@@ -16,5 +16,9 @@ git reset --hard
 # aren't run directly in buddybuild.
 ./gradlew findbugs
 
-./gradlew jacocoTestReport
-bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+# skip jacocoTestReport because we don't have adjust token and build fail on release variant
+#./gradlew jacocoTestReport
+
+
+# skip CODECOV
+#bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
