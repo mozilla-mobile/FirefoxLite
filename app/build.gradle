@@ -70,30 +70,12 @@ android {
 
             applicationIdSuffix ".focus"
         }
-        klar {
-            dimension "product"
-
-            applicationIdSuffix ".klar"
-        }
 
         // We can build with two engines: webkit or gecko
         webkit {
             dimension "engine"
         }
 
-        gecko {
-            dimension "engine"
-
-            applicationIdSuffix ".gecko"
-        }
-    }
-
-    variantFilter { variant ->
-        def flavors = variant.flavors*.name
-        // We only need a gecko debug and beta build for now.
-        if (flavors.contains("gecko") && ((variant.buildType.name != "debug" && variant.buildType.name != "beta") || flavors.contains("klar"))) {
-            setIgnore(true)
-        }
     }
 
     sourceSets {
@@ -109,16 +91,6 @@ android {
         focusWebkitRelease {
             java.srcDir 'src/focusRelease/java'
             manifest.srcFile 'src/focusRelease/AndroidManifest.xml'
-        }
-        focusGeckoRelease {
-            java.srcDir 'src/focusRelease/java'
-            manifest.srcFile 'src/focusRelease/AndroidManifest.xml'
-        }
-        klarWebkitRelease {
-            java.srcDir 'src/klarRelease/java'
-        }
-        klarGeckoRelease {
-            java.srcDir 'src/klarRelease/java'
         }
     }
 }
@@ -150,10 +122,8 @@ dependencies {
 
     compile 'org.mozilla.telemetry:telemetry:1.0.0'
 
-    focusCompile 'com.adjust.sdk:adjust-android:4.11.4'
-    focusCompile 'com.google.android.gms:play-services-analytics:10.2.6' // Required by Adjust
-
-    geckoCompile(name: 'geckoview-latest', ext: 'aar')
+    compile 'com.adjust.sdk:adjust-android:4.11.4'
+    compile 'com.google.android.gms:play-services-analytics:10.2.6' // Required by Adjust
 
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.3.2"
