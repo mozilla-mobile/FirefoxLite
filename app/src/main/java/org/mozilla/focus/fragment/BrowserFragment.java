@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
-import org.mozilla.focus.activity.InstallFirefoxActivity;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
@@ -650,21 +649,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 startActivity(intent);
 
                 TelemetryWrapper.openDefaultAppEvent();
-                break;
-            }
-
-            case R.id.open_firefox: {
-                final Browsers browsers = new Browsers(getContext(), getUrl());
-
-                if (browsers.hasFirefoxBrandedBrowserInstalled()) {
-                    final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
-                    intent.setPackage(browsers.getFirefoxBrandedBrowser().packageName);
-                    startActivity(intent);
-                } else {
-                    InstallFirefoxActivity.open(getContext());
-                }
-
-                TelemetryWrapper.openFirefoxEvent();
                 break;
             }
 
