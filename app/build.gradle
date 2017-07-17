@@ -24,7 +24,7 @@ android {
     }
 
     // We have a three dimensional build configuration:
-    // BUILD TYPE (debug, beta, release) X PRODUCT FLAVOR (focus, klar) X ENGINE FLAVOR (webkit, gecko)
+    // BUILD TYPE (debug, beta, release)
 
     buildTypes {
         release {
@@ -41,7 +41,8 @@ android {
             applicationIdSuffix ".beta"
         }
         debug {
-            applicationIdSuffix ".debug"
+            def userName = System.getenv("USER")
+            applicationIdSuffix ".debug." + userName
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
@@ -64,11 +65,10 @@ android {
     flavorDimensions "product", "engine"
 
     productFlavors {
-        // In most countries we are Firefox Focus - but in some we need to be Firefox Klar
         focus {
             dimension "product"
 
-            applicationIdSuffix ".focus"
+            applicationIdSuffix ".zerda"
         }
 
         // We can build with two engines: webkit or gecko
