@@ -71,11 +71,25 @@ android {
             applicationIdSuffix ".zerda"
         }
 
+        preview {
+            dimension "product"
+            applicationId "gro.allizom"
+            applicationIdSuffix ".zelda"
+        }
+
         // We can build with two engines: webkit or gecko
         webkit {
             dimension "engine"
         }
 
+    }
+
+    variantFilter { variant ->
+        def flavors = variant.flavors*.name
+        // We only need a gecko debug and beta build for now.
+        if (flavors.contains("preview") && (variant.buildType.name != "beta")){
+                setIgnore(true)
+        }
     }
 
     sourceSets {
