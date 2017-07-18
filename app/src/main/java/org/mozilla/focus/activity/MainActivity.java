@@ -42,10 +42,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Settings.getInstance(this).shouldUseSecureMode()) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        }
-
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
@@ -106,12 +102,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity {
         super.onResume();
 
         TelemetryWrapper.startSession();
-
-        if (Settings.getInstance(this).shouldUseSecureMode()) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        }
     }
 
     @Override
