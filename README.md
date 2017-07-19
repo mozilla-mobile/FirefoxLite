@@ -1,16 +1,14 @@
 # Firefox Focus for Android
 
-[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=584f67f6f3d6eb01000842d6&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/584f67f6f3d6eb01000842d6/build/latest?branch=master)
+[![BuddyBuild](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)
  [![codecov](https://codecov.io/gh/mozilla-mobile/focus-android/branch/master/graph/badge.svg)](https://codecov.io/gh/mozilla-mobile/focus-android/branch/master)
-
-_Browse like no one’s watching. The new Firefox Focus automatically blocks a wide range of online trackers — from the moment you launch it to the second you leave it. Easily erase your history, passwords and cookies, so you won’t get followed by things like unwanted ads._
 
 Getting Involved
 ----------------
 
 We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution. Please read the [Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/).
 
-* Issues: [https://github.com/mozilla-mobile/focus-android/issues](https://github.com/mozilla-mobile/focus-android/issues)
+* Issues: [https://github.com/mozilla-tw/Zerda/issues](https://github.com/mozilla-tw/Zerda/issues)
 
 * IRC: [#mobile (irc.mozilla.org)](https://wiki.mozilla.org/IRC)
 
@@ -22,7 +20,7 @@ Build instructions
 1. Clone the repository:
 
   ```shell
-  git clone https://github.com/mozilla-mobile/focus-android
+  git clone https://github.com/mozilla-tw/Zerda
   ```
 
 1. Import the project into Android Studio or build on the command line:
