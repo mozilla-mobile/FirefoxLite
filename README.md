@@ -1,6 +1,5 @@
-# Firefox Focus for Android
-
-[![BuddyBuild](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)
+# Zerda
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=594b679a6ed87e0001fca2cd&build=latest)](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)
  [![codecov](https://codecov.io/gh/mozilla-mobile/focus-android/branch/master/graph/badge.svg)](https://codecov.io/gh/mozilla-mobile/focus-android/branch/master)
 
 Getting Involved
