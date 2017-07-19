@@ -52,16 +52,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         SafeIntent intent = new SafeIntent(getIntent());
 
-        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
-                && !BrowsingSession.getInstance().isActive()) {
-            // This Intent was launched from history (recent apps). Android will redeliver the
-            // original Intent (which might be a VIEW intent). However if there's no active browsing
-            // session then we do not want to re-process the Intent and potentially re-open a website
-            // from a session that the user already "erased".
-            intent = new SafeIntent(new Intent(Intent.ACTION_MAIN));
-            setIntent(intent.getUnsafe());
-        }
-
         if (savedInstanceState == null) {
             WebViewProvider.performCleanup(this);
 
