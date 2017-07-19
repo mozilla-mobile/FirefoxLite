@@ -49,16 +49,6 @@ public class Settings {
         return !preferences.getBoolean(FirstrunFragment.FIRSTRUN_PREF, false);
     }
 
-    public boolean shouldUseSecureMode() {
-        // Always allow screenshots in debug builds - it's really hard to get UX feedback
-        // without screenshots.
-        if (AppConstants.isDevBuild()) {
-            return false;
-        }
-
-        return preferences.getBoolean(getPreferenceKey(R.string.pref_key_secure), true);
-    }
-
     @Nullable
     public String getDefaultSearchEngineName() {
         return preferences.getString(getPreferenceKey(R.string.pref_key_search_engine), null);
