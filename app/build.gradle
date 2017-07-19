@@ -33,7 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         beta {
-            initWith debug
+            initWith release
 
             minifyEnabled true
             shrinkResources true
@@ -87,8 +87,8 @@ android {
     variantFilter { variant ->
         def flavors = variant.flavors*.name
         // We only need a gecko debug and beta build for now.
-        if (flavors.contains("preview") && (variant.buildType.name != "beta")){
-                setIgnore(true)
+        if (flavors.contains("preview") && variant.buildType.name != "beta") {
+            setIgnore(true)
         }
     }
 
