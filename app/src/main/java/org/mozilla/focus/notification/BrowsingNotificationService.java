@@ -129,10 +129,6 @@ public class BrowsingNotificationService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        // If our task got removed then we might have been killed in the task switcher. In this case
-        // our activity had no chance to cleanup the browsing data. Let's try to do it from here.
-        WebViewProvider.performCleanup(this);
-
         stopBrowsingSession();
     }
 

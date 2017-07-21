@@ -34,10 +34,6 @@ public class WebViewProvider {
         TrackingProtectionWebViewClient.triggerPreload(context);
     }
 
-    public static void performCleanup(final Context context) {
-        WebkitView.deleteContentFromKnownLocations(context);
-    }
-
     public static View create(Context context, AttributeSet attrs) {
         final WebkitView webkitView = new WebkitView(context, attrs);
         final WebSettings settings = webkitView.getSettings();

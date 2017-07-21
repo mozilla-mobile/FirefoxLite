@@ -53,8 +53,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         SafeIntent intent = new SafeIntent(getIntent());
 
         if (savedInstanceState == null) {
-            WebViewProvider.performCleanup(this);
-
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
                 final String url = intent.getDataString();
 
@@ -99,10 +97,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     protected void onPause() {
-        if (isFinishing()) {
-            WebViewProvider.performCleanup(this);
-        }
-
         super.onPause();
 
         TelemetryWrapper.stopSession();
@@ -171,7 +165,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else {
             // There's no fragment available currently. Let's delete manually and notify the service
             // that the session should have ended (normally the fragment would do both).
-            WebViewProvider.performCleanup(this);
             BrowsingNotificationService.stop(this);
         }
 

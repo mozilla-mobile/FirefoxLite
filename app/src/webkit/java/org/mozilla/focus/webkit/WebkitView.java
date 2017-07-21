@@ -138,15 +138,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
     }
 
     @Override
-    public void destroy() {
-        super.destroy();
-
-        // WebView might save data to disk once it gets destroyed. In this case our cleanup call
-        // might not have been able to see this data. Let's do it again.
-        deleteContentFromKnownLocations(getContext());
-    }
-
-    @Override
     public void cleanup() {
         clearFormData();
         clearHistory();
@@ -163,8 +154,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         // It isn't entirely clear how this differs from WebView.clearFormData()
         webViewDatabase.clearFormData();
         webViewDatabase.clearHttpAuthUsernamePassword();
-
-        deleteContentFromKnownLocations(getContext());
     }
 
     public static void deleteContentFromKnownLocations(final Context context) {
