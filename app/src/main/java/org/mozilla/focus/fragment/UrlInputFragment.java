@@ -54,16 +54,23 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment createWithHomeScreenAnimation(View fakeUrlBarView) {
-        int[] screenLocation = new int[2];
-        fakeUrlBarView.getLocationOnScreen(screenLocation);
-
+    public static UrlInputFragment createWithHomeScreenAnimation(@Nullable View fakeUrlBarView) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_ANIMATION, ANIMATION_HOME_SCREEN);
-        arguments.putInt(ARGUMENT_X, screenLocation[0]);
-        arguments.putInt(ARGUMENT_Y, screenLocation[1]);
-        arguments.putInt(ARGUMENT_WIDTH, fakeUrlBarView.getWidth());
-        arguments.putInt(ARGUMENT_HEIGHT, fakeUrlBarView.getHeight());
+
+        int[] screenLocation = new int[2];
+        if (fakeUrlBarView == null) {
+            arguments.putInt(ARGUMENT_X, 0);
+            arguments.putInt(ARGUMENT_Y, 0);
+            arguments.putInt(ARGUMENT_WIDTH, 1);
+            arguments.putInt(ARGUMENT_HEIGHT, 1);
+        } else {
+            fakeUrlBarView.getLocationOnScreen(screenLocation);
+            arguments.putInt(ARGUMENT_X, screenLocation[0]);
+            arguments.putInt(ARGUMENT_Y, screenLocation[1]);
+            arguments.putInt(ARGUMENT_WIDTH, fakeUrlBarView.getWidth());
+            arguments.putInt(ARGUMENT_HEIGHT, fakeUrlBarView.getHeight());
+        }
 
         UrlInputFragment fragment = new UrlInputFragment();
         fragment.setArguments(arguments);
@@ -119,7 +126,7 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
 
         searchViewContainer = view.findViewById(R.id.search_hint_container);
 
-        searchView =  (TextView) view.findViewById(R.id.search_hint);
+        searchView = (TextView) view.findViewById(R.id.search_hint);
         searchView.setOnClickListener(this);
 
         urlAutoCompleteFilter = new UrlAutoCompleteFilter();
