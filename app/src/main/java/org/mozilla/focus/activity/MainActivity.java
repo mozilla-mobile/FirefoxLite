@@ -8,16 +8,18 @@ package org.mozilla.focus.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.WindowManager;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
-import org.mozilla.focus.fragment.HomeFragment;
 import org.mozilla.focus.fragment.UrlInputFragment;
+import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.notification.BrowsingNotificationService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -26,8 +28,9 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.focus.widget.FragmentListener;
 
-public class MainActivity extends LocaleAwareAppCompatActivity {
+public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener {
     public static final String ACTION_ERASE = "erase";
     public static final String ACTION_OPEN = "open";
 
@@ -199,10 +202,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity {
         // to the layout directly but then I wasn't able to remove it later. It was still visible but
         // without an activity attached. So let's do it manually.
         final FragmentManager fragmentManager = getSupportFragmentManager();
+        final TopSitesPresenter presenter = new TopSitesPresenter();
+        final HomeFragment fragment = HomeFragment.create(presenter);
+        presenter.setView(fragment);
         if (fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG) == null) {
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, HomeFragment.create(), HomeFragment.FRAGMENT_TAG)
+                    .replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
                     .commit();
         }
     }
@@ -277,6 +283,17 @@ public class MainActivity extends LocaleAwareAppCompatActivity {
             pendingUrl = null;
         } else {
             showHomeScreen();
+        }
+    }
+
+    @Override
+    public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @NonNull Object payload) {
+        switch (type) {
+            case OPEN_URL:
+                if ((payload != null) && (payload instanceof String)) {
+                    showBrowserScreen(payload.toString());
+                }
+                break;
         }
     }
 }
