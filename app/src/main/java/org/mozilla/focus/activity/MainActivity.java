@@ -172,6 +172,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    private void showUrlInput() {
+        final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
+                .commit();
+    }
+
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         if (name.equals(IWebView.class.getName())) {
@@ -224,6 +232,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if ((payload != null) && (payload instanceof String)) {
                     showBrowserScreen(payload.toString());
                 }
+                break;
+            case SHOW_URL_INPUT:
+                showUrlInput();
                 break;
         }
     }
