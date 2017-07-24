@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@android:style/TextAppearance.Material.Menu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:ellipsize="end"
+    android:gravity="center_horizontal"
+    android:longClickable="true"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardBackgroundColor="#EEEEEE"
+        app:cardCornerRadius="8dp">
+
+        <ImageView
+            android:id="@id/content_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            tools:src="@mipmap/ic_launcher" />
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp"
+        android:textColor="#272727"
+        android:textSize="13sp"
+        tools:text="Foobar" />
+</LinearLayout>
