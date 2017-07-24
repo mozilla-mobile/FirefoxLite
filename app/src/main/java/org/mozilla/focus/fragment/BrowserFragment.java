@@ -40,7 +40,6 @@ import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
-import org.mozilla.focus.notification.BrowsingNotificationService;
 import org.mozilla.focus.open.OpenWithFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Browsers;
@@ -48,7 +47,6 @@ import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
@@ -109,13 +107,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     // Set an initial WeakReference so we never have to handle loadStateListenerWeakReference being null
     // (i.e. so we can always just .get()).
     private WeakReference<LoadStateListener> loadStateListenerWeakReference = new WeakReference<>(null);
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        BrowsingNotificationService.start(context);
-    }
 
     @Override
     public void onPause() {
@@ -183,31 +174,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (BrowsingSession.getInstance().isCustomTab()) {
             initialiseCustomTabUi(view);
         } else {
-            initialiseNormalBrowserUi(view);
+            initialiseNormalBrowserUi();
         }
 
         return view;
     }
 
-    private void initialiseNormalBrowserUi(final @NonNull View view) {
-        final View erase = view.findViewById(R.id.erase);
-        erase.setOnClickListener(this);
-
+    private void initialiseNormalBrowserUi() {
         urlView.setOnClickListener(this);
     }
 
     private void initialiseCustomTabUi(final @NonNull View view) {
         final CustomTabConfig customTabConfig = BrowsingSession.getInstance().getCustomTabConfig();
-
-        // Unfortunately there's no simpler way to have the FAB only in normal-browser mode.
-        // - ViewStub: requires splitting attributes for the FAB between the ViewStub, and actual FAB layout file.
-        //             Moreover, the layout behaviour just doesn't work unless you set it programatically.
-        // - View.GONE: doesn't work because the layout-behaviour makes the FAB visible again when scrolling.
-        // - Adding at runtime: works, but then we need to use a separate layout file (and you need
-        //   to set some attributes programatically, same as ViewStub).
-        final View erase = view.findViewById(R.id.erase);
-        final ViewGroup eraseContainer = (ViewGroup) erase.getParent();
-        eraseContainer.removeView(erase);
 
         final int textColor;
 
@@ -526,11 +504,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // We have been started from a VIEW intent. Go back to the previous app immediately (No erase).
                 // However we need to finish the current session so that the custom tab config gets
                 // correctly cleared:
-                BrowsingSession.getInstance().stop();
+                BrowsingSession.getInstance().clearCustomTabConfig();
                 getActivity().finish();
             } else {
                 // Just go back to the home screen.
-                eraseAndShowHomeScreen();
+                showHomeScreen();
             }
 
             TelemetryWrapper.eraseBackEvent();
@@ -539,18 +517,15 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         return true;
     }
 
+    // This is not used currently cause we remove most erasing entry point. We'll need this later.
     public void erase() {
         final IWebView webView = getWebView();
         if (webView != null) {
             webView.cleanup();
         }
-
-        BrowsingNotificationService.stop(getContext());
     }
 
-    public void eraseAndShowHomeScreen() {
-        erase();
-
+    public void showHomeScreen() {
         final TopSitesPresenter presenter = new TopSitesPresenter();
         final org.mozilla.focus.home.HomeFragment fragment = HomeFragment.create(presenter);
         presenter.setView(fragment);
@@ -559,10 +534,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 .setCustomAnimations(0, R.anim.erase_animation)
                 .replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
                 .commit();
-
-        ViewUtils.showBrandedSnackbar(getActivity().findViewById(android.R.id.content),
-                R.string.feedback_erase,
-                getResources().getInteger(R.integer.erase_snackbar_delay));
     }
 
     @Override
@@ -590,13 +561,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                         .commit();
                 break;
-
-            case R.id.erase: {
-                eraseAndShowHomeScreen();
-
-                TelemetryWrapper.eraseEvent();
-                break;
-            }
 
             case R.id.back: {
                 goBack();
@@ -669,7 +633,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             case R.id.customtab_close: {
-                erase();
                 getActivity().finish();
 
                 TelemetryWrapper.closeCustomTabEvent();

@@ -21,7 +21,6 @@ import org.mozilla.focus.fragment.UrlInputFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
-import org.mozilla.focus.notification.BrowsingNotificationService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
@@ -31,13 +30,9 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener {
-    public static final String ACTION_ERASE = "erase";
     public static final String ACTION_OPEN = "open";
 
-    public static final String EXTRA_FINISH = "finish";
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
-
-    private static final String EXTRA_SHORTCUT = "shortcut";
 
     private String pendingUrl;
 
@@ -52,19 +47,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         SafeIntent intent = new SafeIntent(getIntent());
 
-        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
-                && !BrowsingSession.getInstance().isActive()) {
-            // This Intent was launched from history (recent apps). Android will redeliver the
-            // original Intent (which might be a VIEW intent). However if there's no active browsing
-            // session then we do not want to re-process the Intent and potentially re-open a website
-            // from a session that the user already "erased".
-            intent = new SafeIntent(new Intent(Intent.ACTION_MAIN));
-            setIntent(intent.getUnsafe());
-        }
-
         if (savedInstanceState == null) {
-            WebViewProvider.performCleanup(this);
-
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
                 final String url = intent.getDataString();
 
@@ -94,13 +77,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        BrowsingNotificationService.foreground(this);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
 
@@ -109,10 +85,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     protected void onPause() {
-        if (isFinishing()) {
-            WebViewProvider.performCleanup(this);
-        }
-
         super.onPause();
 
         TelemetryWrapper.stopSession();
@@ -121,8 +93,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onStop() {
         super.onStop();
-
-        BrowsingNotificationService.background(this);
 
         TelemetryWrapper.stopMainActivity();
     }
@@ -149,51 +119,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onResumeFragments() {
         super.onResumeFragments();
 
-        final SafeIntent intent = new SafeIntent(getIntent());
-
-        if (ACTION_ERASE.equals(intent.getAction())) {
-            processEraseAction(intent);
-
-            // We do not want to erase again the next time we resume the app.
-            setIntent(new Intent(Intent.ACTION_MAIN));
-        }
-
         if (pendingUrl != null && !Settings.getInstance(this).shouldShowFirstrun()) {
             // We have received an URL in onNewIntent(). Let's load it now.
             // Unless we're trying to show the firstrun screen, in which case we leave it pending until
             // firstrun is dismissed.
             showBrowserScreen(pendingUrl);
             pendingUrl = null;
-        }
-    }
-
-    private void processEraseAction(final SafeIntent intent) {
-        final boolean finishActivity = intent.getBooleanExtra(EXTRA_FINISH, false);
-        final boolean fromShortcut = intent.getBooleanExtra(EXTRA_SHORTCUT, false);
-
-        final BrowserFragment browserFragment = (BrowserFragment) getSupportFragmentManager()
-                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-
-        if (browserFragment != null) {
-            // We are currently displaying a browser fragment. Let the fragment handle the erase and
-            // play its animation.
-            browserFragment.eraseAndShowHomeScreen();
-        } else {
-            // There's no fragment available currently. Let's delete manually and notify the service
-            // that the session should have ended (normally the fragment would do both).
-            WebViewProvider.performCleanup(this);
-            BrowsingNotificationService.stop(this);
-        }
-
-        // The service will track the foreground/background state of our activity. If we are erasing
-        // while the activity is in the background then we want to finish it immediately again.
-        if (finishActivity) {
-            finishAndRemoveTask();
-            overridePendingTransition(0, 0); // This activity should be visible - avoid any animations.
-        }
-
-        if (fromShortcut) {
-            TelemetryWrapper.eraseShortcutEvent();
         }
     }
 
