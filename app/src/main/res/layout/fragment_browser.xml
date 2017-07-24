@@ -20,7 +20,6 @@
             android:background="@drawable/animated_background" />
 
         <org.mozilla.focus.widget.ResizableKeyboardLayout
-            app:viewToHideWhenActivated="@+id/erase"
             android:layout_marginTop="25dp"
             android:id="@+id/main_content"
             android:layout_width="match_parent"
@@ -66,20 +65,6 @@
                 </FrameLayout>
 
             </android.support.design.widget.AppBarLayout>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/erase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginBottom="@dimen/floating_action_button_margin"
-                android:layout_marginEnd="@dimen/floating_action_button_margin"
-                android:elevation="4dp"
-                android:src="@drawable/ic_delete"
-                app:backgroundTint="@color/colorFloatingActionButtonTint"
-                app:rippleColor="#50FFFFFF"
-                app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
-                android:contentDescription="@string/content_description_erase" />
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </FrameLayout>

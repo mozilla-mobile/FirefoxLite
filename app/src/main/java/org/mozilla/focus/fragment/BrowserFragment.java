@@ -182,31 +182,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (BrowsingSession.getInstance().isCustomTab()) {
             initialiseCustomTabUi(view);
         } else {
-            initialiseNormalBrowserUi(view);
+            initialiseNormalBrowserUi();
         }
 
         return view;
     }
 
-    private void initialiseNormalBrowserUi(final @NonNull View view) {
-        final View erase = view.findViewById(R.id.erase);
-        erase.setOnClickListener(this);
-
+    private void initialiseNormalBrowserUi() {
         urlView.setOnClickListener(this);
     }
 
     private void initialiseCustomTabUi(final @NonNull View view) {
         final CustomTabConfig customTabConfig = BrowsingSession.getInstance().getCustomTabConfig();
-
-        // Unfortunately there's no simpler way to have the FAB only in normal-browser mode.
-        // - ViewStub: requires splitting attributes for the FAB between the ViewStub, and actual FAB layout file.
-        //             Moreover, the layout behaviour just doesn't work unless you set it programatically.
-        // - View.GONE: doesn't work because the layout-behaviour makes the FAB visible again when scrolling.
-        // - Adding at runtime: works, but then we need to use a separate layout file (and you need
-        //   to set some attributes programatically, same as ViewStub).
-        final View erase = view.findViewById(R.id.erase);
-        final ViewGroup eraseContainer = (ViewGroup) erase.getParent();
-        eraseContainer.removeView(erase);
 
         final int textColor;
 
@@ -584,13 +571,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                         .commit();
                 break;
-
-            case R.id.erase: {
-                showHomeScreen();
-
-                TelemetryWrapper.eraseEvent();
-                break;
-            }
 
             case R.id.back: {
                 goBack();
