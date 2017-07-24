@@ -35,6 +35,8 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
+import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
@@ -549,10 +551,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void eraseAndShowHomeScreen() {
         erase();
 
+        final TopSitesPresenter presenter = new TopSitesPresenter();
+        final org.mozilla.focus.home.HomeFragment fragment = HomeFragment.create(presenter);
+        presenter.setView(fragment);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(0, R.anim.erase_animation)
-                .replace(R.id.container, HomeFragment.create(), HomeFragment.FRAGMENT_TAG)
+                .replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
                 .commit();
 
         ViewUtils.showBrandedSnackbar(getActivity().findViewById(android.R.id.content),
