@@ -132,6 +132,5 @@ public class AdBlockingTest {
         assertTrue(blockAdTrackerValue.getText().equals("ON"));
         TestHelper.navigateUp.click();
         TestHelper.webView.waitForExists(waitingTime);
-        TestHelper.floatingEraseButton.perform(click());
    }
 }
