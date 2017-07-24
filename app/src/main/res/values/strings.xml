@@ -316,4 +316,6 @@ be temporary, and you can try again later.</li>
     <!-- Indicator that no trackers are being blocked because content blocking is disabled; normally shows the number of blocked trackers -->
     <string name="content_blocking_disabled">-</string>
 
+    <!-- A sub-title in Home screen for top-sites list -->
+    <string name="title_top_sites">Top Sites</string>
 </resources>
