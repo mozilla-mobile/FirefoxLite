@@ -96,9 +96,9 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
                 R.mipmap.ic_launcher,
                 R.mipmap.ic_launcher,
                 R.drawable.ic_info,
-                R.drawable.ic_shortcut_erase,
+                R.drawable.action_search,
                 R.drawable.ic_info,
-                R.drawable.ic_shortcut_erase
+                R.drawable.action_menu
         };
 
         for (int i = 0; i < urls.length; i++) {
