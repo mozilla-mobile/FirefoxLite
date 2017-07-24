@@ -48,7 +48,6 @@ import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
@@ -530,7 +529,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 getActivity().finish();
             } else {
                 // Just go back to the home screen.
-                eraseAndShowHomeScreen();
+                showHomeScreen();
             }
 
             TelemetryWrapper.eraseBackEvent();
@@ -539,6 +538,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         return true;
     }
 
+    // This is not used currently cause we remove most erasing entry point. We'll need this later.
     public void erase() {
         final IWebView webView = getWebView();
         if (webView != null) {
@@ -548,9 +548,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         BrowsingNotificationService.stop(getContext());
     }
 
-    public void eraseAndShowHomeScreen() {
-        erase();
-
+    public void showHomeScreen() {
         final TopSitesPresenter presenter = new TopSitesPresenter();
         final org.mozilla.focus.home.HomeFragment fragment = HomeFragment.create(presenter);
         presenter.setView(fragment);
@@ -559,10 +557,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 .setCustomAnimations(0, R.anim.erase_animation)
                 .replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
                 .commit();
-
-        ViewUtils.showBrandedSnackbar(getActivity().findViewById(android.R.id.content),
-                R.string.feedback_erase,
-                getResources().getInteger(R.integer.erase_snackbar_delay));
     }
 
     @Override
@@ -592,7 +586,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 break;
 
             case R.id.erase: {
-                eraseAndShowHomeScreen();
+                showHomeScreen();
 
                 TelemetryWrapper.eraseEvent();
                 break;

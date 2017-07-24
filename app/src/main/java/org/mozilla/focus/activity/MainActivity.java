@@ -161,7 +161,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (browserFragment != null) {
             // We are currently displaying a browser fragment. Let the fragment handle the erase and
             // play its animation.
-            browserFragment.eraseAndShowHomeScreen();
+            browserFragment.showHomeScreen();
         } else {
             // There's no fragment available currently. Let's delete manually and notify the service
             // that the session should have ended (normally the fragment would do both).
