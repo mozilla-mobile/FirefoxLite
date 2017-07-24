@@ -5,6 +5,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="menu_elevation">8dp</dimen>
 
+    <dimen name="floating_action_button_elevation">4dp</dimen>
     <dimen name="floating_action_button_margin">16dp</dimen>
 
     <item name="match_parent" type="dimen">-1</item>
