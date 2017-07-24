@@ -16,24 +16,4 @@ public class BrowsingSessionTest {
 
         assertEquals(BrowsingSession.getInstance(), BrowsingSession.getInstance());
     }
-
-    @Test
-    public void testActive() {
-        assertFalse(BrowsingSession.getInstance().isActive());
-
-        BrowsingSession.getInstance().start();
-
-        assertTrue(BrowsingSession.getInstance().isActive());
-
-        BrowsingSession.getInstance().stop();
-
-        assertFalse(BrowsingSession.getInstance().isActive());
-
-        BrowsingSession.getInstance().start();
-        BrowsingSession.getInstance().start();
-
-        BrowsingSession.getInstance().stop();
-
-        assertFalse(BrowsingSession.getInstance().isActive());
-    }
 }

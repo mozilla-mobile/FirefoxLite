@@ -40,7 +40,6 @@ import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
-import org.mozilla.focus.notification.BrowsingNotificationService;
 import org.mozilla.focus.open.OpenWithFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Browsers;
@@ -108,13 +107,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     // Set an initial WeakReference so we never have to handle loadStateListenerWeakReference being null
     // (i.e. so we can always just .get()).
     private WeakReference<LoadStateListener> loadStateListenerWeakReference = new WeakReference<>(null);
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        BrowsingNotificationService.start(context);
-    }
 
     @Override
     public void onPause() {
@@ -512,7 +504,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // We have been started from a VIEW intent. Go back to the previous app immediately (No erase).
                 // However we need to finish the current session so that the custom tab config gets
                 // correctly cleared:
-                BrowsingSession.getInstance().stop();
+                BrowsingSession.getInstance().clearCustomTabConfig();
                 getActivity().finish();
             } else {
                 // Just go back to the home screen.
@@ -531,8 +523,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (webView != null) {
             webView.cleanup();
         }
-
-        BrowsingNotificationService.stop(getContext());
     }
 
     public void showHomeScreen() {

@@ -33,7 +33,6 @@ public class BrowsingSession {
         return instance;
     }
 
-    private boolean isActive;
     private int blockedTrackers;
     private WeakReference<TrackingCountListener> listenerWeakReference;
     private @Nullable CustomTabConfig customTabConfig;
@@ -42,17 +41,8 @@ public class BrowsingSession {
         listenerWeakReference = new WeakReference<>(null);
     }
 
-    public void start() {
-        isActive = true;
-    }
-
-    public void stop() {
-        isActive = false;
+    public void clearCustomTabConfig() {
         customTabConfig = null;
-    }
-
-    public boolean isActive() {
-        return isActive;
     }
 
     public void countBlockedTracker() {
