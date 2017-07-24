@@ -8,6 +8,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!-- specify ripple effect color -->
+        <item name="android:colorControlHighlight">#22000000</item>
+
         <item name="android:windowContentTransitions">true</item>
 
         <item name="popupMenuStyle">@style/PopupMenu</item>
