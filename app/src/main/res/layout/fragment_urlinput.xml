@@ -4,7 +4,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.ResizableKeyboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,6 +14,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="81dp"
+        android:layout_gravity="bottom"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:elevation="4dp"
@@ -125,4 +126,4 @@
 
     </FrameLayout>
 
-</FrameLayout>
+</org.mozilla.focus.widget.ResizableKeyboardLayout>
