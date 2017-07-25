@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
@@ -13,10 +14,10 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="81dp"
-        android:orientation="horizontal"
-        android:elevation="4dp"
         android:clipChildren="false"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:elevation="4dp"
+        android:orientation="horizontal">
 
         <View
             android:id="@+id/toolbar_background"
@@ -47,17 +48,17 @@
                     android:id="@+id/url_edit"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
                     android:hint="@string/urlbar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-                    android:background="@android:color/transparent"
                     android:inputType="textUri"
                     android:lines="1"
-                    android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:paddingStart="8dp"
                     android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
                     android:requiresFadingEdge="horizontal"
                     android:selectAllOnFocus="true"
                     android:textColor="#ffffff"
@@ -69,17 +70,17 @@
                     android:id="@+id/clear"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_cancel"
-                    android:layout_marginTop="8dp"
+                    android:layout_gravity="end"
                     android:layout_marginBottom="8dp"
-                    android:paddingTop="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/content_description_clear_input"
                     android:paddingBottom="8dp"
                     android:paddingEnd="8dp"
                     android:paddingStart="8dp"
-                    android:layout_gravity="end"
-                    android:visibility="gone"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/content_description_clear_input" />
+                    android:paddingTop="8dp"
+                    android:src="@drawable/ic_cancel"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -98,29 +99,29 @@
         android:id="@+id/search_hint_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="81dp">
+        android:layout_marginTop="81dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/search_hint"
             android:layout_width="match_parent"
             android:layout_height="54dp"
+            android:background="?android:attr/selectableItemBackground"
             android:drawablePadding="16dp"
             android:drawableStart="@drawable/ic_search"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:lines="1"
-            android:text="Hello World!"
             android:ellipsize="end"
-            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:padding="16dp"
+            android:text="Hello World!"
             android:textColor="@color/searchHintTextColor"
-            android:background="?android:attr/selectableItemBackground" />
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#33ffffff"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:background="#33ffffff" />
 
     </FrameLayout>
 
