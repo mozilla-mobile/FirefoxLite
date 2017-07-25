@@ -9,9 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -244,8 +246,18 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    private void onFragmentDismiss(@NonNull Fragment from, @Nullable Object payload) {
+        final FragmentTransaction t = getSupportFragmentManager().beginTransaction().remove(from);
+
+        if ((payload != null) && (payload instanceof Boolean) &&(((Boolean) payload)).booleanValue()) {
+            t.commitAllowingStateLoss();
+        } else {
+            t.commit();
+        }
+    }
+
     @Override
-    public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @NonNull Object payload) {
+    public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
             case OPEN_URL:
                 if ((payload != null) && (payload instanceof String)) {
@@ -254,6 +266,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case SHOW_URL_INPUT:
                 showUrlInput();
+                break;
+            case DISMISS:
+                onFragmentDismiss(from, payload);
                 break;
         }
     }

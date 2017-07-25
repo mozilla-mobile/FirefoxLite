@@ -8,6 +8,7 @@ package org.mozilla.focus.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +30,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.HintFrameLayout;
 import org.mozilla.focus.widget.InlineAutocompleteEditText;
 
@@ -423,10 +425,10 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
         // IllegalStateException because we already saved the state (of the activity / fragment) before
         // this transaction is committed. To avoid this we commit while allowing a state loss here.
         // We do not save any state in this fragment (It's getting destroyed) so this should not be a problem.
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .remove(this)
-                .commitAllowingStateLoss();
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS, true);
+        }
     }
 
     @Override
