@@ -55,8 +55,10 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment createWithHomeScreenAnimation(@Nullable View fakeUrlBarView) {
+    public static UrlInputFragment createWithHomeScreenAnimation(@Nullable View fakeUrlBarView,
+                                                                 @Nullable String url) {
         Bundle arguments = new Bundle();
+        arguments.putString(ARGUMENT_URL, url);
         arguments.putString(ARGUMENT_ANIMATION, ANIMATION_HOME_SCREEN);
 
         int[] screenLocation = new int[2];

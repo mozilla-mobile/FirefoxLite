@@ -144,7 +144,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUrlInput();
+                showUrlInput(null);
             }
         });
     }
@@ -224,12 +224,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
-    private void showUrlInput() {
+    private void showUrlInput(@Nullable String url) {
         toggleFloatingButtonsVisibility(View.GONE);
 
-        final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null);
-        getSupportFragmentManager()
-                .beginTransaction()
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
+            // We are already showing an URL input fragment. This might have been a double click on the
+            // fake URL bar. Just ignore it.
+            return;
+        }
+
+        final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null, url);
+        fragmentManager.beginTransaction()
                 .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                 .commit();
     }
