@@ -309,8 +309,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     showBrowserScreen(payload.toString());
                 }
                 break;
+            case SHOW_HOME:
+                showHomeScreen();
+                break;
             case SHOW_URL_INPUT:
-                showUrlInput();
+                final String url = (payload != null) ? payload.toString() : null;
+                showUrlInput(url);
                 break;
             case DISMISS:
                 onFragmentDismiss(from, payload);

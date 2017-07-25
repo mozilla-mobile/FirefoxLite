@@ -17,6 +17,7 @@ public interface FragmentListener {
     enum TYPE {
         OPEN_URL, // payload is url in String
         SHOW_URL_INPUT, // no payload
+        SHOW_HOME, // no payload
         DISMISS, // payload is boolean value, true if commitAllowingStateLoss
     }
 

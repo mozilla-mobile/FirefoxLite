@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,8 +34,6 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
-import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
@@ -52,6 +49,7 @@ import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.widget.AnimatedProgressBar;
+import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
 
@@ -399,7 +397,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                     pendingDownload = download;
 
-                    requestPermissions(new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, REQUEST_CODE_STORAGE_PERMISSION);
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
                 }
             }
         };
@@ -526,14 +524,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void showHomeScreen() {
-        final TopSitesPresenter presenter = new TopSitesPresenter();
-        final org.mozilla.focus.home.HomeFragment fragment = HomeFragment.create(presenter);
-        presenter.setView(fragment);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(0, R.anim.erase_animation)
-                .replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
-                .commit();
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_HOME, null);
+        }
     }
 
     @Override
@@ -554,12 +548,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 break;
 
             case R.id.display_url:
-                final Fragment urlFragment = UrlInputFragment.createWithBrowserScreenAnimation(getUrl(), urlView);
+                final Activity activity = getActivity();
+                if (activity instanceof FragmentListener) {
+                    ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
+                }
 
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
-                        .commit();
                 break;
 
             case R.id.back: {

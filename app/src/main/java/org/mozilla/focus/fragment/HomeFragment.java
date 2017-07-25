@@ -5,11 +5,11 @@
 
 package org.mozilla.focus.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
@@ -23,6 +23,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.locale.LocaleAwareFragment;
+import org.mozilla.focus.widget.FragmentListener;
 
 /**
  * Fragment displaying the "home" screen when launching the app.
@@ -38,7 +39,8 @@ public class HomeFragment
 
     private View fakeUrlBarView;
 
-    @Nullable private PopupMenu displayedPopupMenu = null;
+    @Nullable
+    private PopupMenu displayedPopupMenu = null;
 
     @Override
     public void applyLocale() {
@@ -112,20 +114,10 @@ public class HomeFragment
     }
 
     private synchronized void showUrlInput() {
-        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-        final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
-            // We are already showing an URL input fragment. This might have been a double click on the
-            // fake URL bar. Just ignore it.
-            return;
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_URL_INPUT, null);
         }
-
-        final UrlInputFragment fragment = UrlInputFragment.createWithHomeScreenAnimation(fakeUrlBarView);
-
-        fragmentManager.beginTransaction()
-                .add(R.id.container, fragment, UrlInputFragment.FRAGMENT_TAG)
-                .commit();
     }
 
     @Override
