@@ -47,18 +47,6 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
         final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
 
-        view.findViewById(R.id.urlbar_search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Activity parent = getActivity();
-                if ((parent instanceof FragmentListener)) {
-                    ((FragmentListener) parent).onNotified(HomeFragment.this,
-                            FragmentListener.TYPE.SHOW_URL_INPUT,
-                            null);
-                }
-            }
-        });
-
         return view;
     }
 

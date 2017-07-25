@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
@@ -36,14 +37,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private String pendingUrl;
 
+    private FloatingActionButton btnSearch;
+    private FloatingActionButton btnHome;
+    private FloatingActionButton btnMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
         setContentView(R.layout.activity_main);
+        initViews();
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -126,6 +129,22 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             showBrowserScreen(pendingUrl);
             pendingUrl = null;
         }
+    }
+
+    private void initViews() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        btnSearch = (FloatingActionButton) findViewById(R.id.btn_search);
+        btnHome = (FloatingActionButton) findViewById(R.id.btn_home);
+        btnMenu = (FloatingActionButton) findViewById(R.id.btn_menu);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showUrlInput();
+            }
+        });
     }
 
     private void showHomeScreen() {
