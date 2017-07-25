@@ -176,11 +176,32 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void showBrowserScreen(String url) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container,
-                        BrowserFragment.create(url), BrowserFragment.FRAGMENT_TAG)
-                .commit();
+        final FragmentManager fragmentMgr = getSupportFragmentManager();
+
+        // Replace all fragments with a fresh browser fragment. This means we either remove the
+        // HomeFragment with an UrlInputFragment on top or an old BrowserFragment with an
+        // UrlInputFragment.
+        final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
+                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+
+        final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+
+        FragmentTransaction trans = fragmentMgr.beginTransaction();
+
+        trans = (urlInputFrg == null) ? trans : trans.remove(urlInputFrg);
+        trans = (homeFrg == null) ? trans : trans.remove(homeFrg);
+
+        if (browserFrg != null && browserFrg.isVisible()) {
+            // Reuse existing visible fragment - in this case we know the user is already browsing.
+            // The fragment might exist if we "erased" a browsing session, hence we need to check
+            // for visibility in addition to existence.
+            browserFrg.loadUrl(url);
+        } else {
+            trans.replace(R.id.container, BrowserFragment.create(url), BrowserFragment.FRAGMENT_TAG);
+        }
+
+        trans.commit();
 
         final SafeIntent intent = new SafeIntent(getIntent());
 

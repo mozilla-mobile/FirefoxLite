@@ -13,7 +13,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
@@ -458,29 +457,9 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void openUrl(String url) {
-        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-        // Replace all fragments with a fresh browser fragment. This means we either remove the
-        // HomeFragment with an UrlInputFragment on top or an old BrowserFragment with an
-        // UrlInputFragment.
-        final BrowserFragment browserFragment = (BrowserFragment) fragmentManager
-                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-
-        if (browserFragment != null && browserFragment.isVisible()) {
-            // Reuse existing visible fragment - in this case we know the user is already browsing.
-            // The fragment might exist if we "erased" a browsing session, hence we need to check
-            // for visibility in addition to existence.
-            browserFragment.loadUrl(url);
-
-            // And this fragment can be removed again.
-            fragmentManager.beginTransaction()
-                    .remove(this)
-                    .commit();
-        } else {
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.container, BrowserFragment.create(url), BrowserFragment.FRAGMENT_TAG)
-                    .commit();
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.OPEN_URL, url);
         }
     }
 
