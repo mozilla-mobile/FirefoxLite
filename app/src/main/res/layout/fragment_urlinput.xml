@@ -20,24 +20,12 @@
         android:elevation="4dp"
         android:orientation="horizontal">
 
-        <View
-            android:id="@+id/toolbar_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_inactive" />
-
         <org.mozilla.focus.widget.HintFrameLayout
             android:id="@+id/url_input_container"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="bottom"
-            android:layout_margin="8dp">
-
-            <View
-                android:id="@+id/url_input_background"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/urlbar_background" />
+            android:background="@android:color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,6 +69,7 @@
                     android:paddingStart="8dp"
                     android:paddingTop="8dp"
                     android:src="@drawable/ic_cancel"
+                    android:tint="#000000"
                     android:visibility="gone" />
 
             </LinearLayout>
