@@ -149,7 +149,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         });
     }
 
+    private void toggleFloatingButtonsVisibility(int visibility) {
+        btnSearch.setVisibility(visibility);
+        btnHome.setVisibility(visibility);
+        btnMenu.setVisibility(visibility);
+    }
+
     private void showHomeScreen() {
+        toggleFloatingButtonsVisibility(View.VISIBLE);
+
         // We add the home fragment to the layout if it doesn't exist yet. I tried adding the fragment
         // to the layout directly but then I wasn't able to remove it later. It was still visible but
         // without an activity attached. So let's do it manually.
@@ -176,6 +184,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void showBrowserScreen(String url) {
+        toggleFloatingButtonsVisibility(View.VISIBLE);
+
         final FragmentManager fragmentMgr = getSupportFragmentManager();
 
         // Replace all fragments with a fresh browser fragment. This means we either remove the
@@ -215,6 +225,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void showUrlInput() {
+        toggleFloatingButtonsVisibility(View.GONE);
+
         final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -275,6 +287,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else {
             t.commit();
         }
+
+        // TODO: dismissing UrlInputFragment, so we display FAB. This method is not good, need
+        // a better way to deal with it. Maybe better Fragments stack management.
+        final int visibility = (from instanceof UrlInputFragment) ? View.VISIBLE : View.GONE;
+        toggleFloatingButtonsVisibility(visibility);
     }
 
     @Override
