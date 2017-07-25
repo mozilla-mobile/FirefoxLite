@@ -138,6 +138,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         btnSearch = (FloatingActionButton) findViewById(R.id.btn_search);
         btnHome = (FloatingActionButton) findViewById(R.id.btn_home);
         btnMenu = (FloatingActionButton) findViewById(R.id.btn_menu);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showUrlInput();
+            }
+        });
     }
 
     private void showHomeScreen() {
