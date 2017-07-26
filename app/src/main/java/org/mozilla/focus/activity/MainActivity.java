@@ -9,9 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -142,12 +144,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUrlInput();
+                showUrlInput(null);
             }
         });
     }
 
+    private void toggleFloatingButtonsVisibility(int visibility) {
+        btnSearch.setVisibility(visibility);
+        btnHome.setVisibility(visibility);
+        btnMenu.setVisibility(visibility);
+    }
+
     private void showHomeScreen() {
+        toggleFloatingButtonsVisibility(View.VISIBLE);
+
         // We add the home fragment to the layout if it doesn't exist yet. I tried adding the fragment
         // to the layout directly but then I wasn't able to remove it later. It was still visible but
         // without an activity attached. So let's do it manually.
@@ -174,11 +184,34 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void showBrowserScreen(String url) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container,
-                        BrowserFragment.create(url), BrowserFragment.FRAGMENT_TAG)
-                .commit();
+        toggleFloatingButtonsVisibility(View.VISIBLE);
+
+        final FragmentManager fragmentMgr = getSupportFragmentManager();
+
+        // Replace all fragments with a fresh browser fragment. This means we either remove the
+        // HomeFragment with an UrlInputFragment on top or an old BrowserFragment with an
+        // UrlInputFragment.
+        final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
+                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+
+        final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+
+        FragmentTransaction trans = fragmentMgr.beginTransaction();
+
+        trans = (urlInputFrg == null) ? trans : trans.remove(urlInputFrg);
+        trans = (homeFrg == null) ? trans : trans.remove(homeFrg);
+
+        if (browserFrg != null && browserFrg.isVisible()) {
+            // Reuse existing visible fragment - in this case we know the user is already browsing.
+            // The fragment might exist if we "erased" a browsing session, hence we need to check
+            // for visibility in addition to existence.
+            browserFrg.loadUrl(url);
+        } else {
+            trans.replace(R.id.container, BrowserFragment.create(url), BrowserFragment.FRAGMENT_TAG);
+        }
+
+        trans.commit();
 
         final SafeIntent intent = new SafeIntent(getIntent());
 
@@ -191,10 +224,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
-    private void showUrlInput() {
-        final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null);
-        getSupportFragmentManager()
-                .beginTransaction()
+    private void showUrlInput(@Nullable String url) {
+        toggleFloatingButtonsVisibility(View.GONE);
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
+            // We are already showing an URL input fragment. This might have been a double click on the
+            // fake URL bar. Just ignore it.
+            return;
+        }
+
+        final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null, url);
+        fragmentManager.beginTransaction()
                 .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                 .commit();
     }
@@ -244,16 +286,38 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    private void onFragmentDismiss(@NonNull Fragment from, @Nullable Object payload) {
+        final FragmentTransaction t = getSupportFragmentManager().beginTransaction().remove(from);
+
+        if ((payload != null) && (payload instanceof Boolean) &&(((Boolean) payload)).booleanValue()) {
+            t.commitAllowingStateLoss();
+        } else {
+            t.commit();
+        }
+
+        // TODO: dismissing UrlInputFragment, so we display FAB. This method is not good, need
+        // a better way to deal with it. Maybe better Fragments stack management.
+        final int visibility = (from instanceof UrlInputFragment) ? View.VISIBLE : View.GONE;
+        toggleFloatingButtonsVisibility(visibility);
+    }
+
     @Override
-    public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @NonNull Object payload) {
+    public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
             case OPEN_URL:
                 if ((payload != null) && (payload instanceof String)) {
                     showBrowserScreen(payload.toString());
                 }
                 break;
+            case SHOW_HOME:
+                showHomeScreen();
+                break;
             case SHOW_URL_INPUT:
-                showUrlInput();
+                final String url = (payload != null) ? payload.toString() : null;
+                showUrlInput(url);
+                break;
+            case DISMISS:
+                onFragmentDismiss(from, payload);
                 break;
         }
     }
