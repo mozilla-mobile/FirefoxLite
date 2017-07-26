@@ -3,112 +3,67 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.fragment;
+package org.mozilla.focus.urlinput;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.widget.FlowLayout;
 import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.focus.widget.HintFrameLayout;
 import org.mozilla.focus.widget.InlineAutocompleteEditText;
+
+import java.util.List;
 
 /**
  * Fragment for displaying he URL input controls.
  */
-public class UrlInputFragment extends Fragment implements View.OnClickListener, InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener {
+public class UrlInputFragment extends Fragment implements UrlInputContract.View,
+        View.OnClickListener,
+        InlineAutocompleteEditText.OnCommitListener {
+
     public static final String FRAGMENT_TAG = "url_input";
 
     private static final String ARGUMENT_URL = "url";
-    private static final String ARGUMENT_ANIMATION = "animation";
-    private static final String ARGUMENT_X = "x";
-    private static final String ARGUMENT_Y = "y";
-    private static final String ARGUMENT_WIDTH = "width";
-    private static final String ARGUMENT_HEIGHT = "height";
 
-    private static final String ANIMATION_HOME_SCREEN = "home_screen";
-    private static final String ANIMATION_BROWSER_SCREEN = "browser_screen";
+    private UrlInputContract.Presenter presenter;
 
     /**
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment createWithHomeScreenAnimation(@Nullable View fakeUrlBarView,
-                                                                 @Nullable String url) {
+    public static UrlInputFragment create(@NonNull UrlInputContract.Presenter presenter,
+                                          @Nullable String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
-        arguments.putString(ARGUMENT_ANIMATION, ANIMATION_HOME_SCREEN);
-
-        int[] screenLocation = new int[2];
-        if (fakeUrlBarView == null) {
-            arguments.putInt(ARGUMENT_X, 0);
-            arguments.putInt(ARGUMENT_Y, 0);
-            arguments.putInt(ARGUMENT_WIDTH, 1);
-            arguments.putInt(ARGUMENT_HEIGHT, 1);
-        } else {
-            fakeUrlBarView.getLocationOnScreen(screenLocation);
-            arguments.putInt(ARGUMENT_X, screenLocation[0]);
-            arguments.putInt(ARGUMENT_Y, screenLocation[1]);
-            arguments.putInt(ARGUMENT_WIDTH, fakeUrlBarView.getWidth());
-            arguments.putInt(ARGUMENT_HEIGHT, fakeUrlBarView.getHeight());
-        }
 
         UrlInputFragment fragment = new UrlInputFragment();
-        fragment.setArguments(arguments);
-
-        return fragment;
-    }
-
-    /**
-     * Create a new UrlInputFragment and animate the url input view from the position/size of the
-     * browser toolbar's URL view.
-     */
-    public static UrlInputFragment createWithBrowserScreenAnimation(String url, View urlView) {
-        final Bundle arguments = new Bundle();
-        arguments.putString(ARGUMENT_ANIMATION, ANIMATION_BROWSER_SCREEN);
-        arguments.putString(ARGUMENT_URL, url);
-
-        int[] screenLocation = new int[2];
-        urlView.getLocationOnScreen(screenLocation);
-
-        arguments.putInt(ARGUMENT_X, screenLocation[0]);
-        arguments.putInt(ARGUMENT_Y, screenLocation[1]);
-        arguments.putInt(ARGUMENT_WIDTH, urlView.getWidth());
-        arguments.putInt(ARGUMENT_HEIGHT, urlView.getHeight());
-
-        final UrlInputFragment fragment = new UrlInputFragment();
+        fragment.presenter = presenter;
         fragment.setArguments(arguments);
 
         return fragment;
     }
 
     private InlineAutocompleteEditText urlView;
+    private FlowLayout suggestionView;
     private View clearView;
-    private View searchViewContainer;
-    private TextView searchView;
 
     private UrlAutoCompleteFilter urlAutoCompleteFilter;
     private View dismissView;
+    private TextChangeListener textChangeListener = new TextChangeListener();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -120,22 +75,21 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
         clearView = view.findViewById(R.id.clear);
         clearView.setOnClickListener(this);
 
-        searchViewContainer = view.findViewById(R.id.search_hint_container);
-
-        searchView = (TextView) view.findViewById(R.id.search_hint);
-        searchView.setOnClickListener(this);
-
         urlAutoCompleteFilter = new UrlAutoCompleteFilter();
         urlAutoCompleteFilter.loadDomainsInBackground(getContext().getApplicationContext());
 
+        suggestionView = (FlowLayout) view.findViewById(R.id.search_suggestion);
+
         urlView = (InlineAutocompleteEditText) view.findViewById(R.id.url_edit);
-        urlView.setOnFilterListener(this);
+        urlView.addTextChangedListener(textChangeListener);
         urlView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // Avoid showing keyboard again when returning to the previous page by back key.
                 if (hasFocus) {
                     ViewUtils.showKeyboard(urlView);
+                } else {
+                    ViewUtils.hideKeyboard(urlView);
                 }
             }
         });
@@ -169,18 +123,19 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
                 urlView.setText("");
                 urlView.requestFocus();
                 break;
-
-            case R.id.search_hint:
-                onSearch();
-                break;
-
             case R.id.dismiss:
                 dismiss();
                 break;
-
+            case R.id.suggestion_item:
+                onSuggestionClicked(((TextView) view).getText());
+                break;
             default:
                 throw new IllegalStateException("Unhandled view in onClick()");
         }
+    }
+
+    private void onSuggestionClicked(CharSequence tag) {
+        setUrlText(tag);
     }
 
     private void dismiss() {
@@ -195,7 +150,6 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    @Override
     public void onCommit() {
         final String input = urlView.getText().toString();
         if (!input.trim().isEmpty()) {
@@ -213,14 +167,6 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    private void onSearch() {
-        final String searchUrl = UrlUtils.createSearchUrl(getContext(), urlView.getOriginalText());
-
-        openUrl(searchUrl);
-
-        TelemetryWrapper.searchSelectEvent();
-    }
-
     private void openUrl(String url) {
         final Activity activity = getActivity();
         if (activity instanceof FragmentListener) {
@@ -229,30 +175,40 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
     }
 
     @Override
-    public void onFilter(String searchText, InlineAutocompleteEditText view) {
-        // If the UrlInputFragment has already been hidden, don't bother with filtering. Because of the text
-        // input architecture on Android it's possible for onFilter() to be called after we've already
-        // hidden the Fragment, see the relevant bug for more background:
-        // https://github.com/mozilla-mobile/focus-android/issues/441#issuecomment-293691141
-        if (!isVisible()) {
+    public void setUrlText(CharSequence text) {
+        this.urlView.removeTextChangedListener(textChangeListener);
+        this.urlView.setText(text);
+        this.urlView.addTextChangedListener(textChangeListener);
+    }
+
+    @Override
+    public void setSuggestions(@Nullable List<CharSequence> texts) {
+        this.suggestionView.removeAllViews();
+        if (texts == null) {
             return;
         }
 
-        urlAutoCompleteFilter.onFilter(searchText, view);
+        for (int i = 0; i < texts.size(); i++) {
+            final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
+            item.setText(texts.get(i));
+            item.setOnClickListener(this);
+            this.suggestionView.addView(item);
 
-        if (searchText.length() == 0) {
-            clearView.setVisibility(View.GONE);
-            searchViewContainer.setVisibility(View.GONE);
-        } else {
-            clearView.setVisibility(View.VISIBLE);
+        }
+    }
 
-            final String hint = getString(R.string.search_hint, searchText);
+    private class TextChangeListener implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
-            final SpannableString content = new SpannableString(hint);
-            content.setSpan(new StyleSpan(Typeface.BOLD), hint.length() - searchText.length(), hint.length(), 0);
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            UrlInputFragment.this.presenter.onInput(s);
+        }
 
-            searchView.setText(content);
-            searchViewContainer.setVisibility(View.VISIBLE);
+        @Override
+        public void afterTextChanged(Editable s) {
         }
     }
 }

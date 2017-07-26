@@ -21,11 +21,12 @@ import android.view.View;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
-import org.mozilla.focus.fragment.UrlInputFragment;
+import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.urlinput.UrlInputPresenter;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
@@ -256,7 +257,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
-        final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null, url);
+        final UrlInputPresenter presenter = new UrlInputPresenter(this);
+        final UrlInputFragment urlFragment = UrlInputFragment.create(presenter, url);
+        presenter.setView(urlFragment);
         fragmentManager.beginTransaction()
                 .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                 .commit();
@@ -310,7 +313,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void onFragmentDismiss(@NonNull Fragment from, @Nullable Object payload) {
         final FragmentTransaction t = getSupportFragmentManager().beginTransaction().remove(from);
 
-        if ((payload != null) && (payload instanceof Boolean) &&(((Boolean) payload)).booleanValue()) {
+        if ((payload != null) && (payload instanceof Boolean) && (((Boolean) payload)).booleanValue()) {
             t.commitAllowingStateLoss();
         } else {
             t.commit();

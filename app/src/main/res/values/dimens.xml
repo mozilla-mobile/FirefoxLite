@@ -24,4 +24,6 @@
 
     <dimen name="firstrun_card_width">300dp</dimen>
     <dimen name="firstrun_card_height">460dp</dimen>
+
+    <dimen name="flow_layout_spacing">10dp</dimen>
 </resources>
