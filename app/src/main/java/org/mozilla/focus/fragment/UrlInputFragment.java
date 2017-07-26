@@ -6,16 +6,12 @@
 package org.mozilla.focus.fragment;
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
@@ -28,42 +24,21 @@ import org.mozilla.focus.widget.InlineAutocompleteEditText;
 /**
  * Fragment for displaying he URL input controls.
  */
-public class UrlInputFragment extends Fragment implements View.OnClickListener, InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener {
+public class UrlInputFragment extends Fragment implements View.OnClickListener,
+        InlineAutocompleteEditText.OnCommitListener,
+        InlineAutocompleteEditText.OnFilterListener {
+
     public static final String FRAGMENT_TAG = "url_input";
 
     private static final String ARGUMENT_URL = "url";
-    private static final String ARGUMENT_ANIMATION = "animation";
-    private static final String ARGUMENT_X = "x";
-    private static final String ARGUMENT_Y = "y";
-    private static final String ARGUMENT_WIDTH = "width";
-    private static final String ARGUMENT_HEIGHT = "height";
-
-    private static final String ANIMATION_HOME_SCREEN = "home_screen";
-    private static final String ANIMATION_BROWSER_SCREEN = "browser_screen";
 
     /**
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment createWithHomeScreenAnimation(@Nullable View fakeUrlBarView,
-                                                                 @Nullable String url) {
+    public static UrlInputFragment create(@Nullable String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
-        arguments.putString(ARGUMENT_ANIMATION, ANIMATION_HOME_SCREEN);
-
-        int[] screenLocation = new int[2];
-        if (fakeUrlBarView == null) {
-            arguments.putInt(ARGUMENT_X, 0);
-            arguments.putInt(ARGUMENT_Y, 0);
-            arguments.putInt(ARGUMENT_WIDTH, 1);
-            arguments.putInt(ARGUMENT_HEIGHT, 1);
-        } else {
-            fakeUrlBarView.getLocationOnScreen(screenLocation);
-            arguments.putInt(ARGUMENT_X, screenLocation[0]);
-            arguments.putInt(ARGUMENT_Y, screenLocation[1]);
-            arguments.putInt(ARGUMENT_WIDTH, fakeUrlBarView.getWidth());
-            arguments.putInt(ARGUMENT_HEIGHT, fakeUrlBarView.getHeight());
-        }
 
         UrlInputFragment fragment = new UrlInputFragment();
         fragment.setArguments(arguments);
@@ -71,33 +46,8 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
         return fragment;
     }
 
-    /**
-     * Create a new UrlInputFragment and animate the url input view from the position/size of the
-     * browser toolbar's URL view.
-     */
-    public static UrlInputFragment createWithBrowserScreenAnimation(String url, View urlView) {
-        final Bundle arguments = new Bundle();
-        arguments.putString(ARGUMENT_ANIMATION, ANIMATION_BROWSER_SCREEN);
-        arguments.putString(ARGUMENT_URL, url);
-
-        int[] screenLocation = new int[2];
-        urlView.getLocationOnScreen(screenLocation);
-
-        arguments.putInt(ARGUMENT_X, screenLocation[0]);
-        arguments.putInt(ARGUMENT_Y, screenLocation[1]);
-        arguments.putInt(ARGUMENT_WIDTH, urlView.getWidth());
-        arguments.putInt(ARGUMENT_HEIGHT, urlView.getHeight());
-
-        final UrlInputFragment fragment = new UrlInputFragment();
-        fragment.setArguments(arguments);
-
-        return fragment;
-    }
-
     private InlineAutocompleteEditText urlView;
     private View clearView;
-    private View searchViewContainer;
-    private TextView searchView;
 
     private UrlAutoCompleteFilter urlAutoCompleteFilter;
     private View dismissView;
@@ -111,11 +61,6 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
 
         clearView = view.findViewById(R.id.clear);
         clearView.setOnClickListener(this);
-
-        searchViewContainer = view.findViewById(R.id.search_hint_container);
-
-        searchView = (TextView) view.findViewById(R.id.search_hint);
-        searchView.setOnClickListener(this);
 
         urlAutoCompleteFilter = new UrlAutoCompleteFilter();
         urlAutoCompleteFilter.loadDomainsInBackground(getContext().getApplicationContext());
@@ -161,11 +106,6 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
                 urlView.setText("");
                 urlView.requestFocus();
                 break;
-
-            case R.id.search_hint:
-                onSearch();
-                break;
-
             case R.id.dismiss:
                 dismiss();
                 break;
@@ -205,14 +145,6 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    private void onSearch() {
-        final String searchUrl = UrlUtils.createSearchUrl(getContext(), urlView.getOriginalText());
-
-        openUrl(searchUrl);
-
-        TelemetryWrapper.searchSelectEvent();
-    }
-
     private void openUrl(String url) {
         final Activity activity = getActivity();
         if (activity instanceof FragmentListener) {
@@ -222,29 +154,5 @@ public class UrlInputFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onFilter(String searchText, InlineAutocompleteEditText view) {
-        // If the UrlInputFragment has already been hidden, don't bother with filtering. Because of the text
-        // input architecture on Android it's possible for onFilter() to be called after we've already
-        // hidden the Fragment, see the relevant bug for more background:
-        // https://github.com/mozilla-mobile/focus-android/issues/441#issuecomment-293691141
-        if (!isVisible()) {
-            return;
-        }
-
-        urlAutoCompleteFilter.onFilter(searchText, view);
-
-        if (searchText.length() == 0) {
-            clearView.setVisibility(View.GONE);
-            searchViewContainer.setVisibility(View.GONE);
-        } else {
-            clearView.setVisibility(View.VISIBLE);
-
-            final String hint = getString(R.string.search_hint, searchText);
-
-            final SpannableString content = new SpannableString(hint);
-            content.setSpan(new StyleSpan(Typeface.BOLD), hint.length() - searchText.length(), hint.length(), 0);
-
-            searchView.setText(content);
-            searchViewContainer.setVisibility(View.VISIBLE);
-        }
     }
 }

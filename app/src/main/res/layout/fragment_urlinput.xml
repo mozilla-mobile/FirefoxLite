@@ -5,6 +5,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <org.mozilla.focus.widget.ResizableKeyboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,68 +14,53 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="81dp"
+        android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:elevation="4dp"
         android:orientation="horizontal">
 
-        <org.mozilla.focus.widget.HintFrameLayout
-            android:id="@+id/url_input_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:background="@android:color/white">
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:transitionName="urlbar">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:transitionName="urlbar">
+            <org.mozilla.focus.widget.InlineAutocompleteEditText
+                android:id="@+id/url_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="@string/urlbar_hint"
+                android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
+                android:inputType="textUri"
+                android:lines="1"
+                android:requiresFadingEdge="horizontal"
+                android:selectAllOnFocus="true"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="15sp" />
 
-                <org.mozilla.focus.widget.InlineAutocompleteEditText
-                    android:id="@+id/url_edit"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/urlbar_hint"
-                    android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-                    android:inputType="textUri"
-                    android:lines="1"
-                    android:paddingBottom="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:requiresFadingEdge="horizontal"
-                    android:selectAllOnFocus="true"
-                    android:textColor="#ffffff"
-                    android:textColorHighlight="@color/colorAutocompleteHighlight"
-                    android:textColorHint="#40ffffff"
-                    android:textSize="15sp" />
+            <ImageButton
+                android:id="@+id/clear"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/content_description_clear_input"
+                android:src="@drawable/ic_cancel"
+                android:tint="#000000"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                <ImageButton
-                    android:id="@+id/clear"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/content_description_clear_input"
-                    android:paddingBottom="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:src="@drawable/ic_cancel"
-                    android:tint="#000000"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </org.mozilla.focus.widget.HintFrameLayout>
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -84,35 +70,5 @@
         android:layout_height="match_parent"
         android:background="@color/colorUrlInputBackground"
         android:contentDescription="@string/content_description_dismiss_input" />
-
-    <FrameLayout
-        android:id="@+id/search_hint_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="81dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/search_hint"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_search"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:lines="1"
-            android:padding="16dp"
-            android:text="Hello World!"
-            android:textColor="@color/searchHintTextColor"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="bottom"
-            android:background="#33ffffff" />
-
-    </FrameLayout>
 
 </org.mozilla.focus.widget.ResizableKeyboardLayout>

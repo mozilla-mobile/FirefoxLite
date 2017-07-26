@@ -256,7 +256,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
-        final Fragment urlFragment = UrlInputFragment.createWithHomeScreenAnimation(null, url);
+        final Fragment urlFragment = UrlInputFragment.create(url);
         fragmentManager.beginTransaction()
                 .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                 .commit();
@@ -310,7 +310,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void onFragmentDismiss(@NonNull Fragment from, @Nullable Object payload) {
         final FragmentTransaction t = getSupportFragmentManager().beginTransaction().remove(from);
 
-        if ((payload != null) && (payload instanceof Boolean) &&(((Boolean) payload)).booleanValue()) {
+        if ((payload != null) && (payload instanceof Boolean) && (((Boolean) payload)).booleanValue()) {
             t.commitAllowingStateLoss();
         } else {
             t.commit();
