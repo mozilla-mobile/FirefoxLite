@@ -21,7 +21,7 @@ import android.view.View;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
-import org.mozilla.focus.fragment.UrlInputFragment;
+import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
