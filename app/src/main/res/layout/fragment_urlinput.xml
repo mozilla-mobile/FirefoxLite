@@ -12,18 +12,20 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:elevation="4dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/input_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:background="@android:color/white"
             android:orientation="horizontal"
             android:transitionName="urlbar">
@@ -62,7 +64,16 @@
 
         </LinearLayout>
 
-    </FrameLayout>
+        <org.mozilla.focus.widget.FlowLayout
+            android:id="@+id/search_suggestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/input_container"
+            android:layout_margin="10dp"
+            android:animateLayoutChanges="true"
+            tools:background="#55FF0000" />
+
+    </RelativeLayout>
 
     <View
         android:id="@+id/dismiss"
