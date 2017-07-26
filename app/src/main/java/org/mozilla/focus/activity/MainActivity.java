@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +40,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private String pendingUrl;
 
+    private BottomSheetDialog menu;
     private FloatingActionButton btnSearch;
     private FloatingActionButton btnHome;
     private FloatingActionButton btnMenu;
@@ -147,12 +149,31 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 showUrlInput(null);
             }
         });
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMenu();
+            }
+        });
+        setUpMenu();
+
     }
 
     private void toggleFloatingButtonsVisibility(int visibility) {
         btnSearch.setVisibility(visibility);
         btnHome.setVisibility(visibility);
         btnMenu.setVisibility(visibility);
+    }
+
+    private void setUpMenu() {
+        menu = new BottomSheetDialog(this);
+        View sheet = getLayoutInflater().inflate(R.layout.buttom_sheet_menu, null);
+        menu.setContentView(sheet);
+    }
+
+    private void showMenu() {
+        menu.show();
     }
 
     private void showHomeScreen() {
