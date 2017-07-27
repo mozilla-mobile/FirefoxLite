@@ -38,4 +38,5 @@
 
     <color name="colorMenuBackground">#F9F9FA</color>
     <color name="colorMenuDivider">#E6E6E6</color>
+    <color name="colorMenuLabel">#272727</color>
 </resources>
