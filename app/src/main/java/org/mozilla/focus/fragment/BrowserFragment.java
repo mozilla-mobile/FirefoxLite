@@ -94,7 +94,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private View browserContainer;
 
     private View forwardButton;
-    private View backButton;
     private View refreshButton;
     private View stopButton;
 
@@ -156,10 +155,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         if ((forwardButton = view.findViewById(R.id.forward)) != null) {
             forwardButton.setOnClickListener(this);
-        }
-
-        if ((backButton = view.findViewById(R.id.back)) != null) {
-            backButton.setOnClickListener(this);
         }
 
         lockView = (ImageView) view.findViewById(R.id.lock);
@@ -562,11 +557,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 break;
 
-            case R.id.back: {
-                goBack();
-                break;
-            }
-
             case R.id.forward: {
                 goForward();
                 break;
@@ -652,7 +642,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     private void updateToolbarButtonStates() {
-        if (forwardButton == null || backButton == null || refreshButton == null || stopButton == null) {
+        if (forwardButton == null || refreshButton == null || stopButton == null) {
             return;
         }
 
@@ -662,12 +652,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         final boolean canGoForward = webView.canGoForward();
-        final boolean canGoBack = webView.canGoBack();
 
         forwardButton.setEnabled(canGoForward);
         forwardButton.setAlpha(canGoForward ? 1.0f : 0.5f);
-        backButton.setEnabled(canGoBack);
-        backButton.setAlpha(canGoBack ? 1.0f : 0.5f);
 
         refreshButton.setVisibility(isLoading ? View.GONE : View.VISIBLE);
         stopButton.setVisibility(isLoading ? View.VISIBLE : View.GONE);
