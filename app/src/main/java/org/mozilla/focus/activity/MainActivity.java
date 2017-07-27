@@ -42,6 +42,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private String pendingUrl;
 
     private BottomSheetDialog menu;
+    private BottomSheetDialog historyAndDownload;
     private FloatingActionButton btnSearch;
     private FloatingActionButton btnHome;
     private FloatingActionButton btnMenu;
@@ -158,7 +159,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         });
         setUpMenu();
-
+        setUpHistoryAndDownload();
     }
 
     private void toggleFloatingButtonsVisibility(int visibility) {
@@ -173,9 +174,29 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.setContentView(sheet);
     }
 
+    private void setUpHistoryAndDownload() {
+        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_history_download, null);
+        historyAndDownload = new BottomSheetDialog(this);
+        historyAndDownload.setContentView(sheet);
+    }
+
+    private void showMenu() {
+        menu.show();
+    }
+
+    private void showHistoryAndDownload(boolean isHistory) {
+        historyAndDownload.show();
+    }
+
     public void onMenuItemClicked(View v) {
         menu.cancel();
         switch (v.getId()) {
+            case R.id.menu_download:
+                onHistoryClicked();
+                break;
+            case R.id.menu_history:
+                onDownloadClicked();
+                break;
             case R.id.menu_preferences:
                 onPreferenceClicked();
                 break;
@@ -215,6 +236,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         openPreferences();
     }
 
+    private void onHistoryClicked() {
+        showHistoryAndDownload(true);
+    }
+
+    private void onDownloadClicked() {
+        showHistoryAndDownload(false);
+    }
+
     private BrowserFragment getBrowserFragment() {
         return (BrowserFragment) getSupportFragmentManager().findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
     }
@@ -229,10 +258,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onRefreshClicked(final BrowserFragment browserFragment) {
         browserFragment.reload();
-    }
-
-    private void showMenu() {
-        menu.show();
     }
 
     private void showHomeScreen() {
