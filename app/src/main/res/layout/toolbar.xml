@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
@@ -8,75 +9,63 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="horizontal"
-    android:paddingStart="16dp"
-    android:paddingEnd="0dp">
+    android:paddingEnd="0dp"
+    android:paddingStart="8dp">
 
     <ImageButton
         android:id="@+id/customtab_close"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginEnd="10dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/content_description_customtab_exit"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/lock"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="6dp"
+        android:contentDescription="@string/content_description_lock"
         android:scaleType="centerInside"
         android:src="@drawable/ic_lock"
-        android:visibility="gone"
-        android:contentDescription="@string/content_description_lock" />
+        android:tint="#55CC55"
+        android:visibility="gone" />
 
     <!-- lint: We need to use singleLine=true for the fading edge to work (which is officially deprecated,
          but still needed), hence we ignore deprecated warnings here.. -->
     <TextView
-        tools:ignore="Deprecated"
         android:id="@+id/display_url"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:ellipsize="none"
-        android:requiresFadingEdge="horizontal"
         android:gravity="center_vertical"
+        android:lineSpacingExtra="2sp"
         android:lines="1"
-        android:layout_marginEnd="8dp"
         android:maxLines="1"
+        android:requiresFadingEdge="horizontal"
         android:singleLine="true"
-        android:textColor="#ffffff"
-        android:textSize="15sp" />
+        android:textColor="#272727"
+        android:textSize="12sp"
+        tools:ignore="Deprecated" />
 
     <!-- The contentDescription is supplied by other applications in the Custom Tab Intent, and
          is therefore set programatically. -->
     <ImageButton
-        tools:ignore="contentDescription"
         android:id="@+id/customtab_actionbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:adjustViewBounds="true"
-        android:maxWidth="@dimen/customtabs_toolbar_icon_size"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:maxHeight="@dimen/customtabs_toolbar_icon_size"
+        android:maxWidth="@dimen/customtabs_toolbar_icon_size"
         android:scaleType="centerInside"
         android:visibility="gone"
-        android:layout_gravity="center_vertical"
-        android:background="?android:attr/selectableItemBackgroundBorderless"/>
-
-    <ImageButton
-        android:id="@+id/menu"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:padding="4dp"
-        android:contentDescription="@string/content_description_menu"
-        android:src="@drawable/ic_menu" />
+        tools:ignore="contentDescription" />
 
 </LinearLayout>

@@ -34,8 +34,6 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
-import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
-import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.open.OpenWithFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -80,8 +78,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private TextView urlView;
     private AnimatedProgressBar progressView;
     private ImageView lockView;
-    private ImageButton menuView;
-    private WeakReference<BrowserMenu> menuWeakReference = new WeakReference<>(null);
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -94,7 +90,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private View browserContainer;
 
     private View forwardButton;
-    private View backButton;
     private View refreshButton;
     private View stopButton;
 
@@ -109,13 +104,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-
-        final BrowserMenu menu = menuWeakReference.get();
-        if (menu != null) {
-            menu.dismiss();
-
-            menuWeakReference.clear();
-        }
     }
 
     @Override
@@ -158,16 +146,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             forwardButton.setOnClickListener(this);
         }
 
-        if ((backButton = view.findViewById(R.id.back)) != null) {
-            backButton.setOnClickListener(this);
-        }
-
         lockView = (ImageView) view.findViewById(R.id.lock);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
-
-        menuView = (ImageButton) view.findViewById(R.id.menu);
-        menuView.setOnClickListener(this);
 
         if (BrowsingSession.getInstance().isCustomTab()) {
             initialiseCustomTabUi(view);
@@ -244,9 +225,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // We need to tint some icons.. We already tinted the close button above. Let's tint our other icons too.
         final Drawable lockIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_lock, textColor);
         lockView.setImageDrawable(lockIcon);
-
-        final Drawable menuIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_menu, textColor);
-        menuView.setImageDrawable(menuIcon);
     }
 
     @Override
@@ -289,6 +267,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public IWebView.Callback createCallback() {
         return new IWebView.Callback() {
+            private final static int NONE = -1;
+            private int systemVisibility = NONE;
+
             @Override
             public void onPageStarted(final String url) {
                 updateIsLoading(true);
@@ -360,7 +341,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     videoContainer.setVisibility(View.VISIBLE);
 
                     // Switch to immersive mode: Hide system bars other UI controls
-                    switchToImmersiveMode();
+                    systemVisibility = switchToImmersiveMode();
                 }
             }
 
@@ -373,7 +354,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // Show browser UI and web content again
                 browserContainer.setVisibility(View.VISIBLE);
 
-                exitImmersiveMode();
+                if (systemVisibility != NONE) {
+                    exitImmersiveMode(systemVisibility);
+                }
 
                 // Notify renderer that we left fullscreen mode.
                 if (fullscreenCallback != null) {
@@ -408,12 +391,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
      * the top of the screen. These transient system bars will overlay app’s content, may have some
      * degree of transparency, and will automatically hide after a short timeout.
      */
-    private void switchToImmersiveMode() {
+    private int switchToImmersiveMode() {
         final Activity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-
+        final int original = activity.getWindow().getDecorView().getSystemUiVisibility();
         activity.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -421,20 +401,20 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        return original;
     }
 
     /**
      * Show the system bars again.
      */
-    private void exitImmersiveMode() {
+    private void exitImmersiveMode(int visibility) {
         final Activity activity = getActivity();
         if (activity == null) {
             return;
         }
 
-        activity.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
     }
 
     @Override
@@ -540,20 +520,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.menu:
-                final CustomTabConfig customTabConfig;
-                if (BrowsingSession.getInstance().isCustomTab()) {
-                    customTabConfig = BrowsingSession.getInstance().getCustomTabConfig();
-                } else {
-                    customTabConfig = null;
-                }
-
-                BrowserMenu menu = new BrowserMenu(getActivity(), this, customTabConfig);
-                menu.show(menuView);
-
-                menuWeakReference = new WeakReference<>(menu);
-                break;
-
             case R.id.display_url:
                 final Activity activity = getActivity();
                 if (activity instanceof FragmentListener) {
@@ -561,11 +527,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 }
 
                 break;
-
-            case R.id.back: {
-                goBack();
-                break;
-            }
 
             case R.id.forward: {
                 goForward();
@@ -652,7 +613,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     private void updateToolbarButtonStates() {
-        if (forwardButton == null || backButton == null || refreshButton == null || stopButton == null) {
+        if (forwardButton == null || refreshButton == null || stopButton == null) {
             return;
         }
 
@@ -662,12 +623,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         final boolean canGoForward = webView.canGoForward();
-        final boolean canGoBack = webView.canGoBack();
 
         forwardButton.setEnabled(canGoForward);
         forwardButton.setAlpha(canGoForward ? 1.0f : 0.5f);
-        backButton.setEnabled(canGoBack);
-        backButton.setAlpha(canGoBack ? 1.0f : 0.5f);
 
         refreshButton.setVisibility(isLoading ? View.GONE : View.VISIBLE);
         stopButton.setVisibility(isLoading ? View.VISIBLE : View.GONE);

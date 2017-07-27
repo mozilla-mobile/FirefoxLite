@@ -39,4 +39,8 @@
     <color name="colorMenuBackground">#F9F9FA</color>
     <color name="colorMenuDivider">#E6E6E6</color>
     <color name="colorMenuLabel">#272727</color>
+
+    <color name="url_bg_active">#FFFFFF</color>
+    <color name="url_bg_inactive">#EEEEEE</color>
+    <color name="url_bg_disabled">#555555</color>
 </resources>
