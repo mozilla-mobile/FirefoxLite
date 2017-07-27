@@ -123,6 +123,7 @@
 
         <LinearLayout
             android:id="@+id/menu_preferences"
+            android:onClick="onMenuItemClicked"
             style="@style/MenuButton">
 
             <ImageView
