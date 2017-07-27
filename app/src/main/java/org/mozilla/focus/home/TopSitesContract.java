@@ -41,6 +41,8 @@ public class TopSitesContract {
          * @param site the changed site
          */
         void onSiteChanged(@NonNull Site site);
+
+        void setPresenter(Presenter presenter);
     }
 
     interface Presenter {

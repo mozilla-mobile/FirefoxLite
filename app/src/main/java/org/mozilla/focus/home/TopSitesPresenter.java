@@ -44,6 +44,7 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
     @Override
     public void setView(@NonNull TopSitesContract.View view) {
         this.view = view;
+        view.setPresenter(this);
     }
 
     @Override
