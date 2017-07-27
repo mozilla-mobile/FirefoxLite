@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.webkit.GeolocationPermissions;
 
 public interface IWebView {
     class HitTarget {
@@ -66,6 +67,8 @@ public interface IWebView {
          * be hidden now.
          */
         void onExitFullScreen();
+
+        void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback);
     }
 
     interface FullscreenCallback {

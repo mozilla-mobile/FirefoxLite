@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -22,10 +23,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
+import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -60,6 +63,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public static final String FRAGMENT_TAG = "browser";
 
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
+    private static int REQUEST_CODE_LOCATION_PERMISSION = 102;
+
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
     private static final String RESTORE_KEY_DOWNLOAD = "download";
@@ -80,6 +85,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private TextView urlView;
     private AnimatedProgressBar progressView;
     private ImageView lockView;
+
+    //GeoLocationPermission
+    private String geolocationOrigin;
+    private GeolocationPermissions.Callback geolocationCallback;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -410,6 +419,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
                 }
             }
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+                geolocationOrigin = origin;
+                geolocationCallback = callback;
+                //show geolocation permission prompt
+                showGeolocationPermissionPrompt(geolocationOrigin, geolocationCallback);
+            }
         };
     }
 
@@ -446,15 +463,25 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != REQUEST_CODE_STORAGE_PERMISSION) {
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                queueDownload(pendingDownload);
+            }
+
+            pendingDownload = null;
+            return;
+        }
+        else if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                geolocationCallback.invoke(geolocationOrigin, true, true);
+            } else {
+                geolocationCallback.invoke(geolocationOrigin, false, false);
+            }
+            geolocationOrigin = "";
+            geolocationCallback = null;
             return;
         }
 
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            queueDownload(pendingDownload);
-        }
-
-        pendingDownload = null;
     }
 
     /**
@@ -486,6 +513,36 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
+    }
+
+    /*
+     * show webview geolocation permission prompt
+     */
+    private void showGeolocationPermissionPrompt(final String origin, final GeolocationPermissions.Callback callback)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(getString(R.string.geolocation_dialog_message, origin))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.geolocation_dialog_allow), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //check location permission
+                        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            callback.invoke(origin, true, false);
+                            geolocationOrigin = "";
+                            geolocationCallback = null;
+                        } else {
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
+                        }
+                    }
+                }).setNegativeButton(getString(R.string.geolocation_dialog_block), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        callback.invoke(origin, false, false);
+                        geolocationOrigin = "";
+                        geolocationCallback = null;
+                    }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private boolean isStartedFromExternalApp() {

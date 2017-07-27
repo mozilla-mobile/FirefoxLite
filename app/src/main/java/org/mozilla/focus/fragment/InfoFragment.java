@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.GeolocationPermissions;
 import android.widget.ProgressBar;
 
 import org.mozilla.focus.R;
@@ -102,6 +103,11 @@ public class InfoFragment extends WebFragment {
 
             @Override
             public void onExitFullScreen() {}
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+
+            }
         };
     }
 
