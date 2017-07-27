@@ -44,16 +44,28 @@
     </style>
 
     <style name="MenuButton">
-        <item name="android:layout_height">74dp</item>
-        <item name="android:layout_width">74dp</item>
-        <item name="android:background">@color/colorAccent</item>
+        <item name="android:layout_height">62dp</item>
+        <item name="android:layout_width">78dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:layout_margin">4dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="MenuButton2">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
-        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="MenuText">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/colorMenuLabel</item>
+        <item name="android:layout_marginTop">7dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">2</item>
     </style>
 </resources>
