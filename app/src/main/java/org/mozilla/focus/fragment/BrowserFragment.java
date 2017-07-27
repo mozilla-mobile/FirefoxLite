@@ -568,10 +568,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             case R.id.forward: {
-                final IWebView webView = getWebView();
-                if (webView != null) {
-                    webView.goForward();
-                }
+                goForward();
                 break;
             }
 
@@ -703,6 +700,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         final IWebView webView = getWebView();
         if (webView != null) {
             webView.goBack();
+        }
+    }
+
+    public void goForward() {
+        final IWebView webView = getWebView();
+        if (webView != null) {
+            webView.goForward();
         }
     }
 
