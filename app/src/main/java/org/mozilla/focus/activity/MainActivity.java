@@ -138,8 +138,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void initViews() {
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        int visibility = getWindow().getDecorView().getSystemUiVisibility();
+        // do not overwrite existing value
+        visibility |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+        getWindow().getDecorView().setSystemUiVisibility(visibility);
 
         btnSearch = (FloatingActionButton) findViewById(R.id.btn_search);
         btnHome = (FloatingActionButton) findViewById(R.id.btn_home);

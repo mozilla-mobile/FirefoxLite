@@ -267,6 +267,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public IWebView.Callback createCallback() {
         return new IWebView.Callback() {
+            private final static int NONE = -1;
+            private int systemVisibility = NONE;
+
             @Override
             public void onPageStarted(final String url) {
                 updateIsLoading(true);
@@ -338,7 +341,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     videoContainer.setVisibility(View.VISIBLE);
 
                     // Switch to immersive mode: Hide system bars other UI controls
-                    switchToImmersiveMode();
+                    systemVisibility = switchToImmersiveMode();
                 }
             }
 
@@ -351,7 +354,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // Show browser UI and web content again
                 browserContainer.setVisibility(View.VISIBLE);
 
-                exitImmersiveMode();
+                if (systemVisibility != NONE) {
+                    exitImmersiveMode(systemVisibility);
+                }
 
                 // Notify renderer that we left fullscreen mode.
                 if (fullscreenCallback != null) {
@@ -386,12 +391,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
      * the top of the screen. These transient system bars will overlay app’s content, may have some
      * degree of transparency, and will automatically hide after a short timeout.
      */
-    private void switchToImmersiveMode() {
+    private int switchToImmersiveMode() {
         final Activity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-
+        final int original = activity.getWindow().getDecorView().getSystemUiVisibility();
         activity.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -399,20 +401,20 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        return original;
     }
 
     /**
      * Show the system bars again.
      */
-    private void exitImmersiveMode() {
+    private void exitImmersiveMode(int visibility) {
         final Activity activity = getActivity();
         if (activity == null) {
             return;
         }
 
-        activity.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
     }
 
     @Override
