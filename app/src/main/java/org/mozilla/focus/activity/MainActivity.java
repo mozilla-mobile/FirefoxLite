@@ -168,9 +168,17 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void setUpMenu() {
+        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
         menu = new BottomSheetDialog(this);
-        View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
         menu.setContentView(sheet);
+        // TODO: improve this click handler, since there will be lots of menu buttons.
+        sheet.findViewById(R.id.menu_preferences).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu.cancel();
+                openPreferences();
+            }
+        });
     }
 
     private void showMenu() {
