@@ -34,8 +34,6 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
-import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
-import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.open.OpenWithFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -80,8 +78,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private TextView urlView;
     private AnimatedProgressBar progressView;
     private ImageView lockView;
-    private ImageButton menuView;
-    private WeakReference<BrowserMenu> menuWeakReference = new WeakReference<>(null);
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -108,13 +104,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-
-        final BrowserMenu menu = menuWeakReference.get();
-        if (menu != null) {
-            menu.dismiss();
-
-            menuWeakReference.clear();
-        }
     }
 
     @Override
@@ -160,9 +149,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         lockView = (ImageView) view.findViewById(R.id.lock);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
-
-        menuView = (ImageButton) view.findViewById(R.id.menu);
-        menuView.setOnClickListener(this);
 
         if (BrowsingSession.getInstance().isCustomTab()) {
             initialiseCustomTabUi(view);
@@ -239,9 +225,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // We need to tint some icons.. We already tinted the close button above. Let's tint our other icons too.
         final Drawable lockIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_lock, textColor);
         lockView.setImageDrawable(lockIcon);
-
-        final Drawable menuIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_menu, textColor);
-        menuView.setImageDrawable(menuIcon);
     }
 
     @Override
@@ -535,20 +518,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.menu:
-                final CustomTabConfig customTabConfig;
-                if (BrowsingSession.getInstance().isCustomTab()) {
-                    customTabConfig = BrowsingSession.getInstance().getCustomTabConfig();
-                } else {
-                    customTabConfig = null;
-                }
-
-                BrowserMenu menu = new BrowserMenu(getActivity(), this, customTabConfig);
-                menu.show(menuView);
-
-                menuWeakReference = new WeakReference<>(menu);
-                break;
-
             case R.id.display_url:
                 final Activity activity = getActivity();
                 if (activity instanceof FragmentListener) {
