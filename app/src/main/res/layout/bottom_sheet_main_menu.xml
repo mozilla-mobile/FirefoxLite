@@ -168,6 +168,8 @@
 
         <ImageView
             style="@style/MenuButton2"
+            android:id="@+id/action_back"
+            android:onClick="onMenuItemClicked"
             android:src="@drawable/action_back" />
 
         <Space
@@ -176,6 +178,8 @@
 
         <ImageView
             style="@style/MenuButton2"
+            android:id="@+id/action_next"
+            android:onClick="onMenuItemClicked"
             android:src="@drawable/action_next" />
 
         <Space
@@ -184,6 +188,8 @@
 
         <ImageView
             style="@style/MenuButton2"
+            android:id="@+id/action_refresh"
+            android:onClick="onMenuItemClicked"
             android:src="@drawable/action_refresh" />
 
         <ImageView

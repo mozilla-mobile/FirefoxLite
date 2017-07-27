@@ -179,13 +179,56 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.menu_preferences:
                 onPreferenceClicked();
                 break;
-            default:
+            case R.id.action_back:
+            case R.id.action_next:
+            case R.id.action_refresh:
+                onMenuBrowsingItemClicked(v);
                 break;
+            default:
+                throw new RuntimeException("Unknown id in menu, onMenuItemClicked() is only for" +
+                        " known ids");
         }
     }
 
-    public void onPreferenceClicked() {
+    public void onMenuBrowsingItemClicked(View v) {
+        final BrowserFragment browserFragment = getBrowserFragment();
+        if(browserFragment == null || !browserFragment.isVisible()) {
+            return;
+        }
+        switch (v.getId()) {
+            case R.id.action_back:
+                onBackClicked(browserFragment);
+                break;
+            case R.id.action_next:
+                onNextClicked(browserFragment);
+                break;
+            case R.id.action_refresh:
+                onRefreshClicked(browserFragment);
+                break;
+            default:
+                throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
+                        " only for known ids");
+        }
+    }
+
+    private void onPreferenceClicked() {
         openPreferences();
+    }
+
+    private BrowserFragment getBrowserFragment() {
+        return (BrowserFragment) getSupportFragmentManager().findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+    }
+
+    private void onBackClicked(final BrowserFragment browserFragment) {
+        browserFragment.goBack();
+    }
+
+    private void onNextClicked(final BrowserFragment browserFragment) {
+        browserFragment.goForward();
+    }
+
+    private void onRefreshClicked(final BrowserFragment browserFragment) {
+        browserFragment.reload();
     }
 
     private void showMenu() {
