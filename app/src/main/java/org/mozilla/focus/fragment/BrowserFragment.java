@@ -37,6 +37,11 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
+import org.mozilla.focus.db.DownloadIdDAO;
+import org.mozilla.focus.greenDAO.DBUtils;
+import org.mozilla.focus.greenDAO.DownloadInfoEntity;
+import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
+import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.open.OpenWithFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -512,7 +517,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         request.allowScanningByMediaScanner();
 
         final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.enqueue(request);
+        Long downloadId = manager.enqueue(request);
+
+        //record download ID
+        DownloadInfoEntity downloadInfo = new DownloadInfoEntity(null,downloadId,fileName);
+        DBUtils.getDbService().getDao().insert(downloadInfo);
+
     }
 
     /*
