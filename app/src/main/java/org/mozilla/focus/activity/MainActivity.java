@@ -333,6 +333,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     showBrowserScreen(payload.toString());
                 }
                 break;
+            case OPEN_PREFERENCE:
+                openPreferences();
+                break;
             case SHOW_HOME:
                 showHomeScreen();
                 break;

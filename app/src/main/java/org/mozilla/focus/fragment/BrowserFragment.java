@@ -523,6 +523,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
+    public void openPreference() {
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
+        }
+    }
+
     public void showHomeScreen() {
         final Activity activity = getActivity();
         if (activity instanceof FragmentListener) {
@@ -592,7 +599,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             case R.id.settings:
-                ((LocaleAwareAppCompatActivity) getActivity()).openPreferences();
+                openPreference();
                 break;
 
             case R.id.open_default: {
