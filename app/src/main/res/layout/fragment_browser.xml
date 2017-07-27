@@ -17,7 +17,7 @@
         <View
             android:id="@+id/background"
             android:layout_width="match_parent"
-            android:layout_height="81dp"
+            android:layout_height="50dp"
             android:background="@drawable/animated_background" />
 
         <org.mozilla.focus.widget.ResizableKeyboardLayout
@@ -45,7 +45,7 @@
                 <FrameLayout
                     android:id="@+id/urlbar"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="25dp"
                     android:clipChildren="false"
                     app:layout_scrollFlags="scroll|enterAlways|snap">
 

@@ -10,7 +10,7 @@
     android:animateLayoutChanges="true"
     android:orientation="horizontal"
     android:paddingEnd="0dp"
-    android:paddingStart="16dp">
+    android:paddingStart="8dp">
 
     <ImageButton
         android:id="@+id/customtab_close"
@@ -23,15 +23,14 @@
 
     <ImageView
         android:id="@+id/lock"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="6dp"
         android:contentDescription="@string/content_description_lock"
         android:scaleType="centerInside"
         android:src="@drawable/ic_lock"
+        android:tint="#55CC55"
         android:visibility="gone" />
 
     <!-- lint: We need to use singleLine=true for the fading edge to work (which is officially deprecated,
@@ -45,12 +44,13 @@
         android:layout_weight="1"
         android:ellipsize="none"
         android:gravity="center_vertical"
+        android:lineSpacingExtra="2sp"
         android:lines="1"
         android:maxLines="1"
         android:requiresFadingEdge="horizontal"
         android:singleLine="true"
-        android:textColor="#ffffff"
-        android:textSize="15sp"
+        android:textColor="#272727"
+        android:textSize="12sp"
         tools:ignore="Deprecated" />
 
     <!-- The contentDescription is supplied by other applications in the Custom Tab Intent, and
