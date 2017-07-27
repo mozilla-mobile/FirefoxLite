@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/browser_container"
@@ -20,12 +21,12 @@
             android:background="@drawable/animated_background" />
 
         <org.mozilla.focus.widget.ResizableKeyboardLayout
-            android:layout_marginTop="25dp"
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:clipChildren="false">
+            android:layout_marginTop="25dp"
+            android:clipChildren="false"
+            android:orientation="vertical">
 
             <org.mozilla.focus.web.IWebView
                 android:id="@+id/webview"
@@ -38,29 +39,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                app:elevation="0dp"
-                android:clipChildren="false">
+                android:clipChildren="false"
+                app:elevation="0dp">
 
                 <FrameLayout
                     android:id="@+id/urlbar"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
-                    android:clipChildren="false">
+                    android:clipChildren="false"
+                    app:layout_scrollFlags="scroll|enterAlways|snap">
 
-                    <include layout="@layout/toolbar"/>
+                    <include layout="@layout/toolbar" />
 
                     <org.mozilla.focus.widget.AnimatedProgressBar
                         android:id="@+id/progress"
                         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="3dp"
-                        android:progressDrawable="@drawable/photon_progressbar"
-                        app:shiftDuration="@integer/progress_shift_duration"
-                        app:wrapShiftDrawable="true"
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="-1dp"
                         android:importantForAccessibility="yes"
+                        android:progressDrawable="@drawable/photon_progressbar"
+                        app:shiftDuration="@integer/progress_shift_duration"
+                        app:wrapShiftDrawable="true"
                         tools:progress="50" />
                 </FrameLayout>
 
