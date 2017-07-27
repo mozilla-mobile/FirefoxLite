@@ -21,11 +21,11 @@ import android.view.View;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
-import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.urlinput.UrlInputPresenter;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
@@ -168,9 +168,17 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void setUpMenu() {
+        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
         menu = new BottomSheetDialog(this);
-        View sheet = getLayoutInflater().inflate(R.layout.buttom_sheet_menu, null);
         menu.setContentView(sheet);
+        // TODO: improve this click handler, since there will be lots of menu buttons.
+        sheet.findViewById(R.id.menu_preferences).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu.cancel();
+                openPreferences();
+            }
+        });
     }
 
     private void showMenu() {
@@ -332,6 +340,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if ((payload != null) && (payload instanceof String)) {
                     showBrowserScreen(payload.toString());
                 }
+                break;
+            case OPEN_PREFERENCE:
+                openPreferences();
                 break;
             case SHOW_HOME:
                 showHomeScreen();
