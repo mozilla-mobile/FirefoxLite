@@ -47,6 +47,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private FloatingActionButton btnHome;
     private FloatingActionButton btnMenu;
 
+    private TopSitesPresenter topSitesPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +85,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void applyLocale() {
         // We don't care here: all our fragments update themselves as appropriate
+    }
+
+    @Override
+    protected void onStart() {
+        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+        if (homeFragment != null) {
+            getTopSitesPresenter().setView(homeFragment);
+        }
+        super.onStart();
     }
 
     @Override
@@ -269,8 +280,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         // to the layout directly but then I wasn't able to remove it later. It was still visible but
         // without an activity attached. So let's do it manually.
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        final TopSitesPresenter presenter = new TopSitesPresenter();
-        final HomeFragment fragment = HomeFragment.create(presenter);
+        final TopSitesPresenter presenter = getTopSitesPresenter();
+        final HomeFragment fragment = HomeFragment.create();
         presenter.setView(fragment);
         if (fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG) == null) {
             fragmentManager
@@ -432,5 +443,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 onFragmentDismiss(from, payload);
                 break;
         }
+    }
+
+    private TopSitesPresenter getTopSitesPresenter() {
+        if (topSitesPresenter == null){
+            topSitesPresenter = new TopSitesPresenter();
+        }
+        return topSitesPresenter;
     }
 }
