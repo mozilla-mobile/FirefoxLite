@@ -150,7 +150,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         // We do not save any state in this fragment (It's getting destroyed) so this should not be a problem.
         final Activity activity = getActivity();
         if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS, true);
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS_URL_INPUT, true);
         }
     }
 

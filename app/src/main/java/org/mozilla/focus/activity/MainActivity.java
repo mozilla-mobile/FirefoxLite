@@ -13,8 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -47,8 +45,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private FloatingActionButton btnHome;
     private FloatingActionButton btnMenu;
 
-    private TopSitesPresenter topSitesPresenter;
-    private UrlInputPresenter urlInputPresenter;
+    private MainMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +53,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         setContentView(R.layout.activity_main);
         initViews();
+
+        mediator = new MainMediator(this);
+        mediator.registerHome(btnHome);
+        mediator.registerSearch(btnSearch);
+        mediator.registerMenu(btnMenu);
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -67,15 +69,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     pendingUrl = url;
-                    showFirstrun();
+                    this.mediator.showFirstRun();
                 } else {
-                    showBrowserScreen(url);
+                    this.mediator.showBrowserScreen(url);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
-                    showFirstrun();
+                    this.mediator.showFirstRun();
                 } else {
-                    showHomeScreen();
+                    this.mediator.showHomeScreen();
                 }
             }
         }
@@ -90,14 +92,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     protected void onStart() {
-        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-        if (homeFragment != null) {
-            getTopSitesPresenter().setView(homeFragment);
-        }
-        UrlInputFragment urlInputFragment = (UrlInputFragment) getSupportFragmentManager().findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        if (urlInputFragment != null) {
-            getUrlInputPresenter().setView(urlInputFragment);
-        }
+        // TODO: handle fragment creation
+        //HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+        //if (homeFragment != null) {
+        //    getTopSitesPresenter().setView(homeFragment);
+        //}
+        //UrlInputFragment urlInputFragment = (UrlInputFragment) getSupportFragmentManager().findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        //if (urlInputFragment != null) {
+        //    getUrlInputPresenter().setView(urlInputFragment);
+        //}
         super.onStart();
     }
 
@@ -148,7 +151,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // We have received an URL in onNewIntent(). Let's load it now.
             // Unless we're trying to show the firstrun screen, in which case we leave it pending until
             // firstrun is dismissed.
-            showBrowserScreen(pendingUrl);
+            this.mediator.showBrowserScreen(pendingUrl);
             pendingUrl = null;
         }
     }
@@ -166,7 +169,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUrlInput(null);
+                MainActivity.this.mediator.showUrlInput(null);
             }
         });
 
@@ -178,12 +181,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         });
         setUpMenu();
         setUpHistoryAndDownload();
-    }
-
-    private void toggleFloatingButtonsVisibility(int visibility) {
-        btnSearch.setVisibility(visibility);
-        btnHome.setVisibility(visibility);
-        btnMenu.setVisibility(visibility);
     }
 
     private void setUpMenu() {
@@ -231,7 +228,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public void onMenuBrowsingItemClicked(View v) {
         final BrowserFragment browserFragment = getBrowserFragment();
-        if(browserFragment == null || !browserFragment.isVisible()) {
+        if (browserFragment == null || !browserFragment.isVisible()) {
             return;
         }
         switch (v.getId()) {
@@ -278,94 +275,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         browserFragment.reload();
     }
 
-    private void showHomeScreen() {
-        toggleFloatingButtonsVisibility(View.VISIBLE);
-
-        // We add the home fragment to the layout if it doesn't exist yet. I tried adding the fragment
-        // to the layout directly but then I wasn't able to remove it later. It was still visible but
-        // without an activity attached. So let's do it manually.
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final TopSitesPresenter presenter = getTopSitesPresenter();
-        final HomeFragment fragment = HomeFragment.create();
-        presenter.setView(fragment);
-        if (fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG) == null) {
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
-                    .commit();
-        }
-    }
-
-    private void showFirstrun() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.container, FirstrunFragment.create(), FirstrunFragment.FRAGMENT_TAG)
-                    .commit();
-        }
-    }
-
-    private void showBrowserScreen(String url) {
-        toggleFloatingButtonsVisibility(View.VISIBLE);
-
-        final FragmentManager fragmentMgr = getSupportFragmentManager();
-
-        // Replace all fragments with a fresh browser fragment. This means we either remove the
-        // HomeFragment with an UrlInputFragment on top or an old BrowserFragment with an
-        // UrlInputFragment.
-        final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
-                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-
-        final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-
-        FragmentTransaction trans = fragmentMgr.beginTransaction();
-
-        trans = (urlInputFrg == null) ? trans : trans.remove(urlInputFrg);
-        trans = (homeFrg == null) ? trans : trans.remove(homeFrg);
-
-        if (browserFrg != null && browserFrg.isVisible()) {
-            // Reuse existing visible fragment - in this case we know the user is already browsing.
-            // The fragment might exist if we "erased" a browsing session, hence we need to check
-            // for visibility in addition to existence.
-            browserFrg.loadUrl(url);
-        } else {
-            trans.replace(R.id.container, BrowserFragment.create(url), BrowserFragment.FRAGMENT_TAG);
-        }
-
-        trans.commit();
-
-        final SafeIntent intent = new SafeIntent(getIntent());
-
-        if (intent.getBooleanExtra(EXTRA_TEXT_SELECTION, false)) {
-            TelemetryWrapper.textSelectionIntentEvent();
-        } else if (BrowsingSession.getInstance().isCustomTab()) {
-            TelemetryWrapper.customTabsIntentEvent(BrowsingSession.getInstance().getCustomTabConfig().getOptionsList());
-        } else {
-            TelemetryWrapper.browseIntentEvent();
-        }
-    }
-
-    private void showUrlInput(@Nullable String url) {
-        toggleFloatingButtonsVisibility(View.GONE);
-
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
-            // We are already showing an URL input fragment. This might have been a double click on the
-            // fake URL bar. Just ignore it.
-            return;
-        }
-
-        final UrlInputPresenter presenter = new UrlInputPresenter(this);
-        final UrlInputFragment urlFragment = UrlInputFragment.create(url);
-        presenter.setView(urlFragment);
-        fragmentManager.beginTransaction()
-                .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
-                .commit();
-    }
-
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         if (name.equals(IWebView.class.getName())) {
@@ -378,52 +287,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public void onBackPressed() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
-        final UrlInputFragment urlInputFragment = (UrlInputFragment) fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        if (urlInputFragment != null &&
-                urlInputFragment.isVisible() &&
-                urlInputFragment.onBackPressed()) {
-            // The URL input fragment has handled the back press. It does its own animations so
-            // we do not try to remove it from outside.
+        if (this.mediator.handleBackKey()) {
             return;
         }
-
-        final BrowserFragment browserFragment = (BrowserFragment) fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-        if (browserFragment != null &&
-                browserFragment.isVisible() &&
-                browserFragment.onBackPressed()) {
-            // The Browser fragment handles back presses on its own because it might just go back
-            // in the browsing history.
-            return;
-        }
-
         super.onBackPressed();
     }
 
     public void firstrunFinished() {
         if (pendingUrl != null) {
             // We have received an URL in onNewIntent(). Let's load it now.
-            showBrowserScreen(pendingUrl);
+            this.mediator.showBrowserScreen(pendingUrl);
             pendingUrl = null;
         } else {
-            showHomeScreen();
+            this.mediator.showHomeScreen();
         }
-    }
-
-    private void onFragmentDismiss(@NonNull Fragment from, @Nullable Object payload) {
-        final FragmentTransaction t = getSupportFragmentManager().beginTransaction().remove(from);
-
-        if ((payload != null) && (payload instanceof Boolean) && (((Boolean) payload)).booleanValue()) {
-            t.commitAllowingStateLoss();
-        } else {
-            t.commit();
-        }
-
-        // TODO: dismissing UrlInputFragment, so we display FAB. This method is not good, need
-        // a better way to deal with it. Maybe better Fragments stack management.
-        final int visibility = (from instanceof UrlInputFragment) ? View.VISIBLE : View.GONE;
-        toggleFloatingButtonsVisibility(visibility);
     }
 
     @Override
@@ -431,36 +308,56 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         switch (type) {
             case OPEN_URL:
                 if ((payload != null) && (payload instanceof String)) {
-                    showBrowserScreen(payload.toString());
+                    this.mediator.showBrowserScreen(payload.toString());
                 }
                 break;
             case OPEN_PREFERENCE:
                 openPreferences();
                 break;
             case SHOW_HOME:
-                showHomeScreen();
+                this.mediator.showHomeScreen();
                 break;
             case SHOW_URL_INPUT:
                 final String url = (payload != null) ? payload.toString() : null;
-                showUrlInput(url);
+                this.mediator.showUrlInput(url);
                 break;
-            case DISMISS:
-                onFragmentDismiss(from, payload);
+            case DISMISS_URL_INPUT:
+                this.mediator.dismissUrlInput();
                 break;
         }
     }
 
-    private TopSitesPresenter getTopSitesPresenter() {
-        if (topSitesPresenter == null){
-            topSitesPresenter = new TopSitesPresenter();
-        }
-        return topSitesPresenter;
+    public FirstrunFragment createFirstRunFragment() {
+        return FirstrunFragment.create();
     }
 
-    private UrlInputPresenter getUrlInputPresenter() {
-        if (urlInputPresenter == null){
-            urlInputPresenter = new UrlInputPresenter(this);
+    public BrowserFragment createBrowserFragment(@Nullable String url) {
+        BrowserFragment fragment = BrowserFragment.create(url);
+        return fragment;
+    }
+
+    public UrlInputFragment createUrlInputFragment(@Nullable String url) {
+        final UrlInputPresenter presenter = new UrlInputPresenter(this);
+        final UrlInputFragment fragment = UrlInputFragment.create(url);
+        presenter.setView(fragment);
+        return fragment;
+    }
+
+    public HomeFragment createHomeFragment() {
+        final TopSitesPresenter presenter = new TopSitesPresenter();
+        final HomeFragment fragment = HomeFragment.create();
+        presenter.setView(fragment);
+        return fragment;
+    }
+
+    public void sendBrowsingTelemetry() {
+        final SafeIntent intent = new SafeIntent(getIntent());
+        if (intent.getBooleanExtra(EXTRA_TEXT_SELECTION, false)) {
+            TelemetryWrapper.textSelectionIntentEvent();
+        } else if (BrowsingSession.getInstance().isCustomTab()) {
+            TelemetryWrapper.customTabsIntentEvent(BrowsingSession.getInstance().getCustomTabConfig().getOptionsList());
+        } else {
+            TelemetryWrapper.browseIntentEvent();
         }
-        return urlInputPresenter;
     }
 }

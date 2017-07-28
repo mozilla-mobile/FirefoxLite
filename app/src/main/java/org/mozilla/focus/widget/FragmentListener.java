@@ -19,7 +19,7 @@ public interface FragmentListener {
         OPEN_PREFERENCE, // no payload
         SHOW_URL_INPUT, // no payload
         SHOW_HOME, // no payload
-        DISMISS, // payload is boolean value, true if commitAllowingStateLoss
+        DISMISS_URL_INPUT, // payload is boolean value, true if commitAllowingStateLoss
     }
 
     void onNotified(@NonNull Fragment from,
