@@ -48,6 +48,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private FloatingActionButton btnMenu;
 
     private TopSitesPresenter topSitesPresenter;
+    private UrlInputPresenter urlInputPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.FRAGMENT_TAG);
         if (homeFragment != null) {
             getTopSitesPresenter().setView(homeFragment);
+        }
+        UrlInputFragment urlInputFragment = (UrlInputFragment) getSupportFragmentManager().findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        if (urlInputFragment != null) {
+            getUrlInputPresenter().setView(urlInputFragment);
         }
         super.onStart();
     }
@@ -354,7 +359,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         final UrlInputPresenter presenter = new UrlInputPresenter(this);
-        final UrlInputFragment urlFragment = UrlInputFragment.create(presenter, url);
+        final UrlInputFragment urlFragment = UrlInputFragment.create(url);
         presenter.setView(urlFragment);
         fragmentManager.beginTransaction()
                 .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
@@ -450,5 +455,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             topSitesPresenter = new TopSitesPresenter();
         }
         return topSitesPresenter;
+    }
+
+    private UrlInputPresenter getUrlInputPresenter() {
+        if (urlInputPresenter == null){
+            urlInputPresenter = new UrlInputPresenter(this);
+        }
+        return urlInputPresenter;
     }
 }
