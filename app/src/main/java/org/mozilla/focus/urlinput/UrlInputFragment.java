@@ -7,7 +7,6 @@ package org.mozilla.focus.urlinput;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -45,13 +44,11 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment create(@NonNull UrlInputContract.Presenter presenter,
-                                          @Nullable String url) {
+    public static UrlInputFragment create(@Nullable String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
 
         UrlInputFragment fragment = new UrlInputFragment();
-        fragment.presenter = presenter;
         fragment.setArguments(arguments);
 
         return fragment;
@@ -114,6 +111,13 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         super.onStart();
 
         urlView.requestFocus();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.setView(null);
+        setPresenter(null);
     }
 
     @Override
@@ -195,6 +199,11 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             this.suggestionView.addView(item);
 
         }
+    }
+
+    @Override
+    public void setPresenter(UrlInputContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     private class TextChangeListener implements TextWatcher {

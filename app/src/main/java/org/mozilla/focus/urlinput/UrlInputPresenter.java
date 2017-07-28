@@ -33,6 +33,9 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
     @Override
     public void setView(UrlInputContract.View view) {
         this.view = view;
+        if(view != null) {
+            view.setPresenter(this);
+        }
     }
 
     @MainThread
@@ -63,6 +66,9 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
         @Override
         public void handleMessage(Message msg) {
+            if (view == null) {
+                return;
+            }
             final CharSequence input = (CharSequence) msg.obj;
 
             final String[] append = {"foo", "bar", "firefox",

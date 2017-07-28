@@ -26,6 +26,8 @@ public class UrlInputContract {
          * @param texts
          */
         void setSuggestions(@Nullable List<CharSequence> texts);
+
+        void setPresenter(Presenter presenter);
     }
 
     interface Presenter {
@@ -34,7 +36,7 @@ public class UrlInputContract {
          *
          * @param view to be connected
          */
-        void setView(@NonNull View view);
+        void setView(View view);
 
         /**
          * Called when user input any text in Url bar
