@@ -39,6 +39,13 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     }
 
     @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.presenter = new TopSitesPresenter();
+        this.presenter.setView(this);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

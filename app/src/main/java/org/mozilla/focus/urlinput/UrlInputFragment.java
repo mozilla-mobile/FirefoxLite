@@ -63,6 +63,13 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     private TextChangeListener textChangeListener = new TextChangeListener();
 
     @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.presenter = new UrlInputPresenter(getActivity());
+        this.presenter.setView(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_urlinput, container, false);
 
@@ -117,7 +124,6 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     public void onStop() {
         super.onStop();
         presenter.setView(null);
-        setPresenter(null);
     }
 
     @Override
@@ -199,11 +205,6 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             this.suggestionView.addView(item);
 
         }
-    }
-
-    @Override
-    public void setPresenter(UrlInputContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     private class TextChangeListener implements TextWatcher {

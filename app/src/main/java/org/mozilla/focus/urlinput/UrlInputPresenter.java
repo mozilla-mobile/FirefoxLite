@@ -33,9 +33,6 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
     @Override
     public void setView(UrlInputContract.View view) {
         this.view = view;
-        if(view != null) {
-            view.setPresenter(this);
-        }
     }
 
     @MainThread
@@ -72,7 +69,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
             final CharSequence input = (CharSequence) msg.obj;
 
             final String[] append = {"foo", "bar", "firefox",
-                    " test", "mozilla" , "zerda",
+                    " test", "mozilla", "zerda",
                     " internet", " taiwan", " japan"};
             List<CharSequence> texts = new ArrayList<>();
             for (int i = 0; i < append.length; i++) {

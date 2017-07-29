@@ -337,16 +337,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     public UrlInputFragment createUrlInputFragment(@Nullable String url) {
-        final UrlInputPresenter presenter = new UrlInputPresenter(this);
         final UrlInputFragment fragment = UrlInputFragment.create(url);
-        presenter.setView(fragment);
         return fragment;
     }
 
     public HomeFragment createHomeFragment() {
-        final TopSitesPresenter presenter = new TopSitesPresenter();
         final HomeFragment fragment = HomeFragment.create();
-        presenter.setView(fragment);
         return fragment;
     }
 
