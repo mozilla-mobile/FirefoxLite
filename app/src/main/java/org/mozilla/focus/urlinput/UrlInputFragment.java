@@ -108,11 +108,6 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         return view;
     }
 
-    public boolean onBackPressed() {
-        dismiss();
-        return true;
-    }
-
     @Override
     public void onStart() {
         super.onStart();

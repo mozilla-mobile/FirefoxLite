@@ -17,6 +17,7 @@ import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
+import org.mozilla.focus.widget.BackKeyHandleable;
 
 public class MainMediator {
     private final MainActivity activity;
@@ -62,7 +63,7 @@ public class MainMediator {
             return;
         }
 
-        this.prepareUrlInput(url).commit();
+        this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
     public void showBrowserScreen(@Nullable String url) {
@@ -99,27 +100,32 @@ public class MainMediator {
     }
 
     public boolean handleBackKey() {
+        final Fragment topFrg = getTopFragment();
+        return (topFrg instanceof BackKeyHandleable) && ((BackKeyHandleable) topFrg).onBackPressed();
+    }
+
+    private Fragment getTopFragment() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-
-        final UrlInputFragment urlInputFragment = (UrlInputFragment) fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        if (urlInputFragment != null &&
-                urlInputFragment.isVisible() &&
-                urlInputFragment.onBackPressed()) {
-            // The URL input fragment has handled the back press. It does its own animations so
-            // we do not try to remove it from outside.
-            return true;
+        final int count = fragmentManager.getBackStackEntryCount();
+        if (count != 0) {
+            final FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(count - 1);
+            return fragmentManager.findFragmentById(entry.getId());
         }
 
-        final BrowserFragment browserFragment = (BrowserFragment) fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-        if (browserFragment != null &&
-                browserFragment.isVisible() &&
-                browserFragment.onBackPressed()) {
-            // The Browser fragment handles back presses on its own because it might just go back
-            // in the browsing history.
-            return true;
+        // BrowserFragment or HomeFragment does not added to back stack, check them manually
+        final BrowserFragment browserFrg = (BrowserFragment) fragmentManager
+                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+        if ((browserFrg != null) && browserFrg.isVisible()) {
+            return browserFrg;
         }
 
-        return false;
+        final HomeFragment homeFrg = (HomeFragment) fragmentManager
+                .findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+        if ((homeFrg != null) && homeFrg.isVisible()) {
+            return homeFrg;
+        }
+
+        return null;
     }
 
     private FragmentTransaction prepareBrowsing(@Nullable String url) {
@@ -192,6 +198,4 @@ public class MainMediator {
             btnMenu.setVisibility(menu);
         }
     }
-
-
 }
