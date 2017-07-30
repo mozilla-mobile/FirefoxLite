@@ -243,23 +243,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        final Activity parent = getActivity();
-        if (parent instanceof FragmentListener) {
-            ((FragmentListener) parent).onNotified(this,
-                    FragmentListener.TYPE.FRAGMENT_STARTED,
-                    FRAGMENT_TAG);
-        }
+        notifyParent(FragmentListener.TYPE.FRAGMENT_STARTED, FRAGMENT_TAG);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        final Activity parent = getActivity();
-        if (parent instanceof FragmentListener) {
-            ((FragmentListener) parent).onNotified(this,
-                    FragmentListener.TYPE.FRAGMENT_STOPPED,
-                    FRAGMENT_TAG);
-        }
+        notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
     }
 
     public interface LoadStateListener {
@@ -528,28 +518,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void openPreference() {
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
-        }
+        notifyParent(FragmentListener.TYPE.OPEN_PREFERENCE, null);
     }
 
     public void showHomeScreen() {
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_HOME, null);
-        }
+        notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.display_url:
-                final Activity activity = getActivity();
-                if (activity instanceof FragmentListener) {
-                    ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
-                }
-
+                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 break;
 
             case R.id.forward: {
@@ -633,6 +613,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
+        }
+    }
+
+    private void notifyParent(FragmentListener.TYPE type, Object payload) {
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, type, payload);
         }
     }
 
