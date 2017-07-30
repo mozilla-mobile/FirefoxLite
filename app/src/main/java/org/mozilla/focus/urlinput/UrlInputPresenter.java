@@ -12,6 +12,8 @@ import android.os.Message;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 
+import org.mozilla.focus.utils.UrlUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,11 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
         if (input.length() == 0) {
             this.view.setSuggestions(null);
+            return;
+        }
+
+        // No need to provide suggestion for Url input
+        if (UrlUtils.isUrl(input.toString())) {
             return;
         }
 
