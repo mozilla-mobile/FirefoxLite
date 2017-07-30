@@ -47,6 +47,7 @@ import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.widget.AnimatedProgressBar;
+import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
@@ -54,7 +55,8 @@ import java.lang.ref.WeakReference;
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends WebFragment implements View.OnClickListener {
+public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable {
+
     public static final String FRAGMENT_TAG = "browser";
 
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
@@ -144,6 +146,19 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         if ((forwardButton = view.findViewById(R.id.forward)) != null) {
             forwardButton.setOnClickListener(this);
+        }
+
+        final View searchBtn = view.findViewById(R.id.btn_search);
+        final View homeBtn = view.findViewById(R.id.btn_home);
+        final View menuBtn = view.findViewById(R.id.btn_menu);
+        if (searchBtn != null) {
+            searchBtn.setOnClickListener(this);
+        }
+        if (homeBtn != null) {
+            homeBtn.setOnClickListener(this);
+        }
+        if (menuBtn != null) {
+            menuBtn.setOnClickListener(this);
         }
 
         lockView = (ImageView) view.findViewById(R.id.lock);
@@ -236,6 +251,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             // so that we can start it once we get restored and receive the permission.
             outState.putParcelable(RESTORE_KEY_DOWNLOAD, pendingDownload);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        notifyParent(FragmentListener.TYPE.FRAGMENT_STARTED, FRAGMENT_TAG);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
     }
 
     public interface LoadStateListener {
@@ -504,28 +531,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void openPreference() {
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
-        }
+        notifyParent(FragmentListener.TYPE.OPEN_PREFERENCE, null);
     }
 
     public void showHomeScreen() {
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_HOME, null);
-        }
+        notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.display_url:
-                final Activity activity = getActivity();
-                if (activity instanceof FragmentListener) {
-                    ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
-                }
-
+                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 break;
 
             case R.id.forward: {
@@ -607,8 +624,25 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 startActivity(trackerHelpIntent);
                 break;
 
+            case R.id.btn_search:
+                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, null);
+                break;
+            case R.id.btn_home:
+                notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                break;
+            case R.id.btn_menu:
+                notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
+                break;
+
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
+        }
+    }
+
+    private void notifyParent(FragmentListener.TYPE type, Object payload) {
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, type, payload);
         }
     }
 

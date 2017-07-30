@@ -26,8 +26,6 @@ public class UrlInputContract {
          * @param texts
          */
         void setSuggestions(@Nullable List<CharSequence> texts);
-
-        void setPresenter(Presenter presenter);
     }
 
     interface Presenter {

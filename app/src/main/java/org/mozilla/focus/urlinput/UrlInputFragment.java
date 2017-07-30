@@ -63,6 +63,13 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     private TextChangeListener textChangeListener = new TextChangeListener();
 
     @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.presenter = new UrlInputPresenter(getActivity());
+        this.presenter.setView(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_urlinput, container, false);
 
@@ -101,23 +108,30 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         return view;
     }
 
-    public boolean onBackPressed() {
-        dismiss();
-        return true;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
 
         urlView.requestFocus();
+
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STARTED,
+                    FRAGMENT_TAG);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenter.setView(null);
-        setPresenter(null);
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STOPPED,
+                    FRAGMENT_TAG);
+        }
     }
 
     @Override
@@ -150,7 +164,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         // We do not save any state in this fragment (It's getting destroyed) so this should not be a problem.
         final Activity activity = getActivity();
         if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS, true);
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS_URL_INPUT, true);
         }
     }
 
@@ -199,11 +213,6 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             this.suggestionView.addView(item);
 
         }
-    }
-
-    @Override
-    public void setPresenter(UrlInputContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     private class TextChangeListener implements TextWatcher {

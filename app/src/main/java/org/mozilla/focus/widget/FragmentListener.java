@@ -15,11 +15,14 @@ import android.support.v4.app.Fragment;
 public interface FragmentListener {
 
     enum TYPE {
+        FRAGMENT_STARTED, // payload is the fragment tag
+        FRAGMENT_STOPPED, // payload is the fragment tag
         OPEN_URL, // payload is url in String
         OPEN_PREFERENCE, // no payload
         SHOW_URL_INPUT, // no payload
         SHOW_HOME, // no payload
-        DISMISS, // payload is boolean value, true if commitAllowingStateLoss
+        SHOW_MENU, // no payload
+        DISMISS_URL_INPUT, // payload is boolean value, true if commitAllowingStateLoss
     }
 
     void onNotified(@NonNull Fragment from,
