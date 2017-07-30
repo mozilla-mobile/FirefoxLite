@@ -315,6 +315,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case SHOW_HOME:
                 this.mediator.showHomeScreen();
                 break;
+            case SHOW_MENU:
+                this.showMenu();
+                break;
             case SHOW_URL_INPUT:
                 final String url = (payload != null) ? payload.toString() : null;
                 this.mediator.showUrlInput(url);

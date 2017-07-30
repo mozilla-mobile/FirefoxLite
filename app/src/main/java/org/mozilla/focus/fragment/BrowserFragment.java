@@ -148,6 +148,19 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             forwardButton.setOnClickListener(this);
         }
 
+        final View searchBtn = view.findViewById(R.id.btn_search);
+        final View homeBtn = view.findViewById(R.id.btn_home);
+        final View menuBtn = view.findViewById(R.id.btn_menu);
+        if (searchBtn != null) {
+            searchBtn.setOnClickListener(this);
+        }
+        if (homeBtn != null) {
+            homeBtn.setOnClickListener(this);
+        }
+        if (menuBtn != null) {
+            menuBtn.setOnClickListener(this);
+        }
+
         lockView = (ImageView) view.findViewById(R.id.lock);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
@@ -609,6 +622,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             case R.id.help_trackers:
                 Intent trackerHelpIntent = InfoActivity.getTrackerHelpIntent(getActivity());
                 startActivity(trackerHelpIntent);
+                break;
+
+            case R.id.btn_search:
+                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, null);
+                break;
+            case R.id.btn_home:
+                notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                break;
+            case R.id.btn_menu:
+                notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
                 break;
 
             default:
