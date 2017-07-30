@@ -24,50 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|bottom"
-            android:layout_marginBottom="@dimen/floating_action_button_margin"
-            android:layout_marginStart="@dimen/floating_action_button_margin"
-            android:layout_marginTop="@dimen/floating_action_button_elevation"
-            android:contentDescription="@string/content_description_erase"
-            android:elevation="@dimen/floating_action_button_elevation"
-            android:src="@drawable/action_search"
-            app:backgroundTint="@color/colorFloatingActionButtonTint"
-            app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
-            app:rippleColor="#500A84FF" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="@dimen/floating_action_button_margin"
-            android:layout_marginTop="@dimen/floating_action_button_elevation"
-            android:contentDescription="@string/content_description_erase"
-            android:elevation="@dimen/floating_action_button_elevation"
-            android:src="@drawable/menu_home"
-            app:backgroundTint="@color/colorFloatingActionButtonTint"
-            app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
-            app:rippleColor="#500A84FF" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="@dimen/floating_action_button_margin"
-            android:layout_marginEnd="@dimen/floating_action_button_margin"
-            android:layout_marginTop="@dimen/floating_action_button_elevation"
-            android:contentDescription="@string/content_description_erase"
-            android:elevation="@dimen/floating_action_button_elevation"
-            android:src="@drawable/action_menu"
-            app:backgroundTint="@color/colorFloatingActionButtonTint"
-            app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
-            app:rippleColor="#500A84FF" />
-
+        <include layout="@layout/main_fabs" />
 
     </FrameLayout>
 </FrameLayout>

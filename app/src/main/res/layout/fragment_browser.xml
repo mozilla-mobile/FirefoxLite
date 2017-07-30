@@ -28,6 +28,8 @@
             android:clipChildren="false"
             android:orientation="vertical">
 
+            <include layout="@layout/main_fabs" />
+
             <org.mozilla.focus.web.IWebView
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
