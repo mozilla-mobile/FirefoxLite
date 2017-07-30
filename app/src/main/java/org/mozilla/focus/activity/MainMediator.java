@@ -43,7 +43,6 @@ public class MainMediator {
     }
 
     public void showHomeScreen() {
-        toggleFloatingButtons(View.VISIBLE, View.GONE, View.VISIBLE);
         this.prepareHomeScreen().commit();
     }
 
@@ -53,8 +52,6 @@ public class MainMediator {
     }
 
     public void showUrlInput(@Nullable String url) {
-        toggleFloatingButtons(View.GONE, View.GONE, View.GONE);
-
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
         if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
@@ -78,8 +75,6 @@ public class MainMediator {
 
         trans.commit();
 
-        toggleFloatingButtons(View.VISIBLE, View.VISIBLE, View.VISIBLE);
-
         this.activity.sendBrowsingTelemetry();
     }
 
@@ -92,16 +87,38 @@ public class MainMediator {
         }
 
         fragmentMgr.beginTransaction().remove(urlInputFrg).commitAllowingStateLoss();
-
-        // TODO: dismissing UrlInputFragment, so we display FAB. This method is not good, need
-        // a better way to deal with it. Maybe better Fragments stack management.
-        final int visibility = View.VISIBLE;
-        toggleFloatingButtons(visibility, visibility, visibility);
     }
 
     public boolean handleBackKey() {
         final Fragment topFrg = getTopFragment();
         return (topFrg instanceof BackKeyHandleable) && ((BackKeyHandleable) topFrg).onBackPressed();
+    }
+
+    public void onFragmentStarted(@NonNull String tag) {
+        if (HomeFragment.FRAGMENT_TAG.equals(tag)) {
+            toggleFloatingButtons(View.VISIBLE, View.GONE, View.VISIBLE);
+        }
+        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
+            toggleFloatingButtons(View.GONE, View.GONE, View.GONE);
+        }
+        if (BrowserFragment.FRAGMENT_TAG.equals(tag)) {
+            toggleFloatingButtons(View.VISIBLE, View.VISIBLE, View.VISIBLE);
+        }
+    }
+
+    public void onFragmentStopped(@NonNull String tag) {
+        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
+            Fragment top = getTopFragment();
+            if (top == null) {
+                return;
+            }
+            if (HomeFragment.FRAGMENT_TAG.equals(top.getTag())) {
+                toggleFloatingButtons(View.VISIBLE, View.GONE, View.VISIBLE);
+            }
+            if (BrowserFragment.FRAGMENT_TAG.equals(top.getTag())) {
+                toggleFloatingButtons(View.VISIBLE, View.VISIBLE, View.VISIBLE);
+            }
+        }
     }
 
     private Fragment getTopFragment() {

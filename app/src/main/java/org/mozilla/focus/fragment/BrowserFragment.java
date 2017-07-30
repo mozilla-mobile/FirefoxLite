@@ -240,6 +240,28 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STARTED,
+                    FRAGMENT_TAG);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STOPPED,
+                    FRAGMENT_TAG);
+        }
+    }
+
     public interface LoadStateListener {
         void isLoadingChanged(boolean isLoading);
     }

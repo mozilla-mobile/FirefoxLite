@@ -113,12 +113,25 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         super.onStart();
 
         urlView.requestFocus();
+
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STARTED,
+                    FRAGMENT_TAG);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenter.setView(null);
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STOPPED,
+                    FRAGMENT_TAG);
+        }
     }
 
     @Override

@@ -20,11 +20,9 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.home.TopSitesPresenter;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
-import org.mozilla.focus.urlinput.UrlInputPresenter;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
@@ -323,6 +321,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case DISMISS_URL_INPUT:
                 this.mediator.dismissUrlInput();
+                break;
+            case FRAGMENT_STARTED:
+                if ((payload != null) && (payload instanceof String)) {
+                    this.mediator.onFragmentStarted(((String) payload).toLowerCase());
+                }
+                break;
+            case FRAGMENT_STOPPED:
+                if ((payload != null) && (payload instanceof String)) {
+                    this.mediator.onFragmentStopped(((String) payload).toLowerCase());
+                }
                 break;
         }
     }

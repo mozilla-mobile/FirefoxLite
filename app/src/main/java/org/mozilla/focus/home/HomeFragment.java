@@ -62,6 +62,28 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STARTED,
+                    FRAGMENT_TAG);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STOPPED,
+                    FRAGMENT_TAG);
+        }
+    }
+
+    @Override
     public void showSites(@NonNull List<Site> sites) {
         this.recyclerView.setAdapter(
                 new TopSiteAdapter(sites,
