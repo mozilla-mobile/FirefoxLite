@@ -78,12 +78,6 @@ public class TypicalUseScenarioTest {
         assertTrue (TestHelper.browserURLbar.getText().contains("mozilla"));
         assertTrue (TestHelper.browserURLbar.getText().contains("focus"));
 
-        // Let's delete my history
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.erasedMsg.waitForExists(waitingTime);
-        assertTrue(TestHelper.erasedMsg.exists());
-        assertTrue(TestHelper.urlBar.exists());
-
         // Let's go to an actual URL which is https://
         TestHelper.urlBar.click();
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
@@ -96,12 +90,6 @@ public class TypicalUseScenarioTest {
         assertTrue (TestHelper.browserURLbar.getText().contains("https://www.google"));
         TestHelper.lockIcon.waitForExists(waitingTime);
         assertTrue (TestHelper.lockIcon.exists());
-
-        // Let's delete my history again
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.erasedMsg.waitForExists(waitingTime);
-        assertTrue(TestHelper.erasedMsg.exists());
-        assertTrue(TestHelper.urlBar.exists());
 
         // Let's go to an actual URL which is http://
         TestHelper.urlBar.click();
