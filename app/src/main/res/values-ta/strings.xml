@@ -44,7 +44,6 @@
   <string name="preference_about">%1$s பற்றி</string>
   <string name="content_description_clear_input">துள்ளிய உள்ளீடு</string>
   <string name="content_description_dismiss_input">நிராகரி</string>
-  <string name="content_description_erase">உலாவல் வரலாற்றை அகற்று</string>
   <string name="content_description_lock">பாதுகாப்பான இணைப்பு</string>
   <string name="accessibility_announcement_loading">ஏற்றுகிறது</string>
   <string name="accessibility_announcement_loading_finished">வலையத்தளம் ஏற்றப்பட்டது</string>

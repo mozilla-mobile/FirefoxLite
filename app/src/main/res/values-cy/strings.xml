@@ -44,7 +44,6 @@
   <string name="preference_about">Ynghylch %1$s</string>
   <string name="content_description_clear_input">Clirio\'r mewnbwn</string>
   <string name="content_description_dismiss_input">Cau</string>
-  <string name="content_description_erase">Dileu\'r hanes pori</string>
   <string name="content_description_lock">Cysylltiadau diogel</string>
   <string name="accessibility_announcement_loading">Llwytho</string>
   <string name="accessibility_announcement_loading_finished">Gwefan wedi ei lwytho</string>

@@ -34,7 +34,6 @@
   <string name="preference_about">%1$s के बारे में</string>
   <string name="content_description_clear_input">इनपुट मिटाएँ</string>
   <string name="content_description_dismiss_input">निरस्त करें</string>
-  <string name="content_description_erase">ब्राउज़िंग इतिहास मिटाएँ</string>
   <string name="content_description_lock">सुरक्षित संपर्क</string>
   <string name="accessibility_announcement_loading">लोड हो रहा है</string>
   <string name="accessibility_announcement_loading_finished">वेबसाइट लोड हो गया</string>

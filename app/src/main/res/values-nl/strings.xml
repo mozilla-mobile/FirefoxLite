@@ -44,7 +44,6 @@
   <string name="preference_about">Over %1$s</string>
   <string name="content_description_clear_input">Invoer wissen</string>
   <string name="content_description_dismiss_input">Verwijderen</string>
-  <string name="content_description_erase">Navigatiegeschiedenis wissen</string>
   <string name="content_description_lock">Beveiligde verbinding</string>
   <string name="accessibility_announcement_loading">Laden</string>
   <string name="accessibility_announcement_loading_finished">Website geladen</string>

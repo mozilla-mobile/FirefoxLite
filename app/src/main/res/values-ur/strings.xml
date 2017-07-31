@@ -44,7 +44,6 @@
   <string name="preference_about">کے بارے میں%1$s</string>
   <string name="content_description_clear_input">ان پٹ صاف کریں</string>
   <string name="content_description_dismiss_input">برخاست کریں</string>
-  <string name="content_description_erase">برائوزنگ سابقات مٹائیں</string>
   <string name="content_description_lock">قابل بھروسا کنکشن</string>
   <string name="accessibility_announcement_loading">لوڈ ہو رہا ہے</string>
   <string name="accessibility_announcement_loading_finished">ویبسائٹ لوڈ ہو گئی ہے</string>

@@ -44,7 +44,6 @@
   <string name="preference_about">关于 %1$s</string>
   <string name="content_description_clear_input">清空输入框</string>
   <string name="content_description_dismiss_input">关闭</string>
-  <string name="content_description_erase">清除浏览记录</string>
   <string name="content_description_lock">安全连接</string>
   <string name="accessibility_announcement_loading">正在加载</string>
   <string name="accessibility_announcement_loading_finished">网站已加载</string>

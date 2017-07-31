@@ -44,7 +44,6 @@
   <string name="preference_about">เกี่ยวกับ %1$s</string>
   <string name="content_description_clear_input">ล้างข้อมูลที่ป้อน</string>
   <string name="content_description_dismiss_input">ยกเลิก</string>
-  <string name="content_description_erase">ล้างประวัติการท่องเว็บ</string>
   <string name="content_description_lock">การเชื่อมต่อปลอดภัย</string>
   <string name="accessibility_announcement_loading">กำลังโหลด</string>
   <string name="accessibility_announcement_loading_finished">โหลดเว็บไซต์แล้ว</string>

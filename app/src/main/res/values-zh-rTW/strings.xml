@@ -44,7 +44,6 @@
   <string name="preference_about">關於 %1$s</string>
   <string name="content_description_clear_input">清除輸入內容</string>
   <string name="content_description_dismiss_input">結束輸入</string>
-  <string name="content_description_erase">清除瀏覽紀錄</string>
   <string name="content_description_lock">安全連線</string>
   <string name="accessibility_announcement_loading">載入中</string>
   <string name="accessibility_announcement_loading_finished">網站已載入</string>

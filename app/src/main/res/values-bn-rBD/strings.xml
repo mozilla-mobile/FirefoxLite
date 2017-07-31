@@ -34,7 +34,6 @@
   <string name="preference_about">%1$s সম্পর্কে</string>
   <string name="content_description_clear_input">ইনপুট পরিস্কার</string>
   <string name="content_description_dismiss_input">খারিজ</string>
-  <string name="content_description_erase">ব্রাউজিং ইতিহাস পরিষ্কার করুন</string>
   <string name="content_description_lock">সুরক্ষিত কানেকশন</string>
   <string name="accessibility_announcement_loading">লোড হচ্ছে</string>
   <string name="accessibility_announcement_loading_finished">ওয়েবসাইট লোড হয়েছে</string>

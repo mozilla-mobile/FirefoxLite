@@ -44,7 +44,6 @@
   <string name="preference_about">O programie %1$s</string>
   <string name="content_description_clear_input">Usuń tekst</string>
   <string name="content_description_dismiss_input">Odrzuć</string>
-  <string name="content_description_erase">Usuń historię przeglądania</string>
   <string name="content_description_lock">Zabezpieczone połączenie</string>
   <string name="accessibility_announcement_loading">Wczytywanie</string>
   <string name="accessibility_announcement_loading_finished">Wczytano stronę</string>
