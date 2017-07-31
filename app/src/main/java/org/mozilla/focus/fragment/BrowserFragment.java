@@ -473,7 +473,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
         else if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                geolocationCallback.invoke(geolocationOrigin, true, true);
+                geolocationCallback.invoke(geolocationOrigin, true, false);
             } else {
                 geolocationCallback.invoke(geolocationOrigin, false, false);
             }
