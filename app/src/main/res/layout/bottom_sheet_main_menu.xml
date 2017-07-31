@@ -172,6 +172,7 @@
 
         <ImageView
             style="@style/MenuButton2"
+            android:contentDescription="@string/content_description_back"
             android:id="@+id/action_back"
             android:onClick="onMenuItemClicked"
             android:src="@drawable/action_back" />
@@ -182,6 +183,7 @@
 
         <ImageView
             style="@style/MenuButton2"
+            android:contentDescription="@string/content_description_forward"
             android:id="@+id/action_next"
             android:onClick="onMenuItemClicked"
             android:src="@drawable/action_next" />
@@ -192,6 +194,7 @@
 
         <ImageView
             style="@style/MenuButton2"
+            android:contentDescription="@string/content_description_reload"
             android:id="@+id/action_refresh"
             android:onClick="onMenuItemClicked"
             android:src="@drawable/action_refresh" />
