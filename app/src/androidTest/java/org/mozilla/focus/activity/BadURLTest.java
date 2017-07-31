@@ -68,23 +68,5 @@ public class BadURLTest {
         assertTrue(TestHelper.notFoundMsg.exists());
         assertTrue(TestHelper.notFounddetailedMsg.exists());
         assertTrue(TestHelper.tryAgainBtn.exists());
-
-        /* provide market URL that is handled by Google Play app */
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.urlBar.waitForExists(waitingTime);
-        TestHelper.urlBar.click();
-        TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
-        TestHelper.inlineAutocompleteEditText.clearTextField();
-        TestHelper.inlineAutocompleteEditText.setText("market://details?id=org.mozilla.firefox&referrer=" +
-                "utm_source%3Dmozilla%26utm_medium%3DReferral%26utm_campaign%3Dmozilla-org");
-        TestHelper.pressEnterKey();
-
-        // Wait for the dialog
-        cancelOpenAppBtn.waitForExists(waitingTime);
-        assertTrue(openAppalert.exists());
-        assertTrue(cancelOpenAppBtn.exists());
-        cancelOpenAppBtn.click();
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.erasedMsg.waitForExists(waitingTime);
     }
 }

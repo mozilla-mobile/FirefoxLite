@@ -146,13 +146,6 @@ public class ImageSelectTest {
             TestHelper.mDevice.pressBack();
         }
 
-        // Erase browsing session
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.erasedMsg.waitForExists(waitingTime);
-        Assert.assertTrue(TestHelper.erasedMsg.exists());
-        Assert.assertTrue(TestHelper.urlBar.exists());
-
-
         // KeyEvent.KEYCODE_PASTE) requires API 24 or above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             TestHelper.urlBar.click();
@@ -186,14 +179,6 @@ public class ImageSelectTest {
         Assert.assertTrue(copyMenu.exists());
         Assert.assertTrue(saveMenu.exists());
         shareMenu.click();
-
-        // For simulators, where apps are not installed, it'll take to message app
-        TestHelper.shareMenuHeader.waitForExists(waitingTime);
-        Assert.assertTrue(TestHelper.shareMenuHeader.exists());
-        Assert.assertTrue(TestHelper.shareAppList.exists());
-        TestHelper.pressBackKey();
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.erasedMsg.waitForExists(waitingTime);
     }
 
     @Test
@@ -223,16 +208,5 @@ public class ImageSelectTest {
         Assert.assertTrue(copyMenu.exists());
         Assert.assertTrue(saveMenu.exists());
         saveMenu.click();
-
-        TestHelper.mDevice.openNotification();
-        UiObject savedNotification = TestHelper.mDevice.findObject(new UiSelector()
-                .text("Download complete.")
-                .resourceId("android:id/text")
-                .enabled(true));
-        savedNotification.waitForExists(waitingTime);
-        Assert.assertTrue(savedNotification.exists());
-        TestHelper.pressBackKey();
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.erasedMsg.waitForExists(waitingTime);
     }
 }

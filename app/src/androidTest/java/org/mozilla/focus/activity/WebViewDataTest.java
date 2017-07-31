@@ -168,13 +168,6 @@ public class WebViewDataTest {
         serviceWorkerMsg.waitForExists(waitingTime);
         assertTrue("Service worker installed", serviceWorkerMsg.exists());
 
-        // Erase browsing session
-        TestHelper.floatingEraseButton.perform(click());
-        TestHelper.erasedMsg.waitForExists(waitingTime);
-        Assert.assertTrue(TestHelper.erasedMsg.exists());
-        Assert.assertTrue(TestHelper.urlBar.exists());
-        TestHelper.waitForIdle();
-
         // Make sure all resources have been loaded from the web server
         assertPathsHaveBeenRequested(webServer,
                 "/copper/truck/destroy?smoke=violet", // Actual URL
