@@ -20,6 +20,17 @@ import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.widget.BackKeyHandleable;
 
 public class MainMediator {
+
+    // For FragmentManager, there is no real top fragment.
+    // Instead, we define this sequence for fragments of MainActivity
+    // to define that, if there are two visible fragments, which one is top one.
+    private final static String[] FRAGMENTS_SEQUENCE = {
+            UrlInputFragment.FRAGMENT_TAG,
+            BrowserFragment.FRAGMENT_TAG,
+            FirstrunFragment.FRAGMENT_TAG,
+            HomeFragment.FRAGMENT_TAG
+    };
+
     private final MainActivity activity;
 
     private View btnMenu;
@@ -79,14 +90,10 @@ public class MainMediator {
     }
 
     public void dismissUrlInput() {
-        final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
-        final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-
-        if (urlInputFrg == null) {
-            return;
+        final Fragment top = getTopFragment();
+        if (UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
+            this.activity.onBackPressed();
         }
-
-        fragmentMgr.beginTransaction().remove(urlInputFrg).commitAllowingStateLoss();
     }
 
     public boolean handleBackKey() {
@@ -123,25 +130,12 @@ public class MainMediator {
 
     private Fragment getTopFragment() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final int count = fragmentManager.getBackStackEntryCount();
-        if (count != 0) {
-            final FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(count - 1);
-            return fragmentManager.findFragmentById(entry.getId());
+        for (final String tag : FRAGMENTS_SEQUENCE) {
+            final Fragment fragment = fragmentManager.findFragmentByTag(tag);
+            if (fragment != null && fragment.isVisible()) {
+                return fragment;
+            }
         }
-
-        // BrowserFragment or HomeFragment does not added to back stack, check them manually
-        final BrowserFragment browserFrg = (BrowserFragment) fragmentManager
-                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-        if ((browserFrg != null) && browserFrg.isVisible()) {
-            return browserFrg;
-        }
-
-        final HomeFragment homeFrg = (HomeFragment) fragmentManager
-                .findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-        if ((homeFrg != null) && homeFrg.isVisible()) {
-            return homeFrg;
-        }
-
         return null;
     }
 
