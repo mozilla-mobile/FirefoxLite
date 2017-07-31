@@ -90,14 +90,10 @@ public class MainMediator {
     }
 
     public void dismissUrlInput() {
-        final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
-        final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-
-        if (urlInputFrg == null) {
-            return;
+        final Fragment top = getTopFragment();
+        if (UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
+            this.activity.onBackPressed();
         }
-
-        fragmentMgr.beginTransaction().remove(urlInputFrg).commitAllowingStateLoss();
     }
 
     public boolean handleBackKey() {
