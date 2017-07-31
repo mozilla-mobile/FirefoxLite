@@ -141,10 +141,6 @@
      overlay if focused. See https://github.com/mozilla-mobile/focus-android/issues/50 -->
     <string name="content_description_dismiss_input">Dismiss</string>
 
-    <!-- Content description (not visible, for screen readers etc.): Erase button: Erase the browsing
-     history and go back to the home screen. -->
-    <string name="content_description_erase">Erase browsing history</string>
-
     <!-- Content description (not visible, for screen readers etc.): Lock icon showed in the URL bar for
      https pages.. -->
     <string name="content_description_lock">Secure connection</string>
