@@ -44,7 +44,6 @@
   <string name="preference_about">О %1$s</string>
   <string name="content_description_clear_input">Празно поље</string>
   <string name="content_description_dismiss_input">Одбаци</string>
-  <string name="content_description_erase">Избриши историјат прегледања</string>
   <string name="content_description_lock">Безбедна веза</string>
   <string name="accessibility_announcement_loading">Учитавање</string>
   <string name="accessibility_announcement_loading_finished">Веб сајт учитан</string>

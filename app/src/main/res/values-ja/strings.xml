@@ -44,7 +44,6 @@
   <string name="preference_about">%1$s について</string>
   <string name="content_description_clear_input">入力内容を消去</string>
   <string name="content_description_dismiss_input">閉じる</string>
-  <string name="content_description_erase">閲覧履歴を消去</string>
   <string name="content_description_lock">安全な接続</string>
   <string name="accessibility_announcement_loading">読み込み中</string>
   <string name="accessibility_announcement_loading_finished">ウェブサイト読み込み完了</string>

@@ -44,7 +44,6 @@
   <string name="preference_about">ກ່ຽວກັບ %1$s</string>
   <string name="content_description_clear_input">ລົບລ້າງຂໍ້ມູນທີ່ປ້ອນເຂົ້າ</string>
   <string name="content_description_dismiss_input">ຍົກເລີກ</string>
-  <string name="content_description_erase">ລຶບປະຫວັດການທ່ອງເວັບ</string>
   <string name="content_description_lock">ການເຊື່ອມຕໍ່ທີ່ປອດໄພ</string>
   <string name="accessibility_announcement_loading">ກຳລັງໂຫລດ</string>
   <string name="accessibility_announcement_loading_finished">ໂຫລດເວັບໄຊທ໌ນີ້ແລ້ວ</string>

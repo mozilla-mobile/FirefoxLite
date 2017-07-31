@@ -44,7 +44,6 @@
   <string name="preference_about">O %1$su</string>
   <string name="content_description_clear_input">Počisti vnos</string>
   <string name="content_description_dismiss_input">Opusti</string>
-  <string name="content_description_erase">Počisti zgodovino brskanja</string>
   <string name="content_description_lock">Varna povezava</string>
   <string name="accessibility_announcement_loading">Nalaganje</string>
   <string name="accessibility_announcement_loading_finished">Spletna stran naložena</string>

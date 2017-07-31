@@ -44,7 +44,6 @@
   <string name="preference_about">Oer %1$s</string>
   <string name="content_description_clear_input">Ynfier wiskje</string>
   <string name="content_description_dismiss_input">Fuortsmite</string>
-  <string name="content_description_erase">Navigaasjeskiednis wiskje</string>
   <string name="content_description_lock">Befeilige ferbining</string>
   <string name="accessibility_announcement_loading">Lade</string>
   <string name="accessibility_announcement_loading_finished">Website laden</string>

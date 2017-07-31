@@ -44,7 +44,6 @@
   <string name="preference_about">Wo %1$s</string>
   <string name="content_description_clear_input">Zapodaće wuprózdnić</string>
   <string name="content_description_dismiss_input">Zaćisnyć</string>
-  <string name="content_description_erase">Přehladowansku historiju zhašeć</string>
   <string name="content_description_lock">Wěsty zwisk</string>
   <string name="accessibility_announcement_loading">Začitanje</string>
   <string name="accessibility_announcement_loading_finished">Websydło je so začitało</string>

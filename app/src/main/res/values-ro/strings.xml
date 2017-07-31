@@ -44,7 +44,6 @@
   <string name="preference_about">Despre %1$s</string>
   <string name="content_description_clear_input">Șterge adresa introdusă</string>
   <string name="content_description_dismiss_input">Înlătură</string>
-  <string name="content_description_erase">Șterge istoricul de navigare</string>
   <string name="content_description_lock">Conexiune securizată</string>
   <string name="accessibility_announcement_loading">Se încarcă</string>
   <string name="accessibility_announcement_loading_finished">Site web încărcat</string>

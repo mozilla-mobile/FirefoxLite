@@ -44,7 +44,6 @@
   <string name="preference_about">Maidir le %1$s</string>
   <string name="content_description_clear_input">Glan an réimse</string>
   <string name="content_description_dismiss_input">Díbir</string>
-  <string name="content_description_erase">Glan an stair bhrabhsála</string>
   <string name="content_description_lock">Ceangal slán</string>
   <string name="accessibility_announcement_loading">Á luchtú</string>
   <string name="accessibility_announcement_loading_finished">Luchtaíodh an suíomh Gréasáin</string>

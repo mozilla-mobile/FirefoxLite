@@ -44,7 +44,6 @@
   <string name="preference_about">%1$s에 대한 정보</string>
   <string name="content_description_clear_input">입력 값 초기화</string>
   <string name="content_description_dismiss_input">취소</string>
-  <string name="content_description_erase">탐색 기록 지우기</string>
   <string name="content_description_lock">보안 연결</string>
   <string name="accessibility_announcement_loading">로딩 중</string>
   <string name="accessibility_announcement_loading_finished">웹 사이트 불러옴</string>

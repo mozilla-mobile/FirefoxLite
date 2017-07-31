@@ -44,7 +44,6 @@
   <string name="preference_about">O aplikaci %1$s</string>
   <string name="content_description_clear_input">Vymazat pole</string>
   <string name="content_description_dismiss_input">Zavřít</string>
-  <string name="content_description_erase">Vymazat historii prohlížení</string>
   <string name="content_description_lock">Zabezpečené připojení</string>
   <string name="accessibility_announcement_loading">Načítání</string>
   <string name="accessibility_announcement_loading_finished">Stránka načtena</string>
