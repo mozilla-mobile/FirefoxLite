@@ -37,7 +37,6 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
-import org.mozilla.focus.db.DownloadIdDAO;
 import org.mozilla.focus.greenDAO.DBUtils;
 import org.mozilla.focus.greenDAO.DownloadInfoEntity;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
