@@ -43,4 +43,8 @@
     <color name="url_bg_active">#FFFFFF</color>
     <color name="url_bg_inactive">#EEEEEE</color>
     <color name="url_bg_disabled">#555555</color>
+
+    <color name="colorDownloadText">#272727</color>
+    <color name="colorDownloadSubText">#737373</color>
+    <color name="colorDownloadBackground">#F9F9FA</color>
 </resources>

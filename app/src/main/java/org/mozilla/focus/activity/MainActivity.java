@@ -6,6 +6,7 @@
 package org.mozilla.focus.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -28,6 +31,8 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.focus.widget.DownloadDialogShowListener;
+import org.mozilla.focus.widget.DownloadListAdapter;
 import org.mozilla.focus.widget.FragmentListener;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener {
@@ -191,6 +196,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_history_download, null);
         historyAndDownload = new BottomSheetDialog(this);
         historyAndDownload.setContentView(sheet);
+
+        DownloadDialogShowListener listener = new DownloadDialogShowListener(sheet);
+        historyAndDownload.setOnShowListener(listener);
+        historyAndDownload.setOnCancelListener(listener);
+        historyAndDownload.setOnDismissListener(listener);
     }
 
     private void showMenu() {
