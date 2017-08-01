@@ -15,6 +15,8 @@ import org.mozilla.focus.greenDAO.DownloadInfoEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Created by anlin on 01/08/2017.
  */
@@ -62,9 +64,11 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
 
     public class DownloadViewHolder extends RecyclerView.ViewHolder{
 
+        @SuppressFBWarnings("URF_UNREAD_FIELD")
         ImageView icon;
         TextView title;
         TextView subtitle;
+        @SuppressFBWarnings("URF_UNREAD_FIELD")
         ImageView action;
 
         public DownloadViewHolder(View itemView) {
