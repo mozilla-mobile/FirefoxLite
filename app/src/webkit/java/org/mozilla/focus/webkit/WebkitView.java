@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
+import android.webkit.GeolocationPermissions;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebStorage;
@@ -203,6 +204,16 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
             @Override
             public void onHideCustomView() {
                 callback.onExitFullScreen();
+            }
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback glpcallback) {
+                callback.onGeolocationPermissionsShowPrompt(origin, glpcallback);
+            }
+
+            @Override
+            public void onGeolocationPermissionsHidePrompt() {
+                super.onGeolocationPermissionsHidePrompt();
             }
         };
     }

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -22,10 +23,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
+import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -51,6 +54,7 @@ import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.widget.AnimatedProgressBar;
+import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
@@ -58,10 +62,13 @@ import java.lang.ref.WeakReference;
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends WebFragment implements View.OnClickListener {
+public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable {
+
     public static final String FRAGMENT_TAG = "browser";
 
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
+    private static int REQUEST_CODE_LOCATION_PERMISSION = 102;
+
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
     private static final String RESTORE_KEY_DOWNLOAD = "download";
@@ -82,8 +89,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private TextView urlView;
     private AnimatedProgressBar progressView;
     private ImageView lockView;
-    private ImageButton menuView;
-    private WeakReference<BrowserMenu> menuWeakReference = new WeakReference<>(null);
+
+    //GeoLocationPermission
+    private String geolocationOrigin;
+    private GeolocationPermissions.Callback geolocationCallback;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -96,7 +105,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private View browserContainer;
 
     private View forwardButton;
-    private View backButton;
     private View refreshButton;
     private View stopButton;
 
@@ -111,13 +119,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-
-        final BrowserMenu menu = menuWeakReference.get();
-        if (menu != null) {
-            menu.dismiss();
-
-            menuWeakReference.clear();
-        }
     }
 
     @Override
@@ -160,16 +161,22 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             forwardButton.setOnClickListener(this);
         }
 
-        if ((backButton = view.findViewById(R.id.back)) != null) {
-            backButton.setOnClickListener(this);
+        final View searchBtn = view.findViewById(R.id.btn_search);
+        final View homeBtn = view.findViewById(R.id.btn_home);
+        final View menuBtn = view.findViewById(R.id.btn_menu);
+        if (searchBtn != null) {
+            searchBtn.setOnClickListener(this);
+        }
+        if (homeBtn != null) {
+            homeBtn.setOnClickListener(this);
+        }
+        if (menuBtn != null) {
+            menuBtn.setOnClickListener(this);
         }
 
         lockView = (ImageView) view.findViewById(R.id.lock);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
-
-        menuView = (ImageButton) view.findViewById(R.id.menu);
-        menuView.setOnClickListener(this);
 
         if (BrowsingSession.getInstance().isCustomTab()) {
             initialiseCustomTabUi(view);
@@ -246,9 +253,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // We need to tint some icons.. We already tinted the close button above. Let's tint our other icons too.
         final Drawable lockIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_lock, textColor);
         lockView.setImageDrawable(lockIcon);
-
-        final Drawable menuIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_menu, textColor);
-        menuView.setImageDrawable(menuIcon);
     }
 
     @Override
@@ -260,6 +264,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             // so that we can start it once we get restored and receive the permission.
             outState.putParcelable(RESTORE_KEY_DOWNLOAD, pendingDownload);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        notifyParent(FragmentListener.TYPE.FRAGMENT_STARTED, FRAGMENT_TAG);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
     }
 
     public interface LoadStateListener {
@@ -291,6 +307,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public IWebView.Callback createCallback() {
         return new IWebView.Callback() {
+            private final static int NONE = -1;
+            private int systemVisibility = NONE;
+
             @Override
             public void onPageStarted(final String url) {
                 updateIsLoading(true);
@@ -362,7 +381,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     videoContainer.setVisibility(View.VISIBLE);
 
                     // Switch to immersive mode: Hide system bars other UI controls
-                    switchToImmersiveMode();
+                    systemVisibility = switchToImmersiveMode();
                 }
             }
 
@@ -375,7 +394,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // Show browser UI and web content again
                 browserContainer.setVisibility(View.VISIBLE);
 
-                exitImmersiveMode();
+                if (systemVisibility != NONE) {
+                    exitImmersiveMode(systemVisibility);
+                }
 
                 // Notify renderer that we left fullscreen mode.
                 if (fullscreenCallback != null) {
@@ -402,6 +423,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
                 }
             }
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+                geolocationOrigin = origin;
+                geolocationCallback = callback;
+                //show geolocation permission prompt
+                showGeolocationPermissionPrompt(geolocationOrigin, geolocationCallback);
+            }
         };
     }
 
@@ -410,12 +439,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
      * the top of the screen. These transient system bars will overlay app’s content, may have some
      * degree of transparency, and will automatically hide after a short timeout.
      */
-    private void switchToImmersiveMode() {
+    private int switchToImmersiveMode() {
         final Activity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-
+        final int original = activity.getWindow().getDecorView().getSystemUiVisibility();
         activity.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -423,33 +449,43 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        return original;
     }
 
     /**
      * Show the system bars again.
      */
-    private void exitImmersiveMode() {
+    private void exitImmersiveMode(int visibility) {
         final Activity activity = getActivity();
         if (activity == null) {
             return;
         }
 
-        activity.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != REQUEST_CODE_STORAGE_PERMISSION) {
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                queueDownload(pendingDownload);
+            }
+
+            pendingDownload = null;
+            return;
+        }
+        else if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                geolocationCallback.invoke(geolocationOrigin, true, false);
+            } else {
+                geolocationCallback.invoke(geolocationOrigin, false, false);
+            }
+            geolocationOrigin = "";
+            geolocationCallback = null;
             return;
         }
 
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            queueDownload(pendingDownload);
-        }
-
-        pendingDownload = null;
     }
 
     /**
@@ -486,6 +522,36 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         DownloadInfoEntity downloadInfo = new DownloadInfoEntity(null,downloadId,fileName);
         DBUtils.getDbService().getDao().insert(downloadInfo);
 
+    }
+
+    /*
+     * show webview geolocation permission prompt
+     */
+    private void showGeolocationPermissionPrompt(final String origin, final GeolocationPermissions.Callback callback)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(getString(R.string.geolocation_dialog_message, origin))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.geolocation_dialog_allow), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //check location permission
+                        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            callback.invoke(origin, true, false);
+                            geolocationOrigin = "";
+                            geolocationCallback = null;
+                        } else {
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
+                        }
+                    }
+                }).setNegativeButton(getString(R.string.geolocation_dialog_block), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        callback.invoke(origin, false, false);
+                        geolocationOrigin = "";
+                        geolocationCallback = null;
+                    }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private boolean isStartedFromExternalApp() {
@@ -530,48 +596,23 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
+    public void openPreference() {
+        notifyParent(FragmentListener.TYPE.OPEN_PREFERENCE, null);
+    }
+
     public void showHomeScreen() {
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_HOME, null);
-        }
+        notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.menu:
-                final CustomTabConfig customTabConfig;
-                if (BrowsingSession.getInstance().isCustomTab()) {
-                    customTabConfig = BrowsingSession.getInstance().getCustomTabConfig();
-                } else {
-                    customTabConfig = null;
-                }
-
-                BrowserMenu menu = new BrowserMenu(getActivity(), this, customTabConfig);
-                menu.show(menuView);
-
-                menuWeakReference = new WeakReference<>(menu);
-                break;
-
             case R.id.display_url:
-                final Activity activity = getActivity();
-                if (activity instanceof FragmentListener) {
-                    ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
-                }
-
+                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 break;
-
-            case R.id.back: {
-                goBack();
-                break;
-            }
 
             case R.id.forward: {
-                final IWebView webView = getWebView();
-                if (webView != null) {
-                    webView.goForward();
-                }
+                goForward();
                 break;
             }
 
@@ -599,7 +640,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             case R.id.settings:
-                ((LocaleAwareAppCompatActivity) getActivity()).openPreferences();
+                openPreference();
                 break;
 
             case R.id.open_default: {
@@ -649,13 +690,30 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 startActivity(trackerHelpIntent);
                 break;
 
+            case R.id.btn_search:
+                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, null);
+                break;
+            case R.id.btn_home:
+                notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                break;
+            case R.id.btn_menu:
+                notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
+                break;
+
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
         }
     }
 
+    private void notifyParent(FragmentListener.TYPE type, Object payload) {
+        final Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, type, payload);
+        }
+    }
+
     private void updateToolbarButtonStates() {
-        if (forwardButton == null || backButton == null || refreshButton == null || stopButton == null) {
+        if (forwardButton == null || refreshButton == null || stopButton == null) {
             return;
         }
 
@@ -665,12 +723,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         final boolean canGoForward = webView.canGoForward();
-        final boolean canGoBack = webView.canGoBack();
 
         forwardButton.setEnabled(canGoForward);
         forwardButton.setAlpha(canGoForward ? 1.0f : 0.5f);
-        backButton.setEnabled(canGoBack);
-        backButton.setAlpha(canGoBack ? 1.0f : 0.5f);
 
         refreshButton.setVisibility(isLoading ? View.GONE : View.VISIBLE);
         stopButton.setVisibility(isLoading ? View.VISIBLE : View.GONE);
@@ -703,6 +758,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         final IWebView webView = getWebView();
         if (webView != null) {
             webView.goBack();
+        }
+    }
+
+    public void goForward() {
+        final IWebView webView = getWebView();
+        if (webView != null) {
+            webView.goForward();
         }
     }
 

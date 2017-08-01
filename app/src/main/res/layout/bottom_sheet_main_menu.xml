@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/menu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorMenuBackground"
+    android:orientation="vertical"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <LinearLayout style="@style/MenuButton"
+            android:id="@+id/menu_download"
+            android:onClick="onMenuItemClicked">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_download" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_download" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/MenuButton">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_subscribe" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_subscribe" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/MenuButton">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_delete" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_clear_space" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/MenuButton"
+            android:id="@+id/menu_history"
+            android:onClick="onMenuItemClicked">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_history" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_history" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:orientation="horizontal">
+
+        <LinearLayout style="@style/MenuButton">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_share" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_share" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/MenuButton">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_home" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_add_to_home_screen" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/menu_preferences"
+            android:onClick="onMenuItemClicked"
+            style="@style/MenuButton">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_settings" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_settings" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/MenuButton">
+
+            <ImageView
+                style="@style/MenuButton2"
+                android:src="@drawable/menu_viewonline" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="@string/label_menu_view_page_online" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorMenuDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            style="@style/MenuButton2"
+            android:contentDescription="@string/content_description_back"
+            android:id="@+id/action_back"
+            android:onClick="onMenuItemClicked"
+            android:src="@drawable/action_back" />
+
+        <Space
+            android:layout_width="72dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            style="@style/MenuButton2"
+            android:contentDescription="@string/content_description_forward"
+            android:id="@+id/action_next"
+            android:onClick="onMenuItemClicked"
+            android:src="@drawable/action_next" />
+
+        <Space
+            android:layout_width="72dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            style="@style/MenuButton2"
+            android:contentDescription="@string/content_description_reload"
+            android:id="@+id/action_refresh"
+            android:onClick="onMenuItemClicked"
+            android:src="@drawable/action_refresh" />
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            style="@style/MenuButton2"
+            android:src="@drawable/action_refresh" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>

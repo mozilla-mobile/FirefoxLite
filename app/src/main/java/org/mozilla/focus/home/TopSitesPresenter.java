@@ -27,7 +27,6 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
         this.sites = new ArrayList<>();
         initSites();
 
-
         // to simulate adding a site
         ThreadUtils.postToMainThreadDelayed(new Runnable() {
             @Override
@@ -48,19 +47,25 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
 
     @Override
     public void populateSites() {
-        this.view.showSites(this.sites);
+        if (this.view != null) {
+            this.view.showSites(this.sites);
+        }
     }
 
     @Override
     public void addSite(@NonNull Site site) {
         this.sites.add(site);
-        this.view.appendSite(site);
+        if (this.view != null) {
+            this.view.appendSite(site);
+        }
     }
 
     @Override
     public void removeSite(@NonNull Site site) {
         this.sites.remove(site);
-        this.view.removeSite(site);
+        if (this.view != null) {
+            this.view.removeSite(site);
+        }
     }
 
     /**

@@ -7,7 +7,6 @@ package org.mozilla.focus.urlinput;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -45,13 +44,11 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment create(@NonNull UrlInputContract.Presenter presenter,
-                                          @Nullable String url) {
+    public static UrlInputFragment create(@Nullable String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
 
         UrlInputFragment fragment = new UrlInputFragment();
-        fragment.presenter = presenter;
         fragment.setArguments(arguments);
 
         return fragment;
@@ -64,6 +61,13 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     private UrlAutoCompleteFilter urlAutoCompleteFilter;
     private View dismissView;
     private TextChangeListener textChangeListener = new TextChangeListener();
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.presenter = new UrlInputPresenter(getActivity());
+        this.presenter.setView(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,16 +108,30 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         return view;
     }
 
-    public boolean onBackPressed() {
-        dismiss();
-        return true;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
 
         urlView.requestFocus();
+
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STARTED,
+                    FRAGMENT_TAG);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.setView(null);
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STOPPED,
+                    FRAGMENT_TAG);
+        }
     }
 
     @Override
@@ -146,7 +164,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         // We do not save any state in this fragment (It's getting destroyed) so this should not be a problem.
         final Activity activity = getActivity();
         if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS, true);
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS_URL_INPUT, true);
         }
     }
 

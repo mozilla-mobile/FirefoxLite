@@ -33,10 +33,16 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     private RecyclerView recyclerView;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
 
-    public static HomeFragment create(@NonNull TopSitesContract.Presenter presenter) {
+    public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
-        fragment.presenter = presenter;
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.presenter = new TopSitesPresenter();
+        this.presenter.setView(this);
     }
 
     @Override
@@ -53,6 +59,28 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     @Override
     public void onViewCreated(View view, Bundle savedState) {
         this.presenter.populateSites();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STARTED,
+                    FRAGMENT_TAG);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        final Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            ((FragmentListener) parent).onNotified(this,
+                    FragmentListener.TYPE.FRAGMENT_STOPPED,
+                    FRAGMENT_TAG);
+        }
     }
 
     @Override
@@ -77,6 +105,10 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     @Override
     public void onSiteChanged(@NonNull Site site) {
         throw new NoSuchMethodError("Not implement yet");
+    }
+
+    public void setPresenter(TopSitesContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     private class SiteItemClickListener implements View.OnClickListener, View.OnLongClickListener {

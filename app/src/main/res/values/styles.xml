@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+
+    <style name="AppThemeBase" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -15,7 +17,6 @@
 
         <item name="popupMenuStyle">@style/PopupMenu</item>
 
-        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="DialogTitleStyle" parent="TextAppearance.AppCompat.Title">
@@ -44,16 +45,28 @@
     </style>
 
     <style name="MenuButton">
-        <item name="android:layout_height">74dp</item>
-        <item name="android:layout_width">74dp</item>
-        <item name="android:background">@color/colorAccent</item>
+        <item name="android:layout_height">62dp</item>
+        <item name="android:layout_width">78dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:layout_margin">4dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="MenuButton2">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
-        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="MenuText">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/colorMenuLabel</item>
+        <item name="android:layout_marginTop">7dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">2</item>
     </style>
 </resources>

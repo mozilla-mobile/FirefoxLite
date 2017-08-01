@@ -85,8 +85,8 @@ public class WebViewProvider {
         settings.setDomStorageEnabled(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
 
-        // We do not implement the callbacks - So let's disable it.
-        settings.setGeolocationEnabled(false);
+        // We do implement the callbacks - So let's enable it.
+        settings.setGeolocationEnabled(true);
 
         // We do not want to save any data...
         settings.setSaveFormData(false);

@@ -44,7 +44,6 @@
   <string name="preference_about">A %1$s névjegye</string>
   <string name="content_description_clear_input">Bemenet törlése</string>
   <string name="content_description_dismiss_input">Elutasítás</string>
-  <string name="content_description_erase">Böngészési előzmények törlése</string>
   <string name="content_description_lock">Biztonságos kapcsolat</string>
   <string name="accessibility_announcement_loading">Betöltés</string>
   <string name="accessibility_announcement_loading_finished">Weboldal betöltve</string>

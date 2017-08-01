@@ -44,7 +44,6 @@
   <string name="preference_about">%1$s အကြောင်း</string>
   <string name="content_description_clear_input">Input ကို ရှင်းလင်းရန်</string>
   <string name="content_description_dismiss_input">ပိတ်ရန်</string>
-  <string name="content_description_erase">ကြည့်ရှုမှုမှတ်တမ်းကို ရှင်းလင်းရန်</string>
   <string name="content_description_lock">လုံခြုံသော ချိတ်ဆက်မှု</string>
   <string name="accessibility_announcement_loading">ဆောင်ရွက်နေသည်</string>
   <string name="accessibility_announcement_loading_finished">ဝဘ်ဆိုက်ကို ဖွင့်ပြီးပြီ</string>

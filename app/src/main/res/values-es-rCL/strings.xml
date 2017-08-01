@@ -44,7 +44,6 @@
   <string name="preference_about">Acerca de %1$s</string>
   <string name="content_description_clear_input">Limpiar texto ingresado</string>
   <string name="content_description_dismiss_input">Ocultar</string>
-  <string name="content_description_erase">Eliminar historial de navegación</string>
   <string name="content_description_lock">Conexión segura</string>
   <string name="accessibility_announcement_loading">Cargando</string>
   <string name="accessibility_announcement_loading_finished">Sitio cargado</string>

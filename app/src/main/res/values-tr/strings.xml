@@ -44,7 +44,6 @@
   <string name="preference_about">%1$s hakkında</string>
   <string name="content_description_clear_input">Girdiyi temizle</string>
   <string name="content_description_dismiss_input">Kapat</string>
-  <string name="content_description_erase">Gezinti geçmişini sil</string>
   <string name="content_description_lock">Güvenli bağlantı</string>
   <string name="accessibility_announcement_loading">Yükleniyor</string>
   <string name="accessibility_announcement_loading_finished">Web sitesi yüklendi</string>

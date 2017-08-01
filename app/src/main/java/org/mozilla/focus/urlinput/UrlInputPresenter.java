@@ -12,6 +12,8 @@ import android.os.Message;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 
+import org.mozilla.focus.utils.UrlUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,11 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
             return;
         }
 
+        // No need to provide suggestion for Url input
+        if (UrlUtils.isUrl(input.toString())) {
+            return;
+        }
+
         Message msg = this.handler.obtainMessage(SUGGESTION_TAG);
         msg.obj = input;
         this.handler.sendMessageDelayed(msg, DELAY);
@@ -63,10 +70,13 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
         @Override
         public void handleMessage(Message msg) {
+            if (view == null) {
+                return;
+            }
             final CharSequence input = (CharSequence) msg.obj;
 
             final String[] append = {"foo", "bar", "firefox",
-                    " test", "mozilla" , "zerda",
+                    " test", "mozilla", "zerda",
                     " internet", " taiwan", " japan"};
             List<CharSequence> texts = new ArrayList<>();
             for (int i = 0; i < append.length; i++) {

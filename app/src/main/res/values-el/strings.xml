@@ -44,7 +44,6 @@
   <string name="preference_about">Σχετικά με το %1$s</string>
   <string name="content_description_clear_input">Εκκαθάριση εισόδου</string>
   <string name="content_description_dismiss_input">Απόρριψη</string>
-  <string name="content_description_erase">Διαγραφή ιστορικού περιήγησης</string>
   <string name="content_description_lock">Ασφαλής σύνδεση</string>
   <string name="accessibility_announcement_loading">Φόρτωση</string>
   <string name="accessibility_announcement_loading_finished">Η ιστοσελίδα φορτώθηκε</string>

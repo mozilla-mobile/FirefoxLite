@@ -44,7 +44,6 @@
   <string name="preference_about">Tentang %1$s</string>
   <string name="content_description_clear_input">Bersihkan masukan</string>
   <string name="content_description_dismiss_input">Tutup</string>
-  <string name="content_description_erase">Hapus riwayat penjelajahan</string>
   <string name="content_description_lock">Sambungan aman</string>
   <string name="accessibility_announcement_loading">Memuat</string>
   <string name="accessibility_announcement_loading_finished">Situs web dimuat</string>

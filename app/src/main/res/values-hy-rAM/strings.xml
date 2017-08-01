@@ -44,7 +44,6 @@
   <string name="preference_about">%1$s-ի մասին</string>
   <string name="content_description_clear_input">Մաքրել ներածումը</string>
   <string name="content_description_dismiss_input">Բաց թողնել</string>
-  <string name="content_description_erase">Ջնջել դիտարկման պատմությունը</string>
   <string name="content_description_lock">Անվտանգ կապակցում</string>
   <string name="accessibility_announcement_loading">Բեռնում</string>
   <string name="accessibility_announcement_loading_finished">Կայքը բեռնվել է</string>
