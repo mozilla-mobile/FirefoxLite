@@ -6,6 +6,7 @@
 package org.mozilla.focus.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.focus.widget.DownloadDialogShowListener;
 import org.mozilla.focus.widget.DownloadListAdapter;
 import org.mozilla.focus.widget.FragmentListener;
 
@@ -192,11 +194,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void setUpHistoryAndDownload() {
         final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_history_download, null);
-        RecyclerView downloadList = (RecyclerView) sheet.findViewById(R.id.list);
-        downloadList.setAdapter(new DownloadListAdapter());
-        downloadList.setLayoutManager(new LinearLayoutManager(getBaseContext(),LinearLayoutManager.VERTICAL,false));
         historyAndDownload = new BottomSheetDialog(this);
         historyAndDownload.setContentView(sheet);
+
+        DownloadDialogShowListener listener = new DownloadDialogShowListener(sheet);
+        historyAndDownload.setOnShowListener(listener);
+        historyAndDownload.setOnCancelListener(listener);
+        historyAndDownload.setOnDismissListener(listener);
     }
 
     private void showMenu() {
