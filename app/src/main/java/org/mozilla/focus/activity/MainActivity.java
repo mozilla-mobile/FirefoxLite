@@ -194,6 +194,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void setUpHistoryAndDownload() {
         final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_history_download, null);
+        RecyclerView downloadList = (RecyclerView) sheet.findViewById(R.id.list);
+        downloadList.setAdapter(new DownloadListAdapter());
+        downloadList.setLayoutManager(new LinearLayoutManager(getBaseContext(),LinearLayoutManager.VERTICAL,false));
         historyAndDownload = new BottomSheetDialog(this);
         historyAndDownload.setContentView(sheet);
 
