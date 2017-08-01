@@ -5,7 +5,7 @@
 <resources>
     <color name="colorPrimary">#FF363B40</color>
     <color name="colorPrimaryDark">#6c3b6e</color>
-    <color name="colorAccent">#FFCF68FF</color>
+    <color name="colorAccent">#FF0A84FF</color>
 
     <color name="colorGradientStart">#FFA23B3F</color>
     <color name="colorGradientCenter">#FF83377B</color>
