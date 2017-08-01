@@ -46,4 +46,5 @@
 
     <color name="colorDownloadText">#272727</color>
     <color name="colorDownloadSubText">#737373</color>
+    <color name="colorDownloadBackground">#F9F9FA</color>
 </resources>
