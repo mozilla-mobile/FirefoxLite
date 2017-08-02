@@ -4,7 +4,6 @@
     <string name="action_ok">W porjadku</string>
     <string name="urlbar_hint">Adresu pytać abo zapodać</string>
     <string name="teaser">Awtomatiski priwatny modus.\nPřehladować. Zhašeć. Wospjetować.</string>
-    <string name="feedback_erase">Waša přehladowanska historija je so zhašała.</string>
     <string name="search_hint">Pytanje za %1$s</string>
     <string name="menu_share">Dźělić…</string>
     <string name="menu_open_with_default_browser">Z %1$s wočinić</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">Waše prawa</string>
     <string name="menu_trackers_blocked_title">Přesćěhowaki zablokowane</string>
     <string name="share_dialog_title">Dźělić přez</string>
-    <string name="notification_erase_text">Přehladowansku historiju zhašeć</string>
-    <string name="shortcut_erase_short_label">Zhašeć</string>
-    <string name="shortcut_erase_long_label">Přehladowansku historiju zhašeć</string>
     <string name="text_selection_search_action">Priwatnje pytać</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s da was kontrolu wobchowa&#263;.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Wu&#382;iwaj&#263;e j&#243;n jako priwatny wobhladowak:\n  "<ul>"\n    "<li>Pytaj&#263;e a p&#345;ehladuj&#263;e direktnje w na&#322;o&#382;enju</li>"\n    "<li>Blokuj&#263;e p&#345;es&#263;&#283;howaki (abo aktualizuj&#263;e nastajenja, zo by&#353;&#263;e p&#345;es&#263;&#283;howaki dowoli&#322;)</li>"\n    "<li>Zha&#353;ej&#263;e placki a pytansku a p&#345;ehladowansku historiju</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s so wot Mozilla wuwiwa. Na&#353;a misija je sp&#283;chowanje stroweho, wotewrjeneho interneta.<br/>\n<a href="%2$s">Dal&#353;e informacije</a></p>]]></string>
     <string name="preference_category_search">Pytać</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Socialne přesćěhowaki blokować</string>
     <string name="preference_privacy_block_content">Druhe wobsahowe přesćěhowaki blokować</string>
     <string name="preference_privacy_block_content_summary">Haći snano někotrym widejam a webstronam</string>
-    <string name="preference_privacy_secure_mode">Tarnowanje</string>
-    <string name="preference_privacy_secure_mode_summary">Wupińće tarnowanski modus, zo byšće wobrazowku fotografował a sej sydła wobhladował, kotrež sće z %1$s w swojej lisćinje aktualnych nałoženjow wopytał</string>
     <string name="preference_category_performance">Wukon</string>
     <string name="preference_performance_block_webfonts">Webpisma blokować</string>
     <string name="preference_performance_block_webfonts_summary">Móže k tomu wjesć, zo symbole abo wobrazy faluja</string>

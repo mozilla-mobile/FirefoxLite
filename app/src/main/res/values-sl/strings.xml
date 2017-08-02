@@ -4,7 +4,6 @@
     <string name="action_ok">V redu</string>
     <string name="urlbar_hint">Iskanje ali naslov strani</string>
     <string name="teaser">Samodejno zasebno brskanje.\nBrskajte. Izbrišite. Ponovite.</string>
-    <string name="feedback_erase">Vaša zgodovina brskanja je bila izbrisana.</string>
     <string name="search_hint">Išči %1$s</string>
     <string name="menu_share">Deli …</string>
     <string name="menu_open_with_default_browser">Za odpiranje uporabi %1$s</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">Vaše pravice</string>
     <string name="menu_trackers_blocked_title">Sledilci zavrnjeni</string>
     <string name="share_dialog_title">Deli preko</string>
-    <string name="notification_erase_text">Počisti zgodovino brskanja</string>
-    <string name="shortcut_erase_short_label">Izbriši</string>
-    <string name="shortcut_erase_long_label">Počisti zgodovino brskanja</string>
     <string name="text_selection_search_action">Iščite zasebno</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s daje nadzor v va&#353;e roke.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Uporabljajte ga kot zaseben brskalnik:\n  "<ul>"\n    "<li>I&#353;&#269;ite in brskajte naravnost iz aplikacije</li>"\n    "<li>Zavra&#269;ajte sledilce (ali spremenite nastavitve zavra&#269;anja sledilcev)</li>"\n    "<li>Bri&#353;ite pi&#353;kotke ter zgodovino strani in iskanja</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s razvija Mozilla. Na&#353;e poslanstvo je spodbujati zdrav in odprt internet.<br/>\n<a href="%2$s">Ve&#269; o tem</a></p>]]></string>
     <string name="preference_category_search">Išči</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Zavračaj sledilce družbenih omrežij</string>
     <string name="preference_privacy_block_content">Zavračaj druge vsebinske sledilce</string>
     <string name="preference_privacy_block_content_summary">Lahko pokvari nekatere videoposnetke in strani</string>
-    <string name="preference_privacy_secure_mode">Skrivni način</string>
-    <string name="preference_privacy_secure_mode_summary">Izklopite skrivni način za zajemanje zaslona in prikaz strani, obiskanih v %1$su, na seznamu nedavnih aplikacij</string>
     <string name="preference_category_performance">Učinkovitost</string>
     <string name="preference_performance_block_webfonts">Zavračaj spletne pisave</string>
     <string name="preference_performance_block_webfonts_summary">Lahko povzroči izginotje ikon ali slik</string>

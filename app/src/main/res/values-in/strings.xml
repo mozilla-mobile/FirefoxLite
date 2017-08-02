@@ -4,7 +4,6 @@
     <string name="action_ok">Oke</string>
     <string name="urlbar_hint">Cari atau masukkan alamat</string>
     <string name="teaser">Penjelajahan pribadi otomatis.\nJelajahi. Hapus. Ulangi.</string>
-    <string name="feedback_erase">Riwayat penjelajahan Anda sudah dihapus.</string>
     <string name="search_hint">Cari %1$s</string>
     <string name="menu_share">Bagikan…</string>
     <string name="menu_open_with_default_browser">Buka dengan %1$s</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">Hak Anda</string>
     <string name="menu_trackers_blocked_title">Pelacak terblokir</string>
     <string name="share_dialog_title">Bagikan via</string>
-    <string name="notification_erase_text">Hapus riwayat penjelajahan</string>
-    <string name="shortcut_erase_short_label">Hapus</string>
-    <string name="shortcut_erase_long_label">Hapus riwayat penjelajahan</string>
     <string name="text_selection_search_action">Mencari Secara Privat</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s menempatkan Anda dalam kendali.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Gunakan sebagai peramban privat:\n  "<ul>"\n    "<li>Cari dan menjelajah langsung di dalam aplikasi</li>"\n    "<li>Memblokir pelacak (atau ubah di pengaturan untuk izinkan pelacak)</li>"\n    "<li>Hapus untuk menghilangkan kuki termasuk juga pencarian dan riwayat penjelajahan</li>"\n  "</ul>"\n "</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s diproduksi oleh Mozilla. Misi kami adalah untuk memelihara Internet yang sehat dan terbuka.<br/>" "<a href="%2$s">Pelajari lebih lanjut</a></p>]]></string>
     <string name="preference_category_search">Cari</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Blokir pelacak sosial</string>
     <string name="preference_privacy_block_content">Blokir pelacak konten lainnya</string>
     <string name="preference_privacy_block_content_summary">Mungkin menghentikan beberapa video dan laman Web</string>
-    <string name="preference_privacy_secure_mode">Mode Siluman</string>
-    <string name="preference_privacy_secure_mode_summary">Nonaktifkan mode siluman untuk mengambil tangkapan layar dan melihat situs yang Anda kunjungi menggunakan %1$s di daftar Aplikasi Terakhir</string>
     <string name="preference_category_performance">Kinerja</string>
     <string name="preference_performance_block_webfonts">Blokir font Web</string>
     <string name="preference_performance_block_webfonts_summary">Dapat menyebabkan hilangnya ikon atau gambar</string>

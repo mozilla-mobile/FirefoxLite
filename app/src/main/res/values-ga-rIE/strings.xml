@@ -4,7 +4,6 @@
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Cuardach nó seoladh Gréasáin</string>
     <string name="teaser">Brabhsáil phríobháideach, go huathoibríoch.\nBrabhsáil. Bánaigh. Arís is arís eile.</string>
-    <string name="feedback_erase">Bánaíodh do stair bhrabhsála.</string>
     <string name="search_hint">Cuardaigh %1$s</string>
     <string name="menu_share">Comhroinn…</string>
     <string name="menu_open_with_default_browser">Oscail le %1$s</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">Cearta an úsáideora</string>
     <string name="menu_trackers_blocked_title">Lorgairí blocáilte</string>
     <string name="share_dialog_title">Comhroinn trí</string>
-    <string name="notification_erase_text">Glan an stair bhrabhsála</string>
-    <string name="shortcut_erase_short_label">Glan</string>
-    <string name="shortcut_erase_long_label">Glan an stair bhrabhsála</string>
     <string name="text_selection_search_action">Cuardach Príobháideach</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">Cuireann %1$s tusa i gceannas.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"&#218;s&#225;id mar bhrabhs&#225;la&#237; pr&#237;obh&#225;ideach &#233;:\n  "<ul>"\n    "<li>Cuardaigh agus brabhs&#225;il go d&#237;reach san aip</li>"\n    "<li>Cuir cosc ar lorgair&#237; (n&#243; ceadaigh sna socruithe iad)</li>"\n    "<li>Scrios fian&#225;in chomh maith le do stair chuardaigh agus stair bhrabhs&#225;la</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">Is &#233; Mozilla a dh&#233;anann %1$s. An misean at&#225; againn n&#225; Idirl&#237;on br&#237;omhar oscailte a choth&#250;.<br/>\n<a href="%2$s">Tuilleadh eolais</a></p>]]></string>
     <string name="preference_category_search">Cuardach</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Cuir cosc ar lorgairí sóisialta</string>
     <string name="preference_privacy_block_content">Cuir cosc ar lorgairí ábhair eile</string>
     <string name="preference_privacy_block_content_summary">Seans go mbrisfidh seo físeáin agus leathanaigh Ghréasáin áirithe</string>
-    <string name="preference_privacy_secure_mode">Mód Rúnda</string>
-    <string name="preference_privacy_secure_mode_summary">Múch an mód rúnda chun pictiúir a thógáil de na suímh a thugann tú cuairt orthu in %1$s sna hAipeanna is déanaí</string>
     <string name="preference_category_performance">Feidhmíocht</string>
     <string name="preference_performance_block_webfonts">Cuir cosc ar chlónna Gréasáin</string>
     <string name="preference_performance_block_webfonts_summary">D\'fhéadfadh go mbeadh deilbhíní nó íomhánna ar iarraidh</string>

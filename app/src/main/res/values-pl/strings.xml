@@ -4,7 +4,6 @@
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Wpisz adres lub szukaj</string>
     <string name="teaser">Automatyczne przeglądanie prywatne.\nPrzeglądaj. Usuwaj. Powtórz.</string>
-    <string name="feedback_erase">Usunięto historię przeglądania.</string>
     <string name="search_hint">Wyszukaj „%1$s”</string>
     <string name="menu_share">Udostępnij…</string>
     <string name="menu_open_with_default_browser">Otwórz za pomocą „%1$s”</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">O prawach użytkownika</string>
     <string name="menu_trackers_blocked_title">Zablokowano:</string>
     <string name="share_dialog_title">Udostępnij przez</string>
-    <string name="notification_erase_text">Usuń historię przeglądania</string>
-    <string name="shortcut_erase_short_label">Usuń historię</string>
-    <string name="shortcut_erase_long_label">Usuń historię przeglądania</string>
     <string name="text_selection_search_action">Wyszukaj prywatnie</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s daje wi&#281;ksz&#261; kontrol&#281;.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Jako prywatna przegl&#261;darka umo&#380;liwia:\n  "<ul>"\n    "<li>wyszukiwanie i&#160;przegl&#261;danie prosto z&#160;aplikacji</li>"\n    "<li>blokowanie &#347;ledzenia (mo&#380;na to zmieni&#263; w&#160;ustawieniach)</li>"\n    "<li>usuwanie ciasteczek oraz ca&#322;ej historii wyszukiwania i&#160;przegl&#261;dania</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s jest tworzony przez Mozill&#281;. Naszym celem jest wspieranie zdrowego i&#160;otwartego Internetu.<br/>\n<a href="%2$s">Wi&#281;cej informacji</a></p>]]></string>
     <string name="preference_category_search">Wyszukiwanie</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Blokowanie śledzących społecznościowych</string>
     <string name="preference_privacy_block_content">Blokowanie pozostałych śledzących</string>
     <string name="preference_privacy_block_content_summary">Może uniemożliwiać oglądanie niektórych filmów i stron WWW</string>
-    <string name="preference_privacy_secure_mode">Tryb ukryty</string>
-    <string name="preference_privacy_secure_mode_summary">Wyłączenie trybu ukrytego umożliwia wykonywanie zrzutów ekranu i wyświetlanie stron odwiedzonych w programie %1$s na liście ostatnio używanych aplikacji</string>
     <string name="preference_category_performance">Wydajność</string>
     <string name="preference_performance_block_webfonts">Blokowanie czcionek sieciowych</string>
     <string name="preference_performance_block_webfonts_summary">Może spowodować, że niektóre ikony lub obrazy będą niewidoczne</string>

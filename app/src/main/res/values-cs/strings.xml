@@ -4,7 +4,6 @@
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Zadejte hledání nebo adresu</string>
     <string name="teaser">Automatické anonymní prohlížení.\nProhlížejte. Vymažte. Opakujte.</string>
-    <string name="feedback_erase">Vaše historie prohlížení byla vymazána.</string>
     <string name="search_hint">Hledat %1$s</string>
     <string name="menu_share">Sdílet…</string>
     <string name="menu_open_with_default_browser">Otevřít pomocí %1$s</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">Vaše práva</string>
     <string name="menu_trackers_blocked_title">Zablokováno sledujících prvků</string>
     <string name="share_dialog_title">Sdílet přes</string>
-    <string name="notification_erase_text">Vymazat historii prohlížení</string>
-    <string name="shortcut_erase_short_label">Vymazat</string>
-    <string name="shortcut_erase_long_label">Vymazat historii prohlížení</string>
     <string name="text_selection_search_action">Vyhledávejte soukromě</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s v&#225;m d&#225;v&#225; kontrolu.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Pou&#382;&#237;vejte ho jako soukrom&#253; prohl&#237;&#382;e&#269;:\n  "<ul>"\n    "<li>Vyhled&#225;vejte a prohl&#237;&#382;ejte p&#345;&#237;mo v aplikaci</li>"\n    "<li>Blokujte sledovac&#237; prvky (nebo aktualizujte nastaven&#237; pro povolen&#237; sledovac&#237;ch prvk&#367;)</li>"\n    "<li>Tla&#269;&#237;tkem sma&#382;te cookies a historii vyhled&#225;v&#225;n&#237; a prohl&#237;&#382;en&#237;</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s je vyv&#237;jen Mozillou. Na&#353;&#237; mis&#237; je podporovat zdrav&#253; a otev&#345;en&#253; internet.<br/>\n<a href="%2$s">Zjist&#283;te v&#237;ce</a></p>]]></string>
     <string name="preference_category_search">Hledat</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Blokovat sledující prvky sociálních sítí</string>
     <string name="preference_privacy_block_content">Blokovat ostatní sledující prvky</string>
     <string name="preference_privacy_block_content_summary">Může rozbít některá videa a webové stránky</string>
-    <string name="preference_privacy_secure_mode">Nenápadnost</string>
-    <string name="preference_privacy_secure_mode_summary">Vypněte režim nenápadnosti pro vytváření snímků obrazovky a zobrazení stránek, které navštěvujete v aplikaci %1$s v seznamu nedávno použitých aplikacích</string>
     <string name="preference_category_performance">Výkon</string>
     <string name="preference_performance_block_webfonts">Blokovat webové fonty</string>
     <string name="preference_performance_block_webfonts_summary">Některé ikony nebo obrázky se nemusí zobrazovat</string>

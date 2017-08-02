@@ -4,7 +4,6 @@
     <string name="action_ok">確定</string>
     <string name="urlbar_hint">進行搜尋或輸入網址</string>
     <string name="teaser">無痕瀏覽，不留足跡。</string>
-    <string name="feedback_erase">已清除您的瀏覽紀錄。</string>
     <string name="search_hint">搜尋 %1$s</string>
     <string name="menu_share">分享…</string>
     <string name="menu_open_with_default_browser">使用 %1$s 開啟</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">您的權利</string>
     <string name="menu_trackers_blocked_title">封鎖的追蹤器數量</string>
     <string name="share_dialog_title">透過下列程式分享</string>
-    <string name="notification_erase_text">清除瀏覽紀錄</string>
-    <string name="shortcut_erase_short_label">清除</string>
-    <string name="shortcut_erase_long_label">清除瀏覽紀錄</string>
     <string name="text_selection_search_action">隱私搜尋</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s &#35731;&#24744;&#21487;&#33258;&#34892;&#25511;&#21046;&#32218;&#19978;&#29983;&#27963;&#12290;</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"&#21487;&#30070;&#20316;&#31169;&#23494;&#28687;&#35261;&#22120;&#20351;&#29992;:\n  "<ul>"\n    "<li>&#30452;&#25509;&#22312;&#31243;&#24335;&#20013;&#25628;&#23563;&#12289;&#28687;&#35261;</li>"\n    "<li>&#23553;&#37782;&#36861;&#36452;&#22120;&#65288;&#20063;&#21487;&#35519;&#25972;&#35373;&#23450;&#65292;&#20801;&#35377;&#36861;&#36452;&#22120;&#65289;</li>"\n    "<li>&#28165;&#38500; Cookie&#12289;&#25628;&#23563;&#32000;&#37636;&#12289;&#19978;&#32178;&#32000;&#37636;</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s &#26159;&#30001; Mozilla &#25152;&#25171;&#36896;&#65292;&#25105;&#20497;&#30340;&#20351;&#21629;&#26159;&#22521;&#39178;&#19968;&#20491;&#20581;&#24247;&#12289;&#38283;&#25918;&#30340;&#32178;&#38555;&#32178;&#36335;&#12290;<br/>\n<a href="%2$s">&#20102;&#35299;&#26356;&#22810;</a></p>]]></string>
     <string name="preference_category_search">搜尋</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">封鎖社交追蹤器</string>
     <string name="preference_privacy_block_content">封鎖其他內容追蹤器</string>
     <string name="preference_privacy_block_content_summary">可能會影響網頁與影片載入</string>
-    <string name="preference_privacy_secure_mode">秘密行動</string>
-    <string name="preference_privacy_secure_mode_summary">關閉秘密模式，您就可以拍攝畫面擷圖，並在「應用程式切換清單」中，看到您曾使用 %1$s 造訪過的網站。</string>
     <string name="preference_category_performance">效能</string>
     <string name="preference_performance_block_webfonts">封鎖網路字型</string>
     <string name="preference_performance_block_webfonts_summary">可能會造成網頁當中的圖示或圖片消失</string>

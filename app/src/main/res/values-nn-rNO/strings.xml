@@ -4,7 +4,6 @@
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Søk eller skriv inn adresse</string>
     <string name="teaser">Automatisk privat nettlesing.\nSurf. Slett. Gjenta.</string>
-    <string name="feedback_erase">Nettlesarhistorikken din har blitt sletta.</string>
     <string name="search_hint">Søk etter %1$s</string>
     <string name="menu_share">Del…</string>
     <string name="menu_open_with_default_browser">Opne med %1$s</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">Dine rettar</string>
     <string name="menu_trackers_blocked_title">Sporarar blokkerte</string>
     <string name="share_dialog_title">Del via</string>
-    <string name="notification_erase_text">Slett nettlesarhistorikk</string>
-    <string name="shortcut_erase_short_label">Slett</string>
-    <string name="shortcut_erase_long_label">Slett nettlesarhistorikk</string>
     <string name="text_selection_search_action">Søk privat</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s gir deg kontroll.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Bruk han som ein privat nettlesar:\n  "<ul>"\n    "<li>S&#248;k og surf rett i appen</li>"\n    "<li>Blokker sporarar (eller oppdater innstillingane for &#229; tillate sporarar)</li>"\n    "<li>Slett for &#229; fjerne infokapslar samt s&#248;k- og nettlesarhistorikk</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s er produsert av Mozilla. V&#229;r misjon er &#229; fremme eit sunt, ope Internett.<br/>\n<a href="%2$s">Les meir</a></p>]]></string>
     <string name="preference_category_search">Søk</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Blokker sosiale media-sporarar</string>
     <string name="preference_privacy_block_content">Blokker andre innhaldssporarar</string>
     <string name="preference_privacy_block_content_summary">Kan øydelegge nokre videoar og nettsider</string>
-    <string name="preference_privacy_secure_mode">Løyndemodus</string>
-    <string name="preference_privacy_secure_mode_summary">Skru av løyndemodus for å ta skjermbilde og sjå nettsider du har besøkt med %1$s i den nylege applista di</string>
     <string name="preference_category_performance">Yting</string>
     <string name="preference_performance_block_webfonts">Blokker nettfontar</string>
     <string name="preference_performance_block_webfonts_summary">Kan resultere i at ikon eller bilde manglar</string>

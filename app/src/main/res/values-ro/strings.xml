@@ -4,7 +4,6 @@
     <string name="action_ok">Ok</string>
     <string name="urlbar_hint">Caută sau introdu adresa</string>
     <string name="teaser">Navigare privată automată.\nNavighează. Șterge. Repetă.</string>
-    <string name="feedback_erase">Istoricul de navigare a fost șters.</string>
     <string name="search_hint">Caută %1$s</string>
     <string name="menu_share">Partajează…</string>
     <string name="menu_open_with_default_browser">Deschide cu %1$s</string>
@@ -15,9 +14,6 @@
     <string name="menu_rights">Drepturile tale</string>
     <string name="menu_trackers_blocked_title">Urmăritori blocați</string>
     <string name="share_dialog_title">Partajează via</string>
-    <string name="notification_erase_text">Șterge istoricul de navigare</string>
-    <string name="shortcut_erase_short_label">Șterge</string>
-    <string name="shortcut_erase_long_label">Șterge istoricul de navigare</string>
     <string name="text_selection_search_action">Caută într-un mod privat</string>
     <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s &#238;&#539;i ofer&#259; controlul.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Folose&#537;te-l ca browser privat:\n  "<ul>"\n    "<li>Caut&#259; &#537;i navigheaz&#259; direct din aplica&#539;ie</li>"\n    "<li>Blocheaz&#259; urm&#259;ritorii (sau actualizeaz&#259; set&#259;rile pentru a permite urm&#259;ritorii)</li>"\n    "<li>&#536;terge pentru a &#238;ndep&#259;rta cookie-urile precum &#537;i istoricul de c&#259;utare &#537;i navigare</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s este produs de Mozilla. Misiunea noastr&#259; este s&#259; promov&#259;m un internet deschis &#537;i s&#259;n&#259;tos.<br/>\n<a href="%2$s">Afl&#259; mai multe</a></p>]]></string>
     <string name="preference_category_search">Căutare</string>
@@ -31,8 +27,6 @@
     <string name="preference_privacy_block_social">Blochează urmăritorii sociali</string>
     <string name="preference_privacy_block_content">Blochează alți urmăritori de conținut</string>
     <string name="preference_privacy_block_content_summary">Poate afecta funcționalitatea unor videouri sau pagini web</string>
-    <string name="preference_privacy_secure_mode">Discret</string>
-    <string name="preference_privacy_secure_mode_summary">Oprește modul discret pentru a realiza capturi de ecran și a vedea site-urile pe care le vizitezi folosind %1$s în lista de Aplicații recente</string>
     <string name="preference_category_performance">Performanță</string>
     <string name="preference_performance_block_webfonts">Blochează fonturile web</string>
     <string name="preference_performance_block_webfonts_summary">Poate duce la pictograme și imagini lipsă</string>
