@@ -1,96 +1,87 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="action_cancel">Prekliči</string>
-  <string name="action_ok">V redu</string>
-  <string name="urlbar_hint">Iskanje ali naslov strani</string>
-  <string name="teaser">Samodejno zasebno brskanje.\nBrskajte. Izbrišite. Ponovite.</string>
-  <string name="feedback_erase">Vaša zgodovina brskanja je bila izbrisana.</string>
-  <string name="search_hint">Išči %1$s</string>
-  <string name="menu_share">Deli …</string>
-  <string name="menu_open_with_default_browser">Za odpiranje uporabi %1$s</string>
-  <string name="menu_open_with_a_browser">Za odpiranje uporabi ...</string>
-  <string name="menu_settings">Nastavitve</string>
-  <string name="menu_about">Predstavitev</string>
-  <string name="menu_help">Pomoč</string>
-  <string name="menu_rights">Vaše pravice</string>
-  <string name="menu_trackers_blocked_title">Sledilci zavrnjeni</string>
-  <string name="share_dialog_title">Deli preko</string>
-  <string name="notification_erase_text">Počisti zgodovino brskanja</string>
-  <string name="shortcut_erase_short_label">Izbriši</string>
-  <string name="shortcut_erase_long_label">Počisti zgodovino brskanja</string>
-  <string name="text_selection_search_action">Iščite zasebno</string>
-  <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s daje nadzor v va&#353;e roke.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Uporabljajte ga kot zaseben brskalnik:\n  "<ul>"\n    "<li>I&#353;&#269;ite in brskajte naravnost iz aplikacije</li>"\n    "<li>Zavra&#269;ajte sledilce (ali spremenite nastavitve zavra&#269;anja sledilcev)</li>"\n    "<li>Bri&#353;ite pi&#353;kotke ter zgodovino strani in iskanja</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s razvija Mozilla. Na&#353;e poslanstvo je spodbujati zdrav in odprt internet.<br/>\n<a href="%2$s">Ve&#269; o tem</a></p>]]></string>
-  <string name="preference_category_search">Išči</string>
-  <string name="preference_search_engine_default">Privzet</string>
-  <string name="preference_language">Jezik</string>
-  <string name="preference_language_systemdefault">Privzet v sistemu</string>
-  <string name="preference_dialog_title_search_engine">Privzeti iskalnik</string>
-  <string name="preference_category_privacy">Zasebnost</string>
-  <string name="preference_privacy_block_ads">Zavračaj sledilce oglasov</string>
-  <string name="preference_privacy_block_analytics">Zavračaj sledilce analitike</string>
-  <string name="preference_privacy_block_social">Zavračaj sledilce družbenih omrežij</string>
-  <string name="preference_privacy_block_content">Zavračaj druge vsebinske sledilce</string>
-  <string name="preference_privacy_block_content_summary">Lahko pokvari nekatere videoposnetke in strani</string>
-  <string name="preference_privacy_secure_mode">Skrivni način</string>
-  <string name="preference_privacy_secure_mode_summary">Izklopite skrivni način za zajemanje zaslona in prikaz strani, obiskanih v %1$su, na seznamu nedavnih aplikacij</string>
-  <string name="preference_category_performance">Učinkovitost</string>
-  <string name="preference_performance_block_webfonts">Zavračaj spletne pisave</string>
-  <string name="preference_performance_block_webfonts_summary">Lahko povzroči izginotje ikon ali slik</string>
-  <string name="preference_performance_block_images">Zavračaj slike</string>
-  <string name="preference_default_browser">Nastavi kot privzet brskalnik</string>
-  <string name="preference_category_mozilla">Mozilla</string>
-  <string name="preference_mozilla_telemetry">Pošiljaj anonimne podatke o uporabi</string>
-  <string name="preference_mozilla_telemetry_summary">Več o tem</string>
-  <string name="preference_about">O %1$su</string>
-  <string name="content_description_clear_input">Počisti vnos</string>
-  <string name="content_description_dismiss_input">Opusti</string>
-  <string name="content_description_lock">Varna povezava</string>
-  <string name="accessibility_announcement_loading">Nalaganje</string>
-  <string name="accessibility_announcement_loading_finished">Spletna stran naložena</string>
-  <string name="content_description_menu">Več možnosti</string>
-  <string name="content_description_forward">Krmari naprej</string>
-  <string name="content_description_reload">Ponovno naloži stran</string>
-  <string name="content_description_back">Krmari nazaj</string>
-  <string name="content_description_stop">Prekini nalaganje strani</string>
-  <string name="content_description_customtab_exit">Nazaj na prejšnjo aplikacijo</string>
-  <string name="content_description_blocking_switch">Zavračaj sledilce</string>
-  <string name="context_menu_paste_go">Prilepi in odpri</string>
-  <string name="your_rights">Vaše pravice</string>
-  <string name="external_app_prompt_title">Odpri povezavo v drugi aplikaciji</string>
-  <string name="external_app_prompt">Lahko zapustite %1$s in to povezavo odprete v %2$s.</string>
-  <string name="external_app_prompt_no_app_title">Poišči aplikacijo, ki lahko odpre povezavo</string>
-  <string name="external_app_prompt_no_app">Nobena aplikacija na napravi ne more odpreti te povezave. Lahko zapustite %1$s in v %2$s poiščete aplikacijo, ki jo lahko.</string>
-  <string name="external_multiple_apps_matched_exit">Končam zasebno brskanje?</string>
-  <string name="errorpage_title">Napaka pri nalaganju strani</string>
-  <string name="errorpage_refresh">Poskusi znova</string>
-  <string name="error_connectionfailure_title">Povezave ni mogoče vzpostaviti</string>
-  <string name="error_connectionfailure_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>Stran trenutno morda ni na voljo ali je preobremenjena. Poskusite znova &#269;ez nekaj trenutkov.</li>"\n        "<li>&#268;e ne morete nalo&#382;iti nobene strani, na napravi preverite povezavo z omre&#382;jem.</li>"\n      "</ul>]]></string>
-  <string name="error_timeout_title">Povezava je potekla</string>
-  <string name="error_hostLookup_title">Strežnika ni mogoče najti</string>
-  <string name="error_hostLookup_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>"Preverite naslov za tipkarske napake, na primer\n          "<strong>ww</strong>". example.com namesto\n          "<strong>www</strong>. example.com</li>"\n        "<li>&#268;e ne morete nalo&#382;iti nobene strani, na napravi preverite povezavo z omre&#382;jem.</li>"\n      "</ul>]]></string>
-  <string name="error_malformedURI_title">Neveljaven naslov</string>
-  <string name="error_malformedURI_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>"Spletne naslove se obi&#269;ajno pi&#353;e v obliki "<strong>http://www.example.com/</strong></li>"\n  "<li>"Prepri&#269;ajte se, da uporabljate po&#353;evnice naprej (t.j. "<strong>/</strong>).</li>\n</ul>]]></string>
-  <string name="error_redirectLoop_title">Stran se ne preusmerja pravilno</string>
-  <string name="error_redirectLoop_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>To te&#382;avo obi&#269;ajno povzro&#269;ajo onemogo&#269;eni ali zavrnjeni pi&#353;kotki.</li>\n</ul>]]></string>
-  <string name="error_unsupportedprotocol_title">Naslova ni bilo mogoče razumeti</string>
-  <string name="error_unsupportedprotocol_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Za odpiranje tega naslova boste morda morali namestiti dodaten program.</li>\n</ul>]]></string>
-  <string name="error_sslhandshake_title">Varna povezava ni uspela</string>
-  <string name="error_sslhandshake_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Te&#382;ava je morda v nastavitvah stre&#382;nika ali pa nekdo posku&#353;a\nta stre&#382;nik opona&#353;ati.</li>"\n  "<li>&#268;e ste se v preteklosti &#382;e uspe&#353;no povezali na ta stre&#382;nik, je morda\nnapaka za&#269;asna in lahko znova poskusite kasneje.</li>\n</ul>]]></string>
-  <string name="error_generic_title">Ups</string>
-  <string name="error_generic_message">Iz neznanega razloga ne moremo naložiti strani.</string>
-  <string name="contextmenu_link_share">Deli povezavo</string>
-  <string name="contextmenu_link_copy">Kopiraj naslov povezave</string>
-  <string name="contextmenu_image_share">Deli sliko</string>
-  <string name="contextmenu_image_copy">Kopiraj naslov slike</string>
-  <string name="contextmenu_image_save">Shrani sliko</string>
-  <string name="contextmenu_image_warning"><![CDATA["Ob izbrisu zgodovine %1$sa shranjene in deljene slike "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">ne bodo izbrisane</b>.]]></string>
-  <string name="firstrun_tracking_title">Brskajte, kot da vas nihče ne gleda</string>
-  <string name="firstrun_tracking_text">Samodejno zavračajte spletne sledilce, medtem ko brskate. Nato odstranite zgodovino strani in piškotke z dotikom ikone koša v aplikaciji ali med obvestili.</string>
-  <string name="firstrun_defaultbrowser_title">Okrepite svojo zasebnost</string>
-  <string name="firstrun_defaultbrowser_text">Nastavite %1$s kot privzet brskalnik in uživajte prednosti zasebnega brskanja, ko odprete povezave v drugih aplikacijah Androida.</string>
-  <string name="firstrun_breaking_title">Hitra rešitev, kadar\nzavračanje kaj pokvari</string>
-  <string name="firstrun_breaking_text">Kadar zavračanje spletnih sledilcev pokvari prikaz spletne strani, izklopite zavračanje v meniju z orodji.</string>
-  <string name="firstrun_close_button">V redu, razumem!</string>
-  <string name="firstrun_skip_button">Preskoči</string>
-  <string name="firstrun_next_button">Naprej</string>
+    <string name="action_cancel">Prekliči</string>
+    <string name="action_ok">V redu</string>
+    <string name="urlbar_hint">Iskanje ali naslov strani</string>
+    <string name="search_hint">Išči %1$s</string>
+    <string name="menu_share">Deli …</string>
+    <string name="menu_settings">Nastavitve</string>
+    <string name="menu_about">Predstavitev</string>
+    <string name="menu_help">Pomoč</string>
+    <string name="menu_rights">Vaše pravice</string>
+    <string name="menu_trackers_blocked_title">Sledilci zavrnjeni</string>
+    <string name="share_dialog_title">Deli preko</string>
+    <string name="text_selection_search_action">Iščite zasebno</string>
+    <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s daje nadzor v va&#353;e roke.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Uporabljajte ga kot zaseben brskalnik:\n  "<ul>"\n    "<li>I&#353;&#269;ite in brskajte naravnost iz aplikacije</li>"\n    "<li>Zavra&#269;ajte sledilce (ali spremenite nastavitve zavra&#269;anja sledilcev)</li>"\n    "<li>Bri&#353;ite pi&#353;kotke ter zgodovino strani in iskanja</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s razvija Mozilla. Na&#353;e poslanstvo je spodbujati zdrav in odprt internet.<br/>\n<a href="%2$s">Ve&#269; o tem</a></p>]]></string>
+    <string name="preference_category_search">Išči</string>
+    <string name="preference_search_engine_default">Privzet</string>
+    <string name="preference_language">Jezik</string>
+    <string name="preference_language_systemdefault">Privzet v sistemu</string>
+    <string name="preference_dialog_title_search_engine">Privzeti iskalnik</string>
+    <string name="preference_category_privacy">Zasebnost</string>
+    <string name="preference_privacy_block_ads">Zavračaj sledilce oglasov</string>
+    <string name="preference_privacy_block_analytics">Zavračaj sledilce analitike</string>
+    <string name="preference_privacy_block_social">Zavračaj sledilce družbenih omrežij</string>
+    <string name="preference_privacy_block_content">Zavračaj druge vsebinske sledilce</string>
+    <string name="preference_privacy_block_content_summary">Lahko pokvari nekatere videoposnetke in strani</string>
+    <string name="preference_category_performance">Učinkovitost</string>
+    <string name="preference_performance_block_webfonts">Zavračaj spletne pisave</string>
+    <string name="preference_performance_block_webfonts_summary">Lahko povzroči izginotje ikon ali slik</string>
+    <string name="preference_performance_block_images">Zavračaj slike</string>
+    <string name="preference_default_browser">Nastavi kot privzet brskalnik</string>
+    <string name="preference_category_mozilla">Mozilla</string>
+    <string name="preference_mozilla_telemetry">Pošiljaj anonimne podatke o uporabi</string>
+    <string name="preference_mozilla_telemetry_summary">Več o tem</string>
+    <string name="preference_about">O %1$su</string>
+    <string name="content_description_clear_input">Počisti vnos</string>
+    <string name="content_description_dismiss_input">Opusti</string>
+    <string name="content_description_lock">Varna povezava</string>
+    <string name="accessibility_announcement_loading">Nalaganje</string>
+    <string name="accessibility_announcement_loading_finished">Spletna stran naložena</string>
+    <string name="content_description_menu">Več možnosti</string>
+    <string name="content_description_forward">Krmari naprej</string>
+    <string name="content_description_reload">Ponovno naloži stran</string>
+    <string name="content_description_back">Krmari nazaj</string>
+    <string name="content_description_stop">Prekini nalaganje strani</string>
+    <string name="content_description_customtab_exit">Nazaj na prejšnjo aplikacijo</string>
+    <string name="content_description_blocking_switch">Zavračaj sledilce</string>
+    <string name="context_menu_paste_go">Prilepi in odpri</string>
+    <string name="your_rights">Vaše pravice</string>
+    <string name="external_app_prompt_title">Odpri povezavo v drugi aplikaciji</string>
+    <string name="external_app_prompt">Lahko zapustite %1$s in to povezavo odprete v %2$s.</string>
+    <string name="external_app_prompt_no_app_title">Poišči aplikacijo, ki lahko odpre povezavo</string>
+    <string name="external_app_prompt_no_app">Nobena aplikacija na napravi ne more odpreti te povezave. Lahko zapustite %1$s in v %2$s poiščete aplikacijo, ki jo lahko.</string>
+    <string name="external_multiple_apps_matched_exit">Končam zasebno brskanje?</string>
+    <string name="errorpage_title">Napaka pri nalaganju strani</string>
+    <string name="errorpage_refresh">Poskusi znova</string>
+    <string name="error_connectionfailure_title">Povezave ni mogoče vzpostaviti</string>
+    <string name="error_connectionfailure_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>Stran trenutno morda ni na voljo ali je preobremenjena. Poskusite znova &#269;ez nekaj trenutkov.</li>"\n        "<li>&#268;e ne morete nalo&#382;iti nobene strani, na napravi preverite povezavo z omre&#382;jem.</li>"\n      "</ul>]]></string>
+    <string name="error_timeout_title">Povezava je potekla</string>
+    <string name="error_hostLookup_title">Strežnika ni mogoče najti</string>
+    <string name="error_hostLookup_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>"Preverite naslov za tipkarske napake, na primer\n          "<strong>ww</strong>". example.com namesto\n          "<strong>www</strong>. example.com</li>"\n        "<li>&#268;e ne morete nalo&#382;iti nobene strani, na napravi preverite povezavo z omre&#382;jem.</li>"\n      "</ul>]]></string>
+    <string name="error_malformedURI_title">Neveljaven naslov</string>
+    <string name="error_malformedURI_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>"Spletne naslove se obi&#269;ajno pi&#353;e v obliki "<strong>http://www.example.com/</strong></li>"\n  "<li>"Prepri&#269;ajte se, da uporabljate po&#353;evnice naprej (t.j. "<strong>/</strong>).</li>\n</ul>]]></string>
+    <string name="error_redirectLoop_title">Stran se ne preusmerja pravilno</string>
+    <string name="error_redirectLoop_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>To te&#382;avo obi&#269;ajno povzro&#269;ajo onemogo&#269;eni ali zavrnjeni pi&#353;kotki.</li>\n</ul>]]></string>
+    <string name="error_unsupportedprotocol_title">Naslova ni bilo mogoče razumeti</string>
+    <string name="error_unsupportedprotocol_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Za odpiranje tega naslova boste morda morali namestiti dodaten program.</li>\n</ul>]]></string>
+    <string name="error_sslhandshake_title">Varna povezava ni uspela</string>
+    <string name="error_sslhandshake_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Te&#382;ava je morda v nastavitvah stre&#382;nika ali pa nekdo posku&#353;a\nta stre&#382;nik opona&#353;ati.</li>"\n  "<li>&#268;e ste se v preteklosti &#382;e uspe&#353;no povezali na ta stre&#382;nik, je morda\nnapaka za&#269;asna in lahko znova poskusite kasneje.</li>\n</ul>]]></string>
+    <string name="error_generic_title">Ups</string>
+    <string name="error_generic_message">Iz neznanega razloga ne moremo naložiti strani.</string>
+    <string name="contextmenu_link_share">Deli povezavo</string>
+    <string name="contextmenu_link_copy">Kopiraj naslov povezave</string>
+    <string name="contextmenu_image_share">Deli sliko</string>
+    <string name="contextmenu_image_copy">Kopiraj naslov slike</string>
+    <string name="contextmenu_image_save">Shrani sliko</string>
+    <string name="contextmenu_image_warning"><![CDATA["Ob izbrisu zgodovine %1$sa shranjene in deljene slike "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">ne bodo izbrisane</b>.]]></string>
+    <string name="firstrun_tracking_title">Brskajte, kot da vas nihče ne gleda</string>
+    <string name="firstrun_tracking_text">Samodejno zavračajte spletne sledilce, medtem ko brskate. Nato odstranite zgodovino strani in piškotke z dotikom ikone koša v aplikaciji ali med obvestili.</string>
+    <string name="firstrun_defaultbrowser_title">Okrepite svojo zasebnost</string>
+    <string name="firstrun_defaultbrowser_text">Nastavite %1$s kot privzet brskalnik in uživajte prednosti zasebnega brskanja, ko odprete povezave v drugih aplikacijah Androida.</string>
+    <string name="firstrun_breaking_title">Hitra rešitev, kadar\nzavračanje kaj pokvari</string>
+    <string name="firstrun_breaking_text">Kadar zavračanje spletnih sledilcev pokvari prikaz spletne strani, izklopite zavračanje v meniju z orodji.</string>
+    <string name="firstrun_close_button">V redu, razumem!</string>
+    <string name="firstrun_skip_button">Preskoči</string>
+    <string name="firstrun_next_button">Naprej</string>
 </resources>

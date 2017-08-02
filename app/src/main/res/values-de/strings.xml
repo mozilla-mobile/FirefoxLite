@@ -1,96 +1,87 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="action_cancel">Abbrechen</string>
-  <string name="action_ok">OK</string>
-  <string name="urlbar_hint">Suchen oder Adresse eingeben</string>
-  <string name="teaser">Automatischer Privater Modus.\nSurfen. Löschen. Wiederholen.</string>
-  <string name="feedback_erase">Die Surf-Chronik wurde gelöscht.</string>
-  <string name="search_hint">Suchen nach %1$s</string>
-  <string name="menu_share">Teilen…</string>
-  <string name="menu_open_with_default_browser">Öffnen mit %1$s</string>
-  <string name="menu_open_with_a_browser">Öffnen mit…</string>
-  <string name="menu_settings">Einstellungen</string>
-  <string name="menu_about">Über</string>
-  <string name="menu_help">Hilfe</string>
-  <string name="menu_rights">Ihre Rechte</string>
-  <string name="menu_trackers_blocked_title">Verfolger blockiert</string>
-  <string name="share_dialog_title">Teilen über</string>
-  <string name="notification_erase_text">Browser-Chronik löschen</string>
-  <string name="shortcut_erase_short_label">Löschen</string>
-  <string name="shortcut_erase_long_label">Browser-Chronik löschen</string>
-  <string name="text_selection_search_action">Privat Suchen</string>
-  <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s gibt Ihnen die Kontrolle.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Verwenden Sie es als privaten Browser:\n  "<ul>"\n    "<li>Suchen und bl&#228;ttern Sie in der App</li>"\n    "<li>Blockieren Sie Tracker (oder aktualisieren Sie die Einstellungen, um Tracker zu erlauben)</li>"\n    "<li>Entfernen Sie Cookies, um Such- und Browserverlauf zu l&#246;schen</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s wird von Mozilla entwickelt. Unsere Mission ist es, ein gesundes, offenes Internet zu f&#246;rdern.<br/>\n<a href="%2$s">Erfahren Sie mehr</a></p>]]></string>
-  <string name="preference_category_search">Suche</string>
-  <string name="preference_search_engine_default">Standard</string>
-  <string name="preference_language">Sprache</string>
-  <string name="preference_language_systemdefault">Systemstandard</string>
-  <string name="preference_dialog_title_search_engine">Standardsuchmaschine</string>
-  <string name="preference_category_privacy">Datenschutz</string>
-  <string name="preference_privacy_block_ads">Werbeverfolgung blockieren</string>
-  <string name="preference_privacy_block_analytics">Analyseverfolgung blockieren</string>
-  <string name="preference_privacy_block_social">Verfolgung sozialer Netzwerke blockieren</string>
-  <string name="preference_privacy_block_content">Andere Inhaltsverfolgung blockieren</string>
-  <string name="preference_privacy_block_content_summary">Kann einige Videos und Webseiten stören</string>
-  <string name="preference_privacy_secure_mode">Tarnung</string>
-  <string name="preference_privacy_secure_mode_summary">Deaktivieren Sie den Tarnmodus, um Bildschirmfotos aufzunehmen und mit %1$s besuchte Websites in Ihrer Recent-Apps-Liste anzuzeigen</string>
-  <string name="preference_category_performance">Leistung</string>
-  <string name="preference_performance_block_webfonts">Web-Schriftarten blockieren</string>
-  <string name="preference_performance_block_webfonts_summary">Kann zu fehlenden Symbolen oder Grafiken führen</string>
-  <string name="preference_performance_block_images">Grafiken blockieren</string>
-  <string name="preference_default_browser">Als Standardbrowser verwenden</string>
-  <string name="preference_category_mozilla">Mozilla</string>
-  <string name="preference_mozilla_telemetry">Anonyme Nutzungsdaten senden</string>
-  <string name="preference_mozilla_telemetry_summary">Mehr erfahren</string>
-  <string name="preference_about">Über %1$s</string>
-  <string name="content_description_clear_input">Eingabefeld leeren</string>
-  <string name="content_description_dismiss_input">Schließen</string>
-  <string name="content_description_lock">Sichere Verbindung</string>
-  <string name="accessibility_announcement_loading">Wird geladen…</string>
-  <string name="accessibility_announcement_loading_finished">Website geladen</string>
-  <string name="content_description_menu">Weitere Optionen</string>
-  <string name="content_description_forward">Vorwärts navigieren</string>
-  <string name="content_description_reload">Website neu laden</string>
-  <string name="content_description_back">Rückwärts navigieren</string>
-  <string name="content_description_stop">Laden der Website stoppen</string>
-  <string name="content_description_customtab_exit">Zurück zur vorherigen App</string>
-  <string name="content_description_blocking_switch">Verfolger blockieren</string>
-  <string name="context_menu_paste_go">Einfügen &amp; Los</string>
-  <string name="your_rights">Ihre Rechte</string>
-  <string name="external_app_prompt_title">Link in anderer App öffnen</string>
-  <string name="external_app_prompt">Sie können %1$s verlassen, um diesen Link in %2$s zu öffnen.</string>
-  <string name="external_app_prompt_no_app_title">App zum Öffnen des Links finden</string>
-  <string name="external_app_prompt_no_app">Anscheinend kann keine der Apps auf Ihrem Gerät diesen Link öffnen. Sie können %1$s verlassen und bei %2$s nach einer App dafür suchen.</string>
-  <string name="external_multiple_apps_matched_exit">Privaten Modus verlassen?</string>
-  <string name="errorpage_title">Seiten-Ladefehler</string>
-  <string name="errorpage_refresh">Erneut versuchen</string>
-  <string name="error_connectionfailure_title">Verbindung fehlgeschlagen</string>
-  <string name="error_connectionfailure_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>Die Website k&#246;nnte vor&#252;bergehend nicht erreichbar sein, versuchen Sie es bitte sp&#228;ter nochmals.</li>"\n        "<li>"Wenn Sie auch keine andere Website aufrufen k&#246;nnen, &#252;berpr&#252;fen Sie bitte die Daten- oder WLAN-Verbindung. "</li>"\n      "</ul>]]></string>
-  <string name="error_timeout_title">Verbindung verloren</string>
-  <string name="error_hostLookup_title">Server nicht gefunden</string>
-  <string name="error_hostLookup_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>"Bitte &#252;berpr&#252;fen Sie die Adresse auf Tippfehler, wie\n          "<strong>ww</strong>".example.com statt\n          "<strong>www</strong>.example.com</li>"\n        "<li>"Wenn Sie auch keine andere Website aufrufen k&#246;nnen, &#252;berpr&#252;fen Sie bitte die Daten- oder WLAN-Verbindung. "</li>"\n      "</ul>]]></string>
-  <string name="error_malformedURI_title">Fehler: Ungültige Adresse</string>
-  <string name="error_malformedURI_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>"Web-Adressen sehen f&#252;r gew&#246;hnlich folgenderma&#223;en aus: "<strong>http://www.example.com/</strong></li>"\n  "<li>Bitte stellen Sie sicher, dass Sie nicht den umgekehrten, sondern den einfachen Schr&#228;gstrich verwenden (<strong>/</strong>).</li>"\n "</ul>]]></string>
-  <string name="error_redirectLoop_title">Fehler: Umleitungsfehler</string>
-  <string name="error_redirectLoop_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Dieses Problem kann manchmal auftreten, wenn Cookies deaktiviert oder abgelehnt werden.</li>" \n "</ul>]]></string>
-  <string name="error_unsupportedprotocol_title">Adresse nicht erkannt</string>
-  <string name="error_unsupportedprotocol_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Eventuell m&#252;ssen Sie andere Software installieren, um diese Adresse aufrufen zu k&#246;nnen.</li>"\n "</ul>]]></string>
-  <string name="error_sslhandshake_title">Fehler: Gesicherte Verbindung fehlgeschlagen</string>
-  <string name="error_sslhandshake_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Das k&#246;nnte ein Problem mit der Konfiguration des Servers sein, oder jemand will sich als dieser Server ausgeben.</li>"\n  "<li>Wenn Sie mit diesem Server in der Vergangenheit erfolgreich Verbindungen herstellen konnten, ist der Fehler eventuell nur vor&#252;bergehend, und Sie k&#246;nnen es sp&#228;ter erneut versuchen.</li>\n</ul>]]></string>
-  <string name="error_generic_title">Hoppla</string>
-  <string name="error_generic_message">Aus unbekannten Gründen konnte diese Seite nicht geladen werden.</string>
-  <string name="contextmenu_link_share">Link teilen</string>
-  <string name="contextmenu_link_copy">Link-Adresse kopieren</string>
-  <string name="contextmenu_image_share">Grafik teilen</string>
-  <string name="contextmenu_image_copy">Grafikadresse kopieren</string>
-  <string name="contextmenu_image_save">Grafik speichern</string>
-  <string name="contextmenu_image_warning"><![CDATA["Gespeicherte und geteilte Grafiken "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">werden nicht gel&#246;scht</b>, wenn Sie die Chronik von %1$s löschen.]]></string>
-  <string name="firstrun_tracking_title">Surfen Sie, als würde niemand zusehen</string>
-  <string name="firstrun_tracking_text">Blockieren Sie während des Surfens automatisch Online-Verfolger. Entfernen Sie dann mit einem Tippen auf das Müll-Symbol in der App oder Ihren Benachrichtigungen besuchte Seiten und Cookies.</string>
-  <string name="firstrun_defaultbrowser_title">Stärken Sie Ihre Privatsphäre</string>
-  <string name="firstrun_defaultbrowser_text">Verwenden Sie %1$s als Standardbrowser und nutzen Sie die Vorteile des privaten Surfens, wenn Sie von anderen Android-Apps das Internet nutzen.</string>
-  <string name="firstrun_breaking_title">Eine schnelle Korrektur wenn\nBlockieren Störungen verursacht</string>
-  <string name="firstrun_breaking_text">Wenn das Blockieren von Online-Verfolgern eine Website stört, deaktivieren Sie es durch ein Tippen im Werkzeugmenü.</string>
-  <string name="firstrun_close_button">Ok, verstanden!</string>
-  <string name="firstrun_skip_button">Überspringen</string>
-  <string name="firstrun_next_button">Weiter</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_ok">OK</string>
+    <string name="urlbar_hint">Suchen oder Adresse eingeben</string>
+    <string name="search_hint">Suchen nach %1$s</string>
+    <string name="menu_share">Teilen…</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_about">Über</string>
+    <string name="menu_help">Hilfe</string>
+    <string name="menu_rights">Ihre Rechte</string>
+    <string name="menu_trackers_blocked_title">Verfolger blockiert</string>
+    <string name="share_dialog_title">Teilen über</string>
+    <string name="text_selection_search_action">Privat Suchen</string>
+    <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s gibt Ihnen die Kontrolle.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Verwenden Sie es als privaten Browser:\n  "<ul>"\n    "<li>Suchen und bl&#228;ttern Sie in der App</li>"\n    "<li>Blockieren Sie Tracker (oder aktualisieren Sie die Einstellungen, um Tracker zu erlauben)</li>"\n    "<li>Entfernen Sie Cookies, um Such- und Browserverlauf zu l&#246;schen</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s wird von Mozilla entwickelt. Unsere Mission ist es, ein gesundes, offenes Internet zu f&#246;rdern.<br/>\n<a href="%2$s">Erfahren Sie mehr</a></p>]]></string>
+    <string name="preference_category_search">Suche</string>
+    <string name="preference_search_engine_default">Standard</string>
+    <string name="preference_language">Sprache</string>
+    <string name="preference_language_systemdefault">Systemstandard</string>
+    <string name="preference_dialog_title_search_engine">Standardsuchmaschine</string>
+    <string name="preference_category_privacy">Datenschutz</string>
+    <string name="preference_privacy_block_ads">Werbeverfolgung blockieren</string>
+    <string name="preference_privacy_block_analytics">Analyseverfolgung blockieren</string>
+    <string name="preference_privacy_block_social">Verfolgung sozialer Netzwerke blockieren</string>
+    <string name="preference_privacy_block_content">Andere Inhaltsverfolgung blockieren</string>
+    <string name="preference_privacy_block_content_summary">Kann einige Videos und Webseiten stören</string>
+    <string name="preference_category_performance">Leistung</string>
+    <string name="preference_performance_block_webfonts">Web-Schriftarten blockieren</string>
+    <string name="preference_performance_block_webfonts_summary">Kann zu fehlenden Symbolen oder Grafiken führen</string>
+    <string name="preference_performance_block_images">Grafiken blockieren</string>
+    <string name="preference_default_browser">Als Standardbrowser verwenden</string>
+    <string name="preference_category_mozilla">Mozilla</string>
+    <string name="preference_mozilla_telemetry">Anonyme Nutzungsdaten senden</string>
+    <string name="preference_mozilla_telemetry_summary">Mehr erfahren</string>
+    <string name="preference_about">Über %1$s</string>
+    <string name="content_description_clear_input">Eingabefeld leeren</string>
+    <string name="content_description_dismiss_input">Schließen</string>
+    <string name="content_description_lock">Sichere Verbindung</string>
+    <string name="accessibility_announcement_loading">Wird geladen…</string>
+    <string name="accessibility_announcement_loading_finished">Website geladen</string>
+    <string name="content_description_menu">Weitere Optionen</string>
+    <string name="content_description_forward">Vorwärts navigieren</string>
+    <string name="content_description_reload">Website neu laden</string>
+    <string name="content_description_back">Rückwärts navigieren</string>
+    <string name="content_description_stop">Laden der Website stoppen</string>
+    <string name="content_description_customtab_exit">Zurück zur vorherigen App</string>
+    <string name="content_description_blocking_switch">Verfolger blockieren</string>
+    <string name="context_menu_paste_go">Einfügen &amp; Los</string>
+    <string name="your_rights">Ihre Rechte</string>
+    <string name="external_app_prompt_title">Link in anderer App öffnen</string>
+    <string name="external_app_prompt">Sie können %1$s verlassen, um diesen Link in %2$s zu öffnen.</string>
+    <string name="external_app_prompt_no_app_title">App zum Öffnen des Links finden</string>
+    <string name="external_app_prompt_no_app">Anscheinend kann keine der Apps auf Ihrem Gerät diesen Link öffnen. Sie können %1$s verlassen und bei %2$s nach einer App dafür suchen.</string>
+    <string name="external_multiple_apps_matched_exit">Privaten Modus verlassen?</string>
+    <string name="errorpage_title">Seiten-Ladefehler</string>
+    <string name="errorpage_refresh">Erneut versuchen</string>
+    <string name="error_connectionfailure_title">Verbindung fehlgeschlagen</string>
+    <string name="error_connectionfailure_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>Die Website k&#246;nnte vor&#252;bergehend nicht erreichbar sein, versuchen Sie es bitte sp&#228;ter nochmals.</li>"\n        "<li>"Wenn Sie auch keine andere Website aufrufen k&#246;nnen, &#252;berpr&#252;fen Sie bitte die Daten- oder WLAN-Verbindung. "</li>"\n      "</ul>]]></string>
+    <string name="error_timeout_title">Verbindung verloren</string>
+    <string name="error_hostLookup_title">Server nicht gefunden</string>
+    <string name="error_hostLookup_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>"Bitte &#252;berpr&#252;fen Sie die Adresse auf Tippfehler, wie\n          "<strong>ww</strong>".example.com statt\n          "<strong>www</strong>.example.com</li>"\n        "<li>"Wenn Sie auch keine andere Website aufrufen k&#246;nnen, &#252;berpr&#252;fen Sie bitte die Daten- oder WLAN-Verbindung. "</li>"\n      "</ul>]]></string>
+    <string name="error_malformedURI_title">Fehler: Ungültige Adresse</string>
+    <string name="error_malformedURI_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>"Web-Adressen sehen f&#252;r gew&#246;hnlich folgenderma&#223;en aus: "<strong>http://www.example.com/</strong></li>"\n  "<li>Bitte stellen Sie sicher, dass Sie nicht den umgekehrten, sondern den einfachen Schr&#228;gstrich verwenden (<strong>/</strong>).</li>"\n "</ul>]]></string>
+    <string name="error_redirectLoop_title">Fehler: Umleitungsfehler</string>
+    <string name="error_redirectLoop_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Dieses Problem kann manchmal auftreten, wenn Cookies deaktiviert oder abgelehnt werden.</li>" \n "</ul>]]></string>
+    <string name="error_unsupportedprotocol_title">Adresse nicht erkannt</string>
+    <string name="error_unsupportedprotocol_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Eventuell m&#252;ssen Sie andere Software installieren, um diese Adresse aufrufen zu k&#246;nnen.</li>"\n "</ul>]]></string>
+    <string name="error_sslhandshake_title">Fehler: Gesicherte Verbindung fehlgeschlagen</string>
+    <string name="error_sslhandshake_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Das k&#246;nnte ein Problem mit der Konfiguration des Servers sein, oder jemand will sich als dieser Server ausgeben.</li>"\n  "<li>Wenn Sie mit diesem Server in der Vergangenheit erfolgreich Verbindungen herstellen konnten, ist der Fehler eventuell nur vor&#252;bergehend, und Sie k&#246;nnen es sp&#228;ter erneut versuchen.</li>\n</ul>]]></string>
+    <string name="error_generic_title">Hoppla</string>
+    <string name="error_generic_message">Aus unbekannten Gründen konnte diese Seite nicht geladen werden.</string>
+    <string name="contextmenu_link_share">Link teilen</string>
+    <string name="contextmenu_link_copy">Link-Adresse kopieren</string>
+    <string name="contextmenu_image_share">Grafik teilen</string>
+    <string name="contextmenu_image_copy">Grafikadresse kopieren</string>
+    <string name="contextmenu_image_save">Grafik speichern</string>
+    <string name="contextmenu_image_warning"><![CDATA["Gespeicherte und geteilte Grafiken "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">werden nicht gel&#246;scht</b>, wenn Sie die Chronik von %1$s löschen.]]></string>
+    <string name="firstrun_tracking_title">Surfen Sie, als würde niemand zusehen</string>
+    <string name="firstrun_tracking_text">Blockieren Sie während des Surfens automatisch Online-Verfolger. Entfernen Sie dann mit einem Tippen auf das Müll-Symbol in der App oder Ihren Benachrichtigungen besuchte Seiten und Cookies.</string>
+    <string name="firstrun_defaultbrowser_title">Stärken Sie Ihre Privatsphäre</string>
+    <string name="firstrun_defaultbrowser_text">Verwenden Sie %1$s als Standardbrowser und nutzen Sie die Vorteile des privaten Surfens, wenn Sie von anderen Android-Apps das Internet nutzen.</string>
+    <string name="firstrun_breaking_title">Eine schnelle Korrektur wenn\nBlockieren Störungen verursacht</string>
+    <string name="firstrun_breaking_text">Wenn das Blockieren von Online-Verfolgern eine Website stört, deaktivieren Sie es durch ein Tippen im Werkzeugmenü.</string>
+    <string name="firstrun_close_button">Ok, verstanden!</string>
+    <string name="firstrun_skip_button">Überspringen</string>
+    <string name="firstrun_next_button">Weiter</string>
 </resources>

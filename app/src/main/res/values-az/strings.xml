@@ -1,96 +1,87 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="action_cancel">Ləğv et</string>
-  <string name="action_ok">Tamam</string>
-  <string name="urlbar_hint">Ünvanı daxil et və ya axtar</string>
-  <string name="teaser">Avtomatik məxfi səyahət.\nGəz. Poz. Təkrarla.</string>
-  <string name="feedback_erase">Səyahət tarixçəniz silindi.</string>
-  <string name="search_hint">%1$s üçün axtar</string>
-  <string name="menu_share">Paylaş…</string>
-  <string name="menu_open_with_default_browser">%1$s ilə aç</string>
-  <string name="menu_open_with_a_browser">Bununla aç…</string>
-  <string name="menu_settings">Tənzimləmələr</string>
-  <string name="menu_about">Haqqında</string>
-  <string name="menu_help">Kömək</string>
-  <string name="menu_rights">Hüquqlarınız</string>
-  <string name="menu_trackers_blocked_title">İzləyicilər bloklandı</string>
-  <string name="share_dialog_title">Bununla paylaş:</string>
-  <string name="notification_erase_text">Səyahət keçmişini poz</string>
-  <string name="shortcut_erase_short_label">Poz</string>
-  <string name="shortcut_erase_long_label">Səyahət keçmişini poz</string>
-  <string name="text_selection_search_action">Məxfi Axtar</string>
-  <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s sizi idar&#601;nin ba&#351;&#305;na qoyur</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Bunu m&#601;xfi s&#601;yyah olaraq i&#351;l&#601;din:\n  "<ul>"\n    "<li>Birba&#351;a t&#601;tbiqd&#601; axtar&#305;n v&#601; g&#601;zin</li>"\n    "<li>&#304;zl&#601;yicil&#601;ri &#601;ng&#601;ll&#601;yin (v&#601; ya t&#601;nziml&#601;m&#601;d&#601;n icaz&#601; verin)</li>"\n    "<li>&#199;&#601;r&#601;zl&#601;ri, axtar&#305;&#351; v&#601; g&#601;zm&#601; tarix&#231;&#601;sini silm&#601;k &#252;&#231;&#252;n pozun</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s q&#252;rurla Mozilla t&#601;r&#601;find&#601;n. Missiyam&#305;z sa&#287;lam v&#601; a&#231;&#305;q interneti t&#601;min etm&#601;kdir.<br/>\n<a href="%2$s">&#399;trafl&#305; &#246;yr&#601;n</a></p>]]></string>
-  <string name="preference_category_search">Axtar</string>
-  <string name="preference_search_engine_default">İlkin hal</string>
-  <string name="preference_language">Dil</string>
-  <string name="preference_language_systemdefault">Sistemin dili</string>
-  <string name="preference_dialog_title_search_engine">Əsas Axtarış</string>
-  <string name="preference_category_privacy">Məxfilik</string>
-  <string name="preference_privacy_block_ads">Reklam izləyicilərini əngəllə</string>
-  <string name="preference_privacy_block_analytics">Analiz izləyicilərini əngəllə</string>
-  <string name="preference_privacy_block_social">Sosial izləyiciləri əngəllə</string>
-  <string name="preference_privacy_block_content">Digər məzmun izləyicilərini əngəllə</string>
-  <string name="preference_privacy_block_content_summary">Bəzi video və saytları işlənməz hala gətirə bilər</string>
-  <string name="preference_privacy_secure_mode">Görünməzlik</string>
-  <string name="preference_privacy_secure_mode_summary">Ekran görüntülərini almaq və %1$s ilə gəzilən saytları Son Tətbiqlər siyahısında görmək üçün Görünməzlik rejimini söndürün</string>
-  <string name="preference_category_performance">Məhsuldarlıq</string>
-  <string name="preference_performance_block_webfonts">Web şriftlərini əngəllə</string>
-  <string name="preference_performance_block_webfonts_summary">Əksik icon və şəkillərə səbəb ola bilər</string>
-  <string name="preference_performance_block_images">Şəkilləri əngəllə</string>
-  <string name="preference_default_browser">Əsas səyyah et</string>
-  <string name="preference_category_mozilla">Mozilla</string>
-  <string name="preference_mozilla_telemetry">Anonim istifadə məlumatlarını göndər</string>
-  <string name="preference_mozilla_telemetry_summary">Ətraflı öyrən</string>
-  <string name="preference_about">%1$s Haqqında</string>
-  <string name="content_description_clear_input">Girişi təmizlə</string>
-  <string name="content_description_dismiss_input">Ləğv et</string>
-  <string name="content_description_lock">Təhlükəsiz əlaqə</string>
-  <string name="accessibility_announcement_loading">Yüklənir</string>
-  <string name="accessibility_announcement_loading_finished">Sayt yükləndi</string>
-  <string name="content_description_menu">Digər seçimlər</string>
-  <string name="content_description_forward">İrəli keç</string>
-  <string name="content_description_reload">Saytı yenilə</string>
-  <string name="content_description_back">Geri get</string>
-  <string name="content_description_stop">Səhifəni yükləməyi dayandır</string>
-  <string name="content_description_customtab_exit">Əvvəlki tətbiqə qayıt</string>
-  <string name="content_description_blocking_switch">İzləyiciləri əngəllə</string>
-  <string name="context_menu_paste_go">Yapışdır və get</string>
-  <string name="your_rights">Hüquqlarınız</string>
-  <string name="external_app_prompt_title">Keçidi başqa tətbiqdə aç</string>
-  <string name="external_app_prompt">%1$s səyyahını tərk edərək keçidi %2$s üzərində aça bilərsiz.</string>
-  <string name="external_app_prompt_no_app_title">Keçid aça bilən tətbiq tap</string>
-  <string name="external_app_prompt_no_app">Cihazınızdakı heç bir tətbiq bu keçidi aça bilmir. %1$s səyyahını tərk edərək %2$s ilə bunu bacaran tətbiq axtara bilərsiz.</string>
-  <string name="external_multiple_apps_matched_exit">Məxfi Səyahətdən çıxırsın?</string>
-  <string name="errorpage_title">Səhifəni yükləmək mümkün olmadı</string>
-  <string name="errorpage_refresh">Təkrar Yoxla</string>
-  <string name="error_connectionfailure_title">Qoşulmaq mümkün olmadı</string>
-  <string name="error_connectionfailure_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>Sayt m&#252;v&#601;qq&#601;ti olaraq &#601;l&#231;atmaz v&#601; ya &#231;ox m&#601;&#351;&#287;ul ola bil&#601;r. Biraz sonra t&#601;krar yoxlay&#305;n.</li>"\n        "<li>&#399;g&#601;r he&#231; bir s&#601;hif&#601;ni y&#252;kl&#601;y&#601; bilmirsizs&#601;, mobil cihaz&#305;n&#305;z&#305;n internet datas&#305;n&#305; v&#601; ya Wi-Fi ba&#287;lant&#305;s&#305;n&#305; yoxlay&#305;n.</li>"\n      "</ul>]]></string>
-  <string name="error_timeout_title">Qoşulma müddəti bitdi</string>
-  <string name="error_hostLookup_title">Server tapılmadı</string>
-  <string name="error_hostLookup_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>"&#220;nvan&#305; "<strong>www</strong>".example.com\n          yerin&#601; "<strong>ww</strong>".example.com kimi\n          yazma x&#601;talar&#305; &#252;&#231;&#252;n t&#601;krar yaxlay&#305;n"</li>"\n        "<li>&#399;g&#601;r he&#231; bir sayt&#305; y&#252;kl&#601;y&#601; bilmirsizs&#601;, cihaz&#305;n&#305;z&#305;n data v&#601; ya Wi-Fi ba&#287;lant&#305;s&#305;n&#305; yoxlay&#305;n.</li>"\n      "</ul>]]></string>
-  <string name="error_malformedURI_title">Ünvan səhvdir</string>
-  <string name="error_malformedURI_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>"Sayt &#252;nvanlar&#305; &#601;sas&#601;n "<strong>http://www.example.com/</strong>" kimi yaz&#305;l&#305;rlar."</li>"\n  "<li>"&#399;yri k&#601;sm&#601; i&#351;ar&#601;sind&#601;n (yani "<strong>/</strong>) istifad&#601; etdiyinizd&#601;n &#601;min olun.</li>\n</ul>]]></string>
-  <string name="error_redirectLoop_title">Səhifə düzgün yönləndirilmir</string>
-  <string name="error_redirectLoop_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Bu problem &#231;ox vaxt &#231;&#601;r&#601;zl&#601;ri qapatmaqdan v&#601; ya q&#601;bul etm&#601;yi l&#601;&#287;v etm&#601;kd&#601;n olur.</li>\n</ul>]]></string>
-  <string name="error_unsupportedprotocol_title">Ünvan başa düşülmədi</string>
-  <string name="error_unsupportedprotocol_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Bu &#252;nvan&#305; a&#231;maq &#252;&#231;&#252;n ba&#351;qa bir t&#601;tbiq qurman&#305;za ehtiyyac ola bil&#601;r.</li>\n</ul>]]></string>
-  <string name="error_sslhandshake_title">Təhlükəsiz bağlantı qurulmadı</string>
-  <string name="error_sslhandshake_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Bu serverin konfiqurasiyas&#305; il&#601; v&#601; ya biril&#601;rinin server&#601; h&#252;c&#252;m etm&#601;si il&#601; ba&#287;l&#305; ola bil&#601;r.</li>"\n  "<li>&#399;g&#601;r daha sonra bu server&#601; u&#287;urlu ba&#287;lana bilmi&#351;dinizs&#601;, bu x&#601;ta m&#252;v&#601;qq&#601;ti ola bil&#601;r v&#601; daha sonra t&#601;krar yoxlaya bil&#601;rsiz.</li>\n</ul>]]></string>
-  <string name="error_generic_title">Uups</string>
-  <string name="error_generic_message">Bəzi səbəblərdən bu səhifəni yükləyə bilmirik.</string>
-  <string name="contextmenu_link_share">Keçidi paylaş</string>
-  <string name="contextmenu_link_copy">Keçid ünvanını köçür</string>
-  <string name="contextmenu_image_share">Şəkli paylaş</string>
-  <string name="contextmenu_image_copy">Şəkil ünvanını köçür</string>
-  <string name="contextmenu_image_save">Şəkli saxla</string>
-  <string name="contextmenu_image_warning"><![CDATA["Saxlanılan və paylaşılan şəkillər %1$s tarixini pozduqda "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">silinm&#601;y&#601;c&#601;kl&#601;r</b>.]]></string>
-  <string name="firstrun_tracking_title">Başqalarınız izləməsindən narahat olmadan internetdə gəzin</string>
-  <string name="firstrun_tracking_text">Gəzərkən avtomatik olaraq onlayn izləyiciləri əngəlləyin. Daha sonra daxil olunan saytları və çərəzləri zibil qutusu ikonuna və ya bildirişə toxunaraq silin.</string>
-  <string name="firstrun_defaultbrowser_title">Məxfiliyinizi gücləndirin</string>
-  <string name="firstrun_defaultbrowser_text">%1$s tətbiqini əsas səyyahınız olaraq seçin və digər Android tətbiqlərinizdən internetə keçidlərdə məxfi səyahətin üstünlüklərini görün.</string>
-  <string name="firstrun_breaking_title">Əngəlləmək = qırmaq\nhalları üçün cəld həll</string>
-  <string name="firstrun_breaking_text">Onlayn izləyiciləri əngəlləmənin pis tərəfi olaraq hər hansı bir sayt sınmış göründüyündə alət menyusuna toxunuşla əngəlləməni söndürün.</string>
-  <string name="firstrun_close_button">Tamam, başa düşdüm!</string>
-  <string name="firstrun_skip_button">Keç</string>
-  <string name="firstrun_next_button">Sonrakı</string>
+    <string name="action_cancel">Ləğv et</string>
+    <string name="action_ok">Tamam</string>
+    <string name="urlbar_hint">Ünvanı daxil et və ya axtar</string>
+    <string name="search_hint">%1$s üçün axtar</string>
+    <string name="menu_share">Paylaş…</string>
+    <string name="menu_settings">Tənzimləmələr</string>
+    <string name="menu_about">Haqqında</string>
+    <string name="menu_help">Kömək</string>
+    <string name="menu_rights">Hüquqlarınız</string>
+    <string name="menu_trackers_blocked_title">İzləyicilər bloklandı</string>
+    <string name="share_dialog_title">Bununla paylaş:</string>
+    <string name="text_selection_search_action">Məxfi Axtar</string>
+    <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s sizi idar&#601;nin ba&#351;&#305;na qoyur</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Bunu m&#601;xfi s&#601;yyah olaraq i&#351;l&#601;din:\n  "<ul>"\n    "<li>Birba&#351;a t&#601;tbiqd&#601; axtar&#305;n v&#601; g&#601;zin</li>"\n    "<li>&#304;zl&#601;yicil&#601;ri &#601;ng&#601;ll&#601;yin (v&#601; ya t&#601;nziml&#601;m&#601;d&#601;n icaz&#601; verin)</li>"\n    "<li>&#199;&#601;r&#601;zl&#601;ri, axtar&#305;&#351; v&#601; g&#601;zm&#601; tarix&#231;&#601;sini silm&#601;k &#252;&#231;&#252;n pozun</li>"\n  "</ul>\n</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s q&#252;rurla Mozilla t&#601;r&#601;find&#601;n. Missiyam&#305;z sa&#287;lam v&#601; a&#231;&#305;q interneti t&#601;min etm&#601;kdir.<br/>\n<a href="%2$s">&#399;trafl&#305; &#246;yr&#601;n</a></p>]]></string>
+    <string name="preference_category_search">Axtar</string>
+    <string name="preference_search_engine_default">İlkin hal</string>
+    <string name="preference_language">Dil</string>
+    <string name="preference_language_systemdefault">Sistemin dili</string>
+    <string name="preference_dialog_title_search_engine">Əsas Axtarış</string>
+    <string name="preference_category_privacy">Məxfilik</string>
+    <string name="preference_privacy_block_ads">Reklam izləyicilərini əngəllə</string>
+    <string name="preference_privacy_block_analytics">Analiz izləyicilərini əngəllə</string>
+    <string name="preference_privacy_block_social">Sosial izləyiciləri əngəllə</string>
+    <string name="preference_privacy_block_content">Digər məzmun izləyicilərini əngəllə</string>
+    <string name="preference_privacy_block_content_summary">Bəzi video və saytları işlənməz hala gətirə bilər</string>
+    <string name="preference_category_performance">Məhsuldarlıq</string>
+    <string name="preference_performance_block_webfonts">Web şriftlərini əngəllə</string>
+    <string name="preference_performance_block_webfonts_summary">Əksik icon və şəkillərə səbəb ola bilər</string>
+    <string name="preference_performance_block_images">Şəkilləri əngəllə</string>
+    <string name="preference_default_browser">Əsas səyyah et</string>
+    <string name="preference_category_mozilla">Mozilla</string>
+    <string name="preference_mozilla_telemetry">Anonim istifadə məlumatlarını göndər</string>
+    <string name="preference_mozilla_telemetry_summary">Ətraflı öyrən</string>
+    <string name="preference_about">%1$s Haqqında</string>
+    <string name="content_description_clear_input">Girişi təmizlə</string>
+    <string name="content_description_dismiss_input">Ləğv et</string>
+    <string name="content_description_lock">Təhlükəsiz əlaqə</string>
+    <string name="accessibility_announcement_loading">Yüklənir</string>
+    <string name="accessibility_announcement_loading_finished">Sayt yükləndi</string>
+    <string name="content_description_menu">Digər seçimlər</string>
+    <string name="content_description_forward">İrəli keç</string>
+    <string name="content_description_reload">Saytı yenilə</string>
+    <string name="content_description_back">Geri get</string>
+    <string name="content_description_stop">Səhifəni yükləməyi dayandır</string>
+    <string name="content_description_customtab_exit">Əvvəlki tətbiqə qayıt</string>
+    <string name="content_description_blocking_switch">İzləyiciləri əngəllə</string>
+    <string name="context_menu_paste_go">Yapışdır və get</string>
+    <string name="your_rights">Hüquqlarınız</string>
+    <string name="external_app_prompt_title">Keçidi başqa tətbiqdə aç</string>
+    <string name="external_app_prompt">%1$s səyyahını tərk edərək keçidi %2$s üzərində aça bilərsiz.</string>
+    <string name="external_app_prompt_no_app_title">Keçid aça bilən tətbiq tap</string>
+    <string name="external_app_prompt_no_app">Cihazınızdakı heç bir tətbiq bu keçidi aça bilmir. %1$s səyyahını tərk edərək %2$s ilə bunu bacaran tətbiq axtara bilərsiz.</string>
+    <string name="external_multiple_apps_matched_exit">Məxfi Səyahətdən çıxırsın?</string>
+    <string name="errorpage_title">Səhifəni yükləmək mümkün olmadı</string>
+    <string name="errorpage_refresh">Təkrar Yoxla</string>
+    <string name="error_connectionfailure_title">Qoşulmaq mümkün olmadı</string>
+    <string name="error_connectionfailure_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>Sayt m&#252;v&#601;qq&#601;ti olaraq &#601;l&#231;atmaz v&#601; ya &#231;ox m&#601;&#351;&#287;ul ola bil&#601;r. Biraz sonra t&#601;krar yoxlay&#305;n.</li>"\n        "<li>&#399;g&#601;r he&#231; bir s&#601;hif&#601;ni y&#252;kl&#601;y&#601; bilmirsizs&#601;, mobil cihaz&#305;n&#305;z&#305;n internet datas&#305;n&#305; v&#601; ya Wi-Fi ba&#287;lant&#305;s&#305;n&#305; yoxlay&#305;n.</li>"\n      "</ul>]]></string>
+    <string name="error_timeout_title">Qoşulma müddəti bitdi</string>
+    <string name="error_hostLookup_title">Server tapılmadı</string>
+    <string name="error_hostLookup_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n        "<li>"&#220;nvan&#305; "<strong>www</strong>".example.com\n          yerin&#601; "<strong>ww</strong>".example.com kimi\n          yazma x&#601;talar&#305; &#252;&#231;&#252;n t&#601;krar yaxlay&#305;n"</li>"\n        "<li>&#399;g&#601;r he&#231; bir sayt&#305; y&#252;kl&#601;y&#601; bilmirsizs&#601;, cihaz&#305;n&#305;z&#305;n data v&#601; ya Wi-Fi ba&#287;lant&#305;s&#305;n&#305; yoxlay&#305;n.</li>"\n      "</ul>]]></string>
+    <string name="error_malformedURI_title">Ünvan səhvdir</string>
+    <string name="error_malformedURI_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>"Sayt &#252;nvanlar&#305; &#601;sas&#601;n "<strong>http://www.example.com/</strong>" kimi yaz&#305;l&#305;rlar."</li>"\n  "<li>"&#399;yri k&#601;sm&#601; i&#351;ar&#601;sind&#601;n (yani "<strong>/</strong>) istifad&#601; etdiyinizd&#601;n &#601;min olun.</li>\n</ul>]]></string>
+    <string name="error_redirectLoop_title">Səhifə düzgün yönləndirilmir</string>
+    <string name="error_redirectLoop_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Bu problem &#231;ox vaxt &#231;&#601;r&#601;zl&#601;ri qapatmaqdan v&#601; ya q&#601;bul etm&#601;yi l&#601;&#287;v etm&#601;kd&#601;n olur.</li>\n</ul>]]></string>
+    <string name="error_unsupportedprotocol_title">Ünvan başa düşülmədi</string>
+    <string name="error_unsupportedprotocol_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Bu &#252;nvan&#305; a&#231;maq &#252;&#231;&#252;n ba&#351;qa bir t&#601;tbiq qurman&#305;za ehtiyyac ola bil&#601;r.</li>\n</ul>]]></string>
+    <string name="error_sslhandshake_title">Təhlükəsiz bağlantı qurulmadı</string>
+    <string name="error_sslhandshake_message"><![CDATA[<ul xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"\n  "<li>Bu serverin konfiqurasiyas&#305; il&#601; v&#601; ya biril&#601;rinin server&#601; h&#252;c&#252;m etm&#601;si il&#601; ba&#287;l&#305; ola bil&#601;r.</li>"\n  "<li>&#399;g&#601;r daha sonra bu server&#601; u&#287;urlu ba&#287;lana bilmi&#351;dinizs&#601;, bu x&#601;ta m&#252;v&#601;qq&#601;ti ola bil&#601;r v&#601; daha sonra t&#601;krar yoxlaya bil&#601;rsiz.</li>\n</ul>]]></string>
+    <string name="error_generic_title">Uups</string>
+    <string name="error_generic_message">Bəzi səbəblərdən bu səhifəni yükləyə bilmirik.</string>
+    <string name="contextmenu_link_share">Keçidi paylaş</string>
+    <string name="contextmenu_link_copy">Keçid ünvanını köçür</string>
+    <string name="contextmenu_image_share">Şəkli paylaş</string>
+    <string name="contextmenu_image_copy">Şəkil ünvanını köçür</string>
+    <string name="contextmenu_image_save">Şəkli saxla</string>
+    <string name="contextmenu_image_warning"><![CDATA["Saxlanılan və paylaşılan şəkillər %1$s tarixini pozduqda "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">silinm&#601;y&#601;c&#601;kl&#601;r</b>.]]></string>
+    <string name="firstrun_tracking_title">Başqalarınız izləməsindən narahat olmadan internetdə gəzin</string>
+    <string name="firstrun_tracking_text">Gəzərkən avtomatik olaraq onlayn izləyiciləri əngəlləyin. Daha sonra daxil olunan saytları və çərəzləri zibil qutusu ikonuna və ya bildirişə toxunaraq silin.</string>
+    <string name="firstrun_defaultbrowser_title">Məxfiliyinizi gücləndirin</string>
+    <string name="firstrun_defaultbrowser_text">%1$s tətbiqini əsas səyyahınız olaraq seçin və digər Android tətbiqlərinizdən internetə keçidlərdə məxfi səyahətin üstünlüklərini görün.</string>
+    <string name="firstrun_breaking_title">Əngəlləmək = qırmaq\nhalları üçün cəld həll</string>
+    <string name="firstrun_breaking_text">Onlayn izləyiciləri əngəlləmənin pis tərəfi olaraq hər hansı bir sayt sınmış göründüyündə alət menyusuna toxunuşla əngəlləməni söndürün.</string>
+    <string name="firstrun_close_button">Tamam, başa düşdüm!</string>
+    <string name="firstrun_skip_button">Keç</string>
+    <string name="firstrun_next_button">Sonrakı</string>
 </resources>

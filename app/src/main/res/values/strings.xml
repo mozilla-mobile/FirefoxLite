@@ -12,11 +12,6 @@
     <!-- This text is shown in the URL bar when it's empty -->
     <string name="urlbar_hint">Search or enter address</string>
 
-    <string name="teaser">Automatic private browsing.\nBrowse. Erase. Repeat.</string>
-
-    <!-- "Snackbar" shown after the user has pressed the 'erase' button at the end of a browsing session -->
-    <string name="feedback_erase">Your browsing history has been erased.</string>
-
     <!-- This label is shown below the URL bar as soon as the user enters text. Clicking the label will perform a search -->
     <string name="search_hint">Search for %1$s</string>
 
@@ -26,13 +21,11 @@
     <!-- Menu item: Switch to another browser to open the currently visible page. %1$s will be
       replaces with the name of the browser like: "Open with Firefox" or "Open with Chrome". Some
       links can be opened by native apps that aren't a browser, e.g. "Open with YouTube" -->
-    <string name="menu_open_with_default_browser">Open with %1$s</string>
 
     <!-- Menu item: Switch to another browser to open the currently visible page. This menu item
       will be shown if there are multiple browsers and we do not know which one is the default
       browser or in case Focus is actually the default browser. Clicking this menu item will show
       a screen with multiple browsers (or other apps that can open the current URL) to choose from. -->
-    <string name="menu_open_with_a_browser">Open with…</string>
 
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
@@ -49,24 +42,6 @@
     <!-- This is the title of a dialog that shows all the share targets (apps or contacts) when
          sharing an URL. -->
     <string name="share_dialog_title">Share via</string>
-
-    <!-- While a browsing session is active (in the foreground or background) we will show a notification
-         so that the user doesn't forget about the website still being open. This text is shown in
-         the notification. Clicking the notification will have the same effect as clicking the "erase"
-         button in the application. -->
-    <string name="notification_erase_text">Erase browsing history</string>
-
-    <!-- Notification action to open Focus and resume the current browsing session. -->
-    <string name="notification_action_open">Open</string>
-
-    <!-- On Android 7+ users can add a shortcut for erasing the browsing history to the home screen.
-         This is the label for this shortcut. Android recommends a maximum length of 10 characters. -->
-    <string name="shortcut_erase_short_label">Erase</string>
-
-    <!-- The same as 'shortcut_erase_short_label' but more descriptive. The launcher shows this
-         instead of the short title when it has enough space. Android recommends a maximum length
-         of 25 characters. -->
-    <string name="shortcut_erase_long_label">Erase browsing history</string>
 
     <!-- This is the label of an action we offer when the user selects text in other third-party apps.
          Clicking this action will launch Focus and perform a search in the default search engine. -->
@@ -106,14 +81,6 @@
     <string name="preference_privacy_block_social">Block social trackers</string>
     <string name="preference_privacy_block_content">Block other content trackers</string>
     <string name="preference_privacy_block_content_summary">May break some videos and Web pages</string>
-
-    <!-- Preference Title: Secure Mode is a setting that prevents the app's content to show up in the "recent apps" screen
-         and prevents the user from taking screenshots or casting the app to other displays. -->
-    <string name="preference_privacy_secure_mode">Stealth</string>
-    <!-- Preference Summary: Secure Mode is a setting that prevents the app's content to show up in the "recent apps" screen
-     and prevents the user from taking screenshots or casting the app to other displays. %1$s will be replaced with the
-     name of the app (e.g. Firefox Focus). -->
-    <string name="preference_privacy_secure_mode_summary">Turn off stealth mode to take screenshots and see sites you’ve visited using %1$s in your Recent Apps list</string>
 
     <string name="preference_category_performance">Performance</string>
     <string name="preference_performance_block_webfonts">Block Web fonts</string>
@@ -191,24 +158,6 @@
     <string name="external_app_prompt_no_app">None of the apps on your device are able to open this link. You can leave %1$s to search %2$s for an app that can.</string>
     <!-- This label is shown above a list of apps that can be used to open a given link -->
     <string name="external_multiple_apps_matched_exit">Exit Private Browsing?</string>
-
-    <!-- Snackbar that will be displayed after a download has completed. %1$s will be replaced with the file name. -->
-    <string name="download_snackbar_finished">%1$s finished</string>
-
-    <!-- Snackbar action to immediately open the successfully downloaded file. -->
-    <string name="download_snackbar_open">Open</string>
-
-    <!-- Download dialog: Warns users that downloaded files will not be deleted even when erasing history. %1$s will be replaced with the app name (i.e. Firefox Focus). -->
-    <string name="download_dialog_warning"><![CDATA[Downloaded files <b>will not be deleted</b> when you erase %1$s history.]]></string>
-
-    <!-- Title of download dialogue -->
-    <string name="download_dialog_title">Download File</string>
-
-    <!-- Option in download dialogue to cancel a download -->
-    <string name="download_dialog_action_cancel">Cancel</string>
-
-    <!-- Option in download dialogue to start a download -->
-    <string name="download_dialog_action_download">Download</string>
 
     <!-- The page html title (i.e. the <title> tag content) -->
     <string name="errorpage_title">Problem loading page</string>
