@@ -3,7 +3,6 @@
     <string name="action_cancel">Mégse</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Keressen, vagy adjon meg címet</string>
-    <string name="teaser">Automatikus privát böngészés.\nBöngészés. Törlés. Ismétlés.</string>
     <string name="search_hint">Keresés erre: %1$s</string>
     <string name="menu_share">Megosztás…</string>
     <string name="menu_open_with_default_browser">Megnyitás ezzel: %1$s</string>

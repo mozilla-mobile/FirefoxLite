@@ -3,7 +3,6 @@
     <string name="action_cancel">Отмена</string>
     <string name="action_ok">ОК</string>
     <string name="urlbar_hint">Введите запрос или адрес</string>
-    <string name="teaser">Автоматический режим приватного просмотра.\nПросмотреть. Стереть. Повторить.</string>
     <string name="search_hint">Поиск %1$s</string>
     <string name="menu_share">Поделиться…</string>
     <string name="menu_open_with_default_browser">Открыть в %1$s</string>

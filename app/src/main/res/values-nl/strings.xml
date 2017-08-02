@@ -3,7 +3,6 @@
     <string name="action_cancel">Annuleren</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Voer zoekterm of adres in</string>
-    <string name="teaser">Automatische privénavigatie.\nSurfen. Wissen. Herhalen.</string>
     <string name="search_hint">Zoeken naar %1$s</string>
     <string name="menu_share">Delen…</string>
     <string name="menu_open_with_default_browser">Openen met %1$s</string>

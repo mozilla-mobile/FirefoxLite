@@ -3,7 +3,6 @@
     <string name="action_cancel">Anuloje</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Kërkoni ose jepni adresë</string>
-    <string name="teaser">Shfletim automatikisht privat.\nShfletoni. Fshini Gjurmët. Përsëriteni.</string>
     <string name="search_hint">Kërko për %1$s</string>
     <string name="menu_share">Ndajeni me të tjerët…</string>
     <string name="menu_open_with_default_browser">Hape me %1$s</string>

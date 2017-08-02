@@ -3,7 +3,6 @@
     <string name="action_cancel">Откажи</string>
     <string name="action_ok">У реду</string>
     <string name="urlbar_hint">Претражите или унесите адресу</string>
-    <string name="teaser">Аутоматско приватно сурфовање.\nСурфуј. Обриши. Понови.</string>
     <string name="search_hint">Претражи %1$s</string>
     <string name="menu_share">Подели…</string>
     <string name="menu_open_with_default_browser">Отвори у %1$s-у</string>

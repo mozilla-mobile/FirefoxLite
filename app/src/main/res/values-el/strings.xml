@@ -3,7 +3,6 @@
     <string name="action_cancel">Ακύρωση</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Αναζήτηση ή πληκτρολόγηση διεύθυνσης</string>
-    <string name="teaser">Αυτόματη ιδιωτική περιήγηση.\nΠεριήγηση. Διαγραφή. Επανάληψη.</string>
     <string name="search_hint">Αναζήτηση για %1$s</string>
     <string name="menu_share">Κοινή χρήση…</string>
     <string name="menu_open_with_default_browser">Άνοιγμα με %1$s</string>

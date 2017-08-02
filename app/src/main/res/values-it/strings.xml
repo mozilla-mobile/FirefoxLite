@@ -3,7 +3,6 @@
     <string name="action_cancel">Annulla</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Cerca o inserisci un indirizzo</string>
-    <string name="teaser">Navigazione anonima in automatico.\nNaviga. Elimina. Ripeti.</string>
     <string name="search_hint">Cerca %1$s</string>
     <string name="menu_share">Condividi…</string>
     <string name="menu_open_with_default_browser">Apri con %1$s</string>

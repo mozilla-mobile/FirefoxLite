@@ -3,7 +3,6 @@
     <string name="action_cancel">ຍົກເລີກ</string>
     <string name="action_ok">ຕົກລົງ</string>
     <string name="urlbar_hint">ຄົ້ນຫາ ຫລື ປ້ອນທີ່ຢູ່ໃສ່ນີ້</string>
-    <string name="teaser">ການທ່ອງເວັບສ່ວນຕົວແບບອັດຕະໂນມັດ.\nທ່ອງເວັບ ແລະ ລົບລ້າງປະຫວັດການໃຊ້ງານອອກ.</string>
     <string name="search_hint">ຄົ້ນຫາສຳລັບ %1$s</string>
     <string name="menu_share">ແບ່ງປັນ…</string>
     <string name="menu_open_with_default_browser">ເປີດດ້ວຍ %1$s</string>

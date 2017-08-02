@@ -3,7 +3,6 @@
     <string name="action_cancel">ألغِ</string>
     <string name="action_ok">حسنا</string>
     <string name="urlbar_hint">ابحث أو أدخل عنوانا</string>
-    <string name="teaser">تصفح خاص تلقائي.\nتصفح. امسح. كرر.</string>
     <string name="search_hint">ابحث عن %1$s</string>
     <string name="menu_share">شارك…</string>
     <string name="menu_open_with_default_browser">افتح في %1$s</string>

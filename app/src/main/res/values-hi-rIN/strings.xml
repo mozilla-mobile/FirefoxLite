@@ -3,7 +3,6 @@
     <string name="action_cancel">रद्द करें</string>
     <string name="action_ok">ठीक है</string>
     <string name="urlbar_hint">खोजें या पता दर्ज करें</string>
-    <string name="teaser">स्वचालित निजी ब्राउज़िंग. ब्राउज़ करें. मिटाएँ. दोहराएँ.</string>
     <string name="search_hint">%1$s लिए खोजें</string>
     <string name="menu_share">साझा करें…</string>
     <string name="menu_open_with_default_browser">%1$s के साथ खोलें</string>

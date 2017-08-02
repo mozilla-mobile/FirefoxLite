@@ -3,7 +3,6 @@
     <string name="action_cancel">取消</string>
     <string name="action_ok">確定</string>
     <string name="urlbar_hint">進行搜尋或輸入網址</string>
-    <string name="teaser">無痕瀏覽，不留足跡。</string>
     <string name="search_hint">搜尋 %1$s</string>
     <string name="menu_share">分享…</string>
     <string name="menu_open_with_default_browser">使用 %1$s 開啟</string>

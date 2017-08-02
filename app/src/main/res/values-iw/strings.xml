@@ -3,7 +3,6 @@
     <string name="action_cancel">ביטול</string>
     <string name="action_ok">אישור</string>
     <string name="urlbar_hint">חיפוש או הכנסת כתובת</string>
-    <string name="teaser">גלישה פרטית אוטומטית.\nגלישה. מחיקה. חזרה להתחלה.</string>
     <string name="search_hint">חיפוש עבור %1$s</string>
     <string name="menu_share">שיתוף…</string>
     <string name="menu_open_with_default_browser">פתיחה באמצעות %1$s</string>

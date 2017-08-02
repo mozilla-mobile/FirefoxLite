@@ -3,7 +3,6 @@
     <string name="action_cancel">Batal</string>
     <string name="action_ok">Oke</string>
     <string name="urlbar_hint">Cari atau masukkan alamat</string>
-    <string name="teaser">Penjelajahan pribadi otomatis.\nJelajahi. Hapus. Ulangi.</string>
     <string name="search_hint">Cari %1$s</string>
     <string name="menu_share">Bagikan…</string>
     <string name="menu_open_with_default_browser">Buka dengan %1$s</string>

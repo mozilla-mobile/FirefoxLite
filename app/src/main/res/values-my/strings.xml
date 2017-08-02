@@ -3,7 +3,6 @@
     <string name="action_cancel">မလုပ်ဆောင်တော့ပါ</string>
     <string name="action_ok">ကောင်းပြီ</string>
     <string name="urlbar_hint">ရှာဖွေပါ သို့မဟုတ် လိပ်စာရိုက်ပါ</string>
-    <string name="teaser">အလိုအလျောက် တစ်ကိုယ်ရေသုံး၊ \nသုံးပြီးဖျက်</string>
     <string name="search_hint">%1$s ကိုရှာမယ်</string>
     <string name="menu_share">မျှဝေပါ…</string>
     <string name="menu_open_with_default_browser">%1$s ဖြင့်ဖွင့်</string>

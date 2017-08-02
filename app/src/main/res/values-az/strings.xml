@@ -3,7 +3,6 @@
     <string name="action_cancel">Ləğv et</string>
     <string name="action_ok">Tamam</string>
     <string name="urlbar_hint">Ünvanı daxil et və ya axtar</string>
-    <string name="teaser">Avtomatik məxfi səyahət.\nGəz. Poz. Təkrarla.</string>
     <string name="search_hint">%1$s üçün axtar</string>
     <string name="menu_share">Paylaş…</string>
     <string name="menu_open_with_default_browser">%1$s ilə aç</string>

@@ -3,7 +3,6 @@
     <string name="action_cancel">취소</string>
     <string name="action_ok">확인</string>
     <string name="urlbar_hint">검색어 또는 주소 입력</string>
-    <string name="teaser">자동화된 사생활 보호 브라우저.\n쓰고, 지우고. 쓰고, 지우고.</string>
     <string name="search_hint">%1$s 검색</string>
     <string name="menu_share">공유…</string>
     <string name="menu_open_with_default_browser">%1$s로 열기</string>

@@ -3,7 +3,6 @@
     <string name="action_cancel">Abbrechen</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Suchen oder Adresse eingeben</string>
-    <string name="teaser">Automatischer Privater Modus.\nSurfen. Löschen. Wiederholen.</string>
     <string name="search_hint">Suchen nach %1$s</string>
     <string name="menu_share">Teilen…</string>
     <string name="menu_open_with_default_browser">Öffnen mit %1$s</string>

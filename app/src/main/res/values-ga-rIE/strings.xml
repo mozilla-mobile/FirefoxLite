@@ -3,7 +3,6 @@
     <string name="action_cancel">Cealaigh</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Cuardach nó seoladh Gréasáin</string>
-    <string name="teaser">Brabhsáil phríobháideach, go huathoibríoch.\nBrabhsáil. Bánaigh. Arís is arís eile.</string>
     <string name="search_hint">Cuardaigh %1$s</string>
     <string name="menu_share">Comhroinn…</string>
     <string name="menu_open_with_default_browser">Oscail le %1$s</string>

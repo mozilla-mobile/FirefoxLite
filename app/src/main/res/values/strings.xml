@@ -12,8 +12,6 @@
     <!-- This text is shown in the URL bar when it's empty -->
     <string name="urlbar_hint">Search or enter address</string>
 
-    <string name="teaser">Automatic private browsing.\nBrowse. Erase. Repeat.</string>
-
     <!-- This label is shown below the URL bar as soon as the user enters text. Clicking the label will perform a search -->
     <string name="search_hint">Search for %1$s</string>
 

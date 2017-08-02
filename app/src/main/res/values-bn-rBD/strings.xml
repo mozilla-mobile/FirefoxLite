@@ -3,7 +3,6 @@
     <string name="action_cancel">বাতিল</string>
     <string name="action_ok">ঠিক আছে</string>
     <string name="urlbar_hint">অনুসন্ধান করুন বা ঠিকানা লিখুন</string>
-    <string name="teaser">স্বয়ংক্রিয় প্রাইভেন্ট ব্রাউজিং। \nব্রাউজ করুন। মুছে দিন। আবার করুন।</string>
     <string name="search_hint">%1$s এর জন্যে অনুসন্ধান করুন</string>
     <string name="menu_share">শেয়ার…</string>
     <string name="menu_open_with_default_browser">%1$s ব্যবহার করে খোলা হবে</string>

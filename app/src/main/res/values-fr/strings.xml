@@ -3,7 +3,6 @@
     <string name="action_cancel">Annuler</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Recherche ou adresse</string>
-    <string name="teaser">Navigation privée automatique.\nNaviguez. Effacez. Recommencez.</string>
     <string name="search_hint">Rechercher %1$s</string>
     <string name="menu_share">Partager…</string>
     <string name="menu_open_with_default_browser">Ouvrir avec %1$s</string>

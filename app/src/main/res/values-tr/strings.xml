@@ -3,7 +3,6 @@
     <string name="action_cancel">Vazgeç</string>
     <string name="action_ok">Tamam</string>
     <string name="urlbar_hint">Arama yapın veya adres yazın</string>
-    <string name="teaser">Otomatik gizli gezinti.\nGez ve sil. Hepsi bu kadar.</string>
     <string name="search_hint">%1$s terimini ara</string>
     <string name="menu_share">Paylaş…</string>
     <string name="menu_open_with_default_browser">%1$s ile aç</string>

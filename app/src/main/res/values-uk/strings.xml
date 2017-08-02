@@ -3,7 +3,6 @@
     <string name="action_cancel">Скасувати</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Введіть запит чи адресу</string>
-    <string name="teaser">Автоматичний приватний перегляд.\nПереглядайте. Видаляйте. Повторюйте.</string>
     <string name="search_hint">Шукати %1$s</string>
     <string name="menu_share">Поділитися…</string>
     <string name="menu_open_with_default_browser">Відкрити в %1$s</string>

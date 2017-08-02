@@ -3,7 +3,6 @@
     <string name="action_cancel">取消</string>
     <string name="action_ok">确定</string>
     <string name="urlbar_hint">搜索或输入网址</string>
-    <string name="teaser">全自动的私密浏览。\n无痕浏览，无需劳心。</string>
     <string name="search_hint">搜索 %1$s</string>
     <string name="menu_share">分享…</string>
     <string name="menu_open_with_default_browser">使用 %1$s 打开</string>

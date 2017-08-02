@@ -3,7 +3,6 @@
     <string name="action_cancel">Zrušit</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Zadejte hledání nebo adresu</string>
-    <string name="teaser">Automatické anonymní prohlížení.\nProhlížejte. Vymažte. Opakujte.</string>
     <string name="search_hint">Hledat %1$s</string>
     <string name="menu_share">Sdílet…</string>
     <string name="menu_open_with_default_browser">Otevřít pomocí %1$s</string>

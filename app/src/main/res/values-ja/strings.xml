@@ -3,7 +3,6 @@
     <string name="action_cancel">キャンセル</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">検索語またはアドレスを入力</string>
-    <string name="teaser">プライベートブラウジングを自動的に。\nブラウズ、消去の繰り返し。</string>
     <string name="search_hint">%1$s を検索</string>
     <string name="menu_share">共有...</string>
     <string name="menu_open_with_default_browser">%1$s で開く</string>

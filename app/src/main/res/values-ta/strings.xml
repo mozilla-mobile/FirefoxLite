@@ -3,7 +3,6 @@
     <string name="action_cancel">ரத்து</string>
     <string name="action_ok">சரி</string>
     <string name="urlbar_hint">தேட (அ) உலாவ முகவரியை உள்ளிடுக</string>
-    <string name="teaser">தானியக்க அந்தரங்க உலாவல்.\nஉலாவு. அழி, திரும்பச்செய்</string>
     <string name="search_hint">%1$s சொல்லைத் தேடு</string>
     <string name="menu_share">பகிர்…</string>
     <string name="menu_open_with_default_browser">%1$s மூலம் திற</string>

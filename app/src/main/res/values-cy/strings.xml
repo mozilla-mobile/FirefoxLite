@@ -3,7 +3,6 @@
     <string name="action_cancel">Diddymu</string>
     <string name="action_ok">Iawn</string>
     <string name="urlbar_hint">Chwilio neu gyfeiriad</string>
-    <string name="teaser">Pori preifat awtomatig.\nPori. Dileu. Ailadrodd.</string>
     <string name="search_hint">Chwilio am %1$s</string>
     <string name="menu_share">Rhannu…</string>
     <string name="menu_open_with_default_browser">Agor gyda %1$s</string>

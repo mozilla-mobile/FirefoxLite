@@ -3,7 +3,6 @@
     <string name="action_cancel">Renunță</string>
     <string name="action_ok">Ok</string>
     <string name="urlbar_hint">Caută sau introdu adresa</string>
-    <string name="teaser">Navigare privată automată.\nNavighează. Șterge. Repetă.</string>
     <string name="search_hint">Caută %1$s</string>
     <string name="menu_share">Partajează…</string>
     <string name="menu_open_with_default_browser">Deschide cu %1$s</string>

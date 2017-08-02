@@ -3,7 +3,6 @@
     <string name="action_cancel">Avbryt</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Søk eller oppgi adresse</string>
-    <string name="teaser">Automatisk privat nettlesing.\nSurf. Slett. Gjenta.</string>
     <string name="search_hint">Søk etter %1$s</string>
     <string name="menu_share">Del …</string>
     <string name="menu_open_with_default_browser">Åpne med %1$s</string>

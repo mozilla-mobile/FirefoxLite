@@ -3,7 +3,6 @@
     <string name="action_cancel">لغو</string>
     <string name="action_ok">تایید</string>
     <string name="urlbar_hint">جست‌وجو کنید یا آدرسی را وارد کنید</string>
-    <string name="teaser">مرور ناشناس خودکار.\nمرور کنید. پاک کنید. تکرار کنید.</string>
     <string name="search_hint">جست‌وجو برای %1$s</string>
     <string name="menu_share">اشتراک‌گذاری…</string>
     <string name="menu_open_with_default_browser">باز کردن با %1$s</string>

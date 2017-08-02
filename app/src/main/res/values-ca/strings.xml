@@ -3,7 +3,6 @@
     <string name="action_cancel">Cancel·la</string>
     <string name="action_ok">D\'acord</string>
     <string name="urlbar_hint">Escriviu una cerca o adreça</string>
-    <string name="teaser">Navegació privada automàtica.\nNavegueu. Esborreu. Torneu-hi.</string>
     <string name="search_hint">Cerca %1$s</string>
     <string name="menu_share">Comparteix…</string>
     <string name="menu_open_with_default_browser">Obre amb el %1$s</string>

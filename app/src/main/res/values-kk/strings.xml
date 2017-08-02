@@ -3,7 +3,6 @@
     <string name="action_cancel">Бас тарту</string>
     <string name="action_ok">ОК</string>
     <string name="urlbar_hint">Іздеу немесе адрес</string>
-    <string name="teaser">Автоматты түрдегі жекелік шолу.\nШолу. Өшіру. Қайталау.</string>
     <string name="search_hint">%1$s іздеу</string>
     <string name="menu_share">Бөлісу…</string>
     <string name="menu_open_with_default_browser">%1$s көмегімен ашу</string>

@@ -3,7 +3,6 @@
     <string name="action_cancel">Zrušiť</string>
     <string name="action_ok">OK</string>
     <string name="urlbar_hint">Zadajte hľadanie alebo adresu</string>
-    <string name="teaser">Automatické súkromné prehliadanie.\nPrehliadajte. Vymažte históriu. Opakujte.</string>
     <string name="search_hint">Vyhľadať %1$s</string>
     <string name="menu_share">Zdieľať…</string>
     <string name="menu_open_with_default_browser">Otvoriť pomocou %1$s</string>
