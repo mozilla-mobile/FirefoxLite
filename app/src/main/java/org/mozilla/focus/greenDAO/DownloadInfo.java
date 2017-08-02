@@ -11,6 +11,7 @@ import java.util.Formatter;
 
 public class DownloadInfo {
 
+    private Long DownloadId;
     private String Status;
     private String Size;
     private String Date;
@@ -33,7 +34,12 @@ public class DownloadInfo {
             Date = convertMillis(timeStamp);
         }
 
+        DownloadId = downloadId;
         FileName = fileName;
+    }
+
+    public Long getDownloadId(){
+        return DownloadId;
     }
 
     public String getFileName(){
