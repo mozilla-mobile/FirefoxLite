@@ -5,8 +5,6 @@
     <string name="urlbar_hint">検索語またはアドレスを入力</string>
     <string name="search_hint">%1$s を検索</string>
     <string name="menu_share">共有...</string>
-    <string name="menu_open_with_default_browser">%1$s で開く</string>
-    <string name="menu_open_with_a_browser">他のアプリで開く...</string>
     <string name="menu_settings">設定</string>
     <string name="menu_about">製品情報</string>
     <string name="menu_help">ヘルプ</string>

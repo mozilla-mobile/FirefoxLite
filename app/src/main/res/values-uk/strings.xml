@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Введіть запит чи адресу</string>
     <string name="search_hint">Шукати %1$s</string>
     <string name="menu_share">Поділитися…</string>
-    <string name="menu_open_with_default_browser">Відкрити в %1$s</string>
-    <string name="menu_open_with_a_browser">Відкрити в…</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_about">Про</string>
     <string name="menu_help">Допомога</string>

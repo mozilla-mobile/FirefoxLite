@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Sök eller ange adress</string>
     <string name="search_hint">Sök efter %1$s</string>
     <string name="menu_share">Dela…</string>
-    <string name="menu_open_with_default_browser">Öppna med %1$s</string>
-    <string name="menu_open_with_a_browser">Öppna med…</string>
     <string name="menu_settings">Inställningar</string>
     <string name="menu_about">Om</string>
     <string name="menu_help">Hjälp</string>

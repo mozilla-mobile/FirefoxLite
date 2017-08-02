@@ -5,8 +5,6 @@
     <string name="urlbar_hint">खोजें या पता दर्ज करें</string>
     <string name="search_hint">%1$s लिए खोजें</string>
     <string name="menu_share">साझा करें…</string>
-    <string name="menu_open_with_default_browser">%1$s के साथ खोलें</string>
-    <string name="menu_open_with_a_browser">इसके साथ खोलें…</string>
     <string name="menu_settings">सेटिंग्स</string>
     <string name="menu_about">के बारे में</string>
     <string name="menu_help">सहायता</string>

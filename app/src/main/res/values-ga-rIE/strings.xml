@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Cuardach nó seoladh Gréasáin</string>
     <string name="search_hint">Cuardaigh %1$s</string>
     <string name="menu_share">Comhroinn…</string>
-    <string name="menu_open_with_default_browser">Oscail le %1$s</string>
-    <string name="menu_open_with_a_browser">Oscail le…</string>
     <string name="menu_settings">Socruithe</string>
     <string name="menu_about">Maidir leis</string>
     <string name="menu_help">Cabhair</string>

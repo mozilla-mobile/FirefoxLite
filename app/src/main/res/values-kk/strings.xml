@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Іздеу немесе адрес</string>
     <string name="search_hint">%1$s іздеу</string>
     <string name="menu_share">Бөлісу…</string>
-    <string name="menu_open_with_default_browser">%1$s көмегімен ашу</string>
-    <string name="menu_open_with_a_browser">Көмегімен ашу…</string>
     <string name="menu_settings">Баптаулар</string>
     <string name="menu_about">Осы туралы</string>
     <string name="menu_help">Көмек</string>

@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Voer zoekterm of adres in</string>
     <string name="search_hint">Zoeken naar %1$s</string>
     <string name="menu_share">Delen…</string>
-    <string name="menu_open_with_default_browser">Openen met %1$s</string>
-    <string name="menu_open_with_a_browser">Openen met…</string>
     <string name="menu_settings">Instellingen</string>
     <string name="menu_about">Over</string>
     <string name="menu_help">Help</string>

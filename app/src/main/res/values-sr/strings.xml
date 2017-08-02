@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Претражите или унесите адресу</string>
     <string name="search_hint">Претражи %1$s</string>
     <string name="menu_share">Подели…</string>
-    <string name="menu_open_with_default_browser">Отвори у %1$s-у</string>
-    <string name="menu_open_with_a_browser">Отвори у…</string>
     <string name="menu_settings">Поставке</string>
     <string name="menu_about">О Focus за Android</string>
     <string name="menu_help">Помоћ</string>

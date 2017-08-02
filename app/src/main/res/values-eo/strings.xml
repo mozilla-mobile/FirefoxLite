@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Serĉu ion aŭ tajpu adreson</string>
     <string name="search_hint">Serĉi %1$s</string>
     <string name="menu_share">Dividi…</string>
-    <string name="menu_open_with_default_browser">Malfermi per %1$s</string>
-    <string name="menu_open_with_a_browser">Malfermi per…</string>
     <string name="menu_settings">Agordoj</string>
     <string name="menu_about">Pri</string>
     <string name="menu_help">Helpo</string>

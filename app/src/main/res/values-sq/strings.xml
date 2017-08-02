@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Kërkoni ose jepni adresë</string>
     <string name="search_hint">Kërko për %1$s</string>
     <string name="menu_share">Ndajeni me të tjerët…</string>
-    <string name="menu_open_with_default_browser">Hape me %1$s</string>
-    <string name="menu_open_with_a_browser">Hapeni me…</string>
     <string name="menu_settings">Rregullime</string>
     <string name="menu_about">Rreth</string>
     <string name="menu_help">Ndihmë</string>

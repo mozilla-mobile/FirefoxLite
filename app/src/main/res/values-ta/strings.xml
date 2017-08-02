@@ -5,8 +5,6 @@
     <string name="urlbar_hint">தேட (அ) உலாவ முகவரியை உள்ளிடுக</string>
     <string name="search_hint">%1$s சொல்லைத் தேடு</string>
     <string name="menu_share">பகிர்…</string>
-    <string name="menu_open_with_default_browser">%1$s மூலம் திற</string>
-    <string name="menu_open_with_a_browser">செயலிகள் மூலம் திற…</string>
     <string name="menu_settings">அமைவுகள்</string>
     <string name="menu_about">போக்கசு பற்றி</string>
     <string name="menu_help">உதவி</string>

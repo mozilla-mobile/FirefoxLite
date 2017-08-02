@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Caută sau introdu adresa</string>
     <string name="search_hint">Caută %1$s</string>
     <string name="menu_share">Partajează…</string>
-    <string name="menu_open_with_default_browser">Deschide cu %1$s</string>
-    <string name="menu_open_with_a_browser">Deschide cu…</string>
     <string name="menu_settings">Setări</string>
     <string name="menu_about">Despre</string>
     <string name="menu_help">Ajutor</string>

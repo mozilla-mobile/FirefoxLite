@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Αναζήτηση ή πληκτρολόγηση διεύθυνσης</string>
     <string name="search_hint">Αναζήτηση για %1$s</string>
     <string name="menu_share">Κοινή χρήση…</string>
-    <string name="menu_open_with_default_browser">Άνοιγμα με %1$s</string>
-    <string name="menu_open_with_a_browser">Άνοιγμα με…</string>
     <string name="menu_settings">Ρυθμίσεις</string>
     <string name="menu_about">Πληροφορίες</string>
     <string name="menu_help">Βοήθεια</string>

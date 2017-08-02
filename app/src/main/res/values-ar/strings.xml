@@ -5,8 +5,6 @@
     <string name="urlbar_hint">ابحث أو أدخل عنوانا</string>
     <string name="search_hint">ابحث عن %1$s</string>
     <string name="menu_share">شارك…</string>
-    <string name="menu_open_with_default_browser">افتح في %1$s</string>
-    <string name="menu_open_with_a_browser">افتح في…</string>
     <string name="menu_settings">الإعدادات</string>
     <string name="menu_about">عن</string>
     <string name="menu_help">مساعدة</string>

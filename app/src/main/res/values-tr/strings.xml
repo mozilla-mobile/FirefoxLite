@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Arama yapın veya adres yazın</string>
     <string name="search_hint">%1$s terimini ara</string>
     <string name="menu_share">Paylaş…</string>
-    <string name="menu_open_with_default_browser">%1$s ile aç</string>
-    <string name="menu_open_with_a_browser">Birlikte aç…</string>
     <string name="menu_settings">Ayarlar</string>
     <string name="menu_about">Hakkında</string>
     <string name="menu_help">Yardım</string>

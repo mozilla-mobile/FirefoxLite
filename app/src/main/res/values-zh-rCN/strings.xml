@@ -5,8 +5,6 @@
     <string name="urlbar_hint">搜索或输入网址</string>
     <string name="search_hint">搜索 %1$s</string>
     <string name="menu_share">分享…</string>
-    <string name="menu_open_with_default_browser">使用 %1$s 打开</string>
-    <string name="menu_open_with_a_browser">打开方式…</string>
     <string name="menu_settings">设置</string>
     <string name="menu_about">关于</string>
     <string name="menu_help">帮助</string>

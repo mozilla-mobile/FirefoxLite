@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Որոնեք կամ մուտքագրեք հասցեն</string>
     <string name="search_hint">Որոնել %1$s-ի համար</string>
     <string name="menu_share">Համօգտագործել</string>
-    <string name="menu_open_with_default_browser">Բացել %1$s-ով</string>
-    <string name="menu_open_with_a_browser">Բացել հետևյալով՝</string>
     <string name="menu_settings">Կարգավորումներ</string>
     <string name="menu_about">Մասին</string>
     <string name="menu_help">Օգնություն</string>

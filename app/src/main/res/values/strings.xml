@@ -21,13 +21,11 @@
     <!-- Menu item: Switch to another browser to open the currently visible page. %1$s will be
       replaces with the name of the browser like: "Open with Firefox" or "Open with Chrome". Some
       links can be opened by native apps that aren't a browser, e.g. "Open with YouTube" -->
-    <string name="menu_open_with_default_browser">Open with %1$s</string>
 
     <!-- Menu item: Switch to another browser to open the currently visible page. This menu item
       will be shown if there are multiple browsers and we do not know which one is the default
       browser or in case Focus is actually the default browser. Clicking this menu item will show
       a screen with multiple browsers (or other apps that can open the current URL) to choose from. -->
-    <string name="menu_open_with_a_browser">Open with…</string>
 
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>

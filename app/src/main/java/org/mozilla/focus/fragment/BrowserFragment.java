@@ -40,9 +40,7 @@ import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.greenDAO.DBUtils;
 import org.mozilla.focus.greenDAO.DownloadInfoEntity;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
-import org.mozilla.focus.menu.BrowserMenu;
 import org.mozilla.focus.menu.WebContextMenu;
-import org.mozilla.focus.open.OpenWithFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.ColorUtils;
@@ -104,10 +102,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
      */
     private View browserContainer;
 
-    private View forwardButton;
-    private View refreshButton;
-    private View stopButton;
-
     private IWebView.FullscreenCallback fullscreenCallback;
 
     private boolean isLoading = false;
@@ -148,18 +142,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         backgroundView = view.findViewById(R.id.background);
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
-
-        if ((refreshButton = view.findViewById(R.id.refresh)) != null) {
-            refreshButton.setOnClickListener(this);
-        }
-
-        if ((stopButton = view.findViewById(R.id.stop)) != null) {
-            stopButton.setOnClickListener(this);
-        }
-
-        if ((forwardButton = view.findViewById(R.id.forward)) != null) {
-            forwardButton.setOnClickListener(this);
-        }
 
         final View searchBtn = view.findViewById(R.id.btn_search);
         final View homeBtn = view.findViewById(R.id.btn_home);
@@ -323,8 +305,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 progressView.setProgress(5);
                 progressView.setVisibility(View.VISIBLE);
-
-                updateToolbarButtonStates();
             }
 
             @Override
@@ -340,8 +320,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 if (isSecure) {
                     lockView.setVisibility(View.VISIBLE);
                 }
-
-                updateToolbarButtonStates();
             }
 
             @Override
@@ -610,86 +588,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             case R.id.display_url:
                 notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 break;
-
-            case R.id.forward: {
-                goForward();
-                break;
-            }
-
-            case R.id.refresh: {
-                reload();
-                break;
-            }
-
-            case R.id.stop: {
-                final IWebView webView = getWebView();
-                if (webView != null) {
-                    webView.stopLoading();
-                }
-                break;
-            }
-
-            case R.id.share: {
-                final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, getUrl());
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)));
-
-                TelemetryWrapper.shareEvent();
-                break;
-            }
-
-            case R.id.settings:
-                openPreference();
-                break;
-
-            case R.id.open_default: {
-                final Browsers browsers = new Browsers(getContext(), getUrl());
-
-                final ActivityInfo defaultBrowser = browsers.getDefaultBrowser();
-
-                if (defaultBrowser == null) {
-                    // We only add this menu item when a third party default exists, in
-                    // BrowserMenuAdapter.initializeMenu()
-                    throw new IllegalStateException("<Open with $Default> was shown when no default browser is set");
-                }
-
-                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
-                intent.setPackage(defaultBrowser.packageName);
-                startActivity(intent);
-
-                TelemetryWrapper.openDefaultAppEvent();
-                break;
-            }
-
-            case R.id.open_select_browser: {
-                final Browsers browsers = new Browsers(getContext(), getUrl());
-
-                final OpenWithFragment fragment = OpenWithFragment.newInstance(
-                        browsers.getInstalledBrowsers(), getUrl());
-                fragment.show(getFragmentManager(), OpenWithFragment.FRAGMENT_TAG);
-
-                TelemetryWrapper.openSelectionEvent();
-                break;
-            }
-
-            case R.id.customtab_close: {
-                getActivity().finish();
-
-                TelemetryWrapper.closeCustomTabEvent();
-                break;
-            }
-
-            case R.id.help:
-                Intent helpIntent = InfoActivity.getHelpIntent(getActivity());
-                startActivity(helpIntent);
-                break;
-
-            case R.id.help_trackers:
-                Intent trackerHelpIntent = InfoActivity.getTrackerHelpIntent(getActivity());
-                startActivity(trackerHelpIntent);
-                break;
-
             case R.id.btn_search:
                 notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, null);
                 break;
@@ -710,25 +608,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (activity instanceof FragmentListener) {
             ((FragmentListener) activity).onNotified(this, type, payload);
         }
-    }
-
-    private void updateToolbarButtonStates() {
-        if (forwardButton == null || refreshButton == null || stopButton == null) {
-            return;
-        }
-
-        final IWebView webView = getWebView();
-        if (webView == null) {
-            return;
-        }
-
-        final boolean canGoForward = webView.canGoForward();
-
-        forwardButton.setEnabled(canGoForward);
-        forwardButton.setAlpha(canGoForward ? 1.0f : 0.5f);
-
-        refreshButton.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        stopButton.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 
     @NonNull

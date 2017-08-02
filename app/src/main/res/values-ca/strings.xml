@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Escriviu una cerca o adreça</string>
     <string name="search_hint">Cerca %1$s</string>
     <string name="menu_share">Comparteix…</string>
-    <string name="menu_open_with_default_browser">Obre amb el %1$s</string>
-    <string name="menu_open_with_a_browser">Obre amb…</string>
     <string name="menu_settings">Paràmetres</string>
     <string name="menu_about">Quant a</string>
     <string name="menu_help">Ajuda</string>

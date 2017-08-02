@@ -5,8 +5,6 @@
     <string name="urlbar_hint">جست‌وجو کنید یا آدرسی را وارد کنید</string>
     <string name="search_hint">جست‌وجو برای %1$s</string>
     <string name="menu_share">اشتراک‌گذاری…</string>
-    <string name="menu_open_with_default_browser">باز کردن با %1$s</string>
-    <string name="menu_open_with_a_browser">باز کردن با…</string>
     <string name="menu_settings">تنظیمات</string>
     <string name="menu_about">درباره</string>
     <string name="menu_help">راهنما</string>

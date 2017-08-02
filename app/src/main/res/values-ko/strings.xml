@@ -5,8 +5,6 @@
     <string name="urlbar_hint">검색어 또는 주소 입력</string>
     <string name="search_hint">%1$s 검색</string>
     <string name="menu_share">공유…</string>
-    <string name="menu_open_with_default_browser">%1$s로 열기</string>
-    <string name="menu_open_with_a_browser">다음으로 열기…</string>
     <string name="menu_settings">설정</string>
     <string name="menu_about">정보</string>
     <string name="menu_help">도움말</string>

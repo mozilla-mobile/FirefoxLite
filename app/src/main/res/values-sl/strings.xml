@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Iskanje ali naslov strani</string>
     <string name="search_hint">Išči %1$s</string>
     <string name="menu_share">Deli …</string>
-    <string name="menu_open_with_default_browser">Za odpiranje uporabi %1$s</string>
-    <string name="menu_open_with_a_browser">Za odpiranje uporabi ...</string>
     <string name="menu_settings">Nastavitve</string>
     <string name="menu_about">Predstavitev</string>
     <string name="menu_help">Pomoč</string>

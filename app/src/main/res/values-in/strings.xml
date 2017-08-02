@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Cari atau masukkan alamat</string>
     <string name="search_hint">Cari %1$s</string>
     <string name="menu_share">Bagikan…</string>
-    <string name="menu_open_with_default_browser">Buka dengan %1$s</string>
-    <string name="menu_open_with_a_browser">Buka dengan …</string>
     <string name="menu_settings">Setelan</string>
     <string name="menu_about">Tentang</string>
     <string name="menu_help">Bantuan</string>

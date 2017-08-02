@@ -5,8 +5,6 @@
     <string name="urlbar_hint">ຄົ້ນຫາ ຫລື ປ້ອນທີ່ຢູ່ໃສ່ນີ້</string>
     <string name="search_hint">ຄົ້ນຫາສຳລັບ %1$s</string>
     <string name="menu_share">ແບ່ງປັນ…</string>
-    <string name="menu_open_with_default_browser">ເປີດດ້ວຍ %1$s</string>
-    <string name="menu_open_with_a_browser">ເປີດ​ດ້ວຍ …</string>
     <string name="menu_settings">ການຕັ້ງຄ່າ</string>
     <string name="menu_about">ກ່ຽວກັບ</string>
     <string name="menu_help">ວິທີໃຊ້</string>

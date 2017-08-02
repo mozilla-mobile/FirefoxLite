@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Adresu pytać abo zapodać</string>
     <string name="search_hint">Pytanje za %1$s</string>
     <string name="menu_share">Dźělić…</string>
-    <string name="menu_open_with_default_browser">Z %1$s wočinić</string>
-    <string name="menu_open_with_a_browser">Wočinić z…</string>
     <string name="menu_settings">Nastajenja</string>
     <string name="menu_about">Wo</string>
     <string name="menu_help">Pomoc</string>

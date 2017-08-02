@@ -5,8 +5,6 @@
     <string name="urlbar_hint">Zadajte hľadanie alebo adresu</string>
     <string name="search_hint">Vyhľadať %1$s</string>
     <string name="menu_share">Zdieľať…</string>
-    <string name="menu_open_with_default_browser">Otvoriť pomocou %1$s</string>
-    <string name="menu_open_with_a_browser">Otvoriť pomocou…</string>
     <string name="menu_settings">Nastavenia</string>
     <string name="menu_about">O aplikácii</string>
     <string name="menu_help">Pomocník</string>

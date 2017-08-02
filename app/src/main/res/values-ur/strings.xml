@@ -5,8 +5,6 @@
     <string name="urlbar_hint">پتہ تلاش یا داخل کریں</string>
     <string name="search_hint">۔%1$s کے لئے تلاش کریں</string>
     <string name="menu_share">شیئر کریں…</string>
-    <string name="menu_open_with_default_browser">۔%1$s کے ساتھ کھولِں</string>
-    <string name="menu_open_with_a_browser">کے ساتھ کھولیں…</string>
     <string name="menu_settings">سیٹنگیں</string>
     <string name="menu_about">کے بارے میں</string>
     <string name="menu_help">مدد</string>

@@ -5,8 +5,6 @@
     <string name="urlbar_hint">ค้นหาหรือป้อนที่อยู่</string>
     <string name="search_hint">ค้นหาสำหรับ %1$s</string>
     <string name="menu_share">แบ่งปัน…</string>
-    <string name="menu_open_with_default_browser">เปิดด้วย %1$s</string>
-    <string name="menu_open_with_a_browser">เปิดด้วย…</string>
     <string name="menu_settings">การตั้งค่า</string>
     <string name="menu_about">เกี่ยวกับ</string>
     <string name="menu_help">ช่วยเหลือ</string>
