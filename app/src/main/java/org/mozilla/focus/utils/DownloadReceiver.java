@@ -17,21 +17,25 @@ import org.mozilla.focus.greenDAO.DownloadInfoEntityDao;
  */
 
 public class DownloadReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
+
         long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Query query = new DownloadManager.Query();
-        query.setFilterById(downloadId);
-        Cursor cursor = downloadManager.query(query);
+        //DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        //DownloadManager.Query query = new DownloadManager.Query();
+        //query.setFilterById(downloadId);
+        //Cursor cursor = downloadManager.query(query);
 
         QueryBuilder<DownloadInfoEntity> queryBuilder = DBUtils.getDbService().getDao().queryBuilder();
         Property downloadIdProperty = DownloadInfoEntityDao.Properties.DownLoadId;
-        DownloadInfoEntity downloadInfoEntity =queryBuilder.where(downloadIdProperty.eq(downloadId)).unique();
+        DownloadInfoEntity downloadInfoEntity = queryBuilder.where(downloadIdProperty.eq(downloadId)).unique();
 
         //should't be empty and in the local SQLite db.
-        if (downloadInfoEntity != null && cursor.moveToFirst()){
+        if (!downloadInfoEntity.getFileName().isEmpty()){
             //update the status to UI
         }
     }
+
+
 }

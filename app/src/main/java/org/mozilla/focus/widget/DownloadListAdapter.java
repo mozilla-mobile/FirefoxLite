@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.greendao.Property;
+import org.greenrobot.greendao.query.QueryBuilder;
 import org.mozilla.focus.R;
 import org.mozilla.focus.greenDAO.DBUtils;
 import org.mozilla.focus.greenDAO.DownloadInfo;
 import org.mozilla.focus.greenDAO.DownloadInfoEntity;
+import org.mozilla.focus.greenDAO.DownloadInfoEntityDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,12 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
     private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
 
     public DownloadListAdapter(){
+        fetchEntity();
+    }
+
+    public void fetchEntity(){
         List<DownloadInfoEntity> downloadIdList = DBUtils.getDbService().getDao().loadAll();
+        mDownloadInfo.clear();
 
         for (int i = 0 ;i<downloadIdList.size();i++){
             DownloadInfoEntity entity = downloadIdList.get(i);
@@ -34,6 +42,23 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
             mDownloadInfo.add(downloadInfo);
         }
 
+        this.notifyDataSetChanged();
+    }
+
+    public void updateItem(long downloadId){
+
+        QueryBuilder<DownloadInfoEntity> queryBuilder = DBUtils.getDbService().getDao().queryBuilder();
+        Property downloadIdProperty = DownloadInfoEntityDao.Properties.DownLoadId;
+        DownloadInfoEntity entity = queryBuilder.where(downloadIdProperty.eq(downloadId)).unique();
+        DownloadInfo downloadInfo = new DownloadInfo(entity.getDownLoadId(),entity.getFileName());
+
+        for (int i = 0;i<mDownloadInfo.size();i++){
+            if (mDownloadInfo.get(i).getDownloadId().equals(entity.getDownLoadId())){
+                mDownloadInfo.set(i,downloadInfo);
+                this.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     @Override
