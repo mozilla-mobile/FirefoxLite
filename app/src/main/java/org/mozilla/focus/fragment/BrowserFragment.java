@@ -37,7 +37,6 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.greenDAO.DBUtils;
-import org.mozilla.focus.greenDAO.DownloadInfoEntity;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
@@ -498,8 +497,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         Long downloadId = manager.enqueue(request);
 
         //record download ID
-        DownloadInfoEntity downloadInfo = new DownloadInfoEntity(null, downloadId, fileName);
-        DBUtils.getDbService().getDao().insert(downloadInfo);
+        DBUtils.getDbService().insert(downloadId,fileName);
 
     }
 
