@@ -226,6 +226,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.action_back:
             case R.id.action_next:
             case R.id.action_refresh:
+            case R.id.action_share:
                 onMenuBrowsingItemClicked(v);
                 break;
             default:
@@ -248,6 +249,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.action_refresh:
                 onRefreshClicked(browserFragment);
+                break;
+            case R.id.action_share:
+                onShraeClicked(browserFragment);
                 break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
@@ -281,6 +285,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onRefreshClicked(final BrowserFragment browserFragment) {
         browserFragment.reload();
+    }
+
+    private void onShraeClicked(final BrowserFragment browserFragment) {
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, browserFragment.getUrl());
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)));
+
+        TelemetryWrapper.shareEvent();
     }
 
     @Override
