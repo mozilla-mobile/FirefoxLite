@@ -71,6 +71,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/InfoTheme" />
 
+        <activity android:name=".history.BrowsingHistoryActivity" />
+
         <service
             android:name=".customtabs.CustomTabsService"
             android:exported="true"
