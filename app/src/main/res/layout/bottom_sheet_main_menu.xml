@@ -93,7 +93,9 @@
         android:layout_marginRight="6dp"
         android:orientation="horizontal">
 
-        <LinearLayout style="@style/MenuButton">
+        <LinearLayout style="@style/MenuButton"
+            android:id="@+id/action_share"
+            android:onClick="onMenuItemClicked">
 
             <ImageView
                 style="@style/MenuButton2"
