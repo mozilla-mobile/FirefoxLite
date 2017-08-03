@@ -43,6 +43,12 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
         if (action == MotionEvent.ACTION_DOWN) {
             mNestedOffsetY = 0;
         }
+
+        //  Bypass non-first touch event to super to allow WevView handle pinch-zoom, ex. Google Maps
+        if (event.getPointerCount() > 1) {
+            return super.onTouchEvent(event);
+        }
+
         final int eventY = (int) event.getY();
         event.offsetLocation(0, mNestedOffsetY);
 
