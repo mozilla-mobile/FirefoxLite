@@ -1,14 +1,19 @@
 package org.mozilla.focus.widget;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.greenDAO.DBUtils;
 import org.mozilla.focus.greenDAO.DownloadInfo;
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +50,25 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
         }
     }
 
+    private void remove(int position){
+        long downloadId = mDownloadInfo.get(position).getDownloadId();
+        DBUtils.getDbService().delete(downloadId);
+
+        mDownloadInfo.remove(position);
+
+        this.notifyDataSetChanged();
+    }
+
+    private void delete(int position){
+        try {
+            new File(URI.create(mDownloadInfo.get(position).getUri()).getPath()).delete();
+
+        }catch (Exception e){
+            Log.v(this.getClass().getSimpleName(),""+e.getMessage());
+        }
+        remove(position);
+    }
+
     @Override
     public DownloadViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_menu_cell,parent,false);
@@ -65,6 +89,36 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
         }
 
         holder.subtitle.setText(subtitle);
+
+        holder.action.setTag(position);
+        holder.action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int position = (int) view.getTag();
+                final PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_delete,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()){
+                            case R.id.remove:
+                                remove(position);
+                                break;
+                            case R.id.delete:
+                                delete(position);
+                                break;
+                            default:
+                                break;
+                        }
+                        popupMenu.dismiss();
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
     }
 
     @Override
@@ -78,7 +132,6 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
         ImageView icon;
         TextView title;
         TextView subtitle;
-        @SuppressFBWarnings("URF_UNREAD_FIELD")
         ImageView action;
 
         public DownloadViewHolder(View itemView) {

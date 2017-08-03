@@ -29,7 +29,7 @@ public class DownloadDialogShowListener implements DialogInterface.OnShowListene
         RecyclerView downloadList = (RecyclerView) mMainView.findViewById(R.id.list);
         mDownloadListAdapter = new DownloadListAdapter();
         downloadList.setAdapter(mDownloadListAdapter);
-        downloadList.setLayoutManager(new LinearLayoutManager(mMainView.getContext(),LinearLayoutManager.VERTICAL,false));
+        downloadList.setLayoutManager(new LinearLayoutManager(mMainView.getContext(),LinearLayoutManager.VERTICAL,true));
     }
 
     @Override
