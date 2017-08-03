@@ -82,6 +82,12 @@
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
                    android:value="true" />
+
+        <provider
+            android:name=".history.HistoryContentProvider"
+            android:authorities="history"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
