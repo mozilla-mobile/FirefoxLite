@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- data saving path entries -->
+    <string-array name="data_saving_path_entries">
+        <item>SD card (Preferred)</item>
+        <item>Internal storage</item>
+    </string-array>
+
+    <!-- clean browsing data entries -->
+    <string-array name="clean_browsing_data_entries">
+        <item>Browsing history</item>
+        <item>Search history</item>
+        <item>From history</item>
+        <item>Cookies</item>
+        <item>Cache</item>
+        <item>Saving logins</item>
+    </string-array>
+</resources>

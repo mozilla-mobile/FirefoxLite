@@ -68,7 +68,7 @@ class TelemetrySwitchPreference extends Preference {
         final TextView summary = (TextView) view.findViewById(android.R.id.summary);
 
         summary.setPaintFlags(summary.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        summary.setTextColor(Color.WHITE);
+        summary.setTextColor(Color.BLACK);
 
         summary.setOnClickListener(new View.OnClickListener() {
             @Override
