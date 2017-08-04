@@ -11,7 +11,6 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 
-import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.search.SearchEngine;
@@ -47,6 +46,15 @@ public class Settings {
 
     public boolean shouldShowFirstrun() {
         return !preferences.getBoolean(FirstrunFragment.FIRSTRUN_PREF, false);
+    }
+
+    public boolean shouldSaveToRemovableStorage() {
+        final String key = getPreferenceKey(R.string.pref_key_privacy_storage_save_downloads_to);
+        final String value = preferences.getString(key, "");
+
+        // FIXME: rely on String-array-order is not a good idea
+        final String[] defined = resources.getStringArray(R.array.data_saving_path_values);
+        return defined[0].equals(value); // assume the first item is for removable storage
     }
 
     @Nullable
