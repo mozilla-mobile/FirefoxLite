@@ -5,6 +5,7 @@
 package org.mozilla.focus.locale;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.text.TextUtilsCompat;
@@ -36,6 +37,8 @@ public abstract class LocaleAwareAppCompatActivity
         LocaleManager.getInstance().updateConfiguration(this, mLastLocale);
 
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
 
