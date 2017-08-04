@@ -32,7 +32,7 @@
         <item name="android:windowTitleStyle">@style/DialogTitleStyle</item>
     </style>
 
-    <style name="SettingsTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">#FF00A4DC</item>
     </style>
 
