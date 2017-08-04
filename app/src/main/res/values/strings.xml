@@ -75,18 +75,27 @@
     <!-- This is the title of the dialog for selecting a new default search engine -->
     <string name="preference_dialog_title_search_engine">Default search</string>
 
-    <string name="preference_category_privacy">Privacy</string>
-    <string name="preference_privacy_block_ads">Block ad trackers</string>
     <string name="preference_privacy_block_analytics">Block analytic trackers</string>
     <string name="preference_privacy_block_social">Block social trackers</string>
     <string name="preference_privacy_block_content">Block other content trackers</string>
     <string name="preference_privacy_block_content_summary">May break some videos and Web pages</string>
 
+    <!-- Settings Data Saving -->
+    <string name="preference_category_data_saving">Data saving</string>
+    <string name="preference_data_saving_block_ads">Block ads and trackers</string>
+    <string name="preference_data_saving_block_webfonts">Block Web fonts</string>
+    <string name="preference_data_saving_block_images">Block images</string>
+    <string name="preference_data_saving_media_autoplay">Block media autoplay</string>
+    <string name="preference_data_saving_tab_restore">Block tab restore</string>
+
+    <!-- Settings Privacy and storage-->
+    <string name="preference_category_privacy_storage">Privacy and storage</string>
+    <string name="preference_privacy_storage_clear_browsing_data">Clear browsing data</string>
+    <string name="preference_privacy_storage_save_downloads_to">Save downloads/cache/offline pages to </string>
+
     <string name="preference_category_performance">Performance</string>
-    <string name="preference_performance_block_webfonts">Block Web fonts</string>
     <!-- This text is shown below the setting for disabling web fonts. Some websites use icons/images from a font and those do not show up if fonts are blocked.-->
     <string name="preference_performance_block_webfonts_summary">May result in missing icons or images</string>
-    <string name="preference_performance_block_images">Block images</string>
 
     <!-- This preference does not set Focus as the default browser but instead links to Android's
      "default apps" screen or if not supported by this Android version to a SUMO page describing
@@ -279,5 +288,19 @@ be temporary, and you can try again later.</li>
     <string name="geolocation_dialog_message">%1$s \nwants to use your device\'s location.</string>
     <string name="geolocation_dialog_allow">ALLOW</string>
     <string name="geolocation_dialog_block">BLOCK</string>
+
+    <!-- Setting Clear browsing data dialog-->
+    <string name="setting_dialog_clear_data">Clean Data</string>
+    <string name="setting_dialog_cancel">Cancel</string>
+    <string name="setting_dialog_browsing_history">Browsing history</string>
+    <string name="setting_dialog_search_history">Search history</string>
+    <string name="setting_dialog_from_history">From history</string>
+    <string name="setting_dialog_cookies">Cookies</string>
+    <string name="setting_dialog_cache">Cache</string>
+    <string name="setting_dialog_saving_logins">Saving logins</string>
+
+    <!-- Setting data saving path dialog -->
+    <string name="setting_dialog_sd_card">SD card</string>
+    <string name="setting_dialog_internal_storage">Internal storage</string>
 
 </resources>

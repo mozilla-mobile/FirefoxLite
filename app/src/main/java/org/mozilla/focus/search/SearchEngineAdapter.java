@@ -61,7 +61,7 @@ public class SearchEngineAdapter extends BaseAdapter {
         final TextView titleView = (TextView) convertView.findViewById(R.id.title);
         titleView.setText(searchEngine.getName());
         titleView.setTypeface(isDefaultSearchEngine ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
-        titleView.setTextColor(isDefaultSearchEngine ? Color.WHITE : 0xFFC7C7C7);
+        titleView.setTextColor(Color.BLACK);
 
         final ImageView iconView = (ImageView) convertView.findViewById(R.id.icon);
         iconView.setImageBitmap(searchEngine.getIcon());
