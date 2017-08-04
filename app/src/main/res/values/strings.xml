@@ -292,5 +292,15 @@ be temporary, and you can try again later.</li>
     <!-- Setting Clear browsing data dialog-->
     <string name="setting_dialog_clear_data">Clean Data</string>
     <string name="setting_dialog_cancel">Cancel</string>
+    <string name="setting_dialog_browsing_history">Browsing history</string>
+    <string name="setting_dialog_search_history">Search history</string>
+    <string name="setting_dialog_from_history">From history</string>
+    <string name="setting_dialog_cookies">Cookies</string>
+    <string name="setting_dialog_cache">Cache</string>
+    <string name="setting_dialog_saving_logins">Saving logins</string>
+
+    <!-- Setting data saving path dialog -->
+    <string name="setting_dialog_sd_card">SD card</string>
+    <string name="setting_dialog_internal_storage">Internal storage</string>
 
 </resources>

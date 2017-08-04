@@ -31,4 +31,16 @@
     <string name="pref_key_privacy_storage_clear_browsing_data" translatable="false"><xliff:g id="preference_key">pref_clear_browsing_data</xliff:g></string>
     <string name="pref_key_privacy_storage_save_downloads_to" translatable="false"><xliff:g id="preference_key">pref_privacy_save_downloads_to</xliff:g></string>
 
+    <!-- clear browsing data-->
+    <string name="pref_value_clear_browsing_history" translatable="false"><xliff:g id="preference_key">pref_clear_browsing_history</xliff:g></string>
+    <string name="pref_value_clear_search_history" translatable="false"><xliff:g id="preference_key">pref_clear_search_history</xliff:g></string>
+    <string name="pref_value_clear_from_history" translatable="false"><xliff:g id="preference_key">pref_clear_from_history</xliff:g></string>
+    <string name="pref_value_clear_cookies" translatable="false"><xliff:g id="preference_key">pref_clear_cookies</xliff:g></string>
+    <string name="pref_value_clear_cache" translatable="false"><xliff:g id="preference_key">pref_clear_cache</xliff:g></string>
+    <string name="pref_value_clear_saving_logins" translatable="false"><xliff:g id="preference_key">pref_clear_saving_logins</xliff:g></string>
+
+    <!-- data saving path values-->
+    <string name="pref_value_saving_path_sd_card" translatable="false"><xliff:g id="preference_key">pref_saving_path_sd_card</xliff:g></string>
+    <string name="pref_value_saving_path_internal_storage" translatable="false"><xliff:g id="preference_key">pref_saving_path_internal_storage</xliff:g></string>
+
 </resources>

@@ -42,13 +42,13 @@ public class DataSavingPathPreference extends ListPreference {
 
     @Override
     public CharSequence getSummary() {
-        if (TextUtils.isEmpty(getValue())) {
-            final String[] values = getContext().getResources().getStringArray(R.array.data_saving_path_values);
+        if (TextUtils.isEmpty(getEntry())) {
+            final String[] entries = getContext().getResources().getStringArray(R.array.data_saving_path_entries);
             setValueIndex(0);
-            return values[0];
+            return entries[0];
         }
 
-        return getValue();
+        return getEntry();
     }
 
     private void buildList() {
