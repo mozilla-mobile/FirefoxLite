@@ -427,6 +427,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
         return original;
     }
@@ -441,6 +442,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
