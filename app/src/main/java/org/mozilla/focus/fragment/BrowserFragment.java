@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -484,11 +485,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         final String fileName = URLUtil.guessFileName(
                 download.getUrl(), download.getContentDisposition(), download.getMimeType());
 
+        final String dir = download.getDownloadType() == Download.TYPE_IMAGE
+                ? Environment.DIRECTORY_PICTURES
+                : Environment.DIRECTORY_DOWNLOADS;
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(download.getUrl()))
                 .addRequestHeader("User-Agent", download.getUserAgent())
                 .addRequestHeader("Cookie", cookie)
                 .addRequestHeader("Referer", getUrl())
-                .setDestinationInExternalPublicDir(download.getDestinationDirectory(), fileName)
+                .setDestinationInExternalPublicDir(dir, fileName)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setMimeType(download.getMimeType());
 

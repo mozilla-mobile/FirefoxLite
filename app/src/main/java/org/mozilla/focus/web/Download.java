@@ -7,8 +7,13 @@ package org.mozilla.focus.web;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 public class Download implements Parcelable {
+
+    public static final int TYPE_OTHER = 0;
+    public static final int TYPE_IMAGE = 1;
+
     public static final Parcelable.Creator<Download> CREATOR = new Parcelable.Creator<Download>() {
 
         @Override
@@ -19,7 +24,7 @@ public class Download implements Parcelable {
                     source.readString(),
                     source.readString(),
                     source.readLong(),
-                    source.readString());
+                    source.readInt());
         }
 
         @Override
@@ -33,23 +38,20 @@ public class Download implements Parcelable {
     private final String mimeType;
     private final long contentLength;
     private final String userAgent;
-    private final String destinationDirectory;
+    private final int downloadtype;
 
-    public Download(String url, String userAgent, String contentDisposition, String mimeType, long contentLength,
-                    String destinationDirectory) {
+    public Download(@NonNull String url,
+                    @NonNull String userAgent,
+                    @NonNull String contentDisposition,
+                    @NonNull String mimeType,
+                    long contentLength,
+                    int type) {
         this.url = url;
         this.userAgent = userAgent;
         this.contentDisposition = contentDisposition;
         this.mimeType = mimeType;
         this.contentLength = contentLength;
-        this.destinationDirectory = destinationDirectory;
-    }
-
-    /**
-     * @return a Environment.DIRECTORY_* constant.
-     */
-    public String getDestinationDirectory() {
-        return destinationDirectory;
+        this.downloadtype = type;
     }
 
     public String getUrl() {
@@ -72,6 +74,10 @@ public class Download implements Parcelable {
         return userAgent;
     }
 
+    public int getDownloadType() {
+        return downloadtype;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -84,6 +90,5 @@ public class Download implements Parcelable {
         dest.writeString(contentDisposition);
         dest.writeString(mimeType);
         dest.writeLong(contentLength);
-        dest.writeString(destinationDirectory);
     }
 }

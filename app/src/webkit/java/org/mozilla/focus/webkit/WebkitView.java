@@ -227,7 +227,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
                 }
 
                 if (callback != null) {
-                    final Download download = new Download(url, userAgent, contentDisposition, mimetype, contentLength, Environment.DIRECTORY_DOWNLOADS);
+                    final Download download = new Download(url, userAgent, contentDisposition, mimetype, contentLength, Download.TYPE_OTHER);
                     callback.onDownloadStart(download);
                 }
             }
