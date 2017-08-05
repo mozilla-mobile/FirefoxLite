@@ -123,7 +123,7 @@ public class MainMediator {
                 toggleFloatingButtons(View.VISIBLE, View.GONE, View.VISIBLE);
             }
             if (BrowserFragment.FRAGMENT_TAG.equals(top.getTag())) {
-                toggleFloatingButtons(View.VISIBLE, View.VISIBLE, View.VISIBLE);
+                toggleFloatingButtons(View.GONE, View.GONE, View.GONE);
             }
         }
     }
