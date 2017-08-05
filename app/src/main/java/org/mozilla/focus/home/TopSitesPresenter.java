@@ -26,18 +26,6 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
     public TopSitesPresenter() {
         this.sites = new ArrayList<>();
         initSites();
-
-        // to simulate adding a site
-        ThreadUtils.postToMainThreadDelayed(new Runnable() {
-            @Override
-            public void run() {
-                final Site site = new Site(TopSitesPresenter.this.sites.size());
-                site.setIconRes(R.drawable.ic_lock);
-                site.setTitle("Let's Encrypt");
-                site.setUrl("https://letsencrypt.org/");
-                TopSitesPresenter.this.addSite(site);
-            }
-        }, 2000);
     }
 
     @Override
@@ -74,36 +62,36 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
      */
     private void initSites() {
         final String[] urls = {
-                "https://www.mozilla.org",
-                "https://developer.mozilla.org/zh-TW/",
-                "https://zh.wikipedia.org/wiki/Taiwan",
+                "https://www.amazon.com/",
                 "https://duckduckgo.com/",
-                "https://tools.ietf.org/html/rfc2616",
-                "https://www.w3.org/TR/html5/",
+                "https://vimeo.com/",
+                "https://mbasic.facebook.com/",
                 "https://www.google.com",
-                "https://twitter.com"
+                "https://twitter.com",
+                "https://www.mozilla.org",
+                "https://developer.mozilla.org/zh-TW/"
         };
 
         final String[] titles = {
-                "Mozilla",
-                "MDN",
-                "Wikipedia",
+                "Amazon",
                 "DuckDuckGo",
-                "RFC 2616",
-                "HTML5",
+                "Vimeo",
+                "Facebook",
                 "Google",
-                "Twitter"
+                "Twitter",
+                "Mozilla",
+                "MDN"
         };
 
         final int[] icons = {
-                R.mipmap.ic_launcher,
-                R.mipmap.ic_launcher,
-                R.mipmap.ic_launcher,
-                R.mipmap.ic_launcher,
-                R.drawable.ic_info,
-                R.drawable.action_search,
-                R.drawable.ic_info,
-                R.drawable.action_menu
+                R.mipmap.ic_amazon,
+                R.mipmap.ic_duckduckgo,
+                R.mipmap.ic_vimeo,
+                R.mipmap.ic_facebook,
+                R.mipmap.ic_google,
+                R.mipmap.ic_twitter,
+                R.mipmap.ic_mozilla,
+                R.mipmap.ic_mdn
         };
 
         for (int i = 0; i < urls.length; i++) {

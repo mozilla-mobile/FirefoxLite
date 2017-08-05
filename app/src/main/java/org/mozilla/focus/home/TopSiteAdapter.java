@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.home.model.Site;
 
@@ -44,7 +46,11 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
     public void onBindViewHolder(SiteViewHolder holder, int position) {
         final Site site = sites.get(position);
         holder.text.setText(site.getTitle());
-        holder.img.setImageResource(site.getIconRes());
+//        holder.img.setImageResource(site.getIconRes());
+        Glide.with(holder.img.getContext())
+                .asDrawable()
+                .load(site.getIconRes())
+                .into(holder.img);
 
         // let click listener knows which site is clicked
         holder.itemView.setTag(site);
