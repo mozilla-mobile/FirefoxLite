@@ -31,7 +31,7 @@ import java.util.List;
  * Fragment for displaying he URL input controls.
  */
 public class UrlInputFragment extends Fragment implements UrlInputContract.View,
-        View.OnClickListener,
+        View.OnClickListener, View.OnLongClickListener,
         InlineAutocompleteEditText.OnCommitListener {
 
     public static final String FRAGMENT_TAG = "url_input";
@@ -135,6 +135,19 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     }
 
     @Override
+    public boolean onLongClick(View view) {
+        switch (view.getId()) {
+            case R.id.suggestion_item:
+                setUrlText(((TextView) view).getText());
+                return true;
+            case R.id.clear:
+            case R.id.dismiss:
+            default:
+                return false;
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clear:
@@ -154,6 +167,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
     private void onSuggestionClicked(CharSequence tag) {
         setUrlText(tag);
+        onCommit();
     }
 
     private void dismiss() {
@@ -210,6 +224,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
             item.setText(texts.get(i));
             item.setOnClickListener(this);
+            item.setOnLongClickListener(this);
             this.suggestionView.addView(item);
 
         }
