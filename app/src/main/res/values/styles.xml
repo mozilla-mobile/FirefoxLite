@@ -46,13 +46,20 @@
 
     <style name="MenuButton">
         <item name="android:layout_height">62dp</item>
-        <item name="android:layout_width">78dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:layout_margin">4dp</item>
         <item name="android:orientation">vertical</item>
     </style>
 
     <style name="MenuButton2">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="MenuButtonInner">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
