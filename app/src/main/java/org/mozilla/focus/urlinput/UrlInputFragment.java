@@ -210,6 +210,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     public void setUrlText(CharSequence text) {
         this.urlView.removeTextChangedListener(textChangeListener);
         this.urlView.setText(text);
+        this.urlView.setSelection(text.length());
         this.urlView.addTextChangedListener(textChangeListener);
     }
 
