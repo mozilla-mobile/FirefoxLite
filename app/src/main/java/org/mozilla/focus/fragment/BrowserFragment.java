@@ -599,7 +599,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             case R.id.btn_menu:
                 notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
                 break;
-
+            case R.id.customtab_close:
+                BrowsingSession.getInstance().clearCustomTabConfig();
+                getActivity().finishAndRemoveTask();
+                break;
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
         }
