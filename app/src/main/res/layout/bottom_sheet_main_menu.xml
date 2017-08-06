@@ -16,9 +16,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
         <LinearLayout style="@style/MenuButton"
@@ -26,7 +26,7 @@
             android:onClick="onMenuItemClicked">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/menu_download" />
 
             <TextView
@@ -34,17 +34,12 @@
                 android:text="@string/label_menu_download" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
         <LinearLayout style="@style/MenuButton"
             android:id="@+id/menu_history"
             android:onClick="onMenuItemClicked">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/menu_history" />
 
             <TextView
@@ -52,15 +47,10 @@
                 android:text="@string/label_menu_history" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
         <LinearLayout style="@style/MenuButton">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/action_refresh" />
 
             <TextView
@@ -68,15 +58,10 @@
                 android:text="@string/label_menu_screenshots" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
         <LinearLayout style="@style/MenuButton">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/action_refresh" />
 
             <TextView
@@ -88,9 +73,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <LinearLayout style="@style/MenuButton"
@@ -98,7 +83,7 @@
             android:onClick="onMenuItemClicked">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/menu_share" />
 
             <TextView
@@ -106,15 +91,10 @@
                 android:text="@string/label_menu_share" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
         <LinearLayout style="@style/MenuButton">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/action_refresh" />
 
             <TextView
@@ -122,15 +102,10 @@
                 android:text="@string/label_menu_block_ads" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
         <LinearLayout style="@style/MenuButton">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/action_refresh" />
 
             <TextView
@@ -138,15 +113,10 @@
                 android:text="@string/label_menu_block_image" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
         <LinearLayout style="@style/MenuButton">
 
             <ImageView
-                style="@style/MenuButton2"
+                style="@style/MenuButtonInner"
                 android:src="@drawable/menu_delete" />
 
             <TextView
@@ -163,55 +133,55 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="48dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <ImageView
+        <FrameLayout
             style="@style/MenuButton2"
             android:contentDescription="@string/content_description_back"
             android:id="@+id/action_back"
-            android:onClick="onMenuItemClicked"
-            android:src="@drawable/action_back" />
+            android:onClick="onMenuItemClicked">
 
-        <Space
-            android:layout_width="72dp"
-            android:layout_height="match_parent" />
+            <ImageView
+                style="@style/MenuButtonInner"
+                android:src="@drawable/action_back" />
 
-        <ImageView
+        </FrameLayout>
+
+        <FrameLayout
             style="@style/MenuButton2"
             android:contentDescription="@string/content_description_forward"
             android:id="@+id/action_next"
-            android:onClick="onMenuItemClicked"
-            android:src="@drawable/action_next" />
+            android:onClick="onMenuItemClicked">
 
-        <Space
-            android:layout_width="72dp"
-            android:layout_height="match_parent" />
+            <ImageView
+                style="@style/MenuButtonInner"
+                android:src="@drawable/action_next" />
 
-        <ImageView
+        </FrameLayout>
+
+        <FrameLayout
             style="@style/MenuButton2"
             android:contentDescription="@string/content_description_reload"
             android:id="@+id/action_refresh"
-            android:onClick="onMenuItemClicked"
-            android:src="@drawable/action_refresh" />
+            android:onClick="onMenuItemClicked">
 
-        <ImageView
-            android:layout_width="72dp"
-            android:layout_height="match_parent" />
+            <ImageView
+                style="@style/MenuButtonInner"
+                android:src="@drawable/action_refresh" />
 
-        <ImageView
+        </FrameLayout>
+
+        <FrameLayout
             style="@style/MenuButton2"
             android:id="@+id/menu_preferences"
-            android:onClick="onMenuItemClicked"
-            android:src="@drawable/menu_settings" />
+            android:onClick="onMenuItemClicked">
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            <ImageView
+                style="@style/MenuButtonInner"
+                android:src="@drawable/menu_settings" />
+
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
