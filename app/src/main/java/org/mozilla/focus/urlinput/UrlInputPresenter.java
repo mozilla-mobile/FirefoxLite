@@ -6,15 +6,26 @@
 package org.mozilla.focus.urlinput;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mozilla.focus.utils.UrlUtils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class UrlInputPresenter implements UrlInputContract.Presenter {
@@ -23,13 +34,11 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
     // This is just a Mock Presenter, in real implementation we should get rid of Android classes.
     final private Context ctx;
-    final private Handler handler;
-    final private static int SUGGESTION_TAG = 0x9527;
-    final private static long DELAY = 1000;
+
+    private AsyncTask queryTask;
 
     public UrlInputPresenter(@NonNull Context context) {
         this.ctx = context;
-        this.handler = new MyHandler(this.ctx.getMainLooper());
     }
 
     @Override
@@ -39,13 +48,9 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
     @MainThread
     @Override
-    public void onInput(CharSequence input) {
+    public void onInput(@NonNull CharSequence input) {
         if (view == null) {
             return;
-        }
-
-        if (this.handler.hasMessages(SUGGESTION_TAG)) {
-            this.handler.removeMessages(SUGGESTION_TAG);
         }
 
         if (input.length() == 0) {
@@ -58,32 +63,86 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
             return;
         }
 
-        Message msg = this.handler.obtainMessage(SUGGESTION_TAG);
-        msg.obj = input;
-        this.handler.sendMessageDelayed(msg, DELAY);
-    }
-
-    class MyHandler extends Handler {
-        MyHandler(Looper looper) {
-            super(looper);
+        if (queryTask != null) {
+            queryTask.cancel(true);
+            queryTask = null;
         }
 
-        @Override
-        public void handleMessage(Message msg) {
-            if (view == null) {
-                return;
-            }
-            final CharSequence input = (CharSequence) msg.obj;
-
-            final String[] append = {"foo", "bar", "firefox",
-                    " test", "mozilla", "zerda",
-                    " internet", " taiwan", " japan"};
-            List<CharSequence> texts = new ArrayList<>();
-            for (int i = 0; i < append.length; i++) {
-                texts.add(input + " " + append[i]);
+        queryTask = new AsyncTask<CharSequence, Void, List<CharSequence>>() {
+            @Override
+            protected List<CharSequence> doInBackground(CharSequence... urls) {
+                return HttpRequest.get(urls[0]);
             }
 
-            UrlInputPresenter.this.view.setSuggestions(texts);
+            @Override
+            protected void onPostExecute(List<CharSequence> strings) {
+                if(view != null){
+                    view.setSuggestions(strings);
+                }
+            }
+        }.execute(input);
+
+    }
+
+    private static class HttpRequest {
+        private static final String URL_QUERY_API_DUCKDUCKGO = "https://ac.duckduckgo.com/ac/?q=";
+
+        static List<CharSequence> get(CharSequence uri) {
+
+            String line = "";
+            HttpURLConnection urlConnection = null;
+            BufferedReader r = null;
+            try {
+                URL url = new URL(URL_QUERY_API_DUCKDUCKGO + uri);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                r = new BufferedReader(new InputStreamReader(in, "utf-8"));
+                StringBuilder total = new StringBuilder();
+                while ((line = r.readLine()) != null) {
+                    total.append(line).append('\n');
+                }
+
+                line = total.toString();
+            } catch (MalformedURLException e) {
+            } catch (IOException e) {
+            } finally {
+                if (r != null) {
+                    try {
+                        r.close();
+                    } catch (Exception e) {
+                        ;
+                    }
+                }
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+
+            if (TextUtils.isEmpty(line)) {
+                return Collections.emptyList();
+            }
+
+            List<CharSequence> suggests = null;
+            try {
+                JSONArray jsonArray = new JSONArray(line);
+                int size = jsonArray.length();
+                suggests = new ArrayList<>(size);
+                try {
+                    for (int i = 0; i < size; i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String suggestText = jsonObject.getString("phrase");
+                        suggests.add(suggestText);
+                    }
+                } catch (JSONException e) {
+                }
+            } catch (JSONException e) {
+            } finally {
+                if (suggests == null) {
+                    suggests = Collections.emptyList();
+                }
+            }
+
+            return suggests;
         }
     }
 }
