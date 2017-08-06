@@ -24,11 +24,10 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
             android:layout_marginTop="25dp"
             android:clipChildren="false"
             android:orientation="vertical">
-
-            <include layout="@layout/main_fabs" />
 
             <org.mozilla.focus.web.IWebView
                 android:id="@+id/webview"
@@ -71,6 +70,33 @@
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom">
+
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/action_search" />
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/menu_home" />
+
+        <ImageButton
+            android:id="@+id/btn_menu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/action_menu" />
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/video_container"
