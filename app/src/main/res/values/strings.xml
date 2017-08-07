@@ -303,4 +303,7 @@ be temporary, and you can try again later.</li>
     <string name="setting_dialog_sd_card">SD card</string>
     <string name="setting_dialog_internal_storage">Internal storage</string>
 
+    <!--BrowsingHistoryActivity-->
+    <string name="browsing_history_clear_btn">CLEAR BROWSING HISTORY</string>
+
 </resources>

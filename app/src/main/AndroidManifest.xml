@@ -71,6 +71,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/InfoTheme" />
 
+        <activity android:name=".history.BrowsingHistoryActivity" />
+
         <service
             android:name=".customtabs.CustomTabsService"
             android:exported="true"
@@ -82,6 +84,12 @@
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
                    android:value="true" />
+
+        <provider
+            android:name=".provider.HistoryProvider"
+            android:authorities="${applicationId}.provider.historyprovider"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
