@@ -586,7 +586,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 break;
             case R.id.btn_search:
-                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, null);
+                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 break;
             case R.id.btn_home:
                 notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
