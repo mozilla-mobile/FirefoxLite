@@ -86,8 +86,8 @@
                    android:value="true" />
 
         <provider
-            android:name=".history.HistoryContentProvider"
-            android:authorities="history"
+            android:name=".provider.HistoryProvider"
+            android:authorities="${applicationId}.provider.historyprovider"
             android:enabled="true"
             android:exported="false" />
     </application>

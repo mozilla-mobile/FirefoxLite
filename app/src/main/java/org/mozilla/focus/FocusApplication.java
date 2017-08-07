@@ -8,6 +8,7 @@ package org.mozilla.focus;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
+import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.locale.LocaleAwareApplication;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -30,6 +31,8 @@ public class FocusApplication extends LocaleAwareApplication {
 
         TelemetryWrapper.init(this);
         AdjustHelper.setupAdjustIfNeeded(this);
+
+        BrowsingHistoryManager.getInstance().init(this);
     }
 
     private void enableStrictMode() {
