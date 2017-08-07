@@ -57,8 +57,7 @@
                 android:layout_marginStart="5dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/content_description_clear_input"
-                android:src="@drawable/ic_cancel"
-                android:tint="#000000"
+                android:src="@drawable/edit_close"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
