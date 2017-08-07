@@ -36,13 +36,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.greenDAO.DBUtils;
 import org.mozilla.focus.greenDAO.DownloadInfoEntity;
-import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.IntentUtils;
@@ -454,8 +451,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             pendingDownload = null;
             return;
-        }
-        else if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
+        } else if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 geolocationCallback.invoke(geolocationOrigin, true, false);
             } else {
@@ -499,7 +495,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         Long downloadId = manager.enqueue(request);
 
         //record download ID
-        DownloadInfoEntity downloadInfo = new DownloadInfoEntity(null,downloadId,fileName);
+        DownloadInfoEntity downloadInfo = new DownloadInfoEntity(null, downloadId, fileName);
         DBUtils.getDbService().getDao().insert(downloadInfo);
 
     }
@@ -507,8 +503,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     /*
      * show webview geolocation permission prompt
      */
-    private void showGeolocationPermissionPrompt(final String origin, final GeolocationPermissions.Callback callback)
-    {
+    private void showGeolocationPermissionPrompt(final String origin, final GeolocationPermissions.Callback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(getString(R.string.geolocation_dialog_message, origin))
                 .setCancelable(true)
@@ -524,11 +519,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         }
                     }
                 }).setNegativeButton(getString(R.string.geolocation_dialog_block), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        callback.invoke(origin, false, false);
-                        geolocationOrigin = "";
-                        geolocationCallback = null;
-                    }
+            public void onClick(DialogInterface dialog, int id) {
+                callback.invoke(origin, false, false);
+                geolocationOrigin = "";
+                geolocationCallback = null;
+            }
         });
         AlertDialog alert = builder.create();
         alert.show();
