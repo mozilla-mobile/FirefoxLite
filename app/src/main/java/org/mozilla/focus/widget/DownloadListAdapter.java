@@ -44,14 +44,15 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
 
     @Override
     public void onBindViewHolder(DownloadViewHolder holder, int position) {
+        DownloadInfo downloadInfo = mDownloadInfo.get(position);
 
-        holder.title.setText(mDownloadInfo.get(position).getFileName());
+        holder.title.setText(downloadInfo.getFileName());
 
         String subtitle="";
-        if (mDownloadInfo.get(position).getStatus().equalsIgnoreCase("successful")){
-            subtitle = mDownloadInfo.get(position).getSize()+","+mDownloadInfo.get(position).getDate();
-        }else {
-            subtitle = mDownloadInfo.get(position).getStatus();
+        if ("successful".equalsIgnoreCase(downloadInfo.getStatus())) {
+            subtitle = downloadInfo.getSize() + "," + downloadInfo.getDate();
+        } else {
+            subtitle = downloadInfo.getStatus();
         }
 
         holder.subtitle.setText(subtitle);
