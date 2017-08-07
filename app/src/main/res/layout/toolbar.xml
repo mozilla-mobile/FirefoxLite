@@ -22,16 +22,14 @@
         android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/lock"
+        android:id="@+id/site_identity"
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="6dp"
         android:contentDescription="@string/content_description_lock"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_lock"
-        android:tint="#55CC55"
-        android:visibility="gone" />
+        android:src="@drawable/site_identity" />
 
     <!-- lint: We need to use singleLine=true for the fading edge to work (which is officially deprecated,
          but still needed), hence we ignore deprecated warnings here.. -->

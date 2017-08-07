@@ -68,6 +68,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private static final String ARGUMENT_URL = "url";
     private static final String RESTORE_KEY_DOWNLOAD = "download";
 
+    private static final int SITE_GLOBE = 0;
+    private static final int SITE_LOCK = 1;
+
     public static BrowserFragment create(String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
@@ -83,7 +86,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private TransitionDrawable backgroundTransition;
     private TextView urlView;
     private AnimatedProgressBar progressView;
-    private ImageView lockView;
+    private ImageView siteIdentity;
 
     //GeoLocationPermission
     private String geolocationOrigin;
@@ -153,7 +156,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             menuBtn.setOnClickListener(this);
         }
 
-        lockView = (ImageView) view.findViewById(R.id.lock);
+        siteIdentity = (ImageView) view.findViewById(R.id.site_identity);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
 
@@ -230,8 +233,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         // We need to tint some icons.. We already tinted the close button above. Let's tint our other icons too.
-        final Drawable lockIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_lock, textColor);
-        lockView.setImageDrawable(lockIcon);
+        final Drawable tintedIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_lock, textColor);
+        siteIdentity.setImageDrawable(tintedIcon);
     }
 
     @Override
@@ -293,7 +296,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             public void onPageStarted(final String url) {
                 updateIsLoading(true);
 
-                lockView.setVisibility(View.GONE);
+                siteIdentity.setImageLevel(SITE_GLOBE);
 
                 progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading));
 
@@ -315,7 +318,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 progressView.setVisibility(View.GONE);
 
                 if (isSecure) {
-                    lockView.setVisibility(View.VISIBLE);
+                    siteIdentity.setImageLevel(SITE_LOCK);
                 }
             }
 
