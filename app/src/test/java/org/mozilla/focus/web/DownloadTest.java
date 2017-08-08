@@ -18,25 +18,27 @@ import static org.junit.Assert.*;
 public class DownloadTest {
     @Test
     public void testGetters() {
+        final int type = Download.TYPE_OTHER;
         final Download download = new Download(
                 "https://www.mozilla.org/image.png",
                 "Focus/1.0",
                 "Content-Disposition: attachment; filename=\"filename.png\"",
                 "image/png",
                 1024,
-                Environment.DIRECTORY_DOWNLOADS);
+                type);
 
         assertEquals("https://www.mozilla.org/image.png", download.getUrl());
         assertEquals("Focus/1.0", download.getUserAgent());
         assertEquals("Content-Disposition: attachment; filename=\"filename.png\"", download.getContentDisposition());
         assertEquals("image/png", download.getMimeType());
         assertEquals(1024, download.getContentLength());
-        assertEquals(Environment.DIRECTORY_DOWNLOADS, download.getDestinationDirectory());
+        assertEquals(Download.TYPE_OTHER, download.getDownloadType());
     }
 
     @Test
     public void testParcelable() {
         final Parcel parcel = Parcel.obtain();
+        final int type = Download.TYPE_OTHER;
 
         {
             final Download download = new Download(
@@ -45,7 +47,7 @@ public class DownloadTest {
                     "Content-Disposition: attachment; filename=\"filename.png\"",
                     "image/png",
                     1024,
-                    Environment.DIRECTORY_PICTURES);
+                    type);
             download.writeToParcel(parcel, 0);
         }
 
@@ -59,7 +61,7 @@ public class DownloadTest {
             assertEquals("Content-Disposition: attachment; filename=\"filename.png\"", download.getContentDisposition());
             assertEquals("image/png", download.getMimeType());
             assertEquals(1024, download.getContentLength());
-            assertEquals(Environment.DIRECTORY_PICTURES, download.getDestinationDirectory());
+            assertEquals(type, download.getDownloadType());
         }
     }
 }
