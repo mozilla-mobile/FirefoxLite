@@ -7,6 +7,7 @@
     </string-array>
 
     <!-- data saving path values-->
+    <!-- ordering of this array DOES matter, it effects Settings.shouldSaveToExternalStorage() -->
     <string-array name="data_saving_path_values">
         <item>@string/pref_value_saving_path_sd_card</item>
         <item>@string/pref_value_saving_path_internal_storage</item>
