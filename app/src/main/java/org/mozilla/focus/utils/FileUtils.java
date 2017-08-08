@@ -6,8 +6,14 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class FileUtils {
     private static final String WEBVIEW_DIRECTORY = "app_webview";
@@ -20,6 +26,74 @@ public class FileUtils {
     public static boolean deleteWebViewDirectory(final Context context) {
         final File webviewDirectory = new File(context.getApplicationInfo().dataDir, WEBVIEW_DIRECTORY);
         return webviewDirectory.exists() && deleteDirectory(webviewDirectory);
+    }
+
+    /**
+     * To ensure a directory exists and writable
+     *
+     * @param dir directory as File type
+     * @return true if the directory is writable
+     */
+    public static boolean ensureDir(@NonNull File dir) {
+        if (dir.mkdirs()) {
+            return true;
+        } else {
+            return dir.exists() && dir.isDirectory() && dir.canWrite();
+        }
+    }
+
+    /**
+     * To copy a file from src to dst.
+     *
+     * @param src source file to read-from.
+     * @param dst destination file to write-in. NOT A DIRECTORY
+     * @return true if copy successful
+     */
+    public static boolean copy(@NonNull File src, @NonNull File dst) {
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        try {
+            if (dst.exists()) {
+                return false;
+            }
+
+            fis = new FileInputStream(src);
+            fos = new FileOutputStream(dst);
+            boolean result = copy(fis, fos);
+            fis.close();
+            fos.close();
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (fis != null) {
+                    fis.close();
+                }
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public static boolean copy(@NonNull InputStream src, @NonNull OutputStream dst) {
+        final byte[] buffer = new byte[1024];
+        try {
+            int read;
+            while ((read = src.read(buffer)) != -1) {
+                dst.write(buffer, 0, read);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     private static boolean deleteDirectory(File directory) {
