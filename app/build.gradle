@@ -32,6 +32,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix ".${defaultConfig.versionCode}"
         }
         beta {
             initWith release
@@ -40,10 +41,12 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".beta"
+            versionNameSuffix ".${defaultConfig.versionCode}" + applicationIdSuffix
         }
         debug {
             def userName = System.getenv("USER")
             applicationIdSuffix ".debug." + userName
+            versionNameSuffix applicationIdSuffix
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
