@@ -305,5 +305,7 @@ be temporary, and you can try again later.</li>
 
     <!--BrowsingHistoryActivity-->
     <string name="browsing_history_clear_btn">CLEAR BROWSING HISTORY</string>
+    <string name="remove_from_list">Remove from list</string>
+    <string name="delete_file">Delete file</string>
 
 </resources>

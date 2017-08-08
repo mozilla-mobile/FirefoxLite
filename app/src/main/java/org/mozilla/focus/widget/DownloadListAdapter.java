@@ -1,17 +1,19 @@
 package org.mozilla.focus.widget;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
-
 import org.mozilla.focus.R;
 import org.mozilla.focus.greenDAO.DBUtils;
 import org.mozilla.focus.greenDAO.DownloadInfo;
-import org.mozilla.focus.greenDAO.DownloadInfoEntity;
-
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +28,45 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
     private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
 
     public DownloadListAdapter(){
-        List<DownloadInfoEntity> downloadIdList = DBUtils.getDbService().getDao().loadAll();
+        fetchEntity();
+    }
 
-        for (int i = 0 ;i<downloadIdList.size();i++){
-            DownloadInfoEntity entity = downloadIdList.get(i);
-            DownloadInfo downloadInfo = new DownloadInfo(entity.getDownLoadId(),entity.getFileName());
-            mDownloadInfo.add(downloadInfo);
+    public void fetchEntity(){
+        mDownloadInfo.clear();
+        mDownloadInfo = DBUtils.getDbService().getAllDownloadInfo();
+        this.notifyDataSetChanged();
+    }
+
+    public void updateItem(long downloadId){
+
+        for (int i = 0;i<mDownloadInfo.size();i++){
+            if (mDownloadInfo.get(i).getDownloadId().equals(downloadId)){
+                DownloadInfo downloadInfo
+                        = new DownloadInfo(downloadId,mDownloadInfo.get(i).getFileName());
+                mDownloadInfo.set(i,downloadInfo);
+                this.notifyDataSetChanged();
+                break;
+            }
         }
+    }
 
+    private void remove(int position){
+        long downloadId = mDownloadInfo.get(position).getDownloadId();
+        DBUtils.getDbService().delete(downloadId);
+
+        mDownloadInfo.remove(position);
+
+        this.notifyDataSetChanged();
+    }
+
+    private void delete(int position){
+        try {
+            new File(URI.create(mDownloadInfo.get(position).getUri()).getPath()).delete();
+
+        }catch (Exception e){
+            Log.v(this.getClass().getSimpleName(),""+e.getMessage());
+        }
+        remove(position);
     }
 
     @Override
@@ -56,6 +89,36 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
         }
 
         holder.subtitle.setText(subtitle);
+
+        holder.action.setTag(position);
+        holder.action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int position = (int) view.getTag();
+                final PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_delete,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()){
+                            case R.id.remove:
+                                remove(position);
+                                break;
+                            case R.id.delete:
+                                delete(position);
+                                break;
+                            default:
+                                break;
+                        }
+                        popupMenu.dismiss();
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
     }
 
     @Override
@@ -69,7 +132,6 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
         ImageView icon;
         TextView title;
         TextView subtitle;
-        @SuppressFBWarnings("URF_UNREAD_FIELD")
         ImageView action;
 
         public DownloadViewHolder(View itemView) {

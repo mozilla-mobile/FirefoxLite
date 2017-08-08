@@ -3,6 +3,12 @@ package org.mozilla.focus.greenDAO;
 import android.app.DownloadManager;
 import android.content.Context;
 
+import org.greenrobot.greendao.Property;
+import org.greenrobot.greendao.query.QueryBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by anlin on 27/07/2017.
  */
@@ -28,5 +34,30 @@ public class DBService {
 
     public DownloadManager getDownloadManager(){
         return downloadManager;
+    }
+
+    public long insert(Long downloadId,String fileName){
+        DownloadInfoEntity entity = new DownloadInfoEntity(null,downloadId,fileName);
+        return getDao().insert(entity);
+    }
+
+    public void delete(long downloadId){
+        QueryBuilder<DownloadInfoEntity> queryBuilder = getDao().queryBuilder();
+        Property downloadIdProperty = DownloadInfoEntityDao.Properties.DownLoadId;
+        DownloadInfoEntity entity = queryBuilder.where(downloadIdProperty.eq(downloadId)).unique();
+        getDao().delete(entity);
+    }
+
+    public List<DownloadInfo> getAllDownloadInfo(){
+        List<DownloadInfoEntity> downloadIdList = getDao().loadAll();
+        List<DownloadInfo> downloadInfoList = new ArrayList<>();
+
+        for (int i = 0 ;i<downloadIdList.size();i++){
+            DownloadInfoEntity entity = downloadIdList.get(i);
+            DownloadInfo downloadInfo = new DownloadInfo(entity.getDownLoadId(),entity.getFileName());
+            downloadInfoList.add(downloadInfo);
+        }
+
+        return downloadInfoList;
     }
 }
