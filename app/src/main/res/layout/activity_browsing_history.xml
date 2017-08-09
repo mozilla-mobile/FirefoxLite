@@ -19,8 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
-            android:orientation="vertical"
-            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+            android:orientation="vertical" >
 
             <Button
                 android:id="@+id/browsing_history_btn_clear"

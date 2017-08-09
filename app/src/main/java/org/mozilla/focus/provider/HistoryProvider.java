@@ -3,10 +3,10 @@ package org.mozilla.focus.provider;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 import org.mozilla.focus.provider.HistoryContract.BrowsingHistory;
@@ -24,16 +24,26 @@ public class HistoryProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        final Context context = getContext();
-        mDbHelper = HistoryDatabaseHelper.getsInstacne(context);
+        mDbHelper = HistoryDatabaseHelper.getsInstacne(getContext());
         return true;
     }
 
-
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteDatabase db = mDbHelper.getWriteableDatabase();
+        int count;
+        switch (sUriMatcher.match(uri)) {
+            case BROWSING_HISTORY:
+                count = db.delete(Tables.BROWSING_HISTORY, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("URI: " + uri);
+        }
+
+        if (count > 0) {
+            notifyBrowsingHistoryChange();
+        }
+        return count;
     }
 
     @Override
@@ -49,7 +59,7 @@ public class HistoryProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues initialValues) {
         final SQLiteDatabase db = mDbHelper.getWriteableDatabase();
-        long id = 0;
+        long id;
         switch (sUriMatcher.match(uri)) {
             case BROWSING_HISTORY:
                 final ContentValues values = new ContentValues(initialValues);
@@ -62,6 +72,7 @@ public class HistoryProvider extends ContentProvider {
         if (id < 0) {
             return null;
         } else {
+            notifyBrowsingHistoryChange();
             return ContentUris.withAppendedId(uri, id);
         }
     }
@@ -69,15 +80,38 @@ public class HistoryProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) {
-        // TODO: Implement this to handle query requests from clients.
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        switch (sUriMatcher.match(uri)) {
+            case BROWSING_HISTORY:
+                qb.setTables(Tables.BROWSING_HISTORY);
+                break;
+            default:
+                throw new IllegalArgumentException("URI: " + uri);
+        }
+
+        final SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        Cursor cursor = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder, uri.getQueryParameter("limit"));
+
+        return cursor;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection,
             String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteDatabase db = mDbHelper.getWriteableDatabase();
+        int count;
+        switch (sUriMatcher.match(uri)) {
+            case BROWSING_HISTORY:
+                count = db.update(Tables.BROWSING_HISTORY, values, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("URI: " + uri);
+        }
+
+        if (count > 0) {
+            notifyBrowsingHistoryChange();
+        }
+        return count;
     }
 
     private long insertWithUrlUnique(SQLiteDatabase db, ContentValues values) {
@@ -102,5 +136,9 @@ public class HistoryProvider extends ContentProvider {
                 c.close();
             }
         }
+    }
+
+    private void notifyBrowsingHistoryChange() {
+        getContext().getContentResolver().notifyChange(BrowsingHistory.CONTENT_URI, null);
     }
 }

@@ -1,6 +1,7 @@
 package org.mozilla.focus.history;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
@@ -15,24 +16,27 @@ import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 
-import java.util.ArrayList;
-
 /**
  * Created by joseph on 08/08/2017.
  */
 
-public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener,
+        BrowsingHistoryManager.AsyncQueryListener, BrowsingHistoryManager.AsyncDeleteListener {
 
     private static final int VIEW_TYPE_SITE = 1;
     private static final int VIEW_TYPE_DATE = 2;
 
-    private ArrayList<Site> mListSite = new ArrayList<>();
+    private Cursor mCursor;
     private RecyclerView mRecyclerView;
     private Context mContext;
 
+    public interface EmptyListener {
+        void onEmpty(boolean flag);
+    }
     public HistoryItemAdapter(RecyclerView recyclerView, Context context) {
         mRecyclerView = recyclerView;
         mContext = context;
+        BrowsingHistoryManager.getInstance().query(this);
     }
 
     @Override
@@ -50,7 +54,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof SiteItemViewHolder) {
-            Site item = mListSite.get(position);
+            final Site item = getItem(position);
 
             if(item != null) {
                 final SiteItemViewHolder siteVH = (SiteItemViewHolder) holder;
@@ -63,11 +67,9 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 final PopupMenu popupMenu = new PopupMenu(wrapper, siteVH.btnMore);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId() == R.id.browsing_history_menu_delete) {
-                            mListSite.remove(position);
-                            notifyItemRemoved(position);
-                            notifyItemRangeRemoved(position, mListSite.size());
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if(menuItem.getItemId() == R.id.browsing_history_menu_delete) {
+                            BrowsingHistoryManager.getInstance().delete(item.getId(), HistoryItemAdapter.this);
                         }
                         return false;
                     }
@@ -95,7 +97,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return mListSite.size();
+        return mCursor == null ? 0 : mCursor.getCount();
     }
 
     @Override
@@ -107,12 +109,52 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void updateSites(ArrayList<Site> sites) {
-        if(sites != null)
-            mListSite = sites;
-        else
-            mListSite  = new ArrayList<>();
-        notifyDataSetChanged();
+    @Override
+    public void onQueryComplete(Cursor cursor) {
+        if (mContext instanceof EmptyListener) {
+            ((EmptyListener) mContext).onEmpty(cursor == null || cursor.getCount() == 0);
+        }
+        changeCursor(cursor);
+    }
+
+    @Override
+    public void onDeleteComplete(int result) {
+        if (result > 0) {
+            BrowsingHistoryManager.getInstance().query(this);
+        }
+    }
+
+    public void clear() {
+        BrowsingHistoryManager.getInstance().deleteAll(this);
+    }
+
+    public void changeCursor(Cursor cursor) {
+        Cursor old = swapCursor(cursor);
+        if (old != null) {
+            old.close();
+        }
+    }
+
+    private Cursor swapCursor(Cursor newCursor) {
+        if (mCursor == newCursor) {
+            return null;
+        }
+
+        Cursor oldCursor = mCursor;
+        mCursor = newCursor;
+        if (newCursor != null) {
+            notifyDataSetChanged();
+        }
+        return oldCursor;
+    }
+
+    private Site getItem(int position) {
+        if (position > 0 && mCursor != null) {
+            mCursor.moveToPosition(position - 1);
+            return BrowsingHistoryManager.cursorToSite(mCursor);
+        } else {
+            return null;
+        }
     }
 
     private static class SiteItemViewHolder extends RecyclerView.ViewHolder {

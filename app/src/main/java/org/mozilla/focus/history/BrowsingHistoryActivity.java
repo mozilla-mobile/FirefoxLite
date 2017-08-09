@@ -1,9 +1,9 @@
 package org.mozilla.focus.history;
 
+import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,14 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.history.model.Site;
-
-import java.util.ArrayList;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 
-public class BrowsingHistoryActivity extends AppCompatActivity implements View.OnClickListener {
+public class BrowsingHistoryActivity extends AppCompatActivity implements View.OnClickListener, HistoryItemAdapter.EmptyListener {
 
     private Button mBtnClearHistory;
     private ViewGroup mContainerRecyclerView;
@@ -46,34 +43,28 @@ public class BrowsingHistoryActivity extends AppCompatActivity implements View.O
         mAdapter = new HistoryItemAdapter(recyclerView, this);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
 
-//        ArrayList<Site> sites = new ArrayList<>();
-//        sites.add(new Site("Amazon", "https://www.amazon.com/", Calendar.getInstance().getTimeInMillis()));
-//        sites.add(new Site("Yahoo", "https://www.yahoo.com/", Calendar.getInstance().getTimeInMillis()));
-//        sites.add(new Site("Amazon", "https://www.amazon.com/", Calendar.getInstance().getTimeInMillis()));
-//        sites.add(new Site("Yahoo", "https://www.yahoo.com/", Calendar.getInstance().getTimeInMillis()));
-//        sites.add(new Site("Amazon", "https://www.amazon.com/", Calendar.getInstance().getTimeInMillis()));
-//        sites.add(new Site("Yahoo", "https://www.yahoo.com/", Calendar.getInstance().getTimeInMillis()));
-//        sites.add(new Site("Amazon", "https://www.amazon.com/", Calendar.getInstance().getTimeInMillis()));
-//        sites.add(new Site("Yahoo", "https://www.yahoo.com/", Calendar.getInstance().getTimeInMillis()));
-//        updateSites(sites);
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.changeCursor(null);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.browsing_history_btn_clear:
-                updateSites(null);
+                mAdapter.clear();
                 break;
             default:
                 break;
         }
     }
 
-    private void updateSites(ArrayList<Site> sites) {
-        if(sites == null || sites.size() == 0) {
+    @Override
+    public void onEmpty(boolean flag) {
+        if(flag) {
             mContainerRecyclerView.setVisibility(View.GONE);
             mContainerEmptyView.setVisibility(View.VISIBLE);
 
@@ -81,6 +72,5 @@ public class BrowsingHistoryActivity extends AppCompatActivity implements View.O
             mContainerRecyclerView.setVisibility(View.VISIBLE);
             mContainerEmptyView.setVisibility(View.GONE);
         }
-        mAdapter.updateSites(sites);
     }
 }
