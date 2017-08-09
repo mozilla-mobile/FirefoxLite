@@ -41,7 +41,12 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".beta"
-            versionNameSuffix ".${defaultConfig.versionCode}" + applicationIdSuffix
+
+            def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
+            if (buddy_build_number?.trim()) {
+                buddy_build_number = "." + buddy_build_number
+            }
+            versionNameSuffix "${buddy_build_number}" + applicationIdSuffix
         }
         debug {
             def userName = System.getenv("USER")
