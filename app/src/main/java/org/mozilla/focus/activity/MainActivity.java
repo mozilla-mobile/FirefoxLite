@@ -11,10 +11,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -23,6 +25,7 @@ import android.view.View;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
+import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -35,11 +38,14 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.DownloadDialogShowListener;
 import org.mozilla.focus.widget.FragmentListener;
 
+import java.lang.ref.WeakReference;
+
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener {
     public static final String ACTION_OPEN = "open";
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
+    private static final Handler HANDLER = new Handler();
 
     private String pendingUrl;
 
@@ -295,7 +301,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void onCapturePageClicked(final BrowserFragment browserFragment) {
         if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             // We do have the permission to write to the external storage.
-            browserFragment.capturePage();
+            showLoadingAndCapture(browserFragment);
         } else {
             // We do not have the permission to write to the external storage. Request the permission and start the
             // capture from onRequestPermissionsResult().
@@ -305,6 +311,43 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    private static final class CaptureRunnable implements Runnable {
+        private final WeakReference<BrowserFragment> browserFragmentWeakReference;
+        private final WeakReference<ScreenCaptureDialogFragment> screenCaptureDialogFragmentWeakReference;
+        private final WeakReference<View> containerWeakReference;
+
+        public CaptureRunnable(BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container){
+            browserFragmentWeakReference = new WeakReference<>(browserFragment);
+            screenCaptureDialogFragmentWeakReference = new WeakReference<>(screenCaptureDialogFragment);
+            containerWeakReference = new WeakReference<>(container);
+        }
+
+        @Override
+        public void run() {
+            BrowserFragment browserFragment = browserFragmentWeakReference.get();
+            ScreenCaptureDialogFragment screenCaptureDialogFragment = screenCaptureDialogFragmentWeakReference.get();
+            View view = containerWeakReference.get();
+            if(browserFragment!=null) {
+                browserFragment.capturePage();
+            }
+            if(screenCaptureDialogFragment!=null) {
+                screenCaptureDialogFragment.dismiss();
+            }
+            if(view!=null) {
+                Snackbar.make(view, R.string.screenshot_saved, Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void showLoadingAndCapture(final BrowserFragment browserFragment) {
+        final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
+        capturingFragment.show(getSupportFragmentManager(), "capturingFragment");
+        final int WAIT_INTERVAL = 50;
+        // Post delay to wait for Dialog to show
+        HANDLER.postDelayed(new CaptureRunnable(browserFragment, capturingFragment, findViewById(R.id.container)), WAIT_INTERVAL);
+    }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
@@ -313,7 +356,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if (browserFragment == null || !browserFragment.isVisible()) {
                     return;
                 }
-                browserFragment.capturePage();
+                showLoadingAndCapture(browserFragment);
             }
         }
     }
