@@ -5,14 +5,18 @@
 
 package org.mozilla.focus.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -35,6 +39,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public static final String ACTION_OPEN = "open";
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
+    private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
 
     private String pendingUrl;
 
@@ -223,6 +228,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.action_next:
             case R.id.action_refresh:
             case R.id.action_share:
+            case R.id.capture_page:
                 onMenuBrowsingItemClicked(v);
                 break;
             default:
@@ -248,6 +254,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.action_share:
                 onShraeClicked(browserFragment);
+                break;
+            case R.id.capture_page:
+                onCapturePageClicked(browserFragment);
                 break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
@@ -281,6 +290,32 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onRefreshClicked(final BrowserFragment browserFragment) {
         browserFragment.reload();
+    }
+
+    private void onCapturePageClicked(final BrowserFragment browserFragment) {
+        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            // We do have the permission to write to the external storage.
+            browserFragment.capturePage();
+        } else {
+            // We do not have the permission to write to the external storage. Request the permission and start the
+            // capture from onRequestPermissionsResult().
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                final BrowserFragment browserFragment = getBrowserFragment();
+                if (browserFragment == null || !browserFragment.isVisible()) {
+                    return;
+                }
+                browserFragment.capturePage();
+            }
+        }
     }
 
     private void onShraeClicked(final BrowserFragment browserFragment) {

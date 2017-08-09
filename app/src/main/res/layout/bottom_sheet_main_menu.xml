@@ -59,7 +59,9 @@
                 android:text="@string/label_menu_screenshots" />
         </LinearLayout>
 
-        <LinearLayout style="@style/MenuButton">
+        <LinearLayout style="@style/MenuButton"
+            android:id="@+id/capture_page"
+            android:onClick="onMenuItemClicked">
 
             <ImageView
                 style="@style/MenuButtonInner"
