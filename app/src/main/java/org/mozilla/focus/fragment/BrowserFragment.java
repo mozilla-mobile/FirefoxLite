@@ -679,8 +679,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (iwebView != null && iwebView instanceof WebView) {
             WebView webView = (WebView) iwebView;
             try {
-                saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), getPageBitmap(webView));
-                return true;
+                Bitmap content = getPageBitmap(webView);
+                if(content!=null) {
+                    saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
+                    return true;
+                } else {
+                    return false;
+                }
+
             } catch (IOException ex) {
                 return false;
             }
@@ -691,10 +697,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private Bitmap getPageBitmap(WebView webView) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        Bitmap bitmap = Bitmap.createBitmap(webView.getWidth(), (int) (webView.getContentHeight() * displaymetrics.density), Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(bitmap);
-        webView.draw(canvas);
-        return bitmap;
+        try {
+            Bitmap bitmap = Bitmap.createBitmap(webView.getWidth(), (int) (webView.getContentHeight() * displaymetrics.density), Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(bitmap);
+            webView.draw(canvas);
+            return bitmap;
+        // OOM may occur, even if OOMError is not thrown, operations during Bitmap creation may
+        // throw other Exceptions such as NPE when the bitmap is very large.
+        } catch (Exception | OutOfMemoryError ex) {
+            return null;
+        }
+
     }
 
     private void saveBitmapToStorage(String fileName, Bitmap bitmap) throws IOException {

@@ -327,14 +327,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             BrowserFragment browserFragment = browserFragmentWeakReference.get();
             ScreenCaptureDialogFragment screenCaptureDialogFragment = screenCaptureDialogFragmentWeakReference.get();
             View view = containerWeakReference.get();
-            if(browserFragment!=null) {
-                browserFragment.capturePage();
+            int captureResultResource = R.string.screenshot_failed;
+            if(browserFragment!=null && browserFragment.capturePage()) {
+                captureResultResource = R.string.screenshot_saved;
             }
             if(screenCaptureDialogFragment!=null) {
                 screenCaptureDialogFragment.dismiss();
             }
             if(view!=null) {
-                Snackbar.make(view, R.string.screenshot_saved, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(view, captureResultResource, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
