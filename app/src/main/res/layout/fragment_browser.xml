@@ -71,32 +71,56 @@
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom">
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        tools:background="#88FF88">
 
-        <ImageButton
-            android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/action_search" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorMenuBackground"
+            tools:background="#FF8888" />
 
-        <ImageButton
-            android:id="@+id/btn_home"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/menu_home" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|bottom">
 
-        <ImageButton
-            android:id="@+id/btn_menu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/action_menu" />
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/btn_home"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/round_rectangle_ripple"
+                android:src="@drawable/menu_home" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="76dp"
+                android:layout_marginStart="76dp"
+                android:src="@drawable/action_search"
+                android:tint="@color/colorAccent"
+                app:backgroundTint="@color/colorFloatingActionButtonTint"
+                app:fabSize="normal"
+                app:rippleColor="#500A84FF" />
+
+            <ImageButton
+                android:id="@+id/btn_menu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/round_rectangle_ripple"
+                android:src="@drawable/action_menu" />
+
+        </LinearLayout>
+    </FrameLayout>
+
 
     <FrameLayout
         android:id="@+id/video_container"
