@@ -567,12 +567,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // FIXME: does Zerda need this?
                 BrowsingSession.getInstance().clearCustomTabConfig();
                 getActivity().finish();
-            } else {
-                // Just go back to the home screen.
-                showHomeScreen();
-            }
 
-            TelemetryWrapper.eraseBackEvent();
+                TelemetryWrapper.eraseBackEvent();
+            } else {
+                // let parent to decide for this Fragment
+                return false;
+            }
         }
 
         return true;
@@ -588,10 +588,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void openPreference() {
         notifyParent(FragmentListener.TYPE.OPEN_PREFERENCE, null);
-    }
-
-    public void showHomeScreen() {
-        notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
     }
 
     @Override
