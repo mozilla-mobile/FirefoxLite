@@ -72,15 +72,6 @@ public class WebContextMenu {
         final NavigationView menu = (NavigationView) view.findViewById(R.id.context_menu);
         setupMenuForHitTarget(dialog, menu, callback, hitTarget);
 
-        final TextView warningView = (TextView) view.findViewById(R.id.warning);
-        if (hitTarget.isImage) {
-            //noinspection deprecation -- Mew API is only available on 24+
-            warningView.setText(Html.fromHtml(
-                    context.getString(R.string.contextmenu_image_warning, context.getString(R.string.app_name))));
-        } else {
-            warningView.setVisibility(View.GONE);
-        }
-
         dialog.show();
     }
 
