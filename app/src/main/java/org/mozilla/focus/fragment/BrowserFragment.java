@@ -14,6 +14,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -25,12 +27,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,7 +56,11 @@ import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.Calendar;
 
 /**
  * Fragment for displaying the browser UI.
@@ -665,6 +673,60 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             webView.reload();
         }
     }
+
+    public boolean capturePage() {
+        final IWebView iwebView = getWebView();
+        if (iwebView != null && iwebView instanceof WebView) {
+            WebView webView = (WebView) iwebView;
+            try {
+                Bitmap content = getPageBitmap(webView);
+                if(content!=null) {
+                    saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (IOException ex) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    private Bitmap getPageBitmap(WebView webView) {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        try {
+            Bitmap bitmap = Bitmap.createBitmap(webView.getWidth(), (int) (webView.getContentHeight() * displaymetrics.density), Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(bitmap);
+            webView.draw(canvas);
+            return bitmap;
+        // OOM may occur, even if OOMError is not thrown, operations during Bitmap creation may
+        // throw other Exceptions such as NPE when the bitmap is very large.
+        } catch (Exception | OutOfMemoryError ex) {
+            return null;
+        }
+
+    }
+
+    private void saveBitmapToStorage(String fileName, Bitmap bitmap) throws IOException {
+        File folder = new File(Environment.getExternalStorageDirectory(), "Zerda");
+        if(!folder.exists() && !folder.mkdir()){
+            throw new IOException("Can't create folder");
+        }
+        fileName = fileName.concat(".jpg");
+        File file = new File(folder, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void setBlockingEnabled(boolean enabled) {
         final IWebView webView = getWebView();

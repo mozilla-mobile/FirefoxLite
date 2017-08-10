@@ -307,4 +307,8 @@ be temporary, and you can try again later.</li>
     <string name="remove_from_list">Remove from list</string>
     <string name="delete_file">Delete file</string>
 
+    <!--Long Screenshot-->
+    <string name="screenshot_saved">Screenshot saved.</string>
+    <string name="screenshot_failed">Failed to capture</string>
+
 </resources>

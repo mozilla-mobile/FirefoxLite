@@ -35,6 +35,7 @@ public class WebViewProvider {
     }
 
     public static View create(Context context, AttributeSet attrs) {
+        WebView.enableSlowWholeDocumentDraw();
         final WebkitView webkitView = new WebkitView(context, attrs);
         final WebSettings settings = webkitView.getSettings();
 
