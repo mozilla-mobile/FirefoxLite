@@ -51,7 +51,8 @@
 
             <ImageView
                 style="@style/MenuButtonInner"
-                android:src="@drawable/action_refresh" />
+                android:tint="#01000000"
+                android:src="@android:drawable/ic_dialog_info" />
 
             <TextView
                 style="@style/MenuText"
@@ -62,7 +63,8 @@
 
             <ImageView
                 style="@style/MenuButtonInner"
-                android:src="@drawable/action_refresh" />
+                android:tint="#01000000"
+                android:src="@android:drawable/ic_dialog_info" />
 
             <TextView
                 style="@style/MenuText"
@@ -95,7 +97,9 @@
 
             <ImageView
                 style="@style/MenuButtonInner"
-                android:src="@drawable/action_refresh" />
+                android:tint="#01000000"
+                android:src="@android:drawable/ic_dialog_info" />
+
 
             <TextView
                 style="@style/MenuText"
@@ -106,7 +110,8 @@
 
             <ImageView
                 style="@style/MenuButtonInner"
-                android:src="@drawable/action_refresh" />
+                android:tint="#01000000"
+                android:src="@android:drawable/ic_dialog_info" />
 
             <TextView
                 style="@style/MenuText"
