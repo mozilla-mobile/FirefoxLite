@@ -74,7 +74,6 @@
     <string name="contextmenu_image_share">ရုပ်ပုံကို မျှဝေရန်</string>
     <string name="contextmenu_image_copy">ရုပ်ပုံလိပ်စာကို ကူးပါ</string>
     <string name="contextmenu_image_save">ရုပ်ပုံကို သိမ်းရန်</string>
-    <string name="contextmenu_image_warning"><![CDATA["သင် %1$s မှတ်တမ်းကို ရှင်းလင်းသည့်အခါ သိမ်းထားသော သို့မဟုတ် မျှဝေထားသော ရုပ်ပုံများကို "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">&#4121;&#4118;&#4155;&#4096;&#4154;&#4117;&#4139;</b>။]]></string>
     <string name="firstrun_tracking_title">မည်သူမျှစောင့်ကြည့်မနေသကဲ့သို့ အသုံးပြုပါ</string>
     <string name="firstrun_tracking_text">ကြည့်ရှုနေစဉ် အွန်လိုင်းနောက်ယောင်ခံများကို အလိုအလျောက် တားဆီးသည်။ ထို့နောက် ကြည့်ရှုခဲ့သော ဝဘ်စာမျက်နှာများနှင့် ကွတ်ကီးများကို အက်ပ်ရှိ သို့မဟုတ် အသိပေးချက်များထဲရှိ အမှိုက်ပုံးပုံငယ်ကို တို့ထိပြီး ရှင်းလင်းပါ။</string>
     <string name="firstrun_defaultbrowser_title">ကိုယ်ရေးကာကွယ်မှုကို တိုးမြှင့်ပါ</string>
