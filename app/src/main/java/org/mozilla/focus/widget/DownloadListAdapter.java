@@ -23,9 +23,11 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * Created by anlin on 01/08/2017.
  */
 
-public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapter.DownloadViewHolder> {
+public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
+    private static final int VIEW_TYPE_EMPTY = 0;
+    private static final int VIEW_TYPE_NON_EMPTY = 1;
 
     public DownloadListAdapter(){
         fetchEntity();
@@ -37,12 +39,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
         this.notifyDataSetChanged();
     }
 
-    public void updateItem(long downloadId){
+    public void updateItem(DownloadInfo downloadInfo){
 
         for (int i = 0;i<mDownloadInfo.size();i++){
-            if (mDownloadInfo.get(i).getDownloadId().equals(downloadId)){
-                DownloadInfo downloadInfo
-                        = new DownloadInfo(downloadId,mDownloadInfo.get(i).getFileName());
+            if (mDownloadInfo.get(i).getDownloadId().equals(downloadInfo.getDownloadId())){
                 mDownloadInfo.set(i,downloadInfo);
                 this.notifyDataSetChanged();
                 break;
@@ -61,7 +61,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
 
     private void delete(int position){
         try {
-            new File(URI.create(mDownloadInfo.get(position).getUri()).getPath()).delete();
+            new File(URI.create(mDownloadInfo.get(position).getFileUri()).getPath()).delete();
 
         }catch (Exception e){
             Log.v(this.getClass().getSimpleName(),""+e.getMessage());
@@ -70,60 +70,83 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
     }
 
     @Override
-    public DownloadViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_menu_cell,parent,false);
-        return new DownloadViewHolder(itemView);
+    public int getItemViewType(int position) {
+        return mDownloadInfo.size() >0 ? VIEW_TYPE_NON_EMPTY : VIEW_TYPE_EMPTY;
     }
 
     @Override
-    public void onBindViewHolder(DownloadViewHolder holder, int position) {
-        DownloadInfo downloadInfo = mDownloadInfo.get(position);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        holder.title.setText(downloadInfo.getFileName());
-
-        String subtitle="";
-        if ("successful".equalsIgnoreCase(downloadInfo.getStatus())) {
-            subtitle = downloadInfo.getSize() + "," + downloadInfo.getDate();
-        } else {
-            subtitle = downloadInfo.getStatus();
+        View itemView;
+        if (VIEW_TYPE_NON_EMPTY == viewType){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_menu_cell,parent,false);
+            return new DownloadViewHolder(itemView);
+        }else {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_empty,parent,false);
+            return new DownloadEmptyViewHolder(itemView);
         }
+    }
 
-        holder.subtitle.setText(subtitle);
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
-        holder.action.setTag(position);
-        holder.action.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final int position = (int) view.getTag();
-                final PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_delete,popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
+        if (viewHolder instanceof DownloadViewHolder){
+            DownloadViewHolder holder = (DownloadViewHolder) viewHolder;
+            DownloadInfo downloadInfo = mDownloadInfo.get(position);
 
-                        switch (menuItem.getItemId()){
-                            case R.id.remove:
-                                remove(position);
-                                break;
-                            case R.id.delete:
-                                delete(position);
-                                break;
-                            default:
-                                break;
-                        }
-                        popupMenu.dismiss();
-                        return false;
-                    }
-                });
+            holder.title.setText(downloadInfo.getFileName());
 
-                popupMenu.show();
+            String subtitle="";
+            if ("successful".equalsIgnoreCase(downloadInfo.getStatus())) {
+                subtitle = downloadInfo.getSize() + "," + downloadInfo.getDate();
+            } else {
+                subtitle = downloadInfo.getStatus();
             }
-        });
+
+            holder.subtitle.setText(subtitle);
+
+            holder.action.setTag(position);
+            holder.action.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final int position = (int) view.getTag();
+                    final PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_delete,popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+
+                            switch (menuItem.getItemId()){
+                                case R.id.remove:
+                                    remove(position);
+                                    break;
+                                case R.id.delete:
+                                    delete(position);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            popupMenu.dismiss();
+                            return false;
+                        }
+                    });
+
+                    popupMenu.show();
+                }
+            });
+        }else if (viewHolder instanceof DownloadEmptyViewHolder){
+            DownloadEmptyViewHolder holder = (DownloadEmptyViewHolder) viewHolder;
+            holder.imag.setBackgroundResource(R.color.colorPrimary);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mDownloadInfo.size();
+        if (mDownloadInfo.size()>0){
+            return mDownloadInfo.size();
+        }else {
+            return 1;
+        }
     }
 
     public class DownloadViewHolder extends RecyclerView.ViewHolder{
@@ -141,6 +164,17 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
             subtitle = (TextView) itemView.findViewById(R.id.subtitle);
             action = (ImageView) itemView.findViewById(R.id.menu_action);
 
+        }
+    }
+
+    public class DownloadEmptyViewHolder extends RecyclerView.ViewHolder{
+
+        @SuppressFBWarnings("URF_UNREAD_FIELD")
+        ImageView imag;
+
+        public DownloadEmptyViewHolder(View itemView) {
+            super(itemView);
+            imag = (ImageView) itemView.findViewById(R.id.img);
         }
     }
 }
