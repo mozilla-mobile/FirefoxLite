@@ -18,8 +18,9 @@ public class DownloadInfo {
     private String Size;
     private String Date;
     private String FileName;
-    private String Uri;
+    private String MediaUri;
     private String MimeType;
+    private String FileUri;
 
     public DownloadInfo(long downloadId,String fileName){
 
@@ -32,26 +33,32 @@ public class DownloadInfo {
             double size = cursor.getDouble(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
             long timeStamp = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
 
-            Uri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-            String extension = MimeTypeMap.getFileExtensionFromUrl(Uri);
+            MediaUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI));
+            FileUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+            String extension = MimeTypeMap.getFileExtensionFromUrl(FileUri);
             MimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-            cursor.close();
 
             Status = statusConvertStr(status);
             Size = convertByteToReadable(size);
             Date = convertMillis(timeStamp);
         }
 
+        cursor.close();
+
         DownloadId = downloadId;
         FileName = fileName;
+    }
+
+    public String getFileUri(){
+        return FileUri;
     }
 
     public String getMimeType(){
         return MimeType;
     }
 
-    public String getUri(){
-        return Uri;
+    public String getMediaUri(){
+        return MediaUri;
     }
     public Long getDownloadId(){
         return DownloadId;
@@ -105,7 +112,7 @@ public class DownloadInfo {
             case DownloadManager.STATUS_FAILED:
                 return "failed";
             default:
-                return "";
+                return "unknown";
         }
 
     }

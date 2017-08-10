@@ -60,4 +60,11 @@ public class DBService {
 
         return downloadInfoList;
     }
+
+    public DownloadInfo getDownloadInfo(long downloadId){
+        QueryBuilder<DownloadInfoEntity> queryBuilder = getDao().queryBuilder();
+        Property downloadIdProperty = DownloadInfoEntityDao.Properties.DownLoadId;
+        DownloadInfoEntity entity = queryBuilder.where(downloadIdProperty.eq(downloadId)).unique();
+        return new DownloadInfo(entity.getDownLoadId(),entity.getFileName());
+    }
 }
