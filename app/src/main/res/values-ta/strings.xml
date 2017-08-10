@@ -74,7 +74,6 @@
     <string name="contextmenu_image_share">பகிர்</string>
     <string name="contextmenu_image_copy">முகவரியை நகலெடு</string>
     <string name="contextmenu_image_save">சேமி</string>
-    <string name="contextmenu_image_warning"><![CDATA["%1$s வரலாற்றை அகற்றும் போது சேமித்த பகிர்ந்த படங்கள் "<b xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">&#2949;&#2996;&#3007;&#2965;&#3021;&#2965;&#2986;&#3021;&#2986;&#2975;&#3006;&#2980;&#3009;</b>.]]></string>
     <string name="firstrun_tracking_title">யாருக்கும் தெரியாம உலாவுங்கள்.</string>
     <string name="firstrun_tracking_text">நீங்கள் உலாவும்போது தடமறிகளைத் தானாகத் தடுங்கள். பிறகு பலகத்தில் (அ) செயலினுள் உள்ள குப்பை சின்னத்தைத் தட்டி சமீபத்தில் பார்த்த பக்கங்கள் (அ) நினைவிகளை நீக்குங்கள்.</string>
     <string name="firstrun_defaultbrowser_title">தனியுரிமையைத் துரிதப்படுத்துங்கள்</string>
