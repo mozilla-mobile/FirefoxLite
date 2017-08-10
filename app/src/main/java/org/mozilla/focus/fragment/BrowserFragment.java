@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,6 +27,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
@@ -43,9 +45,11 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.greenDAO.DBUtils;
+import org.mozilla.focus.greenDAO.DownloadInfo;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
+import org.mozilla.focus.utils.DownloadReceiver;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -122,6 +126,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
+        getContext().unregisterReceiver(DownloadReceiver.getDownloadReceiver());
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        getContext().registerReceiver(DownloadReceiver.getDownloadReceiver(),intentFilter);
     }
 
     @Override
@@ -174,6 +186,33 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         } else {
             initialiseNormalBrowserUi();
         }
+
+        DownloadReceiver.getDownloadReceiver().setOnCompleteListener(new DownloadReceiver.OnCompleteListener() {
+            @Override
+            public void onCompleted(final DownloadInfo downloadInfo) {
+                Snackbar.make(browserContainer,downloadInfo.getFileName()+" downloaded",Snackbar.LENGTH_LONG)
+                        .setAction("open", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (downloadInfo.getMediaUri() != null)
+                                {
+                                    Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+                                    launchIntent.setDataAndType(Uri.parse(downloadInfo.getMediaUri()),downloadInfo.getMimeType());
+                                    launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                    try {
+                                        view.getContext().startActivity(launchIntent);
+                                    }catch (Exception e){
+                                        openDownloadPage(view.getContext());
+                                    }
+                                }else {
+                                    openDownloadPage(view.getContext());
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
 
         return view;
     }
@@ -514,6 +553,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     }
 
+    private void openDownloadPage(Context context){
+        Intent pageView = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+        pageView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(pageView);
+    }
     /*
      * show webview geolocation permission prompt
      */

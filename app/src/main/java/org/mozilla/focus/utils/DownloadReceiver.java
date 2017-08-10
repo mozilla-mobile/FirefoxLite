@@ -9,8 +9,12 @@ import android.database.Cursor;
 import org.greenrobot.greendao.Property;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.mozilla.focus.greenDAO.DBUtils;
+import org.mozilla.focus.greenDAO.DownloadInfo;
 import org.mozilla.focus.greenDAO.DownloadInfoEntity;
 import org.mozilla.focus.greenDAO.DownloadInfoEntityDao;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by anlin on 31/07/2017.
@@ -18,24 +22,35 @@ import org.mozilla.focus.greenDAO.DownloadInfoEntityDao;
 
 public class DownloadReceiver extends BroadcastReceiver {
 
+    private static DownloadReceiver mDownloadReceiver;
+    private List<OnCompleteListener> listeners = new ArrayList<>();
+
+    public interface OnCompleteListener{
+        void onCompleted(DownloadInfo downloadInfo);
+    }
+
+    public static DownloadReceiver getDownloadReceiver(){
+        if (mDownloadReceiver == null){
+            mDownloadReceiver = new DownloadReceiver();
+        }
+        return mDownloadReceiver;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
-        //DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        //DownloadManager.Query query = new DownloadManager.Query();
-        //query.setFilterById(downloadId);
-        //Cursor cursor = downloadManager.query(query);
+        if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())){
+            long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
+            DownloadInfo downloadInfo = DBUtils.getDbService().getDownloadInfo(downloadId);
 
-        QueryBuilder<DownloadInfoEntity> queryBuilder = DBUtils.getDbService().getDao().queryBuilder();
-        Property downloadIdProperty = DownloadInfoEntityDao.Properties.DownLoadId;
-        DownloadInfoEntity downloadInfoEntity = queryBuilder.where(downloadIdProperty.eq(downloadId)).unique();
-
-        //should't be empty and in the local SQLite db.
-        if (!downloadInfoEntity.getFileName().isEmpty()){
-            //update the status to UI
+            for (int i=0;i<listeners.size();i++){
+                listeners.get(i).onCompleted(downloadInfo);
+            }
         }
     }
 
-
+    //Temporary
+    public void setOnCompleteListener(OnCompleteListener listener){
+        listeners.add(listener);
+    }
 }
