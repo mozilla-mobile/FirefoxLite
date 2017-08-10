@@ -564,6 +564,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // We have been started from a VIEW intent. Go back to the previous app immediately (No erase).
                 // However we need to finish the current session so that the custom tab config gets
                 // correctly cleared:
+                // FIXME: does Zerda need this?
                 BrowsingSession.getInstance().clearCustomTabConfig();
                 getActivity().finish();
             } else {
