@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,10 +101,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
         urlView.setOnCommitListener(this);
 
-        if (getArguments().containsKey(ARGUMENT_URL)) {
-            urlView.setText(getArguments().getString(ARGUMENT_URL));
-            clearView.setVisibility(View.VISIBLE);
-        }
+        initByArguments();
 
         return view;
     }
@@ -162,6 +160,15 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
                 break;
             default:
                 throw new IllegalStateException("Unhandled view in onClick()");
+        }
+    }
+
+    private void initByArguments() {
+        final Bundle args = getArguments();
+        if (args.containsKey(ARGUMENT_URL)) {
+            final String url = args.getString(ARGUMENT_URL);
+            urlView.setText(url);
+            clearView.setVisibility(TextUtils.isEmpty(url) ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -239,6 +246,8 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             UrlInputFragment.this.presenter.onInput(s);
+            final int visibility = TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE;
+            UrlInputFragment.this.clearView.setVisibility(visibility);
         }
 
         @Override
