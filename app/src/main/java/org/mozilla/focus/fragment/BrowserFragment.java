@@ -194,20 +194,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         .setAction("open", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (downloadInfo.getMediaUri() != null)
-                                {
-                                    Intent launchIntent = new Intent(Intent.ACTION_VIEW);
-                                    launchIntent.setDataAndType(Uri.parse(downloadInfo.getMediaUri()),downloadInfo.getMimeType());
-                                    launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                    try {
-                                        view.getContext().startActivity(launchIntent);
-                                    }catch (Exception e){
-                                        openDownloadPage(view.getContext());
-                                    }
-                                }else {
-                                    openDownloadPage(view.getContext());
-                                }
+                                IntentUtils.intentOpenFile(view.getContext(),downloadInfo.getMediaUri(),downloadInfo.getMimeType());
                             }
                         })
                         .show();
@@ -549,14 +536,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         Long downloadId = manager.enqueue(request);
 
         //record download ID
-        DBUtils.getDbService().insert(downloadId, fileName);
+        DBUtils.getDbService().insert(downloadId,fileName);
 
-    }
-
-    private void openDownloadPage(Context context){
-        Intent pageView = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
-        pageView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(pageView);
+        Snackbar.make(browserContainer,"Download started..",Snackbar.LENGTH_LONG)
+                .show();
     }
     /*
      * show webview geolocation permission prompt

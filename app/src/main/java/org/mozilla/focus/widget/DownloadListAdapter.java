@@ -134,6 +134,16 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     popupMenu.show();
                 }
             });
+
+            holder.itemView.setTag(downloadInfo);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DownloadInfo download = (DownloadInfo) view.getTag();
+                    IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
+                }
+            });
+
         }else if (viewHolder instanceof DownloadEmptyViewHolder){
             DownloadEmptyViewHolder holder = (DownloadEmptyViewHolder) viewHolder;
             holder.imag.setBackgroundResource(R.color.colorPrimary);
