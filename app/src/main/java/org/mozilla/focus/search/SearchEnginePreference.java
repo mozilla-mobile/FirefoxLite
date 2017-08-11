@@ -28,7 +28,7 @@ public class SearchEnginePreference extends DialogPreference {
 
     @Override
     protected void onAttachedToActivity() {
-        setTitle(SearchEngineManager.getInstance().getDefaultSearchEngine(getContext()).getName());
+        setSummary(SearchEngineManager.getInstance().getDefaultSearchEngine(getContext()).getName());
         super.onAttachedToActivity();
     }
 
@@ -52,7 +52,7 @@ public class SearchEnginePreference extends DialogPreference {
     }
 
     private void persistSearchEngine(SearchEngine searchEngine) {
-        setTitle(searchEngine.getName());
+        setSummary(searchEngine.getName());
 
         Settings.getInstance(getContext())
                 .setDefaultSearchEngine(searchEngine);

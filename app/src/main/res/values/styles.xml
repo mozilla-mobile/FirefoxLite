@@ -34,6 +34,7 @@
 
     <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">#FF00A4DC</item>
+        <item name="android:listDivider">@null</item>
     </style>
 
     <style name="InfoTheme" parent="SettingsTheme">
