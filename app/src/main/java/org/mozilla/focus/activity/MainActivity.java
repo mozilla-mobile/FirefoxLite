@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -25,6 +26,7 @@ import android.view.View;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
+import org.mozilla.focus.fragment.ListPanelDialog;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.history.BrowsingHistoryActivity;
 import org.mozilla.focus.home.HomeFragment;
@@ -36,7 +38,6 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.widget.DownloadDialogShowListener;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
@@ -51,7 +52,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private String pendingUrl;
 
     private BottomSheetDialog menu;
-    private BottomSheetDialog historyAndDownload;
     private FloatingActionButton btnSearch;
     private FloatingActionButton btnHome;
     private FloatingActionButton btnMenu;
@@ -92,7 +92,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
             }
         }
-
         WebViewProvider.preload(this);
     }
 
@@ -191,7 +190,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         });
         setUpMenu();
-        setUpHistoryAndDownload();
     }
 
     private void setUpMenu() {
@@ -200,33 +198,29 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.setContentView(sheet);
     }
 
-    private void setUpHistoryAndDownload() {
-        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_history_download, null);
-        historyAndDownload = new BottomSheetDialog(this);
-        historyAndDownload.setContentView(sheet);
-
-        DownloadDialogShowListener listener = new DownloadDialogShowListener(sheet);
-        historyAndDownload.setOnShowListener(listener);
-        historyAndDownload.setOnCancelListener(listener);
-        historyAndDownload.setOnDismissListener(listener);
-    }
-
     private void showMenu() {
         menu.show();
     }
 
-    private void showHistoryAndDownload(boolean isHistory) {
-        historyAndDownload.show();
+    private void showListPanel(int type) {
+        DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
+        dialogFragment.setCancelable(true);
+        dialogFragment.show(getSupportFragmentManager(), "");
     }
 
     public void onMenuItemClicked(View v) {
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_download:
-                onHistoryClicked();
+                onDownloadClicked();
                 break;
             case R.id.menu_history:
                 startActivityForResult(new Intent(this, BrowsingHistoryActivity.class), 0);
+                // TODO: 8/11/17 Change to the following when history is moved into ListPanelDialog
+                // onHistoryClicked();
+                break;
+            case R.id.menu_screenshots:
+                onScreenshotsClicked();
                 break;
             case R.id.menu_preferences:
                 onPreferenceClicked();
@@ -275,12 +269,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         openPreferences();
     }
 
-    private void onHistoryClicked() {
-        showHistoryAndDownload(true);
+    private void onDownloadClicked() {
+        showListPanel(ListPanelDialog.TYPE_DOWNLOAD);
     }
 
-    private void onDownloadClicked() {
-        showHistoryAndDownload(false);
+    private void onHistoryClicked() {
+        showListPanel(ListPanelDialog.TYPE_HISTORY);
+    }
+
+    private void onScreenshotsClicked() {
+        showListPanel(ListPanelDialog.TYPE_SCREENSHOTS);
     }
 
     private BrowserFragment getBrowserFragment() {
