@@ -7,6 +7,7 @@ package org.mozilla.focus.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -37,13 +38,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        if (preference.getKey().equals(getResources().getString(R.string.pref_key_about))) {
+        Resources resources = getResources();
+        String keyClicked = preference.getKey();
+
+        if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
-        } else if (preference.getKey().equals(getResources().getString(R.string.pref_key_help))) {
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_help))) {
             Intent helpIntent = InfoActivity.getHelpIntent(getActivity());
             startActivity(helpIntent);
-        } else if (preference.getKey().equals(getResources().getString(R.string.pref_key_rights))) {
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_rights))) {
             final Intent intent = InfoActivity.getRightsIntent(getActivity());
             startActivity(intent);
         }
@@ -106,27 +110,20 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SettingsFragment())
                     .commit();
-        }
-        else if (key.equals(getString(R.string.pref_key_data_saving_block_ads))) {
+        } else if (key.equals(getString(R.string.pref_key_data_saving_block_ads))) {
             //Block ads and trackers Callback function
-        }
-        else if (key.equals(getString(R.string.pref_key_data_saving_block_webfonts))) {
+        } else if (key.equals(getString(R.string.pref_key_data_saving_block_webfonts))) {
             //Block Web Fonts Callback function
-        }
-        else if (key.equals(getString(R.string.pref_key_data_saving_block_images))) {
+        } else if (key.equals(getString(R.string.pref_key_data_saving_block_images))) {
             //block images while over cellular data Callback function
-        }
-        else if (key.equals(getString(R.string.pref_key_data_saving_block_media_autoplay))) {
+        } else if (key.equals(getString(R.string.pref_key_data_saving_block_media_autoplay))) {
             //block media autoplay Callback function
-        }
-        else if (key.equals(getString(R.string.pref_key_data_saving_block_tab_restore))) {
+        } else if (key.equals(getString(R.string.pref_key_data_saving_block_tab_restore))) {
             //block tab restore Callback function
-        }
-        else if (key.equals(getString(R.string.pref_key_privacy_storage_clear_browsing_data))) {
+        } else if (key.equals(getString(R.string.pref_key_privacy_storage_clear_browsing_data))) {
             //Clear browsing data Callback function is not here
             //Go to Class CleanBrowsingDataPreference -> onPrepareDialogBuilder
-        }
-        else if (key.equals(getString(R.string.pref_key_privacy_storage_save_downloads_to))) {
+        } else if (key.equals(getString(R.string.pref_key_privacy_storage_save_downloads_to))) {
             //Save downloads/cache/offline pages to SD card/Internal storage Callback function
         }
     }
