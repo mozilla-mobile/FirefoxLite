@@ -26,6 +26,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
+import org.mozilla.focus.history.BrowsingHistoryActivity;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -225,7 +226,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 onHistoryClicked();
                 break;
             case R.id.menu_history:
-                onDownloadClicked();
+                startActivityForResult(new Intent(this, BrowsingHistoryActivity.class), 0);
                 break;
             case R.id.menu_preferences:
                 onPreferenceClicked();

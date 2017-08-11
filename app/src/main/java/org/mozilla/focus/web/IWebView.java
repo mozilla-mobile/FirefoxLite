@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.web;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -95,6 +96,8 @@ public interface IWebView {
     void stopLoading();
 
     String getUrl();
+
+    String getTitle();
 
     void loadUrl(String url);
 

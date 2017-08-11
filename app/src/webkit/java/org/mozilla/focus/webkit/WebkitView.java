@@ -7,9 +7,12 @@ package org.mozilla.focus.webkit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -22,6 +25,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
 
 import org.mozilla.focus.BuildConfig;
+import org.mozilla.focus.history.BrowsingHistoryManager;
+import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.ThreadUtils;
@@ -33,8 +38,9 @@ import org.mozilla.focus.web.WebViewProvider;
 public class WebkitView extends NestedWebView implements IWebView, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_CURRENTURL = "currenturl";
 
-    private Callback callback;
+    private CallbackWrapper callback;
     private FocusWebViewClient client;
+    private final FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
 
     public WebkitView(Context context, AttributeSet attrs) {
@@ -43,7 +49,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         client = new FocusWebViewClient(getContext().getApplicationContext());
 
         setWebViewClient(client);
-        setWebChromeClient(createWebChromeClient());
+        setWebChromeClient(webChromeClient = new FocusWebChromeClient());
         setDownloadListener(createDownloadListener());
 
         if (BuildConfig.DEBUG) {
@@ -122,9 +128,9 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
     @Override
     public void setCallback(Callback callback) {
-        this.callback = callback;
-        client.setCallback(callback);
-        linkHandler.setCallback(callback);
+        this.callback = new CallbackWrapper(callback);
+        client.setCallback(this.callback);
+        linkHandler.setCallback(this.callback);
     }
 
     public void loadUrl(String url) {
@@ -172,50 +178,122 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         });
     }
 
-    private WebChromeClient createWebChromeClient() {
-        return new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                if (callback != null) {
-                    // This is the earliest point where we might be able to confirm a redirected
-                    // URL: we don't necessarily get a shouldInterceptRequest() after a redirect,
-                    // so we can only check the updated url in onProgressChanges(), or in onPageFinished()
-                    // (which is even later).
-                    final String viewURL = view.getUrl();
-                    if (!UrlUtils.isInternalErrorURL(viewURL)) {
-                        callback.onURLChanged(viewURL);
-                    }
-                    callback.onProgress(newProgress);
+    private class FocusWebChromeClient extends WebChromeClient {
+
+        @Override
+        public void onProgressChanged (WebView view,int newProgress){
+            if (callback != null) {
+                // This is the earliest point where we might be able to confirm a redirected
+                // URL: we don't necessarily get a shouldInterceptRequest() after a redirect,
+                // so we can only check the updated url in onProgressChanges(), or in onPageFinished()
+                // (which is even later).
+                final String viewURL = view.getUrl();
+                if (!UrlUtils.isInternalErrorURL(viewURL)) {
+                    callback.onURLChanged(viewURL);
                 }
+                callback.onProgress(newProgress);
             }
+        }
 
-            @Override
-            public void onShowCustomView(View view, final CustomViewCallback webviewCallback) {
-                final FullscreenCallback fullscreenCallback = new FullscreenCallback() {
-                    @Override
-                    public void fullScreenExited() {
-                        webviewCallback.onCustomViewHidden();
-                    }
-                };
+        @Override
+        public void onReceivedIcon (WebView view, Bitmap icon){
+            Site site = new Site();
+            site.setTitle(view.getTitle());
+            site.setUrl(view.getUrl());
+            site.setFavIcon(icon);
+            BrowsingHistoryManager.getInstance().insert(site, null);
+        }
 
-                callback.onEnterFullScreen(fullscreenCallback, view);
-            }
+        @Override
+        public void onShowCustomView (View view,final CustomViewCallback webviewCallback){
+            final FullscreenCallback fullscreenCallback = new FullscreenCallback() {
+                @Override
+                public void fullScreenExited() {
+                    webviewCallback.onCustomViewHidden();
+                }
+            };
 
-            @Override
-            public void onHideCustomView() {
-                callback.onExitFullScreen();
-            }
+            callback.onEnterFullScreen(fullscreenCallback, view);
+        }
 
-            @Override
-            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback glpcallback) {
-                callback.onGeolocationPermissionsShowPrompt(origin, glpcallback);
-            }
+        @Override
+        public void onHideCustomView () {
+            callback.onExitFullScreen();
+        }
 
-            @Override
-            public void onGeolocationPermissionsHidePrompt() {
-                super.onGeolocationPermissionsHidePrompt();
-            }
-        };
+        @Override
+        public void onGeolocationPermissionsShowPrompt (String
+        origin, GeolocationPermissions.Callback glpcallback){
+            callback.onGeolocationPermissionsShowPrompt(origin, glpcallback);
+        }
+
+        @Override
+        public void onGeolocationPermissionsHidePrompt () {
+            super.onGeolocationPermissionsHidePrompt();
+        }
+    }
+
+    private class CallbackWrapper implements IWebView.Callback {
+        final IWebView.Callback callback;
+
+        CallbackWrapper(IWebView.Callback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        public void onPageStarted(String url) {
+            this.callback.onPageStarted(url);
+        }
+
+        @Override
+        public void onPageFinished(boolean isSecure) {
+            this.callback.onPageFinished(isSecure);
+            Site site = new Site();
+            site.setUrl(getUrl());
+            site.setTitle(getTitle());
+            site.setLastViewTimestamp(System.currentTimeMillis());
+            BrowsingHistoryManager.getInstance().insert(site, null);
+        }
+
+        @Override
+        public void onProgress(int progress) {
+            this.callback.onProgress(progress);
+        }
+
+        @Override
+        public void onURLChanged(String url) {
+            this.callback.onURLChanged(url);
+        }
+
+        @Override
+        public boolean handleExternalUrl(String url) {
+            return callback.handleExternalUrl(url);
+        }
+
+        @Override
+        public void onDownloadStart(Download download) {
+            this.callback.onDownloadStart(download);
+        }
+
+        @Override
+        public void onLongPress(HitTarget hitTarget) {
+            this.callback.onLongPress(hitTarget);
+        }
+
+        @Override
+        public void onEnterFullScreen(@NonNull FullscreenCallback callback, @Nullable View view) {
+            this.callback.onEnterFullScreen(callback, view);
+        }
+
+        @Override
+        public void onExitFullScreen() {
+            this.callback.onExitFullScreen();
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+            this.callback.onGeolocationPermissionsShowPrompt(origin, callback);
+        }
     }
 
     private DownloadListener createDownloadListener() {
