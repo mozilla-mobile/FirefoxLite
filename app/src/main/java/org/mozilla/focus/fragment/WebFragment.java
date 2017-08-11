@@ -24,6 +24,8 @@ public abstract class WebFragment extends LocaleAwareFragment {
     private IWebView webView;
     private boolean isWebViewAvailable;
 
+    private Bundle webViewState;
+
     /**
      * Inflate a layout for this fragment. The layout needs to contain a view implementing IWebView
      * with the id set to "webview".
@@ -48,6 +50,9 @@ public abstract class WebFragment extends LocaleAwareFragment {
         webView.setCallback(createCallback());
 
         if (savedInstanceState == null) {
+            if (webViewState != null) {
+                webView.restoreWebviewState(webViewState);
+            }
             final String url = getInitialUrl();
             if (url != null) {
                 webView.loadUrl(url);
@@ -103,6 +108,10 @@ public abstract class WebFragment extends LocaleAwareFragment {
     public void onDestroyView() {
         isWebViewAvailable = false;
 
+        // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
+        // called. In this case we must store webView-state manually, to retain browsing history.
+        webViewState = new Bundle();
+        webView.onSaveInstanceState(webViewState);
         super.onDestroyView();
     }
 
