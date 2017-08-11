@@ -300,6 +300,9 @@ be temporary, and you can try again later.</li>
     <string name="setting_dialog_cache">Cache</string>
     <string name="setting_dialog_saving_logins">Saving logins</string>
 
+    <!-- Download list-->
+    <string name="no_downloads">No Downloads</string>
+
     <!-- Setting data saving path dialog -->
     <string name="setting_dialog_sd_card">Removable storage</string>
     <string name="setting_dialog_internal_storage">Internal storage</string>

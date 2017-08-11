@@ -8,10 +8,18 @@
 
     <ImageView
         android:id="@+id/img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/darker_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/download_empty"
         android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorDownloadSubText"
+        android:textSize="14sp"
+        android:layout_below="@+id/img"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_downloads"/>
 
 </RelativeLayout>
