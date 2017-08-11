@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bottom_sheet"
+        android:background="@color/colorMenuBackground"
+        android:paddingBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_hideable="true" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/colorMenuBackground"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <TextView
+            style="@style/ListPanelText"
+            android:id="@+id/download"
+            android:text="@string/label_menu_download"/>
+        <TextView
+            style="@style/ListPanelText"
+            android:id="@+id/history"
+            android:text="@string/label_menu_history"/>
+        <TextView
+            style="@style/ListPanelText"
+            android:id="@+id/screenshots"
+            android:text="@string/label_menu_screenshots"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
