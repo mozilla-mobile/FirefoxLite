@@ -12,9 +12,12 @@ import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.greenDAO.DBUtils;
 import org.mozilla.focus.greenDAO.DownloadInfo;
+import org.mozilla.focus.utils.IntentUtils;
+
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -36,6 +39,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void fetchEntity(){
         mDownloadInfo.clear();
         mDownloadInfo = DBUtils.getDbService().getAllDownloadInfo();
+        Collections.reverse(mDownloadInfo);
         this.notifyDataSetChanged();
     }
 
@@ -43,7 +47,9 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         for (int i = 0;i<mDownloadInfo.size();i++){
             if (mDownloadInfo.get(i).getDownloadId().equals(downloadInfo.getDownloadId())){
-                mDownloadInfo.set(i,downloadInfo);
+                mDownloadInfo.remove(i);
+                mDownloadInfo.add(downloadInfo);
+
                 this.notifyDataSetChanged();
                 break;
             }

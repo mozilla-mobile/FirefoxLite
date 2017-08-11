@@ -6,9 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.greenDAO.DownloadInfo;
@@ -28,7 +32,7 @@ public class DownloadDialogShowListener implements DialogInterface.OnShowListene
         RecyclerView downloadList = (RecyclerView) view.findViewById(R.id.list);
         mDownloadListAdapter = new DownloadListAdapter();
         downloadList.setAdapter(mDownloadListAdapter);
-        downloadList.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,true));
+        downloadList.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false));
 
         DownloadReceiver.getDownloadReceiver().setOnCompleteListener(this);
     }
