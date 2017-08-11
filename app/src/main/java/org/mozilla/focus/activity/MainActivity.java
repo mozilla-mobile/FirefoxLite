@@ -223,10 +223,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_download:
-                onHistoryClicked();
+                onDownloadClicked();
                 break;
             case R.id.menu_history:
                 startActivityForResult(new Intent(this, BrowsingHistoryActivity.class), 0);
+                // TODO: 8/11/17 Change to the following when history is moved into ListPanelDialog
+                // onHistoryClicked();
                 break;
             case R.id.menu_preferences:
                 onPreferenceClicked();
