@@ -2,8 +2,6 @@ package org.mozilla.focus.history.model;
 
 import android.graphics.Bitmap;
 
-import java.io.ByteArrayOutputStream;
-
 /**
  * Created by hart on 03/08/2017.
  */
@@ -40,7 +38,7 @@ public class Site {
         this.url = url;
     }
 
-    public long getViweCount() {
+    public long getViewCount() {
         return this.viewCount;
     }
 
@@ -62,11 +60,5 @@ public class Site {
 
     public void setFavIcon(Bitmap favIcon) {
         this.favIcon = favIcon;
-    }
-
-    public byte[] getFavIconInBytes() {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        this.favIcon.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
     }
 }
