@@ -47,7 +47,9 @@
                 android:text="@string/label_menu_history" />
         </LinearLayout>
 
-        <LinearLayout style="@style/MenuButton">
+        <LinearLayout style="@style/MenuButton"
+            android:id="@+id/menu_screenshots"
+            android:onClick="onMenuItemClicked">
 
             <ImageView
                 style="@style/MenuButtonInner"

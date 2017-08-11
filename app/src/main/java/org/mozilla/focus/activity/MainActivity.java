@@ -219,6 +219,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 // TODO: 8/11/17 Change to the following when history is moved into ListPanelDialog
                 // onHistoryClicked();
                 break;
+            case R.id.menu_screenshots:
+                onScreenshotsClicked();
+                break;
             case R.id.menu_preferences:
                 onPreferenceClicked();
                 break;
@@ -266,12 +269,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         openPreferences();
     }
 
+    private void onDownloadClicked() {
+        showListPanel(ListPanelDialog.TYPE_DOWNLOAD);
+    }
+
     private void onHistoryClicked() {
         showListPanel(ListPanelDialog.TYPE_HISTORY);
     }
 
-    private void onDownloadClicked() {
-        showListPanel(ListPanelDialog.TYPE_DOWNLOAD);
+    private void onScreenshotsClicked() {
+        showListPanel(ListPanelDialog.TYPE_SCREENSHOTS);
     }
 
     private BrowserFragment getBrowserFragment() {
