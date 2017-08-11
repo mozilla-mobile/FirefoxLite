@@ -42,7 +42,8 @@ public class BrowsingHistoryManager {
             switch (token) {
                 case SITE_TOKEN:
                     if (cookie != null) {
-                        ((AsyncInsertListener) cookie).onInsertComplete(uri);
+                        final int id = uri == null ? -1 : Integer.parseInt(uri.getLastPathSegment());
+                        ((AsyncInsertListener) cookie).onInsertComplete(id);
                     }
                     break;
                 default:
@@ -109,7 +110,7 @@ public class BrowsingHistoryManager {
     }
 
     public interface AsyncInsertListener {
-        void onInsertComplete(Uri uri);
+        void onInsertComplete(int id);
     }
 
     public interface AsyncDeleteListener {
