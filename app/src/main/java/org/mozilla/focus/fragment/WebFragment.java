@@ -8,6 +8,7 @@ package org.mozilla.focus.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,9 @@ public abstract class WebFragment extends LocaleAwareFragment {
     private boolean isWebViewAvailable;
 
     private Bundle webViewState;
+
+    /* If fragment exists but no WebView to use, store url here if there is any loadUrl requirement */
+    protected String pendingUrl = null;
 
     /**
      * Inflate a layout for this fragment. The layout needs to contain a view implementing IWebView
@@ -49,19 +53,31 @@ public abstract class WebFragment extends LocaleAwareFragment {
         isWebViewAvailable = true;
         webView.setCallback(createCallback());
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // restore WebView state
         if (savedInstanceState == null) {
+            // in two cases we won't have saved-state: fragment just created, or fragment re-attached.
+            // if fragment was detached before, we will have webViewState.
+            // per difference case, we should load initial url or pending url(if any).
             if (webViewState != null) {
                 webView.restoreWebviewState(webViewState);
             }
-            final String url = getInitialUrl();
-            if (url != null) {
+
+            final String url = (webViewState == null) ? getInitialUrl() : pendingUrl;
+            pendingUrl = null; // clear pending url
+            if (!TextUtils.isEmpty(url)) {
                 webView.loadUrl(url);
             }
         } else {
+            // Fragment was destroyed
             webView.restoreWebviewState(savedInstanceState);
         }
-
-        return view;
     }
 
     @Override
@@ -119,4 +135,5 @@ public abstract class WebFragment extends LocaleAwareFragment {
     protected IWebView getWebView() {
         return isWebViewAvailable ? webView : null;
     }
+
 }
