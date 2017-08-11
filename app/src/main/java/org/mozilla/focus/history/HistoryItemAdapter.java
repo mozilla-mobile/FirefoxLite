@@ -63,8 +63,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 siteVH.textSecondary.setText(item.getUrl());
                 siteVH.imgFav.setImageBitmap(item.getFavIcon());
 
-                Context wrapper = new ContextThemeWrapper(mContext, R.style.Theme_AppCompat_Light);
-                final PopupMenu popupMenu = new PopupMenu(wrapper, siteVH.btnMore);
+                final PopupMenu popupMenu = new PopupMenu(mContext, siteVH.btnMore);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
