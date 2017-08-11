@@ -1,110 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <PreferenceCategory
-        android:title="@string/preference_category_data_saving">
-
-        <SwitchPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_data_saving_block_ads"
-            android:key="@string/pref_key_data_saving_block_ads"
-            android:defaultValue="true" />
-
-        <SwitchPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_data_saving_block_webfonts"
-            android:key="@string/pref_key_data_saving_block_webfonts"
-            android:defaultValue="true" />
-
-        <SwitchPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_data_saving_block_images"
-            android:key="@string/pref_key_data_saving_block_images"
-            android:defaultValue="false" />
-
-        <SwitchPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_data_saving_media_autoplay"
-            android:key="@string/pref_key_data_saving_block_media_autoplay"
-            android:defaultValue="true" />
-
-        <SwitchPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_data_saving_tab_restore"
-            android:key="@string/pref_key_data_saving_block_tab_restore"
-            android:defaultValue="false" />
-
-    </PreferenceCategory>
-
     <!-- Empty default: we use an empty string to indicate "system default" language being selected -->
     <!--suppress AndroidDomInspection -->
-    <!--<org.mozilla.focus.widget.LocaleListPreference-->
-        <!--android:layout="@layout/focus_preference"-->
-        <!--android:key="@string/pref_key_locale"-->
-        <!--android:title="@string/preference_language"-->
-        <!--android:defaultValue=""/>-->
+    <org.mozilla.focus.widget.LocaleListPreference
+        android:layout="@layout/focus_preference"
+        android:key="@string/pref_key_locale"
+        android:title="@string/preference_language"
+        android:defaultValue=""/>
 
-    <PreferenceCategory
-        android:title="@string/preference_category_search">
+    <org.mozilla.focus.search.SearchEnginePreference
+        android:layout="@layout/focus_preference"
+        android:title="@string/preference_search_engine_default"
+        android:key="@string/pref_key_search_engine" />
 
-        <org.mozilla.focus.search.SearchEnginePreference
-            android:layout="@layout/focus_preference"
-            android:key="@string/pref_key_search_engine"
-            android:summary="@string/preference_search_engine_default" />
+    <org.mozilla.focus.widget.CleanBrowsingDataPreference
+        android:layout="@layout/focus_preference"
+        android:title="@string/preference_privacy_storage_clear_browsing_data"
+        android:key="@string/pref_key_privacy_storage_clear_browsing_data" />
 
-    </PreferenceCategory>
+    <org.mozilla.focus.widget.DataSavingPathPreference
+        android:layout="@layout/focus_preference"
+        android:title="@string/preference_privacy_storage_save_downloads_to"
+        android:key="@string/pref_key_privacy_storage_save_downloads_to" />
 
-    <PreferenceCategory
-        android:title="@string/preference_category_privacy_storage">
+    <SwitchPreference
+        android:layout="@layout/focus_preference"
+        android:title="@string/preference_data_saving_media_autoplay"
+        android:key="@string/pref_key_data_saving_block_media_autoplay"
+        android:defaultValue="true" />
 
-        <org.mozilla.focus.widget.CleanBrowsingDataPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_privacy_storage_clear_browsing_data"
-            android:key="@string/pref_key_privacy_storage_clear_browsing_data" />
-        <!--<Preference-->
-            <!--android:layout="@layout/focus_preference"-->
-            <!--android:title="@string/preference_privacy_storage_clear_browsing_data"-->
-            <!--android:key="@string/pref_key_privacy_storage_clear_browsing_data" />-->
+    <org.mozilla.focus.widget.DefaultBrowserPreference
+        android:layout="@layout/focus_preference"
+        android:key="@string/pref_key_default_browser"
+        android:title="@string/preference_default_browser" />
 
-        <org.mozilla.focus.widget.DataSavingPathPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_privacy_storage_save_downloads_to"
-            android:key="@string/pref_key_privacy_storage_save_downloads_to" />
+    <org.mozilla.focus.widget.TelemetrySwitchPreference
+        android:layout="@layout/focus_preference"
+        android:title="@string/preference_mozilla_telemetry"
+        android:persistent="false"
+        android:summary="@string/preference_mozilla_telemetry_summary" />
 
-    </PreferenceCategory>
+    <!-- AboutPreference performs some string substitutions, so that we can show "About <AppName>".
+         We keep a plain "About" as the title here in xml as a fallback, but AboutPreference
+         will use the substitution regardless of what is set here. -->
+    <org.mozilla.focus.widget.AboutPreference
+        android:layout="@layout/focus_preference"
+        android:title="@string/menu_about"
+        android:key="@string/pref_key_about" />
 
-    <PreferenceCategory
-        android:title="@string/preference_category_mozilla">
-
-        <org.mozilla.focus.widget.DefaultBrowserPreference
-            android:layout="@layout/focus_preference"
-            android:key="@string/pref_key_default_browser"
-            android:title="@string/preference_default_browser" />
-
-        <org.mozilla.focus.widget.TelemetrySwitchPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/preference_mozilla_telemetry"
-            android:persistent="false"
-            android:summary="@string/preference_mozilla_telemetry_summary" />
-
-        <!-- AboutPreference performs some string substitutions, so that we can show "About <AppName>".
-             We keep a plain "About" as the title here in xml as a fallback, but AboutPreference
-             will use the substitution regardless of what is set here. -->
-        <org.mozilla.focus.widget.AboutPreference
-            android:layout="@layout/focus_preference"
-            android:title="@string/menu_about"
-            android:key="@string/pref_key_about" />
-
-        <Preference
-            android:layout="@layout/focus_preference"
-            android:title="@string/menu_help"
-            android:key="@string/pref_key_help" />
-
-        <!--<Preference-->
-            <!--android:layout="@layout/focus_preference"-->
-            <!--android:title="@string/menu_rights"-->
-            <!--android:key="@string/pref_key_rights" />-->
-
-    </PreferenceCategory>
+    <Preference
+        android:layout="@layout/focus_preference"
+        android:title="@string/menu_help"
+        android:key="@string/pref_key_help" />
 
 </PreferenceScreen>

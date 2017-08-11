@@ -65,7 +65,7 @@
     <string name="preference_category_search">Search</string>
 
     <!-- This label is shown below the name of the default search engine in settings -->
-    <string name="preference_search_engine_default">Default</string>
+    <string name="preference_search_engine_default">Default search engine</string>
 
     <string name="preference_language">Language</string>
     <!-- This is shown when the user hasn't set a focus specific language, i.e. when Focus
@@ -73,7 +73,7 @@
     <string name="preference_language_systemdefault">System default</string>
 
     <!-- This is the title of the dialog for selecting a new default search engine -->
-    <string name="preference_dialog_title_search_engine">Default search</string>
+    <string name="preference_dialog_title_search_engine">Default search engine</string>
 
     <string name="preference_privacy_block_analytics">Block analytic trackers</string>
     <string name="preference_privacy_block_social">Block social trackers</string>
@@ -91,7 +91,7 @@
     <!-- Settings Privacy and storage-->
     <string name="preference_category_privacy_storage">Privacy and storage</string>
     <string name="preference_privacy_storage_clear_browsing_data">Clear browsing data</string>
-    <string name="preference_privacy_storage_save_downloads_to">Save downloads/cache/offline pages to </string>
+    <string name="preference_privacy_storage_save_downloads_to">Save downloads to </string>
 
     <string name="preference_category_performance">Performance</string>
     <!-- This text is shown below the setting for disabling web fonts. Some websites use icons/images from a font and those do not show up if fonts are blocked.-->
@@ -299,7 +299,7 @@ be temporary, and you can try again later.</li>
     <string name="setting_dialog_saving_logins">Saving logins</string>
 
     <!-- Setting data saving path dialog -->
-    <string name="setting_dialog_sd_card">SD card</string>
+    <string name="setting_dialog_sd_card">Removable storage</string>
     <string name="setting_dialog_internal_storage">Internal storage</string>
 
     <!--BrowsingHistoryActivity-->

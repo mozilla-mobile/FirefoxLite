@@ -11,8 +11,8 @@ public class AboutPreference extends Preference {
                            int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        final String appName = getContext().getResources().getString(R.string.app_name);
-        final String title = getContext().getResources().getString(R.string.preference_about, appName);
+//        final String appName = getContext().getResources().getString(R.string.app_name);
+        final String title = getContext().getResources().getString(R.string.preference_about, "");
 
         setTitle(title);
     }
