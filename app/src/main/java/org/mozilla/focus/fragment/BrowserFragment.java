@@ -715,7 +715,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if(!folder.exists() && !folder.mkdir()){
             throw new IOException("Can't create folder");
         }
-        fileName = fileName.concat(".jpg");
+        fileName = fileName.concat(".png");
         File file = new File(folder, fileName);
         try {
             FileOutputStream fos = new FileOutputStream(file);
