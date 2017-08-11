@@ -19,6 +19,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -722,11 +723,15 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
             fos.close();
+            notifyNewScreenshot(file.getPath());
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
+    private void notifyNewScreenshot(String path) {
+        MediaScannerConnection.scanFile(getContext(), new String[] { null }, new String[] { path }, null);
+    }
 
     public void setBlockingEnabled(boolean enabled) {
         final IWebView webView = getWebView();
