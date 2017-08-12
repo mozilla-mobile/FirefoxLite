@@ -138,6 +138,11 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
         this.presenter = presenter;
     }
 
+    public void toggleFakeUrlInput(boolean visible) {
+        final int visibility = visible ? View.VISIBLE : View.INVISIBLE;
+        this.fakeInput.setVisibility(visibility);
+    }
+
     private class SiteItemClickListener implements View.OnClickListener, View.OnLongClickListener {
 
         @Override
