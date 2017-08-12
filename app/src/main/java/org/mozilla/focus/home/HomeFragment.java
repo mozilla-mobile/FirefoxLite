@@ -32,6 +32,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private View btnMenu;
+    private View fakeInput;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
 
     public static HomeFragment create() {
@@ -61,6 +62,19 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
                 if (parent instanceof FragmentListener) {
                     ((FragmentListener) parent).onNotified(HomeFragment.this,
                             FragmentListener.TYPE.SHOW_MENU,
+                            null);
+                }
+            }
+        });
+
+        this.fakeInput = view.findViewById(R.id.home_fragment_fake_input);
+        this.fakeInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Activity parent = getActivity();
+                if (parent instanceof FragmentListener) {
+                    ((FragmentListener) parent).onNotified(HomeFragment.this,
+                            FragmentListener.TYPE.SHOW_URL_INPUT,
                             null);
                 }
             }
