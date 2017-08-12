@@ -39,4 +39,20 @@
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/floating_action_button_margin"
+        android:layout_marginEnd="@dimen/floating_action_button_margin"
+        android:layout_marginTop="@dimen/floating_action_button_elevation"
+        android:contentDescription="@string/content_description_menu"
+        android:elevation="@dimen/floating_action_button_elevation"
+        android:src="@drawable/action_menu"
+        app:backgroundTint="@color/colorFloatingActionButtonTint"
+        app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
+        app:rippleColor="#500A84FF" />
+
 </FrameLayout>

@@ -52,9 +52,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private String pendingUrl;
 
     private BottomSheetDialog menu;
-    private FloatingActionButton btnSearch;
-    private FloatingActionButton btnHome;
-    private FloatingActionButton btnMenu;
 
     private MainMediator mediator;
 
@@ -66,9 +63,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         initViews();
 
         mediator = new MainMediator(this);
-        mediator.registerHome(btnHome);
-        mediator.registerSearch(btnSearch);
-        mediator.registerMenu(btnMenu);
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -172,23 +166,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         visibility |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(visibility);
 
-        btnSearch = (FloatingActionButton) findViewById(R.id.btn_search);
-        btnHome = (FloatingActionButton) findViewById(R.id.btn_home);
-        btnMenu = (FloatingActionButton) findViewById(R.id.btn_menu);
-
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.this.mediator.showUrlInput(null);
-            }
-        });
-
-        btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMenu();
-            }
-        });
         setUpMenu();
     }
 

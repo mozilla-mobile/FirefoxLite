@@ -37,24 +37,8 @@ public class MainMediator {
 
     private final MainActivity activity;
 
-    private View btnMenu;
-    private View btnSearch;
-    private View btnHome;
-
     public MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
-    }
-
-    public void registerMenu(@NonNull View menu) {
-        this.btnMenu = menu;
-    }
-
-    public void registerHome(@NonNull View home) {
-        this.btnHome = home;
-    }
-
-    public void registerSearch(@NonNull View search) {
-        this.btnSearch = search;
     }
 
     public void showHomeScreen() {
@@ -110,30 +94,9 @@ public class MainMediator {
     }
 
     public void onFragmentStarted(@NonNull String tag) {
-        if (HomeFragment.FRAGMENT_TAG.equals(tag)) {
-            toggleFloatingButtons(View.VISIBLE, View.GONE, View.VISIBLE);
-        }
-        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
-            toggleFloatingButtons(View.GONE, View.GONE, View.GONE);
-        }
-        if (BrowserFragment.FRAGMENT_TAG.equals(tag)) {
-            toggleFloatingButtons(View.GONE, View.GONE, View.GONE);
-        }
     }
 
     public void onFragmentStopped(@NonNull String tag) {
-        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
-            Fragment top = getTopFragment();
-            if (top == null) {
-                return;
-            }
-            if (HomeFragment.FRAGMENT_TAG.equals(top.getTag())) {
-                toggleFloatingButtons(View.VISIBLE, View.GONE, View.VISIBLE);
-            }
-            if (BrowserFragment.FRAGMENT_TAG.equals(top.getTag())) {
-                toggleFloatingButtons(View.GONE, View.GONE, View.GONE);
-            }
-        }
     }
 
     private Fragment getTopFragment() {
@@ -209,19 +172,5 @@ public class MainMediator {
         FragmentTransaction transaction = fragmentManager.beginTransaction()
                 .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG);
         return transaction;
-    }
-
-    private void toggleFloatingButtons(int search, int home, int menu) {
-        if (btnSearch != null) {
-            btnSearch.setVisibility(search);
-        }
-
-        if (btnHome != null) {
-            btnHome.setVisibility(home);
-        }
-
-        if (btnMenu != null) {
-            btnMenu.setVisibility(menu);
-        }
     }
 }

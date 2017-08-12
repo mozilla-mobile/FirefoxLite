@@ -24,8 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
 
-        <include layout="@layout/main_fabs" />
-
     </FrameLayout>
 </FrameLayout>
 
