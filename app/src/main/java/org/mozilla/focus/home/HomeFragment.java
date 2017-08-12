@@ -31,6 +31,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
+    private View btnMenu;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
 
     public static HomeFragment create() {
@@ -52,6 +53,18 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
 
         final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
+        this.btnMenu = view.findViewById(R.id.btn_menu);
+        this.btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Activity parent = getActivity();
+                if (parent instanceof FragmentListener) {
+                    ((FragmentListener) parent).onNotified(HomeFragment.this,
+                            FragmentListener.TYPE.SHOW_MENU,
+                            null);
+                }
+            }
+        });
 
         return view;
     }

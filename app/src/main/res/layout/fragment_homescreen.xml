@@ -39,4 +39,16 @@
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="22dp"
+        android:tint="@android:color/white"
+        android:background="@drawable/round_rectangle_ripple"
+        android:src="@drawable/action_menu" />
+
 </FrameLayout>
