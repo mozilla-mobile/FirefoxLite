@@ -40,19 +40,15 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/btn_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="@dimen/floating_action_button_margin"
-        android:layout_marginEnd="@dimen/floating_action_button_margin"
-        android:layout_marginTop="@dimen/floating_action_button_elevation"
-        android:contentDescription="@string/content_description_menu"
-        android:elevation="@dimen/floating_action_button_elevation"
-        android:src="@drawable/action_menu"
-        app:backgroundTint="@color/colorFloatingActionButtonTint"
-        app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
-        app:rippleColor="#500A84FF" />
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="22dp"
+        android:tint="@android:color/white"
+        android:background="@drawable/round_rectangle_ripple"
+        android:src="@drawable/action_menu" />
 
 </FrameLayout>
