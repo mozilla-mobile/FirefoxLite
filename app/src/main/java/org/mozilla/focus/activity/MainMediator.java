@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
@@ -94,9 +93,15 @@ public class MainMediator {
     }
 
     public void onFragmentStarted(@NonNull String tag) {
+        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
+            toggleFakeUrlInput(false);
+        }
     }
 
     public void onFragmentStopped(@NonNull String tag) {
+        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
+            toggleFakeUrlInput(false);
+        }
     }
 
     private Fragment getTopFragment() {
@@ -172,5 +177,14 @@ public class MainMediator {
         FragmentTransaction transaction = fragmentManager.beginTransaction()
                 .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG);
         return transaction;
+    }
+
+    private void toggleFakeUrlInput(boolean visible) {
+        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
+        final HomeFragment homeFragment =
+                (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+        if (homeFragment != null) {
+            homeFragment.toggleFakeUrlInput(visible);
+        }
     }
 }
