@@ -31,6 +31,10 @@ public class MainMediator {
             HomeFragment.FRAGMENT_TAG
     };
 
+    // To indicate the Transaction is to hoist home fragment to user visible area.
+    // This transaction could be wiped if user try to see browser fragment again.
+    private final static String HOIST_HOME_FRAGMENT = "_hoist_home_fragment_";
+
     private final MainActivity activity;
 
     private View btnMenu;
@@ -77,13 +81,17 @@ public class MainMediator {
     public void showBrowserScreen(@Nullable String url) {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+
+        // If UrlInputFragment exists, remove it and clear its transaction from back stack
+        FragmentTransaction clear = fragmentMgr.beginTransaction();
+        clear = (urlInputFrg == null) ? clear : clear.remove(urlInputFrg);
+        clear.commit();
+        fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        // To hide HomeFragment silently, herr to wipe the transaction from back stack
+        fragmentMgr.popBackStackImmediate(HOIST_HOME_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         FragmentTransaction trans = this.prepareBrowsing(url);
-
-        trans = (urlInputFrg == null) ? trans : trans.remove(urlInputFrg);
-        trans = (homeFrg == null) ? trans : trans.remove(homeFrg);
-
         trans.commit();
 
         this.activity.sendBrowsingTelemetry();
@@ -143,20 +151,22 @@ public class MainMediator {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentMgr.beginTransaction();
 
-        // Replace all fragments with a fresh browser fragment. This means we either remove the
-        // HomeFragment with an UrlInputFragment on top or an old BrowserFragment with an
-        // UrlInputFragment.
         final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
                 .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-        if (browserFrg != null && browserFrg.isVisible()) {
+
+        if (browserFrg == null) {
+            final Fragment freshFragment = this.activity.createBrowserFragment(url);
+            transaction.add(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG)
+                    .addToBackStack(null);
+        } else {
             // Reuse existing visible fragment - in this case we know the user is already browsing.
             // The fragment might exist if we "erased" a browsing session, hence we need to check
             // for visibility in addition to existence.
             browserFrg.loadUrl(url);
-        } else {
-            transaction.replace(R.id.container,
-                    this.activity.createBrowserFragment(url),
-                    BrowserFragment.FRAGMENT_TAG);
+
+            if (!browserFrg.isVisible()) {
+                transaction.replace(R.id.container, browserFrg, BrowserFragment.FRAGMENT_TAG);
+            }
         }
         return transaction;
     }
@@ -178,12 +188,17 @@ public class MainMediator {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment fragment = this.activity.createHomeFragment();
 
-        // We add the home fragment to the layout if it doesn't exist yet. I tried adding the fragment
-        // to the layout directly but then I wasn't able to remove it later. It was still visible but
-        // without an activity attached. So let's do it manually.
+        // Two different ways to add HomeFragment.
+        // 1. If Fragments stack is empty, or only first-run - add HomeFragment to bottom of stack.
+        // 2. If we are browsing web pages and launch HomeFragment, hoist HomeFragment from bottom.
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG) == null) {
+        final Fragment topFragment = getTopFragment();
+        if ((topFragment == null) || FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
+        } else {
+            // hoist home fragment and add to back stack, so back-key still works.
+            transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
+                    .addToBackStack(HOIST_HOME_FRAGMENT);
         }
         return transaction;
     }

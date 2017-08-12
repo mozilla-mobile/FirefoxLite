@@ -510,7 +510,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         Long downloadId = manager.enqueue(request);
 
         //record download ID
-        DBUtils.getDbService().insert(downloadId,fileName);
+        DBUtils.getDbService().insert(downloadId, fileName);
 
     }
 
@@ -564,14 +564,15 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // We have been started from a VIEW intent. Go back to the previous app immediately (No erase).
                 // However we need to finish the current session so that the custom tab config gets
                 // correctly cleared:
+                // FIXME: does Zerda need this?
                 BrowsingSession.getInstance().clearCustomTabConfig();
                 getActivity().finish();
-            } else {
-                // Just go back to the home screen.
-                showHomeScreen();
-            }
 
-            TelemetryWrapper.eraseBackEvent();
+                TelemetryWrapper.eraseBackEvent();
+            } else {
+                // let parent to decide for this Fragment
+                return false;
+            }
         }
 
         return true;
@@ -587,10 +588,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void openPreference() {
         notifyParent(FragmentListener.TYPE.OPEN_PREFERENCE, null);
-    }
-
-    public void showHomeScreen() {
-        notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
     }
 
     @Override
@@ -664,7 +661,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void loadUrl(final String url) {
         final IWebView webView = getWebView();
         if (webView != null) {
+            super.pendingUrl = null;
             webView.loadUrl(url);
+        } else {
+            super.pendingUrl = url;
         }
     }
 
@@ -681,7 +681,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             WebView webView = (WebView) iwebView;
             try {
                 Bitmap content = getPageBitmap(webView);
-                if(content!=null) {
+                if (content != null) {
                     saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
                     return true;
                 } else {
@@ -703,8 +703,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             Canvas canvas = new Canvas(bitmap);
             webView.draw(canvas);
             return bitmap;
-        // OOM may occur, even if OOMError is not thrown, operations during Bitmap creation may
-        // throw other Exceptions such as NPE when the bitmap is very large.
+            // OOM may occur, even if OOMError is not thrown, operations during Bitmap creation may
+            // throw other Exceptions such as NPE when the bitmap is very large.
         } catch (Exception | OutOfMemoryError ex) {
             return null;
         }
@@ -713,7 +713,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     private void saveBitmapToStorage(String fileName, Bitmap bitmap) throws IOException {
         File folder = new File(Environment.getExternalStorageDirectory(), "Zerda");
-        if(!folder.exists() && !folder.mkdir()){
+        if (!folder.exists() && !folder.mkdir()) {
             throw new IOException("Can't create folder");
         }
         fileName = fileName.concat(".png");
@@ -724,13 +724,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             fos.flush();
             fos.close();
             notifyNewScreenshot(file.getPath());
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void notifyNewScreenshot(String path) {
-        MediaScannerConnection.scanFile(getContext(), new String[] { null }, new String[] { path }, null);
+        MediaScannerConnection.scanFile(getContext(), new String[]{null}, new String[]{path}, null);
     }
 
     public void setBlockingEnabled(boolean enabled) {
