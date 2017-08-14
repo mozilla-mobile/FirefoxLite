@@ -100,7 +100,7 @@ public class MainMediator {
 
     public void onFragmentStopped(@NonNull String tag) {
         if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
-            toggleFakeUrlInput(false);
+            toggleFakeUrlInput(true);
         }
     }
 
