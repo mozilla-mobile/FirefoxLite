@@ -730,7 +730,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     private void notifyNewScreenshot(String path) {
-        MediaScannerConnection.scanFile(getContext(), new String[]{null}, new String[]{path}, null);
+        MediaScannerConnection.scanFile(getContext(), new String[]{path}, new String[]{null}, null);
     }
 
     public void setBlockingEnabled(boolean enabled) {
