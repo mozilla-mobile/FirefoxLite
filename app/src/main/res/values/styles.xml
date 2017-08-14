@@ -54,34 +54,17 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="MenuButtonBox">
+    <style name="MenuButton">
         <item name="android:layout_width">74dp</item>
         <item name="android:layout_height">74dp</item>
-        <item name="android:background">@drawable/round_rectangle_ripple</item>
-    </style>
-
-    <style name="MenuButtonInnerBox">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="MenuButtonImage">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:tint">@color/sheet_menu_button</item>
-    </style>
-
-    <style name="MenuButtonText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textAlignment">center</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:paddingTop">12dp</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:layout_marginTop">13dp</item>
+        <item name="android:background">@drawable/round_rectangle_ripple</item>
         <item name="android:textColor">@color/sheet_menu_button</item>
+        <item name="android:tint">@color/sheet_menu_button</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
