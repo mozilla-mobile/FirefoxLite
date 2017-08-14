@@ -206,7 +206,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.menu_preferences:
                 onPreferenceClicked();
                 break;
-            case R.id.action_back:
             case R.id.action_next:
             case R.id.action_refresh:
             case R.id.action_share:
@@ -225,9 +224,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
         switch (v.getId()) {
-            case R.id.action_back:
-                onBackClicked(browserFragment);
-                break;
             case R.id.action_next:
                 onNextClicked(browserFragment);
                 break;
