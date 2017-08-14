@@ -5,20 +5,18 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <group>
-        <path
-            android:fillColor="#FF6363"
-            android:fillAlpha="0"
-            android:fillType="evenOdd"
-            android:strokeAlpha="0"
-            android:strokeWidth="1"
-            android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
-        <path
-            android:fillColor="#272727"
-            android:fillType="evenOdd"
-            android:pathData="M20.04 5v3.003C18.55 5.007 15.457 3 12 3c-4.962 0-9 4.038-9 9s4.038 9 9 9a8.94
+    <path
+        android:fillColor="#FF6363"
+        android:fillAlpha="0"
+        android:fillType="evenOdd"
+        android:strokeAlpha="0"
+        android:strokeWidth="1"
+        android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
+    <path
+        android:fillColor="#272727"
+        android:fillType="evenOdd"
+        android:pathData="M20.04 5v3.003C18.55 5.007 15.457 3 12 3c-4.962 0-9 4.038-9 9s4.038 9 9 9a8.94
 8.94 0 0 0 6.364-2.636 1 1 0 0 0-1.414-1.414A6.956 6.956 0 0 1 12 19c-3.86
 0-7-3.14-7-7s3.14-7 7-7c3.104 0 5.806 2.094 6.67 5.04H15a.96 .96 0 0 0 0
 1.92h6c.53 0 .96-.43 .96 -.96V5a.96 .96 0 0 0-1.92 0z" />
-    </group>
 </vector>

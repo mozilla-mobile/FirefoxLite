@@ -6,7 +6,7 @@
     android:viewportHeight="24">
 
     <path
-        android:fillColor="#BCEF2C"
+        android:fillColor="#D8D8D8"
         android:fillAlpha="0"
         android:fillType="evenOdd"
         android:strokeAlpha="0"
@@ -15,7 +15,8 @@
     <path
         android:fillColor="#272727"
         android:fillType="evenOdd"
-        android:pathData="M9 12a2.5 2.5 0 1 1 4.999-.001A2.5 2.5 0 0 1 9 12m0 7.5a2.5 2.5 0 1 1
-4.999-.001A2.5 2.5 0 0 1 9 19.5m0-15a2.5 2.5 0 1 1 4.999-.001A2.5 2.5 0 0 1 9
-4.5" />
+        android:pathData="M5.175 12.074a.628 .628 0 0 0 .453 1.062h3.935c.406 0 .706 .38 .61 .775 l-2.018
+8.31c-.152 .624 .618 1.045 1.063 .583 l10.47-10.91a.628 .628 0 0
+0-.453-1.062H15.09a.627 .627 0 0
+1-.607-.786l2.158-8.257c.164-.626-.613-1.06-1.06-.592L5.174 12.074z" />
 </vector>

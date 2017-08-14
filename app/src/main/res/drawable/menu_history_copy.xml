@@ -5,25 +5,17 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <path
-        android:fillAlpha=".5"
-        android:fillType="evenOdd"
-        android:strokeAlpha=".5"
-        android:strokeWidth="1"
-        android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
     <group
             android:translateX="2"
             android:translateY="2">
         <path
-            android:fillColor="#272727"
+            android:fillColor="#B2B2B2"
             android:fillType="evenOdd"
             android:pathData="M10 2c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8m0 18C4.486 20 0
 15.514 0 10S4.486 0 10 0s10 4.486 10 10-4.486 10-10 10" />
         <path
-            android:fillColor="#272727"
+            android:fillColor="#B2B2B2"
             android:fillType="evenOdd"
-            android:pathData="M10.25 15h-.5a.75 .75 0 0 1-.75-.75v-4.5A.75 .75 0 0 1 9.75 9h.5a.75 .75 0 0 1
-.75 .75 v4.5a.75 .75 0 0 1-.75 .75 m-.5-8A.75 .75 0 0 1 9 6.25v-.5A.75 .75 0 0 1
-9.75 5h.5a.75 .75 0 0 1 .75 .75 v.5a.75 .75 0 0 1-.75 .75 h-.5z" />
+            android:pathData="M14.5 11h-5a.5 .5 0 0 1-.5-.5v-5a.5 .5 0 0 1 1 0V10h4.5a.5 .5 0 0 1 0 1" />
     </group>
 </vector>
