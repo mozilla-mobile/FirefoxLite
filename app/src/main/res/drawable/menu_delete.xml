@@ -5,31 +5,29 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <group>
+    <path
+        android:fillColor="#FF4242"
+        android:fillAlpha="0"
+        android:fillType="evenOdd"
+        android:strokeAlpha="0"
+        android:strokeWidth="1"
+        android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
+    <group
+            android:translateX="5"
+            android:translateY="2">
         <path
-            android:fillColor="#FF4242"
-            android:fillAlpha="0"
+            android:fillColor="#272727"
             android:fillType="evenOdd"
-            android:strokeAlpha="0"
-            android:strokeWidth="1"
-            android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
-        <group
-                android:translateX="5"
-                android:translateY="2">
-            <path
-                android:fillColor="#272727"
-                android:fillType="evenOdd"
-                android:pathData="M12 16.004a.997 .997 0 0 1-.996 .996 H3.996A.997 .997 0 0 1 3
+            android:pathData="M12 16.004a.997 .997 0 0 1-.996 .996 H3.996A.997 .997 0 0 1 3
 16.004V4h9v12.004zM7.5 1c.737 0 1.375 .405 1.722 1H5.778c.347-.595 .985 -1
 1.722-1zm2.816 1A2.992 2.992 0 0 0 7.5 0a2.992 2.992 0 0 0-2.816 2H1a1 1 0 1 0 0
 2v12.004A3 3 0 0 0 3.996 19h7.008A3 3 0 0 0 14 16.004V4a1 1 0 1 0 0-2h-3.684z" />
-            <path
-                android:fillColor="#272727"
-                android:fillType="evenOdd"
-                android:pathData="M7.531 14.5h.002a.5 .5 0 0 0 .498-.502l-.03-7a.5 .5 0 0 0-.5-.498h-.003A.5 .5 0
+        <path
+            android:fillColor="#272727"
+            android:fillType="evenOdd"
+            android:pathData="M7.531 14.5h.002a.5 .5 0 0 0 .498-.502l-.03-7a.5 .5 0 0 0-.5-.498h-.003A.5 .5 0
 0 0 7 7.002l.031 7a.5 .5 0 0 0 .5 .498 m2.469 0a.5 .5 0 0 0 .5-.5V7a.5 .5 0 0
 0-1 0v7a.5 .5 0 0 0 .5 .5 m-5 0a.5 .5 0 0 0 .5-.5V7a.5 .5 0 0 0-1 0v7a.5 .5 0 0
 0 .5 .5" />
-        </group>
     </group>
 </vector>

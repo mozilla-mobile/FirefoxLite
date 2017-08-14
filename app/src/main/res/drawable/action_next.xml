@@ -5,23 +5,21 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <group>
+    <path
+        android:fillColor="#FF6363"
+        android:fillAlpha="0"
+        android:fillType="evenOdd"
+        android:strokeAlpha="0"
+        android:strokeWidth="1"
+        android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
+    <group
+            android:translateX="2"
+            android:translateY="4">
         <path
-            android:fillColor="#FF6363"
-            android:fillAlpha="0"
+            android:fillColor="#272727"
             android:fillType="evenOdd"
-            android:strokeAlpha="0"
-            android:strokeWidth="1"
-            android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
-        <group
-                android:translateX="2"
-                android:translateY="4">
-            <path
-                android:fillColor="#272727"
-                android:fillType="evenOdd"
-                android:pathData="M19.207 7.793l-7.5-7.5a.999 .999 0 1 0-1.414 1.414L16.086 7.5H1a1 1 0 0 0 0
+            android:pathData="M19.207 7.793l-7.5-7.5a.999 .999 0 1 0-1.414 1.414L16.086 7.5H1a1 1 0 0 0 0
 2h15.086l-5.793 5.793a.999 .999 0 1 0 1.414 1.414l7.5-7.5a.999 .999 0 0 0
 0-1.414" />
-        </group>
     </group>
 </vector>
