@@ -15,6 +15,7 @@ import org.mozilla.focus.provider.HistoryContract.BrowsingHistory;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hart on 07/08/2017.
@@ -42,7 +43,7 @@ public class BrowsingHistoryManager {
             switch (token) {
                 case SITE_TOKEN:
                     if (cookie != null) {
-                        final int id = uri == null ? -1 : Integer.parseInt(uri.getLastPathSegment());
+                        final long id = uri == null ? -1 : Long.parseLong(uri.getLastPathSegment());
                         ((AsyncInsertListener) cookie).onInsertComplete(id);
                     }
                     break;
@@ -56,7 +57,10 @@ public class BrowsingHistoryManager {
             switch (token) {
                 case SITE_TOKEN:
                     if (cookie != null) {
-                        ((AsyncDeleteListener) cookie).onDeleteComplete(result);
+                        AsyncDeleteWrapper wrapper = ((AsyncDeleteWrapper) cookie);
+                        if (wrapper.listener != null) {
+                            wrapper.listener.onDeleteComplete(result, wrapper.id);
+                        }
                     }
                     break;
                 default:
@@ -82,12 +86,30 @@ public class BrowsingHistoryManager {
             switch (token) {
                 case SITE_TOKEN:
                     if (cookie != null) {
-                        ((AsyncQueryListener) cookie).onQueryComplete(cursor);
+                        List sites = new ArrayList();
+                        if (cursor != null) {
+                            while (cursor.moveToNext()) {
+                                sites.add(cursorToSite(cursor));
+                            }
+                            cursor.close();
+                        }
+                        ((AsyncQueryListener) cookie).onQueryComplete(sites);
                     }
                     break;
                 default:
                     // do nothing
             }
+        }
+    }
+
+    private static final class AsyncDeleteWrapper {
+
+        public long id;
+        public AsyncDeleteListener listener;
+
+        public AsyncDeleteWrapper(long id, AsyncDeleteListener listener) {
+            this.id = id;
+            this.listener = listener;
         }
     }
 
@@ -110,11 +132,11 @@ public class BrowsingHistoryManager {
     }
 
     public interface AsyncInsertListener {
-        void onInsertComplete(int id);
+        void onInsertComplete(long id);
     }
 
     public interface AsyncDeleteListener {
-        void onDeleteComplete(int result);
+        void onDeleteComplete(int result, long id);
     }
 
     public interface AsyncUpdateListener {
@@ -122,7 +144,7 @@ public class BrowsingHistoryManager {
     }
 
     public interface AsyncQueryListener {
-        void onQueryComplete(Cursor cursor);
+        void onQueryComplete(List sites);
     }
 
     public static BrowsingHistoryManager getInstance() {
@@ -166,26 +188,26 @@ public class BrowsingHistoryManager {
     }
 
     public void delete(long id, AsyncDeleteListener listener) {
-        mQueryHandler.startDelete(SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, BrowsingHistory._ID + " = ?", new String[] {Long.toString(id)});
+        mQueryHandler.startDelete(SITE_TOKEN, new AsyncDeleteWrapper(id, listener), BrowsingHistory.CONTENT_URI, BrowsingHistory._ID + " = ?", new String[] {Long.toString(id)});
     }
 
     public void deleteAll(AsyncDeleteListener listener) {
-        mQueryHandler.startDelete(SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, "1", null);
+        mQueryHandler.startDelete(SITE_TOKEN, new AsyncDeleteWrapper(-1, listener), BrowsingHistory.CONTENT_URI, "1", null);
     }
 
     public void update(Site site, AsyncUpdateListener listener) {
         mQueryHandler.startUpdate(SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, getContentValuesFromSite(site), BrowsingHistory._ID + " = ?", new String[] {Long.toString(site.getId())});
     }
 
-    public void query(AsyncQueryListener listener) {
-        mQueryHandler.startQuery(SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, null, null, null, BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC");
+    public void query(int offset, int limit, AsyncQueryListener listener) {
+        mQueryHandler.startQuery(SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit), null, null, null, BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC");
     }
 
     public void queryTopSites(int limit, int minViewCount, AsyncQueryListener listener) {
         mQueryHandler.startQuery(SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?limit=" + limit), null, BrowsingHistory.VIEW_COUNT + " >= ?", new String[] {Integer.toString(minViewCount)}, BrowsingHistory.VIEW_COUNT + " DESC");
     }
 
-    public static Site cursorToSite(Cursor cursor) {
+    private static Site cursorToSite(Cursor cursor) {
         Site site = new Site();
         site.setId(cursor.getLong(cursor.getColumnIndex(BrowsingHistory._ID)));
         site.setTitle(cursor.getString(cursor.getColumnIndex(BrowsingHistory.TITLE)));

@@ -1,9 +1,10 @@
 package org.mozilla.focus.history;
 
 import android.content.Context;
-import android.database.Cursor;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,7 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by joseph on 08/08/2017.
@@ -26,17 +32,40 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_SITE = 1;
     private static final int VIEW_TYPE_DATE = 2;
 
-    private Cursor mCursor;
+    private static final int PAGE_SIZE = 20;
+
+    private List mItems = new ArrayList();
     private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
     private Context mContext;
+    private boolean mIsInitialQuery;
+    private boolean mIsLoading;
+    private boolean mIsLastPage;
+    private int mCurrentCount;
 
     public interface EmptyListener {
         void onEmpty(boolean flag);
     }
-    public HistoryItemAdapter(RecyclerView recyclerView, Context context) {
+
+    public HistoryItemAdapter(RecyclerView recyclerView, Context context, LinearLayoutManager layoutManager) {
         mRecyclerView = recyclerView;
         mContext = context;
-        BrowsingHistoryManager.getInstance().query(this);
+        mLayoutManager = layoutManager;
+        mIsInitialQuery = true;
+        loadMoreItems();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                final int visibleItemCount = mLayoutManager.getChildCount();
+                final int totalItemCount = mLayoutManager.getItemCount();
+                final int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+                if (!mIsLoading && !mIsLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                        loadMoreItems();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -54,7 +83,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof SiteItemViewHolder) {
-            final Site item = getItem(position);
+            final Site item = (Site) mItems.get(position);
 
             if(item != null) {
                 final SiteItemViewHolder siteVH = (SiteItemViewHolder) holder;
@@ -84,19 +113,27 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             }
         } else if(holder instanceof DateItemViewHolder) {
-            final DateItemViewHolder dateVH = (DateItemViewHolder) holder;
-            dateVH.textDate.setText(R.string.browsing_history_date_today);
+            final DateSection item = (DateSection) mItems.get(position);
+
+            if (item != null) {
+                final DateItemViewHolder dateVH = (DateItemViewHolder) holder;
+                dateVH.textDate.setText(DateUtils.getRelativeTimeSpanString(item.getTimestamp(), System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS));
+            }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? VIEW_TYPE_DATE : VIEW_TYPE_SITE;
+        if (mItems.get(position) instanceof DateSection) {
+            return VIEW_TYPE_DATE;
+        } else {
+            return VIEW_TYPE_SITE;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mCursor == null ? 0 : mCursor.getCount();
+        return mItems.size();
     }
 
     @Override
@@ -109,17 +146,32 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onQueryComplete(Cursor cursor) {
-        if (mContext instanceof EmptyListener) {
-            ((EmptyListener) mContext).onEmpty(cursor == null || cursor.getCount() == 0);
+    public void onQueryComplete(List sites) {
+        mIsLastPage = sites.size() == 0;
+        if (mIsInitialQuery) {
+            mIsInitialQuery = false;
+            notifyEmptyListener(mIsLastPage);
         }
-        changeCursor(cursor);
+        for (Object site : sites) {
+            add(site);
+        }
+        mIsLoading = false;
     }
 
     @Override
-    public void onDeleteComplete(int result) {
+    public void onDeleteComplete(int result, long id) {
         if (result > 0) {
-            BrowsingHistoryManager.getInstance().query(this);
+            if (id < 0) {
+                final int count = mItems.size();
+                mItems.clear();
+                notifyItemRangeRemoved(0, count);
+                notifyEmptyListener(true);
+            } else {
+                remove(getItemPositionById(id));
+                if (mItems.size() == 0) {
+                    notifyEmptyListener(true);
+                }
+            }
         }
     }
 
@@ -127,33 +179,65 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         BrowsingHistoryManager.getInstance().deleteAll(this);
     }
 
-    public void changeCursor(Cursor cursor) {
-        Cursor old = swapCursor(cursor);
-        if (old != null) {
-            old.close();
-        }
-    }
-
-    private Cursor swapCursor(Cursor newCursor) {
-        if (mCursor == newCursor) {
-            return null;
-        }
-
-        Cursor oldCursor = mCursor;
-        mCursor = newCursor;
-        if (newCursor != null) {
-            notifyDataSetChanged();
-        }
-        return oldCursor;
-    }
-
-    private Site getItem(int position) {
-        if (position > 0 && mCursor != null) {
-            mCursor.moveToPosition(position - 1);
-            return BrowsingHistoryManager.cursorToSite(mCursor);
+    private void add(Object item) {
+        if (mItems.size() > 0 && isSameDay(((Site) mItems.get(mItems.size() - 1)).getLastViewTimestamp(), ((Site) item).getLastViewTimestamp())) {
+            mItems.add(item);
+            notifyItemInserted(mItems.size());
         } else {
-            return null;
+            mItems.add(new DateSection(((Site) item).getLastViewTimestamp()));
+            mItems.add(item);
+            notifyItemRangeInserted(mItems.size() - 2, 2);
         }
+        ++mCurrentCount;
+    }
+
+    private void remove(int position) {
+        if (position < 0 || position >= mItems.size()) {
+            return;
+        }
+
+        Object previous = position == 0 ? null : mItems.get(position - 1);
+        Object next = (position + 1) == mItems.size() ? null : mItems.get(position + 1);
+        if (previous instanceof Site || next instanceof Site) {
+            mItems.remove(position);
+            notifyItemRemoved(position);
+        } else {
+            mItems.remove(position);
+            mItems.remove(position - 1);
+            notifyItemRangeRemoved(position - 1, 2);
+        }
+        --mCurrentCount;
+    }
+
+    private void loadMoreItems() {
+        mIsLoading = true;
+        BrowsingHistoryManager.getInstance().query(mCurrentCount, PAGE_SIZE - (mCurrentCount % PAGE_SIZE), this);
+    }
+
+    private void notifyEmptyListener(boolean flag) {
+        if (mContext instanceof EmptyListener) {
+            ((EmptyListener) mContext).onEmpty(flag);
+        }
+    }
+
+    private int getItemPositionById(long id) {
+        for (int i = 0; i < mItems.size(); i++) {
+            Object item = mItems.get(i);
+            if (item instanceof Site) {
+                if (id == ((Site) item).getId()) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private static boolean isSameDay(long day1, long day2) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTimeInMillis(day1);
+        cal2.setTimeInMillis(day2);
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
 
     private static class SiteItemViewHolder extends RecyclerView.ViewHolder {

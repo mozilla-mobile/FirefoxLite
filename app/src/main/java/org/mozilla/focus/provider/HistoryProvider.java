@@ -90,7 +90,7 @@ public class HistoryProvider extends ContentProvider {
         }
 
         final SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder, uri.getQueryParameter("limit"));
+        Cursor cursor = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder, getLimitParam(uri.getQueryParameter("offset"), uri.getQueryParameter("limit")));
 
         return cursor;
     }
@@ -140,5 +140,9 @@ public class HistoryProvider extends ContentProvider {
 
     private void notifyBrowsingHistoryChange() {
         getContext().getContentResolver().notifyChange(BrowsingHistory.CONTENT_URI, null);
+    }
+
+    private String getLimitParam(String offset, String limit) {
+        return (limit == null) ? null : (offset == null) ? limit : offset + "," + limit;
     }
 }

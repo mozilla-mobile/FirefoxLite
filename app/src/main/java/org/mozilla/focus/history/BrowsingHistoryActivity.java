@@ -40,15 +40,10 @@ public class BrowsingHistoryActivity extends AppCompatActivity implements View.O
         mContainerEmptyView = (ViewGroup) findViewById(R.id.browsing_history_empty_view_container);
 
         RecyclerView recyclerView = (RecyclerView) coordinatorLayout.findViewById(R.id.browsing_history_recycler_view);
-        mAdapter = new HistoryItemAdapter(recyclerView, this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mAdapter = new HistoryItemAdapter(recyclerView, this, layoutManager);
         recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mAdapter.changeCursor(null);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
