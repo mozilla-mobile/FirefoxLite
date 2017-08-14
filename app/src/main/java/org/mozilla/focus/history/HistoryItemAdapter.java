@@ -1,11 +1,13 @@
 package org.mozilla.focus.history;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
 
@@ -139,9 +142,13 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onClick(View v) {
         int position = mRecyclerView.getChildLayoutPosition(v);
-        //TODO handle site item click
-        if(position == 0) {
-
+        Site site = (Site)mItems.get(position);
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.setData(Uri.parse(site.getUrl()));
+        intent.setAction(Intent.ACTION_VIEW);
+        mContext.startActivity(intent);
+        if(mContext instanceof BrowsingHistoryActivity) {
+            ((Activity) mContext).finishAndRemoveTask();
         }
     }
 
