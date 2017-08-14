@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:id="@+id/container">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/bottom_sheet"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/main_content"
         android:background="@color/colorMenuBackground"
         android:paddingBottom="50dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true" />
     <LinearLayout
