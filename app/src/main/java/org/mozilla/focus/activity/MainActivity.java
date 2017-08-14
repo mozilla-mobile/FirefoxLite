@@ -28,7 +28,6 @@ import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.fragment.ListPanelDialog;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
-import org.mozilla.focus.history.BrowsingHistoryActivity;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -192,9 +191,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 onDownloadClicked();
                 break;
             case R.id.menu_history:
-                startActivityForResult(new Intent(this, BrowsingHistoryActivity.class), 0);
-                // TODO: 8/11/17 Change to the following when history is moved into ListPanelDialog
-                // onHistoryClicked();
+                onHistoryClicked();
                 break;
             case R.id.menu_screenshots:
                 onScreenshotsClicked();
