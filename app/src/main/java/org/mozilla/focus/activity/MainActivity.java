@@ -52,7 +52,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private BottomSheetDialog menu;
 
     private MainMediator mediator;
-    private boolean afterResume = false;
+    private boolean safeForFragmentTransactions = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,15 +111,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onResume() {
         super.onResume();
 
-        afterResume = true;
         TelemetryWrapper.startSession();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        safeForFragmentTransactions = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        afterResume = false;
+        safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();
     }
 
@@ -316,7 +321,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void showLoadingAndCapture(final BrowserFragment browserFragment) {
-        if(!afterResume) {
+        if(!safeForFragmentTransactions) {
             return;
         }
         final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
