@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.history.BrowsingHistoryFragment;
 import org.mozilla.focus.widget.DownloadListAdapter;
 
 public class ListPanelDialog extends DialogFragment {
@@ -117,7 +118,8 @@ public class ListPanelDialog extends DialogFragment {
     }
 
     private void showHistory() {
-
+        BrowsingHistoryFragment browsingHistoryFragment = BrowsingHistoryFragment.newInstance();
+        getChildFragmentManager().beginTransaction().replace(R.id.main_content, browsingHistoryFragment).commit();
     }
 
     private void showScreenshots() {

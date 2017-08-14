@@ -1,40 +1,45 @@
 package org.mozilla.focus.history;
 
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.mozilla.focus.R;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-
-public class BrowsingHistoryActivity extends AppCompatActivity implements View.OnClickListener, HistoryItemAdapter.EmptyListener {
+public class BrowsingHistoryFragment extends Fragment implements View.OnClickListener, HistoryItemAdapter.EmptyListener {
 
     private Button mBtnClearHistory;
     private RecyclerView mContainerRecyclerView;
     private ViewGroup mContainerEmptyView;
     private HistoryItemAdapter mAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browsing_history);
+    public static BrowsingHistoryFragment newInstance() {
+        return new BrowsingHistoryFragment();
+    }
 
-        mBtnClearHistory = (Button) findViewById(R.id.browsing_history_btn_clear);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_browsing_history, container, false);
+        mBtnClearHistory = (Button) v.findViewById(R.id.browsing_history_btn_clear);
         mBtnClearHistory.setOnClickListener(this);
 
-        mContainerRecyclerView = (RecyclerView) findViewById(R.id.browsing_history_recycler_view);
-        mContainerEmptyView = (ViewGroup) findViewById(R.id.browsing_history_empty_view_container);
+        mContainerRecyclerView = (RecyclerView) v.findViewById(R.id.browsing_history_recycler_view);
+        mContainerEmptyView = (ViewGroup) v.findViewById(R.id.browsing_history_empty_view_container);
+        return v;
+    }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mAdapter = new HistoryItemAdapter(mContainerRecyclerView, this, layoutManager);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mAdapter = new HistoryItemAdapter(mContainerRecyclerView, getActivity(), this, layoutManager);
         mContainerRecyclerView.setAdapter(mAdapter);
         mContainerRecyclerView.setLayoutManager(layoutManager);
     }

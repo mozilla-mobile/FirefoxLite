@@ -41,6 +41,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private Context mContext;
+    private EmptyListener mEmptyListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
@@ -50,9 +51,10 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void onEmpty(boolean flag);
     }
 
-    public HistoryItemAdapter(RecyclerView recyclerView, Context context, LinearLayoutManager layoutManager) {
+    public HistoryItemAdapter(RecyclerView recyclerView, Context context, EmptyListener emptyListener, LinearLayoutManager layoutManager) {
         mRecyclerView = recyclerView;
         mContext = context;
+        mEmptyListener = emptyListener;
         mLayoutManager = layoutManager;
         mIsInitialQuery = true;
         loadMoreItems();
@@ -150,9 +152,6 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(((Site) item).getUrl()));
                 mContext.startActivity(intent);
-                if (mContext instanceof BrowsingHistoryActivity) {
-                    ((Activity) mContext).finishAndRemoveTask();
-                }
             }
         }
     }
@@ -227,8 +226,8 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void notifyEmptyListener(boolean flag) {
-        if (mContext instanceof EmptyListener) {
-            ((EmptyListener) mContext).onEmpty(flag);
+        if (mEmptyListener != null) {
+            mEmptyListener.onEmpty(flag);
         }
     }
 
