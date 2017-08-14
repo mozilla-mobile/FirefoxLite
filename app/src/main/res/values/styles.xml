@@ -56,6 +56,7 @@
     <style name="MenuButtonBox">
         <item name="android:layout_width">74dp</item>
         <item name="android:layout_height">74dp</item>
+        <item name="android:background">@drawable/round_rectangle_ripple</item>
     </style>
 
     <style name="MenuButtonInnerBox">
@@ -69,6 +70,7 @@
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:tint">@color/sheet_menu_button</item>
     </style>
 
     <style name="MenuButtonText">
@@ -78,14 +80,15 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_marginTop">13dp</item>
-        <item name="android:textColor">@color/colorMenuLabel</item>
+        <item name="android:textColor">@color/sheet_menu_button</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
     <style name="MenuBottomButton">
         <item name="android:layout_height">36dp</item>
         <item name="android:layout_width">36dp</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:tint">@color/sheet_menu_button</item>
+        <item name="android:background">@drawable/round_rectangle_ripple</item>
     </style>
 
     <style name="MenuText">

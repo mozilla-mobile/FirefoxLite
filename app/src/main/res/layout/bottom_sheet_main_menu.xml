@@ -98,6 +98,7 @@
 
                 <ImageView
                     style="@style/MenuButtonImage"
+                    android:clickable="false"
                     android:src="@drawable/menu_speedmode"
                     tools:background="#3300FF00" />
 
@@ -185,9 +186,10 @@
         </FrameLayout>
 
         <!-- a placeholder for layout -->
-        <FrameLayout
+        <View
             style="@style/MenuButtonBox"
-            tools:background="#33FF0000"></FrameLayout>
+            android:background="@android:color/transparent"
+            tools:background="#33FF0000"/>
 
     </org.mozilla.focus.widget.EqualDistributeRow>
 
@@ -209,7 +211,6 @@
                 android:id="@+id/action_next"
                 style="@style/MenuBottomButton"
                 android:layout_marginEnd="57dp"
-                android:background="@drawable/round_rectangle_ripple"
                 android:contentDescription="@string/content_description_forward"
                 android:onClick="onMenuItemClicked"
                 android:src="@drawable/action_next"
@@ -219,7 +220,6 @@
                 android:id="@+id/action_refresh"
                 style="@style/MenuBottomButton"
                 android:layout_marginEnd="57dp"
-                android:background="@drawable/round_rectangle_ripple"
                 android:contentDescription="@string/content_description_back"
                 android:onClick="onMenuItemClicked"
                 android:src="@drawable/action_refresh"
@@ -229,7 +229,6 @@
                 android:id="@+id/action_share"
                 style="@style/MenuBottomButton"
                 android:layout_marginEnd="57dp"
-                android:background="@drawable/round_rectangle_ripple"
                 android:contentDescription="@string/content_description_reload"
                 android:onClick="onMenuItemClicked"
                 android:src="@drawable/menu_share"
@@ -238,7 +237,6 @@
             <ImageButton
                 android:id="@+id/capture_page"
                 style="@style/MenuBottomButton"
-                android:background="@drawable/round_rectangle_ripple"
                 android:onClick="onMenuItemClicked"
                 android:src="@drawable/action_capture"
                 tools:background="#330000FF" />
