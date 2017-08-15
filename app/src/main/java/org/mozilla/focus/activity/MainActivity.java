@@ -75,7 +75,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     pendingUrl = url;
                     this.mediator.showFirstRun();
                 } else {
-                    this.mediator.showBrowserScreen(url);
+                    this.mediator.showBrowserScreen(url, true);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
@@ -161,7 +161,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // We have received an URL in onNewIntent(). Let's load it now.
             // Unless we're trying to show the firstrun screen, in which case we leave it pending until
             // firstrun is dismissed.
-            this.mediator.showBrowserScreen(pendingUrl);
+            this.mediator.showBrowserScreen(pendingUrl, true);
             pendingUrl = null;
         }
     }
@@ -371,7 +371,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public void firstrunFinished() {
         if (pendingUrl != null) {
             // We have received an URL in onNewIntent(). Let's load it now.
-            this.mediator.showBrowserScreen(pendingUrl);
+            this.mediator.showBrowserScreen(pendingUrl, true);
             pendingUrl = null;
         } else {
             this.mediator.showHomeScreen();
@@ -383,7 +383,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         switch (type) {
             case OPEN_URL:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.showBrowserScreen(payload.toString());
+                    this.mediator.showBrowserScreen(payload.toString(), false);
                 }
                 break;
             case OPEN_PREFERENCE:
