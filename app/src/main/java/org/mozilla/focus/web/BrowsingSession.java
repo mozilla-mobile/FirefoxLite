@@ -85,6 +85,10 @@ public class BrowsingSession {
             throw new IllegalStateException("Can't retrieve custom tab config for normal browsing session");
         }
 
+        if (customTabConfig == null) {
+            throw new IllegalStateException("Is loading custom tabs page, but configuration is not parsed yet");
+        }
+
         return customTabConfig;
     }
 }
