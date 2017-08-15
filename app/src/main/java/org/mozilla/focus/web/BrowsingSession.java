@@ -21,6 +21,8 @@ import java.lang.ref.WeakReference;
 public class BrowsingSession {
     private static BrowsingSession instance;
 
+    private final static boolean ENABLE_CUSTOM_TABS = false;
+
     public interface TrackingCountListener {
         void onTrackingCountChanged(int trackingCount);
     }
@@ -65,16 +67,16 @@ public class BrowsingSession {
     }
 
     public void loadCustomTabConfig(final @NonNull Context context, final @NonNull SafeIntent intent) {
-        if (!CustomTabConfig.isCustomTabIntent(intent)) {
+        if (ENABLE_CUSTOM_TABS && CustomTabConfig.isCustomTabIntent(intent)) {
+            customTabConfig = CustomTabConfig.parseCustomTabIntent(context, intent);
+        } else {
             customTabConfig = null;
-            return;
         }
-
-        customTabConfig = CustomTabConfig.parseCustomTabIntent(context, intent);
     }
 
     public boolean isCustomTab() {
-        return customTabConfig != null;
+        //noinspection ConstantConditions
+        return (ENABLE_CUSTOM_TABS && customTabConfig != null);
     }
 
     @NonNull
