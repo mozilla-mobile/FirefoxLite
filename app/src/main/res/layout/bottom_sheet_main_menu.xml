@@ -25,6 +25,7 @@
             android:drawablePadding="0dp"
             android:drawableTint="@color/sheet_menu_button"
             android:drawableTop="@drawable/menu_download"
+            android:onClick="onMenuItemClicked"
             android:text="Download" />
 
         <android.support.v7.widget.AppCompatButton
