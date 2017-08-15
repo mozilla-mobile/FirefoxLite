@@ -87,6 +87,12 @@
             android:authorities="${applicationId}.provider.historyprovider"
             android:enabled="true"
             android:exported="false" />
+
+        <provider
+            android:name=".provider.ScreenshotProvider"
+            android:authorities="${applicationId}.provider.screenshotprovider"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
