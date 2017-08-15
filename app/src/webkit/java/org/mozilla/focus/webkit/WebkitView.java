@@ -38,7 +38,7 @@ import org.mozilla.focus.web.WebViewProvider;
 public class WebkitView extends NestedWebView implements IWebView, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_CURRENTURL = "currenturl";
 
-    private CallbackWrapper callback;
+    private IWebView.Callback callback;
     private FocusWebViewClient client;
     private final FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
@@ -128,7 +128,10 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
     @Override
     public void setCallback(Callback callback) {
-        this.callback = new CallbackWrapper(callback);
+        if(callback != null) {
+            callback = new CallbackWrapper(callback);
+        }
+        this.callback = callback;
         client.setCallback(this.callback);
         linkHandler.setCallback(this.callback);
     }
@@ -236,7 +239,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
     private class CallbackWrapper implements IWebView.Callback {
         final IWebView.Callback callback;
 
-        CallbackWrapper(IWebView.Callback callback) {
+        CallbackWrapper(@NonNull IWebView.Callback callback) {
             this.callback = callback;
         }
 
