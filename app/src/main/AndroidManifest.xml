@@ -73,7 +73,7 @@
 
         <service
             android:name=".customtabs.CustomTabsService"
-            android:exported="true"
+            android:exported="false"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.support.customtabs.action.CustomTabsService" />
