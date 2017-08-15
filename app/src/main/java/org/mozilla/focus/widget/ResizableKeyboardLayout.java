@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import org.mozilla.focus.R;
@@ -32,6 +33,7 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
 
     private final int idOfViewToHide;
     private @Nullable View viewToHide;
+    private int marginBottom;
 
     public ResizableKeyboardLayout(Context context) {
         this(context, null);
@@ -58,6 +60,15 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
         }
     }
 
+    // Zerda modification: Intercept bottomMargin
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        super.setLayoutParams(params);
+        if(params instanceof MarginLayoutParams) {
+            marginBottom = (((MarginLayoutParams) params).bottomMargin);
+        }
+    }
+
     private ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
@@ -81,6 +92,8 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
                 // Keyboard not showing -> Reset bottom padding.
                 if (getPaddingBottom() != 0) {
                     setPadding(0, 0, 0, 0);
+                    // Zerda modification: Restore previously canceled margin
+                    ((MarginLayoutParams) getLayoutParams()).bottomMargin = marginBottom;
 
                     if (viewToHide != null) {
                         viewToHide.setVisibility(View.VISIBLE);
