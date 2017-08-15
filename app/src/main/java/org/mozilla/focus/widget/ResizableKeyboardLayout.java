@@ -67,6 +67,11 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
                 // Keyboard showing -> Set difference has bottom padding.
                 if (getPaddingBottom() != difference) {
                     setPadding(0, 0, 0, difference);
+                    // Zerda modification: We don't want extra margin in BrowserFragment for main
+                    // toolbar, so we truncate them.
+                    if(getLayoutParams() instanceof MarginLayoutParams) {
+                        ((MarginLayoutParams) getLayoutParams()).bottomMargin = 0;
+                    }
 
                     if (viewToHide != null) {
                         viewToHide.setVisibility(View.GONE);
