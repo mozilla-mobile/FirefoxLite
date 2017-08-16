@@ -9,12 +9,18 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/main_content"
         android:background="@color/colorMenuBackground"
-        android:paddingBottom="50dp"
+        android:paddingBottom="49dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
         app:behavior_peekHeight="300dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="48dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorMenuDivider"/>
     <LinearLayout
         android:orientation="horizontal"
         android:background="@color/colorMenuBackground"
