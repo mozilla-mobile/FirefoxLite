@@ -21,17 +21,39 @@
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="48dp">
-        <TextView
-            style="@style/ListPanelText"
-            android:id="@+id/download"
-            android:text="@string/label_menu_download"/>
-        <TextView
-            style="@style/ListPanelText"
-            android:id="@+id/history"
-            android:text="@string/label_menu_history"/>
-        <TextView
-            style="@style/ListPanelText"
-            android:id="@+id/screenshots"
-            android:text="@string/label_menu_screenshots"/>
+        <FrameLayout
+            style="@style/ListPanelContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <TextView
+                style="@style/ListPanelText"
+                android:drawableStart="@drawable/menu_download"
+                android:id="@+id/download"
+                android:text="@string/label_menu_download"/>
+        </FrameLayout>
+        <FrameLayout
+            style="@style/ListPanelContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <TextView
+                style="@style/ListPanelText"
+                android:drawableStart="@drawable/menu_history"
+                android:id="@+id/history"
+                android:text="@string/label_menu_history"/>
+        </FrameLayout>
+        <FrameLayout
+            style="@style/ListPanelContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <TextView
+                style="@style/ListPanelText"
+                android:drawableStart="@drawable/menu_screenshots"
+                android:id="@+id/screenshots"
+                android:text="@string/label_menu_screenshots"/>
+        </FrameLayout>
+
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
