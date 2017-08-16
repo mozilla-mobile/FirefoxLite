@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -137,6 +138,7 @@ public class ListPanelDialog extends DialogFragment {
 
     private void showScreenshots() {
         setSelectedItem(TYPE_SCREENSHOTS);
+        getChildFragmentManager().beginTransaction().replace(R.id.main_content, new Fragment()).commit();
     }
 
     private void toggleSelectedItem() {
