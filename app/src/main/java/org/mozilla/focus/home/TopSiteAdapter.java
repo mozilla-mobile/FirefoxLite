@@ -12,17 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-
 import org.mozilla.focus.R;
-import org.mozilla.focus.home.model.Site;
+import org.mozilla.focus.history.model.Site;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
 
-    final List<Site> sites = new ArrayList<>();
+    List<Site> sites = new ArrayList<>();
     final View.OnClickListener clickListener;
     final View.OnLongClickListener longClickListener;
 
@@ -46,11 +44,12 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
     public void onBindViewHolder(SiteViewHolder holder, int position) {
         final Site site = sites.get(position);
         holder.text.setText(site.getTitle());
-//        holder.img.setImageResource(site.getIconRes());
-        Glide.with(holder.img.getContext())
-                .asDrawable()
-                .load(site.getIconRes())
-                .into(holder.img);
+        if (site.getFavIcon() != null) {
+            holder.img.setImageBitmap(site.getFavIcon());
+        } else {
+            //need default icon?
+            holder.img.setImageBitmap(null);
+        }
 
         // let click listener knows which site is clicked
         holder.itemView.setTag(site);
@@ -78,8 +77,14 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
             final Site site = this.sites.get(i);
             if (site.getId() == toRemove.getId()) {
                 this.sites.remove(i);
-                notifyItemRemoved(i);
+                notifyDataSetChanged();
+//                notifyItemRemoved(i);
             }
         }
+    }
+
+    public void setSites(@NonNull List<Site> sites) {
+        this.sites = sites;
+        notifyDataSetChanged();
     }
 }

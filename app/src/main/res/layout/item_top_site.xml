@@ -42,5 +42,6 @@
         android:lineSpacingExtra="2dp"
         android:textColor="#272727"
         android:textSize="13sp"
+        android:maxLines="2"
         tools:text="Foobar" />
 </LinearLayout>
