@@ -1,6 +1,5 @@
 package org.mozilla.focus.history;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,20 +40,21 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private Context mContext;
-    private EmptyListener mEmptyListener;
+    private HistoryListener mHistoryListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
     private int mCurrentCount;
 
-    public interface EmptyListener {
+    public interface HistoryListener {
         void onEmpty(boolean flag);
+        void onItemClicked();
     }
 
-    public HistoryItemAdapter(RecyclerView recyclerView, Context context, EmptyListener emptyListener, LinearLayoutManager layoutManager) {
+    public HistoryItemAdapter(RecyclerView recyclerView, Context context, HistoryListener historyListener, LinearLayoutManager layoutManager) {
         mRecyclerView = recyclerView;
         mContext = context;
-        mEmptyListener = emptyListener;
+        mHistoryListener = historyListener;
         mLayoutManager = layoutManager;
         mIsInitialQuery = true;
         loadMoreItems();
@@ -152,6 +152,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(((Site) item).getUrl()));
                 mContext.startActivity(intent);
+                mHistoryListener.onItemClicked();
             }
         }
     }
@@ -226,8 +227,8 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void notifyEmptyListener(boolean flag) {
-        if (mEmptyListener != null) {
-            mEmptyListener.onEmpty(flag);
+        if (mHistoryListener != null) {
+            mHistoryListener.onEmpty(flag);
         }
     }
 
