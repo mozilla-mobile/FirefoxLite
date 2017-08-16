@@ -52,7 +52,7 @@ public class ListPanelDialog extends DialogFragment {
                 showScreenshots();
                 break;
             default:
-                throw new RuntimeException("There is not view type " + getArguments().getInt(TYPE));
+                throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));
         }
     }
 
@@ -154,7 +154,7 @@ public class ListPanelDialog extends DialogFragment {
                 screenshotsTouchArea.setSelected(true);
                 break;
             default:
-                throw new RuntimeException("There is not view type " + getArguments().getInt(TYPE));
+                throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));
         }
     }
 }
