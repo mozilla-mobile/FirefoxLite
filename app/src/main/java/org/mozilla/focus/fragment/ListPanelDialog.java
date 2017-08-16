@@ -26,6 +26,9 @@ public class ListPanelDialog extends DialogFragment {
 
     private NestedScrollView scrollView;
     private static final String TYPE = "TYPE";
+    private View downloadsTouchArea;
+    private View historyTouchArea;
+    private View screenshotsTouchArea;
 
     public static ListPanelDialog newInstance(int type) {
         ListPanelDialog listPanelDialog = new ListPanelDialog();
@@ -91,19 +94,22 @@ public class ListPanelDialog extends DialogFragment {
                 dismiss();
             }
         });
-        v.findViewById(R.id.download).setOnClickListener(new View.OnClickListener() {
+        downloadsTouchArea = v.findViewById(R.id.download);
+        downloadsTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDownload();
             }
         });
-        v.findViewById(R.id.history).setOnClickListener(new View.OnClickListener() {
+        historyTouchArea = v.findViewById(R.id.history);
+        historyTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showHistory();
             }
         });
-        v.findViewById(R.id.screenshots).setOnClickListener(new View.OnClickListener() {
+        screenshotsTouchArea = v.findViewById(R.id.screenshots);
+        screenshotsTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showScreenshots();
@@ -112,17 +118,43 @@ public class ListPanelDialog extends DialogFragment {
         return v;
     }
 
+    private void setSelectedItem(int selectedItem) {
+        getArguments().putInt(TYPE, selectedItem);
+        toggleSelectedItem();
+    }
+
     private void showDownload() {
+        setSelectedItem(TYPE_DOWNLOAD);
         DownloadFragment downloadFragment = DownloadFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(R.id.main_content, downloadFragment).commit();
     }
 
     private void showHistory() {
+        setSelectedItem(TYPE_HISTORY);
         BrowsingHistoryFragment browsingHistoryFragment = BrowsingHistoryFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(R.id.main_content, browsingHistoryFragment).commit();
     }
 
     private void showScreenshots() {
+        setSelectedItem(TYPE_SCREENSHOTS);
+    }
 
+    private void toggleSelectedItem() {
+        downloadsTouchArea.setSelected(false);
+        historyTouchArea.setSelected(false);
+        screenshotsTouchArea.setSelected(false);
+        switch (getArguments().getInt(TYPE)) {
+            case TYPE_DOWNLOAD:
+                downloadsTouchArea.setSelected(true);
+                break;
+            case TYPE_HISTORY:
+                historyTouchArea.setSelected(true);
+                break;
+            case TYPE_SCREENSHOTS:
+                screenshotsTouchArea.setSelected(true);
+                break;
+            default:
+                throw new RuntimeException("There is not view type " + getArguments().getInt(TYPE));
+        }
     }
 }
