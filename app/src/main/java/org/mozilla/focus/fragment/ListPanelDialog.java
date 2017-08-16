@@ -24,6 +24,7 @@ public class ListPanelDialog extends DialogFragment {
     public final static int TYPE_DOWNLOAD = 1;
     public final static int TYPE_HISTORY = 2;
     public final static int TYPE_SCREENSHOTS = 3;
+    private static final int UNUSED_REQUEST_CODE = -1;
 
     private NestedScrollView scrollView;
     private static final String TYPE = "TYPE";
@@ -126,19 +127,22 @@ public class ListPanelDialog extends DialogFragment {
 
     private void showDownload() {
         setSelectedItem(TYPE_DOWNLOAD);
-        DownloadFragment downloadFragment = DownloadFragment.newInstance();
-        getChildFragmentManager().beginTransaction().replace(R.id.main_content, downloadFragment).commit();
+        showPanelFragment(DownloadFragment.newInstance());
     }
 
     private void showHistory() {
         setSelectedItem(TYPE_HISTORY);
-        BrowsingHistoryFragment browsingHistoryFragment = BrowsingHistoryFragment.newInstance();
-        getChildFragmentManager().beginTransaction().replace(R.id.main_content, browsingHistoryFragment).commit();
+        showPanelFragment(BrowsingHistoryFragment.newInstance());
     }
 
     private void showScreenshots() {
         setSelectedItem(TYPE_SCREENSHOTS);
-        getChildFragmentManager().beginTransaction().replace(R.id.main_content, new Fragment()).commit();
+        showPanelFragment(new PanelFragment());
+    }
+
+    private void showPanelFragment(PanelFragment panelFragment) {
+        panelFragment.setTargetFragment(this, UNUSED_REQUEST_CODE);
+        getChildFragmentManager().beginTransaction().replace(R.id.main_content, panelFragment).commit();
     }
 
     private void toggleSelectedItem() {

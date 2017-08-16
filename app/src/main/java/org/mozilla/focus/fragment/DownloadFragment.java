@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import org.mozilla.focus.R;
 import org.mozilla.focus.widget.DownloadListAdapter;
 
-public class DownloadFragment extends Fragment {
+public class DownloadFragment extends PanelFragment {
 
     private RecyclerView recyclerView;
     private DownloadListAdapter mDownloadListAdapter;
