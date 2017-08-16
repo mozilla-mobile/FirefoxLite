@@ -19,6 +19,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.provider.QueryHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 
 public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener,
-        BrowsingHistoryManager.AsyncQueryListener, BrowsingHistoryManager.AsyncDeleteListener {
+        QueryHandler.AsyncQueryListener, QueryHandler.AsyncDeleteListener {
 
     private static final int VIEW_TYPE_SITE = 1;
     private static final int VIEW_TYPE_DATE = 2;
@@ -158,13 +159,13 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onQueryComplete(List sites) {
-        mIsLastPage = sites.size() == 0;
+    public void onQueryComplete(List result) {
+        mIsLastPage = result.size() == 0;
         if (mIsInitialQuery) {
             mIsInitialQuery = false;
             notifyEmptyListener(mIsLastPage);
         }
-        for (Object site : sites) {
+        for (Object site : result) {
             add(site);
         }
         mIsLoading = false;
