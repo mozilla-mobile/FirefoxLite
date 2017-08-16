@@ -7,11 +7,11 @@ package org.mozilla.focus.home;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -19,21 +19,34 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.home.model.Site;
+import org.mozilla.focus.history.BrowsingHistoryManager;
+import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.widget.FragmentListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements TopSitesContract.View {
 
     public static final String FRAGMENT_TAG = "homescreen";
+    public static final String TOPSITES_PREF = "topsites_pref";
+    public static final int TOP_SITES_QUERY_LIMIT = 8;
+    public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 1;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private View btnMenu;
     private View fakeInput;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
+    private TopSiteAdapter topSiteAdapter;
+    private JSONArray orginalDefaultSites = null;
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -85,12 +98,14 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
 
     @Override
     public void onViewCreated(View view, Bundle savedState) {
-        this.presenter.populateSites();
+//        this.presenter.populateSites();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        initDefaultSites();
+        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
         final Activity parent = getActivity();
         if (parent instanceof FragmentListener) {
             ((FragmentListener) parent).onNotified(this,
@@ -112,10 +127,14 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
 
     @Override
     public void showSites(@NonNull List<Site> sites) {
-        this.recyclerView.setAdapter(
-                new TopSiteAdapter(sites,
-                        clickListener,
-                        clickListener));
+        if (this.topSiteAdapter == null) {
+            this.topSiteAdapter = new TopSiteAdapter(sites, clickListener, clickListener);
+            this.recyclerView.setAdapter(topSiteAdapter);
+        } else {
+            this.recyclerView.setAdapter(topSiteAdapter);
+            this.topSiteAdapter.setSites(sites);
+        }
+
     }
 
     @Override
@@ -126,7 +145,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
 
     @Override
     public void removeSite(@NonNull Site site) {
-        ((TopSiteAdapter) this.recyclerView.getAdapter()).removeSite(site);
+        this.topSiteAdapter.setSites(presenter.getSites());
     }
 
     @Override
@@ -137,6 +156,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     public void setPresenter(TopSitesContract.Presenter presenter) {
         this.presenter = presenter;
     }
+
 
     public void toggleFakeUrlInput(boolean visible) {
         final int visibility = visible ? View.VISIBLE : View.INVISIBLE;
@@ -161,7 +181,6 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
             final Site site = (Site) v.getTag();
 
             if (site == null) {
-                Log.w(FRAGMENT_TAG, "Long-clicked item has no site info");
                 return false;
             }
 
@@ -177,7 +196,15 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
                             .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
-                                    HomeFragment.this.presenter.removeSite(site);
+                                    if (site.getId() < 0) {
+                                        HomeFragment.this.presenter.removeSite(site);
+                                        HomeFragment.this.removeDefaultSites(site);
+                                        restoreDefaultSite();
+                                        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                                    } else {
+                                        BrowsingHistoryManager.getInstance().delete(site.getId(), mTopSiteDeleteListener);
+                                    }
+
                                     return true;
                                 }
                             });
@@ -186,6 +213,111 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
             v.showContextMenu();
 
             return true;
+        }
+    }
+
+    private BrowsingHistoryManager.AsyncQueryListener mTopSitesQueryListener = new BrowsingHistoryManager.AsyncQueryListener() {
+        @Override
+        public void onQueryComplete(List sites) {
+            List<Site> querySites = new ArrayList<>();
+            for (Object site : sites) {
+                if (site instanceof Site) {
+                    querySites.add((Site)site);
+                }
+            }
+
+            HomeFragment.this.mergeQueryAndDefaultSites(querySites);
+        }
+    };
+
+    private BrowsingHistoryManager.AsyncDeleteListener mTopSiteDeleteListener = new BrowsingHistoryManager.AsyncDeleteListener() {
+        @Override
+        public void onDeleteComplete(int result, long id) {
+            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+        }
+    };
+
+    private void mergeQueryAndDefaultSites(List<Site> querySites) {
+        List<Site> topSites = new ArrayList<>(this.presenter.getSites());
+        Iterator<Site> sitesIterator = topSites.iterator();
+        while (sitesIterator.hasNext()) {
+            Site temp = sitesIterator.next();
+            if (temp.getId() >= 0) {
+                sitesIterator.remove();
+            }
+        }
+
+        topSites.addAll(querySites);
+        TopSideComparator topSideComparator = new TopSideComparator();
+        Collections.sort(topSites, topSideComparator);
+
+        if (topSites.size() > TOP_SITES_QUERY_LIMIT) {
+            List<Site> removeSites = topSites.subList(TOP_SITES_QUERY_LIMIT, topSites.size());
+            removeDefaultSites(removeSites);
+
+            topSites = topSites.subList(0, TOP_SITES_QUERY_LIMIT);
+        }
+
+        this.presenter.setSites(topSites);
+        this.presenter.populateSites();
+    }
+
+    private void initDefaultSites() {
+        String obj_sites = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString(HomeFragment.TOPSITES_PREF, null);
+
+        //if no default sites data in SharedPreferences, load data from assets.
+        if (obj_sites == null) {
+            this.orginalDefaultSites = TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
+        } else {
+            try {
+                this.orginalDefaultSites = new JSONArray(obj_sites);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        List<Site> defaultSites = TopSitesUtils.paresJsonToList(getContext(), this.orginalDefaultSites);
+        this.presenter.setSites(defaultSites);
+    }
+
+    private void restoreDefaultSite() {
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .edit()
+                .putString(HomeFragment.TOPSITES_PREF, this.orginalDefaultSites.toString())
+                .apply();
+    }
+
+    private void removeDefaultSites(List<Site> removeSites) {
+        boolean isRemove = false;
+        for(int i = 0; i < removeSites.size(); i++) {
+            Site rSite = removeSites.get(i);
+            if (rSite.getId() < 0) {
+                removeDefaultSites(rSite);
+                isRemove = true;
+            }
+        }
+
+        if (isRemove) {
+            restoreDefaultSite();
+        }
+    }
+
+    private void removeDefaultSites(Site removeSite) {
+        try {
+            if (this.orginalDefaultSites != null) {
+                for (int i = 0; i < this.orginalDefaultSites.length(); i++) {
+                    long id = ((JSONObject) this.orginalDefaultSites.get(i)).getLong("id");
+
+                    if (id == removeSite.getId()) {
+                        this.orginalDefaultSites.remove(i);
+                        break;
+                    }
+                }
+            }
+        }  catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

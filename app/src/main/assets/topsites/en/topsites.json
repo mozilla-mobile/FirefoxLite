@@ -1,0 +1,58 @@
+[
+  {
+    "id": -1,
+    "url": "https://www.amazon.com/",
+    "title": "Amazon",
+    "favicon": "ic_amazon.png",
+    "viewCount": 1
+  },
+  {
+    "id": -2,
+    "url": "https://duckduckgo.com/",
+    "title": "DuckDuckGo",
+    "favicon": "ic_duckduckgo.png",
+    "viewCount": 1
+  },
+  {
+    "id": -3,
+    "url": "https://vimeo.com/",
+    "title": "Vimeo",
+    "favicon": "ic_vimeo.png",
+    "viewCount": 4
+  },
+  {
+    "id": -4,
+    "url": "https://mbasic.facebook.com/",
+    "title": "Facebook",
+    "favicon": "ic_facebook.png",
+    "viewCount": 5
+  },
+  {
+    "id": -5,
+    "url": "https://www.google.com",
+    "title": "Google",
+    "favicon": "ic_google.png",
+    "viewCount": 6
+  },
+  {
+    "id": -6,
+    "url": "https://twitter.com",
+    "title": "Twitter",
+    "favicon": "ic_twitter.png",
+    "viewCount": 3
+  },
+  {
+    "id": -7,
+    "url": "https://www.mozilla.org",
+    "title": "Mozilla",
+    "favicon": "ic_mozilla.png",
+    "viewCount": 100
+  },
+  {
+    "id": -8,
+    "url": "https://developer.mozilla.org/zh-TW/",
+    "title": "MDN",
+    "favicon": "ic_mdn.png",
+    "viewCount": 2
+  }
+]

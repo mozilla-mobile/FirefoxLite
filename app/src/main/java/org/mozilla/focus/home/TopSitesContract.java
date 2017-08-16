@@ -7,7 +7,7 @@ package org.mozilla.focus.home;
 
 import android.support.annotation.NonNull;
 
-import org.mozilla.focus.home.model.Site;
+import org.mozilla.focus.history.model.Site;
 
 import java.util.List;
 
@@ -69,5 +69,17 @@ public class TopSitesContract {
          * @param site to be removed
          */
         void removeSite(@NonNull Site site);
+
+        /**
+         * To set a site list into Model
+         *
+         * @param sites to be set
+         */
+        void setSites(@NonNull List<Site> sites);
+
+        /**
+         * To get a site list into Model
+         */
+        List<Site> getSites();
     }
 }
