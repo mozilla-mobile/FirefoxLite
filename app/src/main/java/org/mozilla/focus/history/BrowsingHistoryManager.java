@@ -1,21 +1,18 @@
 package org.mozilla.focus.history;
 
-import android.content.AsyncQueryHandler;
-import android.content.ContentValues;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Handler;
 
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.HistoryContract.BrowsingHistory;
+import org.mozilla.focus.provider.QueryHandler;
+import org.mozilla.focus.provider.QueryHandler.*;
 
-import java.io.ByteArrayOutputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by hart on 07/08/2017.
@@ -23,95 +20,12 @@ import java.util.List;
 
 public class BrowsingHistoryManager {
 
-    private static final int SITE_TOKEN = 1;
-
     private static BrowsingHistoryManager sInstance;
 
-    private Context mContext;
-    private BrowsingHistoryQueryHandler mQueryHandler;
+    private WeakReference<ContentResolver> mResolver;
+    private QueryHandler mQueryHandler;
     private BrowsingHistoryContentObserver mContentObserver;
     private ArrayList<ContentChangeListener> mListeners;
-
-    private static final class BrowsingHistoryQueryHandler extends AsyncQueryHandler {
-
-        public BrowsingHistoryQueryHandler(Context context) {
-            super(context.getContentResolver());
-        }
-
-        @Override
-        protected void onInsertComplete(int token, Object cookie, Uri uri) {
-            switch (token) {
-                case SITE_TOKEN:
-                    if (cookie != null) {
-                        final long id = uri == null ? -1 : Long.parseLong(uri.getLastPathSegment());
-                        ((AsyncInsertListener) cookie).onInsertComplete(id);
-                    }
-                    break;
-                default:
-                    // do nothing
-            }
-        }
-
-        @Override
-        protected void onDeleteComplete(int token, Object cookie, int result) {
-            switch (token) {
-                case SITE_TOKEN:
-                    if (cookie != null) {
-                        AsyncDeleteWrapper wrapper = ((AsyncDeleteWrapper) cookie);
-                        if (wrapper.listener != null) {
-                            wrapper.listener.onDeleteComplete(result, wrapper.id);
-                        }
-                    }
-                    break;
-                default:
-                    // do nothing
-            }
-        }
-
-        @Override
-        protected void onUpdateComplete(int token, Object cookie, int result) {
-            switch (token) {
-                case SITE_TOKEN:
-                    if (cookie != null) {
-                        ((AsyncUpdateListener) cookie).onUpdateComplete(result);
-                    }
-                    break;
-                default:
-                    // do nothing
-            }
-        }
-
-        @Override
-        protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-            switch (token) {
-                case SITE_TOKEN:
-                    if (cookie != null) {
-                        List sites = new ArrayList();
-                        if (cursor != null) {
-                            while (cursor.moveToNext()) {
-                                sites.add(cursorToSite(cursor));
-                            }
-                            cursor.close();
-                        }
-                        ((AsyncQueryListener) cookie).onQueryComplete(sites);
-                    }
-                    break;
-                default:
-                    // do nothing
-            }
-        }
-    }
-
-    private static final class AsyncDeleteWrapper {
-
-        public long id;
-        public AsyncDeleteListener listener;
-
-        public AsyncDeleteWrapper(long id, AsyncDeleteListener listener) {
-            this.id = id;
-            this.listener = listener;
-        }
-    }
 
     private final class BrowsingHistoryContentObserver extends ContentObserver {
 
@@ -131,22 +45,6 @@ public class BrowsingHistoryManager {
         void onContentChanged();
     }
 
-    public interface AsyncInsertListener {
-        void onInsertComplete(long id);
-    }
-
-    public interface AsyncDeleteListener {
-        void onDeleteComplete(int result, long id);
-    }
-
-    public interface AsyncUpdateListener {
-        void onUpdateComplete(int result);
-    }
-
-    public interface AsyncQueryListener {
-        void onQueryComplete(List sites);
-    }
-
     public static BrowsingHistoryManager getInstance() {
         if (sInstance == null) {
             sInstance = new BrowsingHistoryManager();
@@ -155,8 +53,9 @@ public class BrowsingHistoryManager {
     }
 
     public void init(Context context) {
-        mContext = context;
-        mQueryHandler = new BrowsingHistoryQueryHandler(context);
+        ContentResolver resolver = context.getContentResolver();
+        mResolver = new WeakReference<>(resolver);
+        mQueryHandler = new QueryHandler(resolver);
         mContentObserver = new BrowsingHistoryContentObserver(null);
         mListeners = new ArrayList<>();
     }
@@ -168,7 +67,10 @@ public class BrowsingHistoryManager {
 
         mListeners.add(listener);
         if (mListeners.size() == 1) {
-            mContext.getContentResolver().registerContentObserver(BrowsingHistory.CONTENT_URI, false, mContentObserver);
+            ContentResolver resolver = mResolver.get();
+            if (resolver != null) {
+                resolver.registerContentObserver(BrowsingHistory.CONTENT_URI, false, mContentObserver);
+            }
         }
     }
 
@@ -179,62 +81,34 @@ public class BrowsingHistoryManager {
 
         mListeners.remove(listener);
         if (mListeners.size() == 0) {
-            mContext.getContentResolver().unregisterContentObserver(mContentObserver);
+            ContentResolver resolver = mResolver.get();
+            if (resolver != null) {
+                resolver.unregisterContentObserver(mContentObserver);
+            }
         }
     }
 
     public void insert(Site site, AsyncInsertListener listener) {
-        mQueryHandler.startInsert(SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, getContentValuesFromSite(site));
+        mQueryHandler.startInsert(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site));
     }
 
     public void delete(long id, AsyncDeleteListener listener) {
-        mQueryHandler.startDelete(SITE_TOKEN, new AsyncDeleteWrapper(id, listener), BrowsingHistory.CONTENT_URI, BrowsingHistory._ID + " = ?", new String[] {Long.toString(id)});
+        mQueryHandler.startDelete(QueryHandler.SITE_TOKEN, new AsyncDeleteWrapper(id, listener), BrowsingHistory.CONTENT_URI, BrowsingHistory._ID + " = ?", new String[] {Long.toString(id)});
     }
 
     public void deleteAll(AsyncDeleteListener listener) {
-        mQueryHandler.startDelete(SITE_TOKEN, new AsyncDeleteWrapper(-1, listener), BrowsingHistory.CONTENT_URI, "1", null);
+        mQueryHandler.startDelete(QueryHandler.SITE_TOKEN, new AsyncDeleteWrapper(-1, listener), BrowsingHistory.CONTENT_URI, "1", null);
     }
 
     public void update(Site site, AsyncUpdateListener listener) {
-        mQueryHandler.startUpdate(SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, getContentValuesFromSite(site), BrowsingHistory._ID + " = ?", new String[] {Long.toString(site.getId())});
+        mQueryHandler.startUpdate(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site), BrowsingHistory._ID + " = ?", new String[] {Long.toString(site.getId())});
     }
 
     public void query(int offset, int limit, AsyncQueryListener listener) {
-        mQueryHandler.startQuery(SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit), null, null, null, BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC");
+        mQueryHandler.startQuery(QueryHandler.SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit), null, null, null, BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC");
     }
 
     public void queryTopSites(int limit, int minViewCount, AsyncQueryListener listener) {
-        mQueryHandler.startQuery(SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?limit=" + limit), null, BrowsingHistory.VIEW_COUNT + " >= ?", new String[] {Integer.toString(minViewCount)}, BrowsingHistory.VIEW_COUNT + " DESC");
-    }
-
-    private static Site cursorToSite(Cursor cursor) {
-        Site site = new Site();
-        site.setId(cursor.getLong(cursor.getColumnIndex(BrowsingHistory._ID)));
-        site.setTitle(cursor.getString(cursor.getColumnIndex(BrowsingHistory.TITLE)));
-        site.setUrl(cursor.getString(cursor.getColumnIndex(BrowsingHistory.URL)));
-        site.setViewCount(cursor.getLong(cursor.getColumnIndex(BrowsingHistory.VIEW_COUNT)));
-        site.setLastViewTimestamp(cursor.getLong(cursor.getColumnIndex(BrowsingHistory.LAST_VIEW_TIMESTAMP)));
-        site.setFavIcon(bytesToBitmap(cursor.getBlob(cursor.getColumnIndex(BrowsingHistory.FAV_ICON))));
-        return site;
-    }
-
-    private static ContentValues getContentValuesFromSite(Site site) {
-        ContentValues values = new ContentValues();
-        if (site.getTitle() != null) values.put(BrowsingHistory.TITLE, site.getTitle());
-        if (site.getUrl() != null) values.put(BrowsingHistory.URL, site.getUrl());
-        if (site.getViewCount() != 0) values.put(BrowsingHistory.VIEW_COUNT, site.getViewCount());
-        if (site.getLastViewTimestamp() != 0) values.put(BrowsingHistory.LAST_VIEW_TIMESTAMP, site.getLastViewTimestamp());
-        if (site.getFavIcon() != null) values.put(BrowsingHistory.FAV_ICON, bitmapToBytes(site.getFavIcon()));
-        return values;
-    }
-
-    private static byte[] bitmapToBytes(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
-
-    private static Bitmap bytesToBitmap(byte[] data) {
-        return data == null ? null : BitmapFactory.decodeByteArray(data, 0, data.length);
+        mQueryHandler.startQuery(QueryHandler.SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?limit=" + limit), null, BrowsingHistory.VIEW_COUNT + " >= ?", new String[] {Integer.toString(minViewCount)}, BrowsingHistory.VIEW_COUNT + " DESC");
     }
 }
