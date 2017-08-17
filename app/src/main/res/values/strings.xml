@@ -321,4 +321,10 @@ be temporary, and you can try again later.</li>
     <!-- Snack bar message -->
     <string name="message_clear_cache_fail">Unable to clear cache</string>
     <string name="message_cleared_cached">%1$s cache was cleared</string>
+
+    <!-- ScreenshotGridFragment-->
+    <string name="screenshot_grid_empty_text_title">No Screenshots</string>
+    <string name="screenshot_grid_empty_text_msg_prefix">Click on&#160;</string>
+    <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;in the menu to capture\nthe whole page</string>
+
 </resources>
