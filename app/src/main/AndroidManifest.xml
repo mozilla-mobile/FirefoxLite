@@ -71,13 +71,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/InfoTheme" />
 
+        <!-- Custom Tabs Service is currently not registering the intent-filter before its ready.
+             It should also be set to exported=true if you want to turn it on -->
         <service
             android:name=".customtabs.CustomTabsService"
             android:exported="false"
             tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="android.support.customtabs.action.CustomTabsService" />
-            </intent-filter>
         </service>
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
