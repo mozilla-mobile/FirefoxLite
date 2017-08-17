@@ -28,7 +28,7 @@
         android:layout_height="48dp">
         <LinearLayout
             style="@style/ListPanelContainer"
-            android:id="@+id/download">
+            android:id="@+id/downloads">
             <android.support.v7.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
                 android:src="@drawable/menu_download"/>

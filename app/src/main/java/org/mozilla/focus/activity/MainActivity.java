@@ -247,7 +247,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onDownloadClicked() {
-        showListPanel(ListPanelDialog.TYPE_DOWNLOAD);
+        showListPanel(ListPanelDialog.TYPE_DOWNLOADS);
     }
 
     private void onHistoryClicked() {
