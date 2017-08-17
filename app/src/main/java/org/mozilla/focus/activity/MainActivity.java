@@ -281,7 +281,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else {
             // We do not have the permission to write to the external storage. Request the permission and start the
             // capture from onRequestPermissionsResult().
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
             }
         }
@@ -292,7 +292,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         private final WeakReference<ScreenCaptureDialogFragment> screenCaptureDialogFragmentWeakReference;
         private final WeakReference<View> containerWeakReference;
 
-        public CaptureRunnable(BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container){
+        public CaptureRunnable(BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
             browserFragmentWeakReference = new WeakReference<>(browserFragment);
             screenCaptureDialogFragmentWeakReference = new WeakReference<>(screenCaptureDialogFragment);
             containerWeakReference = new WeakReference<>(container);
@@ -304,20 +304,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             ScreenCaptureDialogFragment screenCaptureDialogFragment = screenCaptureDialogFragmentWeakReference.get();
             View view = containerWeakReference.get();
             int captureResultResource = R.string.screenshot_failed;
-            if(browserFragment!=null && browserFragment.capturePage()) {
+            if (browserFragment != null && browserFragment.capturePage()) {
                 captureResultResource = R.string.screenshot_saved;
             }
-            if(screenCaptureDialogFragment!=null) {
+            if (screenCaptureDialogFragment != null) {
                 screenCaptureDialogFragment.dismiss();
             }
-            if(view!=null) {
+            if (view != null) {
                 Snackbar.make(view, captureResultResource, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
     private void showLoadingAndCapture(final BrowserFragment browserFragment) {
-        if(!safeForFragmentTransactions) {
+        if (!safeForFragmentTransactions) {
             return;
         }
         final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
