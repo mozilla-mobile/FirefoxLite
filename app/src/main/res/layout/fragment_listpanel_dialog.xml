@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,39 +26,35 @@
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="48dp">
-        <FrameLayout
+        <LinearLayout
             style="@style/ListPanelContainer"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:id="@+id/download">
+            <android.support.v7.widget.AppCompatImageView
+                style="@style/ListPanelDrawable"
+                android:src="@drawable/menu_download"/>
             <TextView
                 style="@style/ListPanelText"
-                android:drawableStart="@drawable/menu_download"
-                android:id="@+id/download"
                 android:text="@string/label_menu_download"/>
-        </FrameLayout>
-        <FrameLayout
+        </LinearLayout>
+        <LinearLayout
             style="@style/ListPanelContainer"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:id="@+id/history">
+            <android.support.v7.widget.AppCompatImageView
+                style="@style/ListPanelDrawable"
+                android:src="@drawable/menu_history"/>
             <TextView
                 style="@style/ListPanelText"
-                android:drawableStart="@drawable/menu_history"
-                android:id="@+id/history"
                 android:text="@string/label_menu_history"/>
-        </FrameLayout>
-        <FrameLayout
+        </LinearLayout>
+        <LinearLayout
             style="@style/ListPanelContainer"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:id="@+id/screenshots">
+            <android.support.v7.widget.AppCompatImageView
+                style="@style/ListPanelDrawable"
+                android:src="@drawable/menu_screenshots"/>
             <TextView
                 style="@style/ListPanelText"
-                android:drawableStart="@drawable/menu_screenshots"
-                android:id="@+id/screenshots"
                 android:text="@string/label_menu_screenshots"/>
-        </FrameLayout>
-
+        </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
