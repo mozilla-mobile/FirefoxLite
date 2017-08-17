@@ -19,38 +19,50 @@
         android:layout_marginTop="3dp"
         tools:background="#3300FF00">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/menu_download"
-            style="@style/MenuButton"
-            android:drawablePadding="0dp"
-            android:drawableTint="@color/sheet_menu_button"
-            android:drawableTop="@drawable/menu_download"
-            android:onClick="onMenuItemClicked"
-            android:text="Download" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/menu_history"
-            style="@style/MenuButton"
-            android:drawableTint="@color/sheet_menu_button"
-            android:drawableTop="@drawable/menu_history"
-            android:onClick="onMenuItemClicked"
-            android:text="@string/label_menu_history" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/menu_screenshots"
-            style="@style/MenuButton"
-            android:drawableTint="@color/sheet_menu_button"
-            android:drawableTop="@drawable/menu_screenshots"
-            android:onClick="onMenuItemClicked"
-            android:text="@string/label_menu_screenshots" />
-
-        <android.support.v7.widget.AppCompatButton
-            style="@style/MenuButton"
-            android:drawableTint="@color/sheet_menu_button"
-            android:drawableTop="@drawable/menu_speedmode"
-            android:enabled="false"
-            android:text="@string/label_menu_speed_mode" />
-
+        <LinearLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_download">
+            <ImageView
+                style="@style/MenuButtonIcon"
+                android:src="@drawable/menu_download"
+                />
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_download"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_history">
+            <ImageView
+                style="@style/MenuButtonIcon"
+                android:src="@drawable/menu_history"
+                />
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_history"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_screenshots">
+            <ImageView
+                style="@style/MenuButtonIcon"
+                android:src="@drawable/menu_screenshots"
+                />
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_screenshots"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_speedmode">
+            <ImageView
+                style="@style/MenuButtonIcon"
+                android:src="@drawable/menu_speedmode"
+                />
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_speed_mode"/>
+        </LinearLayout>
     </org.mozilla.focus.widget.EqualDistributeRow>
 
     <org.mozilla.focus.widget.EqualDistributeRow
@@ -59,32 +71,43 @@
         android:layout_marginTop="1dp"
         tools:background="#3300FF00">
 
-        <android.support.v7.widget.AppCompatButton
-            style="@style/MenuButton"
-            android:drawableTint="@color/sheet_menu_button"
-            android:drawableTop="@drawable/menu_blockimg"
-            android:text="@string/label_menu_block_image"
-            tools:background="#33FF0000" />
-
-        <android.support.v7.widget.AppCompatButton
-            style="@style/MenuButton"
-            android:drawableTint="@color/sheet_menu_button"
-            android:drawableTop="@drawable/menu_delete"
-            android:text="@string/label_menu_clear_space"
-            tools:background="#33FF0000" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/menu_preferences"
-            style="@style/MenuButton"
-            android:drawableTint="@color/sheet_menu_button"
-            android:drawableTop="@drawable/menu_settings"
-            android:onClick="onMenuItemClicked"
-            android:text="@string/label_menu_settings"
-            tools:background="#33FF0000" />
+        <LinearLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_blockimg">
+            <ImageView
+                style="@style/MenuButtonIcon"
+                android:src="@drawable/menu_blockimg"
+                />
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_block_image"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_delete">
+            <ImageView
+                style="@style/MenuButtonIcon"
+                android:src="@drawable/menu_delete"
+                />
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_clear_space"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_preferences">
+            <ImageView
+                style="@style/MenuButtonIcon"
+                android:src="@drawable/menu_settings"
+                />
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_settings"/>
+        </LinearLayout>
 
         <!-- a placeholder for layout -->
         <View
-            style="@style/MenuButton"
+            style="@style/MenuButtonContainerSkeleton"
             android:background="@android:color/transparent"
             tools:background="#33FF0000" />
 
