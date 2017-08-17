@@ -7,21 +7,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
-import org.mozilla.focus.widget.DownloadListAdapter;
 
 public class ListPanelDialog extends DialogFragment {
 
-    public final static int TYPE_DOWNLOAD = 1;
+    public final static int TYPE_DOWNLOADS = 1;
     public final static int TYPE_HISTORY = 2;
     public final static int TYPE_SCREENSHOTS = 3;
     private static final int UNUSED_REQUEST_CODE = -1;
@@ -44,8 +40,8 @@ public class ListPanelDialog extends DialogFragment {
     public void onResume() {
         super.onResume();
         switch (getArguments().getInt(TYPE)) {
-            case TYPE_DOWNLOAD:
-                showDownload();
+            case TYPE_DOWNLOADS:
+                showDownloads();
                 break;
             case TYPE_HISTORY:
                 showHistory();
@@ -96,11 +92,11 @@ public class ListPanelDialog extends DialogFragment {
                 dismiss();
             }
         });
-        downloadsTouchArea = v.findViewById(R.id.download);
+        downloadsTouchArea = v.findViewById(R.id.downloads);
         downloadsTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDownload();
+                showDownloads();
             }
         });
         historyTouchArea = v.findViewById(R.id.history);
@@ -125,9 +121,9 @@ public class ListPanelDialog extends DialogFragment {
         toggleSelectedItem();
     }
 
-    private void showDownload() {
-        setSelectedItem(TYPE_DOWNLOAD);
-        showPanelFragment(DownloadFragment.newInstance());
+    private void showDownloads() {
+        setSelectedItem(TYPE_DOWNLOADS);
+        showPanelFragment(DownloadsFragment.newInstance());
     }
 
     private void showHistory() {
@@ -150,7 +146,7 @@ public class ListPanelDialog extends DialogFragment {
         historyTouchArea.setSelected(false);
         screenshotsTouchArea.setSelected(false);
         switch (getArguments().getInt(TYPE)) {
-            case TYPE_DOWNLOAD:
+            case TYPE_DOWNLOADS:
                 downloadsTouchArea.setSelected(true);
                 break;
             case TYPE_HISTORY:
