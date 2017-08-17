@@ -26,4 +26,6 @@
     <dimen name="firstrun_card_height">460dp</dimen>
 
     <dimen name="flow_layout_spacing">10dp</dimen>
+
+    <dimen name="screenshot_grid_cell_padding">8dp</dimen>
 </resources>
