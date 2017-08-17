@@ -1,33 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
     <path
-        android:fillColor="#FF4242"
-        android:fillAlpha="0"
-        android:fillType="evenOdd"
-        android:strokeAlpha="0"
-        android:strokeWidth="1"
-        android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
-    <group
-            android:translateX="5"
-            android:translateY="2">
-        <path
-            android:fillColor="#272727"
-            android:fillType="evenOdd"
-            android:pathData="M12 16.004a.997 .997 0 0 1-.996 .996 H3.996A.997 .997 0 0 1 3
-16.004V4h9v12.004zM7.5 1c.737 0 1.375 .405 1.722 1H5.778c.347-.595 .985 -1
-1.722-1zm2.816 1A2.992 2.992 0 0 0 7.5 0a2.992 2.992 0 0 0-2.816 2H1a1 1 0 1 0 0
-2v12.004A3 3 0 0 0 3.996 19h7.008A3 3 0 0 0 14 16.004V4a1 1 0 1 0 0-2h-3.684z" />
-        <path
-            android:fillColor="#272727"
-            android:fillType="evenOdd"
-            android:pathData="M7.531 14.5h.002a.5 .5 0 0 0 .498-.502l-.03-7a.5 .5 0 0 0-.5-.498h-.003A.5 .5 0
-0 0 7 7.002l.031 7a.5 .5 0 0 0 .5 .498 m2.469 0a.5 .5 0 0 0 .5-.5V7a.5 .5 0 0
-0-1 0v7a.5 .5 0 0 0 .5 .5 m-5 0a.5 .5 0 0 0 .5-.5V7a.5 .5 0 0 0-1 0v7a.5 .5 0 0
-0 .5 .5" />
-    </group>
+        android:fillColor="#FF000000"
+        android:pathData="M17,18c0,0.5 -0.4,1 -1,1H9c-0.5,0 -1,-0.4 -1,-1V6h9V18zM12.5,3c0.7,0 1.4,0.4 1.7,1h-3.4C11.1,3.4 11.8,3 12.5,3zM15.3,4c-0.4,-1.2 -1.5,-2 -2.8,-2s-2.4,0.8 -2.8,2H6C5.4,4 5,4.4 5,5s0.4,1 1,1v12c0,1.7 1.3,3 3,3h7c1.7,0 3,-1.3 3,-3V6c0.6,0 1,-0.4 1,-1s-0.4,-1 -1,-1H15.3z"/>
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M12.5,16.5L12.5,16.5c0.3,0 0.5,-0.2 0.5,-0.5l0,0V9c0,-0.3 -0.2,-0.5 -0.5,-0.5l0,0C12.2,8.5 12,8.7 12,9l0,0v7C12,16.3 12.3,16.5 12.5,16.5M15,16.5c0.3,0 0.5,-0.2 0.5,-0.5V9c0,-0.3 -0.2,-0.5 -0.5,-0.5S14.5,8.7 14.5,9v7C14.5,16.3 14.7,16.5 15,16.5M10,16.5c0.3,0 0.5,-0.2 0.5,-0.5V9c0,-0.3 -0.2,-0.5 -0.5,-0.5S9.5,8.7 9.5,9v7C9.5,16.3 9.7,16.5 10,16.5"/>
 </vector>
