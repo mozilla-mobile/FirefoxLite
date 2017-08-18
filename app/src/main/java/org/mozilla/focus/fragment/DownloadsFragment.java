@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.greenDAO.DBUtils;
-import org.mozilla.focus.greenDAO.DownloadInfo;
 import org.mozilla.focus.widget.DownloadListAdapter;
 
 public class DownloadsFragment extends PanelFragment {
@@ -40,13 +38,10 @@ public class DownloadsFragment extends PanelFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDownloadListAdapter = new DownloadListAdapter();
-        mDownloadListAdapter.fetchEntity();
         mDownloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
-                DownloadInfo downloadInfo = DBUtils.getDbService().getDownloadInfo(downloadId);
-                mDownloadListAdapter.updateItem(downloadInfo);
             }
         };
     }

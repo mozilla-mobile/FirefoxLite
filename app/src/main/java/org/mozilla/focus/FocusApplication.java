@@ -15,7 +15,6 @@ import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AdjustHelper;
 import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.greenDAO.DBUtils;
 
 public class FocusApplication extends LocaleAwareApplication {
 
@@ -24,7 +23,6 @@ public class FocusApplication extends LocaleAwareApplication {
         super.onCreate();
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        DBUtils.getDbService().init(this);
 
         enableStrictMode();
 

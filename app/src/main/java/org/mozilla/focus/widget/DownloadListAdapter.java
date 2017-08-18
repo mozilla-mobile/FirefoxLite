@@ -10,14 +10,11 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import org.mozilla.focus.R;
-import org.mozilla.focus.greenDAO.DBUtils;
-import org.mozilla.focus.greenDAO.DownloadInfo;
 import org.mozilla.focus.utils.IntentUtils;
 
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -33,14 +30,8 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int VIEW_TYPE_NON_EMPTY = 1;
 
     public DownloadListAdapter(){
-        fetchEntity();
     }
 
-    public void fetchEntity(){
-        mDownloadInfo.clear();
-        mDownloadInfo = DBUtils.getDbService().getAllDownloadInfo();
-        Collections.reverse(mDownloadInfo);
-        this.notifyDataSetChanged();
     }
 
     public void updateItem(DownloadInfo downloadInfo){
@@ -58,7 +49,6 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void remove(int position){
         long downloadId = mDownloadInfo.get(position).getDownloadId();
-        DBUtils.getDbService().delete(downloadId);
 
         mDownloadInfo.remove(position);
 
