@@ -87,15 +87,6 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
             return new WebResourceResponse(null, null, null);
         }
 
-        // WebView always requests a favicon, even though it won't be used anywhere. This check
-        // isn't able to block all favicons (some of them will be loaded using <link rel="shortcut icon">
-        // with a custom URL which we can't match or detect), but reduces the amount of unnecessary
-        // favicon loading that's performed.
-        final String path = resourceUri.getPath();
-        if (path != null && path.endsWith("/favicon.ico")) {
-            return new WebResourceResponse(null, null, null);
-        }
-
         final UrlMatcher matcher = getMatcher(view.getContext());
 
         // Don't block the main frame from being loaded. This also protects against cases where we
