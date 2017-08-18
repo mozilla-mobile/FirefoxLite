@@ -17,6 +17,7 @@ import java.io.OutputStream;
 
 public class FileUtils {
     private static final String WEBVIEW_DIRECTORY = "app_webview";
+    private static final String WEBVIEW_CACHE_DIRECTORY = "cache";
 
     public static boolean truncateCacheDirectory(final Context context) {
         final File cacheDirectory = context.getCacheDir();
@@ -26,6 +27,14 @@ public class FileUtils {
     public static boolean deleteWebViewDirectory(final Context context) {
         final File webviewDirectory = new File(context.getApplicationInfo().dataDir, WEBVIEW_DIRECTORY);
         return webviewDirectory.exists() && deleteDirectory(webviewDirectory);
+    }
+
+    public static long deleteWebViewCacheDirectory(final Context context) {
+        final File cachedir = new File(context.getApplicationInfo().dataDir, WEBVIEW_CACHE_DIRECTORY);
+        if (!cachedir.exists()) {
+            return -1L;
+        }
+        return deleteContentOnly(cachedir);
     }
 
     /**
@@ -118,5 +127,28 @@ public class FileUtils {
         }
 
         return success;
+    }
+
+    private static long deleteContentOnly(File directory) {
+        long deleted = 0;
+
+        final String[] files = directory.list();
+        if (files == null) {
+            return deleted;
+        }
+
+        for (final String name : files) {
+            final File file = new File(directory, name);
+            if (file.isDirectory()) {
+                deleted += deleteContentOnly(file);
+            } else {
+                long length = file.length();
+                if (file.delete()) {
+                    deleted += length;
+                }
+            }
+        }
+
+        return deleted;
     }
 }
