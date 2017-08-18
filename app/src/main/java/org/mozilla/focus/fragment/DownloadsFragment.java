@@ -41,7 +41,7 @@ public class DownloadsFragment extends PanelFragment {
         mDownloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
+                intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
             }
         };
     }
