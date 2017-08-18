@@ -16,20 +16,14 @@
     <!-- clean browsing data entries -->
     <string-array name="clean_browsing_data_entries">
         <item>@string/setting_dialog_browsing_history</item>
-        <item>@string/setting_dialog_search_history</item>
-        <item>@string/setting_dialog_from_history</item>
         <item>@string/setting_dialog_cookies</item>
         <item>@string/setting_dialog_cache</item>
-        <item>@string/setting_dialog_saving_logins</item>
     </string-array>
 
     <!-- clean browsing data values -->
     <string-array name="clean_browsing_data_values">
         <item>@string/pref_value_clear_browsing_history</item>
-        <item>@string/pref_value_clear_search_history</item>
-        <item>@string/pref_value_clear_from_history</item>
         <item>@string/pref_value_clear_cookies</item>
         <item>@string/pref_value_clear_cache</item>
-        <item>@string/pref_value_clear_saving_logins</item>
     </string-array>
 </resources>
