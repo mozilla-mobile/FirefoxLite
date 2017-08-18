@@ -75,7 +75,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        return mDownloadInfo.size() >0 ? VIEW_TYPE_NON_EMPTY : VIEW_TYPE_EMPTY;
+        return mDownloadInfo.isEmpty() ? VIEW_TYPE_EMPTY : VIEW_TYPE_NON_EMPTY;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.title.setText(downloadInfo.getFileName());
 
             String subtitle="";
-            if ("successful".equalsIgnoreCase(downloadInfo.getStatus())) {
+            if (DownloadInfo.STATUS_SUCCESSFUL.equalsIgnoreCase(downloadInfo.getStatus())) {
                 subtitle = downloadInfo.getSize() + "," + downloadInfo.getDate();
             } else {
                 subtitle = downloadInfo.getStatus();
@@ -123,14 +123,15 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             switch (menuItem.getItemId()){
                                 case R.id.remove:
                                     remove(position);
-                                    break;
+                                    popupMenu.dismiss();
+                                    return true;
                                 case R.id.delete:
                                     delete(position);
-                                    break;
+                                    popupMenu.dismiss();
+                                    return true;
                                 default:
                                     break;
                             }
-                            popupMenu.dismiss();
                             return false;
                         }
                     });
@@ -156,7 +157,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (mDownloadInfo.size()>0){
+        if (!mDownloadInfo.isEmpty()){
             return mDownloadInfo.size();
         }else {
             return 1;
