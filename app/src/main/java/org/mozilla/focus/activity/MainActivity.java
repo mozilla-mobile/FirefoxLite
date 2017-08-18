@@ -194,6 +194,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public void onMenuItemClicked(View v) {
         menu.cancel();
         switch (v.getId()) {
+            case R.id.menu_blockimg:
+            case R.id.menu_speedmode:
+            case R.id.menu_delete:
+                // Do nothing for now.
+                break;
             case R.id.menu_download:
                 onDownloadClicked();
                 break;
