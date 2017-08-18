@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import org.mozilla.focus.R;
+import org.mozilla.focus.download.DownloadInfo;
+import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.utils.IntentUtils;
 
 import java.io.File;
@@ -23,15 +25,20 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * Created by anlin on 01/08/2017.
  */
 
-public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements DownloadInfoManager.AsyncQueryListener{
 
     private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NON_EMPTY = 1;
+    private int mItemCount = 0;
 
     public DownloadListAdapter(){
+        loadMore();
     }
 
+    public void loadMore(){
+        DownloadInfoManager.getInstance().query(mItemCount,50,this);
     }
 
     public void updateItem(DownloadInfo downloadInfo){
@@ -49,6 +56,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void remove(int position){
         long downloadId = mDownloadInfo.get(position).getDownloadId();
+        DownloadInfoManager.getInstance().delete(downloadId,null);
 
         mDownloadInfo.remove(position);
 
@@ -153,6 +161,13 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }else {
             return 1;
         }
+    }
+
+    @Override
+    public void onQueryComplete(List downloadInfoList) {
+        mDownloadInfo.addAll(downloadInfoList);
+        mItemCount = mDownloadInfo.size();
+        this.notifyDataSetChanged();
     }
 
     public class DownloadViewHolder extends RecyclerView.ViewHolder{
