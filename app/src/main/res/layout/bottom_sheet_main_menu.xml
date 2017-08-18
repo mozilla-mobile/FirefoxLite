@@ -91,7 +91,7 @@
                 />
             <TextView
                 style="@style/MenuButtonText"
-                android:text="@string/label_menu_clear_space"/>
+                android:text="@string/label_menu_clear_cache"/>
         </LinearLayout>
         <LinearLayout
             style="@style/MenuButtonContainer"
