@@ -275,7 +275,7 @@ be temporary, and you can try again later.</li>
     <!-- Menu labels -->
     <!-- Zerda Need l10n -->
     <string name="label_menu_download">Download</string>
-    <string name="label_menu_clear_space">Clear space</string>
+    <string name="label_menu_clear_cache">Clear cache</string>
     <string name="label_menu_history">History</string>
     <string name="label_menu_share">Share</string>
     <string name="label_menu_screenshots">Screenshots</string>
