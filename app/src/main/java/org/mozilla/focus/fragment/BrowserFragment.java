@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -44,12 +43,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.greenDAO.DBUtils;
-import org.mozilla.focus.greenDAO.DownloadInfo;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
-import org.mozilla.focus.utils.DownloadReceiver;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -126,14 +122,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-        getContext().unregisterReceiver(DownloadReceiver.getDownloadReceiver());
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-        getContext().registerReceiver(DownloadReceiver.getDownloadReceiver(),intentFilter);
     }
 
     @Override
@@ -186,20 +179,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         } else {
             initialiseNormalBrowserUi();
         }
-
-        DownloadReceiver.getDownloadReceiver().setOnCompleteListener(new DownloadReceiver.OnCompleteListener() {
-            @Override
-            public void onCompleted(final DownloadInfo downloadInfo) {
-                Snackbar.make(browserContainer,downloadInfo.getFileName()+" downloaded",Snackbar.LENGTH_LONG)
-                        .setAction("open", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                IntentUtils.intentOpenFile(view.getContext(),downloadInfo.getMediaUri(),downloadInfo.getMimeType());
-                            }
-                        })
-                        .show();
-            }
-        });
 
         return view;
     }
@@ -536,7 +515,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         Long downloadId = manager.enqueue(request);
 
         //record download ID
-        DBUtils.getDbService().insert(downloadId,fileName);
 
         Snackbar.make(browserContainer,"Download started..",Snackbar.LENGTH_LONG)
                 .show();
