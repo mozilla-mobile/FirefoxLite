@@ -31,8 +31,10 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
+import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
@@ -196,8 +198,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         switch (v.getId()) {
             case R.id.menu_blockimg:
             case R.id.menu_speedmode:
-            case R.id.menu_delete:
                 // Do nothing for now.
+                break;
+            case R.id.menu_delete:
+                onDeleteClicked();
                 break;
             case R.id.menu_download:
                 onDownloadClicked();
@@ -261,6 +265,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onScreenshotsClicked() {
         showListPanel(ListPanelDialog.TYPE_SCREENSHOTS);
+    }
+
+    private void onDeleteClicked() {
+        final View container = findViewById(R.id.container);
+        final long diff = FileUtils.deleteWebViewCacheDirectory(this);
+        final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
+        final String msg = getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
+        Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
     }
 
     private BrowserFragment getBrowserFragment() {
