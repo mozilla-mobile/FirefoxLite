@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.InterpolatorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
@@ -26,23 +27,59 @@ import android.widget.ProgressBar;
 
 import org.mozilla.focus.R;
 
+/**
+ * A progressbar with some animations on changing progress.
+ * When changing progress of this bar, it does not change value directly. Instead, it use
+ * {@link Animator} to change value progressively. Moreover, change visibility to View.GONE will
+ * cause closing animation.
+ */
 public class AnimatedProgressBar extends ProgressBar {
-    private final static int PROGRESS_DURATION = 200;
-    private final static int CLOSING_DELAY = 300;
-    private final static int CLOSING_DURATION = 300;
-    private ValueAnimator mPrimaryAnimator;
-    private ValueAnimator mClosingAnimator = ValueAnimator.ofFloat(0f, 1f);
-    private float mClipRegion = 0f;
-    private int mExpectedProgress = 0;
-    private Rect tempRect;
-    private boolean mIsRtl;
 
-    private ValueAnimator.AnimatorUpdateListener mListener = new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            setProgressImmediately((int) mPrimaryAnimator.getAnimatedValue());
-        }
-    };
+    /**
+     * Animation duration of progress changing.
+     */
+    private final static int PROGRESS_DURATION = 200;
+
+    /**
+     * Delay before applying closing animation when progress reach max value.
+     */
+    private final static int CLOSING_DELAY = 300;
+
+    /**
+     * Animation duration for closing
+     */
+    private final static int CLOSING_DURATION = 300;
+
+    private ValueAnimator mPrimaryAnimator;
+    private final ValueAnimator mClosingAnimator = ValueAnimator.ofFloat(0f, 1f);
+
+    /**
+     * For closing animation. To indicate how many visible region should be clipped.
+     */
+    private float mClipRatio = 0f;
+    private final Rect mRect = new Rect();
+
+    /**
+     * To store the final expected progress to reach, it does matter in animation.
+     */
+    private int mExpectedProgress = 0;
+
+    /**
+     * setProgress() might be invoked in constructor. Add to flag to avoid null checking for animators.
+     */
+    private boolean mInitialized = false;
+
+    private boolean mIsRtl = false;
+
+    private EndingRunner mEndingRunner = new EndingRunner();
+
+    private final ValueAnimator.AnimatorUpdateListener mListener =
+            new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    setProgressImmediately((int) mPrimaryAnimator.getAnimatedValue());
+                }
+            };
 
     public AnimatedProgressBar(@NonNull Context context) {
         super(context, null);
@@ -58,127 +95,159 @@ public class AnimatedProgressBar extends ProgressBar {
     public AnimatedProgressBar(@NonNull Context context,
                                @Nullable AttributeSet attrs,
                                int defStyleAttr) {
-
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public AnimatedProgressBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    public AnimatedProgressBar(Context context,
+                               AttributeSet attrs,
+                               int defStyleAttr,
+                               int defStyleRes) {
+        super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void setMax(int max) {
+        super.setMax(max);
+        mPrimaryAnimator = createAnimator(getMax(), mListener);
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Instead of set progress directly, this method triggers an animator to change progress.
+     */
     @Override
     public void setProgress(int nextProgress) {
         nextProgress = Math.min(nextProgress, getMax());
         nextProgress = Math.max(0, nextProgress);
         mExpectedProgress = nextProgress;
 
-        // a dirty-hack for reloading page.
-        if (mExpectedProgress < getProgress() && getProgress() == getMax()) {
+        if (!mInitialized) {
+            setProgressImmediately(mExpectedProgress);
+            return;
+        }
+
+        // if regress, jump to the expected value without any animation
+        if (mExpectedProgress < getProgress()) {
+            cancelAnimations();
+            setProgressImmediately(mExpectedProgress);
+            return;
+        }
+
+        // Animation is not needed for reloading a completed page
+        if ((mExpectedProgress == 0) && (getProgress() == getMax())) {
+            cancelAnimations();
             setProgressImmediately(0);
+            return;
         }
 
-        if (mPrimaryAnimator != null) {
-            mPrimaryAnimator.cancel();
-            mPrimaryAnimator.setIntValues(getProgress(), nextProgress);
-            mPrimaryAnimator.start();
-        } else {
-            setProgressImmediately(nextProgress);
-        }
-
-        if (mClosingAnimator != null) {
-            if (nextProgress != getMax()) {
-                // stop closing animation
-                mClosingAnimator.cancel();
-                mClipRegion = 0f;
-            }
-        }
+        cancelAnimations();
+        mPrimaryAnimator.setIntValues(getProgress(), nextProgress);
+        mPrimaryAnimator.start();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (mClipRegion == 0) {
+        if (mClipRatio == 0) {
             super.onDraw(canvas);
         } else {
-            canvas.getClipBounds(tempRect);
-            final float clipWidth = tempRect.width() * mClipRegion;
+            canvas.getClipBounds(mRect);
+            final float clipWidth = mRect.width() * mClipRatio;
             canvas.save();
-
             if (mIsRtl) {
-                canvas.clipRect(tempRect.left, tempRect.top, tempRect.right - clipWidth, tempRect.bottom);
+                canvas.clipRect(mRect.left, mRect.top, mRect.right - clipWidth, mRect.bottom);
             } else {
-                canvas.clipRect(tempRect.left + clipWidth, tempRect.top, tempRect.right, tempRect.bottom);
+                canvas.clipRect(mRect.left + clipWidth, mRect.top, mRect.right, mRect.bottom);
             }
             super.onDraw(canvas);
             canvas.restore();
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Instead of change visibility directly, this method also applies the closing animation if
+     * progress reaches max value.
+     */
     @Override
     public void setVisibility(int value) {
+        // nothing changed
+        if (getVisibility() == value) {
+            return;
+        }
+
         if (value == GONE) {
             if (mExpectedProgress == getMax()) {
+                setProgressImmediately(mExpectedProgress);
                 animateClosing();
             } else {
                 setVisibilityImmediately(value);
             }
         } else {
+            final Handler handler = getHandler();
+            // if this view is detached from window, the handler would be null
+            if (handler != null) {
+                handler.removeCallbacks(mEndingRunner);
+            }
+
+            if (mClosingAnimator != null) {
+                mClipRatio = 0;
+                mClosingAnimator.cancel();
+            }
             setVisibilityImmediately(value);
         }
     }
 
-    private void setVisibilityImmediately(int value) {
-        super.setVisibility(value);
-    }
-
-    private void animateClosing() {
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
         mIsRtl = (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL);
-
-        mClosingAnimator.cancel();
-
-        final Handler handler = getHandler();
-        if (handler != null) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mClosingAnimator.start();
-                }
-            }, CLOSING_DELAY);
-        }
     }
 
-    private void setProgressImmediately(int progress) {
-        super.setProgress(progress);
+    private void cancelAnimations() {
+        if (mPrimaryAnimator != null) {
+            mPrimaryAnimator.cancel();
+        }
+        if (mClosingAnimator != null) {
+            mClosingAnimator.cancel();
+        }
+
+        mClipRatio = 0;
     }
 
     private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
-        tempRect = new Rect();
+        mInitialized = true;
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AnimatedProgressBar);
         final int duration = a.getInteger(R.styleable.AnimatedProgressBar_shiftDuration, 1000);
-        final int resID = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, 0);
         final boolean wrap = a.getBoolean(R.styleable.AnimatedProgressBar_wrapShiftDrawable, false);
+        @InterpolatorRes final int itplId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, 0);
+        a.recycle();
 
-        mPrimaryAnimator = ValueAnimator.ofInt(getProgress(), getMax());
-        mPrimaryAnimator.setInterpolator(new LinearInterpolator());
-        mPrimaryAnimator.setDuration(PROGRESS_DURATION);
-        mPrimaryAnimator.addUpdateListener(mListener);
+        setProgressDrawable(buildDrawable(getProgressDrawable(), wrap, duration, itplId));
+
+        mPrimaryAnimator = createAnimator(getMax(), mListener);
 
         mClosingAnimator.setDuration(CLOSING_DURATION);
         mClosingAnimator.setInterpolator(new LinearInterpolator());
         mClosingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mClipRegion = (float) valueAnimator.getAnimatedValue();
+                mClipRatio = (float) valueAnimator.getAnimatedValue();
                 invalidate();
             }
         });
         mClosingAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                mClipRegion = 0f;
+                mClipRatio = 0f;
             }
 
             @Override
@@ -188,27 +257,59 @@ public class AnimatedProgressBar extends ProgressBar {
 
             @Override
             public void onAnimationCancel(Animator animator) {
-                mClipRegion = 0f;
+                mClipRatio = 0f;
             }
 
             @Override
             public void onAnimationRepeat(Animator animator) {
             }
         });
-        setProgressDrawable(buildWrapDrawable(getProgressDrawable(), wrap, duration, resID));
-
-        a.recycle();
     }
 
-    private Drawable buildWrapDrawable(Drawable original, boolean isWrap, int duration, int resID) {
+    private void setVisibilityImmediately(int value) {
+        super.setVisibility(value);
+    }
+
+    private void animateClosing() {
+        mClosingAnimator.cancel();
+        final Handler handler = getHandler();
+        // if this view is detached from window, the handler would be null
+        if (handler != null) {
+            handler.removeCallbacks(mEndingRunner);
+            handler.postDelayed(mEndingRunner, CLOSING_DELAY);
+        }
+    }
+
+    private void setProgressImmediately(int progress) {
+        super.setProgress(progress);
+    }
+
+    private Drawable buildDrawable(@NonNull Drawable original,
+                                   boolean isWrap,
+                                   int duration,
+                                   @InterpolatorRes int itplId) {
         if (isWrap) {
-            final Interpolator interpolator = (resID > 0)
-                    ? AnimationUtils.loadInterpolator(getContext(), resID)
+            final Interpolator interpolator = (itplId > 0)
+                    ? AnimationUtils.loadInterpolator(getContext(), itplId)
                     : null;
-            final ShiftDrawable wrappedDrawable = new ShiftDrawable(original, duration, interpolator);
-            return wrappedDrawable;
+            return new ShiftDrawable(original, duration, interpolator);
         } else {
             return original;
+        }
+    }
+
+    private static ValueAnimator createAnimator(int max, ValueAnimator.AnimatorUpdateListener listener) {
+        ValueAnimator animator = ValueAnimator.ofInt(0, max);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(PROGRESS_DURATION);
+        animator.addUpdateListener(listener);
+        return animator;
+    }
+
+    private class EndingRunner implements Runnable {
+        @Override
+        public void run() {
+            mClosingAnimator.start();
         }
     }
 }
