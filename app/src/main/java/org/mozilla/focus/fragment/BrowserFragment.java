@@ -331,6 +331,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading_finished));
 
+                progressView.setProgress(progressView.getMax());
                 progressView.setVisibility(View.GONE);
 
                 if (isSecure) {
@@ -346,6 +347,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onProgress(int progress) {
                 progressView.setProgress(progress);
+                if (progress == progressView.getMax()) {
+                    progressView.setVisibility(View.GONE);
+                }
             }
 
             @Override
