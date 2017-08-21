@@ -29,6 +29,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,7 @@ import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
+import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
@@ -74,8 +76,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public static final String FRAGMENT_TAG = "browser";
 
-    private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
+    private static int REQUEST_CODE_READ_STORAGE_PERMISSION = 100;
+    private static int REQUEST_CODE_WRITE_STORAGE_PERMISSION = 101;
     private static int REQUEST_CODE_LOCATION_PERMISSION = 102;
+    private static int REQUEST_CODE_CHOOSE_FILE = 103;
 
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
@@ -122,6 +126,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     // Set an initial WeakReference so we never have to handle loadStateListenerWeakReference being null
     // (i.e. so we can always just .get()).
     private WeakReference<LoadStateListener> loadStateListenerWeakReference = new WeakReference<>(null);
+
+    // pending action for file-choosing
+    private FileChooseAction fileChooseAction;
 
     @Override
     public void onPause() {
@@ -185,6 +192,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_CHOOSE_FILE) {
+            final boolean done = (fileChooseAction == null) || fileChooseAction.onFileChose(resultCode, data);
+            if (done) {
+                fileChooseAction = null;
+            }
+        }
     }
 
     private void initialiseNormalBrowserUi() {
@@ -420,7 +437,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                     pendingDownload = download;
 
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_STORAGE_PERMISSION);
                 }
             }
 
@@ -436,8 +453,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             public boolean onShowFileChooser(WebView webView,
                                              ValueCallback<Uri[]> filePathCallback,
                                              WebChromeClient.FileChooserParams fileChooserParams) {
-                return false;
+                try {
+                    BrowserFragment.this.fileChooseAction = new FileChooseAction(filePathCallback, fileChooserParams);
+                    BrowserFragment.this.fileChooseAction.performAction();
+                    return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
+
+
         };
     }
 
@@ -476,7 +502,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
+        if (requestCode == REQUEST_CODE_WRITE_STORAGE_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 queueDownload(pendingDownload);
             }
@@ -492,6 +518,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             geolocationOrigin = "";
             geolocationCallback = null;
             return;
+        } else if (requestCode == REQUEST_CODE_READ_STORAGE_PERMISSION) {
+            if (fileChooseAction != null) {
+                final boolean granted = (grantResults.length > 0)
+                        && (grantResults[0] == PackageManager.PERMISSION_GRANTED);
+                if (granted) {
+                    fileChooseAction.onPermissionGranted();
+                } else {
+                    fileChooseAction.cancel();
+                    fileChooseAction = null;
+                }
+            }
+
         }
 
     }
@@ -771,5 +809,83 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public boolean isBlockingEnabled() {
         final IWebView webView = getWebView();
         return webView == null || webView.isBlockingEnabled();
+    }
+
+    class FileChooseAction {
+        private ValueCallback<Uri[]> callback;
+        private WebChromeClient.FileChooserParams params;
+        private Uri[] uris;
+
+        FileChooseAction(@NonNull ValueCallback<Uri[]> callback,
+                         @NonNull WebChromeClient.FileChooserParams params) {
+            this.callback = callback;
+            this.params = params;
+        }
+
+        public void performAction() {
+            // check permission before we pick any file.
+            final int permission = ContextCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (PackageManager.PERMISSION_GRANTED == permission) {
+                startChooserActivity();
+            } else {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_CODE_READ_STORAGE_PERMISSION);
+            }
+        }
+
+        public void onPermissionGranted() {
+            startChooserActivity();
+        }
+
+        public void cancel() {
+            this.callback.onReceiveValue(null);
+        }
+
+        /**
+         * Callback when back from a File-choose-activity
+         *
+         * @param resultCode
+         * @param data
+         * @return true if this action is done
+         */
+        public boolean onFileChose(int resultCode, Intent data) {
+            if (this.callback == null) {
+                return true;
+            }
+
+            if ((resultCode != Activity.RESULT_OK) || (data == null)) {
+                this.callback.onReceiveValue(null);
+                this.callback = null;
+                return true;
+            }
+
+            try {
+                final Uri uri = data.getData();
+                uris = (uri == null) ? null : new Uri[]{uri};
+
+                // FIXME: check permission before access the uri
+                // if file locates on external storage and we haven't granted permission
+                // we might get exception here. but try won't work here.
+                this.callback.onReceiveValue(uris);
+            } catch (Exception e) {
+                this.callback.onReceiveValue(null);
+                e.printStackTrace();
+            }
+
+            this.callback = null;
+            return true;
+        }
+
+        private void startChooserActivity() {
+            startActivityForResult(createChooserIntent(this.params), REQUEST_CODE_CHOOSE_FILE);
+        }
+
+        private Intent createChooserIntent(WebChromeClient.FileChooserParams params) {
+            final String[] mimeTypes = params.getAcceptTypes();
+            CharSequence title = params.getTitle();
+            title = TextUtils.isEmpty(title) ? getString(R.string.file_picker_title) : title;
+            return FilePickerUtil.getFilePickerIntent(getActivity(), title, mimeTypes);
+        }
     }
 }
