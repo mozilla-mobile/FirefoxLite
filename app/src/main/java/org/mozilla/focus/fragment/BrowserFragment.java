@@ -127,7 +127,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
@@ -524,11 +524,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         DownloadInfo downloadInfo = new DownloadInfo();
         downloadInfo.setDownloadId(downloadId);
         downloadInfo.setFileName(fileName);
-        DownloadInfoManager.getInstance().insert(downloadInfo,null);
+        DownloadInfoManager.getInstance().insert(downloadInfo, null);
 
-        Snackbar.make(browserContainer,R.string.download_started,Snackbar.LENGTH_LONG)
+        Snackbar.make(browserContainer, R.string.download_started, Snackbar.LENGTH_LONG)
                 .show();
     }
+
     /*
      * show webview geolocation permission prompt
      */
