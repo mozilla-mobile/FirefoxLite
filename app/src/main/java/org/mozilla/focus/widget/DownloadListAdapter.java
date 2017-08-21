@@ -1,5 +1,6 @@
 package org.mozilla.focus.widget;
 
+import android.app.DownloadManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,10 +102,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.title.setText(downloadInfo.getFileName());
 
             String subtitle="";
-            if (DownloadInfo.STATUS_SUCCESSFUL.equalsIgnoreCase(downloadInfo.getStatus())) {
+            if (DownloadManager.STATUS_SUCCESSFUL == downloadInfo.getStatusInt()) {
                 subtitle = downloadInfo.getSize() + "," + downloadInfo.getDate();
             } else {
-                subtitle = downloadInfo.getStatus();
+                subtitle = downloadInfo.getStatusStr();
             }
 
             holder.subtitle.setText(subtitle);
