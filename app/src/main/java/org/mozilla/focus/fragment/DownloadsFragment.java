@@ -37,7 +37,7 @@ public class DownloadsFragment extends PanelFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDownloadListAdapter = new DownloadListAdapter();
+        mDownloadListAdapter = new DownloadListAdapter(getContext());
         mDownloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
