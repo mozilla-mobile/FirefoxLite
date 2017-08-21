@@ -517,12 +517,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         Long downloadId = manager.enqueue(request);
 
         //record download ID
-        DownloadInfo downloadInfo = new DownloadInfo();
+        DownloadInfo downloadInfo = new DownloadInfo(getContext());
         downloadInfo.setDownloadId(downloadId);
         downloadInfo.setFileName(fileName);
         DownloadInfoManager.getInstance().insert(downloadInfo,null);
 
-        Snackbar.make(browserContainer,"Download started..",Snackbar.LENGTH_LONG)
+        Snackbar.make(browserContainer,R.string.download_started,Snackbar.LENGTH_LONG)
                 .show();
     }
     /*

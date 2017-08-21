@@ -1,6 +1,9 @@
 package org.mozilla.focus.download;
 
 import android.app.DownloadManager;
+import android.content.Context;
+
+import org.mozilla.focus.R;
 
 import java.util.Calendar;
 import java.util.Formatter;
@@ -11,15 +14,10 @@ import java.util.Formatter;
 
 public class DownloadInfo {
 
-    public static final String STATUS_PAUSED = "PAUSE";
-    public static final String STATUS_PENDING = "PENDING";
-    public static final String STATUS_RUNNING = "RUNNING";
-    public static final String STATUS_SUCCESSFUL = "SUCCESSFUL";
-    public static final String STATUS_FAILED = "FAILED";
-    public static final String STATUS_UNKNOWN ="UNKNOWN";
-
+    private Context mContext;
     private Long DownloadId;
-    private String Status;
+    private String StatusStr;
+    private int StatusInt;
     private String Size;
     private String Date;
     private String FileName;
@@ -27,6 +25,16 @@ public class DownloadInfo {
     private String MimeType;
     private String FileUri;
 
+    public DownloadInfo(Context context){
+        mContext = context;
+    }
+    public void setStatusInt(int statusInt){
+        StatusInt = statusInt;
+    }
+
+    public int getStatusInt(){
+        return StatusInt;
+    }
     public void setFileUri(String fileUri){
         FileUri = fileUri;
     }
@@ -65,12 +73,12 @@ public class DownloadInfo {
         return FileName;
     }
 
-    public void setStatus(int status){
-        Status = statusConvertStr(status);
+    public void setStatusStr(int status){
+        StatusStr = statusConvertStr(status);
     }
 
-    public String getStatus(){
-        return Status;
+    public String getStatusStr(){
+        return StatusStr;
     }
 
     public void setSize(double size){
@@ -111,17 +119,17 @@ public class DownloadInfo {
     private String statusConvertStr(int status){
         switch(status) {
             case DownloadManager.STATUS_PAUSED:
-                return STATUS_PAUSED;
+                return mContext.getResources().getString(R.string.pause);
             case DownloadManager.STATUS_PENDING:
-                return STATUS_PENDING;
+                return mContext.getResources().getString(R.string.pending);
             case DownloadManager.STATUS_RUNNING:
-                return STATUS_RUNNING;
+                return mContext.getResources().getString(R.string.running);
             case DownloadManager.STATUS_SUCCESSFUL:
-                return STATUS_SUCCESSFUL;
+                return mContext.getResources().getString(R.string.successful);
             case DownloadManager.STATUS_FAILED:
-                return STATUS_FAILED;
+                return mContext.getResources().getString(R.string.failed);
             default:
-                return STATUS_UNKNOWN;
+                return mContext.getResources().getString(R.string.unknown);
         }
 
     }

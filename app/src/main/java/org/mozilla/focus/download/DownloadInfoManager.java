@@ -165,7 +165,7 @@ public class DownloadInfoManager {
         return contentValues;
     }
     private static DownloadInfo cursorToDownloadInfo(Cursor cursor){
-        DownloadInfo downloadInfo = new DownloadInfo();
+        DownloadInfo downloadInfo = new DownloadInfo(mContext);
         downloadInfo.setDownloadId(cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID)));
         downloadInfo.setFileName(cursor.getString(cursor.getColumnIndex(Download.FILE_NAME)));
 
@@ -178,7 +178,8 @@ public class DownloadInfoManager {
         try {
             if (managerCursor.moveToFirst()){
                 int status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                downloadInfo.setStatus(status);
+                downloadInfo.setStatusStr(status);
+                downloadInfo.setStatusInt(status);
 
                 double size = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
                 downloadInfo.setSize(size);

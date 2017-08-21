@@ -302,6 +302,14 @@ be temporary, and you can try again later.</li>
 
     <!-- Download list-->
     <string name="no_downloads">No Downloads</string>
+    <string name="download_started">Download started..</string>
+    <!-- Download status-->
+    <string name="pause">PAUSE</string>
+    <string name="pending">PENDING</string>
+    <string name="running">RUNNING</string>
+    <string name="successful">SUCCESSFUL</string>
+    <string name="failed">FAILED</string>
+    <string name="unknown">UNKNOWN</string>
 
     <!-- Setting data saving path dialog -->
     <string name="setting_dialog_sd_card">Removable storage</string>
