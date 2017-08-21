@@ -11,8 +11,11 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +28,7 @@ import org.json.JSONObject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.widget.FragmentListener;
 
@@ -183,40 +187,36 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
             if (site == null) {
                 return false;
             }
-
-            v.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            final PopupMenu popupMenu = new PopupMenu(v.getContext(), v, Gravity.CLIP_HORIZONTAL);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_top_site_item, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
-                public void onCreateContextMenu(ContextMenu menu,
-                                                View v,
-                                                ContextMenu.ContextMenuInfo menuInfo) {
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch(item.getItemId()){
+                        case R.id.remove:
+                            if (site.getId() < 0) {
+                                HomeFragment.this.presenter.removeSite(site);
+                                HomeFragment.this.removeDefaultSites(site);
+                                restoreDefaultSite();
+                                BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                            } else {
+                                BrowsingHistoryManager.getInstance().delete(site.getId(), mTopSiteDeleteListener);
+                            }
+                            break;
+                        default:
+                            throw new IllegalStateException("Unhandled menu item");
+                    }
 
-                    final MenuInflater inflater = new MenuInflater(getContext());
-                    inflater.inflate(R.menu.menu_top_site_item, menu);
-                    menu.findItem(R.id.remove)
-                            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-                                    if (site.getId() < 0) {
-                                        HomeFragment.this.presenter.removeSite(site);
-                                        HomeFragment.this.removeDefaultSites(site);
-                                        restoreDefaultSite();
-                                        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
-                                    } else {
-                                        BrowsingHistoryManager.getInstance().delete(site.getId(), mTopSiteDeleteListener);
-                                    }
-
-                                    return true;
-                                }
-                            });
+                    return true;
                 }
             });
-            v.showContextMenu();
+            popupMenu.show();
 
             return true;
         }
     }
 
-    private BrowsingHistoryManager.AsyncQueryListener mTopSitesQueryListener = new BrowsingHistoryManager.AsyncQueryListener() {
+    private QueryHandler.AsyncQueryListener mTopSitesQueryListener = new QueryHandler.AsyncQueryListener() {
         @Override
         public void onQueryComplete(List sites) {
             List<Site> querySites = new ArrayList<>();
@@ -230,7 +230,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
         }
     };
 
-    private BrowsingHistoryManager.AsyncDeleteListener mTopSiteDeleteListener = new BrowsingHistoryManager.AsyncDeleteListener() {
+    private QueryHandler.AsyncDeleteListener mTopSiteDeleteListener = new QueryHandler.AsyncDeleteListener() {
         @Override
         public void onDeleteComplete(int result, long id) {
             BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
