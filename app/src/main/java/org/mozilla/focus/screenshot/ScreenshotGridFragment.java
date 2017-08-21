@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.PanelFragment;
 
 
-public class ScreenshotGridFragment extends Fragment implements ScreenshotItemAdapter.EmptyListener {
+public class ScreenshotGridFragment extends PanelFragment implements ScreenshotItemAdapter.EmptyListener {
 
     private RecyclerView mContainerRecyclerView;
     private ViewGroup mContainerEmptyView;
