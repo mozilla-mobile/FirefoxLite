@@ -14,10 +14,8 @@ import java.util.Formatter;
 
 public class DownloadInfo {
 
-    private Context mContext;
     private Long DownloadId;
-    private String StatusStr;
-    private int StatusInt;
+    private int Status;
     private String Size;
     private String Date;
     private String FileName;
@@ -25,15 +23,14 @@ public class DownloadInfo {
     private String MimeType;
     private String FileUri;
 
-    public DownloadInfo(Context context){
-        mContext = context;
+    public DownloadInfo(){
     }
-    public void setStatusInt(int statusInt){
-        StatusInt = statusInt;
+    public void setStatusInt(int status){
+        Status = status;
     }
 
-    public int getStatusInt(){
-        return StatusInt;
+    public int getStatus(){
+        return Status;
     }
     public void setFileUri(String fileUri){
         FileUri = fileUri;
@@ -73,14 +70,6 @@ public class DownloadInfo {
         return FileName;
     }
 
-    public void setStatusStr(int status){
-        StatusStr = statusConvertStr(status);
-    }
-
-    public String getStatusStr(){
-        return StatusStr;
-    }
-
     public void setSize(double size){
         Size = convertByteToReadable(size);
     }
@@ -116,21 +105,4 @@ public class DownloadInfo {
         return String.format("%.1f",bytes)+dictionary[index];
     }
 
-    private String statusConvertStr(int status){
-        switch(status) {
-            case DownloadManager.STATUS_PAUSED:
-                return mContext.getResources().getString(R.string.pause);
-            case DownloadManager.STATUS_PENDING:
-                return mContext.getResources().getString(R.string.pending);
-            case DownloadManager.STATUS_RUNNING:
-                return mContext.getResources().getString(R.string.running);
-            case DownloadManager.STATUS_SUCCESSFUL:
-                return mContext.getResources().getString(R.string.successful);
-            case DownloadManager.STATUS_FAILED:
-                return mContext.getResources().getString(R.string.failed);
-            default:
-                return mContext.getResources().getString(R.string.unknown);
-        }
-
-    }
 }

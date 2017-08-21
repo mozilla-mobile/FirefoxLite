@@ -517,7 +517,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         Long downloadId = manager.enqueue(request);
 
         //record download ID
-        DownloadInfo downloadInfo = new DownloadInfo(getContext());
+        DownloadInfo downloadInfo = new DownloadInfo();
         downloadInfo.setDownloadId(downloadId);
         downloadInfo.setFileName(fileName);
         DownloadInfoManager.getInstance().insert(downloadInfo,null);

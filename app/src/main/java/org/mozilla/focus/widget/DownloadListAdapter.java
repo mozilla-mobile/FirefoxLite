@@ -1,6 +1,7 @@
 package org.mozilla.focus.widget;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,9 +33,11 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NON_EMPTY = 1;
+    private Context mContext;
     private int mItemCount = 0;
 
-    public DownloadListAdapter(){
+    public DownloadListAdapter(Context context){
+        mContext = context;
         loadMore();
     }
 
@@ -102,10 +105,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.title.setText(downloadInfo.getFileName());
 
             String subtitle="";
-            if (DownloadManager.STATUS_SUCCESSFUL == downloadInfo.getStatusInt()) {
+            if (DownloadManager.STATUS_SUCCESSFUL == downloadInfo.getStatus()) {
                 subtitle = downloadInfo.getSize() + "," + downloadInfo.getDate();
             } else {
-                subtitle = downloadInfo.getStatusStr();
+                subtitle = statusConvertStr(downloadInfo.getStatus());
             }
 
             holder.subtitle.setText(subtitle);
@@ -170,6 +173,23 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDownloadInfo.addAll(downloadInfoList);
         mItemCount = mDownloadInfo.size();
         this.notifyDataSetChanged();
+    }
+
+    private String statusConvertStr(int status){
+        switch(status) {
+            case DownloadManager.STATUS_PAUSED:
+                return mContext.getResources().getString(R.string.pause);
+            case DownloadManager.STATUS_PENDING:
+                return mContext.getResources().getString(R.string.pending);
+            case DownloadManager.STATUS_RUNNING:
+                return mContext.getResources().getString(R.string.running);
+            case DownloadManager.STATUS_SUCCESSFUL:
+                return mContext.getResources().getString(R.string.successful);
+            case DownloadManager.STATUS_FAILED:
+                return mContext.getResources().getString(R.string.failed);
+            default:
+                return mContext.getResources().getString(R.string.unknown);
+        }
     }
 
     public class DownloadViewHolder extends RecyclerView.ViewHolder{
