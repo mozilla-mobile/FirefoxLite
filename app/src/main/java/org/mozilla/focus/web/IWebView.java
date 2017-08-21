@@ -6,11 +6,15 @@
 package org.mozilla.focus.web;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 
 public interface IWebView {
     class HitTarget {
@@ -70,6 +74,13 @@ public interface IWebView {
         void onExitFullScreen();
 
         void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback);
+
+        /**
+         * @see WebChromeClient
+         */
+        boolean onShowFileChooser (WebView webView,
+                                   ValueCallback<Uri[]> filePathCallback,
+                                   WebChromeClient.FileChooserParams fileChooserParams);
     }
 
     interface FullscreenCallback {

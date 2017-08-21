@@ -36,6 +36,8 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -428,6 +430,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 geolocationCallback = callback;
                 //show geolocation permission prompt
                 showGeolocationPermissionPrompt(geolocationOrigin, geolocationCallback);
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView,
+                                             ValueCallback<Uri[]> filePathCallback,
+                                             WebChromeClient.FileChooserParams fileChooserParams) {
+                return false;
             }
         };
     }
