@@ -93,6 +93,12 @@
             android:authorities="${applicationId}.provider.screenshotprovider"
             android:enabled="true"
             android:exported="false" />
+
+        <provider
+            android:authorities="${applicationId}.provider.downloadprovider"
+            android:name=".provider.DownloadInfoProvider"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>
