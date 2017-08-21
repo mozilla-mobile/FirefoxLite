@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
+import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 
 public class ListPanelDialog extends DialogFragment {
 
@@ -133,7 +134,7 @@ public class ListPanelDialog extends DialogFragment {
 
     private void showScreenshots() {
         setSelectedItem(TYPE_SCREENSHOTS);
-        showPanelFragment(new PanelFragment());
+        showPanelFragment(ScreenshotGridFragment.newInstance());
     }
 
     private void showPanelFragment(PanelFragment panelFragment) {
