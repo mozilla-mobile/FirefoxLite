@@ -8,7 +8,6 @@ package org.mozilla.focus.webkit;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -128,7 +127,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
     @Override
     public void setCallback(Callback callback) {
-        if(callback != null) {
+        if (callback != null) {
             callback = new CallbackWrapper(callback);
         }
         this.callback = callback;
@@ -184,7 +183,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
     private class FocusWebChromeClient extends WebChromeClient {
 
         @Override
-        public void onProgressChanged (WebView view,int newProgress){
+        public void onProgressChanged(WebView view, int newProgress) {
             if (callback != null) {
                 // This is the earliest point where we might be able to confirm a redirected
                 // URL: we don't necessarily get a shouldInterceptRequest() after a redirect,
@@ -199,7 +198,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         }
 
         @Override
-        public void onReceivedIcon (WebView view, Bitmap icon){
+        public void onReceivedIcon(WebView view, Bitmap icon) {
             Site site = new Site();
             site.setTitle(view.getTitle());
             site.setUrl(view.getUrl());
@@ -208,7 +207,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         }
 
         @Override
-        public void onShowCustomView (View view,final CustomViewCallback webviewCallback){
+        public void onShowCustomView(View view, final CustomViewCallback webviewCallback) {
             final FullscreenCallback fullscreenCallback = new FullscreenCallback() {
                 @Override
                 public void fullScreenExited() {
@@ -220,18 +219,18 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         }
 
         @Override
-        public void onHideCustomView () {
+        public void onHideCustomView() {
             callback.onExitFullScreen();
         }
 
         @Override
-        public void onGeolocationPermissionsShowPrompt (String
-        origin, GeolocationPermissions.Callback glpcallback){
+        public void onGeolocationPermissionsShowPrompt(String origin,
+                                                       GeolocationPermissions.Callback glpcallback) {
             callback.onGeolocationPermissionsShowPrompt(origin, glpcallback);
         }
 
         @Override
-        public void onGeolocationPermissionsHidePrompt () {
+        public void onGeolocationPermissionsHidePrompt() {
             super.onGeolocationPermissionsHidePrompt();
         }
     }
