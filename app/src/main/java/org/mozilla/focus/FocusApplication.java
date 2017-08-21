@@ -8,6 +8,7 @@ package org.mozilla.focus;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
+import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.locale.LocaleAwareApplication;
 import org.mozilla.focus.screenshot.ScreenshotManager;
@@ -33,6 +34,8 @@ public class FocusApplication extends LocaleAwareApplication {
 
         BrowsingHistoryManager.getInstance().init(this);
         ScreenshotManager.getInstance().init(this);
+        DownloadInfoManager.getInstance().init(this);
+
     }
 
     private void enableStrictMode() {
