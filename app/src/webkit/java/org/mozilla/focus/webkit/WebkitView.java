@@ -8,6 +8,7 @@ package org.mozilla.focus.webkit;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
+import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebStorage;
@@ -233,6 +235,14 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         public void onGeolocationPermissionsHidePrompt() {
             super.onGeolocationPermissionsHidePrompt();
         }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView,
+                                         ValueCallback<Uri[]> filePathCallback,
+                                         WebChromeClient.FileChooserParams fileChooserParams) {
+
+            return callback.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+        }
     }
 
     private class CallbackWrapper implements IWebView.Callback {
@@ -295,6 +305,14 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         @Override
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             this.callback.onGeolocationPermissionsShowPrompt(origin, callback);
+        }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView,
+                                         ValueCallback<Uri[]> filePathCallback,
+                                         WebChromeClient.FileChooserParams fileChooserParams) {
+
+            return this.callback.onShowFileChooser(webView, filePathCallback, fileChooserParams);
         }
     }
 
