@@ -49,6 +49,8 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.menu.WebContextMenu;
+import org.mozilla.focus.screenshot.ScreenshotManager;
+import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
@@ -747,7 +749,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             try {
                 Bitmap content = getPageBitmap(webView);
                 if (content != null) {
-                    saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
+                    final String path = saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
+                    if (path != null) {
+                        Screenshot screenshot = new Screenshot(iwebView.getTitle(), iwebView.getUrl(), System.currentTimeMillis(), path);
+                        ScreenshotManager.getInstance().insert(screenshot, null);
+                    }
                     return true;
                 } else {
                     return false;
@@ -776,11 +782,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     }
 
-    private void saveBitmapToStorage(String fileName, Bitmap bitmap) throws IOException {
+    private String saveBitmapToStorage(String fileName, Bitmap bitmap) throws IOException {
         File folder = new File(Environment.getExternalStorageDirectory(), "Zerda");
         if (!folder.exists() && !folder.mkdir()) {
             throw new IOException("Can't create folder");
         }
+        String path = null;
         fileName = fileName.concat(".png");
         File file = new File(folder, fileName);
         try {
@@ -788,10 +795,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
             fos.close();
-            notifyNewScreenshot(file.getPath());
+            path = file.getPath();
+            notifyNewScreenshot(path);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return path;
     }
 
     private void notifyNewScreenshot(String path) {
