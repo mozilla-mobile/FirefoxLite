@@ -291,7 +291,7 @@ be temporary, and you can try again later.</li>
     <string name="geolocation_dialog_block">BLOCK</string>
 
     <!-- Setting Clear browsing data dialog-->
-    <string name="setting_dialog_clear_data">Clean Data</string>
+    <string name="setting_dialog_clear_data">Clear Data</string>
     <string name="setting_dialog_cancel">Cancel</string>
     <string name="setting_dialog_browsing_history">Browsing history</string>
     <string name="setting_dialog_search_history">Search history</string>
