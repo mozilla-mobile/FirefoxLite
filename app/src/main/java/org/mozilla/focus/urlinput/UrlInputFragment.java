@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         View.OnClickListener, View.OnLongClickListener,
-        InlineAutocompleteEditText.OnCommitListener {
+        InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener {
 
     public static final String FRAGMENT_TAG = "url_input";
 
@@ -87,6 +87,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
         urlView = (InlineAutocompleteEditText) view.findViewById(R.id.url_edit);
         urlView.addTextChangedListener(textChangeListener);
+        urlView.setOnFilterListener(this);
         urlView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -236,6 +237,19 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             this.suggestionView.addView(item);
 
         }
+    }
+
+    @Override
+    public void onFilter(String searchText, InlineAutocompleteEditText view) {
+        // If the UrlInputFragment has already been hidden, don't bother with filtering. Because of the text
+        // input architecture on Android it's possible for onFilter() to be called after we've already
+        // hidden the Fragment, see the relevant bug for more background:
+        // https://github.com/mozilla-mobile/focus-android/issues/441#issuecomment-293691141
+        if (!isVisible()) {
+            return;
+        }
+
+        urlAutoCompleteFilter.onFilter(searchText, view);
     }
 
     private class TextChangeListener implements TextWatcher {
