@@ -40,7 +40,8 @@ public class UrlInputContract {
          * Called when user input any text in Url bar
          *
          * @param input
+         * @param isThrottled
          */
-        void onInput(@NonNull CharSequence input);
+        void onInput(@NonNull CharSequence input, boolean isThrottled);
     }
 }
