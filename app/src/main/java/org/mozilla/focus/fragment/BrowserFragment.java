@@ -139,11 +139,15 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(this.getContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(this.getContext())
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -197,8 +201,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             initialiseNormalBrowserUi();
         }
 
-        PreferenceManager.getDefaultSharedPreferences(this.getContext())
-                .registerOnSharedPreferenceChangeListener(this);
 
         SPEED_MODE = PreferenceManager.getDefaultSharedPreferences(this.getContext())
                 .getBoolean(MainActivity.SPEED_MODE_PREF, SPEED_MODE);
@@ -317,7 +319,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             setBlockingEnabled(SPEED_MODE);
             this.reload();
         }
-
     }
 
     public interface LoadStateListener {
