@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,6 +24,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -46,6 +48,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.menu.WebContextMenu;
@@ -73,7 +76,7 @@ import java.util.Calendar;
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable {
+public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable, SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static final String FRAGMENT_TAG = "browser";
 
@@ -88,6 +91,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
+
+    private boolean SPEED_MODE = true;
 
     public static BrowserFragment create(String url) {
         Bundle arguments = new Bundle();
@@ -192,6 +197,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             initialiseNormalBrowserUi();
         }
 
+        PreferenceManager.getDefaultSharedPreferences(this.getContext())
+                .registerOnSharedPreferenceChangeListener(this);
+
+        SPEED_MODE = PreferenceManager.getDefaultSharedPreferences(this.getContext())
+                .getBoolean(MainActivity.SPEED_MODE_PREF, SPEED_MODE);
+
+        setBlockingEnabled(SPEED_MODE);
+
         return view;
     }
 
@@ -294,6 +307,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void onStop() {
         super.onStop();
         notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        if (key.equals(MainActivity.SPEED_MODE_PREF)){
+            SPEED_MODE = sharedPreferences.getBoolean(MainActivity.SPEED_MODE_PREF, SPEED_MODE);
+            setBlockingEnabled(SPEED_MODE);
+            this.reload();
+        }
+
     }
 
     public interface LoadStateListener {

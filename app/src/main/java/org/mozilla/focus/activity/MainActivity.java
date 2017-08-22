@@ -8,10 +8,12 @@ package org.mozilla.focus.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -47,6 +49,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public static final String ACTION_OPEN = "open";
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
+    public static final String SPEED_MODE_PREF = "speed mode";
+    public boolean SPEED_MODE = true;
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
     private static final Handler HANDLER = new Handler();
 
@@ -93,6 +97,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         }
         WebViewProvider.preload(this);
+
+        SPEED_MODE = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(SPEED_MODE_PREF,SPEED_MODE);
     }
 
     @Override
@@ -225,8 +232,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
+                break;
             case R.id.menu_speedmode:
-                // Do nothing for now.
+                SPEED_MODE = !SPEED_MODE;
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit()
+                        .putBoolean(SPEED_MODE_PREF,SPEED_MODE)
+                        .apply();
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
