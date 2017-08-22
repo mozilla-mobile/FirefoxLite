@@ -48,7 +48,10 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
     @MainThread
     @Override
-    public void onInput(@NonNull CharSequence input) {
+    public void onInput(@NonNull CharSequence input, boolean isThrottled) {
+        if (isThrottled && queryTask != null) {
+            queryTask.cancel(true);
+        }
         if (view == null) {
             return;
         }

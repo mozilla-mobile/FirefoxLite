@@ -253,19 +253,30 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     }
 
     private class TextChangeListener implements TextWatcher {
+
+        private long lastRequestTime;
+        private int REQUEST_THROTTLE_THRESHOLD = 300;
+
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            UrlInputFragment.this.presenter.onInput(s);
+            UrlInputFragment.this.presenter.onInput(s, detectThrottle());
             final int visibility = TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE;
             UrlInputFragment.this.clearView.setVisibility(visibility);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
+        }
+
+        private boolean detectThrottle() {
+            long now = System.currentTimeMillis();
+            boolean throttled = now - lastRequestTime < REQUEST_THROTTLE_THRESHOLD;
+            lastRequestTime = now;
+            return throttled;
         }
     }
 }
