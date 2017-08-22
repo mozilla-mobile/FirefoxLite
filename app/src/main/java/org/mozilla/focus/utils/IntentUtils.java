@@ -59,31 +59,8 @@ public class IntentUtils {
 
         if (matchingActivities.size() == 0) {
             return handleUnsupportedLink(context, webView, intent);
-        } else if (matchingActivities.size() == 1) {
-            final ResolveInfo info;
-
-            if (matchingActivities.size() == 1) {
-                info = matchingActivities.get(0);
-            } else {
-                // Ordering isn't guaranteed if there is more than one available activity - hence
-                // we fetch the default (this code isn't currently run because we handle the > 1
-                // case separately, but would be needed if we ever decide to prefer the default
-                // app for the > 1 case.
-                info = packageManager.resolveActivity(intent, 0);
-            }
-            final CharSequence externalAppTitle = info.loadLabel(packageManager);
-
-            showConfirmationDialog(context, intent, context.getString(R.string.external_app_prompt_title), R.string.external_app_prompt, externalAppTitle);
-            return true;
-        } else { // matchingActivities.size() > 1
-            // By explicitly showing the chooser, we can avoid having a (default) app from opening
-            // the link immediately. This isn't perfect - we'd prefer to highlight the default app,
-            // but it's not clear if there's any way of doing that. An alternative
-            // would be to reuse the same dialog as for the single-activity case, and offer
-            // a "open in other app this time" button if we have more than one matchingActivity.
-            final String chooserTitle = context.getString(R.string.external_multiple_apps_matched_exit);
-            final Intent chooserIntent = Intent.createChooser(intent, chooserTitle);
-            context.startActivity(chooserIntent);
+        } else {
+            context.startActivity(intent);
 
             return true;
         }
