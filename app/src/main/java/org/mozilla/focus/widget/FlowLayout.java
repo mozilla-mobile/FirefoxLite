@@ -70,7 +70,7 @@ public class FlowLayout extends ViewGroup {
         final int childCount = getChildCount();
         final int totalWidth = r - l;
         int x = 0;
-        int y = 0;
+        int y = getMeasuredHeight();
         int prevChildHeight = 0;
 
         for (int i = 0; i < childCount; i++) {
@@ -82,10 +82,10 @@ public class FlowLayout extends ViewGroup {
             final int childHeight = child.getMeasuredHeight();
             if (x + childWidth > totalWidth) {
                 x = 0;
-                y += prevChildHeight + mSpacing;
+                y -= prevChildHeight + mSpacing;
             }
             prevChildHeight = childHeight;
-            child.layout(x, y, x + childWidth, y + childHeight);
+            child.layout(x, y - childHeight, x + childWidth, y);
             x += childWidth + mSpacing;
         }
     }
