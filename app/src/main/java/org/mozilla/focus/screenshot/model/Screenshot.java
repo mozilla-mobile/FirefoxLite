@@ -11,6 +11,16 @@ public class Screenshot {
     private long timestamp;
     private String imageUri;
 
+    public Screenshot(){
+    }
+
+    public Screenshot(String title, String url, long timestamp, String imageUri) {
+        this.title = title;
+        this.url = url;
+        this.timestamp = timestamp;
+        this.imageUri = imageUri;
+    }
+
     public long getId() {
         return this.id;
     }
