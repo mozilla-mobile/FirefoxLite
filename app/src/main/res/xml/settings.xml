@@ -17,7 +17,7 @@
         android:layout="@layout/focus_preference"
         android:positiveButtonText="@string/setting_dialog_clear_data"
         android:negativeButtonText="@string/setting_dialog_cancel"
-        android:defaultValue="@string/pref_value_clear_cache"
+        android:defaultValue="@array/clean_browsing_data_values"
         android:entryValues="@array/clean_browsing_data_values"
         android:entries="@array/clean_browsing_data_entries"
         android:title="@string/preference_privacy_storage_clear_browsing_data"
