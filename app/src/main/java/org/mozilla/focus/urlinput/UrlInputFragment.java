@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
+import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.utils.ViewUtils;
@@ -66,7 +67,8 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        this.presenter = new UrlInputPresenter(getActivity());
+        this.presenter = new UrlInputPresenter(SearchEngineManager.getInstance()
+                .getDefaultSearchEngine(getActivity()));
         this.presenter.setView(this);
     }
 
