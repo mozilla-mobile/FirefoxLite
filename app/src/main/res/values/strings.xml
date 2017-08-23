@@ -85,7 +85,6 @@
     <string name="preference_data_saving_block_ads">Block ads and trackers</string>
     <string name="preference_data_saving_block_webfonts">Block Web fonts</string>
     <string name="preference_data_saving_block_images">Block images</string>
-    <string name="preference_data_saving_media_autoplay">Block media autoplay</string>
     <string name="preference_data_saving_tab_restore">Block tab restore</string>
 
     <!-- Settings Privacy and storage-->
