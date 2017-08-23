@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.urlinput;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -13,7 +12,7 @@ import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.utils.UrlUtils;
 
 import java.io.BufferedInputStream;
@@ -31,14 +30,12 @@ import java.util.List;
 public class UrlInputPresenter implements UrlInputContract.Presenter {
 
     private UrlInputContract.View view;
-
-    // This is just a Mock Presenter, in real implementation we should get rid of Android classes.
-    final private Context ctx;
+    final private SearchEngine searchEngine;
 
     private AsyncTask queryTask;
 
-    public UrlInputPresenter(@NonNull Context context) {
-        this.ctx = context;
+    public UrlInputPresenter(@NonNull SearchEngine searchEngine) {
+        this.searchEngine = searchEngine;
     }
 
     @Override
@@ -71,32 +68,35 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
             queryTask = null;
         }
 
-        queryTask = new AsyncTask<CharSequence, Void, List<CharSequence>>() {
-            @Override
-            protected List<CharSequence> doInBackground(CharSequence... urls) {
-                return HttpRequest.get(urls[0]);
-            }
-
-            @Override
-            protected void onPostExecute(List<CharSequence> strings) {
-                if(view != null){
-                    view.setSuggestions(strings);
+        try {
+            queryTask = new AsyncTask<URL, Void, List<CharSequence>>() {
+                @Override
+                protected List<CharSequence> doInBackground(URL... urls) {
+                    return HttpRequest.get(urls[0]);
                 }
-            }
-        }.execute(input);
+
+                @Override
+                protected void onPostExecute(List<CharSequence> strings) {
+                    if(view != null){
+                        view.setSuggestions(strings);
+                    }
+                }
+            }.execute(new URL(searchEngine.buildSearchSuggestionUrl(input.toString())));
+        } catch (MalformedURLException ex) {
+            // Do nothing
+        }
+
 
     }
 
     private static class HttpRequest {
-        private static final String URL_QUERY_API_DUCKDUCKGO = "https://ac.duckduckgo.com/ac/?q=";
 
-        static List<CharSequence> get(CharSequence uri) {
+        static List<CharSequence> get(URL url) {
 
             String line = "";
             HttpURLConnection urlConnection = null;
             BufferedReader r = null;
             try {
-                URL url = new URL(URL_QUERY_API_DUCKDUCKGO + uri);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 r = new BufferedReader(new InputStreamReader(in, "utf-8"));
@@ -106,7 +106,6 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
                 }
 
                 line = total.toString();
-            } catch (MalformedURLException e) {
             } catch (IOException e) {
             } finally {
                 if (r != null) {
@@ -127,14 +126,13 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
             List<CharSequence> suggests = null;
             try {
-                JSONArray jsonArray = new JSONArray(line);
-                int size = jsonArray.length();
+                JSONArray response = new JSONArray(line);
+                JSONArray suggestions = response.getJSONArray(1);
+                int size = suggestions.length();
                 suggests = new ArrayList<>(size);
                 try {
                     for (int i = 0; i < size; i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String suggestText = jsonObject.getString("phrase");
-                        suggests.add(suggestText);
+                        suggests.add(suggestions.getString(i));
                     }
                 } catch (JSONException e) {
                 }
