@@ -19,50 +19,62 @@
         android:layout_marginTop="3dp"
         tools:background="#3300FF00">
 
-        <LinearLayout
+        <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_download">
-            <ImageView
-                style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_download"
-                />
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_download"/>
-        </LinearLayout>
-        <LinearLayout
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <ImageView
+                    style="@style/MenuButtonIcon"
+                    android:src="@drawable/menu_download"
+                    />
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_download"/>
+            </LinearLayout>
+        </FrameLayout>
+        <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_history">
-            <ImageView
-                style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_history"
-                />
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_history"/>
-        </LinearLayout>
-        <LinearLayout
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <ImageView
+                    style="@style/MenuButtonIcon"
+                    android:src="@drawable/menu_history"
+                    />
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_history"/>
+            </LinearLayout>
+        </FrameLayout>
+        <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_screenshots">
-            <ImageView
-                style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_screenshots"
-                />
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_screenshots"/>
-        </LinearLayout>
-        <LinearLayout
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <ImageView
+                    style="@style/MenuButtonIcon"
+                    android:src="@drawable/menu_screenshots"
+                    />
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_screenshots"/>
+            </LinearLayout>
+        </FrameLayout>
+        <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_speedmode">
-            <ImageView
-                style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_speedmode"
-                />
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_speed_mode"/>
-        </LinearLayout>
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <ImageView
+                    style="@style/MenuButtonIcon"
+                    android:src="@drawable/menu_speedmode"
+                    />
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_speed_mode"/>
+            </LinearLayout>
+        </FrameLayout>
     </org.mozilla.focus.widget.EqualDistributeRow>
 
     <org.mozilla.focus.widget.EqualDistributeRow
@@ -71,39 +83,48 @@
         android:layout_marginTop="1dp"
         tools:background="#3300FF00">
 
-        <LinearLayout
+        <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_blockimg">
-            <ImageView
-                style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_blockimg"
-                />
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_block_image"/>
-        </LinearLayout>
-        <LinearLayout
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <ImageView
+                    style="@style/MenuButtonIcon"
+                    android:src="@drawable/menu_blockimg"
+                    />
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_block_image"/>
+            </LinearLayout>
+        </FrameLayout>
+        <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_delete">
-            <ImageView
-                style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_delete"
-                />
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_clear_cache"/>
-        </LinearLayout>
-        <LinearLayout
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <ImageView
+                    style="@style/MenuButtonIcon"
+                    android:src="@drawable/menu_delete"
+                    />
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_clear_cache"/>
+            </LinearLayout>
+        </FrameLayout>
+        <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_preferences">
-            <ImageView
-                style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_settings"
-                />
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_settings"/>
-        </LinearLayout>
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <ImageView
+                    style="@style/MenuButtonIcon"
+                    android:src="@drawable/menu_settings"
+                    />
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_settings"/>
+            </LinearLayout>
+        </FrameLayout>
 
         <!-- a placeholder for layout -->
         <View
@@ -118,50 +139,45 @@
         android:layout_height="1dp"
         android:background="@color/colorMenuDivider" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <ImageButton
-                android:id="@+id/action_next"
-                style="@style/MenuBottomButton"
-                android:layout_marginEnd="57dp"
-                android:contentDescription="@string/content_description_forward"
-                android:onClick="onMenuItemClicked"
+        <RelativeLayout
+            style="@style/BottomMenuButtonContainerWithMargin"
+            android:id="@+id/action_next">
+            <ImageView
+                style="@style/MenuButtonIcon"
                 android:src="@drawable/action_next"
+                android:contentDescription="@string/content_description_forward"
                 tools:background="#330000FF" />
-
-            <ImageButton
-                android:id="@+id/action_refresh"
-                style="@style/MenuBottomButton"
-                android:layout_marginEnd="57dp"
-                android:contentDescription="@string/content_description_back"
-                android:onClick="onMenuItemClicked"
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BottomMenuButtonContainerWithMargin"
+            android:id="@+id/action_refresh">
+            <ImageView
+                style="@style/MenuButtonIcon"
                 android:src="@drawable/action_refresh"
-                tools:background="#330000FF" />
-
-            <ImageButton
-                android:id="@+id/action_share"
-                style="@style/MenuBottomButton"
-                android:layout_marginEnd="57dp"
                 android:contentDescription="@string/content_description_reload"
-                android:onClick="onMenuItemClicked"
+                tools:background="#330000FF" />
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BottomMenuButtonContainerWithMargin"
+            android:id="@+id/action_share">
+            <ImageView
+                style="@style/MenuButtonIcon"
                 android:src="@drawable/menu_share"
                 tools:background="#330000FF" />
-
-            <ImageButton
-                android:id="@+id/capture_page"
-                style="@style/MenuBottomButton"
-                android:onClick="onMenuItemClicked"
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/capture_page"
+            style="@style/BottomMenuButtonContainer">
+            <ImageView
+                style="@style/MenuButtonIcon"
                 android:src="@drawable/action_capture"
                 tools:background="#330000FF" />
-
-        </LinearLayout>
-
-    </FrameLayout>
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
