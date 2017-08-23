@@ -11,7 +11,7 @@
   <Param name="output" value="fxjson" />
   <Param name="appid" value="ffm" />
   <Param name="command" value="{searchTerms}" />
-  <Param name="nresults" value="4" />
+  <Param name="nresults" value="5" />
 </Url>
 <Url type="text/html" method="GET" template="https://id.search.yahoo.com/search">
   <Param name="p" value="{searchTerms}" />
