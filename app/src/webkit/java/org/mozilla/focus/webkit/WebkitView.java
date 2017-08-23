@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -201,9 +202,14 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
+            final String url = view.getUrl();
+            if (TextUtils.isEmpty(url)) {
+                return;
+            }
+
             Site site = new Site();
             site.setTitle(view.getTitle());
-            site.setUrl(view.getUrl());
+            site.setUrl(url);
             site.setFavIcon(icon);
             BrowsingHistoryManager.getInstance().insert(site, null);
         }
@@ -260,8 +266,19 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         @Override
         public void onPageFinished(boolean isSecure) {
             this.callback.onPageFinished(isSecure);
+            insertBrowsingHistory();
+        }
+
+        private void insertBrowsingHistory() {
+            final String url = getUrl();
+            if (TextUtils.isEmpty(url)) {
+                return;
+            } else if ("about:blank".equals(url)) {
+                return;
+            }
+
             Site site = new Site();
-            site.setUrl(getUrl());
+            site.setUrl(url);
             site.setTitle(getTitle());
             site.setLastViewTimestamp(System.currentTimeMillis());
             BrowsingHistoryManager.getInstance().insert(site, null);
