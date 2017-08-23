@@ -31,6 +31,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
     private UrlInputContract.View view;
     final private SearchEngine searchEngine;
+    private static final int MAX_SUGGESTION_COUNT = 5;
 
     private AsyncTask queryTask;
 
@@ -131,7 +132,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
                 int size = suggestions.length();
                 suggests = new ArrayList<>(size);
                 try {
-                    for (int i = 0; i < size; i++) {
+                    for (int i = 0; i < Math.min(size, MAX_SUGGESTION_COUNT); i++) {
                         suggests.add(suggestions.getString(i));
                     }
                 } catch (JSONException e) {
