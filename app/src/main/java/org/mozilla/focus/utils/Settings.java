@@ -37,10 +37,9 @@ public class Settings {
     }
 
     public boolean shouldBlockImages() {
-        boolean flag = preferences.getBoolean(
+        return preferences.getBoolean(
                 resources.getString(R.string.pref_key_performance_block_images),
                 true);
-        return flag;
     }
 
     public boolean shouldShowFirstrun() {
@@ -54,6 +53,12 @@ public class Settings {
         // FIXME: rely on String-array-order is not a good idea
         final String[] defined = resources.getStringArray(R.array.data_saving_path_values);
         return defined[0].equals(value); // assume the first item is for removable storage
+    }
+
+    public boolean shouldUseSpeedMode(){
+        return preferences.getBoolean(
+                resources.getString(R.string.pref_key_privacy_block_speed_mode),
+                true);
     }
 
     @Nullable
