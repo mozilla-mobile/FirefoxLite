@@ -64,6 +64,19 @@ public class Settings {
                 TURBO_MODE_DEFAULT);
     }
 
+    public boolean hasSavedToRemovableStorage() {
+        final String key = getPreferenceKey(R.string.pref_key_privacy_has_saved_to_removable);
+        // use true as default value, because in most of case it should work.
+        return preferences.getBoolean(key, true);
+    }
+
+    public void setSavedToRemovableStorage(boolean savedToExternal) {
+        final String key = getPreferenceKey(R.string.pref_key_privacy_has_saved_to_removable);
+        preferences.edit()
+                .putBoolean(key, savedToExternal)
+                .apply();
+    }
+
     @Nullable
     public String getDefaultSearchEngineName() {
         return preferences.getString(getPreferenceKey(R.string.pref_key_search_engine), null);
