@@ -116,8 +116,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             //Block Web Fonts Callback function
         } else if (key.equals(getString(R.string.pref_key_data_saving_block_images))) {
             //block images while over cellular data Callback function
-        } else if (key.equals(getString(R.string.pref_key_data_saving_block_media_autoplay))) {
-            //block media autoplay Callback function
         } else if (key.equals(getString(R.string.pref_key_data_saving_block_tab_restore))) {
             //block tab restore Callback function
         } else if (key.equals(getString(R.string.pref_key_storage_clear_browsing_data))) {

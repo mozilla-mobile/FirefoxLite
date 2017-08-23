@@ -28,12 +28,6 @@
         android:title="@string/preference_privacy_storage_save_downloads_to"
         android:key="@string/pref_key_storage_save_downloads_to" />
 
-    <SwitchPreference
-        android:layout="@layout/focus_preference"
-        android:title="@string/preference_data_saving_media_autoplay"
-        android:key="@string/pref_key_data_saving_block_media_autoplay"
-        android:defaultValue="true" />
-
     <org.mozilla.focus.widget.DefaultBrowserPreference
         android:layout="@layout/focus_preference"
         android:key="@string/pref_key_default_browser"
