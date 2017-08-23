@@ -40,7 +40,6 @@ import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.webkit.WebkitView;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
@@ -49,9 +48,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public static final String ACTION_OPEN = "open";
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
-    public static final String SPEED_MODE_PREF = "speed mode";
-    public boolean SPEED_MODE = true;
-    public boolean BLOCK_IMAGE = true;
+    private boolean SPEED_MODE_PREF = true;
+    private boolean BLOCK_IMAGE_PREF = true;
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
     private static final Handler HANDLER = new Handler();
 
@@ -65,7 +63,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
-    private WebkitView mWebkitView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +97,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         WebViewProvider.preload(this);
 
-        SPEED_MODE = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(SPEED_MODE_PREF,SPEED_MODE);
+        SPEED_MODE_PREF = Settings.getInstance(this).shouldUseSpeedMode();
 
-        String preferKey = this.getResources().getString(R.string.pref_key_performance_block_images);
-        BLOCK_IMAGE = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(preferKey, BLOCK_IMAGE);
+        BLOCK_IMAGE_PREF = Settings.getInstance(this).shouldBlockImages();
     }
 
     @Override
@@ -238,20 +232,24 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
-                BLOCK_IMAGE = !BLOCK_IMAGE;
-                String preferKey = this.getResources().getString(R.string.pref_key_performance_block_images);
+                BLOCK_IMAGE_PREF = !BLOCK_IMAGE_PREF;
+                String blockImagePrefKey = this.getResources().getString(R.string.pref_key_performance_block_images);
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
-                        .putBoolean(preferKey, BLOCK_IMAGE)
+                        .putBoolean(blockImagePrefKey, BLOCK_IMAGE_PREF)
                         .apply();
-                ((WebkitView)mWebkitView).reload();
+
+                getBrowserFragment().reload();
                 break;
             case R.id.menu_speedmode:
-                SPEED_MODE = !SPEED_MODE;
+                SPEED_MODE_PREF = !SPEED_MODE_PREF;
+                String SpeedModePrefKey = this.getResources().getString(R.string.pref_key_privacy_block_speed_mode);
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
-                        .putBoolean(SPEED_MODE_PREF,SPEED_MODE)
+                        .putBoolean(SpeedModePrefKey, SPEED_MODE_PREF)
                         .apply();
+
+                getBrowserFragment().reload();
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
@@ -434,8 +432,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         if (name.equals(IWebView.class.getName())) {
-            mWebkitView = (WebkitView) WebViewProvider.create(this, attrs);
-            return mWebkitView;
+            View v = WebViewProvider.create(this, attrs);
+            return v;
         }
 
         return super.onCreateView(name, context, attrs);

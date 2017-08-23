@@ -58,6 +58,7 @@ import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.MimeUtils;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
@@ -76,7 +77,7 @@ import java.util.Calendar;
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable, SharedPreferences.OnSharedPreferenceChangeListener{
+public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable{
 
     public static final String FRAGMENT_TAG = "browser";
 
@@ -139,15 +140,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-        PreferenceManager.getDefaultSharedPreferences(this.getContext())
-                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(this.getContext())
-                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -202,8 +199,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
 
-        SPEED_MODE = PreferenceManager.getDefaultSharedPreferences(this.getContext())
-                .getBoolean(MainActivity.SPEED_MODE_PREF, SPEED_MODE);
+        SPEED_MODE = Settings.getInstance(this.getContext()).shouldUseSpeedMode();
 
         setBlockingEnabled(SPEED_MODE);
 
@@ -309,16 +305,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void onStop() {
         super.onStop();
         notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-        if (key.equals(MainActivity.SPEED_MODE_PREF)){
-            SPEED_MODE = sharedPreferences.getBoolean(MainActivity.SPEED_MODE_PREF, SPEED_MODE);
-            setBlockingEnabled(SPEED_MODE);
-            this.reload();
-        }
     }
 
     public interface LoadStateListener {
@@ -760,6 +746,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void reload() {
         final IWebView webView = getWebView();
         if (webView != null) {
+            webView.setBlockingEnabled(Settings.getInstance(this.getContext()).shouldUseSpeedMode());
             webView.reload();
         }
     }
