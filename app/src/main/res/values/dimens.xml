@@ -28,4 +28,5 @@
     <dimen name="flow_layout_spacing">10dp</dimen>
 
     <dimen name="screenshot_grid_cell_padding">8dp</dimen>
+    <dimen name="menu_bottom_space">40dp</dimen>
 </resources>
