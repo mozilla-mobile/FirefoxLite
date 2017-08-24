@@ -31,9 +31,9 @@
 
             <org.mozilla.focus.web.IWebView
                 android:id="@+id/webview"
+                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                android:layout_height="match_parent"/>
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:clipChildren="false"
-                    app:layout_scrollFlags="scroll|enterAlways|snap">
+                    app:layout_scrollFlags="">
 
                     <include layout="@layout/toolbar" />
 
