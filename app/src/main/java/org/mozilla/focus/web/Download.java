@@ -11,9 +11,6 @@ import android.support.annotation.NonNull;
 
 public class Download implements Parcelable {
 
-    public static final int TYPE_OTHER = 0;
-    public static final int TYPE_IMAGE = 1;
-
     public static final Parcelable.Creator<Download> CREATOR = new Parcelable.Creator<Download>() {
 
         @Override
@@ -23,8 +20,7 @@ public class Download implements Parcelable {
                     source.readString(),
                     source.readString(),
                     source.readString(),
-                    source.readLong(),
-                    source.readInt());
+                    source.readLong());
         }
 
         @Override
@@ -38,20 +34,17 @@ public class Download implements Parcelable {
     private final String mimeType;
     private final long contentLength;
     private final String userAgent;
-    private final int downloadtype;
 
     public Download(@NonNull String url,
                     @NonNull String userAgent,
                     @NonNull String contentDisposition,
                     @NonNull String mimeType,
-                    long contentLength,
-                    int type) {
+                    long contentLength) {
         this.url = url;
         this.userAgent = userAgent;
         this.contentDisposition = contentDisposition;
         this.mimeType = mimeType;
         this.contentLength = contentLength;
-        this.downloadtype = type;
     }
 
     public String getUrl() {
@@ -72,10 +65,6 @@ public class Download implements Parcelable {
 
     public String getUserAgent() {
         return userAgent;
-    }
-
-    public int getDownloadType() {
-        return downloadtype;
     }
 
     @Override
