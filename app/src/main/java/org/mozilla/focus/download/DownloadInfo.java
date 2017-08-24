@@ -22,8 +22,16 @@ public class DownloadInfo {
     private String MediaUri;
     private String MimeType;
     private String FileUri;
+    private String FileExtension;
 
-    public DownloadInfo(){
+    public DownloadInfo(){}
+
+    public void setFileExtension(String fileExtension){
+        FileExtension = fileExtension;
+    }
+
+    public String getFileExtension(){
+        return FileExtension;
     }
     public void setStatusInt(int status){
         Status = status;
