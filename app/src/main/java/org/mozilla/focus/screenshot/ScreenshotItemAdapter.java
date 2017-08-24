@@ -1,5 +1,6 @@
 package org.mozilla.focus.screenshot;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.Screenshot;
@@ -40,7 +40,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private List mItems = new ArrayList();
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
-    private Context mContext;
+    private Activity mActivity;
     private EmptyListener mEmptyListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
@@ -51,9 +51,9 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         void onEmpty(boolean flag);
     }
 
-    public ScreenshotItemAdapter(RecyclerView recyclerView, Context context, EmptyListener emptyListener, GridLayoutManager layoutManager) {
+    public ScreenshotItemAdapter(RecyclerView recyclerView, Activity activity, EmptyListener emptyListener, GridLayoutManager layoutManager) {
         mRecyclerView = recyclerView;
-        mContext = context;
+        mActivity = activity;
         mEmptyListener = emptyListener;
         mLayoutManager = layoutManager;
         mLayoutManager.setSpanSizeLookup(mSpanSizeHelper);
@@ -81,7 +81,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_screenshot_grid_cell, parent, false);
             return new GirdItemViewHolder(v);
         } else if (viewType == VIEW_TYPE_DATE) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_date, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_screenshot_date, parent, false);
             return new DateItemViewHolder(v);
         }
         return null;
@@ -95,7 +95,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             //TODO: replace with target image loader
             final Screenshot item = (Screenshot) mItems.get(position);
             gridVH.img.setTag(item.getImageUri());
-            new ThumbnailLoadingTask(gridVH.img, mContext).execute();
+            new ThumbnailLoadingTask(gridVH.img, mActivity).execute();
 
         } else if (holder instanceof DateItemViewHolder) {
             final DateSection item = (DateSection) mItems.get(position);
@@ -143,6 +143,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (position != RecyclerView.NO_POSITION) {
             Object item = mItems.get(position);
             if (item instanceof Screenshot) {
+                ScreenshotViewerActivity.goScreenshotViewerActivityOnResult(mActivity, (Screenshot) item);
             }
         }
     }
@@ -175,11 +176,6 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
             }
         }
-    }
-
-
-    public void clear() {
-        BrowsingHistoryManager.getInstance().deleteAll(this);
     }
 
     private void add(Object item) {
@@ -261,7 +257,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public DateItemViewHolder(View itemView) {
             super(itemView);
-            textDate = (TextView) itemView.findViewById(R.id.history_item_date);
+            textDate = (TextView) itemView.findViewById(R.id.screenshot_item_date);
         }
 
     }

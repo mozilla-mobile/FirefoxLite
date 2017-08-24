@@ -129,4 +129,8 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="ScreenshotViewBottomToolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>
 </resources>
