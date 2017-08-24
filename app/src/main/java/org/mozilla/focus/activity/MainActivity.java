@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
@@ -52,6 +53,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private String pendingUrl;
 
     private BottomSheetDialog menu;
+    private View nextButton;
+    private View refreshButton;
+    private View shareButton;
+    private View captureButton;
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
@@ -181,10 +186,30 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
         menu = new BottomSheetDialog(this);
         menu.setContentView(sheet);
+        nextButton = menu.findViewById(R.id.action_next);
+        refreshButton = menu.findViewById(R.id.action_refresh);
+        shareButton = menu.findViewById(R.id.action_share);
+        captureButton = menu.findViewById(R.id.capture_page);
     }
 
     private void showMenu() {
+        final BrowserFragment browserFragment = getVisibleBrowserFragment();
+        final boolean hasLoadedPage = browserFragment != null && !browserFragment.isLoading();
+        final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
+        setEnable(nextButton, canGoForward);
+        setEnable(refreshButton, hasLoadedPage);
+        setEnable(shareButton, hasLoadedPage);
+        setEnable(captureButton, hasLoadedPage);
         menu.show();
+    }
+
+    private BrowserFragment getVisibleBrowserFragment() {
+        final BrowserFragment browserFragment = getBrowserFragment();
+        if (browserFragment == null || !browserFragment.isVisible()) {
+            return null;
+        } else {
+            return browserFragment;
+        }
     }
 
     private void showListPanel(int type) {
@@ -194,6 +219,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     public void onMenuItemClicked(View v) {
+        if(!v.isEnabled()) {
+            return;
+        }
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
@@ -227,9 +255,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    private void setEnable(View v, boolean enable) {
+        v.setEnabled(enable);
+        if (v instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) v;
+            for(int i=0 ; i < vg.getChildCount() ; i++) {
+                setEnable(((ViewGroup) v).getChildAt(i), enable);
+            }
+        }
+    }
+
     public void onMenuBrowsingItemClicked(View v) {
-        final BrowserFragment browserFragment = getBrowserFragment();
-        if (browserFragment == null || !browserFragment.isVisible()) {
+        final BrowserFragment browserFragment = getVisibleBrowserFragment();
+        if (browserFragment == null) {
             return;
         }
         switch (v.getId()) {
