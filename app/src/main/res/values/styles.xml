@@ -95,7 +95,7 @@
     </style>
 
     <style name="BottomMenuButtonContainerWithMargin" parent="BottomMenuButtonContainer">
-        <item name="android:layout_marginEnd">57dp</item>
+        <item name="android:layout_marginEnd">@dimen/menu_bottom_space</item>
     </style>
 
     <style name="MenuBottomButton">
