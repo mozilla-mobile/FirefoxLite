@@ -72,7 +72,7 @@
     <style name="MenuButtonText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/sheet_menu_button</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textAllCaps">false</item>
