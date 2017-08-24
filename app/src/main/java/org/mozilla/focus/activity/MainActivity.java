@@ -50,7 +50,10 @@ import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
 
+import static org.mozilla.focus.screenshot.ScreenshotViewerActivity.REQ_CODE_NOTIFY_SCREENSHOT_DELETE;
+
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,SharedPreferences.OnSharedPreferenceChangeListener{
+
     public static final String ACTION_OPEN = "open";
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
@@ -69,6 +72,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
+    private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
 
@@ -253,6 +257,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
         dialogFragment.show(getSupportFragmentManager(), "");
+        mDialogFragment =dialogFragment;
     }
 
     public void onMenuItemClicked(View v) {
@@ -463,6 +468,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
                 showLoadingAndCapture(browserFragment);
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == REQ_CODE_NOTIFY_SCREENSHOT_DELETE && mDialogFragment != null) {
+            Snackbar.make(mDialogFragment.getView(), R.string.screenshot_image_viewer_msg_image_deleted, Snackbar.LENGTH_SHORT).show();
         }
     }
 

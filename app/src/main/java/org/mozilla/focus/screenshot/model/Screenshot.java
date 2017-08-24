@@ -1,10 +1,12 @@
 package org.mozilla.focus.screenshot.model;
 
+import java.io.Serializable;
+
 /**
  * Created by hart on 15/08/2017.
  */
 
-public class Screenshot {
+public class Screenshot implements Serializable {
     private long id;
     private String title;
     private String url;
@@ -59,5 +61,16 @@ public class Screenshot {
 
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
+    }
+
+    @Override
+    public String toString() {
+        return "Screenshot{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", timestamp=" + timestamp +
+                ", imageUri='" + imageUri + '\'' +
+                '}';
     }
 }

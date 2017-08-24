@@ -344,6 +344,14 @@ be temporary, and you can try again later.</li>
     <string name="screenshot_grid_empty_text_title">No Screenshots</string>
     <string name="screenshot_grid_empty_text_msg_prefix">Click on&#160;</string>
     <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;in the menu to capture\nthe whole page</string>
+    <string name="screenshot_image_viewer_dialog_title">Info</string>
+    <string name="screenshot_image_viewer_dialog_info_time">Time:</string>
+    <string name="screenshot_image_viewer_dialog_info_resolution">Resolution:</string>
+    <string name="screenshot_image_viewer_dialog_info_size">Size:</string>
+    <string name="screenshot_image_viewer_dialog_info_title">Title:</string>
+    <string name="screenshot_image_viewer_dialog_info_url">URL:</string>
+    <string name="screenshot_image_viewer_dialog_delete_msg">Do you want to delete the image?</string>
+    <string name="screenshot_image_viewer_msg_image_deleted">Image deleted</string>
 
     <!-- Title for file picker when user trying to upload a file -->
     <string name="file_picker_title">Choose a file to upload</string>
