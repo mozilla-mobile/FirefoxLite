@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,8 +18,10 @@ import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.utils.IntentUtils;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -30,6 +33,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements DownloadInfoManager.AsyncQueryListener{
 
+    private static final List<String> SPECIFIC_FILE_EXTENSION
+            = Arrays.asList("apk","zip","gz","tar","7z","rar","war");
     private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NON_EMPTY = 1;
@@ -103,6 +108,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DownloadInfo downloadInfo = mDownloadInfo.get(position);
 
             holder.title.setText(downloadInfo.getFileName());
+            holder.icon.setImageResource(mappingIcon(downloadInfo));
 
             String subtitle="";
             if (DownloadManager.STATUS_SUCCESSFUL == downloadInfo.getStatus()) {
@@ -189,6 +195,28 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 return mContext.getResources().getString(R.string.failed);
             default:
                 return mContext.getResources().getString(R.string.unknown);
+        }
+    }
+
+    public int mappingIcon(DownloadInfo downloadInfo){
+
+        if (SPECIFIC_FILE_EXTENSION.contains(downloadInfo.getFileExtension())){
+           return "apk".equals(downloadInfo.getFileExtension()) ? R.drawable.file_app : R.drawable.file_compressed;
+        }else {
+
+            String mimeType = downloadInfo.getMimeType().substring(0,downloadInfo.getMimeType().indexOf("/"));
+            switch (mimeType){
+                case "text":
+                    return R.drawable.file_document;
+                case "image":
+                    return R.drawable.file_image;
+                case "audio":
+                    return R.drawable.file_music;
+                case "video":
+                    return R.drawable.file_video;
+                default:
+                    return R.drawable.file_document;
+            }
         }
     }
 

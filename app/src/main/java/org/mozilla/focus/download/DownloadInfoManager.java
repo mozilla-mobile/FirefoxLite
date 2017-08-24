@@ -248,7 +248,7 @@ public class DownloadInfoManager {
         query.setFilterById(id);
         final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         final Cursor managerCursor = manager.query(query);
-
+        
         final DownloadPojo pojo = new DownloadPojo();
         try {
             if (managerCursor.moveToFirst()) {
@@ -261,6 +261,7 @@ public class DownloadInfoManager {
                 pojo.fileUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
                 String extension = MimeTypeMap.getFileExtensionFromUrl(pojo.fileUri);
                 pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                pojo.fileExtension = extension;
             }
         } catch (Exception e) {
             managerCursor.close();
@@ -283,5 +284,6 @@ public class DownloadInfoManager {
         long timeStamp;
         String mediaUri;
         String fileUri;
+        String fileExtension;
     }
 }
