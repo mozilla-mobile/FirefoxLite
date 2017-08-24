@@ -24,10 +24,9 @@
             android:id="@+id/menu_download">
             <LinearLayout
                 style="@style/MenuButtonGroup">
-                <ImageView
+                <View
                     style="@style/MenuButtonIcon"
-                    android:src="@drawable/menu_download"
-                    />
+                    android:background="@drawable/menu_download"/>
                 <TextView
                     style="@style/MenuButtonText"
                     android:text="@string/label_menu_download"/>
@@ -38,10 +37,9 @@
             android:id="@+id/menu_history">
             <LinearLayout
                 style="@style/MenuButtonGroup">
-                <ImageView
+                <View
                     style="@style/MenuButtonIcon"
-                    android:src="@drawable/menu_history"
-                    />
+                    android:background="@drawable/menu_history"/>
                 <TextView
                     style="@style/MenuButtonText"
                     android:text="@string/label_menu_history"/>
@@ -52,10 +50,9 @@
             android:id="@+id/menu_screenshots">
             <LinearLayout
                 style="@style/MenuButtonGroup">
-                <ImageView
+                <View
                     style="@style/MenuButtonIcon"
-                    android:src="@drawable/menu_screenshots"
-                    />
+                    android:background="@drawable/menu_screenshots"/>
                 <TextView
                     style="@style/MenuButtonText"
                     android:text="@string/label_menu_screenshots"/>
@@ -66,10 +63,9 @@
             android:id="@+id/menu_speedmode">
             <LinearLayout
                 style="@style/MenuButtonGroup">
-                <ImageView
+                <View
                     style="@style/MenuButtonIcon"
-                    android:src="@drawable/menu_speedmode"
-                    />
+                    android:background="@drawable/menu_speedmode"/>
                 <TextView
                     style="@style/MenuButtonText"
                     android:text="@string/label_menu_speed_mode"/>
@@ -88,10 +84,9 @@
             android:id="@+id/menu_blockimg">
             <LinearLayout
                 style="@style/MenuButtonGroup">
-                <ImageView
+                <View
                     style="@style/MenuButtonIcon"
-                    android:src="@drawable/menu_blockimg"
-                    />
+                    android:background="@drawable/menu_blockimg"/>
                 <TextView
                     style="@style/MenuButtonText"
                     android:text="@string/label_menu_block_image"/>
@@ -102,10 +97,9 @@
             android:id="@+id/menu_delete">
             <LinearLayout
                 style="@style/MenuButtonGroup">
-                <ImageView
+                <View
                     style="@style/MenuButtonIcon"
-                    android:src="@drawable/menu_delete"
-                    />
+                    android:background="@drawable/menu_delete"/>
                 <TextView
                     style="@style/MenuButtonText"
                     android:text="@string/label_menu_clear_cache"/>
@@ -116,10 +110,9 @@
             android:id="@+id/menu_preferences">
             <LinearLayout
                 style="@style/MenuButtonGroup">
-                <ImageView
+                <View
                     style="@style/MenuButtonIcon"
-                    android:src="@drawable/menu_settings"
-                    />
+                    android:background="@drawable/menu_settings"/>
                 <TextView
                     style="@style/MenuButtonText"
                     android:text="@string/label_menu_settings"/>
@@ -148,36 +141,32 @@
         <RelativeLayout
             style="@style/BottomMenuButtonContainerWithMargin"
             android:id="@+id/action_next">
-            <ImageView
+            <View
                 style="@style/MenuButtonIcon"
-                android:src="@drawable/action_next"
-                android:contentDescription="@string/content_description_forward"
-                tools:background="#330000FF" />
+                android:background="@drawable/action_next"
+                android:contentDescription="@string/content_description_forward"/>
         </RelativeLayout>
         <RelativeLayout
             style="@style/BottomMenuButtonContainerWithMargin"
             android:id="@+id/action_refresh">
-            <ImageView
+            <View
                 style="@style/MenuButtonIcon"
-                android:src="@drawable/action_refresh"
-                android:contentDescription="@string/content_description_reload"
-                tools:background="#330000FF" />
+                android:background="@drawable/action_refresh"
+                android:contentDescription="@string/content_description_reload"/>
         </RelativeLayout>
         <RelativeLayout
             style="@style/BottomMenuButtonContainerWithMargin"
             android:id="@+id/action_share">
-            <ImageView
+            <View
                 style="@style/MenuButtonIcon"
-                android:src="@drawable/menu_share"
-                tools:background="#330000FF" />
+                android:background="@drawable/menu_share"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/capture_page"
             style="@style/BottomMenuButtonContainer">
-            <ImageView
+            <View
                 style="@style/MenuButtonIcon"
-                android:src="@drawable/action_capture"
-                tools:background="#330000FF" />
+                android:background="@drawable/action_capture"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
