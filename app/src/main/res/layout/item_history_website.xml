@@ -9,10 +9,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/history_item_img_fav"
@@ -22,10 +23,10 @@
             android:scaleType="fitXY" />
 
         <LinearLayout
-            android:layout_width="241dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/history_item_img_fav"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -52,13 +53,13 @@
             android:id="@+id/history_item_btn_more"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="12dp"
             android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/action_menu" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>
 
 
