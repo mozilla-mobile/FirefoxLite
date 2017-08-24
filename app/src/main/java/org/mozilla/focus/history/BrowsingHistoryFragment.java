@@ -14,9 +14,8 @@ import org.mozilla.focus.fragment.PanelFragment;
 
 public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, HistoryItemAdapter.HistoryListener {
 
-    private Button mBtnClearHistory;
-    private RecyclerView mContainerRecyclerView;
-    private ViewGroup mContainerEmptyView;
+    private RecyclerView mRecyclerView;
+    private ViewGroup mContainerEmptyView, mContainerRecyclerView;
     private HistoryItemAdapter mAdapter;
 
     public static BrowsingHistoryFragment newInstance() {
@@ -27,11 +26,11 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_browsing_history, container, false);
-        mBtnClearHistory = (Button) v.findViewById(R.id.browsing_history_btn_clear);
-        mBtnClearHistory.setOnClickListener(this);
+        v.findViewById(R.id.browsing_history_btn_clear).setOnClickListener(this);
 
-        mContainerRecyclerView = (RecyclerView) v.findViewById(R.id.browsing_history_recycler_view);
+        mContainerRecyclerView = (ViewGroup) v.findViewById(R.id.browsing_history_recycler_view_container);
         mContainerEmptyView = (ViewGroup) v.findViewById(R.id.browsing_history_empty_view_container);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.browsing_history_recycler_view);
         return v;
     }
 
@@ -39,9 +38,9 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new HistoryItemAdapter(mContainerRecyclerView, getActivity(), this, layoutManager);
-        mContainerRecyclerView.setAdapter(mAdapter);
-        mContainerRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new HistoryItemAdapter(mRecyclerView, getActivity(), this, layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -60,7 +59,6 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
         if(flag) {
             mContainerRecyclerView.setVisibility(View.GONE);
             mContainerEmptyView.setVisibility(View.VISIBLE);
-
         } else{
             mContainerRecyclerView.setVisibility(View.VISIBLE);
             mContainerEmptyView.setVisibility(View.GONE);
