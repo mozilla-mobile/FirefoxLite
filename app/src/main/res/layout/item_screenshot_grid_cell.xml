@@ -13,7 +13,7 @@
         android:id="@+id/screenshot_grid_img_cell"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+        android:scaleType="fitCenter" />
 </org.mozilla.focus.screenshot.SquareRelativeLayout>
 
 

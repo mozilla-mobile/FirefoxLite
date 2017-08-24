@@ -1,12 +1,6 @@
 package org.mozilla.focus.screenshot;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -17,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.glide.GlideApp;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.Screenshot;
@@ -92,11 +87,12 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (holder instanceof GirdItemViewHolder) {
             final GirdItemViewHolder gridVH = (GirdItemViewHolder) holder;
             gridVH.rootView.setOnClickListener(this);
-            //TODO: replace with target image loader
             final Screenshot item = (Screenshot) mItems.get(position);
-            gridVH.img.setTag(item.getImageUri());
-            new ThumbnailLoadingTask(gridVH.img, mActivity).execute();
-
+            GlideApp
+                    .with(mActivity)
+                    .asBitmap()
+                    .load(item.getImageUri())
+                    .into(gridVH.img);
         } else if (holder instanceof DateItemViewHolder) {
             final DateSection item = (DateSection) mItems.get(position);
 
@@ -275,49 +271,4 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         }
     };
-
-    private Bitmap getThumbnail(ContentResolver cr, String path) throws Exception {
-
-        Cursor ca = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.MediaColumns._ID}, MediaStore.MediaColumns.DATA + "=?", new String[]{path}, null);
-        if (ca != null && ca.moveToFirst()) {
-            int id = ca.getInt(ca.getColumnIndex(MediaStore.MediaColumns._ID));
-            ca.close();
-            return MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MICRO_KIND, null);
-        }
-
-        if(ca != null)
-            ca.close();
-        return null;
-
-    }
-
-    class ThumbnailLoadingTask extends AsyncTask<Object, Void, Bitmap>{
-
-        private ImageView imv;
-        private String path;
-        private Context context;
-
-        public ThumbnailLoadingTask(ImageView imv, Context context) {
-            this.imv = imv;
-            this.path = imv.getTag().toString();
-            this.context = context;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Object... params) {
-            Bitmap bitmap = null;
-            try {
-                bitmap = getThumbnail(context.getContentResolver(), path);
-            } catch (Exception ex) {
-
-            }
-            return bitmap;
-        }
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            if (imv != null && imv.getTag() != null && imv.getTag().toString().equals(path) && result != null)
-                imv.setImageBitmap(result);
-        }
-
-    }
 }

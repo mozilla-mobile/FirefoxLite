@@ -163,6 +163,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.7.0'
+
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
 }
 
 // -------------------------------------------------------------------------------------------------
