@@ -117,7 +117,7 @@ public class WebContextMenu {
                         return true;
                     }
                     case R.id.menu_image_save: {
-                        final Download download = new Download(hitTarget.imageURL, null, null, null, -1, Download.TYPE_IMAGE);
+                        final Download download = new Download(hitTarget.imageURL, null, null, null, -1);
                         callback.onDownloadStart(download);
                         TelemetryWrapper.saveImageEvent();
                         return true;

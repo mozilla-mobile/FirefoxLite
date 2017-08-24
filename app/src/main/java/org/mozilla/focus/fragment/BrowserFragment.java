@@ -54,6 +54,7 @@ import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.focus.utils.MimeUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
@@ -551,7 +552,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         final String fileName = URLUtil.guessFileName(
                 download.getUrl(), download.getContentDisposition(), download.getMimeType());
 
-        final String dir = download.getDownloadType() == Download.TYPE_IMAGE
+        final String dir = MimeUtils.isImage(download.getMimeType())
                 ? Environment.DIRECTORY_PICTURES
                 : Environment.DIRECTORY_DOWNLOADS;
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(download.getUrl()))

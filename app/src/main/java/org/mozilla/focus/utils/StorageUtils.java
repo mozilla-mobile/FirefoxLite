@@ -29,7 +29,7 @@ public class StorageUtils {
      * @return a directory on removable storage to save files. return null if user's preference is off.
      * @throws NoRemovableStorageException if user's preference is on, but there is no removable storage to use.
      */
-    public static File getTargetDirOnRemovableStorage(@NonNull Context ctx, int type)
+    public static File getTargetDirOnRemovableStorage(@NonNull Context ctx, String type)
             throws NoRemovableStorageException {
 
         if (!Settings.getInstance(ctx).shouldSaveToRemovableStorage()) {
@@ -47,13 +47,10 @@ public class StorageUtils {
 
         final File dir = new File(media, DOWNLOAD_DIR);
 
-        switch (type) {
-            case Download.TYPE_IMAGE:
-                return new File(dir, IMAGE_DIR);
-            case Download.TYPE_OTHER:
-                return new File(dir, OTHER_DIR);
-            default:
-                throw new IllegalArgumentException("Unknown type");
+        if (MimeUtils.isImage(type)) {
+            return new File(dir, IMAGE_DIR);
+        } else {
+            return new File(dir, OTHER_DIR);
         }
     }
 
