@@ -17,6 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.webkit.matcher.UrlMatcher;
 
@@ -54,7 +55,7 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
         // background loading of the lists as early as possible.
         triggerPreload(context);
 
-        this.blockingEnabled = true;
+        this.blockingEnabled = Settings.getInstance(context).shouldUseSpeedMode();
     }
 
     public void setBlockingEnabled(boolean enabled) {
