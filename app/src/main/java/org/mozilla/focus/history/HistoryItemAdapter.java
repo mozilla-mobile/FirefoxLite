@@ -2,6 +2,7 @@ package org.mozilla.focus.history;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -96,7 +97,12 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 siteVH.rootView.setOnClickListener(this);
                 siteVH.textMain.setText(item.getTitle());
                 siteVH.textSecondary.setText(item.getUrl());
-                siteVH.imgFav.setImageBitmap(item.getFavIcon());
+                Bitmap bmpFav = item.getFavIcon();
+                if (bmpFav != null) {
+                    siteVH.imgFav.setImageBitmap(bmpFav);
+                } else {
+                    siteVH.imgFav.setImageResource(R.drawable.ic_globe);
+                }
 
                 final PopupMenu popupMenu = new PopupMenu(mContext, siteVH.btnMore);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
