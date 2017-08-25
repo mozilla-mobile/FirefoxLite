@@ -12,7 +12,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,7 +23,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -48,7 +46,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.menu.WebContextMenu;
@@ -93,7 +90,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
-    private boolean SPEED_MODE = true;
+    private boolean mSpeedMode = true;
 
     public static BrowserFragment create(String url) {
         Bundle arguments = new Bundle();
@@ -197,11 +194,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         } else {
             initialiseNormalBrowserUi();
         }
-
-
-        SPEED_MODE = Settings.getInstance(this.getContext()).shouldUseSpeedMode();
-
-        setBlockingEnabled(SPEED_MODE);
 
         return view;
     }
@@ -746,7 +738,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void reload() {
         final IWebView webView = getWebView();
         if (webView != null) {
-            webView.setBlockingEnabled(Settings.getInstance(this.getContext()).shouldUseSpeedMode());
             webView.reload();
         }
     }

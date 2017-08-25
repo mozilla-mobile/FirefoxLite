@@ -20,6 +20,8 @@ import org.mozilla.focus.search.SearchEngine;
  */
 public class Settings {
     private static Settings instance;
+    private static final boolean BLOCK_IMAGE_DEFAULT = true;
+    private static final boolean SPEED_MODE_DEFAULT = true;
 
     public synchronized static Settings getInstance(Context context) {
         if (instance == null) {
@@ -39,7 +41,7 @@ public class Settings {
     public boolean shouldBlockImages() {
         return preferences.getBoolean(
                 resources.getString(R.string.pref_key_performance_block_images),
-                true);
+                BLOCK_IMAGE_DEFAULT);
     }
 
     public boolean shouldShowFirstrun() {
@@ -57,8 +59,8 @@ public class Settings {
 
     public boolean shouldUseSpeedMode(){
         return preferences.getBoolean(
-                resources.getString(R.string.pref_key_privacy_block_speed_mode),
-                true);
+                resources.getString(R.string.pref_key_speed_mode),
+                SPEED_MODE_DEFAULT);
     }
 
     @Nullable

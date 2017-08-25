@@ -8,6 +8,7 @@ package org.mozilla.focus.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,12 +45,12 @@ import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
 
-public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener {
+public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,SharedPreferences.OnSharedPreferenceChangeListener{
     public static final String ACTION_OPEN = "open";
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
-    private boolean SPEED_MODE_PREF = true;
-    private boolean BLOCK_IMAGE_PREF = true;
+    private boolean mSpeedModePref = true;
+    private boolean mBlockImgPref = true;
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
     private static final Handler HANDLER = new Handler();
 
@@ -97,9 +98,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         WebViewProvider.preload(this);
 
-        SPEED_MODE_PREF = Settings.getInstance(this).shouldUseSpeedMode();
+        mSpeedModePref = Settings.getInstance(this).shouldUseSpeedMode();
 
-        BLOCK_IMAGE_PREF = Settings.getInstance(this).shouldBlockImages();
+        mBlockImgPref = Settings.getInstance(this).shouldBlockImages();
     }
 
     @Override
@@ -126,6 +127,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         super.onResume();
 
         TelemetryWrapper.startSession();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -140,6 +143,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -232,24 +238,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
-                BLOCK_IMAGE_PREF = !BLOCK_IMAGE_PREF;
+                mBlockImgPref = !mBlockImgPref;
                 String blockImagePrefKey = this.getResources().getString(R.string.pref_key_performance_block_images);
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
-                        .putBoolean(blockImagePrefKey, BLOCK_IMAGE_PREF)
+                        .putBoolean(blockImagePrefKey, mBlockImgPref)
                         .apply();
-
-                getBrowserFragment().reload();
                 break;
             case R.id.menu_speedmode:
-                SPEED_MODE_PREF = !SPEED_MODE_PREF;
-                String SpeedModePrefKey = this.getResources().getString(R.string.pref_key_privacy_block_speed_mode);
+                mSpeedModePref = !mSpeedModePref;
+                String SpeedModePrefKey = this.getResources().getString(R.string.pref_key_speed_mode);
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
-                        .putBoolean(SpeedModePrefKey, SPEED_MODE_PREF)
+                        .putBoolean(SpeedModePrefKey, mSpeedModePref)
                         .apply();
-
-                getBrowserFragment().reload();
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
@@ -361,6 +363,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // capture from onRequestPermissionsResult().
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
+            }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (this.getResources().getString(R.string.pref_key_speed_mode).equals(key)){
+            if (getVisibleBrowserFragment() != null){
+                getVisibleBrowserFragment().setBlockingEnabled(Settings.getInstance(this).shouldUseSpeedMode());
+                getVisibleBrowserFragment().reload();
+            }
+        }else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)){
+            if (getVisibleBrowserFragment() != null){
+                getVisibleBrowserFragment().reload();
             }
         }
     }
