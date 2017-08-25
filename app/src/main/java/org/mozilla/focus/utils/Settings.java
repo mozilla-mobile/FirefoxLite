@@ -49,11 +49,12 @@ public class Settings {
     }
 
     public boolean shouldSaveToRemovableStorage() {
-        final String key = getPreferenceKey(R.string.pref_key_privacy_storage_save_downloads_to);
-        final String value = preferences.getString(key, "");
-
         // FIXME: rely on String-array-order is not a good idea
         final String[] defined = resources.getStringArray(R.array.data_saving_path_values);
+
+        final String key = getPreferenceKey(R.string.pref_key_privacy_storage_save_downloads_to);
+        final String value = preferences.getString(key, defined[0]);
+
         return defined[0].equals(value); // assume the first item is for removable storage
     }
 
