@@ -54,8 +54,6 @@ import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.focus.utils.MimeUtils;
-import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
@@ -74,7 +72,7 @@ import java.util.Calendar;
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable{
+public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable {
 
     public static final String FRAGMENT_TAG = "browser";
 
