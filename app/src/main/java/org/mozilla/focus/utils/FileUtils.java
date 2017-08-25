@@ -86,8 +86,31 @@ public class FileUtils {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
+    }
+
+    /**
+     * To get a file which does not exist yet, to ensure file name collision.
+     *
+     * @param dir      The directory to check from
+     * @param fileName Suggest file name
+     * @return a File which definitely does not exist
+     */
+    public static File getFileSlot(@NonNull File dir, @NonNull String fileName) {
+        File target = new File(dir, fileName);
+        if (!target.exists()) {
+            return target;
+        }
+
+        // If target file existed, prepend a serial number to file name, up to 1000
+        for (int i = 1; i < 1000; i++) {
+            target = new File(dir, i + "-" + fileName);
+            if (!target.exists()) {
+                return target;
+            }
+        }
+
+        return getFileSlot(dir, "Not-lucky-" + fileName); // recursive until we make it!
     }
 
     public static boolean copy(@NonNull InputStream src, @NonNull OutputStream dst) {
