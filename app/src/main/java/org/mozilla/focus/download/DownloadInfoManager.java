@@ -7,8 +7,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.mozilla.focus.provider.DownloadContract.Download;
 
 /**
@@ -22,14 +24,14 @@ public class DownloadInfoManager {
     private static Context mContext;
     private static DownloadInfoQueryHandler mQueryHandler;
 
-    public static DownloadInfoManager getInstance(){
-        if (sInstance == null){
+    public static DownloadInfoManager getInstance() {
+        if (sInstance == null) {
             sInstance = new DownloadInfoManager();
         }
-        return  sInstance;
+        return sInstance;
     }
 
-    private static final class DownloadInfoQueryHandler extends AsyncQueryHandler{
+    private static final class DownloadInfoQueryHandler extends AsyncQueryHandler {
 
         public DownloadInfoQueryHandler(Context context) {
             super(context.getContentResolver());
@@ -37,9 +39,9 @@ public class DownloadInfoManager {
 
         @Override
         protected void onInsertComplete(int token, Object cookie, Uri uri) {
-            switch (token){
+            switch (token) {
                 case TOKEN:
-                    if (cookie != null){
+                    if (cookie != null) {
                         final long id = uri == null ? -1 : Long.parseLong(uri.getLastPathSegment());
                         ((AsyncInsertListener) cookie).onInsertComplete(id);
                     }
@@ -51,9 +53,9 @@ public class DownloadInfoManager {
 
         @Override
         protected void onDeleteComplete(int token, Object cookie, int result) {
-            switch (token){
+            switch (token) {
                 case TOKEN:
-                    if (cookie != null){
+                    if (cookie != null) {
                         AsyncDeleteWrapper wrapper = ((AsyncDeleteWrapper) cookie);
                         if (wrapper.listener != null) {
                             wrapper.listener.onDeleteComplete(result, wrapper.id);
@@ -67,10 +69,10 @@ public class DownloadInfoManager {
 
         @Override
         protected void onUpdateComplete(int token, Object cookie, int result) {
-            switch (token){
+            switch (token) {
                 case TOKEN:
-                    if (cookie != null){
-                        ((AsyncUpdateListener)cookie).onUpdateComplete(result);
+                    if (cookie != null) {
+                        ((AsyncUpdateListener) cookie).onUpdateComplete(result);
                     }
                     break;
                 default:
@@ -80,18 +82,18 @@ public class DownloadInfoManager {
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-            switch (token){
+            switch (token) {
                 case TOKEN:
-                    if (cookie != null){
+                    if (cookie != null) {
                         List<DownloadInfo> downloadInfoList = new ArrayList<>();
-                        if (cursor != null){
-                            while (cursor.moveToNext()){
+                        if (cursor != null) {
+                            while (cursor.moveToNext()) {
                                 downloadInfoList.add(cursorToDownloadInfo(cursor));
                             }
                             cursor.close();
                         }
 
-                        ((AsyncQueryListener)cookie).onQueryComplete(downloadInfoList);
+                        ((AsyncQueryListener) cookie).onQueryComplete(downloadInfoList);
                     }
                     break;
                 default:
@@ -132,39 +134,41 @@ public class DownloadInfoManager {
     }
 
 
-    public static void init(Context context){
+    public static void init(Context context) {
         mContext = context;
-        mQueryHandler =  new DownloadInfoQueryHandler(context);
+        mQueryHandler = new DownloadInfoQueryHandler(context);
     }
 
-    public void insert(DownloadInfo downloadInfo,AsyncInsertListener listener){
-        mQueryHandler.startInsert(TOKEN,listener
-                , Download.CONTENT_URI,getContentValuesFromDownloadInfo(downloadInfo));
+    public void insert(DownloadInfo downloadInfo, AsyncInsertListener listener) {
+        mQueryHandler.startInsert(TOKEN, listener
+                , Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo));
     }
 
-    public void delete(Long downloadId,AsyncDeleteListener listener){
-        mQueryHandler.startDelete(TOKEN,new AsyncDeleteWrapper(downloadId,listener)
-                ,Download.CONTENT_URI,Download.DOWNLOAD_ID + " = ?", new String[] {Long.toString(downloadId)});
+    public void delete(Long downloadId, AsyncDeleteListener listener) {
+        mQueryHandler.startDelete(TOKEN, new AsyncDeleteWrapper(downloadId, listener)
+                , Download.CONTENT_URI, Download.DOWNLOAD_ID + " = ?", new String[]{Long.toString(downloadId)});
     }
 
-    public void update(DownloadInfo downloadInfo,AsyncUpdateListener listener){
-        mQueryHandler.startUpdate(TOKEN,listener,Download.CONTENT_URI,getContentValuesFromDownloadInfo(downloadInfo)
-                ,Download.DOWNLOAD_ID + " = ?", new String[] {Long.toString(downloadInfo.getDownloadId())});
+    public void update(DownloadInfo downloadInfo, AsyncUpdateListener listener) {
+        mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo)
+                , Download.DOWNLOAD_ID + " = ?", new String[]{Long.toString(downloadInfo.getDownloadId())});
     }
 
-    public void query(int offset,int limit,AsyncQueryListener listener){
-        mQueryHandler.startQuery(TOKEN,listener,Uri.parse(Download.CONTENT_URI.toString()+"?offset=" + offset + "&limit=" + limit),null,null,null,null);
+    public void query(int offset, int limit, AsyncQueryListener listener) {
+        final String uri = Download.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit;
+        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, null);
     }
 
-    private static ContentValues getContentValuesFromDownloadInfo(DownloadInfo downloadInfo){
-        ContentValues contentValues = new ContentValues();
+    private static ContentValues getContentValuesFromDownloadInfo(DownloadInfo downloadInfo) {
+        final ContentValues contentValues = new ContentValues();
 
-        contentValues.put(Download.DOWNLOAD_ID,downloadInfo.getDownloadId());
-        contentValues.put(Download.FILE_NAME,downloadInfo.getFileName());
+        contentValues.put(Download.DOWNLOAD_ID, downloadInfo.getDownloadId());
+        contentValues.put(Download.FILE_NAME, downloadInfo.getFileName());
 
         return contentValues;
     }
-    private static DownloadInfo cursorToDownloadInfo(Cursor cursor){
+
+    private static DownloadInfo cursorToDownloadInfo(Cursor cursor) {
         DownloadInfo downloadInfo = new DownloadInfo();
         downloadInfo.setDownloadId(cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID)));
         downloadInfo.setFileName(cursor.getString(cursor.getColumnIndex(Download.FILE_NAME)));
@@ -176,7 +180,7 @@ public class DownloadInfoManager {
         Cursor managerCursor = manager.query(query);
 
         try {
-            if (managerCursor.moveToFirst()){
+            if (managerCursor.moveToFirst()) {
                 int status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
                 downloadInfo.setStatusInt(status);
 
@@ -193,10 +197,10 @@ public class DownloadInfoManager {
                 downloadInfo.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension));
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             managerCursor.close();
-        }finally {
-            if (managerCursor != null){
+        } finally {
+            if (managerCursor != null) {
                 managerCursor.close();
             }
         }
