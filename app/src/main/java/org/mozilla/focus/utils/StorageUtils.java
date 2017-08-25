@@ -10,8 +10,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import org.mozilla.focus.web.Download;
-
 import java.io.File;
 
 public class StorageUtils {
@@ -58,7 +56,8 @@ public class StorageUtils {
     static File getFirstRemovableMedia(@NonNull Context ctx) {
         final File[] files = ctx.getExternalMediaDirs();
         for (final File file : files) {
-            if (Environment.isExternalStorageRemovable(file)) {
+            // on some devices such as Oppo, it might return null
+            if ((file != null) && Environment.isExternalStorageRemovable(file)) {
                 return file;
             }
         }
