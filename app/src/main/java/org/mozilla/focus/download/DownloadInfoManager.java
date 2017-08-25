@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.webkit.MimeTypeMap;
 
 import java.util.ArrayList;
@@ -169,34 +170,48 @@ public class DownloadInfoManager {
     }
 
     private static DownloadInfo cursorToDownloadInfo(Cursor cursor) {
-        DownloadInfo downloadInfo = new DownloadInfo();
-        downloadInfo.setDownloadId(cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID)));
-        downloadInfo.setFileName(cursor.getString(cursor.getColumnIndex(Download.FILE_NAME)));
+        final long id = cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID));
+        final String fileName = cursor.getString(cursor.getColumnIndex(Download.FILE_NAME));
+
+        final DownloadPojo pojo = queryDownloadManager(mContext, id);
+        return pojoToDownloadInfo(pojo, fileName);
+    }
+
+    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String fileName) {
+        final DownloadInfo info = new DownloadInfo();
+        info.setFileName(fileName);
+        info.setDownloadId(pojo.id);
+        info.setSize(pojo.length);
+        info.setStatusInt(pojo.status);
+        info.setDate(pojo.timeStamp);
+        info.setMediaUri(pojo.mediaUri);
+        info.setFileUri(pojo.fileUri);
+        info.setMimeType(pojo.mime);
+
+        return info;
+    }
+
+    private static DownloadPojo queryDownloadManager(@NonNull final Context context, final long id) {
 
         //query download manager
-        DownloadManager.Query query = new DownloadManager.Query();
-        query.setFilterById(downloadInfo.getDownloadId());
-        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-        Cursor managerCursor = manager.query(query);
+        final DownloadManager.Query query = new DownloadManager.Query();
+        query.setFilterById(id);
+        final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        final Cursor managerCursor = manager.query(query);
 
+        final DownloadPojo pojo = new DownloadPojo();
         try {
             if (managerCursor.moveToFirst()) {
-                int status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                downloadInfo.setStatusInt(status);
-
-                double size = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                downloadInfo.setSize(size);
-
-                long timeStamp = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
-                downloadInfo.setDate(timeStamp);
-
-                downloadInfo.setMediaUri(managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI)));
-                downloadInfo.setFileUri(managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)));
-
-                String extension = MimeTypeMap.getFileExtensionFromUrl(downloadInfo.getFileUri());
-                downloadInfo.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension));
+                pojo.id = id;
+                pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));
+                pojo.status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                pojo.length = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                pojo.timeStamp = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
+                pojo.mediaUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI));
+                pojo.fileUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                String extension = MimeTypeMap.getFileExtensionFromUrl(pojo.fileUri);
+                pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
             }
-
         } catch (Exception e) {
             managerCursor.close();
         } finally {
@@ -205,7 +220,18 @@ public class DownloadInfoManager {
             }
         }
 
-        return downloadInfo;
+        return pojo;
     }
 
+    /* Data class to store queried information from DownloadManager */
+    private static class DownloadPojo {
+        long id;
+        String desc;
+        String mime;
+        double length;
+        int status;
+        long timeStamp;
+        String mediaUri;
+        String fileUri;
+    }
 }
