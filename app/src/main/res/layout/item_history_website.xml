@@ -53,12 +53,12 @@
 
         <ImageButton
             android:id="@+id/history_item_btn_more"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="12dp"
             android:background="@null"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:src="@drawable/action_menu" />
 
     </LinearLayout>
