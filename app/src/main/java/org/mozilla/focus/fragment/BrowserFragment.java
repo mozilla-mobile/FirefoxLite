@@ -551,9 +551,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         final String fileName = URLUtil.guessFileName(
                 download.getUrl(), download.getContentDisposition(), download.getMimeType());
 
-        final String dir = MimeUtils.isImage(download.getMimeType())
-                ? Environment.DIRECTORY_PICTURES
-                : Environment.DIRECTORY_DOWNLOADS;
+        // so far each download always return null even for an image.
+        // But we might move downloaded file to another directory.
+        // So, for now we always save file to DIRECTORY_DOWNLOADS
+        final String dir = Environment.DIRECTORY_DOWNLOADS;
+
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(download.getUrl()))
                 .addRequestHeader("User-Agent", download.getUserAgent())
                 .addRequestHeader("Cookie", cookie)
