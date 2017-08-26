@@ -68,6 +68,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSpeedModePref = Settings.getInstance(this).shouldUseSpeedMode();
+        mBlockImgPref = Settings.getInstance(this).shouldBlockImages();
 
         setContentView(R.layout.activity_main);
         initViews();
@@ -97,10 +99,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         }
         WebViewProvider.preload(this);
-
-        mSpeedModePref = Settings.getInstance(this).shouldUseSpeedMode();
-
-        mBlockImgPref = Settings.getInstance(this).shouldBlockImages();
     }
 
     @Override
@@ -203,6 +201,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         refreshButton = menu.findViewById(R.id.action_refresh);
         shareButton = menu.findViewById(R.id.action_share);
         captureButton = menu.findViewById(R.id.capture_page);
+        menu.findViewById(R.id.menu_speedmode).setSelected(mSpeedModePref);
+        menu.findViewById(R.id.menu_blockimg).setSelected(mBlockImgPref);
     }
 
     private void showMenu() {
@@ -231,14 +231,22 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         dialogFragment.show(getSupportFragmentManager(), "");
     }
 
+    public boolean isAutoCancelButton(View v) {
+        final int id = v.getId();
+        return id != R.id.menu_speedmode && id != R.id.menu_blockimg;
+    }
+
     public void onMenuItemClicked(View v) {
         if(!v.isEnabled()) {
             return;
         }
-        menu.cancel();
+        if(isAutoCancelButton(v)) {
+            menu.cancel();
+        }
         switch (v.getId()) {
             case R.id.menu_blockimg:
                 mBlockImgPref = !mBlockImgPref;
+                v.setSelected(mBlockImgPref);
                 String blockImagePrefKey = this.getResources().getString(R.string.pref_key_performance_block_images);
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
@@ -247,6 +255,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.menu_speedmode:
                 mSpeedModePref = !mSpeedModePref;
+                v.setSelected(mSpeedModePref);
                 String SpeedModePrefKey = this.getResources().getString(R.string.pref_key_speed_mode);
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
