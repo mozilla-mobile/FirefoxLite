@@ -64,10 +64,10 @@
             <LinearLayout
                 style="@style/MenuButtonGroup">
                 <View
-                    style="@style/MenuButtonIcon"
+                    style="@style/MenuToggleIcon"
                     android:background="@drawable/menu_speedmode"/>
                 <TextView
-                    style="@style/MenuButtonText"
+                    style="@style/MenuToggleText"
                     android:text="@string/label_menu_speed_mode"/>
             </LinearLayout>
         </FrameLayout>
@@ -85,10 +85,10 @@
             <LinearLayout
                 style="@style/MenuButtonGroup">
                 <View
-                    style="@style/MenuButtonIcon"
+                    style="@style/MenuToggleIcon"
                     android:background="@drawable/menu_blockimg"/>
                 <TextView
-                    style="@style/MenuButtonText"
+                    style="@style/MenuToggleText"
                     android:text="@string/label_menu_block_image"/>
             </LinearLayout>
         </FrameLayout>
