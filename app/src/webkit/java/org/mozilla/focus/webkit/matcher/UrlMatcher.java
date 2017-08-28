@@ -142,9 +142,16 @@ public class UrlMatcher implements  SharedPreferences.OnSharedPreferenceChangeLi
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         for (final Map.Entry<String, String> entry : categoryPrefMap.entrySet()) {
-            final boolean prefValue = prefs.getBoolean(entry.getKey(), true);
+            final boolean prefValue = prefs.getBoolean(entry.getKey(), shouldDefaultBlock(context, entry.getKey()));
             setCategoryEnabled(entry.getValue(), prefValue);
         }
+    }
+
+    private boolean shouldDefaultBlock(final Context context, final String preferenceKey) {
+        final String ads = context.getString(R.string.pref_key_privacy_block_ads);
+        final String analytics = context.getString(R.string.pref_key_privacy_block_analytics);
+        final String social = context.getString(R.string.pref_key_privacy_block_social);
+        return ads.equals(preferenceKey) || analytics.equals(preferenceKey) || social.equals(preferenceKey);
     }
 
     @VisibleForTesting UrlMatcher(final String[] patterns) {
