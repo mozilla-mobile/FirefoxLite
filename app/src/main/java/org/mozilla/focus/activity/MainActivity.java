@@ -50,7 +50,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public static final String ACTION_OPEN = "open";
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
-    private boolean mSpeedModePref = true;
+    private boolean mTurboModePref = true;
     private boolean mBlockImgPref = true;
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
     private static final Handler HANDLER = new Handler();
@@ -69,7 +69,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSpeedModePref = Settings.getInstance(this).shouldUseSpeedMode();
+        mTurboModePref = Settings.getInstance(this).shouldUseTurboMode();
         mBlockImgPref = Settings.getInstance(this).shouldBlockImages();
 
         setContentView(R.layout.activity_main);
@@ -202,7 +202,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         refreshButton = menu.findViewById(R.id.action_refresh);
         shareButton = menu.findViewById(R.id.action_share);
         captureButton = menu.findViewById(R.id.capture_page);
-        menu.findViewById(R.id.menu_speedmode).setSelected(mSpeedModePref);
+        menu.findViewById(R.id.menu_turbomode).setSelected(mTurboModePref);
         menu.findViewById(R.id.menu_blockimg).setSelected(mBlockImgPref);
     }
 
@@ -234,7 +234,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public boolean isAutoCancelButton(View v) {
         final int id = v.getId();
-        return id != R.id.menu_speedmode && id != R.id.menu_blockimg;
+        return id != R.id.menu_turbomode && id != R.id.menu_blockimg;
     }
 
     public void onMenuItemClicked(View v) {
@@ -254,13 +254,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         .putBoolean(blockImagePrefKey, mBlockImgPref)
                         .apply();
                 break;
-            case R.id.menu_speedmode:
-                mSpeedModePref = !mSpeedModePref;
-                v.setSelected(mSpeedModePref);
-                String SpeedModePrefKey = this.getResources().getString(R.string.pref_key_speed_mode);
+            case R.id.menu_turbomode:
+                mTurboModePref = !mTurboModePref;
+                v.setSelected(mTurboModePref);
+                String turboModePrefKey = this.getResources().getString(R.string.pref_key_turbo_mode);
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
-                        .putBoolean(SpeedModePrefKey, mSpeedModePref)
+                        .putBoolean(turboModePrefKey, mTurboModePref)
                         .apply();
                 break;
             case R.id.menu_delete:
@@ -381,13 +381,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // Only refresh when disabling speed mode
-        if (this.getResources().getString(R.string.pref_key_speed_mode).equals(key) && !Settings.getInstance(this).shouldUseSpeedMode()){
+        // Only refresh when disabling turbo mode
+        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key) && !Settings.getInstance(this).shouldUseTurboMode()){
             if (getVisibleBrowserFragment() != null){
                 getVisibleBrowserFragment().reload();
             }
         }
-        // For speed mode, a automatic refresh is done when we disable block image.
+        // For turbo mode, a automatic refresh is done when we disable block image.
     }
 
     private static final class CaptureRunnable implements Runnable {
