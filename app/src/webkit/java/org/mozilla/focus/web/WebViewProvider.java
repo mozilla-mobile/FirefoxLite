@@ -83,7 +83,7 @@ public class WebViewProvider {
         // The default for those settings should be "false" - But we want to be explicit.
         settings.setAppCacheEnabled(false);
         settings.setDatabaseEnabled(false);
-        settings.setDomStorageEnabled(false);
+        settings.setDomStorageEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
 
         // We do implement the callbacks - So let's enable it.
