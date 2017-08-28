@@ -6,8 +6,10 @@
 package org.mozilla.focus.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -21,6 +23,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +38,11 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
+import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.FileUtils;
+import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
@@ -66,6 +70,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
 
+    private BroadcastReceiver uiMessageReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +80,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         setContentView(R.layout.activity_main);
         initViews();
+        initBroadcastReceivers();
 
         mediator = new MainMediator(this);
 
@@ -102,6 +109,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         WebViewProvider.preload(this);
     }
 
+    private void initBroadcastReceivers() {
+        uiMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final CharSequence msg = intent.getCharSequenceExtra(Constants.EXTRA_MESSAGE);
+                showMessage(msg);
+            }
+        };
+    }
+
     @Override
     public void applyLocale() {
         // We don't care here: all our fragments update themselves as appropriate
@@ -128,6 +145,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         TelemetryWrapper.startSession();
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
+
+        final IntentFilter uiActionFilter = new IntentFilter(Constants.ACTION_NOTIFY_UI);
+        uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
+        registerReceiver(uiMessageReceiver, uiActionFilter);
     }
 
     @Override
@@ -139,6 +160,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onPause() {
         super.onPause();
+
+        unregisterReceiver(uiMessageReceiver);
 
         safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();
@@ -343,11 +366,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void onDeleteClicked() {
         WebStorage.getInstance().deleteAllData();
         
-        final View container = findViewById(R.id.container);
         final long diff = FileUtils.deleteWebViewCacheDirectory(this);
         final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
         final String msg = getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
-        Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
+        showMessage(msg);
     }
 
     private BrowserFragment getBrowserFragment() {
@@ -547,5 +569,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else {
             TelemetryWrapper.browseIntentEvent();
         }
+    }
+
+    private void showMessage(@NonNull CharSequence msg) {
+        if (TextUtils.isEmpty(msg)) {
+            return;
+        }
+        final View container = findViewById(R.id.container);
+        Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
     }
 }
