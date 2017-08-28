@@ -21,7 +21,7 @@ import org.mozilla.focus.search.SearchEngine;
 public class Settings {
     private static Settings instance;
     private static final boolean BLOCK_IMAGE_DEFAULT = true;
-    private static final boolean SPEED_MODE_DEFAULT = true;
+    private static final boolean TURBO_MODE_DEFAULT = true;
 
     public synchronized static Settings getInstance(Context context) {
         if (instance == null) {
@@ -57,10 +57,10 @@ public class Settings {
         return defined[0].equals(value); // assume the first item is for removable storage
     }
 
-    public boolean shouldUseSpeedMode(){
+    public boolean shouldUseTurboMode(){
         return preferences.getBoolean(
-                resources.getString(R.string.pref_key_speed_mode),
-                SPEED_MODE_DEFAULT);
+                resources.getString(R.string.pref_key_turbo_mode),
+                TURBO_MODE_DEFAULT);
     }
 
     @Nullable

@@ -7,10 +7,8 @@ package org.mozilla.focus.webkit;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -55,7 +53,7 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
         // background loading of the lists as early as possible.
         triggerPreload(context);
 
-        this.blockingEnabled = Settings.getInstance(context).shouldUseSpeedMode();
+        this.blockingEnabled = Settings.getInstance(context).shouldUseTurboMode();
     }
 
     public void setBlockingEnabled(boolean enabled) {

@@ -60,15 +60,15 @@
         </FrameLayout>
         <FrameLayout
             style="@style/MenuButtonContainer"
-            android:id="@+id/menu_speedmode">
+            android:id="@+id/menu_turbomode">
             <LinearLayout
                 style="@style/MenuButtonGroup">
                 <View
                     style="@style/MenuToggleIcon"
-                    android:background="@drawable/menu_speedmode"/>
+                    android:background="@drawable/menu_turbomode"/>
                 <TextView
                     style="@style/MenuToggleText"
-                    android:text="@string/label_menu_speed_mode"/>
+                    android:text="@string/label_menu_turbo_mode"/>
             </LinearLayout>
         </FrameLayout>
     </org.mozilla.focus.widget.EqualDistributeRow>
