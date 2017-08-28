@@ -282,7 +282,7 @@ be temporary, and you can try again later.</li>
     <string name="label_menu_capture_page">Capture Page</string>
     <string name="label_menu_turbo_mode">Turbo mode</string>
     <string name="label_menu_block_ads">Block Ads</string>
-    <string name="label_menu_block_image">Block Image</string>
+    <string name="label_menu_block_image">Block image</string>
     <string name="label_menu_settings">Settings</string>
 
     <!--GeolocationPermissionPrompt-->
