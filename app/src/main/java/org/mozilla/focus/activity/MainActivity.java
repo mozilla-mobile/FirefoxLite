@@ -24,6 +24,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebStorage;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
@@ -340,6 +341,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onDeleteClicked() {
+        WebStorage.getInstance().deleteAllData();
+        
         final View container = findViewById(R.id.container);
         final long diff = FileUtils.deleteWebViewCacheDirectory(this);
         final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
