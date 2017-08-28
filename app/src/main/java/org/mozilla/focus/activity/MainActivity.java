@@ -233,7 +233,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
         dialogFragment.show(getSupportFragmentManager(), "");
-        mDialogFragment =dialogFragment;
+        mDialogFragment = dialogFragment;
     }
 
     public boolean isAutoCancelButton(View v) {
