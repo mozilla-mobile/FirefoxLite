@@ -2,13 +2,16 @@ package org.mozilla.focus.download;
 
 import android.app.DownloadManager;
 import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,6 +161,53 @@ public class DownloadInfoManager {
     public void query(int offset, int limit, AsyncQueryListener listener) {
         final String uri = Download.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit;
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, null);
+    }
+
+    public boolean recordExists(long downloadId) {
+        final ContentResolver resolver = mContext.getContentResolver();
+        final Uri uri = Download.CONTENT_URI;
+        final String selection = Download.DOWNLOAD_ID + "=" + downloadId;
+        final Cursor cursor = resolver.query(uri, null, selection, null, null);
+
+        return (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
+    }
+
+    /**
+     * Update database, to replace file path of a record in both of our own db and DownloadManager.
+     *
+     * @param id      download id for record in DownloadManager
+     * @param newPath new file path
+     * @param type    Mime type
+     */
+    public void replacePath(final long id, @NonNull final String newPath, @NonNull final String type) {
+        final long oldId = id;
+        final File newFile = new File(newPath);
+        final DownloadPojo pojo = queryDownloadManager(mContext, id);
+
+        // remove old download from DownloadManager, then add new one
+        // Description and MIME cannot be blank, otherwise system refuse to add new record
+        final DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        final String desc = TextUtils.isEmpty(pojo.desc) ? "Downloaded from internet" : pojo.desc;
+        final String mimeType = TextUtils.isEmpty(pojo.mime)
+                ? (TextUtils.isEmpty(type) ? "*/*" : type)
+                : pojo.mime;
+        final boolean visible = true; // otherwise we need permission DOWNLOAD_WITHOUT_NOTIFICATION
+
+        final long newId = manager.addCompletedDownload(
+                newFile.getName(),
+                desc,
+                true,
+                mimeType,
+                newPath,
+                newFile.length(),
+                visible);
+        manager.remove(oldId);
+
+        // filename might be different from old file
+        final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newFile.getName());
+        newInfo.setDownloadId(newId);
+        insert(newInfo, null);
+        delete(oldId, null);
     }
 
     private static ContentValues getContentValuesFromDownloadInfo(DownloadInfo downloadInfo) {

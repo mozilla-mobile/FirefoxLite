@@ -332,6 +332,9 @@ be temporary, and you can try again later.</li>
     <!-- Snack bar message -->
     <string name="message_clear_cache_fail">Unable to clear cache</string>
     <string name="message_cleared_cached">%1$s cache was cleared</string>
+    <string name="message_fallback_save_to_primary_external">Can not detect removable storage, file is saved to primary external storage</string>
+    <string name="message_start_to_save_to_removable_storage">Removable storage detected, file will be saved to removable storage</string>
+    <string name="message_removable_storage_space_not_enough">Removable storage space is running out, file saved primary external storage</string>
 
     <!-- ScreenshotGridFragment-->
     <string name="screenshot_grid_empty_text_title">No Screenshots</string>
