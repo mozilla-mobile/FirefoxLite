@@ -21,6 +21,7 @@ import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
+import org.mozilla.focus.utils.TopSitesUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -195,6 +196,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void clear() {
+        TopSitesUtils.getDefaultSitesJsonArrayFromAssets(mContext);
         BrowsingHistoryManager.getInstance().deleteAll(this);
     }
 
