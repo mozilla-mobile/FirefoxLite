@@ -134,6 +134,8 @@ public class LocaleListPreference extends ListPreference {
                 // be the current locales version of Asturian, see:
                 // https://github.com/mozilla-mobile/focus-android/issues/634#issuecomment-303886118
                 displayName = "Asturianu";
+            } else if ("en".equalsIgnoreCase(locale.getLanguage()) && "US".equalsIgnoreCase(locale.getCountry())) {
+                displayName = new Locale(locale.getLanguage()).getDisplayName(Locale.US);
             } else {
                 displayName = locale.getDisplayName(locale);
             }
