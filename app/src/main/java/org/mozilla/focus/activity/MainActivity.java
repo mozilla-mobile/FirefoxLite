@@ -378,16 +378,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (this.getResources().getString(R.string.pref_key_speed_mode).equals(key)){
+        // Only refresh when disabling speed mode
+        if (this.getResources().getString(R.string.pref_key_speed_mode).equals(key) && !Settings.getInstance(this).shouldUseSpeedMode()){
             if (getVisibleBrowserFragment() != null){
                 getVisibleBrowserFragment().setBlockingEnabled(Settings.getInstance(this).shouldUseSpeedMode());
                 getVisibleBrowserFragment().reload();
             }
-        }else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)){
-            if (getVisibleBrowserFragment() != null){
-                getVisibleBrowserFragment().reload();
-            }
         }
+        // For speed mode, a automatic refresh is done when we disable block image.
     }
 
     private static final class CaptureRunnable implements Runnable {
