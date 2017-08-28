@@ -798,21 +798,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         MediaScannerConnection.scanFile(getContext(), new String[]{path}, new String[]{null}, null);
     }
 
-    public void setBlockingEnabled(boolean enabled) {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            webView.setBlockingEnabled(enabled);
-        }
-
-        backgroundView.setBackgroundResource(enabled ? R.drawable.animated_background : R.drawable.animated_background_disabled);
-        backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
-    }
-
-    public boolean isBlockingEnabled() {
-        final IWebView webView = getWebView();
-        return webView == null || webView.isBlockingEnabled();
-    }
-
     class FileChooseAction {
         private ValueCallback<Uri[]> callback;
         private WebChromeClient.FileChooserParams params;

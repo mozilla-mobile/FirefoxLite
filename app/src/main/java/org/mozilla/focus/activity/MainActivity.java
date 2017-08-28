@@ -381,7 +381,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         // Only refresh when disabling speed mode
         if (this.getResources().getString(R.string.pref_key_speed_mode).equals(key) && !Settings.getInstance(this).shouldUseSpeedMode()){
             if (getVisibleBrowserFragment() != null){
-                getVisibleBrowserFragment().setBlockingEnabled(Settings.getInstance(this).shouldUseSpeedMode());
                 getVisibleBrowserFragment().reload();
             }
         }
