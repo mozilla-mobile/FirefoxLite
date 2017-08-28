@@ -20,7 +20,7 @@ import org.mozilla.focus.search.SearchEngine;
  */
 public class Settings {
     private static Settings instance;
-    private static final boolean BLOCK_IMAGE_DEFAULT = true;
+    private static final boolean BLOCK_IMAGE_DEFAULT = false;
     private static final boolean TURBO_MODE_DEFAULT = true;
 
     public synchronized static Settings getInstance(Context context) {
