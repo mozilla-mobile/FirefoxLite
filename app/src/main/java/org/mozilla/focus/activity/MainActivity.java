@@ -255,18 +255,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         dialogFragment.show(getSupportFragmentManager(), "");
     }
 
-    public boolean isAutoCancelButton(View v) {
-        final int id = v.getId();
-        return id != R.id.menu_turbomode && id != R.id.menu_blockimg;
-    }
-
     public void onMenuItemClicked(View v) {
+        final View container = findViewById(R.id.container);
+        final int stringResource;
         if(!v.isEnabled()) {
             return;
         }
-        if(isAutoCancelButton(v)) {
-            menu.cancel();
-        }
+        menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
                 mBlockImgPref = !mBlockImgPref;
@@ -276,6 +271,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         .edit()
                         .putBoolean(blockImagePrefKey, mBlockImgPref)
                         .apply();
+                stringResource = mBlockImgPref ? R.string.message_enable_block_image : R.string.message_disable_block_image;
+                Snackbar.make(container, stringResource, Snackbar.LENGTH_SHORT).show();
                 break;
             case R.id.menu_turbomode:
                 mTurboModePref = !mTurboModePref;
@@ -285,6 +282,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         .edit()
                         .putBoolean(turboModePrefKey, mTurboModePref)
                         .apply();
+                stringResource = mTurboModePref ? R.string.message_enable_turbo_mode : R.string.message_disable_turbo_mode;
+                Snackbar.make(container, stringResource, Snackbar.LENGTH_SHORT).show();
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
