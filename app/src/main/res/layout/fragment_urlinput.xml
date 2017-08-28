@@ -33,7 +33,7 @@
             <org.mozilla.focus.widget.InlineAutocompleteEditText
                 android:id="@+id/url_edit"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
