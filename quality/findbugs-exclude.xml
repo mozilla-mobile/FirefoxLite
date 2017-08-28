@@ -11,4 +11,10 @@
     <Match>
         <Class name="~.*\.*Test"/>
     </Match>
+    <Match>
+        <Class name="org.mozilla.focus.glide.GlideOptions"/>
+    </Match>
+    <Match>
+        <Class name="org.mozilla.focus.glide.GlideRequest"/>
+    </Match>
 </FindBugsFilter>
