@@ -73,6 +73,7 @@
             android:theme="@style/InfoTheme" />
 
         <activity android:name=".screenshot.ScreenshotViewerActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
 
         <!-- Custom Tabs Service is currently not registering the intent-filter before its ready.
