@@ -144,24 +144,33 @@ public class RelocateService extends IntentService {
                 final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
                 mgr.replacePath(downloadId, destFile.getAbsolutePath(), type);
 
-                // now we save to removable storage successfully, however we cannot in last request,
-                // inform user we could respect the preference this time.
-                if (!settings.hasSavedToRemovableStorage()) {
-                    settings.setSavedToRemovableStorage(true);
-                    final CharSequence msg = getString(R.string.message_start_to_save_to_removable_storage);
+                // removable-storage did not exist on app creation, but now it is back
+                // we moved download file to removable-storage, now we should inform user
+                if (!settings.getRemovableStorageStateOnCreate()) {
+
+                    // avoid sending same message continuously
+                    if (settings.getShowedStorageMessage() != Settings.STORAGE_MSG_TYPE_REMOVABLE_AVAILABLE) {
+                        settings.setShowedStorageMessage(Settings.STORAGE_MSG_TYPE_REMOVABLE_AVAILABLE);
+                        final CharSequence msg = getString(R.string.message_start_to_save_to_removable_storage);
+                        broadcastUi(msg);
+                        Log.w(TAG, msg.toString());
+                    }
+                }
+            }
+        } catch (NoRemovableStorageException e) {
+            // removable-storage existed on app creation, but now it is gone
+            // we keep download file in original path, now we should inform user
+            if (settings.getRemovableStorageStateOnCreate()) {
+
+                // avoid sending same message continuously
+                if (settings.getShowedStorageMessage() != Settings.STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE) {
+                    settings.setShowedStorageMessage(Settings.STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE);
+                    final CharSequence msg = getString(R.string.message_fallback_save_to_primary_external);
                     broadcastUi(msg);
                     Log.w(TAG, msg.toString());
                 }
             }
-        } catch (NoRemovableStorageException e) {
-            // user want to save to removable-storage, we did save to removable storage last time.
-            // But we cannot do it now, inform user.
-            if (settings.hasSavedToRemovableStorage()) {
-                settings.setSavedToRemovableStorage(false);
-                final CharSequence msg = getString(R.string.message_fallback_save_to_primary_external);
-                broadcastUi(msg);
-                Log.w(TAG, msg.toString());
-            }
+
             e.printStackTrace();
         } catch (Exception e) {
             // if anything wrong, try to keep original file
