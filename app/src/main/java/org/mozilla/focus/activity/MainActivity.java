@@ -41,13 +41,16 @@ import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FormatUtils;
+import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 import static org.mozilla.focus.screenshot.ScreenshotViewerActivity.REQ_CODE_NOTIFY_SCREENSHOT_DELETE;
@@ -81,6 +84,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         super.onCreate(savedInstanceState);
         mTurboModePref = Settings.getInstance(this).shouldUseTurboMode();
         mBlockImgPref = Settings.getInstance(this).shouldBlockImages();
+
+        asyncInitialize();
 
         setContentView(R.layout.activity_main);
         initViews();
@@ -590,5 +595,29 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         final View container = findViewById(R.id.container);
         Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void asyncInitialize() {
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                asyncCheckStorage();
+            }
+        })).start();
+    }
+
+    /**
+     * To check existence of removable storage, and write result to preference
+     */
+    private void asyncCheckStorage() {
+        boolean exist;
+        try {
+            final File dir = StorageUtils.getTargetDirOnRemovableStorage(this, "*/*");
+            exist = (dir != null);
+        } catch (NoRemovableStorageException e) {
+            exist = false;
+        }
+
+        Settings.getInstance(this).setRemovableStorageStateOnCreate(exist);
     }
 }
