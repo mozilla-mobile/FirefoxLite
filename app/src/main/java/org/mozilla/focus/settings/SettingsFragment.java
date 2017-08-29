@@ -120,10 +120,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             //block media autoplay Callback function
         } else if (key.equals(getString(R.string.pref_key_data_saving_block_tab_restore))) {
             //block tab restore Callback function
-        } else if (key.equals(getString(R.string.pref_key_privacy_storage_clear_browsing_data))) {
+        } else if (key.equals(getString(R.string.pref_key_storage_clear_browsing_data))) {
             //Clear browsing data Callback function is not here
             //Go to Class CleanBrowsingDataPreference -> onDialogClosed
-        } else if (key.equals(getString(R.string.pref_key_privacy_storage_save_downloads_to))) {
+        } else if (key.equals(getString(R.string.pref_key_storage_save_downloads_to))) {
             //Save downloads/cache/offline pages to SD card/Internal storage Callback function
         }
     }
