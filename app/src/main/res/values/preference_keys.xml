@@ -30,6 +30,7 @@
 
     <!-- storage and cache -->
     <string name="pref_key_storage_clear_browsing_data" translatable="false"><xliff:g id="preference_key">pref_clear_browsing_data</xliff:g></string>
+    <string name="pref_key_removable_storage_available_on_create" translatable="false"><xliff:g id="preference_key">pref_removable_available_on_create</xliff:g></string>
     <string name="pref_key_storage_save_downloads_to" translatable="false"><xliff:g id="preference_key">pref_save_downloads_to</xliff:g></string>
     <string name="pref_key_has_saved_to_removable" translatable="false"><xliff:g id="preference_key">pref_has_saved_to_removable</xliff:g></string>
 

@@ -64,6 +64,16 @@ public class Settings {
                 TURBO_MODE_DEFAULT);
     }
 
+    public void setRemovableStorageStateOnCreate(boolean exist) {
+        final String key = getPreferenceKey(R.string.pref_key_removable_storage_available_on_create);
+        preferences.edit().putBoolean(key, exist).apply();
+    }
+
+    public boolean getRemovableStorageStateOnCreate() {
+        final String key = getPreferenceKey(R.string.pref_key_removable_storage_available_on_create);
+        return preferences.getBoolean(key, false);
+    }
+
     public boolean hasSavedToRemovableStorage() {
         final String key = getPreferenceKey(R.string.pref_key_has_saved_to_removable);
         // use true as default value, because in most of case it should work.
