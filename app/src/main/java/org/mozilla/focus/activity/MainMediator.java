@@ -38,6 +38,7 @@ public class MainMediator {
 
     public MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
+        activity.getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
     }
 
     public void showHomeScreen() {
@@ -69,10 +70,10 @@ public class MainMediator {
         FragmentTransaction clear = fragmentMgr.beginTransaction();
         clear = (urlInputFrg == null) ? clear : clear.remove(urlInputFrg);
         clear.commit();
-        fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
         // To hide HomeFragment silently, herr to wipe the transaction from back stack
         fragmentMgr.popBackStackImmediate(HOIST_HOME_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         FragmentTransaction trans = this.prepareBrowsing(url, clearHistory);
         trans.commit();
@@ -183,6 +184,7 @@ public class MainMediator {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
                     .addToBackStack(HOIST_HOME_FRAGMENT);
         }
+
         return transaction;
     }
 
@@ -201,5 +203,44 @@ public class MainMediator {
         if (homeFragment != null) {
             homeFragment.toggleFakeUrlInput(visible);
         }
+    }
+
+    /**
+     * refresh HomeFragment Top sites, if HomeFragment is TopFragment
+     */
+    private void refreshHomeFragment() {
+        final Fragment topFragment = getTopHomeFragmet();
+        if (topFragment != null) {
+            topFragment.onResume();
+        }
+    }
+
+    private int lastBackStackEntryCount = 0;
+    public FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
+        public void onBackStackChanged() {
+            final FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            if (fragmentManager != null) {
+                int currentBackStackEntryCount = fragmentManager.getBackStackEntryCount();
+                if (isPopStack(currentBackStackEntryCount)) {
+                    refreshHomeFragment();
+                }
+                lastBackStackEntryCount = currentBackStackEntryCount;
+            }
+        }
+    };
+
+    private boolean isPopStack(int BackStackEntryCount) {
+        return lastBackStackEntryCount > BackStackEntryCount;
+    }
+
+    /**
+     * get HomeFragment if it's Top Fragment
+     */
+    public Fragment getTopHomeFragmet() {
+        final Fragment topFragment = getTopFragment();
+        if (topFragment != null && HomeFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
+           return topFragment;
+        }
+        return null;
     }
 }

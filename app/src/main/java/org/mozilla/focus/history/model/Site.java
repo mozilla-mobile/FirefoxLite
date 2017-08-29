@@ -61,4 +61,19 @@ public class Site {
     public void setFavIcon(Bitmap favIcon) {
         this.favIcon = favIcon;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Site) {
+            if (((Site)obj).getId() == this.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

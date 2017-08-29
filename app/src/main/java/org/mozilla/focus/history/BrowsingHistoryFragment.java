@@ -2,16 +2,19 @@ package org.mozilla.focus.history;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.PanelFragment;
+import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.utils.TopSitesUtils;
 
 
 public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, HistoryItemAdapter.HistoryListener {
@@ -55,6 +58,11 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mAdapter.clear();
+                        TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
+                        final Fragment fragment = getParentFragment().getTargetFragment();
+                        if (fragment != null && fragment instanceof HomeFragment) {
+                            fragment.onActivityResult(HomeFragment.REFRESH_REQUEST_CODE, Activity.RESULT_OK, null);
+                        }
                     }
                 });
                 builder.setNegativeButton(R.string.action_cancel, null);
