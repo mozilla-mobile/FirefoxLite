@@ -39,10 +39,7 @@ public class TopSitesUtils {
             for (int i = 0 ; i < obj.length(); i++) {
                 ((JSONObject)obj.get(i)).put("lastViewTimestamp",lastViewTimestampSystem);
             }
-            PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit()
-                    .putString(HomeFragment.TOPSITES_PREF, obj.toString())
-                    .apply();
+            saveDefaultSites(context, obj);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -77,6 +74,13 @@ public class TopSitesUtils {
         } finally {
             return json;
         }
+    }
+
+    public static void saveDefaultSites(Context context, JSONArray obj) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(HomeFragment.TOPSITES_PREF, obj.toString())
+                .apply();
     }
 
     public static Bitmap getIconFromAssets(Context context, String fileName) {

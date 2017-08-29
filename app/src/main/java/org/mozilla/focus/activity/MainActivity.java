@@ -261,9 +261,22 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    private Fragment getTopHomeFragment() {
+        final Fragment homeFragment = this.mediator.getTopHomeFragmet();
+        if (homeFragment == null) {
+            return null;
+        } else {
+            return homeFragment;
+        }
+    }
+
     private void showListPanel(int type) {
         DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
+        final Fragment homeFragment = getTopHomeFragment();
+        if (homeFragment != null) {
+            dialogFragment.setTargetFragment(homeFragment, HomeFragment.REFRESH_REQUEST_CODE);
+        }
         dialogFragment.show(getSupportFragmentManager(), "");
         mDialogFragment = dialogFragment;
     }
