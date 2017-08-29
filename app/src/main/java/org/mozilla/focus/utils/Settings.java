@@ -19,6 +19,10 @@ import org.mozilla.focus.search.SearchEngine;
  * A simple wrapper for SharedPreferences that makes reading preference a little bit easier.
  */
 public class Settings {
+
+    public static final int STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE = 0x9527; // beautiful random number
+    public static final int STORAGE_MSG_TYPE_REMOVABLE_AVAILABLE = 0x5987;
+
     private static Settings instance;
     private static final boolean BLOCK_IMAGE_DEFAULT = false;
     private static final boolean TURBO_MODE_DEFAULT = true;
@@ -74,16 +78,20 @@ public class Settings {
         return preferences.getBoolean(key, false);
     }
 
-    public boolean hasSavedToRemovableStorage() {
-        final String key = getPreferenceKey(R.string.pref_key_has_saved_to_removable);
-        // use true as default value, because in most of case it should work.
-        return preferences.getBoolean(key, true);
+    public int getShowedStorageMessage() {
+        final String key = getPreferenceKey(R.string.pref_key_showed_storage_message);
+        return preferences.getInt(key, STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE);
     }
 
-    public void setSavedToRemovableStorage(boolean savedToExternal) {
-        final String key = getPreferenceKey(R.string.pref_key_has_saved_to_removable);
+    public void setShowedStorageMessage(final int type) {
+        if (type != STORAGE_MSG_TYPE_REMOVABLE_AVAILABLE
+                && type != STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE) {
+            throw new RuntimeException("Unknown message type");
+        }
+
+        final String key = getPreferenceKey(R.string.pref_key_showed_storage_message);
         preferences.edit()
-                .putBoolean(key, savedToExternal)
+                .putInt(key, type)
                 .apply();
     }
 
