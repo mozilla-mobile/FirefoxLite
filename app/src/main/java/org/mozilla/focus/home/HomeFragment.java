@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     public static final String FRAGMENT_TAG = "homescreen";
     public static final String TOPSITES_PREF = "topsites_pref";
     public static final int TOP_SITES_QUERY_LIMIT = 8;
-    public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 1;
+    public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 3;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
