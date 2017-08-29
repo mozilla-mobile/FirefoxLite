@@ -19,20 +19,15 @@ public class StorageUtils {
     final static String OTHER_DIR = "others";
 
     /**
-     * To get a directory to save downloaded file. Before invoke this method, callee should check we
-     * already granted necessary permission.
+     * Test if we have a removable storage and throw Exception if no is available and specify cause.
+     * Note that exception is thrown even if the user does not want to save to removable storage.
      *
      * @param ctx  Context
-     * @param type should be Download.TYPE_IMAGE, Download.TYPE_OTHER
-     * @return a directory on removable storage to save files. return null if user's preference is off.
-     * @throws NoRemovableStorageException if user's preference is on, but there is no removable storage to use.
+     * @return app-owned-directory on removable storage
+     * @throws NoRemovableStorageException if there is no removable storage to use.
      */
-    public static File getTargetDirOnRemovableStorage(@NonNull Context ctx, String type)
+    private static File getAppMediaDirOnRemovableStorage(@NonNull Context ctx)
             throws NoRemovableStorageException {
-
-        if (!Settings.getInstance(ctx).shouldSaveToRemovableStorage()) {
-            return null;
-        }
 
         final File media = getFirstRemovableMedia(ctx);
         if (media == null) {
@@ -43,12 +38,46 @@ public class StorageUtils {
             throw new NoRemovableStorageException("No mounted-removable media to use");
         }
 
+        return media;
+    }
+
+    /**
+     * To get a directory to save downloaded file. Before invoke this method, callee should check we
+     * already granted necessary permission.
+     *
+     * @param ctx  Context
+     * @param type should be Download.TYPE_IMAGE, Download.TYPE_OTHER
+     * @return a directory on removable storage to save files. return null if user's preference is off.
+     * @throws NoRemovableStorageException if user's preference is on, but there is no removable storage to use.
+     */
+    public static File getTargetDirOnRemovableStorageForDownloads(@NonNull Context ctx, String type)
+            throws NoRemovableStorageException {
+
+        if (!Settings.getInstance(ctx).shouldSaveToRemovableStorage()) {
+            return null;
+        }
+
+        final File media = getAppMediaDirOnRemovableStorage(ctx);
+
         final File dir = new File(media, DOWNLOAD_DIR);
 
         if (MimeUtils.isImage(type)) {
             return new File(dir, IMAGE_DIR);
         } else {
             return new File(dir, OTHER_DIR);
+        }
+    }
+
+    public static File getTargetDirForSaveFile(@NonNull Context ctx, String folderName) {
+
+        if (!Settings.getInstance(ctx).shouldSaveToRemovableStorage()) {
+            return new File(Environment.getExternalStorageDirectory(), folderName);
+        }
+
+        try {
+            return new File(getAppMediaDirOnRemovableStorage(ctx), folderName);
+        } catch (NoRemovableStorageException ex) {
+            return new File(Environment.getExternalStorageDirectory(), folderName);
         }
     }
 

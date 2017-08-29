@@ -115,7 +115,7 @@ public class RelocateService extends IntentService {
         final Settings settings = Settings.getInstance(getApplicationContext());
         File destFile = null;
         try {
-            final File outputDir = StorageUtils.getTargetDirOnRemovableStorage(this, type);
+            final File outputDir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(this, type);
             if (outputDir != null) {
                 FileUtils.ensureDir(outputDir);
                 destFile = FileUtils.getFileSlot(outputDir, srcFile.getName());
