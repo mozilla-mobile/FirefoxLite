@@ -21,12 +21,12 @@
         android:entryValues="@array/clean_browsing_data_values"
         android:entries="@array/clean_browsing_data_entries"
         android:title="@string/preference_privacy_storage_clear_browsing_data"
-        android:key="@string/pref_key_privacy_storage_clear_browsing_data" />
+        android:key="@string/pref_key_storage_clear_browsing_data" />
 
     <org.mozilla.focus.widget.DataSavingPathPreference
         android:layout="@layout/focus_preference"
         android:title="@string/preference_privacy_storage_save_downloads_to"
-        android:key="@string/pref_key_privacy_storage_save_downloads_to" />
+        android:key="@string/pref_key_storage_save_downloads_to" />
 
     <SwitchPreference
         android:layout="@layout/focus_preference"
