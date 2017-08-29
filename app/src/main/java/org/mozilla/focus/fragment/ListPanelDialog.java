@@ -138,7 +138,6 @@ public class ListPanelDialog extends DialogFragment {
     }
 
     private void showPanelFragment(PanelFragment panelFragment) {
-        panelFragment.setTargetFragment(this, UNUSED_REQUEST_CODE);
         getChildFragmentManager().beginTransaction().replace(R.id.main_content, panelFragment).commit();
     }
 
