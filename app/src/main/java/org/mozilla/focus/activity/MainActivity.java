@@ -612,7 +612,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void asyncCheckStorage() {
         boolean exist;
         try {
-            final File dir = StorageUtils.getTargetDirOnRemovableStorage(this, "*/*");
+            final File dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(this, "*/*");
             exist = (dir != null);
         } catch (NoRemovableStorageException e) {
             exist = false;
