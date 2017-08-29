@@ -743,27 +743,29 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public boolean capturePage() {
-        final IWebView iwebView = getWebView();
-        if (iwebView != null && iwebView instanceof WebView) {
-            WebView webView = (WebView) iwebView;
-            try {
-                Bitmap content = getPageBitmap(webView);
-                if (content != null) {
-                    final String path = saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
-                    if (path != null) {
-                        Screenshot screenshot = new Screenshot(iwebView.getTitle(), iwebView.getUrl(), System.currentTimeMillis(), path);
-                        ScreenshotManager.getInstance().insert(screenshot, null);
-                    }
-                    return true;
-                } else {
-                    return false;
-                }
-
-            } catch (IOException ex) {
+        try {
+            final IWebView iwebView = getWebView();
+            // Failed to get Webview
+            if (iwebView == null || !(iwebView instanceof WebView)) {
                 return false;
             }
+            WebView webView = (WebView) iwebView;
+            Bitmap content = getPageBitmap(webView);
+            // Failed to capture
+            if (content == null) {
+                return false;
+            }
+            final String path = saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
+            // Failed to save
+            if (path == null) {
+                return false;
+            }
+            Screenshot screenshot = new Screenshot(iwebView.getTitle(), iwebView.getUrl(), System.currentTimeMillis(), path);
+            ScreenshotManager.getInstance().insert(screenshot, null);
+            return true;
+        } catch (IOException ex) {
+            return false;
         }
-        return false;
     }
 
     private Bitmap getPageBitmap(WebView webView) {
