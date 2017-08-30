@@ -51,6 +51,9 @@ public class ErrorPage {
 
         substitutionMap.put("%css%", cssString);
 
+        String data = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.errorpage_image);
+        substitutionMap.put("%imageContentInBase64%", data);
+
         final String errorPage = HtmlLoader.loadResourceFile(webView.getContext(), R.raw.errorpage, substitutionMap);
 
         // We could load the raw html file directly into the webview using a file:///android_res/

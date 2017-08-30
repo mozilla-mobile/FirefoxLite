@@ -26,6 +26,12 @@ body {
   font-family: sans-serif;
 }
 
+img.main {
+    display: block;
+    width: auto;
+    height: 40vh;
+    margin: auto;
+}
 
 ul {
   /* Shove the list indicator so that its left aligned, but use outside so that text
