@@ -31,7 +31,7 @@
     <string name="preference_default_browser">Jadikan peramban utama</string>
     <string name="preference_category_mozilla">Mozilla</string>
     <string name="preference_mozilla_telemetry">Kirim data penggunaan anonim</string>
-    <string name="preference_mozilla_telemetry_summary">Pelajari lebih lanjut</string>
+    <string name="preference_mozilla_telemetry_learn_more">Pelajari lebih lanjut</string>
     <string name="preference_about">Tentang %1$s</string>
     <string name="content_description_clear_input">Bersihkan masukan</string>
     <string name="content_description_dismiss_input">Tutup</string>
