@@ -16,8 +16,8 @@ body {
   /* background-size: 64px 32px; */
   background-repeat: repeat-x;
 
-  background-color: #363B40;
-  color: #FFFFFF;
+  color: #363B40;
+  background-color: #FFFFFF;
   padding: 0 20px;
 
   font-weight: 300;
@@ -57,7 +57,6 @@ h1 {
   margin: 0;
   /* Since this has an underline, use padding for vertical spacing rather than margin */
   padding: var(--moz-vertical-spacing) 0;
-  font-weight: 300;
   border-bottom: 1px solid #e0e2e5;
 }
 
@@ -80,10 +79,9 @@ button {
   font-family: sans-serif;
   background-color: #00A4DC;
   color: #FFFFFF;
-  font-weight: 300;
   border-radius: 2px;
   background-image: none;
-  margin: var(--moz-vertical-spacing) 0 0;
+  margin: 30px 0 30px 0;
 }
 
 button.inProgress {
@@ -187,7 +185,8 @@ div[collapsed="true"] > .expander + * {
 @media (min-width: 550px) {
   button {
     min-width: 160px;
-    width: auto;
+    width: 60%;
+    margin: 20px auto;
   }
 
   /* If the tablet is tall as well, add some padding to make content feel a bit more centered */
