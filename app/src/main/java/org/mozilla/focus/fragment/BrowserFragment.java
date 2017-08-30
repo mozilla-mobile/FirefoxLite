@@ -55,6 +55,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
+import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -787,7 +788,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     private String saveBitmapToStorage(String fileName, Bitmap bitmap) throws IOException {
         File folder = StorageUtils.getTargetDirForSaveFile(getActivity(), "Zerda");
-        if (!folder.exists() && !folder.mkdir()) {
+        if (!FileUtils.ensureDir(folder)) {
             throw new IOException("Can't create folder");
         }
         String path = null;
