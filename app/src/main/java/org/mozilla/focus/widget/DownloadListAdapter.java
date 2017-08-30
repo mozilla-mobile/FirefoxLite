@@ -18,7 +18,6 @@ import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.utils.IntentUtils;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -159,9 +158,6 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-        }else if (viewHolder instanceof DownloadEmptyViewHolder){
-            DownloadEmptyViewHolder holder = (DownloadEmptyViewHolder) viewHolder;
-            holder.imag.setBackgroundResource(R.color.colorPrimary);
         }
     }
 

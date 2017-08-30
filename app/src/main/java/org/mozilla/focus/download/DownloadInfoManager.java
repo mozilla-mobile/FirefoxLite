@@ -237,6 +237,7 @@ public class DownloadInfoManager {
         info.setMediaUri(pojo.mediaUri);
         info.setFileUri(pojo.fileUri);
         info.setMimeType(pojo.mime);
+        info.setFileExtension(pojo.fileExtension);
 
         return info;
     }
@@ -248,7 +249,7 @@ public class DownloadInfoManager {
         query.setFilterById(id);
         final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         final Cursor managerCursor = manager.query(query);
-        
+
         final DownloadPojo pojo = new DownloadPojo();
         try {
             if (managerCursor.moveToFirst()) {
