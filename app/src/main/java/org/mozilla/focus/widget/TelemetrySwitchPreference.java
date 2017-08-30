@@ -7,13 +7,11 @@ package org.mozilla.focus.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -41,8 +39,6 @@ class TelemetrySwitchPreference extends Preference {
     }
 
     private void init() {
-        setWidgetLayoutResource(R.layout.preference_telemetry);
-
         // We are keeping track of the preference value ourselves.
         setPersistent(false);
     }
@@ -62,15 +58,9 @@ class TelemetrySwitchPreference extends Preference {
             }
         });
 
-        // The docs don't actually specify that R.id.summary will exist, but we rely on Android
-        // using it in e.g. Fennec's AlignRightLinkPreference, so it should be safe to use it (especially
-        // since we support a narrower set of Android versions in Focus).
-        final TextView summary = (TextView) view.findViewById(android.R.id.summary);
+        final TextView learnMore = (TextView) view.findViewById(R.id.learnMore);
 
-        summary.setPaintFlags(summary.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        summary.setTextColor(Color.BLACK);
-
-        summary.setOnClickListener(new View.OnClickListener() {
+        learnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // This is a hardcoded link: if we ever end up needing more of these links, we should
@@ -82,11 +72,6 @@ class TelemetrySwitchPreference extends Preference {
                 getContext().startActivity(intent);
             }
         });
-
-        final TypedArray backgroundDrawableArray = view.getContext().obtainStyledAttributes(new int[]{R.attr.selectableItemBackground});
-        final Drawable backgroundDrawable = backgroundDrawableArray.getDrawable(0);
-        backgroundDrawableArray.recycle();
-        summary.setBackground(backgroundDrawable);
 
         // We still want to allow toggling the pref by touching any part of the pref (except for
         // the "learn more" link)
