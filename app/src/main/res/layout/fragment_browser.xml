@@ -10,6 +10,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:background="@android:color/white"
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
