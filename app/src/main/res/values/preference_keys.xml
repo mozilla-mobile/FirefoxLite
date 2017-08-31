@@ -19,6 +19,7 @@
     <string name="pref_key_telemetry" translatable="false"><xliff:g id="preference_key">pref_telemetry</xliff:g></string>
 
     <string name="pref_key_give_feedback" translatable="false"><xliff:g id="preference_key">pref_give_feedback</xliff:g></string>
+    <string name="pref_key_share_with_friends" translatable="false"><xliff:g id="preference_key">pref_share_with_friends</xliff:g></string>
     <string name="pref_key_about" translatable="false"><xliff:g id="preference_key">pref_about</xliff:g></string>
     <string name="pref_key_help" translatable="false"><xliff:g id="preference_key">pref_help</xliff:g></string>
     <string name="pref_key_rights" translatable="false"><xliff:g id="preference_key">pref_rights</xliff:g></string>
@@ -39,7 +40,10 @@
 
     <!-- rate app -->
     <string name="pref_key_app_create_counter" translatable="false"><xliff:g id="preference_key">pref_app_create_counter</xliff:g></string>
-    <string name="pref_key_did_show_app_rate_dialog" translatable="false"><xliff:g id="preference_key">pref_did_show_app_rate_dialog</xliff:g></string>
+    <string name="pref_key_did_show_rate_app_dialog" translatable="false"><xliff:g id="preference_key">pref_did_show_rate_app_dialog</xliff:g></string>
+
+    <!-- share app -->
+    <string name="pref_key_did_show_share_app_dialog" translatable="false"><xliff:g id="preference_key">pref_did_show_share_app_dialog</xliff:g></string>
 
     <!-- clear browsing data-->
     <string name="pref_value_clear_browsing_history" translatable="false"><xliff:g id="preference_key">pref_clear_browsing_history</xliff:g></string>

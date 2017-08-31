@@ -16,6 +16,7 @@
     <string name="menu_help">Help</string>
     <string name="menu_rights">Your Rights</string>
     <string name="menu_give_feedback">Give feedback</string>
+    <string name="menu_share_with_friends">Share with friends</string>
 
     <!-- This is the title of a dialog that shows all the share targets (apps or contacts) when
          sharing an URL. -->
@@ -296,4 +297,11 @@
     <string name="rate_app_dialog_btn_feedback">No, send feedback</string>
 
     <string name="rate_app_feedback_url" translatable="false">https://www.mozilla.org/</string>
+
+    <!--In-app Promotion, Share app-->
+    <string name="share_app_dialog_text_title">Share Firefox Rocket with friends!</string>
+    <string name="share_app_dialog_text_content_line1">fast, lightweight and easy</string>
+    <string name="share_app_dialog_text_content_line2">speed mode</string>
+    <string name="share_app_dialog_text_content_line3">single-hand friendly</string>
+    <string name="share_app_dialog_btn_share">Share</string>
 </resources>
