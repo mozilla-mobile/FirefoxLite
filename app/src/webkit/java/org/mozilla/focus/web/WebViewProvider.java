@@ -90,7 +90,7 @@ public class WebViewProvider {
         settings.setGeolocationEnabled(true);
 
         // We do not want to save any data...
-        settings.setSaveFormData(false);
+        settings.setSaveFormData(true);
         //noinspection deprecation - This method is deprecated but let's call it in case WebView implementations still obey it.
         settings.setSavePassword(false);
     }

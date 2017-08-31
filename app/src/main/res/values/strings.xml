@@ -294,10 +294,9 @@ be temporary, and you can try again later.</li>
     <string name="setting_dialog_cancel">Cancel</string>
     <string name="setting_dialog_browsing_history">Browsing history</string>
     <string name="setting_dialog_search_history">Search history</string>
-    <string name="setting_dialog_from_history">From history</string>
+    <string name="setting_dialog_form_history">Form history</string>
     <string name="setting_dialog_cookies">Cookies</string>
     <string name="setting_dialog_cache">Cache</string>
-    <string name="setting_dialog_saving_logins">Saving logins</string>
 
     <!-- Download list-->
     <string name="no_downloads">No Downloads</string>

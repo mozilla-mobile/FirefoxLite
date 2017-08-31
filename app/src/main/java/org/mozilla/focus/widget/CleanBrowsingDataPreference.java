@@ -2,9 +2,16 @@ package org.mozilla.focus.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.WebStorage;
+import android.webkit.WebViewDatabase;
+
+import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.BrowserFragment;
+import org.mozilla.focus.history.BrowsingHistoryManager;
 
 /**
  * Created by ylai on 2017/8/3.
@@ -30,7 +37,20 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
         if (positiveResult) {
+            Resources resources = getContext().getResources();
+
             //  On click positive callback here get current value by getValues();
+            for(String value : getValues()) {
+                if (resources.getString(R.string.pref_value_clear_browsing_history).equals(value)) {
+                    BrowsingHistoryManager.getInstance().deleteAll(null);
+                } else if (resources.getString(R.string.pref_value_clear_cookies).equals(value)) {
+                    CookieManager.getInstance().removeAllCookies(null);
+                } else if (resources.getString(R.string.pref_value_clear_cache).equals(value)) {
+                    //  TODO: Clear Cache
+                } else if (resources.getString(R.string.pref_value_clear_form_history).equals(value)){
+                    WebViewDatabase.getInstance(getContext()).clearFormData();
+                }
+            }
         }
     }
 }
