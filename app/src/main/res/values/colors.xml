@@ -51,5 +51,8 @@
     <color name="colorDownloadBackground">#F9F9FA</color>
 
     <color name="screenshotViewerBtmBarBgColor">#4A4A4F</color>
+    <color name="window_background_screenshot">#CC26384B</color>
+
     <color name="colorUrlBarLockIcon">#12BC00</color>
+
 </resources>

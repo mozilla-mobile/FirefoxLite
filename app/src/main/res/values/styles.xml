@@ -45,6 +45,13 @@
         <item name="overlapAnchor">true</item>
     </style>
 
+    <style name="ScreenCaptureDialog" parent="@style/DialogStyle">
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowBackground">@color/window_background_screenshot</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
     <!-- for bottom sheet menu -->
     <style name="MenuSheetRow">
         <item name="android:layout_width">match_parent</item>
