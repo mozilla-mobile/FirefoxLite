@@ -27,6 +27,7 @@ public class Settings {
     private static final boolean BLOCK_IMAGE_DEFAULT = false;
     private static final boolean TURBO_MODE_DEFAULT = true;
     private static final boolean DID_SHOW_RATE_APP_DEFAULT = false;
+    private static final boolean DID_SHOW_SHARE_APP_DEFAULT = false;
 
     public synchronized static Settings getInstance(Context context) {
         if (instance == null) {
@@ -113,12 +114,22 @@ public class Settings {
     }
 
     public boolean didShowRateAppDialog() {
-        return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_app_rate_dialog), DID_SHOW_RATE_APP_DEFAULT);
+        return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_rate_app_dialog), DID_SHOW_RATE_APP_DEFAULT);
     }
 
     public void setRateAppDialogDidShow() {
         preferences.edit()
-                .putBoolean(getPreferenceKey(R.string.pref_key_did_show_app_rate_dialog), true)
+                .putBoolean(getPreferenceKey(R.string.pref_key_did_show_rate_app_dialog), true)
+                .apply();
+    }
+
+    public boolean didShowShareAppDialog() {
+        return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_share_app_dialog), DID_SHOW_SHARE_APP_DEFAULT);
+    }
+
+    public void setShareAppDialogDidShow() {
+        preferences.edit()
+                .putBoolean(getPreferenceKey(R.string.pref_key_did_show_share_app_dialog), true)
                 .apply();
     }
 

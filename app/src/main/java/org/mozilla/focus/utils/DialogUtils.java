@@ -48,6 +48,7 @@ public class DialogUtils {
         dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Settings.getInstance(context).setShareAppDialogDidShow();
                 Intent urlIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(context.getString(R.string.rate_app_feedback_url)));
                 urlIntent.setClassName(context, MainActivity.class.getName());
                 urlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -61,5 +62,38 @@ public class DialogUtils {
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
         Settings.getInstance(context).setRateAppDialogDidShow();
+    }
+
+    public static void showShareAppDialog(final Context context) {
+        if(context == null) {
+            return;
+        }
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, null);
+        dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialogView.findViewById(R.id.dialog_rate_app_btn_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = context.getPackageName();
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + appPackageName);
+                context.startActivity(Intent.createChooser(sendIntent, null));
+                if(dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+        Settings.getInstance(context).setShareAppDialogDidShow();
     }
 }

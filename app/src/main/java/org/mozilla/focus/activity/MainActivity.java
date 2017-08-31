@@ -126,11 +126,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         WebViewProvider.preload(this);
 
-        if(sIsNewCreated && !Settings.getInstance(this).didShowRateAppDialog()) {
+        if(sIsNewCreated && (!Settings.getInstance(this).didShowRateAppDialog() || !Settings.getInstance(this).didShowShareAppDialog())) {
             sIsNewCreated = false;
             Settings.getInstance(this).increaseAppCreateCounter();
             if(!Settings.getInstance(this).didShowRateAppDialog() && Settings.getInstance(this).getAppCreateCount() == DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
                 DialogUtils.showRateAppDialog(this);
+            } else if(!Settings.getInstance(this).didShowShareAppDialog() && Settings.getInstance(this).getAppCreateCount() == DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP) {
+                DialogUtils.showShareAppDialog(this);
             }
         }
 
