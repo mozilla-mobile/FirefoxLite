@@ -16,6 +16,7 @@
     <!-- clean browsing data entries -->
     <string-array name="clean_browsing_data_entries">
         <item>@string/setting_dialog_browsing_history</item>
+        <item>@string/setting_dialog_form_history</item>
         <item>@string/setting_dialog_cookies</item>
         <item>@string/setting_dialog_cache</item>
     </string-array>
@@ -23,6 +24,7 @@
     <!-- clean browsing data values -->
     <string-array name="clean_browsing_data_values">
         <item>@string/pref_value_clear_browsing_history</item>
+        <item>@string/pref_value_clear_form_history</item>
         <item>@string/pref_value_clear_cookies</item>
         <item>@string/pref_value_clear_cache</item>
     </string-array>
