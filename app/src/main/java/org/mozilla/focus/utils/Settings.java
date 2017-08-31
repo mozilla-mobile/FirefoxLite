@@ -26,6 +26,7 @@ public class Settings {
     private static Settings instance;
     private static final boolean BLOCK_IMAGE_DEFAULT = false;
     private static final boolean TURBO_MODE_DEFAULT = true;
+    private static final boolean DID_SHOW_RATE_APP_DEFAULT = false;
 
     public synchronized static Settings getInstance(Context context) {
         if (instance == null) {
@@ -109,6 +110,27 @@ public class Settings {
     @Nullable
     public String getDefaultSearchEngineName() {
         return preferences.getString(getPreferenceKey(R.string.pref_key_search_engine), null);
+    }
+
+    public boolean didShowRateAppDialog() {
+        return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_app_rate_dialog), DID_SHOW_RATE_APP_DEFAULT);
+    }
+
+    public void setRateAppDialogDidShow() {
+        preferences.edit()
+                .putBoolean(getPreferenceKey(R.string.pref_key_did_show_app_rate_dialog), true)
+                .apply();
+    }
+
+    public void increaseAppCreateCounter() {
+        int count = getAppCreateCount();
+        preferences.edit()
+                .putInt(getPreferenceKey(R.string.pref_key_app_create_counter), ++count)
+                .apply();
+    }
+
+    public int getAppCreateCount() {
+        return preferences.getInt(getPreferenceKey(R.string.pref_key_app_create_counter), 0);
     }
 
     public void setDefaultSearchEngine(SearchEngine searchEngine) {
