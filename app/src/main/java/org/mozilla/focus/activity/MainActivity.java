@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import org.mozilla.focus.fragment.ListPanelDialog;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
+import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.Constants;
@@ -422,49 +424,98 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         // For turbo mode, a automatic refresh is done when we disable block image.
     }
 
-    private static final class CaptureRunnable implements Runnable {
-        private final WeakReference<BrowserFragment> browserFragmentWeakReference;
-        private final WeakReference<ScreenCaptureDialogFragment> screenCaptureDialogFragmentWeakReference;
-        private final WeakReference<View> containerWeakReference;
+    private static final class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, BrowserFragment.ScreenshotCallback {
 
-        public CaptureRunnable(BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
-            browserFragmentWeakReference = new WeakReference<>(browserFragment);
-            screenCaptureDialogFragmentWeakReference = new WeakReference<>(screenCaptureDialogFragment);
-            containerWeakReference = new WeakReference<>(container);
+        final WeakReference<Context> refContext;
+        final WeakReference<BrowserFragment> refBrowserFragment;
+        final WeakReference<ScreenCaptureDialogFragment> refScreenCaptureDialogFragment;
+        final WeakReference<View> refContainerView;
+
+        CaptureRunnable(Context context, BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
+            super(context);
+            refContext = new WeakReference<>(context);
+            refBrowserFragment = new WeakReference<>(browserFragment);
+            refScreenCaptureDialogFragment = new WeakReference<>(screenCaptureDialogFragment);
+            refContainerView = new WeakReference<>(container);
         }
 
         @Override
         public void run() {
-            final BrowserFragment browserFragment = browserFragmentWeakReference.get();
-            ScreenCaptureDialogFragment screenCaptureDialogFragment = screenCaptureDialogFragmentWeakReference.get();
-            View view = containerWeakReference.get();
-            int captureResultResource = R.string.screenshot_failed;
-            final String imgPath = (browserFragment != null) ? browserFragment.capturePage() : null;
-            if (!TextUtils.isEmpty(imgPath)) {
-                captureResultResource = R.string.screenshot_saved;
+            BrowserFragment browserFragment = refBrowserFragment.get();
+            if (browserFragment == null) {
+                return;
             }
-            if (screenCaptureDialogFragment != null) {
-                screenCaptureDialogFragment.dismiss();
-            }
-            if (view != null) {
-                Snackbar snackbar = Snackbar.make(view, captureResultResource, Snackbar.LENGTH_SHORT);
-                if(!TextUtils.isEmpty(imgPath) && browserFragment != null) {
-                    snackbar.setAction(R.string.label_menu_share, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Uri uri = Uri.fromFile(new File(imgPath));
-                            Intent share = new Intent(Intent.ACTION_SEND);
-                            share.putExtra(Intent.EXTRA_STREAM, uri);
-                            share.setType("image/*");
-                            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            browserFragment.startActivity(Intent.createChooser(share, null));
-                        }
-                    });
-                }
-                snackbar.show();
-
+            if(browserFragment.capturePage(this)){
+                //  onCaptureComplete called
+            } else {
+                //  Capture failed
+                promptScreenshotResult(R.string.screenshot_failed, null);
             }
         }
+
+        @Override
+        public void onCaptureComplete(String title, String url, Bitmap bitmap) {
+            Context context = refContext.get();
+            if (context == null) {
+                return;
+            }
+
+            execute(title, url, bitmap);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
+            if (screenCaptureDialogFragment == null) {
+                cancel(true);
+                return;
+            }
+            screenCaptureDialogFragment.start();
+        }
+
+        @Override
+        protected void onPostExecute(String path) {
+            ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
+            if (screenCaptureDialogFragment == null) {
+                cancel(true);
+                return;
+            }
+            final int captureResultResource;
+            if (TextUtils.isEmpty(path)) {
+                screenCaptureDialogFragment.dismiss();
+                captureResultResource = R.string.screenshot_failed;
+            } else {
+                screenCaptureDialogFragment.dismiss(true);
+                captureResultResource = R.string.screenshot_saved;
+            }
+
+            promptScreenshotResult(captureResultResource, path);
+        }
+
+        private void promptScreenshotResult(int snackbarTitleId, final String path){
+            final View container = refContainerView.get();
+            if (container == null) {
+                return;
+            }
+
+            final BrowserFragment browserFragment = refBrowserFragment.get();
+            Snackbar snackbar = Snackbar.make(container, snackbarTitleId, Snackbar.LENGTH_SHORT);
+            if (!TextUtils.isEmpty(path) && browserFragment != null) {
+                snackbar.setAction(R.string.label_menu_share, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri uri = Uri.fromFile(new File(path));
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        share.setType("image/*");
+                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        browserFragment.startActivity(Intent.createChooser(share, null));
+                    }
+                });
+            }
+            snackbar.show();
+        }
+
     }
 
     private void showLoadingAndCapture(final BrowserFragment browserFragment) {
@@ -473,11 +524,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
         capturingFragment.show(getSupportFragmentManager(), "capturingFragment");
-        final int WAIT_INTERVAL = 50;
-        // Post delay to wait for Dialog to show
-        HANDLER.postDelayed(new CaptureRunnable(browserFragment, capturingFragment, findViewById(R.id.container)), WAIT_INTERVAL);
-    }
 
+        final int WAIT_INTERVAL = 150;
+        // Post delay to wait for Dialog to show
+        HANDLER.postDelayed(new CaptureRunnable(MainActivity.this, browserFragment, capturingFragment, findViewById(R.id.container)), WAIT_INTERVAL);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

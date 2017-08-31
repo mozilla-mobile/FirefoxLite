@@ -744,30 +744,24 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
-    public String capturePage() {
-        try {
-            final IWebView iwebView = getWebView();
-            // Failed to get Webview
-            if (iwebView == null || !(iwebView instanceof WebView)) {
-                return null;
-            }
-            WebView webView = (WebView) iwebView;
-            Bitmap content = getPageBitmap(webView);
-            // Failed to capture
-            if (content == null) {
-                return null;
-            }
-            final String path = saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
-            // Failed to save
-            if (path == null) {
-                return null;
-            }
-            Screenshot screenshot = new Screenshot(iwebView.getTitle(), iwebView.getUrl(), System.currentTimeMillis(), path);
-            ScreenshotManager.getInstance().insert(screenshot, null);
-            return path;
-        } catch (IOException ex) {
-            return null;
+    public interface ScreenshotCallback {
+        void onCaptureComplete(String title, String url, Bitmap bitmap);
+    }
+
+    public boolean capturePage(@NonNull ScreenshotCallback callback) {
+        final IWebView iwebView = getWebView();
+        // Failed to get Webview
+        if (iwebView == null || !(iwebView instanceof WebView)) {
+            return false;
         }
+        WebView webView = (WebView) iwebView;
+        Bitmap content = getPageBitmap(webView);
+        // Failed to capture
+        if (content == null) {
+            return false;
+        }
+        callback.onCaptureComplete(iwebView.getTitle(), iwebView.getUrl(), content);
+        return true;
     }
 
     private Bitmap getPageBitmap(WebView webView) {
@@ -784,31 +778,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             return null;
         }
 
-    }
-
-    private String saveBitmapToStorage(String fileName, Bitmap bitmap) throws IOException {
-        File folder = StorageUtils.getTargetDirForSaveFile(getActivity(), "Zerda");
-        if (!FileUtils.ensureDir(folder)) {
-            throw new IOException("Can't create folder");
-        }
-        String path = null;
-        fileName = fileName.concat(".png");
-        File file = new File(folder, fileName);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.flush();
-            fos.close();
-            path = file.getPath();
-            notifyNewScreenshot(path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return path;
-    }
-
-    private void notifyNewScreenshot(String path) {
-        MediaScannerConnection.scanFile(getContext(), new String[]{path}, new String[]{null}, null);
     }
 
     class FileChooseAction {
