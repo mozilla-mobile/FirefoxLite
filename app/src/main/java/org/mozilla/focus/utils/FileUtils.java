@@ -6,6 +6,7 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.support.annotation.NonNull;
 
 import java.io.File;
@@ -174,4 +175,9 @@ public class FileUtils {
 
         return deleted;
     }
+
+    public static void notifyMediaScanner(Context context, String path) {
+        MediaScannerConnection.scanFile(context, new String[]{path}, new String[]{null}, null);
+    }
+
 }
