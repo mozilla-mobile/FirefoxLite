@@ -49,6 +49,7 @@ import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.Constants;
+import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
@@ -87,6 +88,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
+    private static boolean sIsNewCreated = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +125,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         }
         WebViewProvider.preload(this);
+
+        if(sIsNewCreated && !Settings.getInstance(this).didShowRateAppDialog()) {
+            sIsNewCreated = false;
+            Settings.getInstance(this).increaseAppCreateCounter();
+            if(!Settings.getInstance(this).didShowRateAppDialog() && Settings.getInstance(this).getAppCreateCount() == DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
+                DialogUtils.showRateAppDialog(this);
+            }
+        }
+
     }
 
     private void initBroadcastReceivers() {

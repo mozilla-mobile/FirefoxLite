@@ -15,6 +15,7 @@
     <string name="menu_about">About</string>
     <string name="menu_help">Help</string>
     <string name="menu_rights">Your Rights</string>
+    <string name="menu_give_feedback">Give feedback</string>
 
     <!-- This is the title of a dialog that shows all the share targets (apps or contacts) when
          sharing an URL. -->
@@ -287,4 +288,12 @@
 
     <!-- Remove Top site item -->
     <string name="remove">Remove</string>
+
+    <!--In-app Promotion, Rate the App-->
+    <string name="rate_app_dialog_text_title">Love Firefox Rocket?</string>
+    <string name="rate_app_dialog_text_content">Thank you for choosing our product. Your feedback is important to us.</string>
+    <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 star!</string>
+    <string name="rate_app_dialog_btn_feedback">No, send feedback</string>
+
+    <string name="rate_app_feedback_url" translatable="false">https://www.mozilla.org/</string>
 </resources>

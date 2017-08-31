@@ -22,6 +22,8 @@ import org.mozilla.focus.activity.SettingsActivity;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.DialogUtils;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 
 import java.util.Locale;
@@ -43,7 +45,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         TelemetryWrapper.settingsClickEvent(keyClicked);
 
-        if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
+        if (keyClicked.equals(resources.getString(R.string.pref_key_give_feedback))) {
+            DialogUtils.showRateAppDialog(getActivity());
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
         }
