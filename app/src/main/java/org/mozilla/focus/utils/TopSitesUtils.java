@@ -26,6 +26,11 @@ import java.util.Locale;
 
 public class TopSitesUtils {
 
+    /** 
+     * get default topsites data from assets and restore it to SharedPreferences
+     * @param context
+     * @return default TopSites Json Array
+     */
     public static JSONArray getDefaultSitesJsonArrayFromAssets(Context context) {
         JSONArray obj = null;
         try {
