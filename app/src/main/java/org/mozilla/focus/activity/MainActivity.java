@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -434,18 +435,34 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         @Override
         public void run() {
-            BrowserFragment browserFragment = browserFragmentWeakReference.get();
+            final BrowserFragment browserFragment = browserFragmentWeakReference.get();
             ScreenCaptureDialogFragment screenCaptureDialogFragment = screenCaptureDialogFragmentWeakReference.get();
             View view = containerWeakReference.get();
             int captureResultResource = R.string.screenshot_failed;
-            if (browserFragment != null && browserFragment.capturePage()) {
+            final String imgPath = (browserFragment != null) ? browserFragment.capturePage() : null;
+            if (!TextUtils.isEmpty(imgPath)) {
                 captureResultResource = R.string.screenshot_saved;
             }
             if (screenCaptureDialogFragment != null) {
                 screenCaptureDialogFragment.dismiss();
             }
             if (view != null) {
-                Snackbar.make(view, captureResultResource, Snackbar.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(view, captureResultResource, Snackbar.LENGTH_SHORT);
+                if(!TextUtils.isEmpty(imgPath) && browserFragment != null) {
+                    snackbar.setAction(R.string.label_menu_share, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Uri uri = Uri.fromFile(new File(imgPath));
+                            Intent share = new Intent(Intent.ACTION_SEND);
+                            share.putExtra(Intent.EXTRA_STREAM, uri);
+                            share.setType("image/*");
+                            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            browserFragment.startActivity(Intent.createChooser(share, null));
+                        }
+                    });
+                }
+                snackbar.show();
+
             }
         }
     }
