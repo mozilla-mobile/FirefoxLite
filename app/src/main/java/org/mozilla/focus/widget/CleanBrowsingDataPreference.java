@@ -6,12 +6,12 @@ import android.content.res.Resources;
 import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
 import android.webkit.CookieManager;
-import android.webkit.WebStorage;
 import android.webkit.WebViewDatabase;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.history.BrowsingHistoryManager;
+import org.mozilla.focus.utils.TopSitesUtils;
+
 
 /**
  * Created by ylai on 2017/8/3.
@@ -38,11 +38,11 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
         super.onDialogClosed(positiveResult);
         if (positiveResult) {
             Resources resources = getContext().getResources();
-
             //  On click positive callback here get current value by getValues();
             for(String value : getValues()) {
                 if (resources.getString(R.string.pref_value_clear_browsing_history).equals(value)) {
                     BrowsingHistoryManager.getInstance().deleteAll(null);
+                    TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
                 } else if (resources.getString(R.string.pref_value_clear_cookies).equals(value)) {
                     CookieManager.getInstance().removeAllCookies(null);
                 } else if (resources.getString(R.string.pref_value_clear_cache).equals(value)) {
