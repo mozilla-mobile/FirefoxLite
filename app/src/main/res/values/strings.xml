@@ -221,7 +221,7 @@
     <string name="label_menu_clear_cache">Clear cache</string>
     <string name="label_menu_history">History</string>
     <string name="label_menu_share">Share</string>
-    <string name="label_menu_screenshots">Screenshots</string>
+    <string name="label_menu_my_shots">My shots</string>
     <string name="label_menu_capture_page">Capture Page</string>
     <string name="label_menu_turbo_mode">Turbo mode</string>
     <string name="label_menu_block_ads">Block Ads</string>
