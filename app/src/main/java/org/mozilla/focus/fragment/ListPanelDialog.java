@@ -28,6 +28,7 @@ public class ListPanelDialog extends DialogFragment {
     private View downloadsTouchArea;
     private View historyTouchArea;
     private View screenshotsTouchArea;
+    private boolean firstLaunch = true;
 
     public static ListPanelDialog newInstance(int type) {
         ListPanelDialog listPanelDialog = new ListPanelDialog();
@@ -123,18 +124,24 @@ public class ListPanelDialog extends DialogFragment {
     }
 
     private void showDownloads() {
-        setSelectedItem(TYPE_DOWNLOADS);
-        showPanelFragment(DownloadsFragment.newInstance());
+        if(firstLaunch || getArguments().getInt(TYPE) != TYPE_DOWNLOADS) {
+            setSelectedItem(TYPE_DOWNLOADS);
+            showPanelFragment(DownloadsFragment.newInstance());
+        }
     }
 
     private void showHistory() {
-        setSelectedItem(TYPE_HISTORY);
-        showPanelFragment(BrowsingHistoryFragment.newInstance());
+        if(firstLaunch || getArguments().getInt(TYPE) != TYPE_HISTORY) {
+            setSelectedItem(TYPE_HISTORY);
+            showPanelFragment(BrowsingHistoryFragment.newInstance());
+        }
     }
 
     private void showScreenshots() {
-        setSelectedItem(TYPE_SCREENSHOTS);
-        showPanelFragment(ScreenshotGridFragment.newInstance());
+        if (firstLaunch || getArguments().getInt(TYPE) != TYPE_SCREENSHOTS) {
+            setSelectedItem(TYPE_SCREENSHOTS);
+            showPanelFragment(ScreenshotGridFragment.newInstance());
+        }
     }
 
     private void showPanelFragment(PanelFragment panelFragment) {
@@ -142,6 +149,7 @@ public class ListPanelDialog extends DialogFragment {
     }
 
     private void toggleSelectedItem() {
+        firstLaunch = false;
         downloadsTouchArea.setSelected(false);
         historyTouchArea.setSelected(false);
         screenshotsTouchArea.setSelected(false);
