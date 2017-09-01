@@ -52,6 +52,7 @@
 
     <color name="screenshotViewerBtmBarBgColor">#4A4A4F</color>
     <color name="window_background_screenshot">#CC26384B</color>
+    <color name="colorScreenshotItemBorder">#B2B2B2</color>
 
     <color name="colorUrlBarLockIcon">#12BC00</color>
 
