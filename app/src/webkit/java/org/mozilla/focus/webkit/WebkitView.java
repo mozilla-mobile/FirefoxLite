@@ -30,6 +30,7 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -210,7 +211,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
             Site site = new Site();
             site.setTitle(view.getTitle());
             site.setUrl(url);
-            site.setFavIcon(icon);
+            site.setFavIcon(FavIconUtils.getRefinedBitmap(getResources(), icon, view.getTitle().charAt(0)));
             BrowsingHistoryManager.getInstance().insert(site, null);
         }
 
@@ -281,6 +282,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
             site.setUrl(url);
             site.setTitle(getTitle());
             site.setLastViewTimestamp(System.currentTimeMillis());
+            site.setFavIcon(FavIconUtils.getInitialBitmap(getResources(), null, getTitle().charAt(0)));
             BrowsingHistoryManager.getInstance().insert(site, null);
         }
 
