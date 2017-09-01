@@ -744,29 +744,29 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
-    public boolean capturePage() {
+    public String capturePage() {
         try {
             final IWebView iwebView = getWebView();
             // Failed to get Webview
             if (iwebView == null || !(iwebView instanceof WebView)) {
-                return false;
+                return null;
             }
             WebView webView = (WebView) iwebView;
             Bitmap content = getPageBitmap(webView);
             // Failed to capture
             if (content == null) {
-                return false;
+                return null;
             }
             final String path = saveBitmapToStorage(webView.getTitle() + "." + Calendar.getInstance().getTimeInMillis(), content);
             // Failed to save
             if (path == null) {
-                return false;
+                return null;
             }
             Screenshot screenshot = new Screenshot(iwebView.getTitle(), iwebView.getUrl(), System.currentTimeMillis(), path);
             ScreenshotManager.getInstance().insert(screenshot, null);
-            return true;
+            return path;
         } catch (IOException ex) {
-            return false;
+            return null;
         }
     }
 
