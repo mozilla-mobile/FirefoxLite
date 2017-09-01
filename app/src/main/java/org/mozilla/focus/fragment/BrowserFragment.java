@@ -22,17 +22,13 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.FileObserver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,9 +52,11 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.menu.WebContextMenu;
+import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.Constants;
+import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
@@ -78,7 +76,7 @@ import java.util.List;
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable {
+public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable, ScreenshotObserver.OnScreenshotListener {
 
     public static final String FRAGMENT_TAG = "browser";
 
@@ -90,7 +88,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
     private static final String RESTORE_KEY_DOWNLOAD = "download";
-    private static final String SCREENSHOT_PATH = Environment.getExternalStorageDirectory() + File.separator + Environment.DIRECTORY_PICTURES + File.separator + "Screenshots" + File.separator;
 
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
@@ -139,36 +136,23 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     // pending action for file-choosing
     private FileChooseAction fileChooseAction;
 
-    // monitor screenshot is created
-    private FileObserver fileObserver;
-
     private AlertDialog dialogScreenshotOnBoarding;
+    private ScreenshotObserver screenshotObserver;
 
     @Override
     public void onPause() {
         super.onPause();
-        if(fileObserver != null)
-            fileObserver.stopWatching();
+        if(screenshotObserver != null) {
+            screenshotObserver.stop();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if(Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
-            fileObserver = new FileObserver(SCREENSHOT_PATH, FileObserver.CREATE) {
-                @Override
-                public void onEvent(int event, String path) {
-                    if((event & FileObserver.CREATE) != 0 && !TextUtils.isEmpty(path)) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showScreenshotOnBoardingDialog();
-                            }
-                        });
-                    }
-                }
-            };
-            fileObserver.startWatching();
+            screenshotObserver = new ScreenshotObserver(getActivity(), this);
+            screenshotObserver.start();
         }
     }
 
@@ -917,38 +901,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     private void showScreenshotOnBoardingDialog() {
-        if(dialogScreenshotOnBoarding != null && dialogScreenshotOnBoarding.isShowing())
-            return;
-
         if(getActivity() != null && Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
-            dialogScreenshotOnBoarding = new AlertDialog.Builder(getActivity()).create();
-            View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_screenshot_onboarding_dialog, null);
-
-
-            TextView textView = (TextView) dialogView.findViewById(R.id.dialog_screenshot_on_boarding_text);
-            ImageSpan imageSpan = new ImageSpan(getActivity(), R.drawable.action_capture);
-            String emptyPrefix = getString(R.string.screenshot_on_boarding_text_msg_prefix);
-            String emptyPostfix = getString(R.string.screenshot_on_boarding_text_msg_postfix);
-            SpannableString spannableString = new SpannableString(emptyPrefix + emptyPostfix);
-
-            int start = emptyPrefix.length();
-            int end = start + 1;
-            spannableString.setSpan(imageSpan, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            textView.setText(spannableString);
-
-            dialogView.findViewById(R.id.dialog_screenshot_on_boarding_btn_got_it).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(dialogScreenshotOnBoarding != null)
-                        dialogScreenshotOnBoarding.dismiss();
-                }
-            });
-            dialogScreenshotOnBoarding.setView(dialogView);
-            dialogScreenshotOnBoarding.show();
-
-            Settings.getInstance(getActivity()).setScreenshotOnBoardingDone();
-            if(fileObserver != null)
-                fileObserver.stopWatching();
+            if(dialogScreenshotOnBoarding != null && dialogScreenshotOnBoarding.isShowing()) {
+                return;
+            }
+            dialogScreenshotOnBoarding = DialogUtils.showScreenshotOnBoardingDialog(getActivity());
+            if(screenshotObserver != null) {
+                screenshotObserver.stop();
+            }
         }
     }
 
@@ -1028,5 +988,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             title = TextUtils.isEmpty(title) ? getString(R.string.file_picker_title) : title;
             return FilePickerUtil.getFilePickerIntent(getActivity(), title, mimeTypes);
         }
+    }
+
+    @Override
+    public void onScreenshotTaken(String screenshotPath, String title) {
+       if(getActivity() != null) {
+           getActivity().runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                   showScreenshotOnBoardingDialog();
+               }
+           });
+       }
     }
 }
