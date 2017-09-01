@@ -30,6 +30,8 @@ public class WebViewProvider {
      * it might need, in advance of intialising the view (at which time we are probably wanting to
      * show a website immediately).
      */
+
+    public static final String MOBILE_USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.4; en-us; Nexus 4 Build/JOP24G) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
     public static void preload(final Context context) {
         TrackingProtectionWebViewClient.triggerPreload(context);
     }
@@ -74,8 +76,7 @@ public class WebViewProvider {
         settings.setAllowFileAccessFromFileURLs(false);
         settings.setAllowUniversalAccessFromFileURLs(false);
 
-        final String appName = context.getResources().getString(R.string.useragent_appname);
-        settings.setUserAgentString(buildUserAgentString(context, settings, appName));
+        settings.setUserAgentString(MOBILE_USER_AGENT);
 
         // Right now I do not know why we should allow loading content from a content provider
         settings.setAllowContentAccess(false);
