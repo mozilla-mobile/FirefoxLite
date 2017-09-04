@@ -5,6 +5,8 @@
 package org.mozilla.focus.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -34,6 +36,15 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
 
     private ViewPager viewPager;
 
+    private TransitionDrawable bgTransitionDrawable;
+    private Drawable[] bgDrawables;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initDrawables();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -55,6 +66,8 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.skip).setOnClickListener(this);
 
         final View background = view.findViewById(R.id.background);
+        background.setBackground(bgTransitionDrawable);
+
         final FirstrunPagerAdapter adapter = new FirstrunPagerAdapter(container.getContext(), this);
 
         viewPager = (ViewPager) view.findViewById(R.id.pager);
@@ -83,14 +96,20 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
         viewPager.setClipToPadding(false);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                final TransitionDrawable drawable = (TransitionDrawable) background.getBackground();
 
-                if (position == adapter.getCount() - 1) {
-                    drawable.startTransition(200);
+            @Override
+            public void onPageSelected(int newIdx) {
+                final int duration = 400;
+                final Drawable nextDrawable = bgDrawables[newIdx % bgDrawables.length];
+
+                if ((newIdx % 2) == 0) {
+                    // next page is even number
+                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_even, nextDrawable);
+                    bgTransitionDrawable.reverseTransition(duration); // odd -> even
                 } else {
-                    drawable.resetTransition();
+                    // next page is odd number
+                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_odd, nextDrawable);
+                    bgTransitionDrawable.startTransition(duration); // even -> odd
                 }
             }
 
@@ -139,4 +158,21 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
 
         ((MainActivity) getActivity()).firstrunFinished();
     }
+
+    // FirstRun fragment is not used often, so we create drawables programmatically, instead of add
+    // lots of drawable resources
+    private void initDrawables() {
+        final GradientDrawable.Orientation orientation = GradientDrawable.Orientation.TR_BL;
+        bgDrawables = new Drawable[]{
+                new GradientDrawable(orientation, new int[]{0xFF75ADB3, 0xFF328BD1}),
+                new GradientDrawable(orientation, new int[]{0xFF7EBCB5, 0xFF328BD1}),
+                new GradientDrawable(orientation, new int[]{0xFF83C8B3, 0xFF328BD1}),
+                new GradientDrawable(orientation, new int[]{0xFF8ED8B3, 0xFF328BD1}),
+        };
+
+        bgTransitionDrawable = new TransitionDrawable(bgDrawables);
+        bgTransitionDrawable.setId(0, R.id.first_run_bg_even);
+        bgTransitionDrawable.setId(1, R.id.first_run_bg_odd);
+    }
+
 }
