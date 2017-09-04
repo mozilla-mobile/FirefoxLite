@@ -193,7 +193,7 @@
 
     <!-- First run tour -->
     <!-- title for first page of FirstRun, %1$s will be formatted by product name -->
-    <string name="first_run_page1_title">Thanks for choosing\n%1$s</string>
+    <string name="first_run_page1_title">Thanks for choosing %1$s</string>
     <string name="first_run_page1_text">A browser tailor-made for Indonesia by Mozilla, the non-profit committed to a free and open web.</string>
     <string name="first_run_page2_title">Browse faster than ever</string>
     <string name="first_run_page2_text">Our turbo mode blocks ads &amp; trackers for you to enjoy browsing at blazing speed. If a site seems broken, you can turn it off from the menu.</string>
