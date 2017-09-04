@@ -103,7 +103,7 @@
 
     <string name="preference_category_mozilla">Mozilla</string>
     <string name="preference_mozilla_telemetry">Send usage data</string>
-    <string name="preference_mozilla_telemetry_summary">Mozilla strives to collect only what we need to provide and improve Zerda for everyone.</string>
+    <string name="preference_mozilla_telemetry_summary">Mozilla strives to collect only what we need to provide and improve %1$s for everyone.</string>
     <string name="preference_mozilla_telemetry_learn_more">Learn more</string>
 
     <!-- Item in Preferences that shows the about page. Parameter 1 is the app name, i.e. Firefox Focus/Firefox Klar. -->

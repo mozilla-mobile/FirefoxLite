@@ -45,8 +45,6 @@ class TelemetrySwitchPreference extends Preference {
 
     @Override
     protected void onBindView(final View view) {
-        super.onBindView(view);
-
         final Switch switchWidget = (Switch) view.findViewById(R.id.switch_widget);
 
         switchWidget.setChecked(TelemetryWrapper.isTelemetryEnabled(getContext()));
@@ -82,5 +80,10 @@ class TelemetrySwitchPreference extends Preference {
                 return true;
             }
         });
+
+        final String appName = getContext().getResources().getString(R.string.useragent_appname);
+        setSummary(getContext().getResources().getString(R.string.preference_mozilla_telemetry_summary, appName));
+
+        super.onBindView(view);
     }
 }
