@@ -15,6 +15,7 @@ import org.mozilla.focus.glide.GlideApp;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.Screenshot;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -142,6 +143,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Object item = mItems.get(position);
             if (item instanceof Screenshot) {
                 ScreenshotViewerActivity.goScreenshotViewerActivityOnResult(mActivity, (Screenshot) item);
+                TelemetryWrapper.openCapture();
             }
         }
     }

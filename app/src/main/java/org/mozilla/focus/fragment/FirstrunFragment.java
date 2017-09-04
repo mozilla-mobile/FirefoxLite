@@ -137,7 +137,6 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
 
             case R.id.skip:
                 finishFirstrun();
-                TelemetryWrapper.skipFirstRunEvent();
                 break;
 
             case R.id.finish:

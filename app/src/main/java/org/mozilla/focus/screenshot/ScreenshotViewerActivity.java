@@ -3,6 +3,7 @@ package org.mozilla.focus.screenshot;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
 import org.mozilla.focus.screenshot.model.Screenshot;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -122,6 +124,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 mBottomToolBar.setVisibility((mBottomToolBar.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
                 break;
             case R.id.screenshot_viewer_btn_open_url:
+                TelemetryWrapper.openCaptureLink();
                 Intent urlIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mScreenshot.getUrl()));
                 urlIntent.setClassName(this, MainActivity.class.getName());
                 urlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -147,6 +150,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 }
                 break;
             case R.id.screenshot_viewer_btn_info:
+                TelemetryWrapper.showCaptureInfo();
                 onInfoClick();
                 break;
             case R.id.screenshot_viewer_btn_delete:
@@ -265,7 +269,12 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                     Intent editIntent = new Intent(Intent.ACTION_EDIT);
                     editIntent.setDataAndType(uri, "image/*");
                     editIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivity(Intent.createChooser(editIntent, null));
+                    try {
+                        startActivity(Intent.createChooser(editIntent, null));
+                        TelemetryWrapper.editCaptureImage(true);
+                    } catch (ActivityNotFoundException e) {
+                        TelemetryWrapper.editCaptureImage(false);
+                    }
                 }
             }
         }).start();
@@ -277,7 +286,11 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             share.putExtra(Intent.EXTRA_STREAM, mImageUri);
             share.setType("image/*");
             share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(share, null));
+            try {
+                startActivity(Intent.createChooser(share, null));
+                TelemetryWrapper.shareCaptureImage(false);
+            } catch (ActivityNotFoundException e) {
+            }
         } else {
             setupView(true);
             initScreenshotInfo(true);
@@ -298,6 +311,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         builder.setPositiveButton(R.string.browsing_history_menu_delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                TelemetryWrapper.deleteCaptureImage();
                 proceedDelete();
             }
         });

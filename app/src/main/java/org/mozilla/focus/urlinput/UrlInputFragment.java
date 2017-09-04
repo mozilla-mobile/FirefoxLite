@@ -142,9 +142,14 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         switch (view.getId()) {
             case R.id.suggestion_item:
                 setUrlText(((TextView) view).getText());
+                TelemetryWrapper.searchSuggestionLongClick();
                 return true;
             case R.id.clear:
+                TelemetryWrapper.searchClear();
+                return false;
             case R.id.dismiss:
+                TelemetryWrapper.searchDismiss();
+                return false;
             default:
                 return false;
         }
@@ -179,7 +184,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
     private void onSuggestionClicked(CharSequence tag) {
         setUrlText(tag);
-        onCommit();
+        onCommit(true);
     }
 
     private void dismiss() {
@@ -194,7 +199,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         }
     }
 
-    public void onCommit() {
+    public void onCommit(boolean isSuggestion) {
         final String input = urlView.getText().toString();
         if (!input.trim().isEmpty()) {
             ViewUtils.hideKeyboard(urlView);
@@ -207,7 +212,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
             openUrl(url);
 
-            TelemetryWrapper.urlBarEvent(isUrl);
+            TelemetryWrapper.urlBarEvent(isUrl, isSuggestion);
         }
     }
 

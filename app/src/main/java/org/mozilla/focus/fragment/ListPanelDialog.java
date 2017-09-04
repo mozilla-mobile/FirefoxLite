@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public class ListPanelDialog extends DialogFragment {
 
@@ -99,6 +100,7 @@ public class ListPanelDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 showDownloads();
+                TelemetryWrapper.showPanelDownload();
             }
         });
         historyTouchArea = v.findViewById(R.id.history);
@@ -106,6 +108,7 @@ public class ListPanelDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 showHistory();
+                TelemetryWrapper.showPanelHistory();
             }
         });
         screenshotsTouchArea = v.findViewById(R.id.screenshots);
@@ -113,6 +116,7 @@ public class ListPanelDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 showScreenshots();
+                TelemetryWrapper.showPanelCapture();
             }
         });
         return v;

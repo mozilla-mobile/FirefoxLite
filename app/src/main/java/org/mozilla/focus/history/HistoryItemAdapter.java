@@ -22,6 +22,7 @@ import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -111,6 +112,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         if(menuItem.getItemId() == R.id.browsing_history_menu_delete) {
                             BrowsingHistoryManager.getInstance().delete(item.getId(), HistoryItemAdapter.this);
+                            TelemetryWrapper.historyRemoveLink();
                         }
                         return false;
                     }
@@ -121,6 +123,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     @Override
                     public void onClick(View v) {
                         popupMenu.show();
+                        TelemetryWrapper.showHistoryContextMenu();
                     }
                 });
 
@@ -161,6 +164,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 intent.setData(Uri.parse(((Site) item).getUrl()));
                 mContext.startActivity(intent);
                 mHistoryListener.onItemClicked();
+                TelemetryWrapper.historyOpenLink();
             }
         }
     }

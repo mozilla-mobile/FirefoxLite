@@ -299,6 +299,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         .apply();
                 stringResource = mBlockImgPref ? R.string.message_enable_block_image : R.string.message_disable_block_image;
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
+                TelemetryWrapper.menuBlockImageChangeTo(mBlockImgPref);
                 break;
             case R.id.menu_turbomode:
                 mTurboModePref = !mTurboModePref;
@@ -310,21 +311,27 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         .apply();
                 stringResource = mTurboModePref ? R.string.message_enable_turbo_mode : R.string.message_disable_turbo_mode;
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
+                TelemetryWrapper.menuTurboChangeTo(mTurboModePref);
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
+                TelemetryWrapper.clickMenuClearCache();
                 break;
             case R.id.menu_download:
                 onDownloadClicked();
+                TelemetryWrapper.clickMenuDownload();
                 break;
             case R.id.menu_history:
                 onHistoryClicked();
+                TelemetryWrapper.clickMenuHistory();
                 break;
             case R.id.menu_screenshots:
                 onScreenshotsClicked();
+                TelemetryWrapper.clickMenuCapture();
                 break;
             case R.id.menu_preferences:
                 onPreferenceClicked();
+                TelemetryWrapper.clickMenuSettings();
                 break;
             case R.id.action_next:
             case R.id.action_refresh:
@@ -356,15 +363,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         switch (v.getId()) {
             case R.id.action_next:
                 onNextClicked(browserFragment);
+                TelemetryWrapper.clickToolbarForward();
                 break;
             case R.id.action_refresh:
                 onRefreshClicked(browserFragment);
+                TelemetryWrapper.clickToolbarReload();
                 break;
             case R.id.action_share:
                 onShraeClicked(browserFragment);
+                TelemetryWrapper.clickToolbarShare();
                 break;
             case R.id.capture_page:
                 onCapturePageClicked(browserFragment);
+                TelemetryWrapper.clickToolbarCapture();
                 break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
@@ -523,6 +534,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         share.setType("image/*");
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         browserFragment.startActivity(Intent.createChooser(share, null));
+                        TelemetryWrapper.shareCaptureImage(true);
                     }
                 });
             }
@@ -571,8 +583,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, browserFragment.getUrl());
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)));
-
-        TelemetryWrapper.shareEvent();
     }
 
     @Override
