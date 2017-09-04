@@ -11,6 +11,8 @@
     <color name="colorGradientCenter">#FF83377B</color>
     <color name="colorGradientEnd">#FF29528C</color>
 
+    <color name="colorDivider">#E0E0E0</color>
+
     <color name="colorActiveGradientStart">#FF9B3A4D</color>
     <color name="colorActiveGradientCenter">#FF82377D</color>
     <color name="colorActiveGradientEnd">#FF3E4C8A</color>
@@ -40,7 +42,6 @@
     <color name="colorMenuDivider">#E4E4E4</color>
     <color name="colorMenuLabelDefault">#272727</color>
     <color name="colorMenuLabelActive">#0E86FF</color>
-
 
     <color name="url_bg_active">#FFFFFF</color>
     <color name="url_bg_inactive">#EEEEEE</color>
