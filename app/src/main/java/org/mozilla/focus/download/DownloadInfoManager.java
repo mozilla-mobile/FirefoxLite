@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +93,17 @@ public class DownloadInfoManager {
                         List<DownloadInfo> downloadInfoList = new ArrayList<>();
                         if (cursor != null) {
                             while (cursor.moveToNext()) {
-                                downloadInfoList.add(cursorToDownloadInfo(cursor));
+                                DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
+                                File file = new File(URI.create(downloadInfo.getFileUri()).getPath());
+
+                                if (file.exists()){
+                                    downloadInfoList.add(downloadInfo);
+                                }else {
+                                    DownloadInfoManager.getInstance().delete(downloadInfo.getDownloadId(),null);
+                                    DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                                    downloadManager.remove(downloadInfo.getDownloadId());
+                                }
+
                             }
                             cursor.close();
                         }
