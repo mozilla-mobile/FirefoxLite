@@ -1,10 +1,6 @@
 package org.mozilla.focus.download;
 
-import android.app.DownloadManager;
-import android.content.Context;
-
-import org.mozilla.focus.R;
-
+import android.text.TextUtils;
 import java.util.Calendar;
 import java.util.Formatter;
 
@@ -20,14 +16,16 @@ public class DownloadInfo {
     private String Date;
     private String FileName;
     private String MediaUri;
-    private String MimeType;
+    private String MimeType = "";
     private String FileUri;
-    private String FileExtension;
+    private String FileExtension = "";
 
     public DownloadInfo(){}
 
     public void setFileExtension(String fileExtension){
-        FileExtension = fileExtension;
+        if (!TextUtils.isEmpty(fileExtension)){
+            FileExtension = fileExtension;
+        }
     }
 
     public String getFileExtension(){
@@ -48,7 +46,9 @@ public class DownloadInfo {
     }
 
     public void setMimeType(String mimeType){
-        MimeType = mimeType;
+        if (!TextUtils.isEmpty(mimeType)){
+            MimeType = mimeType;
+        }
     }
 
     public String getMimeType(){
