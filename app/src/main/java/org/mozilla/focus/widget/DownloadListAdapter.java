@@ -79,6 +79,9 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }catch (Exception e){
             Log.v(this.getClass().getSimpleName(),""+e.getMessage());
         }
+
+        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        manager.remove(mDownloadInfo.get(position).getDownloadId());
         remove(position);
     }
 
