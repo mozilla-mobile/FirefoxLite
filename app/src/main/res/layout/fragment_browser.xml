@@ -32,9 +32,9 @@
 
             <org.mozilla.focus.web.IWebView
                 android:id="@+id/webview"
-                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="26dp" />
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
@@ -47,11 +47,19 @@
                 <FrameLayout
                     android:id="@+id/urlbar"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="26dp"
                     android:clipChildren="false"
                     app:layout_scrollFlags="">
 
                     <include layout="@layout/toolbar" />
+
+                    <!-- divider between appbar and web-vew, will be covered by progress bar -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/colorDivider"
+                        tools:background="#FF0000" />
 
                     <org.mozilla.focus.widget.AnimatedProgressBar
                         android:id="@+id/progress"
