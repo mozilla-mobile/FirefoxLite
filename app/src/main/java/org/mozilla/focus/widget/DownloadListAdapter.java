@@ -3,6 +3,7 @@ package org.mozilla.focus.widget;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -204,18 +205,22 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
            return "apk".equals(downloadInfo.getFileExtension()) ? R.drawable.file_app : R.drawable.file_compressed;
         }else {
 
-            String mimeType = downloadInfo.getMimeType().substring(0,downloadInfo.getMimeType().indexOf("/"));
-            switch (mimeType){
-                case "text":
-                    return R.drawable.file_document;
-                case "image":
-                    return R.drawable.file_image;
-                case "audio":
-                    return R.drawable.file_music;
-                case "video":
-                    return R.drawable.file_video;
-                default:
-                    return R.drawable.file_document;
+            if (!TextUtils.isEmpty(downloadInfo.getMimeType())){
+                String mimeType = downloadInfo.getMimeType().substring(0,downloadInfo.getMimeType().indexOf("/"));
+                switch (mimeType){
+                    case "text":
+                        return R.drawable.file_document;
+                    case "image":
+                        return R.drawable.file_image;
+                    case "audio":
+                        return R.drawable.file_music;
+                    case "video":
+                        return R.drawable.file_video;
+                    default:
+                        return R.drawable.file_document;
+                }
+            }else {
+                return R.drawable.file_document;
             }
         }
     }
