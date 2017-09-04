@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/btn_menu"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
     android:layout_alignParentBottom="true"
     android:layout_alignParentEnd="true"
-    android:layout_marginBottom="22dp"
-    android:layout_marginEnd="22dp"
-    android:background="@drawable/round_rectangle_ripple"
-    android:src="@drawable/action_menu"
-    android:tint="@android:color/white" />
+    android:gravity="center|bottom">
+
+    <ImageButton
+        android:visibility="invisible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_rectangle_ripple"
+        android:src="@drawable/menu_home" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="76dp"
+        android:layout_marginStart="76dp"
+        android:src="@drawable/action_search"
+        app:fabSize="normal"/>
+
+    <ImageButton
+        android:id="@+id/btn_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_rectangle_ripple"
+        android:src="@drawable/action_menu"
+        android:tint="@android:color/white" />
+
+</LinearLayout>
