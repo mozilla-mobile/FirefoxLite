@@ -16,12 +16,11 @@
     android:gravity="center_horizontal"
     android:longClickable="true"
     android:orientation="vertical"
-    android:paddingBottom="5dp"
     android:paddingTop="5dp">
 
     <android.support.v7.widget.CardView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         app:cardBackgroundColor="#EEEEEE"
         app:cardCornerRadius="8dp">
 
@@ -36,12 +35,12 @@
     <TextView
         android:id="@+id/text"
         android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:lineSpacingExtra="2dp"
+        android:textAlignment="center"
+        android:lineSpacingExtra="1dp"
         android:textColor="#272727"
-        android:textSize="13sp"
+        android:textSize="11dp"
         android:maxLines="2"
         tools:text="Foobar" />
 </LinearLayout>

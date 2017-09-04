@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/main_list"
+    android:layout_width="296dp"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+    app:spanCount="4"
+    tools:listitem="@layout/item_top_site" />

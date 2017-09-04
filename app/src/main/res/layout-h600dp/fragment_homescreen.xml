@@ -13,8 +13,7 @@
         android:id="@+id/home_fragment_fake_input"
         android:layout_width="306dp"
         android:layout_height="48dp"
-        android:layout_above="@id/main_list"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerInParent="true"/>
 
     <include layout="@layout/fragment_homescreen_item_title"
         android:layout_width="wrap_content"
@@ -24,11 +23,10 @@
         android:layout_marginBottom="@dimen/home_padding_url_bar_to_title"/>
 
     <include layout="@layout/fragment_homescreen_item_recyclerview"
-        android:id="@+id/main_list"
         android:layout_width="296dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/btn_menu"
+        android:layout_below="@id/home_fragment_fake_input"
         android:layout_marginTop="@dimen/home_padding_url_bar_to_top_sites"/>
 
     <include layout="@layout/fragment_homescreen_item_menu_button"/>
