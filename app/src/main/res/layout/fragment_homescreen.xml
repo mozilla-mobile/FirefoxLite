@@ -23,14 +23,17 @@
         android:layout_above="@id/home_fragment_fake_input"
         android:layout_marginBottom="@dimen/home_padding_url_bar_to_title"/>
 
+    <include layout="@layout/fragment_homescreen_item_menu_button"
+        android:id="@+id/btn_menu_container"/>
+
     <include layout="@layout/fragment_homescreen_item_recyclerview"
         android:id="@+id/main_list"
         android:layout_width="296dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/btn_menu"
+        android:layout_above="@id/btn_menu_container"
         android:layout_marginTop="@dimen/home_padding_url_bar_to_top_sites"/>
 
-    <include layout="@layout/fragment_homescreen_item_menu_button"/>
+
 
 </RelativeLayout>
