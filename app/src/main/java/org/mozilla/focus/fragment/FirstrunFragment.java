@@ -72,10 +72,12 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
             }
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
 
         viewPager.setClipToPadding(false);
@@ -93,10 +95,12 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
             }
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
 
         final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);

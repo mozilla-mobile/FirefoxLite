@@ -38,7 +38,7 @@ public class FirstrunPagerAdapter extends PagerAdapter {
     public FirstrunPagerAdapter(Context context, View.OnClickListener listener) {
         this.context = context;
         this.listener = listener;
-        this.pages = new FirstrunPage[] {
+        this.pages = new FirstrunPage[]{
                 new FirstrunPage(
                         context.getString(R.string.firstrun_tracking_title),
                         context.getString(R.string.firstrun_tracking_text),
