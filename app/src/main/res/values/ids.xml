@@ -12,4 +12,6 @@
     <item name="next" type="id" />
     <item name="main_list" type="id" />
     <item name="content_image" type="id" />
+    <item name="first_run_bg_odd" type="id" />
+    <item name="first_run_bg_even" type="id" />
 </resources>
