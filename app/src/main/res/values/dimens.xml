@@ -34,4 +34,7 @@
     <dimen name="favicon_initial_threshold_size">25dp</dimen>
     <dimen name="favicon_downscale_threshold_size">128px</dimen>
     <dimen name="favicon_target_size">100px</dimen>
+
+    <dimen name="home_padding_url_bar_to_title">43dp</dimen>
+    <dimen name="home_padding_url_bar_to_top_sites">22dp</dimen>
 </resources>

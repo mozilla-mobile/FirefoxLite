@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_fragment_fake_input"
+    android:layout_width="306dp"
+    android:layout_height="48dp"
+    android:gravity="center"
+    android:background="@drawable/urlbar_background"
+    android:text="@string/urlbar_hint"
+    android:textColor="#B2B2B2"
+    android:textSize="14sp" />
