@@ -191,20 +191,16 @@
 
     <!-- This is a warning shown in the browser's context menu (when long pressing an image). %1$s will be replaced with the long name of the app (e.g. Firefox Focus). -->
 
-    <!-- First run tour (page 1): Title -->
-    <string name="firstrun_tracking_title">Browse like no one’s watching</string>
-    <!-- First run tour (page 1): Text -->
-    <string name="firstrun_tracking_text">Automatically block online tracking while you browse. Then remove visited pages and cookies with a touch to the trash icon in the app or in your notifications.</string>
-
-    <!-- First run tour (page 2): Title -->
-    <string name="firstrun_defaultbrowser_title">Power up your privacy</string>
-    <!-- First run tour (page 2): Text, %1$s will be replaced with the name of the app (e.g. Firefox Focus). -->
-    <string name="firstrun_defaultbrowser_text">Set %1$s as your default browser and get the benefits of private browsing when you link to the Web from other Android apps.</string>
-
-    <!-- First run tour (page 3): Title -->
-    <string name="firstrun_breaking_title">A quick fix when\nblocking = breaking</string>
-    <!-- First run tour (page 3): Text -->
-    <string name="firstrun_breaking_text">When the downside of blocking online trackers is a site that seems broken, turn off blocking with a tap to the tool menu.</string>
+    <!-- First run tour -->
+    <!-- title for first page of FirstRun, %1$s will be formatted by product name -->
+    <string name="first_run_page1_title">Thanks for choosing\n%1$s</string>
+    <string name="first_run_page1_text">A browser tailor-made for Indonesia by Mozilla, the non-profit committed to a free and open web.</string>
+    <string name="first_run_page2_title">Browse faster than ever</string>
+    <string name="first_run_page2_text">Our turbo mode blocks ads &amp; trackers for you to enjoy browsing at blazing speed. If a site seems broken, you can turn it off from the menu.</string>
+    <string name="first_run_page3_title">Save Data = Save Money</string>
+    <string name="first_run_page3_text">We block ads and tracker by default to save you data. You can save even more by enabling Block Image in the app menu.</string>
+    <string name="first_run_page4_title">Screenshot Everything</string>
+    <string name="first_run_page4_text">You can now take screenshots of the whole web page and easily revisit the web page or view screenshots without using your data.</string>
 
     <string name="firstrun_close_button">OK, got it!</string>
     <string name="firstrun_skip_button">Skip</string>

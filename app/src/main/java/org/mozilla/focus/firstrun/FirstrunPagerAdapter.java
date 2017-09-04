@@ -40,17 +40,21 @@ public class FirstrunPagerAdapter extends PagerAdapter {
         this.listener = listener;
         this.pages = new FirstrunPage[]{
                 new FirstrunPage(
-                        context.getString(R.string.firstrun_tracking_title),
-                        context.getString(R.string.firstrun_tracking_text),
+                        context.getString(R.string.first_run_page1_title, context.getString(R.string.app_name)),
+                        context.getString(R.string.first_run_page1_text),
                         R.drawable.onboarding_img1),
                 new FirstrunPage(
-                        context.getString(R.string.firstrun_defaultbrowser_title),
-                        context.getString(R.string.firstrun_defaultbrowser_text, context.getString(R.string.app_name)),
+                        context.getString(R.string.first_run_page2_title),
+                        context.getString(R.string.first_run_page2_text),
                         R.drawable.onboarding_img2),
                 new FirstrunPage(
-                        context.getString(R.string.firstrun_breaking_title),
-                        context.getString(R.string.firstrun_breaking_text),
+                        context.getString(R.string.first_run_page3_title),
+                        context.getString(R.string.first_run_page3_text),
                         R.drawable.onboarding_img3),
+                new FirstrunPage(
+                        context.getString(R.string.first_run_page4_title),
+                        context.getString(R.string.first_run_page4_text),
+                        R.mipmap.ic_launcher),
         };
     }
 
