@@ -34,7 +34,7 @@ import org.mozilla.focus.utils.UrlUtils;
 
 public class InlineAutocompleteEditText extends android.support.v7.widget.AppCompatEditText {
     public interface OnCommitListener {
-        void onCommit();
+        void onCommit(boolean isSuggestion);
     }
 
     public interface OnFilterListener {
@@ -580,7 +580,7 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
                 final Editable content = getText();
                 if (!hasCompositionString(content)) {
                     if (mCommitListener != null) {
-                        mCommitListener.onCommit();
+                        mCommitListener.onCommit(false);
                     }
 
                     return true;
@@ -605,7 +605,7 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
                 }
 
                 if (mCommitListener != null) {
-                    mCommitListener.onCommit();
+                    mCommitListener.onCommit(false);
                 }
 
                 return true;

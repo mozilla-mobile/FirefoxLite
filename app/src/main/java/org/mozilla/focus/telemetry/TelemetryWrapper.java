@@ -45,13 +45,17 @@ public final class TelemetryWrapper {
     }
 
     private static class Method {
-        private static final String TYPE_URL = "type_url";
         private static final String TYPE_QUERY = "type_query";
         private static final String TYPE_SELECT_QUERY = "select_query";
         private static final String CLICK = "click";
         private static final String CANCEL = "cancel";
         private static final String LONG_PRESS = "long_press";
         private static final String CHANGE = "change";
+        private static final String CLEAR = "clear";
+        private static final String REMOVE = "remove";
+        private static final String DELETE = "delete";
+        private static final String EDIT = "edit";
+
         private static final String FOREGROUND = "foreground";
         private static final String BACKGROUND = "background";
         private static final String SHARE = "share";
@@ -65,38 +69,56 @@ public final class TelemetryWrapper {
     }
 
     private static class Object {
+        private static final String PANEL = "panel";
+        private static final String TOOLBAR = "toolbar";
+        private static final String HOME = "home";
+        private static final String CAPTURE = "capture";
+        private static final String SEARCH_SUGGESTION = "search_suggestion";
         private static final String SEARCH_BAR = "search_bar";
-        private static final String ERASE_BUTTON = "erase_button";
+
         private static final String SETTING = "setting";
         private static final String APP = "app";
         private static final String MENU = "menu";
-        private static final String BACK_BUTTON = "back_button";
-        private static final String NOTIFICATION = "notification";
+
         private static final String NOTIFICATION_ACTION = "notification_action";
-        private static final String SHORTCUT = "shortcut";
-        private static final String BLOCKING_SWITCH = "blocking_switch";
         private static final String BROWSER = "browser";
         private static final String BROWSER_CONTEXTMENU = "browser_contextmenu";
-        private static final String CUSTOM_TAB_CLOSE_BUTTON = "custom_tab_close_but";
         private static final String CUSTOM_TAB_ACTION_BUTTON = "custom_tab_action_bu";
         private static final String FIRSTRUN = "firstrun";
     }
 
     private static class Value {
-        private static final String DEFAULT = "default";
-        private static final String FIREFOX = "firefox";
-        private static final String SELECTION = "selection";
-        private static final String ERASE = "erase";
+        private static final String HOME = "home";
+        private static final String DOWNLOAD = "download";
+        private static final String HISTORY = "history";
+        private static final String TURBO = "turbo";
+        private static final String BLOCK_IMAGE = "block_image";
+        private static final String CLEAR_CACHE = "clear_cache";
+        private static final String SETTINGS = "settings";
+
+        private static final String TOOLBAR = "toolbar";
+        private static final String FORWARD = "forward";
+        private static final String RELOAD = "reload";
+        private static final String CAPTURE = "capture";
+
+        private static final String SEARCH_BUTTON = "search_btn";
+        private static final String SEARCH_BOX = "search_box";
+        private static final String MINI_URLBAR = "mini_urlbar";
+
+        private static final String FILE = "file";
         private static final String IMAGE = "image";
         private static final String LINK = "link";
-        private static final String CUSTOM_TAB = "custom_tab";
-        private static final String SKIP = "skip";
         private static final String FINISH = "finish";
         private static final String OPEN = "open";
+        private static final String INFO = "info";
     }
 
     private static class Extra {
         private static final String TO = "to";
+        private static final String ON = "on";
+        private static final String DEFAULT = "default";
+        private static final String SUCCESS = "success";
+        private static final String SNACKBAR = "snackbar";
     }
 
     public static boolean isTelemetryEnabled(Context context) {
@@ -146,11 +168,10 @@ public final class TelemetryWrapper {
                     .setUpdateChannel(BuildConfig.BUILD_TYPE)
                     .setPreferencesImportantForTelemetry(
                             resources.getString(R.string.pref_key_search_engine),
-                            resources.getString(R.string.pref_key_privacy_block_ads),
-                            resources.getString(R.string.pref_key_privacy_block_analytics),
-                            resources.getString(R.string.pref_key_privacy_block_social),
-                            resources.getString(R.string.pref_key_privacy_block_other),
-                            resources.getString(R.string.pref_key_performance_block_webfonts),
+                            resources.getString(R.string.pref_key_data_saving_block_ads),
+                            //  TODO:[Telemetry] default browser
+                            //  TODO:[Telemetry] storage prefer
+                            //  TODO:[Telemetry][P2] webview_version
                             resources.getString(R.string.pref_key_locale))
                     .setCollectionEnabled(telemetryEnabled)
                     .setUploadEnabled(telemetryEnabled);
@@ -180,37 +201,6 @@ public final class TelemetryWrapper {
         };
     }
 
-    public static void startSession() {
-        TelemetryHolder.get().recordSessionStart();
-
-        TelemetryEvent.create(Category.ACTION, Method.FOREGROUND, Object.APP).queue();
-    }
-
-    public static void stopSession() {
-        TelemetryHolder.get().recordSessionEnd();
-
-        TelemetryEvent.create(Category.ACTION, Method.BACKGROUND, Object.APP).queue();
-    }
-
-    public static void stopMainActivity() {
-        TelemetryHolder.get()
-                .queuePing(TelemetryCorePingBuilder.TYPE)
-                .queuePing(TelemetryEventPingBuilder.TYPE)
-                .scheduleUpload();
-    }
-
-    public static void urlBarEvent(boolean isUrl) {
-        if (isUrl) {
-            TelemetryWrapper.browseEvent();
-        } else {
-            TelemetryWrapper.searchEnterEvent();
-        }
-    }
-
-    private static void browseEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.TYPE_URL, Object.SEARCH_BAR).queue();
-    }
-
     public static void browseIntentEvent() {
         TelemetryEvent.create(Category.ACTION, Method.INTENT_URL, Object.APP).queue();
     }
@@ -236,76 +226,22 @@ public final class TelemetryWrapper {
         event.queue();
     }
 
-    public static void closeCustomTabEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.CUSTOM_TAB_CLOSE_BUTTON).queue();
-    }
-
     public static void customTabActionButtonEvent() {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.CUSTOM_TAB_ACTION_BUTTON).queue();
-    }
-
-    public static void customTabMenuEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.MENU, Value.CUSTOM_TAB).queue();
     }
 
     public static void textSelectionIntentEvent() {
         TelemetryEvent.create(Category.ACTION, Method.TEXT_SELECTION_INTENT, Object.APP).queue();
     }
 
-    private static void searchEnterEvent() {
-        Telemetry telemetry = TelemetryHolder.get();
-
-        TelemetryEvent.create(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR).queue();
-
-        SearchEngine searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
-            telemetry.getConfiguration().getContext());
-
-        telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.getIdentifier());
-    }
-
-    public static void searchSelectEvent() {
-        Telemetry telemetry = TelemetryHolder.get();
-
-        TelemetryEvent.create(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR).queue();
-
-        SearchEngine searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
-                telemetry.getConfiguration().getContext());
-
-        telemetry.recordSearch(SearchesMeasurement.LOCATION_SUGGESTION, searchEngine.getIdentifier());
-    }
-
-    public static void eraseEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.ERASE_BUTTON).queue();
-    }
-
-    public static void eraseBackEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.BACK_BUTTON, Value.ERASE).queue();
-    }
-
-    public static void eraseNotificationEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.NOTIFICATION, Value.ERASE).queue();
-    }
-
-    public static void eraseNotificationActionEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.NOTIFICATION_ACTION, Value.ERASE).queue();
-    }
-
     public static void openNotificationActionEvent() {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.NOTIFICATION_ACTION, Value.OPEN).queue();
-    }
-
-    public static void eraseShortcutEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.SHORTCUT, Value.ERASE).queue();
     }
 
     public static void settingsEvent(String key, String value) {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, key)
                 .extra(Extra.TO, value)
                 .queue();
-    }
-
-    public static void shareEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.MENU).queue();
     }
 
     public static void shareLinkEvent() {
@@ -336,31 +272,239 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CANCEL, Object.BROWSER_CONTEXTMENU).queue();
     }
 
-    public static void openDefaultAppEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.MENU, Value.DEFAULT).queue();
-    }
-
-    public static void openFirefoxEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.MENU, Value.FIREFOX).queue();
-    }
-
-    public static void openSelectionEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.MENU, Value.SELECTION).queue();
-    }
-
-    public static void blockingSwitchEvent(boolean isBlockingEnabled) {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.BLOCKING_SWITCH, String.valueOf(isBlockingEnabled)).queue();
-    }
-
     public static void showFirstRunPageEvent(int page) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FIRSTRUN, String.valueOf(page)).queue();
-    }
-
-    public static void skipFirstRunEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FIRSTRUN, Value.SKIP).queue();
     }
 
     public static void finishFirstRunEvent() {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FIRSTRUN, Value.FINISH).queue();
     }
+
+    //  TODO: clear above
+
+    public static void startSession() {
+        TelemetryHolder.get().recordSessionStart();
+
+        TelemetryEvent.create(Category.ACTION, Method.FOREGROUND, Object.APP).queue();
+    }
+
+    public static void stopSession() {
+        TelemetryHolder.get().recordSessionEnd();
+
+        TelemetryEvent.create(Category.ACTION, Method.BACKGROUND, Object.APP).queue();
+    }
+
+    public static void stopMainActivity() {
+        TelemetryHolder.get()
+                .queuePing(TelemetryCorePingBuilder.TYPE)
+                .queuePing(TelemetryEventPingBuilder.TYPE)
+                .scheduleUpload();
+    }
+
+    public static void showMenuHome() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.MENU, Value.HOME).queue();
+    }
+
+    public static void showMenuToolbar() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.MENU, Value.TOOLBAR).queue();
+    }
+
+    public static void clickMenuDownload() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.DOWNLOAD).queue();
+    }
+
+    public static void clickMenuHistory() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.HISTORY).queue();
+    }
+
+    public static void clickMenuCapture() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.CAPTURE).queue();
+    }
+
+    public static void showPanelDownload() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PANEL, Value.DOWNLOAD).queue();
+    }
+
+    public static void showPanelHistory() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PANEL, Value.HISTORY).queue();
+    }
+
+    public static void showPanelCapture() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PANEL, Value.CAPTURE).queue();
+    }
+
+    public static void menuTurboChangeTo(boolean enable) {
+        TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.MENU, Value.TURBO)
+                .extra(Extra.TO, Boolean.toString(enable))
+                .queue();
+    }
+
+    public static void menuBlockImageChangeTo(boolean enable) {
+        TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.MENU, Value.BLOCK_IMAGE)
+                .extra(Extra.TO, Boolean.toString(enable))
+                .queue();
+    }
+
+    public static void clickMenuClearCache() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.CLEAR_CACHE).queue();
+    }
+
+    public static void clickMenuSettings() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.SETTINGS).queue();
+    }
+
+    public static void clickToolbarForward() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.FORWARD).queue();
+    }
+
+    public static void clickToolbarReload() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD).queue();
+    }
+
+    public static void clickToolbarShare() {
+        TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue();
+    }
+
+    public static void clickToolbarCapture() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE).queue();
+    }
+
+    public static void clickTopSiteOn(int index){
+        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
+                .extra(Extra.ON, Integer.toString(index))
+                .queue();
+    }
+
+    public static void removeTopSite(boolean isDefault) {
+        TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.HOME, Value.LINK)
+                .extra(Extra.DEFAULT, Boolean.toString(isDefault))
+                .queue();
+    }
+
+    public static void urlBarEvent(boolean isUrl, boolean isSuggestion) {
+        if (isUrl) {
+            TelemetryWrapper.browseEvent();
+        } else if (isSuggestion) {
+            TelemetryWrapper.searchSelectEvent();
+        } else {
+            TelemetryWrapper.searchEnterEvent();
+        }
+    }
+
+    private static void browseEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.SEARCH_BAR, Value.LINK).queue();
+    }
+
+    public static void searchSelectEvent() {
+        Telemetry telemetry = TelemetryHolder.get();
+
+        TelemetryEvent.create(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR).queue();
+
+        SearchEngine searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
+                telemetry.getConfiguration().getContext());
+
+        telemetry.recordSearch(SearchesMeasurement.LOCATION_SUGGESTION, searchEngine.getIdentifier());
+    }
+
+    private static void searchEnterEvent() {
+        Telemetry telemetry = TelemetryHolder.get();
+
+        TelemetryEvent.create(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR).queue();
+
+        SearchEngine searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
+                telemetry.getConfiguration().getContext());
+
+        telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.getIdentifier());
+    }
+
+    public static void searchSuggestionLongClick() {
+        TelemetryEvent.create(Category.ACTION, Method.LONG_PRESS, Object.SEARCH_SUGGESTION).queue();
+    }
+
+    public static void searchClear() {
+        TelemetryEvent.create(Category.ACTION, Method.CLEAR, Object.SEARCH_BAR).queue();
+    }
+
+    public static void searchDismiss() {
+        TelemetryEvent.create(Category.ACTION, Method.CANCEL, Object.SEARCH_BAR).queue();
+    }
+
+    public static void showSearchBarHome() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BOX).queue();
+    }
+
+    public static void clickUrlbar() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.MINI_URLBAR).queue();
+    }
+
+    public static void clickToolbarSearch() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON).queue();
+    }
+
+    public static void clickToolbarHome() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.TOOLBAR, Value.HOME).queue();
+    }
+
+    public static void downloadRemoveFile() {
+        TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.PANEL, Value.FILE).queue();
+    }
+
+    public static void downloadDeleteFile() {
+        TelemetryEvent.create(Category.ACTION, Method.DELETE, Object.PANEL, Value.FILE).queue();
+    }
+
+    public static void downloadOpenFile(boolean fromSnackBar) {
+        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.PANEL, Value.FILE)
+                .extra(Extra.SNACKBAR, Boolean.toString(fromSnackBar))
+                .queue();
+    }
+
+    public static void showFileContextMenu() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.MENU, Value.DOWNLOAD).queue();
+    }
+
+    public static void historyOpenLink() {
+        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.PANEL, Value.LINK).queue();
+    }
+
+    public static void historyRemoveLink() {
+        TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.PANEL, Value.LINK).queue();
+    }
+
+    public static void showHistoryContextMenu() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.MENU, Value.HISTORY).queue();
+    }
+
+    public static void clearHistory() {
+        TelemetryEvent.create(Category.ACTION, Method.CLEAR, Object.PANEL, Value.HISTORY).queue();
+    }
+
+    public static void openCapture() {
+        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.PANEL, Value.CAPTURE).queue();
+    }
+
+    public static void openCaptureLink() {
+        TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.CAPTURE, Value.LINK).queue();
+    }
+
+    public static void editCaptureImage(boolean editAppResolved) {
+        TelemetryEvent.create(Category.ACTION, Method.EDIT, Object.CAPTURE, Value.IMAGE)
+                .extra(Extra.SUCCESS, Boolean.toString(editAppResolved))
+                .queue();
+    }
+
+    public static void shareCaptureImage(boolean fromSnackBar) {
+        TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.CAPTURE, Value.IMAGE)
+                .extra(Extra.SNACKBAR, Boolean.toString(fromSnackBar))
+                .queue();
+    }
+
+    public static void showCaptureInfo() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.CAPTURE, Value.INFO).queue();
+    }
+
+    public static void deleteCaptureImage() {
+        TelemetryEvent.create(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE).queue();
+    }
+
 }

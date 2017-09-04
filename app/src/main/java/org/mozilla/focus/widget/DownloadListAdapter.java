@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
 
 import java.io.File;
@@ -132,10 +132,12 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             switch (menuItem.getItemId()){
                                 case R.id.remove:
                                     remove(position);
+                                    TelemetryWrapper.downloadRemoveFile();
                                     popupMenu.dismiss();
                                     return true;
                                 case R.id.delete:
                                     delete(position);
+                                    TelemetryWrapper.downloadDeleteFile();
                                     popupMenu.dismiss();
                                     return true;
                                 default:
@@ -146,6 +148,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     });
 
                     popupMenu.show();
+                    TelemetryWrapper.showFileContextMenu();
                 }
             });
 
@@ -155,6 +158,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View view) {
                     DownloadInfo download = (DownloadInfo) view.getTag();
                     IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
+                    TelemetryWrapper.downloadOpenFile(false);
                 }
             });
 

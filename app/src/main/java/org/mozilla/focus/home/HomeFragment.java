@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +28,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.widget.FragmentListener;
 
@@ -80,6 +82,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
                             FragmentListener.TYPE.SHOW_MENU,
                             null);
                 }
+                TelemetryWrapper.showMenuHome();
             }
         });
 
@@ -93,6 +96,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
                             FragmentListener.TYPE.SHOW_URL_INPUT,
                             null);
                 }
+                TelemetryWrapper.showSearchBarHome();
             }
         });
 
@@ -173,6 +177,11 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
                 ((FragmentListener) parent).onNotified(HomeFragment.this,
                         FragmentListener.TYPE.OPEN_URL,
                         site.getUrl());
+                ViewParent viewParent = v.getParent();
+                if(viewParent instanceof ViewGroup){
+                    int index = ((ViewGroup)v.getParent()).indexOfChild(v);
+                    TelemetryWrapper.clickTopSiteOn(index);
+                }
             }
         }
 
@@ -195,8 +204,10 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
                                 HomeFragment.this.removeDefaultSites(site);
                                 TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.orginalDefaultSites);
                                 BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                                TelemetryWrapper.removeTopSite(true);
                             } else {
                                 BrowsingHistoryManager.getInstance().delete(site.getId(), mTopSiteDeleteListener);
+                                TelemetryWrapper.removeTopSite(false);
                             }
                             break;
                         default:

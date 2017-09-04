@@ -19,7 +19,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,15 +49,11 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.menu.WebContextMenu;
-import org.mozilla.focus.screenshot.ScreenshotManager;
-import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
-import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
@@ -68,11 +63,7 @@ import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.Calendar;
 
 /**
  * Fragment for displaying the browser UI.
@@ -637,8 +628,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // FIXME: does Zerda need this?
                 BrowsingSession.getInstance().clearCustomTabConfig();
                 getActivity().finish();
-
-                TelemetryWrapper.eraseBackEvent();
             } else {
                 // let parent to decide for this Fragment
                 return false;
@@ -665,15 +654,19 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.display_url:
                 notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
+                TelemetryWrapper.clickUrlbar();
                 break;
             case R.id.btn_search:
                 notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
+                TelemetryWrapper.clickToolbarSearch();
                 break;
             case R.id.btn_home:
                 notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                TelemetryWrapper.clickToolbarHome();
                 break;
             case R.id.btn_menu:
                 notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
+                TelemetryWrapper.showMenuToolbar();
                 break;
             case R.id.customtab_close:
                 BrowsingSession.getInstance().clearCustomTabConfig();
