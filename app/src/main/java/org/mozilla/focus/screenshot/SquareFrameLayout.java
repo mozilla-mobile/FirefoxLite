@@ -2,19 +2,19 @@ package org.mozilla.focus.screenshot;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
-public class SquareRelativeLayout extends RelativeLayout {
+public class SquareFrameLayout extends FrameLayout {
 
-    public SquareRelativeLayout(Context context) {
+    public SquareFrameLayout(Context context) {
         super(context);
     }
 
-    public SquareRelativeLayout(Context context, AttributeSet attrs) {
+    public SquareFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SquareRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
+    public SquareFrameLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

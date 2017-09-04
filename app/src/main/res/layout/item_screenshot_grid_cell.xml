@@ -4,10 +4,11 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<org.mozilla.focus.screenshot.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.screenshot.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/screenshot_grid_rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foreground="@drawable/round_rectangle_ripple"
     android:background="@color/colorScreenshotItemBorder"
     android:padding="1dp">
 
@@ -16,6 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter" />
-</org.mozilla.focus.screenshot.SquareRelativeLayout>
+</org.mozilla.focus.screenshot.SquareFrameLayout>
 
 
