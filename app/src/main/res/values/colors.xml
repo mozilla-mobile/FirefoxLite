@@ -39,7 +39,6 @@
     <color name="onboarding_indicator_selected">#FFFFFFFF</color>
 
     <color name="colorMenuBackground">#F9F9FA</color>
-    <color name="colorMenuDivider">#E4E4E4</color>
     <color name="colorMenuLabelDefault">#272727</color>
     <color name="colorMenuLabelActive">#0E86FF</color>
 
