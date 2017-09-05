@@ -111,7 +111,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             String subtitle="";
             if (DownloadManager.STATUS_SUCCESSFUL == downloadInfo.getStatus()) {
-                subtitle = downloadInfo.getSize() + "," + downloadInfo.getDate();
+                subtitle = downloadInfo.getSize() + ", " + downloadInfo.getDate();
             } else {
                 subtitle = statusConvertStr(downloadInfo.getStatus());
             }
