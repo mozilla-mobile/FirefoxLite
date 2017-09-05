@@ -44,6 +44,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
@@ -579,7 +580,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         downloadInfo.setFileName(fileName);
         DownloadInfoManager.getInstance().insert(downloadInfo, null);
 
-        Snackbar.make(browserContainer, R.string.download_started, Snackbar.LENGTH_LONG)
+        Toast.makeText(getContext(), R.string.download_started, Toast.LENGTH_LONG)
                 .show();
     }
 

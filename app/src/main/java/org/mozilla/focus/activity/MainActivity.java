@@ -30,6 +30,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebStorage;
+import android.widget.Toast;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
@@ -269,7 +270,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     public void onMenuItemClicked(View v) {
-        final View container = findViewById(R.id.container);
         final int stringResource;
         if(!v.isEnabled()) {
             return;
@@ -285,7 +285,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         .putBoolean(blockImagePrefKey, mBlockImgPref)
                         .apply();
                 stringResource = mBlockImgPref ? R.string.message_enable_block_image : R.string.message_disable_block_image;
-                Snackbar.make(container, stringResource, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_turbomode:
                 mTurboModePref = !mTurboModePref;
@@ -296,7 +296,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         .putBoolean(turboModePrefKey, mTurboModePref)
                         .apply();
                 stringResource = mTurboModePref ? R.string.message_enable_turbo_mode : R.string.message_disable_turbo_mode;
-                Snackbar.make(container, stringResource, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
@@ -381,7 +381,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final long diff = FileUtils.deleteWebViewCacheDirectory(this);
         final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
         final String msg = getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
-        showMessage(msg);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private BrowserFragment getBrowserFragment() {
@@ -549,7 +549,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK && requestCode == REQ_CODE_NOTIFY_SCREENSHOT_DELETE && mDialogFragment != null) {
-            Snackbar.make(mDialogFragment.getView(), R.string.screenshot_image_viewer_msg_image_deleted, Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.message_deleted_screenshot, Toast.LENGTH_SHORT).show();
         }
     }
 
