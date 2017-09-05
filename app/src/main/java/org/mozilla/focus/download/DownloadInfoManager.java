@@ -170,6 +170,11 @@ public class DownloadInfoManager {
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, null);
     }
 
+    public void queryCertainId(Long downloadId,AsyncQueryListener listener){
+        String uri = Download.CONTENT_URI.toString();
+        mQueryHandler.startQuery(TOKEN,listener,Uri.parse(uri),null,Download.DOWNLOAD_ID+"==?",new String[] {Long.toString(downloadId)},null);
+    }
+
     public boolean recordExists(long downloadId) {
         final ContentResolver resolver = mContext.getContentResolver();
         final Uri uri = Download.CONTENT_URI;
