@@ -91,6 +91,8 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             GlideApp
                     .with(mActivity)
                     .asBitmap()
+                    .placeholder(R.drawable.placeholder)
+                    .fitCenter()
                     .load(item.getImageUri())
                     .into(gridVH.img);
         } else if (holder instanceof DateItemViewHolder) {

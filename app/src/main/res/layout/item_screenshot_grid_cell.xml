@@ -16,7 +16,8 @@
         android:id="@+id/screenshot_grid_img_cell"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter" />
+        android:background="@color/colorScreenshotItemBackground"
+        android:scaleType="centerInside" />
 </org.mozilla.focus.screenshot.SquareFrameLayout>
 
 

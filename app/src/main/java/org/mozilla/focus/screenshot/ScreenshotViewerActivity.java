@@ -21,7 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
@@ -61,6 +63,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     private final SimpleDateFormat sSdfInfoTime = new SimpleDateFormat("MMM dd, yyyy");
 
     private Toolbar mBottomToolBar;
+    private ImageView mImgPlaceholder;
     private SubsamplingScaleImageView mImgScreenshot;
     private Screenshot mScreenshot;
     private Uri mImageUri;
@@ -71,6 +74,8 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_screenshot_viewer);
+
+        mImgPlaceholder = (ImageView) findViewById(R.id.screenshot_viewer_image_placeholder);
 
         mImgScreenshot = (SubsamplingScaleImageView) findViewById(R.id.screenshot_viewer_image);
         mImgScreenshot.setPanLimit(PAN_LIMIT_INSIDE);
@@ -89,15 +94,20 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
         initInfoItemArray();
         if (mScreenshot != null) {
-            if(checkPermissions()) {
-                initScreenshotInfo(false);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_VIEW_SCREENSHOT);
+            if (new File(mScreenshot.getImageUri()).exists()) {
+                if(checkPermissions()) {
+                    setupView(true);
+                    initScreenshotInfo(false);
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_VIEW_SCREENSHOT);
+                    }
                 }
+            } else {
+                setupView(false);
+                Toast.makeText(this, R.string.message_cannot_find_screenshot, Toast.LENGTH_LONG).show();
             }
         }
-
     }
 
     @Override
@@ -168,6 +178,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_VIEW_SCREENSHOT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setupView(true);
                 initScreenshotInfo(false);
             }
         } else if(requestCode == REQUEST_CODE_EDIT_SCREENSHOT) {
@@ -183,6 +194,15 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 onDeleteClick();
             }
         }
+    }
+
+    private void setupView(boolean existed) {
+        mImgPlaceholder.setVisibility(existed ? View.GONE : View.VISIBLE);
+        mImgScreenshot.setVisibility(existed ? View.VISIBLE : View.GONE);
+        findViewById(R.id.screenshot_viewer_btn_open_url).setEnabled(existed);
+        findViewById(R.id.screenshot_viewer_btn_edit).setEnabled(existed);
+        findViewById(R.id.screenshot_viewer_btn_share).setEnabled(existed);
+        findViewById(R.id.screenshot_viewer_btn_info).setEnabled(existed);
     }
 
     private void initInfoItemArray() {
@@ -259,6 +279,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(share, null));
         } else {
+            setupView(true);
             initScreenshotInfo(true);
         }
     }
