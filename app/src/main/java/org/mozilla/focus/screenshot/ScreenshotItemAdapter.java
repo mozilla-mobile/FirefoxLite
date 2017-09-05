@@ -95,10 +95,9 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .into(gridVH.img);
         } else if (holder instanceof DateItemViewHolder) {
             final DateSection item = (DateSection) mItems.get(position);
-
             if (item != null) {
                 final DateItemViewHolder dateVH = (DateItemViewHolder) holder;
-                dateVH.textDate.setText(DateUtils.getRelativeTimeSpanString(item.getTimestamp(), System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS));
+                dateVH.textDate.setText(DateUtils.getRelativeTimeSpanString(item.getTimestamp(), System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS).toString().toUpperCase());
             }
         }
     }
