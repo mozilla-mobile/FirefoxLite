@@ -271,15 +271,9 @@
     <string name="screenshot_failed">Failed to capture</string>
 
     <!-- Snack bar message -->
-    <string name="message_clear_cache_fail">Unable to clear cache</string>
-    <string name="message_cleared_cached">%1$s cache was cleared</string>
     <string name="message_fallback_save_to_primary_external">Can not detect removable storage, file is saved to primary external storage</string>
     <string name="message_start_to_save_to_removable_storage">Removable storage detected, file will be saved to removable storage</string>
     <string name="message_removable_storage_space_not_enough">Removable storage space is running out, file saved primary external storage</string>
-    <string name="message_enable_turbo_mode">"Turbo mode" enabled</string>
-    <string name="message_disable_turbo_mode">"Turbo mode" disabled</string>
-    <string name="message_enable_block_image">"Block image" enabled</string>
-    <string name="message_disable_block_image">"Block image" disabled</string>
 
     <!-- ScreenshotGridFragment-->
     <string name="screenshot_grid_empty_text_title">No Screenshots</string>
@@ -292,8 +286,18 @@
     <string name="screenshot_image_viewer_dialog_info_title">Title:</string>
     <string name="screenshot_image_viewer_dialog_info_url">URL:</string>
     <string name="screenshot_image_viewer_dialog_delete_msg">Do you want to delete the image?</string>
-    <string name="screenshot_image_viewer_msg_image_deleted">Image deleted</string>
 
     <!-- Title for file picker when user trying to upload a file -->
     <string name="file_picker_title">Choose a file to upload</string>
+
+    <!-- Toast message -->
+    <string name="message_enable_turbo_mode">\"Turbo mode\" enabled</string>
+    <string name="message_disable_turbo_mode">\"Turbo mode\" disabled</string>
+    <string name="message_enable_block_image">Now blocking images</string>
+    <string name="message_disable_block_image">Now showing images</string>
+    <string name="message_clear_cache_fail">Unable to clear cache</string>
+    <string name="message_cleared_cached">%1$s cache cleared</string>
+    <string name="message_cleared_browsing_data">Browsing data cleared</string>
+    <string name="message_deleted_screenshot">Screenshot deleted</string>
+
 </resources>

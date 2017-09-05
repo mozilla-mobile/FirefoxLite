@@ -7,6 +7,7 @@ import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
 import android.webkit.CookieManager;
 import android.webkit.WebViewDatabase;
+import android.widget.Toast;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
@@ -50,6 +51,10 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
                 } else if (resources.getString(R.string.pref_value_clear_form_history).equals(value)){
                     WebViewDatabase.getInstance(getContext()).clearFormData();
                 }
+            }
+
+            if (getValues().size() > 0) {
+                Toast.makeText(getContext(), R.string.message_cleared_browsing_data, Toast.LENGTH_SHORT).show();
             }
         }
     }
