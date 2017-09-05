@@ -12,7 +12,6 @@
     <string name="menu_trackers_blocked_title">Pelacak terblokir</string>
     <string name="share_dialog_title">Bagikan via</string>
     <string name="text_selection_search_action">Mencari Secara Privat</string>
-    <string name="about_content"><![CDATA[<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s menempatkan Anda dalam kendali.</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">"Gunakan sebagai peramban privat:\n  "<ul>"\n    "<li>Cari dan menjelajah langsung di dalam aplikasi</li>"\n    "<li>Memblokir pelacak (atau ubah di pengaturan untuk izinkan pelacak)</li>"\n    "<li>Hapus untuk menghilangkan kuki termasuk juga pencarian dan riwayat penjelajahan</li>"\n  "</ul>"\n "</p>\n<p xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">%1$s diproduksi oleh Mozilla. Misi kami adalah untuk memelihara Internet yang sehat dan terbuka.<br/>" "<a href="%2$s">Pelajari lebih lanjut</a></p>]]></string>
     <string name="preference_category_search">Cari</string>
     <string name="preference_search_engine_default">Baku</string>
     <string name="preference_language">Bahasa</string>

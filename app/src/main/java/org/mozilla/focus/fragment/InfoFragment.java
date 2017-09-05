@@ -126,4 +126,16 @@ public class InfoFragment extends WebFragment {
     public String getInitialUrl() {
         return getArguments().getString(ARGUMENT_URL);
     }
+
+    public void goBack() {
+        final IWebView webView = getWebView();
+        if (webView != null) {
+            webView.goBack();
+        }
+    }
+
+    public boolean canGoBack() {
+        final IWebView webView = getWebView();
+        return webView != null && webView.canGoBack();
+    }
 }
