@@ -46,9 +46,4 @@
         android:title="@string/menu_about"
         android:key="@string/pref_key_about" />
 
-    <Preference
-        android:layout="@layout/focus_preference"
-        android:title="@string/menu_help"
-        android:key="@string/pref_key_help" />
-
 </PreferenceScreen>
