@@ -17,7 +17,8 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:text="@string/firstrun_skip_button" />
+        android:text="@string/firstrun_skip_button"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
