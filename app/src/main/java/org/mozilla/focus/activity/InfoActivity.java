@@ -29,6 +29,7 @@ import org.mozilla.focus.web.WebViewProvider;
 public class InfoActivity extends AppCompatActivity {
     private static final String EXTRA_URL = "extra_url";
     private static final String EXTRA_TITLE = "extra_title";
+    private InfoFragment infoFragment;
 
     public static final Intent getIntentFor(final Context context, final String url, final String title) {
         final Intent intent = new Intent(context, InfoActivity.class);
@@ -71,8 +72,9 @@ public class InfoActivity extends AppCompatActivity {
         final String url = getIntent().getStringExtra(EXTRA_URL);
         final String title = getIntent().getStringExtra(EXTRA_TITLE);
 
+        infoFragment = InfoFragment.create(url);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.infofragment, InfoFragment.create(url))
+                .replace(R.id.infofragment, infoFragment)
                 .commit();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -103,5 +105,14 @@ public class InfoActivity extends AppCompatActivity {
         }
 
         return super.onCreateView(name, context, attrs);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (infoFragment != null && infoFragment.canGoBack()) {
+            infoFragment.goBack();
+            return;
+        }
+        super.onBackPressed();
     }
 }

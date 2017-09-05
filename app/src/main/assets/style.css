@@ -20,6 +20,13 @@ a {
 /* Make only about page links ("learn more") white */
 .about a {
     color: #FFFFFF;
+    text-decoration: none;
+    font-weight:bold;
+}
+
+a.underline {
+    text-decoration: underline;
+    font-weight:normal;
 }
 
 p.subtitle {

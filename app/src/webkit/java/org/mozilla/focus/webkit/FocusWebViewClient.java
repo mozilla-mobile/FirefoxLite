@@ -212,7 +212,11 @@ import java.util.Map;
 
         final Map<String, String> substitutionMap = new ArrayMap<>();
         final String appName = webView.getContext().getResources().getString(R.string.app_name);
+        final String aboutURI = SupportUtils.getAboutURI();
         final String learnMoreURL = SupportUtils.getManifestoURL();
+        final String supportURL = SupportUtils.getSupportURL();
+        final String rightURL = SupportUtils.getYourRightsURI();
+        final String privacyURL = SupportUtils.getPrivacyURL();
 
         String aboutVersion = "";
         try {
@@ -222,16 +226,16 @@ import java.util.Map;
         }
         substitutionMap.put("%about-version%", aboutVersion);
 
-        final String aboutContent = resources.getString(R.string.about_content, appName, learnMoreURL);
+        final String aboutContent = resources.getString(R.string.about_content, appName, learnMoreURL, supportURL, rightURL, privacyURL);
         substitutionMap.put("%about-content%", aboutContent);
 
-        final String wordmark = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.wordmark);
+        final String wordmark = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.logotype);
         substitutionMap.put("%wordmark%", wordmark);
 
         final String data = HtmlLoader.loadResourceFile(webView.getContext(), R.raw.about, substitutionMap);
         // We use a file:/// base URL so that we have the right origin to load file:/// css and
         // image resources.
-        webView.loadDataWithBaseURL("file:///android_res/raw/about.html", data, "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL(aboutURI, data, "text/html", "UTF-8", null);
     }
 
 }
