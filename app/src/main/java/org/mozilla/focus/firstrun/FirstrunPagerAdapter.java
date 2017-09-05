@@ -6,18 +6,25 @@
 package org.mozilla.focus.firstrun;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.utils.Settings;
 
 public class FirstrunPagerAdapter extends PagerAdapter {
+
+    private final static int TURBO_MODE_PAGE_INDEX = 1;
+
     private static class FirstrunPage {
         public final String title;
         public final String text;
@@ -83,6 +90,10 @@ public class FirstrunPagerAdapter extends PagerAdapter {
             buttonView.setId(R.id.next);
         }
 
+        if (position == TURBO_MODE_PAGE_INDEX) {
+            initForTurboModePage(context, view);
+        }
+
         return view;
     }
 
@@ -109,5 +120,19 @@ public class FirstrunPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object view) {
         container.removeView((View) view);
+    }
+
+    private void initForTurboModePage(@NonNull Context context, @NonNull final View group) {
+        final Switch widget = (Switch) group.findViewById(R.id.switch_widget);
+        final Settings settings = Settings.getInstance(context);
+        widget.setVisibility(View.VISIBLE);
+        widget.setText(R.string.label_menu_turbo_mode);
+        widget.setChecked(settings.shouldUseTurboMode());
+        widget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setTurboMode(isChecked);
+            }
+        });
     }
 }

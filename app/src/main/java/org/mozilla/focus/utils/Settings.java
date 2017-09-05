@@ -68,6 +68,12 @@ public class Settings {
                 TURBO_MODE_DEFAULT);
     }
 
+    public void setTurboMode(boolean toEnable) {
+        final String key = getPreferenceKey(R.string.pref_key_turbo_mode);
+        preferences.edit().putBoolean(key, toEnable).apply();
+    }
+
+
     public void setRemovableStorageStateOnCreate(boolean exist) {
         final String key = getPreferenceKey(R.string.pref_key_removable_storage_available_on_create);
         preferences.edit().putBoolean(key, exist).apply();

@@ -71,6 +71,17 @@
                         android:textSize="14sp"
                         tools:text="@string/first_run_page2_text" />
 
+                    <Switch
+                        android:id="@+id/switch_widget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="14dp"
+                        android:visibility="gone"
+                        android:switchPadding="10dp"
+                        tools:text="@string/label_menu_turbo_mode"
+                        tools:visibility="visible" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
