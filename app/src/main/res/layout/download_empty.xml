@@ -20,6 +20,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/no_downloads"
         android:textColor="@color/colorDownloadSubText"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textStyle="italic" />
 
 </RelativeLayout>
