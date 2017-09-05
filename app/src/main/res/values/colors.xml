@@ -50,9 +50,15 @@
     <color name="colorDownloadSubText">#737373</color>
     <color name="colorDownloadBackground">#F9F9FA</color>
 
-    <color name="screenshotViewerBtmBarBgColor">#4A4A4F</color>
+    <color name="colorScreenshotViewerBackground">#F9F9FA</color>
+    <color name="colorScreenshotViewerToolBarBLineBorder">#62C6EE</color>
+    <color name="colorScreenshotViewerToolBarBackground">#41B7E6</color>
+    <color name="colorScreenshotViewerActionIconPressed">#0E86FF</color>
+    <color name="colorScreenshotViewerActionIconDisabled">#8DD3F0</color>
+    <color name="colorScreenshotViewerActionIconBackgroundPressed">#7FFFFFFF</color>
     <color name="window_background_screenshot">#CC26384B</color>
     <color name="colorScreenshotItemBorder">#B2B2B2</color>
+    <color name="colorScreenshotItemBackground">#EDEDF0</color>
 
     <color name="colorUrlBarLockIcon">#12BC00</color>
 

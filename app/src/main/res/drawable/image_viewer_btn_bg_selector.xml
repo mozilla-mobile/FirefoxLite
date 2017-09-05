@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorMenuLabelDefault" />
+            <solid android:color="@color/colorScreenshotViewerActionIconBackgroundPressed" />
             <corners android:radius="2dp" />
         </shape>
     </item>
