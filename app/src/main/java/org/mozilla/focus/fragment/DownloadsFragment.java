@@ -14,7 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.download.DownloadInfo;
+import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.widget.DownloadListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DownloadsFragment extends PanelFragment {
 
@@ -41,7 +46,18 @@ public class DownloadsFragment extends PanelFragment {
         mDownloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
+                Long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
+                if (id>0){
+                    DownloadInfoManager.getInstance().queryCertainId(id, new DownloadInfoManager.AsyncQueryListener() {
+                        @Override
+                        public void onQueryComplete(List downloadInfoList) {
+                            for (int i=0;i<downloadInfoList.size();i++){
+                                DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(i);
+                                mDownloadListAdapter.updateItem(downloadInfo);
+                            }
+                        }
+                    });
+                }
             }
         };
     }
