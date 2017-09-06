@@ -252,8 +252,6 @@
     <!--BrowsingHistoryActivity-->
     <string name="browsing_history_clear_btn">CLEAR BROWSING HISTORY</string>
     <string name="browsing_history_empty_view_msg">No History</string>
-    <string name="browsing_history_date_today">TODAY</string>
-    <string name="browsing_history_date_yesterday">YESTERDAY</string>
     <string name="browsing_history_menu_delete">Delete</string>
     <string name="browsing_history_dialog_confirm_clear_message">Clear all browsing history?</string>
     <string name="browsing_history_dialog_btn_clear">Clear</string>

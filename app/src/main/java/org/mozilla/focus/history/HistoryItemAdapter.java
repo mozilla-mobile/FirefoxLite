@@ -127,10 +127,9 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         } else if(holder instanceof DateItemViewHolder) {
             final DateSection item = (DateSection) mItems.get(position);
-
             if (item != null) {
                 final DateItemViewHolder dateVH = (DateItemViewHolder) holder;
-                dateVH.textDate.setText(DateUtils.getRelativeTimeSpanString(item.getTimestamp(), System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS));
+                dateVH.textDate.setText(DateUtils.getRelativeTimeSpanString(item.getTimestamp(), System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS).toString().toUpperCase());
             }
         }
     }
