@@ -77,6 +77,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
+    private boolean hasPendingScreenCaptureTask = false;
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
@@ -166,6 +167,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onPostResume() {
         super.onPostResume();
         safeForFragmentTransactions = true;
+        if(hasPendingScreenCaptureTask) {
+            final BrowserFragment browserFragment = getBrowserFragment();
+            if (browserFragment != null && browserFragment.isVisible()) {
+                showLoadingAndCapture(browserFragment);
+            }
+            hasPendingScreenCaptureTask = false;
+        }
     }
 
     @Override
@@ -541,6 +549,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!safeForFragmentTransactions) {
             return;
         }
+        hasPendingScreenCaptureTask = false;
         final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
         capturingFragment.show(getSupportFragmentManager(), "capturingFragment");
 
@@ -558,6 +567,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if (browserFragment == null || !browserFragment.isVisible()) {
                     return;
                 }
+                hasPendingScreenCaptureTask = true;
                 showLoadingAndCapture(browserFragment);
             }
         }
