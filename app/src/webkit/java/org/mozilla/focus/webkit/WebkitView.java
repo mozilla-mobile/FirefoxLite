@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
+import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
@@ -29,6 +30,7 @@ import android.webkit.WebViewDatabase;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
@@ -230,16 +232,26 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
             };
 
             callback.onEnterFullScreen(fullscreenCallback, view);
+            TelemetryWrapper.browseEnterFullScreenEvent();
         }
 
         @Override
         public void onHideCustomView() {
             callback.onExitFullScreen();
+            TelemetryWrapper.browseExitFullScreenEvent();
+        }
+
+
+        @Override
+        public void onPermissionRequest(PermissionRequest request) {
+            super.onPermissionRequest(request);
+            TelemetryWrapper.browsePermissionEvent(request.getResources());
         }
 
         @Override
         public void onGeolocationPermissionsShowPrompt(String origin,
                                                        GeolocationPermissions.Callback glpcallback) {
+            TelemetryWrapper.browseGeoLocationPermissionEvent();
             callback.onGeolocationPermissionsShowPrompt(origin, glpcallback);
         }
 
