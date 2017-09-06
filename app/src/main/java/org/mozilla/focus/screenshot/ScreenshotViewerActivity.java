@@ -1,16 +1,21 @@
 package org.mozilla.focus.screenshot;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +46,10 @@ import static com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.SCAL
 public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener, QueryHandler.AsyncDeleteListener {
 
     public static final int REQ_CODE_NOTIFY_SCREENSHOT_DELETE = 1000;
+    private static int REQUEST_CODE_VIEW_SCREENSHOT = 101;
+    private static int REQUEST_CODE_EDIT_SCREENSHOT = 102;
+    private static int REQUEST_CODE_SHARE_SCREENSHOT = 103;
+    private static int REQUEST_CODE_DELETE_SCREENSHOT = 104;
 
     public static final void goScreenshotViewerActivityOnResult(Activity activity, Screenshot item) {
         Intent intent = new Intent(activity, ScreenshotViewerActivity.class);
@@ -54,7 +63,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     private Toolbar mBottomToolBar;
     private SubsamplingScaleImageView mImgScreenshot;
     private Screenshot mScreenshot;
-    private Uri mImageUri, mImageContentUri;
+    private Uri mImageUri;
     private ArrayList<ImageInfo> mInfoItems = new ArrayList<>();
 
     @Override
@@ -80,11 +89,13 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
         initInfoItemArray();
         if (mScreenshot != null) {
-            prepareInfoData();
-            final ImageSource imageSource;
-            mImageUri = Uri.fromFile(new File(mScreenshot.getImageUri()));
-            imageSource = ImageSource.uri(mImageUri);
-            mImgScreenshot.setImage(imageSource, ImageViewState.ALIGN_TOP);
+            if(checkPermissions()) {
+                initScreenshotInfo(false);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_VIEW_SCREENSHOT);
+                }
+            }
         }
 
     }
@@ -108,37 +119,34 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 finish();
                 break;
             case R.id.screenshot_viewer_btn_edit:
-                if(mImageContentUri != null) {
-                    Intent editIntent = new Intent(Intent.ACTION_EDIT);
-                    editIntent.setDataAndType(mImageContentUri, "image/*");
-                    editIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivity(Intent.createChooser(editIntent, null));
+                if(checkPermissions()) {
+                    onEditClick();
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_EDIT_SCREENSHOT);
+                    }
                 }
-
                 break;
             case R.id.screenshot_viewer_btn_share:
-                if(mImageUri != null) {
-                    Intent share = new Intent(Intent.ACTION_SEND);
-                    share.putExtra(Intent.EXTRA_STREAM, mImageUri);
-                    share.setType("image/*");
-                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivity(Intent.createChooser(share, null));
+                if(checkPermissions()) {
+                    onShareClick();
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_SHARE_SCREENSHOT);
+                    }
                 }
                 break;
             case R.id.screenshot_viewer_btn_info:
-                showInfoDialog();
+                onInfoClick();
                 break;
             case R.id.screenshot_viewer_btn_delete:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.screenshot_image_viewer_dialog_delete_msg);
-                builder.setPositiveButton(R.string.browsing_history_menu_delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        proceedDelete();
+                if(checkPermissions()) {
+                    onDeleteClick();
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_DELETE_SCREENSHOT);
                     }
-                });
-                builder.setNegativeButton(R.string.action_cancel, null);
-                builder.create().show();
+                }
                 break;
             default:
                 break;
@@ -155,6 +163,28 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_VIEW_SCREENSHOT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initScreenshotInfo(false);
+            }
+        } else if(requestCode == REQUEST_CODE_EDIT_SCREENSHOT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onEditClick();
+            }
+        } else if(requestCode == REQUEST_CODE_SHARE_SCREENSHOT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onShareClick();
+            }
+        } else if(requestCode == REQUEST_CODE_DELETE_SCREENSHOT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onDeleteClick();
+            }
+        }
+    }
+
     private void initInfoItemArray() {
         mInfoItems.clear();
         mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_time), ""));
@@ -164,7 +194,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_url), ""));
     }
 
-    private void prepareInfoData() {
+    private void initScreenshotInfo(boolean withShare) {
         if(mScreenshot != null) {
             if(mScreenshot.getTimestamp() > 0) {
                 Calendar cal = Calendar.getInstance();
@@ -185,19 +215,73 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             mInfoItems.get(3).data = mScreenshot.getTitle();
             mInfoItems.get(4).data = mScreenshot.getUrl();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    ContentResolver cr = getContentResolver();
-                    Cursor ca = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.MediaColumns._ID}, MediaStore.MediaColumns.DATA + "=?", new String[]{mScreenshot.getImageUri()}, null);
-                    if (ca != null && ca.moveToFirst()) {
-                        int id = ca.getInt(ca.getColumnIndex(MediaStore.MediaColumns._ID));
-                        ca.close();
-                        mImageContentUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
-                    }
-                }
-            }).start();
+            final ImageSource imageSource;
+            mImageUri = Uri.fromFile(new File(mScreenshot.getImageUri()));
+            imageSource = ImageSource.uri(mImageUri);
+            mImgScreenshot.setImage(imageSource, ImageViewState.ALIGN_TOP);
+
+            if(withShare) {
+                onShareClick();
+            }
         }
+    }
+
+    private boolean checkPermissions() {
+        int permissionState = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void onEditClick() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContentResolver cr = getContentResolver();
+                Cursor ca = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.MediaColumns._ID}, MediaStore.MediaColumns.DATA + "=?", new String[]{mScreenshot.getImageUri()}, null);
+                if (ca != null && ca.moveToFirst()) {
+                    int id = ca.getInt(ca.getColumnIndex(MediaStore.MediaColumns._ID));
+                    ca.close();
+                    Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
+                    Intent editIntent = new Intent(Intent.ACTION_EDIT);
+                    editIntent.setDataAndType(uri, "image/*");
+                    editIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(Intent.createChooser(editIntent, null));
+                }
+            }
+        }).start();
+    }
+
+    private void onShareClick() {
+        if(mImageUri != null) {
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.putExtra(Intent.EXTRA_STREAM, mImageUri);
+            share.setType("image/*");
+            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(share, null));
+        } else {
+            initScreenshotInfo(true);
+        }
+    }
+
+    private void onInfoClick() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.screenshot_image_viewer_dialog_title);
+        builder.setAdapter(new InfoItemAdapter(this, mInfoItems), null);
+        builder.setPositiveButton(R.string.action_ok, null);
+        builder.create().show();
+    }
+
+    private void onDeleteClick() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.screenshot_image_viewer_dialog_delete_msg);
+        builder.setPositiveButton(R.string.browsing_history_menu_delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                proceedDelete();
+            }
+        });
+        builder.setNegativeButton(R.string.action_cancel, null);
+        builder.create().show();
     }
 
     public static String getStringSizeLengthFile(long size) {
@@ -217,14 +301,6 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             return df.format(size / sizeGo) + " G";
 
         return "";
-    }
-
-    private void showInfoDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.screenshot_image_viewer_dialog_title);
-        builder.setAdapter(new InfoItemAdapter(this, mInfoItems), null);
-        builder.setPositiveButton(R.string.action_ok, null);
-        builder.create().show();
     }
 
     private static class InfoItemAdapter extends ArrayAdapter<ImageInfo> {
@@ -264,7 +340,6 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 try {
                     file.delete();
                 } catch (Exception ex) {
-
                 }
             }
             ScreenshotManager.getInstance().delete(mScreenshot.getId(), this);
