@@ -449,6 +449,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             public boolean onShowFileChooser(WebView webView,
                                              ValueCallback<Uri[]> filePathCallback,
                                              WebChromeClient.FileChooserParams fileChooserParams) {
+                TelemetryWrapper.browseFilePermissionEvent();
                 try {
                     BrowserFragment.this.fileChooseAction = new FileChooseAction(filePathCallback, fileChooserParams);
                     BrowserFragment.this.fileChooseAction.performAction();

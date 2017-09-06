@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.webkit.PermissionRequest;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
@@ -55,6 +56,8 @@ public final class TelemetryWrapper {
         private static final String REMOVE = "remove";
         private static final String DELETE = "delete";
         private static final String EDIT = "edit";
+        private static final String PERMISSION = "permission";
+        private static final String FULLSCREEN = "fullscreen";
 
         private static final String FOREGROUND = "foreground";
         private static final String BACKGROUND = "background";
@@ -111,6 +114,14 @@ public final class TelemetryWrapper {
         private static final String FINISH = "finish";
         private static final String OPEN = "open";
         private static final String INFO = "info";
+
+        private static final String ENTER = "enter";
+        private static final String EXIT = "exit";
+        private static final String GEOLOCATION = "geolocation";
+        private static final String AUDIO = "audio";
+        private static final String VIDEO = "video";
+        private static final String MIDI = "midi";
+        private static final String EME = "eme";
     }
 
     private static class Extra {
@@ -256,34 +267,6 @@ public final class TelemetryWrapper {
                 .queue();
     }
 
-    public static void shareLinkEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.LINK).queue();
-    }
-
-    public static void shareImageEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
-    }
-
-    public static void saveImageEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.SAVE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
-    }
-
-    public static void copyLinkEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.LINK).queue();
-    }
-
-    public static void copyImageEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
-    }
-
-    public static void openWebContextMenuEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.LONG_PRESS, Object.BROWSER).queue();
-    }
-
-    public static void cancelWebContextMenuEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CANCEL, Object.BROWSER_CONTEXTMENU).queue();
-    }
-
     public static void showFirstRunPageEvent(int page) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FIRSTRUN, String.valueOf(page)).queue();
     }
@@ -311,6 +294,74 @@ public final class TelemetryWrapper {
                 .queuePing(TelemetryCorePingBuilder.TYPE)
                 .queuePing(TelemetryEventPingBuilder.TYPE)
                 .scheduleUpload();
+    }
+
+    public static void openWebContextMenuEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.LONG_PRESS, Object.BROWSER).queue();
+    }
+
+    public static void cancelWebContextMenuEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.CANCEL, Object.BROWSER_CONTEXTMENU).queue();
+    }
+
+    public static void shareLinkEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.LINK).queue();
+    }
+
+    public static void shareImageEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
+    }
+
+    public static void saveImageEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.SAVE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
+    }
+
+    public static void copyLinkEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.LINK).queue();
+    }
+
+    public static void copyImageEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
+    }
+
+    public static void browseGeoLocationPermissionEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.PERMISSION, Object.BROWSER, Value.GEOLOCATION).queue();
+    }
+
+    public static void browseFilePermissionEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.PERMISSION, Object.BROWSER, Value.FILE).queue();
+    }
+
+    public static void browsePermissionEvent(String[] requests) {
+        for(String request : requests) {
+            final String value;
+            switch(request) {
+                case PermissionRequest.RESOURCE_AUDIO_CAPTURE:
+                    value = Value.AUDIO;
+                    break;
+                case PermissionRequest.RESOURCE_VIDEO_CAPTURE:
+                    value = Value.VIDEO;
+                    break;
+                case PermissionRequest.RESOURCE_PROTECTED_MEDIA_ID:
+                    value = Value.EME;
+                    break;
+                case PermissionRequest.RESOURCE_MIDI_SYSEX:
+                    value = Value.MIDI;
+                    break;
+                default:
+                    value = request;
+                    break;
+            }
+            TelemetryEvent.create(Category.ACTION, Method.PERMISSION, Object.BROWSER, value).queue();
+        }
+    }
+
+    public static void browseEnterFullScreenEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.FULLSCREEN, Object.BROWSER, Value.ENTER).queue();
+    }
+
+    public static void browseExitFullScreenEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.FULLSCREEN, Object.BROWSER, Value.EXIT).queue();
     }
 
     public static void showMenuHome() {
