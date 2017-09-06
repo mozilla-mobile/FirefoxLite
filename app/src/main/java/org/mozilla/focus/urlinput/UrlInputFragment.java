@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -230,10 +232,15 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         if (texts == null) {
             return;
         }
-
+        String searchKey = urlView.getText().toString();
         for (int i = 0; i < texts.size(); i++) {
             final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
-            item.setText(texts.get(i));
+            String trimStr = searchKey.trim();
+            int endIndex = trimStr.length() > texts.get(i).length() ? texts.get(i).length() : trimStr.length();
+            SpannableStringBuilder str = new SpannableStringBuilder(texts.get(i));
+            str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            item.setText(str);
             item.setOnClickListener(this);
             item.setOnLongClickListener(this);
             this.suggestionView.addView(item);
