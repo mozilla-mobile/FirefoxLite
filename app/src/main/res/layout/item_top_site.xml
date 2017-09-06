@@ -39,7 +39,8 @@
         android:gravity="center"
         android:textAlignment="center"
         android:lineSpacingExtra="1dp"
-        android:textColor="#272727"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         android:textSize="11dp"
         android:maxLines="2"
         tools:text="Foobar" />
