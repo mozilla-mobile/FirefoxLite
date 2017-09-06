@@ -212,7 +212,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
             site.setTitle(view.getTitle());
             site.setUrl(url);
             site.setFavIcon(FavIconUtils.getRefinedBitmap(getResources(), icon, view.getTitle().charAt(0)));
-            BrowsingHistoryManager.getInstance().insert(site, null);
+            BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
         }
 
         @Override

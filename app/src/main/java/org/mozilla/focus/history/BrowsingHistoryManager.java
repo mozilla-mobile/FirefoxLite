@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Handler;
 
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryContract.BrowsingHistory;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.provider.QueryHandler.*;
@@ -100,8 +101,8 @@ public class BrowsingHistoryManager {
         mQueryHandler.startDelete(QueryHandler.SITE_TOKEN, new AsyncDeleteWrapper(-1, listener), BrowsingHistory.CONTENT_URI, "1", null);
     }
 
-    public void update(Site site, AsyncUpdateListener listener) {
-        mQueryHandler.startUpdate(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site), BrowsingHistory._ID + " = ?", new String[] {Long.toString(site.getId())});
+    public void updateLastEntry(Site site, AsyncUpdateListener listener) {
+        mQueryHandler.startUpdate(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site), BrowsingHistory._ID + " = ( SELECT " + BrowsingHistory._ID + " FROM " + HistoryContract.TABLE_NAME +" WHERE " + BrowsingHistory.URL + " = ? ORDER BY " + BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC)" , new String[] {site.getUrl()});
     }
 
     public void query(int offset, int limit, AsyncQueryListener listener) {
