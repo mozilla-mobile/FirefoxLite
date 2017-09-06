@@ -242,17 +242,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.findViewById(R.id.menu_blockimg).setSelected(mBlockImgPref);
     }
 
-    private void showMenu() {
-        final BrowserFragment browserFragment = getVisibleBrowserFragment();
-        final boolean hasLoadedPage = browserFragment != null && !browserFragment.isLoading();
-        final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
-        setEnable(nextButton, canGoForward);
-        setEnable(refreshButton, hasLoadedPage);
-        setEnable(shareButton, hasLoadedPage);
-        setEnable(captureButton, hasLoadedPage);
-        menu.show();
-    }
-
     private BrowserFragment getVisibleBrowserFragment() {
         final BrowserFragment browserFragment = getBrowserFragment();
         if (browserFragment == null || !browserFragment.isVisible()) {
@@ -260,6 +249,21 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else {
             return browserFragment;
         }
+    }
+
+    private void showMenu() {
+        updateMenu();
+        menu.show();
+    }
+
+    private void updateMenu() {
+        final BrowserFragment browserFragment = getVisibleBrowserFragment();
+        final boolean hasLoadedPage = browserFragment != null && !browserFragment.isLoading();
+        final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
+        setEnable(nextButton, canGoForward);
+        setEnable(refreshButton, hasLoadedPage);
+        setEnable(shareButton, hasLoadedPage);
+        setEnable(captureButton, hasLoadedPage);
     }
 
     private Fragment getTopHomeFragment() {
@@ -619,6 +623,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case SHOW_MENU:
                 this.showMenu();
+                break;
+            case UPDATE_MENU:
+                this.updateMenu();
                 break;
             case SHOW_URL_INPUT:
                 final String url = (payload != null) ? payload.toString() : null;
