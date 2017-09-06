@@ -341,6 +341,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             public void onPageFinished(boolean isSecure) {
                 updateIsLoading(false);
 
+                notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
+
                 backgroundTransition.startTransition(ANIMATION_DURATION);
 
                 progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading_finished));

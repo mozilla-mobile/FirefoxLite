@@ -23,6 +23,7 @@ public interface FragmentListener {
         SHOW_HOME, // no payload
         SHOW_MENU, // no payload
         DISMISS_URL_INPUT, // payload is boolean value, true if commitAllowingStateLoss
+        UPDATE_MENU, // no payload
     }
 
     void onNotified(@NonNull Fragment from,
