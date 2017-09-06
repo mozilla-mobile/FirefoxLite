@@ -41,6 +41,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Resources resources = getResources();
         String keyClicked = preference.getKey();
 
+        TelemetryWrapper.settingsClickEvent(keyClicked);
+
         if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
@@ -76,12 +78,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
-
-        if (!localeUpdated && key.equals(getString(R.string.pref_key_locale))) {
+        if (key.equals(getString(R.string.pref_key_locale))) {
             // Updating the locale leads to onSharedPreferenceChanged being triggered again in some
             // cases. To avoid an infinite loop we won't update the preference a second time. This
             // fragment gets replaced at the end of this method anyways.
+            if (localeUpdated) {
+                return;
+            }
             localeUpdated = true;
 
             final ListPreference languagePreference = (ListPreference) findPreference(getString(R.string.pref_key_locale));
@@ -97,6 +100,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 locale = Locales.parseLocaleCode(value);
                 localeManager.setSelectedLocale(getActivity(), value);
             }
+            TelemetryWrapper.settingsLocaleChangeEvent(key, String.valueOf(locale), TextUtils.isEmpty(value));
             localeManager.updateConfiguration(getActivity(), locale);
 
             // Manually notify SettingsActivity of locale changes (in most other cases activities
@@ -110,15 +114,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SettingsFragment())
                     .commit();
-        } else if (key.equals(getString(R.string.pref_key_data_saving_block_ads))) {
-            //Block ads and trackers Callback function
-        } else if (key.equals(getString(R.string.pref_key_data_saving_block_webfonts))) {
-            //Block Web Fonts Callback function
-        } else if (key.equals(getString(R.string.pref_key_data_saving_block_images))) {
-            //block images while over cellular data Callback function
-        } else if (key.equals(getString(R.string.pref_key_data_saving_block_tab_restore))) {
-            //block tab restore Callback function
-        } else if (key.equals(getString(R.string.pref_key_storage_clear_browsing_data))) {
+            return;
+        }
+
+        TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
+
+        if (key.equals(getString(R.string.pref_key_storage_clear_browsing_data))) {
             //Clear browsing data Callback function is not here
             //Go to Class CleanBrowsingDataPreference -> onDialogClosed
         } else if (key.equals(getString(R.string.pref_key_storage_save_downloads_to))) {
