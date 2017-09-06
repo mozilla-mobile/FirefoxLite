@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.utils.FavIconUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +41,26 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         return new SiteViewHolder(view);
     }
 
+    private int multiplyColorCodeByPercentage(int colorCode, float percentage) {
+        int result = (int) ( colorCode * 1.1 ) ;
+        if (result > 0xFF) {
+            result = 0xFF;
+        }
+        return result;
+    }
+
     @Override
     public void onBindViewHolder(SiteViewHolder holder, int position) {
         final Site site = sites.get(position);
         holder.text.setText(site.getTitle());
         if (site.getFavIcon() != null) {
             holder.img.setImageBitmap(site.getFavIcon());
+            int dominantColor = FavIconUtils.getDominantColor(site.getFavIcon());
+            int alpha = ( dominantColor & 0xFF000000 );
+            int red = multiplyColorCodeByPercentage( ( dominantColor & 0x00FF0000 ) >> 16, 1.1f ) << 16;
+            int green = multiplyColorCodeByPercentage( ( dominantColor & 0x0000FF00 ) >> 8, 1.1f ) << 8;
+            int blue = multiplyColorCodeByPercentage( ( dominantColor & 0x000000FF ), 1.1f );
+            ((View)holder.img.getParent()).setBackgroundColor(alpha + red + green + blue);
         } else {
             //need default icon?
             holder.img.setImageBitmap(null);
