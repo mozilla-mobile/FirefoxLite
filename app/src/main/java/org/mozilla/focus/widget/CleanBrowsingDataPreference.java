@@ -9,10 +9,14 @@ import android.webkit.CookieManager;
 import android.webkit.WebViewDatabase;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.TopSitesUtils;
 
+import java.util.Set;
 
 /**
  * Created by ylai on 2017/8/3.
@@ -56,6 +60,31 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
             if (getValues().size() > 0) {
                 Toast.makeText(getContext(), R.string.message_cleared_browsing_data, Toast.LENGTH_SHORT).show();
             }
+            TelemetryWrapper.settingsEvent(getKey(), flattenToJsonObject(getValues()).toString());
         }
     }
+
+    private Object flattenToJsonObject(Set<String> values) {
+        final JSONObject object = new JSONObject();
+
+        final String[] preferenceKeys = getContext().getResources().getStringArray(R.array.clean_browsing_data_values);
+        if (preferenceKeys.length <= 0) {
+            return object;
+        }
+
+        for (String key : preferenceKeys) {
+            try {
+                if (values.contains(key)) {
+                    object.put(key, Boolean.TRUE.toString());
+                } else {
+                    object.put(key, JSONObject.NULL);
+                }
+            } catch (JSONException e) {
+                throw new AssertionError("Preference value can't be serialized to JSON", e);
+            }
+        }
+
+        return object;
+    }
+
 }

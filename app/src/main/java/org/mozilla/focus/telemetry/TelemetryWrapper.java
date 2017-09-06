@@ -168,9 +168,10 @@ public final class TelemetryWrapper {
                     .setUpdateChannel(BuildConfig.BUILD_TYPE)
                     .setPreferencesImportantForTelemetry(
                             resources.getString(R.string.pref_key_search_engine),
-                            resources.getString(R.string.pref_key_data_saving_block_ads),
-                            //  TODO:[Telemetry] default browser
-                            //  TODO:[Telemetry] storage prefer
+                            resources.getString(R.string.pref_key_turbo_mode),
+                            resources.getString(R.string.pref_key_performance_block_images),
+                            resources.getString(R.string.pref_key_default_browser),
+                            resources.getString(R.string.pref_key_storage_save_downloads_to),
                             //  TODO:[Telemetry][P2] webview_version
                             resources.getString(R.string.pref_key_locale))
                     .setCollectionEnabled(telemetryEnabled)
@@ -241,6 +242,17 @@ public final class TelemetryWrapper {
     public static void settingsEvent(String key, String value) {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, key)
                 .extra(Extra.TO, value)
+                .queue();
+    }
+
+    public static void settingsClickEvent(String key) {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.SETTING, key).queue();
+    }
+
+    public static void settingsLocaleChangeEvent(String key, String value, boolean isDefault) {
+        TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, key)
+                .extra(Extra.TO, value)
+                .extra(Extra.DEFAULT, Boolean.toString(isDefault))
                 .queue();
     }
 
@@ -378,6 +390,7 @@ public final class TelemetryWrapper {
     public static void removeTopSite(boolean isDefault) {
         TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.HOME, Value.LINK)
                 .extra(Extra.DEFAULT, Boolean.toString(isDefault))
+                //  TODO: add index
                 .queue();
     }
 
