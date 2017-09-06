@@ -278,11 +278,19 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
                 return;
             }
 
+            String title = getTitle();
+            final Bitmap favIcon;
+            if (TextUtils.isEmpty(title)) {
+                favIcon = null;
+            } else {
+                favIcon = FavIconUtils.getInitialBitmap(getResources(), null, title.charAt(0));
+            }
+
             Site site = new Site();
             site.setUrl(url);
             site.setTitle(getTitle());
             site.setLastViewTimestamp(System.currentTimeMillis());
-            site.setFavIcon(FavIconUtils.getInitialBitmap(getResources(), null, getTitle().charAt(0)));
+            site.setFavIcon(favIcon);
             BrowsingHistoryManager.getInstance().insert(site, null);
         }
 
