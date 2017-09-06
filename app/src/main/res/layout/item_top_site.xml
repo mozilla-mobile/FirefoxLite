@@ -18,19 +18,16 @@
     android:orientation="vertical"
     android:paddingTop="5dp">
 
-    <android.support.v7.widget.CardView
+    <FrameLayout
         android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:cardBackgroundColor="#EEEEEE"
-        app:cardCornerRadius="8dp">
-
+        android:layout_height="48dp">
         <ImageView
             android:id="@id/content_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_gravity="center"
             tools:src="@mipmap/ic_launcher" />
-    </android.support.v7.widget.CardView>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/text"

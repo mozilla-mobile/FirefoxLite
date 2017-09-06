@@ -45,7 +45,7 @@ public class FavIconUtils {
         return image;
     }
 
-    private static int getDominantColor(Bitmap source) {
+    public static int getDominantColor(Bitmap source) {
         return getDominantColor(source, true);
     }
 
