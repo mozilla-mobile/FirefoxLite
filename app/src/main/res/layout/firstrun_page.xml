@@ -67,7 +67,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="24dp"
                         android:layout_marginRight="24dp"
-                        android:layout_marginTop="16dp"
                         android:gravity="center"
                         android:lineSpacingMultiplier="1.25"
                         android:textColor="#ff737373"
@@ -100,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="?android:attr/selectableItemBackground"
-                android:textColor="#ff9400FF"
+                android:textColor="@color/colorAccent"
                 android:textSize="14sp"
                 tools:text="@string/firstrun_next_button" />
 
