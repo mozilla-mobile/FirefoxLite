@@ -78,17 +78,17 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         File file = new File(URI.create(mDownloadInfo.get(position).getFileUri()).getPath());
         if (file.exists()){
             try {
-                file.delete();
+                if (file.delete()){
+                    DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                    manager.remove(mDownloadInfo.get(position).getDownloadId());
+
+                    remove(position);
+                }
             }catch (Exception e){
                 Log.e(this.getClass().getSimpleName(),""+e.getMessage());
             }
 
         }
-
-        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.remove(mDownloadInfo.get(position).getDownloadId());
-
-        remove(position);
     }
 
     private void cancel(int position){
