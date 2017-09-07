@@ -37,4 +37,6 @@
 
     <dimen name="home_padding_url_bar_to_title">43dp</dimen>
     <dimen name="home_padding_url_bar_to_top_sites">22dp</dimen>
+
+    <dimen name="top_site_width">296dp</dimen>
 </resources>

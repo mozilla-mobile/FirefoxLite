@@ -32,7 +32,7 @@
 
     <include layout="@layout/fragment_homescreen_item_recyclerview"
         android:id="@+id/main_list"
-        android:layout_width="296dp"
+        android:layout_width="@dimen/top_site_width"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/btn_menu_container"
