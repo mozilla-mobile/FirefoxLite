@@ -12,12 +12,12 @@ public class DownloadInfo {
 
     private Long DownloadId;
     private int Status;
-    private String Size;
-    private String Date;
-    private String FileName;
-    private String MediaUri;
+    private String Size ;
+    private String Date ;
+    private String FileName = "";
+    private String MediaUri ="";
     private String MimeType = "";
-    private String FileUri;
+    private String FileUri ="";
     private String FileExtension = "";
 
     public DownloadInfo(){}
@@ -39,7 +39,10 @@ public class DownloadInfo {
         return Status;
     }
     public void setFileUri(String fileUri){
-        FileUri = fileUri;
+        if (!TextUtils.isEmpty(fileUri))
+        {
+            FileUri = fileUri;
+        }
     }
     public String getFileUri(){
         return FileUri;
@@ -56,7 +59,9 @@ public class DownloadInfo {
     }
 
     public void setMediaUri(String mediaUri){
-        MediaUri = mediaUri;
+        if (!TextUtils.isEmpty(mediaUri)){
+            MediaUri = mediaUri;
+        }
     }
 
     public String getMediaUri(){
@@ -71,7 +76,10 @@ public class DownloadInfo {
     }
 
     public void setFileName(String fileName){
-        FileName = fileName;
+
+        if (!TextUtils.isEmpty(fileName)){
+            FileName = fileName;
+        }
     }
 
     public String getFileName(){

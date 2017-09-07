@@ -24,7 +24,7 @@ public class DownloadContract {
 
         public static final String TABLE_DOWNLOAD = "download_info";
         public static final String DOWNLOAD_ID = "download_id";
-        public static final String FILE_NAME = "file_name";
+        public static final String FILE_PATH = "file_path";
 
     }
 }
