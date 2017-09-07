@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -269,7 +270,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private ViewGroup rootView;
         private ImageView imgFav;
         private TextView textMain, textSecondary;
-        private ImageButton btnMore;
+        private FrameLayout btnMore;
 
         public SiteItemViewHolder(View itemView) {
             super(itemView);
@@ -277,7 +278,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             imgFav = (ImageView) itemView.findViewById(R.id.history_item_img_fav);
             textMain = (TextView) itemView.findViewById(R.id.history_item_text_main);
             textSecondary = (TextView) itemView.findViewById(R.id.history_item_text_secondary);
-            btnMore = (ImageButton) itemView.findViewById(R.id.history_item_btn_more);
+            btnMore = (FrameLayout) itemView.findViewById(R.id.history_item_btn_more);
         }
     }
 

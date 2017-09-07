@@ -51,15 +51,18 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <ImageButton
+        <FrameLayout
             android:id="@+id/history_item_btn_more"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingRight="12dp"
             android:background="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/action_menu" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/action_menu"
+                android:layout_gravity="center"/>
+        </FrameLayout>
 
     </LinearLayout>
 </RelativeLayout>
