@@ -6,7 +6,7 @@ For clients that have "send anonymous usage data" enabled Focus sends a "core" p
 
 ### Core ping
 
-Focus for Android creates and tries to send a "core" ping whenever the app goes to the background. This core ping uses the same format as Firefox for Android and is [documented on readthedocs.io](https://gecko.readthedocs.io/en/latest/toolkit/components/telemetry/telemetry/data/core-ping.html).
+Focus for Android creates and tries to send a "core" ping whenever the app goes to the background. This core ping uses the same format as Firefox for Android and is [documented in Firefox Source Docs](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/data/core-ping.html).
 
 ### Event ping
 
@@ -27,7 +27,7 @@ As part of the event ping the most recent state of the user's setting is sent (d
 
 #### Events
 
-The event ping contains a list of events ([see event format on readthedocs.io](http://gecko.readthedocs.io/en/latest/toolkit/components/telemetry/telemetry/collection/events.html)) for the following actions:
+The event ping contains a list of events ([see event format on Firefox Source Docs](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/collection/events.html)) for the following actions:
 
 * Start session - ("action", "foreground", "app")
 * Stop session - ("action", "background", "app")
