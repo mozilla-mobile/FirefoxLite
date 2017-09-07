@@ -15,7 +15,7 @@ android {
         versionCode 5
         versionName "0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        manifestPlaceholders = [ textActionLabel:getStringFromXml('text_selection_search_action_prefix', 'strings.xml') + getStringFromXml('app_name', 'app.xml')]
         multiDexEnabled true
     }
 
@@ -514,4 +514,10 @@ task checkstyle(type: Checkstyle) {
 
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
+}
+
+def getStringFromXml(String key, String xmlName) {
+    def stringsFile = android.sourceSets.main.res.sourceFiles.find { it.name.equals xmlName }
+    String s = new XmlParser().parse(stringsFile).string.find { it.@name.equals key }.text();
+    return s.replaceAll("\"", "");
 }
