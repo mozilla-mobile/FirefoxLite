@@ -34,8 +34,6 @@ import org.mozilla.telemetry.serialize.TelemetryPingSerializer;
 import org.mozilla.telemetry.storage.FileTelemetryStorage;
 import org.mozilla.telemetry.storage.TelemetryStorage;
 
-import java.util.List;
-
 public final class TelemetryWrapper {
     private static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
 
@@ -66,7 +64,6 @@ public final class TelemetryWrapper {
         private static final String COPY = "copy";
         private static final String OPEN = "open";
         private static final String INTENT_URL = "intent_url";
-        private static final String INTENT_CUSTOM_TAB = "intent_custom_tab";
         private static final String TEXT_SELECTION_INTENT = "text_selection_intent";
         private static final String SHOW = "show";
     }
@@ -83,10 +80,8 @@ public final class TelemetryWrapper {
         private static final String APP = "app";
         private static final String MENU = "menu";
 
-        private static final String NOTIFICATION_ACTION = "notification_action";
         private static final String BROWSER = "browser";
         private static final String BROWSER_CONTEXTMENU = "browser_contextmenu";
-        private static final String CUSTOM_TAB_ACTION_BUTTON = "custom_tab_action_bu";
         private static final String FIRSTRUN = "firstrun";
     }
 
@@ -112,7 +107,6 @@ public final class TelemetryWrapper {
         private static final String IMAGE = "image";
         private static final String LINK = "link";
         private static final String FINISH = "finish";
-        private static final String OPEN = "open";
         private static final String INFO = "info";
 
         private static final String ENTER = "enter";
@@ -213,41 +207,24 @@ public final class TelemetryWrapper {
         };
     }
 
+    public static void toggleFirstRunPageEvent(boolean enableTurboMode) {
+        TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.FIRSTRUN, Value.TURBO)
+                .extra(Extra.TO, Boolean.toString(enableTurboMode))
+                .queue();
+    }
+
+    public static void finishFirstRunEvent(long duration) {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
+                .extra(Extra.ON, Long.toString(duration))
+                .queue();
+    }
+
     public static void browseIntentEvent() {
         TelemetryEvent.create(Category.ACTION, Method.INTENT_URL, Object.APP).queue();
     }
 
-    /**
-     * Sends a list of the custom tab options that a custom-tab intent made use of.
-     */
-    public static void customTabsIntentEvent(final List<String> options) {
-        final TelemetryEvent event = TelemetryEvent.create(Category.ACTION, Method.INTENT_CUSTOM_TAB, Object.APP);
-
-        // We can send at most 10 extras per event - we just ignore the rest if there are too many
-        final int extrasCount;
-        if (options.size() > 10) {
-            extrasCount = 10;
-        } else {
-            extrasCount = options.size();
-        }
-
-        for (final String option : options.subList(0, extrasCount)) {
-            event.extra(option, "true");
-        }
-
-        event.queue();
-    }
-
-    public static void customTabActionButtonEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.CUSTOM_TAB_ACTION_BUTTON).queue();
-    }
-
     public static void textSelectionIntentEvent() {
         TelemetryEvent.create(Category.ACTION, Method.TEXT_SELECTION_INTENT, Object.APP).queue();
-    }
-
-    public static void openNotificationActionEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.NOTIFICATION_ACTION, Value.OPEN).queue();
     }
 
     public static void settingsEvent(String key, String value) {
@@ -266,16 +243,6 @@ public final class TelemetryWrapper {
                 .extra(Extra.DEFAULT, Boolean.toString(isDefault))
                 .queue();
     }
-
-    public static void showFirstRunPageEvent(int page) {
-        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FIRSTRUN, String.valueOf(page)).queue();
-    }
-
-    public static void finishFirstRunEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FIRSTRUN, Value.FINISH).queue();
-    }
-
-    //  TODO: clear above
 
     public static void startSession() {
         TelemetryHolder.get().recordSessionStart();

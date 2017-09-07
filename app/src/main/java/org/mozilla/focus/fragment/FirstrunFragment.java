@@ -39,6 +39,9 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
     private TransitionDrawable bgTransitionDrawable;
     private Drawable[] bgDrawables;
 
+    private boolean isTelemetryValid = true;
+    private long telemetryStartTimestamp = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +59,8 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
 
         // We will send a telemetry event whenever a new firstrun page is shown. However this page
         // listener won't fire for the initial page we are showing. So we are going to firing here.
-        TelemetryWrapper.showFirstRunPageEvent(0);
+        isTelemetryValid = true;
+        telemetryStartTimestamp = System.currentTimeMillis();
     }
 
     @Override
@@ -76,20 +80,6 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
             @Override
             public void transformPage(View page, float position) {
                 page.setAlpha(1 - (0.5f * Math.abs(position)));
-            }
-        });
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                TelemetryWrapper.showFirstRunPageEvent(position);
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
             }
         });
 
@@ -129,6 +119,12 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        isTelemetryValid = false;
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.next:
@@ -141,7 +137,9 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
 
             case R.id.finish:
                 finishFirstrun();
-                TelemetryWrapper.finishFirstRunEvent();
+                if(isTelemetryValid) {
+                    TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp);
+                }
                 break;
 
             default:
