@@ -1,9 +1,7 @@
 package org.mozilla.focus.history;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.widget.FragmentListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -158,12 +156,8 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         final int position = mRecyclerView.getChildAdapterPosition(v);
         if (position != RecyclerView.NO_POSITION && position < mItems.size()) {
             Object item = mItems.get(position);
-            if (item instanceof Site) {
-                // TODO: modify the following code accordingly
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(((Site) item).getUrl()));
-                mContext.startActivity(intent);
+            if (item instanceof Site && mContext instanceof FragmentListener) {
+                ((FragmentListener) mContext).onNotified(null, FragmentListener.TYPE.OPEN_URL, ((Site) item).getUrl());
                 mHistoryListener.onItemClicked();
                 TelemetryWrapper.historyOpenLink();
             }
