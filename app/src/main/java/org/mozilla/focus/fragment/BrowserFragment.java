@@ -740,6 +740,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
+    public void stop() {
+        final IWebView webView = getWebView();
+        if (webView != null) {
+            webView.stopLoading();
+        }
+    }
+
     public interface ScreenshotCallback {
         void onCaptureComplete(String title, String url, Bitmap bitmap);
     }
