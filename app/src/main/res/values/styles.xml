@@ -50,10 +50,10 @@
 
     <!-- for bottom sheet menu -->
     <style name="MenuSheetRow">
+        <item name="android:layout_marginEnd">@dimen/menu_layout_margin</item>
+        <item name="android:layout_marginStart">@dimen/menu_layout_margin</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">14dp</item>
-        <item name="android:layout_marginEnd">14dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
     <style name="MenuButtonContainerSkeleton">
