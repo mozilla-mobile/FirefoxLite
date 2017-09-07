@@ -64,8 +64,6 @@ import static org.mozilla.focus.screenshot.ScreenshotViewerActivity.REQ_CODE_NOT
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
-    private boolean mTurboModePref = true;
-    private boolean mBlockImgPref = true;
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
     private static final Handler HANDLER = new Handler();
 
@@ -89,8 +87,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTurboModePref = Settings.getInstance(this).shouldUseTurboMode();
-        mBlockImgPref = Settings.getInstance(this).shouldBlockImages();
 
         asyncInitialize();
 
@@ -246,8 +242,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         captureButton = menu.findViewById(R.id.capture_page);
         refreshIcon = menu.findViewById(R.id.action_refresh);
         stopIcon = menu.findViewById(R.id.action_stop);
-        menu.findViewById(R.id.menu_turbomode).setSelected(mTurboModePref);
-        menu.findViewById(R.id.menu_blockimg).setSelected(mBlockImgPref);
+        menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
+        menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
     }
 
     private BrowserFragment getVisibleBrowserFragment() {
@@ -268,10 +264,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
         final boolean hasLoadedPage = browserFragment != null && !browserFragment.isLoading();
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
+
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
         setEnable(shareButton, hasLoadedPage);
         setEnable(captureButton, hasLoadedPage);
+    }
+
+    private boolean isTurboEnabled() {
+        return Settings.getInstance(this).shouldUseTurboMode();
+    }
+
+    private boolean isBlockingImages() {
+        return Settings.getInstance(this).shouldBlockImages();
     }
 
     private Fragment getTopHomeFragment() {
@@ -302,28 +307,26 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
-                mBlockImgPref = !mBlockImgPref;
-                v.setSelected(mBlockImgPref);
-                String blockImagePrefKey = this.getResources().getString(R.string.pref_key_performance_block_images);
-                PreferenceManager.getDefaultSharedPreferences(this)
-                        .edit()
-                        .putBoolean(blockImagePrefKey, mBlockImgPref)
-                        .apply();
-                stringResource = mBlockImgPref ? R.string.message_enable_block_image : R.string.message_disable_block_image;
+                //  Toggle
+                final boolean blockingImages = !isBlockingImages();
+                Settings.getInstance(this).setBlockImages(blockingImages);
+
+                v.setSelected(blockingImages);
+                stringResource = blockingImages ? R.string.message_enable_block_image : R.string.message_disable_block_image;
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
-                TelemetryWrapper.menuBlockImageChangeTo(mBlockImgPref);
+
+                TelemetryWrapper.menuBlockImageChangeTo(blockingImages);
                 break;
             case R.id.menu_turbomode:
-                mTurboModePref = !mTurboModePref;
-                v.setSelected(mTurboModePref);
-                String turboModePrefKey = this.getResources().getString(R.string.pref_key_turbo_mode);
-                PreferenceManager.getDefaultSharedPreferences(this)
-                        .edit()
-                        .putBoolean(turboModePrefKey, mTurboModePref)
-                        .apply();
-                stringResource = mTurboModePref ? R.string.message_enable_turbo_mode : R.string.message_disable_turbo_mode;
+                //  Toggle
+                final boolean turboEnabled = !isTurboEnabled();
+                Settings.getInstance(this).setTurboMode(turboEnabled);
+
+                v.setSelected(turboEnabled);
+                stringResource = turboEnabled ? R.string.message_enable_turbo_mode : R.string.message_disable_turbo_mode;
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
-                TelemetryWrapper.menuTurboChangeTo(mTurboModePref);
+
+                TelemetryWrapper.menuTurboChangeTo(turboEnabled);
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
@@ -475,10 +478,18 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Only refresh when disabling turbo mode
-        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key) && !Settings.getInstance(this).shouldUseTurboMode()){
-            if (getVisibleBrowserFragment() != null){
+        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)){
+            final boolean turboEnabled = isTurboEnabled();
+            if (!turboEnabled && getVisibleBrowserFragment() != null){
                 getVisibleBrowserFragment().reload();
             }
+            menu.findViewById(R.id.menu_turbomode).setSelected(turboEnabled);
+        } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
+            final boolean blockingImages = isBlockingImages();
+            if (!blockingImages && getVisibleBrowserFragment() != null){
+                getVisibleBrowserFragment().reload();
+            }
+            menu.findViewById(R.id.menu_blockimg).setSelected(blockingImages);
         }
         // For turbo mode, a automatic refresh is done when we disable block image.
     }

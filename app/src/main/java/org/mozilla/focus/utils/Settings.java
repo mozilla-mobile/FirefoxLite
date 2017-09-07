@@ -48,6 +48,11 @@ public class Settings {
                 BLOCK_IMAGE_DEFAULT);
     }
 
+    public void setBlockImages(boolean blockImages) {
+        final String key = getPreferenceKey(R.string.pref_key_performance_block_images);
+        preferences.edit().putBoolean(key, blockImages).apply();
+    }
+
     public boolean shouldShowFirstrun() {
         return !preferences.getBoolean(FirstrunFragment.FIRSTRUN_PREF, false);
     }
