@@ -15,21 +15,16 @@
         <!-- PAGE CONTAINER (for styling purposes only) -->
         <div id="errorPageContainer">
 
+            <img class="main" src="%imageContentInBase64%">
+
             <!-- Error Title -->
             <div id="errorTitle">
                 <h1 class="errorTitleText">%messageShort%</h1>
             </div>
 
-            <img class="main" src="%imageContentInBase64%">
-
-            <!-- LONG CONTENT (the section most likely to require scrolling) -->
-            <div id="errorLongContent">
-
-                <!-- Short Description -->
-                <div id="errorShortDesc">
-                    <p id="errorShortDescText">%messageLong%</p>
-                </div>
-
+            <!-- Short Description -->
+            <div id="errorDesc">
+                <p id="errorShortDescText">%messageLong%</p>
             </div>
 
             <!-- Retry Button -->
