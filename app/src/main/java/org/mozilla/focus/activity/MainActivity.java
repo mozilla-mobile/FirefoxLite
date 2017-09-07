@@ -61,8 +61,6 @@ import static org.mozilla.focus.screenshot.ScreenshotViewerActivity.REQ_CODE_NOT
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,SharedPreferences.OnSharedPreferenceChangeListener{
 
-    public static final String ACTION_OPEN = "open";
-
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
     private boolean mTurboModePref = true;
     private boolean mBlockImgPref = true;
@@ -197,10 +195,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // We can't update our fragment right now because we need to wait until the activity is
             // resumed. So just remember this URL and load it in onResumeFragments().
             pendingUrl = intent.getDataString();
-        }
-
-        if (ACTION_OPEN.equals(intent.getAction())) {
-            TelemetryWrapper.openNotificationActionEvent();
         }
 
         // We do not care about the previous intent anymore. But let's remember this one.
@@ -673,8 +667,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final SafeIntent intent = new SafeIntent(getIntent());
         if (intent.getBooleanExtra(EXTRA_TEXT_SELECTION, false)) {
             TelemetryWrapper.textSelectionIntentEvent();
-        } else if (BrowsingSession.getInstance().isCustomTab()) {
-            TelemetryWrapper.customTabsIntentEvent(BrowsingSession.getInstance().getCustomTabConfig().getOptionsList());
         } else {
             TelemetryWrapper.browseIntentEvent();
         }

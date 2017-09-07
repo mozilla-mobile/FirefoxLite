@@ -258,7 +258,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     } catch (PendingIntent.CanceledException e) {
                         // There's really nothing we can do here...
                     }
-                    TelemetryWrapper.customTabActionButtonEvent();
                 }
             });
         }
