@@ -4,9 +4,10 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.SwipeMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/home_container">
 
     <org.mozilla.focus.home.HomeScreenBackground
         android:layout_width="match_parent"
@@ -35,4 +36,4 @@
 
     <include layout="@layout/fragment_homescreen_item_menu_button"/>
 
-</RelativeLayout>
+</org.mozilla.focus.widget.SwipeMotionLayout>

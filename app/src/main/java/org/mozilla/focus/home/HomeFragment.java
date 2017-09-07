@@ -29,8 +29,10 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.widget.FragmentListener;
+import org.mozilla.focus.widget.SwipeMotionLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,6 +99,19 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
                             null);
                 }
                 TelemetryWrapper.showSearchBarHome();
+            }
+        });
+
+        SwipeMotionLayout home_container = (SwipeMotionLayout)view.findViewById(R.id.home_container);
+        home_container.setOnSwipeListener(new OnSwipeListener.OnSwipeListenerAdapter() {
+            @Override
+            public void onSwipeUp() {
+                btnMenu.performClick();
+            }
+
+            @Override
+            public void onSwipeDown() {
+                fakeInput.performClick();
             }
         });
 
