@@ -92,7 +92,14 @@ public class DownloadInfoManager {
                         List<DownloadInfo> downloadInfoList = new ArrayList<>();
                         if (cursor != null) {
                             while (cursor.moveToNext()) {
-                                downloadInfoList.add(cursorToDownloadInfo(cursor));
+                                DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
+
+                                //delete DownloadInfo that has canceled from download manager
+                                if (TextUtils.isEmpty(downloadInfo.getFileUri())){
+                                    DownloadInfoManager.getInstance().delete(downloadInfo.getDownloadId(),null);
+                                }else {
+                                    downloadInfoList.add(downloadInfo);
+                                }
                             }
                             cursor.close();
                         }

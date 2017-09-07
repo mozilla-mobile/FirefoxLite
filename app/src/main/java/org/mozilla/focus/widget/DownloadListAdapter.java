@@ -85,6 +85,13 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         remove(position);
     }
 
+    private void cancel(int position){
+        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        manager.remove(mDownloadInfo.get(position).getDownloadId());
+
+        remove(position);
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mDownloadInfo.isEmpty() ? VIEW_TYPE_EMPTY : VIEW_TYPE_NON_EMPTY;
@@ -144,6 +151,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     TelemetryWrapper.downloadDeleteFile();
                                     popupMenu.dismiss();
                                     return true;
+                                case R.id.cancel:
+                                    cancel(position);
+                                    popupMenu.dismiss();
+                                    return true;
                                 default:
                                     break;
                             }
@@ -151,6 +162,17 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         }
                     });
 
+                    if (DownloadManager.STATUS_RUNNING == mDownloadInfo.get(position).getStatus()){
+
+                        popupMenu.getMenu().findItem(R.id.remove).setVisible(false);
+                        popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
+                        popupMenu.getMenu().findItem(R.id.cancel).setVisible(true);
+
+                    }else {
+                        popupMenu.getMenu().findItem(R.id.remove).setVisible(true);
+                        popupMenu.getMenu().findItem(R.id.delete).setVisible(true);
+                        popupMenu.getMenu().findItem(R.id.cancel).setVisible(false);
+                    }
                     popupMenu.show();
                     TelemetryWrapper.showFileContextMenu();
                 }
