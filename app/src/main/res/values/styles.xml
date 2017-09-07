@@ -37,10 +37,6 @@
         <item name="android:listDivider">@null</item>
     </style>
 
-    <style name="InfoTheme" parent="SettingsTheme">
-        <item name="android:colorBackground">@android:color/black</item>
-    </style>
-
     <style name="PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
         <item name="overlapAnchor">true</item>
     </style>

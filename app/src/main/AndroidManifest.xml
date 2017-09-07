@@ -70,7 +70,7 @@
 
         <activity android:name=".activity.InfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/InfoTheme" />
+            android:theme="@style/SettingsTheme" />
 
         <activity android:name=".screenshot.ScreenshotViewerActivity"
             android:exported="false"
