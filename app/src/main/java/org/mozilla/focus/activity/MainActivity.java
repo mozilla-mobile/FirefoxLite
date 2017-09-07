@@ -568,7 +568,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     return;
                 }
                 hasPendingScreenCaptureTask = true;
-                showLoadingAndCapture(browserFragment);
             }
         }
     }
