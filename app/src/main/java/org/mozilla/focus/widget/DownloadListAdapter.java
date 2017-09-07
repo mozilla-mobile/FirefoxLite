@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -234,14 +235,14 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageView icon;
         TextView title;
         TextView subtitle;
-        ImageView action;
+        FrameLayout action;
 
         public DownloadViewHolder(View itemView) {
             super(itemView);
             icon = (ImageView) itemView.findViewById(R.id.img);
             title = (TextView) itemView.findViewById(R.id.title);
             subtitle = (TextView) itemView.findViewById(R.id.subtitle);
-            action = (ImageView) itemView.findViewById(R.id.menu_action);
+            action = (FrameLayout) itemView.findViewById(R.id.menu_action);
 
         }
     }

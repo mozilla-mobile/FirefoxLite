@@ -45,13 +45,19 @@
             android:text="subtitle"/>
     </RelativeLayout>
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/menu_action"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
-        android:src="@drawable/action_menu"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/action_menu"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
 
 </RelativeLayout>
