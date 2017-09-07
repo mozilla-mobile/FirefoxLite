@@ -174,8 +174,13 @@ public class DownloadInfoManager {
         final Uri uri = Download.CONTENT_URI;
         final String selection = Download.DOWNLOAD_ID + "=" + downloadId;
         final Cursor cursor = resolver.query(uri, null, selection, null, null);
+        boolean isExist = (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
 
-        return (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
+        if (cursor != null){
+            cursor.close();
+        }
+
+        return isExist;
     }
 
     /**
