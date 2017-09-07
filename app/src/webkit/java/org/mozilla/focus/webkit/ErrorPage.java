@@ -43,7 +43,7 @@ public class ErrorPage {
 
         final Resources resources = webView.getContext().getResources();
 
-        substitutionMap.put("%page-title%", resources.getString(R.string.error_page_title));
+        substitutionMap.put("%pageTitle%", resources.getString(R.string.error_page_title));
         substitutionMap.put("%button%", resources.getString(R.string.error_page_button));
 
         substitutionMap.put("%messageShort%", resources.getString(R.string.error_page_title));
