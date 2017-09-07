@@ -29,12 +29,11 @@ public class DownloadInfoDbHelper {
 
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            //sqLiteDatabase.execSQL(DROP_TABLE_IF_EXISTS + Download.TABLE_DOWNLOAD);
 
             String CREATE_TABLE =CREATE_TABLE_IF_NOT_EXISTS + Download.TABLE_DOWNLOAD + "("
                     + Download._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Download.DOWNLOAD_ID+ " INTEGER,"
-                    + Download.FILE_NAME + " TEXT"
+                    + Download.FILE_PATH + " TEXT"
                     + ")";
 
             sqLiteDatabase.execSQL(CREATE_TABLE);

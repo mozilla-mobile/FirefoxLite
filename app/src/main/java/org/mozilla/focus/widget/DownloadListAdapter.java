@@ -3,6 +3,7 @@ package org.mozilla.focus.widget;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -72,13 +75,25 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void delete(int position){
-        try {
-            new File(URI.create(mDownloadInfo.get(position).getFileUri()).getPath()).delete();
+        File file = new File(URI.create(mDownloadInfo.get(position).getFileUri()).getPath());
+        if (file.exists()){
+            try {
+                if (file.delete()){
+                    DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                    manager.remove(mDownloadInfo.get(position).getDownloadId());
 
-        }catch (Exception e){
-            Log.v(this.getClass().getSimpleName(),""+e.getMessage());
+                    remove(position);
+                }
+            }catch (Exception e){
+                Log.e(this.getClass().getSimpleName(),""+e.getMessage());
+            }
+
         }
-        remove(position);
+    }
+
+    private void cancel(int position){
+        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        manager.remove(mDownloadInfo.get(position).getDownloadId());
     }
 
     @Override
@@ -106,7 +121,17 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DownloadViewHolder holder = (DownloadViewHolder) viewHolder;
             DownloadInfo downloadInfo = mDownloadInfo.get(position);
 
-            holder.title.setText(downloadInfo.getFileName());
+            if (!TextUtils.isEmpty(downloadInfo.getFileName())){
+                holder.title.setText(downloadInfo.getFileName());
+            }else {
+                if (!TextUtils.isEmpty(downloadInfo.getFileUri()))
+                {
+                    holder.title.setText(new File(downloadInfo.getFileUri()).getName());
+                }else {
+                    holder.title.setText(R.string.unknown);
+                }
+            }
+
             holder.icon.setImageResource(mappingIcon(downloadInfo));
 
             String subtitle="";
@@ -140,6 +165,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     TelemetryWrapper.downloadDeleteFile();
                                     popupMenu.dismiss();
                                     return true;
+                                case R.id.cancel:
+                                    cancel(position);
+                                    popupMenu.dismiss();
+                                    return true;
                                 default:
                                     break;
                             }
@@ -147,6 +176,17 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         }
                     });
 
+                    if (DownloadManager.STATUS_RUNNING == mDownloadInfo.get(position).getStatus()){
+
+                        popupMenu.getMenu().findItem(R.id.remove).setVisible(false);
+                        popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
+                        popupMenu.getMenu().findItem(R.id.cancel).setVisible(true);
+
+                    }else {
+                        popupMenu.getMenu().findItem(R.id.remove).setVisible(true);
+                        popupMenu.getMenu().findItem(R.id.delete).setVisible(true);
+                        popupMenu.getMenu().findItem(R.id.cancel).setVisible(false);
+                    }
                     popupMenu.show();
                     TelemetryWrapper.showFileContextMenu();
                 }
@@ -157,8 +197,15 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View view) {
                     DownloadInfo download = (DownloadInfo) view.getTag();
-                    IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
+
                     TelemetryWrapper.downloadOpenFile(false);
+
+                    if (new File(download.getFileUri()).exists())
+                    {
+                        IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
+                    }else {
+                        Toast.makeText(mContext,R.string.cannot_find_the_file,Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -204,18 +251,22 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
            return "apk".equals(downloadInfo.getFileExtension()) ? R.drawable.file_app : R.drawable.file_compressed;
         }else {
 
-            String mimeType = downloadInfo.getMimeType().substring(0,downloadInfo.getMimeType().indexOf("/"));
-            switch (mimeType){
-                case "text":
-                    return R.drawable.file_document;
-                case "image":
-                    return R.drawable.file_image;
-                case "audio":
-                    return R.drawable.file_music;
-                case "video":
-                    return R.drawable.file_video;
-                default:
-                    return R.drawable.file_document;
+            if (!TextUtils.isEmpty(downloadInfo.getMimeType())){
+                String mimeType = downloadInfo.getMimeType().substring(0,downloadInfo.getMimeType().indexOf("/"));
+                switch (mimeType){
+                    case "text":
+                        return R.drawable.file_document;
+                    case "image":
+                        return R.drawable.file_image;
+                    case "audio":
+                        return R.drawable.file_music;
+                    case "video":
+                        return R.drawable.file_video;
+                    default:
+                        return R.drawable.file_document;
+                }
+            }else {
+                return R.drawable.file_document;
             }
         }
     }

@@ -1,10 +1,6 @@
 package org.mozilla.focus.download;
 
-import android.app.DownloadManager;
-import android.content.Context;
-
-import org.mozilla.focus.R;
-
+import android.text.TextUtils;
 import java.util.Calendar;
 import java.util.Formatter;
 
@@ -16,18 +12,20 @@ public class DownloadInfo {
 
     private Long DownloadId;
     private int Status;
-    private String Size;
-    private String Date;
-    private String FileName;
-    private String MediaUri;
-    private String MimeType;
-    private String FileUri;
-    private String FileExtension;
+    private String Size ;
+    private String Date ;
+    private String FileName = "";
+    private String MediaUri ="";
+    private String MimeType = "";
+    private String FileUri ="";
+    private String FileExtension = "";
 
     public DownloadInfo(){}
 
     public void setFileExtension(String fileExtension){
-        FileExtension = fileExtension;
+        if (!TextUtils.isEmpty(fileExtension)){
+            FileExtension = fileExtension;
+        }
     }
 
     public String getFileExtension(){
@@ -41,14 +39,19 @@ public class DownloadInfo {
         return Status;
     }
     public void setFileUri(String fileUri){
-        FileUri = fileUri;
+        if (!TextUtils.isEmpty(fileUri))
+        {
+            FileUri = fileUri;
+        }
     }
     public String getFileUri(){
         return FileUri;
     }
 
     public void setMimeType(String mimeType){
-        MimeType = mimeType;
+        if (!TextUtils.isEmpty(mimeType)){
+            MimeType = mimeType;
+        }
     }
 
     public String getMimeType(){
@@ -56,7 +59,9 @@ public class DownloadInfo {
     }
 
     public void setMediaUri(String mediaUri){
-        MediaUri = mediaUri;
+        if (!TextUtils.isEmpty(mediaUri)){
+            MediaUri = mediaUri;
+        }
     }
 
     public String getMediaUri(){
@@ -71,7 +76,10 @@ public class DownloadInfo {
     }
 
     public void setFileName(String fileName){
-        FileName = fileName;
+
+        if (!TextUtils.isEmpty(fileName)){
+            FileName = fileName;
+        }
     }
 
     public String getFileName(){
