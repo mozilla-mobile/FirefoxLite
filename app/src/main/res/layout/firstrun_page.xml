@@ -44,8 +44,8 @@
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="40dp"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="@dimen/first_run_image_bottom_spacing"
+                        android:layout_marginTop="@dimen/first_run_image_top_spacing"
                         tools:src="@mipmap/ic_launcher" />
 
                     <TextView
@@ -80,6 +80,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="14dp"
                         android:switchPadding="10dp"
+                        android:textSize="16sp"
                         android:visibility="gone"
                         tools:text="@string/label_menu_turbo_mode"
                         tools:visibility="visible" />
@@ -95,12 +96,15 @@
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="210dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/first_run_button_bottom_spacing"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
                 android:textColor="@color/colorAccent"
                 android:textSize="14sp"
+                tools:background="#33FF0000"
                 tools:text="@string/firstrun_next_button" />
 
         </LinearLayout>

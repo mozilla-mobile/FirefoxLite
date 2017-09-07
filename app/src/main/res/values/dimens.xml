@@ -24,6 +24,10 @@
 
     <dimen name="firstrun_card_width">300dp</dimen>
     <dimen name="firstrun_card_height">500dp</dimen>
+    <!-- dimen for first-run page on small screen device -->
+    <dimen name="first_run_image_top_spacing">35dp</dimen>
+    <dimen name="first_run_image_bottom_spacing">15dp</dimen>
+    <dimen name="first_run_button_bottom_spacing">20dp</dimen>
 
     <dimen name="flow_layout_spacing">10dp</dimen>
 
