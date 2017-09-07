@@ -148,11 +148,18 @@
         </RelativeLayout>
         <RelativeLayout
             style="@style/BottomMenuButtonContainerWithMargin"
-            android:id="@+id/action_refresh">
+            android:id="@+id/action_loading">
             <View
                 style="@style/MenuButtonIcon"
+                android:id="@+id/action_refresh"
                 android:background="@drawable/action_refresh"
                 android:contentDescription="@string/content_description_reload"/>
+            <View
+                style="@style/MenuButtonIcon"
+                android:id="@+id/action_stop"
+                android:background="@drawable/edit_close"
+                android:contentDescription="@string/content_description_stop"
+                android:visibility="gone"/>
         </RelativeLayout>
         <RelativeLayout
             style="@style/BottomMenuButtonContainerWithMargin"

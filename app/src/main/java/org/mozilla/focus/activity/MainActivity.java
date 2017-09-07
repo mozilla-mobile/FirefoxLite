@@ -71,9 +71,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private BottomSheetDialog menu;
     private View nextButton;
-    private View refreshButton;
+    private View loadingButton;
     private View shareButton;
     private View captureButton;
+    private View refreshIcon;
+    private View stopIcon;
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
@@ -237,9 +239,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu = new BottomSheetDialog(this);
         menu.setContentView(sheet);
         nextButton = menu.findViewById(R.id.action_next);
-        refreshButton = menu.findViewById(R.id.action_refresh);
+        loadingButton = menu.findViewById(R.id.action_loading);
         shareButton = menu.findViewById(R.id.action_share);
         captureButton = menu.findViewById(R.id.capture_page);
+        refreshIcon = menu.findViewById(R.id.action_refresh);
+        stopIcon = menu.findViewById(R.id.action_stop);
         menu.findViewById(R.id.menu_turbomode).setSelected(mTurboModePref);
         menu.findViewById(R.id.menu_blockimg).setSelected(mBlockImgPref);
     }
@@ -263,7 +267,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final boolean hasLoadedPage = browserFragment != null && !browserFragment.isLoading();
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
         setEnable(nextButton, canGoForward);
-        setEnable(refreshButton, hasLoadedPage);
+        setLoadingButton(browserFragment);
         setEnable(shareButton, hasLoadedPage);
         setEnable(captureButton, hasLoadedPage);
     }
@@ -340,7 +344,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 TelemetryWrapper.clickMenuSettings();
                 break;
             case R.id.action_next:
-            case R.id.action_refresh:
+            case R.id.action_loading:
             case R.id.action_share:
             case R.id.capture_page:
                 onMenuBrowsingItemClicked(v);
@@ -361,6 +365,21 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    private void setLoadingButton(BrowserFragment fragment) {
+        if (fragment == null) {
+            setEnable(loadingButton, false);
+            refreshIcon.setVisibility(View.VISIBLE);
+            stopIcon.setVisibility(View.GONE);
+            loadingButton.setTag(false);
+        } else {
+            setEnable(loadingButton, true);
+            boolean isLoading = fragment.isLoading();
+            refreshIcon.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+            stopIcon.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            loadingButton.setTag(isLoading);
+        }
+    }
+
     public void onMenuBrowsingItemClicked(View v) {
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
         if (browserFragment == null) {
@@ -371,8 +390,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 onNextClicked(browserFragment);
                 TelemetryWrapper.clickToolbarForward();
                 break;
-            case R.id.action_refresh:
-                onRefreshClicked(browserFragment);
+            case R.id.action_loading:
+                if ((boolean) v.getTag()) {
+                    onStopClicked(browserFragment);
+                } else {
+                    onRefreshClicked(browserFragment);
+                }
                 TelemetryWrapper.clickToolbarReload();
                 break;
             case R.id.action_share:
@@ -428,6 +451,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onRefreshClicked(final BrowserFragment browserFragment) {
         browserFragment.reload();
+    }
+
+    private void onStopClicked(final BrowserFragment browserFragment) {
+        browserFragment.stop();
     }
 
     private void onCapturePageClicked(final BrowserFragment browserFragment) {
