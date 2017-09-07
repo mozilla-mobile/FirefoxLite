@@ -2,4 +2,6 @@
 <resources>
     <dimen name="menu_bottom_space">57dp</dimen>
     <dimen name="top_site_width">320dp</dimen>
+    <dimen name="top_site_font_size">12dp</dimen>
+    <dimen name="top_site_textview_width">65dp</dimen>
 </resources>

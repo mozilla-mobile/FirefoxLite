@@ -33,14 +33,14 @@
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="60dp"
+        android:layout_width="@dimen/top_site_textview_width"
         android:layout_height="40dp"
         android:gravity="center"
         android:textAlignment="center"
         android:lineSpacingExtra="1dp"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:textSize="11dp"
+        android:textStyle="normal"
+        android:textSize="@dimen/top_site_font_size"
         android:maxLines="2"
         tools:text="Foobar" />
 </LinearLayout>
