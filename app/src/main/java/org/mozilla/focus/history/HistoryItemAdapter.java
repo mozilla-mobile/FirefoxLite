@@ -154,8 +154,8 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onClick(View v) {
-        final int position = mRecyclerView.getChildLayoutPosition(v);
-        if (position != RecyclerView.NO_POSITION) {
+        final int position = mRecyclerView.getChildAdapterPosition(v);
+        if (position != RecyclerView.NO_POSITION && position < mItems.size()) {
             Object item = mItems.get(position);
             if (item instanceof Site) {
                 // TODO: modify the following code accordingly
