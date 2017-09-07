@@ -4,4 +4,6 @@
     <dimen name="top_site_width">320dp</dimen>
     <dimen name="top_site_font_size">12dp</dimen>
     <dimen name="top_site_textview_width">65dp</dimen>
+
+    <dimen name="menu_layout_margin">20dp</dimen>
 </resources>
