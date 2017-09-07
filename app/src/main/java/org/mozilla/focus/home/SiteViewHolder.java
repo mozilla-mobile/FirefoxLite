@@ -7,6 +7,7 @@ package org.mozilla.focus.home;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,11 +15,13 @@ import org.mozilla.focus.R;
 
 class SiteViewHolder extends RecyclerView.ViewHolder {
 
+    FrameLayout imgContainer;
     ImageView img;
     TextView text;
 
     public SiteViewHolder(View itemView) {
         super(itemView);
+        imgContainer = (FrameLayout) itemView.findViewById(R.id.content_image_background);
         img = (ImageView) itemView.findViewById(R.id.content_image);
         text = (TextView) itemView.findViewById(R.id.text);
     }

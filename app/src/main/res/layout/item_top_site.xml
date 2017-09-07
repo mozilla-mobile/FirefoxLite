@@ -19,6 +19,8 @@
     android:paddingTop="5dp">
 
     <FrameLayout
+        android:id="@+id/content_image_background"
+        android:background="@drawable/cornered_2dp"
         android:layout_width="48dp"
         android:layout_height="48dp">
         <ImageView
