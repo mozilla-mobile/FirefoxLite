@@ -92,7 +92,7 @@ public class DownloadInfoManager {
                         List<DownloadInfo> downloadInfoList = new ArrayList<>();
                         if (cursor != null) {
                             while (cursor.moveToNext()) {
-                                DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
+                                final DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
                                 downloadInfoList.add(downloadInfo);
                             }
                             cursor.close();
