@@ -49,6 +49,7 @@ import static com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.SCAL
 
 public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener, QueryHandler.AsyncDeleteListener {
 
+    public static final String EXTRA_SCREENSHOT_ITEM_ID = "extra_screenshot_item_id";
     public static final int REQ_CODE_NOTIFY_SCREENSHOT_DELETE = 1000;
     private static int REQUEST_CODE_VIEW_SCREENSHOT = 101;
     private static int REQUEST_CODE_EDIT_SCREENSHOT = 102;
@@ -172,7 +173,9 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     @Override
     public void onDeleteComplete(int result, long id) {
         if (result > 0) {
-            setResult(RESULT_OK, null);
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_SCREENSHOT_ITEM_ID, id);
+            setResult(RESULT_OK, intent);
             finish();
         }
     }

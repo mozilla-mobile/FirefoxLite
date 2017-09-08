@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener,
-        QueryHandler.AsyncQueryListener, QueryHandler.AsyncDeleteListener {
+        QueryHandler.AsyncQueryListener {
 
     public static final int VIEW_TYPE_SCREENSHOT = 1;
     private static final int VIEW_TYPE_DATE = 2;
@@ -161,19 +161,11 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         mIsLoading = false;
     }
 
-    @Override
-    public void onDeleteComplete(int result, long id) {
-        if (result > 0) {
-            if (id < 0) {
-                final int count = mItems.size();
-                mItems.clear();
-                notifyItemRangeRemoved(0, count);
+    public void onItemDelete(long id) {
+        if (id >= 0) {
+            remove(getItemPositionById(id));
+            if (mItems.size() == 0) {
                 notifyEmptyListener(true);
-            } else {
-                remove(getItemPositionById(id));
-                if (mItems.size() == 0) {
-                    notifyEmptyListener(true);
-                }
             }
         }
     }
