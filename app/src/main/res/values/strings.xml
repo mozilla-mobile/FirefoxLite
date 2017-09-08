@@ -238,6 +238,7 @@
     <string name="no_downloads">No Downloads</string>
     <string name="download_started">Download started..</string>
     <string name="cannot_find_the_file">Cannot find the file.</string>
+    <string name="cannot_delete_the_file">Cannot delete the file.</string>
     <!-- Download status-->
     <string name="pause">PAUSE</string>
     <string name="pending">PENDING</string>
