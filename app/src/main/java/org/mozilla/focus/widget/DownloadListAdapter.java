@@ -84,11 +84,16 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     manager.remove(mDownloadInfo.get(position).getDownloadId());
 
                     remove(position);
+                }else {
+                    Toast.makeText(mContext,R.string.cannot_delete_the_file,Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                 Log.e(this.getClass().getSimpleName(),""+e.getMessage());
+                Toast.makeText(mContext,R.string.cannot_delete_the_file,Toast.LENGTH_SHORT).show();
             }
 
+        }else {
+            Toast.makeText(mContext,R.string.cannot_find_the_file,Toast.LENGTH_SHORT).show();
         }
     }
 
