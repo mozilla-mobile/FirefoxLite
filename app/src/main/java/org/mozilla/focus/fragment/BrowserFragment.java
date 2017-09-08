@@ -554,6 +554,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // So, for now we always save file to DIRECTORY_DOWNLOADS
         final String dir = Environment.DIRECTORY_DOWNLOADS;
 
+        // block non-http/https download links
+        if(!URLUtil.isNetworkUrl(download.getUrl())) {
+            Toast.makeText(getContext(), R.string.download_file_not_supported, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(download.getUrl()))
                 .addRequestHeader("User-Agent", download.getUserAgent())
                 .addRequestHeader("Cookie", cookie)
