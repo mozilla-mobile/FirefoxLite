@@ -167,8 +167,8 @@
     <string name="error_page_title">Webpage not available</string>
     <string name="error_page_message"><![CDATA[
       <ul>
-        <li>Make sure you are connected to the internet</li>
-        <li>Check the address</li>
+        <li>- Make sure you are connected to the internet</li>
+        <li>- Check the address</li>
       </ul>
     ]]></string>
     <string name="error_page_button">TRY AGAIN</string>
