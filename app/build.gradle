@@ -231,7 +231,7 @@ task stringsSetup(type:Exec) {
 
     workingDir '..'
 
-    commandLine 'git', 'clone', 'https://github.com/mozilla-l10n/focus-android-l10n.git', 'l10n-repo'
+    commandLine 'git', 'clone', 'https://github.com/mozilla-l10n/zerda-android-l10n.git', 'l10n-repo'
 }
 
 // -------------------------------------------------------------------------------------------------
