@@ -5,7 +5,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
     <!-- Label used for buttons, e.g. in dialogs -->
-    <string name="action_cancel">Cancel</string>
+    <string name="action_cancel">CANCEL</string>
     <!-- Label used for buttons, e.g. in dialogs -->
     <string name="action_ok">OK</string>
 
@@ -151,7 +151,7 @@
 
     <string name="your_rights">Your Rights</string>
 
-    <string name="external_app_prompt_title">Open link in another  app</string>
+    <string name="external_app_prompt_title">Open link in another app</string>
     <!-- This string is shown when the user has clicked a link that needs to be opened in a different app.
          Argument 2 is the external app name, argument 1 is our name (i.e. Firefox Focus, or Firefox Klar). -->
     <string name="external_app_prompt">You can leave %1$s to open this link in %2$s.</string>
@@ -167,11 +167,11 @@
     <string name="error_page_title">Webpage not available</string>
     <string name="error_page_message"><![CDATA[
       <ul>
-        <li>Make sure you have a data connection</li>
-        <li>Check the address you entered</li>
+        <li>Make sure you are connected to the internet</li>
+        <li>Check the address</li>
       </ul>
     ]]></string>
-    <string name="error_page_button">Refresh</string>
+    <string name="error_page_button">TRY AGAIN</string>
 
     <!-- Label used in the contextmenu shown when long-pressing on a link -->
     <string name="contextmenu_link_share">Share link</string>
@@ -191,11 +191,11 @@
     <string name="first_run_page1_title">Thanks for choosing %1$s</string>
     <string name="first_run_page1_text">A browser tailor-made for Indonesia by Mozilla, the non-profit committed to a free and open web.</string>
     <string name="first_run_page2_title">Browse faster than ever</string>
-    <string name="first_run_page2_text">Our turbo mode blocks ads &amp; trackers for you to enjoy browsing at blazing speed. If a site seems broken, you can turn it off from the menu.</string>
-    <string name="first_run_page3_title">Save Data = Save Money</string>
-    <string name="first_run_page3_text">We block ads and tracker by default to save you data. You can save even more by enabling Block Image in the app menu.</string>
-    <string name="first_run_page4_title">Screenshot Everything</string>
-    <string name="first_run_page4_text">You can now take screenshots of the whole web page and easily revisit the web page or view screenshots without using your data.</string>
+    <string name="first_run_page2_text">Use turbo mode to block ads and trackers so you can browse at blazing speeds. If sites seem broken, just tap off the turbo mode switch in the menu.</string>
+    <string name="first_run_page3_title">Save data = Save money</string>
+    <string name="first_run_page3_text">Blocking ads and online trackers not only speeds up browsing, it saves data. Save even more when you block images.</string>
+    <string name="first_run_page4_title">Screenshot everything</string>
+    <string name="first_run_page4_text">Take screenshots of entire web pages. View a screenshot offline (without using data) or tap it to revisit the web page.</string>
 
     <string name="firstrun_close_button">OK, got it!</string>
     <string name="firstrun_skip_button">Skip</string>
@@ -214,7 +214,7 @@
     <string name="label_menu_history">History</string>
     <string name="label_menu_share">Share</string>
     <string name="label_menu_my_shots">My shots</string>
-    <string name="label_menu_capture_page">Capture Page</string>
+    <string name="label_menu_capture_page">Capture page</string>
     <string name="label_menu_turbo_mode">Turbo mode</string>
     <string name="label_menu_block_ads">Block Ads</string>
     <string name="label_menu_block_image">Block image</string>
@@ -235,25 +235,25 @@
     <string name="setting_dialog_cache">Cache</string>
 
     <!-- Download list-->
-    <string name="no_downloads">No Downloads</string>
-    <string name="download_started">Download started..</string>
+    <string name="no_downloads">No downloads</string>
+    <string name="download_started">Downloading...</string>
     <!-- Download status-->
-    <string name="pause">PAUSE</string>
-    <string name="pending">PENDING</string>
-    <string name="running">RUNNING</string>
-    <string name="successful">SUCCESSFUL</string>
-    <string name="failed">FAILED</string>
-    <string name="unknown">UNKNOWN</string>
+    <string name="pause">Paused</string>
+    <string name="pending">Pending</string>
+    <string name="running">Downloading</string>
+    <string name="successful">Successful</string>
+    <string name="failed">Failed</string>
+    <string name="unknown">Unknown</string>
 
     <!-- Setting data saving path dialog -->
-    <string name="setting_dialog_sd_card">Removable storage</string>
+    <string name="setting_dialog_sd_card">SD card</string>
     <string name="setting_dialog_internal_storage">Internal storage</string>
 
     <!--BrowsingHistoryActivity-->
     <string name="browsing_history_clear_btn">CLEAR BROWSING HISTORY</string>
-    <string name="browsing_history_empty_view_msg">No History</string>
-    <string name="browsing_history_date_today">TODAY</string>
-    <string name="browsing_history_date_yesterday">YESTERDAY</string>
+    <string name="browsing_history_empty_view_msg">No history</string>
+    <string name="browsing_history_date_today">Today</string>
+    <string name="browsing_history_date_yesterday">Yesterday</string>
     <string name="browsing_history_menu_delete">Delete</string>
     <string name="browsing_history_dialog_confirm_clear_message">Clear all browsing history?</string>
     <string name="browsing_history_dialog_btn_clear">Clear</string>
@@ -262,18 +262,18 @@
     <string name="delete_file">Delete file</string>
 
     <!--Long Screenshot-->
-    <string name="screenshot_saved">Screenshot saved.</string>
-    <string name="screenshot_failed">Failed to capture</string>
+    <string name="screenshot_saved">Screenshot saved</string>
+    <string name="screenshot_failed">Failed to capture screenshot</string>
 
     <!-- Snack bar message -->
-    <string name="message_fallback_save_to_primary_external">Can not detect removable storage, file is saved to primary external storage</string>
-    <string name="message_start_to_save_to_removable_storage">Removable storage detected, file will be saved to removable storage</string>
-    <string name="message_removable_storage_space_not_enough">Removable storage space is running out, file saved primary external storage</string>
+    <string name="message_fallback_save_to_primary_external">No SD card detected. File was saved to internal storage.</string>
+    <string name="message_start_to_save_to_removable_storage">File saved to SD card</string>
+    <string name="message_removable_storage_space_not_enough">SD card is almost full. File was saved to internal storage.</string>
 
     <!-- ScreenshotGridFragment-->
-    <string name="screenshot_grid_empty_text_title">No Screenshots</string>
-    <string name="screenshot_grid_empty_text_msg_prefix">Click on&#160;</string>
-    <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;in the menu to capture\nthe whole page</string>
+    <string name="screenshot_grid_empty_text_title">No screenshots</string>
+    <string name="screenshot_grid_empty_text_msg_prefix">Tap&#160;</string>
+    <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page</string>
     <string name="screenshot_image_viewer_dialog_title">Info</string>
     <string name="screenshot_image_viewer_dialog_info_time">Time:</string>
     <string name="screenshot_image_viewer_dialog_info_resolution">Resolution:</string>
@@ -286,13 +286,13 @@
     <string name="file_picker_title">Choose a file to upload</string>
 
     <!-- Toast message -->
-    <string name="message_enable_turbo_mode">\"Turbo mode\" enabled</string>
-    <string name="message_disable_turbo_mode">\"Turbo mode\" disabled</string>
+    <string name="message_enable_turbo_mode">Turbo mode enabled</string>
+    <string name="message_disable_turbo_mode">Turbo mode disabled</string>
     <string name="message_enable_block_image">Now blocking images</string>
     <string name="message_disable_block_image">Now showing images</string>
     <string name="message_clear_cache_fail">Unable to clear cache</string>
     <string name="message_cleared_cached">%1$s cache cleared</string>
     <string name="message_cleared_browsing_data">Browsing data cleared</string>
     <string name="message_deleted_screenshot">Screenshot deleted</string>
-    <string name="message_cannot_find_screenshot">Cannot find the screenshot</string>
+    <string name="message_cannot_find_screenshot">Cannot display the screenshot</string>
 </resources>
