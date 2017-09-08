@@ -236,7 +236,7 @@
 
     <!-- Download list-->
     <string name="no_downloads">No downloads</string>
-    <string name="download_started">Downloading...</string>
+    <string name="download_started">Downloading…</string>
     <!-- Download status-->
     <string name="pause">Paused</string>
     <string name="pending">Pending</string>
