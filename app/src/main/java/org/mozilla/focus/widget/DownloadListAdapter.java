@@ -13,6 +13,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -74,16 +76,25 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void delete(int position){
-        try {
-            new File(URI.create(mDownloadInfo.get(position).getFileUri()).getPath()).delete();
+        File file = new File(URI.create(mDownloadInfo.get(position).getFileUri()).getPath());
+        if (file.exists()){
+            try {
+                if (file.delete()){
+                    DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                    manager.remove(mDownloadInfo.get(position).getDownloadId());
 
-        }catch (Exception e){
-            Log.v(this.getClass().getSimpleName(),""+e.getMessage());
+                    remove(position);
+                }else {
+                    Toast.makeText(mContext,R.string.cannot_delete_the_file,Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){
+                Log.e(this.getClass().getSimpleName(),""+e.getMessage());
+                Toast.makeText(mContext,R.string.cannot_delete_the_file,Toast.LENGTH_SHORT).show();
+            }
+
+        }else {
+            Toast.makeText(mContext,R.string.cannot_find_the_file,Toast.LENGTH_SHORT).show();
         }
-
-        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.remove(mDownloadInfo.get(position).getDownloadId());
-        remove(position);
     }
 
     @Override
@@ -111,7 +122,17 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DownloadViewHolder holder = (DownloadViewHolder) viewHolder;
             DownloadInfo downloadInfo = mDownloadInfo.get(position);
 
-            holder.title.setText(downloadInfo.getFileName());
+            if (!TextUtils.isEmpty(downloadInfo.getFileName())){
+                holder.title.setText(downloadInfo.getFileName());
+            }else {
+                if (!TextUtils.isEmpty(downloadInfo.getFileUri()))
+                {
+                    holder.title.setText(new File(downloadInfo.getFileUri()).getName());
+                }else {
+                    holder.title.setText(R.string.unknown);
+                }
+            }
+
             holder.icon.setImageResource(mappingIcon(downloadInfo));
 
             String subtitle="";
@@ -162,8 +183,15 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View view) {
                     DownloadInfo download = (DownloadInfo) view.getTag();
-                    IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
+
                     TelemetryWrapper.downloadOpenFile(false);
+
+                    if (new File(download.getFileUri()).exists())
+                    {
+                        IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
+                    }else {
+                        Toast.makeText(mContext,R.string.cannot_find_the_file,Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 

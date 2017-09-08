@@ -92,7 +92,8 @@ public class DownloadInfoManager {
                         List<DownloadInfo> downloadInfoList = new ArrayList<>();
                         if (cursor != null) {
                             while (cursor.moveToNext()) {
-                                downloadInfoList.add(cursorToDownloadInfo(cursor));
+                                final DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
+                                downloadInfoList.add(downloadInfo);
                             }
                             cursor.close();
                         }
@@ -163,13 +164,23 @@ public class DownloadInfoManager {
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, null);
     }
 
+    public void queryCertainId(Long downloadId,AsyncQueryListener listener){
+        String uri = Download.CONTENT_URI.toString();
+        mQueryHandler.startQuery(TOKEN,listener,Uri.parse(uri),null,Download.DOWNLOAD_ID+"==?",new String[] {Long.toString(downloadId)},null);
+    }
+
     public boolean recordExists(long downloadId) {
         final ContentResolver resolver = mContext.getContentResolver();
         final Uri uri = Download.CONTENT_URI;
         final String selection = Download.DOWNLOAD_ID + "=" + downloadId;
         final Cursor cursor = resolver.query(uri, null, selection, null, null);
+        boolean isExist = (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
 
-        return (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
+        if (cursor != null){
+            cursor.close();
+        }
+
+        return isExist;
     }
 
     /**
@@ -204,7 +215,7 @@ public class DownloadInfoManager {
         manager.remove(oldId);
 
         // filename might be different from old file
-        final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newFile.getName());
+        final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath);
         newInfo.setDownloadId(newId);
         insert(newInfo, null);
         delete(oldId, null);
@@ -214,22 +225,22 @@ public class DownloadInfoManager {
         final ContentValues contentValues = new ContentValues();
 
         contentValues.put(Download.DOWNLOAD_ID, downloadInfo.getDownloadId());
-        contentValues.put(Download.FILE_NAME, downloadInfo.getFileName());
+        contentValues.put(Download.FILE_PATH, downloadInfo.getFileUri());
 
         return contentValues;
     }
 
     private static DownloadInfo cursorToDownloadInfo(Cursor cursor) {
         final long id = cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID));
-        final String fileName = cursor.getString(cursor.getColumnIndex(Download.FILE_NAME));
+        String filePath = cursor.getString(cursor.getColumnIndex(Download.FILE_PATH));
 
         final DownloadPojo pojo = queryDownloadManager(mContext, id);
-        return pojoToDownloadInfo(pojo, fileName);
+        return  pojoToDownloadInfo(pojo, filePath);
     }
 
-    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String fileName) {
+    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String filePath) {
         final DownloadInfo info = new DownloadInfo();
-        info.setFileName(fileName);
+        info.setFileName(pojo.fileName);
         info.setDownloadId(pojo.id);
         info.setSize(pojo.length);
         info.setStatusInt(pojo.status);
@@ -239,10 +250,16 @@ public class DownloadInfoManager {
         info.setMimeType(pojo.mime);
         info.setFileExtension(pojo.fileExtension);
 
+        if (TextUtils.isEmpty(pojo.fileUri)){
+            info.setFileUri(filePath);
+        }else {
+            info.setFileUri(pojo.fileUri);
+        }
+
         return info;
     }
 
-    private static DownloadPojo queryDownloadManager(@NonNull final Context context, final long id) {
+    private static DownloadPojo  queryDownloadManager(@NonNull final Context context, final long id) {
 
         //query download manager
         final DownloadManager.Query query = new DownloadManager.Query();
@@ -251,9 +268,9 @@ public class DownloadInfoManager {
         final Cursor managerCursor = manager.query(query);
 
         final DownloadPojo pojo = new DownloadPojo();
+        pojo.id = id;
         try {
             if (managerCursor.moveToFirst()) {
-                pojo.id = id;
                 pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));
                 pojo.status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
                 pojo.length = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
@@ -263,6 +280,7 @@ public class DownloadInfoManager {
                 String extension = MimeTypeMap.getFileExtensionFromUrl(pojo.fileUri);
                 pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
                 pojo.fileExtension = extension;
+                pojo.fileName = new File(pojo.fileUri).getName();
             }
         } catch (Exception e) {
             managerCursor.close();
@@ -286,5 +304,6 @@ public class DownloadInfoManager {
         String mediaUri;
         String fileUri;
         String fileExtension;
+        String fileName;
     }
 }
