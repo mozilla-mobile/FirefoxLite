@@ -21,7 +21,7 @@ public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
                                RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         int position = parent.getChildAdapterPosition(view); // item position
-        if(parent.getAdapter().getItemViewType(position) == VIEW_TYPE_SCREENSHOT) {
+        if(position >= 0 && parent.getAdapter().getItemViewType(position) == VIEW_TYPE_SCREENSHOT) {
             int adjustPosition = ((ScreenshotItemAdapter)parent.getAdapter()).getAdjustPosition(position);
             int column = adjustPosition % spanCount; // item column
 

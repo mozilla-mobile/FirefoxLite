@@ -69,4 +69,10 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
             mContainerEmptyView.setVisibility(View.GONE);
         }
     }
+
+    public void notifyItemDelete(long id) {
+        if(mAdapter != null) {
+            mAdapter.onItemDelete(id);
+        }
+    }
 }

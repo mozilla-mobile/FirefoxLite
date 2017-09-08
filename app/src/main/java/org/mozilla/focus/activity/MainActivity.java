@@ -40,6 +40,8 @@ import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
+import org.mozilla.focus.screenshot.ScreenshotGridFragment;
+import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.Constants;
@@ -609,6 +611,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if(resultCode == RESULT_OK && requestCode == REQ_CODE_NOTIFY_SCREENSHOT_DELETE && mDialogFragment != null) {
             Toast.makeText(this, R.string.message_deleted_screenshot, Toast.LENGTH_SHORT).show();
+            Fragment fragment = mDialogFragment.getChildFragmentManager().findFragmentById(R.id.main_content);
+            if(fragment instanceof ScreenshotGridFragment && data != null) {
+                long id = data.getLongExtra(ScreenshotViewerActivity.EXTRA_SCREENSHOT_ITEM_ID, -1);
+                ((ScreenshotGridFragment)fragment).notifyItemDelete(id);
+            }
         }
     }
 
