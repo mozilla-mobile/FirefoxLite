@@ -13,6 +13,15 @@ body{
     margin-right: 0px;
 }
 
+body.rights{
+    padding-left: 37px;
+    padding-right: 37px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
 a {
     color: #0A84FF;
 }
