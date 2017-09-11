@@ -11,7 +11,7 @@
     <string name="menu_rights">Hak Anda</string>
     <string name="menu_trackers_blocked_title">Pelacak terblokir</string>
     <string name="share_dialog_title">Bagikan via</string>
-    <string name="text_selection_search_action_prefix">Mencari Secara Privat</string>
+    <string name="text_selection_search_action">Mencari Secara Privat {{app_name}}</string>
     <string name="preference_category_search">Cari</string>
     <string name="preference_search_engine_default">Baku</string>
     <string name="preference_language">Bahasa</string>
