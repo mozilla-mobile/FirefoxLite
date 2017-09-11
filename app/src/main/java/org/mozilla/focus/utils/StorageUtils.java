@@ -28,7 +28,7 @@ public class StorageUtils {
      * @return app-owned-directory on removable storage
      * @throws NoRemovableStorageException if there is no removable storage to use.
      */
-    private static File getAppMediaDirOnRemovableStorage(@NonNull Context ctx)
+    public static File getAppMediaDirOnRemovableStorage(@NonNull Context ctx)
             throws NoRemovableStorageException {
 
         final File media = getFirstRemovableMedia(ctx);

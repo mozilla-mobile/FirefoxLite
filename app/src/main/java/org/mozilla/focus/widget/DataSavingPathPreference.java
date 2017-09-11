@@ -10,9 +10,13 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.utils.NoRemovableStorageException;
+import org.mozilla.focus.utils.StorageUtils;
 
 public class DataSavingPathPreference extends ListPreference {
     private static final String LOG_TAG = "DataSavingPathPreference";
+
+    private boolean hasRemovableStorage = false;
 
     public DataSavingPathPreference(Context context) {
         this(context, null);
@@ -28,6 +32,7 @@ public class DataSavingPathPreference extends ListPreference {
         super.onAttachedToActivity();
 
         buildList();
+        pingRemovableStorage();
     }
 
     @Override
@@ -42,6 +47,11 @@ public class DataSavingPathPreference extends ListPreference {
 
     @Override
     public CharSequence getSummary() {
+        // design's spec, always show 'save to internal' if there is no removable storage
+        if (!hasRemovableStorage) {
+            return getContext().getResources().getString(R.string.setting_dialog_internal_storage);
+        }
+
         if (TextUtils.isEmpty(getEntry())) {
             final String[] entries = getContext().getResources().getStringArray(R.array.data_saving_path_entries);
             setValueIndex(0);
@@ -57,5 +67,18 @@ public class DataSavingPathPreference extends ListPreference {
 
         setEntries(entries);
         setEntryValues(values);
+    }
+
+    private void pingRemovableStorage() {
+        try {
+            StorageUtils.getAppMediaDirOnRemovableStorage(getContext());
+        } catch (NoRemovableStorageException e) {
+            hasRemovableStorage = false;
+        }
+
+        super.setEnabled(hasRemovableStorage);
+
+        // ensure Summary sync to current state
+        super.notifyChanged();
     }
 }
