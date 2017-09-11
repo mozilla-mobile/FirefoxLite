@@ -576,7 +576,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         //record download ID
         DownloadInfo downloadInfo = new DownloadInfo();
         downloadInfo.setDownloadId(downloadId);
-        downloadInfo.setFileName(fileName);
         DownloadInfoManager.getInstance().insert(downloadInfo, null);
 
         Toast.makeText(getContext(), R.string.download_started, Toast.LENGTH_LONG)
