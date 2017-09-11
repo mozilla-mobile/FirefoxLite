@@ -14,6 +14,9 @@ import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import org.mozilla.focus.download.DownloadInfo;
+import org.mozilla.focus.download.DownloadInfoManager;
+
 import java.io.File;
 
 public class DownloadCompleteReceiver extends BroadcastReceiver {
@@ -37,6 +40,13 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
             final String mediaType = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE));
             if ((downloadStatus == DownloadManager.STATUS_SUCCESSFUL)
                     && !TextUtils.isEmpty(localUriStr)) {
+
+                //update download info in our db
+                DownloadInfo downloadInfo = new DownloadInfo();
+                downloadInfo.setDownloadId(downloadId);
+                downloadInfo.setFileName(new File(localUriStr).getName());
+                downloadInfo.setFileUri(localUriStr);
+                DownloadInfoManager.getInstance().update(downloadInfo,null);
 
                 final Uri fileUri = Uri.parse(localUriStr);
                 if ("file".equals(fileUri.getScheme())) {
