@@ -266,6 +266,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
     private class CallbackWrapper implements IWebView.Callback {
         final IWebView.Callback callback;
+        String failingUrl;
 
         CallbackWrapper(@NonNull IWebView.Callback callback) {
             this.callback = callback;
@@ -288,22 +289,34 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
                 return;
             } else if ("about:blank".equals(url)) {
                 return;
+            } else if (url.equals(this.failingUrl)) {
+                return;
             }
 
-            String title = getTitle();
-            final Bitmap favIcon;
-            if (TextUtils.isEmpty(title)) {
-                favIcon = null;
-            } else {
-                favIcon = FavIconUtils.getInitialBitmap(getResources(), null, title.charAt(0));
-            }
+            evaluateJavascript("(function() { return document.getElementById('mozillaErrorPage'); })();",
+                    new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String errorPage) {
+                            if (!"null".equals(errorPage)) {
+                                return;
+                            }
 
-            Site site = new Site();
-            site.setUrl(url);
-            site.setTitle(getTitle());
-            site.setLastViewTimestamp(System.currentTimeMillis());
-            site.setFavIcon(favIcon);
-            BrowsingHistoryManager.getInstance().insert(site, null);
+                            String title = getTitle();
+                            final Bitmap favIcon;
+                            if (TextUtils.isEmpty(title)) {
+                                favIcon = null;
+                            } else {
+                                favIcon = FavIconUtils.getInitialBitmap(getResources(), null, title.charAt(0));
+                            }
+
+                            Site site = new Site();
+                            site.setUrl(url);
+                            site.setTitle(getTitle());
+                            site.setLastViewTimestamp(System.currentTimeMillis());
+                            site.setFavIcon(favIcon);
+                            BrowsingHistoryManager.getInstance().insert(site, null);
+                        }
+                    });
         }
 
         @Override
@@ -352,6 +365,11 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
                                          WebChromeClient.FileChooserParams fileChooserParams) {
 
             return this.callback.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+        }
+
+        @Override
+        public void updateFailingUrl(String url) {
+            this.failingUrl = url;
         }
     }
 

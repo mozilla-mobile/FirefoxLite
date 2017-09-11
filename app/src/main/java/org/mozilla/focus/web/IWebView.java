@@ -81,6 +81,8 @@ public interface IWebView {
         boolean onShowFileChooser (WebView webView,
                                    ValueCallback<Uri[]> filePathCallback,
                                    WebChromeClient.FileChooserParams fileChooserParams);
+
+        void updateFailingUrl(String url);
     }
 
     interface FullscreenCallback {

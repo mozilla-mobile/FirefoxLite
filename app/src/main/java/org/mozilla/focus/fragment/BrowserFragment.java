@@ -461,7 +461,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 }
             }
 
-
+            @Override
+            public void updateFailingUrl(String url) {}
         };
     }
 
