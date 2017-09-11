@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,7 +94,6 @@ public class DownloadInfoManager {
                         if (cursor != null) {
                             while (cursor.moveToNext()) {
                                 DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
-
                                 //delete DownloadInfo that has canceled from download manager
                                 if (TextUtils.isEmpty(downloadInfo.getFileUri())){
                                     DownloadInfoManager.getInstance().delete(downloadInfo.getDownloadId(),null);
