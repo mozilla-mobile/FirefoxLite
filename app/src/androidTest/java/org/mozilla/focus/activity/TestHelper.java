@@ -73,9 +73,6 @@ public final class TestHelper {
             .resourceId("org.mozilla.focus.debug:id/url_edit")
             .focused(true)
             .enabled(true));
-    static UiObject hint = mDevice.findObject(new UiSelector()
-            .resourceId("org.mozilla.focus.debug:id/search_hint")
-            .clickable(true));
     static UiObject webView = mDevice.findObject(new UiSelector()
             .className("android.webkit.Webview")
             .enabled(true));
