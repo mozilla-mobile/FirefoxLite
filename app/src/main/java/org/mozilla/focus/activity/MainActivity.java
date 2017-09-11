@@ -431,11 +431,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onDeleteClicked() {
-        WebStorage.getInstance().deleteAllData();
-        
-        final long diff = FileUtils.deleteWebViewCacheDirectory(this);
-        final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
-        final String msg = getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
+        final String msg = Settings.getInstance(this).clearCache(this);
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 

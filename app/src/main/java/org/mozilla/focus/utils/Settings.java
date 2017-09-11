@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.webkit.WebStorage;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.FirstrunFragment;
@@ -114,5 +115,18 @@ public class Settings {
 
     /* package */ String getPreferenceKey(int resourceId) {
         return resources.getString(resourceId);
+    }
+
+    /**
+     * clear cache and return clear msg
+     * @param context
+     * @return clearCache Msg
+     */
+    public String clearCache(Context context) {
+        WebStorage.getInstance().deleteAllData();
+        final long diff = FileUtils.deleteWebViewCacheDirectory(context);
+        final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
+        final String msg = resources.getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
+        return msg;
     }
 }
