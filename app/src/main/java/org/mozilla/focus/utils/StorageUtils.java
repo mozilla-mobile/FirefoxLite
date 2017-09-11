@@ -17,6 +17,7 @@ public class StorageUtils {
     final static String DOWNLOAD_DIR = "downloads";
     final static String IMAGE_DIR = "pictures";
     final static String OTHER_DIR = "others";
+    private static final String SCREENSHOT_FOLDER_NAME = "Zerda";
 
     /**
      * Test if we have a removable storage and throw Exception if no is available and specify cause.
@@ -68,16 +69,18 @@ public class StorageUtils {
         }
     }
 
-    public static File getTargetDirForSaveFile(@NonNull Context ctx, String folderName) {
+    public static File getTargetDirForSaveScreenshot(@NonNull Context ctx) {
+        File defaultDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), SCREENSHOT_FOLDER_NAME);
+        FileUtils.ensureDir(defaultDirectory);
 
         if (!Settings.getInstance(ctx).shouldSaveToRemovableStorage()) {
-            return new File(Environment.getExternalStorageDirectory(), folderName);
+            return defaultDirectory;
         }
 
         try {
-            return new File(getAppMediaDirOnRemovableStorage(ctx), folderName);
+            return new File(getAppMediaDirOnRemovableStorage(ctx), SCREENSHOT_FOLDER_NAME);
         } catch (NoRemovableStorageException ex) {
-            return new File(Environment.getExternalStorageDirectory(), folderName);
+            return defaultDirectory;
         }
     }
 

@@ -45,7 +45,7 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
     }
 
     private static String saveBitmapToStorage(Context context, String fileName, Bitmap bitmap) throws IOException {
-        File folder = StorageUtils.getTargetDirForSaveFile(context, "Zerda");
+        File folder = StorageUtils.getTargetDirForSaveScreenshot(context);
         if (!FileUtils.ensureDir(folder)) {
             throw new IOException("Can't create folder");
         }
