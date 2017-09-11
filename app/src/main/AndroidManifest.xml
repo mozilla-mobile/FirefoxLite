@@ -53,7 +53,7 @@
 
         <activity android:name=".activity.TextActionActivity"
             android:exported="true"
-            android:label="${textActionLabel}"
+            android:label="@string/text_selection_search_action"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
