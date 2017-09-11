@@ -155,7 +155,7 @@ public final class TelemetryWrapper {
     }
 
     private static boolean isEnabledByDefault() {
-        return !AppConstants.isKlarBuild();
+        return AppConstants.isBetaBuild() || AppConstants.isReleaseBuild();
     }
 
     public static void init(Context context) {
