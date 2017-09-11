@@ -81,7 +81,7 @@ class TelemetrySwitchPreference extends Preference {
             }
         });
 
-        final String appName = getContext().getResources().getString(R.string.useragent_appname);
+        final String appName = getContext().getResources().getString(R.string.app_name);
         setSummary(getContext().getResources().getString(R.string.preference_mozilla_telemetry_summary, appName));
 
         super.onBindView(view);

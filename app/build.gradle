@@ -13,7 +13,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 5
-        versionName "0.4"
+        versionName "0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [ textActionLabel:getStringFromXml('text_selection_search_action_prefix', 'strings.xml') + getStringFromXml('app_name', 'app.xml')]
         multiDexEnabled true
@@ -39,7 +39,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".beta"
 
             def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
             if (buddy_build_number?.trim()) {

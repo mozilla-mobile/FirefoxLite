@@ -157,7 +157,7 @@ public class WebViewProvider {
             appVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             // This should be impossible - we should always be able to get information about ourselves:
-            throw new IllegalStateException("Unable find package details for Focus", e);
+            throw new IllegalStateException("Unable find package details for Rocket", e);
         }
 
         final String focusToken = appName + "/" + appVersion;
