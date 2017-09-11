@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import org.mozilla.focus.R;
+
 import java.io.File;
 
 public class StorageUtils {
@@ -17,7 +19,6 @@ public class StorageUtils {
     final static String DOWNLOAD_DIR = "downloads";
     final static String IMAGE_DIR = "pictures";
     final static String OTHER_DIR = "others";
-    private static final String SCREENSHOT_FOLDER_NAME = "Zerda";
 
     /**
      * Test if we have a removable storage and throw Exception if no is available and specify cause.
@@ -70,7 +71,8 @@ public class StorageUtils {
     }
 
     public static File getTargetDirForSaveScreenshot(@NonNull Context ctx) {
-        File defaultDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), SCREENSHOT_FOLDER_NAME);
+        String folderName = ctx.getString(R.string.app_name).replaceAll(" ","");
+        File defaultDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), folderName);
         FileUtils.ensureDir(defaultDirectory);
 
         if (!Settings.getInstance(ctx).shouldSaveToRemovableStorage()) {
@@ -78,7 +80,7 @@ public class StorageUtils {
         }
 
         try {
-            return new File(getAppMediaDirOnRemovableStorage(ctx), SCREENSHOT_FOLDER_NAME);
+            return new File(getAppMediaDirOnRemovableStorage(ctx), folderName);
         } catch (NoRemovableStorageException ex) {
             return defaultDirectory;
         }
