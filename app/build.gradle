@@ -51,13 +51,14 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".beta"
 
             def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
             if (buddy_build_number?.trim()) {
                 buddy_build_number = "." + buddy_build_number
+                versionNameSuffix "${buddy_build_number}" + applicationIdSuffix
+            } else {
+                versionNameSuffix applicationIdSuffix
             }
-            versionNameSuffix "${buddy_build_number}" + applicationIdSuffix
         }
         debug {
             def userName = System.getenv("USER")
@@ -93,8 +94,9 @@ android {
 
         preview {
             dimension "product"
-            applicationId "gro.allizom"
-            applicationIdSuffix ".zelda"
+            applicationId "gro.allizom.zelda.beta"
+            applicationIdSuffix ""
+            versionNameSuffix ".nightly"
         }
 
         // We can build with two engines: webkit or gecko
