@@ -88,10 +88,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
     @Override
     public void restoreWebviewState(Bundle savedInstanceState) {
-        /*
-            Focus is trying to restore the not fully loaded page
-            However, it is sending extra onPageFinished events that confuses us.
-            Let's first comment out this.
         // We need to have a different method name because restoreState() returns
         // a WebBackForwardList, and we can't overload with different return types:
         final WebBackForwardList backForwardList = restoreState(savedInstanceState);
@@ -116,7 +112,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         } else {
             loadUrl(desiredURL);
         }
-        */
     }
 
     @Override
