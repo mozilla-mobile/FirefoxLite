@@ -8,6 +8,7 @@ package org.mozilla.focus.utils;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.support.annotation.NonNull;
+import android.webkit.WebStorage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +31,7 @@ public class FileUtils {
         return webviewDirectory.exists() && deleteDirectory(webviewDirectory);
     }
 
-    public static long deleteWebViewCacheDirectory(final Context context) {
+    private static long deleteWebViewCacheDirectory(final Context context) {
         final File cachedir = new File(context.getApplicationInfo().dataDir, WEBVIEW_CACHE_DIRECTORY);
         if (!cachedir.exists()) {
             return -1L;
@@ -180,4 +181,8 @@ public class FileUtils {
         MediaScannerConnection.scanFile(context, new String[]{path}, new String[]{null}, null);
     }
 
+    public static long clearCache(Context context) {
+        WebStorage.getInstance().deleteAllData();
+        return FileUtils.deleteWebViewCacheDirectory(context);
+    }
 }
