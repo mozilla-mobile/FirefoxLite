@@ -34,7 +34,6 @@ public class DownloadsFragment extends PanelFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_downloads, container, false);
-        mDownloadListAdapter = new DownloadListAdapter(recyclerView.getContext());
         return recyclerView;
     }
 
@@ -42,6 +41,7 @@ public class DownloadsFragment extends PanelFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDownloadListAdapter = new DownloadListAdapter(getContext());
         mDownloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -52,9 +52,7 @@ public class DownloadsFragment extends PanelFragment {
                         public void onQueryComplete(List downloadInfoList) {
                             for (int i=0;i<downloadInfoList.size();i++){
                                 DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(i);
-                                if (mDownloadListAdapter != null){
-                                    mDownloadListAdapter.updateItem(downloadInfo);
-                                }
+                                mDownloadListAdapter.updateItem(downloadInfo);
                             }
                         }
                     });
