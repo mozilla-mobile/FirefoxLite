@@ -81,6 +81,11 @@ import java.util.Map;
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         hasPageStarted = true;
+
+        if (callback != null) {
+            callback.updateFailingUrl(null);
+        }
+
         if (errorReceived) {
             // When dealing with error pages, webkit sometimes sends onPageStarted()
             // without a matching onPageFinished(). We hack around that by using
@@ -171,6 +176,10 @@ import java.util.Map;
     public void onReceivedError(final WebView webView, int errorCode,
                                 final String description, String failingUrl) {
         errorReceived = true;
+
+        if (callback != null) {
+            callback.updateFailingUrl(failingUrl);
+        }
 
         // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,
         // - the WebResourceRequest would let us know if the error affects the main frame or not. As a workaround

@@ -118,6 +118,9 @@ public class InfoFragment extends WebFragment {
                                              WebChromeClient.FileChooserParams fileChooserParams) {
                 return false;
             }
+
+            @Override
+            public void updateFailingUrl(String url) {}
         };
     }
 
