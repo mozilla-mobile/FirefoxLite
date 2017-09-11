@@ -51,6 +51,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".beta"
 
             def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
             if (buddy_build_number?.trim()) {
