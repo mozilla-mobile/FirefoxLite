@@ -203,7 +203,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     TelemetryWrapper.downloadOpenFile(false);
 
-                    if (new File(download.getFileUri()).exists())
+                    if (new File(URI.create(download.getFileUri()).getPath()).exists())
                     {
                         IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
                     }else {
