@@ -1,8 +1,8 @@
-# Firefox Focus for Android
+# Firefox Rocket for Android
 
 ## Updating translations
 
-Firefox Focus for Android is getting localized on [Pontoon](https://pontoon.mozilla.org/projects/focus-for-android/).
+Firefox Rocket for Android is getting localized on [Pontoon](https://pontoon.mozilla.org/projects/focus-for-android/).
 
 For converting between Android XML files and Gettext PO files (to be consumed by Pontoon) we use a local, slightly modified version of [android2po](https://github.com/miracle2k/android2po) (See `tools/l10n/android2po`).
 

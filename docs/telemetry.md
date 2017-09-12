@@ -1,4 +1,4 @@
-# Firefox Focus for Android
+# Firefox Rocket for Android
 
 ## Telemetry
 
