@@ -22,24 +22,32 @@
     <string name="share_dialog_title">Share via</string>
 
     <!-- This is the label of an action we offer when the user selects text in other third-party apps.
-         Clicking this action will launch Focus and perform a search in the default search engine. -->
+         Clicking this action will launch Rocket and perform a search in the default search engine. -->
     <string name="text_selection_search_action">Search in {{app_name}}</string>
 
-    <!-- Content of about focus. Argument 1 is the app name (Firefox Focus/Firefox Klar/etc).
-         Argument 2 is the url for the learn-more link. -->
-    <string name="about_content"><![CDATA[
-<p>%1$s is a fast and lightweight browser produced by Mozilla. Our missions is to foster a healthy, open internet.<br/>
-<a href="%2$s" class="underline">Learn more</a></p><br/><br/>
-<a href="%3$s">Support</a><br/><br/>
-<a href="%4$s">Your Rights</a><br/><br/>
-<a href="%5$s">Privacy Notice</a><br/><br/>
+    <!-- Content of about Rocket. Argument 1 is the major body of the content #about_content_body.
+         Argument 2,4,6,8 is the urls.
+         Argument 3,5,7,9 is the Label of the urls. -->
+    <string name="about_content" translatable="false"><![CDATA[
+<p>%1$s<br/>
+<a href="%2$s" class="underline">%3$s</a></p><br/><br/>
+<a href="%4$s">%5$s</a><br/><br/>
+<a href="%6$s">%7$s</a><br/><br/>
+<a href="%8$s">%9$s</a><br/><br/>
     ]]></string>
+
+    <!-- Content of about Rocket. Argument 1 is the app name of the content. i.e.x. Firefox Rocket -->
+    <string name="about_content_body">%1$s is a fast and lightweight browser produced by Mozilla. Our missions is to foster a healthy, open internet.</string>
+    <string name="about_link_learn_more">Learn more</string>
+    <string name="about_link_support">Support</string>
+    <string name="about_link_your_rights">Your Rights</string>
+    <string name="about_link_privacy">Privacy Notice</string>
 
     <!-- This label is shown below the name of the default search engine in settings -->
     <string name="preference_search_engine_default">Default search engine</string>
 
     <string name="preference_language">Language</string>
-    <!-- This is shown when the user hasn't set a focus specific language, i.e. when Focus
+    <!-- This is shown when the user hasn't set a Rocket specific language, i.e. when Rocket
          is using the system default language. -->
     <string name="preference_language_systemdefault">System default</string>
 
@@ -52,16 +60,16 @@
     <string name="preference_privacy_storage_clear_browsing_data">Clear browsing data</string>
     <string name="preference_privacy_storage_save_downloads_to">Save downloads to </string>
 
-    <!-- This preference does not set Focus as the default browser but instead links to Android's
+    <!-- This preference does not set Rocket as the default browser but instead links to Android's
      "default apps" screen or if not supported by this Android version to a SUMO page describing
-     how to set Focus as a default browser -->
+     how to set Rocket as a default browser -->
     <string name="preference_default_browser">Make default browser</string>
 
     <string name="preference_mozilla_telemetry">Send usage data</string>
     <string name="preference_mozilla_telemetry_summary">Mozilla strives to collect only what we need to provide and improve %1$s for everyone.</string>
     <string name="preference_mozilla_telemetry_learn_more">Learn more</string>
 
-    <!-- Item in Preferences that shows the about page. Parameter 1 is the app name, i.e. Firefox Focus/Firefox Klar. -->
+    <!-- Item in Preferences that shows the about page. Parameter 1 is the app name, i.e. Firefox Rocket. -->
     <string name="preference_about">About %1$s</string>
 
     <!-- Content description (not visible, for screen readers etc.): Clear text in URL bar -->
@@ -69,7 +77,7 @@
 
     <!-- Content description (not visible, for screen readers etc.): Clicking on the website overlay
      while in typing mode will dismiss and go back to the browser. This text will be read when the
-     overlay if focused. See https://github.com/mozilla-mobile/focus-android/issues/50 -->
+     overlay if it gain focus. -->
     <string name="content_description_dismiss_input">Dismiss</string>
 
     <!-- Content description (not visible, for screen readers etc.): Lock icon showed in the URL bar for
@@ -108,18 +116,21 @@
 
     <!-- This text is the title of a dialog shown if no app could be found for a custom link protocol. -->
     <string name="external_app_prompt_no_app_title">Find an app that can open link</string>
-    <!-- This text is shown in a dialog if no app could be found for a custom link protocol. %1$s is the name of the app (i.e. Firefox Focus) and %2$s is the name of
+    <!-- This text is shown in a dialog if no app could be found for a custom link protocol. %1$s is the name of the app (i.e. Firefox Rocket) and %2$s is the name of
          the app store installed on the device (usually that's Google Play). -->
     <string name="external_app_prompt_no_app">None of the apps on your device are able to open this link. You can leave %1$s to search %2$s for an app that can.</string>
 
-    <!-- The page html title (i.e. the <title> tag content) -->
-    <string name="error_page_title">Webpage not available</string>
-    <string name="error_page_message"><![CDATA[
+
+    <string name="error_page_message" translatable="false"><![CDATA[
       <ul>
-        <li>- Make sure you are connected to the internet</li>
-        <li>- Check the address</li>
+        <li>%1$s</li>
+        <li>%2$s</li>
       </ul>
     ]]></string>
+    <!-- The page html title (i.e. the <title> tag content) -->
+    <string name="error_page_title">Webpage not available</string>
+    <string name="error_page_recover_a">Make sure you are connected to the internet</string>
+    <string name="error_page_recover_b">Check the address</string>
     <string name="error_page_button">TRY AGAIN</string>
 
     <!-- Label used in the contextmenu shown when long-pressing on a link -->
@@ -133,7 +144,7 @@
     <!-- Label used in the contextmenu shown when long-pressing on an image -->
     <string name="contextmenu_image_save">Save image</string>
 
-    <!-- This is a warning shown in the browser's context menu (when long pressing an image). %1$s will be replaced with the long name of the app (e.g. Firefox Focus). -->
+    <!-- This is a warning shown in the browser's context menu (when long pressing an image). %1$s will be replaced with the long name of the app (e.g. Firefox Rocket). -->
 
     <!-- First run tour -->
     <!-- title for first page of FirstRun, %1$s will be formatted by product name -->
@@ -183,12 +194,19 @@
     <string name="download_file_not_supported">File type not supported</string>
     <string name="cannot_find_the_file">Cannot find the file.</string>
     <string name="cannot_delete_the_file">Cannot delete the file.</string>
+
     <!-- Download status-->
+    <!-- File download status is paused -->
     <string name="pause">Paused</string>
+    <!-- File download status is pending -->
     <string name="pending">Pending</string>
+    <!-- File download status is running -->
     <string name="running">Downloading</string>
+    <!-- File download status is successful -->
     <string name="successful">Successful</string>
+    <!-- File download status is failed -->
     <string name="failed">Failed</string>
+    <!-- File download status is unknown -->
     <string name="unknown">Unknown</string>
 
     <!-- Setting data saving path dialog -->
@@ -204,7 +222,10 @@
     <string name="browsing_history_dialog_confirm_clear_message">Clear all browsing history?</string>
     <string name="browsing_history_dialog_btn_clear">Clear</string>
 
+    <!-- Remove the item from Download file panel -->
     <string name="remove_from_list">Remove from list</string>
+
+    <!-- Remove the item from Download file panel and delete the file -->
     <string name="delete_file">Delete file</string>
 
     <!--Long Screenshot-->
@@ -219,8 +240,13 @@
 
     <!-- ScreenshotGridFragment-->
     <string name="screenshot_grid_empty_text_title">No screenshots</string>
+
+    <!-- The element between this prefix and postfix is a button image, not a string.
+        So we cannot use the placeholder here. -->
     <string name="screenshot_grid_empty_text_msg_prefix">Tap&#160;</string>
+
     <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page</string>
+
     <string name="screenshot_image_viewer_dialog_title">Info</string>
     <string name="screenshot_image_viewer_dialog_info_time">Time:</string>
     <string name="screenshot_image_viewer_dialog_info_resolution">Resolution:</string>
@@ -238,6 +264,9 @@
     <string name="message_enable_block_image">Now blocking images</string>
     <string name="message_disable_block_image">Now showing images</string>
     <string name="message_clear_cache_fail">Unable to clear cache</string>
+
+    <!-- Message indicate how much cache file cause disk storage was cleared.
+        Argument is the amount, i.e. 15.0 MB cache cleared -->
     <string name="message_cleared_cached">%1$s cache cleared</string>
     <string name="message_cleared_browsing_data">Browsing data cleared</string>
     <string name="message_deleted_screenshot">Screenshot deleted</string>

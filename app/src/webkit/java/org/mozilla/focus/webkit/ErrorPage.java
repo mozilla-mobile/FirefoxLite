@@ -43,11 +43,14 @@ public class ErrorPage {
 
         final Resources resources = webView.getContext().getResources();
 
+        final String recoverA = resources.getString(R.string.error_page_recover_a);
+        final String recoverB = resources.getString(R.string.error_page_recover_b);
+
         substitutionMap.put("%pageTitle%", resources.getString(R.string.error_page_title));
         substitutionMap.put("%button%", resources.getString(R.string.error_page_button));
 
         substitutionMap.put("%messageShort%", resources.getString(R.string.error_page_title));
-        substitutionMap.put("%messageLong%", resources.getString(R.string.error_page_message));
+        substitutionMap.put("%messageLong%", resources.getString(R.string.error_page_message, recoverA, recoverB));
 
         substitutionMap.put("%css%", cssString);
 
