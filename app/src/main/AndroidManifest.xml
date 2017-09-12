@@ -18,12 +18,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".FocusApplication">
-        <activity android:name=".activity.MainActivity"
-            android:launchMode="singleTask"
+        android:name="org.mozilla.focus.FocusApplication">
+
+        <activity
+            android:name="org.mozilla.focus.activity.MainActivity"
+            android:enabled="true"
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout"
-            android:label="@string/app_name">
+            android:launchMode="singleTask"
+            android:exported="false" />
+
+        <activity-alias
+            android:name="org.mozilla.rocket.activity.MainActivity"
+            android:enabled="true"
+            android:icon="@mipmap/ic_launcher"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity="org.mozilla.focus.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,26 +43,32 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:mimeType="text/html"/>
-                <data android:mimeType="text/plain"/>
-                <data android:mimeType="application/xhtml+xml"/>
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="application/xhtml+xml" />
             </intent-filter>
 
-        </activity>"
+        </activity-alias>
 
-        <activity android:name=".activity.TextActionActivity"
+        <activity
+            android:name="org.mozilla.focus.activity.TextActionActivity"
+            android:enabled="true"
             android:exported="true"
             android:label="@string/text_selection_search_action"
             android:screenOrientation="portrait">
@@ -63,56 +80,68 @@
         </activity>
 
         <!-- SettingsActivity title is set dynamically for multilocale support -->
-        <activity android:name=".activity.SettingsActivity"
+        <activity
+            android:name="org.mozilla.focus.activity.SettingsActivity"
+            android:enabled="true"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/SettingsTheme"
             android:configChanges="locale" />
 
-        <activity android:name=".activity.InfoActivity"
+        <activity
+            android:name="org.mozilla.focus.activity.InfoActivity"
+            android:enabled="true"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/SettingsTheme" />
 
-        <activity android:name=".screenshot.ScreenshotViewerActivity"
+        <activity
+            android:name="org.mozilla.focus.screenshot.ScreenshotViewerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
         <!-- Custom Tabs Service is currently not registering the intent-filter before its ready.
              It should also be set to exported=true if you want to turn it on -->
         <service
-            android:name=".customtabs.CustomTabsService"
+            android:name="org.mozilla.focus.customtabs.CustomTabsService"
+            android:enabled="false"
             android:exported="false"
-            tools:ignore="ExportedService">
-        </service>
+            tools:ignore="ExportedService" />
 
-        <meta-data android:name="android.webkit.WebView.MetricsOptOut"
-                   android:value="true" />
+        <meta-data
+            android:name="android.webkit.WebView.MetricsOptOut"
+            android:value="true" />
 
         <provider
-            android:name=".provider.HistoryProvider"
+            android:name="org.mozilla.focus.provider.HistoryProvider"
             android:authorities="${applicationId}.provider.historyprovider"
             android:enabled="true"
             android:exported="false" />
 
         <provider
-            android:name=".provider.ScreenshotProvider"
+            android:name="org.mozilla.focus.provider.ScreenshotProvider"
             android:authorities="${applicationId}.provider.screenshotprovider"
             android:enabled="true"
             android:exported="false" />
 
         <provider
+            android:name="org.mozilla.focus.provider.DownloadInfoProvider"
             android:authorities="${applicationId}.provider.downloadprovider"
-            android:name=".provider.DownloadInfoProvider"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
 
-        <receiver android:name=".components.DownloadCompleteReceiver">
+        <receiver
+            android:name="org.mozilla.focus.components.DownloadCompleteReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".components.RelocateService"
+            android:name="org.mozilla.focus.components.RelocateService"
+            android:enabled="true"
             android:exported="false" />
     </application>
 
