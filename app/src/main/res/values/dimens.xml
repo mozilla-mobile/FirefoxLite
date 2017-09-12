@@ -28,6 +28,7 @@
     <dimen name="flow_layout_spacing">10dp</dimen>
 
     <dimen name="screenshot_grid_cell_padding">8dp</dimen>
+    <dimen name="screenshot_empty_img_size">18dp</dimen>
     <dimen name="menu_bottom_space">40dp</dimen>
 
     <dimen name="favicon_initial_text_size">25dp</dimen>
