@@ -1,0 +1,182 @@
+## Strings
+#### 0-1. Onboarding - first
+- [x] "Thanks for choosing Firefox Rocket"
+- [x] "A browser tailor-made for Indonesia by Mozilla, the non-profit committed to a free and open web."
+- [x] "NEXT"
+#### 0-2. Onboarding - second
+- [x] "Browse faster than ever"
+- [x] "Our turbo mode blocks ads & trackers for you to enjoy browsing at blazing speed. If a site seems broken, you can turn it off from the menu."
+- [x] "Turbo mode"
+- [x] "NEXT"
+#### 0-3. Onboarding - third
+- [x] "Save Data = Save Money"
+- [x] "We block ads and tracker by default to save you data. You can save even more by enabling Block Image in the app menu."
+- [x] "NEXT"
+#### 0-4. Onboarding - forth
+- [x] "Screenshot Everything"
+- [x] "You can now take screenshots of the whole web page and easily revisit the web page or view screenshots without using your data."
+- [x] "OK, GOT IT!"
+#### 1-1. Home | Long tap on top site
+- [x] "Firefox Rocket"
+- [x] "Search or enter address"
+- [x] "Remove"
+#### 1-2. Home | Menu
+- [x] "Downloads"
+- [x] "History"
+- [x] "My shots"
+- [x] "Turbo mode"
+- [x] "Block image"
+- [x] "Clear cache"
+- [x] "Settings"
+#### 2-1. HOME | Menu | Downloads empty
+- [x] "No Downloads"
+#### 2-2. Home | Menu | Downloads with items
+- [ ] "failed"
+- [ ] "canceled"
+- [ ] "paused"
+- [ ] "downloading"
+#### 2-3. Home | Menu | Downloads with items | item_menu
+- [x] "Remove from list"
+- [x] "Delete file"
+#### 2-4. Home | Menu | Downloads with items | item_menu | Delete file
+- [ ] "file_name* was deleted" (snack bar - action: UNDO)
+#### 2-5. Home | Menu | Downloads with items | tap on a missing file
+- [ ] "Cannot find the file" (toast)
+#### 3-1. Home | Menu | History empty
+- [ ] "No browsing history"
+#### 3-2. Home | Menu | History item | item menu (with CLEAR BROWSING HISTORY)
+- [x] "CLEAR BROWSING HISTORY"
+- [x] "Delete"
+#### 3-3. Home | Menu | History item | CLEAR BROWSING HISTORY
+- [x] "Clear all browsing history?"
+- [x] "CANCEL"
+- [x] "CLEAR"
+#### 4-1. Home | Menu | My shots | No screenshots
+- [x] "No Screenshots"
+- [ ] "Tap %capture_icon% on the menu to capture an entire web page."
+#### 4-2. Home | Menu | My shots | Screenshot item | info
+- [x] "Info"
+- [x] "Time:"
+- [x] "Resolution:"
+- [x] "Size:"
+- [x] "Title:"
+- [x] "URL:"
+- [x] "OK"
+#### 4-3. Home | Menu | My shots | Screenshot item | Delete
+- [ ] "Delete this image?"
+- [x] "CANCEL"
+- [x] "DELETE"
+#### 4-4. Home | Menu | My shots | Screenshot item | Delete | DELETE
+- [x] "Screenshot deleted" (toast)
+#### 4-5. Home | Menu | My shots | Tap on missing screenshot
+- [ ] "Cannot display the screenshot"
+#### 5-1. Home | Menu | Turbo mode | -> off
+- [x] "Turbo mode" disabled (toast)
+#### 5-2. Home | Menu | Turbo mode | -> on
+- [x] "Turbo mode" enabled (toast)
+#### 6-1. Home | Menu | Block image | -> on
+- [x] "Now showing images" (toast)
+#### 6-2. Home | Menu | Block image | -> off
+- [x] "Now blocking images" (toast)
+#### 7-1. Home | Menu | Settings
+- [x] "Language"
+- [x] "Default search engine"
+- [x] "Clear browsing data"
+- [x] "Save downloads to"
+- [x] "Make default browser"
+- [x] "Send usage data"
+- [ ] "Mozilla strives to collect only what we need to provide and improve Firefox Rocket for everyone."
+- [x] "Learn more"
+- [ ] "Give feedback"
+- [ ] "Share with friends"
+- [x] "About"
+#### 7-2. Home | Menu | Settings | Language
+- [x] "Language"
+- [x] "System default"
+- [x] "English (United States)"
+- [ ] "Indonesia"
+- [x] "CANCEL"
+#### 7-3. Home | Menu | Settings | Default search engine
+- [x] "Default search engine"
+- [ ] "%current_default_search_engine% (Default)"
+#### 7-4. Home | Menu | Settings | Clear browsing data
+- [x] "Browsing history"
+- [x] "Form history"
+- [x] "Cookies"
+- [ ] "Cache (file_size*)"
+- [x] "CANCEL"
+- [x] "CLEAR DATA"
+#### 7-5. Home | Menu | Settings | Clear browsing data | CLEAR DATA
+- [x] "Browsing data cleared" (toast)
+#### 7-6. Home | Menu | Settings | Save downloads to
+- [x] "Save downloads to"
+- [ ] "SD card"
+- [x] "Internal storage"
+- [x] "CANCEL"
+#### 7-7. Home | Menu | Settings | Give feedback
+- [ ] "Love Firefox Rocket?"
+- [ ] "Thank you for choosing our product. Your feedback is important to us."
+- [ ] "Yes, rate 5 star!"
+- [ ] "No, send feedback"
+#### 7-8. Home | Menu | Settings | Give feedback | No, send feedback
+- [ ] "Firefox Rocket"
+- [ ] "Help us improve the product by giving feedback"
+- [ ] "say something about performance, easy to use or anything"
+- [ ] "Submit"
+#### 7-9. Home | Menu | Settings | Share with friends
+- [ ] "Share Firefox Rocket with friends!"
+- [ ] "Fast and lightweight"
+- [ ] "Helps save data"
+- [ ] "Powerful screenshots"
+- [ ] "SHARE"
+#### 7-10. Home | Menu | Settings | About
+- [ ] "Firefox Rocket is a fast and lightweight browser produced by Mozilla. Our missions is to foster a healthy, open internet."
+- [x] "Learn more"
+- [x] "Support"
+- [x] "Your Rights"
+- [x] "Privacy Notice"
+#### 7-11. Home | Menu | Settings | About | Your Rights
+- [ ] "Know Your Rights"
+- [ ] "Firefox Rocket is free and open source software made by Mozilla and other contributors."
+- [ ] "Firefox Rocket is made available to you under the terms of the Mozilla Public License and other open source licenses."
+- [ ] "You are not granted any rights or license to the trademarks of the Foundation or any party, including the Mozilla, Firefox or Firefox Rocket names or logos. Additional information may be found here."
+- [ ] "Additional source code for Firefox Rocket is available under various other free and open source licenses."
+- [ ] "Firefox Rocket also uses blocklists provided by Disconnect, Inc. as separate and independent works under the GNU General Public Licence v3, and available here."
+#### 8-1. Home | Menu | Clear cache
+- [x] "%file_size% cache cleared" (toast)
+#### 8-2. Home | Menu | Capture screenshot | Screenshot saved
+- [x] "Screenshot saved" (snack bar - action: SHARE)
+#### 8-3. Home | Menu | Capture screenshot | Failed to capture
+- [x] "Failed to capture" (toast)
+#### 9-1. Home | Error page
+- [x] "Webpage not available"
+- [x] "- Make sure you have a data connection"
+- [x] "- Check the address you entered"
+- [ ] "Reload"
+#### 9-2. Context menu inside Zerda
+- [x] "Share link"
+- [x] "Copy link address"
+- [x] "Share image"
+- [x] "Copy image address"
+- [x] "Save image"
+#### 9-3. Context menu inside Zerda | Save image | finished
+- [ ] "file_name* finished" (snack bar - action: OPEN)
+#### 9-4. Context menu inside Zerda | Download a file | Download using mobile data confirm
+- [ ] "file_name*"
+- [ ] "filesize*"
+- [ ] "Do you want to download the file over mobile connection?"
+- [ ] "CANCEL"
+- [ ] "YES"
+#### 9-5. Context menu inside Zerda | Download a file | Download started
+- [ ] "Downloading..." (toast)
+#### 9-6. Context menu inside Zerda | Download a file | Download finished
+- [ ] "file_name* downloaded" (snack bar - action: OPEN)
+#### 9-7. Context menu inside Zerda | Download a file | Download: No SD card detected
+- [ ] "No SD card detected. File was saved to internal storage." (toast)
+#### 9-8. Context menu inside Zerda | Download a file | Download: Saved to SD card
+- [ ] "File saved to SD card" (toast)
+#### 9-9. Context menu inside Zerda | Download a file | Download: SD card is full
+- [ ] "SD card is almost full. File was saved to internal storage" (toast)
+#### 10-1. Context menu from outside app
+- [x] "SEARCH IN FIREFOX ROCKET"
+
