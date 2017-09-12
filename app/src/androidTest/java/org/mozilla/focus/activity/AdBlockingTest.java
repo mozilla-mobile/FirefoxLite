@@ -67,7 +67,6 @@ public class AdBlockingTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("ads-blocker.com/testing/");
-        TestHelper.hint.waitForExists(waitingTime);
         TestHelper.pressEnterKey();
         TestHelper.webView.waitForExists(waitingTime);
 
@@ -105,7 +104,6 @@ public class AdBlockingTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("ads-blocker.com/testing/");
-        TestHelper.hint.waitForExists(waitingTime);
         TestHelper.pressEnterKey();
         TestHelper.webView.waitForExists(waitingTime);
         TestHelper.mDevice.swipe(

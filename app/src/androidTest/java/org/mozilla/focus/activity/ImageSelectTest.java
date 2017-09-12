@@ -109,7 +109,7 @@ public class ImageSelectTest {
             .enabled(true));
     private UiObject warning = TestHelper.mDevice.findObject(new UiSelector()
             .resourceId("org.mozilla.focus.debug:id/warning")
-            .text("Saved and shared images will not be deleted when you erase Firefox Focus history.")
+            .text("Saved and shared images will not be deleted when you erase Firefox Rocket history.")
             .enabled(true));
 
     @Test
@@ -122,7 +122,6 @@ public class ImageSelectTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText(webServer.url(TEST_PATH).toString());
-        TestHelper.hint.waitForExists(waitingTime);
         TestHelper.pressEnterKey();
         TestHelper.webView.waitForExists(waitingTime);
 
@@ -164,7 +163,6 @@ public class ImageSelectTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText(webServer.url(TEST_PATH).toString());
-        TestHelper.hint.waitForExists(waitingTime);
         TestHelper.pressEnterKey();
         TestHelper.webView.waitForExists(waitingTime);
 
@@ -190,7 +188,6 @@ public class ImageSelectTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("http://www.google.com");
-        TestHelper.hint.waitForExists(waitingTime);
         TestHelper.pressEnterKey();
         TestHelper.webView.waitForExists(waitingTime);
 

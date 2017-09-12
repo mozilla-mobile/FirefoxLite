@@ -52,14 +52,14 @@ public class PageVisitTest {
         /********* Page View Locators ***********/
         UiObject rightsPartialText = TestHelper.mDevice.findObject(new UiSelector()
                 .className("android.view.View")
-                .description("Firefox Focus is free and open source software " +
+                .description("Firefox Rocket is free and open source software " +
                         "made by Mozilla and other contributors."));
         UiObject rightsHeading = TestHelper.mDevice.findObject(new UiSelector()
                 .className("android.widget.TextView")
                 .text("Your Rights"));
         UiObject aboutPartialText = TestHelper.mDevice.findObject(new UiSelector()
                 .className("android.view.View")
-                .description("Firefox Focus puts you in control."));
+                .description("Firefox Rocket puts you in control."));
         UiObject aboutHeading = TestHelper.mDevice.findObject(new UiSelector()
                 .className("android.widget.TextView")
                 .text("About"));
@@ -68,7 +68,7 @@ public class PageVisitTest {
                 .text("Help"));
         UiObject helpView = TestHelper.mDevice.findObject(new UiSelector()
                 .className("android.webkit.WebView")
-                .description("What is Firefox Focus for Android? - Mozilla Support Community"));
+                .description("What is Firefox Rocket for Android? - Mozilla Support Community"));
 
         /* Main View Menu */
         TestHelper.menuButton.perform(click());

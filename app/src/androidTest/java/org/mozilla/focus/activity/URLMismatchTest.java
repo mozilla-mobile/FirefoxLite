@@ -70,8 +70,6 @@ public class URLMismatchTest {
         TestHelper.mDevice.pressKeyCode(KEYCODE_L);
         TestHelper.mDevice.pressKeyCode(KEYCODE_L);
         TestHelper.mDevice.pressKeyCode(KEYCODE_A);
-        assertTrue(TestHelper.hint.getText().equals("Search for mozilla"));
-        TestHelper.hint.click();
         TestHelper.webView.waitForExists(waitingTime);
         assertTrue (TestHelper.browserURLbar.getText().contains("mozilla"));
 
@@ -81,7 +79,6 @@ public class URLMismatchTest {
         TestHelper.mDevice.pressKeyCode(KEYCODE_M);
         TestHelper.mDevice.pressKeyCode(KEYCODE_O);
         TestHelper.mDevice.pressKeyCode(KEYCODE_Z);
-        TestHelper.hint.waitForExists(waitingTime);
         assertTrue (TestHelper.inlineAutocompleteEditText.getText().equals("mozilla.org"));
         TestHelper.pressEnterKey();
 

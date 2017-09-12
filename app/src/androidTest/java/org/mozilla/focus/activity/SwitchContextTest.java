@@ -102,7 +102,6 @@ public class SwitchContextTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText(webServer.url(TEST_PATH).toString());
-        TestHelper.hint.waitForExists(waitingTime);
         TestHelper.pressEnterKey();
 
         // Assert website is loaded
@@ -140,7 +139,6 @@ public class SwitchContextTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText(webServer.url(TEST_PATH).toString());
-        TestHelper.hint.waitForExists(waitingTime);
         TestHelper.pressEnterKey();
 
         // Assert website is loaded

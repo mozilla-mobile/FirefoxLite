@@ -52,13 +52,11 @@ public class URLCompletionTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("mozilla");
-        TestHelper.hint.waitForExists(waitingTime);
         assertTrue (TestHelper.inlineAutocompleteEditText.getText().equals("mozilla.org"));
 
         /* type a full url, and check it does not autocomplete */
         TestHelper.inlineAutocompleteEditText.clearTextField();;
         TestHelper.inlineAutocompleteEditText.setText("http://www.mozilla.org");
-        TestHelper.hint.waitForExists(waitingTime);
         assertTrue (TestHelper.inlineAutocompleteEditText.getText().equals("http://www.mozilla.org"));
     }
 }
