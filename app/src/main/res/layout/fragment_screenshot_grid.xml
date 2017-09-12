@@ -39,9 +39,9 @@
             android:id="@+id/screenshot_grid_empty_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="28dp"
             android:gravity="center"
-            android:textColor="@color/colorDownloadSubText"
+            android:textColor="@color/colorDownloadText"
             android:textSize="14sp"
             android:textStyle="italic" />
     </LinearLayout>

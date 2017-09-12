@@ -1,5 +1,6 @@
 package org.mozilla.focus.screenshot;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +35,10 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
         mContainerEmptyView = (ViewGroup) v.findViewById(R.id.screenshot_grid_empty_view_container);
 
         TextView emptyText = (TextView) v.findViewById(R.id.screenshot_grid_empty_text);
-        ImageSpan imageSpan = new ImageSpan(getActivity(), R.drawable.action_capture);
+        Drawable drawable = getResources().getDrawable(R.drawable.action_capture, null);
+        drawable.setBounds(0, 0, getResources().getDimensionPixelSize(R.dimen.screenshot_empty_img_size), getResources().getDimensionPixelSize(R.dimen.screenshot_empty_img_size));
+        ImageSpan imageSpan = new ImageSpan(drawable);
+
         String emptyPrefix = getString(R.string.screenshot_grid_empty_text_msg_prefix);
         String emptyPostfix = getString(R.string.screenshot_grid_empty_text_msg_postfix);
         SpannableString spannableString = new SpannableString(emptyPrefix + emptyPostfix);
