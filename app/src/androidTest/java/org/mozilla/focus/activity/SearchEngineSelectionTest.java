@@ -95,11 +95,6 @@ public class SearchEngineSelectionTest {
         /* Now do some search */
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("mozilla focus");
-        TestHelper.hint.waitForExists(waitingTime);
-
-        // Check the search hint bar is correctly displayed
-        assertTrue(TestHelper.hint.getText().equals("Search for mozilla focus"));
-        TestHelper.hint.click();
 
         /* Browser shows google search webview*/
         googleWebView.waitForExists(waitingTime);
@@ -123,11 +118,6 @@ public class SearchEngineSelectionTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("mozilla focus");
-        TestHelper.hint.waitForExists(waitingTime);
-
-        // Check the search hint bar is correctly displayed
-        assertTrue(TestHelper.hint.getText().equals("Search for mozilla focus"));
-        TestHelper.hint.click();
 
         /* Browser shows google search webview*/
         yahooWebView.waitForExists(waitingTime);

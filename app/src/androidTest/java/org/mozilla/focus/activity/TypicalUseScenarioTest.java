@@ -71,9 +71,6 @@ public class TypicalUseScenarioTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("mozilla focus");
-        TestHelper.hint.waitForExists(waitingTime);
-        assertTrue(TestHelper.hint.getText().equals("Search for mozilla focus"));
-        TestHelper.hint.click();
         TestHelper.webView.waitForExists(waitingTime);
         assertTrue (TestHelper.browserURLbar.getText().contains("mozilla"));
         assertTrue (TestHelper.browserURLbar.getText().contains("focus"));
@@ -83,8 +80,6 @@ public class TypicalUseScenarioTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("https://www.google.com");
-        TestHelper.hint.waitForExists(waitingTime);
-        assertTrue(TestHelper.hint.getText().equals("Search for https://www.google.com"));
         TestHelper.pressEnterKey();
         TestHelper.webView.waitForExists(waitingTime);
         assertTrue (TestHelper.browserURLbar.getText().contains("https://www.google"));
@@ -96,8 +91,6 @@ public class TypicalUseScenarioTest {
         TestHelper.inlineAutocompleteEditText.waitForExists(waitingTime);
         TestHelper.inlineAutocompleteEditText.clearTextField();
         TestHelper.inlineAutocompleteEditText.setText("http://www.example.com");
-        TestHelper.hint.waitForExists(waitingTime);
-        assertTrue(TestHelper.hint.getText().equals("Search for http://www.example.com"));
         TestHelper.pressEnterKey();
         TestHelper.webView.waitForExists(waitingTime);
         assertTrue (TestHelper.browserURLbar.getText().contains("http://www.example.com"));
