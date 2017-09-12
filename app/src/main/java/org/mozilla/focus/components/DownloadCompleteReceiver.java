@@ -41,13 +41,6 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
             if ((downloadStatus == DownloadManager.STATUS_SUCCESSFUL)
                     && !TextUtils.isEmpty(localUriStr)) {
 
-                //update download info in our db
-                DownloadInfo downloadInfo = new DownloadInfo();
-                downloadInfo.setDownloadId(downloadId);
-                downloadInfo.setFileName(new File(localUriStr).getName());
-                downloadInfo.setFileUri(localUriStr);
-                DownloadInfoManager.getInstance().update(downloadInfo,null);
-
                 final Uri fileUri = Uri.parse(localUriStr);
                 if ("file".equals(fileUri.getScheme())) {
 
@@ -59,6 +52,12 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                     final String type = Environment.DIRECTORY_DOWNLOADS;
                     final File dir = Environment.getExternalStoragePublicDirectory(type);
                     final File downloadedFile = new File(dir, fileName);
+                    //update download info in our db
+                    DownloadInfo downloadInfo = new DownloadInfo();
+                    downloadInfo.setDownloadId(downloadId);
+                    downloadInfo.setFileName(fileName);
+                    downloadInfo.setFileUri(localUriStr);
+                    DownloadInfoManager.getInstance().update(downloadInfo,null);
                     if (downloadedFile.exists() && downloadedFile.canWrite()) {
                         RelocateService.startActionMove(context,
                                 downloadId,

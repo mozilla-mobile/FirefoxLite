@@ -129,15 +129,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DownloadViewHolder holder = (DownloadViewHolder) viewHolder;
             DownloadInfo downloadInfo = mDownloadInfo.get(position);
 
-            if (!TextUtils.isEmpty(downloadInfo.getFileName())){
+            if (!TextUtils.isEmpty(downloadInfo.getFileName())) {
                 holder.title.setText(downloadInfo.getFileName());
-            }else {
-                if (!TextUtils.isEmpty(downloadInfo.getFileUri()))
-                {
-                    holder.title.setText(new File(downloadInfo.getFileUri()).getName());
-                }else {
-                    holder.title.setText(R.string.unknown);
-                }
+            } else {
+                holder.title.setText(R.string.unknown);
             }
 
             holder.icon.setImageResource(mappingIcon(downloadInfo));
