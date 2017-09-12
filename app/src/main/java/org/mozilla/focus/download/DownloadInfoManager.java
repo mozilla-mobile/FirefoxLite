@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -285,7 +286,7 @@ public class DownloadInfoManager {
                 String extension = MimeTypeMap.getFileExtensionFromUrl(pojo.fileUri);
                 pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
                 pojo.fileExtension = extension;
-                pojo.fileName = new File(pojo.fileUri).getName();
+                pojo.fileName = new File(Uri.parse(pojo.fileUri).getPath()).getName();
             }
         } catch (Exception e) {
             managerCursor.close();
