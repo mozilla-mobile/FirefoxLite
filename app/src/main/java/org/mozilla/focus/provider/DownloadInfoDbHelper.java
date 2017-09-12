@@ -12,7 +12,7 @@ import static org.mozilla.focus.provider.DownloadContract.Download;
 public class DownloadInfoDbHelper {
     // Database Info
     private static final String DATABASE_NAME = "DownloadInfo.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE ";
