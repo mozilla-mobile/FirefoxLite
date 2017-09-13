@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/main_list"
     android:layout_width="296dp"
-    android:minHeight="186dp"
+    android:minHeight="186.67dp"
     android:layout_height="wrap_content"
     android:overScrollMode="never"
     app:layoutManager="android.support.v7.widget.GridLayoutManager"
