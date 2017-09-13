@@ -1,10 +1,8 @@
 package org.mozilla.focus.fragment;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.NestedScrollView;
@@ -58,20 +56,14 @@ public class ListPanelDialog extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        // Hack to force full screen
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheetTheme);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_listpanel_dialog, container, false);
         scrollView = (NestedScrollView) v.findViewById(R.id.main_content);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(scrollView);

@@ -19,6 +19,11 @@
 
     </style>
 
+    <style name="BottomSheetTheme" parent="AppTheme">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="DialogTitleStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">#FFFFFF</item>
     </style>
