@@ -37,7 +37,7 @@
     ]]></string>
 
     <!-- Content of about Rocket. Argument 1 is the app name of the content. i.e.x. Firefox Rocket -->
-    <string name="about_content_body">%1$s is a fast and lightweight browser produced by Mozilla. Our missions is to foster a healthy, open internet.</string>
+    <string name="about_content_body">%1$s is a fast and lightweight browser produced by Mozilla. Our mission is to foster a healthy, open internet.</string>
     <string name="about_link_learn_more">Learn more</string>
     <string name="about_link_support">Support</string>
     <string name="about_link_your_rights">Your Rights</string>
@@ -66,6 +66,8 @@
     <string name="preference_default_browser">Make default browser</string>
 
     <string name="preference_mozilla_telemetry">Send usage data</string>
+
+    <!-- Item in Preferences that shows the app name wants to send telemetry. Parameter 1 is the app name, i.e. Firefox Rocket. -->
     <string name="preference_mozilla_telemetry_summary">Mozilla strives to collect only what we need to provide and improve %1$s for everyone.</string>
     <string name="preference_mozilla_telemetry_learn_more">Learn more</string>
 
@@ -116,7 +118,7 @@
 
     <!-- This text is the title of a dialog shown if no app could be found for a custom link protocol. -->
     <string name="external_app_prompt_no_app_title">Find an app that can open link</string>
-    <!-- This text is shown in a dialog if no app could be found for a custom link protocol. %1$s is the name of the app (i.e. Firefox Rocket) and %2$s is the name of
+    <!-- This text is shown in a dialog if no app could be found for a custom link protocol. Argument 1 is the name of the app (i.e. Firefox Rocket) and %2$s is the name of
          the app store installed on the device (usually that's Google Play). -->
     <string name="external_app_prompt_no_app">None of the apps on your device are able to open this link. You can leave %1$s to search %2$s for an app that can.</string>
 
@@ -144,10 +146,8 @@
     <!-- Label used in the contextmenu shown when long-pressing on an image -->
     <string name="contextmenu_image_save">Save image</string>
 
-    <!-- This is a warning shown in the browser's context menu (when long pressing an image). %1$s will be replaced with the long name of the app (e.g. Firefox Rocket). -->
-
     <!-- First run tour -->
-    <!-- title for first page of FirstRun, %1$s will be formatted by product name -->
+    <!-- title for first page of FirstRun, Argument 1 will be formatted by product name -->
     <string name="first_run_page1_title">Thanks for choosing %1$s</string>
     <string name="first_run_page1_text">A browser tailor-made for Indonesia by Mozilla, the non-profit committed to a free and open web.</string>
     <string name="first_run_page2_title">Browse faster than ever</string>
@@ -174,7 +174,8 @@
     <string name="label_menu_block_image">Block images</string>
     <string name="label_menu_settings">Settings</string>
 
-    <!--GeolocationPermissionPrompt-->
+    <!-- When the webpage request access to geolocation a dialog will popup.
+        This is the title of the permission request dialog. Argument 1 is the url of the website. -->
     <string name="geolocation_dialog_message">%1$s \nwants to use your device\'s location.</string>
     <string name="geolocation_dialog_allow">ALLOW</string>
     <string name="geolocation_dialog_block">BLOCK</string>
@@ -241,10 +242,12 @@
     <!-- ScreenshotGridFragment-->
     <string name="screenshot_grid_empty_text_title">No screenshots</string>
 
-    <!-- The element between this prefix and postfix is a button image, not a string.
-        So we cannot use the placeholder here. -->
+    <!-- This string is followed by the image of the button, keep the trailing whitespace.
+        Final result: 'Tap [image] on the menu to capture an entire web page'. -->
     <string name="screenshot_grid_empty_text_msg_prefix">Tap&#160;</string>
 
+    <!-- This string is preceded by the image of the button, keep the leading whitespace.
+        Final result: 'Tap [image] on the menu to capture an entire web page'. -->
     <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page</string>
 
     <string name="screenshot_image_viewer_dialog_title">Info</string>
@@ -266,7 +269,7 @@
     <string name="message_clear_cache_fail">Unable to clear cache</string>
 
     <!-- Message indicate how much cache file cause disk storage was cleared.
-        Argument is the amount, i.e. 15.0 MB cache cleared -->
+        Argument 1 is the amount, i.e. 15.0 MB cache cleared -->
     <string name="message_cleared_cached">%1$s cache cleared</string>
     <string name="message_cleared_browsing_data">Browsing data cleared</string>
     <string name="message_deleted_screenshot">Screenshot deleted</string>
