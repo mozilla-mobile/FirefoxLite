@@ -133,7 +133,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public void applyLocale() {
-        // We don't care here: all our fragments update themselves as appropriate
+        // re-create bottom sheet menu
+        setUpMenu();
     }
 
     @Override
