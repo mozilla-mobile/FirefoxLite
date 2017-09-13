@@ -95,7 +95,7 @@ public class WebViewProvider {
         settings.setSavePassword(false);
 
         //MixedContent Mode
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
     }
 
     public static void applyAppSettings(Context context, WebSettings settings) {
