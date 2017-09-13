@@ -13,6 +13,7 @@ import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -40,7 +41,7 @@ public class WebViewProvider {
         final WebSettings settings = webkitView.getSettings();
 
         setupView(webkitView);
-        configureDefaultSettings(context, settings);
+        configureDefaultSettings(context, settings, webkitView);
         applyAppSettings(context, settings);
 
         return webkitView;
@@ -52,7 +53,7 @@ public class WebViewProvider {
     }
 
     @SuppressLint("SetJavaScriptEnabled") // We explicitly want to enable JavaScript
-    private static void configureDefaultSettings(Context context, WebSettings settings) {
+    private static void configureDefaultSettings(Context context, WebSettings settings, WebkitView webkitView) {
         settings.setJavaScriptEnabled(true);
 
         // Enabling built in zooming shows the controls by default
@@ -93,6 +94,11 @@ public class WebViewProvider {
         settings.setSaveFormData(true);
         //noinspection deprecation - This method is deprecated but let's call it in case WebView implementations still obey it.
         settings.setSavePassword(false);
+
+        // We accept third party cookies
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().setAcceptThirdPartyCookies(webkitView, true);
+        }
     }
 
     public static void applyAppSettings(Context context, WebSettings settings) {
