@@ -25,10 +25,16 @@ android {
         applicationId "org.mozilla"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 5
+        versionCode 1
         versionName "0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
+        if (buddy_build_number?.trim()) {
+            versionCode buddy_build_number.toInteger()
+            versionNameSuffix "." + buddy_build_number
+        }
     }
 
     dexOptions {
@@ -43,7 +49,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix ".${defaultConfig.versionCode}"
         }
         beta {
             initWith release
@@ -51,14 +56,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
-            if (buddy_build_number?.trim()) {
-                buddy_build_number = "." + buddy_build_number
-                versionNameSuffix "${buddy_build_number}" + applicationIdSuffix
-            } else {
-                versionNameSuffix applicationIdSuffix
-            }
         }
         debug {
             def userName = System.getenv("USER")
@@ -89,7 +86,7 @@ android {
         focus {
             dimension "product"
 
-            applicationIdSuffix ".zerda"
+            applicationIdSuffix ".rocket"
         }
 
         preview {
