@@ -72,6 +72,8 @@ public class DataSavingPathPreference extends ListPreference {
     private void pingRemovableStorage() {
         try {
             StorageUtils.getAppMediaDirOnRemovableStorage(getContext());
+            // no exception
+            hasRemovableStorage = true;
         } catch (NoRemovableStorageException e) {
             hasRemovableStorage = false;
         }
