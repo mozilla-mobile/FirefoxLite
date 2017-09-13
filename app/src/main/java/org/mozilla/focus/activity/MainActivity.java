@@ -484,7 +484,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             menu.findViewById(R.id.menu_turbomode).setSelected(turboEnabled);
         } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
             final boolean blockingImages = isBlockingImages();
-            if (!blockingImages && getVisibleBrowserFragment() != null){
+            if (getVisibleBrowserFragment() != null){
                 getVisibleBrowserFragment().reload();
             }
             menu.findViewById(R.id.menu_blockimg).setSelected(blockingImages);
