@@ -305,7 +305,11 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         builder.setTitle(R.string.screenshot_image_viewer_dialog_title);
         builder.setAdapter(new InfoItemAdapter(this, mInfoItems), null);
         builder.setPositiveButton(R.string.action_ok, null);
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        if(dialog.getListView() != null) {
+            dialog.getListView().setSelector(android.R.color.transparent);
+        }
+        dialog.show();
     }
 
     private void onDeleteClick() {
