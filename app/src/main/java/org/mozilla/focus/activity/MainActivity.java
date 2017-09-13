@@ -235,7 +235,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void setUpMenu() {
         final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
-        menu = new BottomSheetDialog(this);
+        menu = new BottomSheetDialog(this, R.style.BottomSheetTheme);
         menu.setContentView(sheet);
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
