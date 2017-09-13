@@ -18,18 +18,14 @@
     android:orientation="vertical"
     android:paddingTop="5dp">
 
-    <FrameLayout
-        android:id="@+id/content_image_background"
-        android:background="@drawable/cornered_2dp"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/content_image"
         android:layout_width="48dp"
-        android:layout_height="48dp">
-        <ImageView
-            android:id="@id/content_image"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            tools:src="@mipmap/ic_launcher" />
-    </FrameLayout>
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@drawable/cornered_2dp"
+        android:padding="11.5dp"
+        tools:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/text"
