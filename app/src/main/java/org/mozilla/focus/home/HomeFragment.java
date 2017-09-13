@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -20,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.OnSwipeListener;
@@ -39,7 +40,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements TopSitesContract.View {
+public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
 
     public static final String FRAGMENT_TAG = "homescreen";
     public static final String TOPSITES_PREF = "topsites_pref";
@@ -50,7 +51,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private View btnMenu;
-    private View fakeInput;
+    private TextView fakeInput;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
@@ -88,7 +89,7 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
             }
         });
 
-        this.fakeInput = view.findViewById(R.id.home_fragment_fake_input);
+        this.fakeInput = (TextView) view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +156,11 @@ public class HomeFragment extends Fragment implements TopSitesContract.View {
             this.recyclerView.setAdapter(topSiteAdapter);
             this.topSiteAdapter.setSites(sites);
         }
+    }
+
+    @Override
+    public void applyLocale() {
+        this.fakeInput.setText(R.string.urlbar_hint);
     }
 
     @Override
