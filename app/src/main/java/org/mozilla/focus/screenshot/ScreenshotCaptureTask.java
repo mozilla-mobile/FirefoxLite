@@ -12,6 +12,8 @@ import org.mozilla.focus.utils.StorageUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
 
@@ -27,9 +29,10 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
         String url = (String) params[1];
         Bitmap content = (Bitmap) params[2];
         long timestamp = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
         try {
-            final String path = saveBitmapToStorage(context, title + "." + timestamp, content);
+            final String path = saveBitmapToStorage(context, "Screenshot_" + sdf.format(new Date(timestamp)), content);
             // Failed to save
             if (!TextUtils.isEmpty(path)) {
                 FileUtils.notifyMediaScanner(context, path);
