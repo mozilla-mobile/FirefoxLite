@@ -93,6 +93,9 @@ public class WebViewProvider {
         settings.setSaveFormData(true);
         //noinspection deprecation - This method is deprecated but let's call it in case WebView implementations still obey it.
         settings.setSavePassword(false);
+
+        //MixedContent Mode
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
     }
 
     public static void applyAppSettings(Context context, WebSettings settings) {
