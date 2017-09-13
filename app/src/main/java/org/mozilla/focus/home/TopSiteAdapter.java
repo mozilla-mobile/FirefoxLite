@@ -8,6 +8,7 @@ package org.mozilla.focus.home;
 import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,7 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
             int red = multiplyColorCodeByPercentage( ( dominantColor & 0x00FF0000 ) >> 16, 1.1f ) << 16;
             int green = multiplyColorCodeByPercentage( ( dominantColor & 0x0000FF00 ) >> 8, 1.1f ) << 8;
             int blue = multiplyColorCodeByPercentage( ( dominantColor & 0x000000FF ), 1.1f );
-            holder.img.setSupportBackgroundTintList(ColorStateList.valueOf(alpha + red + green + blue));
+            ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(alpha + red + green + blue));
         } else {
             //need default icon?
             holder.img.setImageBitmap(null);
