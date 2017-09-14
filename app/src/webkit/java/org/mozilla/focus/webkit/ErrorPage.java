@@ -7,6 +7,7 @@ package org.mozilla.focus.webkit;
 import android.content.res.Resources;
 import android.support.v4.util.ArrayMap;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.HtmlLoader;
@@ -43,15 +44,19 @@ public class ErrorPage {
 
         final Resources resources = webView.getContext().getResources();
 
-        final String recoverA = resources.getString(R.string.error_page_recover_a);
-        final String recoverB = resources.getString(R.string.error_page_recover_b);
-
-        substitutionMap.put("%pageTitle%", resources.getString(R.string.error_page_title));
+        if(errorCode == WebViewClient.ERROR_UNSUPPORTED_SCHEME) {
+            final String contentMsg  = resources.getString(R.string.error_page_content_text_unsupported_scheme);
+            substitutionMap.put("%pageTitle%", resources.getString(R.string.error_page_title_unsupported_scheme));
+            substitutionMap.put("%messageShort%", resources.getString(R.string.error_page_title_unsupported_scheme));
+            substitutionMap.put("%messageLong%", resources.getString(R.string.error_page_message, contentMsg, ""));
+        } else {
+            final String recoverA = resources.getString(R.string.error_page_recover_a);
+            final String recoverB = resources.getString(R.string.error_page_recover_b);
+            substitutionMap.put("%pageTitle%", resources.getString(R.string.error_page_title));
+            substitutionMap.put("%messageShort%", resources.getString(R.string.error_page_title));
+            substitutionMap.put("%messageLong%", resources.getString(R.string.error_page_message, recoverA, recoverB));
+        }
         substitutionMap.put("%button%", resources.getString(R.string.error_page_button));
-
-        substitutionMap.put("%messageShort%", resources.getString(R.string.error_page_title));
-        substitutionMap.put("%messageLong%", resources.getString(R.string.error_page_message, recoverA, recoverB));
-
         substitutionMap.put("%css%", cssString);
 
         String data = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.errorpage_image);

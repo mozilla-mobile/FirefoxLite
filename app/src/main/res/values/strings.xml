@@ -134,6 +134,9 @@
     <string name="error_page_recover_a">Make sure you are connected to the internet</string>
     <string name="error_page_recover_b">Check the address</string>
     <string name="error_page_button">TRY AGAIN</string>
+    <string name="error_page_title_unsupported_scheme">The address wasn’t understood</string>
+    <string name="error_page_content_text_unsupported_scheme">You might need to install other software to open this address.</string>
+
 
     <!-- Label used in the contextmenu shown when long-pressing on a link -->
     <string name="contextmenu_link_share">Share link</string>
