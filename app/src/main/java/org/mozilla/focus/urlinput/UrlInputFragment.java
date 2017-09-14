@@ -63,6 +63,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     private View clearView;
 
     private UrlAutoCompleteFilter urlAutoCompleteFilter;
+    private boolean autoCompleteInProgress;
     private View dismissView;
     private TextChangeListener textChangeListener = new TextChangeListener();
 
@@ -262,8 +263,9 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         if (!isVisible()) {
             return;
         }
-
+        autoCompleteInProgress = true;
         urlAutoCompleteFilter.onFilter(searchText, view);
+        autoCompleteInProgress = false;
     }
 
     private class TextChangeListener implements TextWatcher {
@@ -277,6 +279,9 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(autoCompleteInProgress) {
+                return;
+            }
             UrlInputFragment.this.presenter.onInput(s, detectThrottle());
             final int visibility = TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE;
             UrlInputFragment.this.clearView.setVisibility(visibility);
