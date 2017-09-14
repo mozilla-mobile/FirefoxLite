@@ -266,6 +266,7 @@ import java.util.Map;
         final String data = HtmlLoader.loadResourceFile(webView.getContext(), R.raw.about, substitutionMap);
         // We use a file:/// base URL so that we have the right origin to load file:/// css and
         // image resources.
+        webView.getSettings().setLoadsImagesAutomatically(true);
         webView.loadDataWithBaseURL(aboutURI, data, "text/html", "UTF-8", null);
     }
 

@@ -62,6 +62,7 @@ public class ErrorPage {
         // We could load the raw html file directly into the webview using a file:///android_res/
         // URI - however we'd then need to do some JS hacking to do our String substitutions. Moreover
         // we'd have to deal with the mixed-content issues detailed above in that case.
+        webView.getSettings().setLoadsImagesAutomatically(true);
         webView.loadDataWithBaseURL(desiredURL, errorPage, "text/html", "UTF8", desiredURL);
     }
 }

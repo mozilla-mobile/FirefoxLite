@@ -34,6 +34,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
@@ -280,7 +281,26 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         @Override
         public void onPageFinished(boolean isSecure) {
             this.callback.onPageFinished(isSecure);
+            if (Settings.getInstance(getContext()).shouldBlockImages()) {
+                disableLoadsImagesAutomaticallyIfNeeded();
+            }
             insertBrowsingHistory();
+        }
+
+        private void disableLoadsImagesAutomaticallyIfNeeded() {
+            // LoadsImagesAutomatically might be enabled due to loading about page or error page.
+            // Disable it if needed.
+            evaluateJavascript("(function() { return document.getElementById('mozillaAboutPage') != null || document.getElementById('mozillaErrorPage') != null; })();",
+                    new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String isResetNeeded) {
+                            if (!"true".equals(isResetNeeded)) {
+                                return;
+                            }
+
+                            getSettings().setLoadsImagesAutomatically(false);
+                        }
+                    });
         }
 
         private void insertBrowsingHistory() {
