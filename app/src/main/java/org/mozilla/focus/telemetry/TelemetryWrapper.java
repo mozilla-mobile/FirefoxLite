@@ -484,6 +484,10 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.DELETE, Object.PANEL, Value.FILE).queue();
     }
 
+    public static void downloadCancelFile() {
+        TelemetryEvent.create(Category.ACTION, Method.CANCEL, Object.PANEL, Value.FILE).queue();
+    }
+
     public static void downloadOpenFile(boolean fromSnackBar) {
         TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.PANEL, Value.FILE)
                 .extra(Extra.SNACKBAR, Boolean.toString(fromSnackBar))

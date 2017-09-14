@@ -170,6 +170,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                     return true;
                                 case R.id.cancel:
                                     cancel(position);
+                                    TelemetryWrapper.downloadCancelFile();
                                     popupMenu.dismiss();
                                     return true;
                                 default:
