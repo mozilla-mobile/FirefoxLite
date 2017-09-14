@@ -50,11 +50,8 @@ public abstract class WebFragment extends LocaleAwareFragment {
         final View view = inflateLayout(inflater, container, savedInstanceState);
 
         webView = (IWebView) view.findViewById(R.id.webview);
-        if (webView != null) {
-            isWebViewAvailable = true;
-            webView.setCallback(createCallback());
-        }
-
+        isWebViewAvailable = true;
+        webView.setCallback(createCallback());
 
         return view;
     }
@@ -113,20 +110,24 @@ public abstract class WebFragment extends LocaleAwareFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        isWebViewAvailable = false;
-
+    public void onDestroy() {
         if (webView != null) {
-            // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
-            // called. In this case we must store webView-state manually, to retain browsing history.
-            webViewState = new Bundle();
-            webView.onSaveInstanceState(webViewState);
-
-            // clear callback in case of callback-instance will touch view in onPageFinished
             webView.setCallback(null);
             webView.destroy();
             webView = null;
         }
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        isWebViewAvailable = false;
+
+        // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
+        // called. In this case we must store webView-state manually, to retain browsing history.
+        webViewState = new Bundle();
+        webView.onSaveInstanceState(webViewState);
         super.onDestroyView();
     }
 
