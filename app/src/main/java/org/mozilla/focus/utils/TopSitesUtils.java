@@ -77,6 +77,9 @@ public class TopSitesUtils {
     }
 
     public static void saveDefaultSites(Context context, JSONArray obj) {
+        if (context == null) {
+            return;
+        }
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(HomeFragment.TOPSITES_PREF, obj.toString())
