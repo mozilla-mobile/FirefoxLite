@@ -23,6 +23,9 @@ import org.mozilla.focus.web.IWebView;
  */
 public abstract class WebFragment extends LocaleAwareFragment {
     private IWebView webView;
+    // webView is not available after onDestroyView, but we need webView reference in callback
+    // onSaveInstanceState. However the callback might be invoked at anytime before onDestroy
+    // therefore webView-available-state is decided by this flag but not webView reference itself.
     private boolean isWebViewAvailable;
 
     private Bundle webViewState;
@@ -111,8 +114,9 @@ public abstract class WebFragment extends LocaleAwareFragment {
 
     @Override
     public void onDestroy() {
+        // only remove webView in onDestroy since onSaveInstanceState access webView
+        // and the callback might be invoked before onDestroyView
         if (webView != null) {
-            webView.setCallback(null);
             webView.destroy();
             webView = null;
         }
@@ -124,10 +128,15 @@ public abstract class WebFragment extends LocaleAwareFragment {
     public void onDestroyView() {
         isWebViewAvailable = false;
 
-        // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
-        // called. In this case we must store webView-state manually, to retain browsing history.
-        webViewState = new Bundle();
-        webView.onSaveInstanceState(webViewState);
+        if (webView != null) {
+            webView.setCallback(null);
+
+            // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
+            // called. In this case we must store webView-state manually, to retain browsing history.
+            webViewState = new Bundle();
+            webView.onSaveInstanceState(webViewState);
+        }
+
         super.onDestroyView();
     }
 
