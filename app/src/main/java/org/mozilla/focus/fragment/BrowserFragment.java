@@ -661,6 +661,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         return true;
     }
 
+    public void setBlockingEnabled(boolean enabled) {
+        final IWebView webView = getWebView();
+        if (webView != null) {
+            webView.setBlockingEnabled(enabled);
+        }
+    }
+
     // This is not used currently cause we remove most erasing entry point. We'll need this later.
     public void erase() {
         final IWebView webView = getWebView();

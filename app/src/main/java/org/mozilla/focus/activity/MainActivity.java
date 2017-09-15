@@ -478,8 +478,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         // Only refresh when disabling turbo mode
         if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)){
             final boolean turboEnabled = isTurboEnabled();
-            if (!turboEnabled && getVisibleBrowserFragment() != null){
-                getVisibleBrowserFragment().reload();
+            BrowserFragment browserFragment = getVisibleBrowserFragment();
+            if (browserFragment != null) {
+                browserFragment.setBlockingEnabled(turboEnabled);
+                // Reload if we're closing Turbo mode since we should be fixing something
+                if(!turboEnabled) {
+                    browserFragment.reload();
+                }
             }
             menu.findViewById(R.id.menu_turbomode).setSelected(turboEnabled);
         } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
