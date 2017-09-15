@@ -25,7 +25,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -554,6 +553,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // But we might move downloaded file to another directory.
         // So, for now we always save file to DIRECTORY_DOWNLOADS
         final String dir = Environment.DIRECTORY_DOWNLOADS;
+
+        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            Toast.makeText(getContext(),
+                    R.string.message_storage_unavailable_cancel_download,
+                    Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
 
         // block non-http/https download links
         if(!URLUtil.isNetworkUrl(download.getUrl())) {
