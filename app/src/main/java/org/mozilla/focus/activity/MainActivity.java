@@ -59,8 +59,6 @@ import org.mozilla.focus.widget.FragmentListener;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
-import static org.mozilla.focus.screenshot.ScreenshotViewerActivity.REQ_CODE_NOTIFY_SCREENSHOT_DELETE;
-
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
@@ -620,12 +618,24 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK && requestCode == REQ_CODE_NOTIFY_SCREENSHOT_DELETE && mDialogFragment != null) {
-            Toast.makeText(this, R.string.message_deleted_screenshot, Toast.LENGTH_SHORT).show();
-            Fragment fragment = mDialogFragment.getChildFragmentManager().findFragmentById(R.id.main_content);
-            if(fragment instanceof ScreenshotGridFragment && data != null) {
-                long id = data.getLongExtra(ScreenshotViewerActivity.EXTRA_SCREENSHOT_ITEM_ID, -1);
-                ((ScreenshotGridFragment)fragment).notifyItemDelete(id);
+        if(requestCode == ScreenshotViewerActivity.REQ_CODE_VIEW_SCREENSHOT) {
+            if(resultCode == ScreenshotViewerActivity.RESULT_NOTIFY_SCREENSHOT_IS_DELETED) {
+                Toast.makeText(this, R.string.message_deleted_screenshot, Toast.LENGTH_SHORT).show();
+                if(mDialogFragment != null) {
+                    Fragment fragment = mDialogFragment.getChildFragmentManager().findFragmentById(R.id.main_content);
+                    if (fragment instanceof ScreenshotGridFragment && data != null) {
+                        long id = data.getLongExtra(ScreenshotViewerActivity.EXTRA_SCREENSHOT_ITEM_ID, -1);
+                        ((ScreenshotGridFragment) fragment).notifyItemDelete(id);
+                    }
+                }
+            } else if(resultCode == ScreenshotViewerActivity.RESULT_OPEN_URL) {
+                if(data != null) {
+                    String url = data.getStringExtra(ScreenshotViewerActivity.EXTRA_URL);
+                    if(mDialogFragment != null) {
+                        mDialogFragment.dismiss();
+                    }
+                    onNotified(null, TYPE.OPEN_URL, url);
+                }
             }
         }
     }

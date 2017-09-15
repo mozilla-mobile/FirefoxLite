@@ -31,7 +31,6 @@ import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
@@ -50,7 +49,10 @@ import static com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.SCAL
 public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener, QueryHandler.AsyncDeleteListener {
 
     public static final String EXTRA_SCREENSHOT_ITEM_ID = "extra_screenshot_item_id";
-    public static final int REQ_CODE_NOTIFY_SCREENSHOT_DELETE = 1000;
+    public static final String EXTRA_URL = "extra_url";
+    public static final int REQ_CODE_VIEW_SCREENSHOT = 1000;
+    public static final int RESULT_NOTIFY_SCREENSHOT_IS_DELETED = 100;
+    public static final int RESULT_OPEN_URL = RESULT_NOTIFY_SCREENSHOT_IS_DELETED + 1;
     private static int REQUEST_CODE_VIEW_SCREENSHOT = 101;
     private static int REQUEST_CODE_EDIT_SCREENSHOT = 102;
     private static int REQUEST_CODE_SHARE_SCREENSHOT = 103;
@@ -59,7 +61,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     public static final void goScreenshotViewerActivityOnResult(Activity activity, Screenshot item) {
         Intent intent = new Intent(activity, ScreenshotViewerActivity.class);
         intent.putExtra(EXTRA_SCREENSHOT, item);
-        activity.startActivityForResult(intent, REQ_CODE_NOTIFY_SCREENSHOT_DELETE);
+        activity.startActivityForResult(intent, REQ_CODE_VIEW_SCREENSHOT);
     }
 
     private static final String EXTRA_SCREENSHOT = "extra_screenshot";
@@ -126,10 +128,9 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 break;
             case R.id.screenshot_viewer_btn_open_url:
                 TelemetryWrapper.openCaptureLink();
-                Intent urlIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mScreenshot.getUrl()));
-                urlIntent.setClassName(this, MainActivity.class.getName());
-                urlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(urlIntent);
+                Intent urlIntent = new Intent();
+                urlIntent.putExtra(EXTRA_URL, mScreenshot.getUrl());
+                setResult(RESULT_OPEN_URL, urlIntent);
                 finish();
                 break;
             case R.id.screenshot_viewer_btn_edit:
@@ -175,7 +176,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         if (result > 0) {
             Intent intent = new Intent();
             intent.putExtra(EXTRA_SCREENSHOT_ITEM_ID, id);
-            setResult(RESULT_OK, intent);
+            setResult(RESULT_NOTIFY_SCREENSHOT_IS_DELETED, intent);
             finish();
         }
     }
