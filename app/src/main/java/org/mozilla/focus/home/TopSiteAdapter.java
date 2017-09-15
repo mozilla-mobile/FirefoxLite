@@ -85,7 +85,7 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
     }
 
     public void addSite(int index, @NonNull Site toAdd) {
-       this.sites.add(index, toAdd);
+        this.sites.add(index, toAdd);
         notifyItemInserted(index);
     }
 
