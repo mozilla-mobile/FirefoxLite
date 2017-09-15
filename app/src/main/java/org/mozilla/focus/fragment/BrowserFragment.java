@@ -29,6 +29,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -370,12 +371,21 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public boolean handleExternalUrl(final String url) {
                 final IWebView webView = getWebView();
+                if (getContext() == null) {
+                    Log.w(FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
+                    return false;
+                }
 
                 return webView != null && IntentUtils.handleExternalUri(getContext(), webView, url);
             }
 
             @Override
             public void onLongPress(final IWebView.HitTarget hitTarget) {
+                if (getActivity() == null) {
+                    Log.w(FRAGMENT_TAG, "No context to use, abort callback onLongPress");
+                    return;
+                }
+
                 WebContextMenu.show(getActivity(), this, hitTarget);
             }
 
@@ -420,19 +430,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onDownloadStart(Download download) {
+                if (getContext() == null) {
+                    Log.w(FRAGMENT_TAG, "No context to use, abort callback onDownloadStart");
+                    return;
+                }
+
                 if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     // We do have the permission to write to the external storage. Proceed with the download.
                     queueDownload(download);
                 } else {
                     // We do not have the permission to write to the external storage. Request the permission and start the
                     // download from onRequestPermissionsResult().
-                    final Activity activity = getActivity();
-                    if (activity == null) {
-                        return;
-                    }
-
                     pendingDownload = download;
-
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_STORAGE_PERMISSION);
                 }
             }
