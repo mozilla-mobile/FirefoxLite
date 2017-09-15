@@ -274,4 +274,7 @@
     <string name="message_cleared_browsing_data">Browsing data cleared</string>
     <string name="message_deleted_screenshot">Screenshot deleted</string>
     <string name="message_cannot_find_screenshot">Cannot display the screenshot</string>
+
+    <!-- Remove Top site item -->
+    <string name="remove">Remove</string>
 </resources>
