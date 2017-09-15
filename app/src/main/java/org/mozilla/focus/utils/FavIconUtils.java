@@ -6,6 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import org.mozilla.focus.R;
 
@@ -117,5 +120,53 @@ public class FavIconUtils {
         // Counting the perceptive luminance - human eye favors green color...
         double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
         return a < 0.5 ? Color.BLACK : Color.WHITE;
+    }
+
+    /**
+     * Get a representative character for the given URL.
+     *
+     * For example this method will return "f" for "http://m.facebook.com/foobar".
+     */
+    public static char getRepresentativeCharacter(String url) {
+        if (TextUtils.isEmpty(url)) {
+            return '?';
+        }
+
+        final String snippet = getRepresentativeSnippet(url);
+        for (int i = 0; i < snippet.length(); i++) {
+            char c = snippet.charAt(i);
+
+            if (Character.isLetterOrDigit(c)) {
+                return Character.toUpperCase(c);
+            }
+        }
+
+        // Nothing found..
+        return '?';
+    }
+
+    /**
+     * Get the representative part of the URL. Usually this is the host (without common prefixes).
+     */
+    private static String getRepresentativeSnippet(@NonNull String url) {
+        Uri uri = Uri.parse(url);
+
+        // Use the host if available
+        String snippet = uri.getHost();
+
+        if (TextUtils.isEmpty(snippet)) {
+            // If the uri does not have a host (e.g. file:// uris) then use the path
+            snippet = uri.getPath();
+        }
+
+        if (TextUtils.isEmpty(snippet)) {
+            // If we still have no snippet then just return the question mark
+            return "?";
+        }
+
+        // Strip common prefixes that we do not want to use to determine the representative characterS
+        snippet = UrlUtils.stripCommonSubdomains(snippet);
+
+        return snippet;
     }
 }
