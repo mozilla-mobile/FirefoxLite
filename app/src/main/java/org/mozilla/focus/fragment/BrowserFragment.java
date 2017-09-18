@@ -328,13 +328,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 siteIdentity.setImageLevel(SITE_GLOBE);
 
-                progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading));
-
-
                 backgroundTransition.resetTransition();
-
-                progressView.setProgress(5);
-                progressView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -344,11 +338,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
 
                 backgroundTransition.startTransition(ANIMATION_DURATION);
-
-                progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading_finished));
-
-                progressView.setProgress(progressView.getMax());
-                progressView.setVisibility(View.GONE);
 
                 if (isSecure) {
                     siteIdentity.setImageLevel(SITE_LOCK);
@@ -363,9 +352,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onProgress(int progress) {
                 progressView.setProgress(progress);
-                if (progress == progressView.getMax()) {
-                    progressView.setVisibility(View.GONE);
-                }
             }
 
             @Override
