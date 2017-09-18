@@ -127,4 +127,6 @@ public interface IWebView {
     void restoreWebviewState(Bundle savedInstanceState);
 
     void onSaveInstanceState(Bundle outState);
+
+    void insertBrowsingHistory();
 }

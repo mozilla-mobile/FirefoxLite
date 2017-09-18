@@ -59,6 +59,7 @@ import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.webkit.WebkitView;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -319,6 +320,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public IWebView.Callback createCallback() {
         return new IWebView.Callback() {
+            String failingUrl;
             private final static int NONE = -1;
             private int systemVisibility = NONE;
             private boolean hasPageStarted = false;
@@ -347,6 +349,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 if (isSecure) {
                     siteIdentity.setImageLevel(SITE_LOCK);
+                }
+                if (!getUrl().equals(this.failingUrl) && getWebView()!=null) {
+                    getWebView().insertBrowsingHistory();
                 }
             }
 
@@ -465,7 +470,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             @Override
-            public void updateFailingUrl(String url) {}
+            public void updateFailingUrl(String url) {
+                this.failingUrl = url;
+            }
         };
     }
 
