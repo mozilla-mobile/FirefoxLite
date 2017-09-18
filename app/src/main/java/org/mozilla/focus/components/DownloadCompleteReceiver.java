@@ -13,7 +13,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 
@@ -64,6 +66,9 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                                 downloadedFile,
                                 mediaType);
                     }
+
+                    String completedStr = context.getString(R.string.download_completed);
+                    Toast.makeText(context,fileName+completedStr,Toast.LENGTH_SHORT).show();
                 }
             }
         }

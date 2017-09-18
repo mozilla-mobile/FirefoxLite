@@ -85,6 +85,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (file.exists()){
             try {
                 if (file.delete()){
+
+                    String deletedStr = mContext.getString(R.string.download_deleted);
+                    Toast.makeText(mContext,mDownloadInfo.get(position).getFileName()+deletedStr,Toast.LENGTH_SHORT).show();
+
                     DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
                     manager.remove(mDownloadInfo.get(position).getDownloadId());
 
@@ -103,6 +107,9 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void cancel(int position){
+        String cancelStr = mContext.getString(R.string.download_cancel);
+        Toast.makeText(mContext,mDownloadInfo.get(position).getFileName()+" "+cancelStr,Toast.LENGTH_SHORT).show();
+
         DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
         manager.remove(mDownloadInfo.get(position).getDownloadId());
 
