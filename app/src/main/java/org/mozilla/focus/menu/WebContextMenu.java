@@ -47,7 +47,7 @@ public class WebContextMenu {
 
         final View titleView;
         if (hitTarget.isLink) {
-           titleView = createTitleView(context, hitTarget.linkURL);
+            titleView = createTitleView(context, hitTarget.linkURL);
         } else if (hitTarget.isImage) {
             titleView = createTitleView(context, hitTarget.imageURL);
         } else {
@@ -117,7 +117,7 @@ public class WebContextMenu {
                         return true;
                     }
                     case R.id.menu_image_save: {
-                        final Download download = new Download(hitTarget.imageURL, null, null, null, -1);
+                        final Download download = new Download(hitTarget.imageURL, null, null, null, -1, true);
                         callback.onDownloadStart(download);
                         TelemetryWrapper.saveImageEvent();
                         return true;
