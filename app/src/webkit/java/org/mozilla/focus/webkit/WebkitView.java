@@ -264,9 +264,42 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         }
     }
 
-    private class CallbackWrapper implements IWebView.Callback {
+    public void insertBrowsingHistory() {
+        final String url = getUrl();
+        if (TextUtils.isEmpty(url)) {
+            return;
+        } else if ("about:blank".equals(url)) {
+            return;
+        }
+
+        evaluateJavascript("(function() { return document.getElementById('mozillaErrorPage'); })();",
+                new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String errorPage) {
+                        if (!"null".equals(errorPage)) {
+                            return;
+                        }
+
+                        String title = getTitle();
+                        final Bitmap favIcon;
+                        if (TextUtils.isEmpty(title)) {
+                            favIcon = null;
+                        } else {
+                            favIcon = FavIconUtils.getInitialBitmap(getResources(), null, title.charAt(0));
+                        }
+
+                        Site site = new Site();
+                        site.setUrl(url);
+                        site.setTitle(getTitle());
+                        site.setLastViewTimestamp(System.currentTimeMillis());
+                        site.setFavIcon(favIcon);
+                        BrowsingHistoryManager.getInstance().insert(site, null);
+                    }
+                });
+    }
+
+    private static class CallbackWrapper implements IWebView.Callback {
         final IWebView.Callback callback;
-        String failingUrl;
 
         CallbackWrapper(@NonNull IWebView.Callback callback) {
             this.callback = callback;
@@ -280,43 +313,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         @Override
         public void onPageFinished(boolean isSecure) {
             this.callback.onPageFinished(isSecure);
-            insertBrowsingHistory();
-        }
-
-        private void insertBrowsingHistory() {
-            final String url = getUrl();
-            if (TextUtils.isEmpty(url)) {
-                return;
-            } else if ("about:blank".equals(url)) {
-                return;
-            } else if (url.equals(this.failingUrl)) {
-                return;
-            }
-
-            evaluateJavascript("(function() { return document.getElementById('mozillaErrorPage'); })();",
-                    new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String errorPage) {
-                            if (!"null".equals(errorPage)) {
-                                return;
-                            }
-
-                            String title = getTitle();
-                            final Bitmap favIcon;
-                            if (TextUtils.isEmpty(title)) {
-                                favIcon = null;
-                            } else {
-                                favIcon = FavIconUtils.getInitialBitmap(getResources(), null, FavIconUtils.getRepresentativeCharacter(title));
-                            }
-
-                            Site site = new Site();
-                            site.setUrl(url);
-                            site.setTitle(getTitle());
-                            site.setLastViewTimestamp(System.currentTimeMillis());
-                            site.setFavIcon(favIcon);
-                            BrowsingHistoryManager.getInstance().insert(site, null);
-                        }
-                    });
         }
 
         @Override
@@ -369,7 +365,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
         @Override
         public void updateFailingUrl(String url) {
-            this.failingUrl = url;
+            this.callback.updateFailingUrl(url);
         }
     }
 
