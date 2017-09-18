@@ -62,7 +62,7 @@ public class MainMediator {
         this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
-    public void showBrowserScreen(@Nullable String url, boolean clearHistory) {
+    public void showBrowserScreen(@NonNull String url, boolean clearHistory) {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
 
@@ -116,7 +116,7 @@ public class MainMediator {
         return null;
     }
 
-    private FragmentTransaction prepareBrowsing(@Nullable String url, boolean clearHistory) {
+    private FragmentTransaction prepareBrowsing(@NonNull String url, boolean clearHistory) {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentMgr.beginTransaction();
 
