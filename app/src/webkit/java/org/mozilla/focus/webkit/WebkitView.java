@@ -191,14 +191,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             if (callback != null) {
-                // This is the earliest point where we might be able to confirm a redirected
-                // URL: we don't necessarily get a shouldInterceptRequest() after a redirect,
-                // so we can only check the updated url in onProgressChanges(), or in onPageFinished()
-                // (which is even later).
-                final String viewURL = view.getUrl();
-                if (!UrlUtils.isInternalErrorURL(viewURL)) {
-                    callback.onURLChanged(viewURL);
-                }
                 callback.onProgress(newProgress);
             }
         }
