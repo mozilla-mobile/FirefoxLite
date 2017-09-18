@@ -109,12 +109,6 @@ import java.util.Map;
         // We'll need to deep dive into these when we have time.
         if (callback != null) {
             callback.onPageFinished(view.getCertificate() != null);
-            // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
-            // URL is always correct _except_ for error pages
-            final String viewURL = view.getUrl();
-            if (!UrlUtils.isInternalErrorURL(viewURL)) {
-                callback.onURLChanged(view.getUrl());
-            }
         }
         super.onPageFinished(view, url);
 

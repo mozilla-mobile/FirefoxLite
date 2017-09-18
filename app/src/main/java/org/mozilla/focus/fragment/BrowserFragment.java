@@ -336,11 +336,25 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 backgroundTransition.resetTransition();
             }
 
+            private void updateUrlFromWebView() {
+                final IWebView webView = getWebView();
+                if(webView != null) {
+                    final String viewURL = webView.getUrl();
+                    if (!UrlUtils.isInternalErrorURL(viewURL)) {
+                        onURLChanged(viewURL);
+                    }
+                }
+            }
+
             @Override
             public void onPageFinished(boolean isSecure) {
                 if(!hasPageStarted) {
                     return;
                 }
+                // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
+                // URL is always correct _except_ for error pages
+                updateUrlFromWebView();
+
                 updateIsLoading(false);
 
                 notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
