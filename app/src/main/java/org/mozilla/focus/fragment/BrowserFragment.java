@@ -160,7 +160,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         browserContainer = view.findViewById(R.id.browser_container);
 
         urlView = (TextView) view.findViewById(R.id.display_url);
-        updateURL(getInitialUrl());
 
         backgroundView = view.findViewById(R.id.background);
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
@@ -769,6 +768,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void loadUrl(final String url) {
+        updateURL(url);
         final IWebView webView = getWebView();
         if (webView != null) {
             super.pendingUrl = null;
