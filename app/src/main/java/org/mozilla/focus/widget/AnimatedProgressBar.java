@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.InterpolatorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -228,6 +229,13 @@ public class AnimatedProgressBar extends ProgressBar {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         mIsRtl = (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL);
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        // Force update as 0 (Don't save state) for ProgressBar to avoid 0 -> 100 end animation
+        setProgress(0);
+        return super.onSaveInstanceState();
     }
 
     private void cancelAnimations() {
