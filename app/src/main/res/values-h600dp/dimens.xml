@@ -2,4 +2,5 @@
 <resources>
     <dimen name="home_padding_url_bar_to_title">72dp</dimen>
     <dimen name="home_padding_url_bar_to_top_sites">36dp</dimen>
+    <dimen name="firstrun_icon_bottom_margin">40dp</dimen>
 </resources>
