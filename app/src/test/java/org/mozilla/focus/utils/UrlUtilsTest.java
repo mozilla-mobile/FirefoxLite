@@ -6,7 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class UrlUtilsTest {
@@ -63,10 +65,27 @@ public class UrlUtilsTest {
         assertTrue(UrlUtils.isUrl(" https://www.mozilla.org "));
         assertTrue(UrlUtils.isUrl("https://www.mozilla.org/en-US/internet-health/"));
         assertTrue(UrlUtils.isUrl("file:///mnt/sdcard/"));
+        assertTrue(UrlUtils.isUrl("file:///"));
+        assertTrue(UrlUtils.isUrl("file:///mnt"));
         assertTrue(UrlUtils.isUrl("mozilla.org"));
+        assertTrue(UrlUtils.isUrl("192.168.1.1"));
+        assertTrue(UrlUtils.isUrl("192.168.1.1:4000"));
+        assertTrue(UrlUtils.isUrl("192.168.1.1/a/../b"));
+        assertTrue(UrlUtils.isUrl("http://192.168.1.1"));
+        assertTrue(UrlUtils.isUrl("http://192.168.1.1:4000"));
+        assertTrue(UrlUtils.isUrl("http://192.168.1.1/a/../b"));
+        assertTrue(UrlUtils.isUrl("localhost"));
+        assertTrue(UrlUtils.isUrl("http://localhost"));
 
         assertFalse(UrlUtils.isUrl("Hello World"));
         assertFalse(UrlUtils.isUrl("Mozilla"));
+        assertFalse(UrlUtils.isUrl(""));
+        assertFalse(UrlUtils.isUrl(" "));
+        assertFalse(UrlUtils.isUrl(":"));
+        assertFalse(UrlUtils.isUrl("."));
+        assertFalse(UrlUtils.isUrl("::"));
+        assertFalse(UrlUtils.isUrl("..."));
+        assertFalse(UrlUtils.isUrl("file://:"));
     }
 
     @Test
