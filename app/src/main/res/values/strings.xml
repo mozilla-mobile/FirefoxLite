@@ -198,6 +198,9 @@
     <string name="download_file_not_supported">Download protocol not supported</string>
     <string name="cannot_find_the_file">Cannot find the file</string>
     <string name="cannot_delete_the_file">Cannot delete the file.</string>
+    <string name="download_completed">\u0020downloaded</string>
+    <string name="download_deleted">\u0020was deleted</string>
+    <string name="download_cancel">Download canceled</string>
 
     <!-- Download status-->
     <!-- File download status is paused -->
