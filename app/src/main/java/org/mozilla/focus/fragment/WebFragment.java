@@ -16,6 +16,8 @@ import android.webkit.WebView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.locale.LocaleAwareFragment;
+import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.IWebView;
 
 /**
@@ -73,9 +75,8 @@ public abstract class WebFragment extends LocaleAwareFragment {
             }
 
             final String url = (webViewState == null) ? getInitialUrl() : pendingUrl;
-            pendingUrl = null; // clear pending url
             if (!TextUtils.isEmpty(url)) {
-                webView.loadUrl(url);
+                loadUrl(url);
             }
         } else {
             // Fragment was destroyed
@@ -140,9 +141,28 @@ public abstract class WebFragment extends LocaleAwareFragment {
         super.onDestroyView();
     }
 
+    /**
+     * Let WebView to open the url
+     *
+     * @param url the url to open. It should be a valid url otherwise WebView won't load anything.
+     */
+    public void loadUrl(@NonNull final String url) {
+        final IWebView webView = getWebView();
+        if (webView != null) {
+            if (UrlUtils.isUrl(url)) {
+                this.pendingUrl = null; // clear pending url
+                webView.loadUrl(url);
+            } else if (!AppConstants.isReleaseBuild()) {
+                // throw exception to highlight this issue, except release build.
+                throw new RuntimeException("trying to open a invalid url: " + url);
+            }
+        } else {
+            this.pendingUrl = url;
+        }
+    }
+
     @Nullable
     protected IWebView getWebView() {
         return isWebViewAvailable ? webView : null;
     }
-
 }
