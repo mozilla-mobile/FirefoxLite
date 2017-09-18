@@ -23,7 +23,8 @@ public class DownloadTest {
                 "Focus/1.0",
                 "Content-Disposition: attachment; filename=\"filename.png\"",
                 "image/png",
-                1024);
+                1024,
+                false);
 
         assertEquals("https://www.mozilla.org/image.png", download.getUrl());
         assertEquals("Focus/1.0", download.getUserAgent());
@@ -42,7 +43,8 @@ public class DownloadTest {
                     "Focus/1.0",
                     "Content-Disposition: attachment; filename=\"filename.png\"",
                     "image/png",
-                    1024);
+                    1024,
+                    false);
             download.writeToParcel(parcel, 0);
         }
 

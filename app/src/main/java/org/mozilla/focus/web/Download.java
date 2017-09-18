@@ -8,6 +8,7 @@ package org.mozilla.focus.web;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class Download implements Parcelable {
 
@@ -20,7 +21,8 @@ public class Download implements Parcelable {
                     source.readString(),
                     source.readString(),
                     source.readString(),
-                    source.readLong());
+                    source.readLong(),
+                    source.readByte() != 0);
         }
 
         @Override
@@ -34,17 +36,20 @@ public class Download implements Parcelable {
     private final String mimeType;
     private final long contentLength;
     private final String userAgent;
+    private final boolean startFromContextMenu;
 
     public Download(@NonNull String url,
                     @NonNull String userAgent,
                     @NonNull String contentDisposition,
                     @NonNull String mimeType,
-                    long contentLength) {
+                    long contentLength,
+                    boolean startFromContextMenu) {
         this.url = url;
         this.userAgent = userAgent;
         this.contentDisposition = contentDisposition;
         this.mimeType = mimeType;
         this.contentLength = contentLength;
+        this.startFromContextMenu = startFromContextMenu;
     }
 
     public String getUrl() {
@@ -67,6 +72,10 @@ public class Download implements Parcelable {
         return userAgent;
     }
 
+    public boolean isStartFromContextMenu() {
+        return startFromContextMenu;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -79,5 +88,6 @@ public class Download implements Parcelable {
         dest.writeString(contentDisposition);
         dest.writeString(mimeType);
         dest.writeLong(contentLength);
+        dest.writeByte((byte) (startFromContextMenu ? 0 : 1));
     }
 }
