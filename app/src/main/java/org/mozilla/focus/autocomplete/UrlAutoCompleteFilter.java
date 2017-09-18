@@ -74,7 +74,10 @@ public class UrlAutoCompleteFilter implements InlineAutocompleteEditText.OnFilte
                 final Set<String> domains = new LinkedHashSet<String>();
                 final Set<String> availableLists = getAvailableDomainLists(context);
 
-                // First load the country specific lists following the default locale order
+                // First load the indonesia specific list
+                loadDomainsForLanguage(context, domains, "id");
+
+                // Second load the country specific lists following the default locale order
                 for (final String country : Locales.getCountriesInDefaultLocaleList()) {
                     if (availableLists.contains(country)) {
                         loadDomainsForLanguage(context, domains, country);
