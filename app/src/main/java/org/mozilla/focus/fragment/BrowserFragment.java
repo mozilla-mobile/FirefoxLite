@@ -85,7 +85,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
-    public static BrowserFragment create(String url) {
+    public static BrowserFragment create(@NonNull String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
 

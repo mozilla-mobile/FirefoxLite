@@ -724,7 +724,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         return FirstrunFragment.create();
     }
 
-    public BrowserFragment createBrowserFragment(@Nullable String url) {
+    public BrowserFragment createBrowserFragment(@NonNull String url) {
         BrowserFragment fragment = BrowserFragment.create(url);
         return fragment;
     }
