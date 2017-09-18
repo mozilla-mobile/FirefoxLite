@@ -270,7 +270,7 @@
     <string name="message_enable_block_image">Now blocking images</string>
     <string name="message_disable_block_image">Now showing images</string>
     <string name="message_clear_cache_fail">Unable to clear cache</string>
-    <string name="message_storage_unavailable_cancel_download">Storage is unavailable, download canceled</string>
+    <string name="message_storage_unavailable_cancel_download">Storage inaccessible. Download cancelled</string>
 
     <!-- Message indicate how much cache file cause disk storage was cleared.
         Argument 1 is the amount, i.e. 15.0 MB cache cleared -->
