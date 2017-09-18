@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.locale.Locales;
+import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.HtmlLoader;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -116,6 +117,15 @@ import java.util.Map;
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        if (url == null) {
+            // in case of null url, we won't crash app in release build
+            if (AppConstants.isReleaseBuild()) {
+                return super.shouldOverrideUrlLoading(view, "");
+            } else {
+                throw new RuntimeException("Got null url in FocsWebViewClient.shouldOverrideUrlLoading");
+            }
+        }
+
         if (url.equals("focusabout:")) {
             loadAbout(view);
             return true;
