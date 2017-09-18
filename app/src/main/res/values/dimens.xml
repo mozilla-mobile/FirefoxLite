@@ -44,4 +44,5 @@
     <dimen name="top_site_textview_width">60dp</dimen>
 
     <dimen name="menu_layout_margin">14dp</dimen>
+    <dimen name="firstrun_icon_bottom_margin">20dp</dimen>
 </resources>
