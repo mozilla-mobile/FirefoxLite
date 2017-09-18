@@ -321,9 +321,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         return new IWebView.Callback() {
             private final static int NONE = -1;
             private int systemVisibility = NONE;
+            private boolean hasPageStarted = false;
 
             @Override
             public void onPageStarted(final String url) {
+                hasPageStarted = true;
+
                 updateIsLoading(true);
 
                 siteIdentity.setImageLevel(SITE_GLOBE);
@@ -333,6 +336,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onPageFinished(boolean isSecure) {
+                if(!hasPageStarted) {
+                    return;
+                }
                 updateIsLoading(false);
 
                 notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
@@ -351,6 +357,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onProgress(int progress) {
+                if(!hasPageStarted) {
+                    return;
+                }
                 progressView.setProgress(progress);
             }
 

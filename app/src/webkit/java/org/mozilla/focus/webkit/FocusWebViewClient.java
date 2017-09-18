@@ -36,7 +36,6 @@ import java.util.Map;
     private IWebView.Callback callback;
     private boolean errorReceived;
     private Context context;
-    private boolean hasPageStarted = false;
 
     public FocusWebViewClient(Context context) {
         super(context);
@@ -80,7 +79,6 @@ import java.util.Map;
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        hasPageStarted = true;
 
         if (callback != null) {
             callback.updateFailingUrl(null);
@@ -109,7 +107,7 @@ import java.util.Map;
         // As a quick fix we filtered these onPageFinished out since they are having
         // some properties such as: the getTitle() returned here is incomplete.
         // We'll need to deep dive into these when we have time.
-        if (callback != null && hasPageStarted) {
+        if (callback != null) {
             callback.onPageFinished(view.getCertificate() != null);
             // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
             // URL is always correct _except_ for error pages
