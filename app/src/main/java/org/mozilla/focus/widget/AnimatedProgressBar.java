@@ -117,6 +117,14 @@ public class AnimatedProgressBar extends ProgressBar {
         mPrimaryAnimator = createAnimator(getMax(), mListener);
     }
 
+    private String startLoadingString() {
+        return getContext().getString(R.string.accessibility_announcement_loading);
+    }
+
+    private String endLoadingString() {
+        return getContext().getString(R.string.accessibility_announcement_loading_finished);
+    }
+
     /**
      * {@inheritDoc}
      * <p>
@@ -127,6 +135,17 @@ public class AnimatedProgressBar extends ProgressBar {
         nextProgress = Math.min(nextProgress, getMax());
         nextProgress = Math.max(0, nextProgress);
         mExpectedProgress = nextProgress;
+        if(nextProgress == getMax()) {
+            if(getVisibility() == VISIBLE) {
+                setVisibility(GONE);
+                announceForAccessibility(endLoadingString());
+            }
+        } else {
+            if(getVisibility() == GONE) {
+                setVisibility(VISIBLE);
+                announceForAccessibility(startLoadingString());
+            }
+        }
 
         if (!mInitialized) {
             setProgressImmediately(mExpectedProgress);
