@@ -32,7 +32,7 @@
     <dimen name="menu_bottom_space">40dp</dimen>
 
     <dimen name="favicon_initial_text_size">25dp</dimen>
-    <dimen name="favicon_initial_threshold_size">25dp</dimen>
+    <dimen name="favicon_initial_threshold_size">16px</dimen>
     <dimen name="favicon_downscale_threshold_size">128px</dimen>
     <dimen name="favicon_target_size">100px</dimen>
 
