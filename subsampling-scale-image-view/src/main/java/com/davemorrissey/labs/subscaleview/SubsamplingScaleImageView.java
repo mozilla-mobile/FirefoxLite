@@ -36,6 +36,7 @@ import android.os.AsyncTask;
 import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.AnyThread;
 import android.support.annotation.NonNull;
@@ -1506,6 +1507,10 @@ public class SubsamplingScaleImageView extends View {
 
         @Override
         protected int[] doInBackground(Void... params) {
+            final StrictMode.VmPolicy savedVmPolicy = StrictMode.getVmPolicy();
+            if(savedVmPolicy != StrictMode.VmPolicy.LAX) {
+                StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().build());
+            }
             try {
                 String sourceUri = source.toString();
                 Context context = contextRef.get();
@@ -1527,6 +1532,10 @@ public class SubsamplingScaleImageView extends View {
             } catch (Exception e) {
                 Log.e(TAG, "Failed to initialise bitmap decoder", e);
                 this.exception = e;
+            } finally {
+                if(savedVmPolicy != StrictMode.VmPolicy.LAX) {
+                    StrictMode.setVmPolicy(savedVmPolicy);
+                }
             }
             return null;
         }
@@ -1680,6 +1689,10 @@ public class SubsamplingScaleImageView extends View {
 
         @Override
         protected Integer doInBackground(Void... params) {
+            final StrictMode.VmPolicy savedVmPolicy = StrictMode.getVmPolicy();
+            if(savedVmPolicy != StrictMode.VmPolicy.LAX) {
+                StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().build());
+            }
             try {
                 String sourceUri = source.toString();
                 Context context = contextRef.get();
@@ -1696,6 +1709,10 @@ public class SubsamplingScaleImageView extends View {
             } catch (OutOfMemoryError e) {
                 Log.e(TAG, "Failed to load bitmap - OutOfMemoryError", e);
                 this.exception = new RuntimeException(e);
+            } finally {
+                if(savedVmPolicy != StrictMode.VmPolicy.LAX) {
+                    StrictMode.setVmPolicy(savedVmPolicy);
+                }
             }
             return null;
         }
