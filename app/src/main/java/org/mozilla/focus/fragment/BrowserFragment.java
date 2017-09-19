@@ -323,6 +323,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             private final static int NONE = -1;
             private int systemVisibility = NONE;
             private boolean hasPageStarted = false;
+            private String lastInsertedUrl = null;
 
             @Override
             public void onPageStarted(final String url) {
@@ -330,6 +331,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // As a quick fix we filtered these onPageFinished and onProgress out since they
                 // are having some properties such as: the getTitle() returned here is incomplete.
                 hasPageStarted = true;
+                lastInsertedUrl = null;
 
                 updateIsLoading(true);
 
@@ -366,8 +368,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 if (isSecure) {
                     siteIdentity.setImageLevel(SITE_LOCK);
                 }
-                if (!getUrl().equals(this.failingUrl) && getWebView()!=null) {
+                String urlToBeInserted = getUrl();
+                if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getWebView()!=null) {
                     getWebView().insertBrowsingHistory();
+                    lastInsertedUrl = urlToBeInserted;
                 }
             }
 
