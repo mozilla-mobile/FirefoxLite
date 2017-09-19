@@ -53,7 +53,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.browsing_history_btn_clear:
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialogStyle);
                 builder.setTitle(R.string.browsing_history_dialog_confirm_clear_message);
                 builder.setPositiveButton(R.string.browsing_history_dialog_btn_clear, new DialogInterface.OnClickListener() {
                     @Override

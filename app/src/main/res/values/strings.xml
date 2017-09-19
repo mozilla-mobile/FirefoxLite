@@ -30,7 +30,7 @@
          Argument 3,5,7,9 is the Label of the urls. -->
     <string name="about_content" translatable="false"><![CDATA[
 <p>%1$s<br/>
-<a href="%2$s" class="underline">%3$s</a></p><br/><br/>
+<a href="%2$s">%3$s</a></p><br/><br/>
 <a href="%4$s">%5$s</a><br/><br/>
 <a href="%6$s">%7$s</a><br/><br/>
 <a href="%8$s">%9$s</a><br/><br/>
@@ -254,11 +254,11 @@
     <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page</string>
 
     <string name="screenshot_image_viewer_dialog_title">Info</string>
-    <string name="screenshot_image_viewer_dialog_info_time">Time:</string>
-    <string name="screenshot_image_viewer_dialog_info_resolution">Resolution:</string>
-    <string name="screenshot_image_viewer_dialog_info_size">Size:</string>
-    <string name="screenshot_image_viewer_dialog_info_title">Title:</string>
-    <string name="screenshot_image_viewer_dialog_info_url">URL:</string>
+    <string name="screenshot_image_viewer_dialog_info_time1">Time: %1$s</string>
+    <string name="screenshot_image_viewer_dialog_info_resolution1">Resolution: %1$s</string>
+    <string name="screenshot_image_viewer_dialog_info_size1">Size: %1$s</string>
+    <string name="screenshot_image_viewer_dialog_info_title1">Title: %1$s</string>
+    <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
     <string name="screenshot_image_viewer_dialog_delete_msg">Do you want to delete the image?</string>
 
     <!-- Title for file picker when user trying to upload a file -->

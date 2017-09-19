@@ -24,7 +24,7 @@
     <color name="colorInactiveGradientCenter">#FF493A50</color>
     <color name="colorInactiveGradientEnd">#FF383F53</color>
 
-    <color name="colorAutocompleteHighlight">#FFCF68FF</color>
+    <color name="colorAutocompleteHighlight">#FFADE1F5</color>
 
     <color name="colorFloatingActionButtonTint">#F9F9FA</color>
 
@@ -56,6 +56,7 @@
     <color name="colorScreenshotViewerActionIconPressed">#0E86FF</color>
     <color name="colorScreenshotViewerActionIconDisabled">#8DD3F0</color>
     <color name="colorScreenshotViewerActionIconBackgroundPressed">#7FFFFFFF</color>
+    <color name="colorScreenshotViewerInfoDialogText">#757575</color>
     <color name="window_background_screenshot">#CC26384B</color>
     <color name="colorScreenshotItemBorder">#B2B2B2</color>
     <color name="colorScreenshotItemBackground">#EDEDF0</color>
