@@ -326,6 +326,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onPageStarted(final String url) {
+                // There are some callback triggers that are fired due to Webview.restoreState()
+                // As a quick fix we filtered these onPageFinished and onProgress out since they
+                // are having some properties such as: the getTitle() returned here is incomplete.
                 hasPageStarted = true;
 
                 updateIsLoading(true);

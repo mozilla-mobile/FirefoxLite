@@ -102,11 +102,6 @@ import java.util.Map;
 
     @Override
     public void onPageFinished(WebView view, final String url) {
-        // FIXME: 9/11/17
-        // There are some onPageFinished that are fired due to Webview.restoreState()
-        // As a quick fix we filtered these onPageFinished out since they are having
-        // some properties such as: the getTitle() returned here is incomplete.
-        // We'll need to deep dive into these when we have time.
         if (callback != null) {
             callback.onPageFinished(view.getCertificate() != null);
         }
