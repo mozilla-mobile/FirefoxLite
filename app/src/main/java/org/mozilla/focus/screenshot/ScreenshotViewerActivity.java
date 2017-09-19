@@ -215,11 +215,11 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
     private void initInfoItemArray() {
         mInfoItems.clear();
-        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_time), ""));
-        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_resolution), ""));
-        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_size), ""));
-        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_title), ""));
-        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_url), ""));
+        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_time1, "")));
+        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_resolution1, "")));
+        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_size1, "")));
+        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_title1, "")));
+        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_url1, "")));
     }
 
     private void initScreenshotInfo(boolean withShare) {
@@ -227,7 +227,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             if(mScreenshot.getTimestamp() > 0) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(mScreenshot.getTimestamp());
-                mInfoItems.get(0).data = sSdfInfoTime.format(cal.getTime());
+                mInfoItems.get(0).title = getString(R.string.screenshot_image_viewer_dialog_info_time1, sSdfInfoTime.format(cal.getTime()));
             }
             File imgFile = new File(mScreenshot.getImageUri());
             if(imgFile.exists()) {
@@ -236,12 +236,12 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 BitmapFactory.decodeFile(mScreenshot.getImageUri(), options);
                 int width = options.outWidth;
                 int height = options.outHeight;
-                mInfoItems.get(1).data = String.format("%d X %d", width, height);
-                mInfoItems.get(2).data = getStringSizeLengthFile(imgFile.length());
+                mInfoItems.get(1).title = getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format("%dx%d", width, height));
+                mInfoItems.get(2).title = getString(R.string.screenshot_image_viewer_dialog_info_size1, getStringSizeLengthFile(imgFile.length()));
             }
 
-            mInfoItems.get(3).data = mScreenshot.getTitle();
-            mInfoItems.get(4).data = mScreenshot.getUrl();
+            mInfoItems.get(3).title = getString(R.string.screenshot_image_viewer_dialog_info_title1, mScreenshot.getTitle());
+            mInfoItems.get(4).title = getString(R.string.screenshot_image_viewer_dialog_info_url1, mScreenshot.getUrl());
 
             final ImageSource imageSource;
             mImageUri = Uri.fromFile(new File(mScreenshot.getImageUri()));
@@ -357,11 +357,9 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_screenshot_info_dialog, parent, false);
             }
-            TextView textTitle = (TextView) convertView.findViewById(R.id.screenshot_info_dialog_title);
-            TextView textData = (TextView) convertView.findViewById(R.id.screenshot_info_dialog_data);
+            TextView textTitle = (TextView) convertView.findViewById(R.id.screenshot_info_dialog_text);
 
             textTitle.setText(item.title);
-            textData.setText(item.data);
             if(position == 4) {
                 convertView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override

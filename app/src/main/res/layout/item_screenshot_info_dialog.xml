@@ -7,27 +7,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="30dp"
-    android:paddingLeft="30dp"
     android:background="@null"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
 
     <TextView
-        android:id="@+id/screenshot_info_dialog_title"
-        android:layout_width="match_parent"
+        android:id="@+id/screenshot_info_dialog_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="8dp"
-        android:textSize="13sp" />
+        android:layout_marginTop="15dp"
+        android:textColor="@color/colorScreenshotViewerInfoDialogText"
+        android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/screenshot_info_dialog_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        android:textStyle="bold" />
 </LinearLayout>
 
 

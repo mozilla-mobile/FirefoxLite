@@ -112,11 +112,11 @@
   <string name="screenshot_grid_empty_text_msg_prefix">Ketuk </string>
   <string name="screenshot_grid_empty_text_msg_postfix">  pada menu untuk menangkap\nkeseluruhan laman</string>
   <string name="screenshot_image_viewer_dialog_title">Info</string>
-  <string name="screenshot_image_viewer_dialog_info_time">Waktu:</string>
-  <string name="screenshot_image_viewer_dialog_info_resolution">Resolusi:</string>
-  <string name="screenshot_image_viewer_dialog_info_size">Ukuran:</string>
-  <string name="screenshot_image_viewer_dialog_info_title">Judul:</string>
-  <string name="screenshot_image_viewer_dialog_info_url">URL:</string>
+  <string name="screenshot_image_viewer_dialog_info_time1">Waktu: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_resolution1">Resolusi: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_size1">Ukuran: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_title1">Judul: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Apakah Anda ingin menghapus gambarnya?</string>
   <string name="file_picker_title">Pilih berkas untuk diunggah</string>
   <string name="message_enable_turbo_mode">Mode turbo diaktifkan</string>

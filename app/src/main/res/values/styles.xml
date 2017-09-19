@@ -37,8 +37,12 @@
         <item name="android:windowTitleStyle">@style/DialogTitleStyle</item>
     </style>
 
+    <style name="CustomDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">#FF00A4DC</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:listDivider">@null</item>
     </style>
 
@@ -140,5 +144,9 @@
 
     <style name="ScreenshotViewBottomToolbar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="BrowserMenuStyle" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textStyle">normal</item>
     </style>
 </resources>
