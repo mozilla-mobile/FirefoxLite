@@ -76,6 +76,8 @@ public class UrlUtilsTest {
         assertTrue(UrlUtils.isUrl("http://192.168.1.1/a/../b"));
         assertTrue(UrlUtils.isUrl("localhost"));
         assertTrue(UrlUtils.isUrl("http://localhost"));
+        assertTrue(UrlUtils.isUrl("about:blank"));
+        assertTrue(UrlUtils.isUrl("focusabout:"));
 
         assertFalse(UrlUtils.isUrl("Hello World"));
         assertFalse(UrlUtils.isUrl("Mozilla"));

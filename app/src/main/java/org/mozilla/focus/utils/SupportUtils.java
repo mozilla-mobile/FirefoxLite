@@ -7,7 +7,6 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 
 import org.mozilla.focus.locale.Locales;
 
@@ -24,6 +23,16 @@ public class SupportUtils {
     public static final String YOUR_RIGHTS_URI = "file:///android_asset/rights-focus.html";
     public static final String PRIVACY_URL = "https://www.mozilla.org/privacy/firefox-rocket/";
     public static final String ABOUT_URI = "file:///android_res/raw/about.html";
+
+    static final String[] SUPPORTED_URLS = new String[]{
+            BLANK_URL,
+            FOCUS_ABOUT_URL,
+            HELP_URL,
+            DEFAULT_BROWSER_URL,
+            YOUR_RIGHTS_URI,
+            PRIVACY_URL,
+            ABOUT_URI
+    };
 
     public static String getSumoURLForTopic(final Context context, final String topic) {
         String escapedTopic;

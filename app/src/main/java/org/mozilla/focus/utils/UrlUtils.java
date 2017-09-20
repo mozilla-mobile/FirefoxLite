@@ -48,6 +48,12 @@ public class UrlUtils {
             return false;
         }
 
+        for (final String s : SupportUtils.SUPPORTED_URLS) {
+            if (s.equals(url)) {
+                return true;
+            }
+        }
+
         Uri uri = schemePattern.matcher(url).find()
                 ? Uri.parse(url)
                 : Uri.parse("http://" + url);
