@@ -26,6 +26,13 @@ public class UrlUtils {
         String trimmedInput = input.trim();
         Uri uri = Uri.parse(trimmedInput);
 
+        // for supported/predefined url, no need to normalize it
+        for (final String s : SupportUtils.SUPPORTED_URLS) {
+            if (s.equals(input)) {
+                return input;
+            }
+        }
+
         if (TextUtils.isEmpty(uri.getScheme())) {
             uri = Uri.parse("http://" + trimmedInput);
         }
