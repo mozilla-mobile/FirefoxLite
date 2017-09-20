@@ -154,7 +154,7 @@ public class WebViewProvider {
         // Most webview based browsers (and chrome), include the device name AND build ID, e.g.
         // "Pixel XL Build/NOF26V", that seems unnecessary (and not great from a privacy perspective),
         // so we skip that too.
-        uaBuilder.append(" (Linux; Android ").append(Build.VERSION.RELEASE).append("; wv) ");
+        uaBuilder.append(" (Linux; Android ").append(Build.VERSION.RELEASE).append("; rv) ");
 
         final String existingWebViewUA = settings.getUserAgentString();
 
