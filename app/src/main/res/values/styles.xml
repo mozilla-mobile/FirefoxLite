@@ -163,6 +163,6 @@
 
     <style name="PromoteDialogButton" parent="android:Widget.DeviceDefault.Button.Borderless">
         <item name="android:textSize">14sp</item>
-
     </style>
+
 </resources>

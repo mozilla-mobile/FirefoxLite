@@ -11,25 +11,37 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/dialog_screenshot_on_boarding_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="30dp"
-        android:scaleType="fitXY" />
+        android:layout_width="256dp"
+        android:layout_height="177dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/promotion_01" />
 
     <TextView
-        android:id="@+id/dialog_screenshot_on_boarding_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp" />
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="5dp"
+        android:text="@string/screenshot_on_boarding_text_msg"
+        android:textColor="@color/colorDownloadSubText"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorPromotionDialogDivider" />
 
     <Button
         android:id="@+id/dialog_screenshot_on_boarding_btn_got_it"
+        style="@style/PromoteDialogButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:gravity="center"
-        android:text="@string/screenshot_on_boarding_btn_got_it" />
+        android:text="@string/screenshot_on_boarding_btn_got_it"
+        android:textColor="@color/colorAccent" />
 </LinearLayout>
 
 
