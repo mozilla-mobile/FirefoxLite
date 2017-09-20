@@ -160,4 +160,9 @@
     <style name="DownloadListMainText">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
+
+    <style name="PromoteDialogButton" parent="android:Widget.DeviceDefault.Button.Borderless">
+        <item name="android:textSize">14sp</item>
+
+    </style>
 </resources>

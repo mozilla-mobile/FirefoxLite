@@ -65,4 +65,6 @@
     <color name="colorUrlBarLockIcon">#12BC00</color>
     <color name="colorSuggestionBox">#E4E4E4</color>
 
+    <color name="colorPromotionDialogDivider">#E4E4E4</color>
+    <color name="colorPromotionDialogSecBtn">#757575</color>
 </resources>
