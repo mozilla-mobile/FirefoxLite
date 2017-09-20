@@ -291,7 +291,7 @@
     <string name="remove">Remove</string>
 
     <!--In-app Promotion, Rate the App-->
-    <string name="rate_app_dialog_text_title">Love Firefox Rocket?</string>
+    <string name="rate_app_dialog_text_title">Love {{app_name}}?</string>
     <string name="rate_app_dialog_text_content">Thank you for choosing our product. Your feedback is important to us.</string>
     <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 star!</string>
     <string name="rate_app_dialog_btn_feedback">No, send feedback.</string>
@@ -299,9 +299,7 @@
     <string name="rate_app_feedback_url" translatable="false">https://www.mozilla.org/</string>
 
     <!--In-app Promotion, Share app-->
-    <string name="share_app_dialog_text_title">Share Firefox Rocket with friends!</string>
-    <string name="share_app_dialog_text_content_line1">fast, lightweight and easy</string>
-    <string name="share_app_dialog_text_content_line2">speed mode</string>
-    <string name="share_app_dialog_text_content_line3">single-hand friendly</string>
+    <string name="share_app_dialog_text_title">Share {{app_name}} with friends!</string>
+    <string name="share_app_dialog_text_content">- Fast and lightweight\n- Data saving\n- Powerful screenshots</string>
     <string name="share_app_dialog_btn_share">Share</string>
 </resources>

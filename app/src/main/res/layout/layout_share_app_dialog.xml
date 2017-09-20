@@ -1,61 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/promotion_03" />
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
+        android:text="@string/share_app_dialog_text_title"
+        android:textColor="@color/colorMenuLabelDefault"
+        android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/dialog_share_app_img"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="30dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center"
+        android:lineSpacingExtra="5dp"
+        android:text="@string/share_app_dialog_text_content"
+        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/share_app_dialog_text_title"
-            android:textSize="28sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/share_app_dialog_text_content_line1"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/share_app_dialog_text_content_line2"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/share_app_dialog_text_content_line3"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/dialog_rate_app_btn_share"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/share_app_dialog_btn_share" />
-
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/colorPromotionDialogDivider" />
 
     <Button
-        android:id="@+id/dialog_share_app_btn_close"
-        android:layout_width="wrap_content"
+        android:id="@+id/dialog_rate_app_btn_share"
+        style="@style/PromoteDialogButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="close" />
-</RelativeLayout>
+        android:text="@string/share_app_dialog_btn_share"
+        android:textColor="@color/colorAccent" />
+
+</LinearLayout>
