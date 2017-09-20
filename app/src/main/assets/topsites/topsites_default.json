@@ -1,35 +1,35 @@
 [
   {
     "id": -1,
-    "url": "https://www.youtube.com/",
+    "url": "https://m.youtube.com/",
     "title": "Youtube",
     "favicon": "ic_youtube.png",
     "viewCount": 14
   },
   {
     "id": -2,
-    "url": "http://www.tribunnews.com/",
+    "url": "http://m.tribunnews.com/",
     "title": "Tribunnews",
     "favicon": "ic_tribunnews.png",
     "viewCount": 12
   },
   {
     "id": -3,
-    "url": "https://www.facebook.com/",
+    "url": "https://m.facebook.com/",
     "title": "Facebook",
     "favicon": "ic_facebook.png",
     "viewCount": 10
   },
   {
     "id": -4,
-    "url": "https://www.tokopedia.com/",
+    "url": "https://m.tokopedia.com/",
     "title": "Tokopedia",
     "favicon": "ic_tokopedia.png",
     "viewCount": 8
   },
   {
     "id": -5,
-    "url": "http://www.liputan6.com/",
+    "url": "http://m.liputan6.com/",
     "title": "Liputan6",
     "favicon": "ic_liputan6.png",
     "viewCount": 6
@@ -43,14 +43,14 @@
   },
   {
     "id": -7,
-    "url": "https://www.bukalapak.com/",
+    "url": "https://m.bukalapak.com/",
     "title": "Bukalapak",
     "favicon": "ic_bukalapak.png",
     "viewCount": 4
   },
   {
     "id": -8,
-    "url": "https://www.kapanlagi.com/",
+    "url": "https://m.kapanlagi.com/",
     "title": "Kapanlagi",
     "favicon": "ic_kapanlagi.png",
     "viewCount": 3
