@@ -121,7 +121,7 @@ import java.util.Map;
             }
         }
 
-        if (url.equals("focusabout:")) {
+        if (url.equals(SupportUtils.FOCUS_ABOUT_URL)) {
             loadAbout(view);
             return true;
         }
@@ -129,7 +129,7 @@ import java.util.Map;
         // Allow pages to blank themselves by loading about:blank. While it's a little incorrect to let pages
         // access our internal URLs, Chrome allows loads to about:blank and, to ensure our behavior conforms
         // to the behavior that most of the web is developed against, we do too.
-        if (url.equals("about:blank")) {
+        if (url.equals(SupportUtils.BLANK_URL)) {
             return false;
         }
 
