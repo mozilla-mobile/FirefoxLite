@@ -8,6 +8,7 @@ package org.mozilla.focus.activity;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -29,7 +30,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebStorage;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
@@ -537,32 +537,24 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         @Override
-        protected void onPreExecute() {
+        protected void onPostExecute(final String path) {
             ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
             if (screenCaptureDialogFragment == null) {
                 cancel(true);
                 return;
             }
-            screenCaptureDialogFragment.start();
-        }
-
-        @Override
-        protected void onPostExecute(String path) {
-            ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
-            if (screenCaptureDialogFragment == null) {
-                cancel(true);
-                return;
-            }
-            final int captureResultResource;
+            final int captureResultResource = TextUtils.isEmpty(path) ? R.string.screenshot_failed : R.string.screenshot_saved;
+            screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    promptScreenshotResult(captureResultResource, path);
+                }
+            });
             if (TextUtils.isEmpty(path)) {
                 screenCaptureDialogFragment.dismiss();
-                captureResultResource = R.string.screenshot_failed;
             } else {
                 screenCaptureDialogFragment.dismiss(true);
-                captureResultResource = R.string.screenshot_saved;
             }
-
-            promptScreenshotResult(captureResultResource, path);
         }
 
         private void promptScreenshotResult(int snackbarTitleId, final String path){
