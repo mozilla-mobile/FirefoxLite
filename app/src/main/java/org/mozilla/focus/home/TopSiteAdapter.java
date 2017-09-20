@@ -55,18 +55,13 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
     public void onBindViewHolder(SiteViewHolder holder, int position) {
         final Site site = sites.get(position);
         holder.text.setText(site.getTitle());
-        if (site.getFavIcon() != null) {
-            holder.img.setImageBitmap(site.getFavIcon());
-            int dominantColor = FavIconUtils.getDominantColor(site.getFavIcon());
-            int alpha = ( dominantColor & 0xFF000000 );
-            int red = multiplyColorCodeByPercentage( ( dominantColor & 0x00FF0000 ) >> 16, 1.1f ) << 16;
-            int green = multiplyColorCodeByPercentage( ( dominantColor & 0x0000FF00 ) >> 8, 1.1f ) << 8;
-            int blue = multiplyColorCodeByPercentage( ( dominantColor & 0x000000FF ), 1.1f );
-            ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(alpha + red + green + blue));
-        } else {
-            //need default icon?
-            holder.img.setImageBitmap(null);
-        }
+        holder.img.setImageBitmap(site.getFavIcon());
+        int dominantColor = FavIconUtils.getDominantColor(site.getFavIcon());
+        int alpha = ( dominantColor & 0xFF000000 );
+        int red = multiplyColorCodeByPercentage( ( dominantColor & 0x00FF0000 ) >> 16, 1.1f ) << 16;
+        int green = multiplyColorCodeByPercentage( ( dominantColor & 0x0000FF00 ) >> 8, 1.1f ) << 8;
+        int blue = multiplyColorCodeByPercentage( ( dominantColor & 0x000000FF ), 1.1f );
+        ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(alpha + red + green + blue));
 
         // let click listener knows which site is clicked
         holder.itemView.setTag(site);
