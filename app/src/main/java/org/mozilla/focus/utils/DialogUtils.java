@@ -22,14 +22,6 @@ public class DialogUtils {
         }
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_rate_app_dialog, null);
-        dialogView.findViewById(R.id.dialog_rate_app_btn_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
         dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
