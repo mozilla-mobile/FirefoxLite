@@ -200,7 +200,7 @@ public class MainMediator {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment homeFragment =
                 (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-        if (homeFragment != null) {
+        if (homeFragment != null && homeFragment.isVisible()) {
             homeFragment.toggleFakeUrlInput(visible);
         }
     }
