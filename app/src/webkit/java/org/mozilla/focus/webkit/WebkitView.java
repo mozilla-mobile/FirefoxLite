@@ -34,6 +34,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
+import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
@@ -260,7 +261,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         final String url = getUrl();
         if (TextUtils.isEmpty(url)) {
             return;
-        } else if ("about:blank".equals(url)) {
+        } else if (SupportUtils.BLANK_URL.equals(url)) {
             return;
         }
 

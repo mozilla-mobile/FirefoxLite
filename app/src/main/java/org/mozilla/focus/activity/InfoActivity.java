@@ -45,7 +45,7 @@ public class InfoActivity extends AppCompatActivity {
 
         // We can't use "about:" because webview silently swallows about: pages, hence we use
         // a custom scheme.
-        return getIntentFor(context, "focusabout:", resources.getString(R.string.menu_about));
+        return getIntentFor(context, SupportUtils.FOCUS_ABOUT_URL, resources.getString(R.string.menu_about));
     }
 
     public static final Intent getRightsIntent(final Context context) {
