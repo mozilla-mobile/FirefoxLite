@@ -72,7 +72,6 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         super.onCreate(bundle);
         this.presenter = new UrlInputPresenter(SearchEngineManager.getInstance()
                 .getDefaultSearchEngine(getActivity()));
-        this.presenter.setView(this);
     }
 
     @Override
@@ -115,7 +114,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     @Override
     public void onStart() {
         super.onStart();
-
+        presenter.setView(this);
         urlView.requestFocus();
 
         final Activity parent = getActivity();
