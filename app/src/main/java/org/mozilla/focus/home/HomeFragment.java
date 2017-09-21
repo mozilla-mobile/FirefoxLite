@@ -227,7 +227,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                                 BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
                                 TelemetryWrapper.removeTopSite(true);
                             } else {
-                                BrowsingHistoryManager.getInstance().delete(site.getId(), mTopSiteDeleteListener);
+                                site.setViewCount(1);
+                                BrowsingHistoryManager.getInstance().updateLastEntry(site, mTopSiteUpdateListener);
                                 TelemetryWrapper.removeTopSite(false);
                             }
                             break;
@@ -258,9 +259,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     };
 
-    private QueryHandler.AsyncDeleteListener mTopSiteDeleteListener = new QueryHandler.AsyncDeleteListener() {
+    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = new QueryHandler.AsyncUpdateListener() {
         @Override
-        public void onDeleteComplete(int result, long id) {
+        public void onUpdateComplete(int result) {
             BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
         }
     };
