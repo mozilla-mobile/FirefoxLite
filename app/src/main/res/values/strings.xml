@@ -37,10 +37,10 @@
     ]]></string>
 
     <!-- Content of about Rocket. Argument 1 is the app name of the content. i.e.x. Firefox Rocket -->
-    <string name="about_content_body">%1$s is a fast and lightweight browser produced by Mozilla. Our mission is to foster a healthy, open internet.</string>
+    <string name="about_content_body">%1$s is a fast and lightweight browser produced by Mozilla. Our missions is to foster a healthy, open internet.</string>
     <string name="about_link_learn_more">Learn more</string>
     <string name="about_link_support">Support</string>
-    <string name="about_link_your_rights">Your Rights</string>
+    <string name="about_link_your_rights">Know Your Rights</string>
     <string name="about_link_privacy">Privacy Notice</string>
 
     <!-- This label is shown below the name of the default search engine in settings -->
@@ -154,7 +154,7 @@
     <string name="first_run_page1_title">Thanks for choosing %1$s</string>
     <string name="first_run_page1_text">A browser tailor-made for Indonesia by Mozilla, the non-profit committed to a free and open web.</string>
     <string name="first_run_page2_title">Browse faster than ever</string>
-    <string name="first_run_page2_text">Use turbo mode to block ads and trackers so you can browse at blazing speeds. If sites seem broken, just tap off the turbo mode switch in the menu.</string>
+    <string name="first_run_page2_text">Our turbo mode blocks ads &amp; trackers for you to enjoy browsing at blazing speed. If a site seems broken, you can turn it off from the menu.</string>
     <string name="first_run_page3_title">Save data = Save money</string>
     <string name="first_run_page3_text">Blocking ads and online trackers not only speeds up browsing, it saves data. Save even more when you block images.</string>
     <string name="first_run_page4_title">Screenshot everything</string>
@@ -195,21 +195,21 @@
     <!-- Download list-->
     <string name="no_downloads">No downloads</string>
     <string name="download_started">Downloading…</string>
-    <string name="download_file_not_supported">File type not supported</string>
-    <string name="cannot_find_the_file">Cannot find the file.</string>
+    <string name="download_file_not_supported">Download protocol not supported</string>
+    <string name="cannot_find_the_file">Cannot find the file</string>
     <string name="cannot_delete_the_file">Cannot delete the file.</string>
 
     <!-- Download status-->
     <!-- File download status is paused -->
-    <string name="pause">Paused</string>
+    <string name="pause">paused</string>
     <!-- File download status is pending -->
     <string name="pending">Pending</string>
     <!-- File download status is running -->
-    <string name="running">Downloading</string>
+    <string name="running">downloading</string>
     <!-- File download status is successful -->
     <string name="successful">Successful</string>
     <!-- File download status is failed -->
-    <string name="failed">Failed</string>
+    <string name="failed">failed</string>
     <!-- File download status is unknown -->
     <string name="unknown">Unknown</string>
 
@@ -219,7 +219,7 @@
 
     <!--BrowsingHistoryActivity-->
     <string name="browsing_history_clear_btn">CLEAR BROWSING HISTORY</string>
-    <string name="browsing_history_empty_view_msg">No history</string>
+    <string name="browsing_history_empty_view_msg">No browsing history</string>
     <string name="browsing_history_date_today">Today</string>
     <string name="browsing_history_date_yesterday">Yesterday</string>
     <string name="browsing_history_menu_delete">Delete</string>
@@ -235,7 +235,7 @@
     <!--Long Screenshot-->
     <string name="screenshot_saved">Screenshot saved</string>
     <string name="screenshot_failed">Failed to capture screenshot</string>
-    <string name="screenshot_illustration">capturing screenshot of entire page…</string>
+    <string name="screenshot_illustration">Capturing screenshot of entire page…</string>
 
     <!-- Snack bar message -->
     <string name="message_fallback_save_to_primary_external">No SD card detected. File was saved to internal storage.</string>
@@ -251,7 +251,7 @@
 
     <!-- This string is preceded by the image of the button, keep the leading whitespace.
         Final result: 'Tap [image] on the menu to capture an entire web page'. -->
-    <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page</string>
+    <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page.</string>
 
     <string name="screenshot_image_viewer_dialog_title">Info</string>
     <string name="screenshot_image_viewer_dialog_info_time1">Time: %1$s</string>
@@ -259,7 +259,7 @@
     <string name="screenshot_image_viewer_dialog_info_size1">Size: %1$s</string>
     <string name="screenshot_image_viewer_dialog_info_title1">Title: %1$s</string>
     <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
-    <string name="screenshot_image_viewer_dialog_delete_msg">Do you want to delete the image?</string>
+    <string name="screenshot_image_viewer_dialog_delete_msg">Delete this image?</string>
 
     <!-- Title for file picker when user trying to upload a file -->
     <string name="file_picker_title">Choose a file to upload</string>
@@ -270,7 +270,7 @@
     <string name="message_enable_block_image">Now blocking images</string>
     <string name="message_disable_block_image">Now showing images</string>
     <string name="message_clear_cache_fail">Unable to clear cache</string>
-    <string name="message_storage_unavailable_cancel_download">Storage inaccessible. Download cancelled</string>
+    <string name="message_storage_unavailable_cancel_download">Storage inaccessible. Download canceled.</string>
 
     <!-- Message indicate how much cache file cause disk storage was cleared.
         Argument 1 is the amount, i.e. 15.0 MB cache cleared -->
