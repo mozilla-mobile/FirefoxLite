@@ -108,11 +108,11 @@
 
             <ImageButton
                 android:id="@+id/btn_home"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="5dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@drawable/round_rectangle_ripple"
-                android:src="@drawable/menu_home" />
+                android:src="@drawable/menu_home"
+                android:tint="@color/colorDownloadSubText"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_search"
@@ -129,11 +129,11 @@
 
             <ImageButton
                 android:id="@+id/btn_menu"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="5dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@drawable/round_rectangle_ripple"
-                android:src="@drawable/action_menu" />
+                android:src="@drawable/action_menu"
+                android:tint="@color/colorDownloadSubText"/>
 
         </LinearLayout>
     </FrameLayout>

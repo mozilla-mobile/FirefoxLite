@@ -12,6 +12,7 @@
     <color name="colorGradientEnd">#FF29528C</color>
 
     <color name="colorDivider">#E0E0E0</color>
+    <color name="colorListPanelBottomDivider">#D7D7DB</color>
 
     <color name="colorActiveGradientStart">#FF9B3A4D</color>
     <color name="colorActiveGradientCenter">#FF82377D</color>
@@ -39,7 +40,7 @@
     <color name="onboarding_indicator_selected">#FFFFFFFF</color>
 
     <color name="colorMenuBackground">#F9F9FA</color>
-    <color name="colorMenuLabelDefault">#272727</color>
+    <color name="colorMenuLabelDefault">#33272727</color>
     <color name="colorMenuLabelActive">#0E86FF</color>
 
     <color name="url_bg_active">#FFFFFF</color>
@@ -62,5 +63,6 @@
     <color name="colorScreenshotItemBackground">#EDEDF0</color>
 
     <color name="colorUrlBarLockIcon">#12BC00</color>
+    <color name="colorSuggestionBox">#E4E4E4</color>
 
 </resources>

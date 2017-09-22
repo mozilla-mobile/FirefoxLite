@@ -22,7 +22,7 @@
         android:layout_height="1dp"
         android:layout_marginBottom="48dp"
         android:layout_gravity="bottom"
-        android:background="@color/colorDivider"/>
+        android:background="@color/colorListPanelBottomDivider"/>
     <LinearLayout
         android:orientation="horizontal"
         android:background="@color/colorMenuBackground"
@@ -34,7 +34,7 @@
             android:id="@+id/downloads">
             <android.support.v7.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
-                android:src="@drawable/menu_download"/>
+                app:srcCompat="@drawable/tab_download_icon_selector"/>
             <TextView
                 style="@style/ListPanelText"
                 android:text="@string/label_menu_download"/>
@@ -44,7 +44,7 @@
             android:id="@+id/history">
             <android.support.v7.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
-                android:src="@drawable/menu_history"/>
+                app:srcCompat="@drawable/tab_history_icon_selector"/>
             <TextView
                 style="@style/ListPanelText"
                 android:text="@string/label_menu_history"/>
@@ -54,7 +54,7 @@
             android:id="@+id/screenshots">
             <android.support.v7.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
-                android:src="@drawable/menu_my_shots"/>
+                app:srcCompat="@drawable/tab_my_shots_icon_selector"/>
             <TextView
                 style="@style/ListPanelText"
                 android:text="@string/label_menu_my_shots"/>

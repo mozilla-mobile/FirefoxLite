@@ -3,7 +3,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
-    <dimen name="home_padding_url_bar_to_title">72dp</dimen>
-    <dimen name="home_padding_url_bar_to_top_sites">36dp</dimen>
+    <dimen name="home_padding_url_bar_to_title">43dp</dimen>
+    <dimen name="home_padding_url_bar_to_top_sites">22dp</dimen>
     <dimen name="firstrun_icon_bottom_margin">40dp</dimen>
 </resources>

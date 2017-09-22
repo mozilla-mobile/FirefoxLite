@@ -307,7 +307,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private void onInfoClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialogStyle);
         builder.setTitle(R.string.screenshot_image_viewer_dialog_title);
         builder.setAdapter(new InfoItemAdapter(this, mInfoItems), null);
         builder.setPositiveButton(R.string.action_ok, null);
@@ -319,7 +319,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private void onDeleteClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialogStyle);
         builder.setMessage(R.string.screenshot_image_viewer_dialog_delete_msg);
         builder.setPositiveButton(R.string.browsing_history_menu_delete, new DialogInterface.OnClickListener() {
             @Override
