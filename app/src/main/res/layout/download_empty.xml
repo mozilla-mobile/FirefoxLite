@@ -24,6 +24,7 @@
         android:text="@string/no_downloads"
         android:textColor="@color/colorDownloadSubText"
         android:textSize="14sp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>

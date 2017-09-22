@@ -7,6 +7,8 @@ package org.mozilla.focus.screenshot;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -42,6 +44,7 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
         TextView emptyText = (TextView) v.findViewById(R.id.screenshot_grid_empty_text);
         Drawable drawable = getResources().getDrawable(R.drawable.action_capture, null);
         drawable.setBounds(0, 0, getResources().getDimensionPixelSize(R.dimen.screenshot_empty_img_size), getResources().getDimensionPixelSize(R.dimen.screenshot_empty_img_size));
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(getActivity(), R.color.colorDownloadSubText));
         ImageSpan imageSpan = new ImageSpan(drawable);
 
         String emptyPrefix = getString(R.string.screenshot_grid_empty_text_msg_prefix);

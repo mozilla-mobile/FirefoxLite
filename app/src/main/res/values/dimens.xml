@@ -25,7 +25,7 @@
     <dimen name="firstrun_card_width">300dp</dimen>
     <dimen name="firstrun_card_height">500dp</dimen>
 
-    <dimen name="flow_layout_spacing">10dp</dimen>
+    <dimen name="flow_layout_spacing">6dp</dimen>
 
     <dimen name="screenshot_grid_cell_padding">8dp</dimen>
     <dimen name="screenshot_empty_img_size">18dp</dimen>
@@ -36,8 +36,8 @@
     <dimen name="favicon_downscale_threshold_size">128px</dimen>
     <dimen name="favicon_target_size">100px</dimen>
 
-    <dimen name="home_padding_url_bar_to_title">43dp</dimen>
-    <dimen name="home_padding_url_bar_to_top_sites">22dp</dimen>
+    <dimen name="home_padding_url_bar_to_title">60dp</dimen>
+    <dimen name="home_padding_url_bar_to_top_sites">36dp</dimen>
 
     <dimen name="top_site_width">296dp</dimen>
     <dimen name="top_site_font_size">11dp</dimen>
