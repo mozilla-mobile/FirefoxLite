@@ -656,6 +656,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public void onBackPressed() {
+        if (!safeForFragmentTransactions) {
+            return;
+        }
         if (this.mediator.handleBackKey()) {
             return;
         }
