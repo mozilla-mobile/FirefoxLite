@@ -26,6 +26,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -33,6 +34,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.download.DownloadInfo;
+import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.fragment.ListPanelDialog;
@@ -47,6 +50,7 @@ import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FormatUtils;
+import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
@@ -58,6 +62,7 @@ import org.mozilla.focus.widget.FragmentListener;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,SharedPreferences.OnSharedPreferenceChangeListener{
 
@@ -81,6 +86,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
+    private BroadcastReceiver openDownloadReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +133,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 showMessage(msg);
             }
         };
+
+        openDownloadReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (DownloadInfoManager.DOWNLOAD_OPEN.equals(intent.getAction())){
+                    Long rowId = intent.getLongExtra(DownloadInfoManager.ROW_ID,-1L);
+                    showOpenSnackBar(rowId);
+                }
+            }
+        };
     }
 
     @Override
@@ -160,6 +176,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final IntentFilter uiActionFilter = new IntentFilter(Constants.ACTION_NOTIFY_UI);
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
         registerReceiver(uiMessageReceiver, uiActionFilter);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(openDownloadReceiver
+                , new IntentFilter(DownloadInfoManager.DOWNLOAD_OPEN));
     }
 
     @Override
@@ -180,6 +199,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         super.onPause();
 
         unregisterReceiver(uiMessageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(openDownloadReceiver);
 
         safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();
@@ -773,5 +793,27 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         Settings.getInstance(this).setRemovableStorageStateOnCreate(exist);
+    }
+
+    private void showOpenSnackBar(Long rowId) {
+        DownloadInfoManager.getInstance().queryByRowId(rowId, new DownloadInfoManager.AsyncQueryListener() {
+            @Override
+            public void onQueryComplete(List downloadInfoList) {
+                if (downloadInfoList.size() > 0) {
+                    final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
+
+                    final View container = findViewById(R.id.container);
+                    String completedStr = getString(R.string.download_completed, downloadInfo.getFileName());
+                    Snackbar.make(container, completedStr, Snackbar.LENGTH_SHORT)
+                            .setAction(R.string.open, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    IntentUtils.intentOpenFile(view.getContext(), downloadInfo.getMediaUri(), downloadInfo.getMimeType());
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
     }
 }

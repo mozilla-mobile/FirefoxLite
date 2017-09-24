@@ -10,7 +10,7 @@ import java.util.Formatter;
 
 public class DownloadInfo {
 
-    private Long ColumnId;
+    private Long RowId;
     private Long DownloadId;
     private int Status;
     private String Size ;
@@ -23,12 +23,12 @@ public class DownloadInfo {
 
     public DownloadInfo(){}
 
-    public void setColumnId(Long id){
-        ColumnId = id;
+    public void setRowId(Long id){
+        RowId = id;
     }
 
-    public Long getColumnId(){
-        return ColumnId;
+    public Long getRowId(){
+        return RowId;
     }
 
     public void setFileExtension(String fileExtension){
