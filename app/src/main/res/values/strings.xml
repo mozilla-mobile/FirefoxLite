@@ -202,6 +202,7 @@
     <string name="download_completed">\u0020downloaded</string>
     <string name="download_deleted">\u0020was deleted</string>
     <string name="download_cancel">Download canceled</string>
+    <string name="undo">Undo</string>
 
     <!-- Download status-->
     <!-- File download status is paused -->
