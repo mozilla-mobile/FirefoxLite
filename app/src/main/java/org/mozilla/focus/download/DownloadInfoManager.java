@@ -17,7 +17,6 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,9 @@ import static org.mozilla.focus.provider.DownloadContract.Download;
  */
 
 public class DownloadInfoManager {
-
+    
+    public static final String DOWNLOAD_OPEN = "download open";
+    public static final String ROW_ID = "row id";
     private static final int TOKEN = 2;
     private static DownloadInfoManager sInstance;
     private static Context mContext;
@@ -167,7 +168,7 @@ public class DownloadInfoManager {
 
     public void updateByRowId(DownloadInfo downloadInfo,AsyncUpdateListener listener){
         mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo)
-                , Download._ID + " = ?", new String[]{Long.toString(downloadInfo.getColumnId())});
+                , Download._ID + " = ?", new String[]{Long.toString(downloadInfo.getRowId())});
     }
 
     public void query(int offset, int limit, AsyncQueryListener listener) {
@@ -231,13 +232,13 @@ public class DownloadInfoManager {
         manager.remove(oldId);
 
         // filename might be different from old file
-        // update by column id
+        // update by row id
         queryByDownloadId(oldId, new AsyncQueryListener() {
             @Override
             public void onQueryComplete(List downloadInfoList) {
                 for (int i = 0; i < downloadInfoList.size(); i++) {
                     DownloadInfo queryDownloadInfo = (DownloadInfo) downloadInfoList.get(i);
-                    Long rowId = queryDownloadInfo.getColumnId();
+                    Long rowId = queryDownloadInfo.getRowId();
                     if (oldId == queryDownloadInfo.getDownloadId()){
                         DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath,rowId);
                         newInfo.setDownloadId(newId);
@@ -268,9 +269,9 @@ public class DownloadInfoManager {
         return pojoToDownloadInfo(pojo, filePath, rowId);
     }
 
-    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String filePath, Long rowId) {
+    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String filePath, long rowId) {
         final DownloadInfo info = new DownloadInfo();
-        info.setColumnId(rowId);
+        info.setRowId(rowId);
         info.setFileName(pojo.fileName);
         info.setDownloadId(pojo.downloadId);
         info.setSize(pojo.length);

@@ -9,69 +9,63 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 
 import java.io.File;
+import java.util.List;
 
 public class DownloadCompleteReceiver extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
         if (downloadId == -1) {
             return;
         }
 
-        final DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        final DownloadManager.Query query = new DownloadManager.Query();
+        DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {
+            @Override
+            public void onQueryComplete(List downloadInfoList) {
+                if (downloadInfoList.size() > 0) {
+                    DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
+                    if ((downloadInfo.getStatus() == DownloadManager.STATUS_SUCCESSFUL)
+                            && !TextUtils.isEmpty(downloadInfo.getFileUri())){
 
-        query.setFilterById(downloadId);
-        final Cursor cursor = downloadManager.query(query);
+                        final Uri fileUri = Uri.parse(downloadInfo.getFileUri());
+                        if ("file".equals(fileUri.getScheme())) {
+                            // on some device the uri is "file:///storage/emulated/0/Download/file.png"
+                            // but the real path is "file:///storage/emulated/legacy/Download/file.png"
+                            // Since we already restrict download folder when we were making request to
+                            // DownloadManager, now we only look for the file-name in download folder.
+                            final String fileName = (new File(fileUri.getPath())).getName();
+                            final String type = Environment.DIRECTORY_DOWNLOADS;
+                            final File dir = Environment.getExternalStoragePublicDirectory(type);
+                            final File downloadedFile = new File(dir, fileName);
 
-        if (cursor.moveToFirst()) {
-            final int downloadStatus = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-            final String localUriStr = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-            final String mediaType = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE));
-            if ((downloadStatus == DownloadManager.STATUS_SUCCESSFUL)
-                    && !TextUtils.isEmpty(localUriStr)) {
+                            if (downloadedFile.exists() && downloadedFile.canWrite()) {
+                                RelocateService.startActionMove(context,
+                                        downloadInfo.getDownloadId(),
+                                        downloadedFile,
+                                        downloadInfo.getMimeType());
+                            }
+                        }
 
-                final Uri fileUri = Uri.parse(localUriStr);
-                if ("file".equals(fileUri.getScheme())) {
+                        //have to update, then the fileUri may write into our DB.
+                        DownloadInfoManager.getInstance().updateByRowId(downloadInfo,null);
 
-                    // on some device the uri is "file:///storage/emulated/0/Download/file.png"
-                    // but the real path is "file:///storage/emulated/legacy/Download/file.png"
-                    // Since we already restrict download folder when we were making request to
-                    // DownloadManager, now we only look for the file-name in download folder.
-                    final String fileName = (new File(fileUri.getPath())).getName();
-                    final String type = Environment.DIRECTORY_DOWNLOADS;
-                    final File dir = Environment.getExternalStoragePublicDirectory(type);
-                    final File downloadedFile = new File(dir, fileName);
-                    //update download info in our db
-                    DownloadInfo downloadInfo = new DownloadInfo();
-                    downloadInfo.setDownloadId(downloadId);
-                    downloadInfo.setFileName(fileName);
-                    downloadInfo.setFileUri(localUriStr);
-                    DownloadInfoManager.getInstance().updateByDownloadId(downloadInfo,null);
-                    if (downloadedFile.exists() && downloadedFile.canWrite()) {
-                        RelocateService.startActionMove(context,
-                                downloadId,
-                                downloadedFile,
-                                mediaType);
+                        Long rowId = downloadInfo.getRowId();
+                        Intent intentOpen = new Intent(DownloadInfoManager.DOWNLOAD_OPEN);
+                        intentOpen.putExtra(DownloadInfoManager.ROW_ID, rowId);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intentOpen);
                     }
-
-                    String completedStr = context.getString(R.string.download_completed);
-                    Toast.makeText(context,fileName+completedStr,Toast.LENGTH_SHORT).show();
                 }
             }
-        }
-        cursor.close();
+        });
     }
 }

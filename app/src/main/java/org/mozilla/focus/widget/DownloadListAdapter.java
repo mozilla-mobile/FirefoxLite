@@ -85,10 +85,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void delete(View view, final int position) {
         final DownloadInfo deletedDownload = mDownloadInfo.get(position);
         final File file = new File(URI.create(deletedDownload.getFileUri()).getPath());
-        String str = mContext.getString(R.string.download_deleted);
+        String deleteStr = mContext.getString(R.string.download_deleted, mDownloadInfo.get(position).getFileName());
 
         Snackbar snackBar
-                = Snackbar.make(view, mDownloadInfo.get(position).getFileName() + str, Snackbar.LENGTH_SHORT)
+                = Snackbar.make(view,  deleteStr, Snackbar.LENGTH_SHORT)
                 .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
                     @Override
                     public void onDismissed(Snackbar transientBottomBar, int event) {
