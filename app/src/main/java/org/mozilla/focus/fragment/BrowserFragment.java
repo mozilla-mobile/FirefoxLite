@@ -37,7 +37,9 @@ import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
+import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -765,6 +767,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void goBack() {
         final IWebView webView = getWebView();
         if (webView != null) {
+            WebBackForwardList webBackForwardList = ((WebView) webView).copyBackForwardList();
+            WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
+            updateURL(item.getUrl());
             webView.goBack();
         }
     }
@@ -772,6 +777,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void goForward() {
         final IWebView webView = getWebView();
         if (webView != null) {
+            WebBackForwardList webBackForwardList = ((WebView) webView).copyBackForwardList();
+            WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
+            updateURL(item.getUrl());
             webView.goForward();
         }
     }
