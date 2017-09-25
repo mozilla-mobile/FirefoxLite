@@ -19,6 +19,7 @@ import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.webkit.WebkitView;
 
 /**
  * Base implementation for fragments that use an IWebView instance. Based on Android's WebViewFragment.
@@ -110,6 +111,10 @@ public abstract class WebFragment extends LocaleAwareFragment {
     public void onSaveInstanceState(Bundle outState) {
         webView.onSaveInstanceState(outState);
 
+        // FIXME: add debug message for #857
+        if (!AppConstants.isReleaseBuild()) {
+            webViewState.putInt(WebkitView.KEY_DEBUG, 1);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -136,6 +141,11 @@ public abstract class WebFragment extends LocaleAwareFragment {
             // called. In this case we must store webView-state manually, to retain browsing history.
             webViewState = new Bundle();
             webView.onSaveInstanceState(webViewState);
+
+            // FIXME: add debug message for #857
+            if (!AppConstants.isReleaseBuild()) {
+                webViewState.putInt(WebkitView.KEY_DEBUG, 2);
+            }
         }
 
         super.onDestroyView();
