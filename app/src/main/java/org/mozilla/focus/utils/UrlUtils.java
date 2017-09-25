@@ -66,18 +66,23 @@ public class UrlUtils {
                 : Uri.parse("http://" + url);
 
         final String host = TextUtils.isEmpty(uri.getHost()) ? "" : uri.getHost();
-        if (TextUtils.isEmpty(host)) {
-            // only "file" scheme allows empty domain
-            return "file".equals(uri.getScheme()) && !TextUtils.isEmpty(uri.getPath());
-        }
+        switch(uri.getScheme()){
+            case "http":
+            case "https":
+                // localhost allows zero dot
+                if (!host.contains(".")) {
+                    return host.equals("localhost");
+                }
 
-        // localhost allows zero dot
-        if (!host.contains(".")) {
-            return host.equals("localhost");
+                // .a.b.c  and a.b.c. are not allowed
+                return !host.startsWith(".") && !host.endsWith(".");
+            case "file":
+                // only "file" scheme allows empty domain
+                return !TextUtils.isEmpty(uri.getPath());
+            default:
+                //  unknown schema will treated as app link
+                return true;
         }
-
-        // .a.b.c  and a.b.c. are not allowed
-        return !host.startsWith(".") && !host.endsWith(".");
     }
 
     public static boolean isHttpOrHttps(String url) {
