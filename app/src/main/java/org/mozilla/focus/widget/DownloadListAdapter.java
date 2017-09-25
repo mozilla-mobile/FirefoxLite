@@ -45,22 +45,35 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private static final List<String> SPECIFIC_FILE_EXTENSION
             = Arrays.asList("apk","zip","gz","tar","7z","rar","war");
-    private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
+    private List<DownloadInfo> mDownloadInfo;
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NON_EMPTY = 1;
     private static final int ON_OPENING = 2;
+    private static final int PAGE_SIZE = 20;
     private Context mContext;
     private int mItemCount = 0;
     private boolean isOpening = false;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
 
     public DownloadListAdapter(Context context){
         mContext = context;
+        mDownloadInfo = new ArrayList<>();
         loadMore();
         isOpening = true;
     }
 
+    public boolean isLoading(){
+        return isLoading;
+    }
+
+    public boolean isLastPage(){
+        return isLastPage;
+    }
+
     public void loadMore(){
-        DownloadInfoManager.getInstance().query(mItemCount,50,this);
+        DownloadInfoManager.getInstance().query(mItemCount,PAGE_SIZE,this);
+        isLoading = true;
     }
 
     public void updateItem(DownloadInfo downloadInfo){
@@ -273,7 +286,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-        }else if (viewHolder instanceof OnOpeningViewHolder){
+        } else if (viewHolder instanceof OnOpeningViewHolder) {
             viewHolder.itemView.setVisibility(View.GONE);
         }
     }
@@ -289,10 +302,13 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onQueryComplete(List downloadInfoList) {
+
         mDownloadInfo.addAll(downloadInfoList);
         mItemCount = mDownloadInfo.size();
-        isOpening = false;
         this.notifyDataSetChanged();
+        isOpening = false;
+        isLoading = false;
+        isLastPage = downloadInfoList.size() == 0 ;
     }
 
     private String statusConvertStr(int status){
