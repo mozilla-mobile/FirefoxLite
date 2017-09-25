@@ -6,6 +6,7 @@
 package org.mozilla.focus.history;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.app.Activity;
 import android.os.Bundle;
@@ -58,13 +59,18 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.browsing_history_btn_clear:
+                // if Fragment is detached but AlertDialog still on the screen, we might get null context in callback
+                final Context ctx = getContext();
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialogStyle);
                 builder.setTitle(R.string.browsing_history_dialog_confirm_clear_message);
                 builder.setPositiveButton(R.string.browsing_history_dialog_btn_clear, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (ctx == null) {
+                            return;
+                        }
                         mAdapter.clear();
-                        TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
+                        TopSitesUtils.getDefaultSitesJsonArrayFromAssets(ctx);
                         final Fragment fragment = getParentFragment().getTargetFragment();
                         if (fragment != null && fragment instanceof HomeFragment) {
                             fragment.onActivityResult(HomeFragment.REFRESH_REQUEST_CODE, Activity.RESULT_OK, null);
