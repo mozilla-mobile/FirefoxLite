@@ -22,9 +22,10 @@
   <string name="preference_privacy_storage_clear_browsing_data">Bersihkan data penjelajahan</string>
   <string name="preference_privacy_storage_save_downloads_to">Simpan unduhan ke</string>
   <string name="preference_default_browser">Jadikan peramban baku</string>
+  <string name="preference_turbo_mode">Mode turbo</string>
   <string name="preference_mozilla_telemetry">Kirim data penggunaan</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla berusaha untuk hanya menyimpan apa yang bisa dibagikan dan memperbaiki %1$s untuk semuanya.</string>
-  <string name="preference_mozilla_telemetry_learn_more">Pelajari lebih lanjut</string>
+  <string name="preference_learn_more">Pelajari lebih lanjut</string>
   <string name="preference_about">Tentang %1$s</string>
   <string name="content_description_clear_input">Bersihkan masukan</string>
   <string name="content_description_dismiss_input">Abaikan</string>

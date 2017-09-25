@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:maxLines="10"
             android:textColor="?android:attr/textColorLink"
-            android:text="@string/preference_mozilla_telemetry_learn_more"
+            android:text="@string/preference_learn_more"
             android:ellipsize="end" />
 
     </LinearLayout>

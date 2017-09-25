@@ -65,11 +65,13 @@
      how to set Rocket as a default browser -->
     <string name="preference_default_browser">Make default browser</string>
 
+    <string name="preference_turbo_mode">Turbo mode</string>
+
     <string name="preference_mozilla_telemetry">Send usage data</string>
 
     <!-- Item in Preferences that shows the app name wants to send telemetry. Parameter 1 is the app name, i.e. Firefox Rocket. -->
     <string name="preference_mozilla_telemetry_summary">Mozilla strives to collect only what we need to provide and improve %1$s for everyone.</string>
-    <string name="preference_mozilla_telemetry_learn_more">Learn more</string>
+    <string name="preference_learn_more">Learn more</string>
 
     <!-- Item in Preferences that shows the about page. Parameter 1 is the app name, i.e. Firefox Rocket. -->
     <string name="preference_about">About %1$s</string>
