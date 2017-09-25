@@ -21,6 +21,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.HtmlLoader;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.IWebView;
@@ -112,6 +113,7 @@ import java.util.Map;
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        view.getSettings().setLoadsImagesAutomatically(true);
         if (url == null) {
             // in case of null url, we won't crash app in release build
             if (AppConstants.isReleaseBuild()) {
@@ -152,6 +154,7 @@ import java.util.Map;
             return true;
         }
 
+        view.getSettings().setLoadsImagesAutomatically(!Settings.getInstance(view.getContext()).shouldBlockImages());
         return super.shouldOverrideUrlLoading(view, url);
     }
 
