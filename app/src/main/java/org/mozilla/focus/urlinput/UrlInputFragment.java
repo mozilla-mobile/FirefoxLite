@@ -9,11 +9,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +34,14 @@ import java.util.List;
  */
 public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         View.OnClickListener, View.OnLongClickListener,
-        InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener {
+        InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener,
+        InlineAutocompleteEditText.OnTextChangeListener {
 
     public static final String FRAGMENT_TAG = "url_input";
 
     private static final String ARGUMENT_URL = "url";
+
+    private static final int REQUEST_THROTTLE_THRESHOLD = 300;
 
     private UrlInputContract.Presenter presenter;
 
@@ -65,7 +66,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     private UrlAutoCompleteFilter urlAutoCompleteFilter;
     private boolean autoCompleteInProgress;
     private View dismissView;
-    private TextChangeListener textChangeListener = new TextChangeListener();
+    private long lastRequestTime;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -90,7 +91,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         suggestionView = (FlowLayout) view.findViewById(R.id.search_suggestion);
 
         urlView = (InlineAutocompleteEditText) view.findViewById(R.id.url_edit);
-        urlView.addTextChangedListener(textChangeListener);
+        urlView.setOnTextChangeListener(this);
         urlView.setOnFilterListener(this);
         urlView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -225,10 +226,10 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
     @Override
     public void setUrlText(CharSequence text) {
-        this.urlView.removeTextChangedListener(textChangeListener);
+        this.urlView.setOnTextChangeListener(null);
         this.urlView.setText(text);
         this.urlView.setSelection(text.length());
-        this.urlView.addTextChangedListener(textChangeListener);
+        this.urlView.setOnTextChangeListener(this);
     }
 
     @Override
@@ -267,34 +268,20 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         autoCompleteInProgress = false;
     }
 
-    private class TextChangeListener implements TextWatcher {
-
-        private long lastRequestTime;
-        private int REQUEST_THROTTLE_THRESHOLD = 300;
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    @Override
+    public void onTextChange(String originalText, String autocompleteText) {
+        if(autoCompleteInProgress) {
+            return;
         }
+        UrlInputFragment.this.presenter.onInput(originalText, detectThrottle());
+        final int visibility = TextUtils.isEmpty(originalText) ? View.GONE : View.VISIBLE;
+        UrlInputFragment.this.clearView.setVisibility(visibility);
+    }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(autoCompleteInProgress) {
-                return;
-            }
-            UrlInputFragment.this.presenter.onInput(s, detectThrottle());
-            final int visibility = TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE;
-            UrlInputFragment.this.clearView.setVisibility(visibility);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-
-        private boolean detectThrottle() {
-            long now = System.currentTimeMillis();
-            boolean throttled = now - lastRequestTime < REQUEST_THROTTLE_THRESHOLD;
-            lastRequestTime = now;
-            return throttled;
-        }
+    private boolean detectThrottle() {
+        long now = System.currentTimeMillis();
+        boolean throttled = now - lastRequestTime < REQUEST_THROTTLE_THRESHOLD;
+        lastRequestTime = now;
+        return throttled;
     }
 }
