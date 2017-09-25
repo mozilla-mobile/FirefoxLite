@@ -76,7 +76,9 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
 
     @Override
     public void tryLoadMore() {
-        // TODO: 2017/9/26
+        if (!mDownloadListAdapter.isLoading() && !mDownloadListAdapter.isLastPage()){
+            mDownloadListAdapter.loadMore();
+        }
     }
 
     @Override
@@ -104,7 +106,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
 
     private void prepare() {
         recyclerView.setAdapter(mDownloadListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));
     }
 
     @Override

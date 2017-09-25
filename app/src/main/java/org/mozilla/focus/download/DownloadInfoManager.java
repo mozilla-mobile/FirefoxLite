@@ -174,7 +174,7 @@ public class DownloadInfoManager {
 
     public void query(int offset, int limit, AsyncQueryListener listener) {
         final String uri = Download.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit;
-        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, null);
+        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, Download._ID + " DESC");
     }
 
     public void queryByDownloadId(Long downloadId,AsyncQueryListener listener){
