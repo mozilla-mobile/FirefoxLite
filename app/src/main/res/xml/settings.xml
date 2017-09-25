@@ -28,6 +28,12 @@
         android:title="@string/preference_privacy_storage_save_downloads_to"
         android:key="@string/pref_key_storage_save_downloads_to" />
 
+    <org.mozilla.focus.widget.TurboSwitchPreference
+        android:layout="@layout/focus_preference"
+        android:key="@string/pref_key_turbo_mode"
+        android:title="@string/preference_turbo_mode"
+        android:summary="@string/preference_learn_more" />
+
     <org.mozilla.focus.widget.DefaultBrowserPreference
         android:layout="@layout/focus_preference"
         android:key="@string/pref_key_default_browser"
