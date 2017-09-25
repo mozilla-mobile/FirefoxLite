@@ -747,8 +747,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (TextUtils.isEmpty(msg)) {
             return;
         }
-        final View container = findViewById(R.id.container);
-        Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void asyncInitialize() {
