@@ -99,12 +99,7 @@ public class DownloadInfoManager {
                         if (cursor != null) {
                             while (cursor.moveToNext()) {
                                 final DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
-                                //delete DownloadInfo that has canceled from download manager
-                                if (TextUtils.isEmpty(downloadInfo.getFileUri())){
-                                    DownloadInfoManager.getInstance().delete(downloadInfo.getDownloadId(),null);
-                                }else {
-                                    downloadInfoList.add(downloadInfo);
-                                }
+                                downloadInfoList.add(downloadInfo);
                             }
                             cursor.close();
                         }
@@ -165,9 +160,14 @@ public class DownloadInfoManager {
                 , Download.CONTENT_URI, Download.DOWNLOAD_ID + " = ?", new String[]{Long.toString(downloadId)});
     }
 
-    public void update(DownloadInfo downloadInfo, AsyncUpdateListener listener) {
+    public void updateByDownloadId(DownloadInfo downloadInfo, AsyncUpdateListener listener) {
         mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo)
                 , Download.DOWNLOAD_ID + " = ?", new String[]{Long.toString(downloadInfo.getDownloadId())});
+    }
+
+    public void updateByRowId(DownloadInfo downloadInfo,AsyncUpdateListener listener){
+        mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo)
+                , Download._ID + " = ?", new String[]{Long.toString(downloadInfo.getColumnId())});
     }
 
     public void query(int offset, int limit, AsyncQueryListener listener) {
@@ -175,9 +175,14 @@ public class DownloadInfoManager {
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, null);
     }
 
-    public void queryCertainId(Long downloadId,AsyncQueryListener listener){
+    public void queryByDownloadId(Long downloadId,AsyncQueryListener listener){
         String uri = Download.CONTENT_URI.toString();
         mQueryHandler.startQuery(TOKEN,listener,Uri.parse(uri),null,Download.DOWNLOAD_ID+"==?",new String[] {Long.toString(downloadId)},null);
+    }
+
+    public void queryByRowId(Long rowId,AsyncQueryListener listener){
+        String uri = Download.CONTENT_URI.toString();
+        mQueryHandler.startQuery(TOKEN,listener,Uri.parse(uri),null,Download._ID+"==?",new String[] {Long.toString(rowId)},null);
     }
 
     public boolean recordExists(long downloadId) {
@@ -197,14 +202,14 @@ public class DownloadInfoManager {
     /**
      * Update database, to replace file path of a record in both of our own db and DownloadManager.
      *
-     * @param id      download id for record in DownloadManager
+     * @param downloadId      download id for record in DownloadManager
      * @param newPath new file path
      * @param type    Mime type
      */
-    public void replacePath(final long id, @NonNull final String newPath, @NonNull final String type) {
-        final long oldId = id;
+    public void replacePath(final long downloadId, @NonNull final String newPath, @NonNull final String type) {
+        final long oldId = downloadId;
         final File newFile = new File(newPath);
-        final DownloadPojo pojo = queryDownloadManager(mContext, id);
+        final DownloadPojo pojo = queryDownloadManager(mContext, downloadId);
 
         // remove old download from DownloadManager, then add new one
         // Description and MIME cannot be blank, otherwise system refuse to add new record
@@ -226,10 +231,23 @@ public class DownloadInfoManager {
         manager.remove(oldId);
 
         // filename might be different from old file
-        final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath);
-        newInfo.setDownloadId(newId);
-        insert(newInfo, null);
-        delete(oldId, null);
+        // update by column id
+        queryByDownloadId(oldId, new AsyncQueryListener() {
+            @Override
+            public void onQueryComplete(List downloadInfoList) {
+                for (int i = 0; i < downloadInfoList.size(); i++) {
+                    DownloadInfo queryDownloadInfo = (DownloadInfo) downloadInfoList.get(i);
+                    Long rowId = queryDownloadInfo.getColumnId();
+                    if (oldId == queryDownloadInfo.getDownloadId()){
+                        DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath,rowId);
+                        newInfo.setDownloadId(newId);
+                        updateByRowId(newInfo,null);
+                        break;
+                    }
+                }
+            }
+        });
+
     }
 
     private static ContentValues getContentValuesFromDownloadInfo(DownloadInfo downloadInfo) {
@@ -242,17 +260,19 @@ public class DownloadInfoManager {
     }
 
     private static DownloadInfo cursorToDownloadInfo(Cursor cursor) {
-        final long id = cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID));
+        final long downloadId = cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID));
         String filePath = cursor.getString(cursor.getColumnIndex(Download.FILE_PATH));
+        Long rowId = cursor.getLong(cursor.getColumnIndex(Download._ID));
 
-        final DownloadPojo pojo = queryDownloadManager(mContext, id);
-        return  pojoToDownloadInfo(pojo, filePath);
+        final DownloadPojo pojo = queryDownloadManager(mContext, downloadId);
+        return pojoToDownloadInfo(pojo, filePath, rowId);
     }
 
-    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String filePath) {
+    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String filePath, Long rowId) {
         final DownloadInfo info = new DownloadInfo();
+        info.setColumnId(rowId);
         info.setFileName(pojo.fileName);
-        info.setDownloadId(pojo.id);
+        info.setDownloadId(pojo.downloadId);
         info.setSize(pojo.length);
         info.setStatusInt(pojo.status);
         info.setDate(pojo.timeStamp);
@@ -279,7 +299,7 @@ public class DownloadInfoManager {
         final Cursor managerCursor = manager.query(query);
 
         final DownloadPojo pojo = new DownloadPojo();
-        pojo.id = id;
+        pojo.downloadId = id;
         try {
             if (managerCursor.moveToFirst()) {
                 pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));
@@ -306,7 +326,7 @@ public class DownloadInfoManager {
 
     /* Data class to store queried information from DownloadManager */
     private static class DownloadPojo {
-        long id;
+        long downloadId;
         String desc;
         String mime;
         double length;

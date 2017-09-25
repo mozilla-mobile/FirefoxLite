@@ -15,6 +15,7 @@ import java.util.Formatter;
 
 public class DownloadInfo {
 
+    private Long ColumnId;
     private Long DownloadId;
     private int Status;
     private String Size ;
@@ -26,6 +27,14 @@ public class DownloadInfo {
     private String FileExtension = "";
 
     public DownloadInfo(){}
+
+    public void setColumnId(Long id){
+        ColumnId = id;
+    }
+
+    public Long getColumnId(){
+        return ColumnId;
+    }
 
     public void setFileExtension(String fileExtension){
         if (!TextUtils.isEmpty(fileExtension)){
