@@ -47,7 +47,7 @@ public class DownloadsFragment extends PanelFragment {
             public void onReceive(Context context, Intent intent) {
                 Long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
                 if (id>0){
-                    DownloadInfoManager.getInstance().queryCertainId(id, new DownloadInfoManager.AsyncQueryListener() {
+                    DownloadInfoManager.getInstance().queryByDownloadId(id, new DownloadInfoManager.AsyncQueryListener() {
                         @Override
                         public void onQueryComplete(List downloadInfoList) {
                             for (int i=0;i<downloadInfoList.size();i++){

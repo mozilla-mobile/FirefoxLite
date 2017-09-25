@@ -59,7 +59,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                     downloadInfo.setDownloadId(downloadId);
                     downloadInfo.setFileName(fileName);
                     downloadInfo.setFileUri(localUriStr);
-                    DownloadInfoManager.getInstance().update(downloadInfo,null);
+                    DownloadInfoManager.getInstance().updateByDownloadId(downloadInfo,null);
                     if (downloadedFile.exists() && downloadedFile.canWrite()) {
                         RelocateService.startActionMove(context,
                                 downloadId,
