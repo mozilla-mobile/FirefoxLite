@@ -48,12 +48,15 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<DownloadInfo> mDownloadInfo = new ArrayList<>();
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NON_EMPTY = 1;
+    private static final int ON_OPENING = 2;
     private Context mContext;
     private int mItemCount = 0;
+    private boolean isOpening = false;
 
     public DownloadListAdapter(Context context){
         mContext = context;
         loadMore();
+        isOpening = true;
     }
 
     public void loadMore(){
@@ -147,7 +150,15 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        return mDownloadInfo.isEmpty() ? VIEW_TYPE_EMPTY : VIEW_TYPE_NON_EMPTY;
+        if (isOpening){
+            return ON_OPENING;
+        }else {
+            if (mDownloadInfo.isEmpty()){
+                return VIEW_TYPE_EMPTY;
+            }else {
+                return VIEW_TYPE_NON_EMPTY;
+            }
+        }
     }
 
     @Override
@@ -157,6 +168,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (VIEW_TYPE_NON_EMPTY == viewType){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_menu_cell,parent,false);
             return new DownloadViewHolder(itemView);
+        } else if (ON_OPENING == viewType) {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_empty, parent, false);
+            return new OnOpeningViewHolder(itemView);
+
         }else {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_empty,parent,false);
             return new DownloadEmptyViewHolder(itemView);
@@ -253,6 +268,8 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
+        }else if (viewHolder instanceof OnOpeningViewHolder){
+            viewHolder.itemView.setVisibility(View.GONE);
         }
     }
 
@@ -269,6 +286,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onQueryComplete(List downloadInfoList) {
         mDownloadInfo.addAll(downloadInfoList);
         mItemCount = mDownloadInfo.size();
+        isOpening = false;
         this.notifyDataSetChanged();
     }
 
@@ -341,6 +359,14 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public DownloadEmptyViewHolder(View itemView) {
             super(itemView);
             imag = (ImageView) itemView.findViewById(R.id.img);
+        }
+    }
+
+    public class OnOpeningViewHolder extends RecyclerView.ViewHolder {
+
+        public OnOpeningViewHolder(View itemView) {
+            super(itemView);
+            itemView.setVisibility(View.GONE);
         }
     }
 }
