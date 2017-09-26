@@ -25,7 +25,7 @@
     <color name="colorInactiveGradientCenter">#FF493A50</color>
     <color name="colorInactiveGradientEnd">#FF383F53</color>
 
-    <color name="colorAutocompleteHighlight">#FFADE1F5</color>
+    <color name="colorAutocompleteHighlight">#330A84FF</color>
 
     <color name="colorFloatingActionButtonTint">#F9F9FA</color>
 
