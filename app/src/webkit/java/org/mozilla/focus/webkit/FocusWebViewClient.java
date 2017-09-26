@@ -229,11 +229,13 @@ import java.util.Map;
         final Map<String, String> substitutionMap = new ArrayMap<>();
         final String appName = webView.getContext().getResources().getString(R.string.app_name);
         final String aboutBody = webView.getContext().getResources().getString(R.string.about_content_body, appName);
+
         final String aboutURI = SupportUtils.getAboutURI();
         final String learnMoreURL = SupportUtils.getManifestoURL();
-        final String supportURL = SupportUtils.getSupportURL();
+        final String supportURL = SupportUtils.getSumoURLForTopic(webView.getContext(), "rocket-help");
         final String rightURL = SupportUtils.getYourRightsURI();
         final String privacyURL = SupportUtils.getPrivacyURL();
+
         final String linkLearnMore = resources.getString(R.string.about_link_learn_more);
         final String linkSupport = resources.getString(R.string.about_link_support);
         final String linkYourRights = resources.getString(R.string.about_link_your_rights);
