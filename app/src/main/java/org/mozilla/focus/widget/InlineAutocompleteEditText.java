@@ -112,7 +112,7 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
         }
 
         if (gainFocus) {
-            resetAutocompleteState();
+            resetAutocompleteState(getText());
             return;
         }
 
@@ -135,7 +135,7 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
         super.setText(textString, type);
 
         // Any autocomplete text would have been overwritten, so reset our autocomplete states.
-        resetAutocompleteState();
+        resetAutocompleteState(text);
     }
 
     @Override
@@ -172,8 +172,9 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
 
     /**
      * Reset autocomplete states to their initial values
+     * @param text
      */
-    private void resetAutocompleteState() {
+    private void resetAutocompleteState(CharSequence text) {
         mAutoCompleteSpans = new Object[] {
                 // Span to mark the autocomplete text
                 AUTOCOMPLETE_SPAN,
@@ -186,7 +187,7 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
 
         // Pretend we already autocompleted the existing text,
         // so that actions like backspacing don't trigger autocompletion.
-        mAutoCompletePrefixLength = getText().length();
+        mAutoCompletePrefixLength = text == null ? 0 : text.length();
 
         // Show the cursor.
         setCursorVisible(true);
