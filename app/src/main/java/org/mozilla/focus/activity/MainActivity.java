@@ -714,6 +714,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 this.updateMenu();
                 break;
             case SHOW_URL_INPUT:
+                if (!safeForFragmentTransactions) {
+                    return;
+                }
                 final String url = (payload != null) ? payload.toString() : null;
                 this.mediator.showUrlInput(url);
                 break;
