@@ -65,19 +65,12 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mIsInitialQuery = true;
         notifyStatusListener(BrowsingHistoryFragment.ON_OPENING);
         loadMoreItems();
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                final int visibleItemCount = mLayoutManager.getChildCount();
-                final int totalItemCount = mLayoutManager.getItemCount();
-                final int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-                if (!mIsLoading && !mIsLastPage) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                        loadMoreItems();
-                    }
-                }
-            }
-        });
+    }
+
+    public void tryLoadMore() {
+        if (!mIsLoading && !mIsLastPage) {
+            loadMoreItems();
+        }
     }
 
     @Override

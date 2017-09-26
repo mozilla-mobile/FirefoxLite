@@ -107,4 +107,9 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public void onItemClicked() {
         closePanel();
     }
+
+    @Override
+    public void tryLoadMore() {
+        mAdapter.tryLoadMore();
+    }
 }

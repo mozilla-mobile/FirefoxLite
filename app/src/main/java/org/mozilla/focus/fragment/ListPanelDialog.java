@@ -71,6 +71,19 @@ public class ListPanelDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_listpanel_dialog, container, false);
         scrollView = (NestedScrollView) v.findViewById(R.id.main_content);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                final int halfPageSize = v.getMeasuredHeight() / 2;
+                if ( scrollY > oldScrollY && v.getMeasuredHeight() - scrollY < halfPageSize ) {
+                    PanelFragment pf = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.main_content);
+                    if ( pf != null && pf.isVisible() ) {
+                        pf.tryLoadMore();
+                    }
+                }
+            }
+        });
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(scrollView);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
