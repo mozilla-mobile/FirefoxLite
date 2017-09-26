@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,10 +26,11 @@ import org.mozilla.focus.widget.DownloadListAdapter;
 
 import java.util.List;
 
-public class DownloadsFragment extends PanelFragment {
+public class DownloadsFragment extends PanelFragment implements DownloadInfoManager.AsyncQueryListener{
 
     private RecyclerView recyclerView;
     private DownloadListAdapter mDownloadListAdapter;
+    private BroadcastReceiver mInsertReceiver;
     private BroadcastReceiver mDownloadReceiver;
 
     public static DownloadsFragment newInstance() {
@@ -50,17 +52,23 @@ public class DownloadsFragment extends PanelFragment {
         mDownloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
-                if (id>0){
-                    DownloadInfoManager.getInstance().queryByDownloadId(id, new DownloadInfoManager.AsyncQueryListener() {
-                        @Override
-                        public void onQueryComplete(List downloadInfoList) {
-                            for (int i=0;i<downloadInfoList.size();i++){
-                                DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(i);
-                                mDownloadListAdapter.updateItem(downloadInfo);
-                            }
-                        }
-                    });
+                if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
+                    long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
+                    if (id > 0) {
+                        DownloadInfoManager.getInstance().queryByDownloadId(id, DownloadsFragment.this);
+                    }
+                }
+            }
+        };
+
+        mInsertReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(DownloadInfoManager.INSERT_SUCCESS)) {
+                    Long id = intent.getLongExtra(DownloadInfoManager.ROW_ID, 0L);
+                    if (id > 0) {
+                        DownloadInfoManager.getInstance().queryByRowId(id, DownloadsFragment.this);
+                    }
                 }
             }
         };
@@ -69,14 +77,17 @@ public class DownloadsFragment extends PanelFragment {
     @Override
     public void onResume() {
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-        getActivity().registerReceiver(mDownloadReceiver, intentFilter);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mInsertReceiver
+                ,new IntentFilter(DownloadInfoManager.INSERT_SUCCESS));
+        getContext().registerReceiver(mDownloadReceiver
+                ,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(mDownloadReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mInsertReceiver);
+        getContext().unregisterReceiver(mDownloadReceiver);
     }
 
 
@@ -89,5 +100,14 @@ public class DownloadsFragment extends PanelFragment {
     private void prepare() {
         recyclerView.setAdapter(mDownloadListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true));
+    }
+
+    @Override
+    public void onQueryComplete(List downloadInfoList) {
+
+        for (int i = 0; i < downloadInfoList.size(); i++) {
+            DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(i);
+            mDownloadListAdapter.updateItem(downloadInfo);
+        }
     }
 }
