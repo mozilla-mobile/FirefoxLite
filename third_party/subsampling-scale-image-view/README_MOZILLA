@@ -1,0 +1,5 @@
+The original source of subsampling-scale-image-view is imported from here: https://github.com/davemorrissey/subsampling-scale-image-view
+
+This module provides a large image display/decode/gesture android view widget, which we import the
+source code into our codebase in order to solve bugs. We only import the java files for the library
+without the sample app.
