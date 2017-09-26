@@ -93,4 +93,9 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
             mAdapter.onItemDelete(id);
         }
     }
+
+    @Override
+    public void tryLoadMore() {
+        mAdapter.tryLoadMore();
+    }
 }

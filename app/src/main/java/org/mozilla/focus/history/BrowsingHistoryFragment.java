@@ -53,7 +53,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new HistoryItemAdapter(mRecyclerView, getActivity(), this, layoutManager);
+        mAdapter = new HistoryItemAdapter(mRecyclerView, getActivity(), this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(layoutManager);
     }
@@ -106,5 +106,10 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     @Override
     public void onItemClicked() {
         closePanel();
+    }
+
+    @Override
+    public void tryLoadMore() {
+        mAdapter.tryLoadMore();
     }
 }

@@ -44,7 +44,6 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private List mItems = new ArrayList();
     private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
     private Context mContext;
     private HistoryListener mHistoryListener;
     private boolean mIsInitialQuery;
@@ -57,27 +56,19 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void onItemClicked();
     }
 
-    public HistoryItemAdapter(RecyclerView recyclerView, Context context, HistoryListener historyListener, LinearLayoutManager layoutManager) {
+    public HistoryItemAdapter(RecyclerView recyclerView, Context context, HistoryListener historyListener) {
         mRecyclerView = recyclerView;
         mContext = context;
         mHistoryListener = historyListener;
-        mLayoutManager = layoutManager;
         mIsInitialQuery = true;
         notifyStatusListener(BrowsingHistoryFragment.ON_OPENING);
         loadMoreItems();
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                final int visibleItemCount = mLayoutManager.getChildCount();
-                final int totalItemCount = mLayoutManager.getItemCount();
-                final int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-                if (!mIsLoading && !mIsLastPage) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                        loadMoreItems();
-                    }
-                }
-            }
-        });
+    }
+
+    public void tryLoadMore() {
+        if (!mIsLoading && !mIsLastPage) {
+            loadMoreItems();
+        }
     }
 
     @Override
