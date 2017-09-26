@@ -42,24 +42,24 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private Activity mActivity;
-    private EmptyListener mEmptyListener;
+    private StatusListener mStatusListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
     private int mCurrentCount;
 
-    public interface EmptyListener {
-        void onEmpty(boolean flag);
+    public interface StatusListener {
+        void onStatus(int status);
     }
 
-    public ScreenshotItemAdapter(RecyclerView recyclerView, Activity activity, EmptyListener emptyListener, GridLayoutManager layoutManager) {
+    public ScreenshotItemAdapter(RecyclerView recyclerView, Activity activity, StatusListener statusListener, GridLayoutManager layoutManager) {
         mRecyclerView = recyclerView;
         mActivity = activity;
-        mEmptyListener = emptyListener;
+        mStatusListener = statusListener;
         mLayoutManager = layoutManager;
         mLayoutManager.setSpanSizeLookup(mSpanSizeHelper);
         mIsInitialQuery = true;
-
+        notifyStatusListener(ScreenshotGridFragment.ON_OPENING);
         loadMoreItems();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -158,10 +158,15 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         mIsLastPage = result.size() == 0;
         if (mIsInitialQuery) {
             mIsInitialQuery = false;
-            notifyEmptyListener(mIsLastPage);
         }
         for (Object item : result) {
             add(item);
+        }
+
+        if (mItems.size() > 0) {
+            notifyStatusListener(ScreenshotGridFragment.VIEW_TYPE_NON_EMPTY);
+        } else {
+            notifyStatusListener(ScreenshotGridFragment.VIEW_TYPE_EMPTY);
         }
         mIsLoading = false;
     }
@@ -170,7 +175,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (id >= 0) {
             remove(getItemPositionById(id));
             if (mItems.size() == 0) {
-                notifyEmptyListener(true);
+                notifyStatusListener(ScreenshotGridFragment.VIEW_TYPE_EMPTY);
             }
         }
     }
@@ -210,9 +215,9 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ScreenshotManager.getInstance().query(mCurrentCount, PAGE_SIZE - (mCurrentCount % PAGE_SIZE), this);
     }
 
-    private void notifyEmptyListener(boolean flag) {
-        if (mEmptyListener != null) {
-            mEmptyListener.onEmpty(flag);
+    private void notifyStatusListener(int status) {
+        if (mStatusListener != null) {
+            mStatusListener.onStatus(status);
         }
     }
 
