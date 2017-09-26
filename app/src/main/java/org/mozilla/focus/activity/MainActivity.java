@@ -14,7 +14,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -542,7 +541,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 //  onCaptureComplete called
             } else {
                 //  Capture failed
-                promptScreenshotResult(R.string.screenshot_failed, null);
+                promptScreenshotResult(R.string.screenshot_failed);
             }
         }
 
@@ -567,7 +566,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    promptScreenshotResult(captureResultResource, path);
+                    promptScreenshotResult(captureResultResource);
                 }
             });
             if (TextUtils.isEmpty(path)) {
@@ -577,29 +576,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         }
 
-        private void promptScreenshotResult(int snackbarTitleId, final String path){
-            final View container = refContainerView.get();
-            if (container == null) {
+        private void promptScreenshotResult(int snackbarTitleId){
+            Context context = refContext.get();
+            if(context == null){
                 return;
             }
-
-            final BrowserFragment browserFragment = refBrowserFragment.get();
-            Snackbar snackbar = Snackbar.make(container, snackbarTitleId, Snackbar.LENGTH_SHORT);
-            if (!TextUtils.isEmpty(path) && browserFragment != null) {
-                snackbar.setAction(R.string.label_menu_share, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uri uri = Uri.fromFile(new File(path));
-                        Intent share = new Intent(Intent.ACTION_SEND);
-                        share.putExtra(Intent.EXTRA_STREAM, uri);
-                        share.setType("image/*");
-                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        browserFragment.startActivity(Intent.createChooser(share, null));
-                        TelemetryWrapper.shareCaptureImage(true);
-                    }
-                });
-            }
-            snackbar.show();
+            Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
         }
 
     }
