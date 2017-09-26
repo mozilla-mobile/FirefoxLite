@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +23,6 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
-import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.FragmentListener;
 
@@ -55,7 +53,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private int mCurrentCount;
 
     public interface HistoryListener {
-        void onEmpty(boolean flag);
+        void onStatus(int status);
         void onItemClicked();
     }
 
@@ -65,6 +63,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mHistoryListener = historyListener;
         mLayoutManager = layoutManager;
         mIsInitialQuery = true;
+        notifyStatusListener(BrowsingHistoryFragment.ON_OPENING);
         loadMoreItems();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -174,10 +173,15 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mIsLastPage = result.size() == 0;
         if (mIsInitialQuery) {
             mIsInitialQuery = false;
-            notifyEmptyListener(mIsLastPage);
         }
         for (Object site : result) {
             add(site);
+        }
+
+        if (mItems.size() > 0) {
+            notifyStatusListener(BrowsingHistoryFragment.VIEW_TYPE_NON_EMPTY);
+        } else {
+            notifyStatusListener(BrowsingHistoryFragment.VIEW_TYPE_EMPTY);
         }
         mIsLoading = false;
     }
@@ -189,11 +193,11 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 final int count = mItems.size();
                 mItems.clear();
                 notifyItemRangeRemoved(0, count);
-                notifyEmptyListener(true);
+                notifyStatusListener(BrowsingHistoryFragment.VIEW_TYPE_EMPTY);
             } else {
                 remove(getItemPositionById(id));
                 if (mItems.size() == 0) {
-                    notifyEmptyListener(true);
+                    notifyStatusListener(BrowsingHistoryFragment.VIEW_TYPE_EMPTY);
                 }
             }
         }
@@ -238,9 +242,9 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         BrowsingHistoryManager.getInstance().query(mCurrentCount, PAGE_SIZE - (mCurrentCount % PAGE_SIZE), this);
     }
 
-    private void notifyEmptyListener(boolean flag) {
+    private void notifyStatusListener(int status) {
         if (mHistoryListener != null) {
-            mHistoryListener.onEmpty(flag);
+            mHistoryListener.onStatus(status);
         }
     }
 
