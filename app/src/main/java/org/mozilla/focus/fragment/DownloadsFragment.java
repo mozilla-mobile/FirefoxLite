@@ -75,6 +75,11 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
     }
 
     @Override
+    public void tryLoadMore() {
+        // TODO: 2017/9/26
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mInsertReceiver

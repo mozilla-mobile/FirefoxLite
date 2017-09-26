@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-public class PanelFragment extends Fragment {
+public abstract class PanelFragment extends Fragment {
 
     protected void closePanel() {
         ((ListPanelDialog)getParentFragment()).dismiss();
@@ -22,5 +22,7 @@ public class PanelFragment extends Fragment {
             throw new RuntimeException("PanelFragments needs its parent to be an instance of ListPanelDialog");
         }
     }
+
+    public abstract void tryLoadMore();
 
 }
