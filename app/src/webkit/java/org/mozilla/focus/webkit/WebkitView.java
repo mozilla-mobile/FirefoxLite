@@ -43,9 +43,6 @@ import org.mozilla.focus.web.WebViewProvider;
 public class WebkitView extends NestedWebView implements IWebView, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_CURRENTURL = "currenturl";
 
-    // FIXME: add debug message for #857
-    public static final String KEY_DEBUG = "_debug_";
-
     private IWebView.Callback callback;
     private FocusWebViewClient client;
     private final FocusWebChromeClient webChromeClient;
@@ -107,19 +104,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         final String desiredURL = savedInstanceState.getString(KEY_CURRENTURL);
         client.notifyCurrentURL(desiredURL);
 
-
-        // FIXME: add debug message for #857
-        if (!AppConstants.isReleaseBuild()) {
-            if (savedInstanceState.containsKey(KEY_DEBUG)) {
-                if (TextUtils.isEmpty(desiredURL)) {
-                    throw new RuntimeException("got null url, previous save-state way is: " + savedInstanceState.getInt(KEY_DEBUG, -1));
-                }
-
-            } else {
-                throw new RuntimeException("this WebkitView didn't call onSaveInstanceState as we expected");
-            }
-        }
-
         if (backForwardList != null &&
                 backForwardList.getCurrentItem().getUrl().equals(desiredURL)) {
             // restoreState doesn't actually load the current page, it just restores navigation history,
@@ -132,21 +116,6 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // FIXME: add debug message for #857
-        if (!AppConstants.isReleaseBuild()) {
-            final String currentUrl = getUrl();
-            if (TextUtils.isEmpty(currentUrl)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Trying to store instance state, but we got url: ").append(currentUrl);
-                sb.append(" originalUrl: ").append(getOriginalUrl());
-                sb.append(" title: ").append(getTitle());
-                sb.append(" canGoBack: ").append(canGoBack());
-                sb.append(" canGoForward: ").append(canGoForward());
-                sb.append(" isAttachedToWindow: ").append(isAttachedToWindow());
-                throw new RuntimeException(sb.toString());
-            }
-        }
-
         saveState(outState);
         // See restoreWebViewState() for an explanation of why we need to save this in _addition_
         // to WebView's state
