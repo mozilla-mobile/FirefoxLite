@@ -48,21 +48,6 @@ public class InfoActivity extends AppCompatActivity {
         return getIntentFor(context, SupportUtils.FOCUS_ABOUT_URL, resources.getString(R.string.menu_about));
     }
 
-    public static final Intent getRightsIntent(final Context context) {
-        final Resources resources = Locales.getLocalizedResources(context);
-        return getIntentFor(context, "file:///android_asset/rights-focus.html", resources.getString(R.string.menu_rights));
-    }
-
-    public static final Intent getHelpIntent(final Context context) {
-        final Resources resources = Locales.getLocalizedResources(context);
-        return getIntentFor(context, SupportUtils.HELP_URL, resources.getString(R.string.menu_help));
-    }
-
-    public static final Intent getTrackerHelpIntent(final Context context) {
-        final Resources resources = Locales.getLocalizedResources(context);
-        return getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "trackers"), resources.getString(R.string.menu_help));
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

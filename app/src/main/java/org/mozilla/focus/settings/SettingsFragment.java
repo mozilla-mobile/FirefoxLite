@@ -46,12 +46,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
-        } else if (keyClicked.equals(resources.getString(R.string.pref_key_help))) {
-            Intent helpIntent = InfoActivity.getHelpIntent(getActivity());
-            startActivity(helpIntent);
-        } else if (keyClicked.equals(resources.getString(R.string.pref_key_rights))) {
-            final Intent intent = InfoActivity.getRightsIntent(getActivity());
-            startActivity(intent);
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
