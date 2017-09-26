@@ -5,6 +5,7 @@ apply plugin: 'jacoco-android'
 apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'com.icesmith.androidtextresolver'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 buildscript {
     repositories {

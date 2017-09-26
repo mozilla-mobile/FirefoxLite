@@ -1,0 +1,11 @@
+The original source of Glide is imported from here: https://github.com/bumptech/glide
+
+We import only these modules:
+    * third_party/glide/annotation
+    * third_party/glide/disklrucache
+    * third_party/glide/library
+
+The Glide module provides a image loading/caching library, which we import in code base in order to
+solve bugs. We make some change in order to deploy with our continuous integration system:
+    1. Remove GIF support.
+    2. Remove testing code.
