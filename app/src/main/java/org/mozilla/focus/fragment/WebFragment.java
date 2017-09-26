@@ -78,6 +78,17 @@ public abstract class WebFragment extends LocaleAwareFragment {
             final String url = (webViewState == null) ? getInitialUrl() : pendingUrl;
             if (!TextUtils.isEmpty(url)) {
                 loadUrl(url);
+            } else {
+                // FIXME: add debug message for #857
+                if (!AppConstants.isReleaseBuild()) {
+                    final StringBuilder sb = new StringBuilder();
+                    sb.append("created WebView but load nothing, ");
+                    sb.append("initialUrl: ");
+                    sb.append(getInitialUrl());
+                    sb.append(", pendingUrl: ");
+                    sb.append(pendingUrl);
+                    throw new RuntimeException(sb.toString());
+                }
             }
         } else {
             // Fragment was destroyed
@@ -159,6 +170,9 @@ public abstract class WebFragment extends LocaleAwareFragment {
             }
         } else {
             this.pendingUrl = url;
+            if (TextUtils.isEmpty(url) && !AppConstants.isReleaseBuild()) {
+                throw new RuntimeException("trying to queue empty url, it should not happen");
+            }
         }
     }
 
