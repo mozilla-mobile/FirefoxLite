@@ -702,6 +702,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void loadUrl(@NonNull final String url) {
+        updateURL(url);
+        super.loadUrl(url);
+    }
+
     public void openPreference() {
         notifyParent(FragmentListener.TYPE.OPEN_PREFERENCE, null);
     }
