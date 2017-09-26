@@ -23,8 +23,11 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.PanelFragment;
 
 
-public class ScreenshotGridFragment extends PanelFragment implements ScreenshotItemAdapter.EmptyListener {
+public class ScreenshotGridFragment extends PanelFragment implements ScreenshotItemAdapter.StatusListener {
 
+    public static final int VIEW_TYPE_EMPTY = 0;
+    public static final int VIEW_TYPE_NON_EMPTY = 1;
+    public static final int ON_OPENING = 2;
     private RecyclerView mContainerRecyclerView;
     private ViewGroup mContainerEmptyView;
     private ScreenshotItemAdapter mAdapter;
@@ -71,13 +74,16 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
     }
 
     @Override
-    public void onEmpty(boolean flag) {
-        if(flag) {
+    public void onStatus(int status) {
+        if (VIEW_TYPE_EMPTY == status) {
             mContainerRecyclerView.setVisibility(View.GONE);
             mContainerEmptyView.setVisibility(View.VISIBLE);
 
-        } else{
+        } else if (VIEW_TYPE_NON_EMPTY == status){
             mContainerRecyclerView.setVisibility(View.VISIBLE);
+            mContainerEmptyView.setVisibility(View.GONE);
+        } else {
+            mContainerRecyclerView.setVisibility(View.GONE);
             mContainerEmptyView.setVisibility(View.GONE);
         }
     }
