@@ -125,6 +125,9 @@ android {
             java.srcDir 'src/focusRelease/java'
             manifest.srcFile 'src/focusRelease/AndroidManifest.xml'
         }
+
+        previewWebkitBeta.res.srcDir 'src/preview/res'
+
     }
 }
 
