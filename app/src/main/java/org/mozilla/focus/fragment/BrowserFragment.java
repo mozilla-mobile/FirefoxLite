@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -61,7 +62,6 @@ import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.IWebView;
-import org.mozilla.focus.webkit.WebkitView;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -617,7 +617,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         //record download ID
         DownloadInfo downloadInfo = new DownloadInfo();
         downloadInfo.setDownloadId(downloadId);
-        DownloadInfoManager.getInstance().insert(downloadInfo, null);
+        DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
+            @Override
+            public void onInsertComplete(long id) {
+                Intent intent = new Intent(DownloadInfoManager.INSERT_SUCCESS);
+                intent.putExtra(DownloadInfoManager.ROW_ID, id);
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+            }
+        });
 
         if (!download.isStartFromContextMenu()) {
             Toast.makeText(getContext(), R.string.download_started, Toast.LENGTH_LONG)

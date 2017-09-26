@@ -30,6 +30,7 @@ public class DownloadInfoManager {
     
     public static final String DOWNLOAD_OPEN = "download open";
     public static final String ROW_ID = "row id";
+    public static final String INSERT_SUCCESS = "insert successful";
     private static final int TOKEN = 2;
     private static DownloadInfoManager sInstance;
     private static Context mContext;
@@ -291,16 +292,16 @@ public class DownloadInfoManager {
         return info;
     }
 
-    private static DownloadPojo  queryDownloadManager(@NonNull final Context context, final long id) {
+    private static DownloadPojo queryDownloadManager(@NonNull final Context context, final long downloadId) {
 
         //query download manager
         final DownloadManager.Query query = new DownloadManager.Query();
-        query.setFilterById(id);
+        query.setFilterById(downloadId);
         final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         final Cursor managerCursor = manager.query(query);
 
         final DownloadPojo pojo = new DownloadPojo();
-        pojo.downloadId = id;
+        pojo.downloadId = downloadId;
         try {
             if (managerCursor.moveToFirst()) {
                 pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));

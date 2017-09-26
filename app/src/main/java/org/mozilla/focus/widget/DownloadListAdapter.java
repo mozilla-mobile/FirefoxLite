@@ -61,16 +61,21 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void updateItem(DownloadInfo downloadInfo){
-
+        int index = -1;
         for (int i = 0;i<mDownloadInfo.size();i++){
             if (mDownloadInfo.get(i).getDownloadId().equals(downloadInfo.getDownloadId())){
-                mDownloadInfo.remove(i);
-                mDownloadInfo.add(downloadInfo);
-
-                this.notifyDataSetChanged();
+                index = i;
                 break;
             }
         }
+
+        if (index == -1){
+            mDownloadInfo.add(downloadInfo);
+        }else {
+            mDownloadInfo.remove(index);
+            mDownloadInfo.add(index,downloadInfo);
+        }
+        this.notifyDataSetChanged();
     }
 
     private void remove(int position){
