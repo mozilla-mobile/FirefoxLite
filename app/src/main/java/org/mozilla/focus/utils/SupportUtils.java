@@ -17,9 +17,6 @@ import java.util.Locale;
 public class SupportUtils {
     public static final String BLANK_URL = "about:blank";
     public static final String FOCUS_ABOUT_URL = "focusabout:";
-    public static final String HELP_URL = "https://support.mozilla.org/kb/what-firefox-focus-android";
-    public static final String BLOCKING_HELP_URL = "";
-    public static final String DEFAULT_BROWSER_URL = "https://support.mozilla.org/kb/set-firefox-focus-default-browser-android";
     public static final String YOUR_RIGHTS_URI = "file:///android_asset/rights-focus.html";
     public static final String PRIVACY_URL = "https://github.com/mozilla-tw/Zerda/wiki/Telemetry";
     public static final String ABOUT_URI = "file:///android_res/raw/about.html";
@@ -27,8 +24,6 @@ public class SupportUtils {
     static final String[] SUPPORTED_URLS = new String[]{
             BLANK_URL,
             FOCUS_ABOUT_URL,
-            HELP_URL,
-            DEFAULT_BROWSER_URL,
             YOUR_RIGHTS_URI,
             PRIVACY_URL,
             ABOUT_URI
@@ -63,10 +58,6 @@ public class SupportUtils {
 
     public static String getPrivacyURL() {
         return PRIVACY_URL;
-    }
-
-    public static String getSupportURL() {
-        return HELP_URL;
     }
 
     public static String getYourRightsURI() {
