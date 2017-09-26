@@ -76,7 +76,7 @@ public class DefaultBrowserPreference extends Preference {
     }
 
     private void openSumoPage(Context context) {
-        final Intent intent = InfoActivity.getIntentFor(context, SupportUtils.DEFAULT_BROWSER_URL, getTitle().toString());
+        final Intent intent = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), getTitle().toString());
         context.startActivity(intent);
     }
 }
