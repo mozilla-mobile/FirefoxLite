@@ -113,7 +113,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
 
         // FIXME: add debug message for #857
         if (!AppConstants.isReleaseBuild()) {
-            webViewState.putInt(WebkitView.KEY_DEBUG, 1);
+            outState.putInt(WebkitView.KEY_DEBUG, 1);
         }
         super.onSaveInstanceState(outState);
     }
