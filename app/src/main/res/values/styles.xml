@@ -36,17 +36,13 @@
         <item name="android:windowTitleStyle">@style/DialogTitleStyle</item>
     </style>
 
-    <style name="CustomDialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="CustomDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:dialogTheme">@style/CustomDialogStyle</item>
-        <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
+        <item name="android:alertDialogTheme">@style/CustomDialogStyle</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:listDivider">@null</item>
     </style>

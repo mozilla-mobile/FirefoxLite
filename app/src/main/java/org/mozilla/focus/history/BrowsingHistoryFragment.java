@@ -61,7 +61,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
             case R.id.browsing_history_btn_clear:
                 // if Fragment is detached but AlertDialog still on the screen, we might get null context in callback
                 final Context ctx = getContext();
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogStyle);
                 builder.setTitle(R.string.browsing_history_dialog_confirm_clear_message);
                 builder.setPositiveButton(R.string.browsing_history_dialog_btn_clear, new DialogInterface.OnClickListener() {
                     @Override
