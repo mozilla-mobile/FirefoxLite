@@ -10,14 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
-import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.widget.BackKeyHandleable;
 
 public class MainMediator {
@@ -121,11 +119,6 @@ public class MainMediator {
     private FragmentTransaction prepareBrowsing(@NonNull String url, boolean clearHistory) {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentMgr.beginTransaction();
-
-        // FIXME: add debug message for #857
-        if (TextUtils.isEmpty(url) && !AppConstants.isReleaseBuild()) {
-            throw new RuntimeException("opening BrowserFragment with empty url");
-        }
 
         final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
                 .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
