@@ -40,7 +40,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_SITE = 1;
     private static final int VIEW_TYPE_DATE = 2;
 
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 50;
 
     private List mItems = new ArrayList();
     private RecyclerView mRecyclerView;
