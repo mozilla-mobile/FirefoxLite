@@ -103,6 +103,13 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         // list will be null - so we need to additionally check whether the list even exists.
 
         final String desiredURL = savedInstanceState.getString(KEY_CURRENTURL);
+
+        // If WebView was connecting to a non-exist host (ie. 1.1.1.1:42), getUrl() returns null
+        // in onSaveInstanceState. In any cases we can not get desiredURL, no need to load it.
+        if (TextUtils.isEmpty(desiredURL)) {
+            return;
+        }
+
         client.notifyCurrentURL(desiredURL);
 
         if (backForwardList != null &&
