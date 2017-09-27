@@ -18,6 +18,11 @@ public class Constants {
     public static final String ACTION_NOTIFY_UI = "org.mozilla.action.NOTIFY_UI";
 
     /**
+     * Activity action, to show download finished SnackBar
+     */
+    public static final String ACTION_NOTIFY_RELOCATE_FINISH = "org.mozilla.action.RELOCATE_FINISH";
+
+    /**
      * To indicate this intent is created when we were operating file
      */
     public static final String CATEGORY_FILE_OPERATION = "org.mozilla.category.FILE_OPERATION";

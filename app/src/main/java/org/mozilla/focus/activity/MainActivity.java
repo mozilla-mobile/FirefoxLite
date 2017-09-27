@@ -85,7 +85,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
-    private BroadcastReceiver openDownloadReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,17 +127,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         uiMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                final CharSequence msg = intent.getCharSequenceExtra(Constants.EXTRA_MESSAGE);
-                showMessage(msg);
-            }
-        };
-
-        openDownloadReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (DownloadInfoManager.DOWNLOAD_OPEN.equals(intent.getAction())){
-                    Long rowId = intent.getLongExtra(DownloadInfoManager.ROW_ID,-1L);
-                    showOpenSnackBar(rowId);
+                switch (intent.getAction()) {
+                    case Constants.ACTION_NOTIFY_UI:
+                        final CharSequence msg = intent.getCharSequenceExtra(Constants.EXTRA_MESSAGE);
+                        showMessage(msg);
+                        break;
+                    case Constants.ACTION_NOTIFY_RELOCATE_FINISH:
+                        showOpenSnackBar(intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1));
+                        break;
+                    default:
+                        break;
                 }
             }
         };
@@ -174,10 +172,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         final IntentFilter uiActionFilter = new IntentFilter(Constants.ACTION_NOTIFY_UI);
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
+        uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         registerReceiver(uiMessageReceiver, uiActionFilter);
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(openDownloadReceiver
-                , new IntentFilter(DownloadInfoManager.DOWNLOAD_OPEN));
     }
 
     @Override
@@ -198,7 +194,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         super.onPause();
 
         unregisterReceiver(uiMessageReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(openDownloadReceiver);
 
         safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();
@@ -784,8 +779,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         Settings.getInstance(this).setRemovableStorageStateOnCreate(exist);
     }
 
-    private void showOpenSnackBar(Long rowId) {
-        DownloadInfoManager.getInstance().queryByRowId(rowId, new DownloadInfoManager.AsyncQueryListener() {
+    private void showOpenSnackBar(Long downloadId) {
+        DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {
             @Override
             public void onQueryComplete(List downloadInfoList) {
                 if (downloadInfoList.size() > 0) {

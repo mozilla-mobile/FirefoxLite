@@ -83,6 +83,7 @@ public class RelocateService extends IntentService {
         final Settings settings = Settings.getInstance(getApplicationContext());
         // Do nothing, if user turned off the option
         if (!settings.shouldSaveToRemovableStorage()) {
+            broadcastRelocateFinished(downloadId);
             return;
         }
 
@@ -124,6 +125,7 @@ public class RelocateService extends IntentService {
                     final CharSequence msg = getString(R.string.message_removable_storage_space_not_enough);
                     broadcastUi(msg);
                     Log.w(TAG, msg.toString());
+                    broadcastRelocateFinished(downloadId);
                     return;
                 }
 
@@ -132,6 +134,7 @@ public class RelocateService extends IntentService {
                 if (!copied) {
                     Log.w(TAG, String.format("cannot copy file from %s to %s",
                             srcFile.getPath(), destFile.getPath()));
+                    broadcastRelocateFinished(downloadId);
                     return;
                 }
 
@@ -142,7 +145,8 @@ public class RelocateService extends IntentService {
 
                 // downloaded file is moved, update database to reflect this changing
                 final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
-                mgr.replacePath(downloadId, destFile.getAbsolutePath(), type);
+                long newId = mgr.replacePath(downloadId, destFile.getAbsolutePath(), type);
+                broadcastRelocateFinished(newId);
 
                 // removable-storage did not exist on app creation, but now it is back
                 // we moved download file to removable-storage, now we should inform user
@@ -160,6 +164,7 @@ public class RelocateService extends IntentService {
         } catch (NoRemovableStorageException e) {
             // removable-storage existed on app creation, but now it is gone
             // we keep download file in original path, now we should inform user
+            broadcastRelocateFinished(downloadId);
             if (settings.getRemovableStorageStateOnCreate()) {
 
                 // avoid sending same message continuously
@@ -174,6 +179,7 @@ public class RelocateService extends IntentService {
             e.printStackTrace();
         } catch (Exception e) {
             // if anything wrong, try to keep original file
+            broadcastRelocateFinished(downloadId);
             try {
                 if ((destFile != null)
                         && destFile.exists()
@@ -217,5 +223,14 @@ public class RelocateService extends IntentService {
 
         sendBroadcast(broadcastIntent);
         Log.d(TAG, "no permission for file relocating, send broadcast to grant permission");
+    }
+
+    private void broadcastRelocateFinished(long downloadId) {
+        final Intent broadcastIntent = new Intent(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
+        broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
+        broadcastIntent.putExtra(Constants.EXTRA_DOWNLOAD_ID, downloadId);
+
+        sendBroadcast(broadcastIntent);
+
     }
 }
