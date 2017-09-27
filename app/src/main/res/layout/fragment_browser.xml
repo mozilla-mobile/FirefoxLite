@@ -112,7 +112,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/round_rectangle_ripple"
                 android:src="@drawable/menu_home"
-                android:tint="@color/colorDownloadSubText"/>
+                android:tint="@color/colorDownloadText"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_search"
@@ -133,7 +133,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/round_rectangle_ripple"
                 android:src="@drawable/action_menu"
-                android:tint="@color/colorDownloadSubText"/>
+                android:tint="@color/colorDownloadText"/>
 
         </LinearLayout>
     </FrameLayout>
