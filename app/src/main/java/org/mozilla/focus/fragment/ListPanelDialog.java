@@ -76,7 +76,7 @@ public class ListPanelDialog extends DialogFragment {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 final int halfPageSize = v.getMeasuredHeight() / 2;
-                if ( scrollY > oldScrollY && v.getMeasuredHeight() - scrollY < halfPageSize ) {
+                if ( scrollY > oldScrollY && v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY < halfPageSize ) {
                     PanelFragment pf = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.main_content);
                     if ( pf != null && pf.isVisible() ) {
                         pf.tryLoadMore();
