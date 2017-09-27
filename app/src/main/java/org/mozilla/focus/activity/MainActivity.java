@@ -14,6 +14,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -792,7 +794,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                             .setAction(R.string.open, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    IntentUtils.intentOpenFile(view.getContext(), downloadInfo.getMediaUri(), downloadInfo.getMimeType());
+                                    if (TextUtils.isEmpty(downloadInfo.getMediaUri())) {
+                                        MediaScannerConnection.scanFile(MainActivity.this,
+                                                new String[]{Uri.parse(downloadInfo.getFileUri()).getPath()},
+                                                new String[]{downloadInfo.getMimeType()},
+                                                new MediaScannerConnection.OnScanCompletedListener() {
+
+                                                    @Override
+                                                    public void onScanCompleted(String path, Uri uri) {
+                                                        IntentUtils.intentOpenFile(MainActivity.this, uri.toString(), downloadInfo.getMimeType());
+                                                    }
+                                                });
+                                    } else {
+                                        IntentUtils.intentOpenFile(view.getContext(), downloadInfo.getMediaUri(), downloadInfo.getMimeType());
+                                    }
                                 }
                             })
                             .show();
