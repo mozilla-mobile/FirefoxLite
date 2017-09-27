@@ -173,7 +173,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final IntentFilter uiActionFilter = new IntentFilter(Constants.ACTION_NOTIFY_UI);
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
-        registerReceiver(uiMessageReceiver, uiActionFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter);
     }
 
     @Override
@@ -193,7 +193,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onPause() {
         super.onPause();
 
-        unregisterReceiver(uiMessageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
 
         safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();

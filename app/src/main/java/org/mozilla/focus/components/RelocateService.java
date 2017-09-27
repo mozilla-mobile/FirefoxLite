@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.mozilla.focus.R;
@@ -206,7 +207,7 @@ public class RelocateService extends IntentService {
         broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
         broadcastIntent.putExtra(Constants.EXTRA_MESSAGE, msg);
 
-        sendBroadcast(broadcastIntent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private void broadcastNoPermission(final long downloadId,
@@ -221,7 +222,7 @@ public class RelocateService extends IntentService {
         broadcastIntent.putExtra(Constants.EXTRA_FILE_PATH, srcFile.getAbsoluteFile());
         broadcastIntent.setType(mediaType);
 
-        sendBroadcast(broadcastIntent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
         Log.d(TAG, "no permission for file relocating, send broadcast to grant permission");
     }
 
@@ -230,7 +231,7 @@ public class RelocateService extends IntentService {
         broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
         broadcastIntent.putExtra(Constants.EXTRA_DOWNLOAD_ID, downloadId);
 
-        sendBroadcast(broadcastIntent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
 
     }
 }
