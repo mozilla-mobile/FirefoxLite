@@ -156,14 +156,30 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void cancel(int position){
-        String cancelStr = mContext.getString(R.string.download_cancel);
-        Toast.makeText(mContext,mDownloadInfo.get(position).getFileName()+" "+cancelStr,Toast.LENGTH_SHORT).show();
+    private void cancel(final int position){
 
-        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.remove(mDownloadInfo.get(position).getDownloadId());
+        final long targetRowId = mDownloadInfo.get(position).getRowId();
+        DownloadInfoManager.getInstance().queryByRowId(targetRowId, new DownloadInfoManager.AsyncQueryListener() {
+            @Override
+            public void onQueryComplete(List downloadInfoList) {
+                if (downloadInfoList.size() > 0) {
+                    DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
 
-        remove(position);
+                    if ((targetRowId == downloadInfo.getRowId())
+                            && (DownloadManager.STATUS_SUCCESSFUL != downloadInfo.getStatus())) {
+
+                        String cancelStr = mContext.getString(R.string.download_cancel);
+                        Toast.makeText(mContext, cancelStr, Toast.LENGTH_SHORT).show();
+
+                        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                        manager.remove(mDownloadInfo.get(position).getDownloadId());
+
+                        remove(position);
+                    }
+
+                }
+            }
+        });
     }
 
     @Override
