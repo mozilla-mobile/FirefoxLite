@@ -793,7 +793,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
                     final View container = findViewById(R.id.container);
                     String completedStr = getString(R.string.download_completed, downloadInfo.getFileName());
-                    Snackbar.make(container, completedStr, Snackbar.LENGTH_SHORT)
+                    Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG)
                             .setAction(R.string.open, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
