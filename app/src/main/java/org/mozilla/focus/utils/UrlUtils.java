@@ -66,7 +66,7 @@ public class UrlUtils {
                 : Uri.parse("http://" + url);
 
         final String host = TextUtils.isEmpty(uri.getHost()) ? "" : uri.getHost();
-        switch(uri.getScheme()){
+        switch (uri.getScheme()) {
             case "http":
             case "https":
                 // localhost allows zero dot
@@ -130,16 +130,23 @@ public class UrlUtils {
         }
     }
 
-    public static boolean isPermittedResourceProtocol(final String url) {
-        return url.startsWith("http") ||
-                url.startsWith("https") ||
-                url.startsWith("file") ||
-                url.startsWith("data");
+    public static boolean isPermittedResourceProtocol(@NonNull final String scheme) {
+        if (TextUtils.isEmpty(scheme)) {
+            return false;
+        }
+
+        return scheme.startsWith("http") ||
+                scheme.startsWith("https") ||
+                scheme.startsWith("file") ||
+                scheme.startsWith("data");
     }
 
-    public static boolean isSupportedProtocol(final String url) {
-        return isPermittedResourceProtocol(url) ||
-                url.startsWith("error");
+    public static boolean isSupportedProtocol(@NonNull final String scheme) {
+        if (TextUtils.isEmpty(scheme)) {
+            return false;
+        }
+        return isPermittedResourceProtocol(scheme) ||
+                scheme.startsWith("error");
     }
 
     public static boolean isInternalErrorURL(final String url) {
