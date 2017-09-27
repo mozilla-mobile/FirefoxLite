@@ -87,6 +87,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
+    private String firstLoadingUrlAfterResumed = null;
+
     public static BrowserFragment create(@NonNull String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
@@ -324,15 +326,24 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             String failingUrl;
             private final static int NONE = -1;
             private int systemVisibility = NONE;
-            private boolean hasPageStarted = false;
+            private boolean mostOldCallbacksHaveFinished = false;
             private String lastInsertedUrl = null;
 
             @Override
             public void onPageStarted(final String url) {
+                // This mostOldCallbacksHaveFinished flag sort of works like onPageCommitVisible.
                 // There are some callback triggers that are fired due to Webview.restoreState()
-                // As a quick fix we filtered these onPageFinished and onProgress out since they
-                // are having some properties such as: the getTitle() returned here is incomplete.
-                hasPageStarted = true;
+                // or last webview loading that are not finished. As a quick fix we filtered these
+                // onPageFinished and onProgress out by only consuming the callbacks after our
+                // targeted url has fired a onPageStarted. This is assuming we will always have a
+                // such onPageStarted call back after webview.loadUrl() which I am not certain is
+                // guaranteed. We filtered out these since they are having some properties such as:
+                // the getTitle() returned here is incomplete. This is most likely the
+                // onPageFinished events that are fired by didFinishNavigation
+                // See: https://stackoverflow.com/a/46298285/3591480
+                if (firstLoadingUrlAfterResumed != null && firstLoadingUrlAfterResumed.equals(url)) {
+                    mostOldCallbacksHaveFinished = true;
+                }
                 lastInsertedUrl = null;
 
                 updateIsLoading(true);
@@ -354,7 +365,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onPageFinished(boolean isSecure) {
-                if(!hasPageStarted) {
+                if(!mostOldCallbacksHaveFinished) {
                     return;
                 }
                 // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
@@ -384,7 +395,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onProgress(int progress) {
-                if(!hasPageStarted) {
+                if(!mostOldCallbacksHaveFinished) {
                     return;
                 }
                 progressView.setProgress(progress);
@@ -711,6 +722,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void loadUrl(@NonNull final String url) {
+        firstLoadingUrlAfterResumed = url;
         updateURL(url);
         super.loadUrl(url);
     }
