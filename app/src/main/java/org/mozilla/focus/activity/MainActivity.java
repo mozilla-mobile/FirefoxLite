@@ -286,7 +286,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
-        setEnable(shareButton, hasLoadedPage);
+        setEnable(shareButton, browserFragment != null);
         setEnable(captureButton, hasLoadedPage);
     }
 
