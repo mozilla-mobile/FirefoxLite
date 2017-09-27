@@ -55,7 +55,7 @@
   <string name="first_run_page1_title">Terima kasih telah memilih %1$s</string>
   <string name="first_run_page1_text">Sebuah peramban yang dibuat khusus untuk Indonesia oleh Mozilla, organisasi nirlaba yang berkomitmen pada web bebas dan terbuka.</string>
   <string name="first_run_page2_title">Menjelajah secepat kilat</string>
-  <string name="first_run_page2_text">Mode turbo memblokir iklan dan pelacak sehingga Anda dapat menjelajah dengan super cepat. Jika situs terasa bermasalah, cukup menonaktifkannya pada menu.</string>
+  <string name="first_run_page2_text">Gunakan mode turbo untuk memblokir iklan dan pelacak sehingga Anda dapat menjelajah dengan super cepat. Jika situs terasa bermasalah, cukup matikan mode turbo pada menu.</string>
   <string name="first_run_page3_title">Hemat data = Hemat uang</string>
   <string name="first_run_page3_text">Memblokir iklan dan pelacak daring tidak hanya mempercepat penjelajahan, tapi juga menghemat data. Anda bisa berhemat lebih banyak jika memblokir gambar.</string>
   <string name="first_run_page4_title">Tangkap layar apa saja</string>
