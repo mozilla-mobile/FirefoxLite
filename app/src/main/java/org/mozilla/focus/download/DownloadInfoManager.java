@@ -208,7 +208,7 @@ public class DownloadInfoManager {
      * @param newPath new file path
      * @param type    Mime type
      */
-    public void replacePath(final long downloadId, @NonNull final String newPath, @NonNull final String type) {
+    public long replacePath(final long downloadId, @NonNull final String newPath, @NonNull final String type) {
         final long oldId = downloadId;
         final File newFile = new File(newPath);
         final DownloadPojo pojo = queryDownloadManager(mContext, downloadId);
@@ -249,6 +249,7 @@ public class DownloadInfoManager {
                 }
             }
         });
+        return newId;
 
     }
 

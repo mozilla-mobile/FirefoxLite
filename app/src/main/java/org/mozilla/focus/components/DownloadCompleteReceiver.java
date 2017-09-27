@@ -58,11 +58,6 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 
                         //have to update, then the fileUri may write into our DB.
                         DownloadInfoManager.getInstance().updateByRowId(downloadInfo,null);
-
-                        Long rowId = downloadInfo.getRowId();
-                        Intent intentOpen = new Intent(DownloadInfoManager.DOWNLOAD_OPEN);
-                        intentOpen.putExtra(DownloadInfoManager.ROW_ID, rowId);
-                        LocalBroadcastManager.getInstance(context).sendBroadcast(intentOpen);
                     }
                 }
             }
