@@ -46,7 +46,6 @@ import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
-import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FormatUtils;
@@ -105,21 +104,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
                 final String url = intent.getDataString();
-                // FIXME: add debug message for #857
-                if (TextUtils.isEmpty(url) && !AppConstants.isReleaseBuild()) {
-                    final StringBuilder sb = new StringBuilder();
-                    sb.append("got empty url from intent, ");
-                    try {
-                        intent.getDataString();
-                        sb.append("got data string successfully, weird.");
-                        sb.append(url);
-                    } catch (OutOfMemoryError e) {
-                        sb.append("Couldn't get intent data string: OOM. Malformed?");
-                    } catch (RuntimeException e) {
-                        throw e;
-                    }
-                    throw new RuntimeException(sb.toString());
-                }
 
                 BrowsingSession.getInstance().loadCustomTabConfig(this, intent);
 
