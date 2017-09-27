@@ -36,6 +36,7 @@ import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
@@ -261,6 +262,8 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         if (TextUtils.isEmpty(url)) {
             return;
         } else if (SupportUtils.BLANK_URL.equals(url)) {
+            return;
+        } else if (!UrlUtils.isSupportedProtocol(url)) {
             return;
         }
 
