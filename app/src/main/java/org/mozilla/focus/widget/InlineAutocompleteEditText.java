@@ -523,6 +523,8 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
             } else if (textLength == textLengthBeforeChange - 1) {
                 // If you're hitting backspace (the string is getting smaller), don't autocomplete
                 doAutocomplete = false;
+            } else if (textLength == 0 ) {
+                doAutocomplete = false;
             }
 
             mAutoCompletePrefixLength = textLength;
