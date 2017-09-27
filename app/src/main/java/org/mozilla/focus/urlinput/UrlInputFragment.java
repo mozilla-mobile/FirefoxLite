@@ -201,7 +201,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     }
 
     public void onCommit(boolean isSuggestion) {
-        final String input = urlView.getOriginalText();
+        final String input = isSuggestion ? urlView.getOriginalText() : urlView.getText().toString();
         if (!input.trim().isEmpty()) {
             ViewUtils.hideKeyboard(urlView);
 
