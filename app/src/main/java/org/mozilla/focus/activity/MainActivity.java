@@ -541,6 +541,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 //  onCaptureComplete called
             } else {
                 //  Capture failed
+                ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
+                if (screenCaptureDialogFragment != null) {
+                    screenCaptureDialogFragment.dismiss();
+                }
                 promptScreenshotResult(R.string.screenshot_failed);
             }
         }
