@@ -628,12 +628,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         //record download ID
         DownloadInfo downloadInfo = new DownloadInfo();
         downloadInfo.setDownloadId(downloadId);
-        DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
-            @Override
-            public void onInsertComplete(long id) {
-                DownloadInfoManager.notifyRowUpdated(getContext(), id);
-            }
-        });
+        // When downloading downloaded content, DownloadManager returns the previous download id
+        // Do not insert again if we're already showing it.
+        if (!DownloadInfoManager.getInstance().recordExists(downloadId)) {
+            DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
+                @Override
+                public void onInsertComplete(long id) {
+                    DownloadInfoManager.notifyRowUpdated(getContext(), id);
+                }
+            });
+        }
 
         if (!download.isStartFromContextMenu()) {
             Toast.makeText(getContext(), R.string.download_started, Toast.LENGTH_LONG)
