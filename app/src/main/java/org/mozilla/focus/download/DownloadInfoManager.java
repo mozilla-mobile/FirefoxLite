@@ -159,9 +159,9 @@ public class DownloadInfoManager {
                 , Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo));
     }
 
-    public void delete(Long downloadId, AsyncDeleteListener listener) {
-        mQueryHandler.startDelete(TOKEN, new AsyncDeleteWrapper(downloadId, listener)
-                , Download.CONTENT_URI, Download.DOWNLOAD_ID + " = ?", new String[]{Long.toString(downloadId)});
+    public void delete(Long rowId, AsyncDeleteListener listener) {
+        mQueryHandler.startDelete(TOKEN, new AsyncDeleteWrapper(rowId, listener)
+                , Download.CONTENT_URI, Download._ID + " = ?", new String[]{Long.toString(rowId)});
     }
 
     public void updateByDownloadId(DownloadInfo downloadInfo, AsyncUpdateListener listener) {
