@@ -153,10 +153,10 @@ public abstract class WebFragment extends LocaleAwareFragment {
             if (UrlUtils.isUrl(url)) {
                 this.pendingUrl = null; // clear pending url
 
-                // in case of any unexpected path to here, to normalize URL in release build
-                final String target = AppConstants.isReleaseBuild() ? UrlUtils.normalize(url) : url;
+                // in case of any unexpected path to here, to normalize URL in beta/release build
+                final String target = AppConstants.isDevBuild() ? url: UrlUtils.normalize(url);
                 webView.loadUrl(target);
-            } else if (!AppConstants.isReleaseBuild()) {
+            } else if (AppConstants.isDevBuild()) {
                 // throw exception to highlight this issue, except release build.
                 throw new RuntimeException("trying to open a invalid url: " + url);
             }
