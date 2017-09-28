@@ -54,6 +54,7 @@ import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
+import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
@@ -67,6 +68,7 @@ import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 /**
  * Fragment for displaying the browser UI.
@@ -623,7 +625,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         request.allowScanningByMediaScanner();
 
         final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Long downloadId = manager.enqueue(request);
+        final Long downloadId = manager.enqueue(request);
 
         //record download ID
         DownloadInfo downloadInfo = new DownloadInfo();
@@ -635,6 +637,26 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 @Override
                 public void onInsertComplete(long id) {
                     DownloadInfoManager.notifyRowUpdated(getContext(), id);
+                }
+            });
+        } else {
+            DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {
+                @Override
+                public void onQueryComplete(List downloadInfoList) {
+                    if(!downloadInfoList.isEmpty()) {
+                        DownloadInfo info = (DownloadInfo) downloadInfoList.get(0);
+                        DownloadInfoManager.getInstance().delete(downloadId, null);
+                        DownloadInfoManager.getInstance().insert(info, new DownloadInfoManager.AsyncInsertListener() {
+                            @Override
+                            public void onInsertComplete(long id) {
+                                DownloadInfoManager.notifyRowUpdated(getContext(), id);
+                                final Intent broadcastIntent = new Intent(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
+                                broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
+                                broadcastIntent.putExtra(Constants.EXTRA_ROW_ID, id);
+                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(broadcastIntent);
+                            }
+                        });
+                    }
                 }
             });
         }
