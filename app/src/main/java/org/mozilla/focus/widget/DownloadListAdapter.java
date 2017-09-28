@@ -79,7 +79,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void updateItem(DownloadInfo downloadInfo){
         int index = -1;
         for (int i = 0;i<mDownloadInfo.size();i++){
-            if (mDownloadInfo.get(i).getDownloadId().equals(downloadInfo.getDownloadId())){
+            if (mDownloadInfo.get(i).getRowId().equals(downloadInfo.getRowId())){
                 index = i;
                 break;
             }
@@ -94,92 +94,83 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.notifyDataSetChanged();
     }
 
-    private void remove(int position){
-        long downloadId = mDownloadInfo.get(position).getDownloadId();
-        DownloadInfoManager.getInstance().delete(downloadId,null);
-
-        mDownloadInfo.remove(position);
-
-        this.notifyDataSetChanged();
+    private void removeItem(long rowId){
+        DownloadInfoManager.getInstance().delete(rowId,null);
+        hideItem(rowId);
     }
 
-    private void delete(View view, final int position) {
-        final DownloadInfo deletedDownload = mDownloadInfo.get(position);
-        final File file = new File(URI.create(deletedDownload.getFileUri()).getPath());
-        String deleteStr = mContext.getString(R.string.download_deleted, mDownloadInfo.get(position).getFileName());
+    private void delete(final View view, final long rowId) {
+        DownloadInfoManager.getInstance().queryByRowId(rowId, new DownloadInfoManager.AsyncQueryListener() {
+            @Override
+            public void onQueryComplete(List downloadInfoList) {
+                if (downloadInfoList.size() > 0
+                        && rowId == ((DownloadInfo) downloadInfoList.get(0)).getRowId()) {
 
-        Snackbar snackBar
-                = Snackbar.make(view,  deleteStr, Snackbar.LENGTH_SHORT)
-                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-                        //TODO: delete file
-                        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                            try {
-                                if (file.delete()) {
+                    DownloadInfo deletedDownload = (DownloadInfo) downloadInfoList.get(0);
+                    File file = new File(URI.create(deletedDownload.getFileUri()).getPath());
 
-                                    DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                                    manager.remove(deletedDownload.getDownloadId());
+                    Snackbar snackBar = getDeleteSnackBar(view, deletedDownload);
 
-                                    DownloadInfoManager.getInstance().delete(deletedDownload.getDownloadId(), null);
-                                } else {
-                                    Toast.makeText(mContext, R.string.cannot_delete_the_file, Toast.LENGTH_SHORT).show();
-                                }
-
-                            } catch (Exception e) {
-                                Log.e(this.getClass().getSimpleName(), "" + e.getMessage());
-                                Toast.makeText(mContext, R.string.cannot_delete_the_file, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    if (file.exists()) {
+                        snackBar.show();
+                    } else {
+                        Toast.makeText(mContext, R.string.cannot_find_the_file, Toast.LENGTH_SHORT).show();
                     }
-                    @Override
-                    public void onShown(Snackbar transientBottomBar) {
-                        super.onShown(transientBottomBar);
-                        mDownloadInfo.remove(position);
-                        DownloadListAdapter.this.notifyDataSetChanged();
-                    }
-                })
-                .setAction(R.string.undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // TODO: undo
-                        mDownloadInfo.add(position, deletedDownload);
-                        DownloadListAdapter.this.notifyDataSetChanged();
-                    }
-                });
-
-        if (file.exists()) {
-            snackBar.show();
-        } else {
-            Toast.makeText(mContext, R.string.cannot_find_the_file, Toast.LENGTH_SHORT).show();
-        }
+                }
+            }
+        });
     }
 
-    private void cancel(final int position){
+    private void cancel(final long rowId){
 
-        final long targetRowId = mDownloadInfo.get(position).getRowId();
-        DownloadInfoManager.getInstance().queryByRowId(targetRowId, new DownloadInfoManager.AsyncQueryListener() {
+        DownloadInfoManager.getInstance().queryByRowId(rowId, new DownloadInfoManager.AsyncQueryListener() {
             @Override
             public void onQueryComplete(List downloadInfoList) {
                 if (downloadInfoList.size() > 0) {
                     DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
 
-                    if ((targetRowId == downloadInfo.getRowId())
+                    if ((rowId == downloadInfo.getRowId())
                             && (DownloadManager.STATUS_SUCCESSFUL != downloadInfo.getStatus())) {
 
                         String cancelStr = mContext.getString(R.string.download_cancel);
                         Toast.makeText(mContext, cancelStr, Toast.LENGTH_SHORT).show();
 
                         DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                        manager.remove(mDownloadInfo.get(position).getDownloadId());
+                        manager.remove(downloadInfo.getDownloadId());
 
-                        remove(position);
+                        removeItem(rowId);
                     }
 
                 }
             }
         });
+    }
+
+    private void addItem(DownloadInfo downloadInfo){
+        int index = -1;
+        for (int i = 0;i<mDownloadInfo.size();i++){
+            if (mDownloadInfo.get(i).getRowId() < downloadInfo.getRowId()){
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1){
+            mDownloadInfo.add(downloadInfo);
+        }else {
+            mDownloadInfo.add(index,downloadInfo);
+        }
+        this.notifyDataSetChanged();
+    }
+
+    private void hideItem(long rowId){
+        for (DownloadInfo downloadInfo : mDownloadInfo){
+            if (rowId == downloadInfo.getRowId()){
+                mDownloadInfo.remove(downloadInfo);
+                this.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     @Override
@@ -236,11 +227,13 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             holder.subtitle.setText(subtitle);
 
-            holder.action.setTag(position);
+            holder.action.setTag(R.id.status,downloadInfo.getStatus());
+            holder.action.setTag(R.id.row_id,downloadInfo.getRowId());
             holder.action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    final int position = (int) view.getTag();
+                    final long rowid = (long) view.getTag(R.id.row_id);
+                    int status = (int) view.getTag(R.id.status);
                     final PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
                     popupMenu.getMenuInflater().inflate(R.menu.menu_delete,popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -249,17 +242,17 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                             switch (menuItem.getItemId()){
                                 case R.id.remove:
-                                    remove(position);
+                                    removeItem(rowid);
                                     TelemetryWrapper.downloadRemoveFile();
                                     popupMenu.dismiss();
                                     return true;
                                 case R.id.delete:
-                                    delete(view, position);
+                                    delete(view, rowid);
                                     TelemetryWrapper.downloadDeleteFile();
                                     popupMenu.dismiss();
                                     return true;
                                 case R.id.cancel:
-                                    cancel(position);
+                                    cancel(rowid);
                                     popupMenu.dismiss();
                                     return true;
                                 default:
@@ -269,7 +262,8 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         }
                     });
 
-                    if (DownloadManager.STATUS_RUNNING == mDownloadInfo.get(position).getStatus()){
+
+                    if (DownloadManager.STATUS_RUNNING == status){
 
                         popupMenu.getMenu().findItem(R.id.remove).setVisible(false);
                         popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
@@ -280,6 +274,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         popupMenu.getMenu().findItem(R.id.delete).setVisible(true);
                         popupMenu.getMenu().findItem(R.id.cancel).setVisible(false);
                     }
+
                     popupMenu.show();
                     TelemetryWrapper.showFileContextMenu();
                 }
@@ -405,5 +400,48 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             itemView.setVisibility(View.GONE);
         }
+    }
+
+    private Snackbar getDeleteSnackBar(View view, final DownloadInfo deletedDownload){
+        final String deleteStr = mContext.getString(R.string.download_deleted,deletedDownload.getFileName());
+        final File deleteFile = new File(URI.create(deletedDownload.getFileUri()).getPath());
+
+        return Snackbar.make(view,  deleteStr, Snackbar.LENGTH_SHORT)
+                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        super.onDismissed(transientBottomBar, event);
+
+                        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                            try {
+                                if (deleteFile.delete()) {
+
+                                    DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                                    manager.remove(deletedDownload.getDownloadId());
+
+                                    DownloadInfoManager.getInstance().delete(deletedDownload.getRowId(), null);
+                                } else {
+                                    Toast.makeText(mContext, R.string.cannot_delete_the_file, Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (Exception e) {
+                                Log.e(this.getClass().getSimpleName(), "" + e.getMessage());
+                                Toast.makeText(mContext, R.string.cannot_delete_the_file, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onShown(Snackbar transientBottomBar) {
+                        super.onShown(transientBottomBar);
+                        hideItem(deletedDownload.getRowId());
+                    }
+                })
+                .setAction(R.string.undo, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addItem(deletedDownload);
+                    }
+                });
     }
 }
