@@ -10,9 +10,11 @@ import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -30,7 +32,7 @@ public class DownloadInfoManager {
     
     public static final String DOWNLOAD_OPEN = "download open";
     public static final String ROW_ID = "row id";
-    public static final String INSERT_SUCCESS = "insert successful";
+    public static final String ROW_UPDATED = "row_updated";
     private static final int TOKEN = 2;
     private static DownloadInfoManager sInstance;
     private static Context mContext;
@@ -208,7 +210,7 @@ public class DownloadInfoManager {
      * @param newPath new file path
      * @param type    Mime type
      */
-    public long replacePath(final long downloadId, @NonNull final String newPath, @NonNull final String type) {
+    public void replacePath(final long downloadId, @NonNull final String newPath, @NonNull final String type) {
         final long oldId = downloadId;
         final File newFile = new File(newPath);
         final DownloadPojo pojo = queryDownloadManager(mContext, downloadId);
@@ -230,7 +232,6 @@ public class DownloadInfoManager {
                 newPath,
                 newFile.length(),
                 visible);
-        manager.remove(oldId);
 
         // filename might be different from old file
         // update by row id
@@ -239,18 +240,29 @@ public class DownloadInfoManager {
             public void onQueryComplete(List downloadInfoList) {
                 for (int i = 0; i < downloadInfoList.size(); i++) {
                     DownloadInfo queryDownloadInfo = (DownloadInfo) downloadInfoList.get(i);
-                    Long rowId = queryDownloadInfo.getRowId();
                     if (oldId == queryDownloadInfo.getDownloadId()){
-                        DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath,rowId);
+                        final long rowId = queryDownloadInfo.getRowId();
+                        final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath,rowId);
                         newInfo.setDownloadId(newId);
-                        updateByRowId(newInfo,null);
+                        updateByRowId(newInfo, new AsyncUpdateListener() {
+                            @Override
+                            public void onUpdateComplete(int result) {
+                                notifyRowUpdated(mContext, rowId);
+                            }
+                        });
                         break;
                     }
+                    manager.remove(oldId);
                 }
             }
         });
-        return newId;
 
+    }
+
+    public static void notifyRowUpdated(Context context, long rowId) {
+        Intent intent = new Intent(DownloadInfoManager.ROW_UPDATED);
+        intent.putExtra(DownloadInfoManager.ROW_ID, rowId);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
     private static ContentValues getContentValuesFromDownloadInfo(DownloadInfo downloadInfo) {

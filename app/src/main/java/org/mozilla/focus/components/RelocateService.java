@@ -45,12 +45,14 @@ public class RelocateService extends IntentService {
      * @see IntentService
      */
     public static void startActionMove(@NonNull Context context,
+                                       long rowId,
                                        long downloadId,
                                        @NonNull File srcFile,
                                        @Nullable String mediaType) {
 
         final Intent intent = new Intent(context, RelocateService.class);
         intent.setAction(ACTION_MOVE);
+        intent.putExtra(Constants.EXTRA_ROW_ID, rowId);
         intent.putExtra(Constants.EXTRA_DOWNLOAD_ID, downloadId);
         intent.putExtra(Constants.EXTRA_FILE_PATH, srcFile.getAbsolutePath());
         intent.setType(mediaType);
@@ -62,12 +64,13 @@ public class RelocateService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_MOVE.equals(action)) {
-                final long param1 = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1);
+                final long rowId = intent.getLongExtra(Constants.EXTRA_ROW_ID, -1);
+                final long downloadId = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1);
                 final String type = intent.getType();
                 final File src = new File(intent.getStringExtra(Constants.EXTRA_FILE_PATH));
 
                 if (src.exists() && src.canWrite()) {
-                    handleActionMove(param1, src, type);
+                    handleActionMove(rowId, downloadId, src, type);
                 }
             }
         }
@@ -77,14 +80,15 @@ public class RelocateService extends IntentService {
      * Handle action Move in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionMove(final long downloadId,
+    private void handleActionMove(final long rowId,
+                                  final long downloadId,
                                   @NonNull final File srcFile,
                                   @Nullable final String mediaType) {
 
         final Settings settings = Settings.getInstance(getApplicationContext());
         // Do nothing, if user turned off the option
         if (!settings.shouldSaveToRemovableStorage()) {
-            broadcastRelocateFinished(downloadId);
+            broadcastRelocateFinished(rowId);
             return;
         }
 
@@ -97,7 +101,7 @@ public class RelocateService extends IntentService {
         // To move file if we have correct permission
         if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            moveFile(downloadId, srcFile, mediaType);
+            moveFile(rowId, downloadId, srcFile, mediaType);
         } else {
             // if no permission, send broadcast to UI.
             // If get permission from UI, it should startService again
@@ -109,11 +113,12 @@ public class RelocateService extends IntentService {
      * If removable storage exists, to move a file to it. Once moving completed, also update
      * database for latest file path.
      *
-     * @param downloadId id of downloaded file, need this to update database
+     * @param rowId id of downloaded file in our database
+     * @param downloadId downloadId of downloaded file, need this to update system database
      * @param srcFile    file to be moved
      * @param type       MIME type of the file, to decide sub directory
      */
-    private void moveFile(final long downloadId, final File srcFile, final String type) {
+    private void moveFile(final long rowId, final long downloadId, final File srcFile, final String type) {
         final Settings settings = Settings.getInstance(getApplicationContext());
         File destFile = null;
         try {
@@ -126,7 +131,7 @@ public class RelocateService extends IntentService {
                     final CharSequence msg = getString(R.string.message_removable_storage_space_not_enough);
                     broadcastUi(msg);
                     Log.w(TAG, msg.toString());
-                    broadcastRelocateFinished(downloadId);
+                    broadcastRelocateFinished(rowId);
                     return;
                 }
 
@@ -135,7 +140,7 @@ public class RelocateService extends IntentService {
                 if (!copied) {
                     Log.w(TAG, String.format("cannot copy file from %s to %s",
                             srcFile.getPath(), destFile.getPath()));
-                    broadcastRelocateFinished(downloadId);
+                    broadcastRelocateFinished(rowId);
                     return;
                 }
 
@@ -146,8 +151,8 @@ public class RelocateService extends IntentService {
 
                 // downloaded file is moved, update database to reflect this changing
                 final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
-                long newId = mgr.replacePath(downloadId, destFile.getAbsolutePath(), type);
-                broadcastRelocateFinished(newId);
+                mgr.replacePath(downloadId, destFile.getAbsolutePath(), type);
+                broadcastRelocateFinished(rowId);
 
                 // removable-storage did not exist on app creation, but now it is back
                 // we moved download file to removable-storage, now we should inform user
@@ -165,7 +170,7 @@ public class RelocateService extends IntentService {
         } catch (NoRemovableStorageException e) {
             // removable-storage existed on app creation, but now it is gone
             // we keep download file in original path, now we should inform user
-            broadcastRelocateFinished(downloadId);
+            broadcastRelocateFinished(rowId);
             if (settings.getRemovableStorageStateOnCreate()) {
 
                 // avoid sending same message continuously
@@ -180,7 +185,7 @@ public class RelocateService extends IntentService {
             e.printStackTrace();
         } catch (Exception e) {
             // if anything wrong, try to keep original file
-            broadcastRelocateFinished(downloadId);
+            broadcastRelocateFinished(rowId);
             try {
                 if ((destFile != null)
                         && destFile.exists()
@@ -226,10 +231,10 @@ public class RelocateService extends IntentService {
         Log.d(TAG, "no permission for file relocating, send broadcast to grant permission");
     }
 
-    private void broadcastRelocateFinished(long downloadId) {
+    private void broadcastRelocateFinished(long rowId) {
         final Intent broadcastIntent = new Intent(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
-        broadcastIntent.putExtra(Constants.EXTRA_DOWNLOAD_ID, downloadId);
+        broadcastIntent.putExtra(Constants.EXTRA_ROW_ID, rowId);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
 

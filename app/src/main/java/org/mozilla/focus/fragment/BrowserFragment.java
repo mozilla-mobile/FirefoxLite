@@ -631,9 +631,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
             @Override
             public void onInsertComplete(long id) {
-                Intent intent = new Intent(DownloadInfoManager.INSERT_SUCCESS);
-                intent.putExtra(DownloadInfoManager.ROW_ID, id);
-                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+                DownloadInfoManager.notifyRowUpdated(getContext(), id);
             }
         });
 
