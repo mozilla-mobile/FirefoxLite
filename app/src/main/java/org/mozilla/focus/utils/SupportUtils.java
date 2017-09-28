@@ -21,7 +21,7 @@ public class SupportUtils {
     public static final String BLOCKING_HELP_URL = "";
     public static final String DEFAULT_BROWSER_URL = "https://support.mozilla.org/kb/set-firefox-focus-default-browser-android";
     public static final String YOUR_RIGHTS_URI = "file:///android_asset/rights-focus.html";
-    public static final String PRIVACY_URL = "https://www.mozilla.org/privacy/firefox-rocket/";
+    public static final String PRIVACY_URL = "https://github.com/mozilla-tw/Zerda/wiki/Telemetry";
     public static final String ABOUT_URI = "file:///android_res/raw/about.html";
 
     static final String[] SUPPORTED_URLS = new String[]{
