@@ -17,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import com.bumptech.glide.gifdecoder.GifDecoder;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.data.InputStreamRewinder;
 import com.bumptech.glide.load.engine.Engine;
@@ -55,14 +54,8 @@ import com.bumptech.glide.load.resource.bitmap.StreamBitmapDecoder;
 import com.bumptech.glide.load.resource.bitmap.VideoBitmapDecoder;
 import com.bumptech.glide.load.resource.bytes.ByteBufferRewinder;
 import com.bumptech.glide.load.resource.file.FileDecoder;
-import com.bumptech.glide.load.resource.gif.ByteBufferGifDecoder;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.load.resource.gif.GifDrawableEncoder;
-import com.bumptech.glide.load.resource.gif.GifFrameResourceDecoder;
-import com.bumptech.glide.load.resource.gif.StreamGifDecoder;
 import com.bumptech.glide.load.resource.transcode.BitmapBytesTranscoder;
 import com.bumptech.glide.load.resource.transcode.BitmapDrawableTranscoder;
-import com.bumptech.glide.load.resource.transcode.GifDrawableBytesTranscoder;
 import com.bumptech.glide.manager.ConnectivityMonitorFactory;
 import com.bumptech.glide.manager.RequestManagerRetriever;
 import com.bumptech.glide.module.GlideModule;
@@ -295,8 +288,6 @@ public class Glide implements ComponentCallbacks2 {
 
     Downsampler downsampler = new Downsampler(registry.getImageHeaderParsers(),
         resources.getDisplayMetrics(), bitmapPool, arrayPool);
-    ByteBufferGifDecoder byteBufferGifDecoder =
-        new ByteBufferGifDecoder(context, registry.getImageHeaderParsers(), bitmapPool, arrayPool);
 
     registry
         .append(ByteBuffer.class, new ByteBufferEncoder())
@@ -319,16 +310,6 @@ public class Glide implements ComponentCallbacks2 {
         .append(Registry.BUCKET_BITMAP_DRAWABLE, ParcelFileDescriptor.class, BitmapDrawable.class,
             new BitmapDrawableDecoder<>(resources, bitmapPool, new VideoBitmapDecoder(bitmapPool)))
         .append(BitmapDrawable.class, new BitmapDrawableEncoder(bitmapPool, new BitmapEncoder()))
-        /* GIFs */
-        .append(Registry.BUCKET_GIF, InputStream.class, GifDrawable.class,
-            new StreamGifDecoder(registry.getImageHeaderParsers(), byteBufferGifDecoder, arrayPool))
-        .append(Registry.BUCKET_GIF, ByteBuffer.class, GifDrawable.class, byteBufferGifDecoder)
-        .append(GifDrawable.class, new GifDrawableEncoder())
-        /* GIF Frames */
-        // Compilation with Gradle requires the type to be specified for UnitModelLoader here.
-        .append(GifDecoder.class, GifDecoder.class, new UnitModelLoader.Factory<GifDecoder>())
-        .append(Registry.BUCKET_BITMAP, GifDecoder.class, Bitmap.class,
-            new GifFrameResourceDecoder(bitmapPool))
         /* Files */
         .register(new ByteBufferRewinder.Factory())
         .append(File.class, ByteBuffer.class, new ByteBufferFileLoader.Factory())
@@ -375,8 +356,7 @@ public class Glide implements ComponentCallbacks2 {
         /* Transcoders */
         .register(Bitmap.class, BitmapDrawable.class,
             new BitmapDrawableTranscoder(resources, bitmapPool))
-        .register(Bitmap.class, byte[].class, new BitmapBytesTranscoder())
-        .register(GifDrawable.class, byte[].class, new GifDrawableBytesTranscoder());
+        .register(Bitmap.class, byte[].class, new BitmapBytesTranscoder());
 
     ImageViewTargetFactory imageViewTargetFactory = new ImageViewTargetFactory();
     glideContext =

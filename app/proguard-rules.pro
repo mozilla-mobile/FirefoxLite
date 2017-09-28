@@ -110,3 +110,7 @@ public static java.lang.String TABLENAME;
 # Marshmallow removed Notification.setLatestEventInfo()
 -dontwarn android.app.Notification
 
+
+## Integrate Glide source code
+-dontwarn android.graphics.Bitmap$Config
+-dontwarn android.app.FragmentManager
