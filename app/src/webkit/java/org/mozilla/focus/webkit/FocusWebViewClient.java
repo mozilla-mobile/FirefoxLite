@@ -116,10 +116,10 @@ import java.util.Map;
         view.getSettings().setLoadsImagesAutomatically(true);
         if (url == null) {
             // in case of null url, we won't crash app in release build
-            if (AppConstants.isReleaseBuild()) {
-                return super.shouldOverrideUrlLoading(view, "");
-            } else {
+            if (AppConstants.isDevBuild()) {
                 throw new RuntimeException("Got null url in FocsWebViewClient.shouldOverrideUrlLoading");
+            } else {
+                return super.shouldOverrideUrlLoading(view, "");
             }
         }
 
