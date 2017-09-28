@@ -33,6 +33,12 @@ public class Constants {
     public static final String EXTRA_DOWNLOAD_ID = "org.mozilla.extra.download_id";
 
     /**
+     * The row id of our DownloadInfoManager. Its value type should be *long*
+     */
+    public static final String EXTRA_ROW_ID = "org.mozilla.extra.row_id";
+
+
+    /**
      * Option value for file path. Its value type should be *string*
      */
     public static final String EXTRA_FILE_PATH = "org.mozilla.extra.file_path";

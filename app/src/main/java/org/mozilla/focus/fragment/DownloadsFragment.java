@@ -64,7 +64,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
         mInsertReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(DownloadInfoManager.INSERT_SUCCESS)) {
+                if (intent.getAction().equals(DownloadInfoManager.ROW_UPDATED)) {
                     Long id = intent.getLongExtra(DownloadInfoManager.ROW_ID, 0L);
                     if (id > 0) {
                         DownloadInfoManager.getInstance().queryByRowId(id, DownloadsFragment.this);
@@ -85,7 +85,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mInsertReceiver
-                ,new IntentFilter(DownloadInfoManager.INSERT_SUCCESS));
+                ,new IntentFilter(DownloadInfoManager.ROW_UPDATED));
         getContext().registerReceiver(mDownloadReceiver
                 ,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }

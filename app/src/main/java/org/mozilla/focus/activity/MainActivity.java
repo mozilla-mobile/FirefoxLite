@@ -135,7 +135,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         showMessage(msg);
                         break;
                     case Constants.ACTION_NOTIFY_RELOCATE_FINISH:
-                        showOpenSnackBar(intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1));
+                        showOpenSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1));
                         break;
                     default:
                         break;
@@ -781,8 +781,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         Settings.getInstance(this).setRemovableStorageStateOnCreate(exist);
     }
 
-    private void showOpenSnackBar(Long downloadId) {
-        DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {
+    private void showOpenSnackBar(Long rowId) {
+        DownloadInfoManager.getInstance().queryByRowId(rowId, new DownloadInfoManager.AsyncQueryListener() {
             @Override
             public void onQueryComplete(List downloadInfoList) {
                 if (downloadInfoList.size() > 0) {
