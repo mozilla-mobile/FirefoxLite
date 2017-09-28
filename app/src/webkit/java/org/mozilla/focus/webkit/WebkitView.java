@@ -270,7 +270,9 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
             return;
         } else if (SupportUtils.BLANK_URL.equals(url)) {
             return;
-        } else if (!UrlUtils.isSupportedProtocol(url)) {
+        }
+
+        if (!UrlUtils.isHttpOrHttps(url)) {
             return;
         }
 
