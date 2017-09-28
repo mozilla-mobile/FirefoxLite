@@ -144,7 +144,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':subsampling-scale-image-view')
+    compile project(':third_party:subsampling-scale-image-view')
 
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:customtabs:25.3.1'
