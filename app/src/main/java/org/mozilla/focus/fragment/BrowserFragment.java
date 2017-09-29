@@ -343,7 +343,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 // the getTitle() returned here is incomplete. This is most likely the
                 // onPageFinished events that are fired by didFinishNavigation
                 // See: https://stackoverflow.com/a/46298285/3591480
-                if (firstLoadingUrlAfterResumed != null && firstLoadingUrlAfterResumed.equals(url)) {
+                if (firstLoadingUrlAfterResumed != null && UrlUtils.urlsMatchExceptForTrailingSlash(firstLoadingUrlAfterResumed, url)) {
                     mostOldCallbacksHaveFinished = true;
                 }
                 lastInsertedUrl = null;
