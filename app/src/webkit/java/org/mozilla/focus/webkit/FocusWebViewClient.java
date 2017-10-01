@@ -83,7 +83,7 @@ import java.util.Map;
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
         if (callback != null) {
-            callback.updateFailingUrl(null);
+            callback.updateFailingUrl(url, false);
         }
 
         if (errorReceived) {
@@ -178,7 +178,7 @@ import java.util.Map;
         errorReceived = true;
 
         if (callback != null) {
-            callback.updateFailingUrl(failingUrl);
+            callback.updateFailingUrl(failingUrl, true);
         }
 
         // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,
