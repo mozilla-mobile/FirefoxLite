@@ -121,7 +121,7 @@ public class InfoFragment extends WebFragment {
             }
 
             @Override
-            public void updateFailingUrl(String url) {}
+            public void updateFailingUrl(String url, boolean updateFromError) {}
         };
     }
 

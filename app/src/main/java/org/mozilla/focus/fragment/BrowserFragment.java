@@ -505,8 +505,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             @Override
-            public void updateFailingUrl(String url) {
-                this.failingUrl = url;
+            public void updateFailingUrl(String url, boolean updateFromError) {
+                if( !updateFromError && !url.equals(failingUrl)) {
+                    failingUrl = null;
+                } else {
+                    this.failingUrl = url;
+                }
             }
         };
     }

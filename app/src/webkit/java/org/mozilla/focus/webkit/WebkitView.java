@@ -360,8 +360,8 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         }
 
         @Override
-        public void updateFailingUrl(String url) {
-            this.callback.updateFailingUrl(url);
+        public void updateFailingUrl(String url, boolean updateFromError) {
+            this.callback.updateFailingUrl(url, updateFromError);
         }
     }
 
