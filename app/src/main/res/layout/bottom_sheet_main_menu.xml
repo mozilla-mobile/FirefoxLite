@@ -80,6 +80,8 @@
         <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_blockimg">
+            <!--todo: the FrameLayout and LinearLayout can actually be merged now, but we' re
+            going to do this later since this is an uplift commit.-->
             <LinearLayout
                 style="@style/MenuButtonGroup">
                 <View
