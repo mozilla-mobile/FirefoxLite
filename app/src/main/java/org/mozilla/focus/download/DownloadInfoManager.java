@@ -250,9 +250,9 @@ public class DownloadInfoManager {
                                 notifyRowUpdated(mContext, rowId);
                             }
                         });
+                        manager.remove(oldId);
                         break;
                     }
-                    manager.remove(oldId);
                 }
             }
         });
