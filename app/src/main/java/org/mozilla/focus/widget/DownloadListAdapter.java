@@ -157,17 +157,19 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (index == -1){
             mDownloadInfo.add(downloadInfo);
+            this.notifyItemInserted(mDownloadInfo.size()-1);
         }else {
             mDownloadInfo.add(index,downloadInfo);
+            this.notifyItemInserted(index);
         }
-        this.notifyDataSetChanged();
     }
 
     private void hideItem(long rowId){
-        for (DownloadInfo downloadInfo : mDownloadInfo){
+        for (int i = 0; i< mDownloadInfo.size();i++){
+            DownloadInfo downloadInfo = mDownloadInfo.get(i);
             if (rowId == downloadInfo.getRowId()){
                 mDownloadInfo.remove(downloadInfo);
-                this.notifyDataSetChanged();
+                this.notifyItemRemoved(i);
                 break;
             }
         }
