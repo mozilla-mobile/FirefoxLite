@@ -152,7 +152,6 @@ public class RelocateService extends IntentService {
                 // downloaded file is moved, update database to reflect this changing
                 final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
                 mgr.replacePath(downloadId, destFile.getAbsolutePath(), type);
-                broadcastRelocateFinished(rowId);
 
                 // removable-storage did not exist on app creation, but now it is back
                 // we moved download file to removable-storage, now we should inform user
