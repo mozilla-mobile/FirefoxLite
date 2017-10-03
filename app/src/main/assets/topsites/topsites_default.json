@@ -21,17 +21,17 @@
     "viewCount": 10
   },
   {
-    "id": -4,
-    "url": "https://m.facebook.com/",
-    "title": "Facebook",
-    "favicon": "ic_facebook.png",
-    "viewCount": 8
-  },
-  {
     "id": -5,
     "url": "https://m.tokopedia.com/",
     "title": "Tokopedia",
     "favicon": "ic_tokopedia.png",
+    "viewCount": 8
+  },
+  {
+    "id": -4,
+    "url": "https://m.facebook.com/",
+    "title": "Facebook",
+    "favicon": "ic_facebook.png",
     "viewCount": 6
   },
   {
