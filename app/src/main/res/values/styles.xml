@@ -77,13 +77,12 @@
     <style name="MenuButtonContainer" parent="MenuButtonContainerSkeleton">
         <item name="android:onClick">onMenuItemClicked</item>
         <item name="android:background">@drawable/round_rectangle_ripple</item>
-        <item name="android:orientation">vertical</item>
     </style>
     <style name="MenuButtonGroup">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
     <style name="MenuButtonText">
@@ -94,7 +93,7 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingTop">5dp</item>
     </style>
     <style name="MenuButtonIcon">
         <item name="android:layout_width">24dp</item>
