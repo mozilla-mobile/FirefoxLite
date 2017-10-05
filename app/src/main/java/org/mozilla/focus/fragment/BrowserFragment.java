@@ -649,7 +649,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 public void onQueryComplete(List downloadInfoList) {
                     if(!downloadInfoList.isEmpty()) {
                         DownloadInfo info = (DownloadInfo) downloadInfoList.get(0);
-                        DownloadInfoManager.getInstance().delete(downloadId, null);
+                        DownloadInfoManager.getInstance().delete(info.getRowId(), null);
                         DownloadInfoManager.getInstance().insert(info, new DownloadInfoManager.AsyncInsertListener() {
                             @Override
                             public void onInsertComplete(long id) {
