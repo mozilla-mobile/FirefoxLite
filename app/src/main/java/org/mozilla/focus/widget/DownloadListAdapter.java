@@ -86,7 +86,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         if (index == -1){
-            mDownloadInfo.add(downloadInfo);
+            mDownloadInfo.add(0, downloadInfo);
         }else {
             mDownloadInfo.remove(index);
             mDownloadInfo.add(index,downloadInfo);
