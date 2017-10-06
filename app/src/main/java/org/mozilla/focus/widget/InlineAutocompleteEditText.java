@@ -457,6 +457,15 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
                     // by having finishComposingText() send change notifications to the IME.
                     finishComposingText();
                     setComposingRegion(composingStart, composingEnd);
+
+                    // Force to remove the last character and append it again to let IME align with current input text.
+                    String textCurrent = editable.toString();
+                    int len = textCurrent.length();
+                    beginSettingAutocomplete();
+                    editable.delete(len-1, len);
+                    editable.append(textCurrent.substring(len-1));
+                    endSettingAutocomplete();
+
                     return true;
                 }
                 return false;
