@@ -291,15 +291,27 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
     private void onShareClick() {
         if(mImageUri != null) {
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.putExtra(Intent.EXTRA_STREAM, mImageUri);
-            share.setType("image/*");
-            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            try {
-                startActivity(Intent.createChooser(share, null));
-                TelemetryWrapper.shareCaptureImage(false);
-            } catch (ActivityNotFoundException e) {
-            }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ContentResolver cr = getContentResolver();
+                    Cursor ca = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.MediaColumns._ID}, MediaStore.MediaColumns.DATA + "=?", new String[]{mScreenshot.getImageUri()}, null);
+                    if (ca != null && ca.moveToFirst()) {
+                        int id = ca.getInt(ca.getColumnIndex(MediaStore.MediaColumns._ID));
+                        ca.close();
+                        Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        share.setType("image/*");
+                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        try {
+                            startActivity(Intent.createChooser(share, null));
+                            TelemetryWrapper.shareCaptureImage(false);
+                        } catch (ActivityNotFoundException e) {
+                        }
+                    }
+                }
+            }).start();
         } else {
             setupView(true);
             initScreenshotInfo(true);
