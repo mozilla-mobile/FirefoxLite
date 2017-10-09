@@ -12,11 +12,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.annotation.StringRes;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
+import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.web.IWebView;
 
+import java.io.File;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -137,11 +141,15 @@ public class IntentUtils {
         builder.show();
     }
 
-    public static void intentOpenFile(Context context,String uri,String mimeType){
-        if (uri != null){
+    public static void intentOpenFile(Context context, String fileUriStr, String mimeType) {
+        if (fileUriStr != null) {
+            String authorities = BuildConfig.APPLICATION_ID + ".provider.fileprovider";
+            Uri fileUri = FileProvider.getUriForFile(context, authorities, new File(URI.create(fileUriStr).getPath()));
+
             Intent launchIntent = new Intent(Intent.ACTION_VIEW);
-            launchIntent.setDataAndType(Uri.parse(uri),mimeType);
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            launchIntent.setDataAndType(fileUri, mimeType);
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             try {
                 context.startActivity(launchIntent);

@@ -21,6 +21,8 @@ import android.webkit.MimeTypeMap;
 import org.mozilla.focus.utils.Constants;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -330,8 +332,8 @@ public class DownloadInfoManager {
                 pojo.timeStamp = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
                 pojo.mediaUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI));
                 pojo.fileUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                String extension = MimeTypeMap.getFileExtensionFromUrl(pojo.fileUri);
-                pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                String extension = MimeTypeMap.getFileExtensionFromUrl(URLEncoder.encode(pojo.fileUri, "UTF-8"));
+                pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
                 pojo.fileExtension = extension;
                 pojo.fileName = new File(Uri.parse(pojo.fileUri).getPath()).getName();
             }
