@@ -802,11 +802,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
                                                     @Override
                                                     public void onScanCompleted(String path, Uri uri) {
-                                                        IntentUtils.intentOpenFile(MainActivity.this, uri.toString(), downloadInfo.getMimeType());
+                                                        IntentUtils.intentOpenFile(MainActivity.this, path, downloadInfo.getMimeType());
                                                     }
                                                 });
                                     } else {
-                                        IntentUtils.intentOpenFile(view.getContext(), downloadInfo.getMediaUri(), downloadInfo.getMimeType());
+                                        IntentUtils.intentOpenFile(view.getContext(), downloadInfo.getFileUri(), downloadInfo.getMimeType());
                                     }
                                 }
                             })

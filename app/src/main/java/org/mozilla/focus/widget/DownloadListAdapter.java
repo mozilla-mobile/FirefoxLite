@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -292,7 +293,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     if (new File(URI.create(download.getFileUri()).getPath()).exists())
                     {
-                        IntentUtils.intentOpenFile(view.getContext(),download.getMediaUri(),download.getMimeType());
+                        IntentUtils.intentOpenFile(view.getContext(), download.getFileUri(), download.getMimeType());
                     }else {
                         Toast.makeText(mContext,R.string.cannot_find_the_file,Toast.LENGTH_LONG).show();
                     }
