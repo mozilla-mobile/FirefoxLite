@@ -39,7 +39,7 @@
     <string name="about_content_body">%1$s is a fast and lightweight browser produced by Mozilla. Our mission is to foster a healthy, open internet.</string>
     <string name="about_link_learn_more">Learn more</string>
     <string name="about_link_support">Support</string>
-    <string name="about_link_your_rights">Your Rights</string>
+    <string name="about_link_your_rights">Your Rights / Licenses</string>
     <string name="about_link_privacy">Privacy Notice</string>
 
     <!-- This label is shown below the name of the default search engine in settings -->
