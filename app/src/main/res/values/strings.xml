@@ -296,7 +296,7 @@
     <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 star!</string>
     <string name="rate_app_dialog_btn_feedback">No, send feedback.</string>
 
-    <string name="rate_app_feedback_url" translatable="false">https://www.mozilla.org/</string>
+    <string name="rate_app_feedback_url" translatable="false">https://qsurvey.mozilla.com/s3/Firefox-Rocket-Input/</string>
 
     <!--In-app Promotion, Share app-->
     <string name="share_app_dialog_text_title">Share {{app_name}} with friends!</string>
