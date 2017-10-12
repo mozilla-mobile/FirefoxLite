@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     private static int REQUEST_CODE_EDIT_SCREENSHOT = 102;
     private static int REQUEST_CODE_SHARE_SCREENSHOT = 103;
     private static int REQUEST_CODE_DELETE_SCREENSHOT = 104;
+    private static long DELAY_MILLIS_TO_SHOW_PROGRESS_BAR = 700;
 
     public static final void goScreenshotViewerActivityOnResult(Activity activity, Screenshot item) {
         Intent intent = new Intent(activity, ScreenshotViewerActivity.class);
@@ -76,8 +79,10 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     private ImageView mImgPlaceholder;
     private SubsamplingScaleImageView mImgScreenshot;
     private Screenshot mScreenshot;
+    private ProgressBar mProgressBar;
     private Uri mImageUri;
     private ArrayList<ImageInfo> mInfoItems = new ArrayList<>();
+    private boolean mIsImageReady = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,9 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         mImgScreenshot.setPanLimit(PAN_LIMIT_INSIDE);
         mImgScreenshot.setMinimumScaleType(SCALE_TYPE_CENTER_CROP);
         mImgScreenshot.setOnClickListener(this);
+        mImgScreenshot.setOnImageEventListener(onImageEventListener);
+
+        mProgressBar = (ProgressBar) findViewById(R.id.screenshot_progressbar);
 
         mBottomToolBar = (Toolbar) findViewById(R.id.screenshot_viewer_btm_toolbar);
 
@@ -118,6 +126,8 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 Toast.makeText(this, R.string.message_cannot_find_screenshot, Toast.LENGTH_LONG).show();
             }
         }
+
+        showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
     }
 
     @Override
@@ -403,4 +413,55 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             ScreenshotManager.getInstance().delete(mScreenshot.getId(), this);
         }
     }
+
+    private void showProgressBar(long delayMillis) {
+        Handler handler = new Handler();
+        Runnable r = new Runnable() {
+            public void run() {
+                if (!mIsImageReady && mProgressBar != null) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+
+        handler.postDelayed(r, delayMillis);
+    }
+
+    private void hideProgressBar() {
+        mIsImageReady = true;
+        if (mProgressBar != null && mProgressBar.isShown()) {
+            mProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private SubsamplingScaleImageView.OnImageEventListener onImageEventListener = new SubsamplingScaleImageView.OnImageEventListener() {
+        @Override
+        public void onReady() {
+            hideProgressBar();
+        }
+
+        @Override
+        public void onImageLoaded() {
+
+        }
+
+        @Override
+        public void onPreviewLoadError(Exception e) {
+
+        }
+
+        @Override
+        public void onImageLoadError(Exception e) {
+            hideProgressBar();
+        }
+
+        @Override
+        public void onTileLoadError(Exception e) {
+        }
+
+        @Override
+        public void onPreviewReleased() {
+
+        }
+    };
 }
