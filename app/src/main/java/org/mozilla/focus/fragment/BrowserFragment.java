@@ -56,7 +56,6 @@ import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.Constants;
-import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
@@ -136,7 +135,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     // pending action for file-choosing
     private FileChooseAction fileChooseAction;
 
-    private AlertDialog dialogScreenshotOnBoarding;
     private ScreenshotObserver screenshotObserver;
 
     @Override
@@ -900,18 +898,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     }
 
-    private void showScreenshotOnBoardingDialog() {
-        if(getActivity() != null && Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
-            if(dialogScreenshotOnBoarding != null && dialogScreenshotOnBoarding.isShowing()) {
-                return;
-            }
-            dialogScreenshotOnBoarding = DialogUtils.showScreenshotOnBoardingDialog(getActivity());
-            if(screenshotObserver != null) {
-                screenshotObserver.stop();
-            }
-        }
-    }
-
     class FileChooseAction {
         private ValueCallback<Uri[]> callback;
         private WebChromeClient.FileChooserParams params;
@@ -992,13 +978,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onScreenshotTaken(String screenshotPath, String title) {
-       if(getActivity() != null) {
-           getActivity().runOnUiThread(new Runnable() {
-               @Override
-               public void run() {
-                   showScreenshotOnBoardingDialog();
-               }
-           });
-       }
+        if(screenshotObserver != null) {
+            screenshotObserver.stop();
+        }
+        notifyParent(FragmentListener.TYPE.SHOW_SCREENSHOT_HINT, null);
     }
 }

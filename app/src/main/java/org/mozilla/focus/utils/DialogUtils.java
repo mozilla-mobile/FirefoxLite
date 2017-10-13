@@ -4,12 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -84,7 +80,11 @@ public class DialogUtils {
         Settings.getInstance(context).setShareAppDialogDidShow();
     }
 
-    public static AlertDialog showScreenshotOnBoardingDialog(Context context) {
+    public static void showScreenshotOnBoardingDialog(Context context) {
+        if(context == null || !Settings.getInstance(context).shouldShowScreenshotOnBoarding()) {
+            return;
+        }
+
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_screenshot_onboarding_dialog, null);
 
@@ -98,6 +98,5 @@ public class DialogUtils {
         dialog.setView(dialogView);
         dialog.show();
         Settings.getInstance(context).setScreenshotOnBoardingDone();
-        return dialog;
     }
 }
