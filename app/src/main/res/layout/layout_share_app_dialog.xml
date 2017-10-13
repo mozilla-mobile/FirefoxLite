@@ -5,11 +5,29 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/promotion_03" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/promotion_03" />
+
+        <ImageButton
+            android:id="@+id/dialog_share_app_btn_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/round_rectangle_ripple"
+            android:padding="11dp"
+            android:src="@drawable/edit_close"
+            android:tint="@color/colorScreenshotItemBorder" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -19,7 +37,7 @@
         android:layout_marginTop="35dp"
         android:gravity="center"
         android:text="@string/share_app_dialog_text_title"
-        android:textColor="@color/colorMenuLabelDefault"
+        android:textColor="@color/colorDownloadText"
         android:textSize="20sp" />
 
     <TextView
@@ -30,6 +48,7 @@
         android:gravity="center"
         android:lineSpacingExtra="5dp"
         android:text="@string/share_app_dialog_text_content"
+        android:textColor="@color/colorDownloadSubText"
         android:textSize="16sp" />
 
     <View
@@ -39,11 +58,12 @@
         android:background="@color/colorPromotionDialogDivider" />
 
     <Button
-        android:id="@+id/dialog_rate_app_btn_share"
+        android:id="@+id/dialog_share_app_btn_share"
         style="@style/PromoteDialogButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/share_app_dialog_btn_share"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp" />
 
 </LinearLayout>
