@@ -377,6 +377,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 onPreferenceClicked();
                 TelemetryWrapper.clickMenuSettings();
                 break;
+            case R.id.menu_exit:
+                onExitClicked();
+                TelemetryWrapper.clickMenuExit();
+                break;
             case R.id.action_next:
             case R.id.action_loading:
             case R.id.action_share:
@@ -448,6 +452,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onPreferenceClicked() {
         openPreferences();
+    }
+
+    private void onExitClicked() {
+        finish();
+        moveTaskToBack(true);
     }
 
     private void onDownloadClicked() {

@@ -73,6 +73,7 @@
   <string name="label_menu_block_ads">Blokir Iklan</string>
   <string name="label_menu_block_image">Blokir gambar</string>
   <string name="label_menu_settings">Setelan</string>
+  <string name="label_menu_exit">Keluar</string>
   <string name="geolocation_dialog_message">%1$s ingin menggunakan lokasi peranti Anda.</string>
   <string name="geolocation_dialog_allow">IZINKAN</string>
   <string name="geolocation_dialog_block">TOLAK</string>

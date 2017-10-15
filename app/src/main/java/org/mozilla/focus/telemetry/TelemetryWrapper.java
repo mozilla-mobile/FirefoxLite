@@ -383,6 +383,10 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.SETTINGS).queue();
     }
 
+    public static void clickMenuExit() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.EXIT).queue();
+    }
+
     public static void clickToolbarForward() {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.FORWARD).queue();
     }
