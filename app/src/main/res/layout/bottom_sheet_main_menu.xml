@@ -118,12 +118,25 @@
                     android:text="@string/label_menu_settings"/>
             </LinearLayout>
         </FrameLayout>
+        <FrameLayout
+            style="@style/MenuButtonContainer"
+            android:id="@+id/menu_exit">
+            <LinearLayout
+                style="@style/MenuButtonGroup">
+                <View
+                    style="@style/MenuButtonIcon"
+                    android:background="@drawable/menu_exit"/>
+                <TextView
+                    style="@style/MenuButtonText"
+                    android:text="@string/label_menu_exit"/>
+            </LinearLayout>
+        </FrameLayout>
 
         <!-- a placeholder for layout -->
-        <View
-            style="@style/MenuButtonContainerSkeleton"
-            android:background="@android:color/transparent"
-            tools:background="#33FF0000" />
+        <!--<View-->
+            <!--style="@style/MenuButtonContainerSkeleton"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--tools:background="#33FF0000" />-->
 
     </org.mozilla.focus.widget.EqualDistributeRow>
 

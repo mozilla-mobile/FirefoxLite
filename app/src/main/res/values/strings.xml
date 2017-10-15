@@ -179,6 +179,7 @@
     <string name="label_menu_block_ads">Block Ads</string>
     <string name="label_menu_block_image">Block images</string>
     <string name="label_menu_settings">Settings</string>
+    <string name="label_menu_exit">Exit</string>
 
     <!-- When the webpage request access to geolocation a dialog will popup.
         This is the title of the permission request dialog. Argument 1 is the url of the website. -->
