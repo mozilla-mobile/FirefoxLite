@@ -25,6 +25,9 @@ import org.mozilla.focus.webkit.WebkitView;
  * Base implementation for fragments that use an IWebView instance. Based on Android's WebViewFragment.
  */
 public abstract class WebFragment extends LocaleAwareFragment {
+
+    private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
+
     private IWebView webView;
     // webView is not available after onDestroyView, but we need webView reference in callback
     // onSaveInstanceState. However the callback might be invoked at anytime before onDestroy
@@ -110,6 +113,18 @@ public abstract class WebFragment extends LocaleAwareFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         webView.onSaveInstanceState(outState);
+
+        // Workaround for #1107 TransactionTooLargeException
+        // since Android N, system throws a exception rather than just a warning(then drop bundle)
+        // To set a threshold for dropping WebView state manually
+        // refer: https://issuetracker.google.com/issues/37103380
+        final String key = "WEBVIEW_CHROMIUM_STATE";
+        if (outState.containsKey(key)) {
+            final int size = outState.getByteArray(key).length;
+            if (size > BUNDLE_MAX_SIZE) {
+                outState.remove(key);
+            }
+        }
 
         super.onSaveInstanceState(outState);
     }
