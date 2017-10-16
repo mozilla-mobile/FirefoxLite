@@ -32,6 +32,7 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 
@@ -267,20 +268,18 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     };
 
     private void mergeQueryAndDefaultSites(List<Site> querySites) {
+        //if query data are equal to the default data, merge them
+        initDefaultSitesFromJSONArray(this.orginalDefaultSites);
         List<Site> topSites = new ArrayList<>(this.presenter.getSites());
-        List<Site> oldQuerySites = new ArrayList<>();
-        Iterator<Site> sitesIterator = topSites.iterator();
-        while (sitesIterator.hasNext()) {
-            Site temp = sitesIterator.next();
-            if (temp.getId() >= 0) {
-                oldQuerySites.add(temp);
-                sitesIterator.remove();
+        for (Site topSite: topSites) {
+            Iterator<Site> querySitesIterator = querySites.iterator();
+            while (querySitesIterator.hasNext()) {
+                Site temp = querySitesIterator.next();
+                if (UrlUtils.urlsMatchExceptForTrailingSlash(topSite.getUrl(), temp.getUrl())) {
+                    topSite.setViewCount(topSite.getViewCount()+ temp.getViewCount());
+                    querySitesIterator.remove();
+                }
             }
-        }
-
-        //if query data no change, do nothing
-        if (oldQuerySites.size() != 0 && oldQuerySites.equals(querySites)) {
-            return;
         }
 
         topSites.addAll(querySites);
@@ -314,7 +313,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         }
 
-        List<Site> defaultSites = TopSitesUtils.paresJsonToList(getContext(), this.orginalDefaultSites);
+        initDefaultSitesFromJSONArray(this.orginalDefaultSites);
+    }
+
+    private void initDefaultSitesFromJSONArray(JSONArray jsonDefault) {
+        List<Site> defaultSites = TopSitesUtils.paresJsonToList(getContext(), jsonDefault);
         this.presenter.setSites(defaultSites);
     }
 
