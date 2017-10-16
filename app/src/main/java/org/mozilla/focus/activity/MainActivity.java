@@ -456,7 +456,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onExitClicked() {
         finish();
-        moveTaskToBack(true);
     }
 
     private void onDownloadClicked() {
