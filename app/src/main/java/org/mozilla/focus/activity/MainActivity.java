@@ -437,6 +437,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 TelemetryWrapper.clickToolbarShare();
                 break;
             case R.id.capture_page:
+                Settings.getInstance(this).setScreenshotOnBoardingDone();
                 onCapturePageClicked(browserFragment);
                 TelemetryWrapper.clickToolbarCapture();
                 break;
