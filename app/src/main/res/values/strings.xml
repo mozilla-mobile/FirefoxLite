@@ -263,7 +263,7 @@
     <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page.</string>
 
     <string name="screenshot_image_viewer_dialog_title">Info</string>
-    <string name="screenshot_image_viewer_dialog_info_time1">Time: %1$s</string>
+    <string name="screenshot_image_viewer_dialog_info_time1">Date: %1$s</string>
     <string name="screenshot_image_viewer_dialog_info_resolution1">Resolution: %1$s</string>
     <string name="screenshot_image_viewer_dialog_info_size1">Size: %1$s</string>
     <string name="screenshot_image_viewer_dialog_info_title1">Title: %1$s</string>
