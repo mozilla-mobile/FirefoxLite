@@ -80,10 +80,10 @@ public class DialogUtils {
         dialogView.findViewById(R.id.dialog_share_app_btn_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String appPackageName = context.getPackageName();
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + appPackageName);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+                sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text));
                 context.startActivity(Intent.createChooser(sendIntent, null));
                 if(dialog != null) {
                     dialog.dismiss();
