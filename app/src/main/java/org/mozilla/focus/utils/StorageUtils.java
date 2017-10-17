@@ -90,9 +90,15 @@ public class StorageUtils {
     static File getFirstRemovableMedia(@NonNull Context ctx) {
         final File[] files = ctx.getExternalMediaDirs();
         for (final File file : files) {
-            // on some devices such as Oppo, it might return null
-            if ((file != null) && Environment.isExternalStorageRemovable(file)) {
-                return file;
+            try {
+                // on some devices such as Oppo, it might return null
+                if ((file != null) && Environment.isExternalStorageRemovable(file)) {
+                    return file;
+                }
+            } catch (IllegalArgumentException e) {
+                // Environment will invoke internal API to check volume,
+                // and throws an IllegalArgumentException if the target path has any problem
+                e.printStackTrace();
             }
         }
         return null;
