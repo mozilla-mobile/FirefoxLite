@@ -44,6 +44,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TransparentAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:dialogTheme">@style/CustomDialogStyle</item>
         <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
