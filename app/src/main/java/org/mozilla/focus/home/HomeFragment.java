@@ -47,7 +47,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public static final String TOPSITES_PREF = "topsites_pref";
     public static final int REFRESH_REQUEST_CODE = 911;
     public static final int TOP_SITES_QUERY_LIMIT = 8;
-    public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 3;
+    public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 6;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
