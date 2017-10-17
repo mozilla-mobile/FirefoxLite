@@ -101,16 +101,19 @@ public class DialogUtils {
             return;
         }
 
-        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        final AlertDialog dialog = new AlertDialog.Builder(context, R.style.TransparentAlertDialog).create();
         View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_screenshot_onboarding_dialog, null);
 
-        dialogView.findViewById(R.id.dialog_screenshot_on_boarding_btn_got_it).setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener dismiss = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(dialog != null)
                     dialog.dismiss();
             }
-        });
+        };
+
+        dialogView.findViewById(R.id.dialog_screenshot_on_boarding_btn_got_it).setOnClickListener(dismiss);
+        dialogView.findViewById(R.id.dialog_background).setOnClickListener(dismiss);
         dialog.setView(dialogView);
         dialog.show();
         Settings.getInstance(context).setScreenshotOnBoardingDone();
