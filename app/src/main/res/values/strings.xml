@@ -306,4 +306,6 @@
     <string name="share_app_dialog_text_title">Share {{app_name}} with friends!</string>
     <string name="share_app_dialog_text_content">- Fast and lightweight\n- Data saving\n- Powerful screenshots</string>
     <string name="share_app_dialog_btn_share">Share</string>
+    <string name="share_app_google_play_url" translatable="false">https://mzl.la/2kScptw</string>
+    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from Mozilla. {{app_name}} {{share_app_google_play_url}}</string>
 </resources>
