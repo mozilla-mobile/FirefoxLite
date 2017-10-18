@@ -1,4 +1,4 @@
-# Zerda
+# Rocket
 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=594b679a6ed87e0001fca2cd&build=latest)](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)
 
 Getting Involved
@@ -6,11 +6,7 @@ Getting Involved
 
 We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution. Please read the [Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/).
 
-* Issues: [https://github.com/mozilla-tw/Zerda/issues](https://github.com/mozilla-tw/Zerda/issues)
-
-* IRC: [#mobile (irc.mozilla.org)](https://wiki.mozilla.org/IRC)
-
-* Mailing list: [mobile-firefox-dev](https://mail.mozilla.org/listinfo/mobile-firefox-dev)
+* Issues: [https://github.com/mozilla-tw/Rocket/issues](https://github.com/mozilla-tw/Rocket/issues)
 
 Build instructions
 ------------------
@@ -18,7 +14,7 @@ Build instructions
 1. Clone the repository:
 
   ```shell
-  git clone https://github.com/mozilla-tw/Zerda
+  git clone https://github.com/mozilla-tw/Rocket
   ```
 
 1. Import the project into Android Studio or build on the command line:
