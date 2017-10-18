@@ -32,9 +32,7 @@ public class ScreenshotObserver {
     private MediaObserver mediaObserver;
     private String[] mediaProjections = new String[] {
             MediaStore.Images.ImageColumns.DATA,
-            MediaStore.Images.ImageColumns.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
-            MediaStore.Images.ImageColumns.DATE_TAKEN,
             MediaStore.Images.ImageColumns.TITLE
     };
 
@@ -86,10 +84,8 @@ public class ScreenshotObserver {
 
                     while (cursor.moveToNext()) {
                         String data = cursor.getString(0);
-                        //String display = cursor.getString(1);
-                        String album = cursor.getString(2);
-                        //long date = cursor.getLong(3);
-                        String title = cursor.getString(4);
+                        String album = cursor.getString(1);
+                        String title = cursor.getString(2);
                         if (album != null && album.toLowerCase().contains("screenshot")) {
                             if (listener != null) {
                                 listener.onScreenshotTaken(data, title);
