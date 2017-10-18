@@ -77,8 +77,8 @@ public class ScreenshotObserver {
         ThreadUtils.postToBackgroundThread(new Runnable() {
             @Override
             public void run() {
-                // Find the most recent image added to the MediaStore and see if it's a screenshot.
-                final Cursor cursor = cr.query(uri, mediaProjections, null, null, MediaStore.Images.ImageColumns.DATE_ADDED + " DESC LIMIT 1");
+                // Find the most recent image modification to the MediaStore and see if it's a screenshot.
+                final Cursor cursor = cr.query(uri, mediaProjections, null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC LIMIT 1");
                 try {
                     if (cursor == null) {
                         return;
