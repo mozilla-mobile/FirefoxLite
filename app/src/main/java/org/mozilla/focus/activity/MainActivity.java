@@ -114,7 +114,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     pendingUrl = url;
                     this.mediator.showFirstRun();
                 } else {
-                    this.mediator.showBrowserScreen(url, true);
+                    boolean isFromInternal = intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
+                    this.mediator.showBrowserScreen(url, isFromInternal ? false : true);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
@@ -246,7 +247,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // We have received an URL in onNewIntent(). Let's load it now.
             // Unless we're trying to show the firstrun screen, in which case we leave it pending until
             // firstrun is dismissed.
-            this.mediator.showBrowserScreen(pendingUrl, true);
+            final SafeIntent intent = new SafeIntent(getIntent());
+            boolean isFromInternal = intent != null && intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
+            this.mediator.showBrowserScreen(pendingUrl, isFromInternal ? false : true);
             pendingUrl = null;
         }
     }

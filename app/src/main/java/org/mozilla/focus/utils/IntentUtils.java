@@ -15,6 +15,7 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.web.IWebView;
 
 import java.net.URISyntaxException;
@@ -24,6 +25,7 @@ public class IntentUtils {
 
     private static String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
     private static String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
+    public static final String EXTRA_IS_INTERNAL_REQUEST = "is_internal_request";
 
     /**
      * Find and open the appropriate app for a given Uri. If appropriate, let the user select between
@@ -157,5 +159,14 @@ public class IntentUtils {
         Intent pageView = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
         pageView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(pageView);
+    }
+
+    public static void openUrl(Context context, String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        intent.setClassName(context, MainActivity.class.getName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
+        context.startActivity(intent);
     }
 }

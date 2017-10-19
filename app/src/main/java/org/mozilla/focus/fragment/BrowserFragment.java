@@ -720,7 +720,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // No SafeIntent needed here because intent.getAction() is safe (SafeIntent simply calls intent.getAction()
         // without any wrapping):
         final Intent intent = activity.getIntent();
-        return intent != null && Intent.ACTION_VIEW.equals(intent.getAction());
+        boolean isFromInternal = intent != null && intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
+        return intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) && !isFromInternal;
     }
 
     public boolean onBackPressed() {
