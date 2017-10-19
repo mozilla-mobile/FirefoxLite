@@ -94,7 +94,8 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
         mImgScreenshot = (SubsamplingScaleImageView) findViewById(R.id.screenshot_viewer_image);
         mImgScreenshot.setPanLimit(PAN_LIMIT_INSIDE);
-        mImgScreenshot.setMinimumScaleType(SCALE_TYPE_CENTER_CROP);
+        mImgScreenshot.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CUSTOM);
+        mImgScreenshot.setMinScale(1);
         mImgScreenshot.setOnClickListener(this);
         mImgScreenshot.setOnImageEventListener(onImageEventListener);
 
