@@ -160,6 +160,14 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         client.notifyCurrentURL(url);
     }
 
+    public void reload() {
+        if (UrlUtils.isInternalErrorURL(getOriginalUrl())) {
+            super.loadUrl(getUrl());
+        } else {
+            super.reload();
+        }
+    }
+
     @Override
     public void cleanup() {
         clearFormData();
