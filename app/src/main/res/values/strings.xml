@@ -270,7 +270,7 @@
     <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
     <string name="screenshot_image_viewer_dialog_delete_msg">Delete this image?</string>
 
-    <string name="screenshot_on_boarding_text_msg">Tap the screenshot button in the menu to capture the whole page.\nFast, easy, and come back to the page at anytime!</string>
+    <string name="screenshot_on_boarding_text_msg">Tap the screenshot button in the menu to capture the whole page.\nFast, easy - come back to the page at anytime!</string>
     <string name="screenshot_on_boarding_btn_got_it">Got it!</string>
 
     <!-- Title for file picker when user trying to upload a file -->
@@ -297,7 +297,7 @@
     <!--In-app Promotion, Rate the App-->
     <string name="rate_app_dialog_text_title">Love {{app_name}}?</string>
     <string name="rate_app_dialog_text_content">Thank you for choosing our product. Your feedback is important to us.</string>
-    <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 star!</string>
+    <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 stars!</string>
     <string name="rate_app_dialog_btn_feedback">No, send feedback.</string>
 
     <string name="rate_app_feedback_url" translatable="false">https://qsurvey.mozilla.com/s3/Firefox-Rocket-Input/</string>
