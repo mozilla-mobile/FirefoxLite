@@ -493,6 +493,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     fullscreenCallback.fullScreenExited();
                     fullscreenCallback = null;
                 }
+
+                // WebView gets focus, but unable to open the keyboard after exit Fullscreen for Android 7.0+
+                // We guess some component in WebView might lock focus
+                // So when user touches the input text box on Webview, it will not trigger to open the keyboard
+                // It may be a WebView bug.
+                // The workaround is clearing WebView focus
+                // The WebView will be normal when it gets focus again.
+                // If android change behavior after, can remove this.
+                IWebView webView = getWebView();
+                if (webView instanceof WebView) {
+                    ((WebView) webView).clearFocus();
+                }
             }
 
             @Override
