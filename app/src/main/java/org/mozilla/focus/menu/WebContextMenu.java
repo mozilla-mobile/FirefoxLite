@@ -20,15 +20,18 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.download.GetImgHeaderTask;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.IWebView;
 
 public class WebContextMenu {
+    public static final String DEFAULT_DOWNLOAD_EXTENSION = ".bin";
 
     private static View createTitleView(final @NonNull Context context, final @NonNull String title) {
         final TextView titleView = (TextView) LayoutInflater.from(context).inflate(R.layout.context_menu_title, null);
@@ -118,8 +121,22 @@ public class WebContextMenu {
                         return true;
                     }
                     case R.id.menu_image_save: {
-                        final Download download = new Download(hitTarget.imageURL, null, null, null, -1, true);
-                        callback.onDownloadStart(download);
+                        if (URLUtil.guessFileName(hitTarget.imageURL, null, null).endsWith(DEFAULT_DOWNLOAD_EXTENSION)) {
+                            GetImgHeaderTask getImgHeaderTask = new GetImgHeaderTask();
+                            getImgHeaderTask.setCallback(new GetImgHeaderTask.Callback() {
+                                @Override
+                                public void setMIMEType(String mimeType) {
+                                    final Download download = new Download(hitTarget.imageURL, null, null, mimeType, -1, true);
+                                    callback.onDownloadStart(download);
+                                }
+                            });
+
+                            getImgHeaderTask.execute(hitTarget.imageURL);
+                        } else {
+                            final Download download = new Download(hitTarget.imageURL, null, null, null, -1, true);
+                            callback.onDownloadStart(download);
+                        }
+
                         TelemetryWrapper.saveImageEvent();
                         return true;
                     }
