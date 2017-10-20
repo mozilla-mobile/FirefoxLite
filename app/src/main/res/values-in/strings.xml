@@ -7,12 +7,14 @@
   <string name="menu_about">Tentang</string>
   <string name="menu_help">Bantuan</string>
   <string name="menu_rights">Hak Anda</string>
+  <string name="menu_give_feedback">Kirimkan masukan</string>
+  <string name="menu_share_with_friends">Bagikan dengan teman</string>
   <string name="share_dialog_title">Bagikan via</string>
   <string name="text_selection_search_action">Cari di {{app_name}}</string>
   <string name="about_content_body">%1$s adalah sebuah peramban cepat dan ringan buatan Mozilla. Misi kami adalah untuk mendorong internet yang sehat dan terbuka.</string>
   <string name="about_link_learn_more">Pelajari lebih lanjut</string>
   <string name="about_link_support">Dukungan</string>
-  <string name="about_link_your_rights">Hak Anda</string>
+  <string name="about_link_your_rights">Hak / Izin Anda</string>
   <string name="about_link_privacy">Kebijakan Privasi</string>
   <string name="preference_search_engine_default">Mesin pencari baku</string>
   <string name="preference_language">Bahasa</string>
@@ -55,12 +57,12 @@
   <string name="first_run_page1_title">Terima kasih telah memilih %1$s</string>
   <string name="first_run_page1_text">Sebuah peramban yang dibuat khusus untuk Indonesia oleh Mozilla, organisasi nirlaba yang berkomitmen pada web bebas dan terbuka.</string>
   <string name="first_run_page2_title">Menjelajah secepat kilat</string>
-  <string name="first_run_page2_text">Gunakan mode turbo untuk memblokir iklan dan pelacak sehingga Anda dapat menjelajah dengan super cepat. Jika situs terasa bermasalah, cukup matikan mode turbo pada menu.</string>
+  <string name="first_run_page2_text">Gunakan mode turbo untuk memblokir iklan dan pelacak sehingga Anda dapat menjelajah dengan super cepat. Jika situs terasa bermasalah, cukup menonaktifkannya pada menu.</string>
   <string name="first_run_page3_title">Hemat data = Hemat uang</string>
   <string name="first_run_page3_text">Memblokir iklan dan pelacak daring tidak hanya mempercepat penjelajahan, tapi juga menghemat data. Anda bisa berhemat lebih banyak jika memblokir gambar.</string>
   <string name="first_run_page4_title">Tangkap layar apa saja</string>
   <string name="first_run_page4_text">Tangkap layar dari keseluruhan laman. Lihat tanpa menggunakan kuota data, atau ketuk untuk mengunjungi laman sumbernya.</string>
-  <string name="firstrun_close_button">Oke, mengerti</string>
+  <string name="firstrun_close_button">Oke, paham</string>
   <string name="firstrun_skip_button">Lewati</string>
   <string name="firstrun_next_button">Lanjut</string>
   <string name="label_menu_download">Unduhan</string>
@@ -73,6 +75,7 @@
   <string name="label_menu_block_ads">Blokir Iklan</string>
   <string name="label_menu_block_image">Blokir gambar</string>
   <string name="label_menu_settings">Setelan</string>
+  <string name="label_menu_exit">Keluar</string>
   <string name="geolocation_dialog_message">%1$s ingin menggunakan lokasi peranti Anda.</string>
   <string name="geolocation_dialog_allow">IZINKAN</string>
   <string name="geolocation_dialog_block">TOLAK</string>
@@ -93,7 +96,7 @@
   <string name="download_cancel">Unduhan dibatalkan</string>
   <string name="undo">Urungkan</string>
   <string name="open">Buka</string>
-  <string name="pause">ditunda</string>
+  <string name="pause">dijeda</string>
   <string name="pending">Ditunda</string>
   <string name="running">mengunduh</string>
   <string name="successful">Sukses</string>
@@ -120,12 +123,13 @@
   <string name="screenshot_grid_empty_text_msg_prefix">Ketuk </string>
   <string name="screenshot_grid_empty_text_msg_postfix">  pada menu untuk menangkap\nkeseluruhan laman.</string>
   <string name="screenshot_image_viewer_dialog_title">Info</string>
-  <string name="screenshot_image_viewer_dialog_info_time1">Waktu: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_time1">Tanggal: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Resolusi: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">Ukuran: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">Judul: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Hapus gambar ini?</string>
+  <string name="screenshot_on_boarding_btn_got_it">Paham!</string>
   <string name="file_picker_title">Pilih berkas untuk diunggah</string>
   <string name="message_enable_turbo_mode">Mode turbo diaktifkan</string>
   <string name="message_disable_turbo_mode">Mode turbo dinonaktifkan</string>
@@ -133,9 +137,16 @@
   <string name="message_disable_block_image">Sekarang menampilkan gambar</string>
   <string name="message_clear_cache_fail">Tidak bisa menghapus tembolok</string>
   <string name="message_storage_unavailable_cancel_download">Penyimpanan tidak dapat diakses. Unduhan dibatalkan.</string>
-  <string name="message_cleared_cached">%1$s tembolok dihapus</string>
-  <string name="message_cleared_browsing_data">Data penjelajahan telah dihapus</string>
+  <string name="message_cleared_cached">Tembolok %1$s dihapus</string>
+  <string name="message_cleared_browsing_data">Data penjelajahan dihapus</string>
   <string name="message_deleted_screenshot">Tangkapan layar dihapus</string>
   <string name="message_cannot_find_screenshot">Tidak bisa menampilkan tangkapan layar</string>
   <string name="remove">Hapus</string>
+  <string name="rate_app_dialog_text_title">Suka {{app_name}}?</string>
+  <string name="rate_app_dialog_text_content">Terima kasih telah memilih produk kami. Masukan Anda sangat penting bagi kami.</string>
+  <string name="rate_app_dialog_btn_feedback">Tidak, kirimkan masukan.</string>
+  <string name="share_app_dialog_text_title">Bagikan {{app_name}} dengan teman!</string>
+  <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Tangkapan layar yang canggih</string>
+  <string name="share_app_dialog_btn_share">Bagikan</string>
+  <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari Mozilla! {{app_name}} {{share_app_google_play_url}}</string>
 </resources>
