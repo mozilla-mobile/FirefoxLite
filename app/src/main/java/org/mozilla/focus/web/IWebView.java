@@ -83,6 +83,8 @@ public interface IWebView {
                                    WebChromeClient.FileChooserParams fileChooserParams);
 
         void updateFailingUrl(String url, boolean updateFromError);
+
+        void onReceivedTitle(WebView view, String title);
     }
 
     interface FullscreenCallback {
