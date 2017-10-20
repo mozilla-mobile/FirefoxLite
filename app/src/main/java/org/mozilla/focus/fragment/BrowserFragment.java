@@ -160,6 +160,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     private void updateURL(final String url) {
+        if (UrlUtils.isInternalErrorURL(url)){
+            return;
+        }
+        
         urlView.setText(UrlUtils.stripUserInfo(url));
     }
 
@@ -376,9 +380,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 final IWebView webView = getWebView();
                 if(webView != null) {
                     final String viewURL = webView.getUrl();
-                    if (!UrlUtils.isInternalErrorURL(viewURL)) {
-                        onURLChanged(viewURL);
-                    }
+                    onURLChanged(viewURL);
                 }
             }
 
@@ -554,6 +556,21 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     failingUrl = null;
                 } else {
                     this.failingUrl = url;
+                }
+            }
+
+            //When we're receiving onPageFinished and called webView.getUrl(),
+            // it may return the url that is already loaded rather then the just-finished url.
+            // We do another update in OnReceivedTitle to make sure we change the url if this happens.
+            // See issue1064 and issue1150.
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                if(!mostOldCallbacksHaveFinished) {
+                    return;
+                }
+
+                if (!BrowserFragment.this.getUrl().equals(view.getUrl())) {
+                    updateURL(view.getUrl());
                 }
             }
         };

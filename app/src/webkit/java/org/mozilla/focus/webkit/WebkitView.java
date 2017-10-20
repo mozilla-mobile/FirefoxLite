@@ -262,6 +262,14 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
             return callback.onShowFileChooser(webView, filePathCallback, fileChooserParams);
         }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            if (callback != null){
+                callback.onReceivedTitle(view,title);
+            }
+        }
     }
 
     public void insertBrowsingHistory() {
@@ -362,6 +370,11 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         @Override
         public void updateFailingUrl(String url, boolean updateFromError) {
             this.callback.updateFailingUrl(url, updateFromError);
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            this.callback.onReceivedTitle(view,title);
         }
     }
 
