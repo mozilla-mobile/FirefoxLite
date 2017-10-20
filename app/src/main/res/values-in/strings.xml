@@ -129,6 +129,7 @@
   <string name="screenshot_image_viewer_dialog_info_title1">Judul: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Hapus gambar ini?</string>
+  <string name="screenshot_on_boarding_text_msg">Ketuk tombol tangkap layar di menu untuk menangkap keseluruhan laman.\nCepat, mudah - kembali ke lamannya kapan saja!</string>
   <string name="screenshot_on_boarding_btn_got_it">Paham!</string>
   <string name="file_picker_title">Pilih berkas untuk diunggah</string>
   <string name="message_enable_turbo_mode">Mode turbo diaktifkan</string>
@@ -144,6 +145,7 @@
   <string name="remove">Hapus</string>
   <string name="rate_app_dialog_text_title">Suka {{app_name}}?</string>
   <string name="rate_app_dialog_text_content">Terima kasih telah memilih produk kami. Masukan Anda sangat penting bagi kami.</string>
+  <string name="rate_app_dialog_btn_go_rate">Tentu, beri 5 bintang!</string>
   <string name="rate_app_dialog_btn_feedback">Tidak, kirimkan masukan.</string>
   <string name="share_app_dialog_text_title">Bagikan {{app_name}} dengan teman!</string>
   <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Tangkapan layar yang canggih</string>
