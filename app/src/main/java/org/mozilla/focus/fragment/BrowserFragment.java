@@ -446,6 +446,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     // Add view to video container and make it visible
                     final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     videoContainer.addView(view, params);
                     videoContainer.setVisibility(View.VISIBLE);
 
@@ -457,6 +458,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onExitFullScreen() {
                 // Remove custom video views and hide container
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 videoContainer.removeAllViews();
                 videoContainer.setVisibility(View.GONE);
 
