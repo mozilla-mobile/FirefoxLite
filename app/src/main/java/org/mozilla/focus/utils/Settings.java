@@ -15,6 +15,8 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.search.SearchEngine;
 
+import java.util.Set;
+
 /**
  * A simple wrapper for SharedPreferences that makes reading preference a little bit easier.
  */
@@ -162,6 +164,16 @@ public class Settings {
         preferences.edit()
                 .putString(getPreferenceKey(R.string.pref_key_search_engine), searchEngine.getName())
                 .apply();
+    }
+
+    public static void updatePrefDefaultBrowserIfNeeded(Context context, boolean isDefaultBrowser) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final Set<String> keySet = sharedPreferences.getAll().keySet();
+        final String prefDefaultBrowser = context.getResources().getString(R.string.pref_key_default_browser);
+        //  Update current default browser value, keep null if never set as true
+        if (keySet.contains(prefDefaultBrowser) || isDefaultBrowser) {
+            sharedPreferences.edit().putBoolean(prefDefaultBrowser, isDefaultBrowser).apply();
+        }
     }
 
     /* package */ String getPreferenceKey(int resourceId) {
