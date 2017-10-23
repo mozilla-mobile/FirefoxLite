@@ -670,13 +670,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
         if (name.equals(IWebView.class.getName())) {
             View v = WebViewProvider.create(this, attrs);
             return v;
         }
 
-        return super.onCreateView(name, context, attrs);
+        return super.onCreateView(parent, name, context, attrs);
     }
 
     @Override
