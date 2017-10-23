@@ -17,6 +17,8 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.Browsers;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.telemetry.Telemetry;
 import org.mozilla.telemetry.TelemetryHolder;
 import org.mozilla.telemetry.config.TelemetryConfiguration;
@@ -167,6 +169,8 @@ public final class TelemetryWrapper {
 
             final boolean telemetryEnabled = isTelemetryEnabled(context);
 
+            updateDefaultBrowserStatus(context);
+
             final TelemetryConfiguration configuration = new TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
                     .setAppName(TELEMETRY_APP_NAME_ZERDA)
@@ -194,6 +198,11 @@ public final class TelemetryWrapper {
         } finally {
             StrictMode.setThreadPolicy(threadPolicy);
         }
+    }
+
+    private static void updateDefaultBrowserStatus(Context context) {
+        boolean isDefaultBrowser = new Browsers(context, "http://www.mozilla.org").isDefaultBrowser(context);
+        Settings.updatePrefDefaultBrowserIfNeeded(context, isDefaultBrowser);
     }
 
     private static DefaultSearchMeasurement.DefaultSearchEngineProvider createDefaultSearchProvider(final Context context) {

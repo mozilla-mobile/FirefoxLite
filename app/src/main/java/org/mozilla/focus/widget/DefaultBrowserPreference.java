@@ -9,11 +9,8 @@ import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.preference.Preference;
-import android.provider.Browser;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Switch;
@@ -21,6 +18,7 @@ import android.widget.Switch;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.utils.Browsers;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 
 @TargetApi(Build.VERSION_CODES.N)
@@ -50,7 +48,9 @@ public class DefaultBrowserPreference extends Preference {
     public void update() {
         if (switchView != null) {
             final Browsers browsers = new Browsers(getContext(), "http://www.mozilla.org");
-            switchView.setChecked(browsers.isDefaultBrowser(getContext()));
+            final boolean isDefaultBrowser = browsers.isDefaultBrowser(getContext());
+            switchView.setChecked(isDefaultBrowser);
+            Settings.updatePrefDefaultBrowserIfNeeded(getContext(), isDefaultBrowser);
         }
     }
 
@@ -67,7 +67,7 @@ public class DefaultBrowserPreference extends Preference {
 
     private void openDefaultAppsSettings(Context context) {
         try {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             // In some cases, a matching Activity may not exist (according to the Android docs).
