@@ -26,7 +26,7 @@
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout"
             android:launchMode="singleTask"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity-alias
             android:name="org.mozilla.rocket.activity.MainActivity"
