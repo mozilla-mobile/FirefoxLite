@@ -340,7 +340,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             private final static int NONE = -1;
             private int systemVisibility = NONE;
             private boolean mostOldCallbacksHaveFinished = false;
+            // Some url may have two onPageFinished for the same url. filter them out to avoid
+            // adding twice to the history.
             private String lastInsertedUrl = null;
+            // Some url may report progress from 0 again for the same url. filter them out to avoid
+            // progress bar regression when scrolling.
+            private String loadedUrl = null;
 
             @Override
             public void onPageStarted(final String url) {
@@ -358,6 +363,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     mostOldCallbacksHaveFinished = true;
                 }
                 lastInsertedUrl = null;
+                loadedUrl = null;
 
                 updateIsLoading(true);
 
@@ -410,6 +416,21 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             public void onProgress(int progress) {
                 if(!mostOldCallbacksHaveFinished) {
                     return;
+                }
+                final IWebView webView = getWebView();
+                if (webView != null) {
+                    final String currentUrl = webView.getUrl();
+                    final boolean progressIsForLoadedUrl = currentUrl.equals(loadedUrl);
+                    // Some new url may give 100 directly and then start from 0 again. don't treat
+                    // as loaded for these urls;
+                    final boolean urlBarLoadingToFinished =
+                            progressView.getMax() != progressView.getProgress() && progress == progressView.getMax();
+                    if (urlBarLoadingToFinished) {
+                        loadedUrl = currentUrl;
+                    }
+                    if (progressIsForLoadedUrl) {
+                        return;
+                    }
                 }
                 progressView.setProgress(progress);
             }
