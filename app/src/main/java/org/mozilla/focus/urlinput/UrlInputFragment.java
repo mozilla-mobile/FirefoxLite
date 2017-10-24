@@ -238,19 +238,26 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         if (texts == null) {
             return;
         }
-        String searchKey = urlView.getOriginalText();
+
+        final String searchKey = urlView.getOriginalText().trim();
         for (int i = 0; i < texts.size(); i++) {
             final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
-            String trimStr = searchKey.trim();
-            int endIndex = trimStr.length() > texts.get(i).length() ? texts.get(i).length() : trimStr.length();
-            SpannableStringBuilder str = new SpannableStringBuilder(texts.get(i));
-            str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            final String str = texts.get(i).toString();
+            final int idx = str.indexOf(searchKey);
+            if (idx != -1) {
+                SpannableStringBuilder builder = new SpannableStringBuilder(texts.get(i));
+                builder.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                        idx,
+                        idx + searchKey.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                item.setText(builder);
+            } else {
+                item.setText(texts.get(i));
+            }
 
-            item.setText(str);
             item.setOnClickListener(this);
             item.setOnLongClickListener(this);
             this.suggestionView.addView(item);
-
         }
     }
 
