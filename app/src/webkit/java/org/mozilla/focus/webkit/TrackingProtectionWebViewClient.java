@@ -77,8 +77,10 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
         // via notifyCurrentURL in that case.
         final String scheme = resourceUri.getScheme();
 
-        if (!request.isForMainFrame() &&
-                !scheme.equals("http") && !scheme.equals("https")) {
+        if (!request.isForMainFrame()
+                && !scheme.equals("http")
+                && !scheme.equals("https")
+                && !scheme.equals("blob")) {
             // Block any malformed non-http(s) URIs. Webkit will already ignore things like market: URLs,
             // but not in all cases (malformed market: URIs, such as market:://... will still end up here).
             // (Note: data: URIs are automatically handled by webkit, and won't end up here either.)
