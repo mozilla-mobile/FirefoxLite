@@ -126,9 +126,10 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 setupView(false);
                 Toast.makeText(this, R.string.message_cannot_find_screenshot, Toast.LENGTH_LONG).show();
             }
+            showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
+        } else {
+            finish();
         }
-
-        showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
     }
 
     @Override
