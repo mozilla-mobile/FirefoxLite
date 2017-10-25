@@ -68,6 +68,7 @@ class TelemetrySwitchPreference extends Preference {
 
                 final Intent intent = InfoActivity.getIntentFor(getContext(), url, title);
                 getContext().startActivity(intent);
+                TelemetryWrapper.settingsLearnMoreClickEvent(getContext().getString(R.string.pref_key_telemetry));
             }
         });
 
