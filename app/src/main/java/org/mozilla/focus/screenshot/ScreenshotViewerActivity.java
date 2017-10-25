@@ -126,7 +126,6 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 setupView(false);
                 Toast.makeText(this, R.string.message_cannot_find_screenshot, Toast.LENGTH_LONG).show();
             }
-            showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
         } else {
             finish();
         }
@@ -248,6 +247,8 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             }
             File imgFile = new File(mScreenshot.getImageUri());
             if(imgFile.exists()) {
+                showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
+
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(mScreenshot.getImageUri(), options);
