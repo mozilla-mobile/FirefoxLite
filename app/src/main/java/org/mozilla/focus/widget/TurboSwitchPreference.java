@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 
@@ -77,6 +78,7 @@ public class TurboSwitchPreference extends Preference {
 
                 final Intent intent = InfoActivity.getIntentFor(getContext(), url, title);
                 getContext().startActivity(intent);
+                TelemetryWrapper.settingsLearnMoreClickEvent(getContext().getString(R.string.pref_key_turbo_mode));
             }
         });
 

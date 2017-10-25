@@ -85,9 +85,13 @@ public final class TelemetryWrapper {
         private static final String BROWSER = "browser";
         private static final String BROWSER_CONTEXTMENU = "browser_contextmenu";
         private static final String FIRSTRUN = "firstrun";
+
+        private static final String FEEDBACK = "feedback";
+        private static final String PROMOTE_SHARE = "promote_share";
+        private static final String PROMOTE_SCREENSHOT = "promote_screenshot";
     }
 
-    private static class Value {
+    public static class Value {
         private static final String HOME = "home";
         private static final String DOWNLOAD = "download";
         private static final String HISTORY = "history";
@@ -118,6 +122,13 @@ public final class TelemetryWrapper {
         private static final String VIDEO = "video";
         private static final String MIDI = "midi";
         private static final String EME = "eme";
+
+        private static final String LEARN_MORE = "learn_more";
+
+        public static final String DISMISS = "dismiss";
+        public static final String POSITIVE = "positive";
+        public static final String NEGATIVE = "negative";
+        public static final String SHARE = "share";
     }
 
     private static class Extra {
@@ -126,6 +137,12 @@ public final class TelemetryWrapper {
         private static final String DEFAULT = "default";
         private static final String SUCCESS = "success";
         private static final String SNACKBAR = "snackbar";
+        private static final String SOURCE = "source";
+    }
+
+    public static class Extra_Value {
+        public static final String SETTING = "settings";
+        public static final String CONTEXTUAL_HINTS = "contextual_hints";
     }
 
     public static boolean isTelemetryEnabled(Context context) {
@@ -244,6 +261,12 @@ public final class TelemetryWrapper {
 
     public static void settingsClickEvent(String key) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.SETTING, key).queue();
+    }
+
+    public static void settingsLearnMoreClickEvent(String source) {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.SETTING, Value.LEARN_MORE)
+                .extra(Extra.SOURCE, source)
+                .queue();
     }
 
     public static void settingsLocaleChangeEvent(String key, String value, boolean isDefault) {
@@ -551,4 +574,31 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE).queue();
     }
 
+    public static void feedbackClickEvent(String value, String source) {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
+                .extra(Extra.SOURCE, source)
+                .queue();
+    }
+
+    public static void showFeedbackDialog() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FEEDBACK).queue();
+    }
+
+    public static void promoteShareClickEvent(String value, String source) {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PROMOTE_SHARE, value)
+                .extra(Extra.SOURCE, source)
+                .queue();
+    }
+
+    public static void showPromoteShareDialog() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.PROMOTE_SHARE).queue();
+    }
+
+    public static void promoteScreenShotClickEvent(String value) {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PROMOTE_SCREENSHOT, value).queue();
+    }
+
+    public static void showPromoteScreenShotDialog() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.PROMOTE_SCREENSHOT).queue();
+    }
 }
