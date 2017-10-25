@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
+    <!-- Represents files in the root of the external storage area.
+    Doesn't include removable storage -->
     <external-path
         name="external_files" path="." />
+
+    <!--root path means the root of Android device
+    , So we use this to open file under sd card-->
+    <root-path
+        name="sd_card" path=""/>
 </paths>
