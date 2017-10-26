@@ -1,0 +1,13 @@
+For third-party libraries imported in this project:
+
+Glide
+    License file: third_party/glide/library/LICENSE
+    Applies to files in folder: third_party/glide
+
+Glide:DiskLRUCache
+    License file: third_party/glide/disklrucache/LICENSE
+    Applies to files in folder: third_party/glide/disklrucache
+
+Subampling-Scale-Image-View
+    License file: third_party/subsampling-scale-image-view/LICENSE
+    Applies to files in folder: third_party/subsampling-scale-image-view
