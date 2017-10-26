@@ -456,7 +456,6 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
                     // Make the IME aware that we interrupted the setComposingText call,
                     // by having finishComposingText() send change notifications to the IME.
                     finishComposingText();
-                    setComposingRegion(composingStart, composingEnd);
                     return true;
                 }
                 return false;
