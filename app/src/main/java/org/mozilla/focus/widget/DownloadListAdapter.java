@@ -158,7 +158,15 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (index == -1){
             mDownloadInfo.add(downloadInfo);
-            this.notifyItemInserted(mDownloadInfo.size()-1);
+            //The crash will happen when data set size is 1 after add item.
+            //Because we define item count is 1 and mDownloadInfo is empty that means nothing and show empty view.
+            //So use notifyDataSetChanged() instead of notifyItemInserted when data size is 1 after add item.
+            if (mDownloadInfo.size() > 1){
+                this.notifyItemInserted(mDownloadInfo.size()-1);
+            }else{
+                this.notifyDataSetChanged();
+            }
+
         }else {
             mDownloadInfo.add(index,downloadInfo);
             this.notifyItemInserted(index);
