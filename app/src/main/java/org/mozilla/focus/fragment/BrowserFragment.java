@@ -422,7 +422,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 final IWebView webView = getWebView();
                 if (webView != null) {
                     final String currentUrl = webView.getUrl();
-                    final boolean progressIsForLoadedUrl = currentUrl.equals(loadedUrl);
+                    final boolean progressIsForLoadedUrl = TextUtils.equals(currentUrl, loadedUrl);
                     // Some new url may give 100 directly and then start from 0 again. don't treat
                     // as loaded for these urls;
                     final boolean urlBarLoadingToFinished =
