@@ -7,31 +7,31 @@
     "viewCount": 20
   },
   {
-    "id": -2,
-    "url": "https://m.detik.com/",
-    "title": "Detik",
-    "favicon": "ic_detik.png",
-    "viewCount": 18
-  },
-  {
     "id": -3,
     "url": "http://m.tribunnews.com/",
     "title": "Tribunnews",
     "favicon": "ic_tribunnews.png",
-    "viewCount": 16
+    "viewCount": 18
   },
   {
     "id": -5,
     "url": "https://m.tokopedia.com/",
     "title": "Tokopedia",
     "favicon": "ic_tokopedia.png",
-    "viewCount": 14
+    "viewCount": 16
   },
   {
     "id": -4,
     "url": "https://m.facebook.com/",
     "title": "Facebook",
     "favicon": "ic_facebook.png",
+    "viewCount": 14
+  },
+  {
+    "id": -8,
+    "url": "https://m.bukalapak.com/",
+    "title": "Bukalapak",
+    "favicon": "ic_bukalapak.png",
     "viewCount": 12
   },
   {
@@ -49,10 +49,10 @@
     "viewCount": 8
   },
   {
-    "id": -8,
-    "url": "https://m.bukalapak.com/",
-    "title": "Bukalapak",
-    "favicon": "ic_bukalapak.png",
+    "id": -9,
+    "url": "https://m.merdeka.com/",
+    "title": "Merdeka",
+    "favicon": "ic_merdeka.png",
     "viewCount": 6
   }
 ]
