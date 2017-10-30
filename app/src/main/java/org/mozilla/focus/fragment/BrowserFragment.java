@@ -34,6 +34,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
@@ -583,8 +585,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
      */
     private int switchToImmersiveMode() {
         final Activity activity = getActivity();
-        final int original = activity.getWindow().getDecorView().getSystemUiVisibility();
-        activity.getWindow().getDecorView().setSystemUiVisibility(
+        Window window = activity.getWindow();
+        final int original = window.getDecorView().getSystemUiVisibility();
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -604,8 +608,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (activity == null) {
             return;
         }
-
-        activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
+        Window window = activity.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.getDecorView().setSystemUiVisibility(visibility);
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
