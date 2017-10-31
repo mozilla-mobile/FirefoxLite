@@ -27,6 +27,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -125,6 +126,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
      * Container containing the browser chrome and web content.
      */
     private View browserContainer;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private IWebView.FullscreenCallback fullscreenCallback;
 
@@ -209,6 +211,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         } else {
             initialiseNormalBrowserUi();
         }
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        getWebView().reload();
+                    }
+                }
+        );
 
         return view;
     }
@@ -388,6 +400,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onPageFinished(boolean isSecure) {
+                if (swipeRefreshLayout != null && swipeRefreshLayout.getVisibility() == View.VISIBLE) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
                 if(!mostOldCallbacksHaveFinished) {
                     return;
                 }
