@@ -18,7 +18,7 @@ public class SupportUtils {
     public static final String BLANK_URL = "about:blank";
     public static final String FOCUS_ABOUT_URL = "focusabout:";
     public static final String YOUR_RIGHTS_URI = "file:///android_asset/rights-focus.html";
-    public static final String PRIVACY_URL = "https://github.com/mozilla-tw/Zerda/wiki/Telemetry";
+    public static final String PRIVACY_URL = "https://www.mozilla.org/privacy/firefox-rocket";
     public static final String ABOUT_URI = "file:///android_res/raw/about.html";
 
     static final String[] SUPPORTED_URLS = new String[]{
