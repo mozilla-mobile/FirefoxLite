@@ -5,28 +5,20 @@
 package org.mozilla.focus.webkit;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.support.v4.util.ArrayMap;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import org.mozilla.focus.R;
-import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.utils.HtmlLoader;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.IWebView;
-
-import java.util.Map;
 
 /**
  * WebViewClient layer that handles browser specific WebViewClient functionality, such as error pages
@@ -37,11 +29,9 @@ import java.util.Map;
 
     private IWebView.Callback callback;
     private boolean errorReceived;
-    private Context context;
 
     public FocusWebViewClient(Context context) {
         super(context);
-        this.context = context;
     }
 
     public void setCallback(IWebView.Callback callback) {
@@ -111,6 +101,14 @@ import java.util.Map;
 
     }
 
+    private static boolean shouldOverrideInternalPages(WebView webView, String url) {
+        if(SupportUtils.isTemplateSupportPages(url)){
+            SupportUtils.loadSupportPages(webView, url);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         view.getSettings().setLoadsImagesAutomatically(true);
@@ -123,8 +121,7 @@ import java.util.Map;
             }
         }
 
-        if (url.equals(SupportUtils.FOCUS_ABOUT_URL)) {
-            loadAbout(view);
+        if (shouldOverrideInternalPages(view, url)) {
             return true;
         }
 
@@ -221,54 +218,6 @@ import java.util.Map;
         }
 
         super.onReceivedError(webView, errorCode, description, failingUrl);
-    }
-
-    private void loadAbout(final WebView webView) {
-        final Resources resources = Locales.getLocalizedResources(webView.getContext());
-
-        final Map<String, String> substitutionMap = new ArrayMap<>();
-        final String appName = webView.getContext().getResources().getString(R.string.app_name);
-        final String aboutBody = webView.getContext().getResources().getString(R.string.about_content_body, appName);
-
-        final String aboutURI = SupportUtils.getAboutURI();
-        final String learnMoreURL = SupportUtils.getManifestoURL();
-        final String supportURL = SupportUtils.getSumoURLForTopic(webView.getContext(), "rocket-help");
-        final String rightURL = SupportUtils.getYourRightsURI();
-        final String privacyURL = SupportUtils.getPrivacyURL();
-
-        final String linkLearnMore = resources.getString(R.string.about_link_learn_more);
-        final String linkSupport = resources.getString(R.string.about_link_support);
-        final String linkYourRights = resources.getString(R.string.about_link_your_rights);
-        final String linkPrivacy = resources.getString(R.string.about_link_privacy);
-
-        String aboutVersion = "";
-        try {
-            aboutVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Nothing to do if we can't find the package name.
-        }
-        substitutionMap.put("%about-version%", aboutVersion);
-
-        final String aboutContent = resources.getString(R.string.about_content
-                , aboutBody
-                , learnMoreURL
-                , linkLearnMore
-                , supportURL
-                , linkSupport
-                , rightURL
-                , linkYourRights
-                , privacyURL
-                , linkPrivacy
-        );
-        substitutionMap.put("%about-content%", aboutContent);
-
-        final String wordmark = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.logotype);
-        substitutionMap.put("%wordmark%", wordmark);
-
-        final String data = HtmlLoader.loadResourceFile(webView.getContext(), R.raw.about, substitutionMap);
-        // We use a file:/// base URL so that we have the right origin to load file:/// css and
-        // image resources.
-        webView.loadDataWithBaseURL(aboutURI, data, "text/html", "UTF-8", null);
     }
 
 }

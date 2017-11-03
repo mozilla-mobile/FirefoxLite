@@ -7,17 +7,22 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.support.v4.util.ArrayMap;
+import android.webkit.WebView;
 
+import org.mozilla.focus.R;
 import org.mozilla.focus.locale.Locales;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Locale;
+import java.util.Map;
 
 public class SupportUtils {
     public static final String BLANK_URL = "about:blank";
     public static final String FOCUS_ABOUT_URL = "focusabout:";
-    public static final String YOUR_RIGHTS_URI = "file:///android_asset/rights-focus.html";
+    public static final String YOUR_RIGHTS_URI = "file:///android_res/raw/rights.html";
     public static final String PRIVACY_URL = "https://www.mozilla.org/privacy/firefox-rocket";
     public static final String ABOUT_URI = "file:///android_res/raw/about.html";
 
@@ -28,6 +33,20 @@ public class SupportUtils {
             PRIVACY_URL,
             ABOUT_URI
     };
+
+    public static boolean isTemplateSupportPages(String url) {
+        final boolean isTemplate;
+        switch (url){
+            case FOCUS_ABOUT_URL:
+            case YOUR_RIGHTS_URI:
+                isTemplate = true;
+                break;
+            default:
+                isTemplate = false;
+                break;
+        }
+        return isTemplate;
+    }
 
     public static String getSumoURLForTopic(final Context context, final String topic) {
         String escapedTopic;
@@ -67,4 +86,99 @@ public class SupportUtils {
     public static String getAboutURI() {
         return ABOUT_URI;
     }
+
+    public static void loadSupportPages(WebView webview, String url) {
+        switch (url) {
+            case FOCUS_ABOUT_URL:
+                loadAbout(webview);
+                break;
+            case YOUR_RIGHTS_URI:
+                loadRights(webview);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown internal pages url: " + url);
+        }
+    }
+
+    private static void loadRights(final WebView webView) {
+        final Context context = webView.getContext();
+        final Resources resources = Locales.getLocalizedResources(webView.getContext());
+
+        final Map<String, String> substitutionMap = new ArrayMap<>();
+
+        final String appName = context.getResources().getString(R.string.app_name);
+        final String mplUrl = "https://www.mozilla.org/en-US/MPL/";
+        final String trademarkPolicyUrl = "https://www.mozilla.org/foundation/trademarks/policy/";
+        final String gplUrl = "file:///android_asset/gpl.html";
+        final String trackingProtectionUrl = "https://wiki.mozilla.org/Security/Tracking_protection#Lists";
+        final String licensesUrl = "file:///android_asset/licenses.html";
+
+        final String content1 = resources.getString(R.string.your_rights_content1, appName);
+        substitutionMap.put("%your-rights-content1%", content1);
+
+        final String content2 = resources.getString(R.string.your_rights_content2, appName, mplUrl);
+        substitutionMap.put("%your-rights-content2%", content2);
+
+        final String content3 = resources.getString(R.string.your_rights_content3, appName, trademarkPolicyUrl);
+        substitutionMap.put("%your-rights-content3%", content3);
+
+        final String content4 = resources.getString(R.string.your_rights_content4, appName, licensesUrl);
+        substitutionMap.put("%your-rights-content4%", content4);
+
+        final String content5 = resources.getString(R.string.your_rights_content5, appName, gplUrl, trackingProtectionUrl);
+        substitutionMap.put("%your-rights-content5%", content5);
+
+        final String data = HtmlLoader.loadResourceFile(webView.getContext(), R.raw.rights, substitutionMap);
+        webView.loadDataWithBaseURL(getYourRightsURI(), data, "text/html", "UTF-8", null);
+    }
+
+    private static void loadAbout(final WebView webView) {
+        final Context context = webView.getContext();
+        final Resources resources = Locales.getLocalizedResources(webView.getContext());
+
+        final Map<String, String> substitutionMap = new ArrayMap<>();
+        final String appName = webView.getContext().getResources().getString(R.string.app_name);
+        final String aboutBody = webView.getContext().getResources().getString(R.string.about_content_body, appName);
+
+        final String aboutURI = SupportUtils.getAboutURI();
+        final String learnMoreURL = SupportUtils.getManifestoURL();
+        final String supportURL = SupportUtils.getSumoURLForTopic(webView.getContext(), "rocket-help");
+        final String rightURL = SupportUtils.getYourRightsURI();
+        final String privacyURL = SupportUtils.getPrivacyURL();
+
+        final String linkLearnMore = resources.getString(R.string.about_link_learn_more);
+        final String linkSupport = resources.getString(R.string.about_link_support);
+        final String linkYourRights = resources.getString(R.string.about_link_your_rights);
+        final String linkPrivacy = resources.getString(R.string.about_link_privacy);
+
+        String aboutVersion = "";
+        try {
+            aboutVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Nothing to do if we can't find the package name.
+        }
+        substitutionMap.put("%about-version%", aboutVersion);
+
+        final String aboutContent = resources.getString(R.string.about_content
+                , aboutBody
+                , learnMoreURL
+                , linkLearnMore
+                , supportURL
+                , linkSupport
+                , rightURL
+                , linkYourRights
+                , privacyURL
+                , linkPrivacy
+        );
+        substitutionMap.put("%about-content%", aboutContent);
+
+        final String wordmark = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.logotype);
+        substitutionMap.put("%wordmark%", wordmark);
+
+        final String data = HtmlLoader.loadResourceFile(webView.getContext(), R.raw.about, substitutionMap);
+        // We use a file:/// base URL so that we have the right origin to load file:/// css and
+        // image resources.
+        webView.loadDataWithBaseURL(aboutURI, data, "text/html", "UTF-8", null);
+    }
+
 }
