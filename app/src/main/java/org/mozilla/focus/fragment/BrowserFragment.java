@@ -400,7 +400,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onPageFinished(boolean isSecure) {
-                if (swipeRefreshLayout != null && swipeRefreshLayout.getVisibility() == View.VISIBLE) {
+                if (swipeRefreshLayout != null && swipeRefreshLayout.isNestedScrollingEnabled()) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
 
