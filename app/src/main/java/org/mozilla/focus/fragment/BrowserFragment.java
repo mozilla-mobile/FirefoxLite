@@ -97,6 +97,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     // For perceive-performance. If we are loading page, at least to display this value for UI hint.
     private static final int MIN_LOADING_PROGRESS = 10;
 
+    private final static int NONE = -1;
+    private int systemVisibility = NONE;
+
     private String firstLoadingUrlAfterResumed = null;
 
     public static BrowserFragment create(@NonNull String url) {
@@ -314,6 +317,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onStop() {
+        IWebView webView = getWebView();
+        if (webView != null && systemVisibility != NONE) {
+            webView.performExitFullScreen();
+        }
         super.onStop();
         notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
     }
@@ -352,8 +359,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public IWebView.Callback createCallback() {
         return new IWebView.Callback() {
             String failingUrl;
-            private final static int NONE = -1;
-            private int systemVisibility = NONE;
             private boolean mostOldCallbacksHaveFinished = false;
             // Some url may have two onPageFinished for the same url. filter them out to avoid
             // adding twice to the history.
