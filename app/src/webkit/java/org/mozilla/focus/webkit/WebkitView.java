@@ -140,6 +140,11 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
     }
 
     @Override
+    public void performExitFullScreen() {
+        evaluateJavascript("(function() { return document.webkitExitFullscreen(); })();", null);
+    }
+
+    @Override
     public void setCallback(Callback callback) {
         if (callback != null) {
             callback = new CallbackWrapper(callback);

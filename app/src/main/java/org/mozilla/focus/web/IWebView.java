@@ -101,6 +101,8 @@ public interface IWebView {
 
     boolean isBlockingEnabled();
 
+    void performExitFullScreen();
+
     void setCallback(Callback callback);
 
     void onPause();
