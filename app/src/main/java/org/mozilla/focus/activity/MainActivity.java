@@ -845,20 +845,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                             .setAction(R.string.open, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (TextUtils.isEmpty(downloadInfo.getMediaUri())) {
-                                        MediaScannerConnection.scanFile(MainActivity.this,
-                                                new String[]{Uri.parse(downloadInfo.getFileUri()).getPath()},
-                                                new String[]{downloadInfo.getMimeType()},
-                                                new MediaScannerConnection.OnScanCompletedListener() {
-
-                                                    @Override
-                                                    public void onScanCompleted(String path, Uri uri) {
-                                                        IntentUtils.intentOpenFile(MainActivity.this, path, downloadInfo.getMimeType());
-                                                    }
-                                                });
-                                    } else {
-                                        IntentUtils.intentOpenFile(view.getContext(), downloadInfo.getFileUri(), downloadInfo.getMimeType());
-                                    }
+                                    IntentUtils.intentOpenFile(MainActivity.this, downloadInfo.getFileUri(), downloadInfo.getMimeType());
                                 }
                             })
                             .show();
