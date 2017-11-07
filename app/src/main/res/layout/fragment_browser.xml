@@ -29,11 +29,19 @@
             android:clipChildren="false"
             android:orientation="vertical">
 
-            <org.mozilla.focus.web.IWebView
-                android:id="@+id/webview"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="26dp" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <org.mozilla.focus.web.IWebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="26dp"/>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
