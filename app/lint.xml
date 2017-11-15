@@ -13,4 +13,12 @@
     <issue id="InconsistentLayout">
         <ignore path="**/appcompat-v7/**/res/layout/notification_template_custom_big.xml"/>
     </issue>
+
+    <!-- We're currently doing bad practice, i.e. duplicating the app_name resource in main and
+         preview. However we are also about to change this architecture so let's whitelist it for
+         now.
+    -->
+    <issue id="DuplicateDefinition">
+        <ignore path="src/preview/res/values/app.xml"/>
+    </issue>
 </lint>
