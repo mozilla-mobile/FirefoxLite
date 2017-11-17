@@ -37,7 +37,6 @@ import static org.hamcrest.Matchers.allOf;
 public final class TestHelper {
 
     static UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-    ;
     static final long waitingTime = DateUtils.SECOND_IN_MILLIS * 4;
 
     /********* First View Locators ***********/
