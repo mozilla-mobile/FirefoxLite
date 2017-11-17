@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
  */
 /* package */ class SearchEngineParser {
     private static final String URLTYPE_SUGGEST_JSON = "application/x-suggestions+json";
-    private static final String URLTYPE_SEARCH_HTML  = "text/html";
+    private static final String URLTYPE_SEARCH_HTML = "text/html";
     private static final String URL_REL_MOBILE = "mobile";
 
     private static final String IMAGE_URI_PREFIX = "data:image/png;base64,";
@@ -38,7 +38,8 @@ import java.nio.charset.StandardCharsets;
         }
     }
 
-    @VisibleForTesting static SearchEngine load(String identifier, InputStream stream) throws IOException, XmlPullParserException {
+    @VisibleForTesting
+    static SearchEngine load(String identifier, InputStream stream) throws IOException, XmlPullParserException {
         final SearchEngine searchEngine = new SearchEngine(identifier);
 
         XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();

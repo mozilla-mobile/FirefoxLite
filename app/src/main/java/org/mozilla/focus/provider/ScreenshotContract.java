@@ -21,7 +21,8 @@ public class ScreenshotContract {
 
     public static final class Screenshot implements BaseColumns {
 
-        private Screenshot() {}
+        private Screenshot() {
+        }
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "screenshot");
 

@@ -80,7 +80,7 @@ public class BlocklistProcessor {
 
         /**
          * @param desiredOwners A set containing all the site owners that should be stored in the list.
-         * Corresponds to the group owners listed in blocklist.json (e.g. "Facebook", "Twitter", etc.)
+         *                      Corresponds to the group owners listed in blocklist.json (e.g. "Facebook", "Twitter", etc.)
          */
         ListCallback(final List<String> list, final Set<String> desiredOwners) {
             this.list = list;

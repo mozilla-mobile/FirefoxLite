@@ -35,7 +35,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                 if (downloadInfoList.size() > 0) {
                     final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
                     if ((downloadInfo.getStatus() == DownloadManager.STATUS_SUCCESSFUL)
-                            && !TextUtils.isEmpty(downloadInfo.getFileUri())){
+                            && !TextUtils.isEmpty(downloadInfo.getFileUri())) {
 
                         // have to update, then the fileUri may write into our DB.
                         DownloadInfoManager.getInstance().updateByRowId(downloadInfo, new DownloadInfoManager.AsyncUpdateListener() {

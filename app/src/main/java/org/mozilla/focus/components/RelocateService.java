@@ -113,7 +113,7 @@ public class RelocateService extends IntentService {
      * If removable storage exists, to move a file to it. Once moving completed, also update
      * database for latest file path.
      *
-     * @param rowId id of downloaded file in our database
+     * @param rowId      id of downloaded file in our database
      * @param downloadId downloadId of downloaded file, need this to update system database
      * @param srcFile    file to be moved
      * @param type       MIME type of the file, to decide sub directory

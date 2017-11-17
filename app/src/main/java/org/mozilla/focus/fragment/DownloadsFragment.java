@@ -26,7 +26,7 @@ import org.mozilla.focus.widget.DownloadListAdapter;
 
 import java.util.List;
 
-public class DownloadsFragment extends PanelFragment implements DownloadInfoManager.AsyncQueryListener{
+public class DownloadsFragment extends PanelFragment implements DownloadInfoManager.AsyncQueryListener {
 
     private RecyclerView recyclerView;
     private DownloadListAdapter mDownloadListAdapter;
@@ -76,7 +76,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
 
     @Override
     public void tryLoadMore() {
-        if (!mDownloadListAdapter.isLoading() && !mDownloadListAdapter.isLastPage()){
+        if (!mDownloadListAdapter.isLoading() && !mDownloadListAdapter.isLastPage()) {
             mDownloadListAdapter.loadMore();
         }
     }
@@ -85,9 +85,9 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mInsertReceiver
-                ,new IntentFilter(DownloadInfoManager.ROW_UPDATED));
+                , new IntentFilter(DownloadInfoManager.ROW_UPDATED));
         getContext().registerReceiver(mDownloadReceiver
-                ,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                , new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
 
     private void prepare() {
         recyclerView.setAdapter(mDownloadListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
 
     @Override

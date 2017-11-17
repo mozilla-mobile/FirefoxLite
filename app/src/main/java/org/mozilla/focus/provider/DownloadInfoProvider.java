@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import static org.mozilla.focus.provider.DownloadContract.Download;
 
 /**
@@ -24,9 +25,11 @@ import static org.mozilla.focus.provider.DownloadContract.Download;
 public class DownloadInfoProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     static {
-        sUriMatcher.addURI(DownloadContract.AUTHORITY,DownloadContract.PATH,DownloadContract.CODE);
+        sUriMatcher.addURI(DownloadContract.AUTHORITY, DownloadContract.PATH, DownloadContract.CODE);
     }
+
     private DownloadInfoDbHelper mDbHelper;
 
     @Override
@@ -40,7 +43,7 @@ public class DownloadInfoProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
             case DownloadContract.CODE:
 
                 queryBuilder.setTables(Download.TABLE_DOWNLOAD);
@@ -50,7 +53,7 @@ public class DownloadInfoProvider extends ContentProvider {
         }
 
         SQLiteDatabase sqLiteDatabase = mDbHelper.getReadableDB();
-        Cursor cursor = queryBuilder.query(sqLiteDatabase,projection,selection,selectionArgs,null,null,sortOrder,getLimitParam(uri.getQueryParameter("offset"), uri.getQueryParameter("limit")));
+        Cursor cursor = queryBuilder.query(sqLiteDatabase, projection, selection, selectionArgs, null, null, sortOrder, getLimitParam(uri.getQueryParameter("offset"), uri.getQueryParameter("limit")));
         return cursor;
     }
 
@@ -58,7 +61,7 @@ public class DownloadInfoProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
 
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
             case DownloadContract.CODE:
                 return Download.CONTENT_TYPE;
             default:
@@ -72,20 +75,19 @@ public class DownloadInfoProvider extends ContentProvider {
 
         SQLiteDatabase sqLiteDatabase = mDbHelper.getWritableDB();
         Long id;
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
             case DownloadContract.CODE:
-                id = sqLiteDatabase.insert(Download.TABLE_DOWNLOAD,null,contentValues);
+                id = sqLiteDatabase.insert(Download.TABLE_DOWNLOAD, null, contentValues);
                 break;
             default:
                 throw new UnsupportedOperationException("URI: " + uri);
         }
 
         Uri uriWithId;
-        if (id>0)
-        {
+        if (id > 0) {
             notifyChange();
-            uriWithId =  ContentUris.withAppendedId(uri,id);
-        }else {
+            uriWithId = ContentUris.withAppendedId(uri, id);
+        } else {
             uriWithId = null;
         }
 
@@ -96,15 +98,15 @@ public class DownloadInfoProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase sqLiteDatabase = mDbHelper.getWritableDB();
         int count;
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
             case DownloadContract.CODE:
-                count = sqLiteDatabase.delete(Download.TABLE_DOWNLOAD,selection,selectionArgs);
+                count = sqLiteDatabase.delete(Download.TABLE_DOWNLOAD, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("URI: " + uri);
         }
 
-        if (count>0){
+        if (count > 0) {
             notifyChange();
         }
         return count;
@@ -114,23 +116,23 @@ public class DownloadInfoProvider extends ContentProvider {
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase sqLiteDatabase = mDbHelper.getWritableDB();
         int count;
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
             case DownloadContract.CODE:
-                count = sqLiteDatabase.update(Download.TABLE_DOWNLOAD,contentValues,selection,selectionArgs);
+                count = sqLiteDatabase.update(Download.TABLE_DOWNLOAD, contentValues, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("URI: " + uri);
         }
 
-        if (count > 0){
+        if (count > 0) {
             notifyChange();
         }
 
         return count;
     }
 
-    private void notifyChange(){
-        getContext().getContentResolver().notifyChange(Download.CONTENT_URI,null);
+    private void notifyChange() {
+        getContext().getContentResolver().notifyChange(Download.CONTENT_URI, null);
     }
 
     private String getLimitParam(String offset, String limit) {

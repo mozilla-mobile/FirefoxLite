@@ -44,11 +44,14 @@ public interface IWebView {
         void onPageStarted(String url);
 
         void onPageFinished(boolean isSecure);
+
         void onProgress(int progress);
 
         void onURLChanged(final String url);
 
-        /** Return true if the URL was handled, false if we should continue loading the current URL. */
+        /**
+         * Return true if the URL was handled, false if we should continue loading the current URL.
+         */
         boolean handleExternalUrl(String url);
 
         void onDownloadStart(Download download);
@@ -57,17 +60,17 @@ public interface IWebView {
 
         /**
          * Notify the host application that the current page has entered full screen mode.
-         *
+         * <p>
          * The callback needs to be invoked to request the page to exit full screen mode.
-         *
+         * <p>
          * Some IWebView implementations may pass a custom View which contains the web contents in
          * full screen mode.
          */
-        void onEnterFullScreen(@NonNull  FullscreenCallback callback, @Nullable View view);
+        void onEnterFullScreen(@NonNull FullscreenCallback callback, @Nullable View view);
 
         /**
          * Notify the host application that the current page has exited full screen mode.
-         *
+         * <p>
          * If a View was passed when the application entered full screen mode then this view must
          * be hidden now.
          */
@@ -78,9 +81,9 @@ public interface IWebView {
         /**
          * @see WebChromeClient
          */
-        boolean onShowFileChooser (WebView webView,
-                                   ValueCallback<Uri[]> filePathCallback,
-                                   WebChromeClient.FileChooserParams fileChooserParams);
+        boolean onShowFileChooser(WebView webView,
+                                  ValueCallback<Uri[]> filePathCallback,
+                                  WebChromeClient.FileChooserParams fileChooserParams);
 
         void updateFailingUrl(String url, boolean updateFromError);
 

@@ -50,7 +50,7 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
         if (positiveResult) {
             Resources resources = getContext().getResources();
             //  On click positive callback here get current value by getValues();
-            for(String value : getValues()) {
+            for (String value : getValues()) {
                 if (resources.getString(R.string.pref_value_clear_browsing_history).equals(value)) {
                     BrowsingHistoryManager.getInstance().deleteAll(null);
                     TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
@@ -58,7 +58,7 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
                     CookieManager.getInstance().removeAllCookies(null);
                 } else if (resources.getString(R.string.pref_value_clear_cache).equals(value)) {
                     FileUtils.clearCache(getContext());
-                } else if (resources.getString(R.string.pref_value_clear_form_history).equals(value)){
+                } else if (resources.getString(R.string.pref_value_clear_form_history).equals(value)) {
                     WebViewDatabase.getInstance(getContext()).clearFormData();
                 }
             }

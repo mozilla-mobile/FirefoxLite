@@ -38,7 +38,7 @@ public class GetImgHeaderTask extends AsyncTask<String, Void, String> {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (connection != null) {
                 connection.disconnect();
             }

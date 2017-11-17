@@ -102,7 +102,7 @@ import org.mozilla.focus.web.IWebView;
     }
 
     private static boolean shouldOverrideInternalPages(WebView webView, String url) {
-        if(SupportUtils.isTemplateSupportPages(url)){
+        if (SupportUtils.isTemplateSupportPages(url)) {
             SupportUtils.loadSupportPages(webView, url);
             return true;
         }

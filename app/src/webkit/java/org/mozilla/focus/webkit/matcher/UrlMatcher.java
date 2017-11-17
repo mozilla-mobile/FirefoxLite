@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class UrlMatcher implements  SharedPreferences.OnSharedPreferenceChangeListener {
+public class UrlMatcher implements SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * Map of pref to blocking category (preference key -> Blocklist category name).
      */
@@ -113,7 +113,7 @@ public class UrlMatcher implements  SharedPreferences.OnSharedPreferenceChangeLi
 
         // Ensure all categories have been declared, and enable by default (loadPrefs() will then
         // enabled/disable categories that have actually been configured).
-        for (final Map.Entry<String, Trie> entry: categoryMap.entrySet()) {
+        for (final Map.Entry<String, Trie> entry : categoryMap.entrySet()) {
             if (!categoryPrefMap.values().contains(entry.getKey())) {
                 throw new IllegalArgumentException("categoryMap contains undeclared category");
             }
@@ -154,7 +154,8 @@ public class UrlMatcher implements  SharedPreferences.OnSharedPreferenceChangeLi
         return ads.equals(preferenceKey) || analytics.equals(preferenceKey) || social.equals(preferenceKey);
     }
 
-    @VisibleForTesting UrlMatcher(final String[] patterns) {
+    @VisibleForTesting
+    UrlMatcher(final String[] patterns) {
         final Map<String, String> map = new HashMap<>();
         map.put("default", "default");
         categoryPrefMap = Collections.unmodifiableMap(map);
@@ -168,6 +169,7 @@ public class UrlMatcher implements  SharedPreferences.OnSharedPreferenceChangeLi
 
     /**
      * Only used for testing - uses a list of urls to populate a "default" category.
+     *
      * @param patterns
      */
     private void buildMatcher(String[] patterns) {

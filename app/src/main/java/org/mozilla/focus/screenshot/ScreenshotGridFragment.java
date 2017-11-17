@@ -79,7 +79,7 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
             mContainerRecyclerView.setVisibility(View.GONE);
             mContainerEmptyView.setVisibility(View.VISIBLE);
 
-        } else if (VIEW_TYPE_NON_EMPTY == status){
+        } else if (VIEW_TYPE_NON_EMPTY == status) {
             mContainerRecyclerView.setVisibility(View.VISIBLE);
             mContainerEmptyView.setVisibility(View.GONE);
         } else {
@@ -89,7 +89,7 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
     }
 
     public void notifyItemDelete(long id) {
-        if(mAdapter != null) {
+        if (mAdapter != null) {
             mAdapter.onItemDelete(id);
         }
     }

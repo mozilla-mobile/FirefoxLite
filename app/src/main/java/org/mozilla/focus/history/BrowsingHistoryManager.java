@@ -99,7 +99,7 @@ public class BrowsingHistoryManager {
     }
 
     public void delete(long id, AsyncDeleteListener listener) {
-        mQueryHandler.startDelete(QueryHandler.SITE_TOKEN, new AsyncDeleteWrapper(id, listener), BrowsingHistory.CONTENT_URI, BrowsingHistory._ID + " = ?", new String[] {Long.toString(id)});
+        mQueryHandler.startDelete(QueryHandler.SITE_TOKEN, new AsyncDeleteWrapper(id, listener), BrowsingHistory.CONTENT_URI, BrowsingHistory._ID + " = ?", new String[]{Long.toString(id)});
     }
 
     public void deleteAll(AsyncDeleteListener listener) {
@@ -107,7 +107,7 @@ public class BrowsingHistoryManager {
     }
 
     public void updateLastEntry(Site site, AsyncUpdateListener listener) {
-        mQueryHandler.startUpdate(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site), BrowsingHistory._ID + " = ( SELECT " + BrowsingHistory._ID + " FROM " + HistoryContract.TABLE_NAME +" WHERE " + BrowsingHistory.URL + " = ? ORDER BY " + BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC)" , new String[] {site.getUrl()});
+        mQueryHandler.startUpdate(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site), BrowsingHistory._ID + " = ( SELECT " + BrowsingHistory._ID + " FROM " + HistoryContract.TABLE_NAME + " WHERE " + BrowsingHistory.URL + " = ? ORDER BY " + BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC)", new String[]{site.getUrl()});
     }
 
     public void query(int offset, int limit, AsyncQueryListener listener) {
@@ -115,6 +115,6 @@ public class BrowsingHistoryManager {
     }
 
     public void queryTopSites(int limit, int minViewCount, AsyncQueryListener listener) {
-        mQueryHandler.startQuery(QueryHandler.SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?limit=" + limit), null, BrowsingHistory.VIEW_COUNT + " >= ?", new String[] {Integer.toString(minViewCount)}, BrowsingHistory.VIEW_COUNT + " DESC");
+        mQueryHandler.startQuery(QueryHandler.SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?limit=" + limit), null, BrowsingHistory.VIEW_COUNT + " >= ?", new String[]{Integer.toString(minViewCount)}, BrowsingHistory.VIEW_COUNT + " DESC");
     }
 }

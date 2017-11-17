@@ -37,7 +37,7 @@ public class IntentUtils {
      * URL will be opened in the supplied WebView if appropriate (in which case the URL was handled,
      * and true will also be returned). If not handled, we should  fall back to webviews error handling
      * (which ends up calling our error handling code as needed).
-     *
+     * <p>
      * Note: this method "leaks" the target Uri to Android before asking the user whether they
      * want to use an external app to open the uri. Ultimately the OS can spy on anything we're
      * doing in the app, so this isn't an actual "bug".
@@ -155,15 +155,15 @@ public class IntentUtils {
 
             try {
                 context.startActivity(launchIntent);
-            }catch (Exception e){
+            } catch (Exception e) {
                 openDownloadPage(context);
             }
-        }else {
+        } else {
             openDownloadPage(context);
         }
     }
 
-    private static void openDownloadPage(Context context){
+    private static void openDownloadPage(Context context) {
         Intent pageView = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
         pageView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(pageView);

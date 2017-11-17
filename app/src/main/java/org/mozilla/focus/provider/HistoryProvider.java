@@ -22,6 +22,7 @@ public class HistoryProvider extends ContentProvider {
 
     private static final int BROWSING_HISTORY = 1;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     static {
         sUriMatcher.addURI(HistoryContract.AUTHORITY, "browsing_history", BROWSING_HISTORY);
     }
@@ -85,7 +86,7 @@ public class HistoryProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
-            String[] selectionArgs, String sortOrder) {
+                        String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         switch (sUriMatcher.match(uri)) {
             case BROWSING_HISTORY:
@@ -103,7 +104,7 @@ public class HistoryProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection,
-            String[] selectionArgs) {
+                      String[] selectionArgs) {
         final SQLiteDatabase db = mDbHelper.getWriteableDatabase();
         int count;
         switch (sUriMatcher.match(uri)) {
@@ -124,12 +125,12 @@ public class HistoryProvider extends ContentProvider {
         long id = -1;
         Cursor c = null;
         try {
-            c = db.query(Tables.BROWSING_HISTORY, null, BrowsingHistory.URL + " = ?", new String[] {values.getAsString(BrowsingHistory.URL)}, null, null, null);
+            c = db.query(Tables.BROWSING_HISTORY, null, BrowsingHistory.URL + " = ?", new String[]{values.getAsString(BrowsingHistory.URL)}, null, null, null);
             if (c != null) {
                 if (c.moveToFirst()) {
                     id = c.getLong(c.getColumnIndex(BrowsingHistory._ID));
                     values.put(BrowsingHistory.VIEW_COUNT, c.getLong((c.getColumnIndex(BrowsingHistory.VIEW_COUNT))) + 1);
-                    if (db.update(Tables.BROWSING_HISTORY, values, BrowsingHistory._ID + " = ?", new String[] {Long.toString(id)}) == 0) {
+                    if (db.update(Tables.BROWSING_HISTORY, values, BrowsingHistory._ID + " = ?", new String[]{Long.toString(id)}) == 0) {
                         id = -1;
                     }
                 } else {

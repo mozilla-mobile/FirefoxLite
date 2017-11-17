@@ -114,7 +114,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         initInfoItemArray();
         if (mScreenshot != null) {
             if (new File(mScreenshot.getImageUri()).exists()) {
-                if(checkPermissions()) {
+                if (checkPermissions()) {
                     setupView(true);
                     initScreenshotInfo(false);
                 } else {
@@ -150,7 +150,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 finish();
                 break;
             case R.id.screenshot_viewer_btn_edit:
-                if(checkPermissions()) {
+                if (checkPermissions()) {
                     onEditClick();
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -159,7 +159,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 }
                 break;
             case R.id.screenshot_viewer_btn_share:
-                if(checkPermissions()) {
+                if (checkPermissions()) {
                     onShareClick();
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -172,7 +172,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 onInfoClick();
                 break;
             case R.id.screenshot_viewer_btn_delete:
-                if(checkPermissions()) {
+                if (checkPermissions()) {
                     onDeleteClick();
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -205,15 +205,15 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 setupView(true);
                 initScreenshotInfo(false);
             }
-        } else if(requestCode == REQUEST_CODE_EDIT_SCREENSHOT) {
+        } else if (requestCode == REQUEST_CODE_EDIT_SCREENSHOT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 onEditClick();
             }
-        } else if(requestCode == REQUEST_CODE_SHARE_SCREENSHOT) {
+        } else if (requestCode == REQUEST_CODE_SHARE_SCREENSHOT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 onShareClick();
             }
-        } else if(requestCode == REQUEST_CODE_DELETE_SCREENSHOT) {
+        } else if (requestCode == REQUEST_CODE_DELETE_SCREENSHOT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 onDeleteClick();
             }
@@ -239,14 +239,14 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private void initScreenshotInfo(boolean withShare) {
-        if(mScreenshot != null) {
-            if(mScreenshot.getTimestamp() > 0) {
+        if (mScreenshot != null) {
+            if (mScreenshot.getTimestamp() > 0) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(mScreenshot.getTimestamp());
                 mInfoItems.get(0).title = getString(R.string.screenshot_image_viewer_dialog_info_time1, sSdfInfoTime.format(cal.getTime()));
             }
             File imgFile = new File(mScreenshot.getImageUri());
-            if(imgFile.exists()) {
+            if (imgFile.exists()) {
                 showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -266,7 +266,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             imageSource = ImageSource.uri(mImageUri);
             mImgScreenshot.setImage(imageSource, ImageViewState.ALIGN_TOP);
 
-            if(withShare) {
+            if (withShare) {
                 onShareClick();
             }
         }
@@ -303,7 +303,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private void onShareClick() {
-        if(mImageUri != null) {
+        if (mImageUri != null) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -337,7 +337,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         builder.setAdapter(new InfoItemAdapter(this, mInfoItems), null);
         builder.setPositiveButton(R.string.action_ok, null);
         AlertDialog dialog = builder.create();
-        if(dialog.getListView() != null) {
+        if (dialog.getListView() != null) {
             dialog.getListView().setSelector(android.R.color.transparent);
         }
         dialog.show();
@@ -366,11 +366,11 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         float sizeGo = sizeMo * sizeKb;
         float sizeTerra = sizeGo * sizeKb;
 
-        if(size < sizeMo)
-            return df.format(size / sizeKb)+ " KB";
-        else if(size < sizeGo)
+        if (size < sizeMo)
+            return df.format(size / sizeKb) + " KB";
+        else if (size < sizeGo)
             return df.format(size / sizeMo) + " MB";
-        else if(size < sizeTerra)
+        else if (size < sizeTerra)
             return df.format(size / sizeGo) + " GB";
 
         return "";
@@ -390,7 +390,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             TextView textTitle = (TextView) convertView.findViewById(R.id.screenshot_info_dialog_text);
 
             textTitle.setText(item.title);
-            if(position == 4) {
+            if (position == 4) {
                 convertView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -405,9 +405,9 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private void proceedDelete() {
-        if(mScreenshot != null) {
+        if (mScreenshot != null) {
             File file = new File(mScreenshot.getImageUri());
-            if(file.exists()) {
+            if (file.exists()) {
                 try {
                     file.delete();
                 } catch (Exception ex) {

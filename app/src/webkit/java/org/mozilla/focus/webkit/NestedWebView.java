@@ -16,9 +16,9 @@ import android.webkit.WebView;
 
 /**
  * WebView that supports nested scrolls (for using in a CoordinatorLayout).
- *
+ * <p>
  * Based on:
- *   https://github.com/takahirom/webview-in-coordinatorlayout
+ * https://github.com/takahirom/webview-in-coordinatorlayout
  */
 public class NestedWebView extends WebView implements NestedScrollingChild {
     private int mLastY;

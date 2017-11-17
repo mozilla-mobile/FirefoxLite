@@ -24,7 +24,7 @@ public class StorageUtils {
      * Test if we have a removable storage and throw Exception if no is available and specify cause.
      * Note that exception is thrown even if the user does not want to save to removable storage.
      *
-     * @param ctx  Context
+     * @param ctx Context
      * @return app-owned-directory on removable storage
      * @throws NoRemovableStorageException if there is no removable storage to use.
      */
@@ -71,7 +71,7 @@ public class StorageUtils {
     }
 
     public static File getTargetDirForSaveScreenshot(@NonNull Context ctx) {
-        String folderName = ctx.getString(R.string.app_name).replaceAll(" ","");
+        String folderName = ctx.getString(R.string.app_name).replaceAll(" ", "");
         File defaultDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), folderName);
         FileUtils.ensureDir(defaultDirectory);
 

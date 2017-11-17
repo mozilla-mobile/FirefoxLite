@@ -274,8 +274,8 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if (callback != null){
-                callback.onReceivedTitle(view,title);
+            if (callback != null) {
+                callback.onReceivedTitle(view, title);
             }
         }
     }
@@ -382,7 +382,7 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            this.callback.onReceivedTitle(view,title);
+            this.callback.onReceivedTitle(view, title);
         }
     }
 

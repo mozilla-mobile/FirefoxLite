@@ -109,7 +109,7 @@ public class UrlUtilsTest {
         assertEquals("http://localhost", UrlUtils.normalize("localhost"));
 
         // for supported/predefined url, we should not change them at all.
-        for(final String supported: SupportUtils.SUPPORTED_URLS){
+        for (final String supported : SupportUtils.SUPPORTED_URLS) {
             assertEquals(supported, UrlUtils.normalize(supported));
         }
     }

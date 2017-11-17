@@ -72,7 +72,7 @@ public class Settings {
         return defined[0].equals(value); // assume the first item is for removable storage
     }
 
-    public boolean shouldUseTurboMode(){
+    public boolean shouldUseTurboMode() {
         return preferences.getBoolean(
                 resources.getString(R.string.pref_key_turbo_mode),
                 TURBO_MODE_DEFAULT);
@@ -111,13 +111,13 @@ public class Settings {
                 .apply();
     }
 
-    public boolean shouldShowScreenshotOnBoarding(){
+    public boolean shouldShowScreenshotOnBoarding() {
         return preferences.getBoolean(
                 resources.getString(R.string.pref_key_screenshot_on_boarding),
                 SCREENSHOT_ON_BOARDING_DEFAULT);
     }
 
-    public void setScreenshotOnBoardingDone(){
+    public void setScreenshotOnBoardingDone() {
         final String key = getPreferenceKey(R.string.pref_key_screenshot_on_boarding);
         preferences.edit()
                 .putBoolean(key, false)

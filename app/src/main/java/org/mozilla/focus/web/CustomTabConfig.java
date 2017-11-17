@@ -29,9 +29,15 @@ public class CustomTabConfig {
     private static final String LOGTAG = "CustomTabConfig";
 
     public static final class ActionButtonConfig {
-        public final @NonNull String description;
-        public final @NonNull Bitmap icon;
-        public final @NonNull PendingIntent pendingIntent;
+        public final
+        @NonNull
+        String description;
+        public final
+        @NonNull
+        Bitmap icon;
+        public final
+        @NonNull
+        PendingIntent pendingIntent;
 
         public ActionButtonConfig(final @NonNull String description,
                                   final @NonNull Bitmap icon,
@@ -52,15 +58,26 @@ public class CustomTabConfig {
         }
     }
 
-    public final @Nullable @ColorInt Integer toolbarColor;
-    public final @Nullable Bitmap closeButtonIcon;
+    public final
+    @Nullable
+    @ColorInt
+    Integer toolbarColor;
+    public final
+    @Nullable
+    Bitmap closeButtonIcon;
     public final boolean disableUrlbarHiding;
 
-    public final @Nullable ActionButtonConfig actionButtonConfig;
+    public final
+    @Nullable
+    ActionButtonConfig actionButtonConfig;
     public final boolean showShareMenuItem;
-    public final @NonNull List<CustomTabMenuItem> menuItems;
+    public final
+    @NonNull
+    List<CustomTabMenuItem> menuItems;
 
-    private final @NonNull List<String> unsupportedFeatureList;
+    private final
+    @NonNull
+    List<String> unsupportedFeatureList;
 
     /* package-private */ CustomTabConfig(
             final @Nullable @ColorInt Integer toolbarColor,
@@ -79,11 +96,15 @@ public class CustomTabConfig {
         this.unsupportedFeatureList = unsupportedFeatureList;
     }
 
-    /* package-private */ static boolean isCustomTabIntent(final @NonNull SafeIntent intent) {
+    /* package-private */
+    static boolean isCustomTabIntent(final @NonNull SafeIntent intent) {
         return intent.hasExtra(CustomTabsIntent.EXTRA_SESSION);
     }
 
-    /* package-private */ static @Nullable Bitmap getCloseButtonIcon(final @NonNull Context context, final @NonNull SafeIntent intent) {
+    /* package-private */
+    static
+    @Nullable
+    Bitmap getCloseButtonIcon(final @NonNull Context context, final @NonNull SafeIntent intent) {
         if (!intent.hasExtra(CustomTabsIntent.EXTRA_CLOSE_BUTTON_ICON)) {
             return null;
         }
@@ -105,7 +126,10 @@ public class CustomTabConfig {
         }
     }
 
-    /* package-private */ static @Nullable ActionButtonConfig getActionButtonConfig(final @NonNull Context context, final @NonNull SafeIntent intent) {
+    /* package-private */
+    static
+    @Nullable
+    ActionButtonConfig getActionButtonConfig(final @NonNull Context context, final @NonNull SafeIntent intent) {
         if (!intent.hasExtra(CustomTabsIntent.EXTRA_ACTION_BUTTON_BUNDLE)) {
             return null;
         }
@@ -121,7 +145,7 @@ public class CustomTabConfig {
         final Parcelable pendingIntentParcelable = actionButtonBundle.getParcelable(CustomTabsIntent.KEY_PENDING_INTENT);
         final PendingIntent pendingIntent;
         // See below: this might not be a PendingIntent, we need to verify ourselves
-        if (pendingIntentParcelable instanceof  PendingIntent) {
+        if (pendingIntentParcelable instanceof PendingIntent) {
             pendingIntent = (PendingIntent) pendingIntentParcelable;
         } else {
             Log.w(LOGTAG, "Ignoring EXTRA_ACTION_BUTTON_BUNDLE due to missing pendingIntent");
@@ -145,7 +169,8 @@ public class CustomTabConfig {
         return new ActionButtonConfig(description, icon, pendingIntent);
     }
 
-    /* package-private */ static CustomTabConfig parseCustomTabIntent(final @NonNull Context context, final @NonNull SafeIntent intent) {
+    /* package-private */
+    static CustomTabConfig parseCustomTabIntent(final @NonNull Context context, final @NonNull SafeIntent intent) {
         @ColorInt Integer toolbarColor = null;
         if (intent.hasExtra(CustomTabsIntent.EXTRA_TOOLBAR_COLOR)) {
             toolbarColor = intent.getIntExtra(CustomTabsIntent.EXTRA_TOOLBAR_COLOR, -1);

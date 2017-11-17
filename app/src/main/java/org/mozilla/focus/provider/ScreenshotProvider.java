@@ -26,6 +26,7 @@ public class ScreenshotProvider extends ContentProvider {
 
     private static final int SCREENSHOT = 1;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     static {
         sUriMatcher.addURI(ScreenshotContract.AUTHORITY, "screenshot", SCREENSHOT);
     }
@@ -85,7 +86,7 @@ public class ScreenshotProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
-            String[] selectionArgs, String sortOrder) {
+                        String[] selectionArgs, String sortOrder) {
         final SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         switch (sUriMatcher.match(uri)) {
             case SCREENSHOT:

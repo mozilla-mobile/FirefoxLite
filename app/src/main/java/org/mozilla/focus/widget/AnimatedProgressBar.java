@@ -136,13 +136,13 @@ public class AnimatedProgressBar extends ProgressBar {
         nextProgress = Math.min(nextProgress, getMax());
         nextProgress = Math.max(0, nextProgress);
         mExpectedProgress = nextProgress;
-        if(nextProgress == getMax()) {
-            if(getVisibility() == VISIBLE) {
+        if (nextProgress == getMax()) {
+            if (getVisibility() == VISIBLE) {
                 setVisibility(GONE);
                 announceForAccessibility(endLoadingString());
             }
         } else {
-            if(getVisibility() == GONE) {
+            if (getVisibility() == GONE) {
                 setVisibility(VISIBLE);
                 announceForAccessibility(startLoadingString());
             }

@@ -70,7 +70,7 @@ public class Site {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Site) {
-            if (((Site)obj).getId() == this.getId()) {
+            if (((Site) obj).getId() == this.getId()) {
                 return true;
             }
         }

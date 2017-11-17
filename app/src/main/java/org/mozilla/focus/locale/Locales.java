@@ -20,7 +20,7 @@ import java.util.Set;
  * This is a helper class to do typical locale switching operations without
  * hitting StrictMode errors or adding boilerplate to common activity
  * subclasses.
- *
+ * <p>
  * Either call {@link Locales#initializeLocale(Context)} in your
  * <code>onCreate</code> method, or inherit from
  * <code>LocaleAwareFragmentActivity</code> or <code>LocaleAwareActivity</code>.
@@ -31,6 +31,7 @@ public class Locales {
     /**
      * Is only required by locale aware activities, AND  Application. In most cases you should be
      * using LocaleAwareAppCompatActivity or friends.
+     *
      * @param context
      */
     public static void initializeLocale(Context context) {
@@ -47,7 +48,7 @@ public class Locales {
     /**
      * Sometimes we want just the language for a locale, not the entire language
      * tag. But Java's .getLanguage method is wrong.
-     *
+     * <p>
      * This method is equivalent to the first part of
      * {@link Locales#getLanguageTag(Locale)}.
      *
@@ -76,7 +77,7 @@ public class Locales {
     /**
      * Gecko uses locale codes like "es-ES", whereas a Java {@link Locale}
      * stringifies as "es_ES".
-     *
+     * <p>
      * This method approximates the Java 7 method
      * <code>Locale#toLanguageTag()</code>.
      *
@@ -97,7 +98,7 @@ public class Locales {
     public static Locale parseLocaleCode(final String localeCode) {
         int index;
         if ((index = localeCode.indexOf('-')) != -1 ||
-            (index = localeCode.indexOf('_')) != -1) {
+                (index = localeCode.indexOf('_')) != -1) {
             final String langCode = localeCode.substring(0, index);
             final String countryCode = localeCode.substring(index + 1);
             return new Locale(langCode, countryCode);

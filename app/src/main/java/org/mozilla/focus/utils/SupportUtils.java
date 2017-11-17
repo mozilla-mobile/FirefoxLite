@@ -36,7 +36,7 @@ public class SupportUtils {
 
     public static boolean isTemplateSupportPages(String url) {
         final boolean isTemplate;
-        switch (url){
+        switch (url) {
             case FOCUS_ABOUT_URL:
             case YOUR_RIGHTS_URI:
                 isTemplate = true;

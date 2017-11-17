@@ -179,7 +179,9 @@ public class Browsers {
                 && !defaultBrowser.packageName.equals(context.getPackageName());
     }
 
-    public @Nullable ActivityInfo getDefaultBrowser() {
+    public
+    @Nullable
+    ActivityInfo getDefaultBrowser() {
         return defaultBrowser;
     }
 

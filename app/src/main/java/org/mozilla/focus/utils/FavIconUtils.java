@@ -129,7 +129,7 @@ public class FavIconUtils {
 
     /**
      * Get a representative character for the given URL.
-     *
+     * <p>
      * For example this method will return "f" for "http://m.facebook.com/foobar".
      */
     public static char getRepresentativeCharacter(String url) {
