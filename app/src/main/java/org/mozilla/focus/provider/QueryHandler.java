@@ -140,28 +140,38 @@ public class QueryHandler extends AsyncQueryHandler {
 
     public static ContentValues getContentValuesFromSite(Site site) {
         ContentValues values = new ContentValues();
-        if (site.getTitle() != null)
+        if (site.getTitle() != null) {
             values.put(HistoryContract.BrowsingHistory.TITLE, site.getTitle());
-        if (site.getUrl() != null) values.put(HistoryContract.BrowsingHistory.URL, site.getUrl());
-        if (site.getViewCount() != 0)
+        }
+        if (site.getUrl() != null) {
+            values.put(HistoryContract.BrowsingHistory.URL, site.getUrl());
+        }
+        if (site.getViewCount() != 0) {
             values.put(HistoryContract.BrowsingHistory.VIEW_COUNT, site.getViewCount());
-        if (site.getLastViewTimestamp() != 0)
+        }
+        if (site.getLastViewTimestamp() != 0) {
             values.put(HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP, site.getLastViewTimestamp());
-        if (site.getFavIcon() != null)
+        }
+        if (site.getFavIcon() != null) {
             values.put(HistoryContract.BrowsingHistory.FAV_ICON, bitmapToBytes(site.getFavIcon()));
+        }
         return values;
     }
 
     public static ContentValues getContentValuesFromScreenshot(Screenshot screenshot) {
         ContentValues values = new ContentValues();
-        if (screenshot.getTitle() != null)
+        if (screenshot.getTitle() != null) {
             values.put(ScreenshotContract.Screenshot.TITLE, screenshot.getTitle());
-        if (screenshot.getUrl() != null)
+        }
+        if (screenshot.getUrl() != null) {
             values.put(ScreenshotContract.Screenshot.URL, screenshot.getUrl());
-        if (screenshot.getTimestamp() != 0)
+        }
+        if (screenshot.getTimestamp() != 0) {
             values.put(ScreenshotContract.Screenshot.TIMESTAMP, screenshot.getTimestamp());
-        if (screenshot.getImageUri() != null)
+        }
+        if (screenshot.getImageUri() != null) {
             values.put(ScreenshotContract.Screenshot.IMAGE_URI, screenshot.getImageUri());
+        }
         return values;
     }
 

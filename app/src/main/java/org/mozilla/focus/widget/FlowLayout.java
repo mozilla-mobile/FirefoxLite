@@ -38,8 +38,9 @@ public class FlowLayout extends ViewGroup {
 
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
-            if (child.getVisibility() == GONE)
+            if (child.getVisibility() == GONE) {
                 continue;
+            }
 
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
 
@@ -49,15 +50,17 @@ public class FlowLayout extends ViewGroup {
             if (firstChild || (rowWidth + childWidth > parentWidth)) {
                 rowWidth = 0;
                 totalHeight += childHeight;
-                if (!firstChild)
+                if (!firstChild) {
                     totalHeight += mSpacing;
+                }
                 firstChild = false;
             }
 
             rowWidth += childWidth;
 
-            if (rowWidth > totalWidth)
+            if (rowWidth > totalWidth) {
                 totalWidth = rowWidth;
+            }
 
             rowWidth += mSpacing;
         }
@@ -75,8 +78,9 @@ public class FlowLayout extends ViewGroup {
 
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
-            if (child.getVisibility() == GONE)
+            if (child.getVisibility() == GONE) {
                 continue;
+            }
 
             final int childWidth = child.getMeasuredWidth();
             final int childHeight = child.getMeasuredHeight();

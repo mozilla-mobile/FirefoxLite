@@ -118,13 +118,15 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (position < mItems.size()) {
             int lastDateSectionIndex = 0;
             for (int i = 0; i <= position; i++) {
-                if (mItems.get(i) instanceof DateSection)
+                if (mItems.get(i) instanceof DateSection) {
                     lastDateSectionIndex = i;
+                }
             }
-            if (lastDateSectionIndex == 0)
+            if (lastDateSectionIndex == 0) {
                 adjustPosition = position - 1;
-            else
+            } else {
                 adjustPosition = position - 1 - lastDateSectionIndex;
+            }
         }
         return adjustPosition;
     }
