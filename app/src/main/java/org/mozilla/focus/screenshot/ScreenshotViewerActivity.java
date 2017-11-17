@@ -366,12 +366,13 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         float sizeGo = sizeMo * sizeKb;
         float sizeTerra = sizeGo * sizeKb;
 
-        if (size < sizeMo)
+        if (size < sizeMo) {
             return df.format(size / sizeKb) + " KB";
-        else if (size < sizeGo)
+        } else if (size < sizeGo) {
             return df.format(size / sizeMo) + " MB";
-        else if (size < sizeTerra)
+        } else if (size < sizeTerra) {
             return df.format(size / sizeGo) + " GB";
+        }
 
         return "";
     }

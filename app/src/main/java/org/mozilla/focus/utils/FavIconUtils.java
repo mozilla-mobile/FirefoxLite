@@ -58,8 +58,9 @@ public class FavIconUtils {
     }
 
     private static int getDominantColor(Bitmap source, boolean applyThreshold) {
-        if (source == null)
+        if (source == null) {
             return Color.argb(255, 255, 255, 255);
+        }
 
         // Keep track of how many times a hue in a given bin appears in the image.
         // Hue values range [0 .. 360), so dividing by 10, we get 36 bins.
@@ -84,14 +85,16 @@ public class FavIconUtils {
             for (int col = 0; col < width; col++) {
                 int c = pixels[col + row * width];
                 // Ignore pixels with a certain transparency.
-                if (Color.alpha(c) < 128)
+                if (Color.alpha(c) < 128) {
                     continue;
+                }
 
                 Color.colorToHSV(c, hsv);
 
                 // If a threshold is applied, ignore arbitrarily chosen values for "white" and "black".
-                if (applyThreshold && (hsv[1] <= 0.35f || hsv[2] <= 0.35f))
+                if (applyThreshold && (hsv[1] <= 0.35f || hsv[2] <= 0.35f)) {
                     continue;
+                }
 
                 // We compute the dominant color by putting colors in bins based on their hue.
                 int bin = (int) Math.floor(hsv[0] / 10.0f);
@@ -105,14 +108,16 @@ public class FavIconUtils {
                 colorBins[bin]++;
 
                 // Keep track of the bin that holds the most colors.
-                if (maxBin < 0 || colorBins[bin] > colorBins[maxBin])
+                if (maxBin < 0 || colorBins[bin] > colorBins[maxBin]) {
                     maxBin = bin;
+                }
             }
         }
 
         // maxBin may never get updated if the image holds only transparent and/or black/white pixels.
-        if (maxBin < 0)
+        if (maxBin < 0) {
             return Color.argb(255, 255, 255, 255);
+        }
 
         // Return a color with the average hue/saturation/value of the bin with the most colors.
         hsv[0] = sumHue[maxBin] / colorBins[maxBin];
