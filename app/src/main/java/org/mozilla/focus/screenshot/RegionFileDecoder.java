@@ -57,7 +57,7 @@ public class RegionFileDecoder implements ResourceDecoder<InputStream, Bitmap> {
         BitmapRegionDecoder decoder = createDecoder(source, width, height);
         BitmapFactory.Options opts = new BitmapFactory.Options();
         // Algorithm from Glide's Downsampler.getRoundedSampleSize
-        int sampleSize = (int)Math.ceil((double)imageWidth / (double)width);
+        int sampleSize = (int) Math.ceil((double) imageWidth / (double) width);
         sampleSize = sampleSize == 0 ? 0 : Integer.highestOneBit(sampleSize);
         sampleSize = Math.max(1, sampleSize);
         opts.inSampleSize = sampleSize;

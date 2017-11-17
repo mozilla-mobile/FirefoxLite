@@ -42,11 +42,11 @@ public class SwipeMotionDetector implements View.OnTouchListener {
             if (Math.abs(diffX) > Math.abs(diffY)) {
                 if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffX > 0) {
-                        if(onSwipeListener != null) {
+                        if (onSwipeListener != null) {
                             onSwipeListener.onSwipeRight();
                         }
                     } else {
-                        if(onSwipeListener != null) {
+                        if (onSwipeListener != null) {
                             onSwipeListener.onSwipeLeft();
                         }
                     }
@@ -54,7 +54,7 @@ public class SwipeMotionDetector implements View.OnTouchListener {
             } else {
                 if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffY > 0) {
-                        if(onSwipeListener != null) {
+                        if (onSwipeListener != null) {
                             onSwipeListener.onSwipeDown();
                         }
                     } else {

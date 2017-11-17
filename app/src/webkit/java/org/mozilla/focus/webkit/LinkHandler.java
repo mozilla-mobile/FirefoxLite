@@ -16,7 +16,8 @@ import org.mozilla.focus.web.IWebView;
 
 /* package */ class LinkHandler implements View.OnLongClickListener {
     private final WebView webView;
-    private @Nullable
+    private
+    @Nullable
     IWebView.Callback callback = null;
 
     public LinkHandler(final WebView webView) {

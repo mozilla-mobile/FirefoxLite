@@ -172,10 +172,11 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
 
     /**
      * Reset autocomplete states to their initial values
+     *
      * @param text
      */
     private void resetAutocompleteState(CharSequence text) {
-        mAutoCompleteSpans = new Object[] {
+        mAutoCompleteSpans = new Object[]{
                 // Span to mark the autocomplete text
                 AUTOCOMPLETE_SPAN,
                 // Span to change the autocomplete text color
@@ -415,7 +416,7 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
      * If there is no autocomplete text, both removeAutocomplete() and commitAutocomplete()
      * are no-ops and return false. Therefore we can use them here without checking explicitly
      * if we have autocomplete text or not.
-     *
+     * <p>
      * Also turns off text prediction for private mode tabs.
      */
     @Override
@@ -522,7 +523,7 @@ public class InlineAutocompleteEditText extends android.support.v7.widget.AppCom
             } else if (textLength == textLengthBeforeChange - 1) {
                 // If you're hitting backspace (the string is getting smaller), don't autocomplete
                 doAutocomplete = false;
-            } else if (textLength == 0 ) {
+            } else if (textLength == 0) {
                 doAutocomplete = false;
             }
 

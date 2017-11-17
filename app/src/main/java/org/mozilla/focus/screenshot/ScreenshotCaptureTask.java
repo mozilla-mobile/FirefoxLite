@@ -51,9 +51,10 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
             return null;
         }
     }
+
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(
-            value="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE",
-            justification="We have nothing to do when the delete fails.")
+            value = "RV_RETURN_VALUE_IGNORED_BAD_PRACTICE",
+            justification = "We have nothing to do when the delete fails.")
     private static String saveBitmapToStorage(Context context, String fileName, Bitmap bitmap) throws IOException {
         File folder = StorageUtils.getTargetDirForSaveScreenshot(context);
         if (!FileUtils.ensureDir(folder)) {
@@ -66,7 +67,7 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
-            if(bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)) {
+            if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)) {
                 fos.flush();
                 path = file.getPath();
             } else {

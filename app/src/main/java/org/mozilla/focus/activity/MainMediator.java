@@ -239,7 +239,7 @@ public class MainMediator {
     public Fragment getTopHomeFragmet() {
         final Fragment topFragment = getTopFragment();
         if (topFragment != null && HomeFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
-           return topFragment;
+            return topFragment;
         }
         return null;
     }

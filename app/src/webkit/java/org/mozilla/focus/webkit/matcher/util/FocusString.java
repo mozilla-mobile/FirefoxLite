@@ -8,7 +8,7 @@ import android.support.annotation.CheckResult;
 
 /**
  * A String wrapper utility that allows for efficient string reversal.
- *
+ * <p>
  * We regularly need to reverse strings. The standard way of doing this in Java would be to copy
  * the string to reverse (e.g. using StringBuffer.reverse()). This seems wasteful when we only
  * read our Strings character by character, in which case can just transpose positions as needed.
@@ -41,7 +41,8 @@ public abstract class FocusString {
     // offset at the end of the _raw_ input String
     final int offsetEnd;
 
-    @CheckResult public FocusString reverse() {
+    @CheckResult
+    public FocusString reverse() {
         if (isReversed()) {
             return new ForwardString(string, offsetStart, offsetEnd);
         } else {

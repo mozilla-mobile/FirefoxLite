@@ -27,12 +27,12 @@ import org.mozilla.focus.generated.LocaleList;
 /**
  * This class manages persistence, application, and otherwise handling of
  * user-specified locales.
- *
+ * <p>
  * Of note:
- *
+ * <p>
  * * It's a singleton, because its scope extends to that of the application,
- *   and definitionally all changes to the locale of the app must go through
- *   this.
+ * and definitionally all changes to the locale of the app must go through
+ * this.
  * * It's lazy.
  * * It relies on using the SharedPreferences file owned by the app for performance.
  */
@@ -72,7 +72,7 @@ public class LocaleManager {
      * Ensure that you call this early in your application startup,
      * and with a context that's sufficiently long-lived (typically
      * the application context).
-     *
+     * <p>
      * Calling multiple times is harmless.
      */
     public void initialize(final Context context) {
@@ -136,28 +136,28 @@ public class LocaleManager {
 
     /**
      * We can be in one of two states.
-     *
+     * <p>
      * If the user has not explicitly chosen a Firefox-specific locale, we say
      * we are "mirroring" the system locale.
-     *
+     * <p>
      * When we are not mirroring, system locale changes do not impact Firefox
      * and are essentially ignored; the user's locale selection is the only
      * thing we care about, and we actively correct incoming configuration
      * changes to reflect the user's chosen locale.
-     *
+     * <p>
      * By contrast, when we are mirroring, system locale changes cause Firefox
      * to reflect the new system locale, as if the user picked the new locale.
-     *
+     * <p>
      * If we're currently mirroring the system locale, this method returns the
      * supplied configuration's locale, unless the current activity locale is
      * correct. If we're not currently mirroring, this method updates the
      * configuration object to match the user's currently selected locale, and
      * returns that, unless the current activity locale is correct.
-     *
+     * <p>
      * If the current activity locale is correct, returns null.
-     *
+     * <p>
      * The caller is expected to redisplay themselves accordingly.
-     *
+     * <p>
      * This method is intended to be called from inside
      * <code>onConfigurationChanged(Configuration)</code> as part of a strategy
      * to detect and either apply or undo system locale changes.
@@ -200,7 +200,7 @@ public class LocaleManager {
 
     /**
      * Returns the set locale if it changed.
-     *
+     * <p>
      * Always persists and notifies Gecko.
      */
     public String setSelectedLocale(Context context, String localeCode) {
@@ -283,9 +283,9 @@ public class LocaleManager {
 
     /**
      * Updates the Java locale and the Android configuration.
-     *
+     * <p>
      * Returns the persisted locale if it differed.
-     *
+     * <p>
      * Does not notify Gecko.
      *
      * @param localeCode a locale string in Java format: "en_US".

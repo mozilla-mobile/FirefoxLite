@@ -277,7 +277,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
     @Override
     public void onTextChange(String originalText, String autocompleteText) {
-        if(autoCompleteInProgress) {
+        if (autoCompleteInProgress) {
             return;
         }
         UrlInputFragment.this.presenter.onInput(originalText, detectThrottle());

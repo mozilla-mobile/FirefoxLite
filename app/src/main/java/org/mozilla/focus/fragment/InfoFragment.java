@@ -98,16 +98,20 @@ public class InfoFragment extends WebFragment {
             }
 
             @Override
-            public void onLongPress(IWebView.HitTarget hitTarget) {}
+            public void onLongPress(IWebView.HitTarget hitTarget) {
+            }
 
             @Override
-            public void onURLChanged(String url) {}
+            public void onURLChanged(String url) {
+            }
 
             @Override
-            public void onEnterFullScreen(@NonNull IWebView.FullscreenCallback callback, @Nullable View view) {}
+            public void onEnterFullScreen(@NonNull IWebView.FullscreenCallback callback, @Nullable View view) {
+            }
 
             @Override
-            public void onExitFullScreen() {}
+            public void onExitFullScreen() {
+            }
 
             @Override
             public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
@@ -121,7 +125,8 @@ public class InfoFragment extends WebFragment {
             }
 
             @Override
-            public void updateFailingUrl(String url, boolean updateFromError) {}
+            public void updateFailingUrl(String url, boolean updateFromError) {
+            }
 
             @Override
             public void onReceivedTitle(WebView view, String title) {

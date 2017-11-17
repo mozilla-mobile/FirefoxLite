@@ -33,7 +33,7 @@ import static org.mozilla.focus.provider.DownloadContract.Download;
  */
 
 public class DownloadInfoManager {
-    
+
     public static final String DOWNLOAD_OPEN = "download open";
     public static final String ROW_ID = "row id";
     public static final String ROW_UPDATED = "row_updated";
@@ -173,7 +173,7 @@ public class DownloadInfoManager {
                 , Download.DOWNLOAD_ID + " = ?", new String[]{Long.toString(downloadInfo.getDownloadId())});
     }
 
-    public void updateByRowId(DownloadInfo downloadInfo,AsyncUpdateListener listener){
+    public void updateByRowId(DownloadInfo downloadInfo, AsyncUpdateListener listener) {
         mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo)
                 , Download._ID + " = ?", new String[]{Long.toString(downloadInfo.getRowId())});
     }
@@ -183,14 +183,14 @@ public class DownloadInfoManager {
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, Download._ID + " DESC");
     }
 
-    public void queryByDownloadId(Long downloadId,AsyncQueryListener listener){
+    public void queryByDownloadId(Long downloadId, AsyncQueryListener listener) {
         String uri = Download.CONTENT_URI.toString();
-        mQueryHandler.startQuery(TOKEN,listener,Uri.parse(uri),null,Download.DOWNLOAD_ID+"==?",new String[] {Long.toString(downloadId)},null);
+        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, Download.DOWNLOAD_ID + "==?", new String[]{Long.toString(downloadId)}, null);
     }
 
-    public void queryByRowId(Long rowId,AsyncQueryListener listener){
+    public void queryByRowId(Long rowId, AsyncQueryListener listener) {
         String uri = Download.CONTENT_URI.toString();
-        mQueryHandler.startQuery(TOKEN,listener,Uri.parse(uri),null,Download._ID+"==?",new String[] {Long.toString(rowId)},null);
+        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, Download._ID + "==?", new String[]{Long.toString(rowId)}, null);
     }
 
     public boolean recordExists(long downloadId) {
@@ -200,7 +200,7 @@ public class DownloadInfoManager {
         final Cursor cursor = resolver.query(uri, null, selection, null, null);
         boolean isExist = (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
 
-        if (cursor != null){
+        if (cursor != null) {
             cursor.close();
         }
 
@@ -210,9 +210,9 @@ public class DownloadInfoManager {
     /**
      * Update database, to replace file path of a record in both of our own db and DownloadManager.
      *
-     * @param downloadId      download id for record in DownloadManager
-     * @param newPath new file path
-     * @param type    Mime type
+     * @param downloadId download id for record in DownloadManager
+     * @param newPath    new file path
+     * @param type       Mime type
      */
     public void replacePath(final long downloadId, @NonNull final String newPath, @NonNull final String type) {
         final long oldId = downloadId;
@@ -244,9 +244,9 @@ public class DownloadInfoManager {
             public void onQueryComplete(List downloadInfoList) {
                 for (int i = 0; i < downloadInfoList.size(); i++) {
                     DownloadInfo queryDownloadInfo = (DownloadInfo) downloadInfoList.get(i);
-                    if (oldId == queryDownloadInfo.getDownloadId()){
+                    if (oldId == queryDownloadInfo.getDownloadId()) {
                         final long rowId = queryDownloadInfo.getRowId();
-                        final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath,rowId);
+                        final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath, rowId);
                         newInfo.setDownloadId(newId);
                         updateByRowId(newInfo, new AsyncUpdateListener() {
                             @Override
@@ -305,9 +305,9 @@ public class DownloadInfoManager {
         info.setMimeType(pojo.mime);
         info.setFileExtension(pojo.fileExtension);
 
-        if (TextUtils.isEmpty(pojo.fileUri)){
+        if (TextUtils.isEmpty(pojo.fileUri)) {
             info.setFileUri(filePath);
-        }else {
+        } else {
             info.setFileUri(pojo.fileUri);
         }
 

@@ -31,13 +31,11 @@ public class SquareFrameLayout extends FrameLayout {
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
         int size;
-        if(widthMode == MeasureSpec.EXACTLY && widthSize > 0){
+        if (widthMode == MeasureSpec.EXACTLY && widthSize > 0) {
             size = widthSize;
-        }
-        else if(heightMode == MeasureSpec.EXACTLY && heightSize > 0){
+        } else if (heightMode == MeasureSpec.EXACTLY && heightSize > 0) {
             size = heightSize;
-        }
-        else{
+        } else {
             size = widthSize < heightSize ? widthSize : heightSize;
         }
 

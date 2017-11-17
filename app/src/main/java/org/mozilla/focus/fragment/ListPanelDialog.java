@@ -78,9 +78,9 @@ public class ListPanelDialog extends DialogFragment {
                 final int pageSize = v.getMeasuredHeight();
                 // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
                 // When scrolled to end due to padding
-                if ( scrollY > oldScrollY && v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY < pageSize ) {
+                if (scrollY > oldScrollY && v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY < pageSize) {
                     final PanelFragment pf = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.main_content);
-                    if ( pf != null && pf.isVisible() ) {
+                    if (pf != null && pf.isVisible()) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -145,14 +145,14 @@ public class ListPanelDialog extends DialogFragment {
     }
 
     private void showDownloads() {
-        if(firstLaunch || getArguments().getInt(TYPE) != TYPE_DOWNLOADS) {
+        if (firstLaunch || getArguments().getInt(TYPE) != TYPE_DOWNLOADS) {
             setSelectedItem(TYPE_DOWNLOADS);
             showPanelFragment(DownloadsFragment.newInstance());
         }
     }
 
     private void showHistory() {
-        if(firstLaunch || getArguments().getInt(TYPE) != TYPE_HISTORY) {
+        if (firstLaunch || getArguments().getInt(TYPE) != TYPE_HISTORY) {
             setSelectedItem(TYPE_HISTORY);
             showPanelFragment(BrowsingHistoryFragment.newInstance());
         }

@@ -138,7 +138,7 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
 
             case R.id.finish:
                 finishFirstrun();
-                if(isTelemetryValid) {
+                if (isTelemetryValid) {
                     TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp);
                 }
                 break;

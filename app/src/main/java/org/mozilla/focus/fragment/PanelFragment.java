@@ -12,13 +12,13 @@ import android.support.v4.app.Fragment;
 public abstract class PanelFragment extends Fragment {
 
     protected void closePanel() {
-        ((ListPanelDialog)getParentFragment()).dismiss();
+        ((ListPanelDialog) getParentFragment()).dismiss();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if( ! (getParentFragment() instanceof ListPanelDialog) ) {
+        if (!(getParentFragment() instanceof ListPanelDialog)) {
             throw new RuntimeException("PanelFragments needs its parent to be an instance of ListPanelDialog");
         }
     }

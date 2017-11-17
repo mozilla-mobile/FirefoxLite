@@ -142,7 +142,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-        if(screenshotObserver != null) {
+        if (screenshotObserver != null) {
             screenshotObserver.stop();
         }
     }
@@ -150,7 +150,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        if(Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
+        if (Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
             screenshotObserver = new ScreenshotObserver(getActivity(), this);
             screenshotObserver.start();
         }
@@ -162,10 +162,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     private void updateURL(final String url) {
-        if (UrlUtils.isInternalErrorURL(url)){
+        if (UrlUtils.isInternalErrorURL(url)) {
             return;
         }
-        
+
         urlView.setText(UrlUtils.stripUserInfo(url));
     }
 
@@ -380,7 +380,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             private void updateUrlFromWebView() {
                 final IWebView webView = getWebView();
-                if(webView != null) {
+                if (webView != null) {
                     final String viewURL = webView.getUrl();
                     onURLChanged(viewURL);
                 }
@@ -388,7 +388,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onPageFinished(boolean isSecure) {
-                if(!mostOldCallbacksHaveFinished) {
+                if (!mostOldCallbacksHaveFinished) {
                     return;
                 }
                 // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
@@ -405,7 +405,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     siteIdentity.setImageLevel(SITE_LOCK);
                 }
                 String urlToBeInserted = getUrl();
-                if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getWebView()!=null) {
+                if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getWebView() != null) {
                     getWebView().insertBrowsingHistory();
                     lastInsertedUrl = urlToBeInserted;
                 }
@@ -418,7 +418,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onProgress(int progress) {
-                if(!mostOldCallbacksHaveFinished) {
+                if (!mostOldCallbacksHaveFinished) {
                     return;
                 }
                 final IWebView webView = getWebView();
@@ -554,7 +554,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void updateFailingUrl(String url, boolean updateFromError) {
-                if( !updateFromError && !url.equals(failingUrl)) {
+                if (!updateFromError && !url.equals(failingUrl)) {
                     failingUrl = null;
                 } else {
                     this.failingUrl = url;
@@ -567,7 +567,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             // See issue1064 and issue1150.
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                if(!mostOldCallbacksHaveFinished) {
+                if (!mostOldCallbacksHaveFinished) {
                     return;
                 }
 
@@ -679,7 +679,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         // block non-http/https download links
-        if(!URLUtil.isNetworkUrl(download.getUrl())) {
+        if (!URLUtil.isNetworkUrl(download.getUrl())) {
             Toast.makeText(getContext(), R.string.download_file_not_supported, Toast.LENGTH_LONG).show();
             return;
         }
@@ -713,7 +713,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {
                 @Override
                 public void onQueryComplete(List downloadInfoList) {
-                    if(!downloadInfoList.isEmpty()) {
+                    if (!downloadInfoList.isEmpty()) {
                         DownloadInfo info = (DownloadInfo) downloadInfoList.get(0);
                         DownloadInfoManager.getInstance().delete(info.getRowId(), null);
                         DownloadInfoManager.getInstance().insert(info, new DownloadInfoManager.AsyncInsertListener() {
@@ -1034,7 +1034,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onScreenshotTaken(String screenshotPath, String title) {
-        if(screenshotObserver != null) {
+        if (screenshotObserver != null) {
             screenshotObserver.stop();
         }
         notifyParent(FragmentListener.TYPE.SHOW_SCREENSHOT_HINT, null);

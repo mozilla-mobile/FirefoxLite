@@ -20,10 +20,10 @@ import org.mozilla.focus.R;
 /**
  * A CoordinatorLayout implementation that resizes dynamically (by adding padding to the bottom)
  * based on whether a keyboard is visible or not.
- *
+ * <p>
  * Implementation based on:
  * https://github.com/mikepenz/MaterialDrawer/blob/master/library/src/main/java/com/mikepenz/materialdrawer/util/KeyboardUtil.java
- *
+ * <p>
  * An optional viewToHideWhenActivated can be set: this is a View that will be hidden when the keyboard
  * is showing. That can be useful for things like FABs that you don't need when someone is typing.
  */
@@ -32,7 +32,9 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
     private View decorView;
 
     private final int idOfViewToHide;
-    private @Nullable View viewToHide;
+    private
+    @Nullable
+    View viewToHide;
     private int marginBottom;
 
     public ResizableKeyboardLayout(Context context) {
@@ -64,7 +66,7 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
     @Override
     public void setLayoutParams(ViewGroup.LayoutParams params) {
         super.setLayoutParams(params);
-        if(params instanceof MarginLayoutParams) {
+        if (params instanceof MarginLayoutParams) {
             marginBottom = (((MarginLayoutParams) params).bottomMargin);
         }
     }
@@ -80,7 +82,7 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
                     setPadding(0, 0, 0, difference);
                     // Zerda modification: We don't want extra margin in BrowserFragment for main
                     // toolbar, so we truncate them.
-                    if(getLayoutParams() instanceof MarginLayoutParams) {
+                    if (getLayoutParams() instanceof MarginLayoutParams) {
                         ((MarginLayoutParams) getLayoutParams()).bottomMargin = 0;
                     }
 

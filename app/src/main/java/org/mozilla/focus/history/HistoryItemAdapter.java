@@ -53,6 +53,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public interface HistoryListener {
         void onStatus(int status);
+
         void onItemClicked();
     }
 
@@ -73,10 +74,10 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == VIEW_TYPE_SITE) {
+        if (viewType == VIEW_TYPE_SITE) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_website, parent, false);
             return new SiteItemViewHolder(v);
-        } else if(viewType == VIEW_TYPE_DATE) {
+        } else if (viewType == VIEW_TYPE_DATE) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_date, parent, false);
             return new DateItemViewHolder(v);
         }
@@ -85,10 +86,10 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if(holder instanceof SiteItemViewHolder) {
+        if (holder instanceof SiteItemViewHolder) {
             final Site item = (Site) mItems.get(position);
 
-            if(item != null) {
+            if (item != null) {
                 final SiteItemViewHolder siteVH = (SiteItemViewHolder) holder;
                 siteVH.rootView.setOnClickListener(this);
                 siteVH.textMain.setText(item.getTitle());
@@ -104,7 +105,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        if(menuItem.getItemId() == R.id.browsing_history_menu_delete) {
+                        if (menuItem.getItemId() == R.id.browsing_history_menu_delete) {
                             BrowsingHistoryManager.getInstance().delete(item.getId(), HistoryItemAdapter.this);
                             TelemetryWrapper.historyRemoveLink();
                         }
@@ -122,7 +123,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 });
 
             }
-        } else if(holder instanceof DateItemViewHolder) {
+        } else if (holder instanceof DateItemViewHolder) {
             final DateSection item = (DateSection) mItems.get(position);
 
             if (item != null) {

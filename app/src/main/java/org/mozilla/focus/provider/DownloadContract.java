@@ -20,8 +20,11 @@ public class DownloadContract {
     public static final String PATH = "download_info";
     public static final int CODE = 2;
 
-    public static final class Download implements BaseColumns{
-        private  Download(){};
+    public static final class Download implements BaseColumns {
+        private Download() {
+        }
+
+        ;
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "download_info");
 

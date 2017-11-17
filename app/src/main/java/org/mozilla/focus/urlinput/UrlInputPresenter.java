@@ -78,7 +78,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
                 @Override
                 protected void onPostExecute(List<CharSequence> strings) {
-                    if(view != null){
+                    if (view != null) {
                         view.setSuggestions(strings);
                     }
                 }

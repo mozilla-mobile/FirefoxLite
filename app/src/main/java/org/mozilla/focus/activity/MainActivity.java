@@ -66,7 +66,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,SharedPreferences.OnSharedPreferenceChangeListener{
+public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
@@ -127,13 +127,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         WebViewProvider.preload(this);
 
-        if(sIsNewCreated && (!Settings.getInstance(this).didShowRateAppDialog() || !Settings.getInstance(this).didShowShareAppDialog())) {
+        if (sIsNewCreated && (!Settings.getInstance(this).didShowRateAppDialog() || !Settings.getInstance(this).didShowShareAppDialog())) {
             sIsNewCreated = false;
             Settings.getInstance(this).increaseAppCreateCounter();
-            if(!Settings.getInstance(this).didShowRateAppDialog() && Settings.getInstance(this).getAppCreateCount() >= DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
+            if (!Settings.getInstance(this).didShowRateAppDialog() && Settings.getInstance(this).getAppCreateCount() >= DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
                 DialogUtils.showRateAppDialog(this);
                 TelemetryWrapper.showFeedbackDialog();
-            } else if(!Settings.getInstance(this).didShowShareAppDialog() && Settings.getInstance(this).getAppCreateCount() >= DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP) {
+            } else if (!Settings.getInstance(this).didShowShareAppDialog() && Settings.getInstance(this).getAppCreateCount() >= DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP) {
                 DialogUtils.showShareAppDialog(this);
                 TelemetryWrapper.showPromoteShareDialog();
             }
@@ -198,7 +198,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onPostResume() {
         super.onPostResume();
         safeForFragmentTransactions = true;
-        if(hasPendingScreenCaptureTask) {
+        if (hasPendingScreenCaptureTask) {
             final BrowserFragment browserFragment = getBrowserFragment();
             if (browserFragment != null && browserFragment.isVisible()) {
                 showLoadingAndCapture(browserFragment);
@@ -335,7 +335,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public void onMenuItemClicked(View v) {
         final int stringResource;
-        if(!v.isEnabled()) {
+        if (!v.isEnabled()) {
             return;
         }
         menu.cancel();
@@ -402,7 +402,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         v.setEnabled(enable);
         if (v instanceof ViewGroup) {
             ViewGroup vg = (ViewGroup) v;
-            for(int i=0 ; i < vg.getChildCount() ; i++) {
+            for (int i = 0; i < vg.getChildCount(); i++) {
                 setEnable(((ViewGroup) v).getChildAt(i), enable);
             }
         }
@@ -519,20 +519,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Only refresh when disabling turbo mode
-        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)){
+        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)) {
             final boolean turboEnabled = isTurboEnabled();
             BrowserFragment browserFragment = getVisibleBrowserFragment();
             if (browserFragment != null) {
                 browserFragment.setBlockingEnabled(turboEnabled);
                 // Reload if we're closing Turbo mode since we should be fixing something
-                if(!turboEnabled) {
+                if (!turboEnabled) {
                     browserFragment.reload();
                 }
             }
             menu.findViewById(R.id.menu_turbomode).setSelected(turboEnabled);
         } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
             final boolean blockingImages = isBlockingImages();
-            if (getVisibleBrowserFragment() != null){
+            if (getVisibleBrowserFragment() != null) {
                 getVisibleBrowserFragment().reload();
             }
             menu.findViewById(R.id.menu_blockimg).setSelected(blockingImages);
@@ -561,7 +561,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             if (browserFragment == null) {
                 return;
             }
-            if(browserFragment.capturePage(this)){
+            if (browserFragment.capturePage(this)) {
                 //  onCaptureComplete called
             } else {
                 //  Capture failed
@@ -604,9 +604,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         }
 
-        private void promptScreenshotResult(int snackbarTitleId){
+        private void promptScreenshotResult(int snackbarTitleId) {
             Context context = refContext.get();
-            if(context == null){
+            if (context == null) {
                 return;
             }
             Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
@@ -645,20 +645,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ScreenshotViewerActivity.REQ_CODE_VIEW_SCREENSHOT) {
-            if(resultCode == ScreenshotViewerActivity.RESULT_NOTIFY_SCREENSHOT_IS_DELETED) {
+        if (requestCode == ScreenshotViewerActivity.REQ_CODE_VIEW_SCREENSHOT) {
+            if (resultCode == ScreenshotViewerActivity.RESULT_NOTIFY_SCREENSHOT_IS_DELETED) {
                 Toast.makeText(this, R.string.message_deleted_screenshot, Toast.LENGTH_SHORT).show();
-                if(mDialogFragment != null) {
+                if (mDialogFragment != null) {
                     Fragment fragment = mDialogFragment.getChildFragmentManager().findFragmentById(R.id.main_content);
                     if (fragment instanceof ScreenshotGridFragment && data != null) {
                         long id = data.getLongExtra(ScreenshotViewerActivity.EXTRA_SCREENSHOT_ITEM_ID, -1);
                         ((ScreenshotGridFragment) fragment).notifyItemDelete(id);
                     }
                 }
-            } else if(resultCode == ScreenshotViewerActivity.RESULT_OPEN_URL) {
-                if(data != null) {
+            } else if (resultCode == ScreenshotViewerActivity.RESULT_OPEN_URL) {
+                if (data != null) {
                     String url = data.getStringExtra(ScreenshotViewerActivity.EXTRA_URL);
-                    if(mDialogFragment != null) {
+                    if (mDialogFragment != null) {
                         mDialogFragment.dismiss();
                     }
                     onNotified(null, TYPE.OPEN_URL, url);

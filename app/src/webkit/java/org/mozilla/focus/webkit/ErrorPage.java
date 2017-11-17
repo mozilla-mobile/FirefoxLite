@@ -44,8 +44,8 @@ public class ErrorPage {
 
         final Resources resources = webView.getContext().getResources();
 
-        if(errorCode == WebViewClient.ERROR_UNSUPPORTED_SCHEME) {
-            final String contentMsg  = resources.getString(R.string.error_page_content_text_unsupported_scheme);
+        if (errorCode == WebViewClient.ERROR_UNSUPPORTED_SCHEME) {
+            final String contentMsg = resources.getString(R.string.error_page_content_text_unsupported_scheme);
             substitutionMap.put("%pageTitle%", resources.getString(R.string.error_page_title_unsupported_scheme));
             substitutionMap.put("%messageShort%", resources.getString(R.string.error_page_title_unsupported_scheme));
             substitutionMap.put("%messageLong%", resources.getString(R.string.error_page_message, contentMsg, ""));

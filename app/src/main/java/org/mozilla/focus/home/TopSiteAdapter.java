@@ -44,7 +44,7 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
     }
 
     private int addWhiteToColorCode(int colorCode, float percentage) {
-        int result = (int) ( colorCode + 0xFF * percentage / 2 );
+        int result = (int) (colorCode + 0xFF * percentage / 2);
         if (result > 0xFF) {
             result = 0xFF;
         }
@@ -57,11 +57,11 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         holder.text.setText(site.getTitle());
         holder.img.setImageBitmap(site.getFavIcon());
         int dominantColor = FavIconUtils.getDominantColor(site.getFavIcon());
-        int alpha = ( dominantColor & 0xFF000000 );
+        int alpha = (dominantColor & 0xFF000000);
         // Add 25% white to dominant Color
-        int red = addWhiteToColorCode( ( dominantColor & 0x00FF0000 ) >> 16, 0.25f ) << 16;
-        int green = addWhiteToColorCode( ( dominantColor & 0x0000FF00 ) >> 8, 0.25f ) << 8;
-        int blue = addWhiteToColorCode( ( dominantColor & 0x000000FF ), 0.25f );
+        int red = addWhiteToColorCode((dominantColor & 0x00FF0000) >> 16, 0.25f) << 16;
+        int green = addWhiteToColorCode((dominantColor & 0x0000FF00) >> 8, 0.25f) << 8;
+        int blue = addWhiteToColorCode((dominantColor & 0x000000FF), 0.25f);
         ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(alpha + red + green + blue));
 
         // let click listener knows which site is clicked

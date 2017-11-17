@@ -110,7 +110,8 @@ public class WebViewProvider {
     /**
      * Build the browser specific portion of the UA String, based on the webview's existing UA String.
      */
-    @VisibleForTesting static String getUABrowserString(final String existingUAString, final String focusToken) {
+    @VisibleForTesting
+    static String getUABrowserString(final String existingUAString, final String focusToken) {
         // Use the default WebView agent string here for everything after the platform, but insert
         // Focus in front of Chrome.
         // E.g. a default webview UA string might be:
@@ -144,7 +145,8 @@ public class WebViewProvider {
         return TextUtils.join(" ", tokens) + " " + focusToken;
     }
 
-    @VisibleForTesting static String buildUserAgentString(final Context context, final WebSettings settings, final String appName) {
+    @VisibleForTesting
+    static String buildUserAgentString(final Context context, final WebSettings settings, final String appName) {
         final StringBuilder uaBuilder = new StringBuilder();
 
         uaBuilder.append("Mozilla/5.0");

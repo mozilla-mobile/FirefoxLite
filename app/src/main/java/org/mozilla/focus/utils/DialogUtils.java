@@ -19,7 +19,7 @@ public class DialogUtils {
     public static final int APP_CREATE_THRESHOLD_FOR_SHARE_APP = 11;
 
     public static void showRateAppDialog(final Context context) {
-        if(context == null) {
+        if (context == null) {
             return;
         }
 
@@ -35,7 +35,7 @@ public class DialogUtils {
         dialogView.findViewById(R.id.dialog_rate_app_btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialog != null) {
+                if (dialog != null) {
                     dialog.dismiss();
                     telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
                 }
@@ -51,7 +51,7 @@ public class DialogUtils {
                     //No google play install
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                 }
-                if(dialog != null) {
+                if (dialog != null) {
                     dialog.dismiss();
                 }
                 telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
@@ -62,7 +62,7 @@ public class DialogUtils {
             public void onClick(View v) {
                 Settings.getInstance(context).setShareAppDialogDidShow();
                 IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url));
-                if(dialog != null) {
+                if (dialog != null) {
                     dialog.dismiss();
                 }
                 telemetryFeedback(context, TelemetryWrapper.Value.NEGATIVE);
@@ -83,7 +83,7 @@ public class DialogUtils {
     }
 
     public static void showShareAppDialog(final Context context) {
-        if(context == null) {
+        if (context == null) {
             return;
         }
 
@@ -99,7 +99,7 @@ public class DialogUtils {
         dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialog != null) {
+                if (dialog != null) {
                     dialog.dismiss();
                     telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
                 }
@@ -113,7 +113,7 @@ public class DialogUtils {
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
                 sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text));
                 context.startActivity(Intent.createChooser(sendIntent, null));
-                if(dialog != null) {
+                if (dialog != null) {
                     dialog.dismiss();
                 }
                 telemetryShareApp(context, TelemetryWrapper.Value.SHARE);
@@ -134,7 +134,7 @@ public class DialogUtils {
     }
 
     public static void showScreenshotOnBoardingDialog(final Context context) {
-        if(context == null || !Settings.getInstance(context).shouldShowScreenshotOnBoarding()) {
+        if (context == null || !Settings.getInstance(context).shouldShowScreenshotOnBoarding()) {
             return;
         }
 

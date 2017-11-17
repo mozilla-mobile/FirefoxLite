@@ -104,7 +104,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         });
 
-        SwipeMotionLayout home_container = (SwipeMotionLayout)view.findViewById(R.id.home_container);
+        SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new OnSwipeListener.OnSwipeListenerAdapter() {
             @Override
             public void onSwipeUp() {
@@ -200,8 +200,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                         FragmentListener.TYPE.OPEN_URL,
                         site.getUrl());
                 ViewParent viewParent = v.getParent();
-                if(viewParent instanceof ViewGroup){
-                    int index = ((ViewGroup)v.getParent()).indexOfChild(v);
+                if (viewParent instanceof ViewGroup) {
+                    int index = ((ViewGroup) v.getParent()).indexOfChild(v);
                     TelemetryWrapper.clickTopSiteOn(index);
                 }
             }
@@ -219,7 +219,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    switch(item.getItemId()){
+                    switch (item.getItemId()) {
                         case R.id.remove:
                             if (site.getId() < 0) {
                                 HomeFragment.this.presenter.removeSite(site);
@@ -252,7 +252,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             List<Site> querySites = new ArrayList<>();
             for (Object site : sites) {
                 if (site instanceof Site) {
-                    querySites.add((Site)site);
+                    querySites.add((Site) site);
                 }
             }
 
@@ -271,12 +271,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         //if query data are equal to the default data, merge them
         initDefaultSitesFromJSONArray(this.orginalDefaultSites);
         List<Site> topSites = new ArrayList<>(this.presenter.getSites());
-        for (Site topSite: topSites) {
+        for (Site topSite : topSites) {
             Iterator<Site> querySitesIterator = querySites.iterator();
             while (querySitesIterator.hasNext()) {
                 Site temp = querySitesIterator.next();
                 if (UrlUtils.urlsMatchExceptForTrailingSlash(topSite.getUrl(), temp.getUrl())) {
-                    topSite.setViewCount(topSite.getViewCount()+ temp.getViewCount());
+                    topSite.setViewCount(topSite.getViewCount() + temp.getViewCount());
                     querySitesIterator.remove();
                 }
             }
@@ -323,7 +323,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void removeDefaultSites(List<Site> removeSites) {
         boolean isRemove = false;
-        for(int i = 0; i < removeSites.size(); i++) {
+        for (int i = 0; i < removeSites.size(); i++) {
             Site rSite = removeSites.get(i);
             if (rSite.getId() < 0) {
                 removeDefaultSites(rSite);
@@ -348,7 +348,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     }
                 }
             }
-        }  catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

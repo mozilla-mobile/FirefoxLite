@@ -18,7 +18,7 @@ public class Screenshot implements Serializable {
     private long timestamp;
     private String imageUri;
 
-    public Screenshot(){
+    public Screenshot() {
     }
 
     public Screenshot(String title, String url, long timestamp, String imageUri) {

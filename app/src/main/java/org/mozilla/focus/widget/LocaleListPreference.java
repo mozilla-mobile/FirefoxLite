@@ -31,15 +31,15 @@ public class LocaleListPreference extends ListPreference {
     /**
      * With thanks to <http://stackoverflow.com/a/22679283/22003> for the
      * initial solution.
-     *
+     * <p>
      * This class encapsulates an approach to checking whether a script
      * is usable on a device. We attempt to draw a character from the
      * script (e.g., ব). If the fonts on the device don't have the correct
      * glyph, Android typically renders whitespace (rather than .notdef).
-     *
+     * <p>
      * Pass in part of the name of the locale in its local representation,
      * and a whitespace character; this class performs the graphical comparison.
-     *
+     * <p>
      * See Bug 1023451 Comment 24 for extensive explanation.
      */
     private static class CharacterValidator {
@@ -175,7 +175,7 @@ public class LocaleListPreference extends ListPreference {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof  LocaleDescriptor) {
+            if (obj instanceof LocaleDescriptor) {
                 return compareTo((LocaleDescriptor) obj) == 0;
             } else {
                 return false;
@@ -198,7 +198,7 @@ public class LocaleListPreference extends ListPreference {
          * this method.
          *
          * @return true if this locale can be used for displaying UI
-         *         on this device without known issues.
+         * on this device without known issues.
          */
         public boolean isUsable(CharacterValidator validator) {
             // Oh, for Java 7 switch statements.
@@ -237,7 +237,7 @@ public class LocaleListPreference extends ListPreference {
     /**
      * Not every locale we ship can be used on every device, due to
      * font or rendering constraints.
-     *
+     * <p>
      * This method filters down the list before generating the descriptor array.
      */
     private LocaleDescriptor[] getUsableLocales() {

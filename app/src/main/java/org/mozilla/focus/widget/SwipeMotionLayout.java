@@ -36,7 +36,7 @@ public class SwipeMotionLayout extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if(swipeMotionDetector != null) {
+        if (swipeMotionDetector != null) {
             swipeMotionDetector.onTouch(this, ev);
         }
 
@@ -44,7 +44,7 @@ public class SwipeMotionLayout extends RelativeLayout {
     }
 
     public void setOnSwipeListener(OnSwipeListener onSwipeListener) {
-        if(onSwipeListener != null) {
+        if (onSwipeListener != null) {
             swipeMotionDetector = new SwipeMotionDetector(getContext(), onSwipeListener);
             setOnTouchListener(swipeMotionDetector);
         } else {

@@ -36,7 +36,8 @@ import static org.hamcrest.Matchers.allOf;
 // This test visits each page and checks whether some essential elements are being displayed
 public final class TestHelper {
 
-    static UiDevice mDevice =  UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());;
+    static UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+    ;
     static final long waitingTime = DateUtils.SECOND_IN_MILLIS * 4;
 
     /********* First View Locators ***********/
@@ -155,26 +156,30 @@ public final class TestHelper {
             .resourceId("org.mozilla.focus.debug:id/refresh")
             .enabled(true));
 
-    private TestHelper () throws UiObjectNotFoundException {
+    private TestHelper() throws UiObjectNotFoundException {
     }
 
     static void waitForIdle() {
         mDevice.waitForIdle(waitingTime);
     }
+
     static void pressEnterKey() {
         mDevice.pressKeyCode(KEYCODE_ENTER);
     }
+
     static void pressBackKey() {
         mDevice.pressBack();
     }
+
     static void pressHomeKey() {
         mDevice.pressHome();
     }
+
     static void openNotification() {
         mDevice.openNotification();
     }
 
-    static void swipeUpScreen () {
+    static void swipeUpScreen() {
         int dHeight = mDevice.getDisplayHeight();
         int dWidth = mDevice.getDisplayWidth();
         int xScrollPosition = dWidth / 2;
@@ -188,7 +193,7 @@ public final class TestHelper {
         );
     }
 
-    static void swipedownScreen () {
+    static void swipedownScreen() {
         int dHeight = mDevice.getDisplayHeight();
         int dWidth = mDevice.getDisplayWidth();
         int xScrollPosition = dWidth / 2;
@@ -215,7 +220,7 @@ public final class TestHelper {
         return buffer;
     }
 
-    static  String readFileToString(File file) throws IOException {
+    static String readFileToString(File file) throws IOException {
         System.out.println("Reading file: " + file.getAbsolutePath());
 
         try (final FileInputStream stream = new FileInputStream(file)) {
@@ -223,7 +228,7 @@ public final class TestHelper {
         }
     }
 
-    static  String readStreamIntoString(InputStream stream) throws IOException {
+    static String readStreamIntoString(InputStream stream) throws IOException {
         try (final BufferedReader reader = new BufferedReader(
                 new InputStreamReader(stream, StandardCharsets.UTF_8))) {
 

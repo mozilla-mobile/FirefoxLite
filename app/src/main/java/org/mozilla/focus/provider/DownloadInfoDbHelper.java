@@ -8,6 +8,7 @@ package org.mozilla.focus.provider;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import static org.mozilla.focus.provider.DownloadContract.Download;
 
 /**
@@ -26,7 +27,7 @@ public class DownloadInfoDbHelper {
     private final OpenHelper mOpenHelper;
 
 
-    private static final class OpenHelper extends SQLiteOpenHelper{
+    private static final class OpenHelper extends SQLiteOpenHelper {
 
         public OpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);
@@ -35,9 +36,9 @@ public class DownloadInfoDbHelper {
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-            String CREATE_TABLE =CREATE_TABLE_IF_NOT_EXISTS + Download.TABLE_DOWNLOAD + "("
+            String CREATE_TABLE = CREATE_TABLE_IF_NOT_EXISTS + Download.TABLE_DOWNLOAD + "("
                     + Download._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + Download.DOWNLOAD_ID+ " INTEGER,"
+                    + Download.DOWNLOAD_ID + " INTEGER,"
                     + Download.FILE_PATH + " TEXT"
                     + ")";
 
@@ -45,8 +46,8 @@ public class DownloadInfoDbHelper {
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase,int oldVersion,int newVersion) {
-            if (oldVersion != newVersion){
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+            if (oldVersion != newVersion) {
                 sqLiteDatabase.execSQL(DROP_TABLE_IF_EXISTS + Download.TABLE_DOWNLOAD);
                 onCreate(sqLiteDatabase);
             }
@@ -54,24 +55,24 @@ public class DownloadInfoDbHelper {
         }
     }
 
-    private DownloadInfoDbHelper(Context context){
+    private DownloadInfoDbHelper(Context context) {
 
-        mOpenHelper = new OpenHelper(context,DATABASE_NAME,null,DATABASE_VERSION);
+        mOpenHelper = new OpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized DownloadInfoDbHelper getsInstance(Context context){
-        if (sInstance == null){
+    public static synchronized DownloadInfoDbHelper getsInstance(Context context) {
+        if (sInstance == null) {
             sInstance = new DownloadInfoDbHelper(context);
         }
 
         return sInstance;
     }
 
-    public SQLiteDatabase getReadableDB(){
+    public SQLiteDatabase getReadableDB() {
         return mOpenHelper.getReadableDatabase();
     }
 
-    public SQLiteDatabase getWritableDB(){
+    public SQLiteDatabase getWritableDB() {
         return mOpenHelper.getWritableDatabase();
     }
 }

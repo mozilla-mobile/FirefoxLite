@@ -59,10 +59,10 @@ public class HistoryDatabaseHelper {
                     " BEGIN " +
                     "   DELETE FROM " + Tables.BROWSING_HISTORY +
                     "     WHERE " + BrowsingHistory._ID + " = " +
-                          "(SELECT " + BrowsingHistory._ID +
-                          " FROM " + Tables.BROWSING_HISTORY +
-                          " ORDER BY " + BrowsingHistory.LAST_VIEW_TIMESTAMP +
-                          " LIMIT 1);" +
+                    "(SELECT " + BrowsingHistory._ID +
+                    " FROM " + Tables.BROWSING_HISTORY +
+                    " ORDER BY " + BrowsingHistory.LAST_VIEW_TIMESTAMP +
+                    " LIMIT 1);" +
                     " END");
         }
 

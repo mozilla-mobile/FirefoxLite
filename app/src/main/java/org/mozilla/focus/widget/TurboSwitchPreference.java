@@ -63,7 +63,7 @@ public class TurboSwitchPreference extends Preference {
         final TextView summary = (TextView) view.findViewById(android.R.id.summary);
 
         TypedValue typedValue = new TypedValue();
-        TypedArray ta = getContext().obtainStyledAttributes(typedValue.data, new int[] { android.R.attr.textColorLink });
+        TypedArray ta = getContext().obtainStyledAttributes(typedValue.data, new int[]{android.R.attr.textColorLink});
         int color = ta.getColor(0, 0);
         ta.recycle();
 

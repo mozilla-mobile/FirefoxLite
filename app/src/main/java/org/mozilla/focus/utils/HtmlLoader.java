@@ -30,8 +30,8 @@ public class HtmlLoader {
      * @return The file content, with all substitutions having being made.
      */
     public static String loadResourceFile(@NonNull final Context context,
-                                           @NonNull final @RawRes int resourceID,
-                                           @Nullable final Map<String, String> substitutionTable) {
+                                          @NonNull final @RawRes int resourceID,
+                                          @Nullable final Map<String, String> substitutionTable) {
 
         try (final BufferedReader fileReader =
                      new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceID), StandardCharsets.UTF_8))) {
@@ -55,7 +55,7 @@ public class HtmlLoader {
         }
     }
 
-    private final static byte[] pngHeader = new byte[] { -119, 80, 78, 71, 13, 10, 26, 10 };
+    private final static byte[] pngHeader = new byte[]{-119, 80, 78, 71, 13, 10, 26, 10};
 
     public static String loadPngAsDataURI(@NonNull final Context context,
                                           @NonNull final @DrawableRes int resourceID) {
@@ -96,6 +96,6 @@ public class HtmlLoader {
             throw new IllegalStateException("Unable to load png data");
         }
 
-        return  builder.toString();
+        return builder.toString();
     }
 }

@@ -34,7 +34,7 @@ public class ScreenshotObserver {
     }
 
     private MediaObserver mediaObserver;
-    private String[] mediaProjections = new String[] {
+    private String[] mediaProjections = new String[]{
             MediaStore.Images.ImageColumns.DATA,
             MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
             MediaStore.Images.ImageColumns.TITLE,
@@ -47,7 +47,7 @@ public class ScreenshotObserver {
             @Override
             public void run() {
                 // Find the most recent image added to the MediaStore and see if it's a screenshot.
-                final Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Images.ImageColumns.DATE_MODIFIED }, null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC LIMIT 1");
+                final Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.ImageColumns.DATE_MODIFIED}, null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC LIMIT 1");
                 try {
                     if (cursor == null) {
                         return;

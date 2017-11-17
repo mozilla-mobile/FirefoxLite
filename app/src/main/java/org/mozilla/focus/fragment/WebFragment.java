@@ -169,7 +169,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
                 this.pendingUrl = null; // clear pending url
 
                 // in case of any unexpected path to here, to normalize URL in beta/release build
-                final String target = AppConstants.isDevBuild() ? url: UrlUtils.normalize(url);
+                final String target = AppConstants.isDevBuild() ? url : UrlUtils.normalize(url);
                 webView.loadUrl(target);
             } else if (AppConstants.isDevBuild()) {
                 // throw exception to highlight this issue, except release build.

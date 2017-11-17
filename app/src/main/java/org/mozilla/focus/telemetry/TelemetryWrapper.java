@@ -39,7 +39,8 @@ import org.mozilla.telemetry.storage.TelemetryStorage;
 public final class TelemetryWrapper {
     private static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
 
-    private TelemetryWrapper() {}
+    private TelemetryWrapper() {
+    }
 
     private static class Category {
         private static final String ACTION = "action";
@@ -332,9 +333,9 @@ public final class TelemetryWrapper {
     }
 
     public static void browsePermissionEvent(String[] requests) {
-        for(String request : requests) {
+        for (String request : requests) {
             final String value;
-            switch(request) {
+            switch (request) {
                 case PermissionRequest.RESOURCE_AUDIO_CAPTURE:
                     value = Value.AUDIO;
                     break;
@@ -435,7 +436,7 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE).queue();
     }
 
-    public static void clickTopSiteOn(int index){
+    public static void clickTopSiteOn(int index) {
         TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
                 .extra(Extra.ON, Integer.toString(index))
                 .queue();
