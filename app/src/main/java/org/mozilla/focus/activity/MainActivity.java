@@ -234,6 +234,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // We can't update our fragment right now because we need to wait until the activity is
             // resumed. So just remember this URL and load it in onResumeFragments().
             pendingUrl = intent.getDataString();
+            // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
+            dismissAllMenus();
         }
 
         // We do not care about the previous intent anymore. But let's remember this one.
@@ -331,6 +333,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         dialogFragment.show(getSupportFragmentManager(), "");
         mDialogFragment = dialogFragment;
+    }
+
+    private void dismissAllMenus() {
+        if (menu != null) {
+            menu.dismiss();
+        }
+        BrowserFragment browserFragment = getVisibleBrowserFragment();
+        if (browserFragment != null) {
+            browserFragment.dismissWebContextMenu();
+        }
+        if (mDialogFragment != null) {
+            mDialogFragment.dismissAllowingStateLoss();
+        }
     }
 
     public void onMenuItemClicked(View v) {
