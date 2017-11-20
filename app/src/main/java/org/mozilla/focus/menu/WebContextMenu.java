@@ -39,7 +39,7 @@ public class WebContextMenu {
         return titleView;
     }
 
-    public static void show(final @NonNull Context context, final @NonNull IWebView.Callback callback, final @NonNull IWebView.HitTarget hitTarget) {
+    public static Dialog show(final @NonNull Context context, final @NonNull IWebView.Callback callback, final @NonNull IWebView.HitTarget hitTarget) {
         if (!(hitTarget.isLink || hitTarget.isImage)) {
             // We don't support any other classes yet:
             throw new IllegalStateException("WebContextMenu can only handle long-press on images and/or links.");
@@ -77,6 +77,7 @@ public class WebContextMenu {
         setupMenuForHitTarget(dialog, menu, callback, hitTarget);
 
         dialog.show();
+        return dialog;
     }
 
     /**

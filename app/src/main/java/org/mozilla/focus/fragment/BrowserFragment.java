@@ -7,6 +7,7 @@ package org.mozilla.focus.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -111,6 +112,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private TextView urlView;
     private AnimatedProgressBar progressView;
     private ImageView siteIdentity;
+    private Dialog webContextMenu;
 
     //GeoLocationPermission
     private String geolocationOrigin;
@@ -457,7 +459,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     return;
                 }
 
-                WebContextMenu.show(getActivity(), this, hitTarget);
+                webContextMenu = WebContextMenu.show(getActivity(), this, hitTarget);
             }
 
             @Override
@@ -936,6 +938,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
         callback.onCaptureComplete(iwebView.getTitle(), iwebView.getUrl(), content);
         return true;
+    }
+
+    public void dismissWebContextMenu() {
+        if (webContextMenu != null) {
+            webContextMenu.dismiss();
+            webContextMenu = null;
+        }
     }
 
     private Bitmap getPageBitmap(WebView webView) {
