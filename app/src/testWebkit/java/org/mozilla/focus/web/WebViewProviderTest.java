@@ -60,7 +60,7 @@ public class WebViewProviderTest {
         WebSettings testSettings = mock(WebSettings.class);
         when(testSettings.getUserAgentString()).thenReturn("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
 
-        assertEquals("Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ") AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 fakeappname/null",
+        assertEquals("Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + "; rv) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 fakeappname/null",
                 WebViewProvider.buildUserAgentString(RuntimeEnvironment.application, testSettings, "fakeappname"));
     }
 
