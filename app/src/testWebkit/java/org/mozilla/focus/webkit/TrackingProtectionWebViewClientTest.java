@@ -105,25 +105,6 @@ public class TrackingProtectionWebViewClientTest {
         }
     }
 
-    @Test
-    public void testFaviconBlocked() throws Exception {
-        trackingProtectionWebViewClient.notifyCurrentURL("http://www.mozilla.org");
-
-        {
-            // Webkit tries to load favicon.ico, even though it isn't used:
-            final WebResourceRequest request = createRequest("http://mozilla.org/favicon.ico", false);
-            final WebResourceResponse response = trackingProtectionWebViewClient.shouldInterceptRequest(webView, request);
-            assertResourceBlocked(response);
-        }
-
-        {
-            // But we can't block other images since they might be used by actual pages
-            final WebResourceRequest request = createRequest("http://mozilla.org/favicon.png", false);
-            final WebResourceResponse response = trackingProtectionWebViewClient.shouldInterceptRequest(webView, request);
-            assertResourceAllowed(response);
-        }
-    }
-
     private void assertResourceAllowed(final WebResourceResponse response) {
         // shouldInterceptRequest returns null to indicate that WebView should just load the resource
         assertNull(response);
