@@ -13,15 +13,18 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.webkit.matcher.util.FocusString;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
+@Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
 public class UrlMatcherTest {
 
