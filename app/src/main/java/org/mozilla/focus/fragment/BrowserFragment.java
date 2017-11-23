@@ -165,7 +165,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (UrlUtils.isInternalErrorURL(url)) {
             return;
         }
-
+        firstLoadingUrlAfterResumed = url;
         urlView.setText(UrlUtils.stripUserInfo(url));
     }
 
@@ -817,7 +817,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void loadUrl(@NonNull final String url) {
-        firstLoadingUrlAfterResumed = url;
         updateURL(url);
         super.loadUrl(url);
     }
