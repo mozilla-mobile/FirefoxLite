@@ -23,6 +23,7 @@ import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FlowLayout;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.InlineAutocompleteEditText;
@@ -71,8 +72,9 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        final String userAgent = WebViewProvider.getUserAgentString(getActivity());
         this.presenter = new UrlInputPresenter(SearchEngineManager.getInstance()
-                .getDefaultSearchEngine(getActivity()));
+                .getDefaultSearchEngine(getActivity()), userAgent);
     }
 
     @Override
