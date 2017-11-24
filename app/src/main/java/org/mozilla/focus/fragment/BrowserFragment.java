@@ -93,6 +93,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
+    // For perceive-performance. If we are loading page, at least to display this value for UI hint.
+    private static final int MIN_LOADING_PROGRESS = 10;
+
     private String firstLoadingUrlAfterResumed = null;
 
     public static BrowserFragment create(@NonNull String url) {
@@ -336,6 +339,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         final LoadStateListener currentListener = loadStateListenerWeakReference.get();
         if (currentListener != null) {
             currentListener.isLoadingChanged(isLoading);
+        }
+
+        if (isLoading && progressView.getProgress() < MIN_LOADING_PROGRESS) {
+            progressView.setProgress(MIN_LOADING_PROGRESS);
         }
     }
 
