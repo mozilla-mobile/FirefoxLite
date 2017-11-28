@@ -27,14 +27,14 @@ android {
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
         if (buddy_build_number?.trim()) {
             versionCode buddy_build_number.toInteger()
-            versionNameSuffix "." + buddy_build_number
+            versionNameSuffix "(" + buddy_build_number + ")"
         }
     }
 
