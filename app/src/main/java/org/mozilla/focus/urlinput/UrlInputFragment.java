@@ -241,7 +241,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             return;
         }
 
-        final String searchKey = urlView.getOriginalText().trim();
+        final String searchKey = urlView.getOriginalText().trim().toLowerCase();
         for (int i = 0; i < texts.size(); i++) {
             final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
             final String str = texts.get(i).toString();
