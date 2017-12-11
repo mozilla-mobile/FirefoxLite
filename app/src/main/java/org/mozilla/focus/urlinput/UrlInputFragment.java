@@ -245,7 +245,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         for (int i = 0; i < texts.size(); i++) {
             final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
             final String str = texts.get(i).toString();
-            final int idx = str.indexOf(searchKey);
+            final int idx = str.toLowerCase().indexOf(searchKey);
             if (idx != -1) {
                 SpannableStringBuilder builder = new SpannableStringBuilder(texts.get(i));
                 builder.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
