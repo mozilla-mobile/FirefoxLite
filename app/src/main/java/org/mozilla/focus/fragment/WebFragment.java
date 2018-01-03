@@ -22,7 +22,7 @@ import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
 
 /**
- * Base implementation for fragments that use an TabView instance. Based on Android's WebViewFragment.
+ * Base implementation for fragments that use SINGLE TabView instance. Based on Android's WebViewFragment.
  */
 public abstract class WebFragment extends LocaleAwareFragment {
 
