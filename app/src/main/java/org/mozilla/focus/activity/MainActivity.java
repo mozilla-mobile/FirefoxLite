@@ -12,11 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -24,9 +20,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -43,6 +39,8 @@ import org.mozilla.focus.fragment.ListPanelDialog;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
+import org.mozilla.focus.permission.PermissionHandle;
+import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
@@ -63,13 +61,13 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.io.File;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
-    private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
     private static final Handler HANDLER = new Handler();
 
     private String pendingUrl;
@@ -90,6 +88,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private BroadcastReceiver uiMessageReceiver;
     private static boolean sIsNewCreated = true;
 
+    private PermissionHandler permissionHandler;
+    private static final int ACTION_CAPTURE = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +102,60 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         initBroadcastReceivers();
 
         mediator = new MainMediator(this);
+        permissionHandler = new PermissionHandler(new PermissionHandle() {
+            @Override
+            public void doAction(String permission, int actionId, int triggerType, Serializable params) {
+                if (actionId == ACTION_CAPTURE) {
+                    BrowserFragment browserFragment = getBrowserFragment();
+                    switch (triggerType) {
+                        case TRIGGER_DIRECT:
+                            if (browserFragment == null || !browserFragment.isVisible()) {
+                                return;
+                            }
+                            showLoadingAndCapture(browserFragment);
+                            break;
+                        case TRIGGER_GRANTED:
+                        case TRIGGER_SETTING:
+                            if (browserFragment == null || !browserFragment.isVisible()) {
+                                return;
+                            }
+                            hasPendingScreenCaptureTask = true;
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown Trigger");
+                    }
+                }
+            }
+
+            @Override
+            public int getDoNotAskAgainDialogString(int actionId) {
+                if (actionId == ACTION_CAPTURE ) {
+                    return R.string.permission_dialog_msg_storage;
+                } else {
+                    throw new IllegalArgumentException("Unknown Action");
+                }
+            }
+
+            @Override
+            public Snackbar makeAskAgainSnackBar(int actionId) {
+                return PermissionHandler.makeAskAgainSnackBar(MainActivity.this, findViewById(R.id.container), getAskAgainSnackBarString(actionId));
+            }
+
+            private int getAskAgainSnackBarString(int actionId) {
+                if (actionId == ACTION_CAPTURE ) {
+                    return R.string.permission_toast_storage;
+                } else {
+                    throw new IllegalArgumentException("Unknown Action");
+                }
+            }
+
+            @Override
+            public void requestPermissions(int actionId) {
+                if (actionId == ACTION_CAPTURE) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, actionId);
+                }
+            }
+        });
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -139,6 +194,17 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         }
 
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        permissionHandler.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        permissionHandler.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 
     private void initBroadcastReceivers() {
@@ -462,7 +528,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.capture_page:
                 Settings.getInstance(this).setScreenshotOnBoardingDone();
-                onCapturePageClicked(browserFragment);
+                onCapturePageClicked();
                 TelemetryWrapper.clickToolbarCapture();
                 break;
             default:
@@ -518,17 +584,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         browserFragment.stop();
     }
 
-    private void onCapturePageClicked(final BrowserFragment browserFragment) {
-        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // We do have the permission to write to the external storage.
-            showLoadingAndCapture(browserFragment);
-        } else {
-            // We do not have the permission to write to the external storage. Request the permission and start the
-            // capture from onRequestPermissionsResult().
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
-            }
-        }
+    private void onCapturePageClicked() {
+        permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, null);
     }
 
     @Override
@@ -645,20 +702,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                final BrowserFragment browserFragment = getBrowserFragment();
-                if (browserFragment == null || !browserFragment.isVisible()) {
-                    return;
-                }
-                hasPendingScreenCaptureTask = true;
-            }
-        }
+        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        permissionHandler.onActivityResult(this, requestCode, resultCode, data);
 
         if (requestCode == ScreenshotViewerActivity.REQ_CODE_VIEW_SCREENSHOT) {
             if (resultCode == ScreenshotViewerActivity.RESULT_NOTIFY_SCREENSHOT_IS_DELETED) {
