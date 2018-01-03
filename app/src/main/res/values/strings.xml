@@ -181,9 +181,16 @@
     <string name="label_menu_settings">Settings</string>
     <string name="label_menu_exit">Exit</string>
 
+    <string name="permission_dialog_setting">settings</string>
+    <string name="permission_dialog_not_now">not now</string>
+    <string name="permission_dialog_msg_location">Missing permissions. Give Firefox Rocket permission to access your location.</string>
+    <string name="permission_toast_location">Location not available. Give Firefox Rocket permission to access your location in settings.</string>
+    <string name="permission_dialog_msg_storage">Missing permissions. Give Firefox Rocket permission to access your location.</string>
+    <string name="permission_toast_storage">Storage not available. Give Firefox Rocket permission to store photos, media, and files on your device and SD card in settings.</string>
+
     <!-- When the webpage request access to geolocation a dialog will popup.
         This is the title of the permission request dialog. Argument 1 is the url of the website. -->
-    <string name="geolocation_dialog_message">%1$s \nwants to use your device\'s location.</string>
+    <string name="geolocation_dialog_message">%1$s \nwants to access your location.</string>
     <string name="geolocation_dialog_allow">ALLOW</string>
     <string name="geolocation_dialog_block">BLOCK</string>
 
