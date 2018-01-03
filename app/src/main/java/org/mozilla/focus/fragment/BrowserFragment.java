@@ -56,12 +56,14 @@ import android.widget.Toast;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
+import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DrawableUtils;
@@ -72,6 +74,7 @@ import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
+import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -82,7 +85,8 @@ import java.util.List;
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends WebFragment implements View.OnClickListener, BackKeyHandleable, ScreenshotObserver.OnScreenshotListener {
+public class BrowserFragment extends LocaleAwareFragment implements View.OnClickListener,
+        BackKeyHandleable, ScreenshotObserver.OnScreenshotListener {
 
     public static final String FRAGMENT_TAG = "browser";
 
@@ -104,6 +108,20 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         return fragment;
     }
+
+    private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
+
+    private ViewGroup webViewSlot;
+    private TabView tabView;
+    // webView is not available after onDestroyView, but we need webView reference in callback
+    // onSaveInstanceState. However the callback might be invoked at anytime before onDestroy
+    // therefore webView-available-state is decided by this flag but not webView reference itself.
+    private boolean isWebViewAvailable;
+
+    private Bundle webViewState;
+
+    /* If fragment exists but no WebView to use, store url here if there is any loadUrl requirement */
+    protected String pendingUrl = null;
 
     private View backgroundView;
     private TransitionDrawable backgroundTransition;
@@ -299,6 +317,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onPause() {
+        tabView.onPause();
         super.onPause();
         if (screenshotObserver != null) {
             screenshotObserver.stop();
@@ -306,7 +325,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     @Override
+    public void applyLocale() {
+        // We create and destroy a new WebView here to force the internal state of WebView to know
+        // about the new language. See issue #666.
+        final WebView unneeded = new WebView(getContext());
+        unneeded.destroy();
+    }
+
+    @Override
     public void onResume() {
+        tabView.onResume();
         super.onResume();
         if (Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
             screenshotObserver = new ScreenshotObserver(getActivity(), this);
@@ -314,7 +342,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
     }
 
-    @Override
     public String getInitialUrl() {
         return getArguments().getString(ARGUMENT_URL);
     }
@@ -328,7 +355,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     @Override
-    public View inflateLayout(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_browser, container, false);
 
         videoContainer = (ViewGroup) view.findViewById(R.id.video_container);
@@ -362,7 +389,37 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             initialiseNormalBrowserUi();
         }
 
+        webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
+        tabView = (TabView) WebViewProvider.create(getContext(), null);
+
+        webViewSlot.addView(tabView.getView());
+        isWebViewAvailable = true;
+        tabView.setCallback(new TabViewCallback());
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@Nullable View container, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(container, savedInstanceState);
+
+        // restore WebView state
+        if (savedInstanceState == null) {
+            // in two cases we won't have saved-state: fragment just created, or fragment re-attached.
+            // if fragment was detached before, we will have webViewState.
+            // per difference case, we should load initial url or pending url(if any).
+            if (webViewState != null) {
+                tabView.restoreWebviewState(webViewState);
+            }
+
+            final String url = (webViewState == null) ? getInitialUrl() : pendingUrl;
+            if (!TextUtils.isEmpty(url)) {
+                loadUrl(url);
+            }
+        } else {
+            // Fragment was destroyed
+            tabView.restoreWebviewState(savedInstanceState);
+        }
     }
 
     @Override
@@ -446,6 +503,20 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onSaveInstanceState(Bundle outState) {
         permissionHandler.onSaveInstanceState(outState);
+        tabView.onSaveInstanceState(outState);
+
+        // Workaround for #1107 TransactionTooLargeException
+        // since Android N, system throws a exception rather than just a warning(then drop bundle)
+        // To set a threshold for dropping WebView state manually
+        // refer: https://issuetracker.google.com/issues/37103380
+        final String key = "WEBVIEW_CHROMIUM_STATE";
+        if (outState.containsKey(key)) {
+            final int size = outState.getByteArray(key).length;
+            if (size > BUNDLE_MAX_SIZE) {
+                outState.remove(key);
+            }
+        }
+
         super.onSaveInstanceState(outState);
     }
 
@@ -457,13 +528,40 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onStop() {
-        TabView tabView = getTabView();
         if (tabView != null && systemVisibility != NONE) {
             tabView.performExitFullScreen();
         }
         dismissGeoDialog();
         super.onStop();
         notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
+    }
+
+    @Override
+    public void onDestroy() {
+        // only remove tabView in onDestroy since onSaveInstanceState access tabView
+        // and the callback might be invoked before onDestroyView
+        if (tabView != null) {
+            tabView.destroy();
+            tabView = null;
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        isWebViewAvailable = false;
+
+        if (tabView != null) {
+            tabView.setCallback(null);
+
+            // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
+            // called. In this case we must store tabView-state manually, to retain browsing history.
+            webViewState = new Bundle();
+            tabView.onSaveInstanceState(webViewState);
+        }
+
+        super.onDestroyView();
     }
 
     public interface LoadStateListener {
@@ -490,11 +588,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (currentListener != null) {
             currentListener.isLoadingChanged(isLoading);
         }
-    }
-
-    @Override
-    public TabView.Callback createCallback() {
-        return new TabViewCallback();
     }
 
     /**
@@ -727,7 +820,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void setBlockingEnabled(boolean enabled) {
-        final TabView tabView = getTabView();
         if (tabView != null) {
             tabView.setBlockingEnabled(enabled);
         }
@@ -735,16 +827,28 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     // This is not used currently cause we remove most erasing entry point. We'll need this later.
     public void erase() {
-        final TabView tabView = getTabView();
         if (tabView != null) {
             tabView.cleanup();
         }
     }
 
-    @Override
     public void loadUrl(@NonNull final String url) {
         updateURL(url);
-        super.loadUrl(url);
+
+        if (tabView != null) {
+            if (UrlUtils.isUrl(url)) {
+                this.pendingUrl = null; // clear pending url
+
+                // in case of any unexpected path to here, to normalize URL in beta/release build
+                final String target = AppConstants.isDevBuild() ? url : UrlUtils.normalize(url);
+                tabView.loadUrl(target);
+            } else if (AppConstants.isDevBuild()) {
+                // throw exception to highlight this issue, except release build.
+                throw new RuntimeException("trying to open a invalid url: " + url);
+            }
+        } else {
+            this.pendingUrl = url;
+        }
     }
 
     public void openPreference() {
@@ -796,7 +900,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public boolean canGoForward() {
-        final TabView tabView = getTabView();
         return tabView != null && tabView.canGoForward();
     }
 
@@ -805,12 +908,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public boolean canGoBack() {
-        final TabView tabView = getTabView();
         return tabView != null && tabView.canGoBack();
     }
 
     public void goBack() {
-        final TabView tabView = getTabView();
         if (tabView != null) {
             WebBackForwardList webBackForwardList = ((WebView) tabView).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
@@ -820,7 +921,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void goForward() {
-        final TabView tabView = getTabView();
         if (tabView != null) {
             WebBackForwardList webBackForwardList = ((WebView) tabView).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
@@ -830,14 +930,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void reload() {
-        final TabView tabView = getTabView();
         if (tabView != null) {
             tabView.reload();
         }
     }
 
     public void stop() {
-        final TabView tabView = getTabView();
         if (tabView != null) {
             tabView.stopLoading();
         }
@@ -848,7 +946,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public boolean capturePage(@NonNull ScreenshotCallback callback) {
-        final TabView tabView = getTabView();
         // Failed to get Webview
         if (tabView == null || !(tabView instanceof WebView)) {
             return false;
@@ -917,7 +1014,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         private void updateUrlFromWebView() {
-            final TabView tabView = getTabView();
             if (tabView != null) {
                 final String viewURL = tabView.getUrl();
                 onURLChanged(viewURL);
@@ -940,8 +1036,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 siteIdentity.setImageLevel(SITE_LOCK);
             }
             String urlToBeInserted = getUrl();
-            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getTabView() != null) {
-                getTabView().insertBrowsingHistory();
+            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && tabView != null) {
+                tabView.insertBrowsingHistory();
                 lastInsertedUrl = urlToBeInserted;
             }
         }
@@ -973,7 +1069,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         @Override
         public boolean handleExternalUrl(final String url) {
-            final TabView tabView = getTabView();
             if (getContext() == null) {
                 Log.w(FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
                 return false;
@@ -1037,7 +1132,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            TabView tabView = getTabView();
             if (tabView instanceof WebView) {
                 ((WebView) tabView).clearFocus();
             }
