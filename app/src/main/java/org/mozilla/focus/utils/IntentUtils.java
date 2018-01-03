@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.focus.utils;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -141,6 +142,14 @@ public class IntentUtils {
 //            }
 
         builder.show();
+    }
+
+    public static void intentOpenSettings(Activity activity, int requestCode) {
+        Intent intent = new Intent();
+        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+        intent.setData(uri);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     public static void intentOpenFile(Context context, String fileUriStr, String mimeType) {
