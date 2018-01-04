@@ -497,225 +497,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public IWebView.Callback createCallback() {
-        return new IWebView.Callback() {
-            String failingUrl;
-            private boolean mostOldCallbacksHaveFinished = false;
-            // Some url may have two onPageFinished for the same url. filter them out to avoid
-            // adding twice to the history.
-            private String lastInsertedUrl = null;
-            // Some url may report progress from 0 again for the same url. filter them out to avoid
-            // progress bar regression when scrolling.
-            private String loadedUrl = null;
-
-            @Override
-            public void onPageStarted(final String url) {
-                // This mostOldCallbacksHaveFinished flag sort of works like onPageCommitVisible.
-                // There are some callback triggers that are fired due to Webview.restoreState()
-                // or last webview loading that are not finished. As a quick fix we filtered these
-                // onPageFinished and onProgress out by only consuming the callbacks after our
-                // targeted url has fired a onPageStarted. This is assuming we will always have a
-                // such onPageStarted call back after webview.loadUrl() which I am not certain is
-                // guaranteed. We filtered out these since they are having some properties such as:
-                // the getTitle() returned here is incomplete. This is most likely the
-                // onPageFinished events that are fired by didFinishNavigation
-                // See: https://stackoverflow.com/a/46298285/3591480
-                if (firstLoadingUrlAfterResumed != null && UrlUtils.urlsMatchExceptForTrailingSlash(firstLoadingUrlAfterResumed, url)) {
-                    mostOldCallbacksHaveFinished = true;
-                }
-                lastInsertedUrl = null;
-                loadedUrl = null;
-
-                updateIsLoading(true);
-
-                siteIdentity.setImageLevel(SITE_GLOBE);
-
-                backgroundTransition.resetTransition();
-            }
-
-            private void updateUrlFromWebView() {
-                final IWebView webView = getWebView();
-                if (webView != null) {
-                    final String viewURL = webView.getUrl();
-                    onURLChanged(viewURL);
-                }
-            }
-
-            @Override
-            public void onPageFinished(boolean isSecure) {
-                if (!mostOldCallbacksHaveFinished) {
-                    return;
-                }
-                // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
-                // URL is always correct _except_ for error pages
-                updateUrlFromWebView();
-
-                updateIsLoading(false);
-
-                notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
-
-                backgroundTransition.startTransition(ANIMATION_DURATION);
-
-                if (isSecure) {
-                    siteIdentity.setImageLevel(SITE_LOCK);
-                }
-                String urlToBeInserted = getUrl();
-                if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getWebView() != null) {
-                    getWebView().insertBrowsingHistory();
-                    lastInsertedUrl = urlToBeInserted;
-                }
-            }
-
-            @Override
-            public void onURLChanged(final String url) {
-                updateURL(url);
-            }
-
-            @Override
-            public void onProgress(int progress) {
-                if (!mostOldCallbacksHaveFinished) {
-                    return;
-                }
-                final IWebView webView = getWebView();
-                if (webView != null) {
-                    final String currentUrl = webView.getUrl();
-                    final boolean progressIsForLoadedUrl = TextUtils.equals(currentUrl, loadedUrl);
-                    // Some new url may give 100 directly and then start from 0 again. don't treat
-                    // as loaded for these urls;
-                    final boolean urlBarLoadingToFinished =
-                            progressView.getMax() != progressView.getProgress() && progress == progressView.getMax();
-                    if (urlBarLoadingToFinished) {
-                        loadedUrl = currentUrl;
-                    }
-                    if (progressIsForLoadedUrl) {
-                        return;
-                    }
-                }
-                progressView.setProgress(progress);
-            }
-
-            @Override
-            public boolean handleExternalUrl(final String url) {
-                final IWebView webView = getWebView();
-                if (getContext() == null) {
-                    Log.w(FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
-                    return false;
-                }
-
-                return webView != null && IntentUtils.handleExternalUri(getContext(), webView, url);
-            }
-
-            @Override
-            public void onLongPress(final IWebView.HitTarget hitTarget) {
-                if (getActivity() == null) {
-                    Log.w(FRAGMENT_TAG, "No context to use, abort callback onLongPress");
-                    return;
-                }
-
-                webContextMenu = WebContextMenu.show(getActivity(), this, hitTarget);
-            }
-
-            @Override
-            public void onEnterFullScreen(@NonNull final IWebView.FullscreenCallback callback, @Nullable View view) {
-                fullscreenCallback = callback;
-
-                if (view != null) {
-                    // Hide browser UI and web content
-                    browserContainer.setVisibility(View.INVISIBLE);
-
-                    // Add view to video container and make it visible
-                    final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                    videoContainer.addView(view, params);
-                    videoContainer.setVisibility(View.VISIBLE);
-
-                    // Switch to immersive mode: Hide system bars other UI controls
-                    systemVisibility = switchToImmersiveMode();
-                }
-            }
-
-            @Override
-            public void onExitFullScreen() {
-                // Remove custom video views and hide container
-                videoContainer.removeAllViews();
-                videoContainer.setVisibility(View.GONE);
-
-                // Show browser UI and web content again
-                browserContainer.setVisibility(View.VISIBLE);
-
-                if (systemVisibility != NONE) {
-                    exitImmersiveMode(systemVisibility);
-                }
-
-                // Notify renderer that we left fullscreen mode.
-                if (fullscreenCallback != null) {
-                    fullscreenCallback.fullScreenExited();
-                    fullscreenCallback = null;
-                }
-
-                // WebView gets focus, but unable to open the keyboard after exit Fullscreen for Android 7.0+
-                // We guess some component in WebView might lock focus
-                // So when user touches the input text box on Webview, it will not trigger to open the keyboard
-                // It may be a WebView bug.
-                // The workaround is clearing WebView focus
-                // The WebView will be normal when it gets focus again.
-                // If android change behavior after, can remove this.
-                IWebView webView = getWebView();
-                if (webView instanceof WebView) {
-                    ((WebView) webView).clearFocus();
-                }
-            }
-
-            @Override
-            public void onDownloadStart(Download download) {
-                permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download);
-            }
-
-            @Override
-            public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
-                geolocationOrigin = origin;
-                geolocationCallback = callback;
-                permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.ACCESS_FINE_LOCATION, ACTION_GEO_LOCATION, null);
-            }
-
-            @Override
-            public boolean onShowFileChooser(WebView webView,
-                                             ValueCallback<Uri[]> filePathCallback,
-                                             WebChromeClient.FileChooserParams fileChooserParams) {
-                TelemetryWrapper.browseFilePermissionEvent();
-                try {
-                    BrowserFragment.this.fileChooseAction = new FileChooseAction(BrowserFragment.this, filePathCallback, fileChooserParams);
-                    permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.READ_EXTERNAL_STORAGE, BrowserFragment.ACTION_PICK_FILE, null);
-                    return true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-
-            @Override
-            public void updateFailingUrl(String url, boolean updateFromError) {
-                if (!updateFromError && !url.equals(failingUrl)) {
-                    failingUrl = null;
-                } else {
-                    this.failingUrl = url;
-                }
-            }
-
-            //When we're receiving onPageFinished and called webView.getUrl(),
-            // it may return the url that is already loaded rather then the just-finished url.
-            // We do another update in OnReceivedTitle to make sure we change the url if this happens.
-            // See issue1064 and issue1150.
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                if (!mostOldCallbacksHaveFinished) {
-                    return;
-                }
-
-                if (!BrowserFragment.this.getUrl().equals(view.getUrl())) {
-                    updateURL(view.getUrl());
-                }
-            }
-        };
+        return new WebviewCallback();
     }
 
     /**
@@ -1097,5 +879,226 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             screenshotObserver.stop();
         }
         notifyParent(FragmentListener.TYPE.SHOW_SCREENSHOT_HINT, null);
+    }
+
+    class WebviewCallback implements IWebView.Callback {
+
+        String failingUrl;
+        private boolean mostOldCallbacksHaveFinished = false;
+        // Some url may have two onPageFinished for the same url. filter them out to avoid
+        // adding twice to the history.
+        private String lastInsertedUrl = null;
+        // Some url may report progress from 0 again for the same url. filter them out to avoid
+        // progress bar regression when scrolling.
+        private String loadedUrl = null;
+
+        @Override
+        public void onPageStarted(final String url) {
+            // This mostOldCallbacksHaveFinished flag sort of works like onPageCommitVisible.
+            // There are some callback triggers that are fired due to Webview.restoreState()
+            // or last webview loading that are not finished. As a quick fix we filtered these
+            // onPageFinished and onProgress out by only consuming the callbacks after our
+            // targeted url has fired a onPageStarted. This is assuming we will always have a
+            // such onPageStarted call back after webview.loadUrl() which I am not certain is
+            // guaranteed. We filtered out these since they are having some properties such as:
+            // the getTitle() returned here is incomplete. This is most likely the
+            // onPageFinished events that are fired by didFinishNavigation
+            // See: https://stackoverflow.com/a/46298285/3591480
+            if (firstLoadingUrlAfterResumed != null && UrlUtils.urlsMatchExceptForTrailingSlash(firstLoadingUrlAfterResumed, url)) {
+                mostOldCallbacksHaveFinished = true;
+            }
+            lastInsertedUrl = null;
+            loadedUrl = null;
+
+            updateIsLoading(true);
+
+            siteIdentity.setImageLevel(SITE_GLOBE);
+
+            backgroundTransition.resetTransition();
+        }
+
+        private void updateUrlFromWebView() {
+            final IWebView webView = getWebView();
+            if (webView != null) {
+                final String viewURL = webView.getUrl();
+                onURLChanged(viewURL);
+            }
+        }
+
+        @Override
+        public void onPageFinished(boolean isSecure) {
+            if (!mostOldCallbacksHaveFinished) {
+                return;
+            }
+            // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
+            // URL is always correct _except_ for error pages
+            updateUrlFromWebView();
+
+            updateIsLoading(false);
+
+            notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
+
+            backgroundTransition.startTransition(ANIMATION_DURATION);
+
+            if (isSecure) {
+                siteIdentity.setImageLevel(SITE_LOCK);
+            }
+            String urlToBeInserted = getUrl();
+            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getWebView() != null) {
+                getWebView().insertBrowsingHistory();
+                lastInsertedUrl = urlToBeInserted;
+            }
+        }
+
+        @Override
+        public void onURLChanged(final String url) {
+            updateURL(url);
+        }
+
+        @Override
+        public void onProgress(int progress) {
+            if (!mostOldCallbacksHaveFinished) {
+                return;
+            }
+            final IWebView webView = getWebView();
+            if (webView != null) {
+                final String currentUrl = webView.getUrl();
+                final boolean progressIsForLoadedUrl = TextUtils.equals(currentUrl, loadedUrl);
+                // Some new url may give 100 directly and then start from 0 again. don't treat
+                // as loaded for these urls;
+                final boolean urlBarLoadingToFinished =
+                        progressView.getMax() != progressView.getProgress() && progress == progressView.getMax();
+                if (urlBarLoadingToFinished) {
+                    loadedUrl = currentUrl;
+                }
+                if (progressIsForLoadedUrl) {
+                    return;
+                }
+            }
+            progressView.setProgress(progress);
+        }
+
+        @Override
+        public boolean handleExternalUrl(final String url) {
+            final IWebView webView = getWebView();
+            if (getContext() == null) {
+                Log.w(FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
+                return false;
+            }
+
+            return webView != null && IntentUtils.handleExternalUri(getContext(), webView, url);
+        }
+
+        @Override
+        public void onLongPress(final IWebView.HitTarget hitTarget) {
+            if (getActivity() == null) {
+                Log.w(FRAGMENT_TAG, "No context to use, abort callback onLongPress");
+                return;
+            }
+
+            webContextMenu = WebContextMenu.show(getActivity(), this, hitTarget);
+        }
+
+        @Override
+        public void onEnterFullScreen(@NonNull final IWebView.FullscreenCallback callback, @Nullable View view) {
+            fullscreenCallback = callback;
+
+            if (view != null) {
+                // Hide browser UI and web content
+                browserContainer.setVisibility(View.INVISIBLE);
+
+                // Add view to video container and make it visible
+                final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                videoContainer.addView(view, params);
+                videoContainer.setVisibility(View.VISIBLE);
+
+                // Switch to immersive mode: Hide system bars other UI controls
+                systemVisibility = switchToImmersiveMode();
+            }
+        }
+
+        @Override
+        public void onExitFullScreen() {
+            // Remove custom video views and hide container
+            videoContainer.removeAllViews();
+            videoContainer.setVisibility(View.GONE);
+
+            // Show browser UI and web content again
+            browserContainer.setVisibility(View.VISIBLE);
+
+            if (systemVisibility != NONE) {
+                exitImmersiveMode(systemVisibility);
+            }
+
+            // Notify renderer that we left fullscreen mode.
+            if (fullscreenCallback != null) {
+                fullscreenCallback.fullScreenExited();
+                fullscreenCallback = null;
+            }
+
+            // WebView gets focus, but unable to open the keyboard after exit Fullscreen for Android 7.0+
+            // We guess some component in WebView might lock focus
+            // So when user touches the input text box on Webview, it will not trigger to open the keyboard
+            // It may be a WebView bug.
+            // The workaround is clearing WebView focus
+            // The WebView will be normal when it gets focus again.
+            // If android change behavior after, can remove this.
+            IWebView webView = getWebView();
+            if (webView instanceof WebView) {
+                ((WebView) webView).clearFocus();
+            }
+        }
+
+        @Override
+        public void onDownloadStart(Download download) {
+            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download);
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+            geolocationOrigin = origin;
+            geolocationCallback = callback;
+            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.ACCESS_FINE_LOCATION, ACTION_GEO_LOCATION, null);
+        }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView,
+                                         ValueCallback<Uri[]> filePathCallback,
+                                         WebChromeClient.FileChooserParams fileChooserParams) {
+            TelemetryWrapper.browseFilePermissionEvent();
+            try {
+                BrowserFragment.this.fileChooseAction = new FileChooseAction(BrowserFragment.this, filePathCallback, fileChooserParams);
+                permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.READ_EXTERNAL_STORAGE, BrowserFragment.ACTION_PICK_FILE, null);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        public void updateFailingUrl(String url, boolean updateFromError) {
+            if (!updateFromError && !url.equals(failingUrl)) {
+                failingUrl = null;
+            } else {
+                this.failingUrl = url;
+            }
+        }
+
+        //When we're receiving onPageFinished and called webView.getUrl(),
+        // it may return the url that is already loaded rather then the just-finished url.
+        // We do another update in OnReceivedTitle to make sure we change the url if this happens.
+        // See issue1064 and issue1150.
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            if (!mostOldCallbacksHaveFinished) {
+                return;
+            }
+
+            if (!BrowserFragment.this.getUrl().equals(view.getUrl())) {
+                updateURL(view.getUrl());
+            }
+        }
     }
 }
