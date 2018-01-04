@@ -57,6 +57,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
+import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
@@ -65,7 +66,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DrawableUtils;
-import org.mozilla.focus.utils.FilePickerUtil;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.UrlUtils;
@@ -87,9 +87,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public static final String FRAGMENT_TAG = "browser";
 
-    private static int REQUEST_CODE_READ_STORAGE_PERMISSION = 100;
     private static int REQUEST_CODE_LOCATION_PERMISSION = 102;
-    private static int REQUEST_CODE_CHOOSE_FILE = 103;
 
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
@@ -198,7 +196,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 private void actionPickFileGranted() {
                     if (fileChooseAction != null) {
-                        fileChooseAction.onPermissionGranted();
+                        fileChooseAction.startChooserActivity();
                     }
                 }
 
@@ -374,7 +372,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         permissionHandler.onActivityResult(getActivity(), requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CHOOSE_FILE) {
+        if (requestCode == FileChooseAction.REQUEST_CODE_CHOOSE_FILE) {
             final boolean done = (fileChooseAction == null) || fileChooseAction.onFileChose(resultCode, data);
             if (done) {
                 fileChooseAction = null;
@@ -685,8 +683,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                                              WebChromeClient.FileChooserParams fileChooserParams) {
                 TelemetryWrapper.browseFilePermissionEvent();
                 try {
-                    BrowserFragment.this.fileChooseAction = new FileChooseAction(filePathCallback, fileChooserParams);
-                    BrowserFragment.this.fileChooseAction.performAction();
+                    BrowserFragment.this.fileChooseAction = new FileChooseAction(BrowserFragment.this, filePathCallback, fileChooserParams);
+                    permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.READ_EXTERNAL_STORAGE, BrowserFragment.ACTION_PICK_FILE, null);
                     return true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1091,76 +1089,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             return null;
         }
 
-    }
-
-    class FileChooseAction {
-        private ValueCallback<Uri[]> callback;
-        private WebChromeClient.FileChooserParams params;
-        private Uri[] uris;
-
-        FileChooseAction(@NonNull ValueCallback<Uri[]> callback,
-                         @NonNull WebChromeClient.FileChooserParams params) {
-            this.callback = callback;
-            this.params = params;
-        }
-
-        public void performAction() {
-            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_PICK_FILE, null);
-        }
-
-        public void onPermissionGranted() {
-            startChooserActivity();
-        }
-
-        public void cancel() {
-            this.callback.onReceiveValue(null);
-        }
-
-        /**
-         * Callback when back from a File-choose-activity
-         *
-         * @param resultCode
-         * @param data
-         * @return true if this action is done
-         */
-        public boolean onFileChose(int resultCode, Intent data) {
-            if (this.callback == null) {
-                return true;
-            }
-
-            if ((resultCode != Activity.RESULT_OK) || (data == null)) {
-                this.callback.onReceiveValue(null);
-                this.callback = null;
-                return true;
-            }
-
-            try {
-                final Uri uri = data.getData();
-                uris = (uri == null) ? null : new Uri[]{uri};
-
-                // FIXME: check permission before access the uri
-                // if file locates on external storage and we haven't granted permission
-                // we might get exception here. but try won't work here.
-                this.callback.onReceiveValue(uris);
-            } catch (Exception e) {
-                this.callback.onReceiveValue(null);
-                e.printStackTrace();
-            }
-
-            this.callback = null;
-            return true;
-        }
-
-        private void startChooserActivity() {
-            startActivityForResult(createChooserIntent(this.params), REQUEST_CODE_CHOOSE_FILE);
-        }
-
-        private Intent createChooserIntent(WebChromeClient.FileChooserParams params) {
-            final String[] mimeTypes = params.getAcceptTypes();
-            CharSequence title = params.getTitle();
-            title = TextUtils.isEmpty(title) ? getString(R.string.file_picker_title) : title;
-            return FilePickerUtil.getFilePickerIntent(getActivity(), title, mimeTypes);
-        }
     }
 
     @Override
