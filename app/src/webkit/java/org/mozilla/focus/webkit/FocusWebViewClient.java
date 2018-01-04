@@ -54,7 +54,7 @@ import org.mozilla.focus.web.IWebView;
             // not have a trailing URL (usually no trailing / when a link is entered via UrlInputFragment),
             // hence we do a somewhat convoluted test:
             final String requestURL = request.getUrl().toString();
-            if (UrlUtils.urlsMatchExceptForTrailingSlash(currentPageURL, requestURL)) {
+            if (currentPageURL != null && UrlUtils.urlsMatchExceptForTrailingSlash(currentPageURL, requestURL)) {
                 view.post(new Runnable() {
                     @Override
                     public void run() {
