@@ -176,6 +176,11 @@ public class Settings {
         }
     }
 
+    public static void updatePrefString(Context context, String key, String value) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences.edit().putString(key, value).apply();
+    }
+
     /* package */ String getPreferenceKey(int resourceId) {
         return resources.getString(resourceId);
     }

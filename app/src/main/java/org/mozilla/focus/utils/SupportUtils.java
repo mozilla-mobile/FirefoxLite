@@ -136,6 +136,8 @@ public class SupportUtils {
         final Context context = webView.getContext();
         final Resources resources = Locales.getLocalizedResources(webView.getContext());
 
+        final String webviewVersion = DebugUtils.loadWebViewVersion(webView.getContext());
+
         final Map<String, String> substitutionMap = new ArrayMap<>();
         final String appName = webView.getContext().getResources().getString(R.string.app_name);
         final String aboutBody = webView.getContext().getResources().getString(R.string.about_content_body, appName);
@@ -174,6 +176,8 @@ public class SupportUtils {
 
         final String wordmark = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.logotype);
         substitutionMap.put("%wordmark%", wordmark);
+
+        substitutionMap.put("%webview-version%", webviewVersion);
 
         final String data = HtmlLoader.loadResourceFile(webView.getContext(), R.raw.about, substitutionMap);
         // We use a file:/// base URL so that we have the right origin to load file:/// css and
