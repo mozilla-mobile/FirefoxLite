@@ -18,6 +18,7 @@ import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Browsers;
+import org.mozilla.focus.utils.DebugUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.telemetry.Telemetry;
 import org.mozilla.telemetry.TelemetryHolder;
@@ -188,6 +189,7 @@ public final class TelemetryWrapper {
             final boolean telemetryEnabled = isTelemetryEnabled(context);
 
             updateDefaultBrowserStatus(context);
+            updatePrefValue(context, resources.getString(R.string.pref_key_webview_version), DebugUtils.loadWebViewVersion(context));
 
             final TelemetryConfiguration configuration = new TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
@@ -199,7 +201,7 @@ public final class TelemetryWrapper {
                             resources.getString(R.string.pref_key_performance_block_images),
                             resources.getString(R.string.pref_key_default_browser),
                             resources.getString(R.string.pref_key_storage_save_downloads_to),
-                            //  TODO:[Telemetry][P2] webview_version
+                            resources.getString(R.string.pref_key_webview_version),
                             resources.getString(R.string.pref_key_locale))
                     .setCollectionEnabled(telemetryEnabled)
                     .setUploadEnabled(telemetryEnabled);
@@ -221,6 +223,10 @@ public final class TelemetryWrapper {
     private static void updateDefaultBrowserStatus(Context context) {
         boolean isDefaultBrowser = new Browsers(context, "http://www.mozilla.org").isDefaultBrowser(context);
         Settings.updatePrefDefaultBrowserIfNeeded(context, isDefaultBrowser);
+    }
+
+    private static void updatePrefValue(Context context, String key, String value) {
+        Settings.updatePrefString(context, key, value);
     }
 
     private static DefaultSearchMeasurement.DefaultSearchEngineProvider createDefaultSearchProvider(final Context context) {
