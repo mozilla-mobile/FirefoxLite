@@ -28,11 +28,12 @@ public class PermissionHandler {
     private static final String ACTION_ID_KEY = "HANDLER_ACTION_ID_KEY";
     private static final String PARAMS_KEY = "HANDLER_PARAMS_KEY";
     private static final String PERMISSION_PREFIX = "PERM_";
+    private static final int NO_ACTION = -1;
 
 
     private PermissionHandle permissionHandle;
     private String permission;
-    private int actionId;
+    private int actionId = NO_ACTION;
     private Parcelable params;
 
     public PermissionHandler(PermissionHandle permissionHandle) {
@@ -95,11 +96,11 @@ public class PermissionHandler {
     }
 
     private void clearAction() {
-        setAction(null, -1, null);
+        setAction(null, NO_ACTION, null);
     }
 
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SETTINGS && actionId != -1) {
+        if (requestCode == REQUEST_SETTINGS && actionId != NO_ACTION) {
             if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(activity, permission)) {
                 permissionHandle.doActionSetting(permission, actionId, params);
             }
