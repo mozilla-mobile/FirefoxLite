@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -104,26 +105,35 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         mediator = new MainMediator(this);
         permissionHandler = new PermissionHandler(new PermissionHandle() {
             @Override
-            public void doAction(String permission, int actionId, int triggerType, Serializable params) {
+            public void doActionDirect(String permission, int actionId, Parcelable params) {
                 if (actionId == ACTION_CAPTURE) {
                     BrowserFragment browserFragment = getBrowserFragment();
-                    switch (triggerType) {
-                        case TRIGGER_DIRECT:
-                            if (browserFragment == null || !browserFragment.isVisible()) {
-                                return;
-                            }
-                            showLoadingAndCapture(browserFragment);
-                            break;
-                        case TRIGGER_GRANTED:
-                        case TRIGGER_SETTING:
-                            if (browserFragment == null || !browserFragment.isVisible()) {
-                                return;
-                            }
-                            hasPendingScreenCaptureTask = true;
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown Trigger");
+                    if (browserFragment == null || !browserFragment.isVisible()) {
+                        return;
                     }
+                    showLoadingAndCapture(browserFragment);
+                }
+            }
+
+            private void doCaptureGranted() {
+                BrowserFragment browserFragment = getBrowserFragment();
+                if (browserFragment == null || !browserFragment.isVisible()) {
+                    return;
+                }
+                hasPendingScreenCaptureTask = true;
+            }
+
+            @Override
+            public void doActionGranted(String permission, int actionId, Parcelable params) {
+                if (actionId == ACTION_CAPTURE) {
+                    doCaptureGranted();
+                }
+            }
+
+            @Override
+            public void doActionSetting(String permission, int actionId, Parcelable params) {
+                if (actionId == ACTION_CAPTURE) {
+                    doCaptureGranted();
                 }
             }
 
