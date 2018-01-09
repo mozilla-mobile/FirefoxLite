@@ -20,7 +20,7 @@ buildscript {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "org.mozilla"
@@ -83,6 +83,7 @@ android {
             testCoverageEnabled true
         }
     }
+
     testOptions {
         unitTests.all {
             jacoco {
