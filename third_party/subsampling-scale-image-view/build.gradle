@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 }
 
 dependencies {
-    compile 'com.android.support:support-annotations:25.3.1'
+    compile "com.android.support:support-annotations:$rootProject.androidSupportVersion"
 }
