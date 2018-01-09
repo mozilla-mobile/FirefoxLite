@@ -1,5 +1,6 @@
 package org.mozilla.focus.permission;
 
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 
 import java.io.Serializable;
@@ -11,16 +12,36 @@ public interface PermissionHandle {
     int TRIGGER_SETTING = 2;
 
     /**
-     * List of action implementations that requires a permission that is used in this
-     * Activity/Fragment. Note that Activity does my be destroyed so be aware to test
+     * action implementations that requires a permission that is used in this
+     * Activity/Fragment. When permission is already granted, this is called.
+     *
+     * @param  permission the required permission
+     * @param  actionId the designated action
+     * @param  params the optional params that is used in this action
+     */
+    void doActionDirect(String permission, int actionId, Parcelable params);
+
+    /**
+     * action implementations that requires a permission that is used in this
+     * Activity/Fragment. When permission is not granted but requested, this is called.
+     *
+     * @param  permission the required permission
+     * @param  actionId the designated action
+     * @param  params the optional params that is used in this action
+     */
+    void doActionGranted(String permission, int actionId, Parcelable params);
+
+    /**
+     * action implementations that requires a permission that is used in this
+     * Activity/Fragment. When permission is not granted but user later tried to visit Settings,
+     * this is called. Note that Activity does my be destroyed so be aware to test
      * with ALWAYS_CLOSE_ACTIVITY enabled in developer options.
      *
      * @param  permission the required permission
      * @param  actionId the designated action
-     * @param  triggerType the source that triggers doAction
      * @param  params the optional params that is used in this action
      */
-    void doAction(String permission, int actionId, int triggerType, Serializable params);
+    void doActionSetting(String permission, int actionId, Parcelable params);
 
     /**
      * A mapping of used string that is used in the DoNotAskAgainDialog
