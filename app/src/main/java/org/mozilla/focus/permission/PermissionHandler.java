@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -41,6 +42,25 @@ public class PermissionHandler {
     }
 
     public void tryAction(final Activity activity, final String permission, final int actionId, final Parcelable params) {
+        tryAction(activity, permission, actionId, params, ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                IntentUtils.intentOpenSettings(activity, REQUEST_SETTINGS);
+            }
+        });
+    }
+
+    public void tryAction(final Fragment fragment, final String permission, final int actionId, final Parcelable params) {
+        final Activity activity = fragment.getActivity();
+        tryAction(activity, permission, actionId, params, fragment.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                IntentUtils.intentOpenSettings(fragment, REQUEST_SETTINGS);
+            }
+        });
+    }
+
+    private void tryAction(final Activity activity, final String permission, final int actionId, final Parcelable params, final boolean shouldShowRequestPermissionRationale, final DialogInterface.OnClickListener launchSetting) {
         if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(activity, permission)) {
             // We do have the permission.
             permissionHandle.doActionDirect(permission, actionId, params);
@@ -50,18 +70,14 @@ public class PermissionHandler {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 setAction(permission, actionId, params);
                 // First permission ask, Never ask me again or not able to grand the permission
-                if (!isFirstTimeAsking(activity, permission) && !ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (!isFirstTimeAsking(activity, permission) && !shouldShowRequestPermissionRationale) {
                     // TODO: 1/3/18
                     // This will also be shown when the device is not able to grant the permission
                     // We might want to deal with this at some point?
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setMessage(permissionHandle.getDoNotAskAgainDialogString(actionId))
                             .setCancelable(true)
-                            .setPositiveButton(R.string.permission_dialog_setting, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    IntentUtils.intentOpenSettings(activity, REQUEST_SETTINGS);
-                                }
-                            })
+                            .setPositiveButton(R.string.permission_dialog_setting, launchSetting)
                             .setNegativeButton(R.string.permission_dialog_not_now, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     clearAction();
@@ -146,6 +162,16 @@ public class PermissionHandler {
                     @Override
                     public void onClick(View view) {
                         IntentUtils.intentOpenSettings(activity, REQUEST_SETTINGS);
+                    }
+                });
+    }
+
+    public static Snackbar makeAskAgainSnackBar(final Fragment fragment, final View view, final int stringId) {
+        return Snackbar.make(view, stringId, Snackbar.LENGTH_LONG)
+                .setAction(R.string.permission_dialog_setting, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        IntentUtils.intentOpenSettings(fragment, REQUEST_SETTINGS);
                     }
                 });
     }
