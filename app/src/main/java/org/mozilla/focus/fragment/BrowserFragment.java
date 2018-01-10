@@ -23,9 +23,11 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -52,9 +54,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.menu.WebContextMenu;
+import org.mozilla.focus.permission.PermissionHandle;
+import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
@@ -83,13 +88,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public static final String FRAGMENT_TAG = "browser";
 
     private static int REQUEST_CODE_READ_STORAGE_PERMISSION = 100;
-    private static int REQUEST_CODE_WRITE_STORAGE_PERMISSION = 101;
     private static int REQUEST_CODE_LOCATION_PERMISSION = 102;
     private static int REQUEST_CODE_CHOOSE_FILE = 103;
 
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
-    private static final String RESTORE_KEY_DOWNLOAD = "download";
 
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
@@ -109,7 +112,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         return fragment;
     }
 
-    private Download pendingDownload;
     private View backgroundView;
     private TransitionDrawable backgroundTransition;
     private TextView urlView;
@@ -144,6 +146,104 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     private ScreenshotObserver screenshotObserver;
 
+    private PermissionHandler permissionHandler;
+    private static final int ACTION_DOWNLOAD = 0;
+
+    @Override
+    public void onViewStateRestored (Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            permissionHandler.onRestoreInstanceState(savedInstanceState);
+        }
+    }
+
+    @Override
+    public void onAttach (Context context) {
+        super.onAttach(context);
+            permissionHandler = new PermissionHandler(new PermissionHandle() {
+                @Override
+                public void doActionDirect(String permission, int actionId, Parcelable params) {
+                    switch (actionId) {
+                        case ACTION_DOWNLOAD:
+                            if (getContext() == null) {
+                                Log.w(FRAGMENT_TAG, "No context to use, abort callback onDownloadStart");
+                                return;
+                            }
+
+                            Download download = (Download) params;
+
+                            if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                // We do have the permission to write to the external storage. Proceed with the download.
+                                queueDownload(download);
+                            }
+                        break;
+                        default:
+                            throw new IllegalArgumentException("Unknown actionId");
+                    }
+                }
+
+                private void actionDownloadGranted(Parcelable parcelable) {
+                    Download download = (Download) parcelable;
+                    queueDownload(download);
+                }
+
+                @Override
+                public void doActionGranted(String permission, int actionId, Parcelable params) {
+                    switch (actionId) {
+                        case ACTION_DOWNLOAD:
+                            actionDownloadGranted(params);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown actionId");
+                    }
+                }
+
+                @Override
+                public void doActionSetting(String permission, int actionId, Parcelable params) {
+                    switch (actionId) {
+                        case ACTION_DOWNLOAD:
+                            actionDownloadGranted(params);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown actionId");
+                    }
+                }
+
+                @Override
+                public int getDoNotAskAgainDialogString(int actionId) {
+                    if (actionId == ACTION_DOWNLOAD ) {
+                        return R.string.permission_dialog_msg_storage;
+                    } else {
+                        throw new IllegalArgumentException("Unknown Action");
+                    }
+                }
+
+                @Override
+                public Snackbar makeAskAgainSnackBar(int actionId) {
+                    return PermissionHandler.makeAskAgainSnackBar(BrowserFragment.this, getActivity().findViewById(R.id.container), getAskAgainSnackBarString(actionId));
+                }
+
+                private int getAskAgainSnackBarString(int actionId) {
+                    if (actionId == ACTION_DOWNLOAD ) {
+                        return R.string.permission_toast_storage;
+                    } else {
+                        throw new IllegalArgumentException("Unknown Action");
+                    }
+                }
+
+                @Override
+                public void requestPermissions(int actionId) {
+                    switch (actionId) {
+                        case ACTION_DOWNLOAD:
+                            BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, actionId);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown Action");
+                    }
+                }
+            });
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -176,12 +276,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public View inflateLayout(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (savedInstanceState != null && savedInstanceState.containsKey(RESTORE_KEY_DOWNLOAD)) {
-            // If this activity was destroyed before we could start a download (e.g. because we were waiting for a permission)
-            // then restore the download object.
-            pendingDownload = savedInstanceState.getParcelable(RESTORE_KEY_DOWNLOAD);
-        }
-
         final View view = inflater.inflate(R.layout.fragment_browser, container, false);
 
         videoContainer = (ViewGroup) view.findViewById(R.id.video_container);
@@ -220,6 +314,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionHandler.onActivityResult(getActivity(), requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE_FILE) {
             final boolean done = (fileChooseAction == null) || fileChooseAction.onFileChose(resultCode, data);
             if (done) {
@@ -297,13 +392,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        permissionHandler.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
-
-        if (pendingDownload != null) {
-            // We were not able to start this download yet (waiting for a permission). Save this download
-            // so that we can start it once we get restored and receive the permission.
-            outState.putParcelable(RESTORE_KEY_DOWNLOAD, pendingDownload);
-        }
     }
 
     @Override
@@ -520,20 +610,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onDownloadStart(Download download) {
-                if (getContext() == null) {
-                    Log.w(FRAGMENT_TAG, "No context to use, abort callback onDownloadStart");
-                    return;
-                }
-
-                if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // We do have the permission to write to the external storage. Proceed with the download.
-                    queueDownload(download);
-                } else {
-                    // We do not have the permission to write to the external storage. Request the permission and start the
-                    // download from onRequestPermissionsResult().
-                    pendingDownload = download;
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_STORAGE_PERMISSION);
-                }
+                permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download);
             }
 
             @Override
@@ -623,14 +700,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_WRITE_STORAGE_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                queueDownload(pendingDownload);
-            }
-
-            pendingDownload = null;
-            return;
-        } else if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
+        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 geolocationCallback.invoke(geolocationOrigin, true, false);
             } else {
