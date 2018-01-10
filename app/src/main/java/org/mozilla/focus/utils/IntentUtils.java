@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
@@ -150,6 +151,14 @@ public class IntentUtils {
         Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
         intent.setData(uri);
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    public static void intentOpenSettings(Fragment fragment, int requestCode) {
+        Intent intent = new Intent();
+        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", fragment.getActivity().getPackageName(), null);
+        intent.setData(uri);
+        fragment.startActivityForResult(intent, requestCode);
     }
 
     public static void intentOpenFile(Context context, String fileUriStr, String mimeType) {
