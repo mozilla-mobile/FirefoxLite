@@ -68,6 +68,9 @@ public class PermissionHandler {
             // We do not have the permission to write to the external storage. Request the permission and start the
             // capture from onRequestPermissionsResult().
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (this.actionId != NO_ACTION) {
+                    return;
+                }
                 setAction(permission, actionId, params);
                 // First permission ask, Never ask me again or not able to grand the permission
                 if (!isFirstTimeAsking(activity, permission) && !shouldShowRequestPermissionRationale) {
