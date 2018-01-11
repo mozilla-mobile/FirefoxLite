@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
 
@@ -34,7 +35,7 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
         String url = (String) params[1];
         Bitmap content = (Bitmap) params[2];
         long timestamp = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault());
 
         try {
             final String path = saveBitmapToStorage(context, "Screenshot_" + sdf.format(new Date(timestamp)), content);
