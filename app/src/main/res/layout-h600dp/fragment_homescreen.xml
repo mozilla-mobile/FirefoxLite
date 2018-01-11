@@ -26,6 +26,7 @@
         android:layout_marginBottom="@dimen/home_padding_url_bar_to_title"/>
 
     <include layout="@layout/fragment_homescreen_item_recyclerview"
+        android:id="@+id/main_list"
         android:layout_width="296dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
