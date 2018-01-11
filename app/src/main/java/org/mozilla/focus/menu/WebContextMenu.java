@@ -20,6 +20,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ public class WebContextMenu {
     public static final String DEFAULT_DOWNLOAD_EXTENSION = ".bin";
 
     private static View createTitleView(final @NonNull Context context, final @NonNull String title) {
-        final TextView titleView = (TextView) LayoutInflater.from(context).inflate(R.layout.context_menu_title, null);
+        final TextView titleView = (TextView) LayoutInflater.from(context).inflate(R.layout.context_menu_title, (ViewGroup) null);
         titleView.setText(title);
         return titleView;
     }
@@ -59,7 +60,7 @@ public class WebContextMenu {
         }
         builder.setCustomTitle(titleView);
 
-        final View view = LayoutInflater.from(context).inflate(R.layout.context_menu, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.context_menu, (ViewGroup) null);
         builder.setView(view);
 
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {

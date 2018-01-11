@@ -1,5 +1,6 @@
 package org.mozilla.focus.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -31,7 +33,7 @@ public class DialogUtils {
             }
         });
 
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_rate_app_dialog, null);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_rate_app_dialog, (ViewGroup) null);
         dialogView.findViewById(R.id.dialog_rate_app_btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +97,7 @@ public class DialogUtils {
             }
         });
 
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, null);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, (ViewGroup) null);
         dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +148,7 @@ public class DialogUtils {
             }
         });
 
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_screenshot_onboarding_dialog, null);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_screenshot_onboarding_dialog, (ViewGroup) null);
 
         dialogView.findViewById(R.id.dialog_screenshot_on_boarding_btn_got_it).setOnClickListener(new View.OnClickListener() {
             @Override
