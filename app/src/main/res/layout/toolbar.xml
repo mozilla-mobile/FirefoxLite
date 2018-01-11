@@ -43,8 +43,6 @@
         android:ellipsize="none"
         android:gravity="center_vertical"
         android:lineSpacingExtra="2sp"
-        android:lines="1"
-        android:maxLines="1"
         android:requiresFadingEdge="horizontal"
         android:singleLine="true"
         android:textColor="#272727"
