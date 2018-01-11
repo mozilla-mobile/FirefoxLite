@@ -20,7 +20,7 @@
         <path
             android:fillColor="#272727"
             android:fillType="evenOdd"
-            android:pathData="M7.03 4.77v6.468a1 1 0 0 0 1.548 .836 l4.894-3.217a1 1 0 0 0
-.004-1.67l-4.894-3.25a1 1 0 0 0-1.553 .833" />
+            android:pathData="M7.03 4.77v6.468a1 1 0 0 0 1.548 0.836 l4.894-3.217a1 1 0 0 0
+0.004-1.67l-4.894-3.25a1 1 0 0 0-1.553 0.833" />
     </group>
 </vector>
