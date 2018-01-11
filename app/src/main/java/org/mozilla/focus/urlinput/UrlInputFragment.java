@@ -29,6 +29,7 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.InlineAutocompleteEditText;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Fragment for displaying he URL input controls.
@@ -241,11 +242,11 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             return;
         }
 
-        final String searchKey = urlView.getOriginalText().trim().toLowerCase();
+        final String searchKey = urlView.getOriginalText().trim().toLowerCase(Locale.getDefault());
         for (int i = 0; i < texts.size(); i++) {
             final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
             final String str = texts.get(i).toString();
-            final int idx = str.toLowerCase().indexOf(searchKey);
+            final int idx = str.toLowerCase(Locale.getDefault()).indexOf(searchKey);
             if (idx != -1) {
                 SpannableStringBuilder builder = new SpannableStringBuilder(texts.get(i));
                 builder.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),

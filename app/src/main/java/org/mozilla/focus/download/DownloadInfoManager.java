@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.mozilla.focus.provider.DownloadContract.Download;
 
@@ -354,7 +355,7 @@ public class DownloadInfoManager {
                 pojo.mediaUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI));
                 pojo.fileUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
                 String extension = MimeTypeMap.getFileExtensionFromUrl(URLEncoder.encode(pojo.fileUri, "UTF-8"));
-                pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
+                pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase(Locale.ROOT));
                 pojo.fileExtension = extension;
                 pojo.fileName = new File(Uri.parse(pojo.fileUri).getPath()).getName();
             } else {

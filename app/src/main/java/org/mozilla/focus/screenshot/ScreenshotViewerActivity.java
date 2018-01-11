@@ -300,7 +300,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 BitmapFactory.decodeFile(mScreenshot.getImageUri(), options);
                 int width = options.outWidth;
                 int height = options.outHeight;
-                mInfoItems.get(1).title = getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format("%dx%d", width, height));
+                mInfoItems.get(1).title = getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format(Locale.getDefault(), "%dx%d", width, height));
                 mInfoItems.get(2).title = getString(R.string.screenshot_image_viewer_dialog_info_size1, getStringSizeLengthFile(imgFile.length()));
             }
 
