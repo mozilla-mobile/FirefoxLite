@@ -9,6 +9,8 @@ import android.provider.MediaStore;
 
 import org.mozilla.focus.utils.ThreadUtils;
 
+import java.util.Locale;
+
 public class ScreenshotObserver {
     public Context context;
     // The ContentObserver updates when there is an insert but also when there is a delete,
@@ -120,7 +122,7 @@ public class ScreenshotObserver {
                         String title = cursor.getString(2);
                         long modifiedTime = cursor.getLong(3);
 
-                        if (lastModified < modifiedTime && album != null && album.toLowerCase().contains("screenshot")) {
+                        if (lastModified < modifiedTime && album != null && album.toLowerCase(Locale.ROOT).contains("screenshot")) {
                             if (listener != null) {
                                 listener.onScreenshotTaken(data, title);
                                 break;

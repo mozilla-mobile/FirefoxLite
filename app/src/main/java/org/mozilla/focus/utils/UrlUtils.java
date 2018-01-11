@@ -16,6 +16,7 @@ import org.mozilla.focus.search.SearchEngineManager;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class UrlUtils {
@@ -50,7 +51,7 @@ public class UrlUtils {
             return false;
         }
 
-        final String trimmedUrl = url.trim().toLowerCase();
+        final String trimmedUrl = url.trim().toLowerCase(Locale.getDefault());
         if (trimmedUrl.contains(" ")) {
             return false;
         }

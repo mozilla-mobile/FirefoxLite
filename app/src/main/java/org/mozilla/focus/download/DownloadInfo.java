@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import java.util.Calendar;
 import java.util.Formatter;
+import java.util.Locale;
 
 /**
  * Created by anlin on 27/07/2017.
@@ -137,7 +138,7 @@ public class DownloadInfo {
             }
             bytes = bytes / 1024;
         }
-        return String.format("%.1f", bytes) + dictionary[index];
+        return String.format(Locale.getDefault(), "%.1f", bytes) + dictionary[index];
     }
 
 }

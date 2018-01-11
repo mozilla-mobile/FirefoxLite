@@ -881,12 +881,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case FRAGMENT_STARTED:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.onFragmentStarted(((String) payload).toLowerCase());
+                    this.mediator.onFragmentStarted(((String) payload).toLowerCase(Locale.ROOT));
                 }
                 break;
             case FRAGMENT_STOPPED:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.onFragmentStopped(((String) payload).toLowerCase());
+                    this.mediator.onFragmentStopped(((String) payload).toLowerCase(Locale.ROOT));
                 }
                 break;
             case SHOW_SCREENSHOT_HINT:
