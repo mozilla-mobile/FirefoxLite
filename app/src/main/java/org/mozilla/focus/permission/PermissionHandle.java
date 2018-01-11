@@ -44,6 +44,16 @@ public interface PermissionHandle {
     void doActionSetting(String permission, int actionId, Parcelable params);
 
     /**
+     * error handling implementations that when a required permission that is used in this
+     * Activity/Fragment is requested but user chooses to not grant it.
+     *
+     * @param  permission the required permission
+     * @param  actionId the designated action
+     * @param  params the optional params that is used in this action
+     */
+    void doActionNoPermission(String permission, int actionId, Parcelable params);
+
+    /**
      * A mapping of used string that is used in the DoNotAskAgainDialog
      *
      * @param  actionId the designated action
