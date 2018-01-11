@@ -149,6 +149,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private PermissionHandler permissionHandler;
     private static final int ACTION_DOWNLOAD = 0;
     private static final int ACTION_PICK_FILE = 1;
+    private static final int ACTION_GEO_LOCATION = 2;
+
 
     @Override
     public void onViewStateRestored (Bundle savedInstanceState) {
@@ -181,6 +183,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         case ACTION_PICK_FILE:
                             fileChooseAction.startChooserActivity();
                             break;
+                        case ACTION_GEO_LOCATION:
+                            showGeolocationPermissionPrompt();
+                            break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
                     }
@@ -206,6 +211,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         case ACTION_PICK_FILE:
                             actionPickFileGranted();
                             break;
+                        case ACTION_GEO_LOCATION:
+                            showGeolocationPermissionPrompt();
+                            break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
                     }
@@ -219,6 +227,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                             break;
                         case ACTION_PICK_FILE:
                             actionPickFileGranted();
+                            break;
+                        case ACTION_GEO_LOCATION:
+                            showGeolocationPermissionPrompt();
                             break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
@@ -237,6 +248,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                                 fileChooseAction = null;
                             }
                             break;
+                        case ACTION_GEO_LOCATION:
+                            if (geolocationCallback != null) {
+                                rejectGeoRequest();
+                            }
+                            break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
                     }
@@ -246,6 +262,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 public int getDoNotAskAgainDialogString(int actionId) {
                     if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
                         return R.string.permission_dialog_msg_storage;
+                    } else if (actionId == ACTION_GEO_LOCATION) {
+                        return R.string.permission_dialog_msg_location;
                     } else {
                         throw new IllegalArgumentException("Unknown Action");
                     }
@@ -259,6 +277,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 private int getAskAgainSnackBarString(int actionId) {
                     if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
                         return R.string.permission_toast_storage;
+                    } else if (actionId == ACTION_GEO_LOCATION) {
+                        return R.string.permission_toast_location;
                     } else {
                         throw new IllegalArgumentException("Unknown Action");
                     }
@@ -272,6 +292,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                             break;
                         case ACTION_PICK_FILE:
                             BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, actionId);
+                            break;
+                        case ACTION_GEO_LOCATION:
+                            BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, actionId);
                             break;
                         default:
                             throw new IllegalArgumentException("Unknown Action");
@@ -653,8 +676,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
                 geolocationOrigin = origin;
                 geolocationCallback = callback;
-                //show geolocation permission prompt
-                showGeolocationPermissionPrompt(geolocationOrigin, geolocationCallback);
+                permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.ACCESS_FINE_LOCATION, ACTION_GEO_LOCATION, null);
             }
 
             @Override
@@ -737,17 +759,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                geolocationCallback.invoke(geolocationOrigin, true, false);
-            } else {
-                geolocationCallback.invoke(geolocationOrigin, false, false);
-            }
-            geolocationOrigin = "";
-            geolocationCallback = null;
-            return;
-        }
-
     }
 
     /**
@@ -842,30 +853,49 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     /*
      * show webview geolocation permission prompt
      */
-    private void showGeolocationPermissionPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+    private void showGeolocationPermissionPrompt() {
+        if (geolocationCallback == null) {
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(getString(R.string.geolocation_dialog_message, origin))
+        builder.setMessage(getString(R.string.geolocation_dialog_message, geolocationOrigin))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.geolocation_dialog_allow), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        //check location permission
-                        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                            callback.invoke(origin, true, false);
-                            geolocationOrigin = "";
-                            geolocationCallback = null;
-                        } else {
-                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
-                        }
+                        acceptGeoRequest();
                     }
-                }).setNegativeButton(getString(R.string.geolocation_dialog_block), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                callback.invoke(origin, false, false);
-                geolocationOrigin = "";
-                geolocationCallback = null;
-            }
-        });
+                })
+                .setNegativeButton(getString(R.string.geolocation_dialog_block), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        rejectGeoRequest();
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        rejectGeoRequest();
+                    }
+                });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void acceptGeoRequest() {
+        if (geolocationCallback == null) {
+            return;
+        }
+        geolocationCallback.invoke(geolocationOrigin, true, false);
+        geolocationOrigin = "";
+        geolocationCallback = null;
+    }
+
+    private void rejectGeoRequest() {
+        if (geolocationCallback == null) {
+            return;
+        }
+        geolocationCallback.invoke(geolocationOrigin, false, false);
+        geolocationOrigin = "";
+        geolocationCallback = null;
     }
 
     private boolean isStartedFromExternalApp() {
