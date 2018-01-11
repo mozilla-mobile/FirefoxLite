@@ -40,7 +40,7 @@
     <dimen name="home_padding_url_bar_to_top_sites">36dp</dimen>
 
     <dimen name="top_site_width">296dp</dimen>
-    <dimen name="top_site_font_size">11dp</dimen>
+    <dimen name="top_site_font_size" tools:ignore="SpUsage">11dp</dimen>
     <dimen name="top_site_textview_width">60dp</dimen>
 
     <dimen name="menu_layout_margin">14dp</dimen>

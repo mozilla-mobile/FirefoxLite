@@ -2,10 +2,10 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="menu_bottom_space">57dp</dimen>
     <dimen name="top_site_width">320dp</dimen>
-    <dimen name="top_site_font_size">12dp</dimen>
+    <dimen name="top_site_font_size" tools:ignore="SpUsage">12dp</dimen>
     <dimen name="top_site_textview_width">65dp</dimen>
 
     <dimen name="menu_layout_margin">20dp</dimen>
