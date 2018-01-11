@@ -80,13 +80,13 @@ public class PermissionHandler {
                             .setPositiveButton(R.string.permission_dialog_setting, launchSetting)
                             .setNegativeButton(R.string.permission_dialog_not_now, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    clearAction();
+                                    permissionNotGranted();
                                 }
                             })
                             .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                 @Override
                                 public void onCancel(DialogInterface dialog) {
-                                    clearAction();
+                                    permissionNotGranted();
                                 }
                             });
                     builder.show();
@@ -111,6 +111,11 @@ public class PermissionHandler {
         this.params = params;
     }
 
+    private void permissionNotGranted() {
+        permissionHandle.doActionNoPermission(permission, actionId, params);
+        clearAction();
+    }
+
     private void clearAction() {
         setAction(null, NO_ACTION, null);
     }
@@ -119,9 +124,11 @@ public class PermissionHandler {
         if (requestCode == REQUEST_SETTINGS && actionId != NO_ACTION) {
             if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(activity, permission)) {
                 permissionHandle.doActionSetting(permission, actionId, params);
+                clearAction();
+            } else {
+                permissionNotGranted();
             }
         }
-        clearAction();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -135,7 +142,7 @@ public class PermissionHandler {
                     @Override
                     public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
                         if (event != DISMISS_EVENT_ACTION) {
-                            clearAction();
+                            permissionNotGranted();
                         }
                     }
                 });

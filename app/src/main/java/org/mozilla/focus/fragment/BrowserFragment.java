@@ -210,6 +210,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 }
 
                 @Override
+                public void doActionNoPermission(String permission, int actionId, Parcelable params) {
+                    switch (actionId) {
+                        case ACTION_DOWNLOAD:
+                            // Do nothing
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown actionId");
+                    }
+                }
+
+                @Override
                 public int getDoNotAskAgainDialogString(int actionId) {
                     if (actionId == ACTION_DOWNLOAD ) {
                         return R.string.permission_dialog_msg_storage;

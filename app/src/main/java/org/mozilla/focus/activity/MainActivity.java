@@ -138,6 +138,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
 
             @Override
+            public void doActionNoPermission(String permission, int actionId, Parcelable params) {
+                // Do nothing
+            }
+
+            @Override
             public int getDoNotAskAgainDialogString(int actionId) {
                 if (actionId == ACTION_CAPTURE ) {
                     return R.string.permission_dialog_msg_storage;
