@@ -20,8 +20,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -39,6 +41,8 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
+import org.mozilla.focus.permission.PermissionHandle;
+import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
 import org.mozilla.focus.screenshot.model.Screenshot;
@@ -60,6 +64,13 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     public static final int REQ_CODE_VIEW_SCREENSHOT = 1000;
     public static final int RESULT_NOTIFY_SCREENSHOT_IS_DELETED = 100;
     public static final int RESULT_OPEN_URL = RESULT_NOTIFY_SCREENSHOT_IS_DELETED + 1;
+
+    private PermissionHandler permissionHandler;
+    private static final int ACTION_VIEW = 0;
+    private static final int ACTION_EDIT = ACTION_VIEW + 1;
+    private static final int ACTION_SHARE = ACTION_VIEW + 2;
+    private static final int ACTION_DELETE = ACTION_VIEW + 3;
+
     private static int REQUEST_CODE_VIEW_SCREENSHOT = 101;
     private static int REQUEST_CODE_EDIT_SCREENSHOT = 102;
     private static int REQUEST_CODE_SHARE_SCREENSHOT = 103;
@@ -87,6 +98,67 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        permissionHandler = new PermissionHandler(new PermissionHandle() {
+
+            private void viewScreenshot() {
+                setupView(true);
+                initScreenshotInfo(false);
+            }
+
+            private void doAction(int actionId) {
+                switch (actionId) {
+                    case ACTION_VIEW:
+                        viewScreenshot();
+                        break;
+                    case ACTION_EDIT:
+                        onEditClick();
+                        break;
+                    case ACTION_SHARE:
+                        onShareClick();
+                        break;
+                    case ACTION_DELETE:
+                        onDeleteClick();
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown Action");
+                }
+            }
+
+            @Override
+            public void doActionDirect(String permission, int actionId, Parcelable params) {
+                doAction(actionId);
+            }
+
+            @Override
+            public void doActionGranted(String permission, int actionId, Parcelable params) {
+                doAction(actionId);
+            }
+
+            @Override
+            public void doActionSetting(String permission, int actionId, Parcelable params) {
+                doAction(actionId);
+            }
+
+            @Override
+            public void doActionNoPermission(String permission, int actionId, Parcelable params) {
+                // Do nothing
+            }
+
+            @Override
+            public int getDoNotAskAgainDialogString(int actionId) {
+                return R.string.permission_dialog_msg_storage;
+            }
+
+            @Override
+            public Snackbar makeAskAgainSnackBar(int actionId) {
+                return PermissionHandler.makeAskAgainSnackBar(ScreenshotViewerActivity.this, findViewById(R.id.root), R.string.permission_toast_storage);
+            }
+
+            @Override
+            public void requestPermissions(int actionId) {
+                ActivityCompat.requestPermissions(ScreenshotViewerActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, actionId);
+            }
+        });
 
         setContentView(R.layout.activity_screenshot_viewer);
 
@@ -114,14 +186,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         initInfoItemArray();
         if (mScreenshot != null) {
             if (new File(mScreenshot.getImageUri()).exists()) {
-                if (checkPermissions()) {
-                    setupView(true);
-                    initScreenshotInfo(false);
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_VIEW_SCREENSHOT);
-                    }
-                }
+                permissionHandler.tryAction(this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_VIEW, null);
             } else {
                 setupView(false);
                 Toast.makeText(this, R.string.message_cannot_find_screenshot, Toast.LENGTH_LONG).show();
@@ -129,6 +194,23 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         } else {
             finish();
         }
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        permissionHandler.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        permissionHandler.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        permissionHandler.onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
@@ -150,35 +232,17 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 finish();
                 break;
             case R.id.screenshot_viewer_btn_edit:
-                if (checkPermissions()) {
-                    onEditClick();
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_EDIT_SCREENSHOT);
-                    }
-                }
+                permissionHandler.tryAction(this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_EDIT, null);
                 break;
             case R.id.screenshot_viewer_btn_share:
-                if (checkPermissions()) {
-                    onShareClick();
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_SHARE_SCREENSHOT);
-                    }
-                }
+                permissionHandler.tryAction(this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_SHARE, null);
                 break;
             case R.id.screenshot_viewer_btn_info:
                 TelemetryWrapper.showCaptureInfo();
                 onInfoClick();
                 break;
             case R.id.screenshot_viewer_btn_delete:
-                if (checkPermissions()) {
-                    onDeleteClick();
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_DELETE_SCREENSHOT);
-                    }
-                }
+                permissionHandler.tryAction(this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_DELETE, null);
                 break;
             default:
                 break;
@@ -200,24 +264,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_VIEW_SCREENSHOT) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setupView(true);
-                initScreenshotInfo(false);
-            }
-        } else if (requestCode == REQUEST_CODE_EDIT_SCREENSHOT) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                onEditClick();
-            }
-        } else if (requestCode == REQUEST_CODE_SHARE_SCREENSHOT) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                onShareClick();
-            }
-        } else if (requestCode == REQUEST_CODE_DELETE_SCREENSHOT) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                onDeleteClick();
-            }
-        }
+        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void setupView(boolean existed) {
