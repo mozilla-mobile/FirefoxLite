@@ -412,7 +412,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void setUpMenu() {
-        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
+        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, (ViewGroup) null);
         menu = new BottomSheetDialog(this, R.style.BottomSheetTheme);
         menu.setContentView(sheet);
         menu.setCanceledOnTouchOutside(true);
