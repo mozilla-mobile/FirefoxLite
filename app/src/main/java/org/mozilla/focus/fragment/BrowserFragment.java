@@ -148,6 +148,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     private PermissionHandler permissionHandler;
     private static final int ACTION_DOWNLOAD = 0;
+    private static final int ACTION_PICK_FILE = 1;
 
     @Override
     public void onViewStateRestored (Bundle savedInstanceState) {
@@ -177,6 +178,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                                 queueDownload(download);
                             }
                         break;
+                        case ACTION_PICK_FILE:
+                            fileChooseAction.startChooserActivity();
+                            break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
                     }
@@ -187,11 +191,20 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     queueDownload(download);
                 }
 
+                private void actionPickFileGranted() {
+                    if (fileChooseAction != null) {
+                        fileChooseAction.onPermissionGranted();
+                    }
+                }
+
                 @Override
                 public void doActionGranted(String permission, int actionId, Parcelable params) {
                     switch (actionId) {
                         case ACTION_DOWNLOAD:
                             actionDownloadGranted(params);
+                            break;
+                        case ACTION_PICK_FILE:
+                            actionPickFileGranted();
                             break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
@@ -204,6 +217,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         case ACTION_DOWNLOAD:
                             actionDownloadGranted(params);
                             break;
+                        case ACTION_PICK_FILE:
+                            actionPickFileGranted();
+                            break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
                     }
@@ -215,6 +231,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         case ACTION_DOWNLOAD:
                             // Do nothing
                             break;
+                        case ACTION_PICK_FILE:
+                            if (fileChooseAction != null) {
+                                fileChooseAction.cancel();
+                                fileChooseAction = null;
+                            }
+                            break;
                         default:
                             throw new IllegalArgumentException("Unknown actionId");
                     }
@@ -222,7 +244,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 @Override
                 public int getDoNotAskAgainDialogString(int actionId) {
-                    if (actionId == ACTION_DOWNLOAD ) {
+                    if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
                         return R.string.permission_dialog_msg_storage;
                     } else {
                         throw new IllegalArgumentException("Unknown Action");
@@ -235,7 +257,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 }
 
                 private int getAskAgainSnackBarString(int actionId) {
-                    if (actionId == ACTION_DOWNLOAD ) {
+                    if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
                         return R.string.permission_toast_storage;
                     } else {
                         throw new IllegalArgumentException("Unknown Action");
@@ -247,6 +269,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     switch (actionId) {
                         case ACTION_DOWNLOAD:
                             BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, actionId);
+                            break;
+                        case ACTION_PICK_FILE:
+                            BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, actionId);
                             break;
                         default:
                             throw new IllegalArgumentException("Unknown Action");
@@ -721,18 +746,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             geolocationOrigin = "";
             geolocationCallback = null;
             return;
-        } else if (requestCode == REQUEST_CODE_READ_STORAGE_PERMISSION) {
-            if (fileChooseAction != null) {
-                final boolean granted = (grantResults.length > 0)
-                        && (grantResults[0] == PackageManager.PERMISSION_GRANTED);
-                if (granted) {
-                    fileChooseAction.onPermissionGranted();
-                } else {
-                    fileChooseAction.cancel();
-                    fileChooseAction = null;
-                }
-            }
-
         }
 
     }
@@ -1062,15 +1075,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         public void performAction() {
-            // check permission before we pick any file.
-            final int permission = ContextCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (PackageManager.PERMISSION_GRANTED == permission) {
-                startChooserActivity();
-            } else {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_READ_STORAGE_PERMISSION);
-            }
+            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_PICK_FILE, null);
         }
 
         public void onPermissionGranted() {
