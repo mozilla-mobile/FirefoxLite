@@ -77,27 +77,25 @@ public class PermissionHandler {
                     // TODO: 1/3/18
                     // This will also be shown when the device is not able to grant the permission
                     // We might want to deal with this at some point?
-                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setMessage(permissionHandle.getDoNotAskAgainDialogString(actionId))
-                            .setCancelable(true)
-                            .setPositiveButton(R.string.permission_dialog_setting, launchSetting)
-                            .setNegativeButton(R.string.permission_dialog_not_now, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    permissionNotGranted();
-                                }
-                            })
-                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                @Override
-                                public void onCancel(DialogInterface dialog) {
-                                    permissionNotGranted();
-                                }
-                            });
-                    builder.show();
+                    showSnackBar();
                 } else {
                     permissionHandle.requestPermissions(actionId);
                 }
             }
         }
+    }
+
+    private void showSnackBar() {
+        Snackbar snackbar = permissionHandle.makeAskAgainSnackBar(actionId);
+        snackbar.addCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
+                if (event != DISMISS_EVENT_ACTION) {
+                    permissionNotGranted();
+                }
+            }
+        });
+        snackbar.show();
     }
 
     private boolean isFirstTimeAsking(Context context, String permission) {
@@ -140,16 +138,7 @@ public class PermissionHandler {
                 permissionHandle.doActionGranted(permission, actionId, params);
                 clearAction();
             } else {
-                Snackbar snackbar = permissionHandle.makeAskAgainSnackBar(actionId);
-                snackbar.addCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
-                        if (event != DISMISS_EVENT_ACTION) {
-                            permissionNotGranted();
-                        }
-                    }
-                });
-                snackbar.show();
+                showSnackBar();
             }
         }
     }
