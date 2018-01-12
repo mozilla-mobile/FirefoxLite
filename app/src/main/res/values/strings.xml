@@ -157,9 +157,9 @@
     <string name="first_run_page1_title">Thanks for choosing %1$s</string>
     <string name="first_run_page1_text">A browser tailor-made for Indonesia by Mozilla, the non-profit committed to a free and open web.</string>
     <string name="first_run_page2_title">Browse faster than ever</string>
-    <string name="first_run_page2_text">Use turbo mode to block tracking ads and trackers so you can browse at blazing speeds. If sites seem broken, just tap off the turbo mode switch in the menu.</string>
+    <string name="first_run_page2_text">Use turbo mode to block tracking ads so you can browse at blazing speeds. If sites seem broken, just tap off the turbo mode switch in the menu.</string>
     <string name="first_run_page3_title">Save data = Save money</string>
-    <string name="first_run_page3_text">Blocking tracking ads and online trackers not only speeds up browsing, it saves data. Save even more when you block images.</string>
+    <string name="first_run_page3_text">Blocking tracking ads not only speeds up browsing, it saves data. Save even more when you block images.</string>
     <string name="first_run_page4_title">Screenshot everything</string>
     <string name="first_run_page4_text">Take screenshots of entire web pages. View a screenshot offline (without using data) or tap it to revisit the web page.</string>
 
