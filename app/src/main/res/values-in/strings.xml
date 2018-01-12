@@ -76,7 +76,13 @@
   <string name="label_menu_block_image">Blokir gambar</string>
   <string name="label_menu_settings">Setelan</string>
   <string name="label_menu_exit">Keluar</string>
-  <string name="geolocation_dialog_message">%1$s ingin menggunakan lokasi peranti Anda.</string>
+  <string name="permission_dialog_setting">setelan</string>
+  <string name="permission_dialog_not_now">tidak sekarang</string>
+  <string name="permission_dialog_msg_location">Tidak ada izin. Izinkan Firefox Rocket mengakses lokasi Anda.</string>
+  <string name="permission_toast_location">Lokasi tidak tersedia. Izinkan Firefox Rocket mengakses lokasi Anda di setelan.</string>
+  <string name="permission_dialog_msg_storage">Tidak ada izin. Izinkan Firefox Rocket mengakses lokasi Anda.</string>
+  <string name="permission_toast_storage">Penyimpanan tidak tersedia. Izinkan Firefox Rocket menyimpan foto, media, dan berkas pada peranti dan kartu SD Anda di setelan.</string>
+  <string name="geolocation_dialog_message">%1$s \ningin mengakses lokasi Anda.</string>
   <string name="geolocation_dialog_allow">IZINKAN</string>
   <string name="geolocation_dialog_block">TOLAK</string>
   <string name="setting_dialog_clear_data">Hapus Data</string>
