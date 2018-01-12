@@ -65,22 +65,22 @@ public class PermissionHandler {
             // We do have the permission.
             permissionHandle.doActionDirect(permission, actionId, params);
         } else {
-            // We do not have the permission to write to the external storage. Request the permission and start the
-            // capture from onRequestPermissionsResult().
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (this.actionId != NO_ACTION) {
-                    return;
-                }
-                setAction(permission, actionId, params);
-                // First permission ask, Never ask me again or not able to grand the permission
-                if (!isFirstTimeAsking(activity, permission) && !shouldShowRequestPermissionRationale) {
-                    // TODO: 1/3/18
-                    // This will also be shown when the device is not able to grant the permission
-                    // We might want to deal with this at some point?
-                    showSnackBar();
-                } else {
-                    permissionHandle.requestPermissions(actionId);
-                }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                return;
+            }
+            // A permission action is in half-way.
+            if (this.actionId != NO_ACTION) {
+                return;
+            }
+            setAction(permission, actionId, params);
+            // First permission ask, Never ask me again or not able to grand the permission
+            if (!isFirstTimeAsking(activity, permission) && !shouldShowRequestPermissionRationale) {
+                // TODO: 1/3/18
+                // This will also be shown when the device is not able to grant the permission
+                // We might want to deal with this at some point?
+                showSnackBar();
+            } else {
+                permissionHandle.requestPermissions(actionId);
             }
         }
     }
