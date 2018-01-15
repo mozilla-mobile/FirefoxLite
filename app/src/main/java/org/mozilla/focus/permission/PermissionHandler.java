@@ -16,7 +16,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import org.mozilla.focus.R;
@@ -102,8 +101,13 @@ public class PermissionHandler {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         final String key = PERMISSION_PREFIX + permission;
         boolean exist = preferences.contains(key);
-        preferences.edit().putBoolean(key, true).apply();
         return !exist;
+    }
+
+    private void setPermissionAsked(Context context, String permission) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final String key = PERMISSION_PREFIX + permission;
+        preferences.edit().putBoolean(key, true).apply();
     }
 
     private void setAction(String permission, int actionId, Parcelable params) {
@@ -132,8 +136,9 @@ public class PermissionHandler {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(Context context, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == actionId) {
+            setPermissionAsked(context, permissions[0]);
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 permissionHandle.doActionGranted(permission, actionId, params);
                 clearAction();

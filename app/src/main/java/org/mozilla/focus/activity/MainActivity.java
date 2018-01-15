@@ -62,7 +62,6 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.io.File;
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -717,7 +716,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionHandler.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
     @Override
