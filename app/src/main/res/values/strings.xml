@@ -340,4 +340,12 @@
     %2$s will be replaced with a URL linking to the GPL
     %3$s will be replaced with a URL linking to the tracking protection wiki page (e.g. https://wiki.mozilla.org/Security/Tracking_protection#Lists) -->
     <string name="your_rights_content5"><![CDATA[%1$s also uses blocklists provided by Disconnect, Inc. as separate and independent works under the <a href="%2$s">GNU General Public License v3</a>, and available <a href="%3$s">here</a>.]]></string>
+
+    <!-- Title for survey notification posted after launching the app on the 3rd time
+    %1$s will be replaced with an emoticon -->
+    <string name="survey_notification_title">We need you! %1$s</string>
+    <string name="survey_notification_title_pre_v24">{{app_name}} Needs You! %1$s</string>
+
+    <!-- Subtitle for survey notification posted after launching the app on the 3rd time -->
+    <string name="survey_notification_description">Shape a better product for Indonesia</string>
 </resources>
