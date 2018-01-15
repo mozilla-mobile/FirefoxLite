@@ -29,7 +29,7 @@
   <string name="preference_mozilla_telemetry_summary">Mozilla hanya akan mengumpulkan data yang diperlukan saja untuk memperbaiki %1$s bagi Anda.</string>
   <string name="preference_learn_more">Pelajari lebih lanjut</string>
   <string name="preference_about">Tentang %1$s</string>
-  <string name="content_description_clear_input">Bersihkan masukan alamat</string>
+  <string name="content_description_clear_input">Bersihkan masukan</string>
   <string name="content_description_dismiss_input">Abaikan</string>
   <string name="content_description_lock">Sambungan aman</string>
   <string name="accessibility_announcement_loading">Memuat</string>
