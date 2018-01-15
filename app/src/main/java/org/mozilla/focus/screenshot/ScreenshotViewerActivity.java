@@ -17,7 +17,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -55,7 +54,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.PAN_LIMIT_INSIDE;
-import static com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP;
 
 public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener, QueryHandler.AsyncDeleteListener {
 
@@ -264,7 +262,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionHandler.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
     private void setupView(boolean existed) {

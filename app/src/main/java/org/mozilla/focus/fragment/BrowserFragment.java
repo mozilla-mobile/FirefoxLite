@@ -54,7 +54,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.utils.FileChooseAction;
@@ -538,7 +537,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionHandler.onRequestPermissionsResult(getContext(), requestCode, permissions, grantResults);
     }
 
     /**
