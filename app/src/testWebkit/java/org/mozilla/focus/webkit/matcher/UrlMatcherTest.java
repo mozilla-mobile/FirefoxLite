@@ -87,7 +87,7 @@ public class UrlMatcherTest {
 
                 categoryPrefMap.put(categoryName, categoryName);
             }
-            editor.commit();
+            editor.apply();
         }
 
         final UrlMatcher matcher = new UrlMatcher(RuntimeEnvironment.application, categoryPrefMap, categories, null);
@@ -124,7 +124,7 @@ public class UrlMatcherTest {
                     }
                 }
             }
-            editor.commit();
+            editor.apply();
 
             for (int currentCategory = 0; currentCategory < CAT_COUNT; currentCategory++) {
                 final int currentBit = 1 << currentCategory;
