@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.web;
 
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 import org.junit.Test;
@@ -17,7 +18,8 @@ import static org.junit.Assert.*;
 @RunWith(RobolectricTestRunner.class)
 public class WebViewProviderTest {
 
-    @Test public void testGetUABrowserString() {
+    @Test
+    public void testGetUABrowserString() {
         // Typical situation with a webview UA string from Android 5:
         String focusToken = "Focus/1.0";
         final String existing = "Mozilla/5.0 (Linux; Android 5.0.2; Android SDK built for x86_64 Build/LSY66K) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/37.0.0.0 Mobile Safari/537.36";
@@ -49,8 +51,17 @@ public class WebViewProviderTest {
 
     @Test
     public void buildUserAgentString() {
-        assertEquals("Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + "; rv) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 fakeappname/null",
-                WebViewProvider.buildUserAgentString(RuntimeEnvironment.application, "Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30", "fakeappname"));
+        String version = Build.VERSION.RELEASE;
+        final String appVersion;
+        try {
+            appVersion = RuntimeEnvironment.application.getPackageManager().getPackageInfo(RuntimeEnvironment.application.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // This should be impossible - we should always be able to get information about ourselves:
+            throw new IllegalStateException("Unable find package details for Rocket", e);
+        }
+
+        assertEquals("Mozilla/5.0 (Linux; Android " + version + "; rv) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 fakeappname/" + appVersion,
+                WebViewProvider.buildUserAgentString(RuntimeEnvironment.application, "Mozilla/5.0 (Linux; U; Android " + version + "; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30", "fakeappname"));
     }
 
 }

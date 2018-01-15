@@ -5,6 +5,8 @@
 
 package org.mozilla.focus.utils;
 
+import android.content.pm.PackageManager;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -30,12 +32,20 @@ public class SupportUtilsTest {
      */
     @Test
     public void getSumoURLForTopic() throws Exception {
+        final String appVersion;
+        try {
+            appVersion = RuntimeEnvironment.application.getPackageManager().getPackageInfo(RuntimeEnvironment.application.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // This should be impossible - we should always be able to get information about ourselves:
+            throw new IllegalStateException("Unable find package details for Rocket", e);
+        }
+
         Locale.setDefault(Locale.GERMANY);
-        assertEquals("https://support.mozilla.org/1/mobile/null/Android/de-DE/foobar",
+        assertEquals("https://support.mozilla.org/1/mobile/" + appVersion + "/Android/de-DE/foobar",
                 SupportUtils.getSumoURLForTopic(RuntimeEnvironment.application, "foobar"));
 
         Locale.setDefault(Locale.CANADA_FRENCH);
-        assertEquals("https://support.mozilla.org/1/mobile/null/Android/fr-CA/foobar",
+        assertEquals("https://support.mozilla.org/1/mobile/" + appVersion + "/Android/fr-CA/foobar",
                 SupportUtils.getSumoURLForTopic(RuntimeEnvironment.application, "foobar"));
     }
 
