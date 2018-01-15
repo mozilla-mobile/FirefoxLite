@@ -344,7 +344,6 @@
     <!-- Title for survey notification posted after launching the app on the 3rd time
     %1$s will be replaced with an emoticon -->
     <string name="survey_notification_title">We need you! %1$s</string>
-    <string name="survey_notification_title_pre_v24">{{app_name}} Needs You! %1$s</string>
 
     <!-- Subtitle for survey notification posted after launching the app on the 3rd time -->
     <string name="survey_notification_description">Shape a better product for Indonesia</string>
