@@ -41,10 +41,12 @@ public class Settings {
 
     private final SharedPreferences preferences;
     private final Resources resources;
+    private final EventHistory eventHistory;
 
     private Settings(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         resources = context.getResources();
+        eventHistory = new EventHistory(preferences);
     }
 
     public boolean shouldBlockImages() {
@@ -183,5 +185,50 @@ public class Settings {
 
     /* package */ String getPreferenceKey(int resourceId) {
         return resources.getString(resourceId);
+    }
+
+    public EventHistory getEventHistory() {
+        return eventHistory;
+    }
+
+    public static class Event {
+        public static final String AppCreate = "app_create";
+
+        public static final String ShowShareAppDialog = "show_share_app_dialog";
+        public static final String ShowRateAppDialog = "show_rate_app_dialog";
+
+        public static final String PostSurveyNotification = "post_survey_notification";
+    }
+
+    public static class EventHistory {
+        private SharedPreferences preferences;
+
+        private EventHistory(SharedPreferences preferences) {
+            this.preferences = preferences;
+        }
+
+        public int getCount(String eventName) {
+            String key = "pref_" + eventName + "_counter";
+            return preferences.getInt(key, 0);
+        }
+
+        public boolean didHappened(String eventName) {
+            String oldKey = "pref_did_" + eventName;
+            if (preferences.contains(oldKey)) {
+                return preferences.getBoolean(oldKey, false);
+            }
+
+            String newKey = "pref_" + eventName + "_counter";
+            return preferences.getInt(newKey, 0) > 0;
+        }
+
+        public void setHappened(String eventName) {
+            setCount(eventName, getCount(eventName) + 1);
+        }
+
+        private void setCount(String eventName, int value) {
+            String key = "pref_" + eventName + "_counter";
+            preferences.edit().putInt(key, value).apply();
+        }
     }
 }
