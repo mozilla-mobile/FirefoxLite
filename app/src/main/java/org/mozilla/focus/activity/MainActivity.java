@@ -6,6 +6,7 @@
 package org.mozilla.focus.activity;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +14,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -24,6 +29,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -40,6 +46,8 @@ import org.mozilla.focus.fragment.ListPanelDialog;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
+import org.mozilla.focus.notification.NotificationId;
+import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
@@ -62,7 +70,6 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.io.File;
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -197,18 +204,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         WebViewProvider.preload(this);
 
-        if (sIsNewCreated && (!Settings.getInstance(this).didShowRateAppDialog() || !Settings.getInstance(this).didShowShareAppDialog())) {
+        if (sIsNewCreated) {
             sIsNewCreated = false;
-            Settings.getInstance(this).increaseAppCreateCounter();
-            if (!Settings.getInstance(this).didShowRateAppDialog() && Settings.getInstance(this).getAppCreateCount() >= DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
-                DialogUtils.showRateAppDialog(this);
-                TelemetryWrapper.showFeedbackDialog();
-            } else if (!Settings.getInstance(this).didShowShareAppDialog() && Settings.getInstance(this).getAppCreateCount() >= DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP) {
-                DialogUtils.showShareAppDialog(this);
-                TelemetryWrapper.showPromoteShareDialog();
-            }
+            onNewCreate();
         }
-
     }
 
     @Override
@@ -346,6 +345,66 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         getWindow().getDecorView().setSystemUiVisibility(visibility);
 
         setUpMenu();
+    }
+
+    private void onNewCreate() {
+        Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
+
+        boolean didShowRateDialog = history.didHappened(Settings.Event.ShowRateAppDialog);
+        boolean didShowShareDialog = history.didHappened(Settings.Event.ShowShareAppDialog);
+        boolean didPostSurvey = history.didHappened(Settings.Event.PostSurveyNotification);
+
+        if (!didShowRateDialog || !didShowShareDialog || !didPostSurvey) {
+            history.setHappened(Settings.Event.AppCreate);
+        }
+        int appCreateCount = history.getCount(Settings.Event.AppCreate);
+
+        if (!didShowRateDialog && appCreateCount >= DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
+            DialogUtils.showRateAppDialog(this);
+            TelemetryWrapper.showFeedbackDialog();
+
+        } else if (!didShowShareDialog && appCreateCount >= DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP) {
+            DialogUtils.showShareAppDialog(this);
+            TelemetryWrapper.showPromoteShareDialog();
+
+        }
+
+        if (appCreateCount >= 3 && !didPostSurvey) {
+            postSurveyNotification();
+            history.setHappened(Settings.Event.PostSurveyNotification);
+        }
+    }
+
+    private void postSurveyNotification() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        // TODO: Update survey url
+        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=org.mozilla.rocket"));
+        intent.setClassName(this, MainActivity.class.getName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
+                .setContentText(getString(R.string.survey_notification_description))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText((getString(R.string.survey_notification_description))))
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(new long[0]);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            builder.setColor(Color.parseColor("#00c8d7"));
+
+        } else {
+            builder.setColor(Color.parseColor("#0060df"));
+            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+            builder.setShowWhen(false);
+        }
+
+        NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
     }
 
     private void setUpMenu() {
