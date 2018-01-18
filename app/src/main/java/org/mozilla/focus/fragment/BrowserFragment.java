@@ -119,6 +119,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     //GeoLocationPermission
     private String geolocationOrigin;
     private GeolocationPermissions.Callback geolocationCallback;
+    private AlertDialog geoDialog;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -464,6 +465,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (webView != null && systemVisibility != NONE) {
             webView.performExitFullScreen();
         }
+        dismissGeoDialog();
         super.onStop();
         notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
     }
@@ -636,6 +638,21 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (geolocationCallback == null) {
             return;
         }
+        if (geoDialog != null && geoDialog.isShowing()) {
+            return;
+        }
+        geoDialog = buildGeoPromptDialog();
+        geoDialog.show();
+    }
+
+    public void dismissGeoDialog() {
+        if (geoDialog != null) {
+            geoDialog.dismiss();
+            geoDialog = null;
+        }
+    }
+
+    private AlertDialog buildGeoPromptDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(getString(R.string.geolocation_dialog_message, geolocationOrigin))
                 .setCancelable(true)
@@ -655,8 +672,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         rejectGeoRequest();
                     }
                 });
-        AlertDialog alert = builder.create();
-        alert.show();
+        return builder.create();
     }
 
     private void acceptGeoRequest() {
