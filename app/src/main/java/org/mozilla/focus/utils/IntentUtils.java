@@ -188,11 +188,16 @@ public class IntentUtils {
     }
 
     public static void openUrl(Context context, String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        intent.setClassName(context, MainActivity.class.getName());
+        context.startActivity(createInternalOpenUrlIntent(context, url));
+    }
+
+    public static Intent createInternalOpenUrlIntent(Context context, String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url),
+                context,
+                MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
-        context.startActivity(intent);
+        return intent;
     }
 }
