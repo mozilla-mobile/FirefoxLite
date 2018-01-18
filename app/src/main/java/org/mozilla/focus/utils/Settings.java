@@ -207,7 +207,7 @@ public class Settings {
             return preferences.getInt(key, 0);
         }
 
-        public boolean didHappened(String eventName) {
+        public boolean contains(String eventName) {
             String oldKey = "pref_did_" + eventName;
             if (preferences.contains(oldKey)) {
                 return preferences.getBoolean(oldKey, false);
@@ -217,7 +217,7 @@ public class Settings {
             return preferences.getInt(newKey, 0) > 0;
         }
 
-        public void setHappened(String eventName) {
+        public void add(String eventName) {
             setCount(eventName, getCount(eventName) + 1);
         }
 

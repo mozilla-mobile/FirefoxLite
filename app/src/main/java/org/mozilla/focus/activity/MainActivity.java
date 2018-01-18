@@ -16,8 +16,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -31,6 +29,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.os.BuildCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -350,58 +349,53 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void onNewCreate() {
         Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
 
-        boolean didShowRateDialog = history.didHappened(Settings.Event.ShowRateAppDialog);
-        boolean didShowShareDialog = history.didHappened(Settings.Event.ShowShareAppDialog);
-        boolean didPostSurvey = history.didHappened(Settings.Event.PostSurveyNotification);
+        boolean didShowRateDialog = history.contains(Settings.Event.ShowRateAppDialog);
+        boolean didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog);
+        boolean didPostSurvey = history.contains(Settings.Event.PostSurveyNotification);
 
         if (!didShowRateDialog || !didShowShareDialog || !didPostSurvey) {
-            history.setHappened(Settings.Event.AppCreate);
+            history.add(Settings.Event.AppCreate);
         }
         int appCreateCount = history.getCount(Settings.Event.AppCreate);
 
         if (!didShowRateDialog && appCreateCount >= DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
             DialogUtils.showRateAppDialog(this);
             TelemetryWrapper.showFeedbackDialog();
-
         } else if (!didShowShareDialog && appCreateCount >= DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP) {
             DialogUtils.showShareAppDialog(this);
             TelemetryWrapper.showPromoteShareDialog();
-
         }
 
         if (appCreateCount >= 3 && !didPostSurvey) {
             postSurveyNotification();
-            history.setHappened(Settings.Event.PostSurveyNotification);
+            history.add(Settings.Event.PostSurveyNotification);
         }
     }
 
     private void postSurveyNotification() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        // TODO: Update survey url
-        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=org.mozilla.rocket"));
-        intent.setClassName(this, MainActivity.class.getName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        // TODO: Update url
+        Intent intent = IntentUtils.createInternalOpenUrlIntent(this,
+                "https://play.google.com/store/apps/details?id=org.mozilla.rocket");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
                 .setContentText(getString(R.string.survey_notification_description))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText((getString(R.string.survey_notification_description))))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(
+                        getString(R.string.survey_notification_description)))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[0]);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            builder.setColor(Color.parseColor("#00c8d7"));
-
+        if (BuildCompat.isAtLeastN()) {
+            builder.setColor(Color.parseColor("#0060df"))
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                    .setShowWhen(false);
         } else {
-            builder.setColor(Color.parseColor("#0060df"));
-            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-            builder.setShowWhen(false);
+            builder.setColor(Color.parseColor("#00c8d7"));
         }
 
         NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
