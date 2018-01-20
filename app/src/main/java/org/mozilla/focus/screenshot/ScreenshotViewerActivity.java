@@ -69,11 +69,11 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     private static final int ACTION_SHARE = ACTION_VIEW + 2;
     private static final int ACTION_DELETE = ACTION_VIEW + 3;
 
-    private static int REQUEST_CODE_VIEW_SCREENSHOT = 101;
-    private static int REQUEST_CODE_EDIT_SCREENSHOT = 102;
-    private static int REQUEST_CODE_SHARE_SCREENSHOT = 103;
-    private static int REQUEST_CODE_DELETE_SCREENSHOT = 104;
-    private static long DELAY_MILLIS_TO_SHOW_PROGRESS_BAR = 700;
+    private static final int REQUEST_CODE_VIEW_SCREENSHOT = 101;
+    private static final int REQUEST_CODE_EDIT_SCREENSHOT = 102;
+    private static final int REQUEST_CODE_SHARE_SCREENSHOT = 103;
+    private static final int REQUEST_CODE_DELETE_SCREENSHOT = 104;
+    private static final long DELAY_MILLIS_TO_SHOW_PROGRESS_BAR = 700;
 
     public static final void goScreenshotViewerActivityOnResult(Activity activity, Screenshot item) {
         Intent intent = new Intent(activity, ScreenshotViewerActivity.class);
