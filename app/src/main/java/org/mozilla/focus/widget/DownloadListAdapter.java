@@ -375,7 +375,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public class DownloadViewHolder extends RecyclerView.ViewHolder {
+    public static class DownloadViewHolder extends RecyclerView.ViewHolder {
 
         @SuppressFBWarnings("URF_UNREAD_FIELD")
         ImageView icon;
@@ -393,7 +393,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public class DownloadEmptyViewHolder extends RecyclerView.ViewHolder {
+    public static class DownloadEmptyViewHolder extends RecyclerView.ViewHolder {
 
         @SuppressFBWarnings("URF_UNREAD_FIELD")
         ImageView imag;
@@ -404,7 +404,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public class OnOpeningViewHolder extends RecyclerView.ViewHolder {
+    public static class OnOpeningViewHolder extends RecyclerView.ViewHolder {
 
         public OnOpeningViewHolder(View itemView) {
             super(itemView);
