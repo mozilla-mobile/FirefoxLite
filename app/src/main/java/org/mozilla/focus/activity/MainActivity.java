@@ -65,7 +65,7 @@ import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.web.BrowsingSession;
-import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
@@ -820,7 +820,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        if (name.equals(IWebView.class.getName())) {
+        if (name.equals(TabView.class.getName())) {
             View v = WebViewProvider.create(this, attrs);
             return v;
         }

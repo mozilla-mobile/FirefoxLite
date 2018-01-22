@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.tabs.TabView;
 
 public class InfoFragment extends WebFragment {
     private ProgressBar progressView;
@@ -60,8 +60,8 @@ public class InfoFragment extends WebFragment {
     }
 
     @Override
-    public IWebView.Callback createCallback() {
-        return new IWebView.Callback() {
+    public TabView.Callback createCallback() {
+        return new TabView.Callback() {
             @Override
             public void onPageStarted(final String url) {
                 progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading));
@@ -87,9 +87,9 @@ public class InfoFragment extends WebFragment {
 
             @Override
             public boolean handleExternalUrl(final String url) {
-                final IWebView webView = getWebView();
+                final TabView tabView = getTabView();
 
-                return webView != null && IntentUtils.handleExternalUri(getContext(), webView, url);
+                return tabView != null && IntentUtils.handleExternalUri(getContext(), tabView, url);
             }
 
 
@@ -98,7 +98,7 @@ public class InfoFragment extends WebFragment {
             }
 
             @Override
-            public void onLongPress(IWebView.HitTarget hitTarget) {
+            public void onLongPress(TabView.HitTarget hitTarget) {
             }
 
             @Override
@@ -106,7 +106,7 @@ public class InfoFragment extends WebFragment {
             }
 
             @Override
-            public void onEnterFullScreen(@NonNull IWebView.FullscreenCallback callback, @Nullable View view) {
+            public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback, @Nullable View view) {
             }
 
             @Override
@@ -142,14 +142,14 @@ public class InfoFragment extends WebFragment {
     }
 
     public void goBack() {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            webView.goBack();
+        final TabView tabView = getTabView();
+        if (tabView != null) {
+            tabView.goBack();
         }
     }
 
     public boolean canGoBack() {
-        final IWebView webView = getWebView();
-        return webView != null && webView.canGoBack();
+        final TabView tabView = getTabView();
+        return tabView != null && tabView.canGoBack();
     }
 }
