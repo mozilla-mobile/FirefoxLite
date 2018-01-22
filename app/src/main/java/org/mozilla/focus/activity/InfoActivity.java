@@ -19,7 +19,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.InfoFragment;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.web.WebViewProvider;
 
 /**
@@ -80,10 +80,10 @@ public class InfoActivity extends AppCompatActivity {
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-        if (name.equals(IWebView.class.getName())) {
+        if (name.equals(TabView.class.getName())) {
             final View view = WebViewProvider.create(this, attrs);
 
-            final IWebView webView = (IWebView) view;
+            final TabView webView = (TabView) view;
             webView.setBlockingEnabled(false);
 
             return view;

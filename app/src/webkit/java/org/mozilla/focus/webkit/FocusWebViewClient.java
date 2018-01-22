@@ -18,7 +18,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.tabs.TabView;
 
 /**
  * WebViewClient layer that handles browser specific WebViewClient functionality, such as error pages
@@ -27,14 +27,14 @@ import org.mozilla.focus.web.IWebView;
 /* package */ class FocusWebViewClient extends TrackingProtectionWebViewClient {
     private final static String ERROR_PROTOCOL = "error:";
 
-    private IWebView.Callback callback;
+    private TabView.Callback callback;
     private boolean errorReceived;
 
     public FocusWebViewClient(Context context) {
         super(context);
     }
 
-    public void setCallback(IWebView.Callback callback) {
+    public void setCallback(TabView.Callback callback) {
         this.callback = callback;
     }
 
