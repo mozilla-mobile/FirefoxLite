@@ -19,12 +19,14 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.web.WebViewProvider;
 
 public class InfoFragment extends WebFragment {
     private ProgressBar progressView;
+    private ViewGroup webViewSlot;
     private View webView;
 
     private static final String ARGUMENT_URL = "url";
@@ -45,7 +47,9 @@ public class InfoFragment extends WebFragment {
                               @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_info, container, false);
         progressView = (ProgressBar) view.findViewById(R.id.progress);
-        webView = view.findViewById(R.id.webview);
+        webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
+        webView = ((TabView) WebViewProvider.create(getContext(), null)).getView();
+        webViewSlot.addView(webView);
 
         final String url = getInitialUrl();
         if (!(url.startsWith("http://") || url.startsWith("https://"))) {
