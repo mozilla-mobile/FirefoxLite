@@ -347,4 +347,6 @@
 
     <!-- Subtitle for survey notification posted after launching the app on the 3rd time -->
     <string name="survey_notification_description">Shape a better product for Indonesia</string>
+
+    <string name="survey_notification_url" translatable="false">https://qsurvey.mozilla.com/s3/Rocket-Existing-User-Survey&amp;sglocale=%1$s</string>
 </resources>
