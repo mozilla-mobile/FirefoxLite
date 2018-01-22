@@ -374,7 +374,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void postSurveyNotification() {
-        // TODO: Update url
         Intent intent = IntentUtils.createInternalOpenUrlIntent(this,
                 getSurveyUrl());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
