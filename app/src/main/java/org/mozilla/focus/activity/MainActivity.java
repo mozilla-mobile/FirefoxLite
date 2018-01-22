@@ -15,7 +15,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -28,6 +27,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.os.BuildCompat;
 import android.text.TextUtils;
@@ -54,6 +54,7 @@ import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
+import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FileUtils;
@@ -359,15 +360,18 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         int appCreateCount = history.getCount(Settings.Event.AppCreate);
 
-        if (!didShowRateDialog && appCreateCount >= DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP) {
+        if (!didShowRateDialog &&
+                appCreateCount >= AppConfigWrapper.getRateDialogLaunchTimeThreshold()) {
             DialogUtils.showRateAppDialog(this);
             TelemetryWrapper.showFeedbackDialog();
-        } else if (!didShowShareDialog && appCreateCount >= DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP) {
+        } else if (!didShowShareDialog && appCreateCount >=
+                AppConfigWrapper.getShareDialogLaunchTimeThreshold()) {
             DialogUtils.showShareAppDialog(this);
             TelemetryWrapper.showPromoteShareDialog();
         }
 
-        if (appCreateCount >= 3 && !didPostSurvey) {
+        if (appCreateCount >= AppConfigWrapper.getSurveyNotificationLaunchTimeThreshold() &&
+                !didPostSurvey) {
             postSurveyNotification();
             history.add(Settings.Event.PostSurveyNotification);
         }
@@ -385,17 +389,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 .setContentText(getString(R.string.survey_notification_description))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
                         getString(R.string.survey_notification_description)))
+                .setColor(ContextCompat.getColor(this, R.color.surveyNotificationAccent))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[0]);
 
         if (BuildCompat.isAtLeastN()) {
-            builder.setColor(Color.parseColor("#0060df"))
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                     .setShowWhen(false);
-        } else {
-            builder.setColor(Color.parseColor("#00c8d7"));
         }
 
         NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
