@@ -140,4 +140,6 @@ public interface TabView {
     void onSaveInstanceState(Bundle outState);
 
     void insertBrowsingHistory();
+
+    View getView();
 }
