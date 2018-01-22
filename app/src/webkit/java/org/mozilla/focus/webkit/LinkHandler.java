@@ -12,19 +12,19 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebView;
 
-import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.tabs.TabView;
 
 /* package */ class LinkHandler implements View.OnLongClickListener {
     private final WebView webView;
     private
     @Nullable
-    IWebView.Callback callback = null;
+    TabView.Callback callback = null;
 
     public LinkHandler(final WebView webView) {
         this.webView = webView;
     }
 
-    public void setCallback(final @Nullable IWebView.Callback callback) {
+    public void setCallback(final @Nullable TabView.Callback callback) {
         this.callback = callback;
     }
 
@@ -39,12 +39,12 @@ import org.mozilla.focus.web.IWebView;
         switch (hitTestResult.getType()) {
             case WebView.HitTestResult.SRC_ANCHOR_TYPE:
                 final String linkURL = hitTestResult.getExtra();
-                callback.onLongPress(new IWebView.HitTarget(true, linkURL, false, null));
+                callback.onLongPress(new TabView.HitTarget(true, linkURL, false, null));
                 return true;
 
             case WebView.HitTestResult.IMAGE_TYPE:
                 final String imageURL = hitTestResult.getExtra();
-                callback.onLongPress(new IWebView.HitTarget(false, null, true, imageURL));
+                callback.onLongPress(new TabView.HitTarget(false, null, true, imageURL));
                 return true;
 
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
@@ -64,7 +64,7 @@ import org.mozilla.focus.web.IWebView;
                         }
 
                         if (callback != null) {
-                            callback.onLongPress(new IWebView.HitTarget(true, url, true, src));
+                            callback.onLongPress(new TabView.HitTarget(true, url, true, src));
                         }
                     }
                 });

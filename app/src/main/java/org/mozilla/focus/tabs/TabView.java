@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.web;
+package org.mozilla.focus.tabs;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,7 +15,12 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-public interface IWebView {
+import org.mozilla.focus.web.Download;
+
+/**
+ * An interface for views which display web pages.
+ */
+public interface TabView {
     class HitTarget {
         public final boolean isLink;
         public final String linkURL;
@@ -63,7 +67,7 @@ public interface IWebView {
          * <p>
          * The callback needs to be invoked to request the page to exit full screen mode.
          * <p>
-         * Some IWebView implementations may pass a custom View which contains the web contents in
+         * Some TabView implementations may pass a custom View which contains the web contents in
          * full screen mode.
          */
         void onEnterFullScreen(@NonNull FullscreenCallback callback, @Nullable View view);

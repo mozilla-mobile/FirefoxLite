@@ -56,22 +56,22 @@ import android.widget.Toast;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
-import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
+import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DrawableUtils;
+import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -127,7 +127,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
      */
     private View browserContainer;
 
-    private IWebView.FullscreenCallback fullscreenCallback;
+    private TabView.FullscreenCallback fullscreenCallback;
 
     private boolean isLoading = false;
 
@@ -457,9 +457,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public void onStop() {
-        IWebView webView = getWebView();
-        if (webView != null && systemVisibility != NONE) {
-            webView.performExitFullScreen();
+        TabView tabView = getTabView();
+        if (tabView != null && systemVisibility != NONE) {
+            tabView.performExitFullScreen();
         }
         dismissGeoDialog();
         super.onStop();
@@ -493,8 +493,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     @Override
-    public IWebView.Callback createCallback() {
-        return new WebviewCallback();
+    public TabView.Callback createCallback() {
+        return new TabViewCallback();
     }
 
     /**
@@ -727,17 +727,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public void setBlockingEnabled(boolean enabled) {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            webView.setBlockingEnabled(enabled);
+        final TabView tabView = getTabView();
+        if (tabView != null) {
+            tabView.setBlockingEnabled(enabled);
         }
     }
 
     // This is not used currently cause we remove most erasing entry point. We'll need this later.
     public void erase() {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            webView.cleanup();
+        final TabView tabView = getTabView();
+        if (tabView != null) {
+            tabView.cleanup();
         }
     }
 
@@ -796,8 +796,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public boolean canGoForward() {
-        final IWebView webView = getWebView();
-        return webView != null && webView.canGoForward();
+        final TabView tabView = getTabView();
+        return tabView != null && tabView.canGoForward();
     }
 
     public boolean isLoading() {
@@ -805,41 +805,41 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public boolean canGoBack() {
-        final IWebView webView = getWebView();
-        return webView != null && webView.canGoBack();
+        final TabView tabView = getTabView();
+        return tabView != null && tabView.canGoBack();
     }
 
     public void goBack() {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            WebBackForwardList webBackForwardList = ((WebView) webView).copyBackForwardList();
+        final TabView tabView = getTabView();
+        if (tabView != null) {
+            WebBackForwardList webBackForwardList = ((WebView) tabView).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
             updateURL(item.getUrl());
-            webView.goBack();
+            tabView.goBack();
         }
     }
 
     public void goForward() {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            WebBackForwardList webBackForwardList = ((WebView) webView).copyBackForwardList();
+        final TabView tabView = getTabView();
+        if (tabView != null) {
+            WebBackForwardList webBackForwardList = ((WebView) tabView).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
             updateURL(item.getUrl());
-            webView.goForward();
+            tabView.goForward();
         }
     }
 
     public void reload() {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            webView.reload();
+        final TabView tabView = getTabView();
+        if (tabView != null) {
+            tabView.reload();
         }
     }
 
     public void stop() {
-        final IWebView webView = getWebView();
-        if (webView != null) {
-            webView.stopLoading();
+        final TabView tabView = getTabView();
+        if (tabView != null) {
+            tabView.stopLoading();
         }
     }
 
@@ -848,18 +848,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     public boolean capturePage(@NonNull ScreenshotCallback callback) {
-        final IWebView iwebView = getWebView();
+        final TabView tabView = getTabView();
         // Failed to get Webview
-        if (iwebView == null || !(iwebView instanceof WebView)) {
+        if (tabView == null || !(tabView instanceof WebView)) {
             return false;
         }
-        WebView webView = (WebView) iwebView;
+        WebView webView = (WebView) tabView;
         Bitmap content = getPageBitmap(webView);
         // Failed to capture
         if (content == null) {
             return false;
         }
-        callback.onCaptureComplete(iwebView.getTitle(), iwebView.getUrl(), content);
+        callback.onCaptureComplete(tabView.getTitle(), tabView.getUrl(), content);
         return true;
     }
 
@@ -894,7 +894,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         notifyParent(FragmentListener.TYPE.SHOW_SCREENSHOT_HINT, null);
     }
 
-    class WebviewCallback implements IWebView.Callback {
+    class TabViewCallback implements TabView.Callback {
 
         String failingUrl;
         // Some url may have two onPageFinished for the same url. filter them out to avoid
@@ -917,9 +917,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         private void updateUrlFromWebView() {
-            final IWebView webView = getWebView();
-            if (webView != null) {
-                final String viewURL = webView.getUrl();
+            final TabView tabView = getTabView();
+            if (tabView != null) {
+                final String viewURL = tabView.getUrl();
                 onURLChanged(viewURL);
             }
         }
@@ -940,8 +940,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 siteIdentity.setImageLevel(SITE_LOCK);
             }
             String urlToBeInserted = getUrl();
-            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getWebView() != null) {
-                getWebView().insertBrowsingHistory();
+            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && getTabView() != null) {
+                getTabView().insertBrowsingHistory();
                 lastInsertedUrl = urlToBeInserted;
             }
         }
@@ -953,9 +953,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         @Override
         public void onProgress(int progress) {
-            final IWebView webView = getWebView();
-            if (webView != null) {
-                final String currentUrl = webView.getUrl();
+            final TabView tabView = getTabView();
+            if (tabView != null) {
+                final String currentUrl = tabView.getUrl();
                 final boolean progressIsForLoadedUrl = TextUtils.equals(currentUrl, loadedUrl);
                 // Some new url may give 100 directly and then start from 0 again. don't treat
                 // as loaded for these urls;
@@ -973,17 +973,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         @Override
         public boolean handleExternalUrl(final String url) {
-            final IWebView webView = getWebView();
+            final TabView tabView = getTabView();
             if (getContext() == null) {
                 Log.w(FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
                 return false;
             }
 
-            return webView != null && IntentUtils.handleExternalUri(getContext(), webView, url);
+            return tabView != null && IntentUtils.handleExternalUri(getContext(), tabView, url);
         }
 
         @Override
-        public void onLongPress(final IWebView.HitTarget hitTarget) {
+        public void onLongPress(final TabView.HitTarget hitTarget) {
             if (getActivity() == null) {
                 Log.w(FRAGMENT_TAG, "No context to use, abort callback onLongPress");
                 return;
@@ -993,7 +993,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         @Override
-        public void onEnterFullScreen(@NonNull final IWebView.FullscreenCallback callback, @Nullable View view) {
+        public void onEnterFullScreen(@NonNull final TabView.FullscreenCallback callback, @Nullable View view) {
             fullscreenCallback = callback;
 
             if (view != null) {
@@ -1037,9 +1037,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            IWebView webView = getWebView();
-            if (webView instanceof WebView) {
-                ((WebView) webView).clearFocus();
+            TabView tabView = getTabView();
+            if (tabView instanceof WebView) {
+                ((WebView) tabView).clearFocus();
             }
         }
 
