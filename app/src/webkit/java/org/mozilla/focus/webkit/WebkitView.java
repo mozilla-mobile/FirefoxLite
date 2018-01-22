@@ -315,6 +315,11 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
                 });
     }
 
+    @Override
+    public View getView() {
+        return this;
+    }
+
     private static class CallbackWrapper implements TabView.Callback {
         final TabView.Callback callback;
 
