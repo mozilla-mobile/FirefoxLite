@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.mozilla.focus.tabs.TabView
-        android:id="@+id/webview"
+    <FrameLayout
+        android:id="@+id/webview_slot"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <ProgressBar
         android:id="@+id/progress"

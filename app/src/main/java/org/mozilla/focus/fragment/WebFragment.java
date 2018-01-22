@@ -19,6 +19,7 @@ import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.focus.web.WebViewProvider;
 
 /**
  * Base implementation for fragments that use an TabView instance. Based on Android's WebViewFragment.
@@ -27,6 +28,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
 
     private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
 
+    private ViewGroup webViewSlot;
     private TabView tabView;
     // webView is not available after onDestroyView, but we need webView reference in callback
     // onSaveInstanceState. However the callback might be invoked at anytime before onDestroy
@@ -57,7 +59,10 @@ public abstract class WebFragment extends LocaleAwareFragment {
     public final View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflateLayout(inflater, container, savedInstanceState);
 
-        tabView = (TabView) view.findViewById(R.id.webview);
+        webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
+        tabView = (TabView) WebViewProvider.create(getContext(), null);
+
+        webViewSlot.addView(tabView.getView());
         isWebViewAvailable = true;
         tabView.setCallback(createCallback());
 
