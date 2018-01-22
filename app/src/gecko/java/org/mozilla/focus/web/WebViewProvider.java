@@ -26,7 +26,7 @@ import org.mozilla.gecko.GeckoView;
 import org.mozilla.gecko.GeckoViewSettings;
 
 /**
- * WebViewProvider implementation for creating a Gecko based implementation of IWebView.
+ * WebViewProvider implementation for creating a Gecko based implementation of TabView.
  */
 public class WebViewProvider {
     public static void preload(final Context context) {

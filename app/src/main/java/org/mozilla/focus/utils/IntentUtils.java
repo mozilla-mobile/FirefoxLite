@@ -21,7 +21,7 @@ import android.support.v7.app.AlertDialog;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.tabs.TabView;
 
 import java.io.File;
 import java.net.URI;
@@ -45,7 +45,7 @@ public class IntentUtils {
      * want to use an external app to open the uri. Ultimately the OS can spy on anything we're
      * doing in the app, so this isn't an actual "bug".
      */
-    public static boolean handleExternalUri(final Context context, final IWebView webView, final String uri) {
+    public static boolean handleExternalUri(final Context context, final TabView webView, final String uri) {
         // This code is largely based on Fennec's ExternalIntentDuringPrivateBrowsingPromptFragment.java
         final Intent intent;
         try {
@@ -75,7 +75,7 @@ public class IntentUtils {
         }
     }
 
-    private static boolean handleUnsupportedLink(final Context context, final IWebView webView, final Intent intent) {
+    private static boolean handleUnsupportedLink(final Context context, final TabView webView, final Intent intent) {
         final String fallbackUrl = intent.getStringExtra(EXTRA_BROWSER_FALLBACK_URL);
         if (fallbackUrl != null) {
             webView.loadUrl(fallbackUrl);
