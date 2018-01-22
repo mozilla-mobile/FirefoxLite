@@ -5,21 +5,13 @@
 
 package org.mozilla.focus.tabs;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.webkit.GeolocationPermissions;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
-import org.mozilla.focus.web.Download;
+import org.mozilla.focus.web.DownloadCallback;
 
-/**
- * An interface for views which display web pages.
- */
 public interface TabView {
     class HitTarget {
         public final boolean isLink;
@@ -44,56 +36,6 @@ public interface TabView {
         }
     }
 
-    interface Callback {
-        void onPageStarted(String url);
-
-        void onPageFinished(boolean isSecure);
-
-        void onProgress(int progress);
-
-        void onURLChanged(final String url);
-
-        /**
-         * Return true if the URL was handled, false if we should continue loading the current URL.
-         */
-        boolean handleExternalUrl(String url);
-
-        void onDownloadStart(Download download);
-
-        void onLongPress(final HitTarget hitTarget);
-
-        /**
-         * Notify the host application that the current page has entered full screen mode.
-         * <p>
-         * The callback needs to be invoked to request the page to exit full screen mode.
-         * <p>
-         * Some TabView implementations may pass a custom View which contains the web contents in
-         * full screen mode.
-         */
-        void onEnterFullScreen(@NonNull FullscreenCallback callback, @Nullable View view);
-
-        /**
-         * Notify the host application that the current page has exited full screen mode.
-         * <p>
-         * If a View was passed when the application entered full screen mode then this view must
-         * be hidden now.
-         */
-        void onExitFullScreen();
-
-        void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback);
-
-        /**
-         * @see WebChromeClient
-         */
-        boolean onShowFileChooser(WebView webView,
-                                  ValueCallback<Uri[]> filePathCallback,
-                                  WebChromeClient.FileChooserParams fileChooserParams);
-
-        void updateFailingUrl(String url, boolean updateFromError);
-
-        void onReceivedTitle(WebView view, String title);
-    }
-
     interface FullscreenCallback {
         void fullScreenExited();
     }
@@ -107,7 +49,11 @@ public interface TabView {
 
     void performExitFullScreen();
 
-    void setCallback(Callback callback);
+    void setViewClient(@Nullable TabViewClient viewClient);
+
+    void setChromeClient(@Nullable TabChromeClient chromeClient);
+
+    void setDownloadCallback(DownloadCallback callback);
 
     void onPause();
 
@@ -135,11 +81,15 @@ public interface TabView {
 
     boolean canGoBack();
 
-    void restoreWebviewState(Bundle savedInstanceState);
+    void restoreViewState(Bundle inState);
 
-    void onSaveInstanceState(Bundle outState);
+    void saveViewState(Bundle outState);
 
     void insertBrowsingHistory();
 
     View getView();
+
+    void buildDrawingCache(boolean autoScale);
+
+    Bitmap getDrawingCache(boolean autoScale);
 }
