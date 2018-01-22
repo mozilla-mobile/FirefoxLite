@@ -71,6 +71,7 @@ import org.mozilla.focus.widget.FragmentListener;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -375,7 +376,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void postSurveyNotification() {
         // TODO: Update url
         Intent intent = IntentUtils.createInternalOpenUrlIntent(this,
-                "https://play.google.com/store/apps/details?id=org.mozilla.rocket");
+                getSurveyUrl());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
@@ -399,6 +400,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
+    }
+
+    private String getSurveyUrl() {
+        String currentLang = Locale.getDefault().getLanguage();
+        String indonesiaLang = new Locale("id").getLanguage();
+
+        return getString(R.string.survey_notification_url,
+                currentLang.equalsIgnoreCase(indonesiaLang) ? "id" : "en");
     }
 
     private void setUpMenu() {
