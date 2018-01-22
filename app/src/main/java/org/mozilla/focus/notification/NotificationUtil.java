@@ -6,12 +6,8 @@
 package org.mozilla.focus.notification;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 
 public class NotificationUtil {
 
