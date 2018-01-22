@@ -150,7 +150,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
 
     @Override
-    public void onViewStateRestored (Bundle savedInstanceState) {
+    public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
             permissionHandler.onRestoreInstanceState(savedInstanceState);
@@ -158,146 +158,146 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
 
     @Override
-    public void onAttach (Context context) {
+    public void onAttach(Context context) {
         super.onAttach(context);
-            permissionHandler = new PermissionHandler(new PermissionHandle() {
-                @Override
-                public void doActionDirect(String permission, int actionId, Parcelable params) {
-                    switch (actionId) {
-                        case ACTION_DOWNLOAD:
-                            if (getContext() == null) {
-                                Log.w(FRAGMENT_TAG, "No context to use, abort callback onDownloadStart");
-                                return;
-                            }
+        permissionHandler = new PermissionHandler(new PermissionHandle() {
+            @Override
+            public void doActionDirect(String permission, int actionId, Parcelable params) {
+                switch (actionId) {
+                    case ACTION_DOWNLOAD:
+                        if (getContext() == null) {
+                            Log.w(FRAGMENT_TAG, "No context to use, abort callback onDownloadStart");
+                            return;
+                        }
 
-                            Download download = (Download) params;
+                        Download download = (Download) params;
 
-                            if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                // We do have the permission to write to the external storage. Proceed with the download.
-                                queueDownload(download);
-                            }
+                        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            // We do have the permission to write to the external storage. Proceed with the download.
+                            queueDownload(download);
+                        }
                         break;
-                        case ACTION_PICK_FILE:
-                            fileChooseAction.startChooserActivity();
-                            break;
-                        case ACTION_GEO_LOCATION:
-                            showGeolocationPermissionPrompt();
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown actionId");
-                    }
-                }
-
-                private void actionDownloadGranted(Parcelable parcelable) {
-                    Download download = (Download) parcelable;
-                    queueDownload(download);
-                }
-
-                private void actionPickFileGranted() {
-                    if (fileChooseAction != null) {
+                    case ACTION_PICK_FILE:
                         fileChooseAction.startChooserActivity();
-                    }
+                        break;
+                    case ACTION_GEO_LOCATION:
+                        showGeolocationPermissionPrompt();
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown actionId");
                 }
+            }
 
-                @Override
-                public void doActionGranted(String permission, int actionId, Parcelable params) {
-                    switch (actionId) {
-                        case ACTION_DOWNLOAD:
-                            actionDownloadGranted(params);
-                            break;
-                        case ACTION_PICK_FILE:
-                            actionPickFileGranted();
-                            break;
-                        case ACTION_GEO_LOCATION:
-                            showGeolocationPermissionPrompt();
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown actionId");
-                    }
+            private void actionDownloadGranted(Parcelable parcelable) {
+                Download download = (Download) parcelable;
+                queueDownload(download);
+            }
+
+            private void actionPickFileGranted() {
+                if (fileChooseAction != null) {
+                    fileChooseAction.startChooserActivity();
                 }
+            }
 
-                @Override
-                public void doActionSetting(String permission, int actionId, Parcelable params) {
-                    switch (actionId) {
-                        case ACTION_DOWNLOAD:
-                            actionDownloadGranted(params);
-                            break;
-                        case ACTION_PICK_FILE:
-                            actionPickFileGranted();
-                            break;
-                        case ACTION_GEO_LOCATION:
-                            showGeolocationPermissionPrompt();
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown actionId");
-                    }
+            @Override
+            public void doActionGranted(String permission, int actionId, Parcelable params) {
+                switch (actionId) {
+                    case ACTION_DOWNLOAD:
+                        actionDownloadGranted(params);
+                        break;
+                    case ACTION_PICK_FILE:
+                        actionPickFileGranted();
+                        break;
+                    case ACTION_GEO_LOCATION:
+                        showGeolocationPermissionPrompt();
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown actionId");
                 }
+            }
 
-                @Override
-                public void doActionNoPermission(String permission, int actionId, Parcelable params) {
-                    switch (actionId) {
-                        case ACTION_DOWNLOAD:
-                            // Do nothing
-                            break;
-                        case ACTION_PICK_FILE:
-                            if (fileChooseAction != null) {
-                                fileChooseAction.cancel();
-                                fileChooseAction = null;
-                            }
-                            break;
-                        case ACTION_GEO_LOCATION:
-                            if (geolocationCallback != null) {
-                                rejectGeoRequest();
-                            }
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown actionId");
-                    }
+            @Override
+            public void doActionSetting(String permission, int actionId, Parcelable params) {
+                switch (actionId) {
+                    case ACTION_DOWNLOAD:
+                        actionDownloadGranted(params);
+                        break;
+                    case ACTION_PICK_FILE:
+                        actionPickFileGranted();
+                        break;
+                    case ACTION_GEO_LOCATION:
+                        showGeolocationPermissionPrompt();
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown actionId");
                 }
+            }
 
-                @Override
-                public int getDoNotAskAgainDialogString(int actionId) {
-                    if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
-                        return R.string.permission_dialog_msg_storage;
-                    } else if (actionId == ACTION_GEO_LOCATION) {
-                        return R.string.permission_dialog_msg_location;
-                    } else {
+            @Override
+            public void doActionNoPermission(String permission, int actionId, Parcelable params) {
+                switch (actionId) {
+                    case ACTION_DOWNLOAD:
+                        // Do nothing
+                        break;
+                    case ACTION_PICK_FILE:
+                        if (fileChooseAction != null) {
+                            fileChooseAction.cancel();
+                            fileChooseAction = null;
+                        }
+                        break;
+                    case ACTION_GEO_LOCATION:
+                        if (geolocationCallback != null) {
+                            rejectGeoRequest();
+                        }
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown actionId");
+                }
+            }
+
+            @Override
+            public int getDoNotAskAgainDialogString(int actionId) {
+                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
+                    return R.string.permission_dialog_msg_storage;
+                } else if (actionId == ACTION_GEO_LOCATION) {
+                    return R.string.permission_dialog_msg_location;
+                } else {
+                    throw new IllegalArgumentException("Unknown Action");
+                }
+            }
+
+            @Override
+            public Snackbar makeAskAgainSnackBar(int actionId) {
+                return PermissionHandler.makeAskAgainSnackBar(BrowserFragment.this, getActivity().findViewById(R.id.container), getAskAgainSnackBarString(actionId));
+            }
+
+            private int getAskAgainSnackBarString(int actionId) {
+                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
+                    return R.string.permission_toast_storage;
+                } else if (actionId == ACTION_GEO_LOCATION) {
+                    return R.string.permission_toast_location;
+                } else {
+                    throw new IllegalArgumentException("Unknown Action");
+                }
+            }
+
+            @Override
+            public void requestPermissions(int actionId) {
+                switch (actionId) {
+                    case ACTION_DOWNLOAD:
+                        BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, actionId);
+                        break;
+                    case ACTION_PICK_FILE:
+                        BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, actionId);
+                        break;
+                    case ACTION_GEO_LOCATION:
+                        BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, actionId);
+                        break;
+                    default:
                         throw new IllegalArgumentException("Unknown Action");
-                    }
                 }
-
-                @Override
-                public Snackbar makeAskAgainSnackBar(int actionId) {
-                    return PermissionHandler.makeAskAgainSnackBar(BrowserFragment.this, getActivity().findViewById(R.id.container), getAskAgainSnackBarString(actionId));
-                }
-
-                private int getAskAgainSnackBarString(int actionId) {
-                    if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
-                        return R.string.permission_toast_storage;
-                    } else if (actionId == ACTION_GEO_LOCATION) {
-                        return R.string.permission_toast_location;
-                    } else {
-                        throw new IllegalArgumentException("Unknown Action");
-                    }
-                }
-
-                @Override
-                public void requestPermissions(int actionId) {
-                    switch (actionId) {
-                        case ACTION_DOWNLOAD:
-                            BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, actionId);
-                            break;
-                        case ACTION_PICK_FILE:
-                            BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, actionId);
-                            break;
-                        case ACTION_GEO_LOCATION:
-                            BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, actionId);
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown Action");
-                    }
-                }
-            });
+            }
+        });
     }
 
     @Override
