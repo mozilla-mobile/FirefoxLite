@@ -137,6 +137,9 @@ public class PermissionHandler {
     }
 
     public void onRequestPermissionsResult(Context context, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (permissions == null || permissions.length == 0 || grantResults == null || grantResults.length == 0) {
+            return;
+        }
         if (requestCode == actionId) {
             setPermissionAsked(context, permissions[0]);
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
