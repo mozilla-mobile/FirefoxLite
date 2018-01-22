@@ -65,7 +65,6 @@ import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.web.BrowsingSession;
-import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
@@ -817,16 +816,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, browserFragment.getUrl());
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)));
-    }
-
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        if (name.equals(TabView.class.getName())) {
-            View v = WebViewProvider.create(this, attrs);
-            return v;
-        }
-
-        return super.onCreateView(parent, name, context, attrs);
     }
 
     @Override
