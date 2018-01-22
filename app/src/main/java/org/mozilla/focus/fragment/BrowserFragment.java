@@ -61,7 +61,11 @@ import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
+import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabsChromeListener;
+import org.mozilla.focus.tabs.TabsSession;
+import org.mozilla.focus.tabs.TabsViewListener;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.ColorUtils;
@@ -74,7 +78,7 @@ import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -99,6 +103,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private final static int NONE = -1;
     private int systemVisibility = NONE;
 
+    private DownloadCallback downloadCallback = new DownloadCallback();
+
     public static BrowserFragment create(@NonNull String url) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
@@ -112,13 +118,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
 
     private ViewGroup webViewSlot;
-    private TabView tabView;
-    // webView is not available after onDestroyView, but we need webView reference in callback
-    // onSaveInstanceState. However the callback might be invoked at anytime before onDestroy
-    // therefore webView-available-state is decided by this flag but not webView reference itself.
-    private boolean isWebViewAvailable;
-
-    private Bundle webViewState;
+    private TabsSession tabsSession;
 
     /* If fragment exists but no WebView to use, store url here if there is any loadUrl requirement */
     protected String pendingUrl = null;
@@ -317,7 +317,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onPause() {
-        tabView.onPause();
+        tabsSession.pause();
         super.onPause();
         if (screenshotObserver != null) {
             screenshotObserver.stop();
@@ -334,7 +334,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onResume() {
-        tabView.onResume();
+        tabsSession.resume();
         super.onResume();
         if (Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
             screenshotObserver = new ScreenshotObserver(getActivity(), this);
@@ -352,6 +352,15 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         urlView.setText(UrlUtils.stripUserInfo(url));
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            // save the link until we really have view to open
+            pendingUrl = getInitialUrl();
+        }
     }
 
     @Override
@@ -390,11 +399,15 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
-        tabView = (TabView) WebViewProvider.create(getContext(), null);
 
-        webViewSlot.addView(tabView.getView());
-        isWebViewAvailable = true;
-        tabView.setCallback(new TabViewCallback());
+        // TODO: in subsequent implementation, we should let Activity hold TabsSession instance
+        if (tabsSession == null) {
+            tabsSession = new TabsSession(getActivity());
+            final TabsContentListener listener = new TabsContentListener();
+            tabsSession.setTabsViewListener(listener);
+            tabsSession.setTabsChromeListener(listener);
+            tabsSession.setDownloadCallback(downloadCallback);
+        }
 
         return view;
     }
@@ -405,20 +418,16 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         // restore WebView state
         if (savedInstanceState == null) {
-            // in two cases we won't have saved-state: fragment just created, or fragment re-attached.
-            // if fragment was detached before, we will have webViewState.
-            // per difference case, we should load initial url or pending url(if any).
-            if (webViewState != null) {
-                tabView.restoreWebviewState(webViewState);
-            }
-
-            final String url = (webViewState == null) ? getInitialUrl() : pendingUrl;
-            if (!TextUtils.isEmpty(url)) {
-                loadUrl(url);
+            if (!TextUtils.isEmpty(pendingUrl)) {
+                loadUrl(pendingUrl);
+                pendingUrl = null;
             }
         } else {
             // Fragment was destroyed
-            tabView.restoreWebviewState(savedInstanceState);
+            // FIXME: Obviously, only restore current tab is not enough
+            if (tabsSession.getCurrentTab() != null) {
+                tabsSession.getCurrentTab().getTabView().restoreViewState(savedInstanceState);
+            }
         }
     }
 
@@ -503,7 +512,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     @Override
     public void onSaveInstanceState(Bundle outState) {
         permissionHandler.onSaveInstanceState(outState);
-        tabView.onSaveInstanceState(outState);
+        if (tabsSession.getCurrentTab() != null) {
+            tabsSession.getCurrentTab().getTabView().saveViewState(outState);
+        }
 
         // Workaround for #1107 TransactionTooLargeException
         // since Android N, system throws a exception rather than just a warning(then drop bundle)
@@ -528,8 +539,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onStop() {
-        if (tabView != null && systemVisibility != NONE) {
-            tabView.performExitFullScreen();
+        if (systemVisibility != NONE) {
+            final Tab tab = tabsSession.getCurrentTab();
+            if (tab != null && tab.getTabView() != null) {
+                tab.getTabView().performExitFullScreen();
+            }
         }
         dismissGeoDialog();
         super.onStop();
@@ -538,29 +552,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onDestroy() {
-        // only remove tabView in onDestroy since onSaveInstanceState access tabView
-        // and the callback might be invoked before onDestroyView
-        if (tabView != null) {
-            tabView.destroy();
-            tabView = null;
-        }
-
+        tabsSession.destroy();
         super.onDestroy();
     }
 
     @Override
     public void onDestroyView() {
-        isWebViewAvailable = false;
-
-        if (tabView != null) {
-            tabView.setCallback(null);
-
-            // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
-            // called. In this case we must store tabView-state manually, to retain browsing history.
-            webViewState = new Bundle();
-            tabView.onSaveInstanceState(webViewState);
-        }
-
         super.onDestroyView();
     }
 
@@ -820,34 +817,19 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public void setBlockingEnabled(boolean enabled) {
-        if (tabView != null) {
-            tabView.setBlockingEnabled(enabled);
-        }
-    }
-
-    // This is not used currently cause we remove most erasing entry point. We'll need this later.
-    public void erase() {
-        if (tabView != null) {
-            tabView.cleanup();
+        final List<Tab> tabs = tabsSession.getTabs();
+        for (final Tab tab : tabs) {
+            tab.setBlockingEnabled(enabled);
         }
     }
 
     public void loadUrl(@NonNull final String url) {
         updateURL(url);
-
-        if (tabView != null) {
-            if (UrlUtils.isUrl(url)) {
-                this.pendingUrl = null; // clear pending url
-
-                // in case of any unexpected path to here, to normalize URL in beta/release build
-                final String target = AppConstants.isDevBuild() ? url : UrlUtils.normalize(url);
-                tabView.loadUrl(target);
-            } else if (AppConstants.isDevBuild()) {
-                // throw exception to highlight this issue, except release build.
-                throw new RuntimeException("trying to open a invalid url: " + url);
-            }
-        } else {
-            this.pendingUrl = url;
+        if (UrlUtils.isUrl(url)) {
+            tabsSession.addTab(url);
+        } else if (AppConstants.isDevBuild()) {
+            // throw exception to highlight this issue, except release build.
+            throw new RuntimeException("trying to open a invalid url: " + url);
         }
     }
 
@@ -900,7 +882,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public boolean canGoForward() {
-        return tabView != null && tabView.canGoForward();
+        return tabsSession.getCurrentTab() != null && tabsSession.getCurrentTab().getTabView().canGoForward();
     }
 
     public boolean isLoading() {
@@ -908,36 +890,40 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public boolean canGoBack() {
-        return tabView != null && tabView.canGoBack();
+        return tabsSession.getCurrentTab() != null && tabsSession.getCurrentTab().getTabView().canGoBack();
     }
 
     public void goBack() {
-        if (tabView != null) {
-            WebBackForwardList webBackForwardList = ((WebView) tabView).copyBackForwardList();
+        final TabView current = tabsSession.getCurrentTab().getTabView();
+        if (current != null) {
+            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
             updateURL(item.getUrl());
-            tabView.goBack();
+            current.goBack();
         }
     }
 
     public void goForward() {
-        if (tabView != null) {
-            WebBackForwardList webBackForwardList = ((WebView) tabView).copyBackForwardList();
+        final TabView current = tabsSession.getCurrentTab().getTabView();
+        if (current != null) {
+            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
             updateURL(item.getUrl());
-            tabView.goForward();
+            current.goForward();
         }
     }
 
     public void reload() {
-        if (tabView != null) {
-            tabView.reload();
+        final TabView current = tabsSession.getCurrentTab().getTabView();
+        if (current != null) {
+            current.reload();
         }
     }
 
     public void stop() {
-        if (tabView != null) {
-            tabView.stopLoading();
+        final TabView current = tabsSession.getCurrentTab().getTabView();
+        if (current != null) {
+            current.stopLoading();
         }
     }
 
@@ -946,17 +932,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public boolean capturePage(@NonNull ScreenshotCallback callback) {
-        // Failed to get Webview
-        if (tabView == null || !(tabView instanceof WebView)) {
+        final TabView current = tabsSession.getCurrentTab().getTabView();
+        // Failed to get WebView
+        if (current == null || !(current instanceof WebView)) {
             return false;
         }
-        WebView webView = (WebView) tabView;
+        WebView webView = (WebView) current;
         Bitmap content = getPageBitmap(webView);
         // Failed to capture
         if (content == null) {
             return false;
         }
-        callback.onCaptureComplete(tabView.getTitle(), tabView.getUrl(), content);
+        callback.onCaptureComplete(current.getTitle(), current.getUrl(), content);
         return true;
     }
 
@@ -991,7 +978,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         notifyParent(FragmentListener.TYPE.SHOW_SCREENSHOT_HINT, null);
     }
 
-    class TabViewCallback implements TabView.Callback {
+    class TabsContentListener implements TabsViewListener, TabsChromeListener {
 
         String failingUrl;
         // Some url may have two onPageFinished for the same url. filter them out to avoid
@@ -1002,7 +989,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private String loadedUrl = null;
 
         @Override
-        public void onPageStarted(final String url) {
+        public void onTabHoist(@NonNull final Tab tab) {
+            if (webViewSlot.getChildCount() > 0) {
+                webViewSlot.removeAllViews();
+            }
+
+            // ensure it does not have attach to parent earlier.
+            tab.detach();
+            webViewSlot.addView(tab.getTabView().getView());
+        }
+
+        @Override
+        public void onTabStarted(@NonNull Tab tab) {
             lastInsertedUrl = null;
             loadedUrl = null;
 
@@ -1013,18 +1011,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             backgroundTransition.resetTransition();
         }
 
-        private void updateUrlFromWebView() {
-            if (tabView != null) {
-                final String viewURL = tabView.getUrl();
-                onURLChanged(viewURL);
+        private void updateUrlFromWebView(@NonNull Tab source) {
+            if (tabsSession.getCurrentTab() != null) {
+                final String viewURL = tabsSession.getCurrentTab().getUrl();
+                onURLChanged(source, viewURL);
             }
         }
 
         @Override
-        public void onPageFinished(boolean isSecure) {
-            // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
+        public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
+            // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
             // URL is always correct _except_ for error pages
-            updateUrlFromWebView();
+            updateUrlFromWebView(tab);
 
             updateIsLoading(false);
 
@@ -1036,22 +1034,25 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 siteIdentity.setImageLevel(SITE_LOCK);
             }
             String urlToBeInserted = getUrl();
-            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl) && tabView != null) {
-                tabView.insertBrowsingHistory();
+            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl)) {
+                tabsSession.getCurrentTab().getTabView().insertBrowsingHistory();
                 lastInsertedUrl = urlToBeInserted;
             }
         }
 
         @Override
-        public void onURLChanged(final String url) {
+        public void onTabCountChanged(int count) {
+        }
+
+        @Override
+        public void onURLChanged(@NonNull Tab tab, final String url) {
             updateURL(url);
         }
 
         @Override
-        public void onProgress(int progress) {
-            final TabView tabView = getTabView();
-            if (tabView != null) {
-                final String currentUrl = tabView.getUrl();
+        public void onProgressChanged(@NonNull Tab tab, int progress) {
+            if (tabsSession.getCurrentTab() != null) {
+                final String currentUrl = tabsSession.getCurrentTab().getUrl();
                 final boolean progressIsForLoadedUrl = TextUtils.equals(currentUrl, loadedUrl);
                 // Some new url may give 100 directly and then start from 0 again. don't treat
                 // as loaded for these urls;
@@ -1074,31 +1075,33 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 return false;
             }
 
-            return tabView != null && IntentUtils.handleExternalUri(getContext(), tabView, url);
+            return tabsSession.getCurrentTab() != null
+                    && IntentUtils.handleExternalUri(getContext(), tabsSession.getCurrentTab().getTabView(), url);
         }
 
         @Override
-        public void onLongPress(final TabView.HitTarget hitTarget) {
+        public void onLongPress(@NonNull Tab tab, final TabView.HitTarget hitTarget) {
             if (getActivity() == null) {
                 Log.w(FRAGMENT_TAG, "No context to use, abort callback onLongPress");
                 return;
             }
 
-            webContextMenu = WebContextMenu.show(getActivity(), this, hitTarget);
+            webContextMenu = WebContextMenu.show(getActivity(), downloadCallback, hitTarget);
         }
 
         @Override
-        public void onEnterFullScreen(@NonNull final TabView.FullscreenCallback callback, @Nullable View view) {
+        public void onEnterFullScreen(@NonNull Tab tab,
+                                      @NonNull final TabView.FullscreenCallback callback) {
             fullscreenCallback = callback;
 
-            if (view != null) {
+            if (tab.getTabView() != null) {
                 // Hide browser UI and web content
                 browserContainer.setVisibility(View.INVISIBLE);
 
                 // Add view to video container and make it visible
                 final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                videoContainer.addView(view, params);
+                videoContainer.addView((WebView) tab.getTabView(), params);
                 videoContainer.setVisibility(View.VISIBLE);
 
                 // Switch to immersive mode: Hide system bars other UI controls
@@ -1107,7 +1110,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onExitFullScreen() {
+        public void onExitFullScreen(@NonNull Tab tab) {
             // Remove custom video views and hide container
             videoContainer.removeAllViews();
             videoContainer.setVisibility(View.GONE);
@@ -1132,25 +1135,23 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            if (tabView instanceof WebView) {
-                ((WebView) tabView).clearFocus();
+            if (tabsSession.getCurrentTab().getTabView() instanceof WebView) {
+                ((WebView) tabsSession.getCurrentTab().getTabView()).clearFocus();
             }
         }
 
         @Override
-        public void onDownloadStart(Download download) {
-            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download);
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab,
+                                                       final String origin,
+                                                       final GeolocationPermissions.Callback callback) {
             geolocationOrigin = origin;
             geolocationCallback = callback;
             permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.ACCESS_FINE_LOCATION, ACTION_GEO_LOCATION, null);
         }
 
         @Override
-        public boolean onShowFileChooser(WebView webView,
+        public boolean onShowFileChooser(@NonNull Tab tab,
+                                         WebView webView,
                                          ValueCallback<Uri[]> filePathCallback,
                                          WebChromeClient.FileChooserParams fileChooserParams) {
             TelemetryWrapper.browseFilePermissionEvent();
@@ -1165,7 +1166,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void updateFailingUrl(String url, boolean updateFromError) {
+        public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
             if (!updateFromError && !url.equals(failingUrl)) {
                 failingUrl = null;
             } else {
@@ -1173,15 +1174,19 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
         }
 
-        //When we're receiving onPageFinished and called webView.getUrl(),
-        // it may return the url that is already loaded rather then the just-finished url.
-        // We do another update in OnReceivedTitle to make sure we change the url if this happens.
-        // See issue1064 and issue1150.
         @Override
-        public void onReceivedTitle(WebView view, String title) {
-            if (!BrowserFragment.this.getUrl().equals(view.getUrl())) {
-                updateURL(view.getUrl());
+        public void onReceivedTitle(@NonNull Tab tab, String title) {
+            if (!BrowserFragment.this.getUrl().equals(tab.getUrl())) {
+                updateURL(tab.getUrl());
             }
+        }
+    }
+
+    class DownloadCallback implements org.mozilla.focus.web.DownloadCallback {
+
+        @Override
+        public void onDownloadStart(@NonNull Download download) {
+            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download);
         }
     }
 }
