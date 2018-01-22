@@ -38,13 +38,13 @@ import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.web.WebViewProvider;
 
-public class WebkitView extends NestedWebView implements IWebView, SharedPreferences.OnSharedPreferenceChangeListener {
+public class WebkitView extends NestedWebView implements TabView, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_CURRENTURL = "currenturl";
 
-    private IWebView.Callback callback;
+    private TabView.Callback callback;
     private FocusWebViewClient client;
     private final FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
@@ -315,10 +315,10 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
                 });
     }
 
-    private static class CallbackWrapper implements IWebView.Callback {
-        final IWebView.Callback callback;
+    private static class CallbackWrapper implements TabView.Callback {
+        final TabView.Callback callback;
 
-        CallbackWrapper(@NonNull IWebView.Callback callback) {
+        CallbackWrapper(@NonNull TabView.Callback callback) {
             this.callback = callback;
         }
 
