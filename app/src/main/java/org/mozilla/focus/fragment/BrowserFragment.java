@@ -86,8 +86,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public static final String FRAGMENT_TAG = "browser";
 
-    private static final int REQUEST_CODE_LOCATION_PERMISSION = 102;
-
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
 
