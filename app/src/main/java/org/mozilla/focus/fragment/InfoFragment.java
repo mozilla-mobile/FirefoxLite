@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.WebViewProvider;
 
 public class InfoFragment extends WebFragment {
@@ -94,11 +93,6 @@ public class InfoFragment extends WebFragment {
                 final TabView tabView = getTabView();
 
                 return tabView != null && IntentUtils.handleExternalUri(getContext(), tabView, url);
-            }
-
-
-            @Override
-            public void onDownloadStart(Download download) {
             }
 
             @Override
