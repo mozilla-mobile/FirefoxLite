@@ -385,6 +385,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
                 .setContentText(getString(R.string.survey_notification_description))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
@@ -396,8 +397,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 .setVibrate(new long[0]);
 
         if (BuildCompat.isAtLeastN()) {
-            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                    .setShowWhen(false);
+            builder.setShowWhen(false);
         }
 
         NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
