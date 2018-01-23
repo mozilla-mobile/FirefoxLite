@@ -27,6 +27,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.web.DownloadCallback;
 
 public class WebContextMenu {
     public static final String DEFAULT_DOWNLOAD_EXTENSION = ".bin";
@@ -37,7 +38,7 @@ public class WebContextMenu {
         return titleView;
     }
 
-    public static Dialog show(final @NonNull Context context, final @NonNull TabView.Callback callback, final @NonNull TabView.HitTarget hitTarget) {
+    public static Dialog show(final @NonNull Context context, final @NonNull DownloadCallback callback, final @NonNull TabView.HitTarget hitTarget) {
         if (!(hitTarget.isLink || hitTarget.isImage)) {
             // We don't support any other classes yet:
             throw new IllegalStateException("WebContextMenu can only handle long-press on images and/or links.");
@@ -85,7 +86,7 @@ public class WebContextMenu {
      */
     private static void setupMenuForHitTarget(final @NonNull Dialog dialog,
                                               final @NonNull NavigationView navigationView,
-                                              final @NonNull TabView.Callback callback,
+                                              final @NonNull DownloadCallback callback,
                                               final @NonNull TabView.HitTarget hitTarget) {
         navigationView.inflateMenu(R.menu.menu_browser_context);
 
