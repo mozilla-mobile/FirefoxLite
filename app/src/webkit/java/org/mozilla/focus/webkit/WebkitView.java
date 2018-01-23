@@ -39,12 +39,14 @@ import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.web.WebViewProvider;
 
 public class WebkitView extends NestedWebView implements TabView, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_CURRENTURL = "currenturl";
 
     private TabView.Callback callback;
+    private DownloadCallback downloadCallback;
     private FocusWebViewClient client;
     private final FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
@@ -152,6 +154,11 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         this.callback = callback;
         client.setCallback(this.callback);
         linkHandler.setCallback(this.callback);
+    }
+
+    @Override
+    public void setDownloadCallback(DownloadCallback callback) {
+        this.downloadCallback = callback;
     }
 
     public void loadUrl(String url) {
@@ -353,11 +360,6 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         }
 
         @Override
-        public void onDownloadStart(Download download) {
-            this.callback.onDownloadStart(download);
-        }
-
-        @Override
         public void onLongPress(HitTarget hitTarget) {
             this.callback.onLongPress(hitTarget);
         }
@@ -404,9 +406,9 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
                     return;
                 }
 
-                if (callback != null) {
+                if (downloadCallback != null) {
                     final Download download = new Download(url, userAgent, contentDisposition, mimetype, contentLength, false);
-                    callback.onDownloadStart(download);
+                    downloadCallback.onDownloadStart(download);
                 }
             }
         };
