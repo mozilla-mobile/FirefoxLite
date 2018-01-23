@@ -14,11 +14,11 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.tabs.TabView;
 
 /**
  * WebViewClient layer that handles browser specific WebViewClient functionality, such as error pages
@@ -27,15 +27,15 @@ import org.mozilla.focus.tabs.TabView;
 /* package */ class FocusWebViewClient extends TrackingProtectionWebViewClient {
     private final static String ERROR_PROTOCOL = "error:";
 
-    private TabView.Callback callback;
+    private TabViewClient viewClient;
     private boolean errorReceived;
 
     public FocusWebViewClient(Context context) {
         super(context);
     }
 
-    public void setCallback(TabView.Callback callback) {
-        this.callback = callback;
+    public void setViewClient(TabViewClient callback) {
+        this.viewClient = callback;
     }
 
     @Override
@@ -58,8 +58,8 @@ import org.mozilla.focus.tabs.TabView;
                 view.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (callback != null) {
-                            callback.onURLChanged(currentPageURL);
+                        if (viewClient != null) {
+                            viewClient.onURLChanged(currentPageURL);
                         }
                     }
                 });
@@ -72,8 +72,8 @@ import org.mozilla.focus.tabs.TabView;
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
-        if (callback != null) {
-            callback.updateFailingUrl(url, false);
+        if (viewClient != null) {
+            viewClient.updateFailingUrl(url, false);
         }
 
         if (errorReceived) {
@@ -83,10 +83,10 @@ import org.mozilla.focus.tabs.TabView;
             // been called. (The usual chain is: onPageStarted(url), onReceivedError(url),
             // onPageFinished(url), onPageStarted(url), finally and only sometimes: onPageFinished().
             // Since the final onPageFinished isn't guaranteed (and we know we're showing an error
-            // page already), we don't need to send the onPageStarted() callback a second time anyway.
+            // page already), we don't need to send the onPageStarted() viewClient a second time anyway.
             errorReceived = false;
-        } else if (callback != null) {
-            callback.onPageStarted(url);
+        } else if (viewClient != null) {
+            viewClient.onPageStarted(url);
         }
 
         super.onPageStarted(view, url, favicon);
@@ -94,8 +94,8 @@ import org.mozilla.focus.tabs.TabView;
 
     @Override
     public void onPageFinished(WebView view, final String url) {
-        if (callback != null) {
-            callback.onPageFinished(view.getCertificate() != null);
+        if (viewClient != null) {
+            viewClient.onPageFinished(view.getCertificate() != null);
         }
         super.onPageFinished(view, url);
 
@@ -146,8 +146,8 @@ import org.mozilla.focus.tabs.TabView;
         // skip the external URL handling.)
         final Uri uri = Uri.parse(url);
         if (!UrlUtils.isSupportedProtocol(uri.getScheme()) &&
-                callback != null &&
-                callback.handleExternalUrl(url)) {
+                viewClient != null &&
+                viewClient.handleExternalUrl(url)) {
             return true;
         }
 
@@ -174,8 +174,8 @@ import org.mozilla.focus.tabs.TabView;
                                 final String description, String failingUrl) {
         errorReceived = true;
 
-        if (callback != null) {
-            callback.updateFailingUrl(failingUrl, true);
+        if (viewClient != null) {
+            viewClient.updateFailingUrl(failingUrl, true);
         }
 
         // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,
