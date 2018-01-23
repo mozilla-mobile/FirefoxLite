@@ -16,7 +16,9 @@ import android.webkit.WebView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.locale.LocaleAwareFragment;
+import org.mozilla.focus.tabs.TabChromeClient;
 import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
@@ -31,7 +33,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
     private ViewGroup webViewSlot;
     private TabView tabView;
     // webView is not available after onDestroyView, but we need webView reference in callback
-    // onSaveInstanceState. However the callback might be invoked at anytime before onDestroy
+    // saveViewState. However the callback might be invoked at anytime before onDestroy
     // therefore webView-available-state is decided by this flag but not webView reference itself.
     private boolean isWebViewAvailable;
 
@@ -47,7 +49,9 @@ public abstract class WebFragment extends LocaleAwareFragment {
     @NonNull
     public abstract View inflateLayout(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
-    public abstract TabView.Callback createCallback();
+    public abstract TabViewClient createTabViewClient();
+
+    public abstract TabChromeClient createTabChromeClient();
 
     /**
      * Get the initial URL to load after the view has been created.
@@ -64,7 +68,8 @@ public abstract class WebFragment extends LocaleAwareFragment {
 
         webViewSlot.addView(tabView.getView());
         isWebViewAvailable = true;
-        tabView.setCallback(createCallback());
+        tabView.setViewClient(createTabViewClient());
+        tabView.setChromeClient(createTabChromeClient());
 
         return view;
     }
@@ -79,7 +84,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
             // if fragment was detached before, we will have webViewState.
             // per difference case, we should load initial url or pending url(if any).
             if (webViewState != null) {
-                tabView.restoreWebviewState(webViewState);
+                tabView.restoreViewState(webViewState);
             }
 
             final String url = (webViewState == null) ? getInitialUrl() : pendingUrl;
@@ -88,7 +93,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
             }
         } else {
             // Fragment was destroyed
-            tabView.restoreWebviewState(savedInstanceState);
+            tabView.restoreViewState(savedInstanceState);
         }
     }
 
@@ -116,7 +121,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        tabView.onSaveInstanceState(outState);
+        tabView.saveViewState(outState);
 
         // Workaround for #1107 TransactionTooLargeException
         // since Android N, system throws a exception rather than just a warning(then drop bundle)
@@ -135,7 +140,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
 
     @Override
     public void onDestroy() {
-        // only remove tabView in onDestroy since onSaveInstanceState access tabView
+        // only remove tabView in onDestroy since saveViewState access tabView
         // and the callback might be invoked before onDestroyView
         if (tabView != null) {
             tabView.destroy();
@@ -150,12 +155,12 @@ public abstract class WebFragment extends LocaleAwareFragment {
         isWebViewAvailable = false;
 
         if (tabView != null) {
-            tabView.setCallback(null);
+            tabView.setViewClient(null);
 
-            // If Fragment is detached from Activity but not be destroyed, onSaveInstanceState won't be
+            // If Fragment is detached from Activity but not be destroyed, saveViewState won't be
             // called. In this case we must store tabView-state manually, to retain browsing history.
             webViewState = new Bundle();
-            tabView.onSaveInstanceState(webViewState);
+            tabView.saveViewState(webViewState);
         }
 
         super.onDestroyView();
