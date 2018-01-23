@@ -10,9 +10,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -30,6 +30,9 @@ import android.webkit.WebViewDatabase;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.tabs.TabChromeClient;
+import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FavIconUtils;
@@ -38,14 +41,14 @@ import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.web.WebViewProvider;
 
 public class WebkitView extends NestedWebView implements TabView, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_CURRENTURL = "currenturl";
 
-    private TabView.Callback callback;
+    private TabViewClient viewClient;
+    private TabChromeClient chromeClient;
     private DownloadCallback downloadCallback;
     private FocusWebViewClient client;
     private final FocusWebChromeClient webChromeClient;
@@ -90,7 +93,7 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
     }
 
     @Override
-    public void restoreWebviewState(Bundle savedInstanceState) {
+    public void restoreViewState(Bundle savedInstanceState) {
         // We need to have a different method name because restoreState() returns
         // a WebBackForwardList, and we can't overload with different return types:
         final WebBackForwardList backForwardList = restoreState(savedInstanceState);
@@ -99,7 +102,7 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         // loading when the Activity is paused/killed, then that page won't be in the list,
         // and needs to be restored separately to the history list. We detect this by checking
         // whether the last fully loaded page (getCurrentItem()) matches the last page that the
-        // WebView was actively loading (which was retrieved during onSaveInstanceState():
+        // WebView was actively loading (which was retrieved during saveViewState():
         // WebView.getUrl() always returns the currently loading or loaded page).
         // If the app is paused/killed before the initial page finished loading, then the entire
         // list will be null - so we need to additionally check whether the list even exists.
@@ -107,7 +110,7 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         final String desiredURL = savedInstanceState.getString(KEY_CURRENTURL);
 
         // If WebView was connecting to a non-exist host (ie. 1.1.1.1:42), getUrl() returns null
-        // in onSaveInstanceState. In any cases we can not get desiredURL, no need to load it.
+        // in saveViewState. In any cases we can not get desiredURL, no need to load it.
         if (TextUtils.isEmpty(desiredURL)) {
             return;
         }
@@ -125,8 +128,8 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        saveState(outState);
+    public void saveViewState(Bundle outState) {
+        super.saveState(outState);
         // See restoreWebViewState() for an explanation of why we need to save this in _addition_
         // to WebView's state
         outState.putString(KEY_CURRENTURL, getUrl());
@@ -147,13 +150,19 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
     }
 
     @Override
-    public void setCallback(Callback callback) {
-        if (callback != null) {
-            callback = new CallbackWrapper(callback);
+    public void setViewClient(TabViewClient viewClient) {
+        if (viewClient != null) {
+            viewClient = new TabViewClientWrapper(viewClient);
         }
-        this.callback = callback;
-        client.setCallback(this.callback);
-        linkHandler.setCallback(this.callback);
+        this.viewClient = viewClient;
+        this.client.setViewClient(this.viewClient);
+    }
+
+    @Override
+    public void setChromeClient(TabChromeClient chromeClient) {
+        this.chromeClient = chromeClient;
+        client.setViewClient(this.viewClient);
+        linkHandler.setChromeClient(this.chromeClient);
     }
 
     @Override
@@ -188,7 +197,7 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         clearSslPreferences();
         clearCache(true);
 
-        // We don't care about the callback - we just want to make sure cookies are gone
+        // We don't care about the viewClient - we just want to make sure cookies are gone
         CookieManager.getInstance().removeAllCookies(null);
 
         WebStorage.getInstance().deleteAllData();
@@ -217,9 +226,25 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
     private class FocusWebChromeClient extends WebChromeClient {
 
         @Override
+        public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message msg) {
+            if (chromeClient != null) {
+                return chromeClient.onCreateWindow(isDialog, isUserGesture, msg);
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public void onCloseWindow(WebView view) {
+            if (chromeClient != null) {
+                chromeClient.onCloseWindow(view);
+            }
+        }
+
+        @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            if (callback != null) {
-                callback.onProgress(newProgress);
+            if (chromeClient != null) {
+                chromeClient.onProgressChanged(newProgress);
             }
         }
 
@@ -246,13 +271,17 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
                 }
             };
 
-            callback.onEnterFullScreen(fullscreenCallback, view);
+            if (chromeClient != null) {
+                chromeClient.onEnterFullScreen(fullscreenCallback, view);
+            }
             TelemetryWrapper.browseEnterFullScreenEvent();
         }
 
         @Override
         public void onHideCustomView() {
-            callback.onExitFullScreen();
+            if (chromeClient != null) {
+                chromeClient.onExitFullScreen();
+            }
             TelemetryWrapper.browseExitFullScreenEvent();
         }
 
@@ -267,7 +296,7 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         public void onGeolocationPermissionsShowPrompt(String origin,
                                                        GeolocationPermissions.Callback glpcallback) {
             TelemetryWrapper.browseGeoLocationPermissionEvent();
-            callback.onGeolocationPermissionsShowPrompt(origin, glpcallback);
+            chromeClient.onGeolocationPermissionsShowPrompt(origin, glpcallback);
         }
 
         @Override
@@ -280,14 +309,14 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
                                          ValueCallback<Uri[]> filePathCallback,
                                          WebChromeClient.FileChooserParams fileChooserParams) {
 
-            return callback.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+            return chromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if (callback != null) {
-                callback.onReceivedTitle(view, title);
+            if (chromeClient != null) {
+                chromeClient.onReceivedTitle(view, title);
             }
         }
     }
@@ -327,10 +356,10 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         return this;
     }
 
-    private static class CallbackWrapper implements TabView.Callback {
-        final TabView.Callback callback;
+    private static class TabViewClientWrapper extends TabViewClient {
+        final TabViewClient callback;
 
-        CallbackWrapper(@NonNull TabView.Callback callback) {
+        TabViewClientWrapper(@NonNull TabViewClient callback) {
             this.callback = callback;
         }
 
@@ -345,11 +374,6 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         }
 
         @Override
-        public void onProgress(int progress) {
-            this.callback.onProgress(progress);
-        }
-
-        @Override
         public void onURLChanged(String url) {
             this.callback.onURLChanged(url);
         }
@@ -360,41 +384,8 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         }
 
         @Override
-        public void onLongPress(HitTarget hitTarget) {
-            this.callback.onLongPress(hitTarget);
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull FullscreenCallback callback, @Nullable View view) {
-            this.callback.onEnterFullScreen(callback, view);
-        }
-
-        @Override
-        public void onExitFullScreen() {
-            this.callback.onExitFullScreen();
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-            this.callback.onGeolocationPermissionsShowPrompt(origin, callback);
-        }
-
-        @Override
-        public boolean onShowFileChooser(WebView webView,
-                                         ValueCallback<Uri[]> filePathCallback,
-                                         WebChromeClient.FileChooserParams fileChooserParams) {
-
-            return this.callback.onShowFileChooser(webView, filePathCallback, fileChooserParams);
-        }
-
-        @Override
         public void updateFailingUrl(String url, boolean updateFromError) {
             this.callback.updateFailingUrl(url, updateFromError);
-        }
-
-        @Override
-        public void onReceivedTitle(WebView view, String title) {
-            this.callback.onReceivedTitle(view, title);
         }
     }
 
