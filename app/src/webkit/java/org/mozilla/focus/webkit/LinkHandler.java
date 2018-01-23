@@ -12,25 +12,26 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebView;
 
+import org.mozilla.focus.tabs.TabChromeClient;
 import org.mozilla.focus.tabs.TabView;
 
 /* package */ class LinkHandler implements View.OnLongClickListener {
     private final WebView webView;
     private
     @Nullable
-    TabView.Callback callback = null;
+    TabChromeClient chromeClient = null;
 
     public LinkHandler(final WebView webView) {
         this.webView = webView;
     }
 
-    public void setCallback(final @Nullable TabView.Callback callback) {
-        this.callback = callback;
+    public void setChromeClient(final @Nullable TabChromeClient chromeClient) {
+        this.chromeClient = chromeClient;
     }
 
     @Override
     public boolean onLongClick(View v) {
-        if (callback == null) {
+        if (chromeClient == null) {
             return false;
         }
 
@@ -39,12 +40,12 @@ import org.mozilla.focus.tabs.TabView;
         switch (hitTestResult.getType()) {
             case WebView.HitTestResult.SRC_ANCHOR_TYPE:
                 final String linkURL = hitTestResult.getExtra();
-                callback.onLongPress(new TabView.HitTarget(true, linkURL, false, null));
+                chromeClient.onLongPress(new TabView.HitTarget(true, linkURL, false, null));
                 return true;
 
             case WebView.HitTestResult.IMAGE_TYPE:
                 final String imageURL = hitTestResult.getExtra();
-                callback.onLongPress(new TabView.HitTarget(false, null, true, imageURL));
+                chromeClient.onLongPress(new TabView.HitTarget(false, null, true, imageURL));
                 return true;
 
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
@@ -63,8 +64,8 @@ import org.mozilla.focus.tabs.TabView;
                             throw new IllegalStateException("WebView did not supply url or src for image link");
                         }
 
-                        if (callback != null) {
-                            callback.onLongPress(new TabView.HitTarget(true, url, true, src));
+                        if (chromeClient != null) {
+                            chromeClient.onLongPress(new TabView.HitTarget(true, url, true, src));
                         }
                     }
                 });

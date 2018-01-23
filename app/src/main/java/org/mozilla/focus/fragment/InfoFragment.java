@@ -5,21 +5,19 @@
 
 package org.mozilla.focus.fragment;
 
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.GeolocationPermissions;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.tabs.TabChromeClient;
 import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.web.WebViewProvider;
 
@@ -63,8 +61,9 @@ public class InfoFragment extends WebFragment {
     }
 
     @Override
-    public TabView.Callback createCallback() {
-        return new TabView.Callback() {
+    public TabViewClient createTabViewClient() {
+        return new TabViewClient() {
+
             @Override
             public void onPageStarted(final String url) {
                 progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading));
@@ -84,52 +83,27 @@ public class InfoFragment extends WebFragment {
             }
 
             @Override
-            public void onProgress(int progress) {
-                progressView.setProgress(progress);
-            }
-
-            @Override
             public boolean handleExternalUrl(final String url) {
                 final TabView tabView = getTabView();
 
                 return tabView != null && IntentUtils.handleExternalUri(getContext(), tabView, url);
             }
+        };
+    }
 
+    @Override
+    public TabChromeClient createTabChromeClient() {
+        return new TabChromeClient() {
             @Override
-            public void onLongPress(TabView.HitTarget hitTarget) {
-            }
-
-            @Override
-            public void onURLChanged(String url) {
-            }
-
-            @Override
-            public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback, @Nullable View view) {
-            }
-
-            @Override
-            public void onExitFullScreen() {
-            }
-
-            @Override
-            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-            }
-
-            @Override
-            public boolean onShowFileChooser(WebView webView,
-                                             ValueCallback<Uri[]> filePathCallback,
-                                             WebChromeClient.FileChooserParams fileChooserParams) {
+            public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, Message msg) {
                 return false;
             }
 
             @Override
-            public void updateFailingUrl(String url, boolean updateFromError) {
+            public void onProgressChanged(int progress) {
+                progressView.setProgress(progress);
             }
 
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-
-            }
         };
     }
 
