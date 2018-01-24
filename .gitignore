@@ -47,3 +47,6 @@ l10n-repo/
 
 # Infer output
 infer-out/
+
+# MacOS X DS_Store
+.DS_Store
