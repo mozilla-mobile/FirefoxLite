@@ -41,7 +41,7 @@ public class PermissionHandler {
     }
 
     public void tryAction(final Activity activity, final String permission, final int actionId, final Parcelable params) {
-        tryAction(activity, permission, actionId, params, ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE), new DialogInterface.OnClickListener() {
+        tryAction(activity, permission, actionId, params, ActivityCompat.shouldShowRequestPermissionRationale(activity, permission), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 IntentUtils.intentOpenSettings(activity, REQUEST_SETTINGS);
@@ -51,7 +51,7 @@ public class PermissionHandler {
 
     public void tryAction(final Fragment fragment, final String permission, final int actionId, final Parcelable params) {
         final Activity activity = fragment.getActivity();
-        tryAction(activity, permission, actionId, params, fragment.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), new DialogInterface.OnClickListener() {
+        tryAction(activity, permission, actionId, params, fragment.shouldShowRequestPermissionRationale(permission), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 IntentUtils.intentOpenSettings(fragment, REQUEST_SETTINGS);
