@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
+import org.mozilla.focus.FirebaseHelper;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
@@ -57,6 +59,13 @@ public class DialogUtils {
                 telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
             }
         });
+
+        final String title = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE);
+        final String content = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT);
+
+        ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_title)).setText(title);
+        ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
+
         dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

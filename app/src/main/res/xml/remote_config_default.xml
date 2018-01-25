@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>dialog_rate_app_btn_go_rate</key>
+        <value>rate_app_dialog_btn_go_rate</value>
+    </entry>
+    <entry>
+        <key>dialog_rate_app_btn_feedback</key>
+        <value>dialog_rate_app_btn_feedback</value>
+    </entry>
+    <entry>
+        <key>rate_app_dialog_text_title</key>
+        <value>Love Rocket?</value>
+    </entry>
+    <entry>
+        <key>rate_app_dialog_text_content</key>
+        <value>Thank you for choosing our product. Your feedback is important to us.</value>
+    </entry>
+</defaultsMap>
+    <!-- END xml_defaults -->

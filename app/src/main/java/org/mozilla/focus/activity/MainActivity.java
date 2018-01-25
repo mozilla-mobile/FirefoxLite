@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.mozilla.focus.FirebaseHelper;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -104,6 +105,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FirebaseHelper.init();
         asyncInitialize();
 
         setContentView(R.layout.activity_main);
@@ -291,12 +293,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onPause() {
         super.onPause();
-
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
 
         safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();
-
+    
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
