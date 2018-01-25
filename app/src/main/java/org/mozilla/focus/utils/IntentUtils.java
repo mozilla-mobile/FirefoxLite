@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
@@ -145,20 +146,23 @@ public class IntentUtils {
         builder.show();
     }
 
-    public static void intentOpenSettings(Activity activity, int requestCode) {
-        Intent intent = new Intent();
-        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-        intent.setData(uri);
-        activity.startActivityForResult(intent, requestCode);
+    public static void intentOpenSettings(@NonNull Activity activity, int requestCode) {
+        activity.startActivityForResult(buildOpenSettingsIntent(activity.getPackageName()), requestCode);
     }
 
-    public static void intentOpenSettings(Fragment fragment, int requestCode) {
+    public static void intentOpenSettings(@NonNull Fragment fragment, int requestCode) {
+        Activity host = fragment.getActivity();
+        if (host != null) {
+            fragment.startActivityForResult(buildOpenSettingsIntent(host.getPackageName()), requestCode);
+        }
+    }
+
+    private static Intent buildOpenSettingsIntent(String packageName) {
         Intent intent = new Intent();
         intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", fragment.getActivity().getPackageName(), null);
+        Uri uri = Uri.fromParts("package", packageName, null);
         intent.setData(uri);
-        fragment.startActivityForResult(intent, requestCode);
+        return intent;
     }
 
     public static void intentOpenFile(Context context, String fileUriStr, String mimeType) {

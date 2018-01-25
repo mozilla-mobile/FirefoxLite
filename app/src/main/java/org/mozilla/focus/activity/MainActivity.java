@@ -486,6 +486,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         BrowserFragment browserFragment = getVisibleBrowserFragment();
         if (browserFragment != null) {
             browserFragment.dismissWebContextMenu();
+            browserFragment.dismissGeoDialog();
         }
         if (mDialogFragment != null) {
             mDialogFragment.dismissAllowingStateLoss();
