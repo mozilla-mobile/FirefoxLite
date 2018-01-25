@@ -137,7 +137,8 @@ public class PermissionHandler {
     }
 
     public void onRequestPermissionsResult(Context context, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (permissions == null || permissions.length == 0 || grantResults == null || grantResults.length == 0) {
+        if (permissions.length == 0 || grantResults.length == 0) {
+            clearAction();
             return;
         }
         if (requestCode == actionId) {
