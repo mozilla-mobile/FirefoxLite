@@ -21,7 +21,7 @@ buildscript {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "org.mozilla"
         minSdkVersion 21
@@ -148,11 +148,11 @@ dependencies {
     compile project(':third_party:subsampling-scale-image-view')
     compile project(':third_party:glide:library')
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:customtabs:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:' + rootProject.supportLibVersion;
+    compile 'com.android.support:customtabs:' + rootProject.supportLibVersion;
+    compile 'com.android.support:design:' + rootProject.supportLibVersion;
+    compile 'com.android.support:cardview-v7:' + rootProject.supportLibVersion;
+    compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion;
 
     compile ("com.google.code.findbugs:annotations:3.0.1") {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
@@ -166,17 +166,21 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:10.2.6' // Required by Adjust
 
     compile 'com.airbnb.android:lottie:2.2.0'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-v4:' + rootProject.supportLibVersion;
 
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.3.2"
     testCompile 'org.mockito:mockito-core:2.7.22'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:' + rootProject.espressoVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+    androidTestCompile 'com.android.support.test:runner:' + rootProject.runnerVersion
+    androidTestCompile 'com.android.support.test:rules:' + rootProject.rulesVersion;
+    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:' + rootProject.espressoVersion;
+    androidTestCompile 'com.android.support:support-annotations:' + rootProject.supportLibVersion;
+
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.7.0'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
