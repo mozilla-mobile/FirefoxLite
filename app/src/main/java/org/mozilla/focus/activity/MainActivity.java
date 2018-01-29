@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -332,7 +333,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
     }
 
-    private BrowserFragment getVisibleBrowserFragment() {
+    @VisibleForTesting
+    public BrowserFragment getVisibleBrowserFragment() {
         final BrowserFragment browserFragment = getBrowserFragment();
         if (browserFragment == null || !browserFragment.isVisible()) {
             return null;
