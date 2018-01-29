@@ -11,6 +11,7 @@ import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
 
+import org.mozilla.focus.Inject;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryContract.BrowsingHistory;
@@ -61,7 +62,7 @@ public class BrowsingHistoryManager {
     public void init(Context context) {
         ContentResolver resolver = context.getContentResolver();
         mResolver = new WeakReference<>(resolver);
-        mQueryHandler = new QueryHandler(resolver);
+        mQueryHandler = Inject.getQueryHandler(resolver);
         mContentObserver = new BrowsingHistoryContentObserver(null);
         mListeners = new ArrayList<>();
     }
