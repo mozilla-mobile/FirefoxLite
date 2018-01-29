@@ -12,23 +12,36 @@ import android.webkit.WebView;
 
 public final class DebugUtils {
 
+    private static final String UNKNOWN_WEBVIEW_VERSION = "";
+
     private DebugUtils() {
 
     }
 
     public static String loadWebViewVersion(Context context) {
-        return loadWebViewVersion(new WebView(context));
+        String webViewVersion;
+        try {
+            webViewVersion = loadWebViewVersion(new WebView(context));
+        } catch (Exception exception) {
+            webViewVersion = UNKNOWN_WEBVIEW_VERSION;
+        }
+        return webViewVersion;
     }
 
     public static String loadWebViewVersion(WebView webvView) {
-        final String userAgent = webvView.getSettings().getUserAgentString();
-        final String webViewVersion = parseWebViewVersion(userAgent);
+        String webViewVersion;
+        try {
+            final String userAgent = webvView.getSettings().getUserAgentString();
+            webViewVersion = parseWebViewVersion(userAgent);
+        } catch (Exception e) {
+            webViewVersion = UNKNOWN_WEBVIEW_VERSION;
+        }
         return webViewVersion;
     }
 
     private static String parseWebViewVersion(String userAgent) {
         if (TextUtils.isEmpty(userAgent)) {
-            return "";
+            return UNKNOWN_WEBVIEW_VERSION;
         }
         final String separator = "Chrome/";
         final int from = userAgent.lastIndexOf(separator) + separator.length();
