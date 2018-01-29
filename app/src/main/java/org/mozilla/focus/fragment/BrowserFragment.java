@@ -76,7 +76,6 @@ import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -132,10 +131,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private IWebView.FullscreenCallback fullscreenCallback;
 
     private boolean isLoading = false;
-
-    // Set an initial WeakReference so we never have to handle loadStateListenerWeakReference being null
-    // (i.e. so we can always just .get()).
-    private WeakReference<LoadStateListener> loadStateListenerWeakReference = new WeakReference<>(null);
 
     // pending action for file-choosing
     private FileChooseAction fileChooseAction;
@@ -466,32 +461,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         dismissGeoDialog();
         super.onStop();
         notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
-    }
-
-    public interface LoadStateListener {
-        void isLoadingChanged(boolean isLoading);
-    }
-
-    /**
-     * Set a (singular) LoadStateListener. Only one listener is supported at any given time. Setting
-     * a new listener means any previously set listeners will be dropped. This is only intended
-     * to be used by NavigationItemViewHolder. If you want to use this method for any other
-     * parts of the codebase, please extend it to handle a list of listeners. (We would also need
-     * to automatically clean up expired listeners from that list, probably when adding to that list.)
-     *
-     * @param listener The listener to notify of load state changes. Only a weak reference will be kept,
-     *                 no more calls will be sent once the listener is garbage collected.
-     */
-    public void setIsLoadingListener(final LoadStateListener listener) {
-        loadStateListenerWeakReference = new WeakReference<>(listener);
-    }
-
-    private void updateIsLoading(final boolean isLoading) {
-        this.isLoading = isLoading;
-        final LoadStateListener currentListener = loadStateListenerWeakReference.get();
-        if (currentListener != null) {
-            currentListener.isLoadingChanged(isLoading);
-        }
     }
 
     @Override
@@ -911,8 +880,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             lastInsertedUrl = null;
             loadedUrl = null;
 
-            updateIsLoading(true);
-
             siteIdentity.setImageLevel(SITE_GLOBE);
 
             backgroundTransition.resetTransition();
@@ -931,8 +898,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
             // URL is always correct _except_ for error pages
             updateUrlFromWebView();
-
-            updateIsLoading(false);
 
             notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
 
