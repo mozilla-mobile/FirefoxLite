@@ -1,5 +1,6 @@
 # Rocket
 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=594b679a6ed87e0001fca2cd&build=latest)](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)
+[![Build Status](https://travis-ci.org/mozilla-tw/Rocket.svg?branch=master)](https://travis-ci.org/mozilla-tw/Rocket)
 
 Getting Involved
 ----------------

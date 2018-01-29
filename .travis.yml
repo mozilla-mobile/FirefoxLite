@@ -1,0 +1,55 @@
+branches:
+  only:
+    - master
+    - release/*
+
+language: android
+jdk: oraclejdk8
+android:
+  components:
+    # Uncomment the lines below if you want to
+    # use the latest revision of Android SDK Tools
+    # - tools
+    # - platform-tools
+
+    # The BuildTools version used by your project
+    - build-tools-26.0.2
+    - build-tools-25.0.3
+
+    # The SDK version used to compile your project
+    - android-26
+    - android-25
+
+    # Additional components
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-26
+    - addon-google_apis-google-25
+
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    - sys-img-armeabi-v7a-android-26
+    - sys-img-armeabi-v7a-android-25
+
+before_script:
+  # lint and l10n check
+  - python tools/l10n/check_translations.py
+  - ./gradlew checkstyle
+
+script:
+  # build
+  - ./gradlew clean app:assembleFocusWebkitDebug
+
+after_success:
+  # Check that our APK files are not bigger than they should be
+  - python tools/metrics/apk_size.py
+
+  # findbugs
+  - ./gradlew findbugs
+
+  # skip jacocoTestReport because we don't have adjust token and build fail on release variant
+  #./gradlew jacocoTestReport
+
+  # skip CODECOV
+  #bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
