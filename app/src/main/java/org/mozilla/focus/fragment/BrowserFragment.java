@@ -90,7 +90,6 @@ import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -159,10 +158,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private TabView.FullscreenCallback fullscreenCallback;
 
     private boolean isLoading = false;
-
-    // Set an initial WeakReference so we never have to handle loadStateListenerWeakReference being null
-    // (i.e. so we can always just .get()).
-    private WeakReference<LoadStateListener> loadStateListenerWeakReference = new WeakReference<>(null);
 
     // pending action for file-choosing
     private FileChooseAction fileChooseAction;
@@ -1070,8 +1065,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             lastInsertedUrl = null;
             loadedUrl = null;
 
-            updateIsLoading(true);
-
             siteIdentity.setImageLevel(SITE_GLOBE);
 
             backgroundTransition.resetTransition();
@@ -1089,8 +1082,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
             // URL is always correct _except_ for error pages
             updateUrlFromWebView(tab);
-
-            updateIsLoading(false);
 
             notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
 
