@@ -20,12 +20,12 @@ buildscript {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "org.mozilla"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         resConfigs "en", "in"
         versionCode 1
         versionName "1.0.3"
@@ -46,6 +46,12 @@ android {
             versionNameSuffix "(" + nevercode_build_number + ")"
         }
 
+        // used by Room, to test migrations
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     dexOptions {
@@ -89,6 +95,11 @@ android {
                 includeNoLocationClasses = true
             }
         }
+    }
+
+    // used by Room, to test migrations
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
     flavorDimensions "product", "engine"
@@ -164,6 +175,11 @@ dependencies {
     compile 'com.android.support:cardview-v7:' + rootProject.supportLibVersion;
     compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion;
 
+    compile "android.arch.persistence.room:runtime:$rootProject.architectureComponentsVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.architectureComponentsVersion"
+
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
     compile ("com.google.code.findbugs:annotations:3.0.1") {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
         // Without this we get weird failures due to dependencies.
@@ -193,7 +209,7 @@ dependencies {
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.7.0'
 
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+    androidTestCompile "android.arch.persistence.room:testing:$rootProject.architectureComponentsVersion"
 }
 
 // -------------------------------------------------------------------------------------------------
