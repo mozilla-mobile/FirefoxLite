@@ -26,6 +26,7 @@ android {
         applicationId "org.mozilla"
         minSdkVersion 21
         targetSdkVersion 25
+        resConfigs "en", "id"
         versionCode 1
         versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
