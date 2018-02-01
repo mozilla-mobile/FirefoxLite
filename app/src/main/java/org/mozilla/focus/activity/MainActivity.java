@@ -426,7 +426,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
     }
 
-    private BrowserFragment getVisibleBrowserFragment() {
+    public BrowserFragment getVisibleBrowserFragment() {
         final BrowserFragment browserFragment = getBrowserFragment();
         if (browserFragment == null || !browserFragment.isVisible()) {
             return null;
