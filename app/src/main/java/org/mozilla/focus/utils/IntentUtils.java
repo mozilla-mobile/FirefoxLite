@@ -67,13 +67,10 @@ public class IntentUtils {
         // see what domains we're visiting, so there's no loss of privacy here:
         final List<ResolveInfo> matchingActivities = packageManager.queryIntentActivities(intent, 0);
 
-        if (matchingActivities.size() == 0) {
-            return handleUnsupportedLink(context, webView, intent);
-        } else {
+        if (matchingActivities.size() > 0) {
             context.startActivity(intent);
-
-            return true;
         }
+        return true;
     }
 
     private static boolean handleUnsupportedLink(final Context context, final TabView webView, final Intent intent) {
