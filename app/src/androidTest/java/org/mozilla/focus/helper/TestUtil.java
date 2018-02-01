@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with t
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.test;
+package org.mozilla.focus.helper;
 
 import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.BoundedMatcher;
