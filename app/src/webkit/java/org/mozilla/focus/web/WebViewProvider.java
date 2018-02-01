@@ -155,14 +155,10 @@ public class WebViewProvider {
     static String buildUserAgentString(final Context context, final String existingWebViewUA, final String appName) {
         final StringBuilder uaBuilder = new StringBuilder();
 
-        uaBuilder.append("Mozilla/5.0");
-
         // WebView by default includes "; wv" as part of the platform string, but we're a full browser
-        // so we shouldn't include that.
-        // Most webview based browsers (and chrome), include the device name AND build ID, e.g.
-        // "Pixel XL Build/NOF26V", that seems unnecessary (and not great from a privacy perspective),
-        // so we skip that too.
-        uaBuilder.append(" (Linux; Android ").append(Build.VERSION.RELEASE).append("; rv) ");
+        // so we shouldn't include that. Replace with "rv" fix some webcompat issue.
+
+        uaBuilder.append(existingWebViewUA.substring(0, existingWebViewUA.indexOf("wv) ") + 4).replace("wv) ", "rv) "));
 
         final String appVersion;
         try {
