@@ -285,14 +285,14 @@ public class DownloadInfoManager {
 
     private static DownloadInfo cursorToDownloadInfo(Cursor cursor) {
         final long downloadId = cursor.getLong(cursor.getColumnIndex(Download.DOWNLOAD_ID));
-        String filePath = cursor.getString(cursor.getColumnIndex(Download.FILE_PATH));
+        String fileUri = cursor.getString(cursor.getColumnIndex(Download.FILE_PATH));
         Long rowId = cursor.getLong(cursor.getColumnIndex(Download._ID));
 
         final DownloadPojo pojo = queryDownloadManager(mContext, downloadId);
-        return pojoToDownloadInfo(pojo, filePath, rowId);
+        return pojoToDownloadInfo(pojo, fileUri, rowId);
     }
 
-    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String filePath, long rowId) {
+    private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String fileUri, long rowId) {
         final DownloadInfo info = new DownloadInfo();
         info.setRowId(rowId);
         info.setFileName(pojo.fileName);
@@ -306,7 +306,7 @@ public class DownloadInfoManager {
         info.setFileExtension(pojo.fileExtension);
 
         if (TextUtils.isEmpty(pojo.fileUri)) {
-            info.setFileUri(filePath);
+            info.setFileUri(fileUri);
         } else {
             info.setFileUri(pojo.fileUri);
         }

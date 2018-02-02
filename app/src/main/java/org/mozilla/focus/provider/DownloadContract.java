@@ -32,6 +32,7 @@ public class DownloadContract {
 
         public static final String TABLE_DOWNLOAD = "download_info";
         public static final String DOWNLOAD_ID = "download_id";
+        // TODO: 2/2/18 This is actually a file uri, change the naming if necessary
         public static final String FILE_PATH = "file_path";
 
     }
