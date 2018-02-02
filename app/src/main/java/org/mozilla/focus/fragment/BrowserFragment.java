@@ -591,11 +591,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         final DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         final Long downloadId = manager.enqueue(request);
 
-        //record download ID
         DownloadInfo downloadInfo = new DownloadInfo();
         downloadInfo.setDownloadId(downloadId);
-        // When downloading downloaded content, DownloadManager returns the previous download id
-        // Do not insert again if we're already showing it.
+        // On Pixel, When downloading downloaded content which is still available, DownloadManager
+        // returns the previous download id.
+        // For that case we remove the old entry and re-insert a new one to move it to the top.
+        // (Note that this is not the case for devices like Samsung, I have not verified yet if this
+        // is a because of on those devices we move files to SDcard or if this is true even if the
+        // file is not moved.)
         if (!DownloadInfoManager.getInstance().recordExists(downloadId)) {
             DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
                 @Override
