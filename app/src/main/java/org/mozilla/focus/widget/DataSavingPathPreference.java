@@ -32,7 +32,12 @@ public class DataSavingPathPreference extends ListPreference {
         super.onAttachedToActivity();
 
         buildList();
-        pingRemovableStorage();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                pingRemovableStorage();
+            }
+        }).start();
     }
 
     @Override
