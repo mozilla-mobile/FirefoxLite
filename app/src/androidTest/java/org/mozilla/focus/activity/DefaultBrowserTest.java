@@ -1,4 +1,4 @@
-package org.mozilla.focus;
+package org.mozilla.focus.activity;
 
 
 import android.content.Intent;
@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
 
