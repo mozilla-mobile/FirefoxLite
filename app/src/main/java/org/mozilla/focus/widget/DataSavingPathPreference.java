@@ -32,7 +32,13 @@ public class DataSavingPathPreference extends ListPreference {
         super.onAttachedToActivity();
 
         buildList();
-        pingRemovableStorage();
+        // Put pingRemovableStorage() in background thread to avoid strict mode violation: disk I/O on main thread.
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                pingRemovableStorage();
+            }
+        }).start();
     }
 
     @Override
