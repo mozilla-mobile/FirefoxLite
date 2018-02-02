@@ -52,7 +52,7 @@ public class FocusApplication extends LocaleAwareApplication {
             threadPolicyBuilder.penaltyDialog();
             vmPolicyBuilder.penaltyLog();
         } else { // Dev/debug build
-            threadPolicyBuilder.penaltyDialog();
+            threadPolicyBuilder.penaltyLog().penaltyDialog();
             // We want only penaltyDeath(), but penaltLog() is needed print a stacktrace when a violation happens
             vmPolicyBuilder.penaltyLog().penaltyDeath();
         }
