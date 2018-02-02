@@ -163,5 +163,5 @@
   <string name="your_rights_content4"><![CDATA["Kode sumber tambahan untuk %1$s tersedia dalam berbagai "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">lisensi</a>" bebas dan sumber terbuka lainnya."]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s juga menggunakan daftar blokir yang disediakan oleh Disconnect, Inc. sebagai hasil karya terpisah dan independen di bawah "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>", dan tersedia "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">di sini</a>.]]></string>
   <string name="survey_notification_title">Kami membutuhkan Anda! %1$s</string>
-  <string name="survey_notification_description">Wujudkan produk yang lebih baik untuk Indonesia</string>
+  <string name="survey_notification_description">Wujudkan produk lebih baik bagi Indonesia</string>
 </resources>
