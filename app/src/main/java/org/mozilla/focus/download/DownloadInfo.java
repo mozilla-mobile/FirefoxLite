@@ -16,6 +16,12 @@ import java.util.Formatter;
 
 public class DownloadInfo {
 
+    // An overriding extra definition at the same level with DownloadManager.STATUS_SUCCESSFUL
+    // for the status field of this class which is an alternative when the
+    // DownloadManager.COLUMN_STATUS field is not available because no matching entry is available
+    // in the DownloadManager's table.
+    public static final int STATUS_DELETED = -1;
+
     private Long RowId;
     private Long DownloadId;
     private int Status;
@@ -138,6 +144,10 @@ public class DownloadInfo {
             bytes = bytes / 1024;
         }
         return String.format("%.1f", bytes) + dictionary[index];
+    }
+
+    public boolean existInDownloadManager() {
+        return getStatus() != STATUS_DELETED;
     }
 
 }

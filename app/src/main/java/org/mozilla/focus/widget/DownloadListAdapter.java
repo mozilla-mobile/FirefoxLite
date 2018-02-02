@@ -139,6 +139,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (downloadInfoList.size() > 0) {
                     DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
 
+                    if (!downloadInfo.existInDownloadManager()) {
+                        return;
+                    }
+
                     if ((rowId == downloadInfo.getRowId())
                             && (DownloadManager.STATUS_SUCCESSFUL != downloadInfo.getStatus())) {
 
