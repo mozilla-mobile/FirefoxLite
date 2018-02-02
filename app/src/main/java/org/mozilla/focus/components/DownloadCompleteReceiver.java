@@ -63,6 +63,10 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                             }
                         });
                     }
+                    // Download canceled
+                    if (!downloadInfo.existInDownloadManager()) {
+                        DownloadInfoManager.getInstance().delete(downloadInfo.getRowId(), null);
+                    }
                 }
             }
         });

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
@@ -218,6 +219,11 @@ public class DownloadInfoManager {
         final long oldId = downloadId;
         final File newFile = new File(newPath);
         final DownloadPojo pojo = queryDownloadManager(mContext, downloadId);
+        if (pojo == null) {
+            // Should never happen
+            final String msg = "File entry disappeared after being moved";
+            throw new IllegalStateException(msg);
+        }
 
         // remove old download from DownloadManager, then add new one
         // Description and MIME cannot be blank, otherwise system refuse to add new record
@@ -244,6 +250,11 @@ public class DownloadInfoManager {
             public void onQueryComplete(List downloadInfoList) {
                 for (int i = 0; i < downloadInfoList.size(); i++) {
                     DownloadInfo queryDownloadInfo = (DownloadInfo) downloadInfoList.get(i);
+                    if (!queryDownloadInfo.existInDownloadManager()) {
+                        // Should never happen
+                        final String msg = "File entry disappeared after being moved";
+                        throw new IllegalStateException(msg);
+                    }
                     if (oldId == queryDownloadInfo.getDownloadId()) {
                         final long rowId = queryDownloadInfo.getRowId();
                         final DownloadInfo newInfo = pojoToDownloadInfo(pojo, newPath, rowId);
@@ -289,7 +300,7 @@ public class DownloadInfoManager {
         Long rowId = cursor.getLong(cursor.getColumnIndex(Download._ID));
 
         final DownloadPojo pojo = queryDownloadManager(mContext, downloadId);
-        return pojoToDownloadInfo(pojo, fileUri, rowId);
+        return pojo == null ? createEmptyDownloadInfo(downloadId, rowId, fileUri) : pojoToDownloadInfo(pojo, fileUri, rowId);
     }
 
     private static DownloadInfo pojoToDownloadInfo(@NonNull final DownloadPojo pojo, final String fileUri, long rowId) {
@@ -314,6 +325,16 @@ public class DownloadInfoManager {
         return info;
     }
 
+    private static DownloadInfo createEmptyDownloadInfo(long downloadId, long rowId, String fileUri) {
+        final DownloadInfo info = new DownloadInfo();
+        info.setRowId(rowId);
+        info.setDownloadId(downloadId);
+        info.setFileUri(fileUri);
+        info.setStatusInt(DownloadInfo.STATUS_DELETED);
+        return info;
+    }
+
+    @Nullable
     private static DownloadPojo queryDownloadManager(@NonNull final Context context, final long downloadId) {
 
         //query download manager
@@ -336,9 +357,13 @@ public class DownloadInfoManager {
                 pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
                 pojo.fileExtension = extension;
                 pojo.fileName = new File(Uri.parse(pojo.fileUri).getPath()).getName();
+            } else {
+                // No pojo
+                return null;
             }
         } catch (Exception e) {
-            managerCursor.close();
+            // No valid pojo
+            return null;
         } finally {
             if (managerCursor != null) {
                 managerCursor.close();

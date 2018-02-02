@@ -967,7 +967,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             public void onQueryComplete(List downloadInfoList) {
                 if (downloadInfoList.size() > 0) {
                     final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
-
+                    if (!downloadInfo.existInDownloadManager()) {
+                        // Should never happen
+                        final String msg = "File entry disappeared after being downloaded";
+                        throw new IllegalStateException(msg);
+                    }
                     final View container = findViewById(R.id.container);
                     String completedStr = getString(R.string.download_completed, downloadInfo.getFileName());
                     Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG)
