@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -41,8 +40,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * Created by anlin on 01/08/2017.
  */
 
-public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements DownloadInfoManager.AsyncQueryListener {
+public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final List<String> SPECIFIC_FILE_EXTENSION
             = Arrays.asList("apk", "zip", "gz", "tar", "7z", "rar", "war");
@@ -73,7 +71,18 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void loadMore() {
-        DownloadInfoManager.getInstance().query(mItemCount, PAGE_SIZE, this);
+        DownloadInfoManager.getInstance().query(mItemCount, PAGE_SIZE, new DownloadInfoManager.AsyncQueryListener() {
+            @Override
+            public void onQueryComplete(List downloadInfoList) {
+
+                mDownloadInfo.addAll(downloadInfoList);
+                mItemCount = mDownloadInfo.size();
+                notifyDataSetChanged();
+                isOpening = false;
+                isLoading = false;
+                isLastPage = downloadInfoList.size() == 0;
+            }
+        });
         isLoading = true;
     }
 
@@ -319,17 +328,6 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             return 1;
         }
-    }
-
-    @Override
-    public void onQueryComplete(List downloadInfoList) {
-
-        mDownloadInfo.addAll(downloadInfoList);
-        mItemCount = mDownloadInfo.size();
-        this.notifyDataSetChanged();
-        isOpening = false;
-        isLoading = false;
-        isLastPage = downloadInfoList.size() == 0;
     }
 
     private String statusConvertStr(int status) {
