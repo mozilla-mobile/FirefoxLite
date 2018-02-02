@@ -49,19 +49,4 @@ public class WebViewProviderTest {
 
     }
 
-    @Test
-    public void buildUserAgentString() {
-        String version = Build.VERSION.RELEASE;
-        final String appVersion;
-        try {
-            appVersion = RuntimeEnvironment.application.getPackageManager().getPackageInfo(RuntimeEnvironment.application.getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            // This should be impossible - we should always be able to get information about ourselves:
-            throw new IllegalStateException("Unable find package details for Rocket", e);
-        }
-
-        assertEquals("Mozilla/5.0 (Linux; Android " + version + "; rv) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 fakeappname/" + appVersion,
-                WebViewProvider.buildUserAgentString(RuntimeEnvironment.application, "Mozilla/5.0 (Linux; U; Android " + version + "; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30", "fakeappname"));
-    }
-
 }
