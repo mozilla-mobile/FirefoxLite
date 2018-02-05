@@ -177,6 +177,7 @@ dependencies {
 
     compile 'com.google.firebase:firebase-core:'+ rootProject.firebaseVersion
     compile 'com.google.firebase:firebase-config:'+ rootProject.firebaseVersion
+    compile 'com.google.firebase:firebase-messaging:'+ rootProject.firebaseVersion
 
     compile 'com.airbnb.android:lottie:2.2.0'
     compile 'com.android.support:support-v4:' + rootProject.supportLibVersion;

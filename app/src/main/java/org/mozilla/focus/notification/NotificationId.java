@@ -7,4 +7,5 @@ package org.mozilla.focus.notification;
 
 public class NotificationId {
     public static final int SURVEY_ON_3RD_LAUNCH = 1000;
+    public static final int FIREBASE_AD_HOC = 1001;
 }

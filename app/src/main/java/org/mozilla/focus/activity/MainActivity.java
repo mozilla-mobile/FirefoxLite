@@ -384,22 +384,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+        final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(this, pendingIntent)
                 .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
                 .setContentText(getString(R.string.survey_notification_description))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
-                        getString(R.string.survey_notification_description)))
-                .setColor(ContextCompat.getColor(this, R.color.surveyNotificationAccent))
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(new long[0]);
-
-        if (BuildCompat.isAtLeastN()) {
-            builder.setShowWhen(false);
-        }
+                        getString(R.string.survey_notification_description)));
 
         NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
     }
