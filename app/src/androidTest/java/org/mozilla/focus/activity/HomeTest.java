@@ -34,7 +34,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mozilla.focus.helper.TestUtil.atPosition;
+import static org.mozilla.focus.helper.TestHelper.atPosition;
 
 @Keep
 @RunWith(AndroidJUnit4.class)
