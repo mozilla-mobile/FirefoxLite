@@ -6,17 +6,41 @@
 package org.mozilla.focus.helper;
 
 import android.support.annotation.NonNull;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.BoundedMatcher;
+import android.support.test.uiautomator.UiDevice;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import okio.Buffer;
+import okio.Okio;
+
 import static android.support.test.internal.util.Checks.checkNotNull;
 
 
-public class TestUtil {
+public class TestHelper {
+
+    public static UiDevice DEVICE =  UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
+    public static Buffer readTestAsset(String filename) throws IOException {
+        try (final InputStream stream = InstrumentationRegistry.getContext().getAssets().open(filename)) {
+            return readStreamFile(stream);
+        }
+    }
+
+    public static Buffer readStreamFile(InputStream file) throws IOException {
+
+        Buffer buffer = new Buffer();
+        buffer.writeAll(Okio.source(file));
+        return buffer;
+    }
+
     public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {
         checkNotNull(itemMatcher);
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
