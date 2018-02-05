@@ -121,6 +121,11 @@
             tools:ignore="ExportedService" />
 
         <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="@bool/enableCrashlytics"/>
+
+
+        <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true" />
 
