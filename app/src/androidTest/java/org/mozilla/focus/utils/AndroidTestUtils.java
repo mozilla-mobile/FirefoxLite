@@ -17,6 +17,12 @@ import android.view.View;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import okio.Buffer;
+import okio.Okio;
+
 import static android.support.test.internal.util.Checks.checkNotNull;
 import static org.mozilla.focus.fragment.FirstrunFragment.FIRSTRUN_PREF;
 
@@ -61,5 +67,18 @@ public final class AndroidTestUtils {
                 return itemMatcher.matches(viewHolder.itemView);
             }
         };
+    }
+
+    public static Buffer readTestAsset(String filename) throws IOException {
+        try (final InputStream stream = InstrumentationRegistry.getContext().getAssets().open(filename)) {
+            return readStreamFile(stream);
+        }
+    }
+
+    public static Buffer readStreamFile(InputStream file) throws IOException {
+
+        final Buffer buffer = new Buffer();
+        buffer.writeAll(Okio.source(file));
+        return buffer;
     }
 }
