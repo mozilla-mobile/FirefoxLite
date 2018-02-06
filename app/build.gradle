@@ -6,6 +6,7 @@ apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'com.icesmith.androidtextresolver'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
+apply plugin: 'io.fabric'
 
 buildscript {
     repositories {
@@ -173,7 +174,16 @@ dependencies {
     compile 'org.mozilla.telemetry:telemetry:1.1.1'
 
     compile 'com.adjust.sdk:adjust-android:4.11.4'
-    compile 'com.google.android.gms:play-services-analytics:10.2.6' // Required by Adjust
+    compile 'com.google.android.gms:play-services-analytics:'+ rootProject.firebaseVersion// Required by Adjust
+
+    compile 'com.google.firebase:firebase-core:'+ rootProject.firebaseVersion
+    compile 'com.google.firebase:firebase-config:' + rootProject.firebaseVersion
+    compile 'com.google.firebase:firebase-messaging:' + rootProject.firebaseVersion
+    compile 'com.google.firebase:firebase-crash:' + rootProject.firebaseVersion
+    compile('com.crashlytics.sdk.android:crashlytics:' + rootProject.crashlyticsVersion + '@aar') {
+        transitive = true
+    }
+    compile 'com.google.firebase:firebase-core:'+ rootProject.firebaseVersion
 
     compile 'com.airbnb.android:lottie:2.2.0'
     compile 'com.android.support:support-v4:' + rootProject.supportLibVersion;
@@ -544,3 +554,5 @@ task checkstyle(type: Checkstyle) {
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
+
+apply plugin: 'com.google.gms.google-services'

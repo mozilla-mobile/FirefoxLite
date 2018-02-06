@@ -100,6 +100,18 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <service
+            android:name=".notification.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".notification.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
         <!-- Custom Tabs Service is currently not registering the intent-filter before its ready.
              It should also be set to exported=true if you want to turn it on -->
         <service
