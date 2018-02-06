@@ -57,6 +57,7 @@
   <string name="first_run_page1_title">感谢您选择 %1$s</string>
   <string name="first_run_page1_text">由致力于建立一个自由且开放的网络的非营利组织 Mozilla 打造。</string>
   <string name="first_run_page2_title">浏览比以往更快</string>
+  <string name="first_run_page2_text">使用加速模式来阻止广告跟踪，以便您可以更快地浏览。如果网站呈现有破损，只需在菜单中的关掉加速模式。</string>
   <string name="first_run_page3_title">节省流量 = 节省金钱</string>
   <string name="first_run_page3_text">屏蔽跟踪广告不止能加快浏览速度，还可以节约流量。如果您还屏蔽了图像，那么流量节约则更加显著。</string>
   <string name="first_run_page4_title">无比强大的截图功能</string>
@@ -70,6 +71,7 @@
   <string name="label_menu_share">分享</string>
   <string name="label_menu_my_shots">我的截图</string>
   <string name="label_menu_capture_page">截取网页</string>
+  <string name="label_menu_turbo_mode">加速模式</string>
   <string name="label_menu_block_ads">屏蔽广告</string>
   <string name="label_menu_block_image">屏蔽图像</string>
   <string name="label_menu_settings">设置</string>
