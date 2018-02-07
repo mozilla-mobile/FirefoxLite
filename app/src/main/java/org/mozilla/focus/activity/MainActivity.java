@@ -353,9 +353,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         boolean didShowRateDialog = history.contains(Settings.Event.ShowRateAppDialog);
         boolean didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog);
-        boolean didPostSurvey = history.contains(Settings.Event.PostSurveyNotification);
+        boolean isSurveyEnabled = AppConfigWrapper.isSurveyNotificationEnabled() &&
+                !history.contains(Settings.Event.PostSurveyNotification);
 
-        if (!didShowRateDialog || !didShowShareDialog || !didPostSurvey) {
+        if (!didShowRateDialog || !didShowShareDialog || isSurveyEnabled) {
             history.add(Settings.Event.AppCreate);
         }
         int appCreateCount = history.getCount(Settings.Event.AppCreate);
@@ -370,8 +371,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             TelemetryWrapper.showPromoteShareDialog();
         }
 
-        if (appCreateCount >= AppConfigWrapper.getSurveyNotificationLaunchTimeThreshold() &&
-                !didPostSurvey) {
+        if (isSurveyEnabled &&
+                appCreateCount >= AppConfigWrapper.getSurveyNotificationLaunchTimeThreshold()) {
             postSurveyNotification();
             history.add(Settings.Event.PostSurveyNotification);
         }
