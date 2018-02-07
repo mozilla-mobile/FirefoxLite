@@ -373,6 +373,8 @@ def getEnabledLocales() {
 
     // en-US is the default language (in "values") and therefore needs to be added separately
     langs << "\"en-US\""
+    // Remove zh-CN since we have it in our source code but we currently don't want it packaged.
+    langs.remove("\"zh-CN\"")
 
     return langs
 }
