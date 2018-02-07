@@ -7,6 +7,8 @@ package org.mozilla.focus.tabs;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +38,8 @@ public class TabsSession {
 
     private List<Tab> tabs = new LinkedList<>();
 
+    private Notifier notifier;
+
     /**
      * Index to refer a tab which is 'focused' by this session. When this index be changed, session
      * should hoist current tab as well.
@@ -53,6 +57,9 @@ public class TabsSession {
 
     public TabsSession(@NonNull Activity activity) {
         this.activity = activity;
+
+        this.notifier = new Notifier(activity);
+        this.notifier.setChromeListener(sDefaultListener);
     }
 
     /**
@@ -111,9 +118,6 @@ public class TabsSession {
 
     /**
      * Add a tab to tail and create TabView for it, then hoist this new tab.
-     * <p>
-     * This is asynchronous call.
-     * TODO: make it asynchronous
      *
      * @param url initial url for this tab
      * @return index for created tab
@@ -124,9 +128,6 @@ public class TabsSession {
 
     /**
      * Add a tab to tail and create TabView for it.
-     * <p>
-     * This is asynchronous call.
-     * TODO: make it asynchronous
      *
      * @param url   initial url for this tab
      * @param hoist true to hoist this tab after creation
@@ -142,9 +143,6 @@ public class TabsSession {
 
     /**
      * To remove a tab from list.
-     * <p>
-     * This is asynchronous call.
-     * TODO: make it asynchronous
      *
      * @param idx the index of tab to be removed.
      */
@@ -167,9 +165,6 @@ public class TabsSession {
 
     /**
      * To hoist a tab from list.
-     * <p>
-     * This is asynchronous call.
-     * TODO: make it asynchronous
      *
      * @param idx the index of tab to be hoisted.
      */
@@ -216,6 +211,7 @@ public class TabsSession {
      */
     public void setTabsChromeListener(@Nullable TabsChromeListener listener) {
         tabsChromeListener = (listener == null) ? sDefaultListener : listener;
+        this.notifier.setChromeListener(this.tabsChromeListener);
     }
 
     /**
@@ -290,11 +286,9 @@ public class TabsSession {
     }
 
     private void hoistTab(final Tab tab) {
-        if (tab != null && tab.getTabView() == null) {
-            tab.createView(activity);
-        }
-
-        tabsChromeListener.onTabHoist(tab);
+        final Message msg = notifier.obtainMessage(Notifier.MSG_HOIST_TAB);
+        msg.obj = tab;
+        notifier.sendMessage(msg);
     }
 
     class TabViewClientImpl extends TabViewClient {
@@ -357,7 +351,7 @@ public class TabsSession {
                 return false;
             }
 
-            final int index = addTabInternal(null, true);
+            final int index = addTabInternal(null, false);
             final Tab tab = tabs.get(index);
             if (tab == null) {
                 // FIXME: why null?
@@ -418,6 +412,44 @@ public class TabsSession {
         @Override
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             tabsChromeListener.onGeolocationPermissionsShowPrompt(source, origin, callback);
+        }
+    }
+
+    /**
+     * A class to attach to UI thread for sending message.
+     */
+    private static class Notifier extends Handler {
+        static final int MSG_HOIST_TAB = 0x1001;
+
+        private Activity activity;
+        private TabsChromeListener chromeListener;
+
+        Notifier(@NonNull final Activity activity) {
+            super(Looper.getMainLooper());
+            this.activity = activity;
+        }
+
+        @Override
+        public void handleMessage(final Message msg) {
+            switch (msg.what) {
+                case MSG_HOIST_TAB:
+                    hoistTab((Tab) msg.obj);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void setChromeListener(TabsChromeListener listener) {
+            this.chromeListener = listener;
+        }
+
+        private void hoistTab(final Tab tab) {
+            if (tab != null && tab.getTabView() == null) {
+                tab.createView(this.activity);
+            }
+
+            this.chromeListener.onTabHoist(tab);
         }
     }
 
