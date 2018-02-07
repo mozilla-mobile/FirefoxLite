@@ -19,7 +19,6 @@ import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.IWebView;
-import org.mozilla.focus.webkit.WebkitView;
 
 /**
  * Base implementation for fragments that use an IWebView instance. Based on Android's WebViewFragment.
@@ -97,17 +96,17 @@ public abstract class WebFragment extends LocaleAwareFragment {
     }
 
     @Override
-    public void onPause() {
-        webView.onPause();
-
-        super.onPause();
-    }
-
-    @Override
     public void onResume() {
         webView.onResume();
 
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        webView.onPause();
+
+        super.onPause();
     }
 
     @Override
@@ -130,18 +129,6 @@ public abstract class WebFragment extends LocaleAwareFragment {
     }
 
     @Override
-    public void onDestroy() {
-        // only remove webView in onDestroy since onSaveInstanceState access webView
-        // and the callback might be invoked before onDestroyView
-        if (webView != null) {
-            webView.destroy();
-            webView = null;
-        }
-
-        super.onDestroy();
-    }
-
-    @Override
     public void onDestroyView() {
         isWebViewAvailable = false;
 
@@ -155,6 +142,18 @@ public abstract class WebFragment extends LocaleAwareFragment {
         }
 
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        // only remove webView in onDestroy since onSaveInstanceState access webView
+        // and the callback might be invoked before onDestroyView
+        if (webView != null) {
+            webView.destroy();
+            webView = null;
+        }
+
+        super.onDestroy();
     }
 
     /**
