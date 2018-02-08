@@ -40,8 +40,8 @@ android {
 
         def nevercode_build = System.getenv()["NEVERCODE_BUILD"]
         if (nevercode_build) {
-            // bump 2000 to avoid build number collision with buddybuild
-            def nevercode_build_number = String.valueOf(System.getenv()["NEVERCODE_BUILD_NUMBER"].toInteger() + 2000)
+            // bump 3000 to avoid build number collision with buddybuild
+            def nevercode_build_number = String.valueOf(System.getenv()["NEVERCODE_BUILD_NUMBER"].toInteger() + 3000)
             versionCode nevercode_build_number.toInteger()
             versionNameSuffix "(" + nevercode_build_number + ")"
         }
