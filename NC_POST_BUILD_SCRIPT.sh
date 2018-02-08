@@ -5,7 +5,7 @@ set -e # Exit (and fail) immediately if any command in this scriptfails
 python tools/metrics/apk_size.py
 
 git reset --hard
-./gradlew app:test
+./gradlew app:test -x app:testFocusWebkitReleaseUnitTest
 
 # skip CODECOV
 #bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
