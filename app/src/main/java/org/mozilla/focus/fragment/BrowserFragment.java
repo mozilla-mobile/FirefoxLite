@@ -396,6 +396,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         final View searchBtn = view.findViewById(R.id.btn_search);
         final View homeBtn = view.findViewById(R.id.btn_home);
         final View menuBtn = view.findViewById(R.id.btn_menu);
+        final View captureBtn = view.findViewById(R.id.btn_capture);
         if (searchBtn != null) {
             searchBtn.setOnClickListener(this);
         }
@@ -404,6 +405,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
         if (menuBtn != null) {
             menuBtn.setOnClickListener(this);
+        }
+        if (menuBtn != null) {
+            captureBtn.setOnClickListener(this);
         }
 
         siteIdentity = (ImageView) view.findViewById(R.id.site_identity);
@@ -890,6 +894,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             case R.id.btn_menu:
                 notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
                 TelemetryWrapper.showMenuToolbar();
+                break;
+            case R.id.btn_capture:
+                onCaptureClicked();
+                // FIXME: 2/8/18 Is the telemetry supposed to share the v1 capture button?
+                TelemetryWrapper.clickToolbarCapture();
                 break;
             case R.id.customtab_close:
                 BrowsingSession.getInstance().clearCustomTabConfig();
