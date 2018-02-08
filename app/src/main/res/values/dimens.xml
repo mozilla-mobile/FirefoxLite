@@ -45,4 +45,6 @@
 
     <dimen name="menu_layout_margin">14dp</dimen>
     <dimen name="firstrun_icon_bottom_margin">20dp</dimen>
+    <dimen name="fixed_menu_height">48dp</dimen>
+    <dimen name="fixed_menu_horizontal_margin">40dp</dimen>
 </resources>
