@@ -175,18 +175,11 @@
                 android:visibility="gone"/>
         </RelativeLayout>
         <RelativeLayout
-            style="@style/BottomMenuButtonContainerWithMargin"
+            style="@style/BottomMenuButtonContainer"
             android:id="@+id/action_share">
             <View
                 style="@style/MenuButtonIcon"
                 android:background="@drawable/menu_share"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/capture_page"
-            style="@style/BottomMenuButtonContainer">
-            <View
-                style="@style/MenuButtonIcon"
-                android:background="@drawable/action_capture"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
