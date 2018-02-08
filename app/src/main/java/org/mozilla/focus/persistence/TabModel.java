@@ -7,14 +7,12 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import java.util.UUID;
-
 @Entity(tableName = "tabs")
 public class TabModel {
 
     @Ignore
-    public TabModel(String parentId, String title, String url) {
-        this(UUID.randomUUID().toString(), parentId, title, url, "", "");
+    public TabModel(String id, String parentId, String title, String url) {
+        this(id, parentId, title, url, "", "");
     }
 
     public TabModel(String id, String parentId, String title, String url, String thumbnailUri, String webViewStateUri) {
