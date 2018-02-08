@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btn_home"
+    style="@style/MainMenuButton"
+    android:tint="@android:color/white"
+    android:src="@drawable/menu_home" />
