@@ -71,7 +71,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View nextButton;
     private View loadingButton;
     private View shareButton;
-    private View captureButton;
     private View refreshIcon;
     private View stopIcon;
 
@@ -319,7 +318,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
         shareButton = menu.findViewById(R.id.action_share);
-        captureButton = menu.findViewById(R.id.capture_page);
         refreshIcon = menu.findViewById(R.id.action_refresh);
         stopIcon = menu.findViewById(R.id.action_stop);
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
@@ -348,7 +346,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
         setEnable(shareButton, browserFragment != null);
-        setEnable(captureButton, hasLoadedPage);
     }
 
     private boolean isTurboEnabled() {
@@ -449,7 +446,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.action_next:
             case R.id.action_loading:
             case R.id.action_share:
-            case R.id.capture_page:
                 onMenuBrowsingItemClicked(v);
                 break;
             default:
@@ -505,11 +501,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 onShraeClicked(browserFragment);
                 TelemetryWrapper.clickToolbarShare();
                 break;
-            case R.id.capture_page:
-                Settings.getInstance(this).setScreenshotOnBoardingDone();
-                onCapturePageClicked(browserFragment);
-                TelemetryWrapper.clickToolbarCapture();
-                break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
                         " only for known ids");
@@ -553,10 +544,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onNextClicked(final BrowserFragment browserFragment) {
         browserFragment.goForward();
-    }
-
-    private void onCapturePageClicked(final BrowserFragment browserFragment) {
-        browserFragment.onCaptureClicked();
     }
 
     private void onRefreshClicked(final BrowserFragment browserFragment) {
