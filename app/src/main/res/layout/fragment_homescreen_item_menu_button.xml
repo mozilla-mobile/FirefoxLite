@@ -1,38 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="@dimen/fixed_menu_height"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentEnd="true"
-    android:gravity="center|bottom">
-
-    <ImageButton
-        android:visibility="invisible"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/round_rectangle_ripple"
-        android:src="@drawable/menu_home" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
+    android:layout_gravity="center"
+    android:layout_alignParentBottom="true">
+    <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="76dp"
-        android:layout_marginStart="76dp"
-        android:src="@drawable/action_search"
-        app:fabSize="normal"/>
+        android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"
+        android:layout_marginStart="@dimen/fixed_menu_horizontal_margin"
+        android:layout_width="match_parent">
+        <include
+            layout="@layout/button_open_tab_tray_white" />
 
-    <ImageButton
-        android:id="@+id/btn_menu"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/round_rectangle_ripple"
-        android:src="@drawable/action_menu"
-        android:tint="@android:color/white" />
+        <include
+            layout="@layout/button_open_new_tab"
+            android:visibility="invisible" />
 
-</LinearLayout>
+        <include
+            layout="@layout/button_search"
+            android:visibility="invisible" />
+
+        <include
+            layout="@layout/button_capture"
+            android:visibility="invisible" />
+
+        <include
+            layout="@layout/button_more_white" />
+    </org.mozilla.focus.widget.EqualDistributeRow>
+</FrameLayout>
