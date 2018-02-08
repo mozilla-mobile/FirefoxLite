@@ -23,6 +23,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,12 +55,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
+import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
@@ -92,6 +95,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         BackKeyHandleable, ScreenshotObserver.OnScreenshotListener {
 
     public static final String FRAGMENT_TAG = "browser";
+    private static final Handler HANDLER = new Handler();
 
     private static final int ANIMATION_DURATION = 300;
     private static final String ARGUMENT_URL = "url";
@@ -163,6 +167,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private static final int ACTION_DOWNLOAD = 0;
     private static final int ACTION_PICK_FILE = 1;
     private static final int ACTION_GEO_LOCATION = 2;
+    private static final int ACTION_CAPTURE = 3;
+
+    private boolean hasPendingScreenCaptureTask = false;
 
 
     @Override
@@ -199,6 +206,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                     case ACTION_GEO_LOCATION:
                         showGeolocationPermissionPrompt();
                         break;
+                    case ACTION_CAPTURE:
+                        showLoadingAndCapture();
+                        break;
                     default:
                         throw new IllegalArgumentException("Unknown actionId");
                 }
@@ -215,8 +225,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 }
             }
 
-            @Override
-            public void doActionGranted(String permission, int actionId, Parcelable params) {
+            private void actionCaptureGranted() {
+                hasPendingScreenCaptureTask = true;
+            }
+
+            private void doActionGrantedOrSetting(String permission, int actionId, Parcelable params) {
                 switch (actionId) {
                     case ACTION_DOWNLOAD:
                         actionDownloadGranted(params);
@@ -226,6 +239,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                         break;
                     case ACTION_GEO_LOCATION:
                         showGeolocationPermissionPrompt();
+                        break;
+                    case ACTION_CAPTURE:
+                        actionCaptureGranted();
                         break;
                     default:
                         throw new IllegalArgumentException("Unknown actionId");
@@ -233,20 +249,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
 
             @Override
+            public void doActionGranted(String permission, int actionId, Parcelable params) {
+                doActionGrantedOrSetting(permission, actionId, params);
+            }
+
+            @Override
             public void doActionSetting(String permission, int actionId, Parcelable params) {
-                switch (actionId) {
-                    case ACTION_DOWNLOAD:
-                        actionDownloadGranted(params);
-                        break;
-                    case ACTION_PICK_FILE:
-                        actionPickFileGranted();
-                        break;
-                    case ACTION_GEO_LOCATION:
-                        showGeolocationPermissionPrompt();
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unknown actionId");
-                }
+                doActionGrantedOrSetting(permission, actionId, params);
             }
 
             @Override
@@ -266,6 +275,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                             rejectGeoRequest();
                         }
                         break;
+                    case ACTION_CAPTURE:
+                        // Do nothing
+                        break;
                     default:
                         throw new IllegalArgumentException("Unknown actionId");
                 }
@@ -273,7 +285,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             @Override
             public int getDoNotAskAgainDialogString(int actionId) {
-                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
+                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE || actionId == ACTION_CAPTURE) {
                     return R.string.permission_dialog_msg_storage;
                 } else if (actionId == ACTION_GEO_LOCATION) {
                     return R.string.permission_dialog_msg_location;
@@ -288,7 +300,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
 
             private int getAskAgainSnackBarString(int actionId) {
-                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE) {
+                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE || actionId == ACTION_CAPTURE) {
                     return R.string.permission_toast_storage;
                 } else if (actionId == ACTION_GEO_LOCATION) {
                     return R.string.permission_toast_location;
@@ -301,6 +313,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             public void requestPermissions(int actionId) {
                 switch (actionId) {
                     case ACTION_DOWNLOAD:
+                    case ACTION_CAPTURE:
                         BrowserFragment.this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, actionId);
                         break;
                     case ACTION_PICK_FILE:
@@ -337,6 +350,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void onResume() {
         tabsSession.resume();
         super.onResume();
+        if (hasPendingScreenCaptureTask) {
+            showLoadingAndCapture();
+            hasPendingScreenCaptureTask = false;
+        }
         if (Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
             screenshotObserver = new ScreenshotObserver(getActivity(), this);
             screenshotObserver.start();
@@ -441,6 +458,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 fileChooseAction = null;
             }
         }
+    }
+
+    public void onCaptureClicked() {
+        permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, null);
     }
 
     private void initialiseNormalBrowserUi() {
@@ -578,6 +599,93 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
      */
     public void setIsLoadingListener(final LoadStateListener listener) {
         loadStateListenerWeakReference = new WeakReference<>(listener);
+    }
+
+    private void showLoadingAndCapture() {
+        if (!isResumed()) {
+            return;
+        }
+        hasPendingScreenCaptureTask = false;
+        final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
+        capturingFragment.show(getChildFragmentManager(), "capturingFragment");
+
+        final int WAIT_INTERVAL = 150;
+        // Post delay to wait for Dialog to show
+        HANDLER.postDelayed(new CaptureRunnable(getContext(), this, capturingFragment, getActivity().findViewById(R.id.container)), WAIT_INTERVAL);
+    }
+
+    private static final class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, BrowserFragment.ScreenshotCallback {
+
+        final WeakReference<Context> refContext;
+        final WeakReference<BrowserFragment> refBrowserFragment;
+        final WeakReference<ScreenCaptureDialogFragment> refScreenCaptureDialogFragment;
+        final WeakReference<View> refContainerView;
+
+        CaptureRunnable(Context context, BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
+            super(context);
+            refContext = new WeakReference<>(context);
+            refBrowserFragment = new WeakReference<>(browserFragment);
+            refScreenCaptureDialogFragment = new WeakReference<>(screenCaptureDialogFragment);
+            refContainerView = new WeakReference<>(container);
+        }
+
+        @Override
+        public void run() {
+            BrowserFragment browserFragment = refBrowserFragment.get();
+            if (browserFragment == null) {
+                return;
+            }
+            if (browserFragment.capturePage(this)) {
+                //  onCaptureComplete called
+            } else {
+                //  Capture failed
+                ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
+                if (screenCaptureDialogFragment != null) {
+                    screenCaptureDialogFragment.dismiss();
+                }
+                promptScreenshotResult(R.string.screenshot_failed);
+            }
+        }
+
+        @Override
+        public void onCaptureComplete(String title, String url, Bitmap bitmap) {
+            Context context = refContext.get();
+            if (context == null) {
+                return;
+            }
+
+            execute(title, url, bitmap);
+        }
+
+        @Override
+        protected void onPostExecute(final String path) {
+            ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
+            if (screenCaptureDialogFragment == null) {
+                cancel(true);
+                return;
+            }
+            final int captureResultResource = TextUtils.isEmpty(path) ? R.string.screenshot_failed : R.string.screenshot_saved;
+            screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    promptScreenshotResult(captureResultResource);
+                }
+            });
+            if (TextUtils.isEmpty(path)) {
+                screenCaptureDialogFragment.dismiss();
+            } else {
+                screenCaptureDialogFragment.dismiss(true);
+            }
+        }
+
+        private void promptScreenshotResult(int snackbarTitleId) {
+            Context context = refContext.get();
+            if (context == null) {
+                return;
+            }
+            Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void updateIsLoading(final boolean isLoading) {
