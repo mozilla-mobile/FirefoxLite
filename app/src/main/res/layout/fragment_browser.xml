@@ -78,14 +78,15 @@
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </FrameLayout>
-
-    <FrameLayout
+    <include layout="@layout/fragment_browser_item_menu_button" />
+    <!--<FrameLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="bottom"
-        tools:background="#88FF88">
+        tools:background="#88FF88">-->
 
         <!-- divider between bottom and web-vew -->
+    <!--
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -137,6 +138,7 @@
 
         </LinearLayout>
     </FrameLayout>
+-->
 
 
     <FrameLayout
