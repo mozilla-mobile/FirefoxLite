@@ -5,25 +5,19 @@
 
 package org.mozilla.focus.activity;
 
-import android.Manifest;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -31,7 +25,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.os.BuildCompat;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -42,14 +35,10 @@ import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.fragment.ListPanelDialog;
-import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
-import org.mozilla.focus.permission.PermissionHandle;
-import org.mozilla.focus.permission.PermissionHandler;
-import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -69,14 +58,12 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
-    private static final Handler HANDLER = new Handler();
 
     private String pendingUrl;
 
@@ -96,7 +83,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private BroadcastReceiver uiMessageReceiver;
     private static boolean sIsNewCreated = true;
 
-    private PermissionHandler permissionHandler;
     private static final int ACTION_CAPTURE = 0;
 
     @Override
@@ -110,74 +96,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         initBroadcastReceivers();
 
         mediator = new MainMediator(this);
-        permissionHandler = new PermissionHandler(new PermissionHandle() {
-            @Override
-            public void doActionDirect(String permission, int actionId, Parcelable params) {
-                if (actionId == ACTION_CAPTURE) {
-                    BrowserFragment browserFragment = getBrowserFragment();
-                    if (browserFragment == null || !browserFragment.isVisible()) {
-                        return;
-                    }
-                    showLoadingAndCapture(browserFragment);
-                }
-            }
-
-            private void doCaptureGranted() {
-                BrowserFragment browserFragment = getBrowserFragment();
-                if (browserFragment == null || !browserFragment.isVisible()) {
-                    return;
-                }
-                hasPendingScreenCaptureTask = true;
-            }
-
-            @Override
-            public void doActionGranted(String permission, int actionId, Parcelable params) {
-                if (actionId == ACTION_CAPTURE) {
-                    doCaptureGranted();
-                }
-            }
-
-            @Override
-            public void doActionSetting(String permission, int actionId, Parcelable params) {
-                if (actionId == ACTION_CAPTURE) {
-                    doCaptureGranted();
-                }
-            }
-
-            @Override
-            public void doActionNoPermission(String permission, int actionId, Parcelable params) {
-                // Do nothing
-            }
-
-            @Override
-            public int getDoNotAskAgainDialogString(int actionId) {
-                if (actionId == ACTION_CAPTURE ) {
-                    return R.string.permission_dialog_msg_storage;
-                } else {
-                    throw new IllegalArgumentException("Unknown Action");
-                }
-            }
-
-            @Override
-            public Snackbar makeAskAgainSnackBar(int actionId) {
-                return PermissionHandler.makeAskAgainSnackBar(MainActivity.this, findViewById(R.id.container), getAskAgainSnackBarString(actionId));
-            }
-
-            private int getAskAgainSnackBarString(int actionId) {
-                if (actionId == ACTION_CAPTURE ) {
-                    return R.string.permission_toast_storage;
-                } else {
-                    throw new IllegalArgumentException("Unknown Action");
-                }
-            }
-
-            @Override
-            public void requestPermissions(int actionId) {
-                if (actionId == ACTION_CAPTURE) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, actionId);
-                }
-            }
-        });
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -208,17 +126,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             sIsNewCreated = false;
             onNewCreate();
         }
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        permissionHandler.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        permissionHandler.onSaveInstanceState(outState);
-        super.onSaveInstanceState(outState);
     }
 
     private void initBroadcastReceivers() {
@@ -278,13 +185,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onPostResume() {
         super.onPostResume();
         safeForFragmentTransactions = true;
-        if (hasPendingScreenCaptureTask) {
-            final BrowserFragment browserFragment = getBrowserFragment();
-            if (browserFragment != null && browserFragment.isVisible()) {
-                showLoadingAndCapture(browserFragment);
-            }
-            hasPendingScreenCaptureTask = false;
-        }
     }
 
     @Override
@@ -607,7 +507,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.capture_page:
                 Settings.getInstance(this).setScreenshotOnBoardingDone();
-                onCapturePageClicked();
+                onCapturePageClicked(browserFragment);
                 TelemetryWrapper.clickToolbarCapture();
                 break;
             default:
@@ -655,16 +555,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         browserFragment.goForward();
     }
 
+    private void onCapturePageClicked(final BrowserFragment browserFragment) {
+        browserFragment.onCaptureClicked();
+    }
+
     private void onRefreshClicked(final BrowserFragment browserFragment) {
         browserFragment.reload();
     }
 
     private void onStopClicked(final BrowserFragment browserFragment) {
         browserFragment.stop();
-    }
-
-    private void onCapturePageClicked() {
-        permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, null);
     }
 
     @Override
@@ -691,103 +591,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         // For turbo mode, a automatic refresh is done when we disable block image.
     }
 
-    private static final class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, BrowserFragment.ScreenshotCallback {
-
-        final WeakReference<Context> refContext;
-        final WeakReference<BrowserFragment> refBrowserFragment;
-        final WeakReference<ScreenCaptureDialogFragment> refScreenCaptureDialogFragment;
-        final WeakReference<View> refContainerView;
-
-        CaptureRunnable(Context context, BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
-            super(context);
-            refContext = new WeakReference<>(context);
-            refBrowserFragment = new WeakReference<>(browserFragment);
-            refScreenCaptureDialogFragment = new WeakReference<>(screenCaptureDialogFragment);
-            refContainerView = new WeakReference<>(container);
-        }
-
-        @Override
-        public void run() {
-            BrowserFragment browserFragment = refBrowserFragment.get();
-            if (browserFragment == null) {
-                return;
-            }
-            if (browserFragment.capturePage(this)) {
-                //  onCaptureComplete called
-            } else {
-                //  Capture failed
-                ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
-                if (screenCaptureDialogFragment != null) {
-                    screenCaptureDialogFragment.dismiss();
-                }
-                promptScreenshotResult(R.string.screenshot_failed);
-            }
-        }
-
-        @Override
-        public void onCaptureComplete(String title, String url, Bitmap bitmap) {
-            Context context = refContext.get();
-            if (context == null) {
-                return;
-            }
-
-            execute(title, url, bitmap);
-        }
-
-        @Override
-        protected void onPostExecute(final String path) {
-            ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
-            if (screenCaptureDialogFragment == null) {
-                cancel(true);
-                return;
-            }
-            final int captureResultResource = TextUtils.isEmpty(path) ? R.string.screenshot_failed : R.string.screenshot_saved;
-            screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    promptScreenshotResult(captureResultResource);
-                }
-            });
-            if (TextUtils.isEmpty(path)) {
-                screenCaptureDialogFragment.dismiss();
-            } else {
-                screenCaptureDialogFragment.dismiss(true);
-            }
-        }
-
-        private void promptScreenshotResult(int snackbarTitleId) {
-            Context context = refContext.get();
-            if (context == null) {
-                return;
-            }
-            Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void showLoadingAndCapture(final BrowserFragment browserFragment) {
-        if (!safeForFragmentTransactions) {
-            return;
-        }
-        hasPendingScreenCaptureTask = false;
-        final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
-        capturingFragment.show(getSupportFragmentManager(), "capturingFragment");
-
-        final int WAIT_INTERVAL = 150;
-        // Post delay to wait for Dialog to show
-        HANDLER.postDelayed(new CaptureRunnable(MainActivity.this, browserFragment, capturingFragment, findViewById(R.id.container)), WAIT_INTERVAL);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        permissionHandler.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        permissionHandler.onActivityResult(this, requestCode, resultCode, data);
 
         if (requestCode == ScreenshotViewerActivity.REQ_CODE_VIEW_SCREENSHOT) {
             if (resultCode == ScreenshotViewerActivity.RESULT_NOTIFY_SCREENSHOT_IS_DELETED) {
