@@ -62,6 +62,7 @@ import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
+import org.mozilla.focus.screenshot.CaptureRunnable;
 import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.tabs.Tab;
@@ -614,83 +615,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         HANDLER.postDelayed(new CaptureRunnable(getContext(), this, capturingFragment, getActivity().findViewById(R.id.container)), WAIT_INTERVAL);
     }
 
-    private static final class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, BrowserFragment.ScreenshotCallback {
-
-        final WeakReference<Context> refContext;
-        final WeakReference<BrowserFragment> refBrowserFragment;
-        final WeakReference<ScreenCaptureDialogFragment> refScreenCaptureDialogFragment;
-        final WeakReference<View> refContainerView;
-
-        CaptureRunnable(Context context, BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
-            super(context);
-            refContext = new WeakReference<>(context);
-            refBrowserFragment = new WeakReference<>(browserFragment);
-            refScreenCaptureDialogFragment = new WeakReference<>(screenCaptureDialogFragment);
-            refContainerView = new WeakReference<>(container);
-        }
-
-        @Override
-        public void run() {
-            BrowserFragment browserFragment = refBrowserFragment.get();
-            if (browserFragment == null) {
-                return;
-            }
-            if (browserFragment.capturePage(this)) {
-                //  onCaptureComplete called
-            } else {
-                //  Capture failed
-                ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
-                if (screenCaptureDialogFragment != null) {
-                    screenCaptureDialogFragment.dismiss();
-                }
-                promptScreenshotResult(R.string.screenshot_failed);
-            }
-        }
-
-        @Override
-        public void onCaptureComplete(String title, String url, Bitmap bitmap) {
-            Context context = refContext.get();
-            if (context == null) {
-                return;
-            }
-
-            execute(title, url, bitmap);
-        }
-
-        @Override
-        protected void onPostExecute(final String path) {
-            ScreenCaptureDialogFragment screenCaptureDialogFragment = refScreenCaptureDialogFragment.get();
-            if (screenCaptureDialogFragment == null) {
-                cancel(true);
-                return;
-            }
-            final int captureResultResource = TextUtils.isEmpty(path) ? R.string.screenshot_failed : R.string.screenshot_saved;
-            screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    promptScreenshotResult(captureResultResource);
-                }
-            });
-            if (TextUtils.isEmpty(path)) {
-                screenCaptureDialogFragment.dismiss();
-            } else {
-                screenCaptureDialogFragment.dismiss(true);
-            }
-        }
-
-        private void promptScreenshotResult(int snackbarTitleId) {
-            Context context = refContext.get();
-            if (context == null) {
-                return;
-            }
-            Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
     private void updateIsLoading(final boolean isLoading) {
         this.isLoading = isLoading;
-        final LoadStateListener currentListener = loadStateListenerWeakReference.get();
+        final BrowserFragment.LoadStateListener currentListener = loadStateListenerWeakReference.get();
         if (currentListener != null) {
             currentListener.isLoadingChanged(isLoading);
         }
