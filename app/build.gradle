@@ -28,6 +28,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         resConfigs "en", "in"
         versionCode 1
+        // all three numbers in versionName should contain only one digit to avoid build number overflow
         versionName "1.0.3"
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
         multiDexEnabled true
