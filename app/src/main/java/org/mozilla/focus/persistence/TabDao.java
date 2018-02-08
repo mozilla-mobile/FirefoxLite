@@ -15,10 +15,7 @@ public interface TabDao {
     List<TabModel> getTabs();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTab(TabModel tab);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTabs(List<TabModel> tabs);
+    void insertTabs(TabModel... tab);
 
     @Delete
     void deleteTab(TabModel tab);
