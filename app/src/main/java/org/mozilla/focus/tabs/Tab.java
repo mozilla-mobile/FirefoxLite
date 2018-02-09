@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.web.WebViewProvider;
+
+import java.util.UUID;
 
 public class Tab {
 
@@ -34,7 +37,7 @@ public class Tab {
     private DownloadCallback downloadCallback;
 
     public Tab() {
-        this(new TabModel());
+        this(new TabModel(UUID.randomUUID().toString(), ""));
     }
 
     public Tab(@NonNull TabModel model) {
@@ -42,14 +45,14 @@ public class Tab {
     }
 
     public TabModel getSaveModel() {
-        if (tabModel.webViewState == null) {
-            tabModel.webViewState = new Bundle();
+        if (tabModel.getWebViewState() == null) {
+            tabModel.setWebViewState(new Bundle());
         }
 
         if (tabView != null) {
-            tabModel.title = tabView.getTitle();
-            tabModel.url = tabView.getUrl();
-            tabView.saveViewState(tabModel.webViewState);
+            tabModel.setTitle(tabView.getTitle());
+            tabModel.setUrl(tabView.getUrl());
+            tabView.saveViewState(tabModel.getWebViewState());
         }
 
         return tabModel;
@@ -61,7 +64,7 @@ public class Tab {
 
     public String getTitle() {
         if (tabView == null) {
-            return tabModel.title;
+            return tabModel.getTitle();
         } else {
             return tabView.getTitle();
         }
@@ -73,7 +76,7 @@ public class Tab {
                 Log.d(TAG, "trying to get url from a tab which has no view nor model");
                 return null;
             } else {
-                return tabModel.url;
+                return tabModel.getUrl();
             }
         } else {
             return tabView.getUrl();
@@ -137,11 +140,11 @@ public class Tab {
     }
 
     /* package */ void setTitle(@NonNull String title) {
-        tabModel.title = title;
+        tabModel.setTitle(title);
     }
 
     /* package */ void setUrl(@NonNull String url) {
-        tabModel.url = url;
+        tabModel.setUrl(url);
     }
 
     /* package */ TabView createView(@NonNull final Activity activity) {
@@ -152,8 +155,8 @@ public class Tab {
             tabView.setChromeClient(tabChromeClient);
             tabView.setDownloadCallback(downloadCallback);
 
-            if (tabModel.webViewState != null) {
-                tabView.restoreViewState(tabModel.webViewState);
+            if (tabModel.getWebViewState() != null) {
+                tabView.restoreViewState(tabModel.getWebViewState());
             }
         }
 
@@ -167,7 +170,7 @@ public class Tab {
             view.setDrawingCacheEnabled(true);
             final Bitmap bitmap = tabView.getDrawingCache(true);
             if (bitmap != null) {
-                tabModel.thumbnail = Bitmap.createBitmap(bitmap);
+                tabModel.setThumbnail(Bitmap.createBitmap(bitmap));
                 bitmap.recycle();
             }
             view.setDrawingCacheEnabled(false);
@@ -176,7 +179,7 @@ public class Tab {
 
     // TODO: not implement completely
     private Bitmap getThumbnail() {
-        return tabModel.thumbnail;
+        return tabModel.getThumbnail();
     }
 
 }
