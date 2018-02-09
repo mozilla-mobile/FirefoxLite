@@ -89,6 +89,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
         @Override
         protected List<CharSequence> doInBackground(String... strings) {
+            TrafficStats.setThreadStatsTag(SocketTags.SEARCH_SUGGESTION);
             try {
                 return HttpRequest.get(new URL(strings[0]), strings[1]);
             } catch (MalformedURLException ex) {
