@@ -79,9 +79,9 @@
   <string name="permission_dialog_setting">设置</string>
   <string name="permission_dialog_not_now">暂不</string>
   <string name="permission_dialog_msg_location">缺少权限。请允许 Firefox Rocket 获取您的位置。</string>
-  <string name="permission_toast_location">无法获取您的位置信息，请在系统设置中允许 Firefox Rocket 使用您的位置权限。</string>
+  <string name="permission_toast_location">位置信息不可用。请允许访问您的位置信息。</string>
   <string name="permission_dialog_msg_storage">缺少权限。请允许 Firefox Rocket 访问您的位置。</string>
-  <string name="permission_toast_storage">存储不可用。请在设置中允许 Firefox Rocket 使用您的存储权限。</string>
+  <string name="permission_toast_storage">存储不可用。请允许在您的设备上存储照片和文件。</string>
   <string name="geolocation_dialog_message">%1$s \n想要获取您的位置。</string>
   <string name="geolocation_dialog_allow">允许</string>
   <string name="geolocation_dialog_block">阻止</string>
