@@ -55,7 +55,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.locale.LocaleAwareFragment;
@@ -63,12 +62,12 @@ import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
-import org.mozilla.focus.screenshot.ScreenshotCaptureTask;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
+import org.mozilla.focus.tabs.TabsSessionHost;
 import org.mozilla.focus.tabs.TabsViewListener;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
@@ -422,14 +421,16 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
 
-        // TODO: in subsequent implementation, we should let Activity hold TabsSession instance
-        if (tabsSession == null) {
-            tabsSession = new TabsSession(getActivity());
-            final TabsContentListener listener = new TabsContentListener();
-            tabsSession.setTabsViewListener(listener);
-            tabsSession.setTabsChromeListener(listener);
-            tabsSession.setDownloadCallback(downloadCallback);
+        Activity activity = getActivity();
+        if (activity instanceof TabsSessionHost) {
+            tabsSession = ((TabsSessionHost) activity).getTabsSession();
+        } else {
+            throw new RuntimeException("parent activity should implement TabsSessionHost");
         }
+        final TabsContentListener listener = new TabsContentListener();
+        tabsSession.setTabsViewListener(listener);
+        tabsSession.setTabsChromeListener(listener);
+        tabsSession.setDownloadCallback(downloadCallback);
 
         return view;
     }

@@ -41,6 +41,8 @@ import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
+import org.mozilla.focus.tabs.TabsSession;
+import org.mozilla.focus.tabs.TabsSessionHost;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -62,7 +64,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        TabsSessionHost {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
 
@@ -82,6 +86,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private BroadcastReceiver uiMessageReceiver;
     private static boolean sIsNewCreated = true;
+
+    private TabsSession tabsSession;
 
     private static final int ACTION_CAPTURE = 0;
 
@@ -779,5 +785,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
             }
         });
+    }
+
+    @Override
+    public TabsSession getTabsSession() {
+        // TODO: Find a proper place to allocate and init TabsSession
+        if (tabsSession == null) {
+            tabsSession = new TabsSession(this);
+        }
+        return tabsSession;
     }
 }
