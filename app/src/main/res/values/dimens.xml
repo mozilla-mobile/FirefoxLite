@@ -47,4 +47,9 @@
     <dimen name="firstrun_icon_bottom_margin">20dp</dimen>
     <dimen name="fixed_menu_height">48dp</dimen>
     <dimen name="fixed_menu_horizontal_margin">40dp</dimen>
+
+    <!-- Tab Tray -->
+    <dimen name="tab_tray_peekHeight">300dp</dimen>
+    <dimen name="tab_tray_item_height">64dp</dimen>
+    <dimen name="tab_tray_item_space">4dp</dimen>
 </resources>
