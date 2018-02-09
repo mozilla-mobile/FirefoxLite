@@ -40,7 +40,7 @@ android {
         }
 
         if (System.getenv()["NEVERCODE_BUILD"]) {
-            if (System.getenv()["NEVERCODE_BRANCH"] == "master") {
+            if (System.getenv()["NEVERCODE_BRANCH"] == "master" || System.getenv()["NEVERCODE_BRANCH"].matches("release/\\d(\\.\\d)+")) {
                 def multiplier = 1000000
                 def build_number = versionName.replaceAll("\\D", "").substring(0, 2).toInteger();
                 def nevercode_build_number = String.valueOf(build_number * multiplier + System.getenv()["NEVERCODE_BUILD_NUMBER"].toInteger() % multiplier)
