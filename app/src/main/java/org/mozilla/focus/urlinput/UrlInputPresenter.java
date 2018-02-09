@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.urlinput;
 
+import android.net.TrafficStats;
 import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.mozilla.focus.network.SocketTags;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.utils.UrlUtils;
 
@@ -20,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -71,25 +74,35 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
             queryTask = null;
         }
 
-        try {
-            queryTask = new AsyncTask<URL, Void, List<CharSequence>>() {
-                @Override
-                protected List<CharSequence> doInBackground(URL... urls) {
-                    return HttpRequest.get(urls[0], userAgent);
-                }
+        queryTask = new QueryTask(view).execute(searchEngine.buildSearchSuggestionUrl(input.toString()), userAgent);
 
-                @Override
-                protected void onPostExecute(List<CharSequence> strings) {
-                    if (view != null) {
-                        view.setSuggestions(strings);
-                    }
-                }
-            }.execute(new URL(searchEngine.buildSearchSuggestionUrl(input.toString())));
-        } catch (MalformedURLException ex) {
-            // Do nothing
+
+    }
+
+    private static class QueryTask extends AsyncTask<String, Void, List<CharSequence>> {
+
+        private WeakReference<UrlInputContract.View> viewWeakReference;
+
+        QueryTask(UrlInputContract.View view) {
+            viewWeakReference = new WeakReference<>(view);
         }
 
+        @Override
+        protected List<CharSequence> doInBackground(String... strings) {
+            try {
+                return HttpRequest.get(new URL(strings[0]), strings[1]);
+            } catch (MalformedURLException ex) {
+                return null;
+            }
+        }
 
+        @Override
+        protected void onPostExecute(List<CharSequence> strings) {
+            UrlInputContract.View view = viewWeakReference.get();
+            if (view != null && strings != null) {
+                view.setSuggestions(strings);
+            }
+        }
     }
 
     private static class HttpRequest {
