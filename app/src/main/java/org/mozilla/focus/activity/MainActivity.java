@@ -56,6 +56,7 @@ import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
+import org.mozilla.focus.widget.TabTrayFragment;
 
 import java.io.File;
 import java.util.List;
@@ -346,6 +347,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
         setEnable(shareButton, browserFragment != null);
+    }
+
+    private void showTabTray() {
+        TabTrayFragment fragment = TabTrayFragment.newInstance();
+        fragment.show(getSupportFragmentManager(), TabTrayFragment.FRAGMENT_TAG);
     }
 
     private boolean isTurboEnabled() {
@@ -680,6 +686,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                         TelemetryWrapper.showPromoteScreenShotDialog();
                     }
                 });
+                break;
+            case SHOW_TAB_TRAY:
+                this.showTabTray();
+                break;
+            default:
                 break;
         }
     }

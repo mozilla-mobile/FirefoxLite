@@ -34,6 +34,8 @@ import java.util.List;
 
 public class TabTrayFragment extends DialogFragment implements TabTrayContract.View {
 
+    public static final String FRAGMENT_TAG = "tab_tray";
+
     private static final boolean ENABLE_BACKGROUND_ALPHA_TRANSITION = true;
     private static final boolean ENABLE_SWIPE_TO_DISMISS = false;
 
