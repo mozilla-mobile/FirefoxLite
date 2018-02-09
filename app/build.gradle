@@ -101,10 +101,6 @@ android {
         }
     }
 
-    lintOptions {
-        disable 'RestrictedApi' // https://issuetracker.google.com/issues/63614424 It's related to Room and can be removed after using com.android.tools.build:gradle:3.0.0 or above.
-    }
-
     // used by Room, to test migrations
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
