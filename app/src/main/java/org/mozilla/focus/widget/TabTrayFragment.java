@@ -107,7 +107,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             }
         });
 
-        view.setOnClickListener(new View.OnClickListener() {
+        background.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
@@ -126,7 +126,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void showTabs(List<Tab> tabs) {
+    public void updateData(List<Tab> tabs) {
         adapter.setData(tabs);
     }
 
@@ -152,32 +152,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void tabRemoved(int tabPosition, final int currentFocusPosition,  final int nextFocusPosition) {
-        if (tabPosition == currentFocusPosition) {
-            adapter.setFocusedTab(-1);
-        } else {
-            adapter.setFocusedTab(nextFocusPosition);
-        }
-
-        adapter.notifyItemRemoved(tabPosition);
-        adapter.notifyItemChanged(nextFocusPosition);
-
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
-                if (animator == null) {
-                    return;
-                }
-
-                animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
-                    @Override
-                    public void onAnimationsFinished() {
-                        adapter.setFocusedTab(nextFocusPosition);
-                    }
-                });
-            }
-        });
+    public void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, int nextFocusPos) {
+        adapter.notifyItemRemoved(removePos);
+        adapter.notifyItemChanged(modifiedFocusPos);
+        adapter.setFocusedTab(nextFocusPos);
     }
 
     @Nullable
@@ -359,7 +337,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             return null;
         }
     }
-//
+
 //    private static class TabsModel implements TabTrayContract.Model {
 //        private List<Tab> tabs = new ArrayList<>();
 //        private int currentTabPosition;
