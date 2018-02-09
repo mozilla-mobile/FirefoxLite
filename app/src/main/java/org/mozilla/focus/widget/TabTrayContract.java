@@ -17,11 +17,11 @@ class TabTrayContract {
     }
 
     interface View {
-        void showTabs(List<Tab> tabs);
+        void updateData(List<Tab> tabs);
         void setFocusedTab(int tabPosition);
         void showFocusedTab(int tabPosition);
         void tabSwitched(int tabPosition);
-        void tabRemoved(int tabPosition, int currentFocusPosition, int nextFocusPosition);
+        void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, int nextFocusPos);
     }
 
     interface Model {
