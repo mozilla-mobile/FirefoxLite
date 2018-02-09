@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.widget;
 
+import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +29,10 @@ import android.view.animation.Interpolator;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
+import org.mozilla.focus.tabs.TabsSession;
+import org.mozilla.focus.tabs.TabsSessionHost;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +66,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
 
-        presenter = new TabTrayPresenter(this, new TabsModel());
+        presenter = new TabTrayPresenter(this, new TabsSessionModel(this));
     }
 
     @Nullable
@@ -303,117 +307,100 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
     }
 
-//    private static class TabsSessionModel implements TabTrayContract.Model {
-//        private WeakReference<TabsSession> weakSession;
-//
-//        TabsSessionModel(TabTrayFragment fragment) {
-//            weakSession = new WeakReference<>(locateTabsSession(fragment));
-//        }
-//
-//        @Override
-//        public List<Tab> getTabs() {
-//            TabsSession session = weakSession.get();
-//            if (session == null) {
-//                return new ArrayList<>();
-//            }
-//            return session.getTabs();
-//        }
-//
-//        @Override
-//        public int getTabCount() {
-//            TabsSession session = weakSession.get();
-//            if (session == null) {
-//                return 0;
-//            }
-//            return session.getTabsCount();
-//        }
-//
-//        @Override
-//        public int getCurrentTabPosition() {
-//            TabsSession session = weakSession.get();
-//            if (session == null) {
-//                return -1;
-//            }
-//            return session.getTabs().indexOf(session.getCurrentTab());
-//        }
-//
-//        @Override
-//        public void switchTab(int tabIdx) {
-//            TabsSession session = weakSession.get();
-//            if (session == null) {
-//                return;
-//            }
-//            session.switchToTab(tabIdx);
-//        }
-//
-//        @Override
-//        public void removeTab(Tab tab) {
-//            TabsSession session = weakSession.get();
-//            if (session == null) {
-//                return;
-//            }
-//            session.removeTab(session.getTabs().indexOf(tab));
-//        }
-//
-//        @Nullable
-//        private TabsSession locateTabsSession(TabTrayFragment fragment) {
-//            // TODO: Improve how we get TabsSession instance
-//            MainActivity activity = (MainActivity) fragment.getActivity();
-//            if (activity == null) {
-//                return null;
-//            }
-//
-//            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-//            Fragment browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-//            if (browserFragment == null) {
-//                return null;
-//            }
-//
-//            return ((BrowserFragment) browserFragment).tabsSession;
-//        }
-//    }
+    private static class TabsSessionModel implements TabTrayContract.Model {
+        private WeakReference<TabsSession> weakSession;
 
-    private static class TabsModel implements TabTrayContract.Model {
-        private List<Tab> tabs = new ArrayList<>();
-        private int currentTabPosition;
-
-        TabsModel() {
-            for (int i = 0; i < 15; i++) {
-                Tab tab = new Tab();
-                tabs.add(tab);
-            }
-            currentTabPosition = 8;
+        TabsSessionModel(TabTrayFragment fragment) {
+            weakSession = new WeakReference<>(locateTabsSession(fragment));
         }
 
         @Override
         public List<Tab> getTabs() {
-            return tabs;
+            TabsSession session = weakSession.get();
+            if (session == null) {
+                return new ArrayList<>();
+            }
+            return session.getTabs();
         }
 
         @Override
         public int getCurrentTabPosition() {
-            return currentTabPosition;
+            TabsSession session = weakSession.get();
+            if (session == null) {
+                return -1;
+            }
+            return session.getTabs().indexOf(session.getCurrentTab());
         }
 
         @Override
         public void switchTab(int tabIdx) {
-            currentTabPosition = tabIdx;
+            TabsSession session = weakSession.get();
+            if (session == null) {
+                return;
+            }
+            session.switchToTab(tabIdx);
         }
 
         @Override
         public void removeTab(int tabPosition) {
-            Tab focusedTab = tabs.get(currentTabPosition);
-
-            if (tabPosition == currentTabPosition) {
-                if (tabPosition > 0) {
-                    currentTabPosition = tabPosition - 1;
-                }
-                tabs.remove(tabPosition);
-
-            } else {
-                tabs.remove(tabPosition);
-                currentTabPosition = tabs.indexOf(focusedTab);
+            TabsSession session = weakSession.get();
+            if (session == null) {
+                return;
             }
+            session.removeTab(tabPosition);
+        }
+
+        @Nullable
+        private TabsSession locateTabsSession(TabTrayFragment fragment) {
+            Activity activity = fragment.getActivity();
+            if (activity instanceof TabsSessionHost) {
+                return ((TabsSessionHost) activity).getTabsSession();
+            }
+            return null;
         }
     }
+//
+//    private static class TabsModel implements TabTrayContract.Model {
+//        private List<Tab> tabs = new ArrayList<>();
+//        private int currentTabPosition;
+//
+//        TabsModel() {
+//            for (int i = 0; i < 15; i++) {
+//                Tab tab = new Tab();
+//                tabs.add(tab);
+//            }
+//            currentTabPosition = 8;
+//        }
+//
+//        @Override
+//        public List<Tab> getTabs() {
+//            return tabs;
+//        }
+//
+//        @Override
+//        public int getCurrentTabPosition() {
+//            return currentTabPosition;
+//        }
+//
+//        @Override
+//        public void switchTab(int tabIdx) {
+//            currentTabPosition = tabIdx;
+//        }
+//
+//        @Override
+//        public void removeTab(int tabPosition) {
+//            Tab focusedTab = tabs.get(currentTabPosition);
+//
+//            if (tabPosition == currentTabPosition) {
+//                if (tabPosition > 0) {
+//                    currentTabPosition = tabPosition - 1;
+//                }
+//                tabs.remove(tabPosition);
+//
+//            } else {
+//                tabs.remove(tabPosition);
+//                currentTabPosition = tabs.indexOf(focusedTab);
+//            }
+//        }
+//    }
 }
