@@ -28,7 +28,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         resConfigs "en", "in"
         versionCode 1
-        // all three numbers in versionName should contain only one digit to avoid build number overflow
+        // The first two digits will be used for build versions
         versionName "1.0.3"
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
         multiDexEnabled true
@@ -39,11 +39,11 @@ android {
             versionNameSuffix "(" + buddy_build_number + ")"
         }
 
-        def nevercode_build = System.getenv()["NEVERCODE_BUILD"]
-        if (nevercode_build) {
+        if (System.getenv()["NEVERCODE_BUILD"]) {
             if (System.getenv()["NEVERCODE_BRANCH"] == "master") {
-                def build_number = versionName.replaceAll("\\.", "").toInteger();
-                def nevercode_build_number = String.valueOf(build_number * 100000 + System.getenv()["NEVERCODE_BUILD_NUMBER"].toInteger())
+                def multiplier = 1000000
+                def build_number = versionName.replaceAll("\\D", "").substring(0, 2).toInteger();
+                def nevercode_build_number = String.valueOf(build_number * multiplier + System.getenv()["NEVERCODE_BUILD_NUMBER"].toInteger() % multiplier)
                 versionCode nevercode_build_number.toInteger()
                 versionNameSuffix "(" + nevercode_build_number + ")"
             }
