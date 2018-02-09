@@ -15,16 +15,20 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_dark_background" />
+        android:background="@color/tabTrayBackground" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tab_tray"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_light_background"
+        android:background="@color/tabTrayForeground"
+        android:paddingTop="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="48dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
-        android:paddingBottom="48dp"
+        app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
         tools:listitem="@layout/item_tab_tray" />
 
     <LinearLayout
@@ -36,8 +40,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorListPanelBottomDivider" />
-
+            android:background="@color/tabTrayItemOutlineNormal"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="48dp"
