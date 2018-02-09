@@ -3,38 +3,36 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="1dp"
+    android:layout_height="@dimen/tab_tray_item_height"
+    android:background="@drawable/tab_tray_item_bkg"
     tools:ignore="contentDescription">
-
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/website_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/tab_tray_item_bkg"
-        android:padding="12dp">
-        <ImageView
-            android:id="@+id/website_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="12dp"
-            tools:background="@android:color/black"/>
+        android:layout_toEndOf="@id/website_icon"
+        android:layout_toStartOf="@+id/close_button"
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
         <TextView
             android:id="@+id/website_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/website_icon"
-            android:layout_toStartOf="@+id/close_button"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
+            android:layout_marginBottom="1dp"
+            android:textColor="@color/tabTrayItemTitle"
+            android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
@@ -43,25 +41,23 @@
             android:id="@+id/website_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/website_title"
-            android:layout_alignStart="@id/website_title"
-            android:layout_alignEnd="@id/website_title"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/tabTrayItemSubTitle"
             android:textSize="12sp"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
             tools:text="website_subtitle" />
-        <TextView
-            android:id="@+id/close_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="X"
-            android:textSize="20sp"
-            android:textColor="@color/cardview_dark_background"
-            android:layout_alignParentEnd="true"
-            tools:ignore="HardcodedText" />
-    </RelativeLayout>
-
-</android.support.v7.widget.CardView>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/close_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true">
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/action_close_tab" />
+    </FrameLayout>
+</RelativeLayout>
