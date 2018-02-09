@@ -14,9 +14,13 @@ import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
 
+import java.util.List;
+
 public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHolder> {
 
-    private TabTrayContract.Model model;
+    private List<Tab> tabs;
+    private int focusedTabPosition = -1;
+
     private TabClickListener tabClickListener;
 
     @Override
@@ -24,8 +28,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         final ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_tab_tray, parent, false));
 
-        InternalTabClickListener listener = new InternalTabClickListener(holder,
-                tabClickListener, model);
+        InternalTabClickListener listener = new InternalTabClickListener(holder, tabClickListener);
 
         holder.itemView.setOnClickListener(listener);
         holder.closeButton.setOnClickListener(listener);
@@ -34,24 +37,29 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.itemView.setSelected(position == model.getCurrentTabPosition());
+        holder.itemView.setSelected(position == this.focusedTabPosition);
 
-        Tab tab = model.getTabs().get(position);
+        Tab tab = tabs.get(position);
         holder.websiteTitle.setText(tab.getTitle());
         holder.websiteSubtitle.setText(tab.getUrl());
     }
 
     @Override
     public int getItemCount() {
-        return this.model.getTabCount();
+        return tabs.size();
     }
 
     void setTabClickListener(TabClickListener tabClickListener) {
         this.tabClickListener = tabClickListener;
     }
 
-    void setDataModel(TabTrayContract.Model model) {
-        this.model = model;
+    void setData(List<Tab> tabs) {
+        this.tabs = tabs;
+    }
+
+    void setFocusedTab(int tabPosition) {
+        this.focusedTabPosition = tabPosition;
+        notifyItemChanged(tabPosition);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -70,15 +78,12 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     static class InternalTabClickListener implements View.OnClickListener {
-        private TabTrayContract.Model model;
         private ViewHolder holder;
         private TabClickListener tabClickListener;
 
-        InternalTabClickListener(ViewHolder holder, TabClickListener tabClickListener,
-                                 TabTrayContract.Model model) {
+        InternalTabClickListener(ViewHolder holder, TabClickListener tabClickListener) {
             this.holder = holder;
             this.tabClickListener = tabClickListener;
-            this.model = model;
         }
 
         @Override
@@ -96,11 +101,11 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         private void dispatchOnClick(View v, int position) {
             switch (v.getId()) {
                 case R.id.root_view:
-                    tabClickListener.onItemClick(model.getTabs().get(position));
+                    tabClickListener.onItemClick(position);
                     break;
 
                 case R.id.close_button:
-                    tabClickListener.onCloseClick(model.getTabs().get(position));
+                    tabClickListener.onCloseClick(position);
                     break;
 
                 default:
@@ -110,19 +115,19 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     public interface TabClickListener {
-        void onItemClick(Tab tab);
-        void onCloseClick(Tab tab);
+        void onItemClick(int tabPosition);
+        void onCloseClick(int tabPosition);
     }
 
     public static class TabClickAdapter implements TabClickListener {
 
         @Override
-        public void onItemClick(Tab tab) {
+        public void onItemClick(int tabPosition) {
 
         }
 
         @Override
-        public void onCloseClick(Tab tab) {
+        public void onCloseClick(int tabPosition) {
 
         }
     }
