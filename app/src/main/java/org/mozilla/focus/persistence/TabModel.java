@@ -4,11 +4,17 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = "tabs")
 public class TabModel {
+
+    @Ignore
+    public TabModel(String id, String parentId) {
+        this(id, parentId, "", "", "", "");
+    }
 
     @Ignore
     public TabModel(String id, String parentId, String title, String url) {
@@ -46,6 +52,12 @@ public class TabModel {
 
     @ColumnInfo(name = "webview_state_uri")
     private String webViewStateUri;
+
+    /**
+     * Thumbnail bitmap for tab previewing.
+     */
+    @Ignore
+    private Bitmap thumbnail;
 
     /**
      * ViewState for this Tab. Usually to fill by WebView.saveViewState(Bundle)
@@ -104,6 +116,14 @@ public class TabModel {
         this.webViewStateUri = webViewStateUri;
     }
 
+    public Bitmap getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(Bitmap thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     public Bundle getWebViewState() {
         return webViewState;
     }
@@ -121,6 +141,7 @@ public class TabModel {
                 ", url='" + url + '\'' +
                 ", thumbnailUri='" + thumbnailUri + '\'' +
                 ", webViewStateUri='" + webViewStateUri + '\'' +
+                ", thumbnail=" + thumbnail +
                 ", webViewState=" + webViewState +
                 '}';
     }

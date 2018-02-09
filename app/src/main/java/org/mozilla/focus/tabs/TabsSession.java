@@ -17,6 +17,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.web.DownloadCallback;
 
 import java.util.ArrayList;
