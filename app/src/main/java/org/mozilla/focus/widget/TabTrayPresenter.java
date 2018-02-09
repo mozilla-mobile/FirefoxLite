@@ -5,6 +5,10 @@
 
 package org.mozilla.focus.widget;
 
+import org.mozilla.focus.tabs.Tab;
+
+import java.util.List;
+
 public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     private TabTrayContract.View view;
@@ -13,7 +17,7 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
     TabTrayPresenter(TabTrayContract.View view, TabTrayContract.Model model) {
         this.view = view;
         this.model = model;
-        view.showTabs(model.getTabs());
+        view.updateData(model.getTabs());
     }
 
     @Override
@@ -30,8 +34,16 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void tabCloseClicked(int tabPosition) {
-        int oldFocusTab = model.getCurrentTabPosition();
+        List<Tab> oldTabs = model.getTabs();
+        int oldFocusPos = model.getCurrentTabPosition();
+        Tab oldFocusTab = oldTabs.get(oldFocusPos);
+
         model.removeTab(tabPosition);
-        view.tabRemoved(tabPosition, oldFocusTab, model.getCurrentTabPosition());
+
+        List<Tab> newTabs = model.getTabs();
+        int newFocusTab = model.getCurrentTabPosition();
+
+        view.tabRemoved(tabPosition, oldFocusPos, newTabs.indexOf(oldFocusTab), newFocusTab);
+        view.updateData(newTabs);
     }
 }
