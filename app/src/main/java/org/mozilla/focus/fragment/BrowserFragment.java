@@ -395,7 +395,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
         final View searchBtn = view.findViewById(R.id.btn_search);
-        final View homeBtn = view.findViewById(R.id.btn_home);
+        final View homeBtn = view.findViewById(R.id.btn_tab_tray);
         final View menuBtn = view.findViewById(R.id.btn_menu);
         final View captureBtn = view.findViewById(R.id.btn_capture);
         if (searchBtn != null) {
@@ -889,9 +889,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 TelemetryWrapper.clickToolbarSearch();
                 break;
-            case R.id.btn_home:
-                notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
-                TelemetryWrapper.clickToolbarHome();
+            case R.id.btn_tab_tray:
+                notifyParent(FragmentListener.TYPE.SHOW_TAB_TRAY, null);
+                TelemetryWrapper.showTabTrayToolbar();
                 break;
             case R.id.btn_menu:
                 notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
