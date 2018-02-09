@@ -6,6 +6,7 @@
 package org.mozilla.focus.widget;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,14 +37,13 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabTrayFragment extends DialogFragment implements TabTrayContract.View {
+public class TabTrayFragment extends DialogFragment implements TabTrayContract.View,
+        View.OnClickListener {
 
     public static final String FRAGMENT_TAG = "tab_tray";
 
     private static final boolean ENABLE_BACKGROUND_ALPHA_TRANSITION = true;
     private static final boolean ENABLE_SWIPE_TO_DISMISS = false;
-
-    private static final int TAB_ITEM_MARGIN = 20;
 
     private TabTrayContract.Presenter presenter;
 
@@ -90,29 +90,15 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         adapter.setTabClickListener(tabClickListener);
-
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new TabTrayItemDecoration(TAB_ITEM_MARGIN));
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
+        initRecyclerViewStyle(recyclerView);
         new ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView);
 
         setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
 
-        newTabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        background.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-        });
+        newTabBtn.setOnClickListener(this);
+        background.setOnClickListener(this);
 
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -123,6 +109,21 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.new_tab_button:
+                break;
+
+            case R.id.background:
+                setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override
@@ -202,6 +203,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         return rootView.getMeasuredHeight() / 2 + newTabBtn.getMeasuredHeight();
     }
 
+    private void initRecyclerViewStyle(RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new TabTrayItemDecoration(getContext()));
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+    }
+
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
         private Interpolator interpolator = new AccelerateInterpolator();
         private int collapseHeight = 0;
@@ -270,18 +278,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public static class TabTrayItemDecoration extends RecyclerView.ItemDecoration {
         private int margin;
 
-        TabTrayItemDecoration(int margin) {
-            this.margin = margin;
+        TabTrayItemDecoration(Context context) {
+            this.margin = context.getResources().getDimensionPixelSize(R.dimen.tab_tray_item_space);
         }
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.top = margin;
-            }
-            outRect.left = margin;
-            outRect.right = margin;
-            outRect.bottom = margin;
+            outRect.top = parent.getChildAdapterPosition(view) == 0 ? 0 : margin;
         }
     }
 
