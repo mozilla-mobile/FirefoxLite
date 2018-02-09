@@ -42,11 +42,12 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private static final int TAB_ITEM_MARGIN = 20;
 
     private TabTrayContract.Presenter presenter;
-    private TabTrayContract.Model model;
 
-    private RecyclerView recyclerView;
     private View newTabBtn;
     private View background;
+
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
 
     private TabTrayAdapter adapter = new TabTrayAdapter();
 
@@ -61,7 +62,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
 
-        presenter = new TabTrayPresenter(this, model = new TabsModel());
+        presenter = new TabTrayPresenter(this, new TabsModel());
     }
 
     @Nullable
@@ -85,10 +86,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         adapter.setTabClickListener(tabClickListener);
-        adapter.setDataModel(model);
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+        recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new TabTrayItemDecoration(TAB_ITEM_MARGIN));
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -115,10 +115,26 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             public boolean onPreDraw() {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
                 setCollapseHeight(calculateCollapseHeight(view));
-                recyclerView.scrollToPosition(model.getCurrentTabPosition());
+                presenter.viewReady();
                 return false;
             }
         });
+    }
+
+    @Override
+    public void showTabs(List<Tab> tabs) {
+        adapter.setData(tabs);
+    }
+
+    @Override
+    public void setFocusedTab(int tabPosition) {
+        adapter.setFocusedTab(tabPosition);
+    }
+
+    @Override
+    public void showFocusedTab(int tabPosition) {
+        layoutManager.scrollToPositionWithOffset(tabPosition,
+                recyclerView.getMeasuredHeight() / 2);
     }
 
     @Override
@@ -132,9 +148,32 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void tabRemoved(int tabPosition) {
+    public void tabRemoved(int tabPosition, final int currentFocusPosition,  final int nextFocusPosition) {
+        if (tabPosition == currentFocusPosition) {
+            adapter.setFocusedTab(-1);
+        } else {
+            adapter.setFocusedTab(nextFocusPosition);
+        }
+
         adapter.notifyItemRemoved(tabPosition);
-        adapter.notifyItemChanged(model.getCurrentTabPosition());
+        adapter.notifyItemChanged(nextFocusPosition);
+
+        uiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+                if (animator == null) {
+                    return;
+                }
+
+                animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
+                    @Override
+                    public void onAnimationsFinished() {
+                        adapter.setFocusedTab(nextFocusPosition);
+                    }
+                });
+            }
+        });
     }
 
     @Nullable
@@ -216,13 +255,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private TabTrayAdapter.TabClickListener tabClickListener = new TabTrayAdapter.TabClickAdapter() {
         @Override
-        public void onItemClick(Tab tab) {
-            presenter.tabClicked(tab);
+        public void onItemClick(int tabPosition) {
+            presenter.tabClicked(tabPosition);
         }
 
         @Override
-        public void onCloseClick(Tab tab) {
-            presenter.tabCloseClicked(tab);
+        public void onCloseClick(int tabPosition) {
+            presenter.tabCloseClicked(tabPosition);
         }
     };
 
@@ -242,7 +281,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            presenter.tabCloseClicked(model.getTabs().get(viewHolder.getAdapterPosition()));
+            presenter.tabCloseClicked(viewHolder.getAdapterPosition());
         }
     };
 
@@ -343,12 +382,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 Tab tab = new Tab();
                 tabs.add(tab);
             }
-            currentTabPosition = 10;
-        }
-
-        @Override
-        public int getTabCount() {
-            return tabs.size();
+            currentTabPosition = 8;
         }
 
         @Override
@@ -367,18 +401,17 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         @Override
-        public void removeTab(Tab tab) {
-            int removePos = tabs.indexOf(tab);
+        public void removeTab(int tabPosition) {
             Tab focusedTab = tabs.get(currentTabPosition);
 
-            if (removePos == currentTabPosition) {
-                if (removePos > 0) {
-                    currentTabPosition = removePos - 1;
+            if (tabPosition == currentTabPosition) {
+                if (tabPosition > 0) {
+                    currentTabPosition = tabPosition - 1;
                 }
-                tabs.remove(tabs.indexOf(tab));
+                tabs.remove(tabPosition);
 
             } else {
-                tabs.remove(tabs.indexOf(tab));
+                tabs.remove(tabPosition);
                 currentTabPosition = tabs.indexOf(focusedTab);
             }
         }
