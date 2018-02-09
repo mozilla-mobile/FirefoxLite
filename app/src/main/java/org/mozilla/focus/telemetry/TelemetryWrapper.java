@@ -374,6 +374,14 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.MENU, Value.HOME).queue();
     }
 
+    public static void showTabTrayHome() {
+        // TODO: Implementation needed
+    }
+
+    public static void showTabTrayToolbar() {
+        // TODO: Implementation needed
+    }
+
     public static void showMenuToolbar() {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.MENU, Value.TOOLBAR).queue();
     }

@@ -76,19 +76,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
+
         this.btnMenu = view.findViewById(R.id.btn_menu);
-        this.btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Activity parent = getActivity();
-                if (parent instanceof FragmentListener) {
-                    ((FragmentListener) parent).onNotified(HomeFragment.this,
-                            FragmentListener.TYPE.SHOW_MENU,
-                            null);
-                }
-                TelemetryWrapper.showMenuHome();
-            }
-        });
+        this.btnMenu.setOnClickListener(menuItemClickListener);
+        view.findViewById(R.id.btn_tab_tray).setOnClickListener(menuItemClickListener);
 
         this.fakeInput = (TextView) view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(new View.OnClickListener() {
@@ -365,4 +356,34 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             updateTopSitesData();
         }
     }
+
+    private View.OnClickListener menuItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Activity parent = getActivity();
+            if (parent instanceof FragmentListener) {
+                dispatchOnClick(v, (FragmentListener) parent);
+            }
+        }
+
+        private void dispatchOnClick(View view, FragmentListener listener) {
+            switch (view.getId()) {
+                case R.id.btn_menu:
+                    listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_MENU,
+                            null);
+                    TelemetryWrapper.showMenuHome();
+                    break;
+
+                case R.id.btn_tab_tray:
+                    listener.onNotified(HomeFragment.this,
+                            FragmentListener.TYPE.SHOW_TAB_TRAY,
+                            null);
+                    TelemetryWrapper.showTabTrayHome();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 }
