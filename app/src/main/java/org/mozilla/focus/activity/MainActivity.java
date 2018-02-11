@@ -43,6 +43,7 @@ import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionHost;
+import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -58,7 +59,6 @@ import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.focus.widget.TabTrayFragment;
 
 import java.io.File;
 import java.util.List;
