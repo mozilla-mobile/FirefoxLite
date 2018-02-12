@@ -120,9 +120,9 @@ public class TabsSession {
      * Add a tab to tail and create TabView for it, then hoist this new tab.
      *
      * @param url initial url for this tab
-     * @return index for created tab
+     * @return id for created tab
      */
-    public int addTab(@Nullable final String url) {
+    public String addTab(@Nullable final String url) {
         return addTab(url, true);
     }
 
@@ -131,11 +131,11 @@ public class TabsSession {
      *
      * @param url   initial url for this tab
      * @param hoist true to hoist this tab after creation
-     * @return index for created tab
+     * @return id for created tab
      */
-    public int addTab(@NonNull final String url, boolean hoist) {
+    public String addTab(@NonNull final String url, boolean hoist) {
         if (TextUtils.isEmpty(url)) {
-            return currentIdx;
+            return tabs.get(currentIdx).getId();
         }
 
         return addTabInternal(url, hoist);
@@ -144,14 +144,15 @@ public class TabsSession {
     /**
      * To remove a tab from list.
      *
-     * @param idx the index of tab to be removed.
+     * @param id the id of tab to be removed.
      */
-    public void removeTab(final int idx) {
-        if (idx < 0 || idx > tabs.size() - 1) {
+    public void removeTab(final String id) {
+        final int idx = getTabIndex(id);
+        final Tab tab = tabs.get(idx);
+        if (tab == null) {
             return;
         }
 
-        final Tab tab = tabs.remove(idx);
         tab.destroy();
 
         // removed one tab, now idx should refer to next one
@@ -166,9 +167,10 @@ public class TabsSession {
     /**
      * To hoist a tab from list.
      *
-     * @param idx the index of tab to be hoisted.
+     * @param id the id of tab to be hoisted.
      */
-    public void switchToTab(final int idx) {
+    public void switchToTab(final String id) {
+        final int idx = getTabIndex(id);
         if (idx < 0 || idx > tabs.size() - 1) {
             return;
         }
@@ -264,7 +266,7 @@ public class TabsSession {
         tab.setDownloadCallback(downloadCallback);
     }
 
-    private int addTabInternal(@Nullable final String url, boolean hoist) {
+    private String addTabInternal(@Nullable final String url, boolean hoist) {
         final Tab tab = new Tab();
 
         bindCallback(tab);
@@ -282,7 +284,22 @@ public class TabsSession {
         }
 
         tabsChromeListener.onTabCountChanged(tabs.size());
-        return tabs.indexOf(tab);
+        return tab.getId();
+    }
+
+    private Tab getTab(final @NonNull String id) {
+        final int index = getTabIndex(id);
+        return index == -1 ? null : tabs.get(index);
+    }
+
+    private int getTabIndex(final @NonNull String id) {
+        for (int i = 0; i < tabs.size(); i++) {
+            final Tab tab = tabs.get(i);
+            if (tab.getId().equals(id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void hoistTab(final Tab tab) {
@@ -351,8 +368,8 @@ public class TabsSession {
                 return false;
             }
 
-            final int index = addTabInternal(null, false);
-            final Tab tab = tabs.get(index);
+            final String id = addTabInternal(null, false);
+            final Tab tab = getTab(id);
             if (tab == null) {
                 // FIXME: why null?
                 return false;
@@ -372,8 +389,9 @@ public class TabsSession {
         public void onCloseWindow(WebView webView) {
             if (source.getTabView() == webView) {
                 for (int i = 0; i < tabs.size(); i++) {
-                    if (tabs.get(i).getTabView() == webView) {
-                        removeTab(i);
+                    final Tab tab = tabs.get(i);
+                    if (tab.getTabView() == webView) {
+                        removeTab(tab.getId());
                     }
                 }
             }
