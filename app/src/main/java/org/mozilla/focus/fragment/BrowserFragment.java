@@ -405,7 +405,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (menuBtn != null) {
             menuBtn.setOnClickListener(this);
         }
-        if (menuBtn != null) {
+        if (captureBtn != null) {
             captureBtn.setOnClickListener(this);
         }
 
