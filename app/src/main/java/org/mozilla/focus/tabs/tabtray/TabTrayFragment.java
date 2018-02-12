@@ -319,7 +319,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             if (session == null) {
                 return;
             }
-            session.switchToTab(tabIdx);
+            final List<Tab> tabs = session.getTabs();
+            session.switchToTab(tabs.get(tabIdx).getId());
         }
 
         @Override
@@ -328,7 +329,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             if (session == null) {
                 return;
             }
-            session.removeTab(tabPosition);
+            final List<Tab> tabs = session.getTabs();
+            session.removeTab(tabs.get(tabPosition).getId());
         }
 
         @Nullable
