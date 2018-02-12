@@ -25,9 +25,9 @@ public class MainMediator {
     // to define that, if there are two visible fragments, which one is top one.
     private final static String[] FRAGMENTS_SEQUENCE = {
             UrlInputFragment.FRAGMENT_TAG,
-            BrowserFragment.FRAGMENT_TAG,
             FirstrunFragment.FRAGMENT_TAG,
-            HomeFragment.FRAGMENT_TAG
+            HomeFragment.FRAGMENT_TAG,
+            BrowserFragment.FRAGMENT_TAG
     };
 
     // To indicate the Transaction is to hoist home fragment to user visible area.
@@ -70,8 +70,6 @@ public class MainMediator {
         FragmentTransaction clear = fragmentMgr.beginTransaction();
         clear = (urlInputFrg == null) ? clear : clear.remove(urlInputFrg);
         clear.commit();
-        // To hide HomeFragment silently, herr to wipe the transaction from back stack
-        fragmentMgr.popBackStackImmediate(HOIST_HOME_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
@@ -124,14 +122,8 @@ public class MainMediator {
                 .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
 
         if (browserFrg == null) {
-            // ensure HomeScreen is in the bottom, to match design spec
-            if (fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG) == null) {
-                prepareHomeScreen().commit();
-            }
-
             final Fragment freshFragment = this.activity.createBrowserFragment(url);
-            transaction.add(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG)
-                    .addToBackStack(BrowserFragment.FRAGMENT_TAG);
+            transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
         } else {
             // Reuse existing visible fragment - in this case we know the user is already browsing.
             // The fragment might exist if we "erased" a browsing session, hence we need to check
@@ -149,6 +141,9 @@ public class MainMediator {
                 browserFrg.loadUrl(url);
                 if (!browserFrg.isVisible()) {
                     transaction.replace(R.id.container, browserFrg, BrowserFragment.FRAGMENT_TAG);
+                } else {
+                    fragmentMgr.popBackStackImmediate(HomeFragment.FRAGMENT_TAG,
+                            FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
             }
         }
@@ -180,9 +175,8 @@ public class MainMediator {
         if ((topFragment == null) || FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
         } else {
-            // hoist home fragment and add to back stack, so back-key still works.
-            transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG)
-                    .addToBackStack(HOIST_HOME_FRAGMENT);
+            transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
+            transaction.addToBackStack(HomeFragment.FRAGMENT_TAG);
         }
 
         return transaction;
