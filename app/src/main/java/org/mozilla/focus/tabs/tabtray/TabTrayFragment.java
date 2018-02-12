@@ -17,11 +17,14 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetBehavior.BottomSheetCallback;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -98,7 +101,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
 
         newTabBtn.setOnClickListener(this);
-        background.setOnClickListener(this);
+        setupTapBackgroundToExpand();
 
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -114,10 +117,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.new_tab_button:
-                break;
-
-            case R.id.background:
-                setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
 
             default:
@@ -203,6 +202,33 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
+    }
+
+    private void setupTapBackgroundToExpand() {
+        final GestureDetectorCompat detector = new GestureDetectorCompat(getContext(),
+                new SimpleOnGestureListener() {
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onDown(MotionEvent e) {
+                        return true;
+                    }
+        });
+
+        background.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                boolean result = detector.onTouchEvent(event);
+                if (result) {
+                    v.performClick();
+                }
+                return result;
+            }
+        });
     }
 
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
