@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -33,11 +32,7 @@ import android.view.animation.Interpolator;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionHost;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TabTrayFragment extends DialogFragment implements TabTrayContract.View,
@@ -329,61 +324,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             } else if (itemPosition == fragment.adapter.getItemCount() - 1) {
                 outRect.bottom = fragment.newTabBtn.getMeasuredHeight() + padding;
             }
-        }
-    }
-
-    private static class TabsSessionModel implements TabTrayContract.Model {
-        private WeakReference<TabsSession> weakSession;
-
-        TabsSessionModel(TabTrayFragment fragment) {
-            weakSession = new WeakReference<>(locateTabsSession(fragment));
-        }
-
-        @Override
-        public List<Tab> getTabs() {
-            TabsSession session = weakSession.get();
-            if (session == null) {
-                return new ArrayList<>();
-            }
-            return session.getTabs();
-        }
-
-        @Override
-        public int getCurrentTabPosition() {
-            TabsSession session = weakSession.get();
-            if (session == null) {
-                return -1;
-            }
-            return session.getTabs().indexOf(session.getCurrentTab());
-        }
-
-        @Override
-        public void switchTab(int tabIdx) {
-            TabsSession session = weakSession.get();
-            if (session == null) {
-                return;
-            }
-            final List<Tab> tabs = session.getTabs();
-            session.switchToTab(tabs.get(tabIdx).getId());
-        }
-
-        @Override
-        public void removeTab(int tabPosition) {
-            TabsSession session = weakSession.get();
-            if (session == null) {
-                return;
-            }
-            final List<Tab> tabs = session.getTabs();
-            session.removeTab(tabs.get(tabPosition).getId());
-        }
-
-        @Nullable
-        private TabsSession locateTabsSession(TabTrayFragment fragment) {
-            Activity activity = fragment.getActivity();
-            if (activity instanceof TabsSessionHost) {
-                return ((TabsSessionHost) activity).getTabsSession();
-            }
-            return null;
         }
     }
 
