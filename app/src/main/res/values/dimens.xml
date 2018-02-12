@@ -51,5 +51,7 @@
     <!-- Tab Tray -->
     <dimen name="tab_tray_peekHeight">300dp</dimen>
     <dimen name="tab_tray_item_height">64dp</dimen>
-    <dimen name="tab_tray_item_space">4dp</dimen>
+    <dimen name="tab_tray_item_space">5dp</dimen>
+    <dimen name="tab_tray_padding">8dp</dimen>
+    <dimen name="tab_tray_new_tab_btn_height">48dp</dimen>
 </resources>

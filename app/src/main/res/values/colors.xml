@@ -76,6 +76,7 @@
     <color name="tabTrayBackground">#737373</color>
     <color name="tabTrayForeground">#f9f9fa</color>
     <color name="tabTrayItemBackground">@android:color/white</color>
+    <color name="tabTrayItemIconBackground">#b2b2b2</color>
     <color name="tabTrayItemOutlineNormal">#e4e4e4</color>
     <color name="tabTrayItemOutlineSelected">#0a84ff</color>
     <color name="tabTrayItemTitle">#272727</color>

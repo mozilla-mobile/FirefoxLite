@@ -22,10 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/tabTrayForeground"
-        android:paddingTop="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="48dp"
+        android:clipToPadding="false"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
         app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
@@ -43,7 +40,7 @@
             android:background="@color/tabTrayItemOutlineNormal"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/tab_tray_new_tab_btn_height"
             android:layout_gravity="bottom"
             android:gravity="center"
             android:background="@color/colorMenuBackground"
