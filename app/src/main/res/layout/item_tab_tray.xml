@@ -10,6 +10,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/tab_tray_item_height"
     android:background="@drawable/tab_tray_item_bkg"
+    android:outlineProvider="background"
+    android:elevation="1dp"
     tools:ignore="contentDescription">
     <ImageView
         android:id="@+id/website_icon"
@@ -18,7 +20,8 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@color/tabTrayItemIconBackground"
+        android:src="@drawable/favicon_default"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
