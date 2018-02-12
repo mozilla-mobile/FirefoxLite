@@ -393,14 +393,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
         final View searchBtn = view.findViewById(R.id.btn_search);
-        final View homeBtn = view.findViewById(R.id.btn_tab_tray);
+        final View tabTray = view.findViewById(R.id.btn_tab_tray);
+        final View newTabBtn = view.findViewById(R.id.btn_open_new_tab);
         final View menuBtn = view.findViewById(R.id.btn_menu);
         final View captureBtn = view.findViewById(R.id.btn_capture);
         if (searchBtn != null) {
             searchBtn.setOnClickListener(this);
         }
-        if (homeBtn != null) {
-            homeBtn.setOnClickListener(this);
+        if (tabTray != null) {
+            tabTray.setOnClickListener(this);
+        }
+        if (newTabBtn != null) {
+            newTabBtn.setOnClickListener(this);
         }
         if (menuBtn != null) {
             menuBtn.setOnClickListener(this);
@@ -887,6 +891,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             case R.id.btn_search:
                 notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 TelemetryWrapper.clickToolbarSearch();
+                break;
+            case R.id.btn_open_new_tab:
+                notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                // FIXME: 2018/2/12 new telemetry for 2.0 UI
                 break;
             case R.id.btn_tab_tray:
                 notifyParent(FragmentListener.TYPE.SHOW_TAB_TRAY, null);
