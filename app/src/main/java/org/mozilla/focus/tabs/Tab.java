@@ -62,6 +62,10 @@ public class Tab {
         return tabView;
     }
 
+    public String getId() {
+        return this.tabModel.getId();
+    }
+
     public String getTitle() {
         if (tabView == null) {
             return tabModel.getTitle();
