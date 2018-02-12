@@ -104,7 +104,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             @Override
             public boolean onPreDraw() {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
-                setCollapseHeight(calculateCollapseHeight(view));
                 presenter.viewReady();
                 return false;
             }
@@ -184,13 +183,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
     }
 
-    private void setCollapseHeight(int height) {
-        BottomSheetBehavior behavior = getBehavior(recyclerView);
-        if (behavior != null) {
-            behavior.setPeekHeight(height);
-        }
-    }
-
     private int getCollapseHeight() {
         BottomSheetBehavior behavior = getBehavior(recyclerView);
         if (behavior != null) {
@@ -199,20 +191,23 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         return 0;
     }
 
-    private int calculateCollapseHeight(View rootView) {
-        return rootView.getMeasuredHeight() / 2 + newTabBtn.getMeasuredHeight();
-    }
-
     private void initRecyclerViewStyle(RecyclerView recyclerView) {
         recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new TabTrayItemDecoration(getContext()));
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
+        Context context = getContext();
+        recyclerView.addItemDecoration(new ItemSpaceDecoration(context));
+        recyclerView.addItemDecoration(new TabTrayPaddingDecoration(context, this));
+
+        RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator) {
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+        }
     }
 
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
         private Interpolator interpolator = new AccelerateInterpolator();
-        private int collapseHeight = 0;
+        private int collapseHeight = -1;
 
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -275,16 +270,39 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
     };
 
-    public static class TabTrayItemDecoration extends RecyclerView.ItemDecoration {
+    public static class ItemSpaceDecoration extends RecyclerView.ItemDecoration {
         private int margin;
 
-        TabTrayItemDecoration(Context context) {
+        ItemSpaceDecoration(Context context) {
             this.margin = context.getResources().getDimensionPixelSize(R.dimen.tab_tray_item_space);
         }
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            outRect.top = parent.getChildAdapterPosition(view) == 0 ? 0 : margin;
+            int itemPosition = parent.getChildAdapterPosition(view);
+            outRect.top = itemPosition == 0 ? 0 : margin;
+        }
+    }
+
+    public static class TabTrayPaddingDecoration extends RecyclerView.ItemDecoration {
+        private TabTrayFragment fragment;
+        private int padding;
+
+        TabTrayPaddingDecoration(Context context, TabTrayFragment fragment) {
+            this.fragment = fragment;
+            this.padding = context.getResources().getDimensionPixelSize(R.dimen.tab_tray_padding);
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int itemPosition = parent.getChildAdapterPosition(view);
+            outRect.left = outRect.right = padding;
+
+            if (itemPosition == 0) {
+                outRect.top = padding;
+            } else if (itemPosition == fragment.adapter.getItemCount() - 1) {
+                outRect.bottom = fragment.newTabBtn.getMeasuredHeight() + padding;
+            }
         }
     }
 
