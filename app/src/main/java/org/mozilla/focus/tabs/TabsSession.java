@@ -273,7 +273,7 @@ public class TabsSession {
 
         // add to tail
         tabs.add(tab);
-        currentIdx = tabs.size() - 1;
+        currentIdx = hoist ? tabs.size() - 1 : currentIdx;
 
         if (!TextUtils.isEmpty(url)) {
             tab.createView(activity).loadUrl(url);

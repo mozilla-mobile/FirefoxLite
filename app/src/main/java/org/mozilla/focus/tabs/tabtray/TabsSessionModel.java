@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionHost;
+import org.mozilla.focus.tabs.TabsSessionProvider;
 
 import java.util.List;
 
@@ -47,9 +47,6 @@ class TabsSessionModel implements TabTrayContract.Model {
     @NonNull
     private TabsSession locateTabsSession(TabTrayFragment fragment) {
         Activity activity = fragment.getActivity();
-        if (activity instanceof TabsSessionHost) {
-            return ((TabsSessionHost) activity).getTabsSession();
-        }
-        throw new RuntimeException("host activity should implement TabsSessionHost");
+        return TabsSessionProvider.getOrThrow(activity);
     }
 }
