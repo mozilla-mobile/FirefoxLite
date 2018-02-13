@@ -67,7 +67,7 @@ import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionHost;
+import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.TabsViewListener;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
@@ -425,12 +425,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
 
-        Activity activity = getActivity();
-        if (activity instanceof TabsSessionHost) {
-            tabsSession = ((TabsSessionHost) activity).getTabsSession();
-        } else {
-            throw new RuntimeException("parent activity should implement TabsSessionHost");
-        }
+        tabsSession = TabsSessionProvider.getOrThrow(getActivity());
+
         final TabsContentListener listener = new TabsContentListener();
         tabsSession.setTabsViewListener(listener);
         tabsSession.setTabsChromeListener(listener);

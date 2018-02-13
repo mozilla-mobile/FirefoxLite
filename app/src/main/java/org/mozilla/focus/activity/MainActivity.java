@@ -42,7 +42,7 @@ import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionHost;
+import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
@@ -66,7 +66,7 @@ import java.util.Locale;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        TabsSessionHost {
+        TabsSessionProvider.SessionHost {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
 
