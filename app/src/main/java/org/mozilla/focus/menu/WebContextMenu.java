@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.menu;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +26,12 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.GetImgHeaderTask;
+import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabsSession;
+import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.web.DownloadCallback;
 
 public class WebContextMenu {
@@ -39,7 +43,7 @@ public class WebContextMenu {
         return titleView;
     }
 
-    public static Dialog show(final @NonNull Context context, final @NonNull DownloadCallback callback, final @NonNull TabView.HitTarget hitTarget) {
+    public static Dialog show(final @NonNull Activity activity, final @NonNull DownloadCallback callback, final @NonNull TabView.HitTarget hitTarget) {
         if (!(hitTarget.isLink || hitTarget.isImage)) {
             // We don't support any other classes yet:
             throw new IllegalStateException("WebContextMenu can only handle long-press on images and/or links.");
@@ -47,19 +51,19 @@ public class WebContextMenu {
 
         TelemetryWrapper.openWebContextMenuEvent();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         final View titleView;
         if (hitTarget.isLink) {
-            titleView = createTitleView(context, hitTarget.linkURL);
+            titleView = createTitleView(activity, hitTarget.linkURL);
         } else if (hitTarget.isImage) {
-            titleView = createTitleView(context, hitTarget.imageURL);
+            titleView = createTitleView(activity, hitTarget.imageURL);
         } else {
             throw new IllegalStateException("Unhandled long press target type");
         }
         builder.setCustomTitle(titleView);
 
-        final View view = LayoutInflater.from(context).inflate(R.layout.context_menu, (ViewGroup) null);
+        final View view = LayoutInflater.from(activity).inflate(R.layout.context_menu, (ViewGroup) null);
         builder.setView(view);
 
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -72,8 +76,9 @@ public class WebContextMenu {
         });
 
         final Dialog dialog = builder.create();
+        dialog.setOwnerActivity(activity);
 
-        final NavigationView menu = (NavigationView) view.findViewById(R.id.context_menu);
+        final NavigationView menu = view.findViewById(R.id.context_menu);
         setupMenuForHitTarget(dialog, menu, callback, hitTarget);
 
         dialog.show();
@@ -91,6 +96,10 @@ public class WebContextMenu {
                                               final @NonNull TabView.HitTarget hitTarget) {
         navigationView.inflateMenu(R.menu.menu_browser_context);
 
+        final String targetUrl = hitTarget.isLink ? hitTarget.linkURL : hitTarget.imageURL;
+        boolean canOpenInNewTab = canOpenInNewTab(dialog.getOwnerActivity(), targetUrl);
+        navigationView.getMenu().findItem(R.id.menu_new_tab).setVisible(canOpenInNewTab);
+
         navigationView.getMenu().findItem(R.id.menu_link_share).setVisible(hitTarget.isLink);
         navigationView.getMenu().findItem(R.id.menu_link_copy).setVisible(hitTarget.isLink);
         navigationView.getMenu().findItem(R.id.menu_image_share).setVisible(hitTarget.isImage);
@@ -105,6 +114,9 @@ public class WebContextMenu {
                 dialog.dismiss();
 
                 switch (item.getItemId()) {
+                    case R.id.menu_new_tab:
+                        openInNewTab(dialog, targetUrl);
+                        return true;
                     case R.id.menu_link_share: {
                         TelemetryWrapper.shareLinkEvent();
                         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -165,5 +177,16 @@ public class WebContextMenu {
                 }
             }
         });
+    }
+
+    private static boolean canOpenInNewTab(Activity activity, String url) {
+        return activity != null &&
+                !TextUtils.isEmpty(url) &&
+                TabsSessionProvider.getOrNull(activity) != null;
+    }
+
+    private static void openInNewTab(Dialog dialog, String url) {
+        TabsSession session = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
+        session.addTab(url, false);
     }
 }
