@@ -6,6 +6,9 @@
 package org.mozilla.focus.fragment;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DownloadManager;
@@ -99,6 +102,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private static final Handler HANDLER = new Handler();
 
     private static final int ANIMATION_DURATION = 300;
+    private static final int TAB_TRANSITION_DURATION = 250;
+
     private static final String ARGUMENT_URL = "url";
 
     private static final int SITE_GLOBE = 0;
@@ -1037,15 +1042,25 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         // progress bar regression when scrolling.
         private String loadedUrl = null;
 
+        private ValueAnimator tabTransitionAnimator;
+
         @Override
         public void onTabHoist(@NonNull final Tab tab) {
-            if (webViewSlot.getChildCount() > 0) {
-                webViewSlot.removeAllViews();
-            }
-
             // ensure it does not have attach to parent earlier.
             tab.detach();
-            webViewSlot.addView(tab.getTabView().getView());
+
+            @Nullable final View outView = findExistingTabView(webViewSlot);
+            final View inView = tab.getTabView().getView();
+            webViewSlot.addView(inView);
+
+            startTabTransition(outView, inView, new Runnable() {
+                @Override
+                public void run() {
+                    if (outView != null) {
+                        webViewSlot.removeViewInLayout(outView);
+                    }
+                }
+            });
         }
 
         @Override
@@ -1227,6 +1242,57 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onReceivedTitle(@NonNull Tab tab, String title) {
             if (!BrowserFragment.this.getUrl().equals(tab.getUrl())) {
                 updateURL(tab.getUrl());
+            }
+        }
+
+        private void startTabTransition(@Nullable final View outView, @NonNull final View inView,
+                                        final Runnable finishCallback) {
+            stopTabTransition();
+
+            inView.setAlpha(0f);
+            if (outView != null) {
+                outView.setAlpha(1f);
+            }
+
+            tabTransitionAnimator = ValueAnimator.ofFloat(0, 1).setDuration(TAB_TRANSITION_DURATION);
+            tabTransitionAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float alpha = (float) animation.getAnimatedValue();
+                    if (outView != null) {
+                        outView.setAlpha(1 - alpha);
+                    }
+                    inView.setAlpha(alpha);
+                }
+            });
+            tabTransitionAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    finishCallback.run();
+                    inView.setAlpha(1f);
+                    if (outView != null) {
+                        outView.setAlpha(1f);
+                    }
+                }
+            });
+            tabTransitionAnimator.start();
+        }
+
+        @Nullable
+        private View findExistingTabView(ViewGroup parent) {
+            int viewCount = parent.getChildCount();
+            for (int childIdx = 0; childIdx < viewCount; ++childIdx) {
+                View childView = parent.getChildAt(childIdx);
+                if (childView instanceof TabView) {
+                    return ((TabView) childView).getView();
+                }
+            }
+            return null;
+        }
+
+        private void stopTabTransition() {
+            if (tabTransitionAnimator != null && tabTransitionAnimator.isRunning()) {
+                tabTransitionAnimator.end();
             }
         }
     }
