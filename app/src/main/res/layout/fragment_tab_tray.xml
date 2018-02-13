@@ -15,7 +15,7 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/tabTrayBackground" />
+        android:background="@drawable/tab_tray_background" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tab_tray"
