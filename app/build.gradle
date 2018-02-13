@@ -548,3 +548,12 @@ task checkstyle(type: Checkstyle) {
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
+
+task captureDeviceScreen(type: Exec) {
+    workingDir '..'
+    commandLine 'sh', 'tools/screenCapture.sh'
+}
+
+afterEvaluate {
+    connectedAndroidTest.dependsOn captureDeviceScreen
+}
