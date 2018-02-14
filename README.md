@@ -1,6 +1,7 @@
 # Rocket
 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=594b679a6ed87e0001fca2cd&build=latest)](https://dashboard.buddybuild.com/public/apps/594b679a6ed87e0001fca2cd/build/latest)
 [![Nevercode build status](https://app.nevercode.io/api/projects/9c39e5e8-f3b2-4ab1-a016-fa93789299e3/workflows/e004af8e-ae21-4083-84de-d1a6b1ef7571/status_badge.svg?branch=master)](https://app.nevercode.io/#/project/9c39e5e8-f3b2-4ab1-a016-fa93789299e3/workflow/e004af8e-ae21-4083-84de-d1a6b1ef7571/latestBuild?branch=master)
+[![Bitrise build status](https://www.bitrise.io/app/920ffaa40049a1f5/status.svg?token=jTSuGMp30wxEZ8Pivl8oXg)](https://www.bitrise.io/app/920ffaa40049a1f5/status.svg?token=jTSuGMp30wxEZ8Pivl8oXg)
 
 Getting Involved
 ----------------
