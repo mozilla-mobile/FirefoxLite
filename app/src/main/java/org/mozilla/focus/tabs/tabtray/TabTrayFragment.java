@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.view.animation.Interpolator;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
+import org.mozilla.focus.widget.FragmentListener;
 
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private View newTabBtn;
     private View background;
+    private View logoMan;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
@@ -75,6 +78,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         recyclerView = view.findViewById(R.id.tab_tray);
         newTabBtn = view.findViewById(R.id.new_tab_button);
         background = view.findViewById(R.id.background);
+        logoMan = background.findViewById(R.id.logo_man);
         return view;
     }
 
@@ -112,6 +116,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.new_tab_button:
+                onNewTabClicked();
+                dismiss();
                 break;
 
             default:
@@ -226,6 +232,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         });
     }
 
+    private void onNewTabClicked() {
+        Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this,
+                    FragmentListener.TYPE.SHOW_HOME, null);
+        }
+    }
+
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
         private Interpolator interpolator = new AccelerateInterpolator();
         private int collapseHeight = -1;
@@ -240,13 +254,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             float backgroundAlpha = 1f;
-            float btnTranslationY = -1;
+            float translationY = 0;
 
             if (slideOffset < 0) {
                 if (collapseHeight < 0) {
                     collapseHeight = getCollapseHeight();
                 }
-                btnTranslationY = collapseHeight * -slideOffset;
+                translationY = collapseHeight * -slideOffset;
 
                 if (ENABLE_BACKGROUND_ALPHA_TRANSITION) {
                     float interpolated = interpolator.getInterpolation(-slideOffset);
@@ -254,7 +268,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 }
             }
 
-            newTabBtn.setTranslationY(btnTranslationY);
+            newTabBtn.setTranslationY(translationY);
+            logoMan.setTranslationY(translationY);
             background.setAlpha(backgroundAlpha);
         }
     };
