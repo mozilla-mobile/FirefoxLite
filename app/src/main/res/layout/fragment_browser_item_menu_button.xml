@@ -11,7 +11,7 @@
         android:layout_marginStart="@dimen/fixed_menu_horizontal_margin"
         android:layout_width="match_parent">
         <include
-            layout="@layout/button_open_tab_tray" />
+            layout="@layout/button_tab_counter" />
 
         <include
             layout="@layout/button_open_new_tab"/>
