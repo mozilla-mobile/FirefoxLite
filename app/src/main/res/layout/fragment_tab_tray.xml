@@ -11,11 +11,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <FrameLayout
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/tab_tray_background" />
+        android:background="@drawable/tab_tray_background">
+
+        <View
+            android:id="@+id/logo_man"
+            android:layout_width="@dimen/tab_tray_logo_man_width"
+            android:layout_height="@dimen/tab_tray_logo_man_height"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@drawable/logo_man"
+            android:layout_marginBottom="299dp"/>
+
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tab_tray"
@@ -28,25 +38,22 @@
         app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
         tools:listitem="@layout/item_tab_tray" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/new_tab_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom">
+        android:layout_height="@dimen/tab_tray_new_tab_btn_height"
+        android:layout_gravity="bottom"
+        android:background="@color/tabTrayForeground"
+        android:orientation="vertical">
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/tabTrayItemOutlineNormal"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tab_tray_new_tab_btn_height"
-            android:layout_gravity="bottom"
-            android:gravity="center"
-            android:background="@color/colorMenuBackground"
-            android:text="+"
-            android:textSize="30sp"
-            android:textColor="@color/cardview_dark_background"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/action_add"
+            tools:ignore="contentDescription" />
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
