@@ -12,7 +12,9 @@
         android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"
         android:layout_marginStart="@dimen/fixed_menu_horizontal_margin">
 
-        <include layout="@layout/button_tab_counter" />
+        <org.mozilla.focus.tabs.TabCounter
+            android:id="@+id/btn_tab_tray"
+            style="@style/MainMenuButton" />
 
         <include layout="@layout/button_open_new_tab" />
 
