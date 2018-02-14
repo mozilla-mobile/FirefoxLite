@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/btn_tab_tray"
-    style="@style/MainMenuButton">
+    tools:background="@drawable/round_rectangle_ripple"
+    tools:layout_height="40dp"
+    tools:layout_width="40dp"
+    tools:parentTag="org.mozilla.focus.tabs.TabCounter">
 
     <FrameLayout
         android:id="@+id/counter_root"
@@ -39,4 +41,4 @@
         android:layout_marginTop="1dp"
         android:src="@drawable/tab_counter_bar" />
 
-</RelativeLayout>
+</merge>
