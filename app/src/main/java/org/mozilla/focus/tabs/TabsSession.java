@@ -153,6 +153,7 @@ public class TabsSession {
             return;
         }
 
+        tabs.remove(idx);
         tab.destroy();
 
         // removed one tab, now idx should refer to next one
