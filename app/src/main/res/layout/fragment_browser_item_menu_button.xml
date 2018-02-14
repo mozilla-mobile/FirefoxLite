@@ -2,27 +2,24 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="@dimen/fixed_menu_height"
     android:layout_width="match_parent"
+    android:layout_height="@dimen/fixed_menu_height"
     android:layout_gravity="center|bottom">
+
     <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"
-        android:layout_marginStart="@dimen/fixed_menu_horizontal_margin"
-        android:layout_width="match_parent">
-        <include
-            layout="@layout/button_tab_counter" />
+        android:layout_marginStart="@dimen/fixed_menu_horizontal_margin">
 
-        <include
-            layout="@layout/button_open_new_tab"/>
+        <include layout="@layout/button_tab_counter" />
 
-        <include
-            layout="@layout/button_search" />
+        <include layout="@layout/button_open_new_tab" />
 
-        <include
-            layout="@layout/button_capture" />
+        <include layout="@layout/button_search" />
 
-        <include
-            layout="@layout/button_more" />
+        <include layout="@layout/button_capture" />
+
+        <include layout="@layout/button_more" />
     </org.mozilla.focus.widget.EqualDistributeRow>
 </FrameLayout>
