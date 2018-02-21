@@ -9,7 +9,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="contentDescription">
 
     <FrameLayout
         android:id="@+id/background"
@@ -17,13 +18,13 @@
         android:layout_height="match_parent"
         android:background="@drawable/tab_tray_background">
 
-        <View
+        <ImageView
             android:id="@+id/logo_man"
-            android:layout_width="@dimen/tab_tray_logo_man_width"
-            android:layout_height="@dimen/tab_tray_logo_man_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
-            android:background="@drawable/logo_man"
-            android:layout_marginBottom="299dp"/>
+            android:layout_marginBottom="@dimen/tab_tray_peekHeight"
+            app:srcCompat="@drawable/logo_man" />
 
     </FrameLayout>
 
@@ -48,7 +49,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/tabTrayItemOutlineNormal"/>
+            android:background="@color/tabTrayItemOutlineNormal" />
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
