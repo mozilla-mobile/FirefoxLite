@@ -68,7 +68,7 @@
                     android:layout_height="36dp"
                     android:background="@drawable/image_viewer_btn_bg_selector"
                     android:scaleType="centerInside"
-                    android:src="@drawable/openinbrowser"
+                    android:src="@drawable/action_openinbrowser"
                     android:tint="@color/image_view_btn_tint_color_selector" />
 
                 <View
@@ -96,7 +96,7 @@
                     android:layout_height="36dp"
                     android:background="@drawable/image_viewer_btn_bg_selector"
                     android:scaleType="centerInside"
-                    android:src="@drawable/menu_share"
+                    android:src="@drawable/action_share"
                     android:tint="@color/image_view_btn_tint_color_selector" />
 
                 <View
