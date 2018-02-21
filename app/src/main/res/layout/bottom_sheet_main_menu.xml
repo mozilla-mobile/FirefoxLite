@@ -63,7 +63,7 @@
                 style="@style/MenuButtonGroup">
                 <View
                     style="@style/MenuToggleIcon"
-                    android:background="@drawable/menu_turbomode"/>
+                    android:background="@drawable/menu_speedmode"/>
                 <TextView
                     style="@style/MenuToggleText"
                     android:text="@string/label_menu_turbo_mode"/>
@@ -179,7 +179,7 @@
             android:id="@+id/action_share">
             <View
                 style="@style/MenuButtonIcon"
-                android:background="@drawable/menu_share"/>
+                android:background="@drawable/action_share"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
