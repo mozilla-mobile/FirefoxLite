@@ -398,25 +398,25 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         backgroundView = view.findViewById(R.id.background);
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
-        final View searchBtn = view.findViewById(R.id.btn_search);
         final View tabTray = view.findViewById(R.id.btn_tab_tray);
         final View newTabBtn = view.findViewById(R.id.btn_open_new_tab);
-        final View menuBtn = view.findViewById(R.id.btn_menu);
+        final View searchBtn = view.findViewById(R.id.btn_search);
         final View captureBtn = view.findViewById(R.id.btn_capture);
-        if (searchBtn != null) {
-            searchBtn.setOnClickListener(this);
-        }
+        final View menuBtn = view.findViewById(R.id.btn_menu);
         if (tabTray != null) {
             tabTray.setOnClickListener(this);
         }
         if (newTabBtn != null) {
             newTabBtn.setOnClickListener(this);
         }
-        if (menuBtn != null) {
-            menuBtn.setOnClickListener(this);
+        if (searchBtn != null) {
+            searchBtn.setOnClickListener(this);
         }
         if (captureBtn != null) {
             captureBtn.setOnClickListener(this);
+        }
+        if (menuBtn != null) {
+            menuBtn.setOnClickListener(this);
         }
 
         siteIdentity = (ImageView) view.findViewById(R.id.site_identity);
