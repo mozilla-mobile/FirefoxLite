@@ -2,17 +2,22 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="@dimen/fixed_menu_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_gravity="center"
-    android:layout_alignParentBottom="true">
+    android:layout_height="@dimen/fixed_menu_height"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="center">
+
     <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"
-        android:layout_marginStart="@dimen/fixed_menu_horizontal_margin"
-        android:layout_width="match_parent">
-        <include
-            layout="@layout/button_open_tab_tray_white" />
+        android:layout_marginStart="@dimen/fixed_menu_horizontal_margin">
+
+        <org.mozilla.focus.tabs.TabCounter
+            android:id="@+id/btn_tab_tray"
+            style="@style/MainMenuButton"
+            app:drawableColor="@color/colorMenuIconDarkForeground" />
 
         <include
             layout="@layout/button_open_new_tab"
@@ -26,7 +31,6 @@
             layout="@layout/button_capture"
             android:visibility="invisible" />
 
-        <include
-            layout="@layout/button_more_white" />
+        <include layout="@layout/button_more_white" />
     </org.mozilla.focus.widget.EqualDistributeRow>
 </FrameLayout>
