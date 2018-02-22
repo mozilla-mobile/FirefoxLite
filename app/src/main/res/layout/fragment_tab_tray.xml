@@ -3,58 +3,58 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinator_layout"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:ignore="contentDescription">
 
-    <FrameLayout
-        android:id="@+id/background"
+    <ImageView
+        android:id="@+id/logo_man"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/tab_tray_peekHeight"
+        app:srcCompat="@drawable/logo_man" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/tab_tray_background">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/logo_man"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="@dimen/tab_tray_peekHeight"
-            app:srcCompat="@drawable/logo_man" />
-
-    </FrameLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/tab_tray"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/tabTrayForeground"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
-        tools:listitem="@layout/item_tab_tray" />
-
-    <RelativeLayout
-        android:id="@+id/new_tab_button"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tab_tray_new_tab_btn_height"
-        android:layout_gravity="bottom"
-        android:background="@color/tabTrayForeground"
-        android:orientation="vertical">
-        <View
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tab_tray"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/tabTrayItemOutlineNormal" />
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/action_add"
-            tools:ignore="contentDescription" />
-    </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+            android:layout_height="match_parent"
+            android:background="@color/tabTrayForeground"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
+            tools:listitem="@layout/item_tab_tray" />
+
+        <RelativeLayout
+            android:id="@+id/new_tab_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_tray_new_tab_btn_height"
+            android:layout_gravity="bottom"
+            android:background="@color/tabTrayForeground"
+            android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/tabTrayItemOutlineNormal" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/action_add"
+                tools:ignore="contentDescription" />
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
