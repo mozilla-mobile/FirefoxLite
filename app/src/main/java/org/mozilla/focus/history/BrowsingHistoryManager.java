@@ -6,6 +6,7 @@
 package org.mozilla.focus.history;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
@@ -94,8 +95,14 @@ public class BrowsingHistoryManager {
         }
     }
 
-    public void insert(Site site, AsyncInsertListener listener) {
-        mQueryHandler.startInsert(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site));
+    public void insert(final Site site, final AsyncInsertListener listener) {
+        mQueryHandler.postWorker(new Runnable() {
+            @Override
+            public void run() {
+                final ContentValues contentValues = QueryHandler.getContentValuesFromSite(site);
+                mQueryHandler.startInsert(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, contentValues);
+            }
+        });
     }
 
     public void delete(long id, AsyncDeleteListener listener) {
@@ -106,8 +113,14 @@ public class BrowsingHistoryManager {
         mQueryHandler.startDelete(QueryHandler.SITE_TOKEN, new AsyncDeleteWrapper(-1, listener), BrowsingHistory.CONTENT_URI, "1", null);
     }
 
-    public void updateLastEntry(Site site, AsyncUpdateListener listener) {
-        mQueryHandler.startUpdate(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, QueryHandler.getContentValuesFromSite(site), BrowsingHistory._ID + " = ( SELECT " + BrowsingHistory._ID + " FROM " + HistoryContract.TABLE_NAME + " WHERE " + BrowsingHistory.URL + " = ? ORDER BY " + BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC)", new String[]{site.getUrl()});
+    public void updateLastEntry(final Site site, final AsyncUpdateListener listener) {
+        mQueryHandler.postWorker(new Runnable() {
+            @Override
+            public void run() {
+                final ContentValues contentValues = QueryHandler.getContentValuesFromSite(site);
+                mQueryHandler.startUpdate(QueryHandler.SITE_TOKEN, listener, BrowsingHistory.CONTENT_URI, contentValues, BrowsingHistory._ID + " = ( SELECT " + BrowsingHistory._ID + " FROM " + HistoryContract.TABLE_NAME + " WHERE " + BrowsingHistory.URL + " = ? ORDER BY " + BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC)", new String[]{site.getUrl()});
+            }
+        });
     }
 
     public void query(int offset, int limit, AsyncQueryListener listener) {

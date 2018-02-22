@@ -12,6 +12,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.screenshot.model.Screenshot;
@@ -28,6 +30,7 @@ public class QueryHandler extends AsyncQueryHandler {
 
     public static final int SITE_TOKEN = 1;
     public static final int SCREENSHOT_TOKEN = 2;
+    private Handler mWorkerHandler;
 
     public static final class AsyncDeleteWrapper {
 
@@ -58,6 +61,16 @@ public class QueryHandler extends AsyncQueryHandler {
 
     public QueryHandler(ContentResolver resolver) {
         super(resolver);
+    }
+
+    @Override
+    protected Handler createHandler(Looper looper) {
+        mWorkerHandler = super.createHandler(looper);
+        return mWorkerHandler;
+    }
+
+    public void postWorker(Runnable r) {
+        mWorkerHandler.post(r);
     }
 
     @Override
