@@ -67,6 +67,7 @@ import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.tabs.Tab;
+import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
@@ -134,6 +135,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private View backgroundView;
     private TransitionDrawable backgroundTransition;
+    private TabCounter tabCounter;
     private TextView urlView;
     private AnimatedProgressBar progressView;
     private ImageView siteIdentity;
@@ -397,13 +399,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         backgroundView = view.findViewById(R.id.background);
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
-        final View tabTray = view.findViewById(R.id.btn_tab_tray);
+        tabCounter = view.findViewById(R.id.btn_tab_tray);
         final View newTabBtn = view.findViewById(R.id.btn_open_new_tab);
         final View searchBtn = view.findViewById(R.id.btn_search);
         final View captureBtn = view.findViewById(R.id.btn_capture);
         final View menuBtn = view.findViewById(R.id.btn_menu);
-        if (tabTray != null) {
-            tabTray.setOnClickListener(this);
+        if (tabCounter != null) {
+            tabCounter.setOnClickListener(this);
         }
         if (newTabBtn != null) {
             newTabBtn.setOnClickListener(this);
@@ -1106,6 +1108,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public void onTabCountChanged(int count) {
+            tabCounter.setCountWithAnimation(count);
         }
 
         @Override
