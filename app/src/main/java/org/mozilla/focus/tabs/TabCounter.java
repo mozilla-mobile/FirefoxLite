@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -13,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.utils.DrawableUtils;
 
 import java.text.NumberFormat;
 
@@ -42,12 +46,21 @@ public class TabCounter extends RelativeLayout {
     public TabCounter(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
+        @ColorInt int defaultMenuIconColor = context.getResources().getColor(R.color.colorMenuIconForeground);
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabCounter, defStyle, 0);
+        @ColorInt int menuIconColor = typedArray.getColor(R.styleable.TabCounter_drawableColor, defaultMenuIconColor);
+        typedArray.recycle();
+
         final LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.button_tab_counter, this);
 
         box = findViewById(R.id.counter_box);
         bar = findViewById(R.id.counter_bar);
         text = findViewById(R.id.counter_text);
+
+        if (menuIconColor != defaultMenuIconColor) {
+            tintDrawables(menuIconColor);
+        }
 
         animationSet = createAnimatorSet();
     }
@@ -91,6 +104,16 @@ public class TabCounter extends RelativeLayout {
 
         text.setText(formatForDisplay(count));
         this.count = count;
+    }
+
+    private void tintDrawables(int menuIconColor) {
+        final Drawable tabCounterBox = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_box, menuIconColor);
+        box.setImageDrawable(tabCounterBox);
+
+        final Drawable tabCounterBar = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_bar, menuIconColor);
+        bar.setImageDrawable(tabCounterBar);
+
+        text.setTextColor(menuIconColor);
     }
 
     private AnimatorSet createAnimatorSet() {

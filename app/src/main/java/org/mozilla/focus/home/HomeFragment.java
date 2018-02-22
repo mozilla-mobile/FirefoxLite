@@ -29,6 +29,9 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.provider.QueryHandler;
+import org.mozilla.focus.tabs.TabCounter;
+import org.mozilla.focus.tabs.TabsSession;
+import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
@@ -52,6 +55,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private View btnMenu;
+    private TabCounter tabCounter;
     private TextView fakeInput;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
@@ -79,7 +83,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.btnMenu = view.findViewById(R.id.btn_menu);
         this.btnMenu.setOnClickListener(menuItemClickListener);
-        view.findViewById(R.id.btn_tab_tray).setOnClickListener(menuItemClickListener);
+
+        this.tabCounter = view.findViewById(R.id.btn_tab_tray);
+        this.tabCounter.setOnClickListener(menuItemClickListener);
+        TabsSession tabsSession = TabsSessionProvider.getOrNull(getActivity());
+        tabCounter.setCount(tabsSession != null ? tabsSession.getTabsCount() : 0);
 
         this.fakeInput = (TextView) view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(new View.OnClickListener() {
