@@ -50,10 +50,12 @@
                 android:layout_height="1dp"
                 android:background="@color/tabTrayItemOutlineNormal" />
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:src="@drawable/action_add"
+                android:scaleType="center"
+                android:background="?android:attr/selectableItemBackground"
+                app:srcCompat="@drawable/action_add"
                 tools:ignore="contentDescription" />
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
