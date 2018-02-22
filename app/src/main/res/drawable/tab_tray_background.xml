@@ -6,7 +6,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
         android:angle="270"
-        android:startColor="#65caff"
-        android:centerColor="#63eae8"
-        android:endColor="#63eae8" />
+        android:startColor="@color/tabTrayBackgroundTop"
+        android:centerColor="@color/tabTrayBackgroundBottom"
+        android:endColor="@color/tabTrayBackgroundBottom" />
 </shape>

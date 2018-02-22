@@ -8,6 +8,7 @@ package org.mozilla.focus.tabs.tabtray;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,9 +29,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.widget.FragmentListener;
@@ -48,8 +51,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private TabTrayContract.Presenter presenter;
 
     private View newTabBtn;
-    private View background;
     private View logoMan;
+
+    private View backgroundView;
+    private Drawable backgroundDrawable;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
@@ -77,14 +82,16 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         View view = inflater.inflate(R.layout.fragment_tab_tray, container, false);
         recyclerView = view.findViewById(R.id.tab_tray);
         newTabBtn = view.findViewById(R.id.new_tab_button);
-        background = view.findViewById(R.id.background);
-        logoMan = background.findViewById(R.id.logo_man);
+        backgroundView = view.findViewById(R.id.root_layout);
+        logoMan = backgroundView.findViewById(R.id.logo_man);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initBackground(view.getContext());
 
         BottomSheetBehavior behavior = getBehavior(recyclerView);
         if (behavior != null) {
@@ -220,7 +227,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                     }
         });
 
-        background.setOnTouchListener(new View.OnTouchListener() {
+        backgroundView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 boolean result = detector.onTouchEvent(event);
@@ -238,6 +245,40 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             ((FragmentListener) activity).onNotified(this,
                     FragmentListener.TYPE.SHOW_HOME, null);
         }
+    }
+
+    private void initBackground(Context context) {
+        backgroundDrawable = context.getDrawable(R.drawable.tab_tray_background);
+        if (backgroundDrawable == null) {
+            if (BuildConfig.DEBUG) {
+                throw new IllegalStateException("fail to resolve background drawable");
+            }
+            return;
+        }
+        int validAlpha = validateBackgroundAlpha(0xff);
+        backgroundDrawable.setAlpha(validAlpha);
+
+        Window window = getDialog().getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setBackgroundDrawable(backgroundDrawable);
+    }
+
+    private void setBackgroundAlpha(float alpha) {
+        if (backgroundDrawable == null) {
+            if (BuildConfig.DEBUG) {
+                throw new IllegalStateException("initBackground() should be called first");
+            }
+            return;
+        }
+
+        int validAlpha = validateBackgroundAlpha((int) (alpha * 0xff));
+        backgroundDrawable.setAlpha(validAlpha);
+    }
+
+    private int validateBackgroundAlpha(int alpha) {
+        return Math.max(Math.min(alpha, 0xfe), 0x01);
     }
 
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
@@ -270,7 +311,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
             newTabBtn.setTranslationY(translationY);
             logoMan.setTranslationY(translationY);
-            background.setAlpha(backgroundAlpha);
+
+            backgroundAlpha = backgroundAlpha < 0 ? 0 : backgroundAlpha;
+            backgroundView.setAlpha(backgroundAlpha);
+
+            setBackgroundAlpha(backgroundAlpha);
         }
     };
 
