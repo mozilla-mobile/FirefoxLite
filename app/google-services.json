@@ -8,50 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1062658243921:android:eddef00f8bd18e11",
-        "android_client_info": {
-          "package_name": "com.google.samples.quickstart.config"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1062658243921-pmknkn1ujojhg7isfie7f428q4tl8i0d.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.google.samples.quickstart.config",
-            "certificate_hash": "3b23f4306181d85e3c341111db7136e42d3a185f"
-          }
-        },
-        {
-          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:1062658243921:android:12976494afaf30aa",
         "android_client_info": {
           "package_name": "org.mozilla.rocket.debug.nechen"
@@ -88,6 +44,130 @@
               "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062658243921:android:06dcf70b6f8303ce",
+        "android_client_info": {
+          "package_name": "org.mozilla.rocket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062658243921:android:68d62f85027bc145",
+        "android_client_info": {
+          "package_name": "gro.allizom.zelda.beta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062658243921:android:993448349fb747a5",
+        "android_client_info": {
+          "package_name": "org.mozilla.rocket.coverage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062658243921:android:b0aa199b2bc8c745",
+        "android_client_info": {
+          "package_name": "org.mozilla.rocket.debug.greenhouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
