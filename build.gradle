@@ -13,6 +13,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.google.gms:google-services:3.1.1' // google-services plugin
     }
 }
 
@@ -36,4 +37,6 @@ ext {
     architectureComponentsVersion = "1.0.0"
     runnerVersion = "1.0.1"
     espressoVersion = "3.0.1"
+    firebaseVersion = "11.8.0"
+    crashlyticsVersion = "2.9.0"
 }

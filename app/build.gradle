@@ -33,6 +33,7 @@ android {
         versionCode 1
         versionName "1.0.4"
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
+        testInstrumentationRunnerArgument 'disableAnalytics','true'
         multiDexEnabled true
 
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
@@ -209,7 +210,9 @@ dependencies {
     implementation 'org.mozilla.telemetry:telemetry:1.1.1'
 
     implementation 'com.adjust.sdk:adjust-android:4.11.4'
-    implementation 'com.google.android.gms:play-services-analytics:11.8.0' // Required by Adjust
+    implementation 'com.google.android.gms:play-services-analytics:'+ rootProject.firebaseVersion // Required by Adjust
+    implementation 'com.google.firebase:firebase-core:'+ rootProject.firebaseVersion
+    implementation 'com.google.firebase:firebase-config:'+ rootProject.firebaseVersion
 
     api 'com.airbnb.android:lottie:2.2.0'
 
@@ -587,3 +590,5 @@ task checkstyle(type: Checkstyle) {
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
+
+apply plugin: 'com.google.gms.google-services'

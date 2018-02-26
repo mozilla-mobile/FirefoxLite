@@ -30,6 +30,7 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/rate_app_dialog_text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -41,6 +42,7 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/rate_app_dialog_text_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"

@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -65,6 +66,19 @@ public class DialogUtils {
                 telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
             }
         });
+
+        final String title = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE,
+                context.getString(R.string.rate_app_dialog_text_content));
+        if (title != null) {
+            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_title)).setText(title);
+        }
+
+        final String content = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT,
+                context.getString(R.string.rate_app_dialog_text_content));
+        if (content != null) {
+            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
+        }
+
         dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
