@@ -33,6 +33,7 @@ android {
         versionCode Versions.version_code
         versionName Versions.version_name
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
+        testInstrumentationRunnerArgument 'disableAnalytics','true'
         multiDexEnabled true
 
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
@@ -212,6 +213,8 @@ dependencies {
 
     implementation Libs.adjust
     implementation Libs.play_services_analytics // Required by Adjust
+    implementation Libs.firebase_core
+    implementation Libs.firebase_config
 
     api Libs.lottie
 
@@ -589,3 +592,5 @@ task checkstyle(type: Checkstyle) {
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
+
+apply plugin: 'com.google.gms.google-services'
