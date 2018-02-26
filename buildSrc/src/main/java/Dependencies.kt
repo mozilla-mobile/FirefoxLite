@@ -25,4 +25,9 @@ object Versions {
     const val test_runner = "1.0.1"
     const val uiautomator = "2.1.3"
     const val mockwebserver = "3.7.0"
+    const val firebase = "15.0.2"
+    const val crashlytics = "2.9.1"
+    const val google_services_plugin = "3.1.1"
+    const val fabric_plugin = "1.25.1"
+
 }

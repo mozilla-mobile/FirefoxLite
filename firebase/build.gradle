@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+
+android {
+
+
+    compileSdkVersion Versions.compile_sdk
+    defaultConfig {
+        minSdkVersion Versions.min_sdk
+    }
+
+    defaultPublishConfig "actual"
+    publishNonDefault true
+
+    buildTypes {
+        release {
+        }
+        beta {
+        }
+        debug {
+        }
+        coverage {
+        }
+    }
+}
+
+dependencies {
+
+    debugApi "com.google.firebase:firebase-core:${Versions.firebase}"
+    debugApi "com.google.firebase:firebase-config:${Versions.firebase}"
+    debugApi "com.google.firebase:firebase-messaging:${Versions.firebase}"
+    debugApi "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+
+    betaApi "com.google.firebase:firebase-core:${Versions.firebase}"
+    betaApi "com.google.firebase:firebase-config:${Versions.firebase}"
+    betaApi "com.google.firebase:firebase-messaging:${Versions.firebase}"
+    betaApi "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+
+}
