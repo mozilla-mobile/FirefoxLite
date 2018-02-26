@@ -59,7 +59,6 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     void setFocusedTab(int tabPosition) {
         this.focusedTabPosition = tabPosition;
-        notifyItemChanged(tabPosition);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
