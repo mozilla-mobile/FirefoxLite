@@ -12,7 +12,7 @@ object Versions {
     val room = "1.0.0"
     val glide = "4.0.0"
     val kotlin = "1.2.30"
-    val gms = "11.8.0"
+    val gms = "12.0.0"
     val findbugs = "3.0.1"
     val lottie = "2.2.0"
     val telemetry = "1.1.1"
@@ -24,6 +24,8 @@ object Versions {
     val test_runner = "1.0.1"
     val uiautomator = "2.1.3"
     val mockwebserver = "3.7.0"
+    val firebase = "12.0.0"
+    val crashlytics = "2.9.1"
 }
 
 object Libs {
@@ -44,6 +46,8 @@ object Libs {
     val glide_compiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
     val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
     val play_services_analytics = "com.google.android.gms:play-services-analytics:${Versions.gms}"
+    val firebase_core = "com.google.firebase:firebase-core:${Versions.firebase}"
+    val firebase_config = "com.google.firebase:firebase-config:${Versions.firebase}"
     val findbugs_annotations = "com.google.code.findbugs:annotations:${Versions.findbugs}"
     val lottie = "com.airbnb.android:lottie:${Versions.lottie}"
     val telemetry = "org.mozilla.telemetry:telemetry:${Versions.telemetry}"
