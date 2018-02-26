@@ -44,6 +44,7 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
+import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
@@ -61,6 +62,7 @@ import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FileUtils;
+import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
@@ -111,6 +113,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FirebaseHelper.init(this);
         asyncInitialize();
 
         setContentView(R.layout.activity_main);
@@ -138,6 +141,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                             false);
                     this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
                 }
+            } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
+                // This happens when the app is not running, and the user clicks on the push
+                // notification with payload "PUSH_OPEN_URL"
+                pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     this.mainMediator.showFirstRun();
@@ -217,7 +224,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onPause() {
         super.onPause();
-
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
 
         safeForFragmentTransactions = false;
@@ -250,6 +256,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // resumed. So just remember this URL and load it in onResumeFragments().
             pendingUrl = intent.getDataString();
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
+            dismissAllMenus();
+            TabTray.dismiss(getSupportFragmentManager());
+        } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
+            // This happens when the app is running in background, and the user clicks on the push
+            // notification with payload "PUSH_OPEN_URL"
+            pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
         }
@@ -351,7 +363,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(this, pendingIntent)
+        final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(this, pendingIntent)
                 .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
                 .setContentText(getString(R.string.survey_notification_description))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
