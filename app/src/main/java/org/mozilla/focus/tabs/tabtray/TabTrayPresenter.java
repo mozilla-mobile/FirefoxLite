@@ -18,11 +18,11 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
         this.view = view;
         this.model = model;
         view.updateData(model.getTabs());
+        view.setFocusedTab(model.getCurrentTabPosition());
     }
 
     @Override
     public void viewReady() {
-        view.setFocusedTab(model.getCurrentTabPosition());
         view.showFocusedTab(model.getCurrentTabPosition());
     }
 

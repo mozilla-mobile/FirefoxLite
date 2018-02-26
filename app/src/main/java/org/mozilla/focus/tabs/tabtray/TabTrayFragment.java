@@ -162,7 +162,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, int nextFocusPos) {
         adapter.notifyItemRemoved(removePos);
         adapter.notifyItemChanged(modifiedFocusPos);
+
         adapter.setFocusedTab(nextFocusPos);
+        adapter.notifyItemChanged(nextFocusPos);
     }
 
     @Nullable
