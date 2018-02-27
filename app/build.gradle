@@ -215,6 +215,7 @@ dependencies {
     implementation Libs.play_services_analytics // Required by Adjust
     implementation Libs.firebase_core
     implementation Libs.firebase_config
+    implementation Libs.firebase_messaging
 
     api Libs.lottie
 
