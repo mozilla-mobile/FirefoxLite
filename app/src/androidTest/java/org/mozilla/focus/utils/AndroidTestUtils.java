@@ -26,7 +26,6 @@ import okio.Okio;
 import static android.support.test.internal.util.Checks.checkNotNull;
 import static org.mozilla.focus.fragment.FirstrunFragment.FIRSTRUN_PREF;
 
-
 public final class AndroidTestUtils {
 
     public static void beforeTest() {
@@ -76,7 +75,6 @@ public final class AndroidTestUtils {
     }
 
     public static Buffer readStreamFile(InputStream file) throws IOException {
-
         final Buffer buffer = new Buffer();
         buffer.writeAll(Okio.source(file));
         return buffer;

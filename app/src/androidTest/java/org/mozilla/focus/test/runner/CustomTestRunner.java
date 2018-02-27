@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.test.runner.AndroidJUnitRunner;
 
 public class CustomTestRunner extends AndroidJUnitRunner {
+
     @Override
     public void onCreate(final Bundle arguments) {
         // The strict mode exception throws while running instrumentation tests on Android O.
