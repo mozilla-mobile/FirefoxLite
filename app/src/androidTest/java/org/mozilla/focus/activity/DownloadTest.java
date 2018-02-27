@@ -11,6 +11,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
@@ -105,9 +106,9 @@ public class DownloadTest {
 
         onView(withId(R.id.home_fragment_fake_input)).perform(click());
         onView(withId(R.id.url_edit)).perform(replaceText(webServer.url(TEST_PATH).toString()), pressImeActionButton());
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
-        final UiObject downloadIcon = TestHelper.DEVICE.findObject(new UiSelector()
-                .description("download icon"));
+        // IdlingRegistry.getInstance().register(loadingIdlingResource);
+        final UiObject downloadIcon = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).findObject(new UiSelector()
+                .resourceId("rabbitImage"));
         downloadIcon.click();
 
     }

@@ -90,6 +90,7 @@ import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -158,6 +159,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private TabView.FullscreenCallback fullscreenCallback;
 
     private boolean isLoading = false;
+
+    // Set an initial WeakReference so we never have to handle loadStateListenerWeakReference being null
+    // (i.e. so we can always just .get()).
+    private WeakReference<LoadStateListener> loadStateListenerWeakReference = new WeakReference<>(null);
 
     // pending action for file-choosing
     private FileChooseAction fileChooseAction;

@@ -8,7 +8,6 @@ package org.mozilla.focus.helper;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.BoundedMatcher;
-import android.support.test.uiautomator.UiDevice;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -25,8 +24,6 @@ import static android.support.test.internal.util.Checks.checkNotNull;
 
 
 public class TestHelper {
-
-    public static UiDevice DEVICE =  UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
     public static Buffer readTestAsset(String filename) throws IOException {
         try (final InputStream stream = InstrumentationRegistry.getContext().getAssets().open(filename)) {
