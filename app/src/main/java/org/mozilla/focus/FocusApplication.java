@@ -5,7 +5,6 @@
 
 package org.mozilla.focus;
 
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -15,7 +14,6 @@ import org.mozilla.focus.screenshot.ScreenshotManager;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AdjustHelper;
-import org.mozilla.focus.utils.AppConstants;
 
 public class FocusApplication extends LocaleAwareApplication {
 
@@ -25,7 +23,8 @@ public class FocusApplication extends LocaleAwareApplication {
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
-        enableStrictMode();
+        // Provide different strict mode penalty for ui testing and production code
+        Inject.enableStrictMode();
 
         SearchEngineManager.getInstance().init(this);
 
@@ -36,28 +35,5 @@ public class FocusApplication extends LocaleAwareApplication {
         ScreenshotManager.getInstance().init(this);
         DownloadInfoManager.getInstance().init(this);
 
-    }
-
-    private void enableStrictMode() {
-        // Android/WebView sometimes commit strict mode violations, see e.g.
-        // https://github.com/mozilla-mobile/focus-android/issues/660
-        if (AppConstants.isReleaseBuild()) {
-            return;
-        }
-
-        final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll();
-        final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll();
-
-        if (AppConstants.isBetaBuild()) {
-            threadPolicyBuilder.penaltyLog().penaltyDialog();
-            vmPolicyBuilder.penaltyLog();
-        } else { // Dev/debug build
-            threadPolicyBuilder.penaltyLog().penaltyDialog();
-            // We want only penaltyDeath(), but penaltLog() is needed print a stacktrace when a violation happens
-            vmPolicyBuilder.penaltyLog().penaltyDeath();
-        }
-
-        StrictMode.setThreadPolicy(threadPolicyBuilder.build());
-        StrictMode.setVmPolicy(vmPolicyBuilder.build());
     }
 }
