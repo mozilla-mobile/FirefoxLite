@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.helper.TestHelper;
+import org.mozilla.focus.utils.AndroidTestUtils;
 
 import java.io.IOException;
 
@@ -45,6 +46,7 @@ public class DownloadTest {
 
     @Before
     public void setUp() {
+        AndroidTestUtils.beforeTest(activityRule.getActivity());
 
         loadingIdlingResource = new SessionLoadedIdlingResource(activityRule.getActivity());
 
@@ -102,7 +104,7 @@ public class DownloadTest {
     public void DownloadFileTest() throws InterruptedException, UiObjectNotFoundException, IOException {
 
         onView(withId(R.id.home_fragment_fake_input)).perform(click());
-        onView(withId(R.id.url_edit)).perform(replaceText(webServer.url(TEST_PATH).toString()),pressImeActionButton());
+        onView(withId(R.id.url_edit)).perform(replaceText(webServer.url(TEST_PATH).toString()), pressImeActionButton());
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         final UiObject downloadIcon = TestHelper.DEVICE.findObject(new UiSelector()
                 .description("download icon"));

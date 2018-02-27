@@ -25,7 +25,7 @@ public class FocusApplication extends LocaleAwareApplication {
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
-        enableStrictMode();
+        Inject.enableStrictMode();
 
         SearchEngineManager.getInstance().init(this);
 
