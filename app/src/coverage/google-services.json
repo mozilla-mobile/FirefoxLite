@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1062658243921",
+    "firebase_url": "https://remoteconfigsample-39b5e.firebaseio.com",
+    "project_id": "remoteconfigsample-39b5e",
+    "storage_bucket": "remoteconfigsample-39b5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062658243921:android:993448349fb747a5",
+        "android_client_info": {
+          "package_name": "org.mozilla.rocket.coverage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

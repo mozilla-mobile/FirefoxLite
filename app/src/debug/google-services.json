@@ -52,9 +52,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1062658243921:android:06dcf70b6f8303ce",
+        "mobilesdk_app_id": "1:1062658243921:android:e11b6cbb185fee69",
         "android_client_info": {
-          "package_name": "org.mozilla.rocket"
+          "package_name": "org.mozilla.rocket.debug.bitrise"
         }
       },
       "oauth_client": [
@@ -83,71 +83,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1062658243921:android:68d62f85027bc145",
+        "mobilesdk_app_id": "1:1062658243921:android:72a93cf4c1451539",
         "android_client_info": {
-          "package_name": "gro.allizom.zelda.beta"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1062658243921:android:993448349fb747a5",
-        "android_client_info": {
-          "package_name": "org.mozilla.rocket.coverage"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1062658243921:android:b0aa199b2bc8c745",
-        "android_client_info": {
-          "package_name": "org.mozilla.rocket.debug.greenhouse"
+          "package_name": "org.mozilla.rocket.debug.mozilla"
         }
       },
       "oauth_client": [
