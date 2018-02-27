@@ -7,9 +7,11 @@ package org.mozilla.focus;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.os.StrictMode;
 
 import org.mozilla.focus.provider.MockQueryHandler;
 import org.mozilla.focus.provider.QueryHandler;
+import org.mozilla.focus.utils.AppConstants;
 
 public class Inject {
 
@@ -22,4 +24,26 @@ public class Inject {
     public static String getDefaultTopSites(Context context) {
         return TOP_SITES;
     }
+
+    public static void enableStrictMode() {
+        if (AppConstants.isReleaseBuild()) {
+            return;
+        }
+
+        final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll();
+        final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll();
+
+        if (AppConstants.isBetaBuild()) {
+            threadPolicyBuilder.penaltyDialog();
+            vmPolicyBuilder.penaltyLog();
+        } else { // Dev/debug build
+            threadPolicyBuilder.penaltyLog();
+            // We want only penaltyDeath(), but penaltLog() is needed print a stacktrace when a violation happens
+            vmPolicyBuilder.penaltyLog();
+        }
+
+        StrictMode.setThreadPolicy(threadPolicyBuilder.build());
+        StrictMode.setVmPolicy(vmPolicyBuilder.build());
+    }
+
 }

@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
+import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.Settings;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -54,14 +55,7 @@ public class DefaultBrowserTest {
     public void setup() {
         uiDevice = UiDevice.getInstance(getInstrumentation());
 
-        final Context context = mainActivity.getActivity();
-        if (context != null) {
-            final Settings settings = Settings.getInstance(context);
-            if (settings != null) {
-                settings.setRateAppDialogDidShow();
-                settings.setShareAppDialogDidShow();
-            }
-        }
+        AndroidTestUtils.beforeTest(mainActivity.getActivity());
     }
 
     @Test
