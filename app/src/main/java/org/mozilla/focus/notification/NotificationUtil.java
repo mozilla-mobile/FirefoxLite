@@ -22,6 +22,8 @@ public class NotificationUtil {
 
     private static final String DEFAULT_CHANNEL_ID = "default_channel_id";
 
+    public static final String PUSH_OPEN_URL = "push_open_url";
+
 
     public static NotificationCompat.Builder generateNotificationBuilder(Context context, PendingIntent pendingIntent) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
