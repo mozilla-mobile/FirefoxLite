@@ -28,8 +28,9 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         resConfigs "en", "in"
         versionCode 1
-        versionName "1.0.4"
-        testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
+        versionName "1.0.3"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument 'disableAnalytics','true'
         multiDexEnabled true
 
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
