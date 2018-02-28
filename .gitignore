@@ -47,3 +47,5 @@ l10n-repo/
 
 # Infer output
 infer-out/
+
+.DS_Store

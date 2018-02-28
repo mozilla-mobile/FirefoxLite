@@ -5,42 +5,28 @@
 
 package org.mozilla.focus;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
-import org.mozilla.focus.download.DownloadInfoManager;
-import org.mozilla.focus.history.BrowsingHistoryManager;
-import org.mozilla.focus.locale.LocaleAwareApplication;
-import org.mozilla.focus.screenshot.ScreenshotManager;
-import org.mozilla.focus.search.SearchEngineManager;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AdjustHelper;
+import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.utils.AppConstants;
 
-public class FocusApplication extends LocaleAwareApplication {
+public class Inject {
+    public static QueryHandler getQueryHandler(ContentResolver resolver) {
+        return new QueryHandler(resolver);
+    }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public static String getDefaultTopSites(Context context) {
 
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-
-        Inject.enableStrictMode();
-
-        SearchEngineManager.getInstance().init(this);
-
-        TelemetryWrapper.init(this);
-        AdjustHelper.setupAdjustIfNeeded(this);
-
-        BrowsingHistoryManager.getInstance().init(this);
-        ScreenshotManager.getInstance().init(this);
-        DownloadInfoManager.getInstance().init(this);
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(HomeFragment.TOPSITES_PREF, null);
 
     }
 
-    private void enableStrictMode() {
-        // Android/WebView sometimes commit strict mode violations, see e.g.
-        // https://github.com/mozilla-mobile/focus-android/issues/660
+    public static void enableStrictMode() {
         if (AppConstants.isReleaseBuild()) {
             return;
         }
