@@ -1,6 +1,9 @@
 package org.mozilla.focus.test.runner;
 
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.test.runner.AndroidJUnitRunner;
 
 public class CustomTestRunner extends AndroidJUnitRunner {
@@ -16,5 +19,31 @@ public class CustomTestRunner extends AndroidJUnitRunner {
         // http://izmajlowiczl.blogspot.tw/2014/08/espresso-and-hidden-analytics-calls.html
         arguments.putString("disableAnalytics", "true");
         super.onCreate(arguments);
+    }
+
+    @Override
+    public void onStart() {
+        runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                Context applicationContext = CustomTestRunner.this.getTargetContext().getApplicationContext();
+
+                String tag = CustomTestRunner.class.getSimpleName();
+                unlockScreen(applicationContext, tag);
+                keepScreenAwake(applicationContext, tag);
+            }
+        });
+
+        super.onStart();
+    }
+
+    private void keepScreenAwake(Context applicationContext, String name) {
+        PowerManager power = (PowerManager) applicationContext.getSystemService(Context.POWER_SERVICE);
+        power.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, name).acquire();
+    }
+
+    private void unlockScreen(Context applicationContext, String name) {
+        KeyguardManager keyguard = (KeyguardManager) applicationContext.getSystemService(Context.KEYGUARD_SERVICE);
+        keyguard.newKeyguardLock(name).disableKeyguard();
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.mozilla.focus">
+
+    <!-- Put these permissions in the "debug" folder so it only gets merged into debug builds -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+</manifest>

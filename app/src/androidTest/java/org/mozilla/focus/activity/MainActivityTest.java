@@ -22,10 +22,8 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-        public void testAppStart() {
-
+    public void testAppStart() {
         onView(withId(R.id.root)).check(matches(isDisplayed()));
-
     }
 
 }
