@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -85,6 +86,18 @@ public class WebkitView extends NestedWebView implements IWebView, SharedPrefere
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         WebViewProvider.applyAppSettings(getContext(), getSettings());
+    }
+
+    @Override
+    public void destroy() {
+        // Try to avoid potential memory leakage in webview
+        // https://stackoverflow.com/questions/45744881/activity-has-leaked-intentreceiver-lollipopbrowseraccessibilitymanager/48596543#48596543
+        ViewGroup parent = (ViewGroup) getParent();
+        if (parent != null) {
+            parent.removeView(this);
+        }
+        removeAllViews();
+        super.destroy();
     }
 
     @Override
