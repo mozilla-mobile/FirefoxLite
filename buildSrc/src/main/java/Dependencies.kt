@@ -49,6 +49,7 @@ object Libs {
     val firebase_core = "com.google.firebase:firebase-core:${Versions.firebase}"
     val firebase_config = "com.google.firebase:firebase-config:${Versions.firebase}"
     val firebase_messaging = "com.google.firebase:firebase-messaging:${Versions.firebase}"
+    val firebase_crashlytics = "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
     val findbugs_annotations = "com.google.code.findbugs:annotations:${Versions.findbugs}"
     val lottie = "com.airbnb.android:lottie:${Versions.lottie}"
     val telemetry = "org.mozilla.telemetry:telemetry:${Versions.telemetry}"
