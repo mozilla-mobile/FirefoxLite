@@ -195,25 +195,43 @@ public class TabsSession {
     }
 
     /**
-     * To specify @see{TabsViewListener} to this session, this method will replace existing one.
+     * To add @see{TabsViewListener} to this session.
      *
      * @param listener
      */
-    public void setTabsViewListener(@Nullable TabsViewListener listener) {
+    public void addTabsViewListener(@NonNull TabsViewListener listener) {
         if (!this.tabsViewListeners.contains(listener)) {
             this.tabsViewListeners.add(listener);
         }
     }
 
     /**
-     * To specify @see{TabsChromeListener} to this session, this method will replace existing one.
+     * To add @see{TabsChromeListener} to this session.
      *
      * @param listener
      */
-    public void setTabsChromeListener(@Nullable TabsChromeListener listener) {
+    public void addTabsChromeListener(@Nullable TabsChromeListener listener) {
         if (!this.tabsViewListeners.contains(listener)) {
             this.tabsChromeListeners.add(listener);
         }
+    }
+
+    /**
+     * To remove @see{TabsViewListener} from this session.
+     *
+     * @param listener
+     */
+    public void removeTabsViewListener(@NonNull TabsViewListener listener) {
+        this.tabsViewListeners.remove(listener);
+    }
+
+    /**
+     * To remove @see{TabsChromeListener} from this session.
+     *
+     * @param listener
+     */
+    public void removeTabsChromeListener(@NonNull TabsChromeListener listener) {
+        this.tabsChromeListeners.remove(listener);
     }
 
     /**
