@@ -67,14 +67,12 @@ public class DialogUtils {
             }
         });
 
-        final String title = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE,
-                context.getString(R.string.rate_app_dialog_text_content));
+        final String title = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE);
         if (title != null) {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_title)).setText(title);
         }
 
-        final String content = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT,
-                context.getString(R.string.rate_app_dialog_text_content));
+        final String content = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT);
         if (content != null) {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
         }

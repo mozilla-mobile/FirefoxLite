@@ -108,7 +108,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseHelper.init();
+        FirebaseHelper.init(this);
         asyncInitialize();
 
         setContentView(R.layout.activity_main);
