@@ -51,15 +51,14 @@ public class TabsSession {
      */
     private static DefaultListener sDefaultListener = new DefaultListener();
 
-    private TabsViewListener tabsViewListener = sDefaultListener;
-    private TabsChromeListener tabsChromeListener = sDefaultListener;
+    private List<TabsViewListener> tabsViewListeners = new ArrayList<>();
+    private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
 
     public TabsSession(@NonNull Activity activity) {
         this.activity = activity;
 
-        this.notifier = new Notifier(activity);
-        this.notifier.setChromeListener(sDefaultListener);
+        this.notifier = new Notifier(activity, this.tabsChromeListeners);
     }
 
     /**
@@ -162,7 +161,9 @@ public class TabsSession {
             hoistTab(tabs.get(currentIdx));
         }
 
-        tabsChromeListener.onTabCountChanged(tabs.size());
+        for (final TabsChromeListener l : tabsChromeListeners) {
+            l.onTabCountChanged(tabs.size());
+        }
     }
 
     /**
@@ -204,7 +205,9 @@ public class TabsSession {
      * @param listener
      */
     public void setTabsViewListener(@Nullable TabsViewListener listener) {
-        tabsViewListener = (listener == null) ? sDefaultListener : listener;
+        if (!this.tabsViewListeners.contains(listener)) {
+            this.tabsViewListeners.add(listener);
+        }
     }
 
     /**
@@ -213,8 +216,9 @@ public class TabsSession {
      * @param listener
      */
     public void setTabsChromeListener(@Nullable TabsChromeListener listener) {
-        tabsChromeListener = (listener == null) ? sDefaultListener : listener;
-        this.notifier.setChromeListener(this.tabsChromeListener);
+        if (!this.tabsViewListeners.contains(listener)) {
+            this.tabsChromeListeners.add(listener);
+        }
     }
 
     /**
@@ -284,7 +288,9 @@ public class TabsSession {
             hoistTab(tab);
         }
 
-        tabsChromeListener.onTabCountChanged(tabs.size());
+        for (final TabsChromeListener l : tabsChromeListeners) {
+            l.onTabCountChanged(tabs.size());
+        }
         return tab.getId();
     }
 
@@ -324,7 +330,9 @@ public class TabsSession {
 
             // FIXME: workaround for 'dialog new window'
             if (source.getUrl() != null) {
-                tabsViewListener.onTabStarted(source);
+                for (final TabsViewListener l : tabsViewListeners) {
+                    l.onTabStarted(source);
+                }
             }
         }
 
@@ -332,7 +340,9 @@ public class TabsSession {
         public void onPageFinished(boolean isSecure) {
             source.setTitle(source.getTabView().getTitle());
 
-            tabsViewListener.onTabFinished(source, isSecure);
+            for (final TabsViewListener l : tabsViewListeners) {
+                l.onTabFinished(source, isSecure);
+            }
         }
 
         @Override
@@ -340,17 +350,27 @@ public class TabsSession {
             source.setUrl(url);
             source.setTitle(source.getTabView().getTitle());
 
-            tabsViewListener.onURLChanged(source, url);
+            for (final TabsViewListener l : tabsViewListeners) {
+                l.onURLChanged(source, url);
+            }
         }
 
         @Override
         public boolean handleExternalUrl(String url) {
-            return tabsViewListener.handleExternalUrl(url);
+            // only return false if none of listeners handled external url.
+            for (final TabsViewListener l : tabsViewListeners) {
+                if (l.handleExternalUrl(url)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override
         public void updateFailingUrl(String url, boolean updateFromError) {
-            tabsViewListener.updateFailingUrl(source, url, updateFromError);
+            for (final TabsViewListener l : tabsViewListeners) {
+                l.updateFailingUrl(source, url, updateFromError);
+            }
         }
     }
 
@@ -381,8 +401,9 @@ public class TabsSession {
             transport.setWebView(webView);
             msg.sendToTarget();
 
-            tabsChromeListener.onTabHoist(tab);
-
+            for (final TabsChromeListener l : tabsChromeListeners) {
+                l.onTabHoist(tab);
+            }
             return true;
         }
 
@@ -400,37 +421,54 @@ public class TabsSession {
 
         @Override
         public void onProgressChanged(int progress) {
-            tabsChromeListener.onProgressChanged(source, progress);
+            for (final TabsChromeListener l : tabsChromeListeners) {
+                l.onProgressChanged(source, progress);
+            }
         }
 
         @Override
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-            return tabsChromeListener.onShowFileChooser(source, webView, filePathCallback, fileChooserParams);
+            for (final TabsChromeListener l : tabsChromeListeners) {
+                if (l.onShowFileChooser(source, webView, filePathCallback, fileChooserParams)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            tabsViewListener.onReceivedTitle(source, title);
+            for (final TabsViewListener l : tabsViewListeners) {
+                l.onReceivedTitle(source, title);
+            }
         }
 
         @Override
         public void onLongPress(TabView.HitTarget hitTarget) {
-            tabsChromeListener.onLongPress(source, hitTarget);
+            for (final TabsChromeListener l : tabsChromeListeners) {
+                l.onLongPress(source, hitTarget);
+            }
         }
 
         @Override
         public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback, @Nullable View view) {
-            tabsChromeListener.onEnterFullScreen(source, callback);
+            for (final TabsChromeListener l : tabsChromeListeners) {
+                l.onEnterFullScreen(source, callback);
+            }
         }
 
         @Override
         public void onExitFullScreen() {
-            tabsChromeListener.onExitFullScreen(source);
+            for (final TabsChromeListener l : tabsChromeListeners) {
+                l.onExitFullScreen(source);
+            }
         }
 
         @Override
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-            tabsChromeListener.onGeolocationPermissionsShowPrompt(source, origin, callback);
+            for (final TabsChromeListener l : tabsChromeListeners) {
+                l.onGeolocationPermissionsShowPrompt(source, origin, callback);
+            }
         }
     }
 
@@ -441,11 +479,14 @@ public class TabsSession {
         static final int MSG_HOIST_TAB = 0x1001;
 
         private Activity activity;
-        private TabsChromeListener chromeListener;
+        private List<TabsChromeListener> chromeListeners = null;
 
-        Notifier(@NonNull final Activity activity) {
+        Notifier(@NonNull final Activity activity,
+                 @NonNull final List<TabsChromeListener> listeners) {
+
             super(Looper.getMainLooper());
             this.activity = activity;
+            this.chromeListeners = listeners;
         }
 
         @Override
@@ -459,16 +500,14 @@ public class TabsSession {
             }
         }
 
-        void setChromeListener(TabsChromeListener listener) {
-            this.chromeListener = listener;
-        }
-
         private void hoistTab(final Tab tab) {
             if (tab != null && tab.getTabView() == null) {
                 tab.createView(this.activity);
             }
 
-            this.chromeListener.onTabHoist(tab);
+            for (final TabsChromeListener l : this.chromeListeners) {
+                l.onTabHoist(tab);
+            }
         }
     }
 
