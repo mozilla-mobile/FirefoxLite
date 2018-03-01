@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.utils;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 /**
  * Provide helper for Firebase functionality
@@ -30,28 +32,23 @@ public class FirebaseHelper {
     private static WeakReference<FirebaseRemoteConfig> REMOTE_CONFIG;
     private static long CACHE_EXPIRATION = 3600; // 1 hour in seconds.
 
-    public static String getString(String s, String defaultValue) {
+    public static String getString(String key) {
         final FirebaseRemoteConfig config = REMOTE_CONFIG.get();
         if (config != null) {
-            final String string = config.getString(s);
-            if (string != null) {
-                return string;
-            } else {
-                return defaultValue;
-            }
+            return config.getString(key);
         }
         return null;
     }
 
-    public static void init() {
+    public static void init(final Context context) {
         new Thread(new Runnable() {
             public void run() {
-                internalInit();
+                internalInit(context);
             }
         }).start();
     }
 
-    private static void internalInit() {
+    private static void internalInit(final Context context) {
 
         final FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
         REMOTE_CONFIG = new WeakReference<>(config);
@@ -59,7 +56,7 @@ public class FirebaseHelper {
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
         config.setConfigSettings(configSettings);
-        config.setDefaults(R.xml.remote_config_default);
+        config.setDefaults(getRemoteConfigDefault(context));
 
         // If app is using developer mode, cacheExpiration is set to 0, so each fetch will
         // retrieve values from the service.
@@ -87,5 +84,13 @@ public class FirebaseHelper {
 
             }
         });
+    }
+
+    public static HashMap<String, Object> getRemoteConfigDefault(Context context) {
+
+        final HashMap<String, Object> map = new HashMap<>();
+        map.put(RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title));
+        map.put(RATE_APP_DIALOG_TEXT_CONTENT, context.getString(R.string.rate_app_dialog_text_content));
+        return map;
     }
 }
