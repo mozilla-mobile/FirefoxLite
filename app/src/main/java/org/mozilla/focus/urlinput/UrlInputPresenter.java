@@ -48,7 +48,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
     public void setView(UrlInputContract.View view) {
         this.view = view;
         // queryTask holds a WeakReference to view, cancel the task too.
-        if (view == null) {
+        if (view == null && queryTask != null) {
             queryTask.cancel(false);
         }
     }
