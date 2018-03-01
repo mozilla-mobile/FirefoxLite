@@ -46,11 +46,6 @@ public class TabsSession {
      */
     private int currentIdx = -1;
 
-    /**
-     * A placeholder to avoid null-checking
-     */
-    private static DefaultListener sDefaultListener = new DefaultListener();
-
     private List<TabsViewListener> tabsViewListeners = new ArrayList<>();
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
@@ -508,74 +503,6 @@ public class TabsSession {
             for (final TabsChromeListener l : this.chromeListeners) {
                 l.onTabHoist(tab);
             }
-        }
-    }
-
-    /**
-     * A empty implementation to avoid null-checking.
-     */
-    private static class DefaultListener implements TabsViewListener, TabsChromeListener {
-
-        @Override
-        public void onTabStarted(@NonNull Tab tab) {
-        }
-
-        @Override
-        public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
-
-        }
-
-        @Override
-        public void onURLChanged(@NonNull Tab tab, String url) {
-        }
-
-        @Override
-        public boolean handleExternalUrl(String url) {
-            return false;
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tabView, String origin, GeolocationPermissions.Callback callback) {
-        }
-
-        @Override
-        public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
-        }
-
-        @Override
-        public void onReceivedTitle(@NonNull Tab tab, String title) {
-        }
-
-        @Override
-        public void onProgressChanged(@NonNull Tab tab, int progress) {
-        }
-
-        @Override
-        public void onTabHoist(@NonNull Tab tab) {
-        }
-
-        @Override
-        public void onTabCountChanged(int count) {
-        }
-
-        @Override
-        public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback) {
-        }
-
-        @Override
-        public void onExitFullScreen(@NonNull Tab tab) {
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NonNull Tab tab,
-                                         WebView webView,
-                                         ValueCallback<Uri[]> filePathCallback,
-                                         WebChromeClient.FileChooserParams fileChooserParams) {
-            return false;
         }
     }
 }
