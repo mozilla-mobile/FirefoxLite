@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <integer name="design_snackbar_text_max_lines" tools:override="true">5</integer>
+    <integer name="tab_transition_time">250</integer>
 </resources>

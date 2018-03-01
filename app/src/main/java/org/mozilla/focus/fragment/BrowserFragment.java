@@ -103,7 +103,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private static final Handler HANDLER = new Handler();
 
     private static final int ANIMATION_DURATION = 300;
-    private static final int TAB_TRANSITION_DURATION = 250;
 
     private static final String ARGUMENT_URL = "url";
 
@@ -1257,7 +1256,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 outView.setAlpha(1f);
             }
 
-            tabTransitionAnimator = ValueAnimator.ofFloat(0, 1).setDuration(TAB_TRANSITION_DURATION);
+            int duration = inView.getResources().getInteger(R.integer.tab_transition_time);
+            tabTransitionAnimator = ValueAnimator.ofFloat(0, 1).setDuration(duration);
             tabTransitionAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
