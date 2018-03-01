@@ -28,7 +28,9 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void tabClicked(int tabPosition) {
-        model.switchTab(tabPosition);
+        if (model.getCurrentTabPosition() != tabPosition) {
+            model.switchTab(tabPosition);
+        }
         view.tabSwitched(tabPosition);
     }
 

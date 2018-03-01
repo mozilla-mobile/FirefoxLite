@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 
@@ -48,6 +50,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private static final boolean ENABLE_BACKGROUND_ALPHA_TRANSITION = true;
     private static final boolean ENABLE_SWIPE_TO_DISMISS = false;
 
+    private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
+
     private TabTrayContract.Presenter presenter;
 
     private View newTabBtn;
@@ -55,6 +59,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private View backgroundView;
     private Drawable backgroundDrawable;
+    private Drawable backgroundOverlay;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
@@ -91,7 +96,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initBackground(view.getContext());
+        initWindowBackground(view.getContext());
 
         BottomSheetBehavior behavior = getBehavior(recyclerView);
         if (behavior != null) {
@@ -249,25 +254,35 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
     }
 
-    private void initBackground(Context context) {
-        backgroundDrawable = context.getDrawable(R.drawable.tab_tray_background);
-        if (backgroundDrawable == null) {
+    private void initWindowBackground(Context context) {
+        Drawable drawable = context.getDrawable(R.drawable.tab_tray_background);
+        if (drawable == null) {
             if (BuildConfig.DEBUG) {
-                throw new IllegalStateException("fail to resolve background drawable");
+                throw new RuntimeException("fail to resolve background drawable");
             }
             return;
         }
-        int validAlpha = validateBackgroundAlpha(0xff);
-        backgroundDrawable.setAlpha(validAlpha);
+
+        if (drawable instanceof LayerDrawable) {
+            LayerDrawable layerDrawable = (LayerDrawable) drawable;
+            backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background);
+            backgroundOverlay = layerDrawable.findDrawableByLayerId(R.id.background_overlay);
+            int alpha = validateBackgroundAlpha(0xff);
+            backgroundDrawable.setAlpha(alpha);
+            backgroundOverlay.setAlpha((int) (alpha * OVERLAY_ALPHA_FULL_EXPANDED));
+
+        } else {
+            backgroundDrawable = drawable;
+        }
 
         Window window = getDialog().getWindow();
         if (window == null) {
             return;
         }
-        window.setBackgroundDrawable(backgroundDrawable);
+        window.setBackgroundDrawable(drawable);
     }
 
-    private void setBackgroundAlpha(float alpha) {
+    private void updateWindowBackground(float overlayAlpha, float backgroundAlpha) {
         if (backgroundDrawable == null) {
             if (BuildConfig.DEBUG) {
                 throw new IllegalStateException("initBackground() should be called first");
@@ -275,8 +290,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             return;
         }
 
-        int validAlpha = validateBackgroundAlpha((int) (alpha * 0xff));
-        backgroundDrawable.setAlpha(validAlpha);
+        backgroundDrawable.setAlpha(validateBackgroundAlpha((int) (backgroundAlpha * 0xff)));
+
+        if (backgroundOverlay != null) {
+            backgroundOverlay.setAlpha(validateBackgroundAlpha((int) (overlayAlpha * 0xff)));
+        }
     }
 
     private int validateBackgroundAlpha(int alpha) {
@@ -284,7 +302,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
-        private Interpolator interpolator = new AccelerateInterpolator();
+        private Interpolator backgroundInterpolator = new AccelerateInterpolator();
+        private Interpolator overlayInterpolator = new AccelerateDecelerateInterpolator();
         private int collapseHeight = -1;
 
         @Override
@@ -297,6 +316,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             float backgroundAlpha = 1f;
+            float overlayAlpha = 0f;
+
             float translationY = 0;
 
             if (slideOffset < 0) {
@@ -306,18 +327,21 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 translationY = collapseHeight * -slideOffset;
 
                 if (ENABLE_BACKGROUND_ALPHA_TRANSITION) {
-                    float interpolated = interpolator.getInterpolation(-slideOffset);
+                    float interpolated = backgroundInterpolator.getInterpolation(-slideOffset);
                     backgroundAlpha = 1 - interpolated;
                 }
+            } else {
+                float interpolated = overlayInterpolator.getInterpolation(1 - slideOffset);
+                overlayAlpha = -(interpolated * OVERLAY_ALPHA_FULL_EXPANDED) + OVERLAY_ALPHA_FULL_EXPANDED;
             }
 
             newTabBtn.setTranslationY(translationY);
             logoMan.setTranslationY(translationY);
 
-            backgroundAlpha = backgroundAlpha < 0 ? 0 : backgroundAlpha;
+            backgroundAlpha = Math.max(0, backgroundAlpha);
             backgroundView.setAlpha(backgroundAlpha);
 
-            setBackgroundAlpha(backgroundAlpha);
+            updateWindowBackground(overlayAlpha, backgroundAlpha);
         }
     };
 

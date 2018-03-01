@@ -3,10 +3,18 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:angle="270"
-        android:startColor="@color/tabTrayBackgroundTop"
-        android:centerColor="@color/tabTrayBackgroundBottom"
-        android:endColor="@color/tabTrayBackgroundBottom" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/gradient_background">
+        <shape>
+            <gradient
+                android:angle="270"
+                android:startColor="@color/tabTrayBackgroundTop"
+                android:centerColor="@color/tabTrayBackgroundBottom"
+                android:endColor="@color/tabTrayBackgroundBottom" />
+        </shape>
+    </item>
+
+    <item android:id="@+id/background_overlay">
+        <color android:color="@android:color/black" />
+    </item>
+</layer-list>
