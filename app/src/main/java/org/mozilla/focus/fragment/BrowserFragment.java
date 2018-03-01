@@ -85,7 +85,6 @@ import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -177,6 +176,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private boolean hasPendingScreenCaptureTask = false;
 
+    final TabsContentListener tabsContentListener = new TabsContentListener();
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -434,9 +434,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         tabsSession = TabsSessionProvider.getOrThrow(getActivity());
 
-        final TabsContentListener listener = new TabsContentListener();
-        tabsSession.setTabsViewListener(listener);
-        tabsSession.setTabsChromeListener(listener);
+        tabsSession.addTabsViewListener(this.tabsContentListener);
+        tabsSession.addTabsChromeListener(this.tabsContentListener);
         tabsSession.setDownloadCallback(downloadCallback);
 
         return view;
@@ -587,6 +586,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     @Override
     public void onDestroy() {
         tabsSession.destroy();
+        tabsSession.removeTabsViewListener(this.tabsContentListener);
+        tabsSession.removeTabsChromeListener(this.tabsContentListener);
         super.onDestroy();
     }
 
