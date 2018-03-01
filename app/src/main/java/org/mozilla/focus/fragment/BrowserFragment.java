@@ -85,7 +85,6 @@ import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -1051,17 +1050,21 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             tab.detach();
 
             @Nullable final View outView = findExistingTabView(webViewSlot);
+            webViewSlot.removeViewInLayout(outView);
+
             final View inView = tab.getTabView().getView();
             webViewSlot.addView(inView);
 
-            startTabTransition(outView, inView, new Runnable() {
-                @Override
-                public void run() {
-                    if (outView != null) {
-                        webViewSlot.removeViewInLayout(outView);
-                    }
-                }
-            });
+            // TODO: needed only when user taps on snack bar to switch to background tab. In case
+            // user switch tab from tab tray, there's already a tab tray exit animation.
+//            startTabTransition(outView, inView, new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (outView != null) {
+//                        webViewSlot.removeViewInLayout(outView);
+//                    }
+//                }
+//            });
         }
 
         @Override
