@@ -26,6 +26,12 @@
     <style name="TabTrayTheme" parent="AppTheme">
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/TabTrayDialogAnimation</item>
+    </style>
+
+    <style name="TabTrayDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/tab_tray_enter</item>
+        <item name="android:windowExitAnimation">@anim/tab_tray_exit</item>
     </style>
 
     <style name="DialogTitleStyle" parent="TextAppearance.AppCompat.Title">
