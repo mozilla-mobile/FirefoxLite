@@ -1074,8 +1074,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             lastInsertedUrl = null;
             loadedUrl = null;
 
-            updateIsLoading(true);
-
             siteIdentity.setImageLevel(SITE_GLOBE);
 
             backgroundTransition.resetTransition();
@@ -1093,8 +1091,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
             // URL is always correct _except_ for error pages
             updateUrlFromWebView(tab);
-
-            updateIsLoading(false);
 
             notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
 
