@@ -6,7 +6,9 @@
 package org.mozilla.focus.tabs.tabtray;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -15,6 +17,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetBehavior.BottomSheetCallback;
 import android.support.design.widget.CoordinatorLayout;
@@ -31,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -64,6 +68,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
 
+    private boolean playEnterAnimation = true;
+
     private TabTrayAdapter adapter = new TabTrayAdapter();
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -78,6 +84,19 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
 
         presenter = new TabTrayPresenter(this, new TabsSessionModel(this));
+    }
+
+    @Override
+    public void onStart() {
+        if (playEnterAnimation) {
+            playEnterAnimation = false;
+            setDialogAnimation(R.style.TabTrayDialogEnterExit);
+
+        } else {
+            setDialogAnimation(R.style.TabTrayDialogExit);
+        }
+
+        super.onStart();
     }
 
     @Nullable
@@ -103,13 +122,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             behavior.setBottomSheetCallback(behaviorCallback);
         }
 
+        prepareExpandAnimation();
+
         adapter.setTabClickListener(tabClickListener);
         recyclerView.setAdapter(adapter);
 
         initRecyclerViewStyle(recyclerView);
         new ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView);
-
-        setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
 
         newTabBtn.setOnClickListener(this);
         setupTapBackgroundToExpand();
@@ -118,6 +137,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             @Override
             public boolean onPreDraw() {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
+                postExpandAnimation();
                 presenter.viewReady();
                 return false;
             }
@@ -172,6 +192,38 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         adapter.notifyItemChanged(nextFocusPos);
     }
 
+
+    private void prepareExpandAnimation() {
+        setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN);
+
+        // update logo-man and background alpha state
+        behaviorCallback.onSlide(recyclerView, -1);
+    }
+
+    private void postExpandAnimation() {
+        uiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isVisibleWhenCollapse(adapter.getFocusedTabPosition())) {
+                    setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
+                } else {
+                    setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        }, getResources().getInteger(R.integer.tab_tray_transition_time));
+    }
+
+    private boolean isVisibleWhenCollapse(int focusedPosition) {
+        Resources res = getResources();
+        int visiblePanelHeight = res.getDimensionPixelSize(R.dimen.tab_tray_peekHeight) -
+                res.getDimensionPixelSize(R.dimen.tab_tray_new_tab_btn_height);
+        int itemHeightWithDivider = res.getDimensionPixelSize(R.dimen.tab_tray_item_height) +
+                res.getDimensionPixelSize(R.dimen.tab_tray_item_space);
+        final int visibleItemCount = visiblePanelHeight / itemHeightWithDivider;
+
+        return focusedPosition < visibleItemCount;
+    }
+
     @Nullable
     private BottomSheetBehavior getBehavior(View view) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
@@ -195,6 +247,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         if (behavior != null) {
             behavior.setState(state);
         }
+    }
+
+    private int getBottomSheetState() {
+        BottomSheetBehavior behavior = getBehavior(recyclerView);
+        if (behavior != null) {
+            return behavior.getState();
+        }
+        return -1;
     }
 
     private int getCollapseHeight() {
@@ -269,7 +329,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             backgroundOverlay = layerDrawable.findDrawableByLayerId(R.id.background_overlay);
             int alpha = validateBackgroundAlpha(0xff);
             backgroundDrawable.setAlpha(alpha);
-            backgroundOverlay.setAlpha((int) (alpha * OVERLAY_ALPHA_FULL_EXPANDED));
+            backgroundOverlay.setAlpha(getBottomSheetState() == BottomSheetBehavior.STATE_COLLAPSED ? 0 : (int) (alpha * OVERLAY_ALPHA_FULL_EXPANDED));
 
         } else {
             backgroundDrawable = drawable;
@@ -299,6 +359,36 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private int validateBackgroundAlpha(int alpha) {
         return Math.max(Math.min(alpha, 0xfe), 0x01);
+    }
+
+    private void setDialogAnimation(@StyleRes int resId) {
+        Dialog dialog = getDialog();
+        if (dialog == null) {
+            return;
+        }
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.getAttributes().windowAnimations = resId;
+            updateWindowAttrs(window);
+        }
+    }
+
+    private void updateWindowAttrs(@NonNull Window window) {
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
+
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (manager == null) {
+            return;
+        }
+
+        View decor = window.getDecorView();
+        if (decor.isAttachedToWindow()) {
+            manager.updateViewLayout(decor, window.getAttributes());
+        }
     }
 
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
@@ -412,48 +502,4 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             }
         }
     }
-
-//    private static class TabsModel implements TabTrayContract.Model {
-//        private List<Tab> tabs = new ArrayList<>();
-//        private int currentTabPosition;
-//
-//        TabsModel() {
-//            for (int i = 0; i < 15; i++) {
-//                Tab tab = new Tab();
-//                tabs.add(tab);
-//            }
-//            currentTabPosition = 8;
-//        }
-//
-//        @Override
-//        public List<Tab> getTabs() {
-//            return tabs;
-//        }
-//
-//        @Override
-//        public int getCurrentTabPosition() {
-//            return currentTabPosition;
-//        }
-//
-//        @Override
-//        public void switchTab(int tabIdx) {
-//            currentTabPosition = tabIdx;
-//        }
-//
-//        @Override
-//        public void removeTab(int tabPosition) {
-//            Tab focusedTab = tabs.get(currentTabPosition);
-//
-//            if (tabPosition == currentTabPosition) {
-//                if (tabPosition > 0) {
-//                    currentTabPosition = tabPosition - 1;
-//                }
-//                tabs.remove(tabPosition);
-//
-//            } else {
-//                tabs.remove(tabPosition);
-//                currentTabPosition = tabs.indexOf(focusedTab);
-//            }
-//        }
-//    }
 }

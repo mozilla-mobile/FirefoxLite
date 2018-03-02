@@ -61,6 +61,10 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         this.focusedTabPosition = tabPosition;
     }
 
+    int getFocusedTabPosition() {
+        return this.focusedTabPosition;
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView websiteTitle;
         TextView websiteSubtitle;
