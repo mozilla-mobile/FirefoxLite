@@ -49,11 +49,19 @@ public class TabsSession {
     private List<TabsViewListener> tabsViewListeners = new ArrayList<>();
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
+    private TabModelStore tabModelStore;
+    private TabModelStoreQueryListener tabModelStoreQueryListener;
+
+    public interface TabRestoreListener {
+        void onTabRestoreComplete(@NonNull Tab currentTab);
+    }
 
     public TabsSession(@NonNull Activity activity) {
         this.activity = activity;
 
         this.notifier = new Notifier(activity, this.tabsChromeListeners);
+
+        this.tabModelStore = TabModelStore.getInstance(activity);
     }
 
     /**
@@ -77,24 +85,12 @@ public class TabsSession {
     }
 
     /**
-     * To append tabs from a list of TabModel. If tabs is empty before this call, the first appended
-     * tab will be hoisted, otherwise no tab will be hoisted.
+     * Save tabs into persistent storage.
      * <p>
      * This is asynchronous call.
-     * TODO: make it asynchronous
-     *
-     * @param models
      */
-    public void restoreTabs(List<TabModel> models) {
-        for (final TabModel model : models) {
-            final Tab tab = new Tab(model);
-            bindCallback(tab);
-            tabs.add(tab);
-        }
-
-        if (tabs.size() > 0 && tabs.size() == models.size()) {
-            currentIdx = 0; // first tab
-        }
+    public void saveTabs() {
+        tabModelStore.saveTabs(getTabModelListForPersistence(), null);
     }
 
     /**
@@ -102,12 +98,27 @@ public class TabsSession {
      *
      * @return created TabModel of tabs in this session.
      */
-    public List<TabModel> getSaveState() {
+    private List<TabModel> getTabModelListForPersistence() {
         final List<TabModel> models = new ArrayList<>();
         for (final Tab tab : tabs) {
             models.add(tab.getSaveModel());
         }
         return models;
+    }
+
+    /**
+     * To append tabs from a list of TabModel. If tabs is empty before this call, the first appended
+     * tab will be hoisted, otherwise no tab will be hoisted.
+     * <p>
+     * This is asynchronous call.
+     *
+     * @param listener tab restore event listener
+     */
+    public void restoreTabs(final TabRestoreListener listener) {
+        // Keep a strong reference of tabModelStoreQueryListener to make sure the query complete callback would be executed
+        // since the getSaveTabs task only keep the listener as weak reference
+        tabModelStoreQueryListener = new TabModelStoreQueryListener(listener);
+        tabModelStore.getSavedTabs(tabModelStoreQueryListener);
     }
 
     /**
@@ -328,6 +339,32 @@ public class TabsSession {
         notifier.sendMessage(msg);
     }
 
+    class TabModelStoreQueryListener implements TabModelStore.AsyncQueryListener {
+        private TabRestoreListener listener;
+
+        public TabModelStoreQueryListener(TabRestoreListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void onQueryComplete(List<TabModel> models) {
+            for (final TabModel model : models) {
+                final Tab tab = new Tab(model);
+                bindCallback(tab);
+                tabs.add(tab);
+            }
+
+            if (tabs.size() > 0 && tabs.size() == models.size()) {
+                currentIdx = 0; // first tab
+            }
+
+            if (listener != null && tabs.size() > 0) {
+                // FIXME: should find a way to keep current tab
+                listener.onTabRestoreComplete(tabs.get(0));
+            }
+        }
+    }
+
     class TabViewClientImpl extends TabViewClient {
         @NonNull
         Tab source;
@@ -515,7 +552,8 @@ public class TabsSession {
 
         private void hoistTab(final Tab tab) {
             if (tab != null && tab.getTabView() == null) {
-                tab.createView(this.activity);
+                String url = tab.getUrl();
+                tab.createView(this.activity).loadUrl(url);
             }
 
             for (final TabsChromeListener l : this.chromeListeners) {
