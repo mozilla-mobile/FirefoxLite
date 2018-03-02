@@ -211,7 +211,7 @@ public class TabsSession {
      * @param listener
      */
     public void addTabsChromeListener(@Nullable TabsChromeListener listener) {
-        if (!this.tabsViewListeners.contains(listener)) {
+        if (!this.tabsChromeListeners.contains(listener)) {
             this.tabsChromeListeners.add(listener);
         }
     }
