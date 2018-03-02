@@ -50,6 +50,7 @@ public class TabsSession {
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
     private TabModelStore tabModelStore;
+    private TabModelStoreQueryListener tabModelStoreQueryListener;
 
     public interface TabRestoreListener {
         void onTabRestoreComplete(@NonNull Tab currentTab);
@@ -114,25 +115,10 @@ public class TabsSession {
      * @param listener tab restore event listener
      */
     public void restoreTabs(final TabRestoreListener listener) {
-        tabModelStore.getSavedTabs(new TabModelStore.AsyncQueryListener() {
-            @Override
-            public void onQueryComplete(List<TabModel> models) {
-                for (final TabModel model : models) {
-                    final Tab tab = new Tab(model);
-                    bindCallback(tab);
-                    tabs.add(tab);
-                }
-
-                if (tabs.size() > 0 && tabs.size() == models.size()) {
-                    currentIdx = 0; // first tab
-                }
-
-                if (listener != null && tabs.size() > 0) {
-                    // FIXME: should find a way to keep current tab
-                    listener.onTabRestoreComplete(tabs.get(0));
-                }
-            }
-        });
+        // Keep a strong reference of tabModelStoreQueryListener to make sure the query complete callback would be executed
+        // since the getSaveTabs task only keep the listener as weak reference
+        tabModelStoreQueryListener = new TabModelStoreQueryListener(listener);
+        tabModelStore.getSavedTabs(tabModelStoreQueryListener);
     }
 
     /**
@@ -351,6 +337,32 @@ public class TabsSession {
         final Message msg = notifier.obtainMessage(Notifier.MSG_HOIST_TAB);
         msg.obj = tab;
         notifier.sendMessage(msg);
+    }
+
+    class TabModelStoreQueryListener implements TabModelStore.AsyncQueryListener {
+        private TabRestoreListener listener;
+
+        public TabModelStoreQueryListener(TabRestoreListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void onQueryComplete(List<TabModel> models) {
+            for (final TabModel model : models) {
+                final Tab tab = new Tab(model);
+                bindCallback(tab);
+                tabs.add(tab);
+            }
+
+            if (tabs.size() > 0 && tabs.size() == models.size()) {
+                currentIdx = 0; // first tab
+            }
+
+            if (listener != null && tabs.size() > 0) {
+                // FIXME: should find a way to keep current tab
+                listener.onTabRestoreComplete(tabs.get(0));
+            }
+        }
     }
 
     class TabViewClientImpl extends TabViewClient {
