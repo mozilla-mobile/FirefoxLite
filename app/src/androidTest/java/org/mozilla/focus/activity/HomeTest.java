@@ -44,17 +44,17 @@ import static org.mozilla.focus.helper.TestHelper.atPosition;
 @RunWith(AndroidJUnit4.class)
 public class HomeTest {
 
-
+    // Deffer the startup of the activity cause we want to avoid first run
     @Rule
-    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public final ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
     private SessionLoadedIdlingResource loadingIdlingResource;
 
     @Before
     public void setUp() {
+        // Set the share preferences and start the activity
         AndroidTestUtils.beforeTest();
         activityRule.launchActivity(new Intent());
         loadingIdlingResource = new SessionLoadedIdlingResource(activityRule.getActivity());
-
     }
 
     @After
@@ -70,21 +70,29 @@ public class HomeTest {
 
         final MainActivity context = activityRule.getActivity();
 
-        final JSONArray jsonDefault;
         try {
-            jsonDefault = new JSONArray(Inject.getDefaultTopSites(context));
-            List<Site> defaultSites = TopSitesUtils.paresJsonToList(context, jsonDefault);
+            // Get test top sites
+            final JSONArray jsonDefault = new JSONArray(Inject.getDefaultTopSites(context));
+            final List<Site> defaultSites = TopSitesUtils.paresJsonToList(context, jsonDefault);
+
+            // Check the title of the sample top site is correct
             onView(withId(R.id.main_list))
                     .check(matches(atPosition(0, hasDescendant(withText(defaultSites.get(0).getTitle())))));
 
+            // Click and load the sample top site
             onView(ViewMatchers.withId(R.id.main_list))
                     .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
+            // After page loading completes
             IdlingRegistry.getInstance().register(loadingIdlingResource);
 
+            // Check if the url is displayed correctly
             onView(withText(defaultSites.get(0).getUrl())).check(matches(isDisplayed()));
+
         } catch (JSONException e) {
             e.printStackTrace();
+            throw new AssertionError("testTopSite failed:", e);
+
         }
     }
 
