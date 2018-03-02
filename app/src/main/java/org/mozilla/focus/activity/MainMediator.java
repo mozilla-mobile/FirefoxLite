@@ -62,7 +62,7 @@ public class MainMediator {
         this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
-    public void showBrowserScreen(@NonNull String url, boolean clearHistory) {
+    public void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
 
@@ -73,7 +73,7 @@ public class MainMediator {
 
         fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        FragmentTransaction trans = this.prepareBrowsing(url, clearHistory);
+        FragmentTransaction trans = this.prepareBrowsing(url, openInNewTab);
         trans.commit();
 
         this.activity.sendBrowsingTelemetry();
@@ -114,7 +114,7 @@ public class MainMediator {
         return null;
     }
 
-    private FragmentTransaction prepareBrowsing(@NonNull String url, boolean clearHistory) {
+    private FragmentTransaction prepareBrowsing(@NonNull String url, boolean openInNewTab) {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentMgr.beginTransaction();
         transaction.setCustomAnimations(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
@@ -126,26 +126,12 @@ public class MainMediator {
             final Fragment freshFragment = this.activity.createBrowserFragment(url);
             transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
         } else {
-            // Reuse existing visible fragment - in this case we know the user is already browsing.
-            // The fragment might exist if we "erased" a browsing session, hence we need to check
-            // for visibility in addition to existence.
-            // If we are asked to clear history, just create new fragment because WebView.clearHistory()
-            // won't work until page-loading finished.
-            if (clearHistory) {
-                final Fragment newFragment = this.activity.createBrowserFragment(url);
-                // remove previous BrowserFragment and its transaction
-                fragmentMgr.popBackStackImmediate(BrowserFragment.FRAGMENT_TAG,
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                transaction.replace(R.id.container, newFragment, BrowserFragment.FRAGMENT_TAG)
-                        .addToBackStack(BrowserFragment.FRAGMENT_TAG);
+            browserFrg.loadUrl(url, openInNewTab);
+            if (!browserFrg.isVisible()) {
+                transaction.replace(R.id.container, browserFrg, BrowserFragment.FRAGMENT_TAG);
             } else {
-                browserFrg.loadUrl(url);
-                if (!browserFrg.isVisible()) {
-                    transaction.replace(R.id.container, browserFrg, BrowserFragment.FRAGMENT_TAG);
-                } else {
-                    fragmentMgr.popBackStackImmediate(HomeFragment.FRAGMENT_TAG,
-                            FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
+                fragmentMgr.popBackStackImmediate(HomeFragment.FRAGMENT_TAG,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         }
         return transaction;

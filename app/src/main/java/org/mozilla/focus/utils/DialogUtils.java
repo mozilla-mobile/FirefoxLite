@@ -63,7 +63,7 @@ public class DialogUtils {
             @Override
             public void onClick(View v) {
                 Settings.getInstance(context).setShareAppDialogDidShow();
-                IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url));
+                IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url), true);
                 if (dialog != null) {
                     dialog.dismiss();
                 }
