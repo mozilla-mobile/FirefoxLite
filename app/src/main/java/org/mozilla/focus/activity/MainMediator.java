@@ -63,6 +63,14 @@ public class MainMediator {
     }
 
     public void showBrowserScreen(@NonNull String url, boolean clearHistory) {
+        clearInputAndCommitBrowserFragment(prepareBrowsing(url, clearHistory));
+    }
+
+    public void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
+        clearInputAndCommitBrowserFragment(prepareBrowsingForRestoreTabs(tabId));
+    }
+
+    private void clearInputAndCommitBrowserFragment(FragmentTransaction browserFragmentTransaction) {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
 
@@ -73,8 +81,7 @@ public class MainMediator {
 
         fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        FragmentTransaction trans = this.prepareBrowsing(url, clearHistory);
-        trans.commit();
+        browserFragmentTransaction.commit();
 
         this.activity.sendBrowsingTelemetry();
     }
@@ -147,6 +154,20 @@ public class MainMediator {
                             FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
             }
+        }
+        return transaction;
+    }
+
+    private FragmentTransaction prepareBrowsingForRestoreTabs(@NonNull String tabId) {
+        final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentMgr.beginTransaction();
+
+        final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
+                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+
+        if (browserFrg == null) {
+            final Fragment freshFragment = this.activity.createBrowserFragmentForRestoreTab(tabId);
+            transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
         }
         return transaction;
     }

@@ -41,6 +41,7 @@ import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
+import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
@@ -126,6 +127,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
             }
         }
+
+        getTabsSession().restoreTabs(new TabsSession.TabRestoreListener() {
+            @Override
+            public void onTabRestoreComplete(@NonNull Tab currentTab) {
+                if (!isFinishing() && !isDestroyed()) {
+                    MainActivity.this.mediator.showBrowserScreenForRestoreTabs(currentTab.getId());
+                }
+            }
+        });
+
         WebViewProvider.preload(this);
 
         if (sIsNewCreated) {
@@ -204,6 +215,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
+
+        getTabsSession().saveTabs();
     }
 
     @Override
@@ -707,6 +720,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public BrowserFragment createBrowserFragment(@NonNull String url) {
         BrowserFragment fragment = BrowserFragment.create(url);
+        return fragment;
+    }
+
+    public BrowserFragment createBrowserFragmentForRestoreTab(@NonNull String tabId) {
+        BrowserFragment fragment = BrowserFragment.createForTabId(tabId);
         return fragment;
     }
 
