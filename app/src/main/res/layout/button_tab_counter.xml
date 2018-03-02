@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/colorMenuIconForeground"
+            android:textStyle="bold"
             android:textSize="12sp"
             tools:text="18" />
     </FrameLayout>
