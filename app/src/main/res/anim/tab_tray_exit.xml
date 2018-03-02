@@ -7,4 +7,4 @@
     android:interpolator="@android:interpolator/linear"
     android:fromAlpha="1.0"
     android:toAlpha="0.0"
-    android:duration="100" />
+    android:duration="@integer/tab_tray_transition_time" />
