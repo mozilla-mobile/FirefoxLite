@@ -223,7 +223,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     private void openUrl(String url) {
         final Activity activity = getActivity();
         if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.OPEN_URL, url);
+            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.LOAD_URL, url);
         }
     }
 

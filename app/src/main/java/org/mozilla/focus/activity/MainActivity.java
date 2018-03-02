@@ -115,8 +115,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     pendingUrl = url;
                     this.mediator.showFirstRun();
                 } else {
-                    boolean isFromInternal = intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
-                    this.mediator.showBrowserScreen(url, isFromInternal ? false : true);
+                    boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
+                            false);
+                    this.mediator.showBrowserScreen(url, openInNewTab);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
@@ -238,8 +239,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // Unless we're trying to show the firstrun screen, in which case we leave it pending until
             // firstrun is dismissed.
             final SafeIntent intent = new SafeIntent(getIntent());
-            boolean isFromInternal = intent != null && intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
-            this.mediator.showBrowserScreen(pendingUrl, isFromInternal ? false : true);
+            boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, false);
+            this.mediator.showBrowserScreen(pendingUrl, openInNewTab);
             pendingUrl = null;
         }
     }
@@ -285,7 +286,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void postSurveyNotification() {
         Intent intent = IntentUtils.createInternalOpenUrlIntent(this,
-                getSurveyUrl());
+                getSurveyUrl(), true);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
@@ -648,6 +649,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
             case OPEN_URL:
+                if ((payload != null) && (payload instanceof String)) {
+                    this.mediator.showBrowserScreen(payload.toString(), true);
+                }
+                break;
+            case LOAD_URL:
                 if ((payload != null) && (payload instanceof String)) {
                     this.mediator.showBrowserScreen(payload.toString(), false);
                 }
