@@ -6,17 +6,31 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.test.InstrumentationRegistry;
+
+import static org.mozilla.focus.fragment.FirstrunFragment.FIRSTRUN_PREF;
 
 
 public final class AndroidTestUtils {
 
-    public static void beforeTest(final Context context) {
-        if (context != null) {
-            final Settings settings = Settings.getInstance(context);
-            if (settings != null) {
-                settings.setRateAppDialogDidShow();
-                settings.setShareAppDialogDidShow();
+    public static void beforeTest() {
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        if (context == null) {
+            return;
+        }
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (preferences != null) {
+            final SharedPreferences.Editor editor = preferences.edit();
+            if (editor != null) {
+                editor.putBoolean(FIRSTRUN_PREF, true).commit();
             }
         }
+        final Settings settings = Settings.getInstance(context);
+        if (settings != null) {
+            settings.setShareAppDialogDidShow();
+        }
+
     }
 }

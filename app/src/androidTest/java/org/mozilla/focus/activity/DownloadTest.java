@@ -6,6 +6,7 @@
 package org.mozilla.focus.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingRegistry;
@@ -15,6 +16,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
+import android.widget.ImageView;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,14 +49,14 @@ public class DownloadTest {
 
     @Before
     public void setUp() {
-        AndroidTestUtils.beforeTest(activityRule.getActivity());
+        AndroidTestUtils.beforeTest();
 
         loadingIdlingResource = new SessionLoadedIdlingResource(activityRule.getActivity());
 
     }
 
     @Rule
-    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<MainActivity>(MainActivity.class) {
+    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<MainActivity>(MainActivity.class, true, false) {
         @Override
         protected void beforeActivityLaunched() {
             super.beforeActivityLaunched();
@@ -103,12 +105,13 @@ public class DownloadTest {
 
     @Test
     public void DownloadFileTest() throws InterruptedException, UiObjectNotFoundException, IOException {
-
+        activityRule.launchActivity(new Intent());
         onView(withId(R.id.home_fragment_fake_input)).perform(click());
         onView(withId(R.id.url_edit)).perform(replaceText(webServer.url(TEST_PATH).toString()), pressImeActionButton());
         // IdlingRegistry.getInstance().register(loadingIdlingResource);
-        final UiObject downloadIcon = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).findObject(new UiSelector()
-                .resourceId("rabbitImage"));
+        final UiDevice instance = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+//        final UiObject downloadIcon = instance.findObject(new UiSelector().resourceId("rabbitImage"));
+        final UiObject downloadIcon = instance.findObject(new UiSelector().instance(0).className(ImageView.class));
         downloadIcon.click();
 
     }

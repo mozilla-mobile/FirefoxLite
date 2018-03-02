@@ -5,7 +5,10 @@
 
 package org.mozilla.focus.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Keep;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -43,12 +46,13 @@ public class HomeTest {
 
 
     @Rule
-    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
     private SessionLoadedIdlingResource loadingIdlingResource;
 
     @Before
     public void setUp() {
-        AndroidTestUtils.beforeTest(activityRule.getActivity());
+        AndroidTestUtils.beforeTest();
+        activityRule.launchActivity(new Intent());
         loadingIdlingResource = new SessionLoadedIdlingResource(activityRule.getActivity());
 
     }
@@ -63,6 +67,7 @@ public class HomeTest {
 
     @Test
     public void testTopSite() {
+
         final MainActivity context = activityRule.getActivity();
 
         final JSONArray jsonDefault;

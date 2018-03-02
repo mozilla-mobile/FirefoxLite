@@ -55,7 +55,7 @@ public class DefaultBrowserTest {
     public void setup() {
         uiDevice = UiDevice.getInstance(getInstrumentation());
 
-        AndroidTestUtils.beforeTest(mainActivity.getActivity());
+        AndroidTestUtils.beforeTest();
     }
 
     @Test
