@@ -102,7 +102,7 @@ public class TabsSession {
      *
      * @return created TabModel of tabs in this session.
      */
-    public List<TabModel> getSaveState() {
+    public List<TabModel> getTabModelListForPersistence() {
         final List<TabModel> models = new ArrayList<>();
         for (final Tab tab : tabs) {
             models.add(tab.getSaveModel());
@@ -515,7 +515,8 @@ public class TabsSession {
 
         private void hoistTab(final Tab tab) {
             if (tab != null && tab.getTabView() == null) {
-                tab.createView(this.activity);
+                String url = tab.getUrl();
+                tab.createView(this.activity).loadUrl(url);
             }
 
             for (final TabsChromeListener l : this.chromeListeners) {

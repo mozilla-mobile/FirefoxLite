@@ -39,8 +39,11 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
+import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
+import org.mozilla.focus.tabs.Tab;
+import org.mozilla.focus.tabs.TabModelStore;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
@@ -66,7 +69,7 @@ import java.util.Locale;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        TabsSessionProvider.SessionHost {
+        TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
 
@@ -127,6 +130,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
             }
         }
+        TabModelStore.getInstance(this).getSavedTabs(this);
         WebViewProvider.preload(this);
 
         if (sIsNewCreated) {
@@ -205,6 +209,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
+
+        TabModelStore.getInstance(this).saveTabs(getTabsSession().getTabModelListForPersistence(), null);
     }
 
     @Override
@@ -805,5 +811,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             tabsSession = new TabsSession(this);
         }
         return tabsSession;
+    }
+
+    @Override
+    public void onQueryComplete(List<TabModel> tabModelList) {
+        getTabsSession().restoreTabs(tabModelList);
+        Tab currentTab = getTabsSession().getCurrentTab();
+        if (!isFinishing() && !isDestroyed() && currentTab != null) {
+            MainActivity.this.mediator.showBrowserScreenForRestoreTabs(currentTab.getId());
+        }
     }
 }
