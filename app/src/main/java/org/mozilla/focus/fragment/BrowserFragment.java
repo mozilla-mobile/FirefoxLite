@@ -455,6 +455,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         tabsSession.addTabsChromeListener(this.tabsContentListener);
         tabsSession.setDownloadCallback(downloadCallback);
 
+        if (tabCounter != null) {
+            tabCounter.setCount(tabsSession.getTabsCount());
+        }
+
         return view;
     }
 
