@@ -52,6 +52,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public static final int TOP_SITES_QUERY_LIMIT = 8;
     public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 6;
 
+    private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
+
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private View btnMenu;
@@ -86,8 +88,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.tabCounter = view.findViewById(R.id.btn_tab_tray);
         this.tabCounter.setOnClickListener(menuItemClickListener);
-        TabsSession tabsSession = TabsSessionProvider.getOrNull(getActivity());
-        tabCounter.setCount(tabsSession != null ? tabsSession.getTabsCount() : 0);
+        updateTabCounter();
 
         this.fakeInput = (TextView) view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +187,21 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public void toggleFakeUrlInput(boolean visible) {
         final int visibility = visible ? View.VISIBLE : View.INVISIBLE;
         this.fakeInput.setVisibility(visibility);
+    }
+
+    private void updateTabCounter() {
+        TabsSession tabsSession = TabsSessionProvider.getOrNull(getActivity());
+        int tabCount = tabsSession != null ? tabsSession.getTabsCount() : 0;
+        tabCounter.setCount(tabCount);
+
+        if (tabCount == 0) {
+            tabCounter.setEnabled(false);
+            tabCounter.setAlpha(ALPHA_TAB_COUNTER_DISABLED);
+
+        } else {
+            tabCounter.setEnabled(true);
+            tabCounter.setAlpha(1f);
+        }
     }
 
     private class SiteItemClickListener implements View.OnClickListener, View.OnLongClickListener {
