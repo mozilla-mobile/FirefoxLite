@@ -45,7 +45,7 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
         mContainerEmptyView = (ViewGroup) v.findViewById(R.id.screenshot_grid_empty_view_container);
 
         TextView emptyText = (TextView) v.findViewById(R.id.screenshot_grid_empty_text);
-        Drawable drawable = getResources().getDrawable(R.drawable.action_capture, null);
+        Drawable drawable = getResources().getDrawable(R.drawable.action_capture, null).mutate();
         drawable.setBounds(0, 0, getResources().getDimensionPixelSize(R.dimen.screenshot_empty_img_size), getResources().getDimensionPixelSize(R.dimen.screenshot_empty_img_size));
         DrawableCompat.setTint(drawable, ContextCompat.getColor(getActivity(), R.color.colorDownloadSubText));
         ImageSpan imageSpan = new ImageSpan(drawable);
