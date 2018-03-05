@@ -85,7 +85,7 @@ public class TabsSession {
      *
      * @param models
      */
-    public void restoreTabs(List<TabModel> models) {
+    public void restoreTabs(List<TabModel> models, String currentTabId) {
         for (final TabModel model : models) {
             final Tab tab = new Tab(model);
             bindCallback(tab);
@@ -93,7 +93,8 @@ public class TabsSession {
         }
 
         if (tabs.size() > 0 && tabs.size() == models.size()) {
-            currentIdx = 0; // first tab
+            int previousTabIndex = getTabIndex(currentTabId);
+            currentIdx = previousTabIndex != -1 ? previousTabIndex : 0;
         }
     }
 
