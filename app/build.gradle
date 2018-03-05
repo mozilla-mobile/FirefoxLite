@@ -46,12 +46,27 @@ android {
             versionNameSuffix "(" + nevercode_build_number + ")"
         }
 
-
-        def bitrise_build_number = System.getenv("BITRISE_BUILD_NUMBER")
-        if (bitrise_build_number?.trim()) {
-            def bitrise_build_number_with_offset = bitrise_build_number.toInteger() + 2200
-            versionCode bitrise_build_number_with_offset
-            versionNameSuffix "(" + bitrise_build_number_with_offset + ")"
+        def bitrise_workflow_title = System.getenv()["BITRISE_TRIGGERED_WORKFLOW_TITLE"]
+        if (bitrise_workflow_title == "deploy_nightly" || bitrise_workflow_title == "release") {
+            exec {
+                workingDir '.'
+                commandLine 'rm', 'build.serial'
+                commandLine 'python', '../tools/build_scripts/query_serial.py', '-c', '-v', versionName
+            }
+            File build_serial = file('../build.serial')
+            if (build_serial.exists()) {
+                def bitrise_build_number = build_serial.text.trim()
+                versionCode bitrise_build_number
+                versionNameSuffix "(" + bitrise_build_number + ")"
+            }
+        }
+        else {
+            def bitrise_build_number = System.getenv("BITRISE_BUILD_NUMBER")
+            if (bitrise_build_number?.trim()) {
+                def bitrise_build_number_with_offset = bitrise_build_number.toInteger() + 2200
+                versionCode bitrise_build_number_with_offset
+                versionNameSuffix "(" + bitrise_build_number_with_offset + ")"
+            }
         }
 
         // used by Room, to test migrations
@@ -571,3 +586,15 @@ task checkstyle(type: Checkstyle) {
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
+
+// -------------------------------------------------------------------------------------------------
+// Serial management service: getSerial
+// -------------------------------------------------------------------------------------------------
+
+task getserial(type:Exec) {
+                workingDir '.'
+                commandLine 'rm', 'build.serial'
+                commandLine 'python', '../tools/build_scripts/query_serial.py', '-c', '-v', android.defaultConfig.versionName
+}
+
+getserial.enabled = false
