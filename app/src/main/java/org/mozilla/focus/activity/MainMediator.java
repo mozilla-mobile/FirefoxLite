@@ -63,6 +63,18 @@ public class MainMediator {
     }
 
     public void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
+        clearInputFragmentImmediate();
+        prepareBrowsing(url, openInNewTab).commit();
+        this.activity.sendBrowsingTelemetry();
+    }
+
+    public void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
+        clearInputFragmentImmediate();
+        prepareBrowsingForRestoreTabs(tabId).commit();
+        this.activity.sendBrowsingTelemetry();
+    }
+
+    private void clearInputFragmentImmediate() {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
 
@@ -72,11 +84,6 @@ public class MainMediator {
         clear.commit();
 
         fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        FragmentTransaction trans = this.prepareBrowsing(url, openInNewTab);
-        trans.commit();
-
-        this.activity.sendBrowsingTelemetry();
     }
 
     public void dismissUrlInput() {
@@ -133,6 +140,22 @@ public class MainMediator {
                 fragmentMgr.popBackStackImmediate(HomeFragment.FRAGMENT_TAG,
                         FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
+        }
+        return transaction;
+    }
+
+    private FragmentTransaction prepareBrowsingForRestoreTabs(@NonNull String tabId) {
+        final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentMgr.beginTransaction();
+
+        final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
+                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+
+        if (browserFrg == null) {
+            final Fragment freshFragment = this.activity.createBrowserFragmentForTab(tabId);
+            transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
+        } else {
+            // Do nothing. Tab models are restored in the background.
         }
         return transaction;
     }
