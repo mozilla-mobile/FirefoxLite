@@ -122,8 +122,6 @@ public class Tab {
         setTabViewClient(null);
 
         if (tabView != null) {
-            tabView.cleanup();
-
             // ensure the view not bind to parent
             detach();
 
