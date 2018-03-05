@@ -212,7 +212,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             final Activity parent = getActivity();
             if ((site != null) && (parent instanceof FragmentListener)) {
                 ((FragmentListener) parent).onNotified(HomeFragment.this,
-                        FragmentListener.TYPE.OPEN_URL,
+                        FragmentListener.TYPE.LOAD_URL_FORCE_NEW_TAB,
                         site.getUrl());
                 ViewParent viewParent = v.getParent();
                 if (viewParent instanceof ViewGroup) {

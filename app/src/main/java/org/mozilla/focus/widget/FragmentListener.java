@@ -18,7 +18,7 @@ public interface FragmentListener {
         FRAGMENT_STARTED, // payload is the fragment tag
         FRAGMENT_STOPPED, // payload is the fragment tag
         LOAD_URL, // load url in current tab. payload is url in String
-        OPEN_URL, // open url in new tab, payload is url in String
+        LOAD_URL_FORCE_NEW_TAB, // load url but force in new tab
         OPEN_PREFERENCE, // no payload
         SHOW_URL_INPUT, // no payload
         SHOW_HOME, // no payload
