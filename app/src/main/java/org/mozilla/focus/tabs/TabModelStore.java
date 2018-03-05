@@ -2,8 +2,10 @@ package org.mozilla.focus.tabs;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import org.mozilla.focus.R;
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.persistence.TabsDatabase;
 
@@ -18,7 +20,7 @@ public class TabModelStore {
     private TabsDatabase tabsDatabase;
 
     public interface AsyncQueryListener {
-        void onQueryComplete(List<TabModel> tabModelList);
+        void onQueryComplete(List<TabModel> tabModelList, String currentTabId);
     }
 
     public interface AsyncSaveListener {
@@ -40,27 +42,34 @@ public class TabModelStore {
         return instance;
     }
 
-    public void getSavedTabs(AsyncQueryListener listener) {
-        new QueryTabsTask(tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR);
+    public void getSavedTabs(@NonNull final Context context, final AsyncQueryListener listener) {
+        new QueryTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR);
     }
 
-    public void saveTabs(final List<TabModel> tabModelList, AsyncSaveListener listener) {
-        if (tabModelList == null || tabModelList.size() == 0) {
+    public void saveTabs(@NonNull final Context context, @NonNull final List<TabModel> tabModelList, @NonNull final String currentTabId, final AsyncSaveListener listener) {
+        if (tabModelList.size() == 0) {
             if (listener != null) {
                 listener.onSaveComplete();
             }
             return;
         }
 
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(context.getResources().getString(R.string.pref_key_current_tab_id), currentTabId)
+                .apply();
+
         new SaveTabsTask(tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabModelList.toArray(new TabModel[0]));
     }
 
     private static class QueryTabsTask extends AsyncTask<Void, Void, List<TabModel>> {
 
+        private WeakReference<Context> contextRef;
         private TabsDatabase tabsDatabase;
         private WeakReference<AsyncQueryListener> listenerRef;
 
-        public QueryTabsTask(TabsDatabase tabsDatabase, AsyncQueryListener listener) {
+        public QueryTabsTask(Context context, TabsDatabase tabsDatabase, AsyncQueryListener listener) {
+            this.contextRef = new WeakReference(context);
             this.tabsDatabase = tabsDatabase;
             this.listenerRef = new WeakReference<>(listener);
         }
@@ -76,9 +85,11 @@ public class TabModelStore {
 
         @Override
         protected void onPostExecute(List<TabModel> tabModelList) {
+            Context context = contextRef.get();
             AsyncQueryListener listener = listenerRef.get();
-            if (listener != null) {
-                listener.onQueryComplete(tabModelList);
+            if (listener != null && context != null) {
+                String currentTabId = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getResources().getString(R.string.pref_key_current_tab_id), "");
+                listener.onQueryComplete(tabModelList, currentTabId);
             }
         }
     }

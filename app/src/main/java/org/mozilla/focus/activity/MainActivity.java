@@ -130,7 +130,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
             }
         }
-        TabModelStore.getInstance(this).getSavedTabs(this);
+        restoreTabsFromPersistence();
         WebViewProvider.preload(this);
 
         if (sIsNewCreated) {
@@ -210,7 +210,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
 
-        TabModelStore.getInstance(this).saveTabs(getTabsSession().getTabModelListForPersistence(), null);
+        saveTabsToPersistence();
     }
 
     @Override
@@ -814,11 +814,26 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    public void onQueryComplete(List<TabModel> tabModelList) {
-        getTabsSession().restoreTabs(tabModelList);
+    public void onQueryComplete(List<TabModel> tabModelList, String currentTabId) {
+        getTabsSession().restoreTabs(tabModelList, currentTabId);
         Tab currentTab = getTabsSession().getCurrentTab();
-        if (!isFinishing() && !isDestroyed() && currentTab != null) {
+        if (currentTab != null && safeForFragmentTransactions) {
             MainActivity.this.mediator.showBrowserScreenForRestoreTabs(currentTab.getId());
+        }
+    }
+
+    private void restoreTabsFromPersistence() {
+        TabModelStore.getInstance(this).getSavedTabs(this, this);
+    }
+
+    private void saveTabsToPersistence() {
+        List<TabModel> tabModelListForPersistence = getTabsSession().getTabModelListForPersistence();
+        String currentTabId = null;
+        if (getTabsSession().getCurrentTab() != null) {
+            currentTabId = getTabsSession().getCurrentTab().getId();
+        }
+        if (tabModelListForPersistence != null && currentTabId != null) {
+            TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
         }
     }
 }
