@@ -116,7 +116,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     this.mediator.showFirstRun();
                 } else {
                     boolean isFromInternal = intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
-                    this.mediator.showBrowserScreen(url, isFromInternal ? false : true);
+                    this.mediator.showBrowserScreen(url, !isFromInternal);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
@@ -239,7 +239,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // firstrun is dismissed.
             final SafeIntent intent = new SafeIntent(getIntent());
             boolean isFromInternal = intent != null && intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
-            this.mediator.showBrowserScreen(pendingUrl, isFromInternal ? false : true);
+            this.mediator.showBrowserScreen(pendingUrl, !isFromInternal);
             pendingUrl = null;
         }
     }
@@ -648,6 +648,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
             case OPEN_URL:
+                if ((payload != null) && (payload instanceof String)) {
+                    this.mediator.showBrowserScreen(payload.toString(), true);
+                }
+                break;
+            case LOAD_URL:
                 if ((payload != null) && (payload instanceof String)) {
                     this.mediator.showBrowserScreen(payload.toString(), false);
                 }

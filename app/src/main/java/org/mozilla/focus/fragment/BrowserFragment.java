@@ -50,6 +50,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebHistoryItem;
+import android.webkit.WebIconDatabase;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -218,6 +219,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                         throw new IllegalArgumentException("Unknown actionId");
                 }
             }
+
 
             private void actionDownloadGranted(Parcelable parcelable) {
                 Download download = (Download) parcelable;
@@ -447,7 +449,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         // restore WebView state
         if (savedInstanceState == null) {
             if (!TextUtils.isEmpty(pendingUrl)) {
-                loadUrl(pendingUrl);
+                loadUrl(pendingUrl, true);
                 pendingUrl = null;
             }
         } else {
@@ -870,10 +872,14 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
     }
 
-    public void loadUrl(@NonNull final String url) {
+    public void loadUrl(@NonNull final String url, boolean openNewTab) {
         updateURL(url);
         if (UrlUtils.isUrl(url)) {
-            tabsSession.addTab(url);
+            if (openNewTab) {
+                tabsSession.addTab(url);
+            } else {
+                tabsSession.getCurrentTab().getTabView().loadUrl(url);
+            }
         } else if (AppConstants.isDevBuild()) {
             // throw exception to highlight this issue, except release build.
             throw new RuntimeException("trying to open a invalid url: " + url);
