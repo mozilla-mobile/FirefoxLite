@@ -62,6 +62,11 @@ public class MainMediator {
         this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
+    // If openInNewTab is not provided, we decide based on current state of MainMediator
+    public void showBrowserScreen(final @NonNull String url) {
+        showBrowserScreen(url, isHomeFragmentVisible());
+    }
+
     public void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
         clearInputFragmentImmediate();
         prepareBrowsing(url, openInNewTab).commit();
@@ -248,5 +253,11 @@ public class MainMediator {
             return topFragment;
         }
         return null;
+    }
+
+    private boolean isHomeFragmentVisible() {
+        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
+        final Fragment fragment = fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+        return fragment != null && fragment.isVisible();
     }
 }

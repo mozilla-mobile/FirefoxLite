@@ -7,7 +7,6 @@ package org.mozilla.focus.history;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -153,7 +152,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position != RecyclerView.NO_POSITION && position < mItems.size()) {
             Object item = mItems.get(position);
             if (item instanceof Site && mContext instanceof FragmentListener) {
-                ((FragmentListener) mContext).onNotified(null, FragmentListener.TYPE.OPEN_URL, ((Site) item).getUrl());
+                ((FragmentListener) mContext).onNotified(null, FragmentListener.TYPE.LOAD_URL_FORCE_NEW_TAB, ((Site) item).getUrl());
                 mHistoryListener.onItemClicked();
                 TelemetryWrapper.historyOpenLink();
             }

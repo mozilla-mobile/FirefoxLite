@@ -617,7 +617,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     if (mDialogFragment != null) {
                         mDialogFragment.dismiss();
                     }
-                    onNotified(null, TYPE.OPEN_URL, url);
+                    onNotified(null, TYPE.LOAD_URL_FORCE_NEW_TAB, url);
                 }
             }
         }
@@ -654,14 +654,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
-            case OPEN_URL:
+            case LOAD_URL_FORCE_NEW_TAB:
                 if ((payload != null) && (payload instanceof String)) {
                     this.mediator.showBrowserScreen(payload.toString(), true);
                 }
                 break;
             case LOAD_URL:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.showBrowserScreen(payload.toString(), false);
+                    this.mediator.showBrowserScreen(payload.toString());
                 }
                 break;
             case OPEN_PREFERENCE:
