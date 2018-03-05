@@ -710,6 +710,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         return fragment;
     }
 
+    public BrowserFragment createBrowserFragmentForRestoreTab(@NonNull String tabId) {
+        BrowserFragment fragment = BrowserFragment.createForTabId(tabId);
+        return fragment;
+    }
+
     public UrlInputFragment createUrlInputFragment(@Nullable String url) {
         final UrlInputFragment fragment = UrlInputFragment.create(url);
         return fragment;
