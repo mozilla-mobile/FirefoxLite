@@ -172,7 +172,8 @@ public class MainMediator {
         // 1. If Fragments stack is empty, or only first-run - add HomeFragment to bottom of stack.
         // 2. If we are browsing web pages and launch HomeFragment, hoist HomeFragment from bottom.
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
+        transaction.setCustomAnimations(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out,
+                R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
         final Fragment topFragment = getTopFragment();
         if ((topFragment == null) || FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
