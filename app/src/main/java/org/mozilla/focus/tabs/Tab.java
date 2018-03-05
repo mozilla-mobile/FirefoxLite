@@ -151,6 +151,7 @@ public class Tab {
 
     /* package */ TabView createView(@NonNull final Activity activity) {
         if (tabView == null) {
+            // FIXME: this casting does not make enough sense. TabView and View is totally different
             tabView = (TabView) WebViewProvider.create(activity, null);
 
             tabView.setViewClient(tabViewClient);
