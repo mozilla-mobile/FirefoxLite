@@ -7,6 +7,8 @@ package org.mozilla.focus.tabs;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -54,11 +56,13 @@ public interface TabsChromeListener {
      * Some TabView implementations may pass a custom View which contains the web contents in
      * full screen mode.
      *
-     * @param tab      The tab which entered fullscreen.
-     * @param callback The callback needs to be invoked to request the page to exit full screen mode.
+     * @param tab               The tab which entered fullscreen.
+     * @param callback          The callback needs to be invoked to request the page to exit full screen mode.
+     * @param fullscreenContent The contentView requested to be displayed in fullscreen
      */
     void onEnterFullScreen(@NonNull Tab tab,
-                           @NonNull TabView.FullscreenCallback callback);
+                           @NonNull TabView.FullscreenCallback callback,
+                           @Nullable View fullscreenContent);
 
     /**
      * Notify the host application that the a tab has exited full screen mode.

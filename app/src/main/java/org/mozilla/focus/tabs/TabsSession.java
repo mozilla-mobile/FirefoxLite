@@ -466,7 +466,7 @@ public class TabsSession {
         @Override
         public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback, @Nullable View view) {
             for (final TabsChromeListener l : tabsChromeListeners) {
-                l.onEnterFullScreen(source, callback);
+                l.onEnterFullScreen(source, callback, view);
             }
         }
 
