@@ -122,7 +122,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             behavior.setBottomSheetCallback(behaviorCallback);
         }
 
-        prepareExpandAnimation();
+        final Runnable expandRunnable = prepareExpandAnimation();
 
         adapter.setTabClickListener(tabClickListener);
         recyclerView.setAdapter(adapter);
@@ -137,7 +137,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             @Override
             public boolean onPreDraw() {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
-                postExpandAnimation();
+                uiHandler.postDelayed(expandRunnable, getResources().getInteger(
+                        R.integer.tab_tray_transition_time));
                 presenter.viewReady();
                 return false;
             }
@@ -193,27 +194,27 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
 
-    private void prepareExpandAnimation() {
+    private Runnable prepareExpandAnimation() {
         setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN);
 
         // update logo-man and background alpha state
         behaviorCallback.onSlide(recyclerView, -1);
-    }
+        logoMan.setVisibility(View.INVISIBLE);
 
-    private void postExpandAnimation() {
-        uiHandler.postDelayed(new Runnable() {
+        return new Runnable() {
             @Override
             public void run() {
-                if (isVisibleWhenCollapse(adapter.getFocusedTabPosition())) {
+                if (isPositionVisibleWhenCollapse(adapter.getFocusedTabPosition())) {
                     setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
+                    logoMan.setVisibility(View.VISIBLE);
                 } else {
                     setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
                 }
             }
-        }, getResources().getInteger(R.integer.tab_tray_transition_time));
+        };
     }
 
-    private boolean isVisibleWhenCollapse(int focusedPosition) {
+    private boolean isPositionVisibleWhenCollapse(int focusedPosition) {
         Resources res = getResources();
         int visiblePanelHeight = res.getDimensionPixelSize(R.dimen.tab_tray_peekHeight) -
                 res.getDimensionPixelSize(R.dimen.tab_tray_new_tab_btn_height);
@@ -423,6 +424,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             } else {
                 float interpolated = overlayInterpolator.getInterpolation(1 - slideOffset);
                 overlayAlpha = -(interpolated * OVERLAY_ALPHA_FULL_EXPANDED) + OVERLAY_ALPHA_FULL_EXPANDED;
+            }
+
+            // We don't want to show logo-man during fully expand animation (too complex visually).
+            // In this case, we hide logo-man at first, and make sure it become visible after tab
+            // tray is fully expanded (slideOffset >= 1). See prepareExpandAnimation()
+            if (slideOffset >= 1 && logoMan.getVisibility() != View.VISIBLE) {
+                logoMan.setVisibility(View.VISIBLE);
             }
 
             newTabBtn.setTranslationY(translationY);
