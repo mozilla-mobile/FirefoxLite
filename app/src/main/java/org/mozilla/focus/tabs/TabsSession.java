@@ -93,8 +93,8 @@ public class TabsSession {
         }
 
         if (tabs.size() > 0 && tabs.size() == models.size()) {
-            int currentTabIndex = getTabIndex(currentTabId);
-            currentIdx = currentTabIndex != -1 ? currentTabIndex : 0;
+            int index = getTabIndex(currentTabId);
+            currentIdx = (index != -1) ? index : 0;
         }
     }
 
