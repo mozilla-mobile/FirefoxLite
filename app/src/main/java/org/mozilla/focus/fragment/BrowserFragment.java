@@ -1192,17 +1192,23 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public void onEnterFullScreen(@NonNull Tab tab,
-                                      @NonNull final TabView.FullscreenCallback callback) {
+                                      @NonNull final TabView.FullscreenCallback callback,
+                                      @Nullable View fullscreenContentView) {
+            if (tabsSession.getCurrentTab() != tab) {
+                callback.fullScreenExited();
+                return;
+            }
+
             fullscreenCallback = callback;
 
-            if (tab.getTabView() != null) {
+            if (tab.getTabView() != null && fullscreenContentView != null) {
                 // Hide browser UI and web content
                 browserContainer.setVisibility(View.INVISIBLE);
 
                 // Add view to video container and make it visible
                 final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                videoContainer.addView((WebView) tab.getTabView(), params);
+                videoContainer.addView(fullscreenContentView, params);
                 videoContainer.setVisibility(View.VISIBLE);
 
                 // Switch to immersive mode: Hide system bars other UI controls
