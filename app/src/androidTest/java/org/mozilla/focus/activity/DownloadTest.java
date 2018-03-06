@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.web.webdriver.Locator;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
@@ -47,6 +48,7 @@ import static android.support.test.espresso.web.webdriver.DriverAtoms.findElemen
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
+import static org.mozilla.focus.utils.AndroidTestUtils.clickChildViewWithId;
 
 @RunWith(AndroidJUnit4.class)
 public class DownloadTest {
@@ -67,7 +69,9 @@ public class DownloadTest {
     @After
     public void tearDown() throws Exception {
         clearDownloadFolder();
+        activityRule.getActivity().finishAndRemoveTask();
     }
+
 
     private void clearDownloadFolder() {
         final File externalStoragePublicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -163,6 +167,14 @@ public class DownloadTest {
 
         // TODO: 1. Long Click and check context menu 2. Check File name after downloads completed.
 
+        removeNewAddedTab();
+    }
 
+
+
+    private void removeNewAddedTab() {
+        onView(withId(R.id.counter_box)).perform(click());
+        onView(withId(R.id.tab_tray)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.close_button)));
     }
 }
