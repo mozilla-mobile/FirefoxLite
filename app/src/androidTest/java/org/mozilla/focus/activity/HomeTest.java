@@ -37,6 +37,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mozilla.focus.utils.AndroidTestUtils.atPosition;
+import static org.mozilla.focus.utils.AndroidTestUtils.clickChildViewWithId;
 
 @Keep
 @RunWith(AndroidJUnit4.class)
@@ -90,10 +91,19 @@ public class HomeTest {
             // Always remember to unregister idling resource
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
+            // Remove new added tab
+            removeNewAddedTab();
+
         } catch (JSONException e) {
             e.printStackTrace();
             throw new AssertionError("testTopSite failed:", e);
 
         }
+    }
+
+    private void removeNewAddedTab() {
+        onView(withId(R.id.counter_box)).perform(click());
+        onView(withId(R.id.tab_tray)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.close_button)));
     }
 }
