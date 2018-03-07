@@ -96,6 +96,10 @@ public class TabsSession {
             int index = getTabIndex(currentTabId);
             currentIdx = (index != -1) ? index : 0;
         }
+
+        for (final TabsChromeListener l : tabsChromeListeners) {
+            l.onTabCountChanged(tabs.size());
+        }
     }
 
     /**
