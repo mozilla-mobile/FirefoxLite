@@ -33,6 +33,11 @@ public class IntentUtils {
     private static final String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
     private static final String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
     public static final String EXTRA_IS_INTERNAL_REQUEST = "is_internal_request";
+    public static final String EXTRA_SHOW_RATE_DIALOG = "show_rate_dialog";
+
+    public static final String ACTION_RATE_STAR = "action_rate_star";
+    public static final String ACTION_FEEDBACK = "action_feedback";
+
 
     /**
      * Find and open the appropriate app for a given Uri. If appropriate, let the user select between
@@ -191,6 +196,7 @@ public class IntentUtils {
         context.startActivity(pageView);
     }
 
+    @SuppressWarnings({ "SameParameterValue", "WeakerAccess" })
     public static void openUrl(Context context, String url) {
         context.startActivity(createInternalOpenUrlIntent(context, url));
     }
@@ -203,5 +209,15 @@ public class IntentUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
         return intent;
+    }
+
+    public static void goToPlayStore(Context context) {
+        final String appPackageName = context.getPackageName();
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException ex) {
+            //No google play install
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 }

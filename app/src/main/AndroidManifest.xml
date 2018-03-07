@@ -145,9 +145,19 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".notification.NotificationActionBroadcastReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="action_feedback"/>
+                <action android:name="action_rate_star"/>
+            </intent-filter>
+        </receiver>
+
 
         <service
             android:name="org.mozilla.focus.components.RelocateService"

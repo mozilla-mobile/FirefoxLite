@@ -5,18 +5,64 @@
 
 package org.mozilla.focus.notification;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.os.BuildCompat;
+
+import org.mozilla.focus.R;
 
 public class NotificationUtil {
 
+    private static final String DEFAULT_CHANNEL_ID = "default_channel_id";
+
+
+    public static NotificationCompat.Builder generateNotificationBuilder(Context context, PendingIntent pendingIntent) {
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setColor(ContextCompat.getColor(context, R.color.surveyNotificationAccent))
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(new long[0]);
+
+
+        if (BuildCompat.isAtLeastN()) {
+            builder.setShowWhen(false);
+        }
+        return builder;
+
+    }
+
     public static void sendNotification(Context context, int id, NotificationCompat.Builder builder) {
-        NotificationManager notificationManager =
+        final NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        configNotificationChannel(context, notificationManager);
 
         if (notificationManager != null) {
             notificationManager.notify(id, builder.build());
+        }
+    }
+
+    // Configure the notification channel if needed
+    private static void configNotificationChannel(Context context, NotificationManager notificationManager) {
+        // NotificationChannel API is only available for Android O and above, so we need to add the check here so IDE won't complain
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final String channelName = context.getString(R.string.app_name);
+            final NotificationChannel notificationChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(new long[] { 0, 1000, 500, 1000 });
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
     }
 }

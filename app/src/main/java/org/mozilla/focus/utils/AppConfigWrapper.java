@@ -11,12 +11,22 @@ public class AppConfigWrapper {
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
 
-    public static int getShareDialogLaunchTimeThreshold() {
-        return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP;
+    public static int getRateNotificationLaunchTimeThreshold() {
+        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION;
+    }
+
+    public static int getShareDialogLaunchTimeThreshold(boolean needExtend) {
+        // Dismiss in Love Firefox is clicked, need to wait till notification to fire share dialog
+        if (needExtend) {
+            return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG +
+                    DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION -
+                    DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
+        }
+        return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG;
     }
 
     public static int getRateDialogLaunchTimeThreshold() {
-        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP;
+        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
     }
 
     public static int getSurveyNotificationLaunchTimeThreshold() {

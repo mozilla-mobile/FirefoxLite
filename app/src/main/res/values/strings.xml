@@ -305,7 +305,9 @@
     <string name="rate_app_dialog_text_title">Love {{app_name}}?</string>
     <string name="rate_app_dialog_text_content">Thank you for choosing our product. Your feedback is important to us.</string>
     <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 stars!</string>
+    <string name="rate_app_notification_action_rate">RATE 5 STAR</string>
     <string name="rate_app_dialog_btn_feedback">No, send feedback.</string>
+    <string name="rate_app_notification_action_feedback">FEEDBACK</string>
 
     <string name="rate_app_feedback_url" translatable="false">https://qsurvey.mozilla.com/s3/Firefox-Rocket-Input/</string>
 

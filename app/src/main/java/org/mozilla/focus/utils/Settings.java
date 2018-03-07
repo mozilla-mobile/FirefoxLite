@@ -141,6 +141,18 @@ public class Settings {
                 .apply();
     }
 
+    public void setRateAppDialogDidDismiss() {
+        preferences.edit()
+                .putBoolean(getPreferenceKey(R.string.pref_key_did_dismiss_rate_app_dialog), true)
+                .apply();
+    }
+
+    public void setRateAppNotificationDidShow() {
+        preferences.edit()
+                .putBoolean(getPreferenceKey(R.string.pref_key_did_show_rate_app_notification), true)
+                .apply();
+    }
+
     public boolean didShowShareAppDialog() {
         return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_share_app_dialog), DID_SHOW_SHARE_APP_DEFAULT);
     }
@@ -196,6 +208,8 @@ public class Settings {
 
         public static final String ShowShareAppDialog = "show_share_app_dialog";
         public static final String ShowRateAppDialog = "show_rate_app_dialog";
+        public static final String DismissRateAppDialog = "dismiss_rate_app_dialog";
+        public static final String ShowRateAppNotification = "show_rate_app_notification";
 
         public static final String PostSurveyNotification = "post_survey_notification";
     }
