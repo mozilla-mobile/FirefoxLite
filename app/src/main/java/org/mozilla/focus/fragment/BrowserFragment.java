@@ -902,7 +902,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (openNewTab) {
                 tabsSession.addTab(url);
             } else {
-                tabsSession.getCurrentTab().getTabView().loadUrl(url);
+                Tab currentTab = tabsSession.getCurrentTab();
+                if (currentTab != null) {
+                    tabsSession.getCurrentTab().getTabView().loadUrl(url);
+                } else {
+                    tabsSession.addTab(url);
+                }
             }
         } else if (AppConstants.isDevBuild()) {
             // throw exception to highlight this issue, except release build.
