@@ -156,12 +156,12 @@ public class MainMediator {
         final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
                 .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
 
-        if (browserFrg == null) {
-            final Fragment freshFragment = this.activity.createBrowserFragmentForTab(tabId);
-            transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
-        } else {
-            // Do nothing. Tab models are restored in the background.
+        if (browserFrg != null) {
+            fragmentMgr.popBackStackImmediate(HomeFragment.FRAGMENT_TAG,
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
+        final Fragment freshFragment = this.activity.createBrowserFragmentForTab(tabId);
+        transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
         return transaction;
     }
 
