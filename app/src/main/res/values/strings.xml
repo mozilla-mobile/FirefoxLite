@@ -351,4 +351,10 @@
     <string name="survey_notification_description">Shape a better product for Indonesia</string>
 
     <string name="survey_notification_url" translatable="false">https://qsurvey.mozilla.com/s3/Rocket-Existing-User-Survey&amp;sglocale=%1$s</string>
+
+    <!-- Displayed in Android N+ when user long click on our notification in system tray -->
+    <string name="notification_channel_name">News</string>
+
+    <!-- Displayed in Android N+ when user long click on our notification in system tray -->
+    <string name="notification_channel_description">Introduce news about us</string>
 </resources>
