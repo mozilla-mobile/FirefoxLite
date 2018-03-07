@@ -92,7 +92,7 @@ public class HomeTest {
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
             // Remove new added tab
-            removeNewAddedTab();
+//            removeNewAddedTab();
 
         } catch (JSONException e) {
             e.printStackTrace();
