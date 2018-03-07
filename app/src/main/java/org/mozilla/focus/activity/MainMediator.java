@@ -42,9 +42,14 @@ public class MainMediator {
     }
 
     public void showHomeScreen() {
-        this.prepareHomeScreen().commit();
+        this.showHomeScreen(true);
     }
 
+    public void showHomeScreen(boolean animated) {
+        if (getTopHomeFragmet() == null) {
+            this.prepareHomeScreen(animated).commit();
+        }
+    }
 
     public void showFirstRun() {
         this.prepareFirstRun().commit();
@@ -178,7 +183,7 @@ public class MainMediator {
         return transaction;
     }
 
-    private FragmentTransaction prepareHomeScreen() {
+    private FragmentTransaction prepareHomeScreen(boolean animated) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment fragment = this.activity.createHomeFragment();
 
@@ -186,8 +191,13 @@ public class MainMediator {
         // 1. If Fragments stack is empty, or only first-run - add HomeFragment to bottom of stack.
         // 2. If we are browsing web pages and launch HomeFragment, hoist HomeFragment from bottom.
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out,
-                R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
+        if (animated) {
+            transaction.setCustomAnimations(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out,
+                    R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
+        } else {
+            transaction.setCustomAnimations(0, 0, R.anim.tab_transition_fade_in,
+                    R.anim.tab_transition_fade_out);
+        }
         final Fragment topFragment = getTopFragment();
         if ((topFragment == null) || FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);

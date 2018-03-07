@@ -670,7 +670,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 openPreferences();
                 break;
             case SHOW_HOME:
-                this.mediator.showHomeScreen();
+                boolean animated = true;
+                if (payload != null && payload instanceof Boolean) {
+                    animated = (Boolean) payload;
+                }
+                this.mediator.showHomeScreen(animated);
                 break;
             case SHOW_MENU:
                 this.showMenu();
