@@ -832,7 +832,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 ? getTabsSession().getCurrentTab().getId()
                 : null;
 
-        if (tabModelListForPersistence != null && !TextUtils.isEmpty(currentTabId)) {
+        if (tabModelListForPersistence != null) {
             TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
         }
     }
