@@ -245,7 +245,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // Unless we're trying to show the firstrun screen, in which case we leave it pending until
             // firstrun is dismissed.
             final SafeIntent intent = new SafeIntent(getIntent());
-            boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, false);
+            boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
             this.mediator.showBrowserScreen(pendingUrl, openInNewTab);
             pendingUrl = null;
         }
