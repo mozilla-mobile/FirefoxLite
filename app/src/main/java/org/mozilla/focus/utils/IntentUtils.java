@@ -34,6 +34,11 @@ public class IntentUtils {
     private static final String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
     public static final String EXTRA_IS_INTERNAL_REQUEST = "is_internal_request";
 
+    public static final String ACTION_RATE_STAR = "action_rate_star";
+    public static final String ACTION_FEEDBACK = "action_feedback";
+    public static final String ACTION_SHOW_RATE_DIALOG = "action_show_rate_dialog";
+
+
     /**
      * Find and open the appropriate app for a given Uri. If appropriate, let the user select between
      * multiple supported apps. Returns a boolean indicating whether the URL was handled. A fallback
@@ -200,5 +205,15 @@ public class IntentUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
         return intent;
+    }
+
+    public static void goToPlayStore(Context context) {
+        final String appPackageName = context.getPackageName();
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException ex) {
+            //No google play install
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 }

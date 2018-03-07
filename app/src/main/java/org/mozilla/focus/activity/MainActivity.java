@@ -27,9 +27,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.os.BuildCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -207,7 +206,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if (sIsNewCreated) {
             sIsNewCreated = false;
-            onNewCreate();
+            runPromotion();
         }
     }
 
@@ -348,23 +347,37 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setUpMenu();
     }
 
-    private void onNewCreate() {
-        Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
+    private void runPromotion() {
 
-        boolean didShowRateDialog = history.contains(Settings.Event.ShowRateAppDialog);
-        boolean didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog);
-        boolean isSurveyEnabled = AppConfigWrapper.isSurveyNotificationEnabled() &&
+        // When we receive this action, it means we need to show "Love Rocket" dialog
+        if (getIntent() != null && IntentUtils.ACTION_SHOW_RATE_DIALOG.equals(getIntent().getAction())) {
+            DialogUtils.showRateAppDialog(this);
+            NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_ROCKET);
+            getIntent().setAction("");
+            // Don't run other promotion if we already displayed above dialog
+            return;
+        }
+        final Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
+
+        final boolean didShowRateDialog = history.contains(Settings.Event.ShowRateAppDialog);
+        final boolean didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog);
+        final boolean didDismissRateDialog = history.contains(Settings.Event.DismissRateAppDialog);
+        final boolean didShowRateAppNotification = history.contains(Settings.Event.ShowRateAppNotification);
+        final boolean isSurveyEnabled = AppConfigWrapper.isSurveyNotificationEnabled() &&
                 !history.contains(Settings.Event.PostSurveyNotification);
 
-        if (!didShowRateDialog || !didShowShareDialog || isSurveyEnabled) {
+        if (!didShowRateDialog || !didShowShareDialog || isSurveyEnabled || !didShowRateAppNotification) {
             history.add(Settings.Event.AppCreate);
         }
-        int appCreateCount = history.getCount(Settings.Event.AppCreate);
+        final int appCreateCount = history.getCount(Settings.Event.AppCreate);
 
         if (!didShowRateDialog &&
                 appCreateCount >= AppConfigWrapper.getRateDialogLaunchTimeThreshold()) {
             DialogUtils.showRateAppDialog(this);
             TelemetryWrapper.showFeedbackDialog();
+        } else if (didDismissRateDialog && !didShowRateAppNotification && appCreateCount >=
+                AppConfigWrapper.getShareNotificationLaunchTimeThreshold()) {
+            DialogUtils.showShareAppNotification(this);
         } else if (!didShowShareDialog && appCreateCount >=
                 AppConfigWrapper.getShareDialogLaunchTimeThreshold()) {
             DialogUtils.showShareAppDialog(this);
@@ -384,22 +397,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(this, pendingIntent)
                 .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
                 .setContentText(getString(R.string.survey_notification_description))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
-                        getString(R.string.survey_notification_description)))
-                .setColor(ContextCompat.getColor(this, R.color.surveyNotificationAccent))
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(new long[0]);
-
-        if (BuildCompat.isAtLeastN()) {
-            builder.setShowWhen(false);
-        }
+                        getString(R.string.survey_notification_description)));
 
         NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
     }
