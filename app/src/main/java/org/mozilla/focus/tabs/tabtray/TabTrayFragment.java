@@ -47,7 +47,7 @@ import org.mozilla.focus.widget.FragmentListener;
 import java.util.List;
 
 public class TabTrayFragment extends DialogFragment implements TabTrayContract.View,
-        View.OnClickListener {
+        View.OnClickListener, TabTrayAdapter.TabClickListener {
 
     public static final String FRAGMENT_TAG = "tab_tray";
 
@@ -73,6 +73,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private TabTrayAdapter adapter = new TabTrayAdapter();
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
+
+    private Runnable dismissRunnable = new Runnable() {
+        @Override
+        public void run() {
+            dismiss();
+        }
+    };
 
     public static TabTrayFragment newInstance() {
         return new TabTrayFragment();
@@ -124,11 +131,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         prepareExpandAnimation();
 
-        adapter.setTabClickListener(tabClickListener);
-        recyclerView.setAdapter(adapter);
-
-        initRecyclerViewStyle(recyclerView);
-        new ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView);
+        initRecyclerView();
 
         newTabBtn.setOnClickListener(this);
         setupTapBackgroundToExpand();
@@ -149,7 +152,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         switch (v.getId()) {
             case R.id.new_tab_button:
                 onNewTabClicked();
-                dismiss();
                 break;
 
             default:
@@ -158,8 +160,23 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
+    public void onTabClick(int tabPosition) {
+        presenter.tabClicked(tabPosition);
+    }
+
+    @Override
+    public void onTabCloseClick(int tabPosition) {
+        presenter.tabCloseClicked(tabPosition);
+    }
+
+    @Override
     public void updateData(List<Tab> tabs) {
         adapter.setData(tabs);
+
+        if (tabs.isEmpty()) {
+            notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME, false);
+            uiHandler.post(dismissRunnable);
+        }
     }
 
     @Override
@@ -175,12 +192,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void tabSwitched(int tabPosition) {
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                dismiss();
-            }
-        });
+        uiHandler.post(dismissRunnable);
     }
 
     @Override
@@ -192,6 +204,29 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         adapter.notifyItemChanged(nextFocusPos);
     }
 
+    private void initRecyclerView() {
+        initRecyclerViewStyle(recyclerView);
+        setupSwipeToDismiss(recyclerView);
+
+        adapter.setTabClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setupSwipeToDismiss(RecyclerView recyclerView) {
+        int swipeFlag = ENABLE_SWIPE_TO_DISMISS ? ItemTouchHelper.START | ItemTouchHelper.END : 0;
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, swipeFlag) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        }).attachToRecyclerView(recyclerView);
+    }
 
     private void prepareExpandAnimation() {
         setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN);
@@ -307,11 +342,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this,
-                    FragmentListener.TYPE.SHOW_HOME, null);
-        }
+        notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME, false);
+        uiHandler.post(dismissRunnable);
     }
 
     private void initWindowBackground(Context context) {
@@ -391,6 +423,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
+    private void notifyFragmentListener(@NonNull FragmentListener.TYPE type, @Nullable Object payload) {
+        Activity activity = getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(this, type, payload);
+        }
+    }
+
     private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
         private Interpolator backgroundInterpolator = new AccelerateInterpolator();
         private Interpolator overlayInterpolator = new AccelerateDecelerateInterpolator();
@@ -432,38 +472,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             backgroundView.setAlpha(backgroundAlpha);
 
             updateWindowBackground(overlayAlpha, backgroundAlpha);
-        }
-    };
-
-    private TabTrayAdapter.TabClickListener tabClickListener = new TabTrayAdapter.TabClickAdapter() {
-        @Override
-        public void onItemClick(int tabPosition) {
-            presenter.tabClicked(tabPosition);
-        }
-
-        @Override
-        public void onCloseClick(int tabPosition) {
-            presenter.tabCloseClicked(tabPosition);
-        }
-    };
-
-    private ItemTouchHelper.Callback touchHelperCallback = new ItemTouchHelper.Callback() {
-        @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            int swipeFlag = ItemTouchHelper.START | ItemTouchHelper.END;
-            //noinspection ConstantConditions
-            return ENABLE_SWIPE_TO_DISMISS ? makeMovementFlags(0, swipeFlag) : 0;
-        }
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                              RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            presenter.tabCloseClicked(viewHolder.getAdapterPosition());
         }
     };
 

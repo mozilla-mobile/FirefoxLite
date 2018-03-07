@@ -104,11 +104,11 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         private void dispatchOnClick(View v, int position) {
             switch (v.getId()) {
                 case R.id.root_view:
-                    tabClickListener.onItemClick(position);
+                    tabClickListener.onTabClick(position);
                     break;
 
                 case R.id.close_button:
-                    tabClickListener.onCloseClick(position);
+                    tabClickListener.onTabCloseClick(position);
                     break;
 
                 default:
@@ -118,19 +118,19 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     public interface TabClickListener {
-        void onItemClick(int tabPosition);
-        void onCloseClick(int tabPosition);
+        void onTabClick(int tabPosition);
+        void onTabCloseClick(int tabPosition);
     }
 
     public static class TabClickAdapter implements TabClickListener {
 
         @Override
-        public void onItemClick(int tabPosition) {
+        public void onTabClick(int tabPosition) {
 
         }
 
         @Override
-        public void onCloseClick(int tabPosition) {
+        public void onTabCloseClick(int tabPosition) {
 
         }
     }
