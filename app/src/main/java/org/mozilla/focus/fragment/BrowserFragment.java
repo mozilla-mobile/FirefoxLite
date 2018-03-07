@@ -900,13 +900,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         updateURL(url);
         if (UrlUtils.isUrl(url)) {
             if (openNewTab) {
-                tabsSession.addTab(url);
+                tabsSession.addTab(null, url, false, true);
             } else {
                 Tab currentTab = tabsSession.getCurrentTab();
                 if (currentTab != null) {
                     tabsSession.getCurrentTab().getTabView().loadUrl(url);
                 } else {
-                    tabsSession.addTab(url);
+                    tabsSession.addTab(null, url, false, true);
                 }
             }
         } else if (AppConstants.isDevBuild()) {

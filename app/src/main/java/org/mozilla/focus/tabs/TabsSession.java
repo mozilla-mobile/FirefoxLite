@@ -116,28 +116,25 @@ public class TabsSession {
     }
 
     /**
-     * Add a tab to tail and create TabView for it, then hoist this new tab.
+     * Add a tab to a specific parent tab.
      *
-     * @param url initial url for this tab
+     * @param parentId     id of parent tab. If it is null, the tab will be append to tail
+     * @param url          initial url for this tab
+     * @param fromExternal is this request from external app
+     * @param hoist        true to hoist this tab after creation
      * @return id for created tab
      */
-    public String addTab(@Nullable final String url) {
-        return addTab(url, true);
-    }
+    @Nullable
+    public String addTab(@Nullable final String parentId,
+                         @NonNull final String url,
+                         boolean fromExternal,
+                         boolean hoist) {
 
-    /**
-     * Add a tab to tail and create TabView for it.
-     *
-     * @param url   initial url for this tab
-     * @param hoist true to hoist this tab after creation
-     * @return id for created tab
-     */
-    public String addTab(@NonNull final String url, boolean hoist) {
         if (TextUtils.isEmpty(url)) {
-            return tabs.get(currentIdx).getId();
+            return null;
         }
 
-        return addTabInternal(url, hoist);
+        return addTabInternal(parentId, url, fromExternal, hoist);
     }
 
     /**
@@ -289,20 +286,30 @@ public class TabsSession {
         tab.setDownloadCallback(downloadCallback);
     }
 
-    private String addTabInternal(@Nullable final String url, boolean hoist) {
+    private String addTabInternal(@Nullable final String parentId,
+                                  @Nullable final String url,
+                                  boolean fromExternal,
+                                  boolean hoist) {
+
         final Tab tab = new Tab();
 
         bindCallback(tab);
 
-        // add to tail
-        tabs.add(tab);
-        currentIdx = hoist ? tabs.size() - 1 : currentIdx;
+        final int parentIndex = (TextUtils.isEmpty(parentId)) ? -1 : getTabIndex(parentId);
+        if (fromExternal) {
+            tab.setParentId(Tab.ID_EXTERNAL);
+            tabs.add(tab);
+        } else {
+            insertTab(parentIndex, tab);
+        }
+
+        currentIdx = (hoist || fromExternal) ? getTabIndex(tab.getId()) : currentIdx;
 
         if (!TextUtils.isEmpty(url)) {
             tab.createView(activity).loadUrl(url);
         }
 
-        if (hoist) {
+        if (hoist || fromExternal) {
             hoistTab(tab);
         }
 
@@ -325,6 +332,30 @@ public class TabsSession {
             }
         }
         return -1;
+    }
+
+    private void insertTab(final int parentIdx, @NonNull final Tab tab) {
+        final Tab parentTab = (parentIdx >= 0 && parentIdx < tabs.size() - 1)
+                ? tabs.get(parentIdx)
+                : null;
+        if (parentTab == null) {
+            tabs.add(tab);
+            return;
+        } else {
+            tabs.add(parentIdx + 1, tab);
+        }
+
+        // TODO: in our current design, the parent of a tab are always locate at left(index -1).
+        //       hence no need to loop whole list.
+        // if the parent-tab has a child, give it a new parent
+        for (final Tab t : tabs) {
+            if (parentTab.getId().equals(t.getParentId())) {
+                t.setParentId(tab.getId());
+            }
+        }
+
+        // update family relationship
+        tab.setParentId(parentTab.getId());
     }
 
     private void hoistTab(final Tab tab) {
@@ -407,7 +438,7 @@ public class TabsSession {
                 return false;
             }
 
-            final String id = addTabInternal(null, false);
+            final String id = addTabInternal(source.getId(), null, false, false);
             final Tab tab = getTab(id);
             if (tab == null) {
                 // FIXME: why null?
