@@ -22,6 +22,8 @@ import java.util.UUID;
 
 public class Tab {
 
+    public static final String ID_EXTERNAL = "_open_from_external_";
+
     private static final String TAG = "Tab";
 
     /**
@@ -139,6 +141,15 @@ public class Tab {
         if (tabView != null) {
             tabView.onPause();
         }
+    }
+
+    /* package */ void setParentId(@NonNull String id) {
+        this.tabModel.setParentId(id);
+    }
+
+    @Nullable
+    /* package */ String getParentId() {
+        return this.tabModel.getParentId();
     }
 
     /* package */ void setTitle(@NonNull String title) {

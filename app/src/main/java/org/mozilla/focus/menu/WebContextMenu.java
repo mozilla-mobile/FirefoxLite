@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.GetImgHeaderTask;
+import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
@@ -33,6 +34,8 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.DownloadCallback;
+
+import java.util.List;
 
 public class WebContextMenu {
     public static final String DEFAULT_DOWNLOAD_EXTENSION = ".bin";
@@ -115,7 +118,7 @@ public class WebContextMenu {
 
                 switch (item.getItemId()) {
                     case R.id.menu_new_tab:
-                        openInNewTab(dialog, targetUrl);
+                        openInNewTab(hitTarget.source, dialog, targetUrl);
                         return true;
                     case R.id.menu_link_share: {
                         TelemetryWrapper.shareLinkEvent();
@@ -185,8 +188,16 @@ public class WebContextMenu {
                 TabsSessionProvider.getOrNull(activity) != null;
     }
 
-    private static void openInNewTab(Dialog dialog, String url) {
-        TabsSession session = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
-        session.addTab(url, false);
+    private static void openInNewTab(final TabView source, final Dialog dialog, final String url) {
+        final TabsSession session = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
+        final List<Tab> tabs = session.getTabs();
+        // Try to find parent tab for new tab
+        for (final Tab tab : tabs) {
+            if (tab.getTabView() == source) {
+                session.addTab(tab.getId(), url, false, false);
+                return;
+            }
+        }
+        session.addTab(null, url, false, false);
     }
 }
