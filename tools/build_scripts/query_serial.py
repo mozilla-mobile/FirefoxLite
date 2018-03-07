@@ -63,6 +63,10 @@ def get_parser():
     return parser
 
 if __name__ == '__main__':
+    print(os.getcwd())
+    if not os.path.exists(SERVER_SECRET_FILE):
+        import sys
+        sys.exit(1)
     parser = get_parser()
     args = parser.parse_args()
     print(args)
