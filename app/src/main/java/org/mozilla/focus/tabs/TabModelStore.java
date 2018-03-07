@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.persistence.TabModel;
@@ -42,18 +43,11 @@ public class TabModelStore {
         return instance;
     }
 
-    public void getSavedTabs(@NonNull final Context context, final AsyncQueryListener listener) {
+    public void getSavedTabs(@NonNull final Context context, @Nullable final AsyncQueryListener listener) {
         new QueryTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR);
     }
 
-    public void saveTabs(@NonNull final Context context, @NonNull final List<TabModel> tabModelList, @NonNull final String currentTabId, final AsyncSaveListener listener) {
-        if (tabModelList.size() == 0) {
-            if (listener != null) {
-                listener.onSaveComplete();
-            }
-            return;
-        }
-
+    public void saveTabs(@NonNull final Context context, @NonNull final List<TabModel> tabModelList, @Nullable final String currentTabId, @Nullable final AsyncSaveListener listener) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(context.getResources().getString(R.string.pref_key_current_tab_id), currentTabId)
