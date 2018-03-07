@@ -11,8 +11,12 @@ public class AppConfigWrapper {
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
 
+    public static int getShareNotificationLaunchTimeThreshold() {
+        return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_NOTIFICATION;
+    }
+
     public static int getShareDialogLaunchTimeThreshold() {
-        return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_APP;
+        return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG;
     }
 
     public static int getRateDialogLaunchTimeThreshold() {

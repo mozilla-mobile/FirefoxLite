@@ -1,10 +1,11 @@
 package org.mozilla.focus.utils;
 
-import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,16 @@ import android.view.ViewGroup;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
+import org.mozilla.focus.notification.NotificationActionBroadcastReceiver;
+import org.mozilla.focus.notification.NotificationId;
+import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public class DialogUtils {
 
     public static final int APP_CREATE_THRESHOLD_FOR_RATE_APP = 6;
-    public static final int APP_CREATE_THRESHOLD_FOR_SHARE_APP = 11;
+    public static final int APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG = APP_CREATE_THRESHOLD_FOR_RATE_APP + 4;
+    public static final int APP_CREATE_THRESHOLD_FOR_SHARE_NOTIFICATION = APP_CREATE_THRESHOLD_FOR_RATE_APP + 6;
 
     public static void showRateAppDialog(final Context context) {
         if (context == null) {
@@ -38,6 +43,7 @@ public class DialogUtils {
             @Override
             public void onClick(View v) {
                 if (dialog != null) {
+                    Settings.getInstance(context).setRateAppDialogDidDismiss();
                     dialog.dismiss();
                     telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
                 }
@@ -46,13 +52,9 @@ public class DialogUtils {
         dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String appPackageName = context.getPackageName();
-                try {
-                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    //No google play install
-                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
+
+                IntentUtils.goToPlayStore(context);
+
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -62,6 +64,7 @@ public class DialogUtils {
         dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Users set negative feedback, don't ask them to share in the future
                 Settings.getInstance(context).setShareAppDialogDidShow();
                 IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url), true);
                 if (dialog != null) {
@@ -175,5 +178,39 @@ public class DialogUtils {
 
     private static void telemetryScreenshotOnBoarding(String value) {
         TelemetryWrapper.promoteScreenShotClickEvent(value);
+    }
+
+    public static void showShareAppNotification(Context context) {
+
+        // When clicking notifications while Rocket is in the foreground, just go back to the app.
+        // When clicking notifications while Rocket is in the background, display full screen "Love Rocket" dialog
+        final Intent openRocket = new Intent(context, MainActivity.class);
+        openRocket.setAction(IntentUtils.ACTION_SHOW_RATE_DIALOG);
+        final PendingIntent openRocketPending = PendingIntent.getActivity(context, 0, openRocket,
+                PendingIntent.FLAG_ONE_SHOT);
+        final String string = context.getString(R.string.rate_app_dialog_text_title) + "\uD83D\uDE4C";
+        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
+                .setContentText(string);
+
+        // Send this intent in Broadcast receiver so we can cancel the notification there.
+        // Build notification action for rate 5 stars
+        final Intent rateStar = new Intent(context, NotificationActionBroadcastReceiver.class);
+        rateStar.setAction(IntentUtils.ACTION_RATE_STAR);
+        final PendingIntent rateStarPending = PendingIntent.getBroadcast(context, 0, rateStar,
+                PendingIntent.FLAG_ONE_SHOT);
+        builder.addAction(R.drawable.action_add, context.getString(R.string.rate_app_notification_action_rate), rateStarPending);
+
+        // Send this intent in Broadcast receiver so we can canel the notification there.
+        // Build notification action for  feedback
+        final Intent feedback = new Intent(context, NotificationActionBroadcastReceiver.class);
+        feedback.setAction(IntentUtils.ACTION_FEEDBACK);
+        final PendingIntent feedbackPending = PendingIntent.getBroadcast(context, 0, feedback,
+                PendingIntent.FLAG_ONE_SHOT);
+        builder.addAction(R.drawable.action_search, context.getString(R.string.rate_app_notification_action_feedback), feedbackPending);
+
+        // Show notification
+        NotificationUtil.sendNotification(context, NotificationId.LOVE_ROCKET, builder);
+        Settings.getInstance(context).setRateAppNotificationDidShow();
+        Settings.getInstance(context).setShareAppDialogDidShow();
     }
 }
