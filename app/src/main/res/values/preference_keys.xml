@@ -46,6 +46,8 @@
     <!-- rate app -->
     <string name="pref_key_app_create_counter" translatable="false"><xliff:g id="preference_key">pref_app_create_counter</xliff:g></string>
     <string name="pref_key_did_show_rate_app_dialog" translatable="false"><xliff:g id="preference_key">pref_did_show_rate_app_dialog</xliff:g></string>
+    <string name="pref_key_did_show_rate_app_notification" translatable="false"><xliff:g id="preference_key">pref_did_show_rate_app_notification</xliff:g></string>
+    <string name="pref_key_did_dismiss_rate_app_dialog" translatable="false"><xliff:g id="preference_key">pref_did_dismiss_rate_app_dialog</xliff:g></string>
 
     <!-- share app -->
     <string name="pref_key_did_show_share_app_dialog" translatable="false"><xliff:g id="preference_key">pref_did_show_share_app_dialog</xliff:g></string>
