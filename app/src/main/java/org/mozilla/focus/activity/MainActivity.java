@@ -612,7 +612,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private BrowserFragment getBrowserFragment() {
-        return (BrowserFragment) getSupportFragmentManager().findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+        return (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
     }
 
     private void onBackClicked(final BrowserFragment browserFragment) {
@@ -706,6 +706,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (this.mediator.handleBackKey()) {
             return;
         }
+        if (getVisibleBrowserFragment().onBackPressed()) {
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -791,16 +794,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public FirstrunFragment createFirstRunFragment() {
         return FirstrunFragment.create();
-    }
-
-    public BrowserFragment createBrowserFragment(@NonNull String url) {
-        BrowserFragment fragment = BrowserFragment.create(url);
-        return fragment;
-    }
-
-    public BrowserFragment createBrowserFragmentForTab(@NonNull String tabId) {
-        BrowserFragment fragment = BrowserFragment.createForTabId(tabId);
-        return fragment;
     }
 
     public UrlInputFragment createUrlInputFragment(@Nullable String url) {
