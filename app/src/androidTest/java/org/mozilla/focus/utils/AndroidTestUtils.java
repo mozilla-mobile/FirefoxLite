@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 
+import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 
 import java.io.IOException;
@@ -62,5 +63,9 @@ public final class AndroidTestUtils {
         onView(withId(R.id.counter_box)).perform(click());
         onView(withId(R.id.tab_tray)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.close_button)));
+    }
+
+    public static String getResourceId(String id) {
+        return String.format("%s:id/%s", BuildConfig.APPLICATION_ID, id);
     }
 }
