@@ -42,7 +42,7 @@ def main(args):
             spreadsheetId=spreadsheetId, range=rangeName, body=value_body, valueInputOption='USER_ENTERED').execute()
         with open("build.serial", "w") as file:
             file.write("%04d" % new_max)
-        print("%04d" % new_max)
+        print("New build serial %04d" % new_max)
         print(response)
     elif args.q:
         # print current max
@@ -50,7 +50,7 @@ def main(args):
             cur_max = int(max([x[1] for x in values if x[0] == args.v and x[3] == args.w]))
             with open("build.serial", "w") as file:
                 file.write("%04d" % cur_max)
-            print("%04d" % cur_max)
+            print("Current maximum build serial %04d" % cur_max)
         except:
             print("No data found.")
 
