@@ -33,10 +33,6 @@ public class MainMediator {
             BrowserFragment.FRAGMENT_TAG
     };
 
-    // To indicate the Transaction is to hoist home fragment to user visible area.
-    // This transaction could be wiped if user try to see browser fragment again.
-    private final static String HOIST_HOME_FRAGMENT = "_hoist_home_fragment_";
-
     private final MainActivity activity;
 
     public MainMediator(@NonNull MainActivity activity) {
