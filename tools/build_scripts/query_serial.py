@@ -25,32 +25,37 @@ def main(args):
         spreadsheetId=spreadsheetId, range=rangeName).execute()
     values = result.get('values', [])
 
+    sub_v = args.v.split(".")
+    version_prefix = "%02d%02d" % (int(sub_v[0]), int(sub_v[1]))
+    version = '.'.join(sub_v[0:2])
+
+
     if not values:
         print('No data found.')
     elif args.c:
         # consume a new serial number
         try:
-            cur_max = max([x[1] for x in values if x[0] == args.v and x[3] == args.w])
+            cur_max = max([x[1] for x in values if x[0] == version and x[3] == args.w])
         except:
-            cur_max = 0
+            cur_max = int(version_prefix) * 10000
         new_max = int(cur_max) + 1
         value_body = {
             "majorDimension": "ROWS",
-            "values": [[args.v, new_max, int(time.time()), args.w]]
+            "values": [[version, new_max, int(time.time()), args.w]]
         }
         response = service.spreadsheets().values().append(
             spreadsheetId=spreadsheetId, range=rangeName, body=value_body, valueInputOption='USER_ENTERED').execute()
         with open("build.serial", "w") as file:
-            file.write("%04d" % new_max)
-        print("New build serial %04d" % new_max)
+            file.write("%08d" % new_max)
+        print("New build serial %08d" % new_max)
         print(response)
     elif args.q:
         # print current max
         try:
-            cur_max = int(max([x[1] for x in values if x[0] == args.v and x[3] == args.w]))
+            cur_max = int(max([x[1] for x in values if x[0] == version and x[3] == args.w]))
             with open("build.serial", "w") as file:
-                file.write("%04d" % cur_max)
-            print("Current maximum build serial %04d" % cur_max)
+                file.write("%08d" % cur_max)
+            print("Current maximum build serial %08d" % cur_max)
         except:
             print("No data found.")
 
@@ -63,9 +68,9 @@ def get_parser():
     return parser
 
 if __name__ == '__main__':
-    print(os.getcwd())
     if not os.path.exists(SERVER_SECRET_FILE):
         import sys
+        print("Cannot find SERVER_SECRET_FILE")
         sys.exit(1)
     parser = get_parser()
     args = parser.parse_args()
