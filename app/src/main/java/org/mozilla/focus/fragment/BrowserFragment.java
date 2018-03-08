@@ -610,7 +610,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onDestroy() {
-        tabsSession.destroy();
         tabsSession.removeTabsViewListener(this.tabsContentListener);
         tabsSession.removeTabsChromeListener(this.tabsContentListener);
         super.onDestroy();
