@@ -89,15 +89,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
-    private boolean hasPendingScreenCaptureTask = false;
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
     private static boolean sIsNewCreated = true;
 
     private TabsSession tabsSession;
-
-    private static final int ACTION_CAPTURE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
