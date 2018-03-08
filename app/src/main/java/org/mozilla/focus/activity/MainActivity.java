@@ -578,6 +578,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    @Override
+    public void onDestroy() {
+        tabsSession.destroy();
+        super.onDestroy();
+    }
+
     private void onPreferenceClicked() {
         openPreferences();
     }
