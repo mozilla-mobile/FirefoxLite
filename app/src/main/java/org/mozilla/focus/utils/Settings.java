@@ -153,6 +153,24 @@ public class Settings {
                 .apply();
     }
 
+    public int getMenuPreferenceClickCount() {
+        return preferences.getInt(getPreferenceKey(R.string.pref_key_setting_click_counter), 0);
+    }
+
+    public void addMenuPreferenceClickCount() {
+        preferences.edit().putInt(getPreferenceKey(R.string.pref_key_setting_click_counter), getMenuPreferenceClickCount() + 1).apply();
+    }
+
+    public boolean isDefaultBrowserSettingDidShow() {
+        return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_default_browser_setting), false);
+    }
+
+    public void setDefaultBrowserSettingDidShow() {
+        preferences.edit()
+                .putBoolean(getPreferenceKey(R.string.pref_key_did_show_default_browser_setting), true)
+                .apply();
+    }
+
     public boolean didShowShareAppDialog() {
         return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_share_app_dialog), DID_SHOW_SHARE_APP_DEFAULT);
     }
