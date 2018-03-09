@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -63,6 +64,7 @@ import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
@@ -88,6 +90,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View captureButton;
     private View refreshIcon;
     private View stopIcon;
+    private View pinShortcut;
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
@@ -450,6 +453,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         captureButton = menu.findViewById(R.id.capture_page);
         refreshIcon = menu.findViewById(R.id.action_refresh);
         stopIcon = menu.findViewById(R.id.action_stop);
+        pinShortcut = menu.findViewById(R.id.action_pin_shortcut);
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
     }
@@ -579,6 +583,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.action_loading:
             case R.id.action_share:
             case R.id.capture_page:
+            case R.id.action_pin_shortcut:
                 onMenuBrowsingItemClicked(v);
                 break;
             default:
@@ -652,6 +657,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 Settings.getInstance(this).setScreenshotOnBoardingDone();
                 onCapturePageClicked();
                 TelemetryWrapper.clickToolbarCapture();
+            case R.id.action_pin_shortcut:
+                onAddToHomeClicked();
+                TelemetryWrapper.clickAddToHome();
                 break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
@@ -859,6 +867,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, browserFragment.getUrl());
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)));
+    }
+
+    private void onAddToHomeClicked() {
+        final Intent shortcut = new Intent(Intent.ACTION_VIEW);
+        final Tab focusTab = getTabsSession().getFocusTab();
+        final String url = focusTab.getUrl();
+        shortcut.setData(Uri.parse(url));
+        final Bitmap bitmap = focusTab.getFavicon();
+
+        ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
     }
 
     @Override
