@@ -36,7 +36,6 @@ public class MainMediator {
 
     public MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
-        activity.getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
     }
 
     public void showHomeScreen() {
@@ -198,34 +197,6 @@ public class MainMediator {
         if (homeFragment != null && homeFragment.isVisible()) {
             homeFragment.toggleFakeUrlInput(visible);
         }
-    }
-
-    /**
-     * refresh HomeFragment Top sites, if HomeFragment is TopFragment
-     */
-    private void refreshHomeFragment() {
-        final Fragment topFragment = getTopHomeFragmet();
-        if (topFragment != null) {
-            topFragment.onResume();
-        }
-    }
-
-    private int lastBackStackEntryCount = 0;
-    public FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
-        public void onBackStackChanged() {
-            final FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            if (fragmentManager != null) {
-                int currentBackStackEntryCount = fragmentManager.getBackStackEntryCount();
-                if (isPopStack(currentBackStackEntryCount)) {
-                    refreshHomeFragment();
-                }
-                lastBackStackEntryCount = currentBackStackEntryCount;
-            }
-        }
-    };
-
-    private boolean isPopStack(int BackStackEntryCount) {
-        return lastBackStackEntryCount > BackStackEntryCount;
     }
 
     /**
