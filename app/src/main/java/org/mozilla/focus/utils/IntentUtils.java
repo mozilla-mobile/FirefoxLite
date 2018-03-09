@@ -32,7 +32,6 @@ public class IntentUtils {
 
     private static final String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
     private static final String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
-    public static final String EXTRA_IS_INTERNAL_REQUEST = "is_internal_request";
     public static final String EXTRA_OPEN_NEW_TAB = "open_new_tab";
 
     /**
@@ -203,7 +202,6 @@ public class IntentUtils {
                 context,
                 MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
         intent.putExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, openInNewTab);
         return intent;
     }

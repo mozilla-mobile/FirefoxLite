@@ -16,7 +16,6 @@ import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
-import org.mozilla.focus.widget.BackKeyHandleable;
 
 public class MainMediator {
 
@@ -30,6 +29,8 @@ public class MainMediator {
     };
 
     private final MainActivity activity;
+    private boolean showHomeOnceBeforeLeaving = true;
+    private boolean startedFromExternalApp = false;
 
     public MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
@@ -37,12 +38,12 @@ public class MainMediator {
     }
 
     public void showHomeScreen() {
-        this.showHomeScreen(true);
+        this.showHomeScreen(true, false);
     }
 
-    public void showHomeScreen(boolean animated) {
+    public void showHomeScreen(boolean animated, boolean doNotAddToStack) {
         if (getTopHomeFragmet() == null) {
-            this.prepareHomeScreen(animated).commit();
+            this.prepareHomeScreen(animated, doNotAddToStack).commit();
         }
     }
 
@@ -110,8 +111,18 @@ public class MainMediator {
     }
 
     public boolean handleBackKey() {
-        final Fragment topFrg = getTopFragment();
-        return (topFrg instanceof BackKeyHandleable) && ((BackKeyHandleable) topFrg).onBackPressed();
+        Fragment topFragment = getTopFragment();
+        if (topFragment == null) {
+            boolean shouldShowHome = !startedFromExternalApp && showHomeOnceBeforeLeaving;
+            showHomeOnceBeforeLeaving = false;
+            if (shouldShowHome) {
+                showHomeScreen(true, true);
+            }
+            return shouldShowHome;
+        } else {
+            showHomeOnceBeforeLeaving = true;
+            return false;
+        }
     }
 
     public void onFragmentStarted(@NonNull String tag) {
@@ -154,7 +165,7 @@ public class MainMediator {
         return transaction;
     }
 
-    private FragmentTransaction prepareHomeScreen(boolean animated) {
+    private FragmentTransaction prepareHomeScreen(boolean animated, boolean doNotAddToStack) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment fragment = this.activity.createHomeFragment();
 
@@ -170,7 +181,7 @@ public class MainMediator {
                     R.anim.tab_transition_fade_out);
         }
         final Fragment topFragment = getTopFragment();
-        if ((topFragment != null) && FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
+        if (doNotAddToStack || (topFragment != null) && FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
         } else {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
@@ -225,6 +236,9 @@ public class MainMediator {
         return lastBackStackEntryCount > BackStackEntryCount;
     }
 
+    public void setStartedFromExternalApp() {
+        this.startedFromExternalApp = true;
+    }
     /**
      * get HomeFragment if it's Top Fragment
      */

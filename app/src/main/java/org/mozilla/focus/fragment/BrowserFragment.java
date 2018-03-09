@@ -800,38 +800,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         geolocationCallback = null;
     }
 
-    private boolean isStartedFromExternalApp() {
-        final Activity activity = getActivity();
-        if (activity == null) {
-            return false;
-        }
-
-        // No SafeIntent needed here because intent.getAction() is safe (SafeIntent simply calls intent.getAction()
-        // without any wrapping):
-        final Intent intent = activity.getIntent();
-        boolean isFromInternal = intent != null && intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
-        return intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) && !isFromInternal;
-    }
-
     public boolean onBackPressed() {
-        if (canGoBack()) {
+        boolean ret = canGoBack();
+        if (ret) {
             // Go back in web history
             goBack();
-        } else {
-            if (isStartedFromExternalApp()) {
-                // We have been started from a VIEW intent. Go back to the previous app immediately (No erase).
-                // However we need to finish the current session so that the custom tab config gets
-                // correctly cleared:
-                // FIXME: does Zerda need this?
-                BrowsingSession.getInstance().clearCustomTabConfig();
-                getActivity().finish();
-            } else {
-                // let parent to decide for this Fragment
-                return false;
-            }
         }
-
-        return true;
+        return ret;
     }
 
     public void setBlockingEnabled(boolean enabled) {

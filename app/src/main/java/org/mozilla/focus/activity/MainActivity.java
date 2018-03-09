@@ -108,6 +108,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+                mediator.setStartedFromExternalApp();
                 final String url = intent.getDataString();
 
                 BrowsingSession.getInstance().loadCustomTabConfig(this, intent);
@@ -640,10 +641,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!safeForFragmentTransactions) {
             return;
         }
-        if (this.mediator.handleBackKey()) {
+        // BrowserFragment is at top
+        if (this.mediator.getTopHomeFragmet() == null && getVisibleBrowserFragment().onBackPressed()) {
             return;
         }
-        if (getVisibleBrowserFragment().onBackPressed()) {
+        if (this.mediator.handleBackKey()) {
             return;
         }
         super.onBackPressed();
@@ -680,7 +682,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if (payload != null && payload instanceof Boolean) {
                     animated = (Boolean) payload;
                 }
-                this.mediator.showHomeScreen(animated);
+                this.mediator.showHomeScreen(animated, false);
                 break;
             case SHOW_MENU:
                 this.showMenu();
