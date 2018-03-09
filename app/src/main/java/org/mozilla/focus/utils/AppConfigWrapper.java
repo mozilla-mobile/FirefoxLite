@@ -10,6 +10,7 @@ public class AppConfigWrapper {
 
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
+    private static final int DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD = 2;
 
     public static int getRateNotificationLaunchTimeThreshold() {
         return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION;
@@ -31,6 +32,10 @@ public class AppConfigWrapper {
 
     public static int getSurveyNotificationLaunchTimeThreshold() {
         return SURVEY_NOTIFICATION_POST_THRESHOLD;
+    }
+
+    public static int getDriveDefaultBrowserFromMenuSettingThreshold() {
+        return DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD;
     }
 
     public static boolean isSurveyNotificationEnabled() {

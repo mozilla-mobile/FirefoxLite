@@ -565,6 +565,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 TelemetryWrapper.clickMenuCapture();
                 break;
             case R.id.menu_preferences:
+                driveDefaultBrowser();
                 onPreferenceClicked();
                 TelemetryWrapper.clickMenuSettings();
                 break;
@@ -581,6 +582,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuItemClicked() is only for" +
                         " known ids");
+        }
+    }
+
+    private void driveDefaultBrowser() {
+        final Settings settings = Settings.getInstance(this);
+        if (settings.isDefaultBrowserSettingDidShow()) {
+            // We don't need to accumulate the count after we've displayed the default browser promotion
+            return;
+        } else {
+            settings.addMenuPreferenceClickCount();
+        }
+        if (settings.getMenuPreferenceClickCount() == AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold()) {
+            DialogUtils.showDefaultSettingNotification(this);
         }
     }
 

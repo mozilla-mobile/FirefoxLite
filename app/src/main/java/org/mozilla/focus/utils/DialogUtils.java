@@ -211,4 +211,20 @@ public class DialogUtils {
         NotificationUtil.sendNotification(context, NotificationId.LOVE_ROCKET, builder);
         Settings.getInstance(context).setRateAppNotificationDidShow();
     }
+
+    public static void showDefaultSettingNotification(Context context) {
+
+        final Intent openDefaultBrowserSetting = IntentUtils.genDefaultBrowserSettingIntent(context, context.getString(R.string.preference_default_browser));
+        final PendingIntent openRocketPending = PendingIntent.getActivity(context, 0, openDefaultBrowserSetting,
+                PendingIntent.FLAG_ONE_SHOT);
+        final String title = context.getString(R.string.app_name);
+        final String content = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE4C";
+        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
+                .setContentTitle(title)
+                .setContentText(content);
+
+        // Show notification
+        NotificationUtil.sendNotification(context, NotificationId.LOVE_ROCKET, builder);
+        Settings.getInstance(context).setDefaultBrowserSettingDidShow();
+    }
 }

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.web.IWebView;
 
@@ -220,4 +222,13 @@ public class IntentUtils {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     }
+
+    public static Intent genDefaultBrowserSettingIntent(Context context, String fallbackSumoTitle) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
+        } else {
+            return InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), fallbackSumoTitle);
+        }
+    }
+
 }
