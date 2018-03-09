@@ -1087,21 +1087,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             tab.detach();
 
             @Nullable final View outView = findExistingTabView(webViewSlot);
-            webViewSlot.removeViewInLayout(outView);
+            webViewSlot.removeView(outView);
 
             final View inView = tab.getTabView().getView();
             webViewSlot.addView(inView);
 
-            // TODO: needed only when user taps on snack bar to switch to background tab. In case
-            // user switch tab from tab tray, there's already a tab tray exit animation.
-//            startTabTransition(outView, inView, new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (outView != null) {
-//                        webViewSlot.removeViewInLayout(outView);
-//                    }
-//                }
-//            });
+            startTabTransition(null, inView, null);
         }
 
         @Override
@@ -1293,8 +1284,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
         }
 
+        @SuppressWarnings("SameParameterValue")
         private void startTabTransition(@Nullable final View outView, @NonNull final View inView,
-                                        final Runnable finishCallback) {
+                                        @Nullable final Runnable finishCallback) {
             stopTabTransition();
 
             inView.setAlpha(0f);
@@ -1317,7 +1309,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             tabTransitionAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    finishCallback.run();
+                    if (finishCallback != null) {
+                        finishCallback.run();
+                    }
                     inView.setAlpha(1f);
                     if (outView != null) {
                         outView.setAlpha(1f);
