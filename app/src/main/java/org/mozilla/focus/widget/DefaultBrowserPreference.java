@@ -18,6 +18,7 @@ import android.widget.Switch;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.utils.Browsers;
+import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 
@@ -57,26 +58,8 @@ public class DefaultBrowserPreference extends Preference {
     @Override
     protected void onClick() {
         final Context context = getContext();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            openDefaultAppsSettings(context);
-        } else {
-            openSumoPage(context);
-        }
-    }
-
-    private void openDefaultAppsSettings(Context context) {
-        try {
-            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            // In some cases, a matching Activity may not exist (according to the Android docs).
-            openSumoPage(context);
-        }
-    }
-
-    private void openSumoPage(Context context) {
-        final Intent intent = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), getTitle().toString());
+        final Intent intent = IntentUtils.genDefaultBrowserSettingIntent(context, getTitle().toString());
         context.startActivity(intent);
     }
+
 }
