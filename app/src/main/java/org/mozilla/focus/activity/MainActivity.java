@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.CheckResult;
@@ -24,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +61,7 @@ import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.WebViewProvider;
@@ -81,6 +85,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View shareButton;
     private View refreshIcon;
     private View stopIcon;
+    private View pinShortcut;
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
@@ -361,6 +366,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         shareButton = menu.findViewById(R.id.action_share);
         refreshIcon = menu.findViewById(R.id.action_refresh);
         stopIcon = menu.findViewById(R.id.action_stop);
+        pinShortcut = menu.findViewById(R.id.action_pin_shortcut);
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
     }
@@ -388,6 +394,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
         setEnable(shareButton, browserFragment != null);
+        final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
+        setEnable(pinShortcut, browserFragment != null && requestPinShortcutSupported);
     }
 
     private void showTabTray() {
@@ -494,6 +502,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.action_next:
             case R.id.action_loading:
             case R.id.action_share:
+            case R.id.action_pin_shortcut:
                 onMenuBrowsingItemClicked(v);
                 break;
             default:
@@ -562,6 +571,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.action_share:
                 onShraeClicked(browserFragment);
                 TelemetryWrapper.clickToolbarShare();
+                break;
+            case R.id.action_pin_shortcut:
+                onAddToHomeClicked();
+                TelemetryWrapper.clickAddToHome();
                 break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
@@ -671,6 +684,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, browserFragment.getUrl());
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)));
+    }
+
+    private void onAddToHomeClicked() {
+        final Intent shortcut = new Intent(Intent.ACTION_VIEW);
+        final Tab focusTab = getTabsSession().getFocusTab();
+        final String url = focusTab.getUrl();
+        shortcut.setData(Uri.parse(url));
+        final Bitmap bitmap = focusTab.getFavicon();
+
+        ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
     }
 
     @Override

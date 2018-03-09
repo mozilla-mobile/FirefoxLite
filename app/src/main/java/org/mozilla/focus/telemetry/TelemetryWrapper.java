@@ -64,6 +64,7 @@ public final class TelemetryWrapper {
         private static final String FOREGROUND = "foreground";
         private static final String BACKGROUND = "background";
         private static final String SHARE = "share";
+        private static final String PIN_SHORTCUT = "pin_shortcut";
         private static final String SAVE = "save";
         private static final String COPY = "copy";
         private static final String OPEN = "open";
@@ -446,6 +447,10 @@ public final class TelemetryWrapper {
 
     public static void clickToolbarShare() {
         TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue();
+    }
+
+    public static void clickAddToHome() {
+        TelemetryEvent.create(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK).queue();
     }
 
     public static void clickToolbarCapture() {
