@@ -7,6 +7,7 @@ package org.mozilla.focus.tabs;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -14,13 +15,19 @@ import org.mozilla.focus.web.DownloadCallback;
 
 public interface TabView {
     class HitTarget {
+        public final TabView source;
         public final boolean isLink;
         public final String linkURL;
 
         public final boolean isImage;
         public final String imageURL;
 
-        public HitTarget(final boolean isLink, final String linkURL, final boolean isImage, final String imageURL) {
+        public HitTarget(@NonNull final TabView source,
+                         final boolean isLink,
+                         final String linkURL,
+                         final boolean isImage,
+                         final String imageURL) {
+
             if (isLink && linkURL == null) {
                 throw new IllegalStateException("link hittarget must contain URL");
             }
@@ -29,6 +36,7 @@ public interface TabView {
                 throw new IllegalStateException("image hittarget must contain URL");
             }
 
+            this.source = source;
             this.isLink = isLink;
             this.linkURL = linkURL;
             this.isImage = isImage;

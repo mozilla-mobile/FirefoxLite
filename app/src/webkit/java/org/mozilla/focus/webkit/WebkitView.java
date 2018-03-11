@@ -69,7 +69,7 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
 
         setLongClickable(true);
 
-        linkHandler = new LinkHandler(this);
+        linkHandler = new LinkHandler(this, this);
         setOnLongClickListener(linkHandler);
     }
 
