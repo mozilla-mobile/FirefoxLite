@@ -16,12 +16,14 @@ import org.mozilla.focus.tabs.TabChromeClient;
 import org.mozilla.focus.tabs.TabView;
 
 /* package */ class LinkHandler implements View.OnLongClickListener {
+    private final TabView tabView;
     private final WebView webView;
     private
     @Nullable
     TabChromeClient chromeClient = null;
 
-    public LinkHandler(final WebView webView) {
+    public LinkHandler(final TabView tabView, final WebView webView) {
+        this.tabView = tabView;
         this.webView = webView;
     }
 
@@ -40,12 +42,12 @@ import org.mozilla.focus.tabs.TabView;
         switch (hitTestResult.getType()) {
             case WebView.HitTestResult.SRC_ANCHOR_TYPE:
                 final String linkURL = hitTestResult.getExtra();
-                chromeClient.onLongPress(new TabView.HitTarget(true, linkURL, false, null));
+                chromeClient.onLongPress(new TabView.HitTarget(this.tabView, true, linkURL, false, null));
                 return true;
 
             case WebView.HitTestResult.IMAGE_TYPE:
                 final String imageURL = hitTestResult.getExtra();
-                chromeClient.onLongPress(new TabView.HitTarget(false, null, true, imageURL));
+                chromeClient.onLongPress(new TabView.HitTarget(this.tabView, false, null, true, imageURL));
                 return true;
 
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
@@ -65,7 +67,7 @@ import org.mozilla.focus.tabs.TabView;
                         }
 
                         if (chromeClient != null) {
-                            chromeClient.onLongPress(new TabView.HitTarget(true, url, true, src));
+                            chromeClient.onLongPress(new TabView.HitTarget(tabView, true, url, true, src));
                         }
                     }
                 });
