@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -206,7 +207,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if (sIsNewCreated) {
             sIsNewCreated = false;
-            runPromotion();
+            runPromotion(intent);
         }
     }
 
@@ -310,6 +311,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onNewIntent(Intent unsafeIntent) {
         final SafeIntent intent = new SafeIntent(unsafeIntent);
+
+        if (runPromotionFromIntent(intent)) {
+            // Don't run other promotion or other action if we already displayed above promotion
+            return;
+        }
+
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             // We can't update our fragment right now because we need to wait until the activity is
             // resumed. So just remember this URL and load it in onResumeFragments().
@@ -347,14 +354,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setUpMenu();
     }
 
-    private void runPromotion() {
-
-        // When we receive this action, it means we need to show "Love Rocket" dialog
-        if (getIntent() != null && IntentUtils.ACTION_SHOW_RATE_DIALOG.equals(getIntent().getAction())) {
-            DialogUtils.showRateAppDialog(this);
-            NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_ROCKET);
-            getIntent().setAction("");
-            // Don't run other promotion if we already displayed above dialog
+    private void runPromotion(final SafeIntent intent ) {
+        if (runPromotionFromIntent(intent)) {
+            // Don't run other promotion if we already displayed above promotion
             return;
         }
         final Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
@@ -389,6 +391,28 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             postSurveyNotification();
             history.add(Settings.Event.PostSurveyNotification);
         }
+    }
+
+    // return true if promotion is already handled
+    @CheckResult
+    private boolean runPromotionFromIntent(final SafeIntent intent) {
+        if (intent == null) {
+            return false;
+        }
+        final Bundle bundle = intent.getExtras();
+        if (bundle == null) {
+            return false;
+        }
+        // When we receive this action, it means we need to show "Love Rocket" dialog
+        final boolean loveRocket = bundle.getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
+        if (loveRocket) {
+            DialogUtils.showRateAppDialog(this);
+            NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_ROCKET);
+            // Reset extra after dialog displayed.
+            bundle.putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
+            return true;
+        }
+        return false;
     }
 
     private void postSurveyNotification() {
