@@ -8,16 +8,22 @@ package org.mozilla.focus.notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.InfoActivity;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.SupportUtils;
 
-import static org.mozilla.focus.utils.DialogUtils.telemetryFeedback;
-
+// This class handles all click/actions users performed on a notification.
+// This ensures that all telemetry works for action/click are in one place.
+// The UI code will be responsible for telemetry work for displaying the notifications.
 public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
 
@@ -25,27 +31,67 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (IntentUtils.ACTION_RATE_STAR.equals(intent.getAction())) {
+        if (intent == null) {
+            return;
+        }
+        final String action = intent.getAction();
+        final Bundle bundle = intent.getExtras();
+        if (bundle == null || action == null || !IntentUtils.ACTION_NOTIFICATION.equals(action)) {
+            return;
+        }
+        Intent nexStep = null;
+
+        if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR)) {
 
             IntentUtils.goToPlayStore(context);
 
-            telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
+            TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.POSITIVE);
 
-        } else if (IntentUtils.ACTION_FEEDBACK.equals(intent.getAction())) {
+            NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
-            final Intent openFeedbackPage = IntentUtils.createInternalOpenUrlIntent(context,
+        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_FEEDBACK)) {
+
+            nexStep = IntentUtils.createInternalOpenUrlIntent(context,
                     context.getString(R.string.rate_app_feedback_url), true);
-            context.startActivity(openFeedbackPage);
 
             // Users set negative feedback, don't ask them to share in the future
             Settings.getInstance(context).setShareAppDialogDidShow();
-            telemetryFeedback(context, TelemetryWrapper.Value.NEGATIVE);
+
+            TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.NEGATIVE);
+
+            NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
+
+        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER)) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                nexStep = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
+            } else {
+                final String fallbackTitle = context.getString(R.string.preference_default_browser) + "\uD83D\uDE4C";
+                nexStep = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), fallbackTitle);
+            }
+
+            TelemetryWrapper.clickRateAppNotification();
+
+            NotificationManagerCompat.from(context).cancel(NotificationId.DEFAULT_BROWSER);
+
+        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX)) {
+            nexStep = new Intent(context, MainActivity.class);
+            nexStep.putExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, true);
+
+
+            TelemetryWrapper.clickDefaultSettingNotification();
+
+            NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
         } else {
             Log.e(TAG, "Not a valid action");
         }
 
-        NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_ROCKET);
+        bundle.clear();
+        if (nexStep != null) {
+            nexStep.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(nexStep);
+        }
     }
 
 }
