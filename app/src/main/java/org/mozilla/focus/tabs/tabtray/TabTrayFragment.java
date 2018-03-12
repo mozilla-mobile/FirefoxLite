@@ -74,6 +74,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
 
+    private SlideAnimationCoordinator slideCoordinator = new SlideAnimationCoordinator(this);
+
     private Runnable dismissRunnable = new Runnable() {
         @Override
         public void run() {
@@ -124,10 +126,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         initWindowBackground(view.getContext());
 
-        BottomSheetBehavior behavior = getBehavior(recyclerView);
-        if (behavior != null) {
-            behavior.setBottomSheetCallback(behaviorCallback);
-        }
+        setupBottomSheetCallback();
 
         final Runnable expandRunnable = prepareExpandAnimation();
 
@@ -205,6 +204,27 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         adapter.notifyItemChanged(nextFocusPos);
     }
 
+    private void setupBottomSheetCallback() {
+        BottomSheetBehavior behavior = getBehavior(recyclerView);
+        if (behavior == null) {
+            return;
+        }
+
+        behavior.setBottomSheetCallback(new BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    dismiss();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                slideCoordinator.onSlide(slideOffset);
+            }
+        });
+    }
+
     private void initRecyclerView() {
         initRecyclerViewStyle(recyclerView);
         setupSwipeToDismiss(recyclerView);
@@ -233,7 +253,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN);
 
         // update logo-man and background alpha state
-        behaviorCallback.onSlide(recyclerView, -1);
+        slideCoordinator.onSlide(-1);
         logoMan.setVisibility(View.INVISIBLE);
 
         return new Runnable() {
@@ -375,21 +395,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         window.setBackgroundDrawable(drawable);
     }
 
-    private void updateWindowBackground(float overlayAlpha, float backgroundAlpha) {
-        if (backgroundDrawable == null) {
-            if (BuildConfig.DEBUG) {
-                throw new IllegalStateException("initBackground() should be called first");
-            }
-            return;
-        }
-
-        backgroundDrawable.setAlpha(validateBackgroundAlpha((int) (backgroundAlpha * 0xff)));
-
-        if (backgroundOverlay != null) {
-            backgroundOverlay.setAlpha(validateBackgroundAlpha((int) (overlayAlpha * 0xff)));
-        }
-    }
-
     private int validateBackgroundAlpha(int alpha) {
         return Math.max(Math.min(alpha, 0xfe), 0x01);
     }
@@ -432,20 +437,50 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
     }
 
-    private BottomSheetCallback behaviorCallback = new BottomSheetCallback() {
+    private void onTranslateToHidden(float translationY) {
+        newTabBtn.setTranslationY(translationY);
+        logoMan.setTranslationY(translationY);
+    }
+
+    private void updateWindowBackground(float backgroundAlpha) {
+        backgroundView.setAlpha(backgroundAlpha);
+
+        if (backgroundDrawable != null) {
+            backgroundDrawable.setAlpha(validateBackgroundAlpha((int) (backgroundAlpha * 0xff)));
+        }
+    }
+
+    private void updateWindowOverlay(float overlayAlpha) {
+        if (backgroundOverlay != null) {
+            backgroundOverlay.setAlpha(validateBackgroundAlpha((int) (overlayAlpha * 0xff)));
+        }
+    }
+
+    private void onFullyExpanded() {
+        if (logoMan.getVisibility() != View.VISIBLE) {
+            // We don't want to show logo-man during fully expand animation (too complex visually).
+            // In this case, we hide logo-man at first, and make sure it become visible after tab
+            // tray is fully expanded (slideOffset >= 1). See prepareExpandAnimation()
+            logoMan.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private static class SlideAnimationCoordinator {
         private Interpolator backgroundInterpolator = new AccelerateInterpolator();
         private Interpolator overlayInterpolator = new AccelerateDecelerateInterpolator();
         private int collapseHeight = -1;
 
-        @Override
-        public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                dismiss();
-            }
+        private float translationY = Integer.MIN_VALUE;
+        private float backgroundAlpha = -1;
+        private float overlayAlpha = -1;
+
+        private TabTrayFragment fragment;
+
+        SlideAnimationCoordinator(TabTrayFragment fragment) {
+            this.fragment = fragment;
         }
 
-        @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+        private void onSlide(float slideOffset) {
             float backgroundAlpha = 1f;
             float overlayAlpha = 0f;
 
@@ -453,35 +488,39 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
             if (slideOffset < 0) {
                 if (collapseHeight < 0) {
-                    collapseHeight = getCollapseHeight();
+                    collapseHeight = fragment.getCollapseHeight();
                 }
                 translationY = collapseHeight * -slideOffset;
 
                 if (ENABLE_BACKGROUND_ALPHA_TRANSITION) {
                     float interpolated = backgroundInterpolator.getInterpolation(-slideOffset);
-                    backgroundAlpha = 1 - interpolated;
+                    backgroundAlpha = Math.max(0, 1 - interpolated);
                 }
             } else {
                 float interpolated = overlayInterpolator.getInterpolation(1 - slideOffset);
                 overlayAlpha = -(interpolated * OVERLAY_ALPHA_FULL_EXPANDED) + OVERLAY_ALPHA_FULL_EXPANDED;
             }
 
-            // We don't want to show logo-man during fully expand animation (too complex visually).
-            // In this case, we hide logo-man at first, and make sure it become visible after tab
-            // tray is fully expanded (slideOffset >= 1). See prepareExpandAnimation()
-            if (slideOffset >= 1 && logoMan.getVisibility() != View.VISIBLE) {
-                logoMan.setVisibility(View.VISIBLE);
+            if (slideOffset >= 1) {
+                fragment.onFullyExpanded();
             }
 
-            newTabBtn.setTranslationY(translationY);
-            logoMan.setTranslationY(translationY);
+            if (Float.compare(this.translationY, translationY) != 0) {
+                this.translationY = translationY;
+                fragment.onTranslateToHidden(translationY);
+            }
 
-            backgroundAlpha = Math.max(0, backgroundAlpha);
-            backgroundView.setAlpha(backgroundAlpha);
+            if (Float.compare(this.backgroundAlpha, backgroundAlpha) != 0) {
+                this.backgroundAlpha = backgroundAlpha;
+                fragment.updateWindowBackground(backgroundAlpha);
+            }
 
-            updateWindowBackground(overlayAlpha, backgroundAlpha);
+            if (Float.compare(this.overlayAlpha, overlayAlpha) != 0) {
+                this.overlayAlpha = overlayAlpha;
+                fragment.updateWindowOverlay(overlayAlpha);
+            }
         }
-    };
+    }
 
     public static class ItemSpaceDecoration extends RecyclerView.ItemDecoration {
         private int margin;
