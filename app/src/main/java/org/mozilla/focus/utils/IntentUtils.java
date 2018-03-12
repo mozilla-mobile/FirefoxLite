@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -21,9 +20,9 @@ import android.support.v7.app.AlertDialog;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.web.IWebView;
+import org.mozilla.focus.notification.NotificationActionBroadcastReceiver;
 
 import java.io.File;
 import java.net.URI;
@@ -37,8 +36,12 @@ public class IntentUtils {
     public static final String EXTRA_IS_INTERNAL_REQUEST = "is_internal_request";
     public static final String EXTRA_SHOW_RATE_DIALOG = "show_rate_dialog";
 
-    public static final String ACTION_RATE_STAR = "action_rate_star";
-    public static final String ACTION_FEEDBACK = "action_feedback";
+    public static final String EXTRA_NOTIFICATION_ACTION_RATE_STAR = "ex_no_action_rate_star";
+    public static final String EXTRA_NOTIFICATION_ACTION_FEEDBACK = "ex_no_action_feedback";
+    public static final String EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER = "ex_no_click_default_browser";
+    public static final String EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX = "ex_no_click_love_firefox";
+
+    public static final String ACTION_NOTIFICATION = "action_notification";
 
 
     /**
@@ -209,22 +212,48 @@ public class IntentUtils {
         return intent;
     }
 
+    // FLAG_ACTIVITY_NEW_TASK is needed if the context is not an activity
     public static void goToPlayStore(Context context) {
         final String appPackageName = context.getPackageName();
         try {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         } catch (android.content.ActivityNotFoundException ex) {
             //No google play install
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 
-    public static Intent genDefaultBrowserSettingIntent(Context context, String fallbackSumoTitle) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
-        } else {
-            return InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), fallbackSumoTitle);
-        }
+
+    public static Intent genDefaultBrowserSettingIntent(Context context) {
+
+        final Intent setAsDefault = new Intent(context, NotificationActionBroadcastReceiver.class);
+        setAsDefault.setAction(IntentUtils.ACTION_NOTIFICATION);
+        setAsDefault.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER, true);
+        return setAsDefault;
     }
 
+    static Intent genRateStarNotificationActionForBroadcastReceiver(Context context) {
+        final Intent rateStar = new Intent(context, NotificationActionBroadcastReceiver.class);
+        rateStar.setAction(IntentUtils.ACTION_NOTIFICATION);
+        rateStar.putExtra(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR, true);
+        return rateStar;
+    }
+
+    static Intent genFeedbackNotificationActionForBroadcastReceiver(Context context) {
+        final Intent feedback = new Intent(context, NotificationActionBroadcastReceiver.class);
+        feedback.setAction(IntentUtils.ACTION_NOTIFICATION);
+        feedback.putExtra(IntentUtils.EXTRA_NOTIFICATION_ACTION_FEEDBACK, true);
+        return feedback;
+    }
+
+    static Intent genFeedbackNotificationClickForBroadcastReceiver(Context context) {
+        final Intent openRocket = new Intent(context, NotificationActionBroadcastReceiver.class);
+        openRocket.setAction(IntentUtils.ACTION_NOTIFICATION);
+        openRocket.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX, true);
+        return openRocket;
+    }
 }

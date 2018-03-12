@@ -354,7 +354,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setUpMenu();
     }
 
-    private void runPromotion(final SafeIntent intent ) {
+    private void runPromotion(final SafeIntent intent) {
         if (runPromotionFromIntent(intent)) {
             // Don't run other promotion if we already displayed above promotion
             return;
@@ -380,6 +380,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else if (didDismissRateDialog && !didShowRateAppNotification && appCreateCount >=
                 AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold()) {
             DialogUtils.showRateAppNotification(this);
+            TelemetryWrapper.showRateAppNotification();
         } else if (!didShowShareDialog && appCreateCount >=
                 AppConfigWrapper.getShareDialogLaunchTimeThreshold(didDismissRateDialog)) {
             DialogUtils.showShareAppDialog(this);
@@ -407,7 +408,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final boolean loveRocket = bundle.getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
         if (loveRocket) {
             DialogUtils.showRateAppDialog(this);
-            NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_ROCKET);
+            NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_FIREFOX);
             // Reset extra after dialog displayed.
             bundle.putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
             return true;
@@ -596,6 +597,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         if (settings.getMenuPreferenceClickCount() == AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold()) {
             DialogUtils.showDefaultSettingNotification(this);
+            TelemetryWrapper.showDefaultSettingNotification();
         }
     }
 
