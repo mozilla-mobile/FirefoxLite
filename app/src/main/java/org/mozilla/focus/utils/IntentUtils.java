@@ -36,10 +36,10 @@ public class IntentUtils {
     private static final String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
     public static final String EXTRA_IS_INTERNAL_REQUEST = "is_internal_request";
     public static final String EXTRA_OPEN_NEW_TAB = "open_new_tab";
+    public static final String EXTRA_SHOW_RATE_DIALOG = "show_rate_dialog";
 
     public static final String ACTION_RATE_STAR = "action_rate_star";
     public static final String ACTION_FEEDBACK = "action_feedback";
-    public static final String ACTION_SHOW_RATE_DIALOG = "action_show_rate_dialog";
 
 
     /**
