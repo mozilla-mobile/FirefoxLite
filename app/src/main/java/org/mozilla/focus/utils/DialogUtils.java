@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
-import org.mozilla.focus.notification.NotificationActionBroadcastReceiver;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -23,6 +22,11 @@ public class DialogUtils {
     public static final int APP_CREATE_THRESHOLD_FOR_RATE_DIALOG = 6;
     public static final int APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 6;
     public static final int APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 4;
+
+    private static final int REQUEST_RATE_CLICK = 1;
+    private static final int REQUEST_RATE_RATE = 2;
+    private static final int REQUEST_RATE_FEEDBACK = 3;
+    private static final int REQUEST_DEFAULT_CLICK = 4;
 
     public static void showRateAppDialog(final Context context) {
         if (context == null) {
@@ -79,7 +83,7 @@ public class DialogUtils {
         Settings.getInstance(context).setRateAppDialogDidShow();
     }
 
-    public static void telemetryFeedback(final Context context, String value) {
+    private static void telemetryFeedback(final Context context, String value) {
         if (context instanceof MainActivity) {
             TelemetryWrapper.feedbackClickEvent(value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
         } else if (context instanceof SettingsActivity) {
@@ -183,9 +187,9 @@ public class DialogUtils {
     public static void showRateAppNotification(Context context) {
 
         // Brings up Rocket and display full screen "Love Rocket" dialog
-        final Intent openRocket = new Intent(context, MainActivity.class);
-        openRocket.putExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, true);
-        final PendingIntent openRocketPending = PendingIntent.getActivity(context, 0, openRocket,
+
+        final Intent openRocket = IntentUtils.genFeedbackNotificationClickForBroadcastReceiver(context);
+        final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_RATE_CLICK, openRocket,
                 PendingIntent.FLAG_ONE_SHOT);
         final String string = context.getString(R.string.rate_app_dialog_text_title) + "\uD83D\uDE4C";
         final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
@@ -193,29 +197,27 @@ public class DialogUtils {
 
         // Send this intent in Broadcast receiver so we can cancel the notification there.
         // Build notification action for rate 5 stars
-        final Intent rateStar = new Intent(context, NotificationActionBroadcastReceiver.class);
-        rateStar.setAction(IntentUtils.ACTION_RATE_STAR);
-        final PendingIntent rateStarPending = PendingIntent.getBroadcast(context, 0, rateStar,
+        final Intent rateStar = IntentUtils.genRateStarNotificationActionForBroadcastReceiver(context);
+        final PendingIntent rateStarPending = PendingIntent.getBroadcast(context, REQUEST_RATE_RATE, rateStar,
                 PendingIntent.FLAG_ONE_SHOT);
-        builder.addAction(R.drawable.action_add, context.getString(R.string.rate_app_notification_action_rate), rateStarPending);
+        builder.addAction(R.drawable.notification_rating, context.getString(R.string.rate_app_notification_action_rate), rateStarPending);
 
         // Send this intent in Broadcast receiver so we can canel the notification there.
         // Build notification action for  feedback
-        final Intent feedback = new Intent(context, NotificationActionBroadcastReceiver.class);
-        feedback.setAction(IntentUtils.ACTION_FEEDBACK);
-        final PendingIntent feedbackPending = PendingIntent.getBroadcast(context, 0, feedback,
+        final Intent feedback = IntentUtils.genFeedbackNotificationActionForBroadcastReceiver(context);
+        final PendingIntent feedbackPending = PendingIntent.getBroadcast(context, REQUEST_RATE_FEEDBACK, feedback,
                 PendingIntent.FLAG_ONE_SHOT);
-        builder.addAction(R.drawable.action_search, context.getString(R.string.rate_app_notification_action_feedback), feedbackPending);
+        builder.addAction(R.drawable.notification_feedback, context.getString(R.string.rate_app_notification_action_feedback), feedbackPending);
 
         // Show notification
-        NotificationUtil.sendNotification(context, NotificationId.LOVE_ROCKET, builder);
+        NotificationUtil.sendNotification(context, NotificationId.LOVE_FIREFOX, builder);
         Settings.getInstance(context).setRateAppNotificationDidShow();
     }
 
     public static void showDefaultSettingNotification(Context context) {
 
-        final Intent openDefaultBrowserSetting = IntentUtils.genDefaultBrowserSettingIntent(context, context.getString(R.string.preference_default_browser));
-        final PendingIntent openRocketPending = PendingIntent.getActivity(context, 0, openDefaultBrowserSetting,
+        final Intent openDefaultBrowserSetting = IntentUtils.genDefaultBrowserSettingIntent(context);
+        final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, openDefaultBrowserSetting,
                 PendingIntent.FLAG_ONE_SHOT);
         final String title = context.getString(R.string.app_name);
         final String content = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE4C";
@@ -224,7 +226,7 @@ public class DialogUtils {
                 .setContentText(content);
 
         // Show notification
-        NotificationUtil.sendNotification(context, NotificationId.LOVE_ROCKET, builder);
+        NotificationUtil.sendNotification(context, NotificationId.DEFAULT_BROWSER, builder);
         Settings.getInstance(context).setDefaultBrowserSettingDidShow();
     }
 }

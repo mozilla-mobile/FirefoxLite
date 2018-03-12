@@ -58,7 +58,7 @@ public class DefaultBrowserPreference extends Preference {
     @Override
     protected void onClick() {
         final Context context = getContext();
-        final Intent intent = IntentUtils.genDefaultBrowserSettingIntent(context, getTitle().toString());
+        final Intent intent = IntentUtils.genDefaultBrowserSettingIntent(context);
         context.startActivity(intent);
     }
 
