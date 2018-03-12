@@ -89,6 +89,7 @@ public final class TelemetryWrapper {
         private static final String FIRSTRUN = "firstrun";
 
         private static final String FEEDBACK = "feedback";
+        private static final String DEFAULT_BROWSER = "default_browser";
         private static final String PROMOTE_SHARE = "promote_share";
         private static final String PROMOTE_SCREENSHOT = "promote_screenshot";
     }
@@ -145,6 +146,7 @@ public final class TelemetryWrapper {
     public static class Extra_Value {
         public static final String SETTING = "settings";
         public static final String CONTEXTUAL_HINTS = "contextual_hints";
+        public static final String NOTIFICATION = "notification";
     }
 
     public static boolean isTelemetryEnabled(Context context) {
@@ -589,6 +591,36 @@ public final class TelemetryWrapper {
 
     public static void showFeedbackDialog() {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FEEDBACK).queue();
+    }
+
+    public static void showRateAppNotification() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FEEDBACK)
+                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue();
+    }
+
+    public static void clickRateAppNotification(String value) {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
+                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue();
+    }
+
+    public static void clickRateAppNotification() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK)
+                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue();
+    }
+
+    public static void showDefaultSettingNotification() {
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.DEFAULT_BROWSER)
+                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue();
+    }
+
+    public static void clickDefaultSettingNotification() {
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.DEFAULT_BROWSER)
+                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue();
     }
 
     public static void promoteShareClickEvent(String value, String source) {

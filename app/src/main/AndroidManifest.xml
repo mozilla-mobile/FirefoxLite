@@ -153,8 +153,7 @@
             android:name=".notification.NotificationActionBroadcastReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="action_feedback"/>
-                <action android:name="action_rate_star"/>
+                <action android:name="action_notification"/>
             </intent-filter>
         </receiver>
 
