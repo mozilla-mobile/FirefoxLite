@@ -17,6 +17,9 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
 import org.mozilla.focus.screenshot.RegionFileDecoder;
+import org.mozilla.focus.tabs.tabtray.FaviconDecoder;
+import org.mozilla.focus.tabs.tabtray.FaviconModel;
+import org.mozilla.focus.tabs.tabtray.FaviconModelLoaderFactory;
 
 import java.io.InputStream;
 
@@ -29,6 +32,8 @@ public class FocusGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {
         registry.prepend(InputStream.class, Bitmap.class, new RegionFileDecoder(glide, getScreenWidth(context)));
+        registry.prepend(FaviconModel.class, FaviconModel.class, new FaviconModelLoaderFactory());
+        registry.prepend(FaviconModel.class, Bitmap.class, new FaviconDecoder(context, glide));
     }
 
     private int getScreenWidth(Context context) {

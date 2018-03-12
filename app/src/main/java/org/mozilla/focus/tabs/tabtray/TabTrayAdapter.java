@@ -6,12 +6,27 @@
 package org.mozilla.focus.tabs.tabtray;
 
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
@@ -38,7 +53,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.itemView.setSelected(position == this.focusedTabPosition);
 
         Resources resources = holder.itemView.getResources();
@@ -49,6 +64,8 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 resources.getString(R.string.app_name) : title);
 
         holder.websiteSubtitle.setText(tab.getUrl());
+
+        loadFavicon(tab, holder);
     }
 
     @Override
@@ -76,18 +93,64 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         return this.focusedTabPosition;
     }
 
+    private void loadFavicon(Tab tab, final ViewHolder holder) {
+        RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .dontAnimate();
+
+        Glide.with(holder.itemView)
+                .load(new FaviconModel(tab.getUrl(), tab.getFavicon()))
+                .apply(options)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target,
+                                                boolean isFirstResource) {
+                        updateFavicon(holder, null);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                                                   Target<Drawable> target,
+                                                   DataSource dataSource,
+                                                   boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(Drawable resource,
+                                                Transition<? super Drawable> transition) {
+                        updateFavicon(holder, resource);
+                    }
+                });
+    }
+
+    private void updateFavicon(ViewHolder holder, @Nullable Drawable drawable) {
+        if (drawable != null) {
+            holder.websiteIcon.setImageDrawable(drawable);
+            holder.websiteIcon.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            holder.websiteIcon.setImageResource(R.drawable.favicon_default);
+            holder.websiteIcon.setBackgroundColor(ContextCompat.getColor(
+                    holder.websiteIcon.getContext(),
+                    R.color.tabTrayItemIconBackground));
+        }
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView websiteTitle;
         TextView websiteSubtitle;
         View closeButton;
-        //ImageView websiteIcon;
+        ImageView websiteIcon;
 
         ViewHolder(View itemView) {
             super(itemView);
             websiteTitle = itemView.findViewById(R.id.website_title);
             websiteSubtitle = itemView.findViewById(R.id.website_subtitle);
             closeButton = itemView.findViewById(R.id.close_button);
-            //websiteIcon = itemView.findViewById(R.id.website_icon);
+            websiteIcon = itemView.findViewById(R.id.website_icon);
         }
     }
 
