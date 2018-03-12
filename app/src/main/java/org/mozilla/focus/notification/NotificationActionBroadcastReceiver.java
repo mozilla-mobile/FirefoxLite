@@ -12,7 +12,11 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.focus.utils.Settings;
+
+import static org.mozilla.focus.utils.DialogUtils.telemetryFeedback;
 
 public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
@@ -25,11 +29,18 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
             IntentUtils.goToPlayStore(context);
 
+            telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
+
         } else if (IntentUtils.ACTION_FEEDBACK.equals(intent.getAction())) {
 
             final Intent openFeedbackPage = IntentUtils.createInternalOpenUrlIntent(context,
                     context.getString(R.string.rate_app_feedback_url), true);
             context.startActivity(openFeedbackPage);
+
+            // Users set negative feedback, don't ask them to share in the future
+            Settings.getInstance(context).setShareAppDialogDidShow();
+            telemetryFeedback(context, TelemetryWrapper.Value.NEGATIVE);
+
         } else {
             Log.e(TAG, "Not a valid action");
         }

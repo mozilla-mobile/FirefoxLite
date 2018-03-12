@@ -290,10 +290,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             DialogUtils.showRateAppDialog(this);
             TelemetryWrapper.showFeedbackDialog();
         } else if (didDismissRateDialog && !didShowRateAppNotification && appCreateCount >=
-                AppConfigWrapper.getShareNotificationLaunchTimeThreshold()) {
-            DialogUtils.showShareAppNotification(this);
+                AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold()) {
+            DialogUtils.showRateAppNotification(this);
         } else if (!didShowShareDialog && appCreateCount >=
-                AppConfigWrapper.getShareDialogLaunchTimeThreshold()) {
+                AppConfigWrapper.getShareDialogLaunchTimeThreshold(didDismissRateDialog)) {
             DialogUtils.showShareAppDialog(this);
             TelemetryWrapper.showPromoteShareDialog();
         }
