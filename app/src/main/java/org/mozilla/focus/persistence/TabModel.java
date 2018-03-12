@@ -60,6 +60,12 @@ public class TabModel {
     private Bitmap thumbnail;
 
     /**
+     * Favicon bitmap for tab tray item.
+     */
+    @Ignore
+    private Bitmap favicon;
+
+    /**
      * ViewState for this Tab. Usually to fill by WebView.saveViewState(Bundle)
      * Set it as @Ignore to avoid storing this field into database.
      * It will be serialized to a file and save the uri path into webViewStateUri field.
@@ -122,6 +128,14 @@ public class TabModel {
 
     public void setThumbnail(Bitmap thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public Bitmap getFavicon() {
+        return favicon;
+    }
+
+    public void setFavicon(Bitmap favicon) {
+        this.favicon = favicon;
     }
 
     public Bundle getWebViewState() {
