@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class TabCounter extends RelativeLayout {
 
     private final AnimatorSet animationSet;
     private int count;
+    private float currentTextRatio;
 
     public static final int MAX_VISIBLE_TABS = 99;
     public static final String SO_MANY_TABS_OPEN = "∞";
@@ -224,15 +226,21 @@ public class TabCounter extends RelativeLayout {
     }
 
     private void adjustTextSize(int newCount) {
-        final float oldRatio = (this.count < MAX_VISIBLE_TABS && this.count >= 10) ? TWO_DIGITS_SIZE_RATIO : ONE_DIGIT_SIZE_RATIO;
         final float newRatio = (newCount < MAX_VISIBLE_TABS && newCount >= 10) ? TWO_DIGITS_SIZE_RATIO : ONE_DIGIT_SIZE_RATIO;
 
-        if (this.count == 0 || newRatio != oldRatio) {
-            final int sizeInPixel = (int) (box.getWidth() * newRatio);
-            if (sizeInPixel > 0) {
-                // Only apply the size when we calculate a valid value.
-                text.setTextSize(TypedValue.COMPLEX_UNIT_PX, sizeInPixel);
-            }
+        if (newRatio != currentTextRatio) {
+            currentTextRatio = newRatio;
+            text.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    text.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    final int sizeInPixel = (int) (box.getWidth() * newRatio);
+                    if (sizeInPixel > 0) {
+                        // Only apply the size when we calculate a valid value.
+                        text.setTextSize(TypedValue.COMPLEX_UNIT_PX, sizeInPixel);
+                    }
+                }
+            });
         }
     }
 }
