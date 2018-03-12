@@ -28,6 +28,7 @@ import static android.support.test.espresso.matcher.PreferenceMatchers.withKey;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
@@ -68,7 +69,7 @@ public class DefaultBrowserTest {
         final String prefName = activity.getString(R.string.pref_key_default_browser);
 
         // Click on the menu item
-        onView(withId(R.id.btn_menu)).perform(click());
+        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
 
         // Click on Settings
         onView(withId(R.id.menu_preferences)).perform(click());
