@@ -12,16 +12,21 @@ public class AppConfigWrapper {
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
     private static final int DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD = 2;
 
-    public static int getShareNotificationLaunchTimeThreshold() {
-        return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_NOTIFICATION;
+    public static int getRateAppNotificationLaunchTimeThreshold() {
+        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION;
     }
 
-    public static int getShareDialogLaunchTimeThreshold() {
+    public static int getShareDialogLaunchTimeThreshold(final boolean needExtend) {
+        if (needExtend) {
+            return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG +
+                    DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION -
+                    DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
+        }
         return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG;
     }
 
     public static int getRateDialogLaunchTimeThreshold() {
-        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_APP;
+        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
     }
 
     public static int getSurveyNotificationLaunchTimeThreshold() {
