@@ -5,7 +5,9 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +41,23 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemView.setSelected(position == this.focusedTabPosition);
 
+        Resources resources = holder.itemView.getResources();
         Tab tab = tabs.get(position);
-        holder.websiteTitle.setText(tab.getTitle());
+
+        String title = tab.getTitle();
+        holder.websiteTitle.setText(TextUtils.isEmpty(title) ?
+                resources.getString(R.string.app_name) : title);
+
         holder.websiteSubtitle.setText(tab.getUrl());
     }
 
     @Override
     public int getItemCount() {
         return tabs.size();
+    }
+
+    int getItemPosition(Tab tab) {
+        return tabs.indexOf(tab);
     }
 
     void setTabClickListener(TabClickListener tabClickListener) {
@@ -120,18 +131,5 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     public interface TabClickListener {
         void onTabClick(int tabPosition);
         void onTabCloseClick(int tabPosition);
-    }
-
-    public static class TabClickAdapter implements TabClickListener {
-
-        @Override
-        public void onTabClick(int tabPosition) {
-
-        }
-
-        @Override
-        public void onTabCloseClick(int tabPosition) {
-
-        }
     }
 }
