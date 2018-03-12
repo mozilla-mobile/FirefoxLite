@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -34,6 +33,7 @@ public class DialogUtils {
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
+                Settings.getInstance(context).setRateAppDialogDidDismiss();
                 telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
             }
         });
@@ -182,14 +182,13 @@ public class DialogUtils {
 
     public static void showShareAppNotification(Context context) {
 
-        // When clicking notifications while Rocket is in the foreground, just go back to the app.
-        // When clicking notifications while Rocket is in the background, display full screen "Love Rocket" dialog
+        // Brings up Rocket and display full screen "Love Rocket" dialog
         final Intent openRocket = new Intent(context, MainActivity.class);
-        openRocket.setAction(IntentUtils.ACTION_SHOW_RATE_DIALOG);
+        openRocket.putExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, true);
         final PendingIntent openRocketPending = PendingIntent.getActivity(context, 0, openRocket,
                 PendingIntent.FLAG_ONE_SHOT);
         final String string = context.getString(R.string.rate_app_dialog_text_title) + "\uD83D\uDE4C";
-        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
+        final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
                 .setContentText(string);
 
         // Send this intent in Broadcast receiver so we can cancel the notification there.
@@ -226,7 +225,7 @@ public class DialogUtils {
                 .setContentText(content);
 
         // Show notification
-        NotificationUtil.sendNotification(context, NotificationId.RATE_APP, builder);
+        NotificationUtil.sendNotification(context, NotificationId.LOVE_ROCKET, builder);
         Settings.getInstance(context).setDefaultBrowserSettingDidShow();
     }
 }
