@@ -42,6 +42,9 @@ import android.view.animation.Interpolator;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
+import org.mozilla.focus.tabs.TabsSession;
+import org.mozilla.focus.tabs.TabsSessionProvider;
+import org.mozilla.focus.tabs.TabsViewListener;
 import org.mozilla.focus.widget.FragmentListener;
 
 import java.util.List;
@@ -57,6 +60,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
 
     private TabTrayContract.Presenter presenter;
+    private TabsSession tabsSession;
 
     private View newTabBtn;
     private View logoMan;
@@ -71,6 +75,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private boolean playEnterAnimation = true;
 
     private TabTrayAdapter adapter = new TabTrayAdapter();
+    private OnTabModelChangedListener onTabModelChangedListener;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
 
@@ -92,7 +97,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
 
-        presenter = new TabTrayPresenter(this, new TabsSessionModel(this));
+        tabsSession = TabsSessionProvider.getOrThrow(getActivity());
+        presenter = new TabTrayPresenter(this, new TabsSessionModel(tabsSession));
     }
 
     @Override
@@ -105,7 +111,22 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             setDialogAnimation(R.style.TabTrayDialogExit);
         }
 
+        if (onTabModelChangedListener == null) {
+            onTabModelChangedListener = new OnTabModelChangedListener() {
+                @Override
+                void onTabModelChanged(Tab tab) {
+                    adapter.notifyItemChanged(adapter.getItemPosition(tab));
+                }
+            };
+        }
+        tabsSession.addTabsViewListener(onTabModelChangedListener);
         super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        tabsSession.removeTabsViewListener(onTabModelChangedListener);
     }
 
     @Nullable
@@ -556,5 +577,37 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 outRect.bottom = fragment.newTabBtn.getMeasuredHeight() + padding;
             }
         }
+    }
+
+    private static abstract class OnTabModelChangedListener implements TabsViewListener {
+        @Override
+        public void onTabStarted(@NonNull Tab tab) {
+        }
+
+        @Override
+        public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
+        }
+
+        @Override
+        public void onURLChanged(@NonNull Tab tab, String url) {
+            onTabModelChanged(tab);
+        }
+
+        @Override
+        public boolean handleExternalUrl(String url) {
+            return false;
+        }
+
+        @Override
+        public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
+            onTabModelChanged(tab);
+        }
+
+        @Override
+        public void onReceivedTitle(@NonNull Tab tab, String title) {
+            onTabModelChanged(tab);
+        }
+
+        abstract void onTabModelChanged(Tab tab);
     }
 }
