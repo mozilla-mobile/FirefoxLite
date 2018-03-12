@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -74,6 +75,14 @@ class TabsSessionModel implements TabTrayContract.Model {
 
         @Override
         public void onProgressChanged(@NonNull Tab tab, int progress) {
+        }
+
+        @Override
+        public void onReceivedTitle(@NonNull Tab tab, String title) {
+        }
+
+        @Override
+        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
         }
 
         @Override

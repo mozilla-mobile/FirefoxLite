@@ -312,6 +312,16 @@ public class TabsSessionTest {
         }
 
         @Override
+        public void onReceivedTitle(@NonNull Tab tab, String title) {
+
+        }
+
+        @Override
+        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
+
+        }
+
+        @Override
         public void onTabHoist(@NonNull Tab tab) {
 
         }

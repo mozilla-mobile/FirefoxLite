@@ -1284,6 +1284,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
         }
 
+        @Override
+        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
+        }
+
         @SuppressWarnings("SameParameterValue")
         private void startTabTransition(@Nullable final View outView, @NonNull final View inView,
                                         @Nullable final Runnable finishCallback) {

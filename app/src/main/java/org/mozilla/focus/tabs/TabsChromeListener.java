@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.tabs;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,6 +27,16 @@ public interface TabsChromeListener {
      * @see android.webkit.WebChromeClient#onProgressChanged(WebView, int)
      */
     void onProgressChanged(@NonNull Tab tab, int progress);
+
+    /**
+     * @see android.webkit.WebChromeClient#onReceivedTitle(WebView, String)
+     */
+    void onReceivedTitle(@NonNull Tab tab, String title);
+
+    /**
+     * @see android.webkit.WebChromeClient#onReceivedIcon(WebView, Bitmap)
+     */
+    void onReceivedIcon(@NonNull Tab tab, Bitmap icon);
 
     /**
      * Notify the host application a tab becomes 'current tab'. It usually happens when adding,

@@ -255,11 +255,18 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
                 return;
             }
 
+            Bitmap refinedBitmap  = FavIconUtils.getRefinedBitmap(getResources(), icon,
+                    FavIconUtils.getRepresentativeCharacter(url));
+
             Site site = new Site();
             site.setTitle(view.getTitle());
             site.setUrl(url);
-            site.setFavIcon(FavIconUtils.getRefinedBitmap(getResources(), icon, FavIconUtils.getRepresentativeCharacter(url)));
+            site.setFavIcon(refinedBitmap);
             BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
+
+            if (chromeClient != null) {
+                chromeClient.onReceivedIcon(view, refinedBitmap);
+            }
         }
 
         @Override
