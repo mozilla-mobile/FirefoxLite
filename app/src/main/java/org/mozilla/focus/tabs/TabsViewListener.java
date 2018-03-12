@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.tabs;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.webkit.WebView;
 
@@ -44,4 +45,9 @@ public interface TabsViewListener {
      * @see android.webkit.WebChromeClient#onReceivedTitle(WebView, String)
      */
     void onReceivedTitle(@NonNull Tab tab, String title);
+
+    /**
+     * @see android.webkit.WebChromeClient#onReceivedIcon(WebView, Bitmap)
+     */
+    void onReceivedIcon(@NonNull Tab tab, Bitmap icon);
 }

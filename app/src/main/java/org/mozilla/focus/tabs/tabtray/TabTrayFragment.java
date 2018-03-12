@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -605,6 +606,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         @Override
         public void onReceivedTitle(@NonNull Tab tab, String title) {
+            onTabModelChanged(tab);
+        }
+
+        @Override
+        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
             onTabModelChanged(tab);
         }
 

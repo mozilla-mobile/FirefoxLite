@@ -6,6 +6,7 @@
 package org.mozilla.focus.tabs;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -458,6 +459,14 @@ public class TabsSession {
         public void onReceivedTitle(WebView view, String title) {
             for (final TabsViewListener l : tabsViewListeners) {
                 l.onReceivedTitle(source, title);
+            }
+        }
+
+        @Override
+        public void onReceivedIcon(WebView view, Bitmap icon) {
+            source.setFavicon(icon);
+            for (final TabsViewListener l : tabsViewListeners) {
+                l.onReceivedIcon(source, icon);
             }
         }
 
