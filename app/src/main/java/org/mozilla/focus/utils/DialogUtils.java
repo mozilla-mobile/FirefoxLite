@@ -20,9 +20,9 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public class DialogUtils {
 
-    public static final int APP_CREATE_THRESHOLD_FOR_RATE_APP = 6;
-    public static final int APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG = APP_CREATE_THRESHOLD_FOR_RATE_APP + 4;
-    public static final int APP_CREATE_THRESHOLD_FOR_SHARE_NOTIFICATION = APP_CREATE_THRESHOLD_FOR_RATE_APP + 6;
+    public static final int APP_CREATE_THRESHOLD_FOR_RATE_DIALOG = 6;
+    public static final int APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 6;
+    public static final int APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 4;
 
     public static void showRateAppDialog(final Context context) {
         if (context == null) {
@@ -79,7 +79,7 @@ public class DialogUtils {
         Settings.getInstance(context).setRateAppDialogDidShow();
     }
 
-    private static void telemetryFeedback(final Context context, String value) {
+    public static void telemetryFeedback(final Context context, String value) {
         if (context instanceof MainActivity) {
             TelemetryWrapper.feedbackClickEvent(value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
         } else if (context instanceof SettingsActivity) {
@@ -180,7 +180,7 @@ public class DialogUtils {
         TelemetryWrapper.promoteScreenShotClickEvent(value);
     }
 
-    public static void showShareAppNotification(Context context) {
+    public static void showRateAppNotification(Context context) {
 
         // Brings up Rocket and display full screen "Love Rocket" dialog
         final Intent openRocket = new Intent(context, MainActivity.class);
@@ -210,7 +210,6 @@ public class DialogUtils {
         // Show notification
         NotificationUtil.sendNotification(context, NotificationId.LOVE_ROCKET, builder);
         Settings.getInstance(context).setRateAppNotificationDidShow();
-        Settings.getInstance(context).setShareAppDialogDidShow();
     }
 
     public static void showDefaultSettingNotification(Context context) {
