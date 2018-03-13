@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -39,6 +39,12 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     private int focusedTabPosition = -1;
 
     private TabClickListener tabClickListener;
+
+    private RequestManager requestManager;
+
+    TabTrayAdapter(RequestManager requestManager) {
+        this.requestManager = requestManager;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -98,7 +104,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
 
-        Glide.with(holder.itemView)
+        requestManager
                 .load(new FaviconModel(tab.getUrl(), tab.getFavicon()))
                 .apply(options)
                 .listener(new RequestListener<Drawable>() {

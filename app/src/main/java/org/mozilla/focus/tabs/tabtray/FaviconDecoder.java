@@ -38,6 +38,6 @@ public class FaviconDecoder implements ResourceDecoder<FaviconModel, Bitmap> {
     public Resource<Bitmap> decode(FaviconModel source, int width, int height, Options options) throws IOException {
         Bitmap refinedBitmap  = FavIconUtils.getRefinedBitmap(context.getResources(), source.originalIcon,
                 FavIconUtils.getRepresentativeCharacter(source.url));
-        return new BitmapResource(refinedBitmap, glide.getBitmapPool());
+        return BitmapResource.obtain(refinedBitmap, glide.getBitmapPool());
     }
 }

@@ -45,6 +45,8 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import com.bumptech.glide.Glide;
+
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
@@ -82,7 +84,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private boolean playEnterAnimation = true;
 
-    private TabTrayAdapter adapter = new TabTrayAdapter();
+    private TabTrayAdapter adapter;
     private OnTabModelChangedListener onTabModelChangedListener;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -104,6 +106,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
+
+        adapter = new TabTrayAdapter(Glide.with(this));
 
         tabsSession = TabsSessionProvider.getOrThrow(getActivity());
         presenter = new TabTrayPresenter(this, new TabsSessionModel(tabsSession));
