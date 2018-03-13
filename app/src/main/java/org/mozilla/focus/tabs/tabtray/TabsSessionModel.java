@@ -57,7 +57,7 @@ class TabsSessionModel implements TabTrayContract.Model {
         // with the others onTabHoist()
         tabsSession.addTabsChromeListener(new TabsChromeAdapter() {
             @Override
-            public void onTabHoist(@NonNull Tab tab) {
+            public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
                 tabsSession.removeTabsChromeListener(this);
                 finishCallback.run();
             }
@@ -86,7 +86,7 @@ class TabsSessionModel implements TabTrayContract.Model {
         }
 
         @Override
-        public void onTabHoist(@NonNull Tab tab) {
+        public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
         }
 
         @Override

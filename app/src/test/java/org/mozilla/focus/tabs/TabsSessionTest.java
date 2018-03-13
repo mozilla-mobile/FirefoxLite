@@ -322,7 +322,7 @@ public class TabsSessionTest {
         }
 
         @Override
-        public void onTabHoist(@NonNull Tab tab) {
+        public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
 
         }
 

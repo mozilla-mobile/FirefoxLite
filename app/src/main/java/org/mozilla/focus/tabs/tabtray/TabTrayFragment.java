@@ -632,7 +632,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         @Override
-        public void onTabHoist(@NonNull Tab tab) {
+        public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
         }
 
         @Override
