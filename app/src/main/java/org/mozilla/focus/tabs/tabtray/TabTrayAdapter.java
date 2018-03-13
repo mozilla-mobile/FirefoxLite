@@ -8,6 +8,7 @@ package org.mozilla.focus.tabs.tabtray;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -104,8 +105,12 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
 
+        String tabUri = tab.getUrl();
+        String hostUri = Uri.parse(tabUri).getHost();
+        String cacheUri = hostUri != null ? hostUri : tabUri;
+
         requestManager
-                .load(new FaviconModel(tab.getUrl(), tab.getFavicon()))
+                .load(new FaviconModel(cacheUri, tab.getFavicon()))
                 .apply(options)
                 .listener(new RequestListener<Drawable>() {
                     @Override
