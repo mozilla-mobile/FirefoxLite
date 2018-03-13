@@ -7,6 +7,7 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.media.MediaScannerConnection;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.webkit.WebStorage;
 
@@ -184,5 +185,19 @@ public class FileUtils {
     public static long clearCache(Context context) {
         WebStorage.getInstance().deleteAllData();
         return FileUtils.deleteWebViewCacheDirectory(context);
+    }
+
+    public static void writeBundleToStorage(@NonNull final File dir,
+                                            @NonNull final String fileName,
+                                            @NonNull final Bundle bundle) {
+        ensureDir(dir);
+        // TODO: Not implement yet
+    }
+
+    public static Bundle readBundleFromStorage(@NonNull final File dir,
+                                               @NonNull final String fileName) {
+        ensureDir(dir);
+        // TODO: Not implement yet
+        return null;
     }
 }
