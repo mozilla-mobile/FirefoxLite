@@ -6,7 +6,6 @@
 package org.mozilla.focus.tabs;
 
 import android.support.annotation.NonNull;
-import android.webkit.WebView;
 
 /**
  * An interface for listener to receive notifications and requests from Tabs.
@@ -39,9 +38,4 @@ public interface TabsViewListener {
      * @return true Return true if the URL was handled, false if we should continue loading the current URL.
      */
     void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError);
-
-    /**
-     * @see android.webkit.WebChromeClient#onReceivedTitle(WebView, String)
-     */
-    void onReceivedTitle(@NonNull Tab tab, String title);
 }

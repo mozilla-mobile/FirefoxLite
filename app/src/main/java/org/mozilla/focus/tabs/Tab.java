@@ -87,6 +87,14 @@ public class Tab {
         }
     }
 
+    @Nullable
+    public Bitmap getFavicon() {
+        if (tabModel != null) {
+            return tabModel.getFavicon();
+        }
+        return null;
+    }
+
     void setTabViewClient(@Nullable final TabViewClient client) {
         tabViewClient = (client != null) ? client : sDefViewClient;
     }
@@ -149,6 +157,10 @@ public class Tab {
         tabModel.setUrl(url);
     }
 
+    /* package */ void setFavicon(Bitmap icon) {
+        tabModel.setFavicon(icon);
+    }
+
     /* package */ TabView createView(@NonNull final Activity activity) {
         if (tabView == null) {
             tabView = (TabView) WebViewProvider.create(activity, null);
@@ -183,5 +195,4 @@ public class Tab {
     private Bitmap getThumbnail() {
         return tabModel.getThumbnail();
     }
-
 }

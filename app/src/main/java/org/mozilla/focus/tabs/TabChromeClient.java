@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.tabs;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -41,6 +42,9 @@ public class TabChromeClient {
     }
 
     public void onReceivedTitle(WebView view, String title) {
+    }
+
+    public void onReceivedIcon(WebView view, Bitmap icon) {
     }
 
     public void onLongPress(TabView.HitTarget hitTarget) {
