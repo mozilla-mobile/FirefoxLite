@@ -7,6 +7,7 @@ package org.mozilla.focus.tabs;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -22,6 +23,15 @@ import android.webkit.WebView;
  * Every methods of this listener are supposed to run in main thread.
  */
 public interface TabsChromeListener {
+
+    int FACTOR_UNKNOWN = 1;
+    int FACTOR_TAB_ADDED = 2;
+    int FACTOR_TAB_REMOVED = 3;
+    int FACTOR_TAB_SWITCHED = 4;
+
+    @IntDef({FACTOR_UNKNOWN, FACTOR_TAB_ADDED, FACTOR_TAB_REMOVED, FACTOR_TAB_SWITCHED})
+    @interface Factor {
+    }
 
     /**
      * @see android.webkit.WebChromeClient#onProgressChanged(WebView, int)
@@ -42,9 +52,10 @@ public interface TabsChromeListener {
      * Notify the host application a tab becomes 'current tab'. It usually happens when adding,
      * removing or switching tabs.
      *
-     * @param tab The tab becomes current tab
+     * @param tab    The tab becomes current tab
+     * @param factor the potential factor which cause this hoist-event
      */
-    void onTabHoist(@NonNull Tab tab);
+    void onTabHoist(@NonNull Tab tab, @Factor int factor);
 
     /**
      * Notify the host application the total tab counts changed.

@@ -1082,7 +1082,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private ValueAnimator tabTransitionAnimator;
 
         @Override
-        public void onTabHoist(@NonNull final Tab tab) {
+        public void onTabHoist(@NonNull final Tab tab, @Factor int factor) {
             // ensure it does not have attach to parent earlier.
             tab.detach();
 

@@ -156,7 +156,7 @@ public class TabsSession {
         // removed one tab, now idx should refer to next one
         focusIdx = idx >= tabs.size() ? tabs.size() - 1 : idx;
         if (hasTabs()) {
-            hoistTab(tabs.get(focusIdx));
+            notifyTabHoisted(tabs.get(focusIdx), TabsChromeListener.FACTOR_TAB_REMOVED);
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -176,7 +176,7 @@ public class TabsSession {
         }
 
         focusIdx = idx;
-        hoistTab(tabs.get(focusIdx));
+        notifyTabHoisted(tabs.get(focusIdx), TabsChromeListener.FACTOR_TAB_SWITCHED);
     }
 
     /**
@@ -311,7 +311,7 @@ public class TabsSession {
         }
 
         if (hoist || fromExternal) {
-            hoistTab(tab);
+            notifyTabHoisted(tab, TabsChromeListener.FACTOR_TAB_ADDED);
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -359,9 +359,10 @@ public class TabsSession {
         tab.setParentId(parentTab.getId());
     }
 
-    private void hoistTab(final Tab tab) {
+    private void notifyTabHoisted(final Tab tab, final @TabsChromeListener.Factor int factor) {
         final Message msg = notifier.obtainMessage(Notifier.MSG_HOIST_TAB);
         msg.obj = tab;
+        msg.arg1 = factor;
         notifier.sendMessage(msg);
     }
 
@@ -451,9 +452,7 @@ public class TabsSession {
             transport.setWebView(webView);
             msg.sendToTarget();
 
-            for (final TabsChromeListener l : tabsChromeListeners) {
-                l.onTabHoist(tab);
-            }
+            notifyTabHoisted(tab, TabsChromeListener.FACTOR_TAB_ADDED);
             return true;
         }
 
@@ -551,21 +550,22 @@ public class TabsSession {
         public void handleMessage(final Message msg) {
             switch (msg.what) {
                 case MSG_HOIST_TAB:
-                    hoistTab((Tab) msg.obj);
+                    hoistTab((Tab) msg.obj, msg.arg1);
                     break;
                 default:
                     break;
             }
         }
 
-        private void hoistTab(final Tab tab) {
+        private void hoistTab(final Tab tab, @TabsChromeListener.Factor final int factor) {
+
             if (tab != null && tab.getTabView() == null) {
                 String url = tab.getUrl();
                 tab.createView(this.activity).loadUrl(url);
             }
 
             for (final TabsChromeListener l : this.chromeListeners) {
-                l.onTabHoist(tab);
+                l.onTabHoist(tab, factor);
             }
         }
     }
