@@ -457,7 +457,7 @@ public class TabsSession {
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            for (final TabsViewListener l : tabsViewListeners) {
+            for (final TabsChromeListener l : tabsChromeListeners) {
                 l.onReceivedTitle(source, title);
             }
         }
@@ -465,7 +465,7 @@ public class TabsSession {
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
             source.setFavicon(icon);
-            for (final TabsViewListener l : tabsViewListeners) {
+            for (final TabsChromeListener l : tabsChromeListeners) {
                 l.onReceivedIcon(source, icon);
             }
         }

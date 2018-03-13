@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,10 +40,16 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.webkit.GeolocationPermissions;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
+import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.TabsViewListener;
@@ -121,6 +128,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             };
         }
         tabsSession.addTabsViewListener(onTabModelChangedListener);
+        tabsSession.addTabsChromeListener(onTabModelChangedListener);
         super.onStart();
     }
 
@@ -580,7 +588,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
     }
 
-    private static abstract class OnTabModelChangedListener implements TabsViewListener {
+    private static abstract class OnTabModelChangedListener implements TabsViewListener,
+            TabsChromeListener {
         @Override
         public void onTabStarted(@NonNull Tab tab) {
         }
@@ -605,6 +614,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         @Override
+        public void onProgressChanged(@NonNull Tab tab, int progress) {
+        }
+
+        @Override
         public void onReceivedTitle(@NonNull Tab tab, String title) {
             onTabModelChanged(tab);
         }
@@ -612,6 +625,36 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         @Override
         public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
             onTabModelChanged(tab);
+        }
+
+        @Override
+        public void onTabHoist(@NonNull Tab tab) {
+        }
+
+        @Override
+        public void onTabCountChanged(int count) {
+        }
+
+        @Override
+        public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
+        }
+
+        @Override
+        public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
+        }
+
+        @Override
+        public void onExitFullScreen(@NonNull Tab tab) {
+        }
+
+        @Override
+        public boolean onShowFileChooser(@NonNull Tab tab, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+            return false;
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
+
         }
 
         abstract void onTabModelChanged(Tab tab);
