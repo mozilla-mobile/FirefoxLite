@@ -42,9 +42,9 @@ public class TabsSession {
 
     /**
      * Index to refer a tab which is 'focused' by this session. When this index be changed, session
-     * should hoist current tab as well.
+     * should hoist focused tab as well.
      */
-    private int currentIdx = -1;
+    private int focusIdx = -1;
 
     private List<TabsViewListener> tabsViewListeners = new ArrayList<>();
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
@@ -85,7 +85,7 @@ public class TabsSession {
      *
      * @param models
      */
-    public void restoreTabs(List<TabModel> models, String currentTabId) {
+    public void restoreTabs(@NonNull final List<TabModel> models, String focusTabId) {
         for (final TabModel model : models) {
             final Tab tab = new Tab(model);
             bindCallback(tab);
@@ -93,8 +93,8 @@ public class TabsSession {
         }
 
         if (tabs.size() > 0 && tabs.size() == models.size()) {
-            int index = getTabIndex(currentTabId);
-            currentIdx = (index != -1) ? index : 0;
+            int index = getTabIndex(focusTabId);
+            focusIdx = (index != -1) ? index : 0;
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -153,9 +153,9 @@ public class TabsSession {
         tab.destroy();
 
         // removed one tab, now idx should refer to next one
-        currentIdx = idx >= tabs.size() ? tabs.size() - 1 : idx;
+        focusIdx = idx >= tabs.size() ? tabs.size() - 1 : idx;
         if (hasTabs()) {
-            hoistTab(tabs.get(currentIdx));
+            hoistTab(tabs.get(focusIdx));
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -174,8 +174,8 @@ public class TabsSession {
             return;
         }
 
-        currentIdx = idx;
-        hoistTab(tabs.get(currentIdx));
+        focusIdx = idx;
+        hoistTab(tabs.get(focusIdx));
     }
 
     /**
@@ -192,8 +192,8 @@ public class TabsSession {
      *
      * @return current focused tab. Return null if there is not any tab.
      */
-    public Tab getCurrentTab() {
-        return (currentIdx >= 0 && currentIdx < tabs.size()) ? tabs.get(currentIdx) : null;
+    public Tab getFocusTab() {
+        return (focusIdx >= 0 && focusIdx < tabs.size()) ? tabs.get(focusIdx) : null;
     }
 
     /**
@@ -303,7 +303,7 @@ public class TabsSession {
             insertTab(parentIndex, tab);
         }
 
-        currentIdx = (hoist || fromExternal) ? getTabIndex(tab.getId()) : currentIdx;
+        focusIdx = (hoist || fromExternal) ? getTabIndex(tab.getId()) : focusIdx;
 
         if (!TextUtils.isEmpty(url)) {
             tab.createView(activity).loadUrl(url);

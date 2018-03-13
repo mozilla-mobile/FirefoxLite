@@ -861,7 +861,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onQueryComplete(List<TabModel> tabModelList, String currentTabId) {
         getTabsSession().restoreTabs(tabModelList, currentTabId);
-        Tab currentTab = getTabsSession().getCurrentTab();
+        Tab currentTab = getTabsSession().getFocusTab();
         if (currentTab != null && safeForFragmentTransactions) {
             MainActivity.this.mediator.showBrowserScreenForRestoreTabs(currentTab.getId());
         }
@@ -873,8 +873,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void saveTabsToPersistence() {
         List<TabModel> tabModelListForPersistence = getTabsSession().getTabModelListForPersistence();
-        final String currentTabId = (getTabsSession().getCurrentTab() != null)
-                ? getTabsSession().getCurrentTab().getId()
+        final String currentTabId = (getTabsSession().getFocusTab() != null)
+                ? getTabsSession().getFocusTab().getId()
                 : null;
 
         if (tabModelListForPersistence != null) {
