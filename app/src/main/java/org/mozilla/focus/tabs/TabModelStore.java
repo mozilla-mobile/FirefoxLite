@@ -21,7 +21,7 @@ public class TabModelStore {
     private TabsDatabase tabsDatabase;
 
     public interface AsyncQueryListener {
-        void onQueryComplete(List<TabModel> tabModelList, String currentTabId);
+        void onQueryComplete(List<TabModel> tabModelList, String focusTabId);
     }
 
     public interface AsyncSaveListener {
@@ -47,10 +47,14 @@ public class TabModelStore {
         new QueryTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR);
     }
 
-    public void saveTabs(@NonNull final Context context, @NonNull final List<TabModel> tabModelList, @Nullable final String currentTabId, @Nullable final AsyncSaveListener listener) {
+    public void saveTabs(@NonNull final Context context,
+                         @NonNull final List<TabModel> tabModelList,
+                         @Nullable final String focusTabId,
+                         @Nullable final AsyncSaveListener listener) {
+
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putString(context.getResources().getString(R.string.pref_key_current_tab_id), currentTabId)
+                .putString(context.getResources().getString(R.string.pref_key_focus_tab_id), focusTabId)
                 .apply();
 
         new SaveTabsTask(tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabModelList.toArray(new TabModel[0]));
@@ -82,8 +86,9 @@ public class TabModelStore {
             Context context = contextRef.get();
             AsyncQueryListener listener = listenerRef.get();
             if (listener != null && context != null) {
-                String currentTabId = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getResources().getString(R.string.pref_key_current_tab_id), "");
-                listener.onQueryComplete(tabModelList, currentTabId);
+                String focusTabId = PreferenceManager.getDefaultSharedPreferences(context)
+                        .getString(context.getResources().getString(R.string.pref_key_focus_tab_id), "");
+                listener.onQueryComplete(tabModelList, focusTabId);
             }
         }
     }
