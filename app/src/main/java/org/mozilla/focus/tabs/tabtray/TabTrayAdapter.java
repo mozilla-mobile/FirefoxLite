@@ -8,7 +8,6 @@ package org.mozilla.focus.tabs.tabtray;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -64,15 +63,20 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         holder.itemView.setSelected(position == this.focusedTabPosition);
 
         Resources resources = holder.itemView.getResources();
+
         Tab tab = tabs.get(position);
 
-        String title = tab.getTitle();
+        String title = getTitle(tab, holder);
         holder.websiteTitle.setText(TextUtils.isEmpty(title) ?
                 resources.getString(R.string.app_name) : title);
-
         holder.websiteSubtitle.setText(tab.getUrl());
 
         loadFavicon(tab, holder);
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        holder.websiteTitle.setText("");
     }
 
     @Override
@@ -100,17 +104,24 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         return this.focusedTabPosition;
     }
 
+    private String getTitle(Tab tab, ViewHolder holder) {
+        String newTitle = tab.getTitle();
+        String currentTitle = String.valueOf(holder.websiteTitle.getText());
+
+        if (TextUtils.isEmpty(newTitle)) {
+            return TextUtils.isEmpty(currentTitle) ? "" : currentTitle;
+        }
+
+        return newTitle;
+    }
+
     private void loadFavicon(Tab tab, final ViewHolder holder) {
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
 
-        String tabUri = tab.getUrl();
-        String hostUri = Uri.parse(tabUri).getHost();
-        String cacheUri = hostUri != null ? hostUri : tabUri;
-
         requestManager
-                .load(new FaviconModel(cacheUri, tab.getFavicon()))
+                .load(new FaviconModel(tab.getUrl(), tab.getFavicon()))
                 .apply(options)
                 .listener(new RequestListener<Drawable>() {
                     @Override
