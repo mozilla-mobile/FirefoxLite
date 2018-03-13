@@ -37,7 +37,7 @@ class TabsSessionModel implements TabTrayContract.Model {
 
     @Override
     public int getCurrentTabPosition() {
-        return tabsSession.getTabs().indexOf(tabsSession.getCurrentTab());
+        return tabsSession.getTabs().indexOf(tabsSession.getFocusTab());
     }
 
     @Override

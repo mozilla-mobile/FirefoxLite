@@ -136,16 +136,16 @@ public class TabsSessionTest {
     @Test
     public void testAddTab4() {
         session.restoreTabs(models, urls[0]);
-        Assert.assertEquals(session.getCurrentTab().getId(), urls[0]);
+        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
 
         final String tabId0 = session.addTab(null, "url0", true, false);
-        Assert.assertEquals(session.getCurrentTab().getId(), tabId0);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId0);
 
         final String tabId1 = session.addTab(null, "url1", false, true);
-        Assert.assertEquals(session.getCurrentTab().getId(), tabId1);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
 
         final String tabId2 = session.addTab(null, "url2", false, false);
-        Assert.assertEquals(session.getCurrentTab().getId(), tabId1);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
     }
 
     @Test
