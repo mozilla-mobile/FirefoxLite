@@ -97,6 +97,13 @@ public class Tab {
         return null;
     }
 
+    public @SiteIdentity.SecurityState int getSecurityState() {
+        if (tabView == null) {
+            return SiteIdentity.UNKNOWN;
+        }
+        return tabView.getSecurityState();
+    }
+
     void setTabViewClient(@Nullable final TabViewClient client) {
         tabViewClient = (client != null) ? client : sDefViewClient;
     }

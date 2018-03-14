@@ -30,6 +30,7 @@ import android.webkit.WebViewDatabase;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.tabs.SiteIdentity;
 import org.mozilla.focus.tabs.TabChromeClient;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabViewClient;
@@ -187,6 +188,12 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
         } else {
             super.reload();
         }
+    }
+
+    @Override
+    public @SiteIdentity.SecurityState int getSecurityState() {
+        // FIXME: Having certificate doesn't mean the connection is secure, see #1562
+        return getCertificate() == null ? SiteIdentity.INSECURE : SiteIdentity.SECURE;
     }
 
     @Override

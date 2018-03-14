@@ -77,6 +77,8 @@ public interface TabView {
 
     String getTitle();
 
+    @SiteIdentity.SecurityState int getSecurityState();
+
     void loadUrl(String url);
 
     void cleanup();

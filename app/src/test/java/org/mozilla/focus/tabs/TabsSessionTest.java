@@ -244,6 +244,11 @@ public class TabsSessionTest {
         }
 
         @Override
+        public @SiteIdentity.SecurityState int getSecurityState() {
+            return SiteIdentity.UNKNOWN;
+        }
+
+        @Override
         public void loadUrl(String url) {
 
         }
