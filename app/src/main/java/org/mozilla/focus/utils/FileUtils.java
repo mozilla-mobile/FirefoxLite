@@ -16,6 +16,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 public class FileUtils {
@@ -191,13 +193,55 @@ public class FileUtils {
                                             @NonNull final String fileName,
                                             @NonNull final Bundle bundle) {
         ensureDir(dir);
-        // TODO: Not implement yet
+
+        final File outputFile = new File(dir, fileName);
+        FileOutputStream fos;
+        ObjectOutputStream oos = null;
+        try {
+            fos = new FileOutputStream(outputFile);
+            oos = new ObjectOutputStream(fos);
+            new AndroidBundleSerializer().serializeBundle(oos, bundle);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (oos != null) {
+                    oos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static Bundle readBundleFromStorage(@NonNull final File dir,
                                                @NonNull final String fileName) {
         ensureDir(dir);
-        // TODO: Not implement yet
-        return null;
+
+        final File input = new File(dir, fileName);
+        if (!input.exists()) {
+            return null;
+        }
+
+        FileInputStream fis;
+        ObjectInputStream ois = null;
+        Bundle bundle = null;
+        try {
+            fis = new FileInputStream(input);
+            ois = new ObjectInputStream(fis);
+            bundle = new AndroidBundleSerializer().deserializeBundle(ois);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ois != null) {
+                    ois.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return bundle;
     }
 }
