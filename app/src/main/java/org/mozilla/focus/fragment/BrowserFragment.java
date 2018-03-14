@@ -66,6 +66,7 @@ import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
 import org.mozilla.focus.screenshot.ScreenshotObserver;
+import org.mozilla.focus.tabs.SiteIdentity;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.tabs.TabView;
@@ -91,6 +92,7 @@ import org.mozilla.focus.widget.FragmentListener;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.WeakHashMap;
 
 /**
  * Fragment for displaying the browser UI.
@@ -1070,11 +1072,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
+        private HistoryInserter historyInserter = new HistoryInserter();
 
-        String failingUrl;
-        // Some url may have two onPageFinished for the same url. filter them out to avoid
-        // adding twice to the history.
-        private String lastInsertedUrl = null;
         // Some url may report progress from 0 again for the same url. filter them out to avoid
         // progress bar regression when scrolling.
         private String loadedUrl = null;
@@ -1083,21 +1082,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public void onTabHoist(@NonNull final Tab tab, @Factor int factor) {
-            // ensure it does not have attach to parent earlier.
-            tab.detach();
-
-            @Nullable final View outView = findExistingTabView(webViewSlot);
-            webViewSlot.removeView(outView);
-
-            final View inView = tab.getTabView().getView();
-            webViewSlot.addView(inView);
-
-            startTabTransition(null, inView, null);
+            transitToTab(tab);
+            refreshChrome(tab);
         }
 
         @Override
         public void onTabStarted(@NonNull Tab tab) {
-            lastInsertedUrl = null;
+            historyInserter.onTabStarted(tab);
+
+            if (!isForegroundTab(tab)) {
+                return;
+            }
+
             loadedUrl = null;
 
             updateIsLoading(true);
@@ -1116,24 +1112,20 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
-            // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
-            // URL is always correct _except_ for error pages
-            updateUrlFromWebView(tab);
+            if (isForegroundTab(tab)) {
+                // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
+                // URL is always correct _except_ for error pages
+                updateUrlFromWebView(tab);
 
-            updateIsLoading(false);
+                updateIsLoading(false);
 
-            notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
+                notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
 
-            backgroundTransition.startTransition(ANIMATION_DURATION);
+                backgroundTransition.startTransition(ANIMATION_DURATION);
 
-            if (isSecure) {
-                siteIdentity.setImageLevel(SITE_LOCK);
+                siteIdentity.setImageLevel(isSecure ? SITE_LOCK : SITE_GLOBE);
             }
-            String urlToBeInserted = getUrl();
-            if (!getUrl().equals(this.failingUrl) && !urlToBeInserted.equals(lastInsertedUrl)) {
-                tabsSession.getFocusTab().getTabView().insertBrowsingHistory();
-                lastInsertedUrl = urlToBeInserted;
-            }
+            historyInserter.onTabFinished(tab);
         }
 
         @Override
@@ -1143,11 +1135,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public void onURLChanged(@NonNull Tab tab, final String url) {
+            if (!isForegroundTab(tab)) {
+                return;
+            }
             updateURL(url);
         }
 
         @Override
         public void onProgressChanged(@NonNull Tab tab, int progress) {
+            if (!isForegroundTab(tab)) {
+                return;
+            }
+
             if (tabsSession.getFocusTab() != null) {
                 final String currentUrl = tabsSession.getFocusTab().getUrl();
                 final boolean progressIsForLoadedUrl = TextUtils.equals(currentUrl, loadedUrl);
@@ -1177,6 +1176,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
+        public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
+            historyInserter.updateFailingUrl(tab, url, updateFromError);
+        }
+
+        @Override
         public void onLongPress(@NonNull Tab tab, final TabView.HitTarget hitTarget) {
             if (getActivity() == null) {
                 Log.w(FRAGMENT_TAG, "No context to use, abort callback onLongPress");
@@ -1190,7 +1194,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onEnterFullScreen(@NonNull Tab tab,
                                       @NonNull final TabView.FullscreenCallback callback,
                                       @Nullable View fullscreenContentView) {
-            if (tabsSession.getFocusTab() != tab) {
+            if (!isForegroundTab(tab)) {
                 callback.fullScreenExited();
                 return;
             }
@@ -1247,6 +1251,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab,
                                                        final String origin,
                                                        final GeolocationPermissions.Callback callback) {
+            if (!isForegroundTab(tab)) {
+                return;
+            }
+
             geolocationOrigin = origin;
             geolocationCallback = callback;
             permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.ACCESS_FINE_LOCATION, ACTION_GEO_LOCATION, null);
@@ -1257,6 +1265,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                                          WebView webView,
                                          ValueCallback<Uri[]> filePathCallback,
                                          WebChromeClient.FileChooserParams fileChooserParams) {
+            if (!isForegroundTab(tab)) {
+                return false;
+            }
+
             TelemetryWrapper.browseFilePermissionEvent();
             try {
                 BrowserFragment.this.fileChooseAction = new FileChooseAction(BrowserFragment.this, filePathCallback, fileChooserParams);
@@ -1269,16 +1281,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
-            if (!updateFromError && !url.equals(failingUrl)) {
-                failingUrl = null;
-            } else {
-                this.failingUrl = url;
-            }
-        }
-
-        @Override
         public void onReceivedTitle(@NonNull Tab tab, String title) {
+            if (!isForegroundTab(tab)) {
+                return;
+            }
             if (!BrowserFragment.this.getUrl().equals(tab.getUrl())) {
                 updateURL(tab.getUrl());
             }
@@ -1288,9 +1294,34 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
         }
 
+        private void transitToTab(Tab targetTab) {
+            // ensure it does not have attach to parent earlier.
+            targetTab.detach();
+
+            @Nullable final View outView = findExistingTabView(webViewSlot);
+            webViewSlot.removeView(outView);
+
+            final View inView = targetTab.getTabView().getView();
+            webViewSlot.addView(inView);
+
+            startTransitionAnimation(null, inView, null);
+        }
+
+        private void refreshChrome(Tab tab) {
+            geolocationOrigin = "";
+            geolocationCallback = null;
+
+            dismissGeoDialog();
+
+            updateURL(tab.getUrl());
+
+            int identity = (tab.getSecurityState() == SiteIdentity.SECURE) ? SITE_LOCK : SITE_GLOBE;
+            siteIdentity.setImageLevel(identity);
+        }
+
         @SuppressWarnings("SameParameterValue")
-        private void startTabTransition(@Nullable final View outView, @NonNull final View inView,
-                                        @Nullable final Runnable finishCallback) {
+        private void startTransitionAnimation(@Nullable final View outView, @NonNull final View inView,
+                                              @Nullable final Runnable finishCallback) {
             stopTabTransition();
 
             inView.setAlpha(0f);
@@ -1342,6 +1373,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 tabTransitionAnimator.end();
             }
         }
+
+        private boolean isForegroundTab(Tab tab) {
+            return tabsSession.getFocusTab() == tab;
+        }
     }
 
     class DownloadCallback implements org.mozilla.focus.web.DownloadCallback {
@@ -1349,6 +1384,68 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onDownloadStart(@NonNull Download download) {
             permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download);
+        }
+    }
+
+    /**
+     * TODO: This class records some intermediate data of each tab to avoid inserting duplicate
+     * history, maybe it'd be better to make these data as per-tab data
+     */
+    private final class HistoryInserter {
+        private WeakHashMap<Tab, String> failingUrls = new WeakHashMap<>();
+
+        // Some url may have two onPageFinished for the same url. filter them out to avoid
+        // adding twice to the history.
+        private WeakHashMap<Tab, String> lastInsertedUrls = new WeakHashMap<>();
+
+        void onTabStarted(@NonNull Tab tab) {
+            lastInsertedUrls.remove(tab);
+        }
+
+        void onTabFinished(@NonNull Tab tab) {
+            insertBrowsingHistory(tab);
+        }
+
+        void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
+            String failingUrl = failingUrls.get(tab);
+            if (!updateFromError && !url.equals(failingUrl)) {
+                failingUrls.remove(tab);
+            } else {
+                failingUrls.put(tab, url);
+            }
+        }
+
+        private void insertBrowsingHistory(Tab tab) {
+            String urlToBeInserted = getUrl();
+            @NonNull String lastInsertedUrl = getLastInsertedUrl(tab);
+
+            if (TextUtils.isEmpty(urlToBeInserted)) {
+                return;
+            }
+
+            if (urlToBeInserted.equals(getFailingUrl(tab))) {
+                return;
+            }
+
+            if (urlToBeInserted.equals(lastInsertedUrl)) {
+                return;
+            }
+
+            TabView tabView = tab.getTabView();
+            if (tabView != null) {
+                tabView.insertBrowsingHistory();
+            }
+            lastInsertedUrls.put(tab, urlToBeInserted);
+        }
+
+        private String getFailingUrl(Tab tab) {
+            String url = failingUrls.get(tab);
+            return TextUtils.isEmpty(url) ? "" : url;
+        }
+
+        private String getLastInsertedUrl(Tab tab) {
+            String url = lastInsertedUrls.get(tab);
+            return TextUtils.isEmpty(url) ? "" : url;
         }
     }
 }
