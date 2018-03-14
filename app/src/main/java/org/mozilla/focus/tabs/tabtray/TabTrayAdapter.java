@@ -116,6 +116,11 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     private void loadFavicon(Tab tab, final ViewHolder holder) {
+        String uri = tab.getUrl();
+        if (TextUtils.isEmpty(uri)) {
+            return;
+        }
+
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
