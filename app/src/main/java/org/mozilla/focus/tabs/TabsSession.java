@@ -293,6 +293,7 @@ public class TabsSession {
                                   boolean hoist) {
 
         final Tab tab = new Tab();
+        tab.setUrl(url);
 
         bindCallback(tab);
 

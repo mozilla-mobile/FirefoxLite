@@ -33,10 +33,18 @@ import org.robolectric.annotation.Config;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.RealObject;
+import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.util.ReflectionHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {TabsSessionTest.ShadowTab.class})
@@ -149,6 +157,45 @@ public class TabsSessionTest {
     }
 
     @Test
+    public void testAddTab5() {
+        // Add a tab from internal and hoist it. onTabHoist should be invoked once
+        final TabsChromeListener spy0 = spy(new DefaultChromeListener() {
+            public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
+                Assert.assertEquals(tab.getUrl(), "url0");
+            }
+        });
+        session.addTabsChromeListener(spy0);
+        final String tabId0 = session.addTab(null, "url0", false, true);
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+        verify(spy0, times(1)).onTabHoist(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
+        Assert.assertEquals(session.getFocusTab().getId(), tabId0);
+        session.removeTabsChromeListener(spy0);
+
+        // Add a tab from external. onTabHoist should be invoked
+        final TabsChromeListener spy1 = spy(new DefaultChromeListener() {
+            public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
+                Assert.assertEquals(tab.getUrl(), "url1");
+            }
+        });
+        session.addTabsChromeListener(spy1);
+        final String tabId1 = session.addTab(null, "url1", true, false);
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+        verify(spy1, times(1)).onTabHoist(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
+        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+        session.removeTabsChromeListener(spy1);
+
+        // Add a tab from internal, but don't hoist it.
+        // Add a tab from external. onTabHoist should be invoked
+        final TabsChromeListener spy2 = spy(TabsChromeListener.class);
+        session.addTabsChromeListener(spy2);
+        session.addTab(null, "url2", false, false);
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+        verify(spy2, times(0)).onTabHoist(any(Tab.class), anyInt());
+        Assert.assertEquals(session.getFocusTab().getId(), tabId1); // focus should not be changed
+        session.removeTabsChromeListener(spy2);
+    }
+
+    @Test
     public void testRestore() {
         session.restoreTabs(models, urls[0]);
         Assert.assertEquals(session.getTabs().size(), urls.length);
@@ -178,6 +225,8 @@ public class TabsSessionTest {
     }
 
     private static class DefaultTabView implements TabView {
+        private String url = null;
+
         @Override
         public void setBlockingEnabled(boolean enabled) {
 
@@ -235,7 +284,7 @@ public class TabsSessionTest {
 
         @Override
         public String getUrl() {
-            return null;
+            return this.url;
         }
 
         @Override
@@ -250,7 +299,7 @@ public class TabsSessionTest {
 
         @Override
         public void loadUrl(String url) {
-
+            this.url = url;
         }
 
         @Override
