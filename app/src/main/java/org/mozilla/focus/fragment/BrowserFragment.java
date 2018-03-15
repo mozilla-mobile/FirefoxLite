@@ -875,16 +875,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // Go back in web history
             goBack();
         } else {
-            if (isStartedFromExternalApp()) {
-                // We have been started from a VIEW intent. Go back to the previous app immediately (No erase).
-                // However we need to finish the current session so that the custom tab config gets
-                // correctly cleared:
-                // FIXME: does Zerda need this?
-                BrowsingSession.getInstance().clearCustomTabConfig();
+            final Tab focus = tabsSession.getFocusTab();
+            if (focus == null) {
                 getActivity().finish();
             } else {
-                // let parent to decide for this Fragment
-                return false;
+                tabsSession.closeTab(focus.getId());
             }
         }
 
@@ -1081,9 +1076,17 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private ValueAnimator tabTransitionAnimator;
 
         @Override
-        public void onTabHoist(@NonNull final Tab tab, @Factor int factor) {
-            transitToTab(tab);
-            refreshChrome(tab);
+        public void onTabHoist(@Nullable final Tab tab, @Factor int factor) {
+            if (tab == null) {
+                if (factor == FACTOR_NO_FOCUS) {
+                    notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                } else {
+                    getActivity().finish();
+                }
+            } else {
+                transitToTab(tab);
+                refreshChrome(tab);
+            }
         }
 
         @Override
