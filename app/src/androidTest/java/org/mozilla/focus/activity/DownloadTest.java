@@ -128,7 +128,7 @@ public class DownloadTest {
 
 
     @Test
-    public void DownloadFileTest() throws InterruptedException, UiObjectNotFoundException, IOException {
+    public void triggerDownload_showToast() throws InterruptedException, UiObjectNotFoundException, IOException {
 
         // Start the activity
         activityRule.launchActivity(new Intent());

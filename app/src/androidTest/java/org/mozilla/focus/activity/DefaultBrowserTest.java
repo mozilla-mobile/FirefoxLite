@@ -56,7 +56,7 @@ public class DefaultBrowserTest {
     }
 
     @Test
-    public void testDefaultBrowserSetting() {
+    public void changeDefaultBrowser_prefSwitched() {
 
         // Start MainActivity
         mainActivity.launchActivity(new Intent());

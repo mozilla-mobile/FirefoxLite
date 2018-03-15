@@ -60,7 +60,7 @@ public class HomeTest {
     }
 
     @Test
-    public void testTopSite() {
+    public void clickTopSite_loadTopSite() {
 
         // Now start the activity
         activityRule.launchActivity(new Intent());
