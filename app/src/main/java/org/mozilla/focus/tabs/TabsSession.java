@@ -85,6 +85,10 @@ public class TabsSession {
      */
     public void restoreTabs(@NonNull final List<TabModel> models, String focusTabId) {
         for (final TabModel model : models) {
+            if (!TabModel.isSane(model)) {
+                continue;
+            }
+
             final Tab tab = new Tab(model);
             bindCallback(tab);
             tabs.add(tab);
