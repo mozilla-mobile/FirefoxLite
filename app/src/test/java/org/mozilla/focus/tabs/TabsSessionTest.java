@@ -39,9 +39,9 @@ import org.robolectric.util.ReflectionHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -123,22 +123,26 @@ public class TabsSessionTest {
 
     @Test
     public void testAddTab3() {
-        /* Tab 2, 3 use Tab0 as parent */
-
         String tabId0 = session.addTab(null, "url0", false, false);
         String tabId1 = session.addTab(null, "url1", false, false);
         String tabId2 = session.addTab(tabId0, "url2", false, false);
         String tabId3 = session.addTab(tabId0, "url3", false, false);
+        String tabId4 = session.addTab(tabId1, "url4", false, false);
+        String tabId5 = session.addTab(tabId4, "url5", false, false);
 
-        // tabId0 -> tabId3 -> tabId2 -> tabId1
+        // tabId0 -> tabId3 -> tabId2, tabId1 -> tabId4 -> tabId5
         Assert.assertEquals(session.getTabs().get(0).getId(), tabId0);
         Assert.assertEquals(session.getTabs().get(1).getId(), tabId3);
         Assert.assertEquals(session.getTabs().get(2).getId(), tabId2);
         Assert.assertEquals(session.getTabs().get(3).getId(), tabId1);
+        Assert.assertEquals(session.getTabs().get(4).getId(), tabId4);
+        Assert.assertEquals(session.getTabs().get(5).getId(), tabId5);
         Assert.assertTrue(TextUtils.isEmpty(session.getTabs().get(0).getParentId()));
         Assert.assertEquals(session.getTabs().get(1).getParentId(), tabId0);
         Assert.assertEquals(session.getTabs().get(2).getParentId(), tabId3);
         Assert.assertTrue(TextUtils.isEmpty(session.getTabs().get(3).getParentId()));
+        Assert.assertEquals(session.getTabs().get(4).getParentId(), tabId1);
+        Assert.assertEquals(session.getTabs().get(5).getParentId(), tabId4);
     }
 
     @Test
@@ -199,7 +203,7 @@ public class TabsSessionTest {
     public void testRestore() {
         session.restoreTabs(models, urls[0]);
         Assert.assertEquals(session.getTabs().size(), urls.length);
-        session.addTab(null, "url0", false, false);
+        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
     }
 
     @Implements(Tab.class)
@@ -293,7 +297,8 @@ public class TabsSessionTest {
         }
 
         @Override
-        public @SiteIdentity.SecurityState int getSecurityState() {
+        @SiteIdentity.SecurityState
+        public int getSecurityState() {
             return SiteIdentity.UNKNOWN;
         }
 
