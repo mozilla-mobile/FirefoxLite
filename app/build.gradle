@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 apply plugin: 'jacoco-android'
@@ -175,6 +177,7 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -225,6 +228,7 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
     androidTestImplementation "com.android.support.test.espresso:espresso-web:$rootProject.espressoVersion"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }
 
