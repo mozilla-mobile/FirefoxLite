@@ -16,7 +16,6 @@ import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
-import org.mozilla.focus.widget.BackKeyHandleable;
 
 public class MainMediator {
 
@@ -26,28 +25,24 @@ public class MainMediator {
     private final static String[] FRAGMENTS_SEQUENCE = {
             UrlInputFragment.FRAGMENT_TAG,
             FirstrunFragment.FRAGMENT_TAG,
-            HomeFragment.FRAGMENT_TAG,
-            BrowserFragment.FRAGMENT_TAG
+            HomeFragment.FRAGMENT_TAG
     };
 
-    // To indicate the Transaction is to hoist home fragment to user visible area.
-    // This transaction could be wiped if user try to see browser fragment again.
-    private final static String HOIST_HOME_FRAGMENT = "_hoist_home_fragment_";
-
     private final MainActivity activity;
+    private boolean showHomeOnceBeforeLeaving = true;
+    private boolean startedFromExternalApp = false;
 
     public MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
-        activity.getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
     }
 
     public void showHomeScreen() {
-        this.showHomeScreen(true);
+        this.showHomeScreen(true, false);
     }
 
-    public void showHomeScreen(boolean animated) {
+    public void showHomeScreen(boolean animated, boolean doNotAddToStack) {
         if (getTopHomeFragmet() == null) {
-            this.prepareHomeScreen(animated).commit();
+            this.prepareHomeScreen(animated, doNotAddToStack).commit();
         }
     }
 
@@ -73,27 +68,38 @@ public class MainMediator {
     }
 
     public void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
-        clearInputFragmentImmediate();
-        prepareBrowsing(url, openInNewTab).commit();
-        this.activity.sendBrowsingTelemetry();
+        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
+        findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab);
+        showBrowserScreenPost();
     }
 
     public void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
-        clearInputFragmentImmediate();
-        prepareBrowsingForRestoreTabs(tabId).commit();
+        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
+        findBrowserFragment(fragmentManager).loadTab(tabId);
+        showBrowserScreenPost();
+    }
+
+    private void showBrowserScreenPost() {
+        clearAllFragmentImmediate();
         this.activity.sendBrowsingTelemetry();
     }
 
-    private void clearInputFragmentImmediate() {
+    private void clearBackStack(FragmentManager fm) {
+        fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    private void clearAllFragmentImmediate() {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
 
         // If UrlInputFragment exists, remove it and clear its transaction from back stack
         FragmentTransaction clear = fragmentMgr.beginTransaction();
         clear = (urlInputFrg == null) ? clear : clear.remove(urlInputFrg);
+        clear = (homeFrg == null) ? clear : clear.remove(homeFrg);
         clear.commit();
 
-        fragmentMgr.popBackStackImmediate(UrlInputFragment.FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        clearBackStack(fragmentMgr);
     }
 
     public void dismissUrlInput() {
@@ -104,8 +110,18 @@ public class MainMediator {
     }
 
     public boolean handleBackKey() {
-        final Fragment topFrg = getTopFragment();
-        return (topFrg instanceof BackKeyHandleable) && ((BackKeyHandleable) topFrg).onBackPressed();
+        Fragment topFragment = getTopFragment();
+        if (topFragment == null) {
+            boolean shouldShowHome = !startedFromExternalApp && showHomeOnceBeforeLeaving;
+            showHomeOnceBeforeLeaving = false;
+            if (shouldShowHome) {
+                showHomeScreen(true, true);
+            }
+            return shouldShowHome;
+        } else {
+            showHomeOnceBeforeLeaving = true;
+            return false;
+        }
     }
 
     public void onFragmentStarted(@NonNull String tag) {
@@ -131,43 +147,8 @@ public class MainMediator {
         return null;
     }
 
-    private FragmentTransaction prepareBrowsing(@NonNull String url, boolean openInNewTab) {
-        final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentMgr.beginTransaction();
-        transaction.setCustomAnimations(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
-
-        final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
-                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-
-        if (browserFrg == null) {
-            final Fragment freshFragment = this.activity.createBrowserFragment(url);
-            transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
-        } else {
-            browserFrg.loadUrl(url, openInNewTab);
-            if (!browserFrg.isVisible()) {
-                transaction.replace(R.id.container, browserFrg, BrowserFragment.FRAGMENT_TAG);
-            } else {
-                fragmentMgr.popBackStackImmediate(HomeFragment.FRAGMENT_TAG,
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            }
-        }
-        return transaction;
-    }
-
-    private FragmentTransaction prepareBrowsingForRestoreTabs(@NonNull String tabId) {
-        final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentMgr.beginTransaction();
-
-        final BrowserFragment browserFrg = (BrowserFragment) fragmentMgr
-                .findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-
-        if (browserFrg != null) {
-            fragmentMgr.popBackStackImmediate(HomeFragment.FRAGMENT_TAG,
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-        final Fragment freshFragment = this.activity.createBrowserFragmentForTab(tabId);
-        transaction.replace(R.id.container, freshFragment, BrowserFragment.FRAGMENT_TAG);
-        return transaction;
+    private BrowserFragment findBrowserFragment(FragmentManager fm) {
+        return (BrowserFragment) fm.findFragmentById(R.id.browser);
     }
 
     private FragmentTransaction prepareFirstRun() {
@@ -183,7 +164,7 @@ public class MainMediator {
         return transaction;
     }
 
-    private FragmentTransaction prepareHomeScreen(boolean animated) {
+    private FragmentTransaction prepareHomeScreen(boolean animated, boolean doNotAddToStack) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment fragment = this.activity.createHomeFragment();
 
@@ -199,7 +180,7 @@ public class MainMediator {
                     R.anim.tab_transition_fade_out);
         }
         final Fragment topFragment = getTopFragment();
-        if ((topFragment == null) || FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
+        if (doNotAddToStack || (topFragment != null) && FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
         } else {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
@@ -226,34 +207,9 @@ public class MainMediator {
         }
     }
 
-    /**
-     * refresh HomeFragment Top sites, if HomeFragment is TopFragment
-     */
-    private void refreshHomeFragment() {
-        final Fragment topFragment = getTopHomeFragmet();
-        if (topFragment != null) {
-            topFragment.onResume();
-        }
+    public void setStartedFromExternalApp() {
+        this.startedFromExternalApp = true;
     }
-
-    private int lastBackStackEntryCount = 0;
-    public FragmentManager.OnBackStackChangedListener backStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
-        public void onBackStackChanged() {
-            final FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            if (fragmentManager != null) {
-                int currentBackStackEntryCount = fragmentManager.getBackStackEntryCount();
-                if (isPopStack(currentBackStackEntryCount)) {
-                    refreshHomeFragment();
-                }
-                lastBackStackEntryCount = currentBackStackEntryCount;
-            }
-        }
-    };
-
-    private boolean isPopStack(int BackStackEntryCount) {
-        return lastBackStackEntryCount > BackStackEntryCount;
-    }
-
     /**
      * get HomeFragment if it's Top Fragment
      */

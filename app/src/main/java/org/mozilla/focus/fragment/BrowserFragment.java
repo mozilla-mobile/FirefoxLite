@@ -105,9 +105,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private static final int ANIMATION_DURATION = 300;
 
-    private static final String ARGUMENT_URL = "url";
-    private static final String ARGUMENT_TAB_ID = "tab_id";
-
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
@@ -116,34 +113,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private DownloadCallback downloadCallback = new DownloadCallback();
 
-    public static BrowserFragment create(@NonNull String url) {
-        Bundle arguments = new Bundle();
-        arguments.putString(ARGUMENT_URL, url);
-
-        BrowserFragment fragment = new BrowserFragment();
-        fragment.setArguments(arguments);
-
-        return fragment;
-    }
-
-    public static BrowserFragment createForTabId(@NonNull String tabId) {
-        Bundle arguments = new Bundle();
-        arguments.putString(ARGUMENT_TAB_ID, tabId);
-
-        BrowserFragment fragment = new BrowserFragment();
-        fragment.setArguments(arguments);
-
-        return fragment;
-    }
-
     private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
 
     private ViewGroup webViewSlot;
     private TabsSession tabsSession;
-
-    /* If fragment exists but no WebView to use, store url here if there is any loadUrl requirement */
-    protected String pendingUrl = null;
-    protected String pendingTabId = null;
 
     private View backgroundView;
     private TransitionDrawable backgroundTransition;
@@ -380,30 +353,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
     }
 
-    public String getInitialUrl() {
-        return getArguments().getString(ARGUMENT_URL);
-    }
-
-    public String getInitialTabId() {
-        return getArguments().getString(ARGUMENT_TAB_ID);
-    }
-
     private void updateURL(final String url) {
         if (UrlUtils.isInternalErrorURL(url)) {
             return;
         }
 
         urlView.setText(UrlUtils.stripUserInfo(url));
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            // save the link until we really have view to open
-            pendingUrl = getInitialUrl();
-            pendingTabId = getInitialTabId();
-        }
     }
 
     @Override
@@ -469,16 +424,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         super.onViewCreated(container, savedInstanceState);
 
         // restore WebView state
-        if (savedInstanceState == null) {
-            if (!TextUtils.isEmpty(pendingUrl)) {
-                loadUrl(pendingUrl, true);
-                pendingUrl = null;
-            }
-            if (!TextUtils.isEmpty(pendingTabId)) {
-                tabsSession.switchToTab(pendingTabId);
-                pendingTabId = null;
-            }
-        } else {
+        if (savedInstanceState != null) {
             // Fragment was destroyed
             // FIXME: Obviously, only restore current tab is not enough
             if (tabsSession.getFocusTab() != null) {
@@ -612,7 +558,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onDestroy() {
-        tabsSession.destroy();
         tabsSession.removeTabsViewListener(this.tabsContentListener);
         tabsSession.removeTabsChromeListener(this.tabsContentListener);
         super.onDestroy();
@@ -857,38 +802,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         geolocationCallback = null;
     }
 
-    private boolean isStartedFromExternalApp() {
-        final Activity activity = getActivity();
-        if (activity == null) {
-            return false;
-        }
-
-        // No SafeIntent needed here because intent.getAction() is safe (SafeIntent simply calls intent.getAction()
-        // without any wrapping):
-        final Intent intent = activity.getIntent();
-        boolean isFromInternal = intent != null && intent.getBooleanExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, false);
-        return intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) && !isFromInternal;
-    }
-
     public boolean onBackPressed() {
-        if (canGoBack()) {
+        boolean ret = canGoBack();
+        if (ret) {
             // Go back in web history
             goBack();
-        } else {
-            if (isStartedFromExternalApp()) {
-                // We have been started from a VIEW intent. Go back to the previous app immediately (No erase).
-                // However we need to finish the current session so that the custom tab config gets
-                // correctly cleared:
-                // FIXME: does Zerda need this?
-                BrowsingSession.getInstance().clearCustomTabConfig();
-                getActivity().finish();
-            } else {
-                // let parent to decide for this Fragment
-                return false;
-            }
         }
-
-        return true;
+        return ret;
     }
 
     public void setBlockingEnabled(boolean enabled) {
@@ -914,6 +834,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         } else if (AppConstants.isDevBuild()) {
             // throw exception to highlight this issue, except release build.
             throw new RuntimeException("trying to open a invalid url: " + url);
+        }
+    }
+
+    public void loadTab(final String tabId) {
+        if (!TextUtils.isEmpty(tabId)) {
+            tabsSession.switchToTab(tabId);
         }
     }
 

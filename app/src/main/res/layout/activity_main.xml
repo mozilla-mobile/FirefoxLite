@@ -5,13 +5,15 @@
 <!-- Ignore MergeRootFrame: we need a single container View where we can attach fragments, so
      we definitely need to keep this FrameLayout (i.e. we can't <merge> here). -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MergeRootFrame">
-
+    <fragment android:name="org.mozilla.focus.fragment.BrowserFragment"
+        android:id="@+id/browser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"

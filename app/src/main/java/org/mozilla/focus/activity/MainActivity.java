@@ -84,15 +84,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private MainMediator mediator;
     private boolean safeForFragmentTransactions = false;
-    private boolean hasPendingScreenCaptureTask = false;
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
     private static boolean sIsNewCreated = true;
 
     private TabsSession tabsSession;
-
-    private static final int ACTION_CAPTURE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +107,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+                mediator.setStartedFromExternalApp();
                 final String url = intent.getDataString();
 
                 BrowsingSession.getInstance().loadCustomTabConfig(this, intent);
@@ -567,6 +565,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    @Override
+    public void onDestroy() {
+        tabsSession.destroy();
+        super.onDestroy();
+    }
+
     private void onPreferenceClicked() {
         openPreferences();
     }
@@ -595,7 +599,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private BrowserFragment getBrowserFragment() {
-        return (BrowserFragment) getSupportFragmentManager().findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
+        return (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
     }
 
     private void onBackClicked(final BrowserFragment browserFragment) {
@@ -676,6 +680,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!safeForFragmentTransactions) {
             return;
         }
+        // BrowserFragment is at top
+        if (this.mediator.getTopHomeFragmet() == null && getVisibleBrowserFragment().onBackPressed()) {
+            return;
+        }
         if (this.mediator.handleBackKey()) {
             return;
         }
@@ -713,7 +721,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if (payload != null && payload instanceof Boolean) {
                     animated = (Boolean) payload;
                 }
-                this.mediator.showHomeScreen(animated);
+                this.mediator.showHomeScreen(animated, false);
                 break;
             case SHOW_MENU:
                 this.showMenu();
@@ -760,16 +768,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public FirstrunFragment createFirstRunFragment() {
         return FirstrunFragment.create();
-    }
-
-    public BrowserFragment createBrowserFragment(@NonNull String url) {
-        BrowserFragment fragment = BrowserFragment.create(url);
-        return fragment;
-    }
-
-    public BrowserFragment createBrowserFragmentForTab(@NonNull String tabId) {
-        BrowserFragment fragment = BrowserFragment.createForTabId(tabId);
-        return fragment;
     }
 
     public UrlInputFragment createUrlInputFragment(@Nullable String url) {

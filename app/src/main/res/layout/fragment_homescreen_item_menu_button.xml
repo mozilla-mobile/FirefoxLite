@@ -9,6 +9,7 @@
     android:layout_gravity="center">
 
     <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/home_screen_menu_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"
