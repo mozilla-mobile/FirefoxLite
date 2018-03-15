@@ -139,25 +139,69 @@ public class TabsSession {
     }
 
     /**
-     * To remove a tab from list.
+     * To drop a tab from list, it will not invoke callback onTabHoist, and only change focus to nearest tab.
      *
-     * @param id the id of tab to be removed.
+     * @param id the id of tab to be dropped
      */
-    public void removeTab(final String id) {
+    public void dropTab(@NonNull final String id) {
+        this.removeTabInternal(id, true);
+    }
+
+    /**
+     * To close a tab by remove it from list and update tab focus.
+     *
+     * @param id the id of tab to be closed.
+     */
+    public void closeTab(@NonNull final String id) {
+        this.removeTabInternal(id, false);
+    }
+
+    private void removeTabInternal(final String id, final boolean isDrop) {
         final Tab tab = getTab(id);
         if (tab == null) {
             return;
         }
 
+        final int oldIndex = getTabIndex(id);
         tabs.remove(tab);
         tab.destroy();
 
-        if (hasTabs()) {
-            notifyTabHoisted(tab, TabsChromeListener.FACTOR_TAB_REMOVED);
+        // Update child's parent id to its ancestor
+        // TODO: in our current design, the parent of a tab are always locate at left(index -1).
+        // hence no need to loop whole list.
+        for (final Tab t : tabs) {
+            if (TextUtils.equals(t.getParentId(), tab.getId())) {
+                t.setParentId(tab.getParentId());
+            }
+        }
+
+        // if the removing tab was focused, we need to update focus
+        if (tab == focusRef.get()) {
+            if (isDrop) {
+                final int nextIdx = Math.min(oldIndex, tabs.size() - 1);
+                focusRef = (nextIdx == -1)
+                        ? new WeakReference<Tab>(null)
+                        : new WeakReference<>(tabs.get(nextIdx));
+            } else {
+                updateFocusOnClosing(tab);
+            }
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
             l.onTabCountChanged(tabs.size());
+        }
+    }
+
+    private void updateFocusOnClosing(final Tab removedTab) {
+        if (TextUtils.isEmpty(removedTab.getParentId())) {
+            focusRef.clear();
+            notifyTabHoisted(null, TabsChromeListener.FACTOR_NO_FOCUS);
+        } else if (TextUtils.equals(removedTab.getParentId(), Tab.ID_EXTERNAL)) {
+            focusRef.clear();
+            notifyTabHoisted(null, TabsChromeListener.FACTOR_BACK_EXTERNAL);
+        } else {
+            focusRef = new WeakReference<>(getTab(removedTab.getParentId()));
+            notifyTabHoisted(focusRef.get(), TabsChromeListener.FACTOR_TAB_REMOVED);
         }
     }
 
@@ -460,7 +504,7 @@ public class TabsSession {
                 for (int i = 0; i < tabs.size(); i++) {
                     final Tab tab = tabs.get(i);
                     if (tab.getTabView() == webView) {
-                        removeTab(tab.getId());
+                        closeTab(tab.getId());
                     }
                 }
             }

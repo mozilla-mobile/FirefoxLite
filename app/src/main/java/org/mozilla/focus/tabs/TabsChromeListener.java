@@ -28,8 +28,15 @@ public interface TabsChromeListener {
     int FACTOR_TAB_ADDED = 2;
     int FACTOR_TAB_REMOVED = 3;
     int FACTOR_TAB_SWITCHED = 4;
+    int FACTOR_NO_FOCUS = 5;
+    int FACTOR_BACK_EXTERNAL = 6;
 
-    @IntDef({FACTOR_UNKNOWN, FACTOR_TAB_ADDED, FACTOR_TAB_REMOVED, FACTOR_TAB_SWITCHED})
+    @IntDef({FACTOR_UNKNOWN,
+            FACTOR_TAB_ADDED,
+            FACTOR_TAB_REMOVED,
+            FACTOR_TAB_SWITCHED,
+            FACTOR_NO_FOCUS,
+            FACTOR_BACK_EXTERNAL})
     @interface Factor {
     }
 
@@ -55,7 +62,7 @@ public interface TabsChromeListener {
      * @param tab    The tab becomes current tab
      * @param factor the potential factor which cause this hoist-event
      */
-    void onTabHoist(@NonNull Tab tab, @Factor int factor);
+    void onTabHoist(@Nullable Tab tab, @Factor int factor);
 
     /**
      * Notify the host application the total tab counts changed.

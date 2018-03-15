@@ -261,6 +261,115 @@ public class TabsSessionTest {
         Assert.assertEquals(session.getFocusTab().getId(), urls[2]);
     }
 
+    /**
+     * If there is no any focus, remove tab won't effect focus
+     */
+    @Test
+    public void testCloseTab1() {
+        session.restoreTabs(models, null);
+        Assert.assertNull(session.getFocusTab());
+        session.closeTab(models.get(2).getId());
+        Assert.assertNull(session.getFocusTab());
+        session.closeTab(models.get(0).getId());
+        Assert.assertNull(session.getFocusTab());
+    }
+
+    /**
+     * If there is no any focus, remove tab won't effect focus
+     */
+    @Test
+    public void testCloseTab2() {
+        final String tabId0 = session.addTab(null, "url", false, true);
+        final String tabId1 = session.addTab(null, "url", false, true);
+        final String tabId2 = session.addTab(tabId1, "url", false, true);
+        final String tabId3 = session.addTab(tabId2, "url", false, true);
+        // open from external
+        final String tabId4 = session.addTab(null, "url", true, false);
+        final String tabId5 = session.addTab(tabId4, "url", false, true);
+        final String tabId6 = session.addTab(tabId5, "url", false, true);
+        final String tabId7 = session.addTab(null, "url", true, false);
+        final String tabId8 = session.addTab(tabId7, "url", false, true);
+        final String tabId9 = session.addTab(tabId8, "url", false, true);
+
+        // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
+        session.switchToTab(tabId6);
+        session.closeTab(tabId5);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        session.closeTab(tabId6);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId4);
+        session.closeTab(tabId4);
+        Assert.assertNull(session.getFocusTab());
+
+        session.switchToTab(tabId3);
+        session.closeTab(tabId3);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId2);
+        session.closeTab(tabId2);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+
+        session.switchToTab(tabId7);
+        session.closeTab(tabId7);
+        Assert.assertNull(session.getFocusTab());
+        session.switchToTab(tabId8);
+        session.closeTab(tabId8);
+        Assert.assertNull(session.getFocusTab());
+        session.switchToTab(tabId9);
+        session.closeTab(tabId9);
+        Assert.assertNull(session.getFocusTab());
+    }
+
+    /**
+     * If there is no any focus, drop tab won't effect focus
+     */
+    @Test
+    public void testDropTab1() {
+        session.restoreTabs(models, null);
+        Assert.assertNull(session.getFocusTab());
+        session.dropTab(models.get(2).getId());
+        Assert.assertNull(session.getFocusTab());
+        session.dropTab(models.get(0).getId());
+        Assert.assertNull(session.getFocusTab());
+    }
+
+    @Test
+    public void testDropTab2() {
+        final String tabId0 = session.addTab(null, "url", false, true);
+        final String tabId1 = session.addTab(null, "url", false, true);
+        final String tabId2 = session.addTab(tabId1, "url", false, true);
+        final String tabId3 = session.addTab(tabId2, "url", false, true);
+        // open from external
+        final String tabId4 = session.addTab(null, "url", true, false);
+        final String tabId5 = session.addTab(tabId4, "url", false, true);
+        final String tabId6 = session.addTab(tabId5, "url", false, true);
+        final String tabId7 = session.addTab(null, "url", true, false);
+        final String tabId8 = session.addTab(tabId7, "url", false, true);
+        final String tabId9 = session.addTab(tabId8, "url", false, true);
+
+        // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
+        Assert.assertEquals(session.getFocusTab().getId(), tabId9);
+
+        session.switchToTab(tabId6);
+        session.dropTab(tabId8);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        session.dropTab(tabId9);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        session.dropTab(tabId7);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        session.dropTab(tabId3);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        session.dropTab(tabId0);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        session.dropTab(tabId5);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        session.dropTab(tabId6);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId4);
+        session.dropTab(tabId4);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId2);
+        session.dropTab(tabId2);
+        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+        session.dropTab(tabId1);
+        Assert.assertNull(session.getFocusTab());
+    }
+
     @Implements(Tab.class)
     public static class ShadowTab {
 
