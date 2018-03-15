@@ -160,7 +160,7 @@ public class Tab {
         }
     }
 
-    /* package */ void setParentId(@NonNull String id) {
+    /* package */ void setParentId(@Nullable String id) {
         this.tabModel.setParentId(id);
     }
 
