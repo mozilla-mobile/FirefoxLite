@@ -206,6 +206,21 @@ public class TabsSessionTest {
         Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
     }
 
+    @Test
+    public void testSwitch() {
+        session.restoreTabs(models, urls[0]);
+        session.switchToTab("not-exist");
+        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
+
+        session.switchToTab(urls[0]);
+        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
+        session.switchToTab(urls[3]);
+        Assert.assertEquals(session.getFocusTab().getId(), urls[3]);
+
+        session.switchToTab(urls[2]);
+        Assert.assertEquals(session.getFocusTab().getId(), urls[2]);
+    }
+
     @Implements(Tab.class)
     public static class ShadowTab {
 
