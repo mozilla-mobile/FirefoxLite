@@ -19,7 +19,7 @@ import static android.os.AsyncTask.SERIAL_EXECUTOR;
 
 public class TabModelStore {
 
-    public static final String TAB_WEB_VIEW_STATE_FOLDER_NAME = "tabs_cache";
+    private static final String TAB_WEB_VIEW_STATE_FOLDER_NAME = "tabs_cache";
 
     private static volatile TabModelStore instance;
     private TabsDatabase tabsDatabase;
@@ -81,18 +81,22 @@ public class TabModelStore {
             if (tabsDatabase != null) {
                 List<TabModel> tabModelList = tabsDatabase.tabDao().getTabs();
                 Context context = contextRef.get();
-                if (context != null) {
-                    File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
-                    for (TabModel tabModel : tabModelList) {
-                        if (tabModel != null) {
-                            tabModel.setWebViewState(FileUtils.readBundleFromStorage(cacheDir, tabModel.getId()));
-                        }
-                    }
+                if (context != null && tabModelList != null) {
+                    restoreWebViewState(context, tabModelList);
                 }
                 return tabModelList;
             }
 
             return null;
+        }
+
+        private void restoreWebViewState(@NonNull Context context, @NonNull List<TabModel> tabModelList) {
+            File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
+            for (TabModel tabModel : tabModelList) {
+                if (tabModel != null) {
+                    tabModel.setWebViewState(FileUtils.readBundleFromStorage(cacheDir, tabModel.getId()));
+                }
+            }
         }
 
         @Override
@@ -127,12 +131,7 @@ public class TabModelStore {
                 if (tabModelList != null) {
                     Context context = contextRef.get();
                     if (context != null) {
-                        File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
-                        for (TabModel tabModel : tabModelList) {
-                            if (tabModel != null && tabModel.getWebViewState() != null) {
-                                FileUtils.writeBundleToStorage(cacheDir, tabModel.getId(), tabModel.getWebViewState());
-                            }
-                        }
+                        saveWebViewState(context, tabModelList);
                     }
 
                     tabsDatabase.tabDao().insertTabs(tabModelList);
@@ -140,6 +139,15 @@ public class TabModelStore {
             }
 
             return null;
+        }
+
+        private void saveWebViewState(@NonNull Context context, @NonNull TabModel[] tabModelList) {
+            File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
+            for (TabModel tabModel : tabModelList) {
+                if (tabModel != null && tabModel.getWebViewState() != null) {
+                    FileUtils.writeBundleToStorage(cacheDir, tabModel.getId(), tabModel.getWebViewState());
+                }
+            }
         }
 
         @Override
