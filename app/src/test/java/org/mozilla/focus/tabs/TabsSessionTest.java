@@ -146,6 +146,46 @@ public class TabsSessionTest {
     }
 
     @Test
+    public void testAddTab3A() {
+        final String tabId0 = session.addTab(null, "url", false, true);
+        final String tabId1 = session.addTab(null, "url", false, true);
+        final String tabId2 = session.addTab(tabId1, "url", false, true);
+        final String tabId3 = session.addTab(tabId2, "url", false, true);
+        // from external
+        final String tabId4 = session.addTab(null, "url", true, false);
+        final String tabId5 = session.addTab(tabId4, "url", false, true);
+        final String tabId6 = session.addTab(tabId5, "url", false, true);
+        final String tabId7 = session.addTab(null, "url", true, false);
+        final String tabId8 = session.addTab(tabId7, "url", false, true);
+        final String tabId9 = session.addTab(tabId8, "url", false, true);
+
+        // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
+        final List<Tab> tabs = session.getTabs();
+        Assert.assertEquals(session.getFocusTab().getId(), tabId9);
+        Assert.assertEquals(tabs.get(0).getId(), tabId0);
+        Assert.assertEquals(tabs.get(1).getId(), tabId1);
+        Assert.assertEquals(tabs.get(2).getId(), tabId2);
+        Assert.assertEquals(tabs.get(3).getId(), tabId3);
+        Assert.assertEquals(tabs.get(4).getId(), tabId4);
+        Assert.assertEquals(tabs.get(5).getId(), tabId5);
+        Assert.assertEquals(tabs.get(6).getId(), tabId6);
+        Assert.assertEquals(tabs.get(7).getId(), tabId7);
+        Assert.assertEquals(tabs.get(8).getId(), tabId8);
+        Assert.assertEquals(tabs.get(9).getId(), tabId9);
+
+        Assert.assertTrue(TextUtils.isEmpty(tabs.get(0).getParentId()));
+        Assert.assertTrue(TextUtils.isEmpty(tabs.get(1).getParentId()));
+        Assert.assertEquals(tabs.get(2).getParentId(), tabId1);
+        Assert.assertEquals(tabs.get(3).getParentId(), tabId2);
+        Assert.assertEquals(tabs.get(4).getParentId(), Tab.ID_EXTERNAL);
+        Assert.assertEquals(tabs.get(5).getParentId(), tabId4);
+        Assert.assertEquals(tabs.get(6).getParentId(), tabId5);
+        Assert.assertEquals(tabs.get(7).getParentId(), Tab.ID_EXTERNAL);
+        Assert.assertEquals(tabs.get(8).getParentId(), tabId7);
+        Assert.assertEquals(tabs.get(9).getParentId(), tabId8);
+    }
+
+    @Test
     public void testAddTab4() {
         session.restoreTabs(models, urls[0]);
         Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
