@@ -97,7 +97,8 @@ public class Tab {
         return null;
     }
 
-    public @SiteIdentity.SecurityState int getSecurityState() {
+    @SiteIdentity.SecurityState
+    public int getSecurityState() {
         if (tabView == null) {
             return SiteIdentity.UNKNOWN;
         }
@@ -126,11 +127,12 @@ public class Tab {
      * To detach @see{android.view.View} of this tab, if any, is detached from its parent.
      */
     public void detach() {
-        if (tabView != null) {
-            if (tabView.getView().getParent() != null) {
-                ViewGroup parent = (ViewGroup) tabView.getView().getParent();
-                parent.removeView(tabView.getView());
-            }
+        final boolean hasParentView = (tabView != null)
+                && (tabView.getView() != null)
+                && (tabView.getView().getParent() != null);
+        if (hasParentView) {
+            ViewGroup parent = (ViewGroup) tabView.getView().getParent();
+            parent.removeView(tabView.getView());
         }
     }
 
