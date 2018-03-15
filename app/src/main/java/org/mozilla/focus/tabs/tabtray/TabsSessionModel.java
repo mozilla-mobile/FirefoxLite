@@ -68,7 +68,7 @@ class TabsSessionModel implements TabTrayContract.Model {
     @Override
     public void removeTab(int tabPosition) {
         final List<Tab> tabs = tabsSession.getTabs();
-        tabsSession.removeTab(tabs.get(tabPosition).getId());
+        tabsSession.dropTab(tabs.get(tabPosition).getId());
     }
 
     private static class TabsChromeAdapter implements TabsChromeListener {
