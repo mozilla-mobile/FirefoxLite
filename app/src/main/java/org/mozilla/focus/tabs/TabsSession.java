@@ -337,7 +337,7 @@ public class TabsSession {
     }
 
     private void insertTab(final int parentIdx, @NonNull final Tab tab) {
-        final Tab parentTab = (parentIdx >= 0 && parentIdx < tabs.size() - 1)
+        final Tab parentTab = (parentIdx >= 0 && parentIdx < tabs.size())
                 ? tabs.get(parentIdx)
                 : null;
         if (parentTab == null) {
