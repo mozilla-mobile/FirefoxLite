@@ -23,6 +23,7 @@ import android.webkit.WebView;
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.web.DownloadCallback;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,11 +42,7 @@ public class TabsSession {
 
     private Notifier notifier;
 
-    /**
-     * Index to refer a tab which is 'focused' by this session. When this index be changed, session
-     * should hoist focused tab as well.
-     */
-    private int focusIdx = -1;
+    private WeakReference<Tab> focusRef = new WeakReference<>(null);
 
     private List<TabsViewListener> tabsViewListeners = new ArrayList<>();
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
@@ -94,8 +91,7 @@ public class TabsSession {
         }
 
         if (tabs.size() > 0 && tabs.size() == models.size()) {
-            int index = getTabIndex(focusTabId);
-            focusIdx = (index != -1) ? index : 0;
+            focusRef = new WeakReference<>(getTab(focusTabId));
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -144,19 +140,16 @@ public class TabsSession {
      * @param id the id of tab to be removed.
      */
     public void removeTab(final String id) {
-        final int idx = getTabIndex(id);
-        final Tab tab = tabs.get(idx);
+        final Tab tab = getTab(id);
         if (tab == null) {
             return;
         }
 
-        tabs.remove(idx);
+        tabs.remove(tab);
         tab.destroy();
 
-        // removed one tab, now idx should refer to next one
-        focusIdx = idx >= tabs.size() ? tabs.size() - 1 : idx;
         if (hasTabs()) {
-            notifyTabHoisted(tabs.get(focusIdx), TabsChromeListener.FACTOR_TAB_REMOVED);
+            notifyTabHoisted(tab, TabsChromeListener.FACTOR_TAB_REMOVED);
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -170,13 +163,12 @@ public class TabsSession {
      * @param id the id of tab to be hoisted.
      */
     public void switchToTab(final String id) {
-        final int idx = getTabIndex(id);
-        if (idx < 0 || idx > tabs.size() - 1) {
-            return;
+        final Tab nextTab = getTab(id);
+        if (nextTab != null) {
+            focusRef = new WeakReference<>(nextTab);
         }
 
-        focusIdx = idx;
-        notifyTabHoisted(tabs.get(focusIdx), TabsChromeListener.FACTOR_TAB_SWITCHED);
+        notifyTabHoisted(nextTab, TabsChromeListener.FACTOR_TAB_SWITCHED);
     }
 
     /**
@@ -193,8 +185,9 @@ public class TabsSession {
      *
      * @return current focused tab. Return null if there is not any tab.
      */
+    @Nullable
     public Tab getFocusTab() {
-        return (focusIdx >= 0 && focusIdx < tabs.size()) ? tabs.get(focusIdx) : null;
+        return focusRef.get();
     }
 
     /**
@@ -305,7 +298,7 @@ public class TabsSession {
             insertTab(parentIndex, tab);
         }
 
-        focusIdx = (hoist || fromExternal) ? getTabIndex(tab.getId()) : focusIdx;
+        focusRef = (hoist || fromExternal) ? new WeakReference<>(tab) : focusRef;
 
         if (!TextUtils.isEmpty(url)) {
             tab.createView(activity).loadUrl(url);
