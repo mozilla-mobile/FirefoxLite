@@ -377,7 +377,7 @@ public class TabsSessionTest {
         Tab realTab;
 
         @Implementation
-        public TabView createView(@NonNull final Activity activity) {
+        public TabView initializeView(@NonNull final Activity activity) {
             TabView tv = ReflectionHelpers.<TabView>getField(this.realTab, "tabView");
             if (tv == null) {
                 tv = new DefaultTabView();

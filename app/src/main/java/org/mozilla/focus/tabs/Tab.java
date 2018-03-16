@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -181,7 +182,8 @@ public class Tab {
         tabModel.setFavicon(icon);
     }
 
-    /* package */ TabView createView(@NonNull final Activity activity) {
+    /* package */ TabView initializeView(@NonNull final Activity activity) {
+        final String url = this.getUrl(); // fallback for restoring tab
         if (tabView == null) {
             // FIXME: this casting does not make enough sense. TabView and View is totally different
             tabView = (TabView) WebViewProvider.create(activity, null);
@@ -192,6 +194,8 @@ public class Tab {
 
             if (tabModel.getWebViewState() != null) {
                 tabView.restoreViewState(tabModel.getWebViewState());
+            } else if (!TextUtils.isEmpty(url)) {
+                tabView.loadUrl(url);
             }
         }
 
