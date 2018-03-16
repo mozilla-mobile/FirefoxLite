@@ -355,7 +355,7 @@ public class TabsSession {
         focusRef = (toFocus || fromExternal) ? new WeakReference<>(tab) : focusRef;
 
         if (!TextUtils.isEmpty(url)) {
-            tab.createView(activity).loadUrl(url);
+            tab.initializeView(activity).loadUrl(url);
         }
 
         if (toFocus || fromExternal) {
@@ -634,8 +634,7 @@ public class TabsSession {
         private void focusTab(final Tab tab, @TabsChromeListener.Factor final int factor) {
 
             if (tab != null && tab.getTabView() == null) {
-                String url = tab.getUrl();
-                tab.createView(this.activity).loadUrl(url);
+                tab.initializeView(this.activity);
             }
 
             for (final TabsChromeListener l : this.chromeListeners) {
