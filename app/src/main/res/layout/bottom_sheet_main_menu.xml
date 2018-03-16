@@ -181,7 +181,7 @@
 
             <View
                 style="@style/MenuButtonIcon"
-                android:background="@drawable/menu_home"/>
+                android:background="@drawable/action_add_to_home"/>
         </RelativeLayout>
 
         <RelativeLayout

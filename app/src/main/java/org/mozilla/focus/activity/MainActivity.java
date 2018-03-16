@@ -366,6 +366,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         refreshIcon = menu.findViewById(R.id.action_refresh);
         stopIcon = menu.findViewById(R.id.action_stop);
         pinShortcut = menu.findViewById(R.id.action_pin_shortcut);
+        final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
+        if (!requestPinShortcutSupported) {
+            pinShortcut.setVisibility(View.GONE);
+        }
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
     }
@@ -393,8 +397,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
         setEnable(shareButton, browserFragment != null);
-        final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
-        setEnable(pinShortcut, browserFragment != null && requestPinShortcutSupported);
+        setEnable(pinShortcut, browserFragment != null);
     }
 
     private void showTabTray() {
