@@ -30,6 +30,7 @@ import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
+import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.Download;
@@ -194,10 +195,10 @@ public class WebContextMenu {
         // Try to find parent tab for new tab
         for (final Tab tab : tabs) {
             if (tab.getTabView() == source) {
-                session.addTab(tab.getId(), url, false, false);
+                session.addTab(url, TabUtil.argument(tab.getId(), false, false));
                 return;
             }
         }
-        session.addTab(null, url, false, false);
+        session.addTab(url, TabUtil.argument(null, false, false));
     }
 }

@@ -74,6 +74,7 @@ import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.TabsViewListener;
+import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.ColorUtils;
@@ -897,13 +898,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         updateURL(url);
         if (UrlUtils.isUrl(url)) {
             if (openNewTab) {
-                tabsSession.addTab(null, url, false, true);
+                tabsSession.addTab(url, TabUtil.argument(null, false, true));
             } else {
                 Tab currentTab = tabsSession.getFocusTab();
                 if (currentTab != null) {
                     tabsSession.getFocusTab().getTabView().loadUrl(url);
                 } else {
-                    tabsSession.addTab(null, url, false, true);
+                    tabsSession.addTab(url, TabUtil.argument(null, false, true));
                 }
             }
         } else if (AppConstants.isDevBuild()) {
