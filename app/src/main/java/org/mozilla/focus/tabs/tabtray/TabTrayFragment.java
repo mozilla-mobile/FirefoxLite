@@ -140,6 +140,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void onStop() {
         super.onStop();
         tabsSession.removeTabsViewListener(onTabModelChangedListener);
+        tabsSession.removeTabsChromeListener(onTabModelChangedListener);
     }
 
     @Nullable
@@ -209,7 +210,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         if (tabs.isEmpty()) {
             notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME, false);
-            uiHandler.post(dismissRunnable);
+            postOnNextFrame(dismissRunnable);
         }
     }
 
@@ -226,7 +227,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void tabSwitched(int tabPosition) {
-        uiHandler.post(dismissRunnable);
+        postOnNextFrame(dismissRunnable);
     }
 
     @Override
@@ -412,7 +413,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private void onNewTabClicked() {
         notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME, false);
-        uiHandler.post(dismissRunnable);
+        postOnNextFrame(dismissRunnable);
     }
 
     private void initWindowBackground(Context context) {
@@ -511,6 +512,15 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             // tray is fully expanded (slideOffset >= 1). See prepareExpandAnimation()
             logoMan.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void postOnNextFrame(final Runnable runnable) {
+        uiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                uiHandler.post(runnable);
+            }
+        });
     }
 
     private static class SlideAnimationCoordinator {
@@ -646,7 +656,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         @Override
-        public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
+        public void onTabHoist(@Nullable Tab tab, @Factor int factor) {
         }
 
         @Override

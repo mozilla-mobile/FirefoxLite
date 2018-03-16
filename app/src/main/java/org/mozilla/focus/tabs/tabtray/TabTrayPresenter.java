@@ -28,17 +28,8 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void tabClicked(final int tabPosition) {
-        if (model.getCurrentTabPosition() != tabPosition) {
-            model.switchTab(tabPosition, new Runnable() {
-                @Override
-                public void run() {
-                    view.tabSwitched(tabPosition);
-                }
-            });
-
-        } else {
-            view.tabSwitched(tabPosition);
-        }
+        model.switchTab(tabPosition);
+        view.tabSwitched(tabPosition);
     }
 
     @Override
@@ -56,7 +47,7 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
         view.updateData(newTabs);
 
         if (!newTabs.isEmpty()) {
-            model.switchTab(newFocusTab, null);
+            model.switchTab(newFocusTab);
         }
     }
 }
