@@ -551,6 +551,11 @@ public class TabsSessionTest {
         }
 
         @Override
+        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
+
+        }
+
+        @Override
         public void onTabCountChanged(int count) {
 
         }

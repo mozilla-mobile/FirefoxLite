@@ -1090,6 +1090,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
+        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
+        }
+
+        @Override
         public void onTabStarted(@NonNull Tab tab) {
             historyInserter.onTabStarted(tab);
 
