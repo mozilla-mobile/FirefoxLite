@@ -230,12 +230,26 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, int nextFocusPos) {
+    public void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, final int nextFocusPos) {
         adapter.notifyItemRemoved(removePos);
-        adapter.notifyItemChanged(modifiedFocusPos);
 
-        adapter.setFocusedTab(nextFocusPos);
-        adapter.notifyItemChanged(nextFocusPos);
+        uiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+                if (animator == null) {
+                    return;
+                }
+
+                animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
+                    @Override
+                    public void onAnimationsFinished() {
+                        adapter.setFocusedTab(nextFocusPos);
+                        adapter.notifyItemChanged(nextFocusPos);
+                    }
+                });
+            }
+        });
     }
 
     private void setupBottomSheetCallback() {
