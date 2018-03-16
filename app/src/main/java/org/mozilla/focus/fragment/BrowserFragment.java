@@ -1076,7 +1076,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private ValueAnimator tabTransitionAnimator;
 
         @Override
-        public void onTabHoist(@Nullable final Tab tab, @Factor int factor) {
+        public void onFocusChanged(@Nullable final Tab tab, @Factor int factor) {
             if (tab == null) {
                 if (factor == FACTOR_NO_FOCUS) {
                     notifyParent(FragmentListener.TYPE.SHOW_HOME, null);

@@ -656,7 +656,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         @Override
-        public void onTabHoist(@Nullable Tab tab, @Factor int factor) {
+        public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
         }
 
         @Override

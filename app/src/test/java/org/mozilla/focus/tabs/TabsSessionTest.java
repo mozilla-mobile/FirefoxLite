@@ -202,39 +202,39 @@ public class TabsSessionTest {
 
     @Test
     public void testAddTab5() {
-        // Add a tab from internal and hoist it. onTabHoist should be invoked once
+        // Add a tab from internal and focus it. onFocusChanged should be invoked once
         final TabsChromeListener spy0 = spy(new DefaultChromeListener() {
-            public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
+            public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
                 Assert.assertEquals(tab.getUrl(), "url0");
             }
         });
         session.addTabsChromeListener(spy0);
         final String tabId0 = session.addTab(null, "url0", false, true);
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        verify(spy0, times(1)).onTabHoist(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
+        verify(spy0, times(1)).onFocusChanged(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
         Assert.assertEquals(session.getFocusTab().getId(), tabId0);
         session.removeTabsChromeListener(spy0);
 
-        // Add a tab from external. onTabHoist should be invoked
+        // Add a tab from external. onFocusChanged should be invoked
         final TabsChromeListener spy1 = spy(new DefaultChromeListener() {
-            public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
+            public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
                 Assert.assertEquals(tab.getUrl(), "url1");
             }
         });
         session.addTabsChromeListener(spy1);
         final String tabId1 = session.addTab(null, "url1", true, false);
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        verify(spy1, times(1)).onTabHoist(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
+        verify(spy1, times(1)).onFocusChanged(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
         Assert.assertEquals(session.getFocusTab().getId(), tabId1);
         session.removeTabsChromeListener(spy1);
 
-        // Add a tab from internal, but don't hoist it.
-        // Add a tab from external. onTabHoist should be invoked
+        // Add a tab from internal, but don't focus it.
+        // Add a tab from external. onFocusChanged should be invoked
         final TabsChromeListener spy2 = spy(TabsChromeListener.class);
         session.addTabsChromeListener(spy2);
         session.addTab(null, "url2", false, false);
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        verify(spy2, times(0)).onTabHoist(any(Tab.class), anyInt());
+        verify(spy2, times(0)).onFocusChanged(any(Tab.class), anyInt());
         Assert.assertEquals(session.getFocusTab().getId(), tabId1); // focus should not be changed
         session.removeTabsChromeListener(spy2);
     }
@@ -545,7 +545,7 @@ public class TabsSessionTest {
         }
 
         @Override
-        public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
+        public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
 
         }
 

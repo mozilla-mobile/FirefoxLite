@@ -75,8 +75,8 @@ public class TabsSession {
     }
 
     /**
-     * To append tabs from a list of TabModel. If tabs is empty before this call, the first appended
-     * tab will be hoisted, otherwise no tab will be hoisted.
+     * To append tabs from a list of TabModel. If the specified focusTabId exists, the tab associate
+     * to the id will be focused, otherwise no tab will be focused.
      * <p>
      * This is asynchronous call.
      * TODO: make it asynchronous
@@ -122,24 +122,24 @@ public class TabsSession {
      * @param parentId     id of parent tab. If it is null, the tab will be append to tail
      * @param url          initial url for this tab
      * @param fromExternal is this request from external app
-     * @param hoist        true to hoist this tab after creation
+     * @param toFocus      true to focus this tab after creation
      * @return id for created tab
      */
     @Nullable
     public String addTab(@Nullable final String parentId,
                          @NonNull final String url,
                          boolean fromExternal,
-                         boolean hoist) {
+                         boolean toFocus) {
 
         if (TextUtils.isEmpty(url)) {
             return null;
         }
 
-        return addTabInternal(parentId, url, fromExternal, hoist);
+        return addTabInternal(parentId, url, fromExternal, toFocus);
     }
 
     /**
-     * To drop a tab from list, it will not invoke callback onTabHoist, and only change focus to nearest tab.
+     * To drop a tab from list, it will not invoke callback onFocusChanged, and only change focus to nearest tab.
      *
      * @param id the id of tab to be dropped
      */
@@ -195,20 +195,20 @@ public class TabsSession {
     private void updateFocusOnClosing(final Tab removedTab) {
         if (TextUtils.isEmpty(removedTab.getParentId())) {
             focusRef.clear();
-            notifyTabHoisted(null, TabsChromeListener.FACTOR_NO_FOCUS);
+            notifyTabFocusChanged(null, TabsChromeListener.FACTOR_NO_FOCUS);
         } else if (TextUtils.equals(removedTab.getParentId(), Tab.ID_EXTERNAL)) {
             focusRef.clear();
-            notifyTabHoisted(null, TabsChromeListener.FACTOR_BACK_EXTERNAL);
+            notifyTabFocusChanged(null, TabsChromeListener.FACTOR_BACK_EXTERNAL);
         } else {
             focusRef = new WeakReference<>(getTab(removedTab.getParentId()));
-            notifyTabHoisted(focusRef.get(), TabsChromeListener.FACTOR_TAB_REMOVED);
+            notifyTabFocusChanged(focusRef.get(), TabsChromeListener.FACTOR_TAB_REMOVED);
         }
     }
 
     /**
-     * To hoist a tab from list.
+     * To focus a tab from list.
      *
-     * @param id the id of tab to be hoisted.
+     * @param id the id of tab to be focused.
      */
     public void switchToTab(final String id) {
         final Tab nextTab = getTab(id);
@@ -216,7 +216,7 @@ public class TabsSession {
             focusRef = new WeakReference<>(nextTab);
         }
 
-        notifyTabHoisted(nextTab, TabsChromeListener.FACTOR_TAB_SWITCHED);
+        notifyTabFocusChanged(nextTab, TabsChromeListener.FACTOR_TAB_SWITCHED);
     }
 
     /**
@@ -331,7 +331,7 @@ public class TabsSession {
     private String addTabInternal(@Nullable final String parentId,
                                   @Nullable final String url,
                                   boolean fromExternal,
-                                  boolean hoist) {
+                                  boolean toFocus) {
 
         final Tab tab = new Tab();
         tab.setUrl(url);
@@ -346,14 +346,14 @@ public class TabsSession {
             insertTab(parentIndex, tab);
         }
 
-        focusRef = (hoist || fromExternal) ? new WeakReference<>(tab) : focusRef;
+        focusRef = (toFocus || fromExternal) ? new WeakReference<>(tab) : focusRef;
 
         if (!TextUtils.isEmpty(url)) {
             tab.createView(activity).loadUrl(url);
         }
 
-        if (hoist || fromExternal) {
-            notifyTabHoisted(tab, TabsChromeListener.FACTOR_TAB_ADDED);
+        if (toFocus || fromExternal) {
+            notifyTabFocusChanged(tab, TabsChromeListener.FACTOR_TAB_ADDED);
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -401,8 +401,8 @@ public class TabsSession {
         tab.setParentId(parentTab.getId());
     }
 
-    private void notifyTabHoisted(final Tab tab, final @TabsChromeListener.Factor int factor) {
-        final Message msg = notifier.obtainMessage(Notifier.MSG_HOIST_TAB);
+    private void notifyTabFocusChanged(final Tab tab, final @TabsChromeListener.Factor int factor) {
+        final Message msg = notifier.obtainMessage(Notifier.MSG_FOCUS_TAB);
         msg.obj = tab;
         msg.arg1 = factor;
         notifier.sendMessage(msg);
@@ -494,7 +494,7 @@ public class TabsSession {
             transport.setWebView(webView);
             msg.sendToTarget();
 
-            notifyTabHoisted(tab, TabsChromeListener.FACTOR_TAB_ADDED);
+            notifyTabFocusChanged(tab, TabsChromeListener.FACTOR_TAB_ADDED);
             return true;
         }
 
@@ -575,7 +575,7 @@ public class TabsSession {
      * A class to attach to UI thread for sending message.
      */
     private static class Notifier extends Handler {
-        static final int MSG_HOIST_TAB = 0x1001;
+        static final int MSG_FOCUS_TAB = 0x1001;
 
         private Activity activity;
         private List<TabsChromeListener> chromeListeners = null;
@@ -591,15 +591,15 @@ public class TabsSession {
         @Override
         public void handleMessage(final Message msg) {
             switch (msg.what) {
-                case MSG_HOIST_TAB:
-                    hoistTab((Tab) msg.obj, msg.arg1);
+                case MSG_FOCUS_TAB:
+                    focusTab((Tab) msg.obj, msg.arg1);
                     break;
                 default:
                     break;
             }
         }
 
-        private void hoistTab(final Tab tab, @TabsChromeListener.Factor final int factor) {
+        private void focusTab(final Tab tab, @TabsChromeListener.Factor final int factor) {
 
             if (tab != null && tab.getTabView() == null) {
                 String url = tab.getUrl();
@@ -607,7 +607,7 @@ public class TabsSession {
             }
 
             for (final TabsChromeListener l : this.chromeListeners) {
-                l.onTabHoist(tab, factor);
+                l.onFocusChanged(tab, factor);
             }
         }
     }

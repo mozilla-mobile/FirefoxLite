@@ -56,13 +56,13 @@ public interface TabsChromeListener {
     void onReceivedIcon(@NonNull Tab tab, Bitmap icon);
 
     /**
-     * Notify the host application a tab becomes 'current tab'. It usually happens when adding,
+     * Notify the host application a tab becomes 'focused tab'. It usually happens when adding,
      * removing or switching tabs.
      *
-     * @param tab    The tab becomes current tab
-     * @param factor the potential factor which cause this hoist-event
+     * @param tab    The tab becomes focused, null means there is no focused tab
+     * @param factor the potential factor which cause this focus-change-event
      */
-    void onTabHoist(@Nullable Tab tab, @Factor int factor);
+    void onFocusChanged(@Nullable Tab tab, @Factor int factor);
 
     /**
      * Notify the host application the total tab counts changed.
