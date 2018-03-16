@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.persistence.TabModel;
+import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.web.DownloadCallback;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -85,9 +86,9 @@ public class TabsSessionTest {
     public void testAddTab1() {
         /* no parent id, tab should be append to tail */
 
-        final String tabId0 = session.addTab(null, "url0", false, false);
-        final String tabId1 = session.addTab(null, "url1", false, false);
-        final String tabId2 = session.addTab(null, "url2", false, false);
+        final String tabId0 = session.addTab("url0", TabUtil.argument(null, false, false));
+        final String tabId1 = session.addTab("url1", TabUtil.argument(null, false, false));
+        final String tabId2 = session.addTab("url2", TabUtil.argument(null, false, false));
         Assert.assertEquals(3, session.getTabs().size());
         Assert.assertEquals(session.getTabs().get(0).getId(), tabId0);
         Assert.assertEquals(session.getTabs().get(1).getId(), tabId1);
@@ -101,17 +102,17 @@ public class TabsSessionTest {
     public void testAddTab2() {
         /* Tab 2 use Tab0 as parent */
 
-        String tabId0 = session.addTab(null, "url0", false, false);
+        String tabId0 = session.addTab("url0", TabUtil.argument(null, false, false));
         Assert.assertEquals(1, session.getTabs().size());
 
         // this tab should not have parent
         Assert.assertTrue(TextUtils.isEmpty(session.getTabs().get(0).getParentId()));
 
         // no parent, should be append to tail
-        String tabId1 = session.addTab(null, "url1", false, false);
+        String tabId1 = session.addTab("url1", TabUtil.argument(null, false, false));
 
         // tab0 is parent, order should be: tabId0 -> tabId2 -> tabId1
-        String tabId2 = session.addTab(tabId0, "url2", false, false);
+        String tabId2 = session.addTab("url2", TabUtil.argument(tabId0, false, false));
 
         Assert.assertEquals(session.getTabs().get(0).getId(), tabId0);
         Assert.assertEquals(session.getTabs().get(1).getId(), tabId2);
@@ -123,12 +124,12 @@ public class TabsSessionTest {
 
     @Test
     public void testAddTab3() {
-        String tabId0 = session.addTab(null, "url0", false, false);
-        String tabId1 = session.addTab(null, "url1", false, false);
-        String tabId2 = session.addTab(tabId0, "url2", false, false);
-        String tabId3 = session.addTab(tabId0, "url3", false, false);
-        String tabId4 = session.addTab(tabId1, "url4", false, false);
-        String tabId5 = session.addTab(tabId4, "url5", false, false);
+        String tabId0 = session.addTab("url0", TabUtil.argument(null, false, false));
+        String tabId1 = session.addTab("url1", TabUtil.argument(null, false, false));
+        String tabId2 = session.addTab("url2", TabUtil.argument(tabId0, false, false));
+        String tabId3 = session.addTab("url3", TabUtil.argument(tabId0, false, false));
+        String tabId4 = session.addTab("url4", TabUtil.argument(tabId1, false, false));
+        String tabId5 = session.addTab("url5", TabUtil.argument(tabId4, false, false));
 
         // tabId0 -> tabId3 -> tabId2, tabId1 -> tabId4 -> tabId5
         Assert.assertEquals(session.getTabs().get(0).getId(), tabId0);
@@ -147,17 +148,17 @@ public class TabsSessionTest {
 
     @Test
     public void testAddTab3A() {
-        final String tabId0 = session.addTab(null, "url", false, true);
-        final String tabId1 = session.addTab(null, "url", false, true);
-        final String tabId2 = session.addTab(tabId1, "url", false, true);
-        final String tabId3 = session.addTab(tabId2, "url", false, true);
-        // from external
-        final String tabId4 = session.addTab(null, "url", true, false);
-        final String tabId5 = session.addTab(tabId4, "url", false, true);
-        final String tabId6 = session.addTab(tabId5, "url", false, true);
-        final String tabId7 = session.addTab(null, "url", true, false);
-        final String tabId8 = session.addTab(tabId7, "url", false, true);
-        final String tabId9 = session.addTab(tabId8, "url", false, true);
+        final String tabId0 = session.addTab("url", TabUtil.argument(null, false, true));
+        final String tabId1 = session.addTab("url", TabUtil.argument(null, false, true));
+        final String tabId2 = session.addTab("url", TabUtil.argument(tabId1, false, true));
+        final String tabId3 = session.addTab("url", TabUtil.argument(tabId2, false, true));
+        // open from external
+        final String tabId4 = session.addTab("url", TabUtil.argument(null, true, false));
+        final String tabId5 = session.addTab("url", TabUtil.argument(tabId4, false, true));
+        final String tabId6 = session.addTab("url", TabUtil.argument(tabId5, false, true));
+        final String tabId7 = session.addTab("url", TabUtil.argument(null, true, false));
+        final String tabId8 = session.addTab("url", TabUtil.argument(tabId7, false, true));
+        final String tabId9 = session.addTab("url", TabUtil.argument(tabId8, false, true));
 
         // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
         final List<Tab> tabs = session.getTabs();
@@ -190,13 +191,13 @@ public class TabsSessionTest {
         session.restoreTabs(models, urls[0]);
         Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
 
-        final String tabId0 = session.addTab(null, "url0", true, false);
+        final String tabId0 = session.addTab("url0", TabUtil.argument(null, true, false));
         Assert.assertEquals(session.getFocusTab().getId(), tabId0);
 
-        final String tabId1 = session.addTab(null, "url1", false, true);
+        final String tabId1 = session.addTab("url1", TabUtil.argument(null, false, true));
         Assert.assertEquals(session.getFocusTab().getId(), tabId1);
 
-        final String tabId2 = session.addTab(null, "url2", false, false);
+        final String tabId2 = session.addTab("url2", TabUtil.argument(null, false, false));
         Assert.assertEquals(session.getFocusTab().getId(), tabId1);
     }
 
@@ -209,7 +210,7 @@ public class TabsSessionTest {
             }
         });
         session.addTabsChromeListener(spy0);
-        final String tabId0 = session.addTab(null, "url0", false, true);
+        final String tabId0 = session.addTab("url0", TabUtil.argument(null, false, true));
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
         verify(spy0, times(1)).onFocusChanged(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
         Assert.assertEquals(session.getFocusTab().getId(), tabId0);
@@ -222,7 +223,7 @@ public class TabsSessionTest {
             }
         });
         session.addTabsChromeListener(spy1);
-        final String tabId1 = session.addTab(null, "url1", true, false);
+        final String tabId1 = session.addTab("url1", TabUtil.argument(null, true, false));
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
         verify(spy1, times(1)).onFocusChanged(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
         Assert.assertEquals(session.getFocusTab().getId(), tabId1);
@@ -232,7 +233,7 @@ public class TabsSessionTest {
         // Add a tab from external. onFocusChanged should be invoked
         final TabsChromeListener spy2 = spy(TabsChromeListener.class);
         session.addTabsChromeListener(spy2);
-        session.addTab(null, "url2", false, false);
+        session.addTab("url2", TabUtil.argument(null, false, false));
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
         verify(spy2, times(0)).onFocusChanged(any(Tab.class), anyInt());
         Assert.assertEquals(session.getFocusTab().getId(), tabId1); // focus should not be changed
@@ -279,17 +280,17 @@ public class TabsSessionTest {
      */
     @Test
     public void testCloseTab2() {
-        final String tabId0 = session.addTab(null, "url", false, true);
-        final String tabId1 = session.addTab(null, "url", false, true);
-        final String tabId2 = session.addTab(tabId1, "url", false, true);
-        final String tabId3 = session.addTab(tabId2, "url", false, true);
+        final String tabId0 = session.addTab("url", TabUtil.argument(null, false, true));
+        final String tabId1 = session.addTab("url", TabUtil.argument(null, false, true));
+        final String tabId2 = session.addTab("url", TabUtil.argument(tabId1, false, true));
+        final String tabId3 = session.addTab("url", TabUtil.argument(tabId2, false, true));
         // open from external
-        final String tabId4 = session.addTab(null, "url", true, false);
-        final String tabId5 = session.addTab(tabId4, "url", false, true);
-        final String tabId6 = session.addTab(tabId5, "url", false, true);
-        final String tabId7 = session.addTab(null, "url", true, false);
-        final String tabId8 = session.addTab(tabId7, "url", false, true);
-        final String tabId9 = session.addTab(tabId8, "url", false, true);
+        final String tabId4 = session.addTab("url", TabUtil.argument(null, true, false));
+        final String tabId5 = session.addTab("url", TabUtil.argument(tabId4, false, true));
+        final String tabId6 = session.addTab("url", TabUtil.argument(tabId5, false, true));
+        final String tabId7 = session.addTab("url", TabUtil.argument(null, true, false));
+        final String tabId8 = session.addTab("url", TabUtil.argument(tabId7, false, true));
+        final String tabId9 = session.addTab("url", TabUtil.argument(tabId8, false, true));
 
         // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
         session.switchToTab(tabId6);
@@ -332,17 +333,17 @@ public class TabsSessionTest {
 
     @Test
     public void testDropTab2() {
-        final String tabId0 = session.addTab(null, "url", false, true);
-        final String tabId1 = session.addTab(null, "url", false, true);
-        final String tabId2 = session.addTab(tabId1, "url", false, true);
-        final String tabId3 = session.addTab(tabId2, "url", false, true);
+        final String tabId0 = session.addTab("url", TabUtil.argument(null, false, true));
+        final String tabId1 = session.addTab("url", TabUtil.argument(null, false, true));
+        final String tabId2 = session.addTab("url", TabUtil.argument(tabId1, false, true));
+        final String tabId3 = session.addTab("url", TabUtil.argument(tabId2, false, true));
         // open from external
-        final String tabId4 = session.addTab(null, "url", true, false);
-        final String tabId5 = session.addTab(tabId4, "url", false, true);
-        final String tabId6 = session.addTab(tabId5, "url", false, true);
-        final String tabId7 = session.addTab(null, "url", true, false);
-        final String tabId8 = session.addTab(tabId7, "url", false, true);
-        final String tabId9 = session.addTab(tabId8, "url", false, true);
+        final String tabId4 = session.addTab("url", TabUtil.argument(null, true, false));
+        final String tabId5 = session.addTab("url", TabUtil.argument(tabId4, false, true));
+        final String tabId6 = session.addTab("url", TabUtil.argument(tabId5, false, true));
+        final String tabId7 = session.addTab("url", TabUtil.argument(null, true, false));
+        final String tabId8 = session.addTab("url", TabUtil.argument(tabId7, false, true));
+        final String tabId9 = session.addTab("url", TabUtil.argument(tabId8, false, true));
 
         // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
         Assert.assertEquals(session.getFocusTab().getId(), tabId9);
