@@ -30,8 +30,7 @@ public class NotificationUtil {
                 .setColor(ContextCompat.getColor(context, R.color.surveyNotificationAccent))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(new long[0]);
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
 
 
         if (BuildCompat.isAtLeastN()) {
@@ -60,8 +59,6 @@ public class NotificationUtil {
             final NotificationChannel notificationChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(new long[] { 0, 1000, 500, 1000 });
-            notificationChannel.enableVibration(true);
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }
