@@ -12,6 +12,7 @@ import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.content.pm.ShortcutInfoCompat;
 import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.support.v4.graphics.drawable.IconCompat;
@@ -27,13 +28,8 @@ public class ShortcutUtils {
 
 
     // Request pinned shortcut for both API level
-    public static void requestPinShortcut(final Context context, final Intent shortcutIntent,
-                                          final String title, final String urlAsShortcutId, final Bitmap bitmap) {
-
-        if (context == null || shortcutIntent == null || title == null) {
-            Log.e(TAG, "requestPinShortcut fail cause some required arguments are null.");
-            return;
-        }
+    public static void requestPinShortcut(@NonNull final Context context, @NonNull final Intent shortcutIntent,
+                                          @NonNull final String title, @NonNull final String urlAsShortcutId, final Bitmap bitmap) {
 
         Bitmap icon = bitmap;
         if (icon == null) {
