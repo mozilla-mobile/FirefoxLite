@@ -66,7 +66,7 @@ public class SearchSuggestionTest {
     }
 
     @Test
-    public void searchSuggestionTest() throws UiObjectNotFoundException, UnsupportedEncodingException {
+    public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
 
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 

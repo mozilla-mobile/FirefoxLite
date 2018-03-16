@@ -48,6 +48,11 @@ import static org.hamcrest.Matchers.containsString;
 public class WebGeolocationPermissionTest {
 
     private static final String TEST_PATH = "/";
+    private static final String HTML_FILE_GET_LOCATION = "get_location.html";
+    private static final String HTML_ELEMENT_ID_GET_BUTTON = "get_button";
+    private static final String HTML_ELEMENT_ID_RESULT = "result";
+    private static final String RESULT_CHECK_TEXT = "Latitude";
+
     private MockWebServer webServer;
 
     @Rule
@@ -62,7 +67,7 @@ public class WebGeolocationPermissionTest {
             webServer = new MockWebServer();
             try {
                 webServer.enqueue(new MockResponse()
-                        .setBody(AndroidTestUtils.readTestAsset("get_location.html"))
+                        .setBody(AndroidTestUtils.readTestAsset(HTML_FILE_GET_LOCATION))
                         .addHeader("Set-Cookie", "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"));
                 webServer.start();
             } catch (IOException e) {
@@ -110,13 +115,13 @@ public class WebGeolocationPermissionTest {
         IdlingRegistry.getInstance().register(sessionLoadedIdlingResource);
 
         // Find the element in HTML with id "get_button" and click it. "get_button" will try to access user's current location
-        onWebView().withElement(findElement(Locator.ID, "get_button")).perform(webClick());
+        onWebView().withElement(findElement(Locator.ID, HTML_ELEMENT_ID_GET_BUTTON)).perform(webClick());
 
         // Check the Geolocation permission dialog is popup and click allow button
         onView(withText(R.string.geolocation_dialog_allow)).check(matches(isDisplayed())).perform(click());
 
         // Once the permission is granted, web page will start updating Geolocation
-        onWebView().withElement(findElement(Locator.ID, "result")).check(webMatches(getText(), containsString("Latitude")));
+        onWebView().withElement(findElement(Locator.ID, HTML_ELEMENT_ID_RESULT)).check(webMatches(getText(), containsString(RESULT_CHECK_TEXT)));
 
         // Unregister session loaded idling resource
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);

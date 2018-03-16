@@ -70,7 +70,7 @@ public class RemoveTopSitesTest {
     }
 
     @Test
-    public void deleteTopSiteTest() {
+    public void deleteTopSite_deleteSuccessfully() {
 
         // Pick a test site to delete
         final int siteIndex = new Random().nextInt(siteList.size());
@@ -100,7 +100,7 @@ public class RemoveTopSitesTest {
     }
 
     @Test
-    public void deleteTopSiteAndCancelTest() {
+    public void deleteTopSiteAndCancel_topSiteIsStillThere() {
 
         // Pick a test site to test
         final int siteIndex = new Random().nextInt(siteList.size());
