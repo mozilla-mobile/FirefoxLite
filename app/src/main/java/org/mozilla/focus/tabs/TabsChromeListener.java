@@ -7,6 +7,7 @@ package org.mozilla.focus.tabs;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -63,6 +64,15 @@ public interface TabsChromeListener {
      * @param factor the potential factor which cause this focus-change-event
      */
     void onFocusChanged(@Nullable Tab tab, @Factor int factor);
+
+    /**
+     * Notify the host application there is a tab be added.
+     *
+     * @param tab       the tab be added
+     * @param arguments the same arguments when invoke @see{org.mozilla.focus.tabs.TabsSession#addTab}.
+     *                  It might be null if this tab is not created from the method.
+     */
+    void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments);
 
     /**
      * Notify the host application the total tab counts changed.

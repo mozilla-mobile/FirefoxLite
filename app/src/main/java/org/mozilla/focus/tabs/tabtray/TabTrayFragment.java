@@ -397,7 +397,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                     public boolean onDown(MotionEvent e) {
                         return true;
                     }
-        });
+                });
 
         backgroundView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -657,6 +657,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         @Override
         public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
+        }
+
+        @Override
+        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
         }
 
         @Override
