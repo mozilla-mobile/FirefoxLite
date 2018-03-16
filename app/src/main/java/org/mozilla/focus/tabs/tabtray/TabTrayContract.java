@@ -29,7 +29,7 @@ class TabTrayContract {
 
         int getCurrentTabPosition();
 
-        void switchTab(int tabPosition, Runnable finishCallback);
+        void switchTab(int tabPosition);
         void removeTab(int tabPosition);
     }
 }
