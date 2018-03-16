@@ -8,6 +8,7 @@ package org.mozilla.focus.tabs;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -21,6 +22,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import org.mozilla.focus.persistence.TabModel;
+import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.web.DownloadCallback;
 
 import java.lang.ref.WeakReference;
@@ -117,25 +119,25 @@ public class TabsSession {
     }
 
     /**
-     * Add a tab to a specific parent tab.
+     * Add a tab, its attributes are controlled by arguments. The default attributes of a new tab
+     * is defined by @see{org.mozilla.focus.tabs.utils.TabUtil}. Usually it 1) has no parent
+     * 2) is not opened from external app 3) will not change focus
      *
-     * @param parentId     id of parent tab. If it is null, the tab will be append to tail
-     * @param url          initial url for this tab
-     * @param fromExternal is this request from external app
-     * @param toFocus      true to focus this tab after creation
+     * @param url       initial url for this tab
+     * @param arguments to contain dispensable arguments to indicate whether the new tab is from-external? should be focused?...etc.
      * @return id for created tab
      */
     @Nullable
-    public String addTab(@Nullable final String parentId,
-                         @NonNull final String url,
-                         boolean fromExternal,
-                         boolean toFocus) {
+    public String addTab(@NonNull final String url, @NonNull final Bundle arguments) {
 
         if (TextUtils.isEmpty(url)) {
             return null;
         }
 
-        return addTabInternal(parentId, url, fromExternal, toFocus);
+        return addTabInternal(url,
+                TabUtil.getParentId(arguments),
+                TabUtil.isFromExternal(arguments),
+                TabUtil.toFocus(arguments));
     }
 
     /**
@@ -328,8 +330,8 @@ public class TabsSession {
         tab.setDownloadCallback(downloadCallback);
     }
 
-    private String addTabInternal(@Nullable final String parentId,
-                                  @Nullable final String url,
+    private String addTabInternal(@Nullable final String url,
+                                  @Nullable final String parentId,
                                   boolean fromExternal,
                                   boolean toFocus) {
 
@@ -482,7 +484,7 @@ public class TabsSession {
                 return false;
             }
 
-            final String id = addTabInternal(source.getId(), null, false, false);
+            final String id = addTabInternal(null, source.getId(), false, false);
             final Tab tab = getTab(id);
             if (tab == null) {
                 // FIXME: why null?
