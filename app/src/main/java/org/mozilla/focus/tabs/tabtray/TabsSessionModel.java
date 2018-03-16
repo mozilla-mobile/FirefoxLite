@@ -42,7 +42,7 @@ class TabsSessionModel implements TabTrayContract.Model {
     }
 
     @Override
-    public void switchTab(int tabIdx, final Runnable finishCallback) {
+    public void switchTab(int tabIdx, @Nullable final Runnable finishCallback) {
         final List<Tab> tabs = tabsSession.getTabs();
         if (tabIdx < 0 || tabIdx >= tabs.size()) {
             if (BuildConfig.DEBUG) {
@@ -59,7 +59,9 @@ class TabsSessionModel implements TabTrayContract.Model {
             @Override
             public void onTabHoist(@NonNull Tab tab, @Factor int factor) {
                 tabsSession.removeTabsChromeListener(this);
-                finishCallback.run();
+                if (finishCallback != null) {
+                    finishCallback.run();
+                }
             }
         });
         tabsSession.switchToTab(tabs.get(tabIdx).getId());

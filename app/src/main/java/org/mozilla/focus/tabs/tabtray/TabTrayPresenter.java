@@ -54,5 +54,9 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
         view.tabRemoved(tabPosition, oldFocusPos, newTabs.indexOf(oldFocusTab), newFocusTab);
         view.updateData(newTabs);
+
+        if (!newTabs.isEmpty()) {
+            model.switchTab(newFocusTab, null);
+        }
     }
 }
