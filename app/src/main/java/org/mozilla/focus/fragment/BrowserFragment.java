@@ -58,6 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.locale.LocaleAwareFragment;
@@ -800,6 +801,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
      * show webview geolocation permission prompt
      */
     private void showGeolocationPermissionPrompt() {
+        if (!isPopupWindowAllowed()) {
+            return;
+        }
+
         if (geolocationCallback == null) {
             return;
         }
@@ -1067,6 +1072,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         notifyParent(FragmentListener.TYPE.SHOW_SCREENSHOT_HINT, null);
     }
 
+    private boolean isPopupWindowAllowed() {
+        Activity activity = getActivity();
+        return activity instanceof MainActivity &&
+                ((MainActivity) activity).isTopVisibleFragment(this);
+    }
+
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
         private HistoryInserter historyInserter = new HistoryInserter();
 
@@ -1259,7 +1270,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab,
                                                        final String origin,
                                                        final GeolocationPermissions.Callback callback) {
-            if (!isForegroundTab(tab)) {
+            if (!isForegroundTab(tab) || !isPopupWindowAllowed()) {
                 return;
             }
 
