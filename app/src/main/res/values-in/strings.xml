@@ -152,7 +152,9 @@
   <string name="rate_app_dialog_text_title">Suka {{app_name}}?</string>
   <string name="rate_app_dialog_text_content">Terima kasih telah memilih produk kami. Masukan Anda sangat penting bagi kami.</string>
   <string name="rate_app_dialog_btn_go_rate">Tentu, beri 5 bintang!</string>
+  <string name="rate_app_notification_action_rate">BERI NILAI 5 BINTANG"</string>
   <string name="rate_app_dialog_btn_feedback">Tidak, kirimkan masukan.</string>
+  <string name="rate_app_notification_action_feedback">MASUKAN</string>
   <string name="share_app_dialog_text_title">Bagikan {{app_name}} dengan teman!</string>
   <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Tangkapan layar yang canggih</string>
   <string name="share_app_dialog_btn_share">Bagikan</string>
