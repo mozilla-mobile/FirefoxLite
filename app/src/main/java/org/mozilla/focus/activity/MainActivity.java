@@ -760,6 +760,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
+    public boolean isTopVisibleFragment(@NonNull Fragment fragment) {
+        return mediator.isTopVisibleFragment(fragment);
+    }
+
     public FirstrunFragment createFirstRunFragment() {
         return FirstrunFragment.create();
     }

@@ -10,11 +10,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.widget.BackKeyHandleable;
 
@@ -24,6 +26,7 @@ public class MainMediator {
     // Instead, we define this sequence for fragments of MainActivity
     // to define that, if there are two visible fragments, which one is top one.
     private final static String[] FRAGMENTS_SEQUENCE = {
+            TabTrayFragment.FRAGMENT_TAG,
             UrlInputFragment.FRAGMENT_TAG,
             FirstrunFragment.FRAGMENT_TAG,
             HomeFragment.FRAGMENT_TAG,
@@ -269,5 +272,12 @@ public class MainMediator {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final Fragment fragment = fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
         return fragment != null && fragment.isVisible();
+    }
+
+    boolean isTopVisibleFragment(@NonNull Fragment fragment) {
+        Fragment topFragment = getTopFragment();
+        return topFragment != null &&
+                !TextUtils.isEmpty(topFragment.getTag()) &&
+                TextUtils.equals(fragment.getTag(), topFragment.getTag());
     }
 }
