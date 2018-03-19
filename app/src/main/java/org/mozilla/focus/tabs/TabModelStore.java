@@ -13,6 +13,8 @@ import org.mozilla.focus.utils.FileUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.os.AsyncTask.SERIAL_EXECUTOR;
@@ -142,10 +144,24 @@ public class TabModelStore {
         }
 
         private void saveWebViewState(@NonNull Context context, @NonNull TabModel[] tabModelList) {
-            File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
+            final File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
+            final List<File> updateFileList = new ArrayList<>();
+
             for (TabModel tabModel : tabModelList) {
                 if (tabModel != null && tabModel.getWebViewState() != null) {
                     FileUtils.writeBundleToStorage(cacheDir, tabModel.getId(), tabModel.getWebViewState());
+                    updateFileList.add(new File(cacheDir, tabModel.getId()));
+                }
+            }
+
+            // Remove the out-of-date WebView state cache file
+            File[] cacheFiles = cacheDir.listFiles();
+            if (cacheFiles != null) {
+                List<File> outOfDateFileList = new ArrayList<>(Arrays.asList(cacheFiles));
+                outOfDateFileList.removeAll(updateFileList);
+                boolean success = true;
+                for (File file : outOfDateFileList) {
+                    success &= file.delete();
                 }
             }
         }
