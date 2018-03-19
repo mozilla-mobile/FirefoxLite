@@ -7,16 +7,11 @@ package org.mozilla.focus.tabs;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.GeolocationPermissions;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
 import junit.framework.Assert;
 
@@ -27,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.persistence.TabModel;
+import org.mozilla.focus.tabs.utils.DefaultTabsChromeListener;
 import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.web.DownloadCallback;
 import org.robolectric.RobolectricTestRunner;
@@ -204,7 +200,7 @@ public class TabsSessionTest {
     @Test
     public void testAddTab5() {
         // Add a tab from internal and focus it. onFocusChanged should be invoked once
-        final TabsChromeListener spy0 = spy(new DefaultChromeListener() {
+        final TabsChromeListener spy0 = spy(new DefaultTabsChromeListener() {
             public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
                 Assert.assertEquals(tab.getUrl(), "url0");
             }
@@ -217,7 +213,7 @@ public class TabsSessionTest {
         session.removeTabsChromeListener(spy0);
 
         // Add a tab from external. onFocusChanged should be invoked
-        final TabsChromeListener spy1 = spy(new DefaultChromeListener() {
+        final TabsChromeListener spy1 = spy(new DefaultTabsChromeListener() {
             public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
                 Assert.assertEquals(tab.getUrl(), "url1");
             }
@@ -525,63 +521,6 @@ public class TabsSessionTest {
         @Override
         public Bitmap getDrawingCache(boolean autoScale) {
             return null;
-        }
-    }
-
-    private static class DefaultChromeListener implements TabsChromeListener {
-
-        @Override
-        public void onProgressChanged(@NonNull Tab tab, int progress) {
-
-        }
-
-        @Override
-        public void onReceivedTitle(@NonNull Tab tab, String title) {
-
-        }
-
-        @Override
-        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
-
-        }
-
-        @Override
-        public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
-
-        }
-
-        @Override
-        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
-
-        }
-
-        @Override
-        public void onTabCountChanged(int count) {
-
-        }
-
-        @Override
-        public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
-
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
-        }
-
-        @Override
-        public void onExitFullScreen(@NonNull Tab tab) {
-
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NonNull Tab tab, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-            return false;
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
-
         }
     }
 }
