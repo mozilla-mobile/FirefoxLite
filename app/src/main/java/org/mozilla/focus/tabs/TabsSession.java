@@ -137,7 +137,8 @@ public class TabsSession {
         return addTabInternal(url,
                 TabUtil.getParentId(arguments),
                 TabUtil.isFromExternal(arguments),
-                TabUtil.toFocus(arguments));
+                TabUtil.toFocus(arguments),
+                arguments);
     }
 
     /**
@@ -333,7 +334,8 @@ public class TabsSession {
     private String addTabInternal(@Nullable final String url,
                                   @Nullable final String parentId,
                                   boolean fromExternal,
-                                  boolean toFocus) {
+                                  boolean toFocus,
+                                  final Bundle arguments) {
 
         final Tab tab = new Tab();
         tab.setUrl(url);
@@ -347,6 +349,8 @@ public class TabsSession {
         } else {
             insertTab(parentIndex, tab);
         }
+
+        notifier.notifyTabAdded(tab, arguments);
 
         focusRef = (toFocus || fromExternal) ? new WeakReference<>(tab) : focusRef;
 
@@ -477,7 +481,12 @@ public class TabsSession {
                 return false;
             }
 
-            final String id = addTabInternal(null, source.getId(), false, false);
+            final String id = addTabInternal(null,
+                    source.getId(),
+                    false,
+                    false,
+                    null);
+
             final Tab tab = getTab(id);
             if (tab == null) {
                 // FIXME: why null?
@@ -571,6 +580,7 @@ public class TabsSession {
      */
     private static class Notifier extends Handler {
         static final int MSG_FOCUS_TAB = 0x1001;
+        static final int MSG_ADDED_TAB = 0x1002;
 
         private Activity activity;
         private List<TabsChromeListener> chromeListeners = null;
@@ -589,8 +599,28 @@ public class TabsSession {
                 case MSG_FOCUS_TAB:
                     focusTab((Tab) msg.obj, msg.arg1);
                     break;
+                case MSG_ADDED_TAB:
+                    addedTab(msg);
+                    break;
                 default:
                     break;
+            }
+        }
+
+        private void notifyTabAdded(@NonNull final Tab tab, @Nullable final Bundle arguments) {
+            final Message msg = this.obtainMessage(MSG_ADDED_TAB);
+            final NotifierPojo pojo = new NotifierPojo();
+            pojo.tab = tab;
+            pojo.arguements = arguments;
+            msg.obj = pojo;
+            this.sendMessage(msg);
+        }
+
+        private void addedTab(Message msg) {
+            final NotifierPojo pojo = (NotifierPojo) msg.obj;
+
+            for (final TabsChromeListener l : this.chromeListeners) {
+                l.onTabAdded(pojo.tab, pojo.arguements);
             }
         }
 
@@ -611,6 +641,11 @@ public class TabsSession {
             for (final TabsChromeListener l : this.chromeListeners) {
                 l.onFocusChanged(tab, factor);
             }
+        }
+
+        private static class NotifierPojo {
+            private Tab tab;
+            private Bundle arguements;
         }
     }
 }
