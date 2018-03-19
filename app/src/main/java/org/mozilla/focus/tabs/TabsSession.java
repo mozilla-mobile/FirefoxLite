@@ -197,13 +197,13 @@ public class TabsSession {
     private void updateFocusOnClosing(final Tab removedTab) {
         if (TextUtils.isEmpty(removedTab.getParentId())) {
             focusRef.clear();
-            notifyTabFocusChanged(null, TabsChromeListener.FACTOR_NO_FOCUS);
+            notifier.notifyTabFocused(null, TabsChromeListener.FACTOR_NO_FOCUS);
         } else if (TextUtils.equals(removedTab.getParentId(), Tab.ID_EXTERNAL)) {
             focusRef.clear();
-            notifyTabFocusChanged(null, TabsChromeListener.FACTOR_BACK_EXTERNAL);
+            notifier.notifyTabFocused(null, TabsChromeListener.FACTOR_BACK_EXTERNAL);
         } else {
             focusRef = new WeakReference<>(getTab(removedTab.getParentId()));
-            notifyTabFocusChanged(focusRef.get(), TabsChromeListener.FACTOR_TAB_REMOVED);
+            notifier.notifyTabFocused(focusRef.get(), TabsChromeListener.FACTOR_TAB_REMOVED);
         }
     }
 
@@ -218,7 +218,7 @@ public class TabsSession {
             focusRef = new WeakReference<>(nextTab);
         }
 
-        notifyTabFocusChanged(nextTab, TabsChromeListener.FACTOR_TAB_SWITCHED);
+        notifier.notifyTabFocused(nextTab, TabsChromeListener.FACTOR_TAB_SWITCHED);
     }
 
     /**
@@ -355,7 +355,7 @@ public class TabsSession {
         }
 
         if (toFocus || fromExternal) {
-            notifyTabFocusChanged(tab, TabsChromeListener.FACTOR_TAB_ADDED);
+            notifier.notifyTabFocused(tab, TabsChromeListener.FACTOR_TAB_ADDED);
         }
 
         for (final TabsChromeListener l : tabsChromeListeners) {
@@ -401,13 +401,6 @@ public class TabsSession {
 
         // update family relationship
         tab.setParentId(parentTab.getId());
-    }
-
-    private void notifyTabFocusChanged(final Tab tab, final @TabsChromeListener.Factor int factor) {
-        final Message msg = notifier.obtainMessage(Notifier.MSG_FOCUS_TAB);
-        msg.obj = tab;
-        msg.arg1 = factor;
-        notifier.sendMessage(msg);
     }
 
     class TabViewClientImpl extends TabViewClient {
@@ -496,7 +489,7 @@ public class TabsSession {
             transport.setWebView(webView);
             msg.sendToTarget();
 
-            notifyTabFocusChanged(tab, TabsChromeListener.FACTOR_TAB_ADDED);
+            notifier.notifyTabFocused(tab, TabsChromeListener.FACTOR_TAB_ADDED);
             return true;
         }
 
@@ -599,6 +592,13 @@ public class TabsSession {
                 default:
                     break;
             }
+        }
+
+        private void notifyTabFocused(final Tab tab, final @TabsChromeListener.Factor int factor) {
+            final Message msg = this.obtainMessage(MSG_FOCUS_TAB);
+            msg.obj = tab;
+            msg.arg1 = factor;
+            this.sendMessage(msg);
         }
 
         private void focusTab(final Tab tab, @TabsChromeListener.Factor final int factor) {
