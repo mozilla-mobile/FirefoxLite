@@ -353,4 +353,10 @@
     <string name="survey_notification_description">Shape a better product for Indonesia</string>
 
     <string name="survey_notification_url" translatable="false">https://qsurvey.mozilla.com/s3/Rocket-Existing-User-Survey&amp;sglocale=%1$s</string>
+
+    <!-- Snack bar message indicates there's a new tab loaded in the background -->
+    <string name="new_background_tab_hint">New tab opened</string>
+
+    <!-- Snack bar button that switch the newly loaded background tab to the foreground -->
+    <string name="new_background_tab_switch">Switch</string>
 </resources>

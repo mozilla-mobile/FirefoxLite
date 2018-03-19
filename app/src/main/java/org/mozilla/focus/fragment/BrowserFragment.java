@@ -103,6 +103,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         BackKeyHandleable, ScreenshotObserver.OnScreenshotListener {
 
     public static final String FRAGMENT_TAG = "browser";
+
+    /** Custom data that is passed when calling {@link TabsSession#addTab(String, Bundle)} */
+    public static final String EXTRA_NEW_TAB_SRC = "extra_bkg_tab_src";
+    public static final int SRC_CONTEXT_MENU = 0;
+
     private static final Handler HANDLER = new Handler();
 
     private static final int ANIMATION_DURATION = 300;
@@ -1102,7 +1107,20 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
+        public void onTabAdded(@NonNull final Tab tab, @Nullable final Bundle arguments) {
+            if (arguments == null) {
+                return;
+            }
+
+            int src = arguments.getInt(EXTRA_NEW_TAB_SRC, -1);
+            switch (src) {
+                case SRC_CONTEXT_MENU:
+                    onTabAddedByContextMenu(tab, arguments);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         @Override
@@ -1395,6 +1413,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         private boolean isForegroundTab(Tab tab) {
             return tabsSession.getFocusTab() == tab;
+        }
+
+        private void onTabAddedByContextMenu(@NonNull final Tab tab, @NonNull Bundle arguments) {
+            if (!TabUtil.toFocus(arguments)) {
+                Snackbar.make(webViewSlot, R.string.new_background_tab_hint, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.new_background_tab_switch, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                tabsSession.switchToTab(tab.getId());
+                            }
+                        }).show();
+            }
         }
     }
 
