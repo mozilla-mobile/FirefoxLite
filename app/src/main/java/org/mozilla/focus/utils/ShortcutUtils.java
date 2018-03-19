@@ -66,8 +66,11 @@ public class ShortcutUtils {
             }
         }
 
+        // If the launcher or system didn't support shortcut, we don't bother to call it.
+        if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
+            ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender);
+        }
 
-        ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender);
     }
 
 }
