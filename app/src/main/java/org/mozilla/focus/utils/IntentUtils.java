@@ -228,7 +228,7 @@ public class IntentUtils {
     }
 
 
-    public static Intent genDefaultBrowserSettingIntent(Context context) {
+    public static Intent genDefaultBrowserSettingIntentForBroadcastReceiver(Context context) {
 
         final Intent setAsDefault = new Intent(context, NotificationActionBroadcastReceiver.class);
         setAsDefault.setAction(IntentUtils.ACTION_NOTIFICATION);
