@@ -58,7 +58,26 @@ public class DefaultBrowserPreference extends Preference {
     @Override
     protected void onClick() {
         final Context context = getContext();
-        final Intent intent = IntentUtils.genDefaultBrowserSettingIntent(context);
+        // fire an intent and start related activity immediately
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            openDefaultAppsSettings(context);
+        } else {
+            openSumoPage(context);
+        }
+    }
+
+    private void openDefaultAppsSettings(Context context) {
+        try {
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // In some cases, a matching Activity may not exist (according to the Android docs).
+            openSumoPage(context);
+        }
+    }
+
+    private void openSumoPage(Context context) {
+        final Intent intent = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), getTitle().toString());
         context.startActivity(intent);
     }
 
