@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.GetImgHeaderTask;
+import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsSession;
@@ -192,13 +194,19 @@ public class WebContextMenu {
     private static void openInNewTab(final TabView source, final Dialog dialog, final String url) {
         final TabsSession session = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
         final List<Tab> tabs = session.getTabs();
+
+        String parentId = null;
+
         // Try to find parent tab for new tab
         for (final Tab tab : tabs) {
             if (tab.getTabView() == source) {
-                session.addTab(url, TabUtil.argument(tab.getId(), false, false));
-                return;
+                parentId = tab.getId();
+                break;
             }
         }
-        session.addTab(url, TabUtil.argument(null, false, false));
+
+        Bundle args = TabUtil.argument(parentId, false, false);
+        args.putInt(BrowserFragment.EXTRA_NEW_TAB_SRC, BrowserFragment.SRC_CONTEXT_MENU);
+        session.addTab(url, args);
     }
 }
