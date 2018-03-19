@@ -32,6 +32,10 @@ import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId
 public final class AndroidTestUtils {
 
     public static void beforeTest() {
+        beforeTest(true);
+    }
+
+    public static void beforeTest(final boolean firstRun) {
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         if (context == null) {
             return;
@@ -40,7 +44,7 @@ public final class AndroidTestUtils {
         if (preferences != null) {
             final SharedPreferences.Editor editor = preferences.edit();
             if (editor != null) {
-                editor.putBoolean(PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, true)
+                editor.putBoolean(PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, firstRun)
                         .putInt(PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, FirstrunFragment.FIRSTRUN_UPGRADE_VERSION).commit();
             }
         }
