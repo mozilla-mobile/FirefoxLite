@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.tabs;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,10 +34,7 @@ import java.util.List;
  */
 public class TabsSession {
 
-    /**
-     * Context for this session. In current intention, a session belongs to an Activity but not just a Context.
-     */
-    private Activity activity;
+    private TabViewProvider tabViewProvider;
 
     private List<Tab> tabs = new LinkedList<>();
 
@@ -50,10 +46,10 @@ public class TabsSession {
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
 
-    public TabsSession(@NonNull Activity activity) {
-        this.activity = activity;
+    public TabsSession(@NonNull TabViewProvider provider) {
+        this.tabViewProvider = provider;
 
-        this.notifier = new Notifier(activity, this.tabsChromeListeners);
+        this.notifier = new Notifier(provider, this.tabsChromeListeners);
     }
 
     /**
@@ -355,7 +351,7 @@ public class TabsSession {
         focusRef = (toFocus || fromExternal) ? new WeakReference<>(tab) : focusRef;
 
         if (!TextUtils.isEmpty(url)) {
-            tab.initializeView(activity).loadUrl(url);
+            tab.initializeView(this.tabViewProvider).loadUrl(url);
         }
 
         if (toFocus || fromExternal) {
@@ -582,14 +578,14 @@ public class TabsSession {
         static final int MSG_FOCUS_TAB = 0x1001;
         static final int MSG_ADDED_TAB = 0x1002;
 
-        private Activity activity;
+        private TabViewProvider tabViewProvider;
         private List<TabsChromeListener> chromeListeners = null;
 
-        Notifier(@NonNull final Activity activity,
+        Notifier(@NonNull final TabViewProvider provider,
                  @NonNull final List<TabsChromeListener> listeners) {
 
             super(Looper.getMainLooper());
-            this.activity = activity;
+            this.tabViewProvider = provider;
             this.chromeListeners = listeners;
         }
 
@@ -634,7 +630,7 @@ public class TabsSession {
         private void focusTab(final Tab tab, @TabsChromeListener.Factor final int factor) {
 
             if (tab != null && tab.getTabView() == null) {
-                tab.initializeView(this.activity);
+                tab.initializeView(this.tabViewProvider);
             }
 
             for (final TabsChromeListener l : this.chromeListeners) {
