@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.activity;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -47,6 +48,8 @@ import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabModelStore;
+import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabViewProvider;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.tabtray.TabTray;
@@ -877,7 +880,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public TabsSession getTabsSession() {
         // TODO: Find a proper place to allocate and init TabsSession
         if (tabsSession == null) {
-            tabsSession = new TabsSession(this);
+            final TabViewProvider provider = new MainTabViewProvider(this);
+            tabsSession = new TabsSession(provider);
         }
         return tabsSession;
     }
@@ -903,6 +907,23 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if (tabModelListForPersistence != null) {
             TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
+        }
+    }
+
+    // a TabViewProvider and it should only be used in this activity
+    private static class MainTabViewProvider implements TabViewProvider {
+        private Activity activity;
+
+        MainTabViewProvider(@NonNull final Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public TabView create() {
+            // FIXME: we should avoid casting here.
+            // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
+            // but there is no promise about this.
+            return (TabView) WebViewProvider.create(this.activity, null);
         }
     }
 }
