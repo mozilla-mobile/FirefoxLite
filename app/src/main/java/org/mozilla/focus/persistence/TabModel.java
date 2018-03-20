@@ -147,6 +147,13 @@ public class TabModel {
         this.webViewState = webViewState;
     }
 
+    public boolean isValid() {
+        final boolean hasId = !TextUtils.isEmpty(this.getId());
+        final boolean hasUrl = !TextUtils.isEmpty(this.getUrl());
+
+        return hasId && hasUrl;
+    }
+
     @Override
     public String toString() {
         return "TabModel{" +
@@ -159,18 +166,5 @@ public class TabModel {
                 ", thumbnail=" + thumbnail +
                 ", webViewState=" + webViewState +
                 '}';
-    }
-
-    /**
-     * To test whether a model is sane to use
-     *
-     * @param model to be test
-     * @return true if the the model is sane
-     */
-    public static boolean isSane(@NonNull final TabModel model) {
-        final boolean hasId = !TextUtils.isEmpty(model.getId());
-        final boolean hasUrl = !TextUtils.isEmpty(model.getUrl());
-
-        return hasId && hasUrl;
     }
 }
