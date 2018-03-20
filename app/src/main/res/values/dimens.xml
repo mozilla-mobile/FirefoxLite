@@ -29,7 +29,7 @@
 
     <dimen name="screenshot_grid_cell_padding">8dp</dimen>
     <dimen name="screenshot_empty_img_size">18dp</dimen>
-    <dimen name="menu_bottom_space">40dp</dimen>
+    <dimen name="menu_bottom_space">32dp</dimen>
 
     <dimen name="favicon_initial_text_size">25dp</dimen>
     <dimen name="favicon_initial_threshold_size">25px</dimen>
@@ -47,4 +47,7 @@
 
     <dimen name="menu_layout_margin">14dp</dimen>
     <dimen name="firstrun_icon_bottom_margin">20dp</dimen>
+
+    <dimen name="fixed_menu_height">48dp</dimen>
+
 </resources>
