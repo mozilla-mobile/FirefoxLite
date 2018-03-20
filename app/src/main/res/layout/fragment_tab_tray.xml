@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:background="@color/tabTrayForeground"
             android:clipToPadding="false"
-            app:layout_behavior="@string/bottom_sheet_behavior"
+            app:layout_behavior="org.mozilla.focus.tabs.tabtray.InterceptBehavior"
             app:behavior_hideable="true"
             app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
             tools:listitem="@layout/item_tab_tray" />
