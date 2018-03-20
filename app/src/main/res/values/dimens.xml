@@ -36,6 +36,8 @@
     <dimen name="favicon_downscale_threshold_size">128px</dimen>
     <dimen name="favicon_target_size">100px</dimen>
 
+    <dimen name="shortcut_icon_size">48dp</dimen>
+
     <dimen name="home_padding_url_bar_to_title">60dp</dimen>
     <dimen name="home_padding_url_bar_to_top_sites">36dp</dimen>
 
