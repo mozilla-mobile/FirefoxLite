@@ -49,7 +49,7 @@ import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabModelStore;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
-import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
+import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -240,6 +240,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             pendingUrl = intent.getDataString();
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
             dismissAllMenus();
+            TabTray.dismiss(getSupportFragmentManager());
         }
 
         // We do not care about the previous intent anymore. But let's remember this one.
@@ -399,11 +400,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setLoadingButton(browserFragment);
         setEnable(shareButton, browserFragment != null);
         setEnable(pinShortcut, browserFragment != null);
-    }
-
-    private void showTabTray() {
-        TabTrayFragment fragment = TabTrayFragment.newInstance();
-        fragment.show(getSupportFragmentManager(), TabTrayFragment.FRAGMENT_TAG);
     }
 
     private boolean isTurboEnabled() {
@@ -779,7 +775,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 });
                 break;
             case SHOW_TAB_TRAY:
-                this.showTabTray();
+                TabTray.show(getSupportFragmentManager());
                 break;
             default:
                 break;
