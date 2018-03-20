@@ -879,6 +879,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onAddToHomeClicked() {
         final Intent shortcut = new Intent(Intent.ACTION_VIEW);
+        shortcut.setClass(this, MainActivity.class);
         final BrowserFragment browserFragment = getBrowserFragment();
         if (browserFragment == null) {
             return;
