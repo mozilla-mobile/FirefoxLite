@@ -164,6 +164,7 @@ public class TabModel {
                 ", thumbnailUri='" + thumbnailUri + '\'' +
                 ", webViewStateUri='" + webViewStateUri + '\'' +
                 ", thumbnail=" + thumbnail +
+                ", favicon=" + favicon +
                 ", webViewState=" + webViewState +
                 '}';
     }
