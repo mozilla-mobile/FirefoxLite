@@ -22,6 +22,8 @@ import org.mozilla.focus.R;
  */
 
 public class FavIconUtils {
+
+
     public static Bitmap getRefinedBitmap(Resources res, Bitmap source, char initial) {
         if (source.getWidth() > res.getDimensionPixelSize(R.dimen.favicon_downscale_threshold_size)) {
             int targetSize = res.getDimensionPixelSize(R.dimen.favicon_target_size);
@@ -179,4 +181,18 @@ public class FavIconUtils {
 
         return snippet;
     }
+
+    static Bitmap getRefinedShortcutIcon(Resources res, Bitmap source, char initial) {
+        final int sizeThreshold = res.getDimensionPixelSize(R.dimen.shortcut_icon_size);
+
+        if (source == null || source.getWidth() < sizeThreshold) {
+            return getInitialBitmap(res, source, initial);
+        }
+        if (source.getWidth() > sizeThreshold) {
+            return Bitmap.createScaledBitmap(source, sizeThreshold, sizeThreshold, false);
+        } else {
+            return source;
+        }
+    }
+
 }

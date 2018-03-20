@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -31,10 +32,16 @@ public class ShortcutUtils {
     public static void requestPinShortcut(@NonNull final Context context, @NonNull final Intent shortcutIntent,
                                           @NonNull final String title, @NonNull final String urlAsShortcutId, final Bitmap bitmap) {
 
-        Bitmap icon = bitmap;
-        if (icon == null) {
+        final Bitmap icon;
+        final Resources resources = context.getResources();
+        final char representativeCharacter = FavIconUtils.getRepresentativeCharacter(urlAsShortcutId);
+
+        if (bitmap == null) {
             // if favicon is not ready, we use the default initial icon with white color
-            icon = FavIconUtils.getInitialBitmap(context.getResources(), null, FavIconUtils.getRepresentativeCharacter(urlAsShortcutId));
+            icon = FavIconUtils.getInitialBitmap(resources, null, representativeCharacter);
+        } else {
+            // if favicon is ready, resize it using size that fits shortcut better
+            icon = FavIconUtils.getRefinedShortcutIcon(resources, bitmap, representativeCharacter);
         }
         // label must not be empty
         String label = title;
