@@ -232,9 +232,22 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, final int nextFocusPos) {
-        adapter.notifyItemRemoved(removePos);
+        animateItemRemove(removePos, new Runnable() {
+            @Override
+            public void run() {
+                adapter.setFocusedTab(nextFocusPos);
+                adapter.notifyItemChanged(nextFocusPos);
+            }
+        });
+    }
 
-        uiHandler.post(new Runnable() {
+    private void animateItemRemove(int removePos, final Runnable onAnimationEndCallback) {
+        adapter.notifyItemRemoved(removePos);
+        if (removePos != 0) {
+            adapter.notifyItemChanged(removePos - 1);
+        }
+
+        final Runnable monitorAnimationEnd = new Runnable() {
             @Override
             public void run() {
                 RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
@@ -245,12 +258,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
                     @Override
                     public void onAnimationsFinished() {
-                        adapter.setFocusedTab(nextFocusPos);
-                        adapter.notifyItemChanged(nextFocusPos);
+                        uiHandler.post(onAnimationEndCallback);
                     }
                 });
             }
-        });
+        } ;
+
+        // remove animation will start in next frame
+        uiHandler.post(monitorAnimationEnd);
     }
 
     private void setupBottomSheetCallback() {
