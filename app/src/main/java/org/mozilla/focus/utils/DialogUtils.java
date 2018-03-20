@@ -149,7 +149,7 @@ public class DialogUtils {
         final Intent openRocket = IntentUtils.genFeedbackNotificationClickForBroadcastReceiver(context);
         final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_RATE_CLICK, openRocket,
                 PendingIntent.FLAG_ONE_SHOT);
-        final String string = context.getString(R.string.rate_app_dialog_text_title) + "\uD83D\uDE4C";
+        final String string = context.getString(R.string.rate_app_dialog_text_title) + "\uD83D\uDE00";
         final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
                 .setContentText(string);
 
@@ -179,7 +179,7 @@ public class DialogUtils {
         final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, openDefaultBrowserSetting,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        final String title = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE4C";
+        final String title = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A";
         NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
                 .setContentTitle(title);
 
