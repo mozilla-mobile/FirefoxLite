@@ -80,6 +80,7 @@ public class ScreenshotProvider extends ContentProvider {
         if (id < 0) {
             return null;
         } else {
+            notifyScreenshotChange();
             return ContentUris.withAppendedId(uri, id);
         }
     }
@@ -116,5 +117,9 @@ public class ScreenshotProvider extends ContentProvider {
         }
 
         return count;
+    }
+
+    private void notifyScreenshotChange() {
+        getContext().getContentResolver().notifyChange(ScreenshotContract.Screenshot.CONTENT_URI, null);
     }
 }
