@@ -664,6 +664,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 Settings.getInstance(this).setScreenshotOnBoardingDone();
                 onCapturePageClicked();
                 TelemetryWrapper.clickToolbarCapture();
+                break;
             case R.id.action_pin_shortcut:
                 onAddToHomeClicked();
                 TelemetryWrapper.clickAddToHome();
