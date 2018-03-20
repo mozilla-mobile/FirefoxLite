@@ -179,11 +179,9 @@ public class DialogUtils {
         final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, openDefaultBrowserSetting,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        final String title = context.getString(R.string.app_name);
-        final String content = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE4C";
+        final String title = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE4C";
         NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
-                .setContentTitle(title)
-                .setContentText(content);
+                .setContentTitle(title);
 
         // Show notification
         NotificationUtil.sendNotification(context, NotificationId.DEFAULT_BROWSER, builder);
