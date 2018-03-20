@@ -61,7 +61,10 @@ public class Settings {
     }
 
     public boolean shouldShowFirstrun() {
-        return !preferences.getBoolean(FirstrunFragment.FIRSTRUN_PREF, false);
+        final boolean firstrunShown = preferences.getBoolean(FirstrunFragment.PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, false);
+        final int firserunUpgradeVersion = preferences.getInt(FirstrunFragment.PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, 0);
+
+        return FirstrunFragment.FIRSTRUN_UPGRADE_VERSION > firserunUpgradeVersion || !firstrunShown;
     }
 
     public boolean shouldSaveToRemovableStorage() {

@@ -165,6 +165,12 @@
     <string name="first_run_page4_title">Screenshot everything</string>
     <string name="first_run_page4_text">Take screenshots of entire web pages. View a screenshot offline (without using data) or tap it to revisit the web page.</string>
 
+    <string name="first_run_upgrade_page_title">We heard your feedback!</string>
+    <string name="first_run_upgrade_page_text1">1. Multitask by opening %s at the same time!</string>
+    <string name="first_run_upgrade_page_text1_highlight">multiple tabs</string>
+    <string name="first_run_upgrade_page_text2">2. Access your favorite sites quickly by %s</string>
+    <string name="first_run_upgrade_page_text2_highlight">adding them to the home screen!</string>
+
     <string name="firstrun_close_button">OK, got it!</string>
     <string name="firstrun_skip_button">Skip</string>
     <string name="firstrun_next_button">Next</string>

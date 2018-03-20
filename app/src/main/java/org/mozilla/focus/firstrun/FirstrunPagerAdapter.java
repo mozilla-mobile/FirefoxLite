@@ -53,10 +53,6 @@ public class FirstrunPagerAdapter extends PagerAdapter {
         this.listener = listener;
         this.pages = new FirstrunPage[]{
                 new FirstrunPage(
-                        context.getString(R.string.first_run_page1_title, context.getString(R.string.app_name)),
-                        context.getString(R.string.first_run_page1_text),
-                        "first_run_img_1.json"),
-                new FirstrunPage(
                         context.getString(R.string.first_run_page2_title),
                         context.getString(R.string.first_run_page2_text),
                         "first_run_img_2.json"),
@@ -68,6 +64,10 @@ public class FirstrunPagerAdapter extends PagerAdapter {
                         context.getString(R.string.first_run_page4_title),
                         context.getString(R.string.first_run_page4_text),
                         "first_run_img_4.json"),
+                new FirstrunPage(
+                        context.getString(R.string.first_run_page1_title, context.getString(R.string.app_name)),
+                        context.getString(R.string.first_run_page1_text),
+                        "first_run_img_1.json")
         };
     }
 

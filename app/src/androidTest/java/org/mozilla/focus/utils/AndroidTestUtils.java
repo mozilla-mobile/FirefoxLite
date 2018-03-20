@@ -13,6 +13,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.FirstrunFragment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +24,8 @@ import okio.Okio;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.mozilla.focus.fragment.FirstrunFragment.FIRSTRUN_PREF;
+import static org.mozilla.focus.fragment.FirstrunFragment.PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN;
+import static org.mozilla.focus.fragment.FirstrunFragment.PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 public final class AndroidTestUtils {
@@ -37,7 +39,8 @@ public final class AndroidTestUtils {
         if (preferences != null) {
             final SharedPreferences.Editor editor = preferences.edit();
             if (editor != null) {
-                editor.putBoolean(FIRSTRUN_PREF, true).commit();
+                editor.putBoolean(PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, true)
+                        .putInt(PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, FirstrunFragment.FIRSTRUN_UPGRADE_VERSION).commit();
             }
         }
         final Settings settings = Settings.getInstance(context);
