@@ -145,58 +145,72 @@
         android:layout_height="1dp"
         android:background="@color/colorDivider" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical">
 
-        <RelativeLayout
-            style="@style/BottomMenuButtonContainerWithMargin"
-            android:id="@+id/action_next">
-            <View
-                style="@style/MenuButtonIcon"
-                android:background="@drawable/action_next"
-                android:contentDescription="@string/content_description_forward"/>
-        </RelativeLayout>
-        <RelativeLayout
-            style="@style/BottomMenuButtonContainerWithMargin"
-            android:id="@+id/action_loading">
-            <View
-                style="@style/MenuButtonIcon"
-                android:id="@+id/action_refresh"
-                android:background="@drawable/action_refresh"
-                android:contentDescription="@string/content_description_reload"/>
-            <View
-                style="@style/MenuButtonIcon"
-                android:id="@+id/action_stop"
-                android:background="@drawable/edit_close"
-                android:contentDescription="@string/content_description_stop"
-                android:visibility="gone"/>
-        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fixed_menu_height"
+        android:gravity="center">
 
-        <RelativeLayout
-            android:id="@+id/action_pin_shortcut"
-            style="@style/BottomMenuButtonContainerWithMargin">
+        <org.mozilla.focus.widget.EqualDistributeRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/menu_layout_margin"
+            android:layout_marginStart="@dimen/menu_layout_margin">
 
-            <View
-                style="@style/MenuButtonIcon"
-                android:background="@drawable/action_add_to_home"/>
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/action_next"
+                style="@style/BottomMenuButtonContainerWithMargin">
 
-        <RelativeLayout
-            style="@style/BottomMenuButtonContainerWithMargin"
-            android:id="@+id/action_share">
-            <View
-                style="@style/MenuButtonIcon"
-                android:background="@drawable/menu_share"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/capture_page"
-            style="@style/BottomMenuButtonContainer">
-            <View
-                style="@style/MenuButtonIcon"
-                android:background="@drawable/action_capture"/>
-        </RelativeLayout>
-    </LinearLayout>
+                <View
+                    style="@style/MenuButtonIcon"
+                    android:background="@drawable/action_next"
+                    android:contentDescription="@string/content_description_forward" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/action_loading"
+                style="@style/BottomMenuButtonContainerWithMargin">
+
+                <View
+                    android:id="@+id/action_refresh"
+                    style="@style/MenuButtonIcon"
+                    android:background="@drawable/action_refresh"
+                    android:contentDescription="@string/content_description_reload" />
+
+                <View
+                    android:id="@+id/action_stop"
+                    style="@style/MenuButtonIcon"
+                    android:background="@drawable/edit_close"
+                    android:contentDescription="@string/content_description_stop"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/action_pin_shortcut"
+                style="@style/BottomMenuButtonContainerWithMargin">
+
+                <View
+                    style="@style/MenuButtonIcon"
+                    android:background="@drawable/action_add_to_home" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/action_share"
+                style="@style/BottomMenuButtonContainerWithMargin">
+
+                <View
+                    style="@style/MenuButtonIcon"
+                    android:background="@drawable/menu_share" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/capture_page"
+                style="@style/BottomMenuButtonContainer">
+
+                <View
+                    style="@style/MenuButtonIcon"
+                    android:background="@drawable/action_capture" />
+            </RelativeLayout>
+        </org.mozilla.focus.widget.EqualDistributeRow>
+    </RelativeLayout>
 </LinearLayout>
