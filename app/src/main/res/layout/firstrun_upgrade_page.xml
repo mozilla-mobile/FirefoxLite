@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#883388FF">
+
+    <!-- The actual size of FirstrunCardView is determined in onMeasure() -->
+    <org.mozilla.focus.firstrun.FirstrunCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:elevation="4dp"
+        cardview:cardBackgroundColor="#FFF9F9FA"
+        cardview:cardCornerRadius="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fadingEdgeLength="12sp"
+                android:fillViewport="true"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:requiresFadingEdge="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/first_run_upgrade_title_margin_bottom"
+                        android:layout_marginTop="@dimen/first_run_upgrade_title_margin_top"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/onboarding_text_highlight"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif"
+                        tools:text="@string/first_run_upgrade_page_title" />
+
+                    <ImageView
+                        android:id="@+id/image1"
+                        android:layout_width="140dp"
+                        android:layout_height="110dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/first_run_upgrade_image1"
+                        tools:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14dp"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingMultiplier="1.25"
+                        android:textColor="@color/onboarding_text_normal"
+                        android:textSize="14sp"
+                        tools:text="@string/first_run_upgrade_page_text1" />
+
+                    <ImageView
+                        android:id="@+id/image2"
+                        android:layout_width="@dimen/first_run_upgrade_image2_size"
+                        android:layout_height="@dimen/first_run_upgrade_image2_size"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/first_run_upgrade_image2"
+                        tools:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/text2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingMultiplier="1.25"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/onboarding_text_normal"
+                        android:textSize="14sp"
+                        tools:text="@string/first_run_upgrade_page_text2" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="?android:attr/selectableItemBackground"
+                android:textColor="@color/colorAccent"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                tools:text="@string/firstrun_next_button" />
+
+        </LinearLayout>
+
+    </org.mozilla.focus.firstrun.FirstrunCardView>
+
+</FrameLayout>

@@ -38,6 +38,8 @@
 
     <color name="onboarding_indicator_default">#7FFFFFFF</color>
     <color name="onboarding_indicator_selected">#FFFFFFFF</color>
+    <color name="onboarding_text_highlight">#272727</color>
+    <color name="onboarding_text_normal">#737373</color>
 
     <color name="colorMenuBackground">#F9F9FA</color>
     <color name="colorMenuIconForeground">#272727</color>

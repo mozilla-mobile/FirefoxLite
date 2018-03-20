@@ -6,6 +6,7 @@
 package org.mozilla.focus.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -14,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -24,12 +26,15 @@ import android.view.ViewGroup;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.firstrun.FirstrunPagerAdapter;
+import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public class FirstrunFragment extends Fragment implements View.OnClickListener {
     public static final String FRAGMENT_TAG = "firstrun";
 
-    public static final String FIRSTRUN_PREF = "firstrun_shown";
+    public static final String PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN = "firstrun_shown";
+    public static final String PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION = "firstrun_upgrade_version";
+    public static final int FIRSTRUN_UPGRADE_VERSION = 1;
 
     public static FirstrunFragment create() {
         return new FirstrunFragment();
@@ -73,7 +78,11 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
         final View background = view.findViewById(R.id.background);
         background.setBackground(bgTransitionDrawable);
 
-        final FirstrunPagerAdapter adapter = new FirstrunPagerAdapter(container.getContext(), this);
+        PagerAdapter adapter = findPagerAdapter(container.getContext(), this);
+        if (adapter == null) {
+            finishFirstrun();
+            return view;
+        }
 
         viewPager = (ViewPager) view.findViewById(R.id.pager);
 
@@ -113,8 +122,10 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager, true);
+        if (adapter.getCount() > 1) {
+            final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(viewPager, true);
+        }
 
         return view;
     }
@@ -148,10 +159,25 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private PagerAdapter findPagerAdapter(Context context, View.OnClickListener onClickListener) {
+        final PagerAdapter pagerAdapter;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean shown = sharedPreferences.getBoolean(PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, false);
+        int firstrunUpgradeVersion = sharedPreferences.getInt(PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, 0);
+        if (!shown) {
+            pagerAdapter = new FirstrunPagerAdapter(context, onClickListener);
+        } else if (FIRSTRUN_UPGRADE_VERSION > firstrunUpgradeVersion) {
+            pagerAdapter = new FirstrunUpgradePagerAdapter(context, onClickListener);
+        } else {
+            pagerAdapter = null;
+        }
+        return pagerAdapter;
+    }
+
     private void finishFirstrun() {
-        PreferenceManager.getDefaultSharedPreferences(getContext())
-                .edit()
-                .putBoolean(FIRSTRUN_PREF, true)
+        PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
+                .putInt(PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, FIRSTRUN_UPGRADE_VERSION)
+                .putBoolean(PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, true)
                 .apply();
 
         ((MainActivity) getActivity()).firstrunFinished();
