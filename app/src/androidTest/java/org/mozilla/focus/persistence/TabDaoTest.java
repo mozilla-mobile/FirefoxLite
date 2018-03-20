@@ -1,13 +1,10 @@
 package org.mozilla.focus.persistence;
 
-import android.arch.persistence.room.Room;
-import android.support.test.InstrumentationRegistry;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mozilla.focus.Inject;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -21,10 +18,8 @@ public class TabDaoTest {
 
     @Before
     public void initDb() throws Exception {
-        // using an in-memory database because the information stored here disappears when the
-        // process is killed
-        tabsDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
-                TabsDatabase.class).build();
+        tabsDatabase = Inject.getTabsDatabase(null);
+        tabsDatabase.tabDao().deleteAllTabs();
     }
 
     @After
