@@ -381,11 +381,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @VisibleForTesting
     public BrowserFragment getVisibleBrowserFragment() {
         final BrowserFragment browserFragment = getBrowserFragment();
-        if (browserFragment == null || !browserFragment.isVisible()) {
-            return null;
-        } else {
-            return browserFragment;
-        }
+        return isTopVisibleFragment(browserFragment) ? browserFragment : null;
     }
 
     private void showMenu() {
@@ -395,7 +391,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void updateMenu() {
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
-        final boolean hasLoadedPage = browserFragment != null && !browserFragment.isLoading();
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
 
         setEnable(nextButton, canGoForward);
@@ -786,8 +781,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
-    public boolean isTopVisibleFragment(@NonNull Fragment fragment) {
-        return mainMediator.isTopVisibleFragment(fragment);
+    public boolean isTopVisibleFragment(@Nullable Fragment fragment) {
+        if (fragment instanceof BrowserFragment) {
+            return browserMediator.isBrowserFragmentAtTop();
+        }
+        return fragment != null && mainMediator.isTopVisibleFragment(fragment);
     }
 
     public FirstrunFragment createFirstRunFragment() {
