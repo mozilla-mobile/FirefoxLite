@@ -687,16 +687,20 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onAddToHomeClicked() {
-        final Intent shortcut = new Intent(Intent.ACTION_VIEW);
         final Tab focusTab = getTabsSession().getFocusTab();
+        if (focusTab == null) {
+            return;
+        }
         final String url = focusTab.getUrl();
         // If we pin an invalid url as shortcut, the app will not function properly.
         // TODO: only enable the bottom menu item if the page is valid and loaded.
         if (!UrlUtils.isUrl(url)) {
             return;
         }
-        shortcut.setData(Uri.parse(url));
         final Bitmap bitmap = focusTab.getFavicon();
+        final Intent shortcut = new Intent(Intent.ACTION_VIEW);
+        shortcut.setClass(this, MainActivity.class);
+        shortcut.setData(Uri.parse(url));
 
         ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
     }
