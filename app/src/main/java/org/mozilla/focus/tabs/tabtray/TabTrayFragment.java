@@ -326,8 +326,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 if (isPositionVisibleWhenCollapse(adapter.getFocusedTabPosition())) {
                     setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
                     logoMan.setVisibility(View.VISIBLE);
+                    setIntercept(false);
                 } else {
                     setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
+                    setIntercept(true);
                 }
             }
         };
@@ -345,7 +347,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Nullable
-    private BottomSheetBehavior getBehavior(View view) {
+    private InterceptBehavior getBehavior(View view) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (!(params instanceof CoordinatorLayout.LayoutParams)) {
             return null;
@@ -356,8 +358,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             return null;
         }
 
-        if (behavior instanceof BottomSheetBehavior) {
-            return (BottomSheetBehavior) behavior;
+        if (behavior instanceof InterceptBehavior) {
+            return (InterceptBehavior) behavior;
         }
         return null;
     }
@@ -383,6 +385,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             return behavior.getPeekHeight();
         }
         return 0;
+    }
+
+    private void setIntercept(boolean intercept) {
+        InterceptBehavior behavior = getBehavior(recyclerView);
+        if (behavior != null) {
+            behavior.setIntercept(intercept);
+        }
     }
 
     private void initRecyclerViewStyle(RecyclerView recyclerView) {
@@ -527,6 +536,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             // tray is fully expanded (slideOffset >= 1). See prepareExpandAnimation()
             logoMan.setVisibility(View.VISIBLE);
         }
+        setIntercept(false);
     }
 
     private void postOnNextFrame(final Runnable runnable) {
