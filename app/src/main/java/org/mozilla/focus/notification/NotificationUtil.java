@@ -30,7 +30,9 @@ public class NotificationUtil {
                 .setColor(ContextCompat.getColor(context, R.color.surveyNotificationAccent))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                // DEFAULT_VIBRATE makes notifications can show heads-up for Android 7 and below
+                .setDefaults(NotificationCompat.DEFAULT_VIBRATE);
 
 
         if (BuildCompat.isAtLeastN()) {
@@ -49,6 +51,7 @@ public class NotificationUtil {
         if (notificationManager != null) {
             notificationManager.notify(id, builder.build());
         }
+
     }
 
     // Configure the notification channel if needed
@@ -56,7 +59,8 @@ public class NotificationUtil {
         // NotificationChannel API is only available for Android O and above, so we need to add the check here so IDE won't complain
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final String channelName = context.getString(R.string.app_name);
-            final NotificationChannel notificationChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            // IMPORTANCE_HIGH makes notifications can show heads-up for Android 8 and above
+            final NotificationChannel notificationChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationManager.createNotificationChannel(notificationChannel);
