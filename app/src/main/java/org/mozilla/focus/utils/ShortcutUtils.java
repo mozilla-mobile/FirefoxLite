@@ -39,7 +39,7 @@ public class ShortcutUtils {
             // if favicon is not ready, we use the default initial icon with white color
             icon = FavIconUtils.getInitialBitmap(resources, null, representativeCharacter);
         } else {
-            icon = FavIconUtils.getRefinedBitmap(resources, bitmap, representativeCharacter);
+            icon = FavIconUtils.getRefinedShortcutIcon(resources, bitmap, representativeCharacter);
         }
         // label must not be empty
         String label = title;
