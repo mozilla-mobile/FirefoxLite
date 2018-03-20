@@ -182,11 +182,10 @@ public class Tab {
         tabModel.setFavicon(icon);
     }
 
-    /* package */ TabView initializeView(@NonNull final Activity activity) {
+    /* package */ TabView initializeView(@NonNull final TabViewProvider provider) {
         final String url = this.getUrl(); // fallback for restoring tab
         if (tabView == null) {
-            // FIXME: this casting does not make enough sense. TabView and View is totally different
-            tabView = (TabView) WebViewProvider.create(activity, null);
+            tabView = provider.create();
 
             tabView.setViewClient(tabViewClient);
             tabView.setChromeClient(tabChromeClient);
