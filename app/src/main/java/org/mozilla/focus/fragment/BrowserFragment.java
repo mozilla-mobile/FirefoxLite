@@ -1046,7 +1046,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onFocusChanged(@Nullable final Tab tab, @Factor int factor) {
             if (tab == null) {
-                if (factor == FACTOR_NO_FOCUS) {
+                if (factor == FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
                     notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
                 } else {
                     getActivity().finish();
