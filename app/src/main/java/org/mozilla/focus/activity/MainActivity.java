@@ -33,8 +33,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
@@ -876,12 +878,23 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onAddToHomeClicked() {
         final Intent shortcut = new Intent(Intent.ACTION_VIEW);
-        final Tab focusTab = getTabsSession().getFocusTab();
-        final String url = focusTab.getUrl();
-        shortcut.setData(Uri.parse(url));
-        final Bitmap bitmap = focusTab.getFavicon();
+        final BrowserFragment browserFragment = getBrowserFragment();
+        if (browserFragment == null) {
+            return;
+        }
+        final IWebView webView = browserFragment.getWebView();
+        if (webView == null) {
+            return;
+        }
 
-        ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
+        final String url = webView.getUrl();
+        shortcut.setData(Uri.parse(url));
+        try {
+            final Bitmap bitmap = ((WebView) webView).getFavicon();
+            ShortcutUtils.requestPinShortcut(this, shortcut, webView.getTitle(), url, bitmap);
+        } catch (ClassCastException e) {
+            Log.e(MainActivity.class.getSimpleName(), "Can't get favicon: " + e);
+        }
     }
 
     @Override
