@@ -16,12 +16,12 @@ public class TabModelTest {
 
     @Test
     public void testSanity() {
-        Assert.assertFalse(TabModel.isSane(new TabModel(null, null)));
-        Assert.assertFalse(TabModel.isSane(new TabModel(null, null, "title", "")));
-        Assert.assertFalse(TabModel.isSane(new TabModel(null, null, null, "url")));
-        Assert.assertFalse(TabModel.isSane(new TabModel("id", null, null, null)));
+        Assert.assertFalse(new TabModel(null, null).isValid());
+        Assert.assertFalse(new TabModel(null, null, "title", "").isValid());
+        Assert.assertFalse(new TabModel(null, null, null, "url").isValid());
+        Assert.assertFalse(new TabModel("id", null, null, null).isValid());
 
-        Assert.assertTrue(TabModel.isSane(new TabModel("id", null, null, "url")));
-        Assert.assertTrue(TabModel.isSane(new TabModel("id", null, "title", "url")));
+        Assert.assertTrue(new TabModel("id", null, null, "url").isValid());
+        Assert.assertTrue(new TabModel("id", null, "title", "url").isValid());
     }
 }
