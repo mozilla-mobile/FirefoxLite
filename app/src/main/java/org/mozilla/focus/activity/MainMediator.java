@@ -64,6 +64,11 @@ public class MainMediator {
         this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
+    // A.k.a. close Home Screen
+    public void showBrowserScreen() {
+        clearAllFragmentImmediate();
+    }
+
     // If openInNewTab is not provided, we decide based on current state of MainMediator
     public void showBrowserScreen(final @NonNull String url) {
         showBrowserScreen(url, isHomeFragmentVisible());
