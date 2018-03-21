@@ -68,6 +68,7 @@ import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.IWebView;
 import org.mozilla.focus.web.WebViewProvider;
@@ -890,6 +891,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         final String url = webView.getUrl();
+        // If we pin an invalid url as shortcut, the app will not function properly.
+        // TODO: only enable the bottom menu item if the page is valid and loaded.
+        if (!UrlUtils.isUrl(url)) {
+            return;
+        }
         shortcut.setData(Uri.parse(url));
         try {
             final Bitmap bitmap = ((WebView) webView).getFavicon();
