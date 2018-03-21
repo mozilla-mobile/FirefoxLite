@@ -1023,16 +1023,22 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private String loadedUrl = null;
 
         private ValueAnimator tabTransitionAnimator;
+        private int focusChangeCount = 0;
+
+        private boolean userHasSwitchedTab() {
+            return focusChangeCount >= 2;
+        }
 
         @Override
         public void onFocusChanged(@Nullable final Tab tab, @Factor int factor) {
             if (tab == null) {
-                if (factor == FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
+                if (factor == FACTOR_NO_FOCUS && (!isStartedFromExternalApp() || userHasSwitchedTab())) {
                     notifyParent(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {true, false});
                 } else {
                     getActivity().finish();
                 }
             } else {
+                focusChangeCount++;
                 transitToTab(tab);
                 refreshChrome(tab);
             }
