@@ -119,9 +119,6 @@
         <item name="android:background">@drawable/round_rectangle_ripple</item>
     </style>
 
-    <style name="BottomMenuButtonContainerWithMargin" parent="BottomMenuButtonContainer">
-        <item name="android:layout_marginEnd">@dimen/menu_bottom_space</item>
-    </style>
 
     <style name="MenuBottomButton">
         <item name="android:layout_height">24dp</item>

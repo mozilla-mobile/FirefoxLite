@@ -9,4 +9,6 @@
     <dimen name="top_site_textview_width">65dp</dimen>
 
     <dimen name="menu_layout_margin">20dp</dimen>
+    <dimen name="fixed_menu_horizontal_margin">40dp</dimen>
+
 </resources>
