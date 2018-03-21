@@ -6,12 +6,10 @@
 package org.mozilla.focus.webkit;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -23,6 +21,7 @@ import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
@@ -45,7 +44,7 @@ import org.mozilla.focus.web.Download;
 import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.web.WebViewProvider;
 
-public class WebkitView extends NestedWebView implements TabView, SharedPreferences.OnSharedPreferenceChangeListener {
+public class WebkitView extends NestedWebView implements TabView {
     private static final String KEY_CURRENTURL = "currenturl";
 
     private TabViewClient viewClient;
@@ -54,6 +53,8 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
     private FocusWebViewClient client;
     private final FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
+
+    private boolean shouldReloadOnAttached = false;
 
     public WebkitView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -78,19 +79,15 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        if (shouldReloadOnAttached) {
+            shouldReloadOnAttached = false;
+            reload();
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
-        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        WebViewProvider.applyAppSettings(getContext(), getSettings());
     }
 
     @Override
@@ -137,12 +134,35 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
     }
 
     @Override
-    public void setBlockingEnabled(boolean enabled) {
-        client.setBlockingEnabled(enabled);
+    public void setContentBlockingEnabled(boolean enable) {
+        if (client.isBlockingEnabled() == enable) {
+            return;
+        }
+
+        client.setBlockingEnabled(enable);
+
+        if (!enable) {
+            reloadOnAttached();
+        }
     }
 
     public boolean isBlockingEnabled() {
         return client.isBlockingEnabled();
+    }
+
+    @Override
+    public void setImageBlockingEnabled(boolean enable) {
+        WebSettings settings = getSettings();
+        if (enable == settings.getBlockNetworkImage()
+                && enable == !settings.getLoadsImagesAutomatically()) {
+            return;
+        }
+
+        WebViewProvider.applyAppSettings(getContext(), getSettings());
+
+        if (enable) {
+            reloadOnAttached();
+        }
     }
 
     @Override
@@ -187,6 +207,14 @@ public class WebkitView extends NestedWebView implements TabView, SharedPreferen
             super.loadUrl(getUrl());
         } else {
             super.reload();
+        }
+    }
+
+    private void reloadOnAttached() {
+        if (isAttachedToWindow()) {
+            reload();
+        } else {
+            shouldReloadOnAttached = true;
         }
     }
 

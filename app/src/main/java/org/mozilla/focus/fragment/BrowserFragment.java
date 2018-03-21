@@ -564,6 +564,22 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         super.onDestroyView();
     }
 
+    public void setContentBlockingEnabled(boolean enabled) {
+        // TODO: Better if we can move this logic to some setting-like classes, and provider interface
+        // for configuring blocking function of each tab.
+        for (final Tab tab : tabsSession.getTabs()) {
+            tab.setContentBlockingEnabled(enabled);
+        }
+    }
+
+    public void setImageBlockingEnabled(boolean enabled) {
+        // TODO: Better if we can move this logic to some setting-like classes, and provider interface
+        // for configuring blocking function of each tab.
+        for (Tab tab : tabsSession.getTabs()) {
+            tab.setImageBlockingEnabled(enabled);
+        }
+    }
+
     public interface LoadStateListener {
         void isLoadingChanged(boolean isLoading);
     }
@@ -829,13 +845,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         return true;
-    }
-
-    public void setBlockingEnabled(boolean enabled) {
-        final List<Tab> tabs = tabsSession.getTabs();
-        for (final Tab tab : tabs) {
-            tab.setBlockingEnabled(enabled);
-        }
     }
 
     public void loadUrl(@NonNull final String url, boolean openNewTab) {

@@ -84,7 +84,7 @@ public class InfoActivity extends AppCompatActivity {
             final View view = WebViewProvider.create(this, attrs);
 
             final TabView webView = (TabView) view;
-            webView.setBlockingEnabled(false);
+            webView.setContentBlockingEnabled(false);
 
             return view;
         }

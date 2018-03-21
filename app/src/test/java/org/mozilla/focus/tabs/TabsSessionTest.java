@@ -368,7 +368,12 @@ public class TabsSessionTest {
         private String url = null;
 
         @Override
-        public void setBlockingEnabled(boolean enabled) {
+        public void setContentBlockingEnabled(boolean enabled) {
+
+        }
+
+        @Override
+        public void setImageBlockingEnabled(boolean enabled) {
 
         }
 
