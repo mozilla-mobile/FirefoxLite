@@ -840,8 +840,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             final Tab focus = tabsSession.getFocusTab();
             if (focus == null) {
                 return false;
-            } else {
+            } else if (focus.isFromExternal()) {
                 tabsSession.closeTab(focus.getId());
+            } else {
+                ScreenNavigator.get(getContext()).popToHomeScreen(true);
             }
         }
 
