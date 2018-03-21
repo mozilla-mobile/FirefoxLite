@@ -706,7 +706,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!safeForFragmentTransactions) {
             return;
         }
-        if (getVisibleBrowserFragment().onBackPressed()) {
+        if (this.mediator.isBrowserFragmentAtTop() && getVisibleBrowserFragment().onBackPressed()) {
             return;
         }
         super.onBackPressed();
@@ -740,10 +740,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case SHOW_HOME:
                 boolean animated = true;
-                if (payload != null && payload instanceof Boolean) {
-                    animated = (Boolean) payload;
+                boolean addToBackStack = false;
+                if (payload != null && payload instanceof boolean[]) {
+                    animated = ((boolean[]) payload)[0];
+                    addToBackStack = ((boolean[]) payload)[1];
                 }
-                this.mediator.showHomeScreen(animated);
+                this.mediator.showHomeScreen(animated, addToBackStack);
                 break;
             case SHOW_MENU:
                 this.showMenu();
