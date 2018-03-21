@@ -51,7 +51,9 @@ public interface TabView {
     /**
      * Enable/Disable content blocking for this session (Only the blockers that are enabled in the app's settings will be turned on/off).
      */
-    void setBlockingEnabled(boolean enabled);
+    void setContentBlockingEnabled(boolean enabled);
+
+    void setImageBlockingEnabled(boolean enabled);
 
     boolean isBlockingEnabled();
 

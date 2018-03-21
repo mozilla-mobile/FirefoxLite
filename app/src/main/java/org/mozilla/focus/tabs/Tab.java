@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.tabs;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.web.DownloadCallback;
-import org.mozilla.focus.web.WebViewProvider;
 
 import java.util.UUID;
 
@@ -118,9 +116,15 @@ public class Tab {
         downloadCallback = callback;
     }
 
-    public void setBlockingEnabled(final boolean enabled) {
+    public void setContentBlockingEnabled(final boolean enabled) {
         if (tabView != null) {
-            tabView.setBlockingEnabled(enabled);
+            tabView.setContentBlockingEnabled(enabled);
+        }
+    }
+
+    public void setImageBlockingEnabled(boolean enabled) {
+        if (tabView != null) {
+            tabView.setImageBlockingEnabled(enabled);
         }
     }
 
