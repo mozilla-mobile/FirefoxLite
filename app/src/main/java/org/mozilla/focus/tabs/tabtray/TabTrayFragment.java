@@ -227,6 +227,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void tabSwitched(int tabPosition) {
+        notifyFragmentListener(FragmentListener.TYPE.DISMISS_HOME, null);
         postOnNextFrame(dismissRunnable);
     }
 

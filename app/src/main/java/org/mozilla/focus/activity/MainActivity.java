@@ -761,6 +761,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case DISMISS_URL_INPUT:
                 this.mediator.dismissUrlInput();
                 break;
+            case DISMISS_HOME:
+                this.mediator.showBrowserScreen();
+                break;
             case FRAGMENT_STARTED:
                 if ((payload != null) && (payload instanceof String)) {
                     this.mediator.onFragmentStarted(((String) payload).toLowerCase(Locale.ROOT));
