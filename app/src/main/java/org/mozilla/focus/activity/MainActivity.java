@@ -706,9 +706,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!safeForFragmentTransactions) {
             return;
         }
-        if (this.mediator.handleBackKey()) {
-            return;
-        }
         if (getVisibleBrowserFragment().onBackPressed()) {
             return;
         }
