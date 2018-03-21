@@ -478,7 +478,7 @@ public class TabsSession {
             final String id = addTabInternal(null,
                     source.getId(),
                     false,
-                    false,
+                    isUserGesture,
                     null);
 
             final Tab tab = getTab(id);
