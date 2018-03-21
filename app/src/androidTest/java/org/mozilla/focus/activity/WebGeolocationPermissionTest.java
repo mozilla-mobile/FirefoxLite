@@ -7,9 +7,11 @@ package org.mozilla.focus.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.Keep;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.web.webdriver.Locator;
+import android.support.test.filters.SdkSuppress;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -44,6 +46,12 @@ import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 import static org.hamcrest.Matchers.containsString;
 
 @Keep
+// Ignore this test since from
+// https://developer.android.com/reference/android/webkit/WebView.html:
+// "For applications targeting Android N and later releases (API level > M) the geolocation
+// api is only supported on secure origins such as https."
+// org.junit.Assume.assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M);
+@SdkSuppress(maxSdkVersion = Build.VERSION_CODES.M)
 @RunWith(AndroidJUnit4.class)
 public class WebGeolocationPermissionTest {
 
