@@ -90,7 +90,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View stopIcon;
     private View pinShortcut;
 
-    private MainMediator mediator;
+    private MainMediator mainMediator;
+    private BrowserMediator browserMediator;
     private boolean safeForFragmentTransactions = false;
     private DialogFragment mDialogFragment;
 
@@ -109,7 +110,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         initViews();
         initBroadcastReceivers();
 
-        mediator = new MainMediator(this);
+        mainMediator = new MainMediator(this);
+        browserMediator = new BrowserMediator(this, mainMediator);
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -121,17 +123,17 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     pendingUrl = url;
-                    this.mediator.showFirstRun();
+                    this.mainMediator.showFirstRun();
                 } else {
                     boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
                             false);
-                    this.mediator.showBrowserScreen(url, openInNewTab);
+                    this.browserMediator.showBrowserScreen(url, openInNewTab);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
-                    this.mediator.showFirstRun();
+                    this.mainMediator.showFirstRun();
                 } else {
-                    this.mediator.showHomeScreen();
+                    this.mainMediator.showHomeScreen();
                 }
             }
         }
@@ -258,7 +260,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // firstrun is dismissed.
             final SafeIntent intent = new SafeIntent(getIntent());
             boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
-            this.mediator.showBrowserScreen(pendingUrl, openInNewTab);
+            this.browserMediator.showBrowserScreen(pendingUrl, openInNewTab);
             pendingUrl = null;
         }
     }
@@ -411,7 +413,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private Fragment getTopHomeFragment() {
-        final Fragment homeFragment = this.mediator.getTopHomeFragmet();
+        final Fragment homeFragment = this.mainMediator.getTopHomeFragmet();
         if (homeFragment == null) {
             return null;
         } else {
@@ -706,7 +708,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!safeForFragmentTransactions) {
             return;
         }
-        if (this.mediator.isBrowserFragmentAtTop() && getVisibleBrowserFragment().onBackPressed()) {
+        if (this.browserMediator.isBrowserFragmentAtTop() && getVisibleBrowserFragment().onBackPressed()) {
             return;
         }
         super.onBackPressed();
@@ -715,10 +717,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public void firstrunFinished() {
         if (pendingUrl != null) {
             // We have received an URL in onNewIntent(). Let's load it now.
-            this.mediator.showBrowserScreen(pendingUrl, true);
+            this.browserMediator.showBrowserScreen(pendingUrl, true);
             pendingUrl = null;
         } else {
-            this.mediator.showHomeScreen();
+            this.mainMediator.showHomeScreen();
         }
     }
 
@@ -727,12 +729,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         switch (type) {
             case LOAD_URL_FORCE_NEW_TAB:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.showBrowserScreen(payload.toString(), true);
+                    this.browserMediator.showBrowserScreen(payload.toString(), true);
                 }
                 break;
             case LOAD_URL:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.showBrowserScreen(payload.toString());
+                    this.browserMediator.showBrowserScreen(payload.toString());
                 }
                 break;
             case OPEN_PREFERENCE:
@@ -745,7 +747,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     animated = ((boolean[]) payload)[0];
                     addToBackStack = ((boolean[]) payload)[1];
                 }
-                this.mediator.showHomeScreen(animated, addToBackStack);
+                this.mainMediator.showHomeScreen(animated, addToBackStack);
                 break;
             case SHOW_MENU:
                 this.showMenu();
@@ -758,22 +760,22 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     return;
                 }
                 final String url = (payload != null) ? payload.toString() : null;
-                this.mediator.showUrlInput(url);
+                this.mainMediator.showUrlInput(url);
                 break;
             case DISMISS_URL_INPUT:
-                this.mediator.dismissUrlInput();
+                this.mainMediator.dismissUrlInput();
                 break;
             case DISMISS_HOME:
-                this.mediator.showBrowserScreen();
+                this.browserMediator.showBrowserScreen();
                 break;
             case FRAGMENT_STARTED:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.onFragmentStarted(((String) payload).toLowerCase(Locale.ROOT));
+                    this.mainMediator.onFragmentStarted(((String) payload).toLowerCase(Locale.ROOT));
                 }
                 break;
             case FRAGMENT_STOPPED:
                 if ((payload != null) && (payload instanceof String)) {
-                    this.mediator.onFragmentStopped(((String) payload).toLowerCase(Locale.ROOT));
+                    this.mainMediator.onFragmentStopped(((String) payload).toLowerCase(Locale.ROOT));
                 }
                 break;
             case SHOW_SCREENSHOT_HINT:
@@ -794,7 +796,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     public boolean isTopVisibleFragment(@NonNull Fragment fragment) {
-        return mediator.isTopVisibleFragment(fragment);
+        return mainMediator.isTopVisibleFragment(fragment);
     }
 
     public FirstrunFragment createFirstRunFragment() {
@@ -893,7 +895,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         getTabsSession().restoreTabs(tabModelList, currentTabId);
         Tab currentTab = getTabsSession().getFocusTab();
         if (currentTab != null && safeForFragmentTransactions) {
-            MainActivity.this.mediator.showBrowserScreenForRestoreTabs(currentTab.getId());
+            MainActivity.this.browserMediator.showBrowserScreenForRestoreTabs(currentTab.getId());
         }
     }
 
