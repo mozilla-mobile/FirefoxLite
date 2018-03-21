@@ -492,7 +492,6 @@ public class TabsSession {
             transport.setWebView(webView);
             msg.sendToTarget();
 
-            notifier.notifyTabFocused(tab, TabsChromeListener.FACTOR_TAB_ADDED);
             return true;
         }
 
