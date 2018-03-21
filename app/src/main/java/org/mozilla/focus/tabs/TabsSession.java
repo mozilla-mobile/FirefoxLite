@@ -350,9 +350,7 @@ public class TabsSession {
 
         focusRef = (toFocus || fromExternal) ? new WeakReference<>(tab) : focusRef;
 
-        if (!TextUtils.isEmpty(url)) {
-            tab.initializeView(this.tabViewProvider).loadUrl(url);
-        }
+        tab.initializeView(this.tabViewProvider);
 
         if (toFocus || fromExternal) {
             notifier.notifyTabFocused(tab, TabsChromeListener.FACTOR_TAB_ADDED);
