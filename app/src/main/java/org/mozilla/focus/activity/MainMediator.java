@@ -18,7 +18,6 @@ import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
-import org.mozilla.focus.widget.BackKeyHandleable;
 
 public class MainMediator {
 
@@ -114,11 +113,6 @@ public class MainMediator {
         if (UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
             this.activity.onBackPressed();
         }
-    }
-
-    public boolean handleBackKey() {
-        final Fragment topFrg = getTopFragment();
-        return (topFrg instanceof BackKeyHandleable) && ((BackKeyHandleable) topFrg).onBackPressed();
     }
 
     public void onFragmentStarted(@NonNull String tag) {
