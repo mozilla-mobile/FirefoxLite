@@ -279,9 +279,6 @@
     <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
     <string name="screenshot_image_viewer_dialog_delete_msg">Delete this image?</string>
 
-    <string name="screenshot_on_boarding_text_msg">Tap the screenshot button in the menu to capture the whole page.\nFast, easy - come back to the page at anytime!</string>
-    <string name="screenshot_on_boarding_btn_got_it">Got it!</string>
-
     <!-- Title for file picker when user trying to upload a file -->
     <string name="file_picker_title">Choose a file to upload</string>
 

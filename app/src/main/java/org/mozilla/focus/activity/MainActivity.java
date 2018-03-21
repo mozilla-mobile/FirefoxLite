@@ -765,15 +765,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     this.mediator.onFragmentStopped(((String) payload).toLowerCase(Locale.ROOT));
                 }
                 break;
-            case SHOW_SCREENSHOT_HINT:
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DialogUtils.showScreenshotOnBoardingDialog(MainActivity.this);
-                        TelemetryWrapper.showPromoteScreenShotDialog();
-                    }
-                });
-                break;
             case SHOW_TAB_TRAY:
                 TabTray.show(getSupportFragmentManager());
                 break;
