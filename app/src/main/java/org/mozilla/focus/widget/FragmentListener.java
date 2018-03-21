@@ -26,7 +26,6 @@ public interface FragmentListener {
         DISMISS_HOME, // payload is boolean value, true if commitAllowingStateLoss
         DISMISS_URL_INPUT, // payload is boolean value, true if commitAllowingStateLoss
         UPDATE_MENU, // no payload
-        SHOW_SCREENSHOT_HINT, // no payload
         SHOW_TAB_TRAY, // no payload
     }
 

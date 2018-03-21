@@ -66,7 +66,6 @@ import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
-import org.mozilla.focus.screenshot.ScreenshotObserver;
 import org.mozilla.focus.tabs.SiteIdentity;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabCounter;
@@ -83,7 +82,6 @@ import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
@@ -100,7 +98,7 @@ import java.util.WeakHashMap;
  * Fragment for displaying the browser UI.
  */
 public class BrowserFragment extends LocaleAwareFragment implements View.OnClickListener,
-        BackKeyHandleable, ScreenshotObserver.OnScreenshotListener {
+        BackKeyHandleable {
 
     public static final String FRAGMENT_TAG = "browser";
 
@@ -158,8 +156,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     // pending action for file-choosing
     private FileChooseAction fileChooseAction;
-
-    private ScreenshotObserver screenshotObserver;
 
     private PermissionHandler permissionHandler;
     private static final int ACTION_DOWNLOAD = 0;
@@ -333,9 +329,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void onPause() {
         tabsSession.pause();
         super.onPause();
-        if (screenshotObserver != null) {
-            screenshotObserver.stop();
-        }
     }
 
     @Override
@@ -353,10 +346,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (hasPendingScreenCaptureTask) {
             showLoadingAndCapture();
             hasPendingScreenCaptureTask = false;
-        }
-        if (Settings.getInstance(getActivity()).shouldShowScreenshotOnBoarding()) {
-            screenshotObserver = new ScreenshotObserver(getActivity(), this);
-            screenshotObserver.start();
         }
     }
 
@@ -1018,14 +1007,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             return null;
         }
 
-    }
-
-    @Override
-    public void onScreenshotTaken(String screenshotPath, String title) {
-        if (screenshotObserver != null) {
-            screenshotObserver.stop();
-        }
-        notifyParent(FragmentListener.TYPE.SHOW_SCREENSHOT_HINT, null);
     }
 
     private boolean isPopupWindowAllowed() {

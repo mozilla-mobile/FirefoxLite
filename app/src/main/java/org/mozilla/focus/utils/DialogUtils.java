@@ -142,48 +142,6 @@ public class DialogUtils {
         }
     }
 
-    public static void showScreenshotOnBoardingDialog(final Context context) {
-        if (context == null || !Settings.getInstance(context).shouldShowScreenshotOnBoarding()) {
-            return;
-        }
-
-        final AlertDialog dialog = new AlertDialog.Builder(context, R.style.TransparentAlertDialog).create();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                telemetryScreenshotOnBoarding(TelemetryWrapper.Value.DISMISS);
-            }
-        });
-
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_screenshot_onboarding_dialog, (ViewGroup) null);
-
-        dialogView.findViewById(R.id.dialog_screenshot_on_boarding_btn_got_it).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                    telemetryScreenshotOnBoarding(TelemetryWrapper.Value.POSITIVE);
-                }
-            }
-        });
-        dialogView.findViewById(R.id.dialog_background).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                    telemetryScreenshotOnBoarding(TelemetryWrapper.Value.DISMISS);
-                }
-            }
-        });
-        dialog.setView(dialogView);
-        dialog.show();
-        Settings.getInstance(context).setScreenshotOnBoardingDone();
-    }
-
-    private static void telemetryScreenshotOnBoarding(String value) {
-        TelemetryWrapper.promoteScreenShotClickEvent(value);
-    }
-
     public static void showRateAppNotification(Context context) {
 
         // Brings up Rocket and display full screen "Love Rocket" dialog

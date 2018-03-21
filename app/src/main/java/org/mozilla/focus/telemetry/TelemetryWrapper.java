@@ -92,7 +92,6 @@ public final class TelemetryWrapper {
         private static final String FEEDBACK = "feedback";
         private static final String DEFAULT_BROWSER = "default_browser";
         private static final String PROMOTE_SHARE = "promote_share";
-        private static final String PROMOTE_SCREENSHOT = "promote_screenshot";
     }
 
     public static class Value {
@@ -644,13 +643,5 @@ public final class TelemetryWrapper {
 
     public static void showPromoteShareDialog() {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.PROMOTE_SHARE).queue();
-    }
-
-    public static void promoteScreenShotClickEvent(String value) {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PROMOTE_SCREENSHOT, value).queue();
-    }
-
-    public static void showPromoteScreenShotDialog() {
-        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.PROMOTE_SCREENSHOT).queue();
     }
 }
