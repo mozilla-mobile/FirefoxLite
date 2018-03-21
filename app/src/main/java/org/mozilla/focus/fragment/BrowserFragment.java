@@ -833,7 +833,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         } else {
             final Tab focus = tabsSession.getFocusTab();
             if (focus == null) {
-                getActivity().finish();
+                return false;
             } else {
                 tabsSession.closeTab(focus.getId());
             }
@@ -890,7 +890,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 TelemetryWrapper.clickToolbarSearch();
                 break;
             case R.id.btn_open_new_tab:
-                notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                notifyParent(FragmentListener.TYPE.SHOW_HOME, new boolean[] {true, true});
                 // FIXME: 2018/2/12 new telemetry for 2.0 UI
                 break;
             case R.id.btn_tab_tray:
@@ -1047,7 +1047,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onFocusChanged(@Nullable final Tab tab, @Factor int factor) {
             if (tab == null) {
                 if (factor == FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
-                    notifyParent(FragmentListener.TYPE.SHOW_HOME, null);
+                    notifyParent(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {true, false});
                 } else {
                     getActivity().finish();
                 }

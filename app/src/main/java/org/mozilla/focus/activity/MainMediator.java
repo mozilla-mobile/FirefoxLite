@@ -42,8 +42,12 @@ public class MainMediator {
     }
 
     public void showHomeScreen(boolean animated) {
+        this.showHomeScreen(animated, false);
+    }
+
+    public void showHomeScreen(boolean animated, boolean addToBackStack) {
         if (getTopHomeFragmet() == null) {
-            this.prepareHomeScreen(animated).commit();
+            this.prepareHomeScreen(animated, addToBackStack).commit();
         }
     }
 
@@ -127,6 +131,10 @@ public class MainMediator {
         }
     }
 
+    public boolean isBrowserFragmentAtTop() {
+        return getTopFragment() == null;
+    }
+
     private Fragment getTopFragment() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         for (final String tag : FRAGMENTS_SEQUENCE) {
@@ -155,7 +163,7 @@ public class MainMediator {
         return transaction;
     }
 
-    private FragmentTransaction prepareHomeScreen(boolean animated) {
+    private FragmentTransaction prepareHomeScreen(boolean animated, boolean addToBackStack) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment fragment = this.activity.createHomeFragment();
 
@@ -170,12 +178,11 @@ public class MainMediator {
             transaction.setCustomAnimations(0, 0, R.anim.tab_transition_fade_in,
                     R.anim.tab_transition_fade_out);
         }
-        final Fragment topFragment = getTopFragment();
-        if ((topFragment != null) && FirstrunFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
-            transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-        } else {
+        if (addToBackStack) {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
             transaction.addToBackStack(HomeFragment.FRAGMENT_TAG);
+        } else {
+            transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
         }
 
         return transaction;

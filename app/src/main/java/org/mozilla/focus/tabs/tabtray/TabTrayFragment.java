@@ -209,7 +209,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         adapter.setData(tabs);
 
         if (tabs.isEmpty()) {
-            notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME, false);
+            notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {false, false});
             postOnNextFrame(dismissRunnable);
         }
     }
@@ -437,7 +437,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME, false);
+        notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {true, true});
         postOnNextFrame(dismissRunnable);
     }
 
