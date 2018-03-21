@@ -7,17 +7,23 @@ package org.mozilla.focus.components;
 
 import android.Manifest;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.ServiceCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfoManager;
+import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
@@ -56,7 +62,25 @@ public class RelocateService extends IntentService {
         intent.putExtra(Constants.EXTRA_DOWNLOAD_ID, downloadId);
         intent.putExtra(Constants.EXTRA_FILE_PATH, srcFile.getAbsolutePath());
         intent.setType(mediaType);
-        context.startService(intent);
+        ContextCompat.startForegroundService(context, intent);
+    }
+
+    private void startForeground() {
+        final String notificationChannelId;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannelId = NotificationChannel.DEFAULT_CHANNEL_ID;
+        } else {
+            notificationChannelId = "not_used_notification_id";
+        }
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), notificationChannelId);
+
+        Notification notification = builder
+                .build();
+        startForeground(NotificationId.RELOCATE_SERVICE, notification);
+    }
+
+    private void stopForeground() {
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
     }
 
     @Override
@@ -64,6 +88,7 @@ public class RelocateService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_MOVE.equals(action)) {
+                startForeground();
                 final long rowId = intent.getLongExtra(Constants.EXTRA_ROW_ID, -1);
                 final long downloadId = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1);
                 final String type = intent.getType();
@@ -72,6 +97,7 @@ public class RelocateService extends IntentService {
                 if (src.exists() && src.canWrite()) {
                     handleActionMove(rowId, downloadId, src, type);
                 }
+                stopForeground();
             }
         }
     }
