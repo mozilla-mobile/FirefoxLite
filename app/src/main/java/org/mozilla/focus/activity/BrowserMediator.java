@@ -17,7 +17,10 @@ class BrowserMediator {
     }
 
     // A.k.a. close Home Screen
-    void raiseBrowserScreen(boolean animate) {
+    void raiseBrowserScreen(boolean animate, boolean fromTabTray) {
+        if (fromTabTray) {
+            findBrowserFragment(this.activity.getSupportFragmentManager()).setNoSwitchTabAfterNewIntent(false);
+        }
         mainMediator.clearAllFragment(animate);
         this.activity.sendBrowsingTelemetry();
     }
@@ -27,7 +30,7 @@ class BrowserMediator {
         findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab, new Runnable() {
             @Override
             public void run() {
-                raiseBrowserScreen(true);
+                raiseBrowserScreen(true, false);
             }
         });
     }
@@ -35,7 +38,7 @@ class BrowserMediator {
     void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         findBrowserFragment(fragmentManager).loadTab(tabId);
-        raiseBrowserScreen(false);
+        raiseBrowserScreen(false, false);
     }
 
 

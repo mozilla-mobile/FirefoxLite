@@ -136,6 +136,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private String geolocationOrigin;
     private GeolocationPermissions.Callback geolocationCallback;
     private AlertDialog geoDialog;
+    private boolean noSwitchTabAfterNewIntent = true;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -838,10 +839,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             goBack();
         } else {
             final Tab focus = tabsSession.getFocusTab();
-            if (focus == null) {
+            if (startedFromExternalAndStays()) {
+                tabsSession.closeTab(focus.getId());
+            } else if (focus == null) {
                 return false;
             } else {
-                tabsSession.closeTab(focus.getId());
+                ScreenNavigator.get(getContext()).popToHomeScreen(true);
             }
         }
 
@@ -1036,6 +1039,14 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         return ScreenNavigator.get(getContext()).isBrowserInForeground();
     }
 
+    private boolean startedFromExternalAndStays() {
+        return isStartedFromExternalApp() && noSwitchTabAfterNewIntent;
+    }
+
+    public void setNoSwitchTabAfterNewIntent(boolean newValue) {
+        noSwitchTabAfterNewIntent = newValue;
+    }
+
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
         private HistoryInserter historyInserter = new HistoryInserter();
 
@@ -1048,7 +1059,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onFocusChanged(@Nullable final Tab tab, @Factor int factor) {
             if (tab == null) {
-                if (factor == FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
+                if (factor == FACTOR_NO_FOCUS && !startedFromExternalAndStays()) {
                     ScreenNavigator.get(getContext()).popToHomeScreen(true);
                 } else {
                     getActivity().finish();

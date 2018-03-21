@@ -53,7 +53,7 @@ public class ScreenNavigator {
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
 
-        this.browserMediator.raiseBrowserScreen(animate);
+        this.browserMediator.raiseBrowserScreen(animate, true);
     }
 
     /**
