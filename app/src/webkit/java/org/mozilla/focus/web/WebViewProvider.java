@@ -96,6 +96,9 @@ public class WebViewProvider {
         //noinspection deprecation - This method is deprecated but let's call it in case WebView implementations still obey it.
         settings.setSavePassword(false);
 
+        // We have multi-tabs support
+        settings.setSupportMultipleWindows(true);
+
         // We accept third party cookies
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webkitView, true);
