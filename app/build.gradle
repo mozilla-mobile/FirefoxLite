@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 apply plugin: 'jacoco-android'
@@ -186,6 +187,7 @@ dependencies {
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+    kapt 'com.github.bumptech.glide:compiler:4.0.0'
 
     implementation "com.android.support:support-v4:$rootProject.androidSupportVersion"
     implementation "com.android.support:appcompat-v7:$rootProject.androidSupportVersion"
@@ -196,6 +198,7 @@ dependencies {
 
     implementation "android.arch.persistence.room:runtime:$rootProject.architectureComponentsVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.architectureComponentsVersion"
+    kapt "android.arch.persistence.room:compiler:$rootProject.architectureComponentsVersion"
 
     implementation("com.google.code.findbugs:annotations:3.0.1") {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
