@@ -5,10 +5,8 @@
 
 package org.mozilla.focus.tabs;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,19 +17,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.tabs.utils.DefaultTabsChromeListener;
 import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.web.DownloadCallback;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.annotation.Implementation;
-import org.robolectric.annotation.Implements;
-import org.robolectric.annotation.RealObject;
 import org.robolectric.shadows.ShadowLooper;
-import org.robolectric.util.ReflectionHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +35,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {TabsSessionTest.ShadowTab.class})
 public class TabsSessionTest {
 
     TabsSession session;
@@ -59,8 +49,7 @@ public class TabsSessionTest {
 
     @Before
     public void setUp() {
-        final Activity activity = Mockito.mock(MainActivity.class);
-        session = new TabsSession(activity);
+        session = new TabsSession(new DefaultTabViewProvider());
 
         for (int i = 0; i < urls.length; i++) {
             // use url as id for convenience
@@ -367,25 +356,11 @@ public class TabsSessionTest {
         Assert.assertNull(session.getFocusTab());
     }
 
-    @Implements(Tab.class)
-    public static class ShadowTab {
+    private static class DefaultTabViewProvider implements TabViewProvider {
 
-        @RealObject
-        Tab realTab;
-
-        @Implementation
-        public TabView initializeView(@NonNull final Activity activity) {
-            TabView tv = ReflectionHelpers.<TabView>getField(this.realTab, "tabView");
-            if (tv == null) {
-                tv = new DefaultTabView();
-                tv.setViewClient(ReflectionHelpers.<TabViewClient>getField(this.realTab, "tabViewClient"));
-                tv.setChromeClient(ReflectionHelpers.<TabChromeClient>getField(this.realTab, "tabChromeClient"));
-                tv.setDownloadCallback(ReflectionHelpers.<DownloadCallback>getField(this.realTab, "downloadCallback"));
-
-                ReflectionHelpers.setField(this.realTab, "tabView", tv);
-            }
-
-            return tv;
+        @Override
+        public TabView create() {
+            return new DefaultTabView();
         }
     }
 

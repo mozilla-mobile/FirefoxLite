@@ -230,6 +230,7 @@ dependencies {
     }
     androidTestImplementation "com.android.support.test.espresso:espresso-web:$rootProject.espressoVersion"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }
 
