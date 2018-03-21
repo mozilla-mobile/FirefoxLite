@@ -431,9 +431,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void dismissAllMenus() {
-        if (menu != null) {
-            menu.dismiss();
-        }
+        dismissBottomMenu();
         BrowserFragment browserFragment = getVisibleBrowserFragment();
         if (browserFragment != null) {
             browserFragment.dismissWebContextMenu();
@@ -441,6 +439,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         if (mDialogFragment != null) {
             mDialogFragment.dismissAllowingStateLoss();
+        }
+    }
+
+    private void dismissBottomMenu() {
+        if (menu != null) {
+            menu.dismiss();
         }
     }
 
@@ -703,6 +707,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (this.mediator.handleBackKey()) {
             return;
         }
+
+        dismissBottomMenu();
+
         super.onBackPressed();
     }
 
