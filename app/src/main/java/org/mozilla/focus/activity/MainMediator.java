@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
@@ -67,38 +66,11 @@ public class MainMediator {
         this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
-    // A.k.a. close Home Screen
-    public void showBrowserScreen() {
-        clearAllFragmentImmediate();
-    }
-
-    // If openInNewTab is not provided, we decide based on current state of MainMediator
-    public void showBrowserScreen(final @NonNull String url) {
-        showBrowserScreen(url, isHomeFragmentVisible());
-    }
-
-    public void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
-        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab);
-        showBrowserScreenPost();
-    }
-
-    public void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
-        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        findBrowserFragment(fragmentManager).loadTab(tabId);
-        showBrowserScreenPost();
-    }
-
-    private void showBrowserScreenPost() {
-        clearAllFragmentImmediate();
-        this.activity.sendBrowsingTelemetry();
-    }
-
     private void clearBackStack(FragmentManager fm) {
         fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
-    private void clearAllFragmentImmediate() {
+    void clearAllFragmentImmediate() {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
         final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
@@ -131,11 +103,7 @@ public class MainMediator {
         }
     }
 
-    public boolean isBrowserFragmentAtTop() {
-        return getTopFragment() == null;
-    }
-
-    private Fragment getTopFragment() {
+    Fragment getTopFragment() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         for (final String tag : FRAGMENTS_SEQUENCE) {
             final Fragment fragment = fragmentManager.findFragmentByTag(tag);
@@ -144,10 +112,6 @@ public class MainMediator {
             }
         }
         return null;
-    }
-
-    private BrowserFragment findBrowserFragment(FragmentManager fm) {
-        return (BrowserFragment) fm.findFragmentById(R.id.browser);
     }
 
     private FragmentTransaction prepareFirstRun() {
@@ -216,7 +180,7 @@ public class MainMediator {
         return null;
     }
 
-    private boolean isHomeFragmentVisible() {
+    boolean isHomeFragmentVisible() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final Fragment fragment = fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
         return fragment != null && fragment.isVisible();
