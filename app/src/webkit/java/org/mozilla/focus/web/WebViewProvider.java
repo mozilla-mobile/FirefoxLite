@@ -86,7 +86,6 @@ public class WebViewProvider {
         settings.setAppCacheEnabled(false);
         settings.setDatabaseEnabled(false);
         settings.setDomStorageEnabled(true);
-        settings.setJavaScriptCanOpenWindowsAutomatically(false);
 
         // We do implement the callbacks - So let's enable it.
         settings.setGeolocationEnabled(true);
@@ -98,6 +97,8 @@ public class WebViewProvider {
 
         // We have multi-tabs support
         settings.setSupportMultipleWindows(true);
+        // then let Javascript open window
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
 
         // We accept third party cookies
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
