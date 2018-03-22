@@ -90,9 +90,6 @@ public class HomeTest {
             // Always remember to unregister idling resource
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
-            // Remove new added tab
-            AndroidTestUtils.removeNewAddedTab();
-
         } catch (JSONException e) {
             e.printStackTrace();
             throw new AssertionError("testTopSite failed:", e);

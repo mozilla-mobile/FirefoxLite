@@ -164,7 +164,5 @@ public class DownloadTest {
         }
 
         // TODO: 1. Long Click and check context menu 2. Check File name after downloads completed.
-
-        AndroidTestUtils.removeNewAddedTab();
     }
 }

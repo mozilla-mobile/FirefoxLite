@@ -133,8 +133,6 @@ public class WebGeolocationPermissionTest {
 
         // Unregister session loaded idling resource
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
-
-        AndroidTestUtils.removeNewAddedTab();
     }
 
 }
