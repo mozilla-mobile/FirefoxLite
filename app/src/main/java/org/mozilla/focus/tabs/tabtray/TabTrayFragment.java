@@ -437,7 +437,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {true, true});
+        notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {false, true});
         postOnNextFrame(dismissRunnable);
     }
 
