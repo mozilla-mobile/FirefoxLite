@@ -82,6 +82,7 @@ import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
@@ -847,17 +848,30 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         return true;
     }
 
-    public void loadUrl(@NonNull final String url, boolean openNewTab) {
+    /**
+     * @param url target url
+     * @param openNewTab whether to load url in a new tab or not
+     * @param onViewReadyCallback callback to notify that web view is ready for showing.
+     */
+    public void loadUrl(@NonNull final String url, boolean openNewTab,
+                        final Runnable onViewReadyCallback) {
         updateURL(url);
         if (UrlUtils.isUrl(url)) {
             if (openNewTab) {
                 tabsSession.addTab(url, TabUtil.argument(null, false, true));
+
+                // In case we call TabsSession#addTab(), which is an async operation calls back in the next
+                // message loop. By posting this runnable we can call back in the same message loop with
+                // TabsContentListener#onFocusChanged(), which is when the view is ready and being attached.
+                ThreadUtils.postToMainThread(onViewReadyCallback);
             } else {
                 Tab currentTab = tabsSession.getFocusTab();
                 if (currentTab != null) {
                     tabsSession.getFocusTab().getTabView().loadUrl(url);
+                    onViewReadyCallback.run();
                 } else {
                     tabsSession.addTab(url, TabUtil.argument(null, false, true));
+                    ThreadUtils.postToMainThread(onViewReadyCallback);
                 }
             }
         } else if (AppConstants.isDevBuild()) {

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 
-public class BrowserMediator {
+class BrowserMediator {
 
     private final MainActivity activity;
     private final MainMediator mainMediator;
@@ -29,8 +29,12 @@ public class BrowserMediator {
 
     void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab);
-        showBrowserScreenPost();
+        findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab, new Runnable() {
+            @Override
+            public void run() {
+                showBrowserScreenPost();
+            }
+        });
     }
 
     void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
