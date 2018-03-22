@@ -7,6 +7,7 @@
     android:layout_gravity="center|bottom">
 
     <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/browser_screen_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"

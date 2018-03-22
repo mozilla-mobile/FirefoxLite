@@ -6,6 +6,7 @@
 package org.mozilla.focus.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Keep;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingRegistry;
@@ -48,7 +49,7 @@ import static org.mozilla.focus.utils.AndroidTestUtils.getResourceId;
 public class SearchSuggestionTest {
 
     @Rule
-    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
     private Context context;
     private UiDevice uiDevice;
@@ -58,6 +59,7 @@ public class SearchSuggestionTest {
         AndroidTestUtils.beforeTest();
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        activityTestRule.launchActivity(new Intent());
     }
 
     @After
