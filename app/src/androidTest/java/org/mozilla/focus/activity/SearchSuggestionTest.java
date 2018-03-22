@@ -27,13 +27,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.helper.DecodedTextMatcher;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Random;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -42,6 +42,8 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.mozilla.focus.utils.AndroidTestUtils.getResourceId;
 
 @Keep
@@ -52,14 +54,11 @@ public class SearchSuggestionTest {
     public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
     private Context context;
-    private UiDevice uiDevice;
 
     @Before
     public void setUp() throws JSONException {
         AndroidTestUtils.beforeTest();
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        activityTestRule.launchActivity(new Intent());
     }
 
     @After
@@ -69,6 +68,9 @@ public class SearchSuggestionTest {
 
     @Test
     public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
+
+        activityTestRule.launchActivity(new Intent());
+
 
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
@@ -102,15 +104,15 @@ public class SearchSuggestionTest {
         // After page loading completes
         IdlingRegistry.getInstance().register(loadingIdlingResource);
 
-        final UiObject urlBar = uiDevice.findObject(new UiSelector().resourceId(getResourceId("display_url")));
-        Assert.assertTrue(urlBar.exists());
+        onView(withId(R.id.display_url)).check(matches(isDisplayed()));
 
         // Check if the search result is using default search engine
         final String[] searchEngine = defaultSearchEngine.getName().toLowerCase().split(" ");
-        Assert.assertTrue(urlBar.getText().contains(searchEngine[0]));
+        onView(withId(R.id.display_url)).check(matches(withText(containsString(searchEngine[0]))));
+
 
         // Check if the search result is matched the suggestion we picked
-        Assert.assertTrue(URLDecoder.decode(urlBar.getText(), "UTF-8").contains(suggestionText));
+        onView(withId(R.id.display_url)).check(matches(DecodedTextMatcher.withText(containsString(searchEngine[0]))));
 
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
