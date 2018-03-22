@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.activity;
 
+import android.content.Intent;
 import android.support.annotation.Keep;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
@@ -36,7 +37,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class NavigationTest {
 
     @Rule
-    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
     private static final String TARGET_URL_SITE_1 = "file:///android_asset/gpl.html";
     private static final String TARGET_URL_SITE_2 = "file:///android_asset/licenses.html";
@@ -44,6 +45,7 @@ public class NavigationTest {
     @Before
     public void setUp() {
         AndroidTestUtils.beforeTest();
+        activityTestRule.launchActivity(new Intent());
     }
 
     @After
@@ -108,9 +110,6 @@ public class NavigationTest {
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
                 .check(matches(withText(TARGET_URL_SITE_1)));
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
-
-        // Remove new added tab
-        AndroidTestUtils.removeNewAddedTab();
 
     }
 

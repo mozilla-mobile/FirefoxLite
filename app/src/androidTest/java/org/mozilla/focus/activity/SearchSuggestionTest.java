@@ -114,9 +114,6 @@ public class SearchSuggestionTest {
 
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
-        // Remove new added tab
-        AndroidTestUtils.removeNewAddedTab();
-
     }
 
 }
