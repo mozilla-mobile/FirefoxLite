@@ -26,7 +26,7 @@
   <string name="preference_default_browser">设为默认浏览器</string>
   <string name="preference_turbo_mode">加速模式</string>
   <string name="preference_mozilla_telemetry">发送统计数据</string>
-  <string name="preference_mozilla_telemetry_summary">Mozilla 坚持仅收集为大众提供和改进 %1$s 所必要的信息。</string>
+  <string name="preference_mozilla_telemetry_summary">Mozilla 力争仅收集用来为大众改进 %1$s 所必需的数据。</string>
   <string name="preference_learn_more">详细了解</string>
   <string name="preference_about">关于 %1$s</string>
   <string name="content_description_clear_input">清除输入内容</string>
