@@ -135,8 +135,6 @@
   <string name="screenshot_image_viewer_dialog_info_title1">Judul: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Hapus gambar ini?</string>
-  <string name="screenshot_on_boarding_text_msg">Ketuk tombol tangkap layar di menu untuk menangkap keseluruhan laman.\nCepat, mudah - kembali ke lamannya kapan saja!</string>
-  <string name="screenshot_on_boarding_btn_got_it">Paham!</string>
   <string name="file_picker_title">Pilih berkas untuk diunggah</string>
   <string name="message_enable_turbo_mode">Mode turbo diaktifkan</string>
   <string name="message_disable_turbo_mode">Mode turbo dinonaktifkan</string>
