@@ -135,8 +135,6 @@
   <string name="screenshot_image_viewer_dialog_info_title1">标题：%1$s</string>
   <string name="screenshot_image_viewer_dialog_info_url1">网址：%1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">删除此图像？</string>
-  <string name="screenshot_on_boarding_text_msg">点按菜单中的截图按钮截取整个网页。\n快速、简单——还能随时回到原始网页！</string>
-  <string name="screenshot_on_boarding_btn_got_it">了解！</string>
   <string name="file_picker_title">选择要上传的文件</string>
   <string name="message_enable_turbo_mode">启用加速模式</string>
   <string name="message_disable_turbo_mode">禁用加速模式</string>
