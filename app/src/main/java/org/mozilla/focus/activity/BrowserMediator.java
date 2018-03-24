@@ -19,6 +19,7 @@ class BrowserMediator {
     // A.k.a. close Home Screen
     void showBrowserScreen() {
         mainMediator.clearAllFragmentImmediate();
+        this.activity.sendBrowsingTelemetry();
     }
 
 
@@ -32,7 +33,7 @@ class BrowserMediator {
         findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab, new Runnable() {
             @Override
             public void run() {
-                showBrowserScreenPost();
+                showBrowserScreen();
             }
         });
     }
@@ -40,12 +41,7 @@ class BrowserMediator {
     void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         findBrowserFragment(fragmentManager).loadTab(tabId);
-        showBrowserScreenPost();
-    }
-
-    private void showBrowserScreenPost() {
         showBrowserScreen();
-        this.activity.sendBrowsingTelemetry();
     }
 
 
