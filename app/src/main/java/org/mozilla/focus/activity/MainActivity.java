@@ -801,8 +801,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         return FirstrunFragment.create();
     }
 
-    public UrlInputFragment createUrlInputFragment(@Nullable String url) {
-        final UrlInputFragment fragment = UrlInputFragment.create(url);
+    public UrlInputFragment createUrlInputFragment(@Nullable String url, String parentFragmentTag) {
+        final UrlInputFragment fragment = UrlInputFragment.create(url, parentFragmentTag);
         return fragment;
     }
 

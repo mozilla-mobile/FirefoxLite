@@ -42,6 +42,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     public static final String FRAGMENT_TAG = "url_input";
 
     private static final String ARGUMENT_URL = "url";
+    private static final String ARGUMENT_PARENT_FRAGMENT = "parent_frag_tag";
 
     private static final int REQUEST_THROTTLE_THRESHOLD = 300;
 
@@ -51,9 +52,10 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment create(@Nullable String url) {
+    public static UrlInputFragment create(@Nullable String url, String parentFragmentTag) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
+        arguments.putString(ARGUMENT_PARENT_FRAGMENT, parentFragmentTag);
 
         UrlInputFragment fragment = new UrlInputFragment();
         fragment.setArguments(arguments);
