@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -72,7 +71,7 @@ class MainMediator {
 
     void dismissUrlInput() {
         final Fragment top = getTopFragment();
-        if (UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
+        if (top != null && UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
             this.activity.onBackPressed();
         }
     }
@@ -153,7 +152,7 @@ class MainMediator {
         }
     }
 
-    Fragment getTopFragment() {
+    private Fragment getTopFragment() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         for (final String tag : FRAGMENTS_SEQUENCE) {
             final Fragment fragment = fragmentManager.findFragmentByTag(tag);
@@ -232,16 +231,9 @@ class MainMediator {
         return null;
     }
 
-    boolean isHomeFragmentVisible() {
+    private boolean isHomeFragmentVisible() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final Fragment fragment = fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
         return fragment != null && fragment.isVisible();
-    }
-
-    boolean isTopVisibleFragment(@NonNull Fragment fragment) {
-        Fragment topFragment = getTopFragment();
-        return topFragment != null &&
-                !TextUtils.isEmpty(topFragment.getTag()) &&
-                TextUtils.equals(fragment.getTag(), topFragment.getTag());
     }
 }

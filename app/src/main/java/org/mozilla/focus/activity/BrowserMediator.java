@@ -22,12 +22,6 @@ class BrowserMediator {
         this.activity.sendBrowsingTelemetry();
     }
 
-
-    // If openInNewTab is not provided, we decide based on current state of MainMediator
-    void showBrowserScreen(final @NonNull String url) {
-        showBrowserScreen(url, mainMediator.isHomeFragmentVisible());
-    }
-
     void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab, new Runnable() {
@@ -47,9 +41,5 @@ class BrowserMediator {
 
     private BrowserFragment findBrowserFragment(FragmentManager fm) {
         return (BrowserFragment) fm.findFragmentById(R.id.browser);
-    }
-
-    boolean isBrowserFragmentAtTop() {
-        return mainMediator.getTopFragment() == null;
     }
 }
