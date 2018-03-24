@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -49,13 +48,13 @@ import com.bumptech.glide.Glide;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.TabsViewListener;
-import org.mozilla.focus.widget.FragmentListener;
 
 import java.util.List;
 
@@ -209,7 +208,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         adapter.setData(tabs);
 
         if (tabs.isEmpty()) {
-            notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {false, false});
+            ScreenNavigator.get(getContext()).popToHomeScreen(false);
             postOnNextFrame(dismissRunnable);
         }
     }
@@ -227,7 +226,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void tabSwitched(int tabPosition) {
-        notifyFragmentListener(FragmentListener.TYPE.DISMISS_HOME, null);
+        ScreenNavigator.get(getContext()).raiseBrowserScreen(false);
         postOnNextFrame(dismissRunnable);
     }
 
@@ -437,7 +436,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        notifyFragmentListener(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {false, true});
+        ScreenNavigator.get(getContext()).addHomeScreen(false);
         postOnNextFrame(dismissRunnable);
     }
 
@@ -500,14 +499,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         View decor = window.getDecorView();
         if (decor.isAttachedToWindow()) {
             manager.updateViewLayout(decor, window.getAttributes());
-        }
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private void notifyFragmentListener(@NonNull FragmentListener.TYPE type, @Nullable Object payload) {
-        Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, type, payload);
         }
     }
 

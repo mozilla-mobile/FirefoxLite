@@ -59,6 +59,7 @@ import android.widget.Toast;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
+import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.locale.LocaleAwareFragment;
@@ -902,7 +903,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 TelemetryWrapper.clickToolbarSearch();
                 break;
             case R.id.btn_open_new_tab:
-                notifyParent(FragmentListener.TYPE.SHOW_HOME, new boolean[] {true, true});
+                ScreenNavigator.get(getContext()).addHomeScreen(true);
                 // FIXME: 2018/2/12 new telemetry for 2.0 UI
                 break;
             case R.id.btn_tab_tray:
@@ -1051,7 +1052,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onFocusChanged(@Nullable final Tab tab, @Factor int factor) {
             if (tab == null) {
                 if (factor == FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
-                    notifyParent(FragmentListener.TYPE.SHOW_HOME,  new boolean[] {true, false});
+                    ScreenNavigator.get(getContext()).popToHomeScreen(true);
                 } else {
                     getActivity().finish();
                 }
