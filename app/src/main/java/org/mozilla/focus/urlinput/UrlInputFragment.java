@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
+import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
@@ -223,10 +225,13 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     }
 
     private void openUrl(String url) {
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.LOAD_URL, url);
+        boolean openNewTab = false;
+
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(ARGUMENT_PARENT_FRAGMENT)) {
+            openNewTab = HomeFragment.FRAGMENT_TAG.equals(args.getString(ARGUMENT_PARENT_FRAGMENT));
         }
+        ScreenNavigator.get(getContext()).showBrowserScreen(url, openNewTab);
     }
 
     @Override

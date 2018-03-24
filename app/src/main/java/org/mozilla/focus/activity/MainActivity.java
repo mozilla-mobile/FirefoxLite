@@ -677,7 +677,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     if (mDialogFragment != null) {
                         mDialogFragment.dismiss();
                     }
-                    onNotified(null, TYPE.LOAD_URL_FORCE_NEW_TAB, url);
+                    screenNavigator.showBrowserScreen(url, true);
                 }
             }
         }
@@ -733,27 +733,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
-            case LOAD_URL_FORCE_NEW_TAB:
-                if ((payload != null) && (payload instanceof String)) {
-                    this.browserMediator.showBrowserScreen(payload.toString(), true);
-                }
-                break;
-            case LOAD_URL:
-                if ((payload != null) && (payload instanceof String)) {
-                    this.browserMediator.showBrowserScreen(payload.toString());
-                }
-                break;
             case OPEN_PREFERENCE:
                 openPreferences();
-                break;
-            case SHOW_HOME:
-                boolean animated = true;
-                boolean addToBackStack = false;
-                if (payload != null && payload instanceof boolean[]) {
-                    animated = ((boolean[]) payload)[0];
-                    addToBackStack = ((boolean[]) payload)[1];
-                }
-                this.mainMediator.showHomeScreen(animated, addToBackStack);
                 break;
             case SHOW_MENU:
                 this.showMenu();
@@ -770,11 +751,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case DISMISS_URL_INPUT:
                 this.mainMediator.dismissUrlInput();
-                break;
-            case DISMISS_HOME:
-                // TODO: This is used only by tab tray, please make tab tray directly decide whether
-                // to play animation instead of hard-code here.
-                this.browserMediator.raiseBrowserScreen(false);
                 break;
             case FRAGMENT_STARTED:
                 if ((payload != null) && (payload instanceof String)) {

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
@@ -152,7 +153,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position != RecyclerView.NO_POSITION && position < mItems.size()) {
             Object item = mItems.get(position);
             if (item instanceof Site && mContext instanceof FragmentListener) {
-                ((FragmentListener) mContext).onNotified(null, FragmentListener.TYPE.LOAD_URL_FORCE_NEW_TAB, ((Site) item).getUrl());
+                ScreenNavigator.get(mContext).showBrowserScreen(((Site) item).getUrl(), true);
                 mHistoryListener.onItemClicked();
                 TelemetryWrapper.historyOpenLink();
             }

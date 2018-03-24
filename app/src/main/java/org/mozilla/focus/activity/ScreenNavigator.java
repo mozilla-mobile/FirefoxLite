@@ -6,7 +6,6 @@
 package org.mozilla.focus.activity;
 
 import android.content.Context;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -23,13 +22,6 @@ import java.util.Arrays;
  * 2. Finally remove MainMediator from MainActivity
  */
 public class ScreenNavigator {
-    @SuppressWarnings("WeakerAccess")
-//    public static final int FROM_HOME = 0;
-//    public static final int FROM_BROWSER = 1;
-//    public static final int FROM_TAB_TRAY = 2;
-//    @IntDef({FROM_HOME, FROM_BROWSER, FROM_TAB_TRAY})
-//    private @interface SourcePage {}
-
     private static final String LOG_TAG = "ScreenNavigator";
     private static final boolean LOG_NAVIGATION = true;
 
@@ -58,10 +50,10 @@ public class ScreenNavigator {
      * 1. you just want to move the old existing browser fragment to the foreground
      * 2. you've called Tab#loadUrl() by yourself, and want to move that tab to the foreground.
      */
-    public void raiseBrowserScreen() {
+    public void raiseBrowserScreen(boolean animate) {
         logMethod();
 
-        this.browserMediator.raiseBrowserScreen(true);
+        this.browserMediator.raiseBrowserScreen(animate);
     }
 
     /**
@@ -121,7 +113,7 @@ public class ScreenNavigator {
         }
 
         @Override
-        public void raiseBrowserScreen() {
+        public void raiseBrowserScreen(boolean animate) {
         }
 
         @Override

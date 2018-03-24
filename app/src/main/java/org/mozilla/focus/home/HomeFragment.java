@@ -8,7 +8,6 @@ package org.mozilla.focus.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.PopupMenu;
@@ -26,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
@@ -212,9 +212,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             final Site site = (Site) v.getTag();
             final Activity parent = getActivity();
             if ((site != null) && (parent instanceof FragmentListener)) {
-                ((FragmentListener) parent).onNotified(HomeFragment.this,
-                        FragmentListener.TYPE.LOAD_URL_FORCE_NEW_TAB,
-                        site.getUrl());
+                ScreenNavigator.get(v.getContext()).showBrowserScreen(site.getUrl(), true);
                 ViewParent viewParent = v.getParent();
                 if (viewParent instanceof ViewGroup) {
                     int index = ((ViewGroup) v.getParent()).indexOfChild(v);

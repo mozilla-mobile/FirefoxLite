@@ -17,13 +17,9 @@ public interface FragmentListener {
     enum TYPE {
         FRAGMENT_STARTED, // payload is the fragment tag
         FRAGMENT_STOPPED, // payload is the fragment tag
-        LOAD_URL, // load url in current tab. payload is url in String
-        LOAD_URL_FORCE_NEW_TAB, // load url but force in new tab
         OPEN_PREFERENCE, // no payload
         SHOW_URL_INPUT, // no payload
-        SHOW_HOME, // no payload
         SHOW_MENU, // no payload
-        DISMISS_HOME, // payload is boolean value, true if commitAllowingStateLoss
         DISMISS_URL_INPUT, // payload is boolean value, true if commitAllowingStateLoss
         UPDATE_MENU, // no payload
         SHOW_TAB_TRAY, // no payload
