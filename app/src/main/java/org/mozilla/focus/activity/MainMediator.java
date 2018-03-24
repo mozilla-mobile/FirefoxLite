@@ -11,6 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.FirstrunFragment;
@@ -66,11 +69,18 @@ public class MainMediator {
         this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
+    public void dismissUrlInput() {
+        final Fragment top = getTopFragment();
+        if (UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
+            this.activity.onBackPressed();
+        }
+    }
+
     private void clearBackStack(FragmentManager fm) {
         fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
-    void clearAllFragmentImmediate() {
+    private void clearAllFragmentImmediate() {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
         final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
@@ -84,11 +94,48 @@ public class MainMediator {
         clearBackStack(fragmentMgr);
     }
 
-    public void dismissUrlInput() {
-        final Fragment top = getTopFragment();
-        if (UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
-            this.activity.onBackPressed();
+    void clearAllFragment(boolean animate) {
+        final FragmentManager manager = this.activity.getSupportFragmentManager();
+        final Fragment homeFragment = manager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
+        if (!animate || homeFragment == null) {
+            clearAllFragmentImmediate();
+            return;
         }
+
+        fadeOutFragment(homeFragment, new Runnable() {
+            @Override
+            public void run() {
+                clearAllFragmentImmediate();
+            }
+        });
+    }
+
+    private void fadeOutFragment(Fragment fragment, @Nullable final Runnable onAnimationEndCallback) {
+        View view = fragment.getView();
+        if (view == null) {
+            onAnimationEndCallback.run();
+            return;
+        }
+
+        Animation fadeOut = AnimationUtils.loadAnimation(view.getContext(),
+                R.anim.tab_transition_fade_out);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (onAnimationEndCallback != null) {
+                    onAnimationEndCallback.run();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        view.startAnimation(fadeOut);
     }
 
     public void onFragmentStarted(@NonNull String tag) {

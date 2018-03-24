@@ -768,7 +768,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 this.mainMediator.dismissUrlInput();
                 break;
             case DISMISS_HOME:
-                this.browserMediator.showBrowserScreen();
+                // TODO: This is used only by tab tray, please make tab tray directly decide whether
+                // to play animation instead of hard-code here.
+                this.browserMediator.showBrowserScreen(false);
                 break;
             case FRAGMENT_STARTED:
                 if ((payload != null) && (payload instanceof String)) {
