@@ -77,7 +77,8 @@ import java.util.Locale;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener {
+        TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
+        ScreenNavigator.Provider {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
 
@@ -93,6 +94,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private MainMediator mainMediator;
     private BrowserMediator browserMediator;
+    private ScreenNavigator screenNavigator;
+
     private boolean safeForFragmentTransactions = false;
     private DialogFragment mDialogFragment;
 
@@ -113,6 +116,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         mainMediator = new MainMediator(this);
         browserMediator = new BrowserMediator(this, mainMediator);
+        screenNavigator = new ScreenNavigator(this);
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -770,7 +774,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case DISMISS_HOME:
                 // TODO: This is used only by tab tray, please make tab tray directly decide whether
                 // to play animation instead of hard-code here.
-                this.browserMediator.showBrowserScreen(false);
+                this.browserMediator.raiseBrowserScreen(false);
                 break;
             case FRAGMENT_STARTED:
                 if ((payload != null) && (payload instanceof String)) {
@@ -788,6 +792,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             default:
                 break;
         }
+    }
+
+    @Override
+    public ScreenNavigator getScreenNavigator() {
+        return screenNavigator;
     }
 
     public boolean isTopVisibleFragment(@Nullable Fragment fragment) {
