@@ -409,7 +409,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private Fragment getTopHomeFragment() {
-        final Fragment homeFragment = this.mainMediator.getTopHomeFragmet();
+        final Fragment homeFragment = this.mainMediator.getTopHomeFragment();
         if (homeFragment == null) {
             return null;
         } else {
