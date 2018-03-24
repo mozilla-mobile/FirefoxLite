@@ -17,8 +17,8 @@ class BrowserMediator {
     }
 
     // A.k.a. close Home Screen
-    void showBrowserScreen() {
-        mainMediator.clearAllFragmentImmediate();
+    void showBrowserScreen(boolean animate) {
+        mainMediator.clearAllFragment(animate);
         this.activity.sendBrowsingTelemetry();
     }
 
@@ -33,7 +33,7 @@ class BrowserMediator {
         findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab, new Runnable() {
             @Override
             public void run() {
-                showBrowserScreen();
+                showBrowserScreen(true);
             }
         });
     }
@@ -41,7 +41,7 @@ class BrowserMediator {
     void showBrowserScreenForRestoreTabs(@NonNull String tabId) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         findBrowserFragment(fragmentManager).loadTab(tabId);
-        showBrowserScreen();
+        showBrowserScreen(false);
     }
 
 
