@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
@@ -65,7 +66,8 @@ class MainMediator {
             return;
         }
 
-        this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
+        String parent = isHomeFragmentVisible() ? HomeFragment.FRAGMENT_TAG : BrowserFragment.FRAGMENT_TAG;
+        this.prepareUrlInput(url, parent).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
     void dismissUrlInput() {
@@ -202,9 +204,9 @@ class MainMediator {
         return transaction;
     }
 
-    private FragmentTransaction prepareUrlInput(@Nullable String url) {
+    private FragmentTransaction prepareUrlInput(@Nullable String url, String parentFragmentTag) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final UrlInputFragment urlFragment = this.activity.createUrlInputFragment(url);
+        final UrlInputFragment urlFragment = this.activity.createUrlInputFragment(url, parentFragmentTag);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG);
         return transaction;
