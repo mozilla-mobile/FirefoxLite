@@ -93,7 +93,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View pinShortcut;
 
     private MainMediator mainMediator;
-    private BrowserMediator browserMediator;
     private ScreenNavigator screenNavigator;
 
     private boolean safeForFragmentTransactions = false;
@@ -115,7 +114,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         initBroadcastReceivers();
 
         mainMediator = new MainMediator(this);
-        browserMediator = new BrowserMediator(this, mainMediator);
         screenNavigator = new ScreenNavigator(this);
 
         SafeIntent intent = new SafeIntent(getIntent());
@@ -132,7 +130,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 } else {
                     boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
                             false);
-                    this.browserMediator.showBrowserScreen(url, openInNewTab);
+                    this.screenNavigator.showBrowserScreen(url, openInNewTab);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
@@ -265,7 +263,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // firstrun is dismissed.
             final SafeIntent intent = new SafeIntent(getIntent());
             boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
-            this.browserMediator.showBrowserScreen(pendingUrl, openInNewTab);
+            this.screenNavigator.showBrowserScreen(pendingUrl, openInNewTab);
             pendingUrl = null;
         }
     }
@@ -385,8 +383,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @VisibleForTesting
     public BrowserFragment getVisibleBrowserFragment() {
-        final BrowserFragment browserFragment = getBrowserFragment();
-        return isTopVisibleFragment(browserFragment) ? browserFragment : null;
+        return screenNavigator.isBrowserInForeground() ? getBrowserFragment() : null;
     }
 
     private void showMenu() {
@@ -714,16 +711,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!safeForFragmentTransactions) {
             return;
         }
-        if (this.browserMediator.isBrowserFragmentAtTop() && getVisibleBrowserFragment().onBackPressed()) {
+
+        BrowserFragment browserFragment = getVisibleBrowserFragment();
+        if (browserFragment != null && browserFragment.onBackPressed()) {
             return;
         }
+
         super.onBackPressed();
     }
 
     public void firstrunFinished() {
         if (pendingUrl != null) {
             // We have received an URL in onNewIntent(). Let's load it now.
-            this.browserMediator.showBrowserScreen(pendingUrl, true);
+            this.screenNavigator.showBrowserScreen(pendingUrl, true);
             pendingUrl = null;
         } else {
             this.mainMediator.showHomeScreen();
@@ -773,13 +773,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public ScreenNavigator getScreenNavigator() {
         return screenNavigator;
-    }
-
-    public boolean isTopVisibleFragment(@Nullable Fragment fragment) {
-        if (fragment instanceof BrowserFragment) {
-            return browserMediator.isBrowserFragmentAtTop();
-        }
-        return fragment != null && mainMediator.isTopVisibleFragment(fragment);
     }
 
     public FirstrunFragment createFirstRunFragment() {
@@ -878,7 +871,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         getTabsSession().restoreTabs(tabModelList, currentTabId);
         Tab currentTab = getTabsSession().getFocusTab();
         if (currentTab != null && safeForFragmentTransactions) {
-            MainActivity.this.browserMediator.showBrowserScreenForRestoreTabs(currentTab.getId());
+            screenNavigator.restoreBrowserScreen(currentTab.getId());
         }
     }
 

@@ -58,7 +58,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -1034,9 +1033,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     private boolean isPopupWindowAllowed() {
-        Activity activity = getActivity();
-        return activity instanceof MainActivity &&
-                ((MainActivity) activity).isTopVisibleFragment(this);
+        return ScreenNavigator.get(getContext()).isBrowserInForeground();
     }
 
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
