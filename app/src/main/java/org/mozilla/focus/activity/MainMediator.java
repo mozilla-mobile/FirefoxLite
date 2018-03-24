@@ -21,7 +21,7 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 
-public class MainMediator {
+class MainMediator {
 
     // For FragmentManager, there is no real top fragment.
     // Instead, we define this sequence for fragments of MainActivity
@@ -35,29 +35,28 @@ public class MainMediator {
 
     private final MainActivity activity;
 
-    public MainMediator(@NonNull MainActivity activity) {
+    MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
     }
 
-    public void showHomeScreen() {
-        this.showHomeScreen(true);
+    /**
+     * Show landing home screen when app is launched
+     */
+    void showHomeScreen() {
+        this.showHomeScreen(false, false);
     }
 
-    public void showHomeScreen(boolean animated) {
-        this.showHomeScreen(animated, false);
-    }
-
-    public void showHomeScreen(boolean animated, boolean addToBackStack) {
-        if (getTopHomeFragmet() == null) {
+    void showHomeScreen(boolean animated, boolean addToBackStack) {
+        if (getTopHomeFragment() == null) {
             this.prepareHomeScreen(animated, addToBackStack).commit();
         }
     }
 
-    public void showFirstRun() {
+    void showFirstRun() {
         this.prepareFirstRun().commit();
     }
 
-    public void showUrlInput(@Nullable String url) {
+    void showUrlInput(@Nullable String url) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
         if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
@@ -69,7 +68,7 @@ public class MainMediator {
         this.prepareUrlInput(url).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
-    public void dismissUrlInput() {
+    void dismissUrlInput() {
         final Fragment top = getTopFragment();
         if (UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
             this.activity.onBackPressed();
@@ -113,7 +112,9 @@ public class MainMediator {
     private void fadeOutFragment(Fragment fragment, @Nullable final Runnable onAnimationEndCallback) {
         View view = fragment.getView();
         if (view == null) {
-            onAnimationEndCallback.run();
+            if (onAnimationEndCallback != null) {
+                onAnimationEndCallback.run();
+            }
             return;
         }
 
@@ -138,13 +139,13 @@ public class MainMediator {
         view.startAnimation(fadeOut);
     }
 
-    public void onFragmentStarted(@NonNull String tag) {
+    void onFragmentStarted(@NonNull String tag) {
         if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
             toggleFakeUrlInput(false);
         }
     }
 
-    public void onFragmentStopped(@NonNull String tag) {
+    void onFragmentStopped(@NonNull String tag) {
         if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
             toggleFakeUrlInput(true);
         }
@@ -189,6 +190,8 @@ public class MainMediator {
             transaction.setCustomAnimations(0, 0, R.anim.tab_transition_fade_in,
                     R.anim.tab_transition_fade_out);
         }
+
+        clearAllFragmentImmediate();
         if (addToBackStack) {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
             transaction.addToBackStack(HomeFragment.FRAGMENT_TAG);
@@ -202,8 +205,8 @@ public class MainMediator {
     private FragmentTransaction prepareUrlInput(@Nullable String url) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final UrlInputFragment urlFragment = this.activity.createUrlInputFragment(url);
-        FragmentTransaction transaction = fragmentManager.beginTransaction()
-                .add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG);
         return transaction;
     }
 
@@ -219,7 +222,7 @@ public class MainMediator {
     /**
      * get HomeFragment if it's Top Fragment
      */
-    public Fragment getTopHomeFragmet() {
+    Fragment getTopHomeFragment() {
         final Fragment topFragment = getTopFragment();
         if (topFragment != null && HomeFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             return topFragment;
