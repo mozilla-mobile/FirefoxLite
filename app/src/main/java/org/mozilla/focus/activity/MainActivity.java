@@ -24,6 +24,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -115,6 +116,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         mainMediator = new MainMediator(this);
         screenNavigator = new ScreenNavigator(this);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -904,6 +907,19 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
             // but there is no promise about this.
             return (TabView) WebViewProvider.create(this.activity, null);
+        }
+    }
+
+    private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
+        @Override
+        public void onBackStackChanged() {
+            final BrowserFragment fragment = getBrowserFragment();
+            final Fragment top = MainActivity.this.mainMediator.getTopFragment();
+            if (top == null) {
+                fragment.goForeground();
+            } else {
+                fragment.goBackground();
+            }
         }
     }
 }

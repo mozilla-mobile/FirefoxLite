@@ -54,6 +54,7 @@ public class ScreenNavigator {
         logMethod();
 
         this.browserMediator.raiseBrowserScreen(animate);
+        this.browserMediator.setInForeground(true);
     }
 
     /**
@@ -88,6 +89,7 @@ public class ScreenNavigator {
 
         this.mainMediator.clearAllFragment(false);
         this.mainMediator.showHomeScreen(animate, true);
+        this.browserMediator.setInForeground(false);
     }
 
     /**

@@ -38,6 +38,15 @@ class BrowserMediator {
         raiseBrowserScreen(false);
     }
 
+    void setInForeground(final boolean isForeground) {
+        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
+        final BrowserFragment fragment = findBrowserFragment(fragmentManager);
+        if (isForeground) {
+            fragment.goForeground();
+        } else {
+            fragment.goBackground();
+        }
+    }
 
     private BrowserFragment findBrowserFragment(FragmentManager fm) {
         return (BrowserFragment) fm.findFragmentById(R.id.browser);
