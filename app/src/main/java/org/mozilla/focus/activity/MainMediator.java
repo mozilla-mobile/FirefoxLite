@@ -152,7 +152,7 @@ class MainMediator {
         }
     }
 
-    private Fragment getTopFragment() {
+    Fragment getTopFragment() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         for (final String tag : FRAGMENTS_SEQUENCE) {
             final Fragment fragment = fragmentManager.findFragmentByTag(tag);

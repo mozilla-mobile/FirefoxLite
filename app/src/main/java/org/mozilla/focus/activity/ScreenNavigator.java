@@ -75,7 +75,7 @@ public class ScreenNavigator {
      * @return Whether user can directly see browser fragment
      */
     public boolean isBrowserInForeground() {
-        return this.mainMediator.getTopHomeFragment() == null;
+        return this.mainMediator.getTopFragment() == null;
     }
 
     /**
