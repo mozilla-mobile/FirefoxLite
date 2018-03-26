@@ -37,6 +37,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.mozilla.focus.utils.EspressoUtils.PREF_KEY_ENABLE_GEOLOCATION_PERMISSION_PROMPT;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 public final class AndroidTestUtils {
@@ -66,6 +67,17 @@ public final class AndroidTestUtils {
 
         Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
         setFocusTabId("");
+    }
+
+    public static void setAllowGeoPermissionPrompt(final boolean allow) {
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (preferences != null) {
+            final SharedPreferences.Editor editor = preferences.edit();
+            if (editor != null) {
+                editor.putBoolean(PREF_KEY_ENABLE_GEOLOCATION_PERMISSION_PROMPT, allow).commit();
+            }
+        }
     }
 
     public static Buffer readTestAsset(String filename) throws IOException {

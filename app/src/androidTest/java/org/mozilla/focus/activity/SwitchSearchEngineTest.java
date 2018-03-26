@@ -52,10 +52,12 @@ public class SwitchSearchEngineTest {
     @Before
     public void setUp() {
         AndroidTestUtils.beforeTest();
+        AndroidTestUtils.setAllowGeoPermissionPrompt(false);
     }
 
     @After
     public void tearDown() {
+        AndroidTestUtils.setAllowGeoPermissionPrompt(true);
         activityTestRule.getActivity().finishAndRemoveTask();
     }
 
