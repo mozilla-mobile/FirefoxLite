@@ -445,6 +445,23 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, null);
     }
 
+    public void goBackground() {
+        final Tab current = tabsSession.getFocusTab();
+        if (current != null && current.getTabView() != null) {
+            current.detach();
+            webViewSlot.removeView(current.getTabView().getView());
+        }
+    }
+
+    public void goForeground() {
+        final Tab current = tabsSession.getFocusTab();
+        if (webViewSlot.getChildCount() == 0 && current != null && current.getTabView() != null) {
+            final View inView = current.getTabView().getView();
+            webViewSlot.addView(inView);
+
+        }
+    }
+
     private void initialiseNormalBrowserUi() {
         urlView.setOnClickListener(this);
     }
