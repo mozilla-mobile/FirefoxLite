@@ -192,7 +192,6 @@ class MainMediator {
                     R.anim.tab_transition_fade_out);
         }
 
-        clearAllFragmentImmediate();
         if (addToBackStack) {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
             transaction.addToBackStack(HomeFragment.FRAGMENT_TAG);
