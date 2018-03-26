@@ -23,7 +23,7 @@ import java.util.Arrays;
  */
 public class ScreenNavigator {
     private static final String LOG_TAG = "ScreenNavigator";
-    private static final boolean LOG_NAVIGATION = true;
+    private static final boolean LOG_NAVIGATION = false;
 
     private MainMediator mainMediator;
     private BrowserMediator browserMediator;
@@ -85,6 +85,7 @@ public class ScreenNavigator {
     public void addHomeScreen(boolean animate) {
         logMethod();
 
+        this.mainMediator.clearAllFragment(false);
         this.mainMediator.showHomeScreen(animate, true);
     }
 
@@ -94,7 +95,7 @@ public class ScreenNavigator {
     public void popToHomeScreen(boolean animate) {
         logMethod();
 
-        this.mainMediator.clearAllFragment(animate);
+        this.mainMediator.clearAllFragment(false);
         this.mainMediator.showHomeScreen(animate, false);
     }
 
