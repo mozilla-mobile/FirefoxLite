@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +68,7 @@ public class SearchSuggestionTest {
     }
 
     @Test
+    @Ignore
     public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
 
         activityTestRule.launchActivity(new Intent());
