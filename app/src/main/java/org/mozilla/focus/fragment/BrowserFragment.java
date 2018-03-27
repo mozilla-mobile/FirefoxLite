@@ -136,6 +136,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private String geolocationOrigin;
     private GeolocationPermissions.Callback geolocationCallback;
     private AlertDialog geoDialog;
+    private boolean noSwitchTabAfterNewIntent = true;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -840,8 +841,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             final Tab focus = tabsSession.getFocusTab();
             if (focus == null) {
                 return false;
-            } else {
+            // Do not remove focus.isFromExternal() statement
+            // If user opens tabTray and close current focused tab, we will close the next focused
+            // Tab since startedFromExternalAndStays is still true.
+            } else if (startedFromExternalAndStays() && focus.isFromExternal()) {
                 tabsSession.closeTab(focus.getId());
+            } else {
+                ScreenNavigator.get(getContext()).popToHomeScreen(true);
             }
         }
 
@@ -851,14 +857,15 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     /**
      * @param url target url
      * @param openNewTab whether to load url in a new tab or not
+     * @param isFromExternal if this url is started from external VIEW intent
      * @param onViewReadyCallback callback to notify that web view is ready for showing.
      */
     public void loadUrl(@NonNull final String url, boolean openNewTab,
-                        final Runnable onViewReadyCallback) {
+                        boolean isFromExternal, final Runnable onViewReadyCallback) {
         updateURL(url);
         if (UrlUtils.isUrl(url)) {
             if (openNewTab) {
-                tabsSession.addTab(url, TabUtil.argument(null, false, true));
+                tabsSession.addTab(url, TabUtil.argument(null, isFromExternal, true));
 
                 // In case we call TabsSession#addTab(), which is an async operation calls back in the next
                 // message loop. By posting this runnable we can call back in the same message loop with
@@ -870,7 +877,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                     tabsSession.getFocusTab().getTabView().loadUrl(url);
                     onViewReadyCallback.run();
                 } else {
-                    tabsSession.addTab(url, TabUtil.argument(null, false, true));
+                    tabsSession.addTab(url, TabUtil.argument(null, isFromExternal, true));
                     ThreadUtils.postToMainThread(onViewReadyCallback);
                 }
             }
@@ -1036,6 +1043,14 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         return ScreenNavigator.get(getContext()).isBrowserInForeground();
     }
 
+    private boolean startedFromExternalAndStays() {
+        return isStartedFromExternalApp() && noSwitchTabAfterNewIntent;
+    }
+
+    public void setNoSwitchTabAfterNewIntent(boolean newValue) {
+        noSwitchTabAfterNewIntent = newValue;
+    }
+
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
         private HistoryInserter historyInserter = new HistoryInserter();
 
@@ -1048,7 +1063,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onFocusChanged(@Nullable final Tab tab, @Factor int factor) {
             if (tab == null) {
-                if (factor == FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
+                if (factor == FACTOR_NO_FOCUS && !startedFromExternalAndStays()) {
                     ScreenNavigator.get(getContext()).popToHomeScreen(true);
                 } else {
                     getActivity().finish();

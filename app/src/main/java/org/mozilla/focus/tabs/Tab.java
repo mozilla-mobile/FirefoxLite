@@ -128,6 +128,10 @@ public class Tab {
         }
     }
 
+    public boolean isFromExternal() {
+        return ID_EXTERNAL.equals(getParentId());
+    }
+
     /**
      * To detach @see{android.view.View} of this tab, if any, is detached from its parent.
      */
