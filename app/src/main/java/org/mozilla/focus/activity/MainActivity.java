@@ -109,6 +109,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         super.onCreate(savedInstanceState);
 
         FirebaseHelper.init(this);
+        FirebaseHelper.checkIfInstallFromReferral(this,getIntent());
+        FirebaseHelper.checkIfNeedToShowRegister(this);
+
         asyncInitialize();
 
         setContentView(R.layout.activity_main);
@@ -193,6 +196,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onResume() {
         super.onResume();
+        DialogUtils.showShareAppDialog(this);
 
         TelemetryWrapper.startSession();
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -682,6 +686,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     screenNavigator.showBrowserScreen(url, true);
                 }
             }
+        } else if (requestCode == FirebaseHelper.REQUEST_SIGN_IN) {
+            FirebaseHelper.handleSiginResult(data, resultCode);
+
         }
     }
 
