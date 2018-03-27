@@ -33,7 +33,7 @@ public class SessionLoadedIdlingResource implements IdlingResource {
         if (mainActivity == null || mainActivity.getVisibleBrowserFragment() == null) {
             return false;
         }
-        // TODO: Maybe use an interface to wait for the state is better than depending on the activity directly
+        // FIXME: Maybe use an interface to wait for the state is better than depending on the activity directly
         final boolean isLoading = mainActivity.getVisibleBrowserFragment().isLoading();
         if (isLoading) {
             return false;
