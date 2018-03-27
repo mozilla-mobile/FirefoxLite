@@ -123,7 +123,7 @@ public class ScreenNavigatorTest {
     private void assertNewPageLoaded(MainThreadScreenNavigator navigator, String url) {
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
-        navigator.showBrowserScreen(url, true);
+        navigator.showBrowserScreen(url, true, false);
 
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()));
@@ -152,11 +152,11 @@ public class ScreenNavigatorTest {
         }
 
         @Override
-        public void showBrowserScreen(final String url, final boolean withNewTab) {
+        public void showBrowserScreen(final String url, final boolean withNewTab, boolean isFromExternal) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    MainThreadScreenNavigator.super.showBrowserScreen(url, withNewTab);
+                    MainThreadScreenNavigator.super.showBrowserScreen(url, withNewTab, false);
                 }
             });
         }
