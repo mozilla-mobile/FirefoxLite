@@ -80,7 +80,7 @@ public class SearchSuggestionTest {
         onView(allOf(withId(R.id.search_suggestion), isDisplayed())).check(matches(CountChildViewMatcher.withChildViewCount(5, withId(R.id.suggestion_item))));
 
         // Pick a suggestion to click
-        String text = GetTextViewMatcher.getText(GetNthChildViewMatcher.nthChildOf(withId(R.id.search_suggestion), 0));
+        final String text = GetTextViewMatcher.getText(GetNthChildViewMatcher.nthChildOf(withId(R.id.search_suggestion), 0));
         onView(allOf(withId(R.id.suggestion_item), withText(text), isDisplayed())).perform(click());
 
         // Wait for page is loaded
