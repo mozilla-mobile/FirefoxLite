@@ -25,9 +25,9 @@ class BrowserMediator {
         this.activity.sendBrowsingTelemetry();
     }
 
-    void showBrowserScreen(@NonNull String url, boolean openInNewTab) {
+    void showBrowserScreen(@NonNull String url, boolean openInNewTab, boolean isFromExternal) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab, new Runnable() {
+        findBrowserFragment(fragmentManager).loadUrl(url, openInNewTab, isFromExternal, new Runnable() {
             @Override
             public void run() {
                 raiseBrowserScreen(true, false);

@@ -130,7 +130,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 } else {
                     boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
                             false);
-                    this.screenNavigator.showBrowserScreen(url, openInNewTab);
+                    this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
                 }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
@@ -264,7 +264,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // firstrun is dismissed.
             final SafeIntent intent = new SafeIntent(getIntent());
             boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
-            this.screenNavigator.showBrowserScreen(pendingUrl, openInNewTab);
+            this.screenNavigator.showBrowserScreen(pendingUrl, openInNewTab, true);
             pendingUrl = null;
         }
     }
@@ -675,7 +675,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     if (mDialogFragment != null) {
                         mDialogFragment.dismiss();
                     }
-                    screenNavigator.showBrowserScreen(url, true);
+                    screenNavigator.showBrowserScreen(url, true, false);
                 }
             }
         }
@@ -724,7 +724,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public void firstrunFinished() {
         if (pendingUrl != null) {
             // We have received an URL in onNewIntent(). Let's load it now.
-            this.screenNavigator.showBrowserScreen(pendingUrl, true);
+            this.screenNavigator.showBrowserScreen(pendingUrl, true, true);
             pendingUrl = null;
         } else {
             this.mainMediator.showHomeScreen();

@@ -231,7 +231,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         if (args != null && args.containsKey(ARGUMENT_PARENT_FRAGMENT)) {
             openNewTab = HomeFragment.FRAGMENT_TAG.equals(args.getString(ARGUMENT_PARENT_FRAGMENT));
         }
-        ScreenNavigator.get(getContext()).showBrowserScreen(url, openNewTab);
+        ScreenNavigator.get(getContext()).showBrowserScreen(url, openNewTab, false);
     }
 
     @Override

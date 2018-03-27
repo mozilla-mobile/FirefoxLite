@@ -212,7 +212,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             final Site site = (Site) v.getTag();
             final Activity parent = getActivity();
             if ((site != null) && (parent instanceof FragmentListener)) {
-                ScreenNavigator.get(v.getContext()).showBrowserScreen(site.getUrl(), true);
+                ScreenNavigator.get(v.getContext()).showBrowserScreen(site.getUrl(), true, false);
                 ViewParent viewParent = v.getParent();
                 if (viewParent instanceof ViewGroup) {
                     int index = ((ViewGroup) v.getParent()).indexOfChild(v);

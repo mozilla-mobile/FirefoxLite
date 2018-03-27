@@ -60,11 +60,12 @@ public class ScreenNavigator {
      * Load target url on current/new tab and clear every thing above browser fragment
      * @param url target url
      * @param withNewTab whether to open and load target url in a new tab
+     * @param isFromExternal if this url is started from external VIEW intent
      */
-    public void showBrowserScreen(String url, boolean withNewTab) {
+    public void showBrowserScreen(String url, boolean withNewTab, boolean isFromExternal) {
         logMethod(url, withNewTab);
 
-        this.browserMediator.showBrowserScreen(url, withNewTab);
+        this.browserMediator.showBrowserScreen(url, withNewTab, isFromExternal);
     }
 
     void restoreBrowserScreen(@NonNull String tabId) {
@@ -118,7 +119,7 @@ public class ScreenNavigator {
         }
 
         @Override
-        public void showBrowserScreen(String url, boolean withNewTab) {
+        public void showBrowserScreen(String url, boolean withNewTab, boolean isFromExternal) {
         }
 
         @Override
