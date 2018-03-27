@@ -1088,6 +1088,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             updateIsLoading(true);
 
+            updateURL(tab.getUrl());
             siteIdentity.setImageLevel(SITE_GLOBE);
 
             backgroundTransition.resetTransition();
@@ -1304,6 +1305,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             dismissGeoDialog();
 
             updateURL(tab.getUrl());
+            progressView.setProgress(0);
 
             int identity = (tab.getSecurityState() == SiteIdentity.SECURE) ? SITE_LOCK : SITE_GLOBE;
             siteIdentity.setImageLevel(identity);
