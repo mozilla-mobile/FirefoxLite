@@ -34,16 +34,14 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void tabCloseClicked(int tabPosition) {
-        List<Tab> oldTabs = model.getTabs();
         int oldFocusPos = model.getCurrentTabPosition();
-        Tab oldFocusTab = oldTabs.get(oldFocusPos);
 
         model.removeTab(tabPosition);
 
         List<Tab> newTabs = model.getTabs();
         int newFocusTab = model.getCurrentTabPosition();
 
-        view.tabRemoved(tabPosition, oldFocusPos, newTabs.indexOf(oldFocusTab), newFocusTab);
+        view.tabRemoved(tabPosition, oldFocusPos, oldFocusPos, newFocusTab);
         view.updateData(newTabs);
 
         if (!newTabs.isEmpty()) {
