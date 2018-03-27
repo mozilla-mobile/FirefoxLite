@@ -31,7 +31,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         resConfigs "en", "in"
         versionCode 1
-        versionName "1.0.4"
+        versionName "2.0.0"
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
         multiDexEnabled true
 
