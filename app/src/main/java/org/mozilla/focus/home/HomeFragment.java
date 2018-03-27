@@ -7,6 +7,8 @@ package org.mozilla.focus.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.webkit.GeolocationPermissions;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -30,7 +36,9 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.provider.QueryHandler;
+import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabCounter;
+import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -63,6 +71,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
+    private TabsSession tabsSession;
+
+    private final TabsChromeListener tabsChromeListener = new TabsChromeListener();
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -87,6 +98,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.btnMenu = view.findViewById(R.id.btn_menu);
         this.btnMenu.setOnClickListener(menuItemClickListener);
 
+        tabsSession = TabsSessionProvider.getOrThrow(getActivity());
+        tabsSession.addTabsChromeListener(this.tabsChromeListener);
         this.tabCounter = view.findViewById(R.id.btn_tab_tray);
         this.tabCounter.setOnClickListener(menuItemClickListener);
         updateTabCounter();
@@ -150,6 +163,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
+    public void onDestroy() {
+        tabsSession.removeTabsChromeListener(this.tabsChromeListener);
+        super.onDestroy();
+    }
+
+    @Override
     public void showSites(@NonNull List<Site> sites) {
         if (this.topSiteAdapter == null) {
             this.topSiteAdapter = new TopSiteAdapter(sites, clickListener, clickListener);
@@ -191,7 +210,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void updateTabCounter() {
-        TabsSession tabsSession = TabsSessionProvider.getOrNull(getActivity());
         int tabCount = tabsSession != null ? tabsSession.getTabsCount() : 0;
         tabCounter.setCount(tabCount);
 
@@ -409,4 +427,63 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         }
     };
+
+    private class TabsChromeListener implements org.mozilla.focus.tabs.TabsChromeListener {
+
+        @Override
+        public void onProgressChanged(@NonNull Tab tab, int progress) {
+            // do nothing
+        }
+
+        @Override
+        public void onReceivedTitle(@NonNull Tab tab, String title) {
+            // do nothing
+        }
+
+        @Override
+        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
+            // do nothing
+        }
+
+        @Override
+        public void onFocusChanged(@Nullable Tab tab, int factor) {
+            // do nothing
+        }
+
+        @Override
+        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
+            // do nothing
+        }
+
+        @Override
+        public void onTabCountChanged(int count) {
+            updateTabCounter();
+        }
+
+        @Override
+        public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
+            // do nothing
+        }
+
+        @Override
+        public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
+            // do nothing
+        }
+
+        @Override
+        public void onExitFullScreen(@NonNull Tab tab) {
+            // do nothing
+        }
+
+        @Override
+        public boolean onShowFileChooser(@NonNull Tab tab, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+            // do nothing
+            return false;
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
+            // do nothing
+        }
+    }
 }
