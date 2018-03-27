@@ -839,10 +839,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             goBack();
         } else {
             final Tab focus = tabsSession.getFocusTab();
-            if (startedFromExternalAndStays()) {
-                tabsSession.closeTab(focus.getId());
-            } else if (focus == null) {
+            if (focus == null) {
                 return false;
+            // Do not remove focus.isFromExternal() statement
+            // If user opens tabTray and close current focused tab, we will close the next focused
+            // Tab since startedFromExternalAndStays is still true.
+            } else if (startedFromExternalAndStays() && focus.isFromExternal()) {
+                tabsSession.closeTab(focus.getId());
             } else {
                 ScreenNavigator.get(getContext()).popToHomeScreen(true);
             }
