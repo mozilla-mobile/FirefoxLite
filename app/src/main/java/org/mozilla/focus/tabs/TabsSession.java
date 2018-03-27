@@ -82,6 +82,7 @@ public class TabsSession {
      * @param models
      */
     public void restoreTabs(@NonNull final List<TabModel> models, String focusTabId) {
+        int insertPos = 0;
         for (final TabModel model : models) {
             if (!model.isValid()) {
                 continue;
@@ -89,7 +90,7 @@ public class TabsSession {
 
             final Tab tab = new Tab(model);
             bindCallback(tab);
-            tabs.add(tab);
+            tabs.add(insertPos++, tab);
         }
 
         if (tabs.size() > 0 && tabs.size() == models.size()) {
