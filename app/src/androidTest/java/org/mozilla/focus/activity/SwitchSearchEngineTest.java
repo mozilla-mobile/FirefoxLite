@@ -62,7 +62,6 @@ public class SwitchSearchEngineTest {
         if (loadingIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
         }
-        activityTestRule.getActivity().finishAndRemoveTask();
     }
 
     @Test

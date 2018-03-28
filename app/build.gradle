@@ -251,6 +251,7 @@ dependencies {
         exclude module: 'recyclerview-v7'
     })
     androidTestImplementation "com.android.support.test.espresso:espresso-web:${Versions.espresso}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${Versions.espresso}"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
