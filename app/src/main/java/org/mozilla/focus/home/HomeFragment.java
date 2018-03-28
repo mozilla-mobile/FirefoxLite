@@ -163,9 +163,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         tabsSession.removeTabsChromeListener(this.tabsChromeListener);
-        super.onDestroy();
+        super.onDestroyView();
     }
 
     @Override
