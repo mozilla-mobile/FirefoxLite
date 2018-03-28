@@ -19,10 +19,10 @@ import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.widget.FragmentListener;
+import org.mozilla.focus.helper.BeforeTestTask;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,29 +47,9 @@ import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId
 public final class AndroidTestUtils {
 
     public static void beforeTest() {
-        beforeTest(true);
-    }
-
-    public static void beforeTest(final boolean skipFirstRun) {
-        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        if (context == null) {
-            return;
-        }
-
-        if (skipFirstRun) {
-            NewFeatureNotice.getInstance(context).setMultiTabUpdateNoticeDidShow();
-        } else {
-            NewFeatureNotice.getInstance(context).resetFirstRunDidShow();
-        }
-
-        final Settings settings = Settings.getInstance(context);
-        if (settings != null) {
-            settings.setShareAppDialogDidShow();
-            settings.setRateAppDialogDidShow();
-        }
-
-        Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
-        setFocusTabId("");
+        new BeforeTestTask.Builder()
+                .build()
+                .execute();
     }
 
     public static Buffer readTestAsset(String filename) throws IOException {
@@ -160,4 +140,14 @@ public final class AndroidTestUtils {
         onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(containsString(text))));
     }
 
+    public static void setRateAppPromotionIsReadyToShow() {
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        // Clear rate app did show flag
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putBoolean(context.getResources().getString(R.string.pref_key_did_show_rate_app_dialog), false).apply();
+
+        // Force app created count to hit threshold to show app promotion dialog
+        final Settings.EventHistory history = Settings.getInstance(context).getEventHistory();
+        history.setCount(Settings.Event.AppCreate, (int) AppConfigWrapper.getRateDialogLaunchTimeThreshold(context));
+    }
 }

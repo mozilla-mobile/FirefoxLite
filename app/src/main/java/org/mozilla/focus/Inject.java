@@ -17,6 +17,8 @@ import org.mozilla.focus.utils.AppConstants;
 
 public class Inject {
 
+    private static boolean sIsNewCreated = true;
+
     public static String getDefaultTopSites(Context context) {
 
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -60,5 +62,13 @@ public class Inject {
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
+    }
+
+    public static final boolean getActivityNewlyCreatedFlag() {
+        return sIsNewCreated;
+    }
+
+    public static void setActivityNewlyCreatedFlag() {
+        sIsNewCreated = false;
     }
 }

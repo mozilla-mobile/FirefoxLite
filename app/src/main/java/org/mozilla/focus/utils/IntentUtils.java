@@ -14,6 +14,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -31,7 +32,8 @@ import java.util.List;
 
 public class IntentUtils {
 
-    private static final String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
+    @VisibleForTesting
+    public static final String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
     private static final String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
     public static final String EXTRA_IS_INTERNAL_REQUEST = "is_internal_request";
     public static final String EXTRA_OPEN_NEW_TAB = "open_new_tab";
@@ -220,7 +222,7 @@ public class IntentUtils {
     public static void goToPlayStore(Context context) {
         final String appPackageName = context.getPackageName();
         try {
-            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName));
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_INTENT_URI_PACKAGE_PREFIX + appPackageName));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } catch (android.content.ActivityNotFoundException ex) {

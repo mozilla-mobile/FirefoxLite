@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.search.SearchEngine;
@@ -245,7 +246,8 @@ public class Settings {
             setCount(eventName, getCount(eventName) + 1);
         }
 
-        private void setCount(String eventName, int value) {
+        @VisibleForTesting
+        public void setCount(String eventName, int value) {
             String key = "pref_" + eventName + "_counter";
             preferences.edit().putInt(key, value).apply();
         }

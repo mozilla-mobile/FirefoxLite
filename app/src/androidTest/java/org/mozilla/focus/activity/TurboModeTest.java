@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -37,7 +38,10 @@ public class TurboModeTest {
 
     @Before
     public void setUp() {
-        AndroidTestUtils.beforeTest(false);
+        new BeforeTestTask.Builder()
+                .setSkipFirstRun(false)
+                .build()
+                .execute();
         activityTestRule.launchActivity(new Intent());
     }
 
