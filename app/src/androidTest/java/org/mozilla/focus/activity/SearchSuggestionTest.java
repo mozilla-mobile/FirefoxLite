@@ -12,30 +12,25 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiCollection;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiSelector;
-import android.view.inputmethod.InputMethodManager;
 
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.helper.CountChildViewMatcher;
 import org.mozilla.focus.helper.DecodedTextMatcher;
+import org.mozilla.focus.helper.GetNthChildViewMatcher;
+import org.mozilla.focus.helper.GetTextViewMatcher;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Random;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -45,7 +40,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.mozilla.focus.utils.AndroidTestUtils.getResourceId;
+import static org.hamcrest.core.AllOf.allOf;
 
 @Keep
 @RunWith(AndroidJUnit4.class)
@@ -68,56 +63,38 @@ public class SearchSuggestionTest {
     }
 
     @Test
-    @Ignore
     public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
 
         activityTestRule.launchActivity(new Intent());
 
-
+        // Get the default search engine
+        final SearchEngine defaultSearchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(context);
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
         // Click search field
-        onView(withId(R.id.home_fragment_fake_input))
-                .perform(click());
+        onView(allOf(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click());
 
-        onView(withId(R.id.url_edit)).check(matches(isDisplayed()));
+        // Type search text
+        onView(allOf(withId(R.id.url_edit), isDisplayed())).perform(typeText("zerda"));
 
-        // Check if the soft keyboard is shown
-        final InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        Assert.assertTrue(inputMethodManager.isAcceptingText());
-
-        onView(withId(R.id.url_edit)).perform(typeText("rocket"));
-
-        onView(withId(R.id.search_suggestion)).check(matches(isDisplayed()));
         // Check if the suggestion count is shown at most 5
-        final UiCollection suggestionCollection = new UiCollection(new UiSelector().resourceId(getResourceId("search_suggestion")));
-        Assert.assertTrue(suggestionCollection.exists());
-        final int suggestionCount = suggestionCollection.getChildCount(new UiSelector().resourceId(getResourceId("suggestion_item")));
-        Assert.assertTrue(suggestionCount <= 5);
+        onView(allOf(withId(R.id.search_suggestion), isDisplayed())).check(matches(CountChildViewMatcher.withChildViewCount(5, withId(R.id.suggestion_item))));
 
-        // Pick a suggestion
-        final UiObject suggestionItem = suggestionCollection.getChild(new UiSelector().index(new Random().nextInt(suggestionCount)));
-        final String suggestionText = suggestionItem.getText();
-        suggestionItem.click();
+        // Pick a suggestion to click
+        String text = GetTextViewMatcher.getText(GetNthChildViewMatcher.nthChildOf(withId(R.id.search_suggestion), 0));
+        onView(allOf(withId(R.id.suggestion_item), withText(text), isDisplayed())).perform(click());
 
-        // Get default search engine
-        final SearchEngine defaultSearchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(context);
-
-        // After page loading completes
+        // Wait for page is loaded
         IdlingRegistry.getInstance().register(loadingIdlingResource);
-
-        onView(withId(R.id.display_url)).check(matches(isDisplayed()));
 
         // Check if the search result is using default search engine
         final String[] searchEngine = defaultSearchEngine.getName().toLowerCase().split(" ");
-        onView(withId(R.id.display_url)).check(matches(withText(containsString(searchEngine[0]))));
-
+        onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(containsString(searchEngine[0]))));
 
         // Check if the search result is matched the suggestion we picked
-        onView(withId(R.id.display_url)).check(matches(DecodedTextMatcher.withText(containsString(searchEngine[0]))));
+        onView(withId(R.id.display_url)).check(matches(DecodedTextMatcher.withText(containsString(text))));
 
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
     }
-
 }
