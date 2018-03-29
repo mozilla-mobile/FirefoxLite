@@ -128,6 +128,10 @@ public class Tab {
         }
     }
 
+    public boolean hasParentTab() {
+        return !isFromExternal() && !TextUtils.isEmpty(getParentId());
+    }
+
     public boolean isFromExternal() {
         return ID_EXTERNAL.equals(getParentId());
     }
