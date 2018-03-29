@@ -22,6 +22,8 @@ class TabTrayContract {
         void showFocusedTab(int tabPosition);
         void tabSwitched(int tabPosition);
         void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, int nextFocusPos);
+        void closeTabTray();
+        void navigateToHome();
     }
 
     interface Model {

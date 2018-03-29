@@ -23,7 +23,12 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void viewReady() {
-        view.showFocusedTab(model.getCurrentTabPosition());
+        List<Tab> tabs = model.getTabs();
+        if (tabs.isEmpty()) {
+            view.closeTabTray();
+        } else {
+            view.showFocusedTab(model.getCurrentTabPosition());
+        }
     }
 
     @Override
@@ -46,6 +51,9 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
         if (!newTabs.isEmpty()) {
             model.switchTab(newFocusTab);
+        } else {
+            view.closeTabTray();
+            view.navigateToHome();
         }
     }
 }

@@ -206,11 +206,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void updateData(List<Tab> tabs) {
         adapter.setData(tabs);
-
-        if (tabs.isEmpty()) {
-            ScreenNavigator.get(getContext()).popToHomeScreen(false);
-            postOnNextFrame(dismissRunnable);
-        }
     }
 
     @Override
@@ -239,6 +234,16 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 adapter.notifyItemChanged(nextFocusPos);
             }
         });
+    }
+
+    @Override
+    public void closeTabTray() {
+        postOnNextFrame(dismissRunnable);
+    }
+
+    @Override
+    public void navigateToHome() {
+        ScreenNavigator.get(getContext()).popToHomeScreen(false);
     }
 
     private void animateItemRemove(int removePos, final Runnable onAnimationEndCallback) {
