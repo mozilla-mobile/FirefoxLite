@@ -46,6 +46,8 @@ public class BrowsingHistoryTest {
 
     private MockWebServer webServer;
 
+    private SessionLoadedIdlingResource loadingIdlingResource;
+
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class, true, false) {
         @Override
@@ -87,14 +89,21 @@ public class BrowsingHistoryTest {
     @After
     public void tearDown() {
         activityTestRule.getActivity().finishAndRemoveTask();
+        // We unregister loadingIdlingResource here so other tests will not be affected.
+        if (loadingIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(loadingIdlingResource);
+        }
+
+
     }
 
     @Test
     public void browsingWebsiteThenTapTheFirstHistoryItem_browsingHistoryRecordCorrectly() {
 
         activityTestRule.launchActivity(new Intent());
+        // loadingIdlingResource needs to be initialized here cause activity only exist till above line is called.
+        loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
-        final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
         final String targerUrl = webServer.url(TEST_PATH).toString();
 
         // Click search field
@@ -106,7 +115,6 @@ public class BrowsingHistoryTest {
         // Check if target url is loaded
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(targerUrl)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Open menu
         onView(allOf(withId(R.id.btn_menu), isDisplayed())).perform(click());
@@ -119,9 +127,7 @@ public class BrowsingHistoryTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
         // Check if this history record is target url and loaded again
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(targerUrl)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
     }
 
