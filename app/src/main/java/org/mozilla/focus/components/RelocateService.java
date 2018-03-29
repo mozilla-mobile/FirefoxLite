@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +40,7 @@ public class RelocateService extends IntentService {
 
     private static final String TAG = "RelocateService";
     private static final String ACTION_MOVE = "org.mozilla.focus.components.action.MOVE";
+    private static final String CHANNEL_ID = "relocation_service";
 
     public RelocateService() {
         super(TAG);
@@ -68,7 +70,8 @@ public class RelocateService extends IntentService {
     private void startForeground() {
         final String notificationChannelId;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannelId = NotificationChannel.DEFAULT_CHANNEL_ID;
+            configForegroundChannel(this);
+            notificationChannelId = CHANNEL_ID;
         } else {
             notificationChannelId = "not_used_notification_id";
         }
@@ -77,6 +80,18 @@ public class RelocateService extends IntentService {
         Notification notification = builder
                 .build();
         startForeground(NotificationId.RELOCATE_SERVICE, notification);
+    }
+
+    // Configure the notification channel if needed
+    private static void configForegroundChannel(Context context) {
+        final NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // NotificationChannel API is only available for Android O and above, so we need to add the check here so IDE won't complain
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final String channelName = context.getString(R.string.app_name);
+            final NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
     }
 
     private void stopForeground() {
