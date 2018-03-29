@@ -5,55 +5,40 @@
 
 package org.mozilla.focus.tabs.tabtray
 
-import android.app.Activity
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.mozilla.focus.activity.MainActivity
-import org.mozilla.focus.tabs.TabView
-import org.mozilla.focus.tabs.TabViewProvider
-import org.mozilla.focus.tabs.TabsSession
-import org.mozilla.focus.web.WebViewProvider
+import org.mozilla.focus.tabs.Tab
 
 class TabTrayPresenterTest {
 
     private lateinit var tabTrayPresenter: TabTrayPresenter
 
     @Mock
-    private val mainActivity: MainActivity? = null
-
-    @Mock
     private val tabTrayContractView: TabTrayContract.View? = null
 
+    @Mock
+    private lateinit var tabsSessionModel: TabsSessionModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-
-        val tabsSession = TabsSession(TestTabViewProvider(mainActivity!!))
-        val tabsSessionModel = TabsSessionModel(tabsSession)
-
         tabTrayPresenter = TabTrayPresenter(tabTrayContractView, tabsSessionModel)
-
     }
 
 
     @Test
     fun viewReady_showFocusedTab() {
+        Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf())
         this.tabTrayPresenter.viewReady()
+        verify<TabTrayContract.View>(this.tabTrayContractView).closeTabTray()
 
+        Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf(Tab(), Tab(), Tab()))
+        this.tabTrayPresenter.viewReady()
         verify<TabTrayContract.View>(this.tabTrayContractView).showFocusedTab(anyInt())
-    }
-
-    class TestTabViewProvider(activity: Activity) : TabViewProvider {
-        private var activity: Activity = activity
-
-        override fun create(): TabView {
-            return WebViewProvider.create(this.activity, null) as TabView
-        }
-
     }
 }
