@@ -4,18 +4,17 @@ dependencies {
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:disklrucache')
 
-    implementation "com.android.support:support-annotations:$rootProject.androidSupportVersion"
-    implementation "com.android.support:support-v4:$rootProject.androidSupportVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.androidSupportVersion"
+    implementation Libs.support_annotations
+    implementation Libs.support_v4
+    implementation Libs.app_compat_v7
 }
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
-
+    compileSdkVersion Versions.compile_sdk
+    buildToolsVersion Versions.build_tools
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
 
         versionName "4.0.0"
 
