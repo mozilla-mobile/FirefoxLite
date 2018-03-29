@@ -80,6 +80,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DrawableUtils;
+import org.mozilla.focus.utils.EspressoUtils;
 import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.ThreadUtils;
@@ -1239,7 +1240,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab,
                                                        final String origin,
                                                        final GeolocationPermissions.Callback callback) {
-            if (!isForegroundTab(tab) || !isPopupWindowAllowed()) {
+            if (!isForegroundTab(tab) || !isPopupWindowAllowed() || !EspressoUtils.isAllowGeoPermissionPrompt(getContext())) {
                 return;
             }
 

@@ -24,9 +24,20 @@ import okio.Okio;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
+import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.not;
 import static org.mozilla.focus.fragment.FirstrunFragment.PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN;
 import static org.mozilla.focus.fragment.FirstrunFragment.PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.mozilla.focus.utils.EspressoUtils.PREF_KEY_ENABLE_GEOLOCATION_PERMISSION_PROMPT;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 public final class AndroidTestUtils {
@@ -56,6 +67,17 @@ public final class AndroidTestUtils {
 
         Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
         setFocusTabId("");
+    }
+
+    public static void setAllowGeoPermissionPrompt(final boolean allow) {
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (preferences != null) {
+            final SharedPreferences.Editor editor = preferences.edit();
+            if (editor != null) {
+                editor.putBoolean(PREF_KEY_ENABLE_GEOLOCATION_PERMISSION_PROMPT, allow).commit();
+            }
+        }
     }
 
     public static Buffer readTestAsset(String filename) throws IOException {
@@ -90,4 +112,29 @@ public final class AndroidTestUtils {
             }
         }
     }
+
+    public static void tapHomeMenuButton() {
+        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
+    }
+
+    public static void tapBrowserMenuButton() {
+        onView(allOf(withId(R.id.btn_menu), not(withParent(withId(R.id.home_screen_menu))))).perform(click());
+    }
+
+    public static void tapSettingButton() {
+        onView(allOf(withId(R.id.menu_preferences), isDisplayed())).perform(click());
+    }
+
+    public static void tapHomeSearchField() {
+        onView(allOf(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click());
+    }
+
+    public static void typeTextInSearchFieldAndGo(String text) {
+        onView(allOf(withId(R.id.url_edit), isDisplayed())).perform(replaceText(text), pressImeActionButton());
+    }
+
+    public static void urlBarContainsText(String text) {
+        onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(containsString(text))));
+    }
+
 }
