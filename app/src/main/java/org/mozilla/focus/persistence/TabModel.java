@@ -14,21 +14,14 @@ public class TabModel {
 
     @Ignore
     public TabModel(String id, String parentId) {
-        this(id, parentId, "", "", "", "");
+        this(id, parentId, "", "");
     }
 
-    @Ignore
     public TabModel(String id, String parentId, String title, String url) {
-        this(id, parentId, title, url, "", "");
-    }
-
-    public TabModel(String id, String parentId, String title, String url, String thumbnailUri, String webViewStateUri) {
         this.id = id;
         this.parentId = parentId;
         this.title = title;
         this.url = url;
-        this.thumbnailUri = thumbnailUri;
-        this.webViewStateUri = webViewStateUri;
     }
 
     @PrimaryKey
@@ -44,15 +37,6 @@ public class TabModel {
 
     @ColumnInfo(name = "tab_url")
     private String url;
-
-    /**
-     * Thumbnail uri for tab preview.
-     */
-    @ColumnInfo(name = "tab_thumbnail_uri")
-    private String thumbnailUri;
-
-    @ColumnInfo(name = "webview_state_uri")
-    private String webViewStateUri;
 
     /**
      * Thumbnail bitmap for tab previewing.
@@ -107,22 +91,6 @@ public class TabModel {
         this.url = url;
     }
 
-    public String getThumbnailUri() {
-        return thumbnailUri;
-    }
-
-    public void setThumbnailUri(String thumbnailUri) {
-        this.thumbnailUri = thumbnailUri;
-    }
-
-    public String getWebViewStateUri() {
-        return webViewStateUri;
-    }
-
-    public void setWebViewStateUri(String webViewStateUri) {
-        this.webViewStateUri = webViewStateUri;
-    }
-
     public Bitmap getThumbnail() {
         return thumbnail;
     }
@@ -161,8 +129,6 @@ public class TabModel {
                 ", parentId='" + parentId + '\'' +
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
-                ", thumbnailUri='" + thumbnailUri + '\'' +
-                ", webViewStateUri='" + webViewStateUri + '\'' +
                 ", thumbnail=" + thumbnail +
                 ", favicon=" + favicon +
                 ", webViewState=" + webViewState +
