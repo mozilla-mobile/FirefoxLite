@@ -23,15 +23,36 @@ import org.mozilla.focus.R;
 
 public class FavIconUtils {
 
+    public static final int TYPE_ORIGINAL = 0;
+    public static final int TYPE_SCALED_DOWN = 1;
+    public static final int TYPE_GENERATED = 2;
+
+    public static int getFavIconType(Resources res, Bitmap source) {
+        if (source == null || source.getWidth() < res.getDimensionPixelSize(R.dimen.favicon_initial_threshold_size)) {
+            return TYPE_GENERATED;
+        }
+
+        if (source.getWidth() > res.getDimensionPixelSize(R.dimen.favicon_downscale_threshold_size)) {
+            return TYPE_SCALED_DOWN;
+        }
+
+        return TYPE_ORIGINAL;
+    }
 
     public static Bitmap getRefinedBitmap(Resources res, Bitmap source, char initial) {
-        if (source.getWidth() > res.getDimensionPixelSize(R.dimen.favicon_downscale_threshold_size)) {
-            int targetSize = res.getDimensionPixelSize(R.dimen.favicon_target_size);
-            return Bitmap.createScaledBitmap(source, targetSize, targetSize, false);
-        } else if (source.getWidth() < res.getDimensionPixelSize(R.dimen.favicon_initial_threshold_size)) {
-            return getInitialBitmap(res, source, initial);
-        } else {
-            return source;
+        switch (getFavIconType(res, source)) {
+            case TYPE_ORIGINAL:
+                return source;
+
+            case TYPE_SCALED_DOWN:
+                int targetSize = res.getDimensionPixelSize(R.dimen.favicon_target_size);
+                return Bitmap.createScaledBitmap(source, targetSize, targetSize, false);
+
+            case TYPE_GENERATED:
+                return getInitialBitmap(res, source, initial);
+
+            default:
+                return getInitialBitmap(res, source, initial);
         }
     }
 

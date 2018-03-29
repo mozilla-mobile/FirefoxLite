@@ -7,6 +7,7 @@ package org.mozilla.focus.tabs.tabtray;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -30,7 +31,9 @@ import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
+import org.mozilla.focus.utils.FavIconUtils;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHolder> {
@@ -41,6 +44,8 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     private TabClickListener tabClickListener;
 
     private RequestManager requestManager;
+
+    private HashMap<Character, Drawable> localIconCache = new HashMap<>();
 
     TabTrayAdapter(RequestManager requestManager) {
         this.requestManager = requestManager;
@@ -71,7 +76,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 resources.getString(R.string.app_name) : title);
         holder.websiteSubtitle.setText(tab.getUrl());
 
-        loadFavicon(tab, holder);
+        setFavicon(tab, holder);
     }
 
     @Override
@@ -115,12 +120,28 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         return newTitle;
     }
 
-    private void loadFavicon(Tab tab, final ViewHolder holder) {
+    private void setFavicon(Tab tab, final ViewHolder holder) {
         String uri = tab.getUrl();
         if (TextUtils.isEmpty(uri)) {
             return;
         }
 
+        int type = FavIconUtils.getFavIconType(holder.itemView.getResources(), tab.getFavicon());
+        switch (type) {
+            case FavIconUtils.TYPE_ORIGINAL:
+            case FavIconUtils.TYPE_SCALED_DOWN:
+                loadCachedFavicon(tab, holder);
+                break;
+
+            case FavIconUtils.TYPE_GENERATED:
+                loadGeneratedFavicon(tab, holder);
+                break;
+            default:
+                updateFavicon(holder, null);
+        }
+    }
+
+    private void loadCachedFavicon(Tab tab, final ViewHolder holder) {
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
@@ -152,6 +173,19 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                         updateFavicon(holder, resource);
                     }
                 });
+    }
+
+    private void loadGeneratedFavicon(Tab tab, final ViewHolder holder) {
+        Character symbol = FavIconUtils.getRepresentativeCharacter(tab.getUrl());
+
+        if (localIconCache.containsKey(symbol)) {
+            updateFavicon(holder, localIconCache.get(symbol));
+        } else {
+            BitmapDrawable drawable = new BitmapDrawable(holder.itemView.getResources(),
+                    FavIconUtils.getInitialBitmap(holder.itemView.getResources(), tab.getFavicon(), symbol));
+            localIconCache.put(symbol, drawable);
+            updateFavicon(holder, drawable);
+        }
     }
 
     private void updateFavicon(ViewHolder holder, @Nullable Drawable drawable) {
