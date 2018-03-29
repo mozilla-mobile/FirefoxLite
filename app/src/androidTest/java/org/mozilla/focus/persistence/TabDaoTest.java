@@ -55,7 +55,7 @@ public class TabDaoTest {
         tabsDatabase.tabDao().insertTabs(TAB);
 
         // When we are updating the title of the tab
-        TabModel updatedTab = new TabModel(TAB.getId(), TAB.getParentId(), "new title", TAB.getUrl(), TAB.getThumbnailUri(), TAB.getWebViewStateUri());
+        TabModel updatedTab = new TabModel(TAB.getId(), TAB.getParentId(), "new title", TAB.getUrl());
         tabsDatabase.tabDao().insertTabs(updatedTab);
 
         // The retrieved tab has the updated title
@@ -94,7 +94,5 @@ public class TabDaoTest {
         assertEquals(expectedTab.getParentId(), actualTab.getParentId());
         assertEquals(expectedTab.getTitle(), actualTab.getTitle());
         assertEquals(expectedTab.getUrl(), actualTab.getUrl());
-        assertEquals(expectedTab.getThumbnailUri(), actualTab.getThumbnailUri());
-        assertEquals(expectedTab.getWebViewStateUri(), actualTab.getWebViewStateUri());
     }
 }
