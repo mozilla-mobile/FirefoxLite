@@ -166,6 +166,8 @@ android {
 
         previewWebkitBeta.res.srcDir 'src/preview/res'
 
+        // used by Room, to test migrations
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 }
 
