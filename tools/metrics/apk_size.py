@@ -6,9 +6,15 @@
 
 from os import path, listdir, stat
 from sys import exit
+import argparse
 
-SIZE_LIMIT = 4194304
-PATH = path.join(path.dirname(path.abspath(__file__)), '../../app/build/outputs/apk/')
+SIZE_LIMIT = 2.5 * 1024 * 1024 
+parser = argparse.ArgumentParser(description='Determine Path')
+parser.add_argument('product', choices=['focus', 'preview'], default='focus')
+parser.add_argument('engine', choices=['webkit'], default='webkit')
+args = parser.parse_args()
+FLAVOR = args.product + args.engine.capitalize()
+PATH = path.join(path.dirname(path.abspath(__file__)), '../../app/build/outputs/apk/' + FLAVOR + '/release')
 
 files = []
 try:
