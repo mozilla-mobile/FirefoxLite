@@ -5,6 +5,10 @@ buildscript {
     repositories {
         jcenter()
         google()
+        maven { url "https://maven.google.com" }
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -13,6 +17,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.google.gms:google-services:3.1.1' // google-services plugin
+        classpath 'io.fabric.tools:gradle:1.25.1'
     }
 }
 
@@ -36,4 +42,6 @@ ext {
     architectureComponentsVersion = "1.0.0"
     runnerVersion = "1.0.1"
     espressoVersion = "3.0.1"
+    firebaseVersion = "12.0.0"
+    crashlyticsVersion = "2.9.0"
 }

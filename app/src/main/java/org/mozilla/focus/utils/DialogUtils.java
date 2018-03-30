@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -65,6 +66,17 @@ public class DialogUtils {
                 telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
             }
         });
+
+        final String title = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE);
+        if (title != null) {
+            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_title)).setText(title);
+        }
+
+        final String content = FirebaseHelper.getString(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT);
+        if (content != null) {
+            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
+        }
+
         dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,14 +129,16 @@ public class DialogUtils {
         dialogView.findViewById(R.id.dialog_share_app_btn_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
-                sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text));
-                context.startActivity(Intent.createChooser(sendIntent, null));
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
+//                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+//                sendIntent.setType("text/plain");
+//                sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+//                sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text));
+//                context.startActivity(Intent.createChooser(sendIntent, null));
+//                if (dialog != null) {
+//                    dialog.dismiss();
+//                }
+                FirebaseHelper.shareWithDynamicLink(context,dialog);
+
                 telemetryShareApp(context, TelemetryWrapper.Value.SHARE);
             }
         });

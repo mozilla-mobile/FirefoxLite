@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+//apply plugin: 'kotlin-kapt'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 apply plugin: 'jacoco-android'
@@ -9,6 +9,7 @@ apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'com.icesmith.androidtextresolver'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
+apply plugin: 'io.fabric'
 
 buildscript {
     repositories {
@@ -33,6 +34,7 @@ android {
         versionCode 1
         versionName "2.0.0"
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
+        testInstrumentationRunnerArgument 'disableAnalytics','true'
         multiDexEnabled true
 
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
@@ -77,6 +79,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "bool", "enableCrashlytics", "true"
         }
         beta {
             initWith release
@@ -85,11 +88,13 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             matchingFallbacks = ["release"]
+            resValue "bool", "enableCrashlytics", "true"
         }
         debug {
             def userName = System.getenv("USER")
             applicationIdSuffix ".debug." + userName
             versionNameSuffix applicationIdSuffix
+            resValue "bool", "enableCrashlytics", "false"
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
@@ -100,6 +105,7 @@ android {
             applicationIdSuffix ".coverage"
             testCoverageEnabled true
             matchingFallbacks = ["debug"]
+            resValue "bool", "enableCrashlytics", "false"
         }
     }
 
@@ -187,7 +193,7 @@ dependencies {
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-    kapt 'com.github.bumptech.glide:compiler:4.0.0'
+//    kapt 'com.github.bumptech.glide:compiler:4.0.0'
 
     implementation "com.android.support:support-v4:$rootProject.androidSupportVersion"
     implementation "com.android.support:appcompat-v7:$rootProject.androidSupportVersion"
@@ -198,7 +204,7 @@ dependencies {
 
     implementation "android.arch.persistence.room:runtime:$rootProject.architectureComponentsVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.architectureComponentsVersion"
-    kapt "android.arch.persistence.room:compiler:$rootProject.architectureComponentsVersion"
+//    kapt "android.arch.persistence.room:compiler:$rootProject.architectureComponentsVersion"
 
     implementation("com.google.code.findbugs:annotations:3.0.1") {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
@@ -209,7 +215,19 @@ dependencies {
     implementation 'org.mozilla.telemetry:telemetry:1.1.1'
 
     implementation 'com.adjust.sdk:adjust-android:4.11.4'
-    implementation 'com.google.android.gms:play-services-analytics:11.8.0' // Required by Adjust
+    implementation 'com.google.android.gms:play-services-analytics:'+ rootProject.firebaseVersion // Required by Adjust
+    implementation 'com.google.firebase:firebase-core:'+ rootProject.firebaseVersion
+    implementation 'com.google.firebase:firebase-config:'+ rootProject.firebaseVersion
+    implementation 'com.google.firebase:firebase-messaging:'+ rootProject.firebaseVersion
+    implementation 'com.google.firebase:firebase-invites:'+ rootProject.firebaseVersion
+    implementation 'com.google.firebase:firebase-auth:'+ rootProject.firebaseVersion
+    implementation 'com.google.firebase:firebase-database:'+ rootProject.firebaseVersion
+//    api 'com.firebaseui:firebase-ui-auth:3.2.2'
+
+
+    implementation('com.crashlytics.sdk.android:crashlytics:' + rootProject.crashlyticsVersion + '@aar') {
+        transitive = true
+    }
 
     api 'com.airbnb.android:lottie:2.2.0'
 
@@ -587,3 +605,5 @@ task checkstyle(type: Checkstyle) {
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
+
+apply plugin: 'com.google.gms.google-services'
