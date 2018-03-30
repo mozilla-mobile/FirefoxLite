@@ -6,6 +6,7 @@
 package org.mozilla.focus.tabs.tabtray;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -126,35 +127,28 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
             return;
         }
 
-        int type = FavIconUtils.getFavIconType(holder.itemView.getResources(), tab.getFavicon());
-        switch (type) {
-            case FavIconUtils.TYPE_ORIGINAL:
-            case FavIconUtils.TYPE_SCALED_DOWN:
-                loadCachedFavicon(tab, holder);
-                break;
-
-            case FavIconUtils.TYPE_GENERATED:
-                loadGeneratedFavicon(tab, holder);
-                break;
-            default:
-                updateFavicon(holder, null);
-        }
+        loadCachedFavicon(tab, holder);
     }
 
-    private void loadCachedFavicon(Tab tab, final ViewHolder holder) {
+    private void loadCachedFavicon(final Tab tab, final ViewHolder holder) {
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
 
+        Bitmap favicon = tab.getFavicon();
+        FaviconModel model = new FaviconModel(tab.getUrl(),
+                FavIconUtils.getFavIconType(holder.itemView.getResources(), favicon),
+                favicon);
+
         requestManager
-                .load(new FaviconModel(tab.getUrl(), tab.getFavicon()))
+                .load(model)
                 .apply(options)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target,
                                                 boolean isFirstResource) {
-                        updateFavicon(holder, null);
+                        loadGeneratedFavicon(tab, holder);
                         return true;
                     }
 

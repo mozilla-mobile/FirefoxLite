@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -26,7 +27,10 @@ public class FavIconUtils {
     public static final int TYPE_ORIGINAL = 0;
     public static final int TYPE_SCALED_DOWN = 1;
     public static final int TYPE_GENERATED = 2;
+    @IntDef({TYPE_ORIGINAL, TYPE_SCALED_DOWN, TYPE_GENERATED})
+    public @interface FavIconType {}
 
+    @FavIconType
     public static int getFavIconType(Resources res, Bitmap source) {
         if (source == null || source.getWidth() < res.getDimensionPixelSize(R.dimen.favicon_initial_threshold_size)) {
             return TYPE_GENERATED;
