@@ -911,11 +911,18 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
+
+        boolean hasUrlFragmentOnly(Fragment top) {
+            final int stackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+            return (stackEntryCount == 1 && UrlInputFragment.FRAGMENT_TAG.equals(top.getTag()));
+        }
+
         @Override
         public void onBackStackChanged() {
             final BrowserFragment fragment = getBrowserFragment();
             final Fragment top = MainActivity.this.mainMediator.getTopFragment();
-            if (top == null) {
+
+            if (top == null || hasUrlFragmentOnly(top)) {
                 fragment.goForeground();
             } else {
                 fragment.goBackground();
