@@ -54,6 +54,7 @@
   <string name="contextmenu_image_share">Bagikan gambar</string>
   <string name="contextmenu_image_copy">Salin alamat gambar</string>
   <string name="contextmenu_image_save">Simpan gambar</string>
+  <string name="contextmenu_open_in_new_tab">Buka tautan di tab baru</string>
   <string name="first_run_page1_title">Terima kasih telah memilih %1$s</string>
   <string name="first_run_page1_text">Sebuah peramban yang dibuat khusus untuk Indonesia oleh Mozilla, organisasi nirlaba yang berkomitmen pada web bebas dan terbuka.</string>
   <string name="first_run_page2_title">Menjelajah secepat kilat</string>
@@ -62,6 +63,11 @@
   <string name="first_run_page3_text">Memblokir iklan pelacak tidak hanya mempercepat penjelajahan, tapi juga menghemat data. Anda bisa berhemat lebih banyak jika memblokir gambar.</string>
   <string name="first_run_page4_title">Tangkap layar apa saja</string>
   <string name="first_run_page4_text">Tangkap layar dari keseluruhan laman. Lihat tanpa menggunakan kuota data, atau ketuk untuk mengunjungi laman sumbernya.</string>
+  <string name="first_run_upgrade_page_title">Kami mendengar masukan Anda!</string>
+  <string name="first_run_upgrade_page_text1">1. Mengerjakan sekaligus dengan membuka %s tab secara bersamaan!</string>
+  <string name="first_run_upgrade_page_text1_highlight">multi-tab</string>
+  <string name="first_run_upgrade_page_text2">2. Akses situs favorit Anda secara cepat dengan %s</string>
+  <string name="first_run_upgrade_page_text2_highlight">menambahkan ke beranda!</string>
   <string name="firstrun_close_button">Oke, paham</string>
   <string name="firstrun_skip_button">Lewati</string>
   <string name="firstrun_next_button">Lanjut</string>
@@ -164,4 +170,6 @@
   <string name="your_rights_content5"><![CDATA["%1$s juga menggunakan daftar blokir yang disediakan oleh Disconnect, Inc. sebagai hasil karya terpisah dan independen di bawah "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>", dan tersedia "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">di sini</a>.]]></string>
   <string name="survey_notification_title">Kami membutuhkan Anda! %1$s</string>
   <string name="survey_notification_description">Wujudkan produk lebih baik bagi Indonesia</string>
+  <string name="new_background_tab_hint">Tab baru dibuka</string>
+  <string name="new_background_tab_switch">Tukar</string>
 </resources>
