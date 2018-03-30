@@ -163,7 +163,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         setupBottomSheetCallback();
 
-        final Runnable expandRunnable = prepareExpandAnimation();
+        prepareExpandAnimation();
 
         initRecyclerView();
 
@@ -174,8 +174,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             @Override
             public boolean onPreDraw() {
                 view.getViewTreeObserver().removeOnPreDrawListener(this);
-                uiHandler.postDelayed(expandRunnable, getResources().getInteger(
-                        R.integer.tab_tray_transition_time));
+                startExpandAnimation();
                 presenter.viewReady();
                 return false;
             }
@@ -321,17 +320,20 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }).attachToRecyclerView(recyclerView);
     }
 
-    private Runnable prepareExpandAnimation() {
+    private void prepareExpandAnimation() {
         setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN);
 
         // update logo-man and background alpha state
         slideCoordinator.onSlide(-1);
         logoMan.setVisibility(View.INVISIBLE);
+    }
 
-        return new Runnable() {
+    private void startExpandAnimation() {
+        final boolean shouldExpand = isPositionVisibleWhenCollapse(adapter.getFocusedTabPosition());
+        uiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (isPositionVisibleWhenCollapse(adapter.getFocusedTabPosition())) {
+                if (shouldExpand) {
                     setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
                     logoMan.setVisibility(View.VISIBLE);
                     setIntercept(false);
@@ -340,7 +342,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                     setIntercept(true);
                 }
             }
-        };
+        }, getResources().getInteger(R.integer.tab_tray_transition_time));
     }
 
     private boolean isPositionVisibleWhenCollapse(int focusedPosition) {
@@ -403,10 +405,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void initRecyclerViewStyle(RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(getContext(),
+        Context context = recyclerView.getContext();
+        recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false));
 
-        Context context = getContext();
         recyclerView.addItemDecoration(new ItemSpaceDecoration(context));
         recyclerView.addItemDecoration(new TabTrayPaddingDecoration(context, this));
 
