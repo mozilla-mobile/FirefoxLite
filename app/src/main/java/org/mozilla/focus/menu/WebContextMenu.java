@@ -208,5 +208,6 @@ public class WebContextMenu {
         Bundle args = TabUtil.argument(parentId, false, false);
         args.putInt(BrowserFragment.EXTRA_NEW_TAB_SRC, BrowserFragment.SRC_CONTEXT_MENU);
         session.addTab(url, args);
+        TelemetryWrapper.addNewTabFromContextMenu();
     }
 }
