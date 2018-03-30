@@ -918,7 +918,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 break;
             case R.id.btn_open_new_tab:
                 ScreenNavigator.get(getContext()).addHomeScreen(true);
-                // FIXME: 2018/2/12 new telemetry for 2.0 UI
+                TelemetryWrapper.clickAddTabToolbar();
                 break;
             case R.id.btn_tab_tray:
                 notifyParent(FragmentListener.TYPE.SHOW_TAB_TRAY, null);
@@ -930,7 +930,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 break;
             case R.id.btn_capture:
                 onCaptureClicked();
-                // FIXME: 2/8/18 Is the telemetry supposed to share the v1 capture button?
                 TelemetryWrapper.clickToolbarCapture();
                 break;
             case R.id.customtab_close:

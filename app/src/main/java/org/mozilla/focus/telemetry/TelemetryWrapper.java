@@ -60,6 +60,7 @@ public final class TelemetryWrapper {
         private static final String EDIT = "edit";
         private static final String PERMISSION = "permission";
         private static final String FULLSCREEN = "fullscreen";
+        private static final String ADD = "add";
 
         private static final String FOREGROUND = "foreground";
         private static final String BACKGROUND = "background";
@@ -80,6 +81,8 @@ public final class TelemetryWrapper {
         private static final String CAPTURE = "capture";
         private static final String SEARCH_SUGGESTION = "search_suggestion";
         private static final String SEARCH_BAR = "search_bar";
+        private static final String TAB = "tab";
+        private static final String TABTRAY = "tab_tray";
 
         private static final String SETTING = "setting";
         private static final String APP = "app";
@@ -96,6 +99,7 @@ public final class TelemetryWrapper {
 
     public static class Value {
         private static final String HOME = "home";
+        private static final String TOPSITE = "top_site";
         private static final String DOWNLOAD = "download";
         private static final String HISTORY = "history";
         private static final String TURBO = "turbo";
@@ -103,6 +107,7 @@ public final class TelemetryWrapper {
         private static final String CLEAR_CACHE = "clear_cache";
         private static final String SETTINGS = "settings";
 
+        private static final String TABTRAY = "tab_tray";
         private static final String TOOLBAR = "toolbar";
         private static final String FORWARD = "forward";
         private static final String RELOAD = "reload";
@@ -141,6 +146,7 @@ public final class TelemetryWrapper {
         private static final String SUCCESS = "success";
         private static final String SNACKBAR = "snackbar";
         private static final String SOURCE = "source";
+        private static final String VERSION = "version";
     }
 
     public static class Extra_Value {
@@ -332,6 +338,10 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
     }
 
+    public static void addNewTabFromContextMenu() {
+        TelemetryEvent.create(Category.ACTION, Method.ADD, Object.BROWSER_CONTEXTMENU, Value.LINK).queue();
+    }
+
     public static void browseGeoLocationPermissionEvent() {
         TelemetryEvent.create(Category.ACTION, Method.PERMISSION, Object.BROWSER, Value.GEOLOCATION).queue();
     }
@@ -377,11 +387,11 @@ public final class TelemetryWrapper {
     }
 
     public static void showTabTrayHome() {
-        // TODO: Implementation needed
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.HOME).queue();
     }
 
     public static void showTabTrayToolbar() {
-        // TODO: Implementation needed
+        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.TOOLBAR).queue();
     }
 
     public static void showMenuToolbar() {
@@ -453,12 +463,16 @@ public final class TelemetryWrapper {
     }
 
     public static void clickToolbarCapture() {
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE).queue();
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE)
+                .extra(Extra.VERSION, Integer.toString(2))
+                .queue();
     }
 
     public static void clickTopSiteOn(int index) {
         TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
                 .extra(Extra.ON, Integer.toString(index))
+                .queue();
+        TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TOPSITE)
                 .queue();
     }
 
@@ -467,6 +481,10 @@ public final class TelemetryWrapper {
                 .extra(Extra.DEFAULT, Boolean.toString(isDefault))
                 //  TODO: add index
                 .queue();
+    }
+
+    public static void addNewTabFromHome() {
+        TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.HOME).queue();
     }
 
     public static void urlBarEvent(boolean isUrl, boolean isSuggestion) {
@@ -529,8 +547,20 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON).queue();
     }
 
-    public static void clickToolbarHome() {
-        TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.TOOLBAR, Value.HOME).queue();
+    public static void clickAddTabToolbar() {
+        TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TOOLBAR).queue();
+    }
+
+    public static void clickAddTabTray() {
+        TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TABTRAY).queue();
+    }
+
+    public static void clickTabFromTabTray() {
+        TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.TAB, Value.TABTRAY).queue();
+    }
+
+    public static void closeTabFromTabTray() {
+        TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.TAB, Value.TABTRAY).queue();
     }
 
     public static void downloadRemoveFile() {

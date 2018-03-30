@@ -7,6 +7,7 @@ package org.mozilla.focus.urlinput;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
@@ -218,13 +219,21 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
                     ? UrlUtils.normalize(input)
                     : UrlUtils.createSearchUrl(getContext(), input);
 
-            openUrl(url);
+            boolean isOpenInNewTab = openUrl(url);
 
+            if (isOpenInNewTab) {
+                TelemetryWrapper.addNewTabFromHome();
+            }
             TelemetryWrapper.urlBarEvent(isUrl, isSuggestion);
         }
     }
 
-    private void openUrl(String url) {
+    /**
+     *
+     * @param url the URL to open
+     * @return true if open URL in new tab.
+     */
+    private boolean openUrl(String url) {
         boolean openNewTab = false;
 
         Bundle args = getArguments();
@@ -232,6 +241,8 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             openNewTab = HomeFragment.FRAGMENT_TAG.equals(args.getString(ARGUMENT_PARENT_FRAGMENT));
         }
         ScreenNavigator.get(getContext()).showBrowserScreen(url, openNewTab, false);
+
+        return openNewTab;
     }
 
     @Override

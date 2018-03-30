@@ -55,6 +55,7 @@ import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.TabsViewListener;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.util.List;
 
@@ -196,11 +197,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onTabClick(int tabPosition) {
         presenter.tabClicked(tabPosition);
+        TelemetryWrapper.clickTabFromTabTray();
     }
 
     @Override
     public void onTabCloseClick(int tabPosition) {
         presenter.tabCloseClicked(tabPosition);
+        TelemetryWrapper.closeTabFromTabTray();
     }
 
     @Override
@@ -442,6 +445,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private void onNewTabClicked() {
         ScreenNavigator.get(getContext()).addHomeScreen(false);
+        TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
     }
 
