@@ -54,6 +54,7 @@
   <string name="contextmenu_image_share">分享图像</string>
   <string name="contextmenu_image_copy">复制图像地址</string>
   <string name="contextmenu_image_save">保存图像</string>
+  <string name="contextmenu_open_in_new_tab">在新标签页中打开链接</string>
   <string name="first_run_page1_title">感谢您选择 %1$s</string>
   <string name="first_run_page1_text">由致力于建立一个自由且开放的网络的非营利组织 Mozilla 打造。</string>
   <string name="first_run_page2_title">上网快上加快</string>
@@ -62,6 +63,11 @@
   <string name="first_run_page3_text">过滤广告跟踪既可加快上网速度，又可节约流量。不载入图像还能再省更多。</string>
   <string name="first_run_page4_title">无比强大的截图功能</string>
   <string name="first_run_page4_text">不但能截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
+  <string name="first_run_upgrade_page_title">我们收到了您的反馈！</string>
+  <string name="first_run_upgrade_page_text1">1. 并开%s，看剧读文两不误！</string>
+  <string name="first_run_upgrade_page_text1_highlight">多个标签页</string>
+  <string name="first_run_upgrade_page_text2">2. 把爱看的网站%s，下次访问更快捷！</string>
+  <string name="first_run_upgrade_page_text2_highlight">放到桌面</string>
   <string name="firstrun_close_button">了解！</string>
   <string name="firstrun_skip_button">跳过</string>
   <string name="firstrun_next_button">下一步</string>
@@ -164,4 +170,6 @@
   <string name="your_rights_content5"><![CDATA["%1$s 还使用 Disconnect 公司提供的黑名单，该黑名单为该公司的独立作品，按 "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU &#36890;&#29992;&#20844;&#20849;&#35768;&#21487;&#35777;&#31532;&#19977;&#29256;</a>提供，可在<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#36825;&#37324;</a>找到。]]></string>
   <string name="survey_notification_title">我们需要你！%1$s</string>
   <string name="survey_notification_description">为用户打造更好的产品</string>
+  <string name="new_background_tab_hint">已打开新标签页</string>
+  <string name="new_background_tab_switch">切换过去</string>
 </resources>
