@@ -51,18 +51,27 @@ public class WebkitView extends NestedWebView implements TabView {
     private TabChromeClient chromeClient;
     private DownloadCallback downloadCallback;
     private FocusWebViewClient client;
-    private final FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
 
     private boolean shouldReloadOnAttached = false;
 
+    private String lastNonErrorPageUrl;
+
     public WebkitView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        client = new FocusWebViewClient(getContext().getApplicationContext());
+        client = new FocusWebViewClient(getContext().getApplicationContext()) {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                if (!UrlUtils.isInternalErrorURL(url)) {
+                    lastNonErrorPageUrl = url;
+                }
+                super.onPageStarted(view, url, favicon);
+            }
+        };
 
         setWebViewClient(client);
-        setWebChromeClient(webChromeClient = new FocusWebChromeClient());
+        setWebChromeClient(new FocusWebChromeClient());
         setDownloadListener(createDownloadListener());
 
         if (BuildConfig.DEBUG) {
@@ -208,6 +217,11 @@ public class WebkitView extends NestedWebView implements TabView {
         } else {
             super.reload();
         }
+    }
+
+    @Override
+    public String getUrl() {
+        return lastNonErrorPageUrl;
     }
 
     private void reloadOnAttached() {
