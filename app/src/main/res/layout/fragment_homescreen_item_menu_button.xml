@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
     android:layout_alignParentBottom="true"
-    android:layout_gravity="center">
+    android:layout_gravity="center_horizontal|bottom">
 
-    <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+    <org.mozilla.focus.widget.EqualDistributeRow
         android:id="@+id/home_screen_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"
         android:layout_marginStart="@dimen/fixed_menu_horizontal_margin">
 
