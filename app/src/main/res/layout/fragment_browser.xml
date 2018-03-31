@@ -9,10 +9,10 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:background="@android:color/white"
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <View
             android:id="@+id/background"
@@ -24,7 +24,7 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="51dp"
+            android:layout_marginBottom="49dp"
             android:layout_marginTop="25dp"
             android:clipChildren="false"
             android:orientation="vertical">
@@ -78,6 +78,15 @@
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/fixed_menu_height"
+        android:background="@color/colorDivider"
+        tools:background="#FF0000" />
+
     <include layout="@layout/fragment_browser_item_menu_button" />
 
     <FrameLayout
