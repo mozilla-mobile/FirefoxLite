@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.CountChildViewMatcher;
-import org.mozilla.focus.helper.DecodedTextMatcher;
 import org.mozilla.focus.helper.GetNthChildViewMatcher;
 import org.mozilla.focus.helper.GetTextViewMatcher;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
@@ -39,7 +38,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.AllOf.allOf;
 
 @Keep
@@ -52,7 +50,9 @@ public class SearchSuggestionTest {
     private Context context;
 
     @Before
-    public void setUp() throws JSONException {
+    public void setUp() {
+        // Load mock search engines
+        SearchEngineManager.getInstance().loadSearchEngines(InstrumentationRegistry.getContext());
         AndroidTestUtils.beforeTest();
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
@@ -64,7 +64,6 @@ public class SearchSuggestionTest {
 
     @Test
     public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
-
         activityTestRule.launchActivity(new Intent());
 
         // Get the default search engine
@@ -87,12 +86,8 @@ public class SearchSuggestionTest {
         // Wait for page is loaded
         IdlingRegistry.getInstance().register(loadingIdlingResource);
 
-        // Check if the search result is using default search engine
-        final String[] searchEngine = defaultSearchEngine.getName().toLowerCase().split(" ");
-        onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(containsString(searchEngine[0]))));
-
-        // Check if the search result is matched the suggestion we picked
-        onView(withId(R.id.display_url)).check(matches(DecodedTextMatcher.withText(containsString(text))));
+        // Check if current url is matched with SearchEngine.buildSearchUrl()
+        onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(defaultSearchEngine.buildSearchUrl((text)))));
 
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
+import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
@@ -64,7 +65,8 @@ public class SearchEngineManager extends BroadcastReceiver {
         loadSearchEngines(context.getApplicationContext());
     }
 
-    private void loadSearchEngines(final Context context) {
+    @VisibleForTesting
+    public void loadSearchEngines(final Context context) {
         new Thread("SearchEngines-Load") {
             @Override
             public void run() {
