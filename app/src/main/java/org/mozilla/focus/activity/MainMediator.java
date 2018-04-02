@@ -82,6 +82,10 @@ class MainMediator {
 
     private void clearAllFragmentImmediate() {
         final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
+        if (fragmentMgr.isStateSaved()) {
+            return;
+        }
+
         final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
         final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
 
