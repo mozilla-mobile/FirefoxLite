@@ -7,7 +7,6 @@ package org.mozilla.focus.urlinput;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
