@@ -6,12 +6,14 @@ package org.mozilla.focus.widget;
 
 import android.content.Context;
 import android.preference.ListPreference;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.StorageUtils;
+import org.mozilla.focus.utils.ThreadUtils;
 
 public class DataSavingPathPreference extends ListPreference {
     private static final String LOG_TAG = "DataSavingPathPreference";
@@ -33,12 +35,12 @@ public class DataSavingPathPreference extends ListPreference {
 
         buildList();
         // Put pingRemovableStorage() in background thread to avoid strict mode violation: disk I/O on main thread.
-        new Thread(new Runnable() {
+        ThreadUtils.postToBackgroundThread(new Runnable() {
             @Override
             public void run() {
                 pingRemovableStorage();
             }
-        }).start();
+        });
     }
 
     @Override
@@ -75,8 +77,11 @@ public class DataSavingPathPreference extends ListPreference {
         setEntryValues(values);
     }
 
+
+    @WorkerThread
     private void pingRemovableStorage() {
         try {
+            // This must be called in a background thread cause it has I/O access.
             StorageUtils.getAppMediaDirOnRemovableStorage(getContext());
             // no exception
             hasRemovableStorage = true;
@@ -86,7 +91,14 @@ public class DataSavingPathPreference extends ListPreference {
 
         super.setEnabled(hasRemovableStorage);
 
-        // ensure Summary sync to current state
-        super.notifyChanged();
+        // notifyChanged() will update the UI so it must be called in main thread.
+        ThreadUtils.postToMainThread(new Runnable() {
+            @Override
+            public void run() {
+                // ensure Summary sync to current state
+                DataSavingPathPreference.this.notifyChanged();
+            }
+        });
+
     }
 }
