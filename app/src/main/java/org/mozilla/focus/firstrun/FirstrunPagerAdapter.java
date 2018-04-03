@@ -29,7 +29,7 @@ import org.mozilla.focus.utils.Settings;
 
 public class FirstrunPagerAdapter extends PagerAdapter {
 
-    private final static int TURBO_MODE_PAGE_INDEX = 1;
+    private final static int TURBO_MODE_PAGE_INDEX = 0;
 
     private static class FirstrunPage {
         public final String title;
