@@ -132,6 +132,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ImageView siteIdentity;
     private Dialog webContextMenu;
 
+    private TabViewDebugHud tabViewDebugHud;
+
     //GeoLocationPermission
     private String geolocationOrigin;
     private GeolocationPermissions.Callback geolocationCallback;
@@ -412,6 +414,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (tabCounter != null) {
             tabCounter.setCount(tabsSession.getTabsCount());
         }
+
+        tabViewDebugHud = TabViewDebugHud.create(inflater.getContext(),
+                (ViewGroup) view.findViewById(R.id.appbar), menuBtn);
 
         return view;
     }
@@ -848,6 +853,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (canGoBack()) {
             // Go back in web history
             goBack();
+            tabViewDebugHud.update();
         } else {
             final Tab focus = tabsSession.getFocusTab();
             if (focus == null) {
@@ -1129,6 +1135,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 backgroundTransition.startTransition(ANIMATION_DURATION);
 
                 siteIdentity.setImageLevel(isSecure ? SITE_LOCK : SITE_GLOBE);
+                tabViewDebugHud.update();
             }
             historyInserter.onTabFinished(tab);
         }
@@ -1308,6 +1315,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             final View inView = targetTab.getTabView().getView();
             webViewSlot.addView(inView);
+
+            tabViewDebugHud.bind(inView);
 
             startTransitionAnimation(null, inView, null);
         }
