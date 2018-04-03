@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.text.TextUtils;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -30,7 +31,7 @@ import org.mozilla.focus.utils.UrlUtils;
     private TabViewClient viewClient;
     private boolean errorReceived;
 
-    public FocusWebViewClient(Context context) {
+    FocusWebViewClient(Context context) {
         super(context);
     }
 
@@ -157,7 +158,7 @@ import org.mozilla.focus.utils.UrlUtils;
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        handler.cancel();
+        super.onReceivedSslError(view, handler, error);
 
         // Webkit can try to load the favicon for a bad page when you set a new URL. If we then
         // loadErrorPage() again, webkit tries to load the favicon again. We end up in onReceivedSSlError()
@@ -220,4 +221,16 @@ import org.mozilla.focus.utils.UrlUtils;
         super.onReceivedError(webView, errorCode, description, failingUrl);
     }
 
+    @Override
+    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        super.onReceivedHttpError(view, request, errorResponse);
+        Uri url = request.getUrl();
+        if (url == null) {
+            return;
+        }
+
+        if (request.isForMainFrame() && url.toString().equals(currentPageURL)) {
+            ErrorPage.loadErrorPage(view, currentPageURL, errorResponse.getStatusCode());
+        }
+    }
 }

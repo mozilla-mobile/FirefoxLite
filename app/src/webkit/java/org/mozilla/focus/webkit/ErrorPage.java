@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.HtmlLoader;
+import org.mozilla.focus.utils.UrlUtils;
 
 import java.util.Map;
 
@@ -26,6 +27,11 @@ public class ErrorPage {
     }
 
     public static void loadErrorPage(final WebView webView, final String desiredURL, final int errorCode) {
+        if (UrlUtils.isInternalErrorURL(desiredURL)) {
+            return;
+        }
+        webView.stopLoading();
+
         // This is quite hacky: ideally we'd just load the css file directly using a '<link rel="stylesheet"'.
         // However webkit thinks it's still loading the original page, which can be an https:// page.
         // If mixed content blocking is enabled (which is probably what we want in Focus), then webkit
