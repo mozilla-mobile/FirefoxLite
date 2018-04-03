@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -48,6 +49,7 @@ import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,7 +85,6 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private static final String EXTRA_SCREENSHOT = "extra_screenshot";
-    private final SimpleDateFormat sSdfInfoTime = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
 
     private Toolbar mBottomToolBar;
     private ImageView mImgPlaceholder;
@@ -184,12 +185,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
         initInfoItemArray();
         if (mScreenshot != null) {
-            if (new File(mScreenshot.getImageUri()).exists()) {
-                permissionHandler.tryAction(this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_VIEW, null);
-            } else {
-                setupView(false);
-                Toast.makeText(this, R.string.message_cannot_find_screenshot, Toast.LENGTH_LONG).show();
-            }
+            permissionHandler.tryAction(this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_VIEW, null);
         } else {
             finish();
         }
@@ -286,35 +282,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
     private void initScreenshotInfo(boolean withShare) {
         if (mScreenshot != null) {
-            if (mScreenshot.getTimestamp() > 0) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(mScreenshot.getTimestamp());
-                mInfoItems.get(0).title = getString(R.string.screenshot_image_viewer_dialog_info_time1, sSdfInfoTime.format(cal.getTime()));
-            }
-            File imgFile = new File(mScreenshot.getImageUri());
-            if (imgFile.exists()) {
-                showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
-
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(mScreenshot.getImageUri(), options);
-                int width = options.outWidth;
-                int height = options.outHeight;
-                mInfoItems.get(1).title = getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format(Locale.getDefault(), "%dx%d", width, height));
-                mInfoItems.get(2).title = getString(R.string.screenshot_image_viewer_dialog_info_size1, getStringSizeLengthFile(imgFile.length()));
-            }
-
-            mInfoItems.get(3).title = getString(R.string.screenshot_image_viewer_dialog_info_title1, mScreenshot.getTitle());
-            mInfoItems.get(4).title = getString(R.string.screenshot_image_viewer_dialog_info_url1, mScreenshot.getUrl());
-
-            final ImageSource imageSource;
-            mImageUri = Uri.fromFile(new File(mScreenshot.getImageUri()));
-            imageSource = ImageSource.uri(mImageUri);
-            mImgScreenshot.setImage(imageSource, ImageViewState.ALIGN_TOP);
-
-            if (withShare) {
-                onShareClick();
-            }
+            new ScreenshotInfoTask(this, mScreenshot, mInfoItems, withShare).execute();
         }
     }
 
@@ -349,7 +317,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private void onShareClick() {
-        if (mImageUri != null) {
+        if (mImgScreenshot.isImageLoaded()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -403,7 +371,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         builder.create().show();
     }
 
-    public static String getStringSizeLengthFile(long size) {
+    public static String getFileSizeText(long size) {
 
         DecimalFormat df = new DecimalFormat("0.00");
 
@@ -453,13 +421,18 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
     private void proceedDelete() {
         if (mScreenshot != null) {
-            File file = new File(mScreenshot.getImageUri());
-            if (file.exists()) {
-                try {
-                    file.delete();
-                } catch (Exception ex) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    File file = new File(mScreenshot.getImageUri());
+                    if (file.exists()) {
+                        try {
+                            file.delete();
+                        } catch (Exception ex) {
+                        }
+                    }
                 }
-            }
+            }).start();
             ScreenshotManager.getInstance().delete(mScreenshot.getId(), this);
         }
     }
@@ -481,6 +454,82 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         mIsImageReady = true;
         if (mProgressBar != null && mProgressBar.isShown()) {
             mProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private static class ScreenshotInfoTask extends AsyncTask<Void, Void, Void> {
+        private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+
+        private final WeakReference<ScreenshotViewerActivity> activityRef;
+        private final Screenshot screenshot;
+        private final ArrayList<ImageInfo> infoItems;
+        private final boolean withShare;
+
+        private int width;
+        private int height;
+        private ImageSource imageSource;
+        private String fileSizeText;
+
+        public ScreenshotInfoTask(ScreenshotViewerActivity activity, Screenshot screenshot, ArrayList<ImageInfo> infoItems, boolean withShare) {
+            this.activityRef = new WeakReference<>(activity);
+            this.screenshot = screenshot;
+            this.infoItems = infoItems;
+            this.withShare = withShare;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            ScreenshotViewerActivity activity = activityRef.get();
+            if (activity != null) {
+                activity.showProgressBar(DELAY_MILLIS_TO_SHOW_PROGRESS_BAR);
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            final File imgFile = new File(screenshot.getImageUri());
+            if (imgFile.exists()) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(screenshot.getImageUri(), options);
+                width = options.outWidth;
+                height = options.outHeight;
+
+                Uri imageUri = Uri.fromFile(new File(screenshot.getImageUri()));
+                imageSource = ImageSource.uri(imageUri);
+                fileSizeText = getFileSizeText(imgFile.length());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            ScreenshotViewerActivity activity = activityRef.get();
+            if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+
+            if (screenshot.getTimestamp() > 0) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(screenshot.getTimestamp());
+                infoItems.get(0).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_time1, dateFormat.format(cal.getTime()));
+            }
+            infoItems.get(1).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format(Locale.getDefault(), "%dx%d", width, height));
+            infoItems.get(2).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_size1, fileSizeText);
+            infoItems.get(3).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_title1, screenshot.getTitle());
+            infoItems.get(4).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_url1, screenshot.getUrl());
+
+            if (imageSource != null) {
+                activity.mImgScreenshot.setImage(imageSource, ImageViewState.ALIGN_TOP);
+
+                if (withShare) {
+                    activity.onShareClick();
+                }
+            } else {
+                activity.hideProgressBar();
+                activity.setupView(false);
+                Toast.makeText(activity, R.string.message_cannot_find_screenshot, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
