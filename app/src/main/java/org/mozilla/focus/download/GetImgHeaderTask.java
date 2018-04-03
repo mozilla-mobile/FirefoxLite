@@ -1,6 +1,9 @@
 package org.mozilla.focus.download;
 
+import android.net.TrafficStats;
 import android.os.AsyncTask;
+
+import org.mozilla.focus.network.SocketTags;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -24,6 +27,7 @@ public class GetImgHeaderTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
+        TrafficStats.setThreadStatsTag(SocketTags.DOWNLOADS);
         HttpURLConnection connection = null;
         String contentType = "";
         int responseCode = 0;
