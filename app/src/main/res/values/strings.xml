@@ -151,8 +151,10 @@
     <string name="contextmenu_image_copy">Copy image address</string>
     <!-- Label used in the contextmenu shown when long-pressing on an image -->
     <string name="contextmenu_image_save">Save image</string>
-    <!-- Label used in the contextmenu shown when long-pressing on a link/image -->
+    <!-- Label used in the contextmenu shown when long-pressing on a link -->
     <string name="contextmenu_open_in_new_tab">Open link in new tab</string>
+    <!-- Label used in the contextmenu shown when long-pressing on a image -->
+    <string name="contextmenu_open_image_in_new_tab">Open image in new tab</string>
 
     <!-- First run tour -->
     <!-- title for first page of FirstRun, Argument 1 will be formatted by product name -->
