@@ -35,7 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/btn_menu_container"
-        android:layout_marginTop="@dimen/home_padding_url_bar_to_top_sites"/>
+        android:layout_marginTop="@dimen/home_padding_url_bar_to_top_sites"
+        android:layout_marginBottom="24dp"/>
 
 
 
