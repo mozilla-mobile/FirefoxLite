@@ -104,7 +104,8 @@ public class WebContextMenu {
 
         final String targetUrl = hitTarget.isLink ? hitTarget.linkURL : hitTarget.imageURL;
         boolean canOpenInNewTab = canOpenInNewTab(dialog.getOwnerActivity(), targetUrl);
-        navigationView.getMenu().findItem(R.id.menu_new_tab).setVisible(canOpenInNewTab);
+        navigationView.getMenu().findItem(R.id.menu_new_tab).setVisible(canOpenInNewTab && hitTarget.isLink);
+        navigationView.getMenu().findItem(R.id.menu_new_tab_image).setVisible(canOpenInNewTab && !hitTarget.isLink && hitTarget.isImage);
 
         navigationView.getMenu().findItem(R.id.menu_link_share).setVisible(hitTarget.isLink);
         navigationView.getMenu().findItem(R.id.menu_link_copy).setVisible(hitTarget.isLink);
@@ -121,6 +122,7 @@ public class WebContextMenu {
 
                 switch (item.getItemId()) {
                     case R.id.menu_new_tab:
+                    case R.id.menu_new_tab_image:
                         openInNewTab(hitTarget.source, dialog, targetUrl);
                         return true;
                     case R.id.menu_link_share: {
