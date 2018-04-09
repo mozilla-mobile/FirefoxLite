@@ -20,7 +20,7 @@
   <string name="preference_language">语言</string>
   <string name="preference_language_systemdefault">系统默认</string>
   <string name="preference_dialog_title_search_engine">默认搜索引擎</string>
-  <string name="preference_data_saving_block_images">不载入图像</string>
+  <string name="preference_data_saving_block_images">无图模式</string>
   <string name="preference_privacy_storage_clear_browsing_data">清除浏览数据</string>
   <string name="preference_privacy_storage_save_downloads_to">下载文件至</string>
   <string name="preference_default_browser">设为默认浏览器</string>
@@ -79,7 +79,7 @@
   <string name="label_menu_capture_page">截取网页</string>
   <string name="label_menu_turbo_mode">加速模式</string>
   <string name="label_menu_block_ads">过滤广告</string>
-  <string name="label_menu_block_image">不载入图像</string>
+  <string name="label_menu_block_image">无图模式</string>
   <string name="label_menu_settings">设置</string>
   <string name="label_menu_exit">退出</string>
   <string name="permission_dialog_setting">设置</string>
@@ -144,8 +144,8 @@
   <string name="file_picker_title">选择要上传的文件</string>
   <string name="message_enable_turbo_mode">启用加速模式</string>
   <string name="message_disable_turbo_mode">禁用加速模式</string>
-  <string name="message_enable_block_image">不载入图像</string>
-  <string name="message_disable_block_image">正显示图像</string>
+  <string name="message_enable_block_image">无图模式已启用</string>
+  <string name="message_disable_block_image">无图模式已禁用</string>
   <string name="message_clear_cache_fail">无法清除缓存</string>
   <string name="message_storage_unavailable_cancel_download">无法访问存储设备。下载已取消。</string>
   <string name="message_cleared_cached">%1$s 缓存已清除</string>
@@ -155,7 +155,7 @@
   <string name="remove">移除</string>
   <string name="rate_app_dialog_text_title">喜欢 {{app_name}} 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
-  <string name="rate_app_dialog_btn_go_rate">是的，5星好评！</string>
+  <string name="rate_app_dialog_btn_go_rate">是的，5 星好评！</string>
   <string name="rate_app_notification_action_rate">5 星好评</string>
   <string name="rate_app_dialog_btn_feedback">不，发送反馈。</string>
   <string name="rate_app_notification_action_feedback">反馈</string>
