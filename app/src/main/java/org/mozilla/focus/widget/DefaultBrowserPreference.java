@@ -48,8 +48,7 @@ public class DefaultBrowserPreference extends Preference {
 
     public void update() {
         if (switchView != null) {
-            final Browsers browsers = new Browsers(getContext(), "http://www.mozilla.org");
-            final boolean isDefaultBrowser = browsers.isDefaultBrowser(getContext());
+            final boolean isDefaultBrowser = Browsers.isDefaultBrowser(getContext());
             switchView.setChecked(isDefaultBrowser);
             Settings.updatePrefDefaultBrowserIfNeeded(getContext(), isDefaultBrowser);
         }

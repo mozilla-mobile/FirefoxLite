@@ -229,8 +229,7 @@ public final class TelemetryWrapper {
     }
 
     private static void updateDefaultBrowserStatus(Context context) {
-        boolean isDefaultBrowser = new Browsers(context, "http://www.mozilla.org").isDefaultBrowser(context);
-        Settings.updatePrefDefaultBrowserIfNeeded(context, isDefaultBrowser);
+        Settings.updatePrefDefaultBrowserIfNeeded(context, Browsers.isDefaultBrowser(context));
     }
 
     private static void updatePrefValue(Context context, String key, String value) {
