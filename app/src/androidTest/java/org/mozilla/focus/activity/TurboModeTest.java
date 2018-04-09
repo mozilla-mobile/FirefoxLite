@@ -50,11 +50,11 @@ public class TurboModeTest {
     @Test
     public void turnOnTurboModeDuringOnBoarding_turboModeIsOnInMenu() {
 
-        // Click next button in the first on boarding page
-        onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
-
         // Check if turbo mode switch is on
         onView(allOf(withId(R.id.switch_widget), isDisplayed())).check(matches(isChecked()));
+
+        // Click next button in the first on boarding page
+        onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
 
         // Click next button in the second on boarding page
         onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
