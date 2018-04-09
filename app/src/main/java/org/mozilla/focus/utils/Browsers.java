@@ -214,9 +214,10 @@ public class Browsers {
     /**
      * Is *this* application the default browser?
      */
-    public boolean isDefaultBrowser(Context context) {
-        return defaultBrowser != null && context.getPackageName().equals(defaultBrowser.packageName);
-
+    public static boolean isDefaultBrowser(Context context) {
+        final Browsers browser = new Browsers(context, "http://mozilla.org");
+        return (browser.defaultBrowser != null)
+                && (context.getPackageName().equals(browser.defaultBrowser.packageName));
     }
 
     public ActivityInfo[] getInstalledBrowsers() {
