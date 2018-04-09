@@ -60,6 +60,7 @@ import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FileUtils;
+import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
@@ -108,6 +109,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FirebaseHelper.init(this);
         asyncInitialize();
 
         setContentView(R.layout.activity_main);
@@ -214,7 +216,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onPause() {
         super.onPause();
-
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
 
         safeForFragmentTransactions = false;
@@ -247,6 +248,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // resumed. So just remember this URL and load it in onResumeFragments().
             pendingUrl = intent.getDataString();
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
+            dismissAllMenus();
+            TabTray.dismiss(getSupportFragmentManager());
+        } else if (intent.getStringExtra(NotificationUtil.PUSH_OPEN_URL) != null) {
+            pendingUrl = intent.getStringExtra(NotificationUtil.PUSH_OPEN_URL);
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
         }
@@ -348,7 +353,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(this, pendingIntent)
+        final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(this, pendingIntent)
                 .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
                 .setContentText(getString(R.string.survey_notification_description))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(

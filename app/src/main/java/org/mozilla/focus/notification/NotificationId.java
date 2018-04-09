@@ -7,7 +7,8 @@ package org.mozilla.focus.notification;
 
 public class NotificationId {
     public static final int SURVEY_ON_3RD_LAUNCH = 1000;
-    public static final int LOVE_FIREFOX = 1001;
-    public static final int DEFAULT_BROWSER = 1002;
-    public static final int RELOCATE_SERVICE = 2000;
+    public static final int LOVE_FIREFOX = 1001;        // in app promotion: Love Firefox
+    public static final int DEFAULT_BROWSER = 1002;     // in app promotion: Set Default Browser
+    public static final int RELOCATE_SERVICE = 2000;    // For file download
+    public static final int FIREBASE_AD_HOC = 3000;     // For push notification
 }
