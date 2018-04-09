@@ -57,6 +57,7 @@ import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FileUtils;
@@ -520,7 +521,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else {
             settings.addMenuPreferenceClickCount();
         }
-        if (settings.getMenuPreferenceClickCount() == AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold()) {
+
+        final int count = settings.getMenuPreferenceClickCount();
+        final int threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold();
+        // even if user above threshold and not set-as-default-browser, still don't show notification.
+        if ( count == threshold && !Browsers.isDefaultBrowser(this)) {
             DialogUtils.showDefaultSettingNotification(this);
             TelemetryWrapper.showDefaultSettingNotification();
         }
