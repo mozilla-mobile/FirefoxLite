@@ -26,6 +26,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.helper.DownloadCompleteIdlingResource;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
@@ -60,6 +61,7 @@ public class GrantStoragePermissionTest {
     private MockWebServer webServer;
     private Context context;
     private SessionLoadedIdlingResource sessionLoadedIdlingResource;
+    private DownloadCompleteIdlingResource downloadCompleteIdlingResource;
 
     @Rule
     public final GrantPermissionRule writePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -139,8 +141,15 @@ public class GrantStoragePermissionTest {
         final int displayHeight = displayMetrics.heightPixels;
         onView(withId(R.id.main_content)).check(matches(isDisplayed())).perform(AndroidTestUtils.clickXY(displayWidth / 2, displayHeight / 2, Tap.LONG));
 
+        // Initialize DownloadCompleteIdlingResource and register content observer
+        downloadCompleteIdlingResource = new DownloadCompleteIdlingResource(activityRule.getActivity());
+        downloadCompleteIdlingResource.registerDownloadCompleteObserver();
+
         // Click save image button
         onView(allOf(withText(R.string.contextmenu_image_save), isDisplayed())).perform(click());
+
+        // Wait for download complete
+        IdlingRegistry.getInstance().register(downloadCompleteIdlingResource);
 
         // Open menu
         // Since right now snackbar will overlap with menu bar and we don't want to wait until snackbar is dismissed,
@@ -149,6 +158,8 @@ public class GrantStoragePermissionTest {
 
         // Open download panel
         onView(withId(R.id.menu_download)).check(matches(isDisplayed())).perform(click());
+
+        IdlingRegistry.getInstance().unregister(downloadCompleteIdlingResource);
 
         // Click the first download item and check if the name is matched
         onView(withId(R.id.recyclerview))
