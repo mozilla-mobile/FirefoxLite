@@ -46,7 +46,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     private RequestManager requestManager;
 
-    private HashMap<Character, Drawable> localIconCache = new HashMap<>();
+    private HashMap<String, Drawable> localIconCache = new HashMap<>();
 
     TabTrayAdapter(RequestManager requestManager) {
         this.requestManager = requestManager;
@@ -171,13 +171,16 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     private void loadGeneratedFavicon(Tab tab, final ViewHolder holder) {
         Character symbol = FavIconUtils.getRepresentativeCharacter(tab.getUrl());
+        Bitmap favicon = tab.getFavicon();
+        int backgroundColor = (favicon == null) ? Color.WHITE : FavIconUtils.getDominantColor(favicon);
+        String key = symbol.toString() + "_" + Integer.toHexString(backgroundColor);
 
-        if (localIconCache.containsKey(symbol)) {
-            updateFavicon(holder, localIconCache.get(symbol));
+        if (localIconCache.containsKey(key)) {
+            updateFavicon(holder, localIconCache.get(key));
         } else {
             BitmapDrawable drawable = new BitmapDrawable(holder.itemView.getResources(),
-                    FavIconUtils.getInitialBitmap(holder.itemView.getResources(), tab.getFavicon(), symbol));
-            localIconCache.put(symbol, drawable);
+                    FavIconUtils.getInitialBitmap(holder.itemView.getResources(), symbol, backgroundColor));
+            localIconCache.put(key, drawable);
             updateFavicon(holder, drawable);
         }
     }
