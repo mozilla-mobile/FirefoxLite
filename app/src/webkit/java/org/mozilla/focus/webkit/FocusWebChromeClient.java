@@ -49,7 +49,7 @@ class FocusWebChromeClient extends WebChromeClient {
     @Override
     public void onCloseWindow(WebView view) {
         if (this.tabChromeClient != null) {
-            this.tabChromeClient.onCloseWindow(view);
+            this.tabChromeClient.onCloseWindow(this.host);
         }
     }
 
