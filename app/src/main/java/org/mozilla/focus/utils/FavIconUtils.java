@@ -61,8 +61,11 @@ public class FavIconUtils {
     }
 
     public static Bitmap getInitialBitmap(Resources res, Bitmap source, char initial) {
+        return getInitialBitmap(res, initial, getDominantColor(source));
+    }
+
+    public static Bitmap getInitialBitmap(Resources res, char initial, int backgroundColor) {
         char[] firstChar = {initial};
-        int backgroundColor = getDominantColor(source);
         int textColor = getContractColor(backgroundColor);
         Paint paint = new Paint();
         paint.setTextSize(res.getDimension(R.dimen.favicon_initial_text_size));
