@@ -497,11 +497,11 @@ public class TabsSession {
         }
 
         @Override
-        public void onCloseWindow(WebView webView) {
-            if (source.getTabView() == webView) {
+        public void onCloseWindow(TabView tabView) {
+            if (source.getTabView() == tabView) {
                 for (int i = 0; i < tabs.size(); i++) {
                     final Tab tab = tabs.get(i);
-                    if (tab.getTabView() == webView) {
+                    if (tab.getTabView() == tabView) {
                         closeTab(tab.getId());
                     }
                 }

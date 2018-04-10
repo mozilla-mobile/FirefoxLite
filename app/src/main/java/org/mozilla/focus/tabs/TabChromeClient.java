@@ -25,7 +25,7 @@ public class TabChromeClient {
         return false;
     }
 
-    public void onCloseWindow(WebView webView) {
+    public void onCloseWindow(TabView tabView) {
     }
 
     public void onProgressChanged(int progress) {
