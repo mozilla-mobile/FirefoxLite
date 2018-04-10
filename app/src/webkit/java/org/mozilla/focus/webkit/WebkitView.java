@@ -209,7 +209,12 @@ public class WebkitView extends NestedWebView implements TabView {
 
     @Override
     public String getUrl() {
-        return lastNonErrorPageUrl;
+        final String currentUrl = super.getUrl();
+        if (UrlUtils.isInternalErrorURL(currentUrl)) {
+            return lastNonErrorPageUrl;
+        } else {
+            return currentUrl;
+        }
     }
 
     private void reloadOnAttached() {
