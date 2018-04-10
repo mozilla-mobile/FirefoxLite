@@ -44,7 +44,7 @@ public class TabChromeClient {
     public void onReceivedTitle(TabView view, String title) {
     }
 
-    public void onReceivedIcon(WebView view, Bitmap icon) {
+    public void onReceivedIcon(TabView view, Bitmap icon) {
     }
 
     public void onLongPress(TabView.HitTarget hitTarget) {
