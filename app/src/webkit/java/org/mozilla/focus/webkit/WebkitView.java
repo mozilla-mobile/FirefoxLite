@@ -8,7 +8,6 @@ package org.mozilla.focus.webkit;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -175,9 +174,6 @@ public class WebkitView extends NestedWebView implements TabView {
 
     @Override
     public void setViewClient(TabViewClient viewClient) {
-        if (viewClient != null) {
-            viewClient = new TabViewClientWrapper(viewClient);
-        }
         this.webViewClient.setViewClient(viewClient);
     }
 
@@ -298,39 +294,6 @@ public class WebkitView extends NestedWebView implements TabView {
     @Override
     public View getView() {
         return this;
-    }
-
-    private static class TabViewClientWrapper extends TabViewClient {
-        final TabViewClient callback;
-
-        TabViewClientWrapper(@NonNull TabViewClient callback) {
-            this.callback = callback;
-        }
-
-        @Override
-        public void onPageStarted(String url) {
-            this.callback.onPageStarted(url);
-        }
-
-        @Override
-        public void onPageFinished(boolean isSecure) {
-            this.callback.onPageFinished(isSecure);
-        }
-
-        @Override
-        public void onURLChanged(String url) {
-            this.callback.onURLChanged(url);
-        }
-
-        @Override
-        public boolean handleExternalUrl(String url) {
-            return callback.handleExternalUrl(url);
-        }
-
-        @Override
-        public void updateFailingUrl(String url, boolean updateFromError) {
-            this.callback.updateFailingUrl(url, updateFromError);
-        }
     }
 
     private DownloadListener createDownloadListener() {
