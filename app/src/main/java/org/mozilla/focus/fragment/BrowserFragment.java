@@ -1281,7 +1281,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public boolean onShowFileChooser(@NonNull Tab tab,
-                                         WebView webView,
+                                         TabView tabView,
                                          ValueCallback<Uri[]> filePathCallback,
                                          WebChromeClient.FileChooserParams fileChooserParams) {
             if (!isForegroundTab(tab)) {

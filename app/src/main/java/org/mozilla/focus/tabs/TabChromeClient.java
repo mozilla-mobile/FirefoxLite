@@ -14,7 +14,6 @@ import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
 /**
  * An abstract layer of @see{android.webkit.WebChromeClient}
@@ -35,7 +34,7 @@ public class TabChromeClient {
     /**
      * @see android.webkit.WebChromeClient
      */
-    public boolean onShowFileChooser(WebView webView,
+    public boolean onShowFileChooser(TabView tabView,
                                      @Nullable ValueCallback<Uri[]> filePathCallback,
                                      @Nullable WebChromeClient.FileChooserParams fileChooserParams) {
         return false;

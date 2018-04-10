@@ -132,7 +132,7 @@ class FocusWebChromeClient extends WebChromeClient {
                                      FileChooserParams fileChooserParams) {
 
         return (this.tabChromeClient != null)
-                && tabChromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+                && tabChromeClient.onShowFileChooser(this.host, filePathCallback, fileChooserParams);
     }
 
     @Override

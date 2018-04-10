@@ -516,9 +516,9 @@ public class TabsSession {
         }
 
         @Override
-        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             for (final TabsChromeListener l : tabsChromeListeners) {
-                if (l.onShowFileChooser(source, webView, filePathCallback, fileChooserParams)) {
+                if (l.onShowFileChooser(source, tabView, filePathCallback, fileChooserParams)) {
                     return true;
                 }
             }

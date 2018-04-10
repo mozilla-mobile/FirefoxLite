@@ -14,7 +14,6 @@ import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabView;
@@ -70,7 +69,7 @@ public class DefaultTabsChromeListener implements TabsChromeListener {
     }
 
     @Override
-    public boolean onShowFileChooser(@NonNull Tab tab, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+    public boolean onShowFileChooser(@NonNull Tab tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
         return false;
     }
 
