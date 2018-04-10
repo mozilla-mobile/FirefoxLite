@@ -31,8 +31,9 @@ public class TabCounter extends RelativeLayout {
     private int count;
     private float currentTextRatio;
 
-    public static final int MAX_VISIBLE_TABS = 99;
-    public static final String SO_MANY_TABS_OPEN = "∞";
+    private static final int MAX_VISIBLE_TABS = 99;
+    private static final String SO_MANY_TABS_OPEN = "∞";
+    private static final String DEFAULT_TABS_COUNTER_TEXT = ":)";
 
     private static final float ONE_DIGIT_SIZE_RATIO = 0.6f;
     private static final float TWO_DIGITS_SIZE_RATIO = 0.5f;
@@ -59,6 +60,10 @@ public class TabCounter extends RelativeLayout {
         box = findViewById(R.id.counter_box);
         bar = findViewById(R.id.counter_bar);
         text = findViewById(R.id.counter_text);
+        text.setText(DEFAULT_TABS_COUNTER_TEXT);
+        final int shiftOneDpForDefaultText = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+        text.setPadding(0, 0, 0, shiftOneDpForDefaultText);
 
         if (menuIconColor != defaultMenuIconColor) {
             tintDrawables(menuIconColor);
@@ -90,6 +95,7 @@ public class TabCounter extends RelativeLayout {
 
         adjustTextSize(count);
 
+        text.setPadding(0, 0, 0, 0);
         text.setText(formatForDisplay(count));
         this.count = count;
 
@@ -104,6 +110,7 @@ public class TabCounter extends RelativeLayout {
     public void setCount(int count) {
         adjustTextSize(count);
 
+        text.setPadding(0, 0, 0, 0);
         text.setText(formatForDisplay(count));
         this.count = count;
     }

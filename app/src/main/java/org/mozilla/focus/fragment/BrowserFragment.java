@@ -58,6 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -409,7 +410,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         tabsSession.addTabsChromeListener(this.tabsContentListener);
         tabsSession.setDownloadCallback(downloadCallback);
 
-        if (tabCounter != null) {
+        if (tabCounter != null && isTabRestoredComplete()) {
             tabCounter.setCount(tabsSession.getTabsCount());
         }
 
@@ -1050,6 +1051,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         return ScreenNavigator.get(getContext()).isBrowserInForeground();
     }
 
+    private boolean isTabRestoredComplete() {
+        return (getActivity() instanceof MainActivity)
+                && ((MainActivity) getActivity()).isTabRestoredComplete();
+    }
+
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
         private HistoryInserter historyInserter = new HistoryInserter();
 
@@ -1135,7 +1141,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public void onTabCountChanged(int count) {
-            tabCounter.setCountWithAnimation(count);
+            if (isTabRestoredComplete()) {
+                tabCounter.setCountWithAnimation(count);
+            }
         }
 
         @Override
