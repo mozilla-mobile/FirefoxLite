@@ -104,6 +104,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private static boolean sIsNewCreated = true;
 
     private TabsSession tabsSession;
+    private boolean isTabRestoredComplete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -874,8 +875,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         return tabsSession;
     }
 
+    public boolean isTabRestoredComplete() {
+        return isTabRestoredComplete;
+    }
+
     @Override
     public void onQueryComplete(List<TabModel> tabModelList, String currentTabId) {
+        isTabRestoredComplete = true;
         getTabsSession().restoreTabs(tabModelList, currentTabId);
         Tab currentTab = getTabsSession().getFocusTab();
         if (currentTab != null && safeForFragmentTransactions) {
@@ -884,10 +890,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void restoreTabsFromPersistence() {
+        isTabRestoredComplete = false;
         TabModelStore.getInstance(this).getSavedTabs(this, this);
     }
 
     private void saveTabsToPersistence() {
+        if (!isTabRestoredComplete) {
+            return;
+        }
+
         List<TabModel> tabModelListForPersistence = getTabsSession().getTabModelListForPersistence();
         final String currentTabId = (getTabsSession().getFocusTab() != null)
                 ? getTabsSession().getFocusTab().getId()
