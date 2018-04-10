@@ -7,20 +7,15 @@ package org.mozilla.focus.webkit;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
-import android.webkit.GeolocationPermissions;
-import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
@@ -33,7 +28,6 @@ import org.mozilla.focus.tabs.SiteIdentity;
 import org.mozilla.focus.tabs.TabChromeClient;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabViewClient;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
@@ -269,117 +263,6 @@ public class WebkitView extends NestedWebView implements TabView {
                 FileUtils.truncateCacheDirectory(context);
             }
         });
-    }
-
-    private class FocusWebChromeClient extends WebChromeClient {
-
-        private TabChromeClient tabChromeClient;
-
-        public void setChromeClient(TabChromeClient callback) {
-            this.tabChromeClient = callback;
-        }
-
-        @Override
-        public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message msg) {
-            if (tabChromeClient != null) {
-                return tabChromeClient.onCreateWindow(isDialog, isUserGesture, msg);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public void onCloseWindow(WebView view) {
-            if (tabChromeClient != null) {
-                tabChromeClient.onCloseWindow(view);
-            }
-        }
-
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            if (tabChromeClient != null) {
-                tabChromeClient.onProgressChanged(newProgress);
-            }
-        }
-
-        @Override
-        public void onReceivedIcon(WebView view, Bitmap icon) {
-            final String url = view.getUrl();
-            if (TextUtils.isEmpty(url)) {
-                return;
-            }
-
-            Bitmap refinedBitmap = FavIconUtils.getRefinedBitmap(getResources(), icon,
-                    FavIconUtils.getRepresentativeCharacter(url));
-
-            Site site = new Site();
-            site.setTitle(view.getTitle());
-            site.setUrl(url);
-            site.setFavIcon(refinedBitmap);
-            BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
-
-            if (tabChromeClient != null) {
-                tabChromeClient.onReceivedIcon(view, refinedBitmap);
-            }
-        }
-
-        @Override
-        public void onShowCustomView(View view, final CustomViewCallback webviewCallback) {
-            final FullscreenCallback fullscreenCallback = new FullscreenCallback() {
-                @Override
-                public void fullScreenExited() {
-                    webviewCallback.onCustomViewHidden();
-                }
-            };
-
-            if (tabChromeClient != null) {
-                tabChromeClient.onEnterFullScreen(fullscreenCallback, view);
-            }
-            TelemetryWrapper.browseEnterFullScreenEvent();
-        }
-
-        @Override
-        public void onHideCustomView() {
-            if (tabChromeClient != null) {
-                tabChromeClient.onExitFullScreen();
-            }
-            TelemetryWrapper.browseExitFullScreenEvent();
-        }
-
-
-        @Override
-        public void onPermissionRequest(PermissionRequest request) {
-            super.onPermissionRequest(request);
-            TelemetryWrapper.browsePermissionEvent(request.getResources());
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(String origin,
-                                                       GeolocationPermissions.Callback glpcallback) {
-            TelemetryWrapper.browseGeoLocationPermissionEvent();
-            tabChromeClient.onGeolocationPermissionsShowPrompt(origin, glpcallback);
-        }
-
-        @Override
-        public void onGeolocationPermissionsHidePrompt() {
-            super.onGeolocationPermissionsHidePrompt();
-        }
-
-        @Override
-        public boolean onShowFileChooser(WebView webView,
-                                         ValueCallback<Uri[]> filePathCallback,
-                                         WebChromeClient.FileChooserParams fileChooserParams) {
-
-            return tabChromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
-        }
-
-        @Override
-        public void onReceivedTitle(WebView view, String title) {
-            super.onReceivedTitle(view, title);
-            if (tabChromeClient != null) {
-                tabChromeClient.onReceivedTitle(view, title);
-            }
-        }
     }
 
     public void insertBrowsingHistory() {
