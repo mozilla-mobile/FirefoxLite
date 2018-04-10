@@ -526,7 +526,7 @@ public class TabsSession {
         }
 
         @Override
-        public void onReceivedTitle(WebView view, String title) {
+        public void onReceivedTitle(TabView view, String title) {
             for (final TabsChromeListener l : tabsChromeListeners) {
                 l.onReceivedTitle(source, title);
             }

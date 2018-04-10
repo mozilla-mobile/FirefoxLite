@@ -62,7 +62,7 @@ public class WebkitView extends NestedWebView implements TabView {
             }
         };
 
-        webChromeClient = new FocusWebChromeClient();
+        webChromeClient = new FocusWebChromeClient(this);
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         setDownloadListener(createDownloadListener());
