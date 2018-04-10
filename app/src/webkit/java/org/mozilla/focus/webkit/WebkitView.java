@@ -47,10 +47,9 @@ import org.mozilla.focus.web.WebViewProvider;
 public class WebkitView extends NestedWebView implements TabView {
     private static final String KEY_CURRENTURL = "currenturl";
 
-    private TabViewClient viewClient;
-    private TabChromeClient chromeClient;
     private DownloadCallback downloadCallback;
-    private FocusWebViewClient client;
+    private FocusWebViewClient webViewClient;
+    private FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
 
     private boolean shouldReloadOnAttached = false;
@@ -60,7 +59,7 @@ public class WebkitView extends NestedWebView implements TabView {
     public WebkitView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        client = new FocusWebViewClient(getContext().getApplicationContext()) {
+        webViewClient = new FocusWebViewClient(getContext().getApplicationContext()) {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 if (!UrlUtils.isInternalErrorURL(url)) {
@@ -70,8 +69,9 @@ public class WebkitView extends NestedWebView implements TabView {
             }
         };
 
-        setWebViewClient(client);
-        setWebChromeClient(new FocusWebChromeClient());
+        webChromeClient = new FocusWebChromeClient();
+        setWebViewClient(webViewClient);
+        setWebChromeClient(webChromeClient);
         setDownloadListener(createDownloadListener());
 
         if (BuildConfig.DEBUG) {
@@ -122,7 +122,7 @@ public class WebkitView extends NestedWebView implements TabView {
             return;
         }
 
-        client.notifyCurrentURL(desiredURL);
+        webViewClient.notifyCurrentURL(desiredURL);
 
         if (backForwardList != null &&
                 backForwardList.getCurrentItem().getUrl().equals(desiredURL)) {
@@ -144,11 +144,11 @@ public class WebkitView extends NestedWebView implements TabView {
 
     @Override
     public void setContentBlockingEnabled(boolean enable) {
-        if (client.isBlockingEnabled() == enable) {
+        if (webViewClient.isBlockingEnabled() == enable) {
             return;
         }
 
-        client.setBlockingEnabled(enable);
+        webViewClient.setBlockingEnabled(enable);
 
         if (!enable) {
             reloadOnAttached();
@@ -156,7 +156,7 @@ public class WebkitView extends NestedWebView implements TabView {
     }
 
     public boolean isBlockingEnabled() {
-        return client.isBlockingEnabled();
+        return webViewClient.isBlockingEnabled();
     }
 
     @Override
@@ -184,15 +184,13 @@ public class WebkitView extends NestedWebView implements TabView {
         if (viewClient != null) {
             viewClient = new TabViewClientWrapper(viewClient);
         }
-        this.viewClient = viewClient;
-        this.client.setViewClient(this.viewClient);
+        this.webViewClient.setViewClient(viewClient);
     }
 
     @Override
     public void setChromeClient(TabChromeClient chromeClient) {
-        this.chromeClient = chromeClient;
-        client.setViewClient(this.viewClient);
-        linkHandler.setChromeClient(this.chromeClient);
+        linkHandler.setChromeClient(chromeClient);
+        this.webChromeClient.setChromeClient(chromeClient);
     }
 
     @Override
@@ -204,11 +202,11 @@ public class WebkitView extends NestedWebView implements TabView {
         // We need to check external URL handling here - shouldOverrideUrlLoading() is only
         // called by webview when clicking on a link, and not when opening a new page for the
         // first time using loadUrl().
-        if (!client.shouldOverrideUrlLoading(this, url)) {
+        if (!webViewClient.shouldOverrideUrlLoading(this, url)) {
             super.loadUrl(url);
         }
 
-        client.notifyCurrentURL(url);
+        webViewClient.notifyCurrentURL(url);
     }
 
     public void reload() {
@@ -233,7 +231,8 @@ public class WebkitView extends NestedWebView implements TabView {
     }
 
     @Override
-    public @SiteIdentity.SecurityState int getSecurityState() {
+    public @SiteIdentity.SecurityState
+    int getSecurityState() {
         // FIXME: Having certificate doesn't mean the connection is secure, see #1562
         return getCertificate() == null ? SiteIdentity.INSECURE : SiteIdentity.SECURE;
     }
@@ -274,10 +273,16 @@ public class WebkitView extends NestedWebView implements TabView {
 
     private class FocusWebChromeClient extends WebChromeClient {
 
+        private TabChromeClient tabChromeClient;
+
+        public void setChromeClient(TabChromeClient callback) {
+            this.tabChromeClient = callback;
+        }
+
         @Override
         public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message msg) {
-            if (chromeClient != null) {
-                return chromeClient.onCreateWindow(isDialog, isUserGesture, msg);
+            if (tabChromeClient != null) {
+                return tabChromeClient.onCreateWindow(isDialog, isUserGesture, msg);
             } else {
                 return false;
             }
@@ -285,15 +290,15 @@ public class WebkitView extends NestedWebView implements TabView {
 
         @Override
         public void onCloseWindow(WebView view) {
-            if (chromeClient != null) {
-                chromeClient.onCloseWindow(view);
+            if (tabChromeClient != null) {
+                tabChromeClient.onCloseWindow(view);
             }
         }
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            if (chromeClient != null) {
-                chromeClient.onProgressChanged(newProgress);
+            if (tabChromeClient != null) {
+                tabChromeClient.onProgressChanged(newProgress);
             }
         }
 
@@ -304,7 +309,7 @@ public class WebkitView extends NestedWebView implements TabView {
                 return;
             }
 
-            Bitmap refinedBitmap  = FavIconUtils.getRefinedBitmap(getResources(), icon,
+            Bitmap refinedBitmap = FavIconUtils.getRefinedBitmap(getResources(), icon,
                     FavIconUtils.getRepresentativeCharacter(url));
 
             Site site = new Site();
@@ -313,8 +318,8 @@ public class WebkitView extends NestedWebView implements TabView {
             site.setFavIcon(refinedBitmap);
             BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
 
-            if (chromeClient != null) {
-                chromeClient.onReceivedIcon(view, refinedBitmap);
+            if (tabChromeClient != null) {
+                tabChromeClient.onReceivedIcon(view, refinedBitmap);
             }
         }
 
@@ -327,16 +332,16 @@ public class WebkitView extends NestedWebView implements TabView {
                 }
             };
 
-            if (chromeClient != null) {
-                chromeClient.onEnterFullScreen(fullscreenCallback, view);
+            if (tabChromeClient != null) {
+                tabChromeClient.onEnterFullScreen(fullscreenCallback, view);
             }
             TelemetryWrapper.browseEnterFullScreenEvent();
         }
 
         @Override
         public void onHideCustomView() {
-            if (chromeClient != null) {
-                chromeClient.onExitFullScreen();
+            if (tabChromeClient != null) {
+                tabChromeClient.onExitFullScreen();
             }
             TelemetryWrapper.browseExitFullScreenEvent();
         }
@@ -352,7 +357,7 @@ public class WebkitView extends NestedWebView implements TabView {
         public void onGeolocationPermissionsShowPrompt(String origin,
                                                        GeolocationPermissions.Callback glpcallback) {
             TelemetryWrapper.browseGeoLocationPermissionEvent();
-            chromeClient.onGeolocationPermissionsShowPrompt(origin, glpcallback);
+            tabChromeClient.onGeolocationPermissionsShowPrompt(origin, glpcallback);
         }
 
         @Override
@@ -365,14 +370,14 @@ public class WebkitView extends NestedWebView implements TabView {
                                          ValueCallback<Uri[]> filePathCallback,
                                          WebChromeClient.FileChooserParams fileChooserParams) {
 
-            return chromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+            return tabChromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if (chromeClient != null) {
-                chromeClient.onReceivedTitle(view, title);
+            if (tabChromeClient != null) {
+                tabChromeClient.onReceivedTitle(view, title);
             }
         }
     }
