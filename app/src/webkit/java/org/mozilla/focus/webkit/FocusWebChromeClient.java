@@ -3,6 +3,7 @@ package org.mozilla.focus.webkit;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
@@ -23,7 +24,17 @@ import org.mozilla.focus.utils.FavIconUtils;
  */
 class FocusWebChromeClient extends WebChromeClient {
 
+    /**
+     * The TabView be attached by this client. No matter which WebView notify this client, this client
+     * always hand over notification to TabChromeClient with this hosted TabView.
+     */
+    private TabView host;
+
     private TabChromeClient tabChromeClient;
+
+    FocusWebChromeClient(@NonNull TabView tabView) {
+        this.host = tabView;
+    }
 
     public void setChromeClient(TabChromeClient callback) {
         this.tabChromeClient = callback;
@@ -128,7 +139,7 @@ class FocusWebChromeClient extends WebChromeClient {
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
         if (tabChromeClient != null) {
-            tabChromeClient.onReceivedTitle(view, title);
+            tabChromeClient.onReceivedTitle(this.host, title);
         }
     }
 }

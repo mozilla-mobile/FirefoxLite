@@ -41,7 +41,7 @@ public class TabChromeClient {
         return false;
     }
 
-    public void onReceivedTitle(WebView view, String title) {
+    public void onReceivedTitle(TabView view, String title) {
     }
 
     public void onReceivedIcon(WebView view, Bitmap icon) {
