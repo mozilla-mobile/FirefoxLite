@@ -42,7 +42,6 @@ import android.view.animation.Interpolator;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
 import com.bumptech.glide.Glide;
 
@@ -708,7 +707,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }
 
         @Override
-        public boolean onShowFileChooser(@NonNull Tab tab, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(@NonNull Tab tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             return false;
         }
 

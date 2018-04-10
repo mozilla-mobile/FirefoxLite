@@ -23,7 +23,6 @@ import android.view.ViewParent;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -476,7 +475,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         @Override
-        public boolean onShowFileChooser(@NonNull Tab tab, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(@NonNull Tab tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             // do nothing
             return false;
         }

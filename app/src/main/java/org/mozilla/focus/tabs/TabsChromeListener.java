@@ -15,7 +15,6 @@ import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
 /**
  * An interface for listener which cares about changes of tabs to update browser chrome.
@@ -42,17 +41,17 @@ public interface TabsChromeListener {
     }
 
     /**
-     * @see android.webkit.WebChromeClient#onProgressChanged(WebView, int)
+     * @see android.webkit.WebChromeClient#onProgressChanged(android.webkit.WebView, int)
      */
     void onProgressChanged(@NonNull Tab tab, int progress);
 
     /**
-     * @see android.webkit.WebChromeClient#onReceivedTitle(WebView, String)
+     * @see android.webkit.WebChromeClient#onReceivedTitle(android.webkit.WebView, String)
      */
     void onReceivedTitle(@NonNull Tab tab, String title);
 
     /**
-     * @see android.webkit.WebChromeClient#onReceivedIcon(WebView, Bitmap)
+     * @see android.webkit.WebChromeClient#onReceivedIcon(android.webkit.WebView, Bitmap)
      */
     void onReceivedIcon(@NonNull Tab tab, Bitmap icon);
 
@@ -117,13 +116,13 @@ public interface TabsChromeListener {
      * Notify the host application to show a file chooser. Usually for file uploading.
      *
      * @param tab               The tab which is asking file chooser.
-     * @param webView
+     * @param tabView
      * @param filePathCallback
      * @param fileChooserParams
-     * @see android.webkit.WebChromeClient#onShowFileChooser(WebView, ValueCallback, WebChromeClient.FileChooserParams)
+     * @see android.webkit.WebChromeClient#onShowFileChooser(android.webkit.WebView, ValueCallback, WebChromeClient.FileChooserParams)
      */
     boolean onShowFileChooser(@NonNull Tab tab,
-                              WebView webView,
+                              TabView tabView,
                               ValueCallback<Uri[]> filePathCallback,
                               WebChromeClient.FileChooserParams fileChooserParams);
 
