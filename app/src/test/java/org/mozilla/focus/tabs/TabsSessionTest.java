@@ -7,6 +7,8 @@ package org.mozilla.focus.tabs;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -370,6 +372,10 @@ public class TabsSessionTest {
         @Override
         public void setContentBlockingEnabled(boolean enabled) {
 
+        }
+
+        @Override
+        public void bindOnNewWindowCreation(@NonNull Message msg) {
         }
 
         @Override

@@ -7,6 +7,7 @@ package org.mozilla.focus.tabs;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -52,6 +53,13 @@ public interface TabView {
      * Enable/Disable content blocking for this session (Only the blockers that are enabled in the app's settings will be turned on/off).
      */
     void setContentBlockingEnabled(boolean enabled);
+
+    /**
+     * Be invoked by TabChromeClient.onCreateWindow to transport this new-created-window to its parent window.
+     *
+     * @param msg The message to send when once a new WebView has been created
+     */
+    void bindOnNewWindowCreation(@NonNull final Message msg);
 
     void setImageBlockingEnabled(boolean enabled);
 

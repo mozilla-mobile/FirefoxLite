@@ -18,7 +18,6 @@ import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.tabs.utils.TabUtil;
@@ -488,11 +487,7 @@ public class TabsSession {
                 return false;
             }
 
-            final WebView webView = (WebView) tab.getTabView();
-            final WebView.WebViewTransport transport = (WebView.WebViewTransport) msg.obj;
-            transport.setWebView(webView);
-            msg.sendToTarget();
-
+            tab.getTabView().bindOnNewWindowCreation(msg);
             return true;
         }
 

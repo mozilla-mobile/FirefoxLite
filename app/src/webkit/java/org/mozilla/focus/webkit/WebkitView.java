@@ -8,6 +8,8 @@ package org.mozilla.focus.webkit;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -146,6 +148,17 @@ public class WebkitView extends NestedWebView implements TabView {
         if (!enable) {
             reloadOnAttached();
         }
+    }
+
+    @Override
+    public void bindOnNewWindowCreation(@NonNull Message msg) {
+        if (!(msg.obj instanceof WebView.WebViewTransport)) {
+            throw new IllegalArgumentException("Message payload is not a WebViewTransport instance");
+        }
+
+        final WebView.WebViewTransport transport = (WebView.WebViewTransport) msg.obj;
+        transport.setWebView(this);
+        msg.sendToTarget();
     }
 
     public boolean isBlockingEnabled() {
