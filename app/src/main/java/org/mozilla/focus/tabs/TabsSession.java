@@ -533,7 +533,7 @@ public class TabsSession {
         }
 
         @Override
-        public void onReceivedIcon(WebView view, Bitmap icon) {
+        public void onReceivedIcon(TabView view, Bitmap icon) {
             source.setFavicon(icon);
             for (final TabsChromeListener l : tabsChromeListeners) {
                 l.onReceivedIcon(source, icon);

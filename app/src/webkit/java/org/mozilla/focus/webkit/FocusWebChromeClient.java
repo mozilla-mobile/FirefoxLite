@@ -78,7 +78,7 @@ class FocusWebChromeClient extends WebChromeClient {
         BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
 
         if (this.tabChromeClient != null) {
-            this.tabChromeClient.onReceivedIcon(view, icon);
+            this.tabChromeClient.onReceivedIcon(this.host, icon);
         }
     }
 
