@@ -29,6 +29,8 @@ import org.mozilla.focus.utils.UrlUtils;
 
     private TabViewClient viewClient;
     private boolean errorReceived;
+    private static final String GOOGLE_OAUTH2_PREFIX = "https://accounts.google.com/o/oauth2/";
+    private static final String IGNORE_GOOGLE_WEBVIEW_BLOCKING_PARAM = "&suppress_webview_warning=true";
 
     public FocusWebViewClient(Context context) {
         super(context);
@@ -119,6 +121,12 @@ import org.mozilla.focus.utils.UrlUtils;
             } else {
                 return super.shouldOverrideUrlLoading(view, "");
             }
+        }
+
+        // A workaround for Google SSO since they're blocking us even when we had changed the agent
+        if (url.startsWith(GOOGLE_OAUTH2_PREFIX) && !url.endsWith(IGNORE_GOOGLE_WEBVIEW_BLOCKING_PARAM)) {
+            view.loadUrl(url.concat(IGNORE_GOOGLE_WEBVIEW_BLOCKING_PARAM));
+            return true;
         }
 
         if (shouldOverrideInternalPages(view, url)) {
