@@ -57,14 +57,14 @@ public class UrlUtils {
         }
 
         for (final String s : SupportUtils.SUPPORTED_URLS) {
-            if (s.equals(url)) {
+            if (s.equals(trimmedUrl)) {
                 return true;
             }
         }
 
-        Uri uri = schemePattern.matcher(url).find()
-                ? Uri.parse(url)
-                : Uri.parse("http://" + url);
+        Uri uri = schemePattern.matcher(trimmedUrl).find()
+                ? Uri.parse(trimmedUrl)
+                : Uri.parse("http://" + trimmedUrl);
 
         final String host = TextUtils.isEmpty(uri.getHost()) ? "" : uri.getHost();
         switch (uri.getScheme()) {
