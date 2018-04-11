@@ -14,24 +14,38 @@ class TabTrayContract {
         void viewReady();
         void tabClicked(int tabPosition);
         void tabCloseClicked(int tabPosition);
+        void tabTrayClosed();
     }
 
     interface View {
-        void updateData(List<Tab> tabs);
-        void setFocusedTab(int tabPosition);
+        void initData(List<Tab> newTabs, Tab newFocusedTab);
+        void refreshData(List<Tab> newTabs, Tab newFocusedTab);
+        void refreshTabData(Tab tab);
         void showFocusedTab(int tabPosition);
         void tabSwitched(int tabPosition);
-        void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, int nextFocusPos);
         void closeTabTray();
         void navigateToHome();
     }
 
     interface Model {
+        void loadTabs(OnLoadCompleteListener listener);
         List<Tab> getTabs();
 
-        int getCurrentTabPosition();
+        Tab getFocusedTab();
 
         void switchTab(int tabPosition);
         void removeTab(int tabPosition);
+
+        void subscribe(Observer observer);
+        void unsubscribe();
+
+        interface OnLoadCompleteListener {
+            void onLoadComplete();
+        }
+
+        interface Observer {
+            void onUpdate(List<Tab> newTabs);
+            void onTabUpdate(Tab tab);
+        }
     }
 }

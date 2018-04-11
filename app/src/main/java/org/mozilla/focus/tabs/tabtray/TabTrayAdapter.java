@@ -34,13 +34,14 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.utils.FavIconUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHolder> {
 
-    private List<Tab> tabs;
-    private int focusedTabPosition = -1;
+    private List<Tab> tabs = new ArrayList<>();
+    private Tab focusedTab;
 
     private TabClickListener tabClickListener;
 
@@ -66,7 +67,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.itemView.setSelected(position == this.focusedTabPosition);
+        holder.itemView.setSelected(tabs.get(position) == focusedTab);
 
         Resources resources = holder.itemView.getResources();
 
@@ -75,7 +76,11 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         String title = getTitle(tab, holder);
         holder.websiteTitle.setText(TextUtils.isEmpty(title) ?
                 resources.getString(R.string.app_name) : title);
-        holder.websiteSubtitle.setText(tab.getUrl());
+
+        String url = tab.getUrl();
+        if (!TextUtils.isEmpty(url)) {
+            holder.websiteSubtitle.setText(tab.getUrl());
+        }
 
         setFavicon(tab, holder);
     }
@@ -83,6 +88,8 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     @Override
     public void onViewRecycled(ViewHolder holder) {
         holder.websiteTitle.setText("");
+        holder.websiteSubtitle.setText("");
+        updateFavicon(holder, null);
     }
 
     @Override
@@ -90,24 +97,25 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         return tabs.size();
     }
 
-    int getItemPosition(Tab tab) {
-        return tabs.indexOf(tab);
-    }
-
     void setTabClickListener(TabClickListener tabClickListener) {
         this.tabClickListener = tabClickListener;
     }
 
     void setData(List<Tab> tabs) {
-        this.tabs = tabs;
+        this.tabs.clear();
+        this.tabs.addAll(tabs);
     }
 
-    void setFocusedTab(int tabPosition) {
-        this.focusedTabPosition = tabPosition;
+    List<Tab> getData() {
+        return this.tabs;
     }
 
-    int getFocusedTabPosition() {
-        return this.focusedTabPosition;
+    void setFocusedTab(Tab tab) {
+        focusedTab = tab;
+    }
+
+    Tab getFocusedTab() {
+        return focusedTab;
     }
 
     private String getTitle(Tab tab, ViewHolder holder) {
