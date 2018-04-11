@@ -883,7 +883,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             } else {
                 Tab currentTab = tabsSession.getFocusTab();
                 if (currentTab != null) {
-                    tabsSession.getFocusTab().getTabView().loadUrl(url);
+                    currentTab.getTabView().loadUrl(url);
                     onViewReadyCallback.run();
                 } else {
                     tabsSession.addTab(url, TabUtil.argument(null, isFromExternal, true));
@@ -971,8 +971,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public void goBack() {
-        final TabView current = tabsSession.getFocusTab().getTabView();
-        if (current != null) {
+        final Tab currentTab = tabsSession.getFocusTab();
+        if (currentTab != null) {
+            final TabView current = currentTab.getTabView();
             WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
             updateURL(item.getUrl());
@@ -981,8 +982,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public void goForward() {
-        final TabView current = tabsSession.getFocusTab().getTabView();
-        if (current != null) {
+        final Tab currentTab = tabsSession.getFocusTab();
+        if (currentTab != null) {
+            final TabView current = currentTab.getTabView();
             WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
             updateURL(item.getUrl());
@@ -991,15 +993,17 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public void reload() {
-        final TabView current = tabsSession.getFocusTab().getTabView();
-        if (current != null) {
+        final Tab currentTab = tabsSession.getFocusTab();
+        if (currentTab != null) {
+            final TabView current = currentTab.getTabView();
             current.reload();
         }
     }
 
     public void stop() {
-        final TabView current = tabsSession.getFocusTab().getTabView();
-        if (current != null) {
+        final Tab currentTab = tabsSession.getFocusTab();
+        if (currentTab != null) {
+            final TabView current = currentTab.getTabView();
             current.stopLoading();
         }
     }
@@ -1009,11 +1013,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public boolean capturePage(@NonNull ScreenshotCallback callback) {
-        final TabView current = tabsSession.getFocusTab().getTabView();
+        final Tab currentTab = tabsSession.getFocusTab();
         // Failed to get WebView
-        if (current == null || !(current instanceof WebView)) {
+        if (currentTab == null || currentTab.getTabView() == null || !(currentTab.getTabView() instanceof WebView)) {
             return false;
         }
+        final TabView current = currentTab.getTabView();
         WebView webView = (WebView) current;
         Bitmap content = getPageBitmap(webView);
         // Failed to capture
@@ -1261,8 +1266,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            if (tabsSession.getFocusTab().getTabView() instanceof WebView) {
-                ((WebView) tabsSession.getFocusTab().getTabView()).clearFocus();
+            if (tab.getTabView() instanceof WebView) {
+                ((WebView) tab.getTabView()).clearFocus();
             }
         }
 
