@@ -72,6 +72,7 @@ import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
+import org.mozilla.focus.widget.TabRestoreMonitor;
 
 import java.io.File;
 import java.util.List;
@@ -80,7 +81,7 @@ import java.util.Locale;
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
-        ScreenNavigator.Provider {
+        TabRestoreMonitor, ScreenNavigator.Provider {
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
 
@@ -875,6 +876,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         return tabsSession;
     }
 
+    @Override
     public boolean isTabRestoredComplete() {
         return isTabRestoredComplete;
     }
