@@ -8,11 +8,9 @@ package org.mozilla.focus.tabs.tabtray;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,6 +22,7 @@ import android.support.design.widget.BottomSheetBehavior.BottomSheetCallback;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -39,9 +38,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.webkit.GeolocationPermissions;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 
 import com.bumptech.glide.Glide;
 
@@ -49,11 +45,8 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
-import org.mozilla.focus.tabs.TabsViewListener;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.util.List;
@@ -69,7 +62,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
 
     private TabTrayContract.Presenter presenter;
-    private TabsSession tabsSession;
 
     private View newTabBtn;
     private View logoMan;
@@ -84,7 +76,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private boolean playEnterAnimation = true;
 
     private TabTrayAdapter adapter;
-    private OnTabModelChangedListener onTabModelChangedListener;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
 
@@ -108,7 +99,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         adapter = new TabTrayAdapter(Glide.with(this));
 
-        tabsSession = TabsSessionProvider.getOrThrow(getActivity());
+        TabsSession tabsSession = TabsSessionProvider.getOrThrow(getActivity());
         presenter = new TabTrayPresenter(this, new TabsSessionModel(tabsSession));
     }
 
@@ -121,25 +112,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         } else {
             setDialogAnimation(R.style.TabTrayDialogExit);
         }
-
-        if (onTabModelChangedListener == null) {
-            onTabModelChangedListener = new OnTabModelChangedListener() {
-                @Override
-                void onTabModelChanged(Tab tab) {
-                    adapter.notifyItemChanged(adapter.getItemPosition(tab));
-                }
-            };
-        }
-        tabsSession.addTabsViewListener(onTabModelChangedListener);
-        tabsSession.addTabsChromeListener(onTabModelChangedListener);
         super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        tabsSession.removeTabsViewListener(onTabModelChangedListener);
-        tabsSession.removeTabsChromeListener(onTabModelChangedListener);
     }
 
     @Nullable
@@ -205,13 +178,59 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void updateData(List<Tab> tabs) {
-        adapter.setData(tabs);
+    public void initData(List<Tab> newTabs, Tab newFocusedTab) {
+        adapter.setData(newTabs);
+        adapter.setFocusedTab(newFocusedTab);
     }
 
     @Override
-    public void setFocusedTab(int tabPosition) {
-        adapter.setFocusedTab(tabPosition);
+    public void refreshData(final List<Tab> newTabs, final Tab newFocusedTab) {
+        final List<Tab> oldTabs = adapter.getData();
+        DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return oldTabs.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newTabs.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return newTabs.get(newItemPosition).getId().equals(oldTabs.get(oldItemPosition).getId());
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return true;
+            }
+        }, false).dispatchUpdatesTo(adapter);
+        adapter.setData(newTabs);
+
+        waitItemAnimation(new Runnable() {
+            @Override
+            public void run() {
+                Tab oldFocused = adapter.getFocusedTab();
+                List<Tab> oldTabs = adapter.getData();
+                int oldFocusedPosition = oldTabs.indexOf(oldFocused);
+                adapter.notifyItemChanged(oldFocusedPosition);
+
+                adapter.setFocusedTab(newFocusedTab);
+                int newFocusedPosition = oldTabs.indexOf(newFocusedTab);
+                adapter.notifyItemChanged(newFocusedPosition);
+            }
+        });
+    }
+
+    @Override
+    public void refreshTabData(Tab tab) {
+        List<Tab> tabs = adapter.getData();
+        int position = tabs.indexOf(tab);
+        if (position >= 0 && position < tabs.size()) {
+            adapter.notifyItemChanged(position);
+        }
     }
 
     @Override
@@ -227,17 +246,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void tabRemoved(int removePos, int focusPos, int modifiedFocusPos, final int nextFocusPos) {
-        animateItemRemove(removePos, new Runnable() {
-            @Override
-            public void run() {
-                adapter.setFocusedTab(nextFocusPos);
-                adapter.notifyItemChanged(nextFocusPos);
-            }
-        });
-    }
-
-    @Override
     public void closeTabTray() {
         postOnNextFrame(dismissRunnable);
     }
@@ -247,31 +255,12 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         ScreenNavigator.get(getContext()).popToHomeScreen(false);
     }
 
-    private void animateItemRemove(int removePos, final Runnable onAnimationEndCallback) {
-        adapter.notifyItemRemoved(removePos);
-        if (removePos != 0) {
-            adapter.notifyItemChanged(removePos - 1);
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        if (presenter != null) {
+            presenter.tabTrayClosed();
         }
-
-        final Runnable monitorAnimationEnd = new Runnable() {
-            @Override
-            public void run() {
-                RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
-                if (animator == null) {
-                    return;
-                }
-
-                animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
-                    @Override
-                    public void onAnimationsFinished() {
-                        uiHandler.post(onAnimationEndCallback);
-                    }
-                });
-            }
-        } ;
-
-        // remove animation will start in next frame
-        uiHandler.post(monitorAnimationEnd);
     }
 
     private void setupBottomSheetCallback() {
@@ -328,7 +317,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void startExpandAnimation() {
-        final boolean shouldExpand = isPositionVisibleWhenCollapse(adapter.getFocusedTabPosition());
+        List<Tab> tabs = adapter.getData();
+        int focusedPosition = tabs.indexOf(adapter.getFocusedTab());
+        final boolean shouldExpand = isPositionVisibleWhenCollapse(focusedPosition);
         uiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -353,6 +344,25 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         final int visibleItemCount = visiblePanelHeight / itemHeightWithDivider;
 
         return focusedPosition < visibleItemCount;
+    }
+
+    private void waitItemAnimation(final Runnable onAnimationEnd) {
+        uiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+                if (animator == null) {
+                    return;
+                }
+
+                animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
+                    @Override
+                    public void onAnimationsFinished() {
+                        uiHandler.post(onAnimationEnd);
+                    }
+                });
+            }
+        });
     }
 
     @Nullable
@@ -641,81 +651,5 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 outRect.bottom = fragment.newTabBtn.getMeasuredHeight() + padding;
             }
         }
-    }
-
-    private static abstract class OnTabModelChangedListener implements TabsViewListener,
-            TabsChromeListener {
-        @Override
-        public void onTabStarted(@NonNull Tab tab) {
-        }
-
-        @Override
-        public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
-        }
-
-        @Override
-        public void onURLChanged(@NonNull Tab tab, String url) {
-            onTabModelChanged(tab);
-        }
-
-        @Override
-        public boolean handleExternalUrl(String url) {
-            return false;
-        }
-
-        @Override
-        public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
-            onTabModelChanged(tab);
-        }
-
-        @Override
-        public void onProgressChanged(@NonNull Tab tab, int progress) {
-        }
-
-        @Override
-        public void onReceivedTitle(@NonNull Tab tab, String title) {
-            onTabModelChanged(tab);
-        }
-
-        @Override
-        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
-            onTabModelChanged(tab);
-        }
-
-        @Override
-        public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
-        }
-
-        @Override
-        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
-        }
-
-        @Override
-        public void onTabCountChanged(int count) {
-        }
-
-        @Override
-        public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
-        }
-
-        @Override
-        public void onExitFullScreen(@NonNull Tab tab) {
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NonNull Tab tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-            return false;
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
-
-        }
-
-        abstract void onTabModelChanged(Tab tab);
     }
 }

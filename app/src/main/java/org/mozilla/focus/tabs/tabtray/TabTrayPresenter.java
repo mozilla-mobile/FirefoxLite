@@ -14,20 +14,36 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
     private TabTrayContract.View view;
     private TabTrayContract.Model model;
 
-    TabTrayPresenter(TabTrayContract.View view, TabTrayContract.Model model) {
+    TabTrayPresenter(final TabTrayContract.View view, final TabTrayContract.Model model) {
         this.view = view;
         this.model = model;
-        view.updateData(model.getTabs());
-        view.setFocusedTab(model.getCurrentTabPosition());
+        this.model.loadTabs(new TabTrayContract.Model.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete() {
+                view.initData(model.getTabs(), model.getFocusedTab());
+            }
+        });
     }
 
     @Override
     public void viewReady() {
-        List<Tab> tabs = model.getTabs();
+        final List<Tab> tabs = model.getTabs();
         if (tabs.isEmpty()) {
             view.closeTabTray();
         } else {
-            view.showFocusedTab(model.getCurrentTabPosition());
+            model.subscribe(new TabTrayContract.Model.Observer() {
+                @Override
+                public void onUpdate(List<Tab> newTabs) {
+                    view.refreshData(newTabs, model.getFocusedTab());
+                    model.loadTabs(null);
+                }
+
+                @Override
+                public void onTabUpdate(Tab tab) {
+                    view.refreshTabData(tab);
+                }
+            });
+            view.showFocusedTab(tabs.indexOf(model.getFocusedTab()));
         }
     }
 
@@ -39,21 +55,21 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void tabCloseClicked(int tabPosition) {
-        int oldFocusPos = model.getCurrentTabPosition();
-
         model.removeTab(tabPosition);
 
         List<Tab> newTabs = model.getTabs();
-        int newFocusTab = model.getCurrentTabPosition();
+        int newFocusTab = newTabs.indexOf(model.getFocusedTab());
 
-        view.tabRemoved(tabPosition, oldFocusPos, oldFocusPos, newFocusTab);
-        view.updateData(newTabs);
-
-        if (!newTabs.isEmpty()) {
-            model.switchTab(newFocusTab);
-        } else {
+        if (newTabs.isEmpty()) {
             view.closeTabTray();
             view.navigateToHome();
+        } else if (newFocusTab >= 0 && newFocusTab < newTabs.size()) {
+            model.switchTab(newFocusTab);
         }
+    }
+
+    @Override
+    public void tabTrayClosed() {
+        model.unsubscribe();
     }
 }
