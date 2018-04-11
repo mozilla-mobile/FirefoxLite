@@ -11,6 +11,7 @@ apply plugin: 'com.icesmith.androidtextresolver'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'io.fabric'
 
+
 buildscript {
     repositories {
         maven {

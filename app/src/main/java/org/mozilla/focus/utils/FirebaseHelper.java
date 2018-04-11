@@ -26,15 +26,16 @@ final public class FirebaseHelper {
 
     static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
     static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
+    private static final long DEFAULT_CACHE_EXPIRATION_IN_SECONDS = 3600; // 1 hour in seconds.
 
     private static final String TAG = "FirebaseHelper";
 
-    private static WeakReference<FirebaseRemoteConfig> REMOTE_CONFIG;
-    private static long CACHE_EXPIRATION = 3600; // 1 hour in seconds.
+    private static WeakReference<FirebaseRemoteConfig> remoteConfig;
+    private static long cacheExpirationInSeconds = DEFAULT_CACHE_EXPIRATION_IN_SECONDS;
 
     // get Remote Config string
     static String getRcString(String key) {
-        final FirebaseRemoteConfig config = REMOTE_CONFIG.get();
+        final FirebaseRemoteConfig config = remoteConfig.get();
         if (config != null) {
             return config.getString(key);
         }
@@ -54,7 +55,7 @@ final public class FirebaseHelper {
 
         // Init remote config
         final FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
-        REMOTE_CONFIG = new WeakReference<>(config);
+        remoteConfig = new WeakReference<>(config);
         final FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
@@ -64,18 +65,18 @@ final public class FirebaseHelper {
         // If app is using developer mode, cacheExpiration is set to 0, so each fetch will
         // retrieve values from the service.
         if (config.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
-            CACHE_EXPIRATION = 0;
+            cacheExpirationInSeconds = 0;
         }
         refreshRemoteConfig();
     }
 
     // Call this method to refresh the value in remote config
     private static void refreshRemoteConfig() {
-        final FirebaseRemoteConfig config = REMOTE_CONFIG.get();
+        final FirebaseRemoteConfig config = remoteConfig.get();
         if (config == null) {
             return;
         }
-        config.fetch(CACHE_EXPIRATION).addOnCompleteListener(new OnCompleteListener<Void>() {
+        config.fetch(cacheExpirationInSeconds).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
