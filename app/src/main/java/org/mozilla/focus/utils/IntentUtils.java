@@ -56,7 +56,7 @@ public class IntentUtils {
      * want to use an external app to open the uri. Ultimately the OS can spy on anything we're
      * doing in the app, so this isn't an actual "bug".
      */
-    public static boolean handleExternalUri(final Context context, final TabView webView, final String uri) {
+    public static boolean handleExternalUri(final Context context, final String uri) {
         // This code is largely based on Fennec's ExternalIntentDuringPrivateBrowsingPromptFragment.java
         final Intent intent;
         try {

@@ -59,6 +59,7 @@ public class Tab {
         return tabModel;
     }
 
+    @Nullable
     public TabView getTabView() {
         return tabView;
     }

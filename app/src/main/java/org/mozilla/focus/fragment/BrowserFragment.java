@@ -425,8 +425,15 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (savedInstanceState != null) {
             // Fragment was destroyed
             // FIXME: Obviously, only restore current tab is not enough
-            if (tabsSession.getFocusTab() != null) {
-                tabsSession.getFocusTab().getTabView().restoreViewState(savedInstanceState);
+            final Tab focusTab = tabsSession.getFocusTab();
+            if (focusTab != null) {
+                TabView tabView = focusTab.getTabView();
+                if (tabView != null) {
+                    tabView.restoreViewState(savedInstanceState);
+                } else {
+                    // Focus to tab again to force initialization.
+                    tabsSession.switchToTab(focusTab.getId());
+                }
             }
         }
     }
@@ -448,18 +455,25 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     public void goBackground() {
         final Tab current = tabsSession.getFocusTab();
-        if (current != null && current.getTabView() != null) {
+        if (current != null) {
+            final TabView tabView = current.getTabView();
+            if (tabView == null) {
+                return;
+            }
             current.detach();
-            webViewSlot.removeView(current.getTabView().getView());
+            webViewSlot.removeView(tabView.getView());
         }
     }
 
     public void goForeground() {
         final Tab current = tabsSession.getFocusTab();
-        if (webViewSlot.getChildCount() == 0 && current != null && current.getTabView() != null) {
-            final View inView = current.getTabView().getView();
+        if (webViewSlot.getChildCount() == 0 && current != null) {
+            final TabView tabView = current.getTabView();
+            if (tabView == null) {
+                return;
+            }
+            final View inView = tabView.getView();
             webViewSlot.addView(inView);
-
         }
     }
 
@@ -534,7 +548,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void onSaveInstanceState(Bundle outState) {
         permissionHandler.onSaveInstanceState(outState);
         if (tabsSession.getFocusTab() != null) {
-            tabsSession.getFocusTab().getTabView().saveViewState(outState);
+            final TabView tabView = tabsSession.getFocusTab().getTabView();
+            if (tabView != null) {
+                tabView.saveViewState(outState);
+            }
         }
 
         // Workaround for #1107 TransactionTooLargeException
@@ -562,8 +579,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void onStop() {
         if (systemVisibility != NONE) {
             final Tab tab = tabsSession.getFocusTab();
-            if (tab != null && tab.getTabView() != null) {
-                tab.getTabView().performExitFullScreen();
+            if (tab != null) {
+                final TabView tabView = tab.getTabView();
+                if (tabView != null) {
+                    tabView.performExitFullScreen();
+                }
             }
         }
         dismissGeoDialog();
@@ -882,7 +902,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 ThreadUtils.postToMainThread(onViewReadyCallback);
             } else {
                 Tab currentTab = tabsSession.getFocusTab();
-                if (currentTab != null) {
+                if (currentTab != null && currentTab.getTabView() != null) {
                     currentTab.getTabView().loadUrl(url);
                     onViewReadyCallback.run();
                 } else {
@@ -959,7 +979,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public boolean canGoForward() {
-        return tabsSession.getFocusTab() != null && tabsSession.getFocusTab().getTabView().canGoForward();
+        return tabsSession.getFocusTab() != null && tabsSession.getFocusTab().getTabView() != null && tabsSession.getFocusTab().getTabView().canGoForward();
     }
 
     public boolean isLoading() {
@@ -967,13 +987,16 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public boolean canGoBack() {
-        return tabsSession.getFocusTab() != null && tabsSession.getFocusTab().getTabView().canGoBack();
+        return tabsSession.getFocusTab() != null && tabsSession.getFocusTab().getTabView() != null && tabsSession.getFocusTab().getTabView().canGoBack();
     }
 
     public void goBack() {
         final Tab currentTab = tabsSession.getFocusTab();
         if (currentTab != null) {
             final TabView current = currentTab.getTabView();
+            if (current == null) {
+                return;
+            }
             WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
             updateURL(item.getUrl());
@@ -985,6 +1008,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         final Tab currentTab = tabsSession.getFocusTab();
         if (currentTab != null) {
             final TabView current = currentTab.getTabView();
+            if (current == null) {
+                return;
+            }
             WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
             WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
             updateURL(item.getUrl());
@@ -996,6 +1022,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         final Tab currentTab = tabsSession.getFocusTab();
         if (currentTab != null) {
             final TabView current = currentTab.getTabView();
+            if (current == null) {
+                return;
+            }
             current.reload();
         }
     }
@@ -1004,6 +1033,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         final Tab currentTab = tabsSession.getFocusTab();
         if (currentTab != null) {
             final TabView current = currentTab.getTabView();
+            if (current == null) {
+                return;
+            }
             current.stopLoading();
         }
     }
@@ -1015,10 +1047,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public boolean capturePage(@NonNull ScreenshotCallback callback) {
         final Tab currentTab = tabsSession.getFocusTab();
         // Failed to get WebView
-        if (currentTab == null || currentTab.getTabView() == null || !(currentTab.getTabView() instanceof WebView)) {
+        if (currentTab == null) {
             return false;
         }
         final TabView current = currentTab.getTabView();
+        if (current == null || !(current instanceof WebView)) {
+            return false;
+        }
         WebView webView = (WebView) current;
         Bitmap content = getPageBitmap(webView);
         // Failed to capture
@@ -1195,8 +1230,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 return false;
             }
 
-            return tabsSession.getFocusTab() != null
-                    && IntentUtils.handleExternalUri(getContext(), tabsSession.getFocusTab().getTabView(), url);
+            return IntentUtils.handleExternalUri(getContext(), url);
         }
 
         @Override
@@ -1318,14 +1352,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
         }
 
-        private void transitToTab(Tab targetTab) {
+        private void transitToTab(@NonNull Tab targetTab) {
+            final TabView tabView = targetTab.getTabView();
+            if (tabView == null) {
+                throw new RuntimeException("Tabview should be created at this moment and never be null");
+            }
             // ensure it does not have attach to parent earlier.
             targetTab.detach();
 
             @Nullable final View outView = findExistingTabView(webViewSlot);
             webViewSlot.removeView(outView);
 
-            final View inView = targetTab.getTabView().getView();
+            final View inView = tabView.getView();
             webViewSlot.addView(inView);
 
             startTransitionAnimation(null, inView, null);
