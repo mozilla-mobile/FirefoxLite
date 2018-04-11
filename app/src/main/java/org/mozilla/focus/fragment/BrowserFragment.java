@@ -58,7 +58,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -91,6 +90,7 @@ import org.mozilla.focus.web.Download;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
+import org.mozilla.focus.widget.TabRestoreMonitor;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -1052,8 +1052,14 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     private boolean isTabRestoredComplete() {
-        return (getActivity() instanceof MainActivity)
-                && ((MainActivity) getActivity()).isTabRestoredComplete();
+        if (!(getActivity() instanceof TabRestoreMonitor)) {
+            if (AppConstants.isDevBuild()) {
+                throw new RuntimeException("Base activity needs to implement TabRestoreMonitor");
+            } else {
+                return true; // No clue for the tab restore status. Just return true to bypass smile face tab counter
+            }
+        }
+        return ((TabRestoreMonitor) getActivity()).isTabRestoredComplete();
     }
 
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
