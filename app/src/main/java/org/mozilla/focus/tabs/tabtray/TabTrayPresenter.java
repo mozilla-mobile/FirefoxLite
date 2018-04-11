@@ -33,6 +33,11 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void tabClicked(final int tabPosition) {
+        List<Tab> tabs = model.getTabs();
+        if (tabPosition < 0 || tabPosition >= tabs.size()) {
+            view.closeTabTray();
+            return;
+        }
         model.switchTab(tabPosition);
         view.tabSwitched(tabPosition);
     }

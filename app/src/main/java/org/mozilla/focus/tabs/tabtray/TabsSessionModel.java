@@ -32,21 +32,28 @@ class TabsSessionModel implements TabTrayContract.Model {
     }
 
     @Override
-    public void switchTab(int tabIdx) {
+    public void switchTab(int tabPosition) {
         final List<Tab> tabs = tabsSession.getTabs();
-        if (tabIdx < 0 || tabIdx >= tabs.size()) {
+        if (tabPosition < 0 || tabPosition >= tabs.size()) {
             if (BuildConfig.DEBUG) {
-                throw new ArrayIndexOutOfBoundsException("index: " + tabIdx + ", size: " + tabs.size());
+                throw new ArrayIndexOutOfBoundsException("index: " + tabPosition + ", size: " + tabs.size());
             }
             return;
         }
 
-        tabsSession.switchToTab(tabs.get(tabIdx).getId());
+        tabsSession.switchToTab(tabs.get(tabPosition).getId());
     }
 
     @Override
     public void removeTab(int tabPosition) {
         final List<Tab> tabs = tabsSession.getTabs();
+        if (tabPosition < 0 || tabPosition >= tabs.size()) {
+            if (BuildConfig.DEBUG) {
+                throw new ArrayIndexOutOfBoundsException("index: " + tabPosition + ", size: " + tabs.size());
+            }
+            return;
+        }
+
         tabsSession.dropTab(tabs.get(tabPosition).getId());
     }
 }
