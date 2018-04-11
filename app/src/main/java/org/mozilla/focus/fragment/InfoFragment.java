@@ -86,7 +86,7 @@ public class InfoFragment extends WebFragment {
             public boolean handleExternalUrl(final String url) {
                 final TabView tabView = getTabView();
 
-                return tabView != null && IntentUtils.handleExternalUri(getContext(), tabView, url);
+                return tabView != null && IntentUtils.handleExternalUri(getContext(), url);
             }
         };
     }

@@ -409,10 +409,17 @@ public class TabsSession {
             this.source = source;
         }
 
+        private void setTitle() {
+            if (source.getTabView() == null) {
+                return;
+            }
+            source.setTitle(source.getTabView().getTitle());
+        }
+
         @Override
         public void onPageStarted(String url) {
             source.setUrl(url);
-            source.setTitle(source.getTabView().getTitle());
+            setTitle();
 
             // FIXME: workaround for 'dialog new window'
             if (source.getUrl() != null) {
@@ -424,7 +431,7 @@ public class TabsSession {
 
         @Override
         public void onPageFinished(boolean isSecure) {
-            source.setTitle(source.getTabView().getTitle());
+            setTitle();
 
             for (final TabsViewListener l : tabsViewListeners) {
                 l.onTabFinished(source, isSecure);
@@ -434,7 +441,7 @@ public class TabsSession {
         @Override
         public void onURLChanged(String url) {
             source.setUrl(url);
-            source.setTitle(source.getTabView().getTitle());
+            setTitle();
 
             for (final TabsViewListener l : tabsViewListeners) {
                 l.onURLChanged(source, url);
@@ -486,7 +493,9 @@ public class TabsSession {
                 // FIXME: why null?
                 return false;
             }
-
+            if (tab.getTabView() == null) {
+                throw new RuntimeException("webview is null, previous creation failed");
+            }
             tab.getTabView().bindOnNewWindowCreation(msg);
             return true;
         }
