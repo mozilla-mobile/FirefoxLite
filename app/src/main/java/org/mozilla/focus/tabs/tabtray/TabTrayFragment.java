@@ -8,7 +8,6 @@ package org.mozilla.focus.tabs.tabtray;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -418,9 +417,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false));
 
-        recyclerView.addItemDecoration(new ItemSpaceDecoration(context));
-        recyclerView.addItemDecoration(new TabTrayPaddingDecoration(context, this));
-
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
@@ -613,42 +609,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             if (Float.compare(this.overlayAlpha, overlayAlpha) != 0) {
                 this.overlayAlpha = overlayAlpha;
                 fragment.updateWindowOverlay(overlayAlpha);
-            }
-        }
-    }
-
-    public static class ItemSpaceDecoration extends RecyclerView.ItemDecoration {
-        private int margin;
-
-        ItemSpaceDecoration(Context context) {
-            this.margin = context.getResources().getDimensionPixelSize(R.dimen.tab_tray_item_space);
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int itemPosition = parent.getChildAdapterPosition(view);
-            outRect.top = itemPosition == 0 ? 0 : margin;
-        }
-    }
-
-    public static class TabTrayPaddingDecoration extends RecyclerView.ItemDecoration {
-        private TabTrayFragment fragment;
-        private int padding;
-
-        TabTrayPaddingDecoration(Context context, TabTrayFragment fragment) {
-            this.fragment = fragment;
-            this.padding = context.getResources().getDimensionPixelSize(R.dimen.tab_tray_padding);
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int itemPosition = parent.getChildAdapterPosition(view);
-            outRect.left = outRect.right = padding;
-
-            if (itemPosition == 0) {
-                outRect.top = padding;
-            } else if (itemPosition == fragment.adapter.getItemCount() - 1) {
-                outRect.bottom = fragment.newTabBtn.getMeasuredHeight() + padding;
             }
         }
     }

@@ -12,6 +12,7 @@
     android:background="@drawable/tab_tray_item_bkg"
     android:outlineProvider="background"
     android:elevation="1dp"
+    android:layout_marginBottom="@dimen/tab_tray_item_space"
     tools:ignore="contentDescription">
     <ImageView
         android:id="@+id/website_icon"
