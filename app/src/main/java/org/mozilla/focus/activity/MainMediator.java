@@ -123,6 +123,11 @@ class MainMediator {
             return;
         }
 
+        Animation currentAnim = view.getAnimation();
+        if (currentAnim != null && !currentAnim.hasEnded()) {
+            return;
+        }
+
         Animation fadeOut = AnimationUtils.loadAnimation(view.getContext(),
                 R.anim.tab_transition_fade_out);
         fadeOut.setAnimationListener(new Animation.AnimationListener() {
