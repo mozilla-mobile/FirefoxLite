@@ -195,6 +195,8 @@ dependencies {
     implementation project(':third_party:subsampling-scale-image-view')
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
+    api project(':firebase')
+
     annotationProcessor Libs.glide_compiler
     kapt Libs.glide_compiler
 
@@ -219,10 +221,6 @@ dependencies {
 
     implementation Libs.adjust
     implementation Libs.play_services_analytics // Required by Adjust
-    implementation Libs.firebase_core
-    implementation Libs.firebase_config
-    implementation Libs.firebase_messaging
-    implementation Libs.firebase_crashlytics
 
     api Libs.lottie
 

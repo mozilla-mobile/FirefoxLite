@@ -102,16 +102,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <!-- This will either be an actual FCM messaging service, or a dummy service that do nothing-->
         <service
-            android:name=".notification.RocketFirebaseMessagingService">
+            android:name=".notification.RocketMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name=".notification.MyFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
         <!-- Custom Tabs Service is currently not registering the intent-filter before its ready.

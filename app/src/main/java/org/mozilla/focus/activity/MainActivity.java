@@ -44,6 +44,7 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
+import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
@@ -250,8 +251,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
-        } else if (intent.getStringExtra(NotificationUtil.PUSH_OPEN_URL) != null) {
-            pendingUrl = intent.getStringExtra(NotificationUtil.PUSH_OPEN_URL);
+        } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
+            pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
         }

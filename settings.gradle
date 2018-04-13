@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'
 include ':third_party:glide:library'
 include ':third_party:glide:annotation'

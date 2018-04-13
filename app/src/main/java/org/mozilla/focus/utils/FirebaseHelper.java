@@ -1,97 +1,44 @@
-/* -*- Mode: Java; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; -*-
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package org.mozilla.focus.utils;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.mozilla.focus.BuildConfig;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 /**
- * Provide helper for Firebase functionality
+ * Implementation for FirebaseWrapper. It's job:
+ * 1. Call init() to start the wrapper in a background thread
+ * 2. Implement getRemoteConfigDefault to provide Remote Config default value
  */
-final public class FirebaseHelper {
+final public class FirebaseHelper extends FirebaseWrapper {
 
+    // keys for remote config default value
     static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
     static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
-    private static final long DEFAULT_CACHE_EXPIRATION_IN_SECONDS = 3600; // 1 hour in seconds.
 
-    private static final String TAG = "FirebaseHelper";
+    private static FirebaseHelper instance;
 
-    private static WeakReference<FirebaseRemoteConfig> remoteConfig;
-    private static long cacheExpirationInSeconds = DEFAULT_CACHE_EXPIRATION_IN_SECONDS;
+    private FirebaseHelper() {
 
-    // get Remote Config string
-    static String getRcString(String key) {
-        final FirebaseRemoteConfig config = remoteConfig.get();
-        if (config != null) {
-            return config.getString(key);
-        }
-        return null;
     }
 
     public static void init(final Context context) {
+        if (instance == null) {
+            instance = new FirebaseHelper();
+        }
+        setDeveloperModeEnabled(BuildConfig.DEBUG);
         // internalInit() require I/O so I put it in background thread.
-        new Thread(new Runnable() {
+        ThreadUtils.postToBackgroundThread(new Runnable() {
             public void run() {
-                internalInit(context);
-            }
-        }).start();
-    }
-
-    private static void internalInit(final Context context) {
-
-        // Init remote config
-        final FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
-        remoteConfig = new WeakReference<>(config);
-        final FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        config.setConfigSettings(configSettings);
-        config.setDefaults(getRemoteConfigDefault(context));
-
-        // If app is using developer mode, cacheExpiration is set to 0, so each fetch will
-        // retrieve values from the service.
-        if (config.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
-            cacheExpirationInSeconds = 0;
-        }
-        refreshRemoteConfig();
-    }
-
-    // Call this method to refresh the value in remote config
-    private static void refreshRemoteConfig() {
-        final FirebaseRemoteConfig config = remoteConfig.get();
-        if (config == null) {
-            return;
-        }
-        config.fetch(cacheExpirationInSeconds).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Firebase RmoteConfig Fetch Successfully ");
-                    config.activateFetched();
-                } else {
-                    Log.d(TAG, "Firebase RmoteConfig Fetch Failed: ");
-                }
-
+                internalInit(context, instance);
             }
         });
     }
 
-    private static HashMap<String, Object> getRemoteConfigDefault(Context context) {
-
+    // this is called in FirebaseWrapper's internalInit()
+    @Override
+    HashMap<String, Object> getRemoteConfigDefault(Context context) {
         return FirebaseHelperInject.getRemoteConfigDefault(context);
     }
 }
