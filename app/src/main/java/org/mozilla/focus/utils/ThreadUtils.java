@@ -10,11 +10,12 @@ import android.os.Looper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class ThreadUtils {
-    private static final ExecutorService backgroundExecutorService = Executors.newSingleThreadExecutor();
+    private static final ExecutorService backgroundExecutorService = Executors.newSingleThreadExecutor(getIoPrioritisedFactory());
     private static final Handler handler = new Handler(Looper.getMainLooper());
     private static final Thread uiThread = Looper.getMainLooper().getThread();
 
@@ -41,5 +42,27 @@ public class ThreadUtils {
         }
 
         throw new IllegalThreadStateException("Expected UI thread, but running on " + currentThread.getName());
+    }
+
+    private static ThreadFactory getIoPrioritisedFactory() {
+        return new CustomThreadFactory("pool-io-background", Thread.NORM_PRIORITY - 1);
+    }
+
+    private static class CustomThreadFactory implements ThreadFactory {
+        private final String threadName;
+        private final int threadPriority;
+
+        public CustomThreadFactory(String threadName, int threadPriority) {
+            super();
+            this.threadName = threadName;
+            this.threadPriority = threadPriority;
+        }
+
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r, threadName);
+            thread.setPriority(threadPriority);
+            return thread;
+        }
     }
 }
