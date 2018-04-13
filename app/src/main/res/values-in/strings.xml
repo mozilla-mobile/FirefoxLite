@@ -55,6 +55,7 @@
   <string name="contextmenu_image_copy">Salin alamat gambar</string>
   <string name="contextmenu_image_save">Simpan gambar</string>
   <string name="contextmenu_open_in_new_tab">Buka tautan di tab baru</string>
+  <string name="contextmenu_open_image_in_new_tab">Buka gambar di tab baru</string>
   <string name="first_run_page1_title">Terima kasih telah memilih %1$s</string>
   <string name="first_run_page1_text">Sebuah peramban yang dibuat khusus untuk Indonesia oleh Mozilla, organisasi nirlaba yang berkomitmen pada web bebas dan terbuka.</string>
   <string name="first_run_page2_title">Menjelajah secepat kilat</string>
