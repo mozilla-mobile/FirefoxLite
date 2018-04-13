@@ -233,7 +233,7 @@ public class TabCounter extends RelativeLayout {
     }
 
     private void adjustTextSize(int newCount) {
-        final float newRatio = (newCount < MAX_VISIBLE_TABS && newCount >= 10) ? TWO_DIGITS_SIZE_RATIO : ONE_DIGIT_SIZE_RATIO;
+        final float newRatio = (newCount <= MAX_VISIBLE_TABS && newCount >= 10) ? TWO_DIGITS_SIZE_RATIO : ONE_DIGIT_SIZE_RATIO;
 
         if (newRatio != currentTextRatio) {
             currentTextRatio = newRatio;
