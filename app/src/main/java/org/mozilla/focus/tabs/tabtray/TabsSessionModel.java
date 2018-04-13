@@ -107,6 +107,7 @@ class TabsSessionModel implements TabTrayContract.Model {
         if (onTabModelChangedListener != null) {
             tabsSession.removeTabsViewListener(onTabModelChangedListener);
             tabsSession.removeTabsChromeListener(onTabModelChangedListener);
+            onTabModelChangedListener = null;
         }
     }
 
