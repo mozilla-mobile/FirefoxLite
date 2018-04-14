@@ -7,6 +7,8 @@ package org.mozilla.focus;
 
 import android.preference.PreferenceManager;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.locale.LocaleAwareApplication;
@@ -20,6 +22,14 @@ public class FocusApplication extends LocaleAwareApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+        // Normal app init code...
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 

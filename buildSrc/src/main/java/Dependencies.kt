@@ -24,6 +24,7 @@ object Versions {
     val test_runner = "1.0.1"
     val uiautomator = "2.1.3"
     val mockwebserver = "3.7.0"
+    val leakcanary = "1.5.4"
 }
 
 object Libs {
@@ -58,4 +59,6 @@ object Libs {
     val test_runner = "com.android.support.test:runner:${Versions.test_runner}"
     val uiautomator_v18 = "com.android.support.test.uiautomator:uiautomator-v18:${Versions.uiautomator}"
     val mockwebserver = "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
+    val leakcanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+    val leakcanary_no_op = "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
 }
