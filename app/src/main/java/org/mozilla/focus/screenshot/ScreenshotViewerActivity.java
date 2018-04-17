@@ -47,6 +47,7 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
 import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.ThreadUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -293,7 +294,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     }
 
     private void onEditClick() {
-        new Thread(new Runnable() {
+        ThreadUtils.postToBackgroundThread(new Runnable() {
             @Override
             public void run() {
                 ContentResolver cr = getContentResolver();
@@ -313,12 +314,12 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                     }
                 }
             }
-        }).start();
+        });
     }
 
     private void onShareClick() {
         if (mImgScreenshot.isImageLoaded()) {
-            new Thread(new Runnable() {
+            ThreadUtils.postToBackgroundThread(new Runnable() {
                 @Override
                 public void run() {
                     ContentResolver cr = getContentResolver();
@@ -338,7 +339,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                         }
                     }
                 }
-            }).start();
+            });
         } else {
             setupView(true);
             initScreenshotInfo(true);
@@ -421,7 +422,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
     private void proceedDelete() {
         if (mScreenshot != null) {
-            new Thread(new Runnable() {
+            ThreadUtils.postToBackgroundThread(new Runnable() {
                 @Override
                 public void run() {
                     File file = new File(mScreenshot.getImageUri());
@@ -432,7 +433,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                         }
                     }
                 }
-            }).start();
+            });
             ScreenshotManager.getInstance().delete(mScreenshot.getId(), this);
         }
     }
