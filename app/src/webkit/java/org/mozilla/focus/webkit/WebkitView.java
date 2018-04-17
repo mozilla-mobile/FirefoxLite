@@ -17,6 +17,7 @@ import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
+import android.webkit.WebHistoryItem;
 import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
@@ -50,6 +51,7 @@ public class WebkitView extends NestedWebView implements TabView {
     private boolean shouldReloadOnAttached = false;
 
     private String lastNonErrorPageUrl;
+    private final ErrorPageDelegate errorPageDelegate;
 
     private WebViewDebugOverlay debugOverlay;
 
@@ -65,6 +67,7 @@ public class WebkitView extends NestedWebView implements TabView {
                 super.onPageStarted(view, url, favicon);
             }
         };
+        webViewClient.setErrorPageDelegate((errorPageDelegate = new ErrorPageDelegate(this)));
 
         webChromeClient = new FocusWebChromeClient(this);
         setWebViewClient(webViewClient);
@@ -98,6 +101,7 @@ public class WebkitView extends NestedWebView implements TabView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
+        this.errorPageDelegate.onWebViewScrolled(l, t);
         this.debugOverlay.onWebViewScrolled(l, t);
     }
 
@@ -131,12 +135,42 @@ public class WebkitView extends NestedWebView implements TabView {
 
         webViewClient.notifyCurrentURL(desiredURL);
 
-        if (backForwardList != null &&
-                backForwardList.getCurrentItem().getUrl().equals(desiredURL)) {
-            // restoreState doesn't actually load the current page, it just restores navigation history,
-            // so we also need to explicitly reload in this case:
-            reload();
+        WebHistoryItem currentItem;
+        if (backForwardList != null && (currentItem = backForwardList.getCurrentItem()) != null) {
+            String latestHistoryUrl = currentItem.getUrl();
+
+            if (desiredURL.equals(latestHistoryUrl)) {
+                // The last url WebView saved is consistent with what we saved.
+                reload();
+
+            } else {
+                // Two possible cases:
+                // Case 1: last url ends up become an error page, the url saved in back-forward list is an error-url.
+                // Case 2: last url is not yet being saved by the WebView (WebView didn't finished loading)
+
+                //noinspection StatementWithEmptyBody, for clearer logic and comment
+                if (UrlUtils.isInternalErrorURL(latestHistoryUrl) && desiredURL.equals(getUrl())) {
+                    // Case 1: What we get from WebHistoryItem:
+                    // WebHistoryItem#getOriginalUrl(): error-url
+                    // WebHistoryItem#getUrl(): error-url
+                    //
+                    // However, after WebView restores this error-url, WebView#getUrl() will instead
+                    // return a virtual url given when we called loadDataWithBaseUrl(..., virtualUrl)
+                    //
+                    // What we get from WebView after error-url is restored:
+                    // WebView#getOriginalUrl(): error-url
+                    // WebView#getUrl(): virtual-url
+
+                    // The condition here means "WebView and us agree the last page is <virtual-url>,
+                    // which however, ends up become an error page.
+
+                } else {
+                    // Case 2, we have more up-to-date url than WebView, load it
+                    loadUrl(desiredURL);
+                }
+            }
         } else {
+            // WebView saved nothing, so directly load what we recorded
             loadUrl(desiredURL);
         }
     }
@@ -214,6 +248,8 @@ public class WebkitView extends NestedWebView implements TabView {
     }
 
     public void loadUrl(String url) {
+        debugOverlay.onLoadUrlCalled();
+
         // We need to check external URL handling here - shouldOverrideUrlLoading() is only
         // called by webview when clicking on a link, and not when opening a new page for the
         // first time using loadUrl().

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -29,11 +30,11 @@ import org.mozilla.focus.utils.UrlUtils;
     private final static String ERROR_PROTOCOL = "error:";
 
     private TabViewClient viewClient;
-    private boolean errorReceived;
     private static final String GOOGLE_OAUTH2_PREFIX = "https://accounts.google.com/o/oauth2/";
     private static final String IGNORE_GOOGLE_WEBVIEW_BLOCKING_PARAM = "&suppress_webview_warning=true";
 
     private WebViewDebugOverlay debugOverlay;
+    private ErrorPageDelegate errorPageDelegate;
 
     FocusWebViewClient(Context context) {
         super(context);
@@ -79,21 +80,14 @@ import org.mozilla.focus.utils.UrlUtils;
 
         if (viewClient != null) {
             viewClient.updateFailingUrl(url, false);
-        }
-
-        if (errorReceived) {
-            // When dealing with error pages, webkit sometimes sends onPageStarted()
-            // without a matching onPageFinished(). We hack around that by using
-            // a flag to ignore the first onPageStarted() after onReceivedError() has
-            // been called. (The usual chain is: onPageStarted(url), onReceivedError(url),
-            // onPageFinished(url), onPageStarted(url), finally and only sometimes: onPageFinished().
-            // Since the final onPageFinished isn't guaranteed (and we know we're showing an error
-            // page already), we don't need to send the onPageStarted() viewClient a second time anyway.
-            errorReceived = false;
-        } else if (viewClient != null) {
             viewClient.onPageStarted(url);
         }
 
+        if (this.errorPageDelegate != null) {
+            this.errorPageDelegate.onPageStarted();
+        }
+
+        this.debugOverlay.recordLifecycle("onPageStarted:" + url, true);
         super.onPageStarted(view, url, favicon);
     }
 
@@ -104,6 +98,8 @@ import org.mozilla.focus.utils.UrlUtils;
         }
         super.onPageFinished(view, url);
 
+        this.debugOverlay.updateHistory();
+        this.debugOverlay.recordLifecycle("onPageFinished:" + url, false);
     }
 
     private static boolean shouldOverrideInternalPages(WebView webView, String url) {
@@ -168,7 +164,8 @@ import org.mozilla.focus.utils.UrlUtils;
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        handler.cancel();
+        super.onReceivedSslError(view, handler, error);
+        this.debugOverlay.recordLifecycle("onReceivedSslError:" + error.getUrl(), false);
 
         // Webkit can try to load the favicon for a bad page when you set a new URL. If we then
         // loadErrorPage() again, webkit tries to load the favicon again. We end up in onReceivedSSlError()
@@ -176,18 +173,20 @@ import org.mozilla.focus.utils.UrlUtils;
         // in the toolbar, but that's less noticeable). Hence we check whether this error is from
         // the desired page, or a page resource:
         if (error.getUrl().equals(currentPageURL)) {
-            ErrorPage.loadErrorPage(view, error.getUrl(), WebViewClient.ERROR_FAILED_SSL_HANDSHAKE);
+            if (this.errorPageDelegate != null) {
+                this.errorPageDelegate.onReceivedSslError(view, handler, error);
+            }
         }
     }
 
     @Override
     public void onReceivedError(final WebView webView, int errorCode,
                                 final String description, String failingUrl) {
-        errorReceived = true;
-
         if (viewClient != null) {
             viewClient.updateFailingUrl(failingUrl, true);
         }
+
+        this.debugOverlay.recordLifecycle("onReceivedError:" + failingUrl, false);
 
         // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,
         // - the WebResourceRequest would let us know if the error affects the main frame or not. As a workaround
@@ -215,7 +214,9 @@ import org.mozilla.focus.utils.UrlUtils;
             } catch (final NumberFormatException e) {
                 desiredErrorCode = WebViewClient.ERROR_BAD_URL;
             }
-            ErrorPage.loadErrorPage(webView, failingUrl, desiredErrorCode);
+            if (this.errorPageDelegate != null) {
+                this.errorPageDelegate.onReceivedError(webView, desiredErrorCode, description, failingUrl);
+            }
             return;
         }
 
@@ -224,11 +225,29 @@ import org.mozilla.focus.utils.UrlUtils;
         // e.g.. "There was a network error.", whereas this version provides things like "net::ERR_NAME_NOT_RESOLVED"
         if (failingUrl.equals(currentPageURL) &&
                 ErrorPage.supportsErrorCode(errorCode)) {
-            ErrorPage.loadErrorPage(webView, currentPageURL, errorCode);
+            if (this.errorPageDelegate != null) {
+                this.errorPageDelegate.onReceivedError(webView, errorCode, description, failingUrl);
+            }
             return;
         }
 
         super.onReceivedError(webView, errorCode, description, failingUrl);
+    }
+
+    @Override
+    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        super.onReceivedHttpError(view, request, errorResponse);
+
+        Uri url = request.getUrl();
+        if (url != null) {
+            this.debugOverlay.recordLifecycle("onReceivedHttpError:" + url.toString(), false);
+
+            if (request.isForMainFrame() && TextUtils.equals(currentPageURL, url.toString())) {
+                if (this.errorPageDelegate != null) {
+                    this.errorPageDelegate.onReceivedHttpError(view, request, errorResponse);
+                }
+            }
+        }
     }
 
     @Override
@@ -239,5 +258,9 @@ import org.mozilla.focus.utils.UrlUtils;
 
     final void setDebugOverlay(@NonNull WebViewDebugOverlay overlay) {
         this.debugOverlay = overlay;
+    }
+
+    public void setErrorPageDelegate(ErrorPageDelegate errorPageDelegate) {
+        this.errorPageDelegate = errorPageDelegate;
     }
 }

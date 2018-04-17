@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta name="viewport" content="width=device-width; user-scalable=false;" />
+        <meta name="viewport" content="width=device-width, user-scalable=0" />
         <title>%pageTitle%</title>
         <style>%css%</style>
     </head>
@@ -28,7 +28,16 @@
             </div>
 
             <!-- Retry Button -->
-            <button id="errorTryAgain" onclick="window.location.reload()">%button%</button>
+            <button id="errorTryAgain" onclick="javascript:onRetryClicked();">%button%</button>
+            <script type='text/javascript'>
+                function onRetryClicked() {
+                    if (window.jsInterface) {
+                        window.jsInterface.onRetryClicked();
+                    } else {
+                        document.location.reload();
+                    }
+                }
+            </script>
 
         </div>
         <input type="hidden" id="mozillaErrorPage">
