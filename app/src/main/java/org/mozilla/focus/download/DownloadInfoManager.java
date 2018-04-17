@@ -20,9 +20,9 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import org.mozilla.focus.utils.Constants;
+import org.mozilla.focus.utils.ThreadUtils;
 
 import java.io.File;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,21 +101,31 @@ public class DownloadInfoManager {
         }
 
         @Override
-        protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+        protected void onQueryComplete(int token, final Object cookie, final Cursor cursor) {
             switch (token) {
                 case TOKEN:
-                    if (cookie != null) {
-                        List<DownloadInfo> downloadInfoList = new ArrayList<>();
-                        if (cursor != null) {
-                            while (cursor.moveToNext()) {
-                                final DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
-                                downloadInfoList.add(downloadInfo);
-                            }
-                            cursor.close();
-                        }
+                    ThreadUtils.postToBackgroundThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (cookie != null) {
+                                final List<DownloadInfo> downloadInfoList = new ArrayList<>();
+                                if (cursor != null) {
+                                    while (cursor.moveToNext()) {
+                                        final DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
+                                        downloadInfoList.add(downloadInfo);
+                                    }
+                                    cursor.close();
+                                }
 
-                        ((AsyncQueryListener) cookie).onQueryComplete(downloadInfoList);
-                    }
+                                ThreadUtils.postToMainThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ((AsyncQueryListener) cookie).onQueryComplete(downloadInfoList);
+                                    }
+                                });
+                            }
+                        }
+                    });
                     break;
                 default:
                     break;
