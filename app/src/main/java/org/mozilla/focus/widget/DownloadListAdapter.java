@@ -27,6 +27,7 @@ import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.focus.utils.ThreadUtils;
 
 import java.io.File;
 import java.net.URI;
@@ -307,16 +308,28 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setTag(downloadInfo);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    DownloadInfo download = (DownloadInfo) view.getTag();
+                public void onClick(final View view) {
+                    final DownloadInfo download = (DownloadInfo) view.getTag();
 
                     TelemetryWrapper.downloadOpenFile(false);
 
-                    if (new File(URI.create(download.getFileUri()).getPath()).exists()) {
-                        IntentUtils.intentOpenFile(view.getContext(), download.getFileUri(), download.getMimeType());
-                    } else {
-                        Toast.makeText(mContext, R.string.cannot_find_the_file, Toast.LENGTH_LONG).show();
-                    }
+                    ThreadUtils.postToBackgroundThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final boolean fileExist = new File(URI.create(download.getFileUri()).getPath()).exists();
+
+                            ThreadUtils.postToMainThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (fileExist) {
+                                        IntentUtils.intentOpenFile(view.getContext(), download.getFileUri(), download.getMimeType());
+                                    } else {
+                                        Toast.makeText(mContext, R.string.cannot_find_the_file, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
             });
 
