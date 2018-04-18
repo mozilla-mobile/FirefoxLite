@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.support.annotation.NonNull;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -32,7 +33,9 @@ import org.mozilla.focus.utils.UrlUtils;
     private static final String GOOGLE_OAUTH2_PREFIX = "https://accounts.google.com/o/oauth2/";
     private static final String IGNORE_GOOGLE_WEBVIEW_BLOCKING_PARAM = "&suppress_webview_warning=true";
 
-    public FocusWebViewClient(Context context) {
+    private WebViewDebugOverlay debugOverlay;
+
+    FocusWebViewClient(Context context) {
         super(context);
     }
 
@@ -228,4 +231,13 @@ import org.mozilla.focus.utils.UrlUtils;
         super.onReceivedError(webView, errorCode, description, failingUrl);
     }
 
+    @Override
+    public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+        super.doUpdateVisitedHistory(view, url, isReload);
+        this.debugOverlay.updateHistory();
+    }
+
+    final void setDebugOverlay(@NonNull WebViewDebugOverlay overlay) {
+        this.debugOverlay = overlay;
+    }
 }
