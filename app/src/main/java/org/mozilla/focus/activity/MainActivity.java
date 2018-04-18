@@ -34,6 +34,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -469,6 +471,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
+                Crashlytics.getInstance().crash();
                 //  Toggle
                 final boolean blockingImages = !isBlockingImages();
                 Settings.getInstance(this).setBlockImages(blockingImages);
@@ -480,6 +483,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 TelemetryWrapper.menuBlockImageChangeTo(blockingImages);
                 break;
             case R.id.menu_turbomode:
+                DialogUtils.showRateAppDialog(this);
                 //  Toggle
                 final boolean turboEnabled = !isTurboEnabled();
                 Settings.getInstance(this).setTurboMode(turboEnabled);

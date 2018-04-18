@@ -95,7 +95,7 @@ android {
             def userName = System.getenv("USER")
             applicationIdSuffix ".debug." + userName
             versionNameSuffix applicationIdSuffix
-            resValue "bool", "enableCrashlytics", "false"
+            resValue "bool", "enableCrashlytics", "true"
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
