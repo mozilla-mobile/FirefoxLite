@@ -42,6 +42,8 @@ public class IntentUtils {
     public static final String EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER = "ex_no_click_default_browser";
     public static final String EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX = "ex_no_click_love_firefox";
 
+    public static final String EXTRA_RESET = "reset";
+
     public static final String ACTION_NOTIFICATION = "action_notification";
 
 
@@ -259,4 +261,5 @@ public class IntentUtils {
         openRocket.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX, true);
         return openRocket;
     }
+
 }

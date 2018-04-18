@@ -64,4 +64,5 @@
     <!-- default browser-->
     <string name="pref_key_did_show_default_browser_setting" translatable="false"><xliff:g id="preference_key">pref_did_show_default_browser_setting</xliff:g></string>
     <string name="pref_key_setting_click_counter" translatable="false"><xliff:g id="preference_key">pref_setting_click_counter</xliff:g></string>
+
 </resources>

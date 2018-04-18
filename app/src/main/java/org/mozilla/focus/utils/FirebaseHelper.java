@@ -2,8 +2,11 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 
-import org.mozilla.focus.BuildConfig;
+import org.mozilla.focus.notification.RocketMessagingService;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.util.HashMap;
 
@@ -20,23 +23,74 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     private static FirebaseHelper instance;
     private HashMap<String, Object> remoteConfigDefault;
+    private static boolean changing = false;
+    private static Boolean pending = null;
 
     private FirebaseHelper() {
-
     }
 
-    public static void init(final Context context) {
+    public static void init(final AppCompatActivity activity) {
+
+
         if (instance == null) {
             instance = new FirebaseHelper();
         }
-        setDeveloperModeEnabled(BuildConfig.DEBUG);
-        // internalInit() require I/O so I put it in background thread.
+
+        initCrashlytics();
+
+        bind(activity);
+    }
+
+
+    public static void bind(@NonNull final Context context) {
+
+        final boolean enable = TelemetryWrapper.isTelemetryEnabled(context);
+
+        enableFirebase(context, enable);
+
+
+    }
+
+    private static void enableFirebase(final Context context, final boolean enable) {
+
+        // if the task is already running, we cache the value and skip creating new runnable
+        if (changing) {
+            pending = enable;
+            return;
+        }
+        // Now it's time to change the state of firebase helper.
+        changing = true;
+        // starting from now, there's no pending state. (pending state will only be used in the runnable)
+        pending = null;
+
         ThreadUtils.postToBackgroundThread(new Runnable() {
+            @Override
             public void run() {
-                internalInit(context, instance);
+                // make sure we are in the changing state
+                changing = true;
+
+                updateInstanceId(enable);
+
+                enableCrashlytics(enable);
+                enableAnalytics(context, enable);
+                enableCloudMessaging(context, RocketMessagingService.class.getName(), enable);
+                enableRemoteConfig(context, enable);
+
+                // now firebase has completed state changing,
+                changing = false;
+                // we'll check if the cached state is the same as our current one. If not, issue
+                // a state change again.
+                if (pending != null && pending != enable) {
+                    enableFirebase(context, pending);
+                }
+                // after now, there'll be now pending state.
+                pending = null;
+
+
             }
         });
     }
+
 
     // this is called in FirebaseWrapper's internalInit()
     @Override
