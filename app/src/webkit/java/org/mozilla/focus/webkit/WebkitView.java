@@ -51,6 +51,8 @@ public class WebkitView extends NestedWebView implements TabView {
 
     private String lastNonErrorPageUrl;
 
+    private WebViewDebugOverlay debugOverlay;
+
     public WebkitView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -77,6 +79,10 @@ public class WebkitView extends NestedWebView implements TabView {
 
         linkHandler = new LinkHandler(this, this);
         setOnLongClickListener(linkHandler);
+
+        debugOverlay = WebViewDebugOverlay.create(context);
+        debugOverlay.bindWebView(this);
+        webViewClient.setDebugOverlay(debugOverlay);
     }
 
     @Override
@@ -87,6 +93,12 @@ public class WebkitView extends NestedWebView implements TabView {
             shouldReloadOnAttached = false;
             reload();
         }
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        this.debugOverlay.onWebViewScrolled(l, t);
     }
 
     @Override
@@ -218,6 +230,13 @@ public class WebkitView extends NestedWebView implements TabView {
         } else {
             super.reload();
         }
+        this.debugOverlay.updateHistory();
+    }
+
+    @Override
+    public void goBack() {
+        super.goBack();
+        this.debugOverlay.updateHistory();
     }
 
     @Override
