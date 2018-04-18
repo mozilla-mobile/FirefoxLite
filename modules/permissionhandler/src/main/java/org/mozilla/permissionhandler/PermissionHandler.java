@@ -1,12 +1,12 @@
-package org.mozilla.focus.permission;
+package org.mozilla.permissionhandler;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -18,8 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import org.mozilla.focus.R;
-import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.rocket.permissionhandler.R;
 
 public class PermissionHandler {
 
@@ -44,7 +43,7 @@ public class PermissionHandler {
         tryAction(activity, permission, actionId, params, ActivityCompat.shouldShowRequestPermissionRationale(activity, permission), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                IntentUtils.intentOpenSettings(activity, REQUEST_SETTINGS);
+                intentOpenSettings(activity, REQUEST_SETTINGS);
             }
         });
     }
@@ -54,7 +53,7 @@ public class PermissionHandler {
         tryAction(activity, permission, actionId, params, fragment.shouldShowRequestPermissionRationale(permission), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                IntentUtils.intentOpenSettings(fragment, REQUEST_SETTINGS);
+                intentOpenSettings(fragment, REQUEST_SETTINGS);
             }
         });
     }
@@ -166,21 +165,40 @@ public class PermissionHandler {
 
     public static Snackbar makeAskAgainSnackBar(final Activity activity, final View view, final int stringId) {
         return Snackbar.make(view, stringId, Snackbar.LENGTH_LONG)
-                .setAction(R.string.permission_dialog_setting, new View.OnClickListener() {
+                .setAction(R.string.permission_handler_permission_dialog_setting, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        IntentUtils.intentOpenSettings(activity, REQUEST_SETTINGS);
+                        intentOpenSettings(activity, REQUEST_SETTINGS);
                     }
                 });
     }
 
     public static Snackbar makeAskAgainSnackBar(final Fragment fragment, final View view, final int stringId) {
         return Snackbar.make(view, stringId, Snackbar.LENGTH_LONG)
-                .setAction(R.string.permission_dialog_setting, new View.OnClickListener() {
+                .setAction(R.string.permission_handler_permission_dialog_setting, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        IntentUtils.intentOpenSettings(fragment, REQUEST_SETTINGS);
+                        intentOpenSettings(fragment, REQUEST_SETTINGS);
                     }
                 });
+    }
+
+    private static void intentOpenSettings(@NonNull Activity activity, int requestCode) {
+        activity.startActivityForResult(buildOpenSettingsIntent(activity.getPackageName()), requestCode);
+    }
+
+    private static void intentOpenSettings(@NonNull Fragment fragment, int requestCode) {
+        Activity host = fragment.getActivity();
+        if (host != null) {
+            fragment.startActivityForResult(buildOpenSettingsIntent(host.getPackageName()), requestCode);
+        }
+    }
+
+    private static Intent buildOpenSettingsIntent(String packageName) {
+        Intent intent = new Intent();
+        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", packageName, null);
+        intent.setData(uri);
+        return intent;
     }
 }

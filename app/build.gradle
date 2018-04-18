@@ -188,6 +188,7 @@ dependencies {
     implementation project(':third_party:subsampling-scale-image-view')
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
+    implementation project(path: ':modules:permissionhandler')
     kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
 
     implementation "com.android.support:support-v4:${Versions.support}"

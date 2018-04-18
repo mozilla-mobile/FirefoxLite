@@ -195,7 +195,7 @@
     <string name="label_menu_settings">Settings</string>
     <string name="label_menu_exit">Exit</string>
 
-    <string name="permission_dialog_setting">settings</string>
+    <string name="permission_handler_permission_dialog_setting">settings</string>
     <string name="permission_dialog_not_now">not now</string>
     <string name="permission_dialog_msg_location">Missing permissions. Give Firefox Rocket permission to access your location.</string>
     <string name="permission_toast_location">Location not available. Give permission to access your location.</string>

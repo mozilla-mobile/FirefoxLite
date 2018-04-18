@@ -154,25 +154,6 @@ public class IntentUtils {
         builder.show();
     }
 
-    public static void intentOpenSettings(@NonNull Activity activity, int requestCode) {
-        activity.startActivityForResult(buildOpenSettingsIntent(activity.getPackageName()), requestCode);
-    }
-
-    public static void intentOpenSettings(@NonNull Fragment fragment, int requestCode) {
-        Activity host = fragment.getActivity();
-        if (host != null) {
-            fragment.startActivityForResult(buildOpenSettingsIntent(host.getPackageName()), requestCode);
-        }
-    }
-
-    private static Intent buildOpenSettingsIntent(String packageName) {
-        Intent intent = new Intent();
-        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", packageName, null);
-        intent.setData(uri);
-        return intent;
-    }
-
     public static void intentOpenFile(Context context, String fileUriStr, String mimeType) {
         if (fileUriStr != null) {
             String authorities = BuildConfig.APPLICATION_ID + ".provider.fileprovider";

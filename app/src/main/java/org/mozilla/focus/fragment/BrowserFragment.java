@@ -56,8 +56,6 @@ import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.download.EnqueueDownloadTask;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
-import org.mozilla.focus.permission.PermissionHandle;
-import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
 import org.mozilla.focus.tabs.SiteIdentity;
 import org.mozilla.focus.tabs.Tab;
@@ -83,6 +81,8 @@ import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
+import org.mozilla.permissionhandler.PermissionHandle;
+import org.mozilla.permissionhandler.PermissionHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;

@@ -82,7 +82,7 @@
   <string name="label_menu_block_image">无图模式</string>
   <string name="label_menu_settings">设置</string>
   <string name="label_menu_exit">退出</string>
-  <string name="permission_dialog_setting">设置</string>
+  <string name="permission_handler_permission_dialog_setting">设置</string>
   <string name="permission_dialog_not_now">暂不</string>
   <string name="permission_dialog_msg_location">缺少权限。请允许 Firefox Rocket 获知您的位置。</string>
   <string name="permission_toast_location">无法获知您的位置。请授予获取您位置的权限。</string>
