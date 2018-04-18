@@ -4,6 +4,9 @@ buildscript {
     repositories {
         jcenter()
         google()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath Libs.android_gradle_plugin
@@ -12,6 +15,8 @@ buildscript {
         classpath Libs.kotlin_gradle_plugin
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath Libs.google_services_plugin
+        classpath Libs.fabric_plugin
     }
 }
 
