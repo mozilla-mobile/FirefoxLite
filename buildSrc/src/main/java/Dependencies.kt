@@ -8,7 +8,7 @@ object Versions {
     const val android_gradle_plugin = "3.1.1"
     const val dicedmelon_jacoco_plugin = "0.1.3"
     const val gms_oss_licenses_plugin = "0.9.1"
-    const val support = "27.0.2"
+    const val support = "27.1.1"
     const val room = "1.0.0"
     const val glide = "4.0.0"
     const val kotlin = "1.2.30"
