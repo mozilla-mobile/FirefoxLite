@@ -11,7 +11,7 @@ object Versions {
     const val support = "27.1.1"
     const val room = "1.0.0"
     const val glide = "4.0.0"
-    const val kotlin = "1.2.30"
+    const val kotlin = "1.2.31"
     const val gms = "11.8.0"
     const val findbugs = "3.0.1"
     const val lottie = "2.2.0"
