@@ -188,60 +188,60 @@ dependencies {
     implementation project(':third_party:subsampling-scale-image-view')
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
-    annotationProcessor Libs.glide_compiler
-    kapt Libs.glide_compiler
+    annotationProcessor "com.github.bumptech.glide:compiler:${Versions.glide}"
+    kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
 
-    implementation Libs.support_v4
-    implementation Libs.app_compat_v7
-    implementation Libs.customtabs
-    implementation Libs.design
-    implementation Libs.cardview_v7
-    implementation Libs.recyclerview_v7
+    implementation "com.android.support:support-v4:${Versions.support}"
+    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    implementation "com.android.support:customtabs:${Versions.support}"
+    implementation "com.android.support:design:${Versions.support}"
+    implementation "com.android.support:cardview-v7:${Versions.support}"
+    implementation "com.android.support:recyclerview-v7:${Versions.support}"
 
-    implementation Libs.room_runtime
-    annotationProcessor Libs.room_compiler
-    kapt Libs.room_compiler
+    implementation "android.arch.persistence.room:runtime:${Versions.room}"
+    annotationProcessor "android.arch.persistence.room:compiler:${Versions.room}"
+    kapt "android.arch.persistence.room:compiler:${Versions.room}"
 
-    implementation(Libs.findbugs_annotations, {
+    implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
         // Without this we get weird failures due to dependencies.
         transitive = false
     })
 
-    implementation Libs.telemetry
+    implementation "org.mozilla.telemetry:telemetry:${Versions.telemetry}"
 
-    implementation Libs.adjust
-    implementation Libs.play_services_analytics // Required by Adjust
+    implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
+    implementation "com.google.android.gms:play-services-analytics:${Versions.gms}" // Required by Adjust
 
-    api Libs.lottie
+    api "com.airbnb.android:lottie:${Versions.lottie}"
 
-    testImplementation Libs.junit
-    testImplementation Libs.robolectric
-    testImplementation Libs.mockito_core
+    testImplementation "junit:junit:${Versions.junit}"
+    testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
+    testImplementation "org.mockito:mockito-core:${Versions.mockito}"
 
-    androidTestImplementation(Libs.espresso_core, {
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:${Versions.espresso}", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation Libs.test_runner
-    androidTestImplementation Libs.espresso_idling_resource
-    androidTestImplementation Libs.support_annotations
-    androidTestImplementation Libs.uiautomator_v18
-    androidTestImplementation Libs.mockwebserver
-    androidTestImplementation Libs.room_testing
-    androidTestImplementation(Libs.espresso_contrib, {
+    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:${Versions.espresso}"
+    androidTestImplementation "com.android.support:support-annotations:${Versions.support}"
+    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:${Versions.uiautomator}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
+    androidTestImplementation "android.arch.persistence.room:testing:${Versions.room}"
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:${Versions.espresso}", {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     })
-    androidTestImplementation Libs.espresso_web
-    androidTestImplementation Libs.kotlin_stdlib
-    testImplementation Libs.kotlin_stdlib
+    androidTestImplementation "com.android.support.test.espresso:espresso-web:${Versions.espresso}"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
 
     // LeakCanary
-    debugImplementation Libs.leakcanary
-    betaImplementation Libs.leakcanary_no_op
-    coverageImplementation Libs.leakcanary_no_op
-    releaseImplementation Libs.leakcanary_no_op
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+    betaImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
+    coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
 }
 
 // -------------------------------------------------------------------------------------------------
