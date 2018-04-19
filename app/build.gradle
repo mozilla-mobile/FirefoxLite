@@ -213,7 +213,7 @@ dependencies {
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.google.android.gms:play-services-analytics:${Versions.gms}" // Required by Adjust
 
-    api "com.airbnb.android:lottie:${Versions.lottie}"
+    implementation "com.airbnb.android:lottie:${Versions.lottie}"
 
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
