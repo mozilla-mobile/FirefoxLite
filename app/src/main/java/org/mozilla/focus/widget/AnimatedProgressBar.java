@@ -316,13 +316,18 @@ public class AnimatedProgressBar extends ProgressBar {
                                    int duration,
                                    @InterpolatorRes int itplId) {
         if (isWrap) {
-            final Interpolator interpolator = (itplId > 0)
+            final Interpolator interpolator = isValidInterpolator(itplId)
                     ? AnimationUtils.loadInterpolator(getContext(), itplId)
                     : null;
             return new ShiftDrawable(original, duration, interpolator);
         } else {
             return original;
         }
+    }
+
+    @SuppressWarnings("ResourceType")
+    private boolean isValidInterpolator(@InterpolatorRes int itplId) {
+        return itplId > 0;
     }
 
     private static ValueAnimator createAnimator(int max, ValueAnimator.AnimatorUpdateListener listener) {
