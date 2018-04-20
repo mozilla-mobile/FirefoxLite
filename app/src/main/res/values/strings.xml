@@ -24,7 +24,7 @@
 
     <!-- This is the label of an action we offer when the user selects text in other third-party apps.
          Clicking this action will launch Rocket and perform a search in the default search engine. -->
-    <string name="text_selection_search_action">Search in {{app_name}}</string>
+    <string name="text_selection_search_action">Search in Firefox Rocket</string>
 
     <!-- Content of about Rocket. Argument 1 is the major body of the content #about_content_body.
          Argument 2,4,6,8 is the urls.
@@ -334,7 +334,7 @@
     <string name="privacy_policy_update_notification_action">To make Firefox Rocket better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
 
     <!--In-app Promotion, Rate the App-->
-    <string name="rate_app_dialog_text_title">Love {{app_name}}?</string>
+    <string name="rate_app_dialog_text_title">Love %1$s?</string>
     <string name="rate_app_dialog_text_content">Thank you for choosing our product. Your feedback is important to us.</string>
     <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 stars!</string>
     <string name="rate_app_notification_action_rate">RATE 5 STARS</string>
@@ -344,11 +344,11 @@
     <string name="rate_app_feedback_url" translatable="false">https://qsurvey.mozilla.com/s3/Firefox-Rocket-Input/</string>
 
     <!--In-app Promotion, Share app-->
-    <string name="share_app_dialog_text_title">Share {{app_name}} with friends!</string>
+    <string name="share_app_dialog_text_title">Share %1$s with friends!</string>
     <string name="share_app_dialog_text_content">- Fast and lightweight\n- Data saving\n- Powerful screenshots</string>
     <string name="share_app_dialog_btn_share">Share</string>
     <string name="share_app_google_play_url" translatable="false">https://mzl.la/2kScptw</string>
-    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from Mozilla. {{app_name}} {{share_app_google_play_url}}</string>
+    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from Mozilla. %1$s %2$s</string>
 
     <!-- Text shown in the "Your rights" screen.
     %1$s will be replaced with the name of the app (e.g. Firefox Rocket)-->
