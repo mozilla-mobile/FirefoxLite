@@ -4,25 +4,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
 apply plugin: 'jacoco-android'
-apply plugin: 'com.icesmith.androidtextresolver'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply from: 'buildscripts/pmd.gradle'
 apply from: 'buildscripts/checkstyle.gradle'
 apply from: 'buildscripts/findbugs.gradle'
 apply from: 'buildscripts/l10n.gradle'
 
-
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-
-    dependencies {
-        classpath "gradle.plugin.android-text-resolver:buildSrc:1.1.0"
-    }
-}
 
 android {
     compileSdkVersion Versions.compile_sdk
