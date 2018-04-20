@@ -13,26 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/fixed_menu_horizontal_margin"
-        android:layout_marginStart="@dimen/fixed_menu_horizontal_margin">
+        android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin"
+        android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin">
 
         <org.mozilla.focus.tabs.TabCounter
             android:id="@+id/btn_tab_tray"
-            style="@style/MainMenuButton"
+            style="@style/HomeMenuButton"
             app:drawableColor="@color/colorMenuIconDarkForeground" />
 
         <include
+            style="@style/HomeMenuButton"
             layout="@layout/button_open_new_tab"
             android:visibility="invisible" />
 
         <include
+            style="@style/HomeMenuButton"
             layout="@layout/button_search"
             android:visibility="invisible" />
 
         <include
+            style="@style/HomeMenuButton"
             layout="@layout/button_capture"
             android:visibility="invisible" />
 
-        <include layout="@layout/button_more_white" />
+        <include
+            style="@style/HomeMenuButton"
+            layout="@layout/button_more_white" />
     </org.mozilla.focus.widget.EqualDistributeRow>
 </FrameLayout>
