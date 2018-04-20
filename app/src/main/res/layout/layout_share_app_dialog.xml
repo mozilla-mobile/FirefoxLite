@@ -30,13 +30,13 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/share_app_dialog_textview_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="@string/share_app_dialog_text_title"
         android:textColor="@color/colorDownloadText"
         android:textSize="20sp" />
 
