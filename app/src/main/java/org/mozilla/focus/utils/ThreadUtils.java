@@ -11,6 +11,7 @@ import android.os.Looper;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -51,6 +52,7 @@ public class ThreadUtils {
     private static class CustomThreadFactory implements ThreadFactory {
         private final String threadName;
         private final int threadPriority;
+        private final AtomicInteger mNumber = new AtomicInteger();
 
         public CustomThreadFactory(String threadName, int threadPriority) {
             super();
@@ -60,7 +62,7 @@ public class ThreadUtils {
 
         @Override
         public Thread newThread(Runnable r) {
-            Thread thread = new Thread(r, threadName);
+            Thread thread = new Thread(r, threadName + "-" + mNumber.getAndIncrement());
             thread.setPriority(threadPriority);
             return thread;
         }
