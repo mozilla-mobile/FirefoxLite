@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import org.mozilla.focus.utils.Constants;
+import org.mozilla.focus.utils.CursorUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 
 import java.io.File;
@@ -110,11 +111,16 @@ public class DownloadInfoManager {
                             if (cookie != null) {
                                 final List<DownloadInfo> downloadInfoList = new ArrayList<>();
                                 if (cursor != null) {
-                                    while (cursor.moveToNext()) {
-                                        final DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
-                                        downloadInfoList.add(downloadInfo);
+                                    try {
+                                        while (cursor.moveToNext()) {
+                                            final DownloadInfo downloadInfo = cursorToDownloadInfo(cursor);
+                                            downloadInfoList.add(downloadInfo);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        CursorUtils.closeCursorSafely(cursor);
                                     }
-                                    cursor.close();
                                 }
 
                                 ThreadUtils.postToMainThread(new Runnable() {
@@ -123,11 +129,14 @@ public class DownloadInfoManager {
                                         ((AsyncQueryListener) cookie).onQueryComplete(downloadInfoList);
                                     }
                                 });
+                            } else {
+                                CursorUtils.closeCursorSafely(cursor);
                             }
                         }
                     });
                     break;
                 default:
+                    CursorUtils.closeCursorSafely(cursor);
                     break;
             }
         }
@@ -210,10 +219,14 @@ public class DownloadInfoManager {
         final Uri uri = Download.CONTENT_URI;
         final String selection = Download.DOWNLOAD_ID + "=" + downloadId;
         final Cursor cursor = resolver.query(uri, null, selection, null, null);
-        boolean isExist = (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
 
-        if (cursor != null) {
-            cursor.close();
+        boolean isExist = false;
+        try {
+            isExist = (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            CursorUtils.closeCursorSafely(cursor);
         }
 
         return isExist;
@@ -357,7 +370,7 @@ public class DownloadInfoManager {
         final DownloadPojo pojo = new DownloadPojo();
         pojo.downloadId = downloadId;
         try {
-            if (managerCursor.moveToFirst()) {
+            if (managerCursor != null && managerCursor.moveToFirst()) {
                 pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));
                 pojo.status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
                 pojo.length = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
@@ -376,9 +389,7 @@ public class DownloadInfoManager {
             // No valid pojo
             return null;
         } finally {
-            if (managerCursor != null) {
-                managerCursor.close();
-            }
+            CursorUtils.closeCursorSafely(managerCursor);
         }
 
         return pojo;
