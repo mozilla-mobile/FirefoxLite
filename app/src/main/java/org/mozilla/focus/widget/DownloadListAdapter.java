@@ -45,12 +45,12 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private static final List<String> SPECIFIC_FILE_EXTENSION
             = Arrays.asList("apk", "zip", "gz", "tar", "7z", "rar", "war");
-    private List<DownloadInfo> mDownloadInfo;
+    private final List<DownloadInfo> mDownloadInfo;
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NON_EMPTY = 1;
     private static final int ON_OPENING = 2;
     private static final int PAGE_SIZE = 20;
-    private Context mContext;
+    private final Context mContext;
     private int mItemCount = 0;
     private boolean isOpening = false;
     private boolean isLoading = false;

@@ -40,14 +40,14 @@ import java.util.List;
 
 public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHolder> {
 
-    private List<Tab> tabs = new ArrayList<>();
+    private final List<Tab> tabs = new ArrayList<>();
     private Tab focusedTab;
 
     private TabClickListener tabClickListener;
 
-    private RequestManager requestManager;
+    private final RequestManager requestManager;
 
-    private HashMap<String, Drawable> localIconCache = new HashMap<>();
+    private final HashMap<String, Drawable> localIconCache = new HashMap<>();
 
     TabTrayAdapter(RequestManager requestManager) {
         this.requestManager = requestManager;
@@ -221,8 +221,8 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     static class InternalTabClickListener implements View.OnClickListener {
-        private ViewHolder holder;
-        private TabClickListener tabClickListener;
+        private final ViewHolder holder;
+        private final TabClickListener tabClickListener;
 
         InternalTabClickListener(ViewHolder holder, TabClickListener tabClickListener) {
             this.holder = holder;

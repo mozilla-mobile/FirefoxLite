@@ -43,7 +43,7 @@ public class FaviconModelLoaderFactory implements ModelLoaderFactory<FaviconMode
     }
 
     public static class Fetcher implements DataFetcher<FaviconModel> {
-        private FaviconModel model;
+        private final FaviconModel model;
 
         Fetcher(FaviconModel model) {
             this.model = model;

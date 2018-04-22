@@ -28,10 +28,10 @@ public class Tab {
     /**
      * A placeholder in case of there is no callback to use.
      */
-    private static TabViewClient sDefViewClient = new TabViewClient();
-    private static TabChromeClient sDefChromeClient = new TabChromeClient();
+    private static final TabViewClient sDefViewClient = new TabViewClient();
+    private static final TabChromeClient sDefChromeClient = new TabChromeClient();
 
-    private TabModel tabModel;
+    private final TabModel tabModel;
     private TabView tabView;
     private TabViewClient tabViewClient = sDefViewClient;
     private TabChromeClient tabChromeClient = sDefChromeClient;

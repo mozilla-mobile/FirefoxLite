@@ -32,7 +32,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class SearchEngineManager extends BroadcastReceiver {
     private static final String LOG_TAG = SearchEngineManager.class.getSimpleName();
 
-    private static SearchEngineManager instance = new SearchEngineManager();
+    private static final SearchEngineManager instance = new SearchEngineManager();
 
     private List<SearchEngine> searchEngines;
 

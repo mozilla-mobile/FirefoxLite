@@ -25,7 +25,7 @@ public class TabModelStore {
     private static final String TAB_WEB_VIEW_STATE_FOLDER_NAME = "tabs_cache";
 
     private static volatile TabModelStore instance;
-    private TabsDatabase tabsDatabase;
+    private final TabsDatabase tabsDatabase;
 
     public interface AsyncQueryListener {
         void onQueryComplete(List<TabModel> tabModelList, String focusTabId);
@@ -69,9 +69,9 @@ public class TabModelStore {
 
     private static class QueryTabsTask extends AsyncTask<Void, Void, List<TabModel>> {
 
-        private WeakReference<Context> contextRef;
-        private TabsDatabase tabsDatabase;
-        private WeakReference<AsyncQueryListener> listenerRef;
+        private final WeakReference<Context> contextRef;
+        private final TabsDatabase tabsDatabase;
+        private final WeakReference<AsyncQueryListener> listenerRef;
 
         public QueryTabsTask(Context context, TabsDatabase tabsDatabase, AsyncQueryListener listener) {
             this.contextRef = new WeakReference<>(context);
@@ -116,9 +116,9 @@ public class TabModelStore {
 
     private static class SaveTabsTask extends AsyncTask<TabModel, Void, Void> {
 
-        private WeakReference<Context> contextRef;
-        private TabsDatabase tabsDatabase;
-        private WeakReference<AsyncSaveListener> listenerRef;
+        private final WeakReference<Context> contextRef;
+        private final TabsDatabase tabsDatabase;
+        private final WeakReference<AsyncSaveListener> listenerRef;
 
         public SaveTabsTask(Context context, TabsDatabase tabsDatabase, AsyncSaveListener listener) {
             this.contextRef = new WeakReference<>(context);

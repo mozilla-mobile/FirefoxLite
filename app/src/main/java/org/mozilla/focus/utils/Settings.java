@@ -222,7 +222,7 @@ public class Settings {
     }
 
     public static class EventHistory {
-        private SharedPreferences preferences;
+        private final SharedPreferences preferences;
 
         private EventHistory(SharedPreferences preferences) {
             this.preferences = preferences;

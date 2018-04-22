@@ -31,7 +31,7 @@ public class PermissionHandler {
     private static final int NO_ACTION = -1;
 
 
-    private PermissionHandle permissionHandle;
+    private final PermissionHandle permissionHandle;
     private String permission;
     private int actionId = NO_ACTION;
     private Parcelable params;

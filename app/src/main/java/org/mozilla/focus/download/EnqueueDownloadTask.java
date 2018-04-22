@@ -26,9 +26,9 @@ import java.util.List;
  */
 public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTask.ErrorCode> {
 
-    private WeakReference<Activity> activityRef;
-    private Download download;
-    private String refererUrl;
+    private final WeakReference<Activity> activityRef;
+    private final Download download;
+    private final String refererUrl;
 
     public EnqueueDownloadTask(@NonNull Activity activity, @NonNull Download download, @Nullable String refererUrl) {
         this.activityRef = new WeakReference<>(activity);

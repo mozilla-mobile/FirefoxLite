@@ -22,9 +22,9 @@ import java.util.List;
 
 public class AppAdapter extends RecyclerView.Adapter<AppViewHolder> {
     /* package-private */ static class App {
-        private Context context;
-        private ActivityInfo info;
-        private String label;
+        private final Context context;
+        private final ActivityInfo info;
+        private final String label;
 
         public App(Context context, ActivityInfo info) {
             this.context = context;
@@ -49,7 +49,7 @@ public class AppAdapter extends RecyclerView.Adapter<AppViewHolder> {
         void onAppSelected(App app);
     }
 
-    private List<App> apps;
+    private final List<App> apps;
     private OnAppSelectedListener listener;
 
     public AppAdapter(Context context, ActivityInfo[] infoArray) {

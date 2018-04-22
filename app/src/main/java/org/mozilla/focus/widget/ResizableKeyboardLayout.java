@@ -71,7 +71,7 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
         }
     }
 
-    private ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+    private final ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
             int difference = calculateDifferenceBetweenHeightAndUsableArea();

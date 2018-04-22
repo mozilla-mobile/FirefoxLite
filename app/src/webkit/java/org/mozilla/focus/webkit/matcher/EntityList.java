@@ -17,7 +17,7 @@ import java.net.URL;
 
 /* package-private */ class EntityList {
 
-    private WhiteListTrie rootNode;
+    private final WhiteListTrie rootNode;
 
     public EntityList() {
         rootNode = WhiteListTrie.createRootNode();

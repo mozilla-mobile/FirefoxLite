@@ -109,7 +109,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private final static int NONE = -1;
     private int systemVisibility = NONE;
 
-    private DownloadCallback downloadCallback = new DownloadCallback();
+    private final DownloadCallback downloadCallback = new DownloadCallback();
 
     private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
 
@@ -1014,7 +1014,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
-        private HistoryInserter historyInserter = new HistoryInserter();
+        private final HistoryInserter historyInserter = new HistoryInserter();
 
         // Some url may report progress from 0 again for the same url. filter them out to avoid
         // progress bar regression when scrolling.
@@ -1378,11 +1378,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
      * history, maybe it'd be better to make these data as per-tab data
      */
     private final class HistoryInserter {
-        private WeakHashMap<Tab, String> failingUrls = new WeakHashMap<>();
+        private final WeakHashMap<Tab, String> failingUrls = new WeakHashMap<>();
 
         // Some url may have two onPageFinished for the same url. filter them out to avoid
         // adding twice to the history.
-        private WeakHashMap<Tab, String> lastInsertedUrls = new WeakHashMap<>();
+        private final WeakHashMap<Tab, String> lastInsertedUrls = new WeakHashMap<>();
 
         void onTabStarted(@NonNull Tab tab) {
             lastInsertedUrls.remove(tab);

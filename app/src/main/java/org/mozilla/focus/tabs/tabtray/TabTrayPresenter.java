@@ -11,8 +11,8 @@ import java.util.List;
 
 public class TabTrayPresenter implements TabTrayContract.Presenter {
 
-    private TabTrayContract.View view;
-    private TabTrayContract.Model model;
+    private final TabTrayContract.View view;
+    private final TabTrayContract.Model model;
 
     TabTrayPresenter(final TabTrayContract.View view, final TabTrayContract.Model model) {
         this.view = view;

@@ -76,11 +76,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private TabTrayAdapter adapter;
 
-    private Handler uiHandler = new Handler(Looper.getMainLooper());
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
-    private SlideAnimationCoordinator slideCoordinator = new SlideAnimationCoordinator(this);
+    private final SlideAnimationCoordinator slideCoordinator = new SlideAnimationCoordinator(this);
 
-    private Runnable dismissRunnable = new Runnable() {
+    private final Runnable dismissRunnable = new Runnable() {
         @Override
         public void run() {
             dismiss();
@@ -557,15 +557,15 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private static class SlideAnimationCoordinator {
-        private Interpolator backgroundInterpolator = new AccelerateInterpolator();
-        private Interpolator overlayInterpolator = new AccelerateDecelerateInterpolator();
+        private final Interpolator backgroundInterpolator = new AccelerateInterpolator();
+        private final Interpolator overlayInterpolator = new AccelerateDecelerateInterpolator();
         private int collapseHeight = -1;
 
         private float translationY = Integer.MIN_VALUE;
         private float backgroundAlpha = -1;
         private float overlayAlpha = -1;
 
-        private TabTrayFragment fragment;
+        private final TabTrayFragment fragment;
 
         SlideAnimationCoordinator(TabTrayFragment fragment) {
             this.fragment = fragment;

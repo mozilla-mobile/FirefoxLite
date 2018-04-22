@@ -85,7 +85,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
     private static class QueryTask extends AsyncTask<String, Void, List<CharSequence>> {
 
-        private WeakReference<UrlInputContract.View> viewWeakReference;
+        private final WeakReference<UrlInputContract.View> viewWeakReference;
 
         QueryTask(UrlInputContract.View view) {
             viewWeakReference = new WeakReference<>(view);

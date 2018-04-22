@@ -27,10 +27,10 @@ import java.util.List;
 
 class TabsSessionModel implements TabTrayContract.Model {
     @NonNull
-    private TabsSession tabsSession;
+    private final TabsSession tabsSession;
     private OnTabModelChangedListener onTabModelChangedListener;
 
-    private List<Tab> tabs = new ArrayList<>();
+    private final List<Tab> tabs = new ArrayList<>();
 
     TabsSessionModel(@NonNull TabsSession tabsSession) {
         this.tabsSession = tabsSession;

@@ -24,9 +24,9 @@ public class FileChooseAction {
 
     public static final int REQUEST_CODE_CHOOSE_FILE = 103;
 
-    private Fragment hostFragment;
+    private final Fragment hostFragment;
     private ValueCallback<Uri[]> callback;
-    private WebChromeClient.FileChooserParams params;
+    private final WebChromeClient.FileChooserParams params;
     private Uri[] uris;
 
     public FileChooseAction(@NonNull Fragment hostFragment,

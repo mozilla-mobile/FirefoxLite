@@ -72,7 +72,7 @@ public class AnimatedProgressBar extends ProgressBar {
 
     private boolean mIsRtl = false;
 
-    private EndingRunner mEndingRunner = new EndingRunner();
+    private final EndingRunner mEndingRunner = new EndingRunner();
 
     private final ValueAnimator.AnimatorUpdateListener mListener =
             new ValueAnimator.AnimatorUpdateListener() {

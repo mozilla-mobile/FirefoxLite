@@ -28,7 +28,7 @@ class FocusWebChromeClient extends WebChromeClient {
      * The TabView be attached by this client. No matter which WebView notify this client, this client
      * always hand over notification to TabChromeClient with this hosted TabView.
      */
-    private TabView host;
+    private final TabView host;
 
     private TabChromeClient tabChromeClient;
 

@@ -913,7 +913,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     // a TabViewProvider and it should only be used in this activity
     private static class MainTabViewProvider implements TabViewProvider {
-        private Activity activity;
+        private final Activity activity;
 
         MainTabViewProvider(@NonNull final Activity activity) {
             this.activity = activity;

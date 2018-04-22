@@ -33,16 +33,16 @@ import java.util.List;
  */
 public class TabsSession {
 
-    private TabViewProvider tabViewProvider;
+    private final TabViewProvider tabViewProvider;
 
-    private List<Tab> tabs = new LinkedList<>();
+    private final List<Tab> tabs = new LinkedList<>();
 
-    private Notifier notifier;
+    private final Notifier notifier;
 
     private WeakReference<Tab> focusRef = new WeakReference<>(null);
 
-    private List<TabsViewListener> tabsViewListeners = new ArrayList<>();
-    private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
+    private final List<TabsViewListener> tabsViewListeners = new ArrayList<>();
+    private final List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
 
     public TabsSession(@NonNull TabViewProvider provider) {
@@ -580,7 +580,7 @@ public class TabsSession {
         static final int MSG_FOCUS_TAB = 0x1001;
         static final int MSG_ADDED_TAB = 0x1002;
 
-        private TabViewProvider tabViewProvider;
+        private final TabViewProvider tabViewProvider;
         private List<TabsChromeListener> chromeListeners = null;
 
         Notifier(@NonNull final TabViewProvider provider,

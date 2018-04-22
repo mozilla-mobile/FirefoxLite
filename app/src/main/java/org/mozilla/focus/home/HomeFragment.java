@@ -67,7 +67,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private View btnMenu;
     private TabCounter tabCounter;
     private TextView fakeInput;
-    private SiteItemClickListener clickListener = new SiteItemClickListener();
+    private final SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
     private TabsSession tabsSession;
@@ -277,7 +277,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private QueryHandler.AsyncQueryListener mTopSitesQueryListener = new QueryHandler.AsyncQueryListener() {
+    private final QueryHandler.AsyncQueryListener mTopSitesQueryListener = new QueryHandler.AsyncQueryListener() {
         @Override
         public void onQueryComplete(List sites) {
             List<Site> querySites = new ArrayList<>();
@@ -291,7 +291,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     };
 
-    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = new QueryHandler.AsyncUpdateListener() {
+    private final QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = new QueryHandler.AsyncUpdateListener() {
         @Override
         public void onUpdateComplete(int result) {
             BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
@@ -397,7 +397,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private View.OnClickListener menuItemClickListener = new View.OnClickListener() {
+    private final View.OnClickListener menuItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             final Activity parent = getActivity();

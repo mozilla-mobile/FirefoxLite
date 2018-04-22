@@ -25,8 +25,8 @@ public class ScreenNavigator {
     private static final String LOG_TAG = "ScreenNavigator";
     private static final boolean LOG_NAVIGATION = false;
 
-    private MainMediator mainMediator;
-    private BrowserMediator browserMediator;
+    private final MainMediator mainMediator;
+    private final BrowserMediator browserMediator;
 
     public static ScreenNavigator get(Context context) {
         if (context instanceof Provider) {

@@ -13,8 +13,8 @@ import static org.mozilla.focus.screenshot.ScreenshotItemAdapter.VIEW_TYPE_SCREE
 
 public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
 
-    private int spanCount;
-    private int spacing;
+    private final int spanCount;
+    private final int spacing;
 
     public ItemOffsetDecoration(int spanCount, int spacing) {
         this.spanCount = spanCount;

@@ -93,7 +93,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
     private Screenshot mScreenshot;
     private ProgressBar mProgressBar;
     private Uri mImageUri;
-    private ArrayList<ImageInfo> mInfoItems = new ArrayList<>();
+    private final ArrayList<ImageInfo> mInfoItems = new ArrayList<>();
     private boolean mIsImageReady = false;
 
     @Override
@@ -534,7 +534,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         }
     }
 
-    private SubsamplingScaleImageView.OnImageEventListener onImageEventListener = new SubsamplingScaleImageView.OnImageEventListener() {
+    private final SubsamplingScaleImageView.OnImageEventListener onImageEventListener = new SubsamplingScaleImageView.OnImageEventListener() {
         @Override
         public void onReady() {
             hideProgressBar();

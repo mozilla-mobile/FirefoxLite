@@ -45,8 +45,8 @@ public class FirstrunPagerAdapter extends PagerAdapter {
 
     private final FirstrunPage[] pages;
 
-    private Context context;
-    private View.OnClickListener listener;
+    private final Context context;
+    private final View.OnClickListener listener;
 
     public FirstrunPagerAdapter(Context context, View.OnClickListener listener) {
         this.context = context;

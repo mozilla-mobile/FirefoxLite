@@ -23,8 +23,8 @@ import java.util.List;
  * Adapter for displaying a list of search engines.
  */
 public class SearchEngineAdapter extends BaseAdapter {
-    private List<SearchEngine> searchEngines;
-    private SearchEngine defaultSearchEngine;
+    private final List<SearchEngine> searchEngines;
+    private final SearchEngine defaultSearchEngine;
 
     public SearchEngineAdapter(Context context) {
         SearchEngineManager searchEngineManager = SearchEngineManager.getInstance();

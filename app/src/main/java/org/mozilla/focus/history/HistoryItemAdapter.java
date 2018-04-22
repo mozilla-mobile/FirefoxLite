@@ -42,10 +42,10 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int PAGE_SIZE = 50;
 
-    private List mItems = new ArrayList();
-    private RecyclerView mRecyclerView;
-    private Context mContext;
-    private HistoryListener mHistoryListener;
+    private final List mItems = new ArrayList();
+    private final RecyclerView mRecyclerView;
+    private final Context mContext;
+    private final HistoryListener mHistoryListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
@@ -262,10 +262,10 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static class SiteItemViewHolder extends RecyclerView.ViewHolder {
 
-        private ViewGroup rootView;
-        private ImageView imgFav;
-        private TextView textMain, textSecondary;
-        private FrameLayout btnMore;
+        private final ViewGroup rootView;
+        private final ImageView imgFav;
+        private final TextView textMain, textSecondary;
+        private final FrameLayout btnMore;
 
         public SiteItemViewHolder(View itemView) {
             super(itemView);
@@ -279,7 +279,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static class DateItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textDate;
+        private final TextView textDate;
 
         public DateItemViewHolder(View itemView) {
             super(itemView);

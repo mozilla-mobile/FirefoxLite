@@ -38,11 +38,11 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private static final int PAGE_SIZE = 20;
 
-    private List mItems = new ArrayList();
-    private RecyclerView mRecyclerView;
-    private GridLayoutManager mLayoutManager;
-    private Activity mActivity;
-    private StatusListener mStatusListener;
+    private final List mItems = new ArrayList();
+    private final RecyclerView mRecyclerView;
+    private final GridLayoutManager mLayoutManager;
+    private final Activity mActivity;
+    private final StatusListener mStatusListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
@@ -238,8 +238,8 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private static class GirdItemViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView img;
-        private View rootView;
+        private final ImageView img;
+        private final View rootView;
 
         public GirdItemViewHolder(View itemView) {
             super(itemView);
@@ -250,7 +250,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private static class DateItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textDate;
+        private final TextView textDate;
 
         public DateItemViewHolder(View itemView) {
             super(itemView);

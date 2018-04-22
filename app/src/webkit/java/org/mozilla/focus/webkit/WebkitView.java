@@ -43,8 +43,8 @@ public class WebkitView extends NestedWebView implements TabView {
     private static final String KEY_CURRENTURL = "currenturl";
 
     private DownloadCallback downloadCallback;
-    private FocusWebViewClient webViewClient;
-    private FocusWebChromeClient webChromeClient;
+    private final FocusWebViewClient webViewClient;
+    private final FocusWebChromeClient webChromeClient;
     private final LinkHandler linkHandler;
 
     private boolean shouldReloadOnAttached = false;
