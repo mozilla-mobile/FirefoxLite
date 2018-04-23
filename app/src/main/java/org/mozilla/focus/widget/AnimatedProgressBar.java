@@ -36,6 +36,8 @@ import org.mozilla.focus.R;
  */
 public class AnimatedProgressBar extends ProgressBar {
 
+    private final static int INTEPOLATOR_NOT_EXIST = 0;
+
     /**
      * Animation duration of progress changing.
      */
@@ -255,7 +257,7 @@ public class AnimatedProgressBar extends ProgressBar {
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AnimatedProgressBar);
         final int duration = a.getInteger(R.styleable.AnimatedProgressBar_shiftDuration, 1000);
         final boolean wrap = a.getBoolean(R.styleable.AnimatedProgressBar_wrapShiftDrawable, false);
-        @InterpolatorRes final int itplId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, 0);
+        @InterpolatorRes final int itplId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, INTEPOLATOR_NOT_EXIST);
         a.recycle();
 
         setProgressDrawable(buildDrawable(getProgressDrawable(), wrap, duration, itplId));
@@ -325,9 +327,8 @@ public class AnimatedProgressBar extends ProgressBar {
         }
     }
 
-    @SuppressWarnings("ResourceType")
     private boolean isValidInterpolator(@InterpolatorRes int itplId) {
-        return itplId > 0;
+        return itplId != INTEPOLATOR_NOT_EXIST;
     }
 
     private static ValueAnimator createAnimator(int max, ValueAnimator.AnimatorUpdateListener listener) {
