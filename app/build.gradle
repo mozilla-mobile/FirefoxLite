@@ -69,6 +69,11 @@ android {
         preDexLibraries true
     }
 
+    // Use third-party image optimize tool instead of the built-in one
+    aaptOptions {
+        cruncherEnabled = false
+    }
+
     // We have a three dimensional build configuration:
     // BUILD TYPE (debug, beta, release)
 
