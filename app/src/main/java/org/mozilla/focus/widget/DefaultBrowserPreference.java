@@ -7,16 +7,21 @@ package org.mozilla.focus.widget;
 
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.Preference;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Switch;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
+import org.mozilla.focus.components.ComponentStatusMonitor;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
@@ -49,7 +54,13 @@ public class DefaultBrowserPreference extends Preference {
     public void update() {
         if (switchView != null) {
             final boolean isDefaultBrowser = Browsers.isDefaultBrowser(getContext());
+
             switchView.setChecked(isDefaultBrowser);
+            if (ComponentStatusMonitor.isAlive(getContext())) {
+                setEnabled(false);
+                setSummary(R.string.preference_default_browser_is_setting);
+            }
+
             Settings.updatePrefDefaultBrowserIfNeeded(getContext(), isDefaultBrowser);
         }
     }
@@ -61,11 +72,41 @@ public class DefaultBrowserPreference extends Preference {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             openDefaultAppsSettings(context);
         } else {
-            openSumoPage(context);
+
+            final boolean isDefaultBrowser = Browsers.isDefaultBrowser(getContext());
+            final boolean hasDefaultBrowser = Browsers.hasDefaultBrowser(getContext());
+
+            if (isDefaultBrowser) {
+                openAppDetailSettings(context);
+            } else if (hasDefaultBrowser) {
+                setEnabled(false);
+                setSummary(R.string.preference_default_browser_is_setting);
+                clearDefaultBrowser(context);
+            } else {
+                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+                viewIntent.setData(Uri.parse("http://mozilla.org"));
+
+                //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
+                viewIntent.putExtra("resolve_default_browser", true);
+                context.startActivity(viewIntent);
+            }
+
+
         }
     }
 
+    private void openAppDetailSettings(Context context) {
+        //  TODO: extract this to util module
+        Intent intent = new Intent();
+        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        //  fromParts might be faster than parse: ex. Uri.parse("package://"+context.getPackageName());
+        Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+        intent.setData(uri);
+        context.startActivity(intent);
+    }
+
     private void openDefaultAppsSettings(Context context) {
+        //  TODO: extract this to util module, return false to allow caller to handle
         try {
             Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
             context.startActivity(intent);
@@ -73,6 +114,12 @@ public class DefaultBrowserPreference extends Preference {
             // In some cases, a matching Activity may not exist (according to the Android docs).
             openSumoPage(context);
         }
+    }
+
+    private void clearDefaultBrowser(Context context) {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(context, ComponentStatusMonitor.class));
+        context.startService(intent);
     }
 
     private void openSumoPage(Context context) {
