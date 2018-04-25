@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
+import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.UrlUtils;
 
@@ -38,7 +39,7 @@ public class TextActionActivity extends Activity {
 
         final Intent searchIntent = new Intent(this, MainActivity.class);
         searchIntent.setAction(Intent.ACTION_VIEW);
-        searchIntent.putExtra(MainActivity.EXTRA_TEXT_SELECTION, true);
+        searchIntent.putExtra(AppLaunchMethod.EXTRA_TEXT_SELECTION, true);
         searchIntent.setData(Uri.parse(searchUrl));
 
         startActivity(searchIntent);

@@ -72,6 +72,7 @@ public final class TelemetryWrapper {
         private static final String INTENT_URL = "intent_url";
         private static final String TEXT_SELECTION_INTENT = "text_selection_intent";
         private static final String SHOW = "show";
+        private static final String LAUNCH = "launch";
     }
 
     private static class Object {
@@ -137,6 +138,10 @@ public final class TelemetryWrapper {
         public static final String POSITIVE = "positive";
         public static final String NEGATIVE = "negative";
         public static final String SHARE = "share";
+
+        private static final String LAUNCHER = "launcher";
+        private static final String EXTERNAL_APP = "external_app";
+        private static final String SHORTCUT = "shortcut";
     }
 
     private static class Extra {
@@ -147,12 +152,14 @@ public final class TelemetryWrapper {
         private static final String SNACKBAR = "snackbar";
         private static final String SOURCE = "source";
         private static final String VERSION = "version";
+        private static final String TYPE = "type";
     }
 
     public static class Extra_Value {
         public static final String SETTING = "settings";
         public static final String CONTEXTUAL_HINTS = "contextual_hints";
         public static final String NOTIFICATION = "notification";
+        private static final String TEXT_SELECTION = "text_selection";
     }
 
     public static boolean isTelemetryEnabled(Context context) {
@@ -265,6 +272,24 @@ public final class TelemetryWrapper {
 
     public static void textSelectionIntentEvent() {
         TelemetryEvent.create(Category.ACTION, Method.TEXT_SELECTION_INTENT, Object.APP).queue();
+    }
+
+    public static void launchByAppLauncherEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.LAUNCHER).queue();
+    }
+
+    public static void launchByHomeScreenShortcutEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.SHORTCUT).queue();
+    }
+
+    public static void launchByTextSelectionSearchEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
+                .extra(Extra.TYPE, Extra_Value.TEXT_SELECTION)
+                .queue();
+    }
+
+    public static void launchByExternalAppEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP).queue();
     }
 
     public static void settingsEvent(String key, String value) {
