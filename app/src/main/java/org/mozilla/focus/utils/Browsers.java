@@ -220,6 +220,11 @@ public class Browsers {
                 && (context.getPackageName().equals(browser.defaultBrowser.packageName));
     }
 
+    public static boolean hasDefaultBrowser(Context context) {
+        final Browsers browser = new Browsers(context, "http://mozilla.org");
+        return (browser.defaultBrowser != null);
+    }
+
     public ActivityInfo[] getInstalledBrowsers() {
         final Collection<ActivityInfo> collection = browsers.values();
 

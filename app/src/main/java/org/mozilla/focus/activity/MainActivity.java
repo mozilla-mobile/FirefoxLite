@@ -252,6 +252,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            /**  TODO: Dirty hack to finish self if it's coming from DefaultBrowser setting process, onCreate need to be handled also
+             *      It would be better if we can move this to LauncherActivity somewhere.
+             */
+            if(intent.getBooleanExtra("resolve_default_browser", false)){
+                startActivity(new Intent(this, SettingsActivity.class));
+                finish();
+            }
+
+
             // We can't update our fragment right now because we need to wait until the activity is
             // resumed. So just remember this URL and load it in onResumeFragments().
             pendingUrl = intent.getDataString();
