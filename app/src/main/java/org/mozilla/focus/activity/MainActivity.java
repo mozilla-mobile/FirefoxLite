@@ -54,6 +54,7 @@ import org.mozilla.focus.tabs.TabViewProvider;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.tabtray.TabTray;
+import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -82,8 +83,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
         TabRestoreMonitor, ScreenNavigator.Provider {
-
-    public static final String EXTRA_TEXT_SELECTION = "text_selection";
 
     private String pendingUrl;
 
@@ -123,6 +122,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
 
         SafeIntent intent = new SafeIntent(getIntent());
+        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
 
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -239,6 +239,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onNewIntent(Intent unsafeIntent) {
         final SafeIntent intent = new SafeIntent(unsafeIntent);
+        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
 
         if (runPromotionFromIntent(intent)) {
             // Don't run other promotion or other action if we already displayed above promotion
@@ -712,6 +713,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final Intent shortcut = new Intent(Intent.ACTION_VIEW);
         shortcut.setClass(this, MainActivity.class);
         shortcut.setData(Uri.parse(url));
+        shortcut.putExtra(AppLaunchMethod.EXTRA_HOME_SCREEN_SHORTCUT, true);
 
         ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
     }
@@ -801,7 +803,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public void sendBrowsingTelemetry() {
         final SafeIntent intent = new SafeIntent(getIntent());
-        if (intent.getBooleanExtra(EXTRA_TEXT_SELECTION, false)) {
+        if (intent.getBooleanExtra(AppLaunchMethod.EXTRA_TEXT_SELECTION, false)) {
             TelemetryWrapper.textSelectionIntentEvent();
         } else {
             TelemetryWrapper.browseIntentEvent();
