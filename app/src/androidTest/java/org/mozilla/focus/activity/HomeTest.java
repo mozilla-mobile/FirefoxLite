@@ -36,6 +36,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
 
 @Keep
@@ -85,7 +86,8 @@ public class HomeTest {
             IdlingRegistry.getInstance().register(loadingIdlingResource);
 
             // Check if the url is displayed correctly
-            onView(withText(defaultSites.get(0).getUrl())).check(matches(isDisplayed()));
+            onView(withId(R.id.display_url))
+                    .check(matches(allOf(withText(defaultSites.get(0).getUrl()), isDisplayed())));
 
             // Always remember to unregister idling resource
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
