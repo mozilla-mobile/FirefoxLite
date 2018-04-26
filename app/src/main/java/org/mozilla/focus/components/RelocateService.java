@@ -272,11 +272,15 @@ public class RelocateService extends IntentService {
     }
 
     private void broadcastRelocateFinished(long rowId) {
+        broadcastRelocateFinished(this, rowId);
+    }
+
+    public static void broadcastRelocateFinished(Context context, long rowId) {
         final Intent broadcastIntent = new Intent(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
         broadcastIntent.putExtra(Constants.EXTRA_ROW_ID, rowId);
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
 
     }
 }
