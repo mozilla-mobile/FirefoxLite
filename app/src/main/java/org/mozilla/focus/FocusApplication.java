@@ -6,6 +6,7 @@
 package org.mozilla.focus;
 
 import android.preference.PreferenceManager;
+import android.support.annotation.VisibleForTesting;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -23,17 +24,9 @@ public class FocusApplication extends LocaleAwareApplication {
     public void onCreate() {
         super.onCreate();
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
+        setupLeakCanary();
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-
-        // Provide different strict mode penalty for ui testing and production code
-        Inject.enableStrictMode();
 
         SearchEngineManager.getInstance().init(this);
 
@@ -45,4 +38,19 @@ public class FocusApplication extends LocaleAwareApplication {
         DownloadInfoManager.getInstance().init(this);
 
     }
+
+    @VisibleForTesting
+    protected void setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+
+        // Provide different strict mode penalty for ui testing and production code
+        Inject.enableStrictMode();
+
+    }
+
 }

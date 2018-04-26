@@ -30,6 +30,9 @@ import java.util.HashMap;
  */
 abstract class FirebaseWrapper {
 
+
+
+
     private static final String TAG = "FirebaseWrapper";
 
     // Instance of FirebaseWrapper that provides default values
