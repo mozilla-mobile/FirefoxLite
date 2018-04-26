@@ -15,6 +15,7 @@ import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.web.Download;
 
@@ -102,12 +103,9 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
                         DownloadInfoManager.getInstance().delete(info.getRowId(), null);
                         DownloadInfoManager.getInstance().insert(info, new DownloadInfoManager.AsyncInsertListener() {
                             @Override
-                            public void onInsertComplete(long id) {
-                                DownloadInfoManager.notifyRowUpdated(context, id);
-                                final Intent broadcastIntent = new Intent(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
-                                broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
-                                broadcastIntent.putExtra(Constants.EXTRA_ROW_ID, id);
-                                LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
+                            public void onInsertComplete(long rowId) {
+                                DownloadInfoManager.notifyRowUpdated(context, rowId);
+                                RelocateService.broadcastRelocateFinished(context, rowId);
                             }
                         });
                     }

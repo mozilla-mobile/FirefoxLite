@@ -19,6 +19,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
+import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.CursorUtils;
 import org.mozilla.focus.utils.ThreadUtils;
@@ -287,11 +288,7 @@ public class DownloadInfoManager {
                             @Override
                             public void onUpdateComplete(int result) {
                                 notifyRowUpdated(mContext, rowId);
-                                final Intent broadcastIntent = new Intent(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
-                                broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
-                                broadcastIntent.putExtra(Constants.EXTRA_ROW_ID, rowId);
-
-                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(broadcastIntent);
+                                RelocateService.broadcastRelocateFinished(mContext, rowId);
                             }
                         });
                         manager.remove(oldId);
