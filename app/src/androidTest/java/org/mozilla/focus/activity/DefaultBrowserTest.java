@@ -9,6 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.widget.Switch;
 
@@ -92,10 +93,11 @@ public class DefaultBrowserTest {
         }
 
         // Choose our testing app
-        final UiObject browserCandidate = uiDevice
-                .findObject(new UiSelector().text(activity.getString(R.string.app_name)));
-
+        final UiScrollable browserList = new UiScrollable(new UiSelector());
+        final UiSelector rocketView = new UiSelector().text(activity.getString(R.string.app_name));
         try {
+            browserList.scrollIntoView(rocketView);
+            final UiObject browserCandidate = uiDevice.findObject(rocketView);
             browserCandidate.click();
 
         } catch (UiObjectNotFoundException e) {
