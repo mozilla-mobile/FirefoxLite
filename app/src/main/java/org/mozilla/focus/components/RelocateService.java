@@ -125,17 +125,16 @@ public class RelocateService extends IntentService {
                                   final long downloadId,
                                   @NonNull final File srcFile,
                                   @Nullable final String mediaType) {
+        // if the download id is not in our database, ignore this operation
+        final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
+        if (!mgr.recordExists(downloadId)) {
+            return;
+        }
 
         final Settings settings = Settings.getInstance(getApplicationContext());
         // Do nothing, if user turned off the option
         if (!settings.shouldSaveToRemovableStorage()) {
             broadcastRelocateFinished(rowId);
-            return;
-        }
-
-        // if the download id is not in our database, ignore this operation
-        final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
-        if (!mgr.recordExists(downloadId)) {
             return;
         }
 
