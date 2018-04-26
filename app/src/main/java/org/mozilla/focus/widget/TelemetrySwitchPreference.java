@@ -54,7 +54,7 @@ class TelemetrySwitchPreference extends Preference {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 TelemetryWrapper.setTelemetryEnabled(getContext(), isChecked);
-                FirebaseHelper.bind(getContext());
+                FirebaseHelper.bind(getContext().getApplicationContext());
             }
         });
 

@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.logging.Handler;
 
 /**
  * Implementation for FirebaseWrapper. It's job:
@@ -26,7 +28,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     private FirebaseHelper() {
     }
 
-    public static void init(final AppCompatActivity activity) {
+    public static void init(final Context context) {
 
 
         if (instance == null) {
@@ -35,7 +37,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
         initCrashlytics();
 
-        bind(activity);
+        bind(context);
     }
 
 
@@ -60,32 +62,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         // starting from now, there's no pending state. (pending state will only be used in the runnable)
         pending = null;
 
-        ThreadUtils.postToBackgroundThread(new Runnable() {
-            @Override
-            public void run() {
-                // make sure we are in the changing state
-                changing = true;
-
-                updateInstanceId(enable);
-
-                enableCrashlytics(enable);
-                enableAnalytics(context, enable);
-                enableCloudMessaging(context, RocketMessagingService.class.getName(), enable);
-                enableRemoteConfig(context, enable);
-
-                // now firebase has completed state changing,
-                changing = false;
-                // we'll check if the cached state is the same as our current one. If not, issue
-                // a state change again.
-                if (pending != null && pending != enable) {
-                    enableFirebase(context, pending);
-                }
-                // after now, there'll be now pending state.
-                pending = null;
-
-
-            }
-        });
+        ThreadUtils.postToBackgroundThread(new EnableHandler(context,enable));
     }
 
 
@@ -93,5 +70,45 @@ final public class FirebaseHelper extends FirebaseWrapper {
     @Override
     HashMap<String, Object> getRemoteConfigDefault(Context context) {
         return FirebaseHelperInject.getRemoteConfigDefault(context);
+    }
+
+    private static class EnableHandler implements Runnable {
+
+        boolean enable;
+        WeakReference<Context> weakContext;
+
+        EnableHandler(Context c, boolean state) {
+            enable = state;
+            weakContext = new WeakReference<>(c);
+        }
+
+        @Override
+        public void run() {
+            if (weakContext == null || weakContext.get() ==null) {
+                return;
+            }
+
+            final Context context = weakContext.get();
+
+            // make sure we are in the changing state
+            changing = true;
+
+            updateInstanceId(enable);
+
+            enableCrashlytics(enable);
+            enableAnalytics(context, enable);
+            enableCloudMessaging(context, RocketMessagingService.class.getName(), enable);
+            enableRemoteConfig(context, enable);
+
+            // now firebase has completed state changing,
+            changing = false;
+            // we'll check if the cached state is the same as our current one. If not, issue
+            // a state change again.
+            if (pending != null && pending != enable) {
+                enableFirebase(context, pending);
+            }
+            // after now, there'll be now pending state.
+            pending = null;
+        }
     }
 }
