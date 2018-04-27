@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<video id="my_video" width="400" height="300" autoplay muted>
+    <source src="mov_bbb.mp4">
+</video>
+<button id="btn_full_screen" onclick="toggleFullScreen()" name="btn_full_name">Enter Fullscreen</button>
+<p id="result"></p>
+<script>
+var vid = document.getElementById("my_video");
+
+function toggleFullScreen() {
+	if(vid.requestFullscreen) {
+		vid.requestFullscreen();
+	} else if(vid.webkitRequestFullscreen) {
+		vid.webkitRequestFullscreen();
+	} else if(vid.mozRequestFullScreen) {
+		vid.mozRequestFullScreen();
+	}
+}
+
+</script>
+</body>
+</html>
