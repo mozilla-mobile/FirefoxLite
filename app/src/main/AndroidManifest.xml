@@ -180,11 +180,6 @@
             </intent-filter>
         </receiver>
 
-
-        <service
-            android:name="org.mozilla.focus.components.RelocateService"
-            android:enabled="true"
-            android:exported="false" />
     </application>
 
 </manifest>

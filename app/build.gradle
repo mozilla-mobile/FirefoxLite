@@ -93,9 +93,10 @@ android {
         }
         debug {
             def userName = System.getenv("USER")
+            if (userName == null) userName = "mozilla" // windows users will need this
             applicationIdSuffix ".debug." + userName
             versionNameSuffix applicationIdSuffix
-            resValue "bool", "enableCrashlytics", "false"
+            resValue "bool", "enableCrashlytics", "true"
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
@@ -256,7 +257,7 @@ dependencies {
 // -------------------------------------------------------------------------------------------------
 
 configurations.all { config ->
-    if (config.name.contains('UnitTest') || config.name.contains('AndroidTest')) {
+    if (config.name.contains('UnitTest')) {
         config.resolutionStrategy.eachDependency { details ->
             if (details.requested.group == 'com.squareup.leakcanary' && details.requested.name == 'leakcanary-android') {
                 details.useTarget(group: details.requested.group, name: 'leakcanary-android-no-op', version: details.requested.version)

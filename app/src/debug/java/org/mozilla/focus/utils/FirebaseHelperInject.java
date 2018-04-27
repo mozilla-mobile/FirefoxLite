@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Looper;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
@@ -34,9 +35,10 @@ final class FirebaseHelperInject {
     // XML default value can't read l10n values, so we use code for default values.
 
     static HashMap<String, Object> getRemoteConfigDefault(Context context) {
-
+        // This should only happen in the background thread during initialization in BlockingEnabler's doInBackground
+        final boolean isWorkerThread = Looper.myLooper() != Looper.getMainLooper();
         // If we don't have read external storage permission, just don't bother reading the config file.
-        if (canReadExternalStorage(context)) {
+        if (isWorkerThread && canReadExternalStorage(context)) {
             try {
                 return fromJsonOnDisk();
             } catch (Exception e) {
@@ -51,6 +53,7 @@ final class FirebaseHelperInject {
 
     // Assume we already have read external storage permission
     // For any Exception, we'll handle them in the same way. So a general Exception should be fine.
+    @WorkerThread
     private static HashMap<String, Object> fromJsonOnDisk() throws Exception {
 
         final File sdcard = Environment.getExternalStorageDirectory();

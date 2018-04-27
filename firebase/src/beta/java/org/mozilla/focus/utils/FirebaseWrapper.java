@@ -5,17 +5,24 @@
 
 package org.mozilla.focus.utils;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
+import com.example.firebase.BuildConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**
@@ -23,53 +30,161 @@ import java.util.HashMap;
  */
 abstract class FirebaseWrapper {
 
-    private static final long DEFAULT_CACHE_EXPIRATION_IN_SECONDS = 3600; // 1 hour in seconds.
+    private static final String TAG = "FirebaseWrapper";
 
-    private static final String TAG = "FirebaseHelper";
+    // Instance of FirebaseWrapper that provides default values
+    private static FirebaseWrapper instance;
 
+
+    // ==== Crashlytics =====
+    private static final String FIREBASE_CRASH_HANDLER_CLASS = "com.crashlytics.android.core.CrashlyticsUncaughtExceptionHandler";
+    private static final String FIREBASE_CRASH_HANDLER_DEFAULT = "defaultHandler";
+
+    private static Thread.UncaughtExceptionHandler systemCrashHandler;
+    private static Thread.UncaughtExceptionHandler firebaseCrashHandler;
+
+
+    // ==== Remote Config =====
     // FirebaseRemoteConfig has access to context internally so it need to be WeakReference
     private static WeakReference<FirebaseRemoteConfig> remoteConfig;
 
-    // We allow the client code to modify this with setter
-    private static boolean isDebugMode;
+    // An app can fetch a maximum of 5 times in a 60 minute window before the SDK begins to throttle.
+    // See: https://firebase.google.com/docs/remote-config/android#caching_and_throttling
+    private static final long DEFAULT_CACHE_EXPIRATION_IN_SECONDS = 3600; // 1 hour in seconds.
 
-    private static long cacheExpirationInSeconds = DEFAULT_CACHE_EXPIRATION_IN_SECONDS;
+    // Cache threshold for remote config
+    private static long remoteConfigCacheExpirationInSeconds = DEFAULT_CACHE_EXPIRATION_IN_SECONDS;
 
 
     // get Remote Config string
-    static String getRcString(String key) {
+    static String getRcString(@NonNull Context context, @NonNull String key) {
+        if (instance == null) {
+            Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
+            return "";
+        }
+        // if remoteConfig is not initialized, we go to default config directly
+        if (remoteConfig == null) {
+            final Object value = instance.getRemoteConfigDefault(context).get(key);
+            if (value instanceof String) {
+                return (String) value;
+            } else {
+                return "";
+            }
+        }
+
         final FirebaseRemoteConfig config = remoteConfig.get();
         if (config != null) {
             return config.getString(key);
         }
-        return null;
+        return "";
     }
 
-    static void setDeveloperModeEnabled(boolean enabled) {
-        isDebugMode = enabled;
+
+    @WorkerThread
+    static void updateInstanceId(boolean enable) {
+        if (enable) {
+            // This method is synchronized and runs in background thread
+            FirebaseInstanceId.getInstance().getToken();
+        } else {
+            try {
+                // This method is synchronized and runs in background thread
+                FirebaseInstanceId.getInstance().deleteInstanceId();
+            } catch (IOException e) {
+                Log.e(TAG, "FCM failed to deleteInstanceId");
+            }
+        }
+
     }
 
+    static void initInternal(FirebaseWrapper wrapper) {
+        instance = wrapper;
+    }
+
+    static boolean initNeeded() {
+        return instance == null;
+    }
+
+    static void enableCloudMessaging(Context context, String componentName, boolean enable) {
+
+        final ComponentName component = new ComponentName(context, componentName);
+
+        final int newState = enable ?
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+
+        context.getPackageManager().setComponentEnabledSetting(component, newState, PackageManager.DONT_KILL_APP);
+
+    }
+
+    static void initCrashlytics() {
+        final Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
+
+        try {
+            // If the cached handler if from Firebase
+            if (handler != null && handler.getClass().getName().equals(FIREBASE_CRASH_HANDLER_CLASS)) {
+                firebaseCrashHandler = handler;
+                // We use reflection to get it's  systemHandler. Which should be RuntimeInit$UncaughtHandler
+                final Field systemHandler = handler.getClass().getDeclaredField(FIREBASE_CRASH_HANDLER_DEFAULT); //NoSuchFieldException
+                // Make it accessible
+                systemHandler.setAccessible(true);
+
+                systemCrashHandler = (Thread.UncaughtExceptionHandler) systemHandler.get(handler);
+
+            } else {
+
+                firebaseCrashHandler = null;
+                systemCrashHandler = handler;
+            }
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+
+            firebaseCrashHandler = null;
+            systemCrashHandler = handler;
+
+            Log.e(TAG, "initCrashlytics failed: " + e);
+
+        }
+
+    }
+
+    // Replace DefaultUncaughtExceptionHandler with our naive implementation
+    // We don't need to cache the original UncaughtExceptionHandler
+    // If we want to restart crashlytics, we just restart the app and don't call this method here.
+    static void enableCrashlytics(boolean enable) {
+
+        if (enable && firebaseCrashHandler != null) {
+            Thread.setDefaultUncaughtExceptionHandler(firebaseCrashHandler);
+        } else if (systemCrashHandler != null) {
+            Thread.setDefaultUncaughtExceptionHandler(systemCrashHandler);
+        }
+    }
+
+    static void enableAnalytics(Context context, boolean enable) {
+
+        FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(enable);
+    }
 
     // This need to be run in worker thread since FirebaseRemoteConfigSettings has IO access
-    @WorkerThread
-    static void internalInit(final Context context, FirebaseWrapper wrapper) {
-        if (wrapper == null) {
-            Log.e(TAG, "FirebaseWrapper Not initialized");
+    static void enableRemoteConfig(Context context, boolean enable) {
+        if (!enable) {
+            remoteConfig = null;
             return;
         }
-        // Init remote config
+
+
         final FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
         remoteConfig = new WeakReference<>(config);
         final FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(isDebugMode)
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
         config.setConfigSettings(configSettings);
-        config.setDefaults(wrapper.getRemoteConfigDefault(context));
-
+        if (instance != null) {
+            config.setDefaults(instance.getRemoteConfigDefault(context));
+        }
         // If app is using developer mode, cacheExpiration is set to 0, so each fetch will
         // retrieve values from the service.
         if (config.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
-            cacheExpirationInSeconds = 0;
+            remoteConfigCacheExpirationInSeconds = 0;
         }
         refreshRemoteConfig();
     }
@@ -82,7 +197,7 @@ abstract class FirebaseWrapper {
         if (config == null) {
             return;
         }
-        config.fetch(cacheExpirationInSeconds).addOnCompleteListener(new OnCompleteListener<Void>() {
+        config.fetch(remoteConfigCacheExpirationInSeconds).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -91,7 +206,6 @@ abstract class FirebaseWrapper {
                 } else {
                     Log.d(TAG, "Firebase RemoteConfig Fetch Failed: ");
                 }
-
             }
         });
     }
