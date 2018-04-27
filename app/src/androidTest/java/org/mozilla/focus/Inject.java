@@ -7,7 +7,10 @@ package org.mozilla.focus;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 
 import org.mozilla.focus.persistence.TabsDatabase;
@@ -37,6 +40,20 @@ public class Inject {
         return tabsDatabase;
     }
 
+
+    // The pref is not persist so we need to inject the condition instead of override defaultSharedPreference
+    public static boolean isTelemetryEnabled(Context context) {
+        // The first access to shared preferences will require a disk read.
+        final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskReads();
+        try {
+            final Resources resources = context.getResources();
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            return preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), true);
+        } finally {
+            StrictMode.setThreadPolicy(threadPolicy);
+        }
+
+    }
     public static void enableStrictMode() {
         if (AppConstants.isReleaseBuild()) {
             return;
@@ -45,17 +62,15 @@ public class Inject {
         final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll();
         final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll();
 
-        if (AppConstants.isBetaBuild()) {
-            threadPolicyBuilder.penaltyDialog();
-            vmPolicyBuilder.penaltyLog();
-        } else { // Dev/debug build
-            threadPolicyBuilder.penaltyLog();
-            // We want only penaltyDeath(), but penaltLog() is needed print a stacktrace when a violation happens
-            vmPolicyBuilder.penaltyLog();
-        }
+        // In AndroidTest we are super kind :)
+        threadPolicyBuilder.penaltyLog();
+        // Previously we have penaltyDeath() for debug build, but in order to add crashlytics, we can't use it here.
+        // ( crashlytics has untagged Network violation so it always crashes
+        vmPolicyBuilder.penaltyLog();
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
     }
+
 
 }

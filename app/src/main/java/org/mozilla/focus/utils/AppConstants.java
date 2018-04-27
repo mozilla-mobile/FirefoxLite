@@ -9,6 +9,7 @@ import org.mozilla.focus.BuildConfig;
 
 public final class AppConstants {
     private static final String BUILD_TYPE_DEBUG = "debug";
+    private static final String BUILD_TYPE_FIREBASE = "firebase";
     private static final String BUILD_TYPE_BETA = "beta";
     private static final String BUILD_TYPE_RELEASE = "release";
 
@@ -17,6 +18,10 @@ public final class AppConstants {
 
     public static boolean isDevBuild() {
         return BUILD_TYPE_DEBUG.equals(BuildConfig.BUILD_TYPE);
+    }
+
+    public static boolean isFirebaseBuild() {
+        return BUILD_TYPE_FIREBASE.equals(BuildConfig.BUILD_TYPE);
     }
 
     public static boolean isReleaseBuild() {

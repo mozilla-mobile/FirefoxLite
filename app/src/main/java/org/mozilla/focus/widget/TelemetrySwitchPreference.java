@@ -19,6 +19,7 @@ import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.SupportUtils;
 
 /**
@@ -27,7 +28,7 @@ import org.mozilla.focus.utils.SupportUtils;
  * switches used in the remaining preferences. There's no AppCompat SwitchPreference to extend,
  * so instead we just build our own preference.
  */
-class TelemetrySwitchPreference extends Preference {
+public class TelemetrySwitchPreference extends Preference {
     public TelemetrySwitchPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
@@ -53,6 +54,7 @@ class TelemetrySwitchPreference extends Preference {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 TelemetryWrapper.setTelemetryEnabled(getContext(), isChecked);
+                FirebaseHelper.bind(getContext());
             }
         });
 

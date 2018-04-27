@@ -9,7 +9,6 @@ apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'com.icesmith.androidtextresolver'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
-apply plugin: 'io.fabric'
 
 
 buildscript {
@@ -85,33 +84,37 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "bool", "enableCrashlytics", "true"
+            matchingFallbacks = ["firebase"]
         }
         beta {
             initWith release
-
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            matchingFallbacks = ["release"]
-            resValue "bool", "enableCrashlytics", "true"
+            matchingFallbacks = ["release", "firebase"]
         }
         debug {
             def userName = System.getenv("USER")
             applicationIdSuffix ".debug." + userName
             versionNameSuffix applicationIdSuffix
-            resValue "bool", "enableCrashlytics", "false"
+            matchingFallbacks = ["firebase_no_op"]
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
         // for some developers (i.e. variables can't be inspected or seen).
         coverage {
             initWith debug
-
             applicationIdSuffix ".coverage"
             testCoverageEnabled true
-            matchingFallbacks = ["debug"]
-            resValue "bool", "enableCrashlytics", "false"
+            matchingFallbacks = ["debug", "firebase_no_op"]
+        }
+        // special build type to develop Firebase related stuff
+        firebase {
+            initWith debug
+
+            applicationIdSuffix ".debug.mozilla"
+            versionNameSuffix applicationIdSuffix
+            matchingFallbacks = ["debug", "firebase"]
         }
     }
 
@@ -202,7 +205,7 @@ dependencies {
     implementation project(':third_party:glide:library')
     kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
 
-    api project(':firebase')
+    implementation project(':firebase')
 
     implementation "com.android.support:support-v4:${Versions.support}"
     implementation "com.android.support:appcompat-v7:${Versions.support}"
@@ -254,6 +257,8 @@ dependencies {
     betaImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
+    firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -321,6 +326,16 @@ android.applicationVariants.all { variant ->
     } else {
         buildConfigField 'String', 'ADJUST_TOKEN', 'null'
         println("Not setting adjust token (Not a focus release build)")
+    }
+    if (variant.buildType.name == "firebase") {
+        variant.assemble.doFirst {
+            if (SystemEnv.google_app_id == null || SystemEnv.default_web_client_id == null ||
+                    SystemEnv.firebase_database_url == null || SystemEnv.gcm_defaultSenderId == null ||
+                    SystemEnv.google_api_key == null || SystemEnv.google_crash_reporting_api_key == null ||
+                    SystemEnv.project_id == null) {
+                throw new GradleException("System variables for Firebase are required here since you are in firebase build type")
+            }
+        }
     }
 }
 
@@ -621,4 +636,3 @@ afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
 
-apply plugin: 'com.google.gms.google-services'

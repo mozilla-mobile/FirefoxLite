@@ -5,24 +5,37 @@
 
 package org.mozilla.focus.utils;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.webkit.WebStorage;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class FileUtils {
     private static final String WEBVIEW_DIRECTORY = "app_webview";
     private static final String WEBVIEW_CACHE_DIRECTORY = "cache";
+
 
     public static boolean truncateCacheDirectory(final Context context) {
         final File cacheDirectory = context.getCacheDir();
@@ -232,4 +245,61 @@ public class FileUtils {
 
         return bundle;
     }
+
+    // Assume we already have read external storage permission
+    // For any Exception, we'll handle them in the same way. So a general Exception should be fine.
+    public static HashMap<String, Object> fromJsonOnDisk(String remoteConfigJson) throws Exception {
+
+        final File sdcard = Environment.getExternalStorageDirectory();
+
+        // Check External Storage
+        if (sdcard == null) {
+            throw new Exception("No External Storage Available");
+        }
+
+        // Check if config file exist
+        final File file = new File(sdcard, remoteConfigJson);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("Can't find " + remoteConfigJson);
+        }
+
+        // Read text from config file
+        final StringBuilder text = new StringBuilder();
+
+
+        // try with resource so br will call close() automatically
+        try (InputStream inputStream = new FileInputStream(file);
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+        }
+
+        // Parse JSON and put it into a HashMap
+        final JSONObject jsonObject = new JSONObject(text.toString());
+        final HashMap<String, Object> map = new HashMap<>();
+
+        // Iterate the JSON and put the key-value pair in the HashMap
+        for (Iterator<String> it = jsonObject.keys(); it.hasNext(); ) {
+            String key = it.next();
+            map.put(key, jsonObject.get(key));
+        }
+
+
+        return map;
+    }
+
+    // Check if we have the permission.
+    public static boolean canReadExternalStorage(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int result = context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
+    }
+
 }
