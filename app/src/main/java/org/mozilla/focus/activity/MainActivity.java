@@ -479,7 +479,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
                 TelemetryWrapper.menuBlockImageChangeTo(blockingImages);
                 break;
-            case R.id.menu_turbomode:
+            case R.id.menu_turbomode:DialogUtils.showRateAppDialog(this);
                 //  Toggle
                 final boolean turboEnabled = !isTurboEnabled();
                 Settings.getInstance(this).setTurboMode(turboEnabled);

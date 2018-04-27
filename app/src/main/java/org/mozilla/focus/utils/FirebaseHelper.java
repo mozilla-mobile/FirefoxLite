@@ -1,6 +1,7 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.os.Looper;
 
 import org.mozilla.focus.BuildConfig;
 
@@ -18,6 +19,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
 
     private static FirebaseHelper instance;
+    private HashMap<String, Object> remoteConfigDefault;
 
     private FirebaseHelper() {
 
@@ -39,6 +41,14 @@ final public class FirebaseHelper extends FirebaseWrapper {
     // this is called in FirebaseWrapper's internalInit()
     @Override
     HashMap<String, Object> getRemoteConfigDefault(Context context) {
-        return FirebaseHelperInject.getRemoteConfigDefault(context);
+
+        if (remoteConfigDefault == null) {
+            // This should only happen during internalInit
+            if (Looper.myLooper() != Looper.getMainLooper()){
+                // getRemoteConfigDefault can have I/O access, so must in background thread
+                remoteConfigDefault = FirebaseHelperInject.getRemoteConfigDefault(context);
+            }
+        }
+        return remoteConfigDefault;
     }
 }
