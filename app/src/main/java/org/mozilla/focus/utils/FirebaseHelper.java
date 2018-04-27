@@ -31,10 +31,12 @@ final public class FirebaseHelper extends FirebaseWrapper {
     @Nullable
     private static BlockingEnabler.BlockingEnablerCallback enablerCallback;
 
+
     private FirebaseHelper() {
     }
 
     // this is only for testing, so testing code can observe the completion of enabler completes.
+    // the passin callback is static, so don't pass something could be leaked
     @VisibleForTesting
     public static void injectEnablerCallback(BlockingEnabler.BlockingEnablerCallback callback) {
         enablerCallback = callback;
@@ -55,9 +57,10 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     public static boolean bind(@NonNull final Context context) {
 
-        final boolean enable = TelemetryWrapper.isTelemetryEnabled(context);
+        final Context safeContext = context.getApplicationContext();
+        final boolean enable = TelemetryWrapper.isTelemetryEnabled(safeContext);
 
-        return enableFirebase(context, enable);
+        return enableFirebase(safeContext, enable);
 
 
     }
@@ -82,13 +85,17 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     
     // this is a static class cause I want avoid leaking to context.
-    private static class BlockingEnabler implements Runnable {
+    public static class BlockingEnabler implements Runnable {
 
-        interface BlockingEnablerCallback {
+        public interface BlockingEnablerCallback {
+
+            void runDelayOnExecution();
+
             void onComplete();
         }
 
         BlockingEnablerCallback blockingEnablerCallback;
+
         boolean enable;
         WeakReference<Context> weakContext;
 
@@ -104,6 +111,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
             if (weakContext == null || weakContext.get() == null) {
                 return;
             }
+
+            blockingEnablerCallback.runDelayOnExecution();
 
             final Context context = weakContext.get();
 

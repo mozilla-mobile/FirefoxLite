@@ -1,9 +1,19 @@
 package org.mozilla.focus.test.runner;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.test.runner.AndroidJUnitRunner;
 
+import org.mozilla.focus.AndroidTestApplication;
+
 public class CustomTestRunner extends AndroidJUnitRunner {
+
+    @Override
+    public Application newApplication(ClassLoader cl, String className, Context context)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        return super.newApplication(cl, AndroidTestApplication.class.getName(), context);
+    }
 
     @Override
     public void onCreate(final Bundle arguments) {
