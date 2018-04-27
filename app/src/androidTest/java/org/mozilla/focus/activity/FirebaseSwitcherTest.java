@@ -72,7 +72,7 @@ public class FirebaseSwitcherTest {
         AndroidTestUtils.beforeTest();
 
         // set the pref name for later use
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         prefName = context.getString(R.string.pref_key_telemetry);
 
         // set idlingResource for Firebase enabler
@@ -86,7 +86,7 @@ public class FirebaseSwitcherTest {
     public void tearDown() {
 
         // make sure the pref is off when the app starts
-        resetPref(false);
+        resetPref(true);
 
         if (idlingResource != null) {
             // unregister again if any surprise happens during the test
@@ -204,7 +204,7 @@ public class FirebaseSwitcherTest {
 
 
     private void resetPref(boolean enable) {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         final String prefName = context.getString(R.string.pref_key_telemetry);
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().putBoolean(prefName, enable).apply();
