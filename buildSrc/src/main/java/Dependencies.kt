@@ -26,8 +26,18 @@ object Versions {
     const val uiautomator = "2.1.3"
     const val mockwebserver = "3.7.0"
     const val firebase = "15.0.2"
-    const val crashlytics = "2.9.1"
+    const val crashlytics = "2.9.2"
     const val google_services_plugin = "3.1.1"
     const val fabric_plugin = "1.25.1"
 
+}
+
+object SystemEnv {
+    val google_app_id: String? = System.getenv("google_app_id")
+    val default_web_client_id: String? = System.getenv("default_web_client_id")
+    val firebase_database_url: String? = System.getenv("firebase_database_url")
+    val gcm_defaultSenderId: String? = System.getenv("gcm_defaultSenderId")
+    val google_api_key: String? = System.getenv("google_api_key")
+    val google_crash_reporting_api_key: String? = System.getenv("google_crash_reporting_api_key")
+    val project_id: String? = System.getenv("project_id")
 }

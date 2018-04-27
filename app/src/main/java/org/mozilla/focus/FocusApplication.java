@@ -45,4 +45,6 @@ public class FocusApplication extends LocaleAwareApplication {
         DownloadInfoManager.getInstance().init(this);
 
     }
+
+
 }

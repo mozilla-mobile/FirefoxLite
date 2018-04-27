@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import org.mozilla.focus.activity.MainActivity;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 // Prov
 public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
@@ -18,7 +19,9 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
     //
     @Override
     public void onRemoteMessage(String url, String title, String body) {
-
+        if (!TelemetryWrapper.isTelemetryEnabled(this)) {
+            return;
+        }
 
         final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 

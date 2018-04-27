@@ -104,7 +104,7 @@
 
         <!-- This will either be an actual FCM messaging service, or a dummy service that do nothing-->
         <service
-            android:name=".notification.RocketMessagingService">
+            android:name="org.mozilla.focus.notification.RocketMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -116,12 +116,6 @@
             android:enabled="false"
             android:exported="false"
             tools:ignore="ExportedService" />
-
-        <!-- We don't need Crashlytics in debug build. Besides, there's some Strict Mode violation
-             in it when API > 26. Which will make the penalty dialog keeps popping :( -->
-        <meta-data
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="@bool/enableCrashlytics"/>
 
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"
@@ -173,7 +167,7 @@
         </receiver>
 
         <receiver
-            android:name=".notification.NotificationActionBroadcastReceiver"
+            android:name="org.mozilla.focus.notification.NotificationActionBroadcastReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="action_notification"/>
@@ -183,8 +177,15 @@
 
         <service
             android:name="org.mozilla.focus.components.RelocateService"
-            android:enabled="true"
             android:exported="false" />
+
+        <provider
+            android:name="org.mozilla.focus.provider.FirebaseHelperProvider"
+            android:authorities="${applicationId}.provider.firebasehelperprovider"
+            android:enabled="true"
+            android:exported="false"
+            android:initOrder="100" />
+
     </application>
 
 </manifest>
