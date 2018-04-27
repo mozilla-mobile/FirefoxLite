@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.preference.SwitchPreference;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.IdlingRegistry;
@@ -31,6 +32,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.helper.FirebaseEnablerIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.widget.TelemetrySwitchPreference;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -79,14 +81,14 @@ public class FirebaseSwitcherTest {
         idlingResource = new FirebaseEnablerIdlingResource();
 
         // make sure the pref is on when the app starts
-        resetPref(true);
+//        resetPref(true);
     }
 
     @After
     public void tearDown() {
 
         // make sure the pref is off when the app starts
-        resetPref(true);
+//        resetPref(true);
 
         if (idlingResource != null) {
             // unregister again if any surprise happens during the test
@@ -124,13 +126,14 @@ public class FirebaseSwitcherTest {
 
         // Click on the switch multiple times...
         return onData(allOf(
-                is(instanceOf(Preference.class)),
-                withKey(prefName))).
+                is(instanceOf(TelemetrySwitchPreference.class)))).
                 onChildView(withClassName(is(Switch.class.getName())));
     }
 
     @Test
     public void flipPrefCrazily_OnlyOneRunnableIsCreated() {
+
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         // prepare for the view to interact
         DataInteraction view = prepareForView();
@@ -144,21 +147,21 @@ public class FirebaseSwitcherTest {
         // The state is not changed, but we still want keep the same status and call bind again to kick off the enabler.
         // I use bind() to simulate the click. This is because calling click can't let get the return value
         // of the bind method ( I use it to deteremine if a new Runnable is created)
-        boolean newRunnableCreated = FirebaseHelper.bind(getContext());
+        boolean newRunnableCreated = FirebaseHelper.bind(context);
         // Only this time will be true
         // first time, should get true from bind
         assertTrue(newRunnableCreated);
 
         // the successors should return false( not create new runnable)
         // assume below three method calls happens very fast
-        newRunnableCreated = FirebaseHelper.bind(getContext());
+        newRunnableCreated = FirebaseHelper.bind(context);
         assertFalse(newRunnableCreated);
 
-        newRunnableCreated = FirebaseHelper.bind(getContext());
+        newRunnableCreated = FirebaseHelper.bind(context);
         // second time, should get false
         assertFalse(newRunnableCreated);
 
-        newRunnableCreated = FirebaseHelper.bind(getContext());
+        newRunnableCreated = FirebaseHelper.bind(context);
         // third time, should get false
         assertFalse(newRunnableCreated);
 
@@ -202,7 +205,15 @@ public class FirebaseSwitcherTest {
 
     }
 
+    @Test
+    public void flipCrazyAndPressBack_ShouldHaveNoLeak() {
+        // TODO: WIP
 
+    }
+
+
+    // in debug, this pref is off by default, We can either reset it before we run the test, or inject
+    // the implementation in the original code
     private void resetPref(boolean enable) {
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         final String prefName = context.getString(R.string.pref_key_telemetry);

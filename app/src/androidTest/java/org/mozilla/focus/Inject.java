@@ -7,7 +7,10 @@ package org.mozilla.focus;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 
 import org.mozilla.focus.persistence.TabsDatabase;
@@ -56,6 +59,19 @@ public class Inject {
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
+    }
+
+    public static boolean isTelemetryEnabled(Context context) {
+        // The first access to shared preferences will require a disk read.
+        final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskReads();
+        try {
+            final Resources resources = context.getResources();
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            return preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), true);
+        } finally {
+            StrictMode.setThreadPolicy(threadPolicy);
+        }
+
     }
 
 }

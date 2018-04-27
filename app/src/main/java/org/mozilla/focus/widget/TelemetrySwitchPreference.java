@@ -28,7 +28,7 @@ import org.mozilla.focus.utils.SupportUtils;
  * switches used in the remaining preferences. There's no AppCompat SwitchPreference to extend,
  * so instead we just build our own preference.
  */
-class TelemetrySwitchPreference extends Preference {
+public class TelemetrySwitchPreference extends Preference {
     public TelemetrySwitchPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
