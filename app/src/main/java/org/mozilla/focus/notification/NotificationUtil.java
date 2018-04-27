@@ -22,7 +22,6 @@ public class NotificationUtil {
 
     private static final String DEFAULT_CHANNEL_ID = "default_channel_id";
 
-
     public static NotificationCompat.Builder generateNotificationBuilder(Context context, PendingIntent pendingIntent) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -63,6 +62,7 @@ public class NotificationUtil {
             final NotificationChannel notificationChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }

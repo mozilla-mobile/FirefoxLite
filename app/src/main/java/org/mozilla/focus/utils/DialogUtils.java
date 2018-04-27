@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -20,6 +21,10 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 public class DialogUtils {
 
     public static final int APP_CREATE_THRESHOLD_FOR_RATE_DIALOG = 6;
+
+    // APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION must be larger than APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG.
+    // otherwise RATE_NOTIFICATION'll be shown before SHARE_DIALOG. And
+    // AppConfigWrapper.getShareDialogLaunchTimeThreshold() will have unexpected behaviour
     public static final int APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 6;
     public static final int APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 4;
 
@@ -65,6 +70,16 @@ public class DialogUtils {
                 telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
             }
         });
+        final String title = FirebaseWrapper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE);
+        if (title != null) {
+            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_title)).setText(title);
+        }
+
+        final String content = FirebaseWrapper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT);
+        if (content != null) {
+            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
+        }
+
         dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

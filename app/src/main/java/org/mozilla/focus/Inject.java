@@ -35,12 +35,12 @@ public class Inject {
         final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll();
 
         if (AppConstants.isBetaBuild()) {
-            threadPolicyBuilder.penaltyDialog();
+            threadPolicyBuilder.penaltyLog().penaltyDialog();
             vmPolicyBuilder.penaltyLog();
         } else { // Dev/debug build
             threadPolicyBuilder.penaltyLog().penaltyDialog();
-            // We want only penaltyDeath(), but penaltLog() is needed print a stacktrace when a violation happens
-            vmPolicyBuilder.penaltyLog().penaltyDeath();
+            // For crashlytics to work in Debug build, we can't use penaltyDeath here.
+            vmPolicyBuilder.penaltyLog();
         }
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());

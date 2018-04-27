@@ -19,6 +19,7 @@ import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.SupportUtils;
 
 /**
@@ -53,6 +54,7 @@ class TelemetrySwitchPreference extends Preference {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 TelemetryWrapper.setTelemetryEnabled(getContext(), isChecked);
+                FirebaseHelper.bind(getContext().getApplicationContext());
             }
         });
 

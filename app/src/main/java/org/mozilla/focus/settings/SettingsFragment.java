@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -23,7 +24,8 @@ import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DialogUtils;
-import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 
 import java.util.Locale;
@@ -126,4 +128,5 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             //Save downloads/cache/offline pages to SD card/Internal storage Callback function
         }
     }
+
 }

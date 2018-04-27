@@ -372,4 +372,10 @@
 
     <!-- Snack bar button that switch the newly loaded background tab to the foreground -->
     <string name="new_background_tab_switch">Switch</string>
+
+    <!-- Displayed in Android N+ when user long click on our notification in system tray -->
+    <string name="notification_channel_name">Notification Channel</string>
+
+    <!-- Displayed in Android N+ when user long click on our notification in system tray -->
+    <string name="notification_channel_description">Default Notification Channel</string>
 </resources>
