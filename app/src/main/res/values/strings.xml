@@ -313,8 +313,8 @@
     <string name="remove">Remove</string>
 
     <!-- In-app notification, Privacy policy update -->
-    <string name="privacy_policy_update_notification_title">Privacy policy update</string>
-    <string name="privacy_policy_update_notification_action">Tap here to learn more about the changes.</string>
+    <string name="privacy_policy_update_notification_title">Product Update Notice</string>
+    <string name="privacy_policy_update_notification_action">To make Firefox Rocket better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
 
     <!--In-app Promotion, Rate the App-->
     <string name="rate_app_dialog_text_title">Love {{app_name}}?</string>
