@@ -115,13 +115,16 @@ public class FirebaseSwitcherTest {
         // now the pref should be unchecked
         view.check(matches(isNotChecked()));
 
+        IdlingRegistry.getInstance().unregister(idlingResource);
+
+
     }
 
     private DataInteraction prepareForView() {
         // Now launch Rocket's setting activity
         settingsActivity.launchActivity(new Intent());
 
-        // set idlingResource for Firebase enabler
+        // set idlingResource for Firebase enabler. Please note: idlingReource
         idlingResource = new FirebaseEnablerIdlingResource();
 
         // This make FirebaseHelper aware of idlingResource
@@ -134,9 +137,9 @@ public class FirebaseSwitcherTest {
     }
 
     // call bind() multiple times to see if any runnable is created.
-    // no actual click was performed.
+    // no actual click was performed. This test case here is not really a UI test.
     @Test
-    public void flipPrefCrazily_OnlyOneRunnableIsCreated() {
+    public void callBindCrazily_OnlyOneRunnableIsCreated() {
 
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
@@ -173,7 +176,9 @@ public class FirebaseSwitcherTest {
         // wait for the enabler to completes, and start a new one.
         IdlingRegistry.getInstance().register(idlingResource);
 
+        // calling onView will make sure the idlingResource will completes its operation
         view.check(matches(isChecked()));
+
         // this time it will be true cause the previous one is done
         newRunnableCreated = FirebaseHelper.bind(context);
 
@@ -216,6 +221,8 @@ public class FirebaseSwitcherTest {
 
         // now the pref should be checked
         view.check(matches(isChecked()));
+
+        IdlingRegistry.getInstance().unregister(idlingResource);
 
     }
 
