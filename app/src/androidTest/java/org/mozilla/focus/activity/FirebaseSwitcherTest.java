@@ -1,6 +1,7 @@
 package org.mozilla.focus.activity;
 
 
+import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
@@ -30,9 +31,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.FirebaseEnablerIdlingResource;
+import org.mozilla.focus.helper.LeakCanaryHandlingIdlingResource;
+import org.mozilla.focus.utils.AndroidTestAnalysisResultService;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.widget.TelemetrySwitchPreference;
+
+import java.lang.ref.WeakReference;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -43,6 +48,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.PreferenceMatchers.withKey;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -76,7 +82,6 @@ public class FirebaseSwitcherTest {
         // set the pref name for later use
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         prefName = context.getString(R.string.pref_key_telemetry);
-
 
 
         // make sure the pref is on when the app starts
@@ -144,10 +149,10 @@ public class FirebaseSwitcherTest {
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         // prepare for the view to interact
-         DataInteraction view = prepareForView();
+        DataInteraction view = prepareForView();
 
         // make sure Send Usage Data pref' switch is checked ( the initial state)
-         view.check(matches(isChecked()));
+        view.check(matches(isChecked()));
 
         // I've added some latency to the enabler, in case it runs too fast
         // This is done via BlockingEnabler's interface that IdlingResource implements.
@@ -229,6 +234,46 @@ public class FirebaseSwitcherTest {
     @Test
     public void flipCrazyAndPressBack_ShouldHaveNoLeak() {
         // TODO: WIP
+
+
+        // prepare for the view to interact
+        DataInteraction view = prepareForView();
+
+        WeakReference<SettingsActivity> reference = new WeakReference<>(settingsActivity.getActivity());
+
+        // make sure Send Usage Data pref' switch is checked ( the initial state)
+//        view.check(matches(isChecked()));
+
+        // after this, the state is off
+        view.perform(click());
+
+        // after this, the state is on
+        view.perform(click());
+
+        // after this, the state is off
+        view.perform(click());
+
+        // after this, the state is on
+        view.perform(click());
+
+        // Now we wait for the enabler to completes
+        IdlingRegistry.getInstance().register(idlingResource);
+
+        // now the pref should be checked
+//        view.check(matches(isChecked()));
+
+        IdlingRegistry.getInstance().unregister(idlingResource);
+
+        final LeakCanaryHandlingIdlingResource leakCanaryHandlingIdlingResource = new LeakCanaryHandlingIdlingResource(settingsActivity.getActivity());
+        IdlingRegistry.getInstance().register(leakCanaryHandlingIdlingResource);
+        settingsActivity.getActivity().finishAndRemoveTask();
+        onView(isRoot());
+
+//        assertTrue(reference.get() == null);
+        assertTrue(!AndroidTestAnalysisResultService.hasLeak);
+
+        IdlingRegistry.getInstance().register(leakCanaryHandlingIdlingResource);
+
 
     }
 
