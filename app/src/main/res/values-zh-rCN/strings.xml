@@ -55,6 +55,7 @@
   <string name="contextmenu_image_copy">复制图像地址</string>
   <string name="contextmenu_image_save">保存图像</string>
   <string name="contextmenu_open_in_new_tab">在新标签页中打开链接</string>
+  <string name="contextmenu_open_image_in_new_tab">在新标签页中打开图像</string>
   <string name="first_run_page1_title">感谢您选择 %1$s</string>
   <string name="first_run_page1_text">由致力于建立一个自由且开放的网络的非营利组织 Mozilla 打造。</string>
   <string name="first_run_page2_title">上网快上加快</string>

@@ -65,7 +65,7 @@
   <string name="first_run_page4_title">Tangkap layar apa saja</string>
   <string name="first_run_page4_text">Tangkap layar dari keseluruhan laman. Lihat tanpa menggunakan kuota data, atau ketuk untuk mengunjungi laman sumbernya.</string>
   <string name="first_run_upgrade_page_title">Kami mendengar masukan Anda!</string>
-  <string name="first_run_upgrade_page_text1">1. Mengerjakan sekaligus dengan membuka %s tab secara bersamaan!</string>
+  <string name="first_run_upgrade_page_text1">1. Mengerjakan sekaligus dengan membuka %s secara bersamaan!</string>
   <string name="first_run_upgrade_page_text1_highlight">multi-tab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs favorit Anda secara cepat dengan %s</string>
   <string name="first_run_upgrade_page_text2_highlight">menambahkan ke beranda!</string>
