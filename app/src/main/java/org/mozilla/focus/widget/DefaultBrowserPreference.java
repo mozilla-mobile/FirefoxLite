@@ -12,18 +12,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.preference.Preference;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Switch;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
-import org.mozilla.focus.components.ComponentStatusMonitor;
+import org.mozilla.focus.components.ComponentToggleService;
 import org.mozilla.focus.utils.Browsers;
-import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 
@@ -56,7 +53,7 @@ public class DefaultBrowserPreference extends Preference {
             final boolean isDefaultBrowser = Browsers.isDefaultBrowser(getContext());
 
             switchView.setChecked(isDefaultBrowser);
-            if (ComponentStatusMonitor.isAlive(getContext())) {
+            if (ComponentToggleService.isAlive(getContext())) {
                 setEnabled(false);
                 setSummary(R.string.preference_default_browser_is_setting);
             }
@@ -118,7 +115,7 @@ public class DefaultBrowserPreference extends Preference {
 
     private void clearDefaultBrowser(Context context) {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName(context, ComponentStatusMonitor.class));
+        intent.setComponent(new ComponentName(context, ComponentToggleService.class));
         context.startService(intent);
     }
 

@@ -187,7 +187,7 @@
             android:initOrder="100" />
 
         <service
-            android:name="org.mozilla.focus.components.ComponentStatusMonitor"
+            android:name="org.mozilla.focus.components.ComponentToggleService"
             android:enabled="true"
             android:exported="false">
             <!-- The enabled state should be converted to resource value and diff in 21~23 and 24~ -->
