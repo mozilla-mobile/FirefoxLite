@@ -133,8 +133,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
             // a state change again.
             if (pending != null && pending != enable) {
                 enableFirebase(context, pending);
-            } else if (pending == null && pending == enable) {
-                if (blockingEnablerCallback == null) {
+            } else {
+                if (blockingEnablerCallback != null) {
                     blockingEnablerCallback.onComplete();
                 }
                 // after now, there'll be now pending state.

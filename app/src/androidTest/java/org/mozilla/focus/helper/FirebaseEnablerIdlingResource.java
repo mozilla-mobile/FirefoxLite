@@ -8,6 +8,7 @@ import android.database.ContentObserver;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.IdlingResource;
+import android.util.Log;
 
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.provider.ScreenshotContract;
@@ -17,6 +18,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FirebaseEnablerIdlingResource implements IdlingResource, FirebaseHelper.BlockingEnabler.BlockingEnablerCallback {
+    private static final String TAG = "FirebaseEnablerIdlingResource";
     private ResourceCallback resourceCallback;
     @NonNull
     private AtomicBoolean isCompleted = new AtomicBoolean(false);
@@ -29,10 +31,11 @@ public class FirebaseEnablerIdlingResource implements IdlingResource, FirebaseHe
     @Override
     public boolean isIdleNow() {
         if (isCompleted.get()) {
-            return false;
-        } else {
             invokeCallback();
             return true;
+        } else {
+
+            return false;
         }
     }
 
@@ -54,6 +57,7 @@ public class FirebaseEnablerIdlingResource implements IdlingResource, FirebaseHe
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
+            Log.d(TAG, "runDelayOnExecution: ");
         }
     }
 

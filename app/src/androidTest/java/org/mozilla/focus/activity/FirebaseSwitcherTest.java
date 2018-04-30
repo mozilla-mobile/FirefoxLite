@@ -77,8 +77,7 @@ public class FirebaseSwitcherTest {
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         prefName = context.getString(R.string.pref_key_telemetry);
 
-        // set idlingResource for Firebase enabler
-        idlingResource = new FirebaseEnablerIdlingResource();
+
 
         // make sure the pref is on when the app starts
 //        resetPref(true);
@@ -109,6 +108,7 @@ public class FirebaseSwitcherTest {
         // after click on the pref
         view.perform(click());
 
+
         // wait for completion
         IdlingRegistry.getInstance().register(idlingResource);
 
@@ -121,6 +121,9 @@ public class FirebaseSwitcherTest {
         // Now launch Rocket's setting activity
         settingsActivity.launchActivity(new Intent());
 
+        // set idlingResource for Firebase enabler
+        idlingResource = new FirebaseEnablerIdlingResource();
+
         // This make FirebaseHelper aware of idlingResource
         FirebaseHelper.injectEnablerCallback(idlingResource);
 
@@ -130,16 +133,18 @@ public class FirebaseSwitcherTest {
                 onChildView(withClassName(is(Switch.class.getName())));
     }
 
+    // call bind() multiple times to see if any runnable is created.
+    // no actual click was performed.
     @Test
     public void flipPrefCrazily_OnlyOneRunnableIsCreated() {
 
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         // prepare for the view to interact
-        DataInteraction view = prepareForView();
+         DataInteraction view = prepareForView();
 
         // make sure Send Usage Data pref' switch is checked ( the initial state)
-        view.check(matches(isChecked()));
+         view.check(matches(isChecked()));
 
         // I've added some latency to the enabler, in case it runs too fast
         // This is done via BlockingEnabler's interface that IdlingResource implements.
@@ -165,13 +170,22 @@ public class FirebaseSwitcherTest {
         // third time, should get false
         assertFalse(newRunnableCreated);
 
-        // Now we wait for the enabler to completes
+        // wait for the enabler to completes, and start a new one.
         IdlingRegistry.getInstance().register(idlingResource);
+
+        view.check(matches(isChecked()));
+        // this time it will be true cause the previous one is done
+        newRunnableCreated = FirebaseHelper.bind(context);
+
+        // Only this time will be true
+        // first time, should get true from bind
+        assertTrue(newRunnableCreated);
 
         // now waits for the idling resource to complete, then check again
 
         // now the pref should be unchecked
-        view.check(matches(isNotChecked()));
+//        view.check(matches(isNotChecked()));
+        IdlingRegistry.getInstance().unregister(idlingResource);
 
         // check the state, should be synced.
     }

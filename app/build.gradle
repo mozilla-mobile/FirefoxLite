@@ -93,7 +93,7 @@ android {
         }
         debug {
             def userName = System.getenv("USER")
-            applicationIdSuffix ".debug." + userName
+            applicationIdSuffix ".debug.mozilla"
             versionNameSuffix applicationIdSuffix
             resValue "bool", "enableCrashlytics", "true"
         }
