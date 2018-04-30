@@ -83,6 +83,13 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
+        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_PRIVACY_POLICY_UPDATE)) {
+            nexStep = IntentUtils.createInternalOpenUrlIntent(context, SupportUtils.getPrivacyURL(), true);
+
+            // TODO: telemetry
+
+            NotificationManagerCompat.from(context).cancel(NotificationId.PRIVACY_POLICY_UPDATE);
+
         } else {
             Log.e(TAG, "Not a valid action");
         }

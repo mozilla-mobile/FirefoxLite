@@ -199,4 +199,21 @@ public class DialogUtils {
         NotificationUtil.sendNotification(context, NotificationId.DEFAULT_BROWSER, builder);
         Settings.getInstance(context).setDefaultBrowserSettingDidShow();
     }
+
+    public static void showPrivacyPolicyUpdateNotification(Context context) {
+
+        final Intent privacyPolicyUpdateNotice = IntentUtils.genPrivacyPolicyUpdateNotificationActionForBroadcastReceiver(context);
+        final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, privacyPolicyUpdateNotice,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
+                .setContentTitle(context.getString(R.string.privacy_policy_update_notification_title))
+                .setContentText(context.getString(R.string.privacy_policy_update_notification_action))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(context.getString(R.string.privacy_policy_update_notification_action)));
+
+        // Show notification
+        NotificationUtil.sendNotification(context, NotificationId.PRIVACY_POLICY_UPDATE, builder);
+        // TODO: Mark the notification was shown
+    }
 }

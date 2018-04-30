@@ -41,6 +41,7 @@ public class IntentUtils {
     public static final String EXTRA_NOTIFICATION_ACTION_FEEDBACK = "ex_no_action_feedback";
     public static final String EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER = "ex_no_click_default_browser";
     public static final String EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX = "ex_no_click_love_firefox";
+    public static final String EXTRA_NOTIFICATION_CLICK_PRIVACY_POLICY_UPDATE = "ex_no_click_privacy_policy_update";
 
     public static final String ACTION_NOTIFICATION = "action_notification";
 
@@ -258,5 +259,12 @@ public class IntentUtils {
         openRocket.setAction(IntentUtils.ACTION_NOTIFICATION);
         openRocket.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX, true);
         return openRocket;
+    }
+
+    static Intent genPrivacyPolicyUpdateNotificationActionForBroadcastReceiver(Context context) {
+        final Intent privacyPolicyUpdate = new Intent(context, NotificationActionBroadcastReceiver.class);
+        privacyPolicyUpdate.setAction(IntentUtils.ACTION_NOTIFICATION);
+        privacyPolicyUpdate.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_PRIVACY_POLICY_UPDATE, true);
+        return privacyPolicyUpdate;
     }
 }
