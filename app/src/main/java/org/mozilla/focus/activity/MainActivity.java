@@ -74,6 +74,7 @@ import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.focus.widget.DefaultBrowserPreference;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 
@@ -125,6 +126,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         SafeIntent intent = new SafeIntent(getIntent());
         AppLaunchMethod.parse(intent).sendLaunchTelemetry();
+
+        // TODO: It would be better if we can move this to LauncherActivity somewhere.
+        if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            finish();
+            return;
+        }
 
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -252,14 +260,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            /**  TODO: Dirty hack to finish self if it's coming from DefaultBrowser setting process, onCreate need to be handled also
-             *      It would be better if we can move this to LauncherActivity somewhere.
-             */
-            if(intent.getBooleanExtra("resolve_default_browser", false)){
+            // TODO: It would be better if we can move this to LauncherActivity somewhere.
+            if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
                 startActivity(new Intent(this, SettingsActivity.class));
                 finish();
+                return;
             }
-
 
             // We can't update our fragment right now because we need to wait until the activity is
             // resumed. So just remember this URL and load it in onResumeFragments().
@@ -539,7 +545,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final int count = settings.getMenuPreferenceClickCount();
         final int threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold();
         // even if user above threshold and not set-as-default-browser, still don't show notification.
-        if ( count == threshold && !Browsers.isDefaultBrowser(this)) {
+        if (count == threshold && !Browsers.isDefaultBrowser(this)) {
             DialogUtils.showDefaultSettingNotification(this);
             TelemetryWrapper.showDefaultSettingNotification();
         }

@@ -29,6 +29,9 @@ import org.mozilla.focus.utils.SupportUtils;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class DefaultBrowserPreference extends Preference {
+
+    public final static String EXTRA_RESOLVE_BROWSER = "_intent_to_resolve_browser_";
+
     private Switch switchView;
 
     private BroadcastReceiver receiver = new ServiceReceiver(this);
@@ -147,7 +150,7 @@ public class DefaultBrowserPreference extends Preference {
         viewIntent.setData(Uri.parse("http://mozilla.org"));
 
         //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
-        viewIntent.putExtra("resolve_default_browser", true);
+        viewIntent.putExtra(EXTRA_RESOLVE_BROWSER, true);
         getContext().startActivity(viewIntent);
     }
 
