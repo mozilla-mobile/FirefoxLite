@@ -20,7 +20,7 @@ import org.mozilla.focus.R;
 
 public class NotificationUtil {
 
-    private static final String DEFAULT_CHANNEL_ID = "default_channel_id";
+    public static final String DEFAULT_CHANNEL_ID = "default_channel_id";
 
     public static NotificationCompat.Builder generateNotificationBuilder(Context context, PendingIntent pendingIntent) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
