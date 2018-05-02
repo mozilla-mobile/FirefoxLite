@@ -60,7 +60,7 @@ public class FirebaseSwitcherTest {
     @After
     public void tearDown() {
         // make sure the pref is back to on when the test ends
-        resetPref(true);
+        resetPref();
 
         if (firebaseEnablerIdlingResource != null) {
             // unregister again if any surprise happens during the test
@@ -234,6 +234,8 @@ public class FirebaseSwitcherTest {
             }
         });
 
+        // FIXME: threading issue?
+
         // leakWatchIdlingResource will be idle is gc is completed.
         IdlingRegistry.getInstance().register(leakWatchIdlingResource);
 
@@ -250,11 +252,11 @@ public class FirebaseSwitcherTest {
 
     // in debug, this pref is off by default, We can either reset it before we run the test, or inject
     // the implementation in the original code
-    private void resetPref(boolean enable) {
+    private void resetPref() {
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         final String prefName = context.getString(R.string.pref_key_telemetry);
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean(prefName, enable).apply();
+        preferences.edit().putBoolean(prefName, true).apply();
 
     }
 

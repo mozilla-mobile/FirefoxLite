@@ -4,17 +4,12 @@
 
 package org.mozilla.focus.helper;
 
-import android.database.ContentObserver;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.IdlingResource;
 import android.util.Log;
 
-import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.provider.ScreenshotContract;
 import org.mozilla.focus.utils.FirebaseHelper;
 
-import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FirebaseEnablerIdlingResource implements IdlingResource, FirebaseHelper.BlockingEnabler.BlockingEnablerCallback {

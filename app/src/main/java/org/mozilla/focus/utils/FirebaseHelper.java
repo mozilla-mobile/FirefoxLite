@@ -94,7 +94,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
             void onComplete();
         }
 
-        BlockingEnablerCallback blockingEnablerCallback;
 
         boolean enable;
         WeakReference<Context> weakContext;
@@ -103,7 +102,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         BlockingEnabler(Context c, boolean state, BlockingEnablerCallback callback) {
             enable = state;
             weakContext = new WeakReference<>(c.getApplicationContext());
-            blockingEnablerCallback = callback;
+
         }
 
         @Override
@@ -112,7 +111,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
                 return;
             }
 
-            blockingEnablerCallback.runDelayOnExecution();
+            if (FirebaseHelper.enablerCallback != null) {
+                FirebaseHelper.enablerCallback.runDelayOnExecution();
+            }
 
             final Context context = weakContext.get();
 
@@ -134,8 +135,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
             if (pending != null && pending != enable) {
                 enableFirebase(context, pending);
             } else {
-                if (blockingEnablerCallback != null) {
-                    blockingEnablerCallback.onComplete();
+                if (FirebaseHelper.enablerCallback != null) {
+                    FirebaseHelper.enablerCallback.onComplete();
                 }
                 // after now, there'll be now pending state.
                 pending = null;
