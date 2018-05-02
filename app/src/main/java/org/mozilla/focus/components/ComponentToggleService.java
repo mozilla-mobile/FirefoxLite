@@ -15,9 +15,11 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.SettingsActivity;
+import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.rocket.component.ConfigActivity;
 
@@ -29,9 +31,9 @@ import org.mozilla.rocket.component.ConfigActivity;
  */
 public class ComponentToggleService extends Service {
 
+    public static final int NOTIFICATION_ID = 0xDEFB;
     private static final int FG_NOTIFICATION_ID = 0xDEFA;
     private static final int INTENT_REQ_CODE = 0x9527;
-    private static final String NOTIFICATION_CHANNEL = "change_default_browser_channel";
     private static final IntentFilter sIntentFilter = new IntentFilter();
 
     static {
@@ -68,9 +70,6 @@ public class ComponentToggleService extends Service {
     @Override
     public void onDestroy() {
         unregisterReceiver(mPackageStatusReceiver);
-
-        //  TODO: Do not remove the Notification, replace it with contentTitle("Tap to set default browser")
-        //  TODO: replaced Notification should launch Setting activity and popup system activity resolver
         stopForeground(true);
         super.onDestroy();
     }
@@ -150,7 +149,7 @@ public class ComponentToggleService extends Service {
         //  The notification channel id should not be necessary since this service should only be enabled for API 21~23
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext(),
-                NOTIFICATION_CHANNEL);
+                NotificationUtil.DEFAULT_CHANNEL_ID);
 
         final Notification notification = builder
                 .setContentTitle(getString(R.string.setting_default_browser_notification_title))
@@ -167,6 +166,21 @@ public class ComponentToggleService extends Service {
     }
 
     private void removeFromForeground() {
+        // to post a new notification so people can go to SettingsActivity easily
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                getApplicationContext(),
+                NotificationUtil.DEFAULT_CHANNEL_ID);
+        final Notification notification = builder
+                .setContentTitle(getString(R.string.setting_default_browser_notification_clickable_text))
+                .setBadgeIconType(R.drawable.ic_notification)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true)
+                .setContentIntent(buildIntent())
+                .build();
+
+        NotificationManagerCompat.from(getApplicationContext())
+                .notify(NOTIFICATION_ID, notification);
+
         stopSelf();
     }
 
