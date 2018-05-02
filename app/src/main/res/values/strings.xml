@@ -65,7 +65,9 @@
      "default apps" screen or if not supported by this Android version to a SUMO page describing
      how to set Rocket as a default browser -->
     <string name="preference_default_browser">Make default browser</string>
-    <string name="preference_default_browser_is_setting">Changing settings...</string>
+    <!-- The message shown in disabled preference_default_browser button when user is in the half
+    way of setting change -->
+    <string name="preference_default_browser_is_setting">Changing settings…</string>
 
     <string name="preference_turbo_mode">Turbo mode</string>
 
@@ -375,7 +377,7 @@
     <string name="new_background_tab_switch">Switch</string>
 
     <!-- Sticky notification to inform user we are in the process of changing default browser -->
-    <string name="setting_default_browser_notification_title">Changing settings...</string>
+    <string name="setting_default_browser_notification_title">Changing settings…</string>
     <string name="setting_default_browser_notification_text">It may take a while</string>
     <string name="setting_default_browser_notification_clickable_text">Tap to set default browser</string>
 </resources>
