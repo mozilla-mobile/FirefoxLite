@@ -5,29 +5,11 @@
 
 package org.mozilla.focus;
 
-import android.preference.PreferenceManager;
-
-import com.squareup.leakcanary.AndroidExcludedRefs;
-import com.squareup.leakcanary.DisplayLeakService;
-import com.squareup.leakcanary.LeakCanary;
-
-import org.mozilla.focus.download.DownloadInfoManager;
-import org.mozilla.focus.history.BrowsingHistoryManager;
-import org.mozilla.focus.locale.LocaleAwareApplication;
-import org.mozilla.focus.screenshot.ScreenshotManager;
-import org.mozilla.focus.search.SearchEngineManager;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AdjustHelper;
-import org.mozilla.focus.utils.AndroidTestAnalysisResultService;
-
 public class AndroidTestApplication extends FocusApplication {
 
     @Override
     protected void setupLeakCanary() {
-        // We use AndroidTestAnalysisResultService to do extra work after a dump is analyzed.
-        LeakCanary.refWatcher(this).listenerServiceClass(AndroidTestAnalysisResultService.class)
-                .excludedRefs(AndroidExcludedRefs.createAppDefaults().build())
-                .buildAndInstall();
+
     }
 
 }

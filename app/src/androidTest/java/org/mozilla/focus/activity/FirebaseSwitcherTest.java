@@ -1,61 +1,41 @@
 package org.mozilla.focus.activity;
 
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiSelector;
 import android.widget.Switch;
 
-import com.squareup.leakcanary.LeakCanary;
-
-import org.bouncycastle.crypto.util.Pack;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.helper.ActivityRecreateLeakWatcherIdlingResource;
 import org.mozilla.focus.helper.FirebaseEnablerIdlingResource;
-import org.mozilla.focus.helper.LeakCanaryHandlingIdlingResource;
-import org.mozilla.focus.utils.AndroidTestAnalysisResultService;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.widget.TelemetrySwitchPreference;
 
-import java.lang.ref.WeakReference;
-
-import static android.support.test.InstrumentationRegistry.getContext;
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.PreferenceMatchers.withKey;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 
 // Only device with API>=24 can set default browser via system settings
@@ -63,40 +43,30 @@ import static org.hamcrest.core.Is.is;
 @SdkSuppress(minSdkVersion = 24, maxSdkVersion = 27)
 public class FirebaseSwitcherTest {
 
-    // idling resource for firebase enabler
-    FirebaseEnablerIdlingResource idlingResource;
+    // idling resource for Firebase enabler
+    private FirebaseEnablerIdlingResource firebaseEnablerIdlingResource;
 
-    // pref key for send usage data
-    String prefName;
+    // idling resource for ActivityRecreateLeakWatcherIdlingResource
+    private ActivityRecreateLeakWatcherIdlingResource leakWatchIdlingResource;
 
     @Rule
     public final ActivityTestRule<SettingsActivity> settingsActivity = new ActivityTestRule<>(SettingsActivity.class, false, false);
 
-    @Rule
-    public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class, true, false);
-
     @Before
     public void setup() {
         AndroidTestUtils.beforeTest();
-
-        // set the pref name for later use
-        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        prefName = context.getString(R.string.pref_key_telemetry);
-
-
-        // make sure the pref is on when the app starts
-//        resetPref(true);
     }
 
     @After
     public void tearDown() {
+        // make sure the pref is back to on when the test ends
+        resetPref(true);
 
-        // make sure the pref is off when the app starts
-//        resetPref(true);
-
-        if (idlingResource != null) {
+        if (firebaseEnablerIdlingResource != null) {
             // unregister again if any surprise happens during the test
-            IdlingRegistry.getInstance().unregister(idlingResource);
+            IdlingRegistry.getInstance().unregister(firebaseEnablerIdlingResource);
+        }
+        if (leakWatchIdlingResource != null) {
         }
     }
 
@@ -113,14 +83,13 @@ public class FirebaseSwitcherTest {
         // after click on the pref
         view.perform(click());
 
-
         // wait for completion
-        IdlingRegistry.getInstance().register(idlingResource);
+        IdlingRegistry.getInstance().register(firebaseEnablerIdlingResource);
 
         // now the pref should be unchecked
         view.check(matches(isNotChecked()));
 
-        IdlingRegistry.getInstance().unregister(idlingResource);
+        IdlingRegistry.getInstance().unregister(firebaseEnablerIdlingResource);
 
 
     }
@@ -130,14 +99,14 @@ public class FirebaseSwitcherTest {
         settingsActivity.launchActivity(new Intent());
 
         // set idlingResource for Firebase enabler. Please note: idlingReource
-        idlingResource = new FirebaseEnablerIdlingResource();
+        firebaseEnablerIdlingResource = new FirebaseEnablerIdlingResource();
 
         // This make FirebaseHelper aware of idlingResource
-        FirebaseHelper.injectEnablerCallback(idlingResource);
+        FirebaseHelper.injectEnablerCallback(firebaseEnablerIdlingResource);
 
         // Click on the switch multiple times...
-        return onData(allOf(
-                is(instanceOf(TelemetrySwitchPreference.class)))).
+        return onData(
+                is(instanceOf(TelemetrySwitchPreference.class))).
                 onChildView(withClassName(is(Switch.class.getName())));
     }
 
@@ -179,7 +148,7 @@ public class FirebaseSwitcherTest {
         assertFalse(newRunnableCreated);
 
         // wait for the enabler to completes, and start a new one.
-        IdlingRegistry.getInstance().register(idlingResource);
+        IdlingRegistry.getInstance().register(firebaseEnablerIdlingResource);
 
         // calling onView will make sure the idlingResource will completes its operation
         view.check(matches(isChecked()));
@@ -195,7 +164,7 @@ public class FirebaseSwitcherTest {
 
         // now the pref should be unchecked
 //        view.check(matches(isNotChecked()));
-        IdlingRegistry.getInstance().unregister(idlingResource);
+        IdlingRegistry.getInstance().unregister(firebaseEnablerIdlingResource);
 
         // check the state, should be synced.
     }
@@ -222,24 +191,19 @@ public class FirebaseSwitcherTest {
         view.perform(click());
 
         // Now we wait for the enabler to completes
-        IdlingRegistry.getInstance().register(idlingResource);
+        IdlingRegistry.getInstance().register(firebaseEnablerIdlingResource);
 
         // now the pref should be checked
         view.check(matches(isChecked()));
 
-        IdlingRegistry.getInstance().unregister(idlingResource);
+        IdlingRegistry.getInstance().unregister(firebaseEnablerIdlingResource);
 
     }
 
     @Test
-    public void flipCrazyAndPressBack_ShouldHaveNoLeak() {
-        // TODO: WIP
-
-
+    public void flipAndLeave_ShouldHaveNoLeak() {
         // prepare for the view to interact
         DataInteraction view = prepareForView();
-
-        WeakReference<SettingsActivity> reference = new WeakReference<>(settingsActivity.getActivity());
 
         // make sure Send Usage Data pref' switch is checked ( the initial state)
 //        view.check(matches(isChecked()));
@@ -256,24 +220,30 @@ public class FirebaseSwitcherTest {
         // after this, the state is on
         view.perform(click());
 
-        // Now we wait for the enabler to completes
-        IdlingRegistry.getInstance().register(idlingResource);
+        // shouldn't leak SettingsActivity if SettingsActivity is recreated before the task completed.
+        leakWatchIdlingResource = new ActivityRecreateLeakWatcherIdlingResource(settingsActivity.getActivity());
 
-        // now the pref should be checked
-//        view.check(matches(isChecked()));
+        // re create the activity to force the current one to call onDestroy.
+        // two things are happening here:
+        // 1. the dying one is being tracked
+        // 2. when the new activity is created, idling resource will check if the old one is cleared.
+        settingsActivity.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                settingsActivity.getActivity().recreate();
+            }
+        });
 
-        IdlingRegistry.getInstance().unregister(idlingResource);
+        // leakWatchIdlingResource will be idle is gc is completed.
+        IdlingRegistry.getInstance().register(leakWatchIdlingResource);
 
-        final LeakCanaryHandlingIdlingResource leakCanaryHandlingIdlingResource = new LeakCanaryHandlingIdlingResource(settingsActivity.getActivity());
-        IdlingRegistry.getInstance().register(leakCanaryHandlingIdlingResource);
-        settingsActivity.getActivity().finishAndRemoveTask();
+        // call onView to sync and wait for idling resource
         onView(isRoot());
 
-//        assertTrue(reference.get() == null);
-        assertTrue(!AndroidTestAnalysisResultService.hasLeak);
+        // now there should be no leak
+        assertFalse(leakWatchIdlingResource.hasLeak());
 
-        IdlingRegistry.getInstance().register(leakCanaryHandlingIdlingResource);
-
+        IdlingRegistry.getInstance().unregister(leakWatchIdlingResource);
 
     }
 
