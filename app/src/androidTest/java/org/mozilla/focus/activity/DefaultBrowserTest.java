@@ -105,7 +105,7 @@ public class DefaultBrowserTest {
         }
 
         // Now launch Rocket's setting activity
-        settingsActivity.launchActivity(new Intent());
+        settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
 
         // Check if the "Default Browser" pref is correctly displayed (switch checked)
         onData(allOf(
