@@ -84,7 +84,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         final DefaultBrowserPreference preference = (DefaultBrowserPreference) findPreference(getString(R.string.pref_key_default_browser));
         if (preference != null) {
-            preference.update();
+            preference.onFragmentResume();
         }
     }
 
@@ -92,6 +92,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onPause() {
         super.onPause();
 
+        final DefaultBrowserPreference preference = (DefaultBrowserPreference) findPreference(getString(R.string.pref_key_default_browser));
+        if (preference != null) {
+            preference.onFragmentPause();
+        }
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 

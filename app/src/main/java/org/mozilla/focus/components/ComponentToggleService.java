@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.SettingsActivity;
@@ -32,6 +33,14 @@ import org.mozilla.rocket.component.ConfigActivity;
 public class ComponentToggleService extends Service {
 
     public static final int NOTIFICATION_ID = 0xDEFB;
+
+    public static final IntentFilter SERVICE_STOP_INTENT_FILTER = new IntentFilter();
+    public static final String SERVICE_STOP_ACTION = "_component_service_stopped_";
+
+    static {
+        SERVICE_STOP_INTENT_FILTER.addAction(SERVICE_STOP_ACTION);
+    }
+
     private static final int FG_NOTIFICATION_ID = 0xDEFA;
     private static final int INTENT_REQ_CODE = 0x9527;
     private static final IntentFilter sIntentFilter = new IntentFilter();
@@ -70,6 +79,10 @@ public class ComponentToggleService extends Service {
     @Override
     public void onDestroy() {
         unregisterReceiver(mPackageStatusReceiver);
+
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .sendBroadcast(new Intent(SERVICE_STOP_ACTION));
+
         stopForeground(true);
         super.onDestroy();
     }
@@ -167,6 +180,7 @@ public class ComponentToggleService extends Service {
 
     private void removeFromForeground() {
         // to post a new notification so people can go to SettingsActivity easily
+        // this notification will be removed by SettingsActivity if it is in foreground
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext(),
                 NotificationUtil.DEFAULT_CHANNEL_ID);
