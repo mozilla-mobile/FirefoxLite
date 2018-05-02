@@ -28,6 +28,7 @@ import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.focus.utils.RecyclerViewTestUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
 
 import java.util.List;
@@ -121,6 +122,38 @@ public class RemoveTopSitesTest {
         // Check the title of test site is matched
         onView(withId(R.id.main_list))
                 .check(matches(atPosition(siteIndex, hasDescendant(withText(testSite.getTitle())))));
+    }
+
+    @Test
+    public void deleteAllTopSitesAndRelaunchApp_defaultTopSitesAreLoaded() {
+
+        // Get the count of top sites
+        final int countTopSite = RecyclerViewTestUtils.getCountFromRecyclerView(R.id.main_list);
+
+        // Iterate each top site and delete it
+        for (int i = 0; i < countTopSite; i++) {
+            // Long click the first top site
+            onView(withId(R.id.main_list))
+                    .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
+
+            // Check the remove button is displayed
+            onView(withText(removeLabel)).check(matches(isDisplayed()));
+
+            // Click the remove button
+            onView(withText(removeLabel))
+                    .inRoot(RootMatchers.isPlatformPopup())
+                    .perform(click());
+        }
+
+        // Exit app
+        Espresso.pressBackUnconditionally();
+
+        // Relaunch app
+        activityTestRule.launchActivity(new Intent());
+
+        // Check if default top sites are loaded again
+        Assert.assertTrue(countTopSite == RecyclerViewTestUtils.getCountFromRecyclerView(R.id.main_list));
+
     }
 
     private void prepareTopSiteList() throws JSONException {
