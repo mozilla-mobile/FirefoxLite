@@ -13,6 +13,7 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.hamcrest.core.AllOf;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.After;
@@ -35,6 +36,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
@@ -97,6 +99,27 @@ public class HomeTest {
             throw new AssertionError("testTopSite failed:", e);
 
         }
+    }
+
+    @Test
+    public void checkBasicHomeComponents_allAreVisible() {
+        activityRule.launchActivity(new Intent());
+
+        // Check if App Logo is visible
+        onView(withId(R.id.home_fragment_title)).check(matches(isDisplayed()));
+
+        // Check if home search field is visible
+        onView(withId(R.id.home_fragment_fake_input)).check(matches(isDisplayed()));
+
+        // Check if top site list is visible
+        onView(withId(R.id.main_list)).check(matches(isDisplayed()));
+
+        // Check if menu button is visible
+        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).check(matches(isDisplayed()));
+
+        // Check if tab tray button is visible
+        onView(allOf(withId(R.id.btn_tab_tray), withParent(withId(R.id.home_screen_menu)))).check(matches(isDisplayed()));
+
     }
 
 }
