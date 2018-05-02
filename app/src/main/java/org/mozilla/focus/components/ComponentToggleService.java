@@ -2,6 +2,7 @@ package org.mozilla.focus.components;
 
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -16,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.SettingsActivity;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.rocket.component.ConfigActivity;
 
@@ -28,6 +30,7 @@ import org.mozilla.rocket.component.ConfigActivity;
 public class ComponentToggleService extends Service {
 
     private static final int FG_NOTIFICATION_ID = 0xDEFA;
+    private static final int INTENT_REQ_CODE = 0x9527;
     private static final String NOTIFICATION_CHANNEL = "change_default_browser_channel";
     private static final IntentFilter sIntentFilter = new IntentFilter();
 
@@ -156,6 +159,7 @@ public class ComponentToggleService extends Service {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(false)
                 .setOngoing(true)
+                .setContentIntent(buildIntent())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();
 
@@ -164,6 +168,13 @@ public class ComponentToggleService extends Service {
 
     private void removeFromForeground() {
         stopSelf();
+    }
+
+    private PendingIntent buildIntent() {
+        return PendingIntent.getActivity(getApplicationContext(),
+                INTENT_REQ_CODE,
+                new Intent(getApplicationContext(), SettingsActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private final static class PackageStatusReceiver extends BroadcastReceiver {

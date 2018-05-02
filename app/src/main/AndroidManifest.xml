@@ -86,6 +86,7 @@
             android:name="org.mozilla.focus.activity.SettingsActivity"
             android:enabled="true"
             android:exported="false"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/SettingsTheme"
             android:configChanges="locale" />
