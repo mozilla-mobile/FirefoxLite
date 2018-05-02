@@ -88,12 +88,7 @@ public class DefaultBrowserPreference extends Preference {
                 setSummary(R.string.preference_default_browser_is_setting);
                 clearDefaultBrowser(context);
             } else {
-                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-                viewIntent.setData(Uri.parse("http://mozilla.org"));
-
-                //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
-                viewIntent.putExtra("resolve_default_browser", true);
-                context.startActivity(viewIntent);
+                triggerWebOpen();
             }
 
 
@@ -147,6 +142,15 @@ public class DefaultBrowserPreference extends Preference {
         context.startActivity(intent);
     }
 
+    private void triggerWebOpen() {
+        Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+        viewIntent.setData(Uri.parse("http://mozilla.org"));
+
+        //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
+        viewIntent.putExtra("resolve_default_browser", true);
+        getContext().startActivity(viewIntent);
+    }
+
     private static class ServiceReceiver extends BroadcastReceiver {
         DefaultBrowserPreference pref;
 
@@ -162,6 +166,13 @@ public class DefaultBrowserPreference extends Preference {
             // SettingsActivity is in foreground(because this BroadcastReceiver is working),
             // to remove notification which created by Service
             NotificationManagerCompat.from(context).cancel(ComponentToggleService.NOTIFICATION_ID);
+
+            // if service finished its job, lets fire an intent to choose myself as default browser
+            final boolean isDefaultBrowser = Browsers.isDefaultBrowser(context);
+            final boolean hasDefaultBrowser = Browsers.hasDefaultBrowser(context);
+            if (!isDefaultBrowser && !hasDefaultBrowser) {
+                pref.triggerWebOpen();
+            }
         }
     }
 }
