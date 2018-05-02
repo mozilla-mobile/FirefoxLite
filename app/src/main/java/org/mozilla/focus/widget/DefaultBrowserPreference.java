@@ -7,12 +7,15 @@ package org.mozilla.focus.widget;
 
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.Preference;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Switch;
@@ -27,6 +30,8 @@ import org.mozilla.focus.utils.SupportUtils;
 @TargetApi(Build.VERSION_CODES.N)
 public class DefaultBrowserPreference extends Preference {
     private Switch switchView;
+
+    private BroadcastReceiver receiver = new ServiceReceiver(this);
 
     @SuppressWarnings("unused") // Instantiated from XML
     public DefaultBrowserPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -56,6 +61,9 @@ public class DefaultBrowserPreference extends Preference {
             if (ComponentToggleService.isAlive(getContext())) {
                 setEnabled(false);
                 setSummary(R.string.preference_default_browser_is_setting);
+            } else {
+                setEnabled(true);
+                setSummary(null);
             }
 
             Settings.updatePrefDefaultBrowserIfNeeded(getContext(), isDefaultBrowser);
@@ -92,6 +100,21 @@ public class DefaultBrowserPreference extends Preference {
         }
     }
 
+    public void onFragmentResume() {
+        this.update();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            LocalBroadcastManager.getInstance(this.getContext())
+                    .registerReceiver(this.receiver, ComponentToggleService.SERVICE_STOP_INTENT_FILTER);
+        }
+    }
+
+    public void onFragmentPause() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            LocalBroadcastManager.getInstance(this.getContext())
+                    .unregisterReceiver(this.receiver);
+        }
+    }
+
     private void openAppDetailSettings(Context context) {
         //  TODO: extract this to util module
         Intent intent = new Intent();
@@ -124,4 +147,21 @@ public class DefaultBrowserPreference extends Preference {
         context.startActivity(intent);
     }
 
+    private static class ServiceReceiver extends BroadcastReceiver {
+        DefaultBrowserPreference pref;
+
+        ServiceReceiver(DefaultBrowserPreference pref) {
+            this.pref = pref;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // update UI
+            pref.update();
+
+            // SettingsActivity is in foreground(because this BroadcastReceiver is working),
+            // to remove notification which created by Service
+            NotificationManagerCompat.from(context).cancel(ComponentToggleService.NOTIFICATION_ID);
+        }
+    }
 }
