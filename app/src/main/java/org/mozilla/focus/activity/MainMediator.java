@@ -231,10 +231,10 @@ class MainMediator {
     /**
      * get HomeFragment if it's Top Fragment
      */
-    Fragment getTopHomeFragment() {
+    HomeFragment getTopHomeFragment() {
         final Fragment topFragment = getTopFragment();
         if (topFragment != null && HomeFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
-            return topFragment;
+            return (HomeFragment) topFragment;
         }
         return null;
     }
