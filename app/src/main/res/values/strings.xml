@@ -381,4 +381,10 @@
     <string name="setting_default_browser_notification_title">Changing settings…</string>
     <string name="setting_default_browser_notification_text">It may take a while</string>
     <string name="setting_default_browser_notification_clickable_text">Tap to set default browser</string>
+
+    <!-- Button on tab tray that can closes all tabs at once -->
+    <string name="tab_tray_close_tabs_btn_text">Close all</string>
+
+    <!-- Confirm message shown on the dialog popped after user clicks close-all-tabs button -->
+    <string name="tab_tray_close_tabs_dialog_msg">Close all tabs?</string>
 </resources>

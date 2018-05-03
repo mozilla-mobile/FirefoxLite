@@ -5,8 +5,10 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -64,6 +66,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private View newTabBtn;
     private View logoMan;
+    private View closeTabsBtn;
+    private AlertDialog closeTabsDialog;
 
     private View backgroundView;
     private Drawable backgroundDrawable;
@@ -114,6 +118,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         super.onStart();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (closeTabsDialog != null && closeTabsDialog.isShowing()) {
+            closeTabsDialog.dismiss();
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -121,6 +133,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         View view = inflater.inflate(R.layout.fragment_tab_tray, container, false);
         recyclerView = view.findViewById(R.id.tab_tray);
         newTabBtn = view.findViewById(R.id.new_tab_button);
+        closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
         return view;
@@ -139,6 +152,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         initRecyclerView();
 
         newTabBtn.setOnClickListener(this);
+        closeTabsBtn.setOnClickListener(this);
         setupTapBackgroundToExpand();
 
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -157,6 +171,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         switch (v.getId()) {
             case R.id.new_tab_button:
                 onNewTabClicked();
+                break;
+
+            case R.id.close_all_tabs_btn:
+                onCloseAllTabsClicked();
                 break;
 
             default:
@@ -454,6 +472,26 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         ScreenNavigator.get(getContext()).addHomeScreen(false);
         TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
+    }
+
+    private void onCloseAllTabsClicked() {
+        if (closeTabsDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
+                    .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            presenter.closeAllTabs();
+                        }
+                    }).setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+        } else {
+            closeTabsDialog.show();
+        }
     }
 
     private void initWindowBackground(Context context) {
