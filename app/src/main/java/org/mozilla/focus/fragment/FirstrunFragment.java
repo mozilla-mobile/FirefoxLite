@@ -72,6 +72,7 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_firstrun, container, false);
+        view.setClickable(true);
 
         view.findViewById(R.id.skip).setOnClickListener(this);
 
