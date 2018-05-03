@@ -223,23 +223,11 @@ public class FileUtils {
             return null;
         }
 
-        FileInputStream fis;
-        ObjectInputStream ois = null;
         Bundle bundle = null;
-        try {
-            fis = new FileInputStream(input);
-            ois = new ObjectInputStream(fis);
+        try (FileInputStream fis = new FileInputStream(input); ObjectInputStream ois = new ObjectInputStream(fis)) {
             bundle = new AndroidBundleSerializer().deserializeBundle(ois);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (ois != null) {
-                    ois.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         return bundle;
