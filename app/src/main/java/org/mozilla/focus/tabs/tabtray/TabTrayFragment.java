@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public static final String FRAGMENT_TAG = "tab_tray";
 
     private static final boolean ENABLE_BACKGROUND_ALPHA_TRANSITION = true;
-    private static final boolean ENABLE_SWIPE_TO_DISMISS = false;
+    private static final boolean ENABLE_SWIPE_TO_DISMISS = true;
 
     private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
 
@@ -320,7 +321,20 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                presenter.tabCloseClicked(viewHolder.getAdapterPosition());
+            }
 
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView,
+                                    RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY,
+                                    int actionState,
+                                    boolean isCurrentlyActive) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    float alpha = 1f - (Math.abs(dX) / (recyclerView.getWidth() / 2f));
+                    viewHolder.itemView.setAlpha(alpha);
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         }).attachToRecyclerView(recyclerView);
     }
