@@ -62,11 +62,12 @@
     <string name="preference_privacy_storage_save_downloads_to">Save downloads to </string>
 
     <!-- This preference does not set Rocket as the default browser but instead links to Android's
-     "default apps" screen or if not supported by this Android version to a SUMO page describing
-     how to set Rocket as a default browser -->
+     "default apps" screen, on older Android versions, we try to reset user's current default
+     browser and let user choose again if they want to always open links with Rocket. -->
     <string name="preference_default_browser">Make default browser</string>
-    <!-- The message shown in disabled preference_default_browser button when user is in the half
-    way of setting change -->
+    <!-- In the "Make default browser" preference entry, there is an optional description field
+    which is empty before the entry is tapped. When a user taps the entry and the change is
+    applying, this message is shown as the description. -->
     <string name="preference_default_browser_is_setting">Changing settings…</string>
 
     <string name="preference_turbo_mode">Turbo mode</string>
