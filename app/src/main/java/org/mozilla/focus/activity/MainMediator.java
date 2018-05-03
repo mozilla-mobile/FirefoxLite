@@ -47,7 +47,7 @@ class MainMediator {
     }
 
     void showHomeScreen(boolean animated, boolean addToBackStack) {
-        if (getTopHomeFragment() == null) {
+        if (!homeFragmentAtTop()) {
             this.prepareHomeScreen(animated, addToBackStack).commit();
         }
     }
@@ -237,6 +237,10 @@ class MainMediator {
             return (HomeFragment) topFragment;
         }
         return null;
+    }
+
+    private boolean homeFragmentAtTop() {
+        return getTopHomeFragment() != null;
     }
 
     private boolean isHomeFragmentVisible() {
