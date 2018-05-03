@@ -23,6 +23,7 @@ public interface FragmentListener {
         SHOW_MENU, // no payload
         DISMISS_URL_INPUT, // payload is boolean value, true if commitAllowingStateLoss
         UPDATE_MENU, // no payload
+        REFRESH_TOP_SITE, // no payload
         SHOW_TAB_TRAY, // no payload
     }
 

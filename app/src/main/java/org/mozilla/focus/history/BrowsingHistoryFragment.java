@@ -7,9 +7,7 @@ package org.mozilla.focus.history;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +17,9 @@ import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.PanelFragment;
-import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.widget.FragmentListener;
 
 
 public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, HistoryItemAdapter.HistoryListener {
@@ -74,10 +72,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                         }
                         mAdapter.clear();
                         TopSitesUtils.getDefaultSitesJsonArrayFromAssets(ctx);
-                        final Fragment fragment = getParentFragment().getTargetFragment();
-                        if (fragment != null && fragment instanceof HomeFragment) {
-                            fragment.onActivityResult(HomeFragment.REFRESH_REQUEST_CODE, Activity.RESULT_OK, null);
-                        }
+                        FragmentListener.notifyParent(BrowsingHistoryFragment.this, FragmentListener.TYPE.REFRESH_TOP_SITE, null);
                         TelemetryWrapper.clearHistory();
                     }
                 });
