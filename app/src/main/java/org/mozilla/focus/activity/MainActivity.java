@@ -418,10 +418,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void showListPanel(int type) {
         DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
-        final Fragment homeFragment = this.mainMediator.getTopHomeFragment();
-        if (homeFragment != null) {
-            dialogFragment.setTargetFragment(homeFragment, HomeFragment.REFRESH_REQUEST_CODE);
-        }
         dialogFragment.show(getSupportFragmentManager(), "");
         mDialogFragment = dialogFragment;
     }
@@ -765,6 +761,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case SHOW_TAB_TRAY:
                 TabTray.show(getSupportFragmentManager());
+                break;
+            case REFRESH_TOP_SITE:
+                HomeFragment homeFragment = this.mainMediator.getTopHomeFragment();
+                if (homeFragment != null) {
+                    homeFragment.updateTopSitesData();
+                }
                 break;
             default:
                 break;
