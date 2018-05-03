@@ -563,7 +563,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     @Override
     public void onStart() {
         super.onStart();
-        notifyParent(FragmentListener.TYPE.FRAGMENT_STARTED, FRAGMENT_TAG);
+        FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.FRAGMENT_STARTED, FRAGMENT_TAG);
     }
 
     @Override
@@ -579,7 +579,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
         dismissGeoDialog();
         super.onStop();
-        notifyParent(FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
+        FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
     }
 
     @Override
@@ -834,18 +834,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public void openPreference() {
-        notifyParent(FragmentListener.TYPE.OPEN_PREFERENCE, null);
+        FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.display_url:
-                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 TelemetryWrapper.clickUrlbar();
                 break;
             case R.id.btn_search:
-                notifyParent(FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 TelemetryWrapper.clickToolbarSearch();
                 break;
             case R.id.btn_open_new_tab:
@@ -853,11 +853,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 TelemetryWrapper.clickAddTabToolbar();
                 break;
             case R.id.btn_tab_tray:
-                notifyParent(FragmentListener.TYPE.SHOW_TAB_TRAY, null);
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
                 TelemetryWrapper.showTabTrayToolbar();
                 break;
             case R.id.btn_menu:
-                notifyParent(FragmentListener.TYPE.SHOW_MENU, null);
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
                 TelemetryWrapper.showMenuToolbar();
                 break;
             case R.id.btn_capture:
@@ -870,13 +870,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
-        }
-    }
-
-    private void notifyParent(FragmentListener.TYPE type, Object payload) {
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, type, payload);
         }
     }
 
@@ -1087,7 +1080,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
                 updateIsLoading(false);
 
-                notifyParent(FragmentListener.TYPE.UPDATE_MENU, null);
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.UPDATE_MENU, null);
 
                 backgroundTransition.startTransition(ANIMATION_DURATION);
 

@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.widget;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,5 +29,12 @@ public interface FragmentListener {
     void onNotified(@NonNull Fragment from,
                     @NonNull TYPE type,
                     @Nullable Object payload);
+
+    static void notifyParent(Fragment fragment, FragmentListener.TYPE type, Object payload) {
+        final Activity activity = fragment.getActivity();
+        if (activity instanceof FragmentListener) {
+            ((FragmentListener) activity).onNotified(fragment, type, payload);
+        }
+    }
 }
 
