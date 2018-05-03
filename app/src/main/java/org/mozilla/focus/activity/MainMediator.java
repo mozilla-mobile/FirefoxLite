@@ -65,7 +65,7 @@ class MainMediator {
             return;
         }
 
-        String parent = isHomeFragmentVisible() ? HomeFragment.FRAGMENT_TAG : BrowserFragment.FRAGMENT_TAG;
+        String parent = homeFragmentAtTop() ? HomeFragment.FRAGMENT_TAG : BrowserFragment.FRAGMENT_TAG;
         this.prepareUrlInput(url, parent).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
     }
 
@@ -241,11 +241,5 @@ class MainMediator {
 
     private boolean homeFragmentAtTop() {
         return getTopHomeFragment() != null;
-    }
-
-    private boolean isHomeFragmentVisible() {
-        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final Fragment fragment = fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-        return fragment != null && fragment.isVisible();
     }
 }
