@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
@@ -34,24 +35,25 @@ public class DefaultBrowserPreference extends Preference {
 
     private Switch switchView;
 
-    private BroadcastReceiver receiver = new ServiceReceiver(this);
+    private DefaultBrowserAction action;
 
     @SuppressWarnings("unused") // Instantiated from XML
     public DefaultBrowserPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setWidgetLayoutResource(R.layout.preference_default_browser);
+        init();
     }
 
     @SuppressWarnings("unused") // Instantiated from XML
     public DefaultBrowserPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWidgetLayoutResource(R.layout.preference_default_browser);
+        init();
     }
 
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
-
         switchView = (Switch) view.findViewById(R.id.switch_widget);
         update();
     }
@@ -75,41 +77,24 @@ public class DefaultBrowserPreference extends Preference {
 
     @Override
     protected void onClick() {
-        final Context context = getContext();
-        // fire an intent and start related activity immediately
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            openDefaultAppsSettings(context);
-        } else {
-
-            final boolean isDefaultBrowser = Browsers.isDefaultBrowser(getContext());
-            final boolean hasDefaultBrowser = Browsers.hasDefaultBrowser(getContext());
-
-            if (isDefaultBrowser) {
-                openAppDetailSettings(context);
-            } else if (hasDefaultBrowser) {
-                setEnabled(false);
-                setSummary(R.string.preference_default_browser_is_setting);
-                clearDefaultBrowser(context);
-            } else {
-                triggerWebOpen();
-            }
-
-
-        }
+        action.onPrefClicked();
     }
 
     public void onFragmentResume() {
         this.update();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            LocalBroadcastManager.getInstance(this.getContext())
-                    .registerReceiver(this.receiver, ComponentToggleService.SERVICE_STOP_INTENT_FILTER);
-        }
+        action.onFragmentResume();
     }
 
     public void onFragmentPause() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            LocalBroadcastManager.getInstance(this.getContext())
-                    .unregisterReceiver(this.receiver);
+        action.onFragmentPause();
+    }
+
+    private void init() {
+        if (action == null) {
+            action = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                    ? new DefaultAction(this)
+                    : new LowSdkAction(this);
+
         }
     }
 
@@ -152,6 +137,78 @@ public class DefaultBrowserPreference extends Preference {
         //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
         viewIntent.putExtra(EXTRA_RESOLVE_BROWSER, true);
         getContext().startActivity(viewIntent);
+    }
+
+    /**
+     * To define necessary actions for setting default-browser.
+     */
+    private interface DefaultBrowserAction {
+        void onPrefClicked();
+
+        void onFragmentResume();
+
+        void onFragmentPause();
+    }
+
+    private static class DefaultAction implements DefaultBrowserAction {
+        DefaultBrowserPreference pref;
+
+        DefaultAction(@NonNull final DefaultBrowserPreference pref) {
+            this.pref = pref;
+        }
+
+        public void onPrefClicked() {
+            // fire an intent and start related activity immediately
+            pref.openDefaultAppsSettings(pref.getContext());
+        }
+
+        public void onFragmentResume() {
+
+        }
+
+        public void onFragmentPause() {
+        }
+    }
+
+    /**
+     * For android sdk version older than N
+     */
+    private static class LowSdkAction implements DefaultBrowserAction {
+        DefaultBrowserPreference pref;
+        BroadcastReceiver receiver;
+
+        LowSdkAction(@NonNull final DefaultBrowserPreference pref) {
+            this.pref = pref;
+            this.receiver = new ServiceReceiver(pref);
+        }
+
+        public void onPrefClicked() {
+            final Context context = pref.getContext();
+            final boolean isDefaultBrowser = Browsers.isDefaultBrowser(context);
+            final boolean hasDefaultBrowser = Browsers.hasDefaultBrowser(context);
+
+            if (isDefaultBrowser) {
+                pref.openAppDetailSettings(context);
+            } else if (hasDefaultBrowser) {
+                pref.setEnabled(false);
+                pref.setSummary(R.string.preference_default_browser_is_setting);
+                pref.clearDefaultBrowser(context);
+            } else {
+                pref.triggerWebOpen();
+            }
+        }
+
+        public void onFragmentResume() {
+            LocalBroadcastManager.getInstance(pref.getContext())
+                    .registerReceiver(this.receiver, ComponentToggleService.SERVICE_STOP_INTENT_FILTER);
+        }
+
+        public void onFragmentPause() {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                LocalBroadcastManager.getInstance(pref.getContext())
+                        .unregisterReceiver(this.receiver);
+            }
+        }
     }
 
     private static class ServiceReceiver extends BroadcastReceiver {
