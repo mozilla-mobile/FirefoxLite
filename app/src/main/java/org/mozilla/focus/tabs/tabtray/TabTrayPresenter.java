@@ -7,6 +7,7 @@ package org.mozilla.focus.tabs.tabtray;
 
 import org.mozilla.focus.tabs.Tab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TabTrayPresenter implements TabTrayContract.Presenter {
@@ -71,5 +72,14 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
     @Override
     public void tabTrayClosed() {
         model.unsubscribe();
+    }
+
+    @Override
+    public void closeAllTabs() {
+        view.refreshData(new ArrayList<Tab>(), null);
+        view.closeTabTray();
+        view.navigateToHome();
+
+        model.clearTabs();
     }
 }

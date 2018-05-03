@@ -10,7 +10,7 @@
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="contentDescription">
+    tools:ignore="contentDescription,spUsage">
 
     <ImageView
         android:id="@+id/logo_man"
@@ -52,14 +52,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/tabTrayItemOutlineNormal" />
-            <ImageView
+            <View
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground" />
+            <ImageView
+                android:id="@+id/plus_sign"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:scaleType="center"
-                android:background="?android:attr/selectableItemBackground"
                 app:srcCompat="@drawable/action_add"
                 tools:ignore="contentDescription" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@id/plus_sign"
+                android:layout_marginStart="@dimen/tab_tray_close_all_btn_margin_start">
+                <TextView
+                    android:id="@+id/close_all_tabs_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:paddingStart="@dimen/tab_tray_close_all_btn_margin_end"
+                    android:paddingEnd="@dimen/tab_tray_close_all_btn_margin_end"
+                    android:textAllCaps="true"
+                    android:text="@string/tab_tray_close_tabs_btn_text"
+                    android:gravity="center|end"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="@color/tabTrayItemSubTitle"
+                    android:textSize="@dimen/tab_tray_close_all_btn_text_size"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:ignore="RtlSymmetry" />
+            </FrameLayout>
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

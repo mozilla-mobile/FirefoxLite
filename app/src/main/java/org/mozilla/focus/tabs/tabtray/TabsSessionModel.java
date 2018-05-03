@@ -84,6 +84,14 @@ class TabsSessionModel implements TabTrayContract.Model {
     }
 
     @Override
+    public void clearTabs() {
+        List<Tab> tabs = tabsSession.getTabs();
+        for (Tab tab : tabs) {
+            tabsSession.dropTab(tab.getId());
+        }
+    }
+
+    @Override
     public void subscribe(final Observer observer) {
         if (onTabModelChangedListener == null) {
             onTabModelChangedListener = new OnTabModelChangedListener() {

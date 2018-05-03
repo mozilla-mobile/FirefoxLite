@@ -15,6 +15,7 @@ class TabTrayContract {
         void tabClicked(int tabPosition);
         void tabCloseClicked(int tabPosition);
         void tabTrayClosed();
+        void closeAllTabs();
     }
 
     interface View {
@@ -35,6 +36,7 @@ class TabTrayContract {
 
         void switchTab(int tabPosition);
         void removeTab(int tabPosition);
+        void clearTabs();
 
         void subscribe(Observer observer);
         void unsubscribe();
