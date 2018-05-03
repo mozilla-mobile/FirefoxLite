@@ -24,6 +24,10 @@ import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.rocket.component.ConfigActivity;
 
+import java.lang.ref.WeakReference;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * A service to toggle ConfigActivity on-off to clear Default browser config.
  * <p>
@@ -54,6 +58,7 @@ public class ComponentToggleService extends Service {
     }
 
     private BroadcastReceiver mPackageStatusReceiver;
+    private Timer timer = new Timer();
 
     @Override
     public void onCreate() {
@@ -73,12 +78,20 @@ public class ComponentToggleService extends Service {
                 }
             }
         });
+
+        timer.schedule(new BombTask(this), BombTask.TIMEOUT);
         registerReceiver(mPackageStatusReceiver, sIntentFilter);
     }
 
     @Override
     public void onDestroy() {
         unregisterReceiver(mPackageStatusReceiver);
+
+        // this should not happen, just in case
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
 
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .sendBroadcast(new Intent(SERVICE_STOP_ACTION));
@@ -123,10 +136,6 @@ public class ComponentToggleService extends Service {
                     PackageManager.DONT_KILL_APP);
             removeFromForeground();
         }
-
-        //  TODO: To avoid a service keep up and idle because these conditions above are not able to complete
-        //  We probably need to set a timeout runnable to postDelay to stopSelf if it takes too long.
-        //  Or maybe do this in onDestroy
 
         return START_STICKY;
     }
@@ -195,6 +204,11 @@ public class ComponentToggleService extends Service {
         NotificationManagerCompat.from(getApplicationContext())
                 .notify(NOTIFICATION_ID, notification);
 
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+
         stopSelf();
     }
 
@@ -203,6 +217,26 @@ public class ComponentToggleService extends Service {
                 INTENT_REQ_CODE,
                 new Intent(getApplicationContext(), SettingsActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    // A TimerTask to stop service if it runs too long
+    private final static class BombTask extends TimerTask {
+        // How long this Service will stop itself
+        private static final long TIMEOUT = 30000; // 30 seconds
+
+        final WeakReference<ComponentToggleService> service;
+
+        BombTask(ComponentToggleService srv) {
+            this.service = new WeakReference<>(srv);
+        }
+
+        @Override
+        public void run() {
+            final ComponentToggleService srv = this.service.get();
+            if (srv != null) {
+                srv.removeFromForeground();
+            }
+        }
     }
 
     private final static class PackageStatusReceiver extends BroadcastReceiver {
