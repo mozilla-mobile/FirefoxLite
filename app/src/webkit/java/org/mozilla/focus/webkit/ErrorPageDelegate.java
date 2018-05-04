@@ -131,8 +131,9 @@ public class ErrorPageDelegate {
     }
 
     public void onReceivedHttpError(WebView webView, WebResourceRequest request, WebResourceResponse errorResponse) {
-        createErrorView();
-        factory.onBindHttpErrorView(factory.getErrorViewHolder(), request, errorResponse);
+        // Currently we are not going to show error page for http error
+        //createErrorView();
+        //factory.onBindHttpErrorView(factory.getErrorViewHolder(), request, errorResponse);
     }
 
     private void createErrorView() {
@@ -164,6 +165,9 @@ public class ErrorPageDelegate {
         public abstract void onErrorViewDestroyed(T viewHolder);
 
         private void createErrorView() {
+            if (errorViewHolder != null) {
+                destroyErrorView();
+            }
             onErrorViewCreated(errorViewHolder = onCreateErrorView());
         }
 
