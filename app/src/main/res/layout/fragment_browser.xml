@@ -20,7 +20,7 @@
             android:layout_height="50dp"
             android:background="@drawable/animated_background" />
 
-        <org.mozilla.focus.widget.ResizableKeyboardLayout
+        <FrameLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,48 +35,38 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="26dp" />
 
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
+            <FrameLayout
+                android:id="@+id/urlbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                android:layout_height="26dp"
                 android:clipChildren="false"
-                app:elevation="0dp">
+                app:layout_scrollFlags="">
 
-                <FrameLayout
-                    android:id="@+id/urlbar"
+                <include layout="@layout/toolbar" />
+
+                <!-- divider between appbar and web-vew, will be covered by progress bar -->
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="26dp"
-                    android:clipChildren="false"
-                    app:layout_scrollFlags="">
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/colorDivider"
+                    tools:background="#FF0000" />
 
-                    <include layout="@layout/toolbar" />
+                <org.mozilla.focus.widget.AnimatedProgressBar
+                    android:id="@+id/progress"
+                    style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="-1dp"
+                    android:importantForAccessibility="yes"
+                    android:progressDrawable="@drawable/photon_progressbar"
+                    app:shiftDuration="@integer/progress_shift_duration"
+                    app:wrapShiftDrawable="true"
+                    tools:progress="50" />
+            </FrameLayout>
 
-                    <!-- divider between appbar and web-vew, will be covered by progress bar -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_gravity="bottom"
-                        android:background="@color/colorDivider"
-                        tools:background="#FF0000" />
-
-                    <org.mozilla.focus.widget.AnimatedProgressBar
-                        android:id="@+id/progress"
-                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="-1dp"
-                        android:importantForAccessibility="yes"
-                        android:progressDrawable="@drawable/photon_progressbar"
-                        app:shiftDuration="@integer/progress_shift_duration"
-                        app:wrapShiftDrawable="true"
-                        tools:progress="50" />
-                </FrameLayout>
-
-            </android.support.design.widget.AppBarLayout>
-
-        </org.mozilla.focus.widget.ResizableKeyboardLayout>
+        </FrameLayout>
     </FrameLayout>
 
     <View
