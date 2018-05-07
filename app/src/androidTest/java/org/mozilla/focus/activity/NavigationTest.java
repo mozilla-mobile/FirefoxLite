@@ -13,7 +13,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.KeyEvent;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +25,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -48,11 +47,6 @@ public class NavigationTest {
         activityTestRule.launchActivity(new Intent());
     }
 
-    @After
-    public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
-    }
-
     @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
@@ -64,7 +58,7 @@ public class NavigationTest {
 
         // Enter site 1 url
         onView(withId(R.id.url_edit)).check(matches(isDisplayed()));
-        onView(withId(R.id.url_edit)).perform(typeText(TARGET_URL_SITE_1));
+        onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_1));
         onView(withId(R.id.url_edit)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
 
         // Check if site 1 url is loaded
@@ -78,7 +72,7 @@ public class NavigationTest {
         onView(withId(R.id.url_edit)).perform(clearText());
 
         // Enter site 2 url
-        onView(withId(R.id.url_edit)).perform(typeText(TARGET_URL_SITE_2));
+        onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_2));
         onView(withId(R.id.url_edit)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
 
         // Check if site 2 url is loaded

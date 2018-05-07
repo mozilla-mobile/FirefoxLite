@@ -12,10 +12,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiObjectNotFoundException;
 
-import org.json.JSONException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,11 +26,9 @@ import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
-import java.io.UnsupportedEncodingException;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -57,13 +52,8 @@ public class SearchSuggestionTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
-    @After
-    public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
-    }
-
     @Test
-    public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
+    public void clickSearchSuggestion_browseByDefaultSearchEngine() {
         activityTestRule.launchActivity(new Intent());
 
         // Get the default search engine
@@ -74,7 +64,7 @@ public class SearchSuggestionTest {
         onView(allOf(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click());
 
         // Type search text
-        onView(allOf(withId(R.id.url_edit), isDisplayed())).perform(typeText("zerda"));
+        onView(allOf(withId(R.id.url_edit), isDisplayed())).perform(replaceText("zerda"));
 
         // Check if the suggestion count is shown at most 5
         onView(allOf(withId(R.id.search_suggestion), isDisplayed())).check(matches(CountChildViewMatcher.withChildViewCount(5, withId(R.id.suggestion_item))));
