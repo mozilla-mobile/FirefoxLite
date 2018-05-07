@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'io.fabric'
 
 android {
 
@@ -8,31 +9,41 @@ android {
         minSdkVersion Versions.min_sdk
     }
 
-    defaultPublishConfig "actual"
-    publishNonDefault true
 
     buildTypes {
-        release {
+        firebase {
+
+            resValue "string", "default_web_client_id", "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com"
+            resValue "string", "firebase_database_url", "https://remoteconfigsample-39b5e.firebaseio.com"
+            resValue "string", "gcm_defaultSenderId", "1062658243921"
+            resValue "string", "google_api_key", "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
+            resValue "string", "google_app_id", "1:1062658243921:android:72a93cf4c1451539"
+            resValue "string", "google_crash_reporting_api_key", "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
+            resValue "string", "project_id", "remoteconfigsample-39b5e.appspot.com"
+            // plugin io.fabric should generate this build_id but somehow it just won't work here.
+            // In the log it says "Crashlytics was applied to an android-library project. Android-library support is currently an incubating feature. Contact support@fabric.io with any issues."
+            // So maybe we can do that later.
+            // Since there's no source code for me to trace, I'll do it manually.
+            // For more details, use ./gradlew help --task fabricGenerateResourcesDebug
+            resValue "string", "com.crashlytics.android.build_id", UUID.randomUUID().toString()
         }
-        beta {
-        }
-        debug {
-        }
-        coverage {
+
+        firebase_no_op {
         }
     }
 }
 
 dependencies {
 
-    debugApi "com.google.firebase:firebase-core:${Versions.firebase}"
-    debugApi "com.google.firebase:firebase-config:${Versions.firebase}"
-    debugApi "com.google.firebase:firebase-messaging:${Versions.firebase}"
-    debugApi "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+    implementation "com.google.firebase:firebase-core:${Versions.firebase}"
+    implementation "com.google.firebase:firebase-config:${Versions.firebase}"
+    api "com.google.firebase:firebase-messaging:${Versions.firebase}"
+    implementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
 
-    betaApi "com.google.firebase:firebase-core:${Versions.firebase}"
-    betaApi "com.google.firebase:firebase-config:${Versions.firebase}"
-    betaApi "com.google.firebase:firebase-messaging:${Versions.firebase}"
-    betaApi "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+}
 
+android.variantFilter { variant ->
+    if(variant.buildType.name.endsWith('release') || variant.buildType.name.endsWith('debug')) {
+        variant.setIgnore(true);
+    }
 }

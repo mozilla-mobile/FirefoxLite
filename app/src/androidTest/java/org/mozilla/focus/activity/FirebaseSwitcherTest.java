@@ -83,7 +83,7 @@ public class FirebaseSwitcherTest {
         // Now launch Rocket's setting activity
         settingsActivity.launchActivity(new Intent());
 
-        FirebaseHelper.init(settingsActivity.getActivity());
+//        FirebaseHelper.init(settingsActivity.getActivity());
 
         FirebaseHelper.injectEnablerCallback(new Delay());
 

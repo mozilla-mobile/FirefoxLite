@@ -2,11 +2,14 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
+import org.mozilla.focus.R;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
@@ -20,6 +23,8 @@ import java.util.HashMap;
  */
 final public class FirebaseHelper extends FirebaseWrapper {
 
+    private static final String TAG = "FirebaseHelper";
+
     // keys for remote config default value
     static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
     static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
@@ -30,6 +35,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     @Nullable
     private static BlockingEnablerCallback enablerCallback;
+
+    // the file name to used when you want to set the default value of RemoteConfig
+    private static final String REMOTE_CONFIG_JSON = "remote_config.json";
 
     private FirebaseHelper() {
     }
@@ -42,22 +50,18 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     public static void init(final Context context) {
 
-        if (initNeeded()) {
+        if (getInstance() == null) {
             initInternal(new FirebaseHelper());
         }
-
-        initCrashlytics();
-
         bind(context);
     }
 
 
     public static boolean bind(@NonNull final Context context) {
 
-        final Context safeContext = context.getApplicationContext();
-        final boolean enable = TelemetryWrapper.isTelemetryEnabled(safeContext);
+        final boolean enable = TelemetryWrapper.isTelemetryEnabled(context);
 
-        return enableFirebase(safeContext, enable);
+        return enableFirebase(context.getApplicationContext(), enable);
 
 
     }
@@ -98,7 +102,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
         }
 
-
         @Override
         protected Void doInBackground(Void... voids) {
             // make StrictMode quiet here, cause Crashlytics has StrictMode.onUntaggedSocket violation
@@ -124,7 +127,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
             changing = true;
 
             // this methods is blocking.
-            updateInstanceId(enable);
+            updateInstanceId(context, enable);
 
             enableCrashlytics(context, enable);
             enableAnalytics(context, enable);
@@ -154,9 +157,41 @@ final public class FirebaseHelper extends FirebaseWrapper {
     HashMap<String, Object> getRemoteConfigDefault(Context context) {
 
         if (remoteConfigDefault == null) {
-            // getRemoteConfigDefault can have I/O access, so must in background thread
-            remoteConfigDefault = FirebaseHelperInject.getRemoteConfigDefault(context);
+            final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();
+            if (mayUseLocalFile && Looper.myLooper() != Looper.getMainLooper()) {
+                // this only happens during init with
+                remoteConfigDefault = fromFile(context);
+            } else {
+                remoteConfigDefault = fromResourceString(context);
+            }
         }
+
         return remoteConfigDefault;
     }
+
+    private HashMap<String, Object> fromFile(Context context) {
+
+        // If we don't have read external storage permission, just don't bother reading the config file.
+        if (FileUtils.canReadExternalStorage(context)) {
+            try {
+                return FileUtils.fromJsonOnDisk(REMOTE_CONFIG_JSON);
+            } catch (Exception e) {
+                Log.w(TAG, "Some problem when reading RemoteConfig file from local disk: ", e);
+                // For any exception, we read the default resource file.
+                return fromResourceString(context);
+            }
+        }
+
+        return fromResourceString(context);
+    }
+
+    // This is the default value from resource string ( so we can leverage l10n)
+    private HashMap<String, Object> fromResourceString(Context context) {
+        final HashMap<String, Object> map = new HashMap<>();
+        map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title));
+        map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT, context.getString(R.string.rate_app_dialog_text_content));
+        return map;
+    }
+
+
 }

@@ -31,7 +31,7 @@ public class FocusApplication extends LocaleAwareApplication {
         LeakCanary.install(this);
 
         // Provide different strict mode penalty for ui testing and production code
-        Inject.enableStrictMode();
+//        Inject.enableStrictMode();
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
