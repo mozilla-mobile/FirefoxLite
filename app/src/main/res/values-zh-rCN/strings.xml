@@ -24,6 +24,7 @@
   <string name="preference_privacy_storage_clear_browsing_data">清除浏览数据</string>
   <string name="preference_privacy_storage_save_downloads_to">下载文件至</string>
   <string name="preference_default_browser">设为默认浏览器</string>
+  <string name="preference_default_browser_is_setting">更改设置…</string>
   <string name="preference_turbo_mode">加速模式</string>
   <string name="preference_mozilla_telemetry">发送统计数据</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla 力争仅收集用来为大众改进 %1$s 所必需的数据。</string>
@@ -154,6 +155,8 @@
   <string name="message_deleted_screenshot">截图已删除</string>
   <string name="message_cannot_find_screenshot">无法显示此截图</string>
   <string name="remove">移除</string>
+  <string name="privacy_policy_update_notification_title">产品更新通知</string>
+  <string name="privacy_policy_update_notification_action">为了让 Firefox Rocket 更适合您和每个人，我们对隐私政策进行了一些修改。点击以了解更多信息。</string>
   <string name="rate_app_dialog_text_title">喜欢 {{app_name}} 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
   <string name="rate_app_dialog_btn_go_rate">是的，5 星好评！</string>
@@ -173,4 +176,7 @@
   <string name="survey_notification_description">为用户打造更好的产品</string>
   <string name="new_background_tab_hint">已打开新标签页</string>
   <string name="new_background_tab_switch">切换过去</string>
+  <string name="setting_default_browser_notification_title">更改设置…</string>
+  <string name="setting_default_browser_notification_text">这可能需要一段时间</string>
+  <string name="setting_default_browser_notification_clickable_text">点按设为默认浏览器</string>
 </resources>
