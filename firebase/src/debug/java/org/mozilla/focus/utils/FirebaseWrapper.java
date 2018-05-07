@@ -20,6 +20,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -37,6 +38,7 @@ abstract class FirebaseWrapper {
 
 
     // ==== Crashlytics =====
+    private static final String CRASHLYTICS_REPORT_DIR = "//data//data//%s//files//.Fabric//com.crashlytics.sdk.android.crashlytics-core";
     private static final String FIREBASE_CRASH_HANDLER_CLASS = "com.crashlytics.android.core.CrashlyticsUncaughtExceptionHandler";
     private static final String FIREBASE_CRASH_HANDLER_DEFAULT = "defaultHandler";
 
@@ -150,12 +152,28 @@ abstract class FirebaseWrapper {
     // Replace DefaultUncaughtExceptionHandler with our naive implementation
     // We don't need to cache the original UncaughtExceptionHandler
     // If we want to restart crashlytics, we just restart the app and don't call this method here.
-    static void enableCrashlytics(boolean enable) {
+    static void enableCrashlytics(Context context, boolean enable) {
 
         if (enable && firebaseCrashHandler != null) {
             Thread.setDefaultUncaughtExceptionHandler(firebaseCrashHandler);
         } else if (systemCrashHandler != null) {
             Thread.setDefaultUncaughtExceptionHandler(systemCrashHandler);
+            removeCrashReportDirectory(context);
+        }
+    }
+
+    private static void removeCrashReportDirectory(Context context) {
+
+        final String path = String.format(CRASHLYTICS_REPORT_DIR, context.getPackageName());
+        final File crashlyticsReportDir = new File(path);
+        try {
+            if (crashlyticsReportDir.exists() && crashlyticsReportDir.isDirectory()) {
+                for (File report : crashlyticsReportDir.listFiles()) {
+                    report.delete();
+                }
+            }
+        } catch (SecurityException e) {
+            Log.e(TAG, "removeCrashReportDirectory: ", e);
         }
     }
 

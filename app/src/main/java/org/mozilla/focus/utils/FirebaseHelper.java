@@ -126,7 +126,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
             // this methods is blocking.
             updateInstanceId(enable);
 
-            enableCrashlytics(enable);
+            enableCrashlytics(context, enable);
             enableAnalytics(context, enable);
             enableCloudMessaging(context, RocketMessagingService.class.getName(), enable);
             enableRemoteConfig(context, enable);
