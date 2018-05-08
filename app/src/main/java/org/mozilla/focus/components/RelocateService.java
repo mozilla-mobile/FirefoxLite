@@ -103,15 +103,24 @@ public class RelocateService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_MOVE.equals(action)) {
-                startForeground();
-                final long rowId = intent.getLongExtra(Constants.EXTRA_ROW_ID, -1);
-                final long downloadId = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1);
-                final String type = intent.getType();
-                final File src = new File(intent.getStringExtra(Constants.EXTRA_FILE_PATH));
 
-                if (src.exists() && src.canWrite()) {
-                    handleActionMove(rowId, downloadId, src, type);
+                // if the download id is not in our database, ignore this operation
+                final long downloadId = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1);
+                final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
+                if (!mgr.recordExists(downloadId)) {
+                    return;
                 }
+
+                // return if no file to move
+                final File src = new File(intent.getStringExtra(Constants.EXTRA_FILE_PATH));
+                if (!src.exists() || !src.canWrite()) {
+                    return;
+                }
+
+                final long rowId = intent.getLongExtra(Constants.EXTRA_ROW_ID, -1);
+                final String type = intent.getType();
+                startForeground();
+                handleActionMove(rowId, downloadId, src, type);
                 stopForeground();
             }
         }
@@ -125,11 +134,6 @@ public class RelocateService extends IntentService {
                                   final long downloadId,
                                   @NonNull final File srcFile,
                                   @Nullable final String mediaType) {
-        // if the download id is not in our database, ignore this operation
-        final DownloadInfoManager mgr = DownloadInfoManager.getInstance();
-        if (!mgr.recordExists(downloadId)) {
-            return;
-        }
 
         final Settings settings = Settings.getInstance(getApplicationContext());
         // Do nothing, if user turned off the option
