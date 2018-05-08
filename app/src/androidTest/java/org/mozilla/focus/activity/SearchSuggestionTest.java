@@ -13,6 +13,7 @@ import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,6 +44,7 @@ public class SearchSuggestionTest {
     public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
     private Context context;
+    private SessionLoadedIdlingResource loadingIdlingResource;
 
     @Before
     public void setUp() {
@@ -52,13 +54,23 @@ public class SearchSuggestionTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    @After
+    public void tearDown() {
+        if (loadingIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(loadingIdlingResource);
+        }
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
+    }
+
     @Test
     public void clickSearchSuggestion_browseByDefaultSearchEngine() {
         activityTestRule.launchActivity(new Intent());
 
         // Get the default search engine
         final SearchEngine defaultSearchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(context);
-        final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
+        loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
         // Click search field
         onView(allOf(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click());

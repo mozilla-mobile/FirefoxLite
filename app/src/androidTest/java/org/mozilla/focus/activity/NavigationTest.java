@@ -13,6 +13,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.KeyEvent;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,16 +42,28 @@ public class NavigationTest {
     private static final String TARGET_URL_SITE_1 = "file:///android_asset/gpl.html";
     private static final String TARGET_URL_SITE_2 = "file:///android_asset/licenses.html";
 
+    private SessionLoadedIdlingResource loadingIdlingResource;
+
     @Before
     public void setUp() {
         AndroidTestUtils.beforeTest();
         activityTestRule.launchActivity(new Intent());
     }
 
+    @After
+    public void tearDown() {
+        if (loadingIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(loadingIdlingResource);
+        }
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
+    }
+
     @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
-        final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
+        loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
         // Click search field
         onView(withId(R.id.home_fragment_fake_input))

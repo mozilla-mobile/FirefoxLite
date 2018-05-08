@@ -88,13 +88,13 @@ public class BrowsingHistoryTest {
 
     @After
     public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
         // We unregister loadingIdlingResource here so other tests will not be affected.
         if (loadingIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
         }
-
-
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test

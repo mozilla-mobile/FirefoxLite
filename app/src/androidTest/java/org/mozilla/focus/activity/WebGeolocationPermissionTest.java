@@ -102,8 +102,10 @@ public class WebGeolocationPermissionTest {
     }
 
     @After
-    public void tearDown() throws Exception {
-        activityRule.getActivity().finishAndRemoveTask();
+    public void tearDown() {
+        if (activityRule.getActivity() != null) {
+            activityRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test

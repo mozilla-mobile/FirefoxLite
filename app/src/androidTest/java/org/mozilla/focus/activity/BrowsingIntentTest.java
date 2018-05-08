@@ -74,6 +74,9 @@ public class BrowsingIntentTest {
         if (loadingIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
         }
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
         try {
             if (webServer != null) {
                 webServer.close();

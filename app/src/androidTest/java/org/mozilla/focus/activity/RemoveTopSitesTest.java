@@ -53,20 +53,20 @@ public class RemoveTopSitesTest {
 
     private List<Site> siteList;
     private Context context;
-    private String removeLabel;
 
     @Before
     public void setUp() throws JSONException {
         AndroidTestUtils.beforeTest();
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        removeLabel = context.getString(R.string.remove);
         prepareTopSiteList();
         activityTestRule.launchActivity(new Intent());
     }
 
     @After
     public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test
@@ -87,10 +87,10 @@ public class RemoveTopSitesTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(siteIndex, longClick()));
 
         // Check the remove button is displayed
-        onView(withText(removeLabel)).check(matches(isDisplayed()));
+        onView(withText(R.string.remove)).check(matches(isDisplayed()));
 
         // Click the remove button
-        onView(withText(removeLabel))
+        onView(withText(R.string.remove))
                 .inRoot(RootMatchers.isPlatformPopup())
                 .perform(click());
 
@@ -117,7 +117,7 @@ public class RemoveTopSitesTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(siteIndex, longClick()));
 
         // Check the remove button is displayed
-        onView(withText(removeLabel))
+        onView(withText(R.string.remove))
                 .check(matches(isDisplayed()));
 
         // Press the back key
