@@ -91,7 +91,8 @@ public class DefaultBrowserPreference extends Preference {
 
     private void init() {
         if (action == null) {
-            action = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            action = ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                    || Build.MANUFACTURER.toLowerCase().contains("vivo"))
                     ? new DefaultAction(this)
                     : new LowSdkAction(this);
 
