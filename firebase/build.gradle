@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'io.fabric'
 
 android {
 
@@ -13,13 +12,13 @@ android {
     buildTypes {
         firebase {
 
-            resValue "string", "default_web_client_id", "1062658243921-pmiqk0hsrv01ir3vsr5sogdtbpf4alfh.apps.googleusercontent.com"
-            resValue "string", "firebase_database_url", "https://remoteconfigsample-39b5e.firebaseio.com"
-            resValue "string", "gcm_defaultSenderId", "1062658243921"
-            resValue "string", "google_api_key", "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
-            resValue "string", "google_app_id", "1:1062658243921:android:72a93cf4c1451539"
-            resValue "string", "google_crash_reporting_api_key", "AIzaSyCQWNEMAqJcG40XzLbIi0fcjzRvP1sUiBU"
-            resValue "string", "project_id", "remoteconfigsample-39b5e.appspot.com"
+            resValue "string", "default_web_client_id", System.getenv("default_web_client_id") ?: ""
+            resValue "string", "firebase_database_url", System.getenv("firebase_database_url") ?: ""
+            resValue "string", "gcm_defaultSenderId", System.getenv("gcm_defaultSenderId") ?: ""
+            resValue "string", "google_api_key", System.getenv("google_api_key") ?: ""
+            resValue "string", "google_app_id", System.getenv("google_app_id") ?: ""
+            resValue "string", "google_crash_reporting_api_key", System.getenv("google_crash_reporting_api_key") ?: ""
+            resValue "string", "project_id", System.getenv("project_id") ?: ""
             // plugin io.fabric should generate this build_id but somehow it just won't work here.
             // In the log it says "Crashlytics was applied to an android-library project. Android-library support is currently an incubating feature. Contact support@fabric.io with any issues."
             // So maybe we can do that later.
@@ -43,7 +42,7 @@ dependencies {
 }
 
 android.variantFilter { variant ->
-    if(variant.buildType.name.endsWith('release') || variant.buildType.name.endsWith('debug')) {
+    if (variant.buildType.name.endsWith('release') || variant.buildType.name.endsWith('debug')) {
         variant.setIgnore(true);
     }
 }

@@ -26,8 +26,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
     private static final String TAG = "FirebaseHelper";
 
     // keys for remote config default value
-    static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
-    static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
+    public static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
+    public static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
 
     private HashMap<String, Object> remoteConfigDefault;
     private static boolean changing = false;
@@ -104,49 +104,62 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            // make StrictMode quiet here, cause Crashlytics has StrictMode.onUntaggedSocket violation
-            // and some I/O access below will also conduct StrictModeDiskReadViolation. I'll set it back after all works are done
-            final StrictMode.ThreadPolicy cachedThreadPolicy = StrictMode.getThreadPolicy();
-            final StrictMode.VmPolicy cacheVmPolicy = StrictMode.getVmPolicy();
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().build());
+            try {
 
-            if (weakContext == null || weakContext.get() == null) {
-                return null;
+
+                // make StrictMode quiet here, cause Crashlytics has StrictMode.onUntaggedSocket violation
+                // and some I/O access below will also conduct StrictModeDiskReadViolation. I'll set it back after all works are done
+                final StrictMode.ThreadPolicy cachedThreadPolicy = StrictMode.getThreadPolicy();
+                final StrictMode.VmPolicy cacheVmPolicy = StrictMode.getVmPolicy();
+                StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
+                StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().build());
+
+                if (weakContext == null || weakContext.get() == null) {
+                    return null;
+                }
+
+                // this is only for testing. So we can simulate slow network..etc
+                final BlockingEnablerCallback callback = FirebaseHelper.enablerCallback;
+                if (callback != null) {
+                    callback.runDelayOnExecution();
+                }
+
+                final Context context = weakContext.get();
+
+                // make sure we are in the changing state
+                changing = true;
+
+                // this methods is blocking.
+                updateInstanceId(context, enable);
+
+                enableCrashlytics(context, enable);
+                enableAnalytics(context, enable);
+                enableCloudMessaging(context, RocketMessagingService.class.getName(), enable);
+                enableRemoteConfig(context, enable);
+
+                // now firebase has completed state changing,
+                changing = false;
+                // we'll check if the cached state is the same as our current one. If not, issue
+                // a state change again.
+                if (pending != null && pending != enable) {
+                    enableFirebase(context, pending);
+                } else {
+                    // after now, there'll be now pending state.
+                    pending = null;
+                }
+
+                StrictMode.setThreadPolicy(cachedThreadPolicy);
+                StrictMode.setVmPolicy(cacheVmPolicy);
+            } catch (Exception e) {
+                // If the google api id from CI is not correct, IllegalStateException " Default FirebaseApp is not initialized"
+                // may be thrown. Just log and do nothing in release build.
+                if (AppConstants.isReleaseBuild()) {
+                    Log.e(TAG, "FirebaseHelper bind failed when Enabler's doInBackground: ", e);
+                } else {
+                    throw e;
+                }
             }
 
-            // this is only for testing. So we can simulate slow network..etc
-            final BlockingEnablerCallback callback = FirebaseHelper.enablerCallback;
-            if (callback != null) {
-                callback.runDelayOnExecution();
-            }
-
-            final Context context = weakContext.get();
-
-            // make sure we are in the changing state
-            changing = true;
-
-            // this methods is blocking.
-            updateInstanceId(context, enable);
-
-            enableCrashlytics(context, enable);
-            enableAnalytics(context, enable);
-            enableCloudMessaging(context, RocketMessagingService.class.getName(), enable);
-            enableRemoteConfig(context, enable);
-
-            // now firebase has completed state changing,
-            changing = false;
-            // we'll check if the cached state is the same as our current one. If not, issue
-            // a state change again.
-            if (pending != null && pending != enable) {
-                enableFirebase(context, pending);
-            } else {
-                // after now, there'll be now pending state.
-                pending = null;
-            }
-
-            StrictMode.setThreadPolicy(cachedThreadPolicy);
-            StrictMode.setVmPolicy(cacheVmPolicy);
             return null;
         }
 

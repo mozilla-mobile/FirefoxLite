@@ -70,7 +70,7 @@ abstract class FirebaseWrapper {
 
 
     // get Remote Config string
-    static String getRcString(@NonNull Context context, @NonNull String key) {
+    public static String getRcString(@NonNull Context context, @NonNull String key) {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
             return "";
@@ -136,7 +136,6 @@ abstract class FirebaseWrapper {
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 
         context.getPackageManager().setComponentEnabledSetting(component, newState, PackageManager.DONT_KILL_APP);
-
     }
 
     private static void initCrashlytics(Context context) {
