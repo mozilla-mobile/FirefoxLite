@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import org.mozilla.focus.utils.SafeIntent;
 
+/* The order of enum value matters. Please put the more specific matching in front of the broader one */
 public enum AppLaunchMethod {
 
     LAUNCHER() {
@@ -55,6 +56,18 @@ public enum AppLaunchMethod {
         public void sendLaunchTelemetry() {
             TelemetryWrapper.launchByExternalAppEvent();
         }
+    },
+
+    UNKNOWN() {
+        @Override
+        boolean match(@NonNull SafeIntent intent) {
+            return true;
+        }
+
+        @Override
+        public void sendLaunchTelemetry() {
+            // Do nothing
+        }
     };
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
@@ -73,6 +86,6 @@ public enum AppLaunchMethod {
             }
         }
 
-        return LAUNCHER;
+        return UNKNOWN;
     }
 }

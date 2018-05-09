@@ -58,6 +58,6 @@ class AppLaunchMethodTest {
 
         val launchMethod = AppLaunchMethod.parse(safeIntent)
 
-        Assert.assertEquals(AppLaunchMethod.LAUNCHER, launchMethod)
+        Assert.assertEquals(AppLaunchMethod.UNKNOWN, launchMethod)
     }
 }
