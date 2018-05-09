@@ -6,12 +6,10 @@
 package org.mozilla.focus.fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -28,13 +26,10 @@ import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.firstrun.FirstrunPagerAdapter;
 import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.NewFeatureNotice;
 
 public class FirstrunFragment extends Fragment implements View.OnClickListener {
     public static final String FRAGMENT_TAG = "firstrun";
-
-    public static final String PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN = "firstrun_shown";
-    public static final String PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION = "firstrun_upgrade_version";
-    public static final int FIRSTRUN_UPGRADE_VERSION = 1;
 
     public static FirstrunFragment create() {
         return new FirstrunFragment();
@@ -162,12 +157,10 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
 
     private PagerAdapter findPagerAdapter(Context context, View.OnClickListener onClickListener) {
         final PagerAdapter pagerAdapter;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean shown = sharedPreferences.getBoolean(PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, false);
-        int firstrunUpgradeVersion = sharedPreferences.getInt(PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, 0);
+        boolean shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun();
         if (!shown) {
             pagerAdapter = new FirstrunPagerAdapter(context, onClickListener);
-        } else if (FIRSTRUN_UPGRADE_VERSION > firstrunUpgradeVersion) {
+        } else if (NewFeatureNotice.getInstance(getContext()).shouldShowMultiTabUpdate()) {
             pagerAdapter = new FirstrunUpgradePagerAdapter(context, onClickListener);
         } else {
             pagerAdapter = null;
@@ -176,10 +169,8 @@ public class FirstrunFragment extends Fragment implements View.OnClickListener {
     }
 
     private void finishFirstrun() {
-        PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
-                .putInt(PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, FIRSTRUN_UPGRADE_VERSION)
-                .putBoolean(PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, true)
-                .apply();
+        NewFeatureNotice.getInstance(getContext()).setFirstRunDidShow();
+        NewFeatureNotice.getInstance(getContext()).setMultiTabUpdateNoticeDidShow();
 
         ((MainActivity) getActivity()).firstrunFinished();
     }
