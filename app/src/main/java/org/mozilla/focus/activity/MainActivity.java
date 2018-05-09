@@ -66,6 +66,7 @@ import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
@@ -333,6 +334,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 appCreateCount >= AppConfigWrapper.getSurveyNotificationLaunchTimeThreshold()) {
             postSurveyNotification();
             history.add(Settings.Event.PostSurveyNotification);
+        }
+
+        if (NewFeatureNotice.getInstance(this).shouldShowPrivacyPolicyUpdate()) {
+            DialogUtils.showPrivacyPolicyUpdateNotification(this);
         }
     }
 

@@ -214,6 +214,6 @@ public class DialogUtils {
 
         // Show notification
         NotificationUtil.sendNotification(context, NotificationId.PRIVACY_POLICY_UPDATE, builder);
-        // TODO: Mark the notification was shown
+        NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow();
     }
 }

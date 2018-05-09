@@ -12,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.search.SearchEngine;
 
 import java.util.Set;
@@ -41,11 +40,13 @@ public class Settings {
     private final SharedPreferences preferences;
     private final Resources resources;
     private final EventHistory eventHistory;
+    private final NewFeatureNotice newFeatureNotice;
 
     private Settings(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         resources = context.getResources();
         eventHistory = new EventHistory(preferences);
+        newFeatureNotice = NewFeatureNotice.getInstance(context);
     }
 
     public boolean shouldBlockImages() {
@@ -60,10 +61,7 @@ public class Settings {
     }
 
     public boolean shouldShowFirstrun() {
-        final boolean firstrunShown = preferences.getBoolean(FirstrunFragment.PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN, false);
-        final int firserunUpgradeVersion = preferences.getInt(FirstrunFragment.PREF_KEY_INT_FIRSTRUN_UPGRADE_VERSION, 0);
-
-        return FirstrunFragment.FIRSTRUN_UPGRADE_VERSION > firserunUpgradeVersion || !firstrunShown;
+        return newFeatureNotice.shouldShowMultiTabUpdate() || !newFeatureNotice.hasShownFirstRun();
     }
 
     public boolean shouldSaveToRemovableStorage() {
