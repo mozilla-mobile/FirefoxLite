@@ -7,7 +7,10 @@ package org.mozilla.focus;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 
 import org.mozilla.focus.persistence.TabsDatabase;
@@ -49,13 +52,27 @@ public class Inject {
             threadPolicyBuilder.penaltyDialog();
             vmPolicyBuilder.penaltyLog();
         } else { // Dev/debug build
+            // in AndroidTest, we are super kind to all StrictMode policy
             threadPolicyBuilder.penaltyLog();
-            // We want only penaltyDeath(), but penaltLog() is needed print a stacktrace when a violation happens
             vmPolicyBuilder.penaltyLog();
         }
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
+    }
+
+    // The pref is not persist so we need to inject the condition instead of override defaultSharedPreference
+    public static boolean isTelemetryEnabled(Context context) {
+        // The first access to shared preferences will require a disk read.
+        final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskReads();
+        try {
+            final Resources resources = context.getResources();
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            return preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), true);
+        } finally {
+            StrictMode.setThreadPolicy(threadPolicy);
+        }
+
     }
 
 }

@@ -6,6 +6,8 @@
 package org.mozilla.focus;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
@@ -31,19 +33,31 @@ public class Inject {
             return;
         }
 
+        // for Nightly(beta) and debug build:
         final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll();
         final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll();
 
-        if (AppConstants.isBetaBuild()) {
-            threadPolicyBuilder.penaltyDialog();
-            vmPolicyBuilder.penaltyLog();
-        } else { // Dev/debug build
-            threadPolicyBuilder.penaltyLog().penaltyDialog();
-            // We want only penaltyDeath(), but penaltLog() is needed print a stacktrace when a violation happens
-            vmPolicyBuilder.penaltyLog().penaltyDeath();
-        }
+        threadPolicyBuilder.penaltyLog().penaltyDialog();
+        // Previously we have penaltyDeath() for debug build, but in order to add crashlytics, we can't use it here.
+        vmPolicyBuilder.penaltyLog();
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
+    }
+
+    public static boolean isTelemetryEnabled(Context context) {
+        // The first access to shared preferences will require a disk read.
+        final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskReads();
+        try {
+            final Resources resources = context.getResources();
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            final boolean isEnabledByDefault = AppConstants.isBetaBuild() || AppConstants.isReleaseBuild();
+            // Telemetry is not enable by default in debug build. But the user / developer can choose to turn it on
+            // in AndroidTest, this is enabled by default
+            return preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), isEnabledByDefault);
+        } finally {
+            StrictMode.setThreadPolicy(threadPolicy);
+        }
+
     }
 }

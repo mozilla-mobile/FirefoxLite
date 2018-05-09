@@ -119,9 +119,9 @@
 
         <!-- We don't need Crashlytics in debug build. Besides, there's some Strict Mode violation
              in it when API > 26. Which will make the penalty dialog keeps popping :( -->
-        <meta-data
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="@bool/enableCrashlytics"/>
+        <!--<meta-data-->
+            <!--android:name="firebase_crashlytics_collection_enabled"-->
+            <!--android:value="@bool/enableCrashlytics"/>-->
 
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"
@@ -180,11 +180,13 @@
             </intent-filter>
         </receiver>
 
-
-        <service
-            android:name="org.mozilla.focus.components.RelocateService"
+        <provider
+            android:name=".provider.FirebaseHelperProvider"
+            android:authorities="${applicationId}.provider.firebasehelperprovider"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:initOrder="100" />
+
     </application>
 
 </manifest>

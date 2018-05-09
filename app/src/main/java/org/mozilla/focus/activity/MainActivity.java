@@ -62,7 +62,6 @@ import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FileUtils;
-import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
@@ -113,7 +112,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseHelper.init(this);
         asyncInitialize();
 
         setContentView(R.layout.activity_main);
@@ -456,6 +454,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
+                DialogUtils.showRateAppDialog(this);
                 //  Toggle
                 final boolean blockingImages = !isBlockingImages();
                 Settings.getInstance(this).setBlockImages(blockingImages);

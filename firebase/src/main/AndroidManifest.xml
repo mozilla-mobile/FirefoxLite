@@ -1,2 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.firebase" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.mozilla.firebase">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application>
+
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="false"
+            android:enabled="false"
+            tools:node="remove">
+
+            <intent-filter android:priority="-500">
+
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="${applicationId}.firebaseinitprovider"
+            android:enabled="false"
+            android:exported="false"
+            android:initOrder="100"
+            tools:node="remove" />
+
+
+        <provider
+            android:name="com.crashlytics.android.CrashlyticsInitProvider"
+            android:authorities="${applicationId}.crashlyticsinitprovider"
+            android:enabled="false"
+            android:exported="false"
+            android:initOrder="100"
+            tools:node="remove" />
+    </application>
+</manifest>

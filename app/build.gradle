@@ -9,7 +9,6 @@ apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'com.icesmith.androidtextresolver'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
-apply plugin: 'io.fabric'
 
 
 buildscript {
@@ -85,33 +84,38 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "bool", "enableCrashlytics", "true"
+            matchingFallbacks = ["firebase"]
         }
         beta {
             initWith release
-
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            matchingFallbacks = ["release"]
-            resValue "bool", "enableCrashlytics", "true"
+            matchingFallbacks = ["release", "firebase"]
         }
         debug {
             def userName = System.getenv("USER")
+            if (userName == null) userName = "mozilla" // windows users will need this
             applicationIdSuffix ".debug." + userName
             versionNameSuffix applicationIdSuffix
-            resValue "bool", "enableCrashlytics", "false"
+            matchingFallbacks = ["firebase_no_op"]
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
         // for some developers (i.e. variables can't be inspected or seen).
         coverage {
             initWith debug
-
             applicationIdSuffix ".coverage"
             testCoverageEnabled true
-            matchingFallbacks = ["debug"]
-            resValue "bool", "enableCrashlytics", "false"
+            matchingFallbacks = ["debug", "firebase_no_op"]
+        }
+        // special build type to develop Firebase related stuff
+        firebase {
+            initWith debug
+
+            applicationIdSuffix ".debug.mozilla"
+            versionNameSuffix applicationIdSuffix
+            matchingFallbacks = ["debug", "firebase"]
         }
     }
 
@@ -202,7 +206,7 @@ dependencies {
     implementation project(':third_party:glide:library')
     kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
 
-    api project(':firebase')
+    implementation project(':firebase')
 
     implementation "com.android.support:support-v4:${Versions.support}"
     implementation "com.android.support:appcompat-v7:${Versions.support}"
@@ -210,27 +214,22 @@ dependencies {
     implementation "com.android.support:design:${Versions.support}"
     implementation "com.android.support:cardview-v7:${Versions.support}"
     implementation "com.android.support:recyclerview-v7:${Versions.support}"
-
     implementation "android.arch.persistence.room:runtime:${Versions.room}"
     kapt "android.arch.persistence.room:compiler:${Versions.room}"
-
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
         // Without this we get weird failures due to dependencies.
         transitive = false
     })
-
     implementation "org.mozilla.telemetry:telemetry:${Versions.telemetry}"
-
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
-    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
+    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}"
 
+    // Required by Adjust
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
-
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
-
     androidTestImplementation("com.android.support.test.espresso:espresso-core:${Versions.espresso}", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -254,6 +253,9 @@ dependencies {
     betaImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
+    firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -261,7 +263,7 @@ dependencies {
 // -------------------------------------------------------------------------------------------------
 
 configurations.all { config ->
-    if (config.name.contains('UnitTest') || config.name.contains('AndroidTest')) {
+    if (config.name.contains('UnitTest')) {
         config.resolutionStrategy.eachDependency { details ->
             if (details.requested.group == 'com.squareup.leakcanary' && details.requested.name == 'leakcanary-android') {
                 details.useTarget(group: details.requested.group, name: 'leakcanary-android-no-op', version: details.requested.version)
@@ -621,4 +623,3 @@ afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
 
-apply plugin: 'com.google.gms.google-services'
