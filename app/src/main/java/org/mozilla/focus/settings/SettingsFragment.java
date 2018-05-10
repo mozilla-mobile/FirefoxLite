@@ -23,7 +23,6 @@ import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DialogUtils;
-import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 
 import java.util.Locale;
@@ -119,10 +118,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
 
-        if (key.equals(getString(R.string.pref_key_storage_clear_browsing_data))) {
-            //Clear browsing data Callback function is not here
-            //Go to Class CleanBrowsingDataPreference -> onDialogClosed
-        } else if (key.equals(getString(R.string.pref_key_storage_save_downloads_to))) {
+        if (key.equals(getString(R.string.pref_key_storage_save_downloads_to))) {
             //Save downloads/cache/offline pages to SD card/Internal storage Callback function
         }
     }
