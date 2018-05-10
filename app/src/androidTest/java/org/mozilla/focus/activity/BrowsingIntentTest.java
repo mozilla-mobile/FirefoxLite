@@ -17,6 +17,7 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,9 +75,6 @@ public class BrowsingIntentTest {
         if (loadingIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
         }
-        if (activityTestRule.getActivity() != null) {
-            activityTestRule.getActivity().finishAndRemoveTask();
-        }
         try {
             if (webServer != null) {
                 webServer.close();
@@ -85,8 +83,12 @@ public class BrowsingIntentTest {
         } catch (IOException e) {
             throw new AssertionError("Could not stop web server", e);
         }
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
     }
 
+    @Ignore
     @Test
     public void receivedBrowsingIntent_tabIsCreated() {
 
@@ -122,7 +124,7 @@ public class BrowsingIntentTest {
         // Check if site 1 is loaded again
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
-                .check(matches(withText(webServer.url("/").toString())));
+                .check(matches(withText(webServer.url(TEST_PATH).toString())));
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click back to leave rocket
@@ -130,6 +132,7 @@ public class BrowsingIntentTest {
 
     }
 
+    @Ignore
     @Test
     public void appHasOneTabAndReceiveBrowsingIntent_tabIncreasedAndBrowse() {
 

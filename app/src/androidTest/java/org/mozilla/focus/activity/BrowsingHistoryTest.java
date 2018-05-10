@@ -115,6 +115,7 @@ public class BrowsingHistoryTest {
         // Check if target url is loaded
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(targerUrl)));
+        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Open menu
         onView(allOf(withId(R.id.btn_menu), isDisplayed())).perform(click());

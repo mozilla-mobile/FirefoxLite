@@ -112,6 +112,9 @@ public class GrantStoragePermissionTest {
         if (sessionLoadedIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
         }
+        if (downloadCompleteIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(downloadCompleteIdlingResource);
+        }
         if (activityRule.getActivity() != null) {
             activityRule.getActivity().finishAndRemoveTask();
         }
@@ -139,6 +142,8 @@ public class GrantStoragePermissionTest {
         final int displayWidth = displayMetrics.widthPixels;
         final int displayHeight = displayMetrics.heightPixels;
         onView(withId(R.id.main_content)).check(matches(isDisplayed())).perform(AndroidTestUtils.clickXY(displayWidth / 2, displayHeight / 2, Tap.LONG));
+
+        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
         // Initialize DownloadCompleteIdlingResource and register content observer
         downloadCompleteIdlingResource = new DownloadCompleteIdlingResource(activityRule.getActivity());
