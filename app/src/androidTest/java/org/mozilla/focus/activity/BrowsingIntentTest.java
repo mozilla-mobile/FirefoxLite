@@ -8,7 +8,6 @@ package org.mozilla.focus.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Keep;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
@@ -17,7 +16,6 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -88,7 +86,6 @@ public class BrowsingIntentTest {
         }
     }
 
-    @Ignore
     @Test
     public void receivedBrowsingIntent_tabIsCreated() {
 
@@ -127,12 +124,8 @@ public class BrowsingIntentTest {
                 .check(matches(withText(webServer.url(TEST_PATH).toString())));
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
-        // Click back to leave rocket
-        Espresso.pressBackUnconditionally();
-
     }
 
-    @Ignore
     @Test
     public void appHasOneTabAndReceiveBrowsingIntent_tabIncreasedAndBrowse() {
 
@@ -183,7 +176,6 @@ public class BrowsingIntentTest {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(webServer.url(TEST_PATH).toString()));
-        intent.setPackage(InstrumentationRegistry.getInstrumentation().getTargetContext().getPackageName());
         activityTestRule.launchActivity(intent);
     }
 }
