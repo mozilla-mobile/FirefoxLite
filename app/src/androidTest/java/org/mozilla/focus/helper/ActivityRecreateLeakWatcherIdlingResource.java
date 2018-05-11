@@ -61,9 +61,9 @@ public class ActivityRecreateLeakWatcherIdlingResource implements IdlingResource
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        if (LeakWatcher.reference != null) {
+        if (LeakWatcher.getReference() != null && LeakWatcher.getReference().get() != null) {
             LeakWatcher.runGc();
-            hasLeak.set(LeakWatcher.reference.get() == null);
+            hasLeak.set(LeakWatcher.getReference().get() == null);
         }
         isCompleted.set(true);
     }
@@ -95,7 +95,6 @@ public class ActivityRecreateLeakWatcherIdlingResource implements IdlingResource
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        LeakWatcher.reference = new WeakReference<>(activity);
-
+        LeakWatcher.setReference(new WeakReference<>(activity));
     }
 }

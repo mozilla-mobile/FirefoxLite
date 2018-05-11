@@ -72,5 +72,4 @@ public class Inject {
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
     }
 
-
 }
