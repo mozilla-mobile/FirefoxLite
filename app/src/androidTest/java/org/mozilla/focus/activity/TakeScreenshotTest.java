@@ -7,7 +7,6 @@ package org.mozilla.focus.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.annotation.Keep;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
@@ -88,8 +87,7 @@ public class TakeScreenshotTest {
         onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(TARGET_URL_SITE)));
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
-        screenshotIdlingResource = new ScreenshotIdlingResource(activityTestRule.getActivity());
-        screenshotIdlingResource.registerScreenshotObserver();
+        screenshotIdlingResource = new ScreenshotIdlingResource();
 
         // Click screen capture button
         onView(allOf(withId(R.id.btn_capture), isDisplayed())).perform(click());
@@ -97,10 +95,11 @@ public class TakeScreenshotTest {
         // Register screenshot taken idling resource and wait capture complete
         IdlingRegistry.getInstance().register(screenshotIdlingResource);
 
-        IdlingRegistry.getInstance().unregister(screenshotIdlingResource);
-
+        // wait for the screen shot to complete
         // Open menu
         onView(allOf(withId(R.id.btn_menu), isDisplayed())).perform(click());
+
+        IdlingRegistry.getInstance().unregister(screenshotIdlingResource);
 
         // Click my shot
         onView(allOf(withId(R.id.menu_screenshots), isDisplayed())).perform(click());

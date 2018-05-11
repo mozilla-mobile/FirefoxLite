@@ -19,6 +19,7 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
     final WeakReference<BrowserFragment> refBrowserFragment;
     final WeakReference<ScreenCaptureDialogFragment> refScreenCaptureDialogFragment;
     final WeakReference<View> refContainerView;
+    private static volatile boolean completed;
 
     public CaptureRunnable(Context context, BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
         super(context);
@@ -26,6 +27,15 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
         refBrowserFragment = new WeakReference<>(browserFragment);
         refScreenCaptureDialogFragment = new WeakReference<>(screenCaptureDialogFragment);
         refContainerView = new WeakReference<>(container);
+        setCompleted(false);
+    }
+
+    public static boolean isCompleted() {
+        return completed;
+    }
+
+    public static void setCompleted(boolean completed) {
+        CaptureRunnable.completed = completed;
     }
 
     @Override
@@ -83,6 +93,7 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
             return;
         }
         Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
+        completed = true;
     }
 
 }

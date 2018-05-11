@@ -1,12 +1,14 @@
 package org.mozilla.focus.utils;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(
+        value = "DM_GC",
+        justification = "This code is for testing only.")
 public class LeakWatcher {
-    public static WeakReference<? extends Activity> reference;
+    private static volatile WeakReference<? extends Activity> reference;
 
     // this code is from LeakCanary
     public static void runGc() {
@@ -28,5 +30,13 @@ public class LeakWatcher {
         } catch (InterruptedException e) {
             throw new AssertionError();
         }
+    }
+
+    public static void setReference(WeakReference<? extends Activity> ref) {
+        LeakWatcher.reference = ref;
+    }
+
+    public static WeakReference<? extends Activity> getReference() {
+        return LeakWatcher.reference;
     }
 }

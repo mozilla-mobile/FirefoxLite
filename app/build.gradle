@@ -118,6 +118,8 @@ android {
         }
     }
 
+    testBuildType "firebase"
+
     testOptions {
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
@@ -327,7 +329,7 @@ android.applicationVariants.all { variant ->
         buildConfigField 'String', 'ADJUST_TOKEN', 'null'
         println("Not setting adjust token (Not a focus release build)")
     }
-    if (variant.buildType.name == "firebase") {
+    if (variant.buildType.name == "release" || variant.buildType.name == "beta"|| variant.buildType.name == "firebase") {
         variant.assemble.doFirst {
             if (SystemEnv.google_app_id == null || SystemEnv.default_web_client_id == null ||
                     SystemEnv.firebase_database_url == null || SystemEnv.gcm_defaultSenderId == null ||

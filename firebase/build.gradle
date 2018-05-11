@@ -20,7 +20,8 @@ android {
             resValue "string", "google_crash_reporting_api_key", SystemEnv.google_crash_reporting_api_key ?: ""
             resValue "string", "project_id", SystemEnv.project_id ?: ""
             // plugin io.fabric should generate this build_id but somehow it just won't work here.
-            // In the log it says "Crashlytics was applied to an android-library project. Android-library support is currently an incubating feature. Contact support@fabric.io with any issues."
+            // In the log it says "Crashlytics was applied to an android-library project.
+            // Android-library support is currently an incubating feature. Contact support@fabric.io with any issues."
             // So maybe we can do that later.
             // Since there's no source code for me to trace, I'll do it manually.
             // For more details, use ./gradlew help --task fabricGenerateResourcesDebug
