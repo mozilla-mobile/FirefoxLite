@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
@@ -281,5 +282,17 @@ abstract class FirebaseWrapper {
 
     // Client code must implement this method so it's not static here.
     abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
+
+    @Nullable
+    public static String getFcmToken() {
+        try {
+            return FirebaseInstanceId.getInstance().getToken();
+        } catch (Exception e) {
+            // If Firebase is not initialized, getInstance() will throw an exception here
+            // Since  This method is for debugging, return empty string is acceptable
+            Log.e(TAG, "getGcmToken: ", e);
+            return "";
+        }
+    }
 
 }

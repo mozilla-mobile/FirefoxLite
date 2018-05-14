@@ -22,14 +22,18 @@ import org.mozilla.focus.activity.SettingsActivity;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.DialogUtils;
-import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 
 import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private boolean localeUpdated;
+    private  static int debugClicks = 0;
+    private  static final int DEBUG_CLICKS_THRESHOLD = 19;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,13 +52,28 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (keyClicked.equals(resources.getString(R.string.pref_key_give_feedback))) {
             DialogUtils.showRateAppDialog(getActivity());
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_share_with_friends))) {
-            DialogUtils.showShareAppDialog(getActivity());
+            if (!debugingFirebase()) {
+                DialogUtils.showShareAppDialog(getActivity());
+            }
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    private boolean debugingFirebase() {
+        debugClicks++;
+        if ((AppConstants.isBetaBuild() || AppConstants.isFirebaseBuild()) && debugClicks > DEBUG_CLICKS_THRESHOLD) {
+            final Intent debugShare = new Intent();
+            debugShare.setAction(Intent.ACTION_SEND);
+            debugShare.setType("text/plain");
+            debugShare.putExtra(Intent.EXTRA_TEXT, FirebaseHelper.getFcmToken());
+            startActivity(Intent.createChooser(debugShare, "This token is only for QA to test in Nightly and debug build"));
+            return true;
+        }
+        return false;
     }
 
     @Override
