@@ -4,6 +4,7 @@
 
 package org.mozilla.focus.utils;
 
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +19,6 @@ import android.support.v4.content.pm.ShortcutInfoCompat;
 import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.support.v4.graphics.drawable.IconCompat;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +62,20 @@ public class ShortcutUtils {
         final PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, showHome, PendingIntent.FLAG_UPDATE_CURRENT);
         final IntentSender intentSender = pendingIntent.getIntentSender();
 
-        // Update the shortcut icon on launcher since previous one may not ready. API 25+ only
-        // TODO: find a way to update the shortcut icon for API 25-. Currently the only way is remove old shortcut and add again.
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+        // Update the shortcut icon on launcher since previous one may not ready. API 26+ only.
+        // TODO: find a way to update the shortcut icon for API 25 and below. Currently the only way is remove old shortcut and add again.
+        updateShortcut26(context, shortcut);
+
+        // If the launcher or system didn't support shortcut, we don't bother to call it.
+        if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
+            ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender);
+        }
+
+    }
+
+    @TargetApi(26) // Add this to make lint happy
+    private static void updateShortcut26(@NonNull Context context, ShortcutInfoCompat shortcut) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
             if (shortcutManager != null) {
                 final List<ShortcutInfo> list = new ArrayList<>();
@@ -72,12 +83,6 @@ public class ShortcutUtils {
                 shortcutManager.updateShortcuts(list);
             }
         }
-
-        // If the launcher or system didn't support shortcut, we don't bother to call it.
-        if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
-            ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender);
-        }
-
     }
 
 }
