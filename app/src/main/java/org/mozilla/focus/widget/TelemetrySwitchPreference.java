@@ -9,9 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.preference.Preference;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -54,7 +52,8 @@ public class TelemetrySwitchPreference extends Preference {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 TelemetryWrapper.setTelemetryEnabled(getContext(), isChecked);
-                FirebaseHelper.bind(getContext());
+                // we should use the value from UI (isChecked) instead of relying on SharePreference.
+                FirebaseHelper.bind(getContext(), isChecked);
             }
         });
 
