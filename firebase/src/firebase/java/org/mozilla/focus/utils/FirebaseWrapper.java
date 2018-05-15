@@ -73,6 +73,8 @@ abstract class FirebaseWrapper {
     public static String getRcString(@NonNull Context context, @NonNull String key) {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
+            throwRcNotInitException();
+
             return "";
         }
         // if remoteConfig is not initialized, we go to default config directly
@@ -81,7 +83,7 @@ abstract class FirebaseWrapper {
             if (value instanceof String) {
                 return (String) value;
             } else {
-                return "";
+                throwGetValueException("getRcString");
             }
         }
 
@@ -89,9 +91,39 @@ abstract class FirebaseWrapper {
         if (config != null) {
             return config.getString(key);
         }
+        throwGetValueException("getRcString");
         return "";
     }
 
+    static long getRcLong(Context context, String key) {
+        if (instance == null) {
+            Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
+            throwRcNotInitException();
+            return 0L;
+
+        }
+        // if remoteConfig is not initialized, we go to default config directly
+        if (remoteConfig == null) {
+            final Object value = instance.getRemoteConfigDefault(context).get(key);
+            if (value instanceof Integer) {
+                return ((Integer) value).longValue();
+            } else if (value instanceof Long) {
+                return (Long) value;
+            }
+            throwGetValueException("getRcLong");
+            return 0L;
+        }
+
+        final FirebaseRemoteConfig config = remoteConfig.get();
+        if (config != null) {
+            // config.getValue will never return null (checked from FirebaseRemoteConfig‘s decompiled source)
+            return config.getValue(key).asLong();
+        }
+        throwGetValueException("getRcLong");
+        return 0L;
+
+
+    }
 
     @WorkerThread
     static void updateInstanceId(Context context, boolean enable) {
@@ -295,4 +327,15 @@ abstract class FirebaseWrapper {
         }
     }
 
+    private static void throwGetValueException(String method) {
+        if (developerModeEnabled) {
+            throw new RuntimeException("Calling FirebaseWrapper." + method + " failed");
+        }
+    }
+
+    private static void throwRcNotInitException() {
+        if (developerModeEnabled) {
+            throw new IllegalStateException("FirebaseWrapper not initialized");
+        }
+    }
 }

@@ -330,15 +330,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final int appCreateCount = history.getCount(Settings.Event.AppCreate);
 
         if (!didShowRateDialog &&
-                appCreateCount >= AppConfigWrapper.getRateDialogLaunchTimeThreshold()) {
+                appCreateCount >= AppConfigWrapper.getRateDialogLaunchTimeThreshold(this)) {
             DialogUtils.showRateAppDialog(this);
             TelemetryWrapper.showFeedbackDialog();
         } else if (didDismissRateDialog && !didShowRateAppNotification && appCreateCount >=
-                AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold()) {
+                AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(this)) {
             DialogUtils.showRateAppNotification(this);
             TelemetryWrapper.showRateAppNotification();
         } else if (!didShowShareDialog && appCreateCount >=
-                AppConfigWrapper.getShareDialogLaunchTimeThreshold(didDismissRateDialog)) {
+                AppConfigWrapper.getShareDialogLaunchTimeThreshold(this, didDismissRateDialog)) {
             DialogUtils.showShareAppDialog(this);
             TelemetryWrapper.showPromoteShareDialog();
         }

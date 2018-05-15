@@ -1,3 +1,8 @@
+/* -*- Mode: Java; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package org.mozilla.focus.utils;
 
 import android.content.Context;
@@ -27,6 +32,10 @@ final public class FirebaseHelper extends FirebaseWrapper {
     // keys for remote config default value
     public static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
     public static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
+
+    static final String RATE_APP_DIALOG_THRESHOLD = "rate_app_dialog_threshold";
+    static final String RATE_APP_NOTIFICATION_THRESHOLD = "rate_app_notification_threshold";
+    static final String SHARE_APP_DIALOG_THRESHOLD = "share_app_dialog_threshold";
 
     private HashMap<String, Object> remoteConfigDefault;
     private static boolean changing = false;
@@ -199,6 +208,10 @@ final public class FirebaseHelper extends FirebaseWrapper {
         final HashMap<String, Object> map = new HashMap<>();
         map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title));
         map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT, context.getString(R.string.rate_app_dialog_text_content));
+
+        map.put(FirebaseHelper.RATE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG);
+        map.put(FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION);
+        map.put(FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG);
         return map;
     }
 

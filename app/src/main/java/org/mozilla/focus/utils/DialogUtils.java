@@ -1,3 +1,8 @@
+/* -*- Mode: Java; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package org.mozilla.focus.utils;
 
 import android.app.PendingIntent;
@@ -20,11 +25,8 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public class DialogUtils {
 
+    // default values for RemoteConfig
     public static final int APP_CREATE_THRESHOLD_FOR_RATE_DIALOG = 6;
-
-    // APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION must be larger than APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG.
-    // otherwise RATE_NOTIFICATION'll be shown before SHARE_DIALOG. And
-    // AppConfigWrapper.getShareDialogLaunchTimeThreshold() will have unexpected behaviour
     public static final int APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 6;
     public static final int APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG = APP_CREATE_THRESHOLD_FOR_RATE_DIALOG + 4;
 

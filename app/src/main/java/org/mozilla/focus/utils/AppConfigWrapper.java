@@ -5,6 +5,8 @@
 
 package org.mozilla.focus.utils;
 
+import android.content.Context;
+
 public class AppConfigWrapper {
     private static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
 
@@ -12,21 +14,21 @@ public class AppConfigWrapper {
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
     private static final int DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD = 2;
 
-    public static int getRateAppNotificationLaunchTimeThreshold() {
-        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION;
+    public static long getRateAppNotificationLaunchTimeThreshold(Context context) {
+        return FirebaseHelper.getRcLong(context, FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD);
     }
 
-    public static int getShareDialogLaunchTimeThreshold(final boolean needExtend) {
+    public static long getShareDialogLaunchTimeThreshold(Context context, final boolean needExtend) {
         if (needExtend) {
-            return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG +
-                    DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION -
-                    DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
+            return getRateDialogLaunchTimeThreshold(context) +
+                    getRateAppNotificationLaunchTimeThreshold(context) -
+                    FirebaseHelper.getRcLong(context, FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD);
         }
         return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG;
     }
 
-    public static int getRateDialogLaunchTimeThreshold() {
-        return DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
+    public static long getRateDialogLaunchTimeThreshold(Context context) {
+        return FirebaseHelper.getRcLong(context, FirebaseHelper.RATE_APP_DIALOG_THRESHOLD);
     }
 
     public static int getSurveyNotificationLaunchTimeThreshold() {
