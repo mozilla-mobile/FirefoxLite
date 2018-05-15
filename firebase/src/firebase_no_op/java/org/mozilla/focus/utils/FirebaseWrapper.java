@@ -23,19 +23,29 @@ abstract class FirebaseWrapper {
         return instance;
     }
 
-    // get Remote Config string
+    static long getRcLong(Context context, String key) {
+        if (instance == null) {
+            return 0L;
+        }
+        final Object value = instance.getRemoteConfigDefault(context).get(key);
+        if (value instanceof Integer) {
+            return ((Integer) value).longValue();
+        } else if (value instanceof Long) {
+            return (Long) value;
+        }
+        return 0L;
+    }
+
     // get Remote Config string
     static String getRcString(Context context, String key) {
         if (instance == null) {
             return "";
         }
-        // if remoteConfig is not initialized, we go to default config directly
         final Object value = instance.getRemoteConfigDefault(context).get(key);
         if (value instanceof String) {
             return (String) value;
-        } else {
-            return "";
         }
+        return "";
     }
 
 
@@ -47,10 +57,6 @@ abstract class FirebaseWrapper {
             return;
         }
         instance = wrapper;
-    }
-
-    static boolean initNeeded() {
-        return false;
     }
 
     static void enableCloudMessaging(Context context, String componentName, boolean enable) {
