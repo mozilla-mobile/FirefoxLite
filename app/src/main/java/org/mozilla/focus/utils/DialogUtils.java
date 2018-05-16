@@ -102,9 +102,9 @@ public class DialogUtils {
 
     private static void telemetryFeedback(final Context context, String value) {
         if (context instanceof MainActivity) {
-            TelemetryWrapper.feedbackClickEvent(value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
+            TelemetryWrapper.feedbackClickEvent(context, value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
         } else if (context instanceof SettingsActivity) {
-            TelemetryWrapper.feedbackClickEvent(value, TelemetryWrapper.Extra_Value.SETTING);
+            TelemetryWrapper.feedbackClickEvent(context, value, TelemetryWrapper.Extra_Value.SETTING);
         }
     }
 
@@ -153,9 +153,9 @@ public class DialogUtils {
 
     private static void telemetryShareApp(final Context context, String value) {
         if (context instanceof MainActivity) {
-            TelemetryWrapper.promoteShareClickEvent(value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
+            TelemetryWrapper.promoteShareClickEvent(context, value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
         } else if (context instanceof SettingsActivity) {
-            TelemetryWrapper.promoteShareClickEvent(value, TelemetryWrapper.Extra_Value.SETTING);
+            TelemetryWrapper.promoteShareClickEvent(context, value, TelemetryWrapper.Extra_Value.SETTING);
         }
     }
 

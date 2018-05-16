@@ -125,7 +125,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
 
         SafeIntent intent = new SafeIntent(getIntent());
-        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
+        AppLaunchMethod.parse(intent).sendLaunchTelemetry(this);
 
         // TODO: It would be better if we can move this to LauncherActivity somewhere.
         if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
@@ -252,7 +252,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onNewIntent(Intent unsafeIntent) {
         final SafeIntent intent = new SafeIntent(unsafeIntent);
-        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
+        AppLaunchMethod.parse(intent).sendLaunchTelemetry(this);
 
         if (runPromotionFromIntent(intent)) {
             // Don't run other promotion or other action if we already displayed above promotion
@@ -332,15 +332,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (!didShowRateDialog &&
                 appCreateCount >= AppConfigWrapper.getRateDialogLaunchTimeThreshold(this)) {
             DialogUtils.showRateAppDialog(this);
-            TelemetryWrapper.showFeedbackDialog();
+            TelemetryWrapper.showFeedbackDialog(this);
         } else if (didDismissRateDialog && !didShowRateAppNotification && appCreateCount >=
                 AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(this)) {
             DialogUtils.showRateAppNotification(this);
-            TelemetryWrapper.showRateAppNotification();
+            TelemetryWrapper.showRateAppNotification(this);
         } else if (!didShowShareDialog && appCreateCount >=
                 AppConfigWrapper.getShareDialogLaunchTimeThreshold(this, didDismissRateDialog)) {
             DialogUtils.showShareAppDialog(this);
-            TelemetryWrapper.showPromoteShareDialog();
+            TelemetryWrapper.showPromoteShareDialog(this);
         }
 
         if (isSurveyEnabled &&
@@ -483,7 +483,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 stringResource = blockingImages ? R.string.message_enable_block_image : R.string.message_disable_block_image;
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
 
-                TelemetryWrapper.menuBlockImageChangeTo(blockingImages);
+                TelemetryWrapper.menuBlockImageChangeTo(this, blockingImages);
                 break;
             case R.id.menu_turbomode:
                 //  Toggle
@@ -494,11 +494,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 stringResource = turboEnabled ? R.string.message_enable_turbo_mode : R.string.message_disable_turbo_mode;
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
 
-                TelemetryWrapper.menuTurboChangeTo(turboEnabled);
+                TelemetryWrapper.menuTurboChangeTo(this, turboEnabled);
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
-                TelemetryWrapper.clickMenuClearCache();
+                TelemetryWrapper.clickMenuClearCache(this);
                 break;
             case R.id.menu_download:
                 onDownloadClicked();
@@ -547,7 +547,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         // even if user above threshold and not set-as-default-browser, still don't show notification.
         if (count == threshold && !Browsers.isDefaultBrowser(this)) {
             DialogUtils.showDefaultSettingNotification(this);
-            TelemetryWrapper.showDefaultSettingNotification();
+            TelemetryWrapper.showDefaultSettingNotification(this);
         }
     }
 
@@ -596,11 +596,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.action_share:
                 onShraeClicked(browserFragment);
-                TelemetryWrapper.clickToolbarShare();
+                TelemetryWrapper.clickToolbarShare(this);
                 break;
             case R.id.action_pin_shortcut:
                 onAddToHomeClicked();
-                TelemetryWrapper.clickAddToHome();
+                TelemetryWrapper.clickAddToHome(this);
                 break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +

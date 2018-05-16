@@ -167,13 +167,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onTabClick(int tabPosition) {
         presenter.tabClicked(tabPosition);
-        TelemetryWrapper.clickTabFromTabTray();
+        TelemetryWrapper.clickTabFromTabTray(getContext());
     }
 
     @Override
     public void onTabCloseClick(int tabPosition) {
         presenter.tabCloseClicked(tabPosition);
-        TelemetryWrapper.closeTabFromTabTray();
+        TelemetryWrapper.closeTabFromTabTray(getContext());
     }
 
     @Override
@@ -452,7 +452,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private void onNewTabClicked() {
         ScreenNavigator.get(getContext()).addHomeScreen(false);
-        TelemetryWrapper.clickAddTabTray();
+        TelemetryWrapper.clickAddTabTray(getContext());
         postOnNextFrame(dismissRunnable);
     }
 

@@ -8,6 +8,7 @@ package org.mozilla.focus.utils;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
@@ -339,5 +340,12 @@ abstract class FirebaseWrapper {
         if (developerModeEnabled) {
             throw new IllegalStateException("FirebaseWrapper not initialized");
         }
+    }
+
+    public static void event(Context context, String key, Bundle param) {
+        if (context == null || key == null) {
+            return;
+        }
+        FirebaseAnalytics.getInstance(context).logEvent(key, param);
     }
 }

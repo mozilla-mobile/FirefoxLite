@@ -1,5 +1,6 @@
 package org.mozilla.focus.telemetry;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
@@ -15,8 +16,8 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry() {
-            TelemetryWrapper.launchByAppLauncherEvent();
+        public void sendLaunchTelemetry(Context context) {
+            TelemetryWrapper.launchByAppLauncherEvent(context);
         }
     },
 
@@ -28,7 +29,7 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry() {
+        public void sendLaunchTelemetry(Context context) {
             TelemetryWrapper.launchByHomeScreenShortcutEvent();
         }
     },
@@ -41,8 +42,8 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry() {
-            TelemetryWrapper.launchByTextSelectionSearchEvent();
+        public void sendLaunchTelemetry(Context context) {
+            TelemetryWrapper.launchByTextSelectionSearchEvent(context);
         }
     },
 
@@ -53,8 +54,8 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry() {
-            TelemetryWrapper.launchByExternalAppEvent();
+        public void sendLaunchTelemetry(Context context) {
+            TelemetryWrapper.launchByExternalAppEvent(context);
         }
     },
 
@@ -65,7 +66,7 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry() {
+        public void sendLaunchTelemetry(Context context) {
             // Do nothing
         }
     };
@@ -75,7 +76,7 @@ public enum AppLaunchMethod {
 
     abstract boolean match(@NonNull SafeIntent intent);
 
-    public abstract void sendLaunchTelemetry();
+    public abstract void sendLaunchTelemetry(Context context);
 
     public static AppLaunchMethod parse(SafeIntent intent) {
         if (intent != null) {

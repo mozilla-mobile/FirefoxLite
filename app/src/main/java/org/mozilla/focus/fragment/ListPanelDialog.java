@@ -133,7 +133,7 @@ public class ListPanelDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 showScreenshots();
-                TelemetryWrapper.showPanelCapture();
+                TelemetryWrapper.showPanelCapture(v.getContext());
             }
         });
         return v;
