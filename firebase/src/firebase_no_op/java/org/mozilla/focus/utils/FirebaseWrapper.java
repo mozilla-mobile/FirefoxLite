@@ -6,6 +6,7 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import java.util.HashMap;
 
@@ -87,5 +88,8 @@ abstract class FirebaseWrapper {
 
     public static String getFcmToken() {
         return FIREBASE_STRING_DEFAULT;
+    }
+
+    public static void event(Context context, String key, Bundle param) {
     }
 }

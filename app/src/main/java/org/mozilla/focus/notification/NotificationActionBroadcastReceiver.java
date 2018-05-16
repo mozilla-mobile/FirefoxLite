@@ -45,7 +45,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
             IntentUtils.goToPlayStore(context);
 
-            TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.POSITIVE);
+            TelemetryWrapper.clickRateAppNotification(context, TelemetryWrapper.Value.POSITIVE);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
@@ -57,7 +57,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             // Users set negative feedback, don't ask them to share in the future
             Settings.getInstance(context).setShareAppDialogDidShow();
 
-            TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.NEGATIVE);
+            TelemetryWrapper.clickRateAppNotification(context, TelemetryWrapper.Value.NEGATIVE);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
@@ -70,7 +70,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
                 nexStep = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), fallbackTitle);
             }
 
-            TelemetryWrapper.clickRateAppNotification();
+            TelemetryWrapper.clickRateAppNotification(context);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.DEFAULT_BROWSER);
 
@@ -79,7 +79,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             nexStep.putExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, true);
 
 
-            TelemetryWrapper.clickDefaultSettingNotification();
+            TelemetryWrapper.clickDefaultSettingNotification(context);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 

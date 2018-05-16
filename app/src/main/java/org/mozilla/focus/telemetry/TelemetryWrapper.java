@@ -40,6 +40,8 @@ import org.mozilla.telemetry.storage.TelemetryStorage;
 public final class TelemetryWrapper {
     private static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
 
+    private static final int TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 2;
+
     private TelemetryWrapper() {
     }
 
@@ -260,22 +262,28 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.TEXT_SELECTION_INTENT, Object.APP).queue();
     }
 
-    public static void launchByAppLauncherEvent() {
+    public static void launchByAppLauncherEvent(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.LAUNCHER).queue();
+        FirebaseEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.LAUNCHER).queue(context);
     }
 
     public static void launchByHomeScreenShortcutEvent() {
         TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.SHORTCUT).queue();
     }
 
-    public static void launchByTextSelectionSearchEvent() {
+    public static void launchByTextSelectionSearchEvent(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
                 .extra(Extra.TYPE, Extra_Value.TEXT_SELECTION)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
+                .param(Extra.TYPE, Extra_Value.TEXT_SELECTION)
+                .queue(context);
     }
 
-    public static void launchByExternalAppEvent() {
+    public static void launchByExternalAppEvent(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP).queue();
+        FirebaseEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP).queue(context);
     }
 
     public static void settingsEvent(String key, String value) {
@@ -284,8 +292,29 @@ public final class TelemetryWrapper {
                 .queue();
     }
 
-    public static void settingsClickEvent(String key) {
+    public static void settingsEvent(Context context, String key, String value) {
+        TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, key)
+                .extra(Extra.TO, value)
+                .queue();
+        final String pref_key_turbo_mode = context.getString(R.string.pref_key_turbo_mode);
+        if (key.equals(pref_key_turbo_mode)) {
+            FirebaseEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, key)
+                    .param(Extra.TO, value)
+                    .queue(context);
+        }
+    }
+
+    public static void settingsClickEvent(Context context, String key) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.SETTING, key).queue();
+
+        final String pref_key_storage_save_downloads_to = context.getString(R.string.pref_key_storage_save_downloads_to);
+        final String pref_key_default_browser = context.getString(R.string.pref_key_default_browser);
+        final String pref_key_give_feedback = context.getString(R.string.pref_key_give_feedback);
+        final String pref_key_share_with_friends = context.getString(R.string.pref_key_share_with_friends);
+        if (key.equals(pref_key_storage_save_downloads_to) || key.equals(pref_key_default_browser) ||
+                key.equals(pref_key_give_feedback) || key.equals(pref_key_share_with_friends)) {
+            FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.SETTING, key).queue(context);
+        }
     }
 
     public static void settingsLearnMoreClickEvent(String source) {
@@ -332,16 +361,19 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.LINK).queue();
     }
 
-    public static void shareImageEvent() {
+    public static void shareImageEvent(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
+        FirebaseEvent.create(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue(context);
     }
 
-    public static void saveImageEvent() {
+    public static void saveImageEvent(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SAVE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue();
+        FirebaseEvent.create(Category.ACTION, Method.SAVE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue(context);
     }
 
-    public static void copyLinkEvent() {
+    public static void copyLinkEvent(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.LINK).queue();
+        FirebaseEvent.create(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.LINK).queue(context);
     }
 
     public static void copyImageEvent() {
@@ -396,12 +428,16 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.MENU, Value.HOME).queue();
     }
 
-    public static void showTabTrayHome() {
+    public static void showTabTrayHome(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.HOME).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.HOME).queue(context);
     }
 
-    public static void showTabTrayToolbar() {
+    public static void showTabTrayToolbar(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.TOOLBAR).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.TOOLBAR).queue(context);
     }
 
     public static void showMenuToolbar() {
@@ -428,24 +464,35 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PANEL, Value.HISTORY).queue();
     }
 
-    public static void showPanelCapture() {
+    public static void showPanelCapture(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PANEL, Value.CAPTURE).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.PANEL, Value.CAPTURE).queue(context);
     }
 
-    public static void menuTurboChangeTo(boolean enable) {
+    public static void menuTurboChangeTo(Context context, boolean enable) {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.MENU, Value.TURBO)
                 .extra(Extra.TO, Boolean.toString(enable))
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CHANGE, Object.MENU, Value.TURBO)
+                .param(Extra.TO, Boolean.toString(enable))
+                .queue(context);
     }
 
-    public static void menuBlockImageChangeTo(boolean enable) {
+    public static void menuBlockImageChangeTo(Context context, boolean enable) {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.MENU, Value.BLOCK_IMAGE)
                 .extra(Extra.TO, Boolean.toString(enable))
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CHANGE, Object.MENU, Value.BLOCK_IMAGE)
+                .param(Extra.TO, Boolean.toString(enable))
+                .queue(context);
     }
 
-    public static void clickMenuClearCache() {
+    public static void clickMenuClearCache(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.CLEAR_CACHE).queue();
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.CLEAR_CACHE).queue(context);
     }
 
     public static void clickMenuSettings() {
@@ -464,24 +511,38 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD).queue();
     }
 
-    public static void clickToolbarShare() {
+    public static void clickToolbarShare(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue(context);
     }
 
-    public static void clickAddToHome() {
+    public static void clickAddToHome(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK).queue(context);
     }
 
-    public static void clickToolbarCapture() {
+    public static void clickToolbarCapture(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE)
-                .extra(Extra.VERSION, Integer.toString(2))
+                .extra(Extra.VERSION, Integer.toString(TOOL_BAR_CAPTURE_TELEMETRY_VERSION))
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE)
+                .param(Extra.VERSION, Integer.toString(TOOL_BAR_CAPTURE_TELEMETRY_VERSION))
+                .queue(context);
     }
 
-    public static void clickTopSiteOn(int index) {
+    public static void clickTopSiteOn(Context context, int index) {
         TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
                 .extra(Extra.ON, Integer.toString(index))
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
+                .param(Extra.ON, Integer.toString(index))
+                .queue(context);
+
+
         TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TOPSITE)
                 .queue();
     }
@@ -493,8 +554,10 @@ public final class TelemetryWrapper {
                 .queue();
     }
 
-    public static void addNewTabFromHome() {
+    public static void addNewTabFromHome(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.HOME).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.HOME).queue(context);
     }
 
     public static void urlBarEvent(boolean isUrl, boolean isSuggestion) {
@@ -545,32 +608,40 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CANCEL, Object.SEARCH_BAR).queue();
     }
 
-    public static void showSearchBarHome() {
+    public static void showSearchBarHome(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BOX).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BOX).queue(context);
+
     }
 
     public static void clickUrlbar() {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.MINI_URLBAR).queue();
     }
 
-    public static void clickToolbarSearch() {
+    public static void clickToolbarSearch(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON).queue();
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON).queue(context);
     }
 
-    public static void clickAddTabToolbar() {
+    public static void clickAddTabToolbar(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TOOLBAR).queue();
+        FirebaseEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TOOLBAR).queue(context);
     }
 
-    public static void clickAddTabTray() {
+    public static void clickAddTabTray(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TABTRAY).queue();
+        FirebaseEvent.create(Category.ACTION, Method.ADD, Object.TAB, Value.TABTRAY).queue(context);
     }
 
-    public static void clickTabFromTabTray() {
+    public static void clickTabFromTabTray(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.TAB, Value.TABTRAY).queue();
+        FirebaseEvent.create(Category.ACTION, Method.CHANGE, Object.TAB, Value.TABTRAY).queue(context);
     }
 
-    public static void closeTabFromTabTray() {
+    public static void closeTabFromTabTray(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.TAB, Value.TABTRAY).queue();
+        FirebaseEvent.create(Category.ACTION, Method.REMOVE, Object.TAB, Value.TABTRAY).queue(context);
     }
 
     public static void downloadRemoveFile() {
@@ -581,10 +652,14 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.DELETE, Object.PANEL, Value.FILE).queue();
     }
 
-    public static void downloadOpenFile(boolean fromSnackBar) {
+    public static void downloadOpenFile(Context context, boolean fromSnackBar) {
         TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.PANEL, Value.FILE)
                 .extra(Extra.SNACKBAR, Boolean.toString(fromSnackBar))
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.OPEN, Object.PANEL, Value.FILE)
+                .param(Extra.SNACKBAR, Boolean.toString(fromSnackBar))
+                .queue(context);
     }
 
     public static void showFileContextMenu() {
@@ -611,77 +686,124 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.PANEL, Value.CAPTURE).queue();
     }
 
-    public static void openCaptureLink() {
+    public static void openCaptureLink(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.OPEN, Object.CAPTURE, Value.LINK).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.OPEN, Object.CAPTURE, Value.LINK).queue(context);
     }
 
-    public static void editCaptureImage(boolean editAppResolved) {
+    public static void editCaptureImage(Context context, boolean editAppResolved) {
         TelemetryEvent.create(Category.ACTION, Method.EDIT, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SUCCESS, Boolean.toString(editAppResolved))
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.EDIT, Object.CAPTURE, Value.IMAGE)
+                .param(Extra.SUCCESS, Boolean.toString(editAppResolved))
+                .queue(context);
     }
 
-    public static void shareCaptureImage(boolean fromSnackBar) {
+    public static void shareCaptureImage(Context context, boolean fromSnackBar) {
         TelemetryEvent.create(Category.ACTION, Method.SHARE, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SNACKBAR, Boolean.toString(fromSnackBar))
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHARE, Object.CAPTURE, Value.IMAGE)
+                .param(Extra.SNACKBAR, Boolean.toString(fromSnackBar))
+                .queue(context);
     }
 
-    public static void showCaptureInfo() {
+    public static void showCaptureInfo(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.CAPTURE, Value.INFO).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.CAPTURE, Value.INFO).queue(context);
     }
 
-    public static void deleteCaptureImage() {
+    public static void deleteCaptureImage(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE).queue(context);
     }
 
-    public static void feedbackClickEvent(String value, String source) {
+    public static void feedbackClickEvent(Context context, String value, String source) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
                 .extra(Extra.SOURCE, source)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
+                .param(Extra.SOURCE, source)
+                .queue(context);
     }
 
-    public static void showFeedbackDialog() {
+    public static void showFeedbackDialog(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FEEDBACK).queue();
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.FEEDBACK).queue(context);
     }
 
-    public static void showRateAppNotification() {
+    public static void showRateAppNotification(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.FEEDBACK)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.FEEDBACK)
+                .param(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue(context);
     }
 
-    public static void clickRateAppNotification(String value) {
+    // TODO: test Context from contetReceiver
+    public static void clickRateAppNotification(Context context, String value) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
+                .param(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue(context);
     }
 
-    public static void clickRateAppNotification() {
+    public static void clickRateAppNotification(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK)
+                .param(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue(context);
     }
 
-    public static void showDefaultSettingNotification() {
+    public static void showDefaultSettingNotification(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.DEFAULT_BROWSER)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.DEFAULT_BROWSER)
+                .param(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue(context);
     }
 
-    public static void clickDefaultSettingNotification() {
+    public static void clickDefaultSettingNotification(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.DEFAULT_BROWSER)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.DEFAULT_BROWSER)
+                .param(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue(context);
+
     }
 
-    public static void promoteShareClickEvent(String value, String source) {
+    public static void promoteShareClickEvent(Context context, String value, String source) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PROMOTE_SHARE, value)
                 .extra(Extra.SOURCE, source)
                 .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.PROMOTE_SHARE, value)
+                .param(Extra.SOURCE, source)
+                .queue(context);
     }
 
-    public static void showPromoteShareDialog() {
+    public static void showPromoteShareDialog(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.SHOW, Object.PROMOTE_SHARE).queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.SHOW, Object.PROMOTE_SHARE).queue(context);
     }
 }

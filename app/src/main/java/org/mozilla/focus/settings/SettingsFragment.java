@@ -47,7 +47,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Resources resources = getResources();
         String keyClicked = preference.getKey();
 
-        TelemetryWrapper.settingsClickEvent(keyClicked);
+        TelemetryWrapper.settingsClickEvent(getActivity(), keyClicked);
 
         if (keyClicked.equals(resources.getString(R.string.pref_key_give_feedback))) {
             DialogUtils.showRateAppDialog(getActivity());
@@ -140,7 +140,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             return;
         }
 
-        TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
+        TelemetryWrapper.settingsEvent(getActivity(), key, String.valueOf(sharedPreferences.getAll().get(key)));
 
         if (key.equals(getString(R.string.pref_key_storage_clear_browsing_data))) {
             //Clear browsing data Callback function is not here
