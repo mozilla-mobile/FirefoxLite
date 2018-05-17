@@ -23,7 +23,7 @@ import org.robolectric.annotation.Config;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.mockito.Mockito.when;
 
 // IMPORTANT NOTE - IF RUNNING TESTS USING ANDROID STUDIO:

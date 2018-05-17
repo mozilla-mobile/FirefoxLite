@@ -8,14 +8,22 @@ package org.mozilla.focus.telemetry;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mozilla.focus.utils.AppConstants;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
 
 import static junit.framework.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({FirebaseEventTest.class, AppConstants.class})
 public class FirebaseEventTest {
 
     final private static char FAKE_EVENT_NAME_CHAR = 'a';
@@ -50,15 +58,23 @@ public class FirebaseEventTest {
         return new String(chars);
     }
 
+    @Before
+    public void warmUp() {
+
+        mockStatic(AppConstants.class);
+        when(AppConstants.isReleaseBuild()).thenReturn(false);
+
+    }
+
     @NonNull
     private FirebaseEvent generateValidFirebaseEvent() {
         return FirebaseEvent.create("", "", "", VALID_EVENT_NAME);
     }
 
-//    @Test(expected = IllegalArgumentException.class)
-//    public void eventNameLongerThan40Characters_shouldThrowIllegalArgumentException() {
-//        FirebaseEvent.create("", "", "", INVALID_EVENT_NAME);
-//    }
+    @Test(expected = IllegalArgumentException.class)
+    public void eventNameLongerThan40Characters_shouldThrowIllegalArgumentException() {
+        FirebaseEvent.create("", "", "", INVALID_EVENT_NAME);
+    }
 
     @Test
     public void eventNameValid_shouldBeSafe() {
@@ -69,7 +85,6 @@ public class FirebaseEventTest {
         }
     }
 
-
     @Test
     public void nullContext_shouldBeSafe() {
         try {
@@ -79,14 +94,14 @@ public class FirebaseEventTest {
         }
     }
 
-//    @Test(expected = IllegalArgumentException.class)
-//    public void paramSizeTooLarge_shouldThrow() {
-//        final FirebaseEvent firebaseEvent = generateValidFirebaseEvent();
-//        final Bundle params = mock(Bundle.class);
-//        firebaseEvent.setParam(params);
-//        when(params.size()).thenReturn(FirebaseEvent.MAX_PARAM_SIZE);
-//        firebaseEvent.param("", "");
-//    }
+    @Test(expected = IllegalArgumentException.class)
+    public void paramSizeTooLarge_shouldThrow() {
+        final FirebaseEvent firebaseEvent = generateValidFirebaseEvent();
+        final Bundle params = mock(Bundle.class);
+        firebaseEvent.setParam(params);
+        when(params.size()).thenReturn(FirebaseEvent.MAX_PARAM_SIZE);
+        firebaseEvent.param("", "");
+    }
 
     @Test
     public void paramSizeValid_shouldBeSafe() {
@@ -103,11 +118,11 @@ public class FirebaseEventTest {
         }
     }
 
-//    @Test(expected = IllegalArgumentException.class)
-//    public void paramKeyLengthTooLarge_shouldThrow() {
-//        final FirebaseEvent firebaseEvent = generateValidFirebaseEvent();
-//        firebaseEvent.param(INVALID_PARAM_NAME, "");
-//    }
+    @Test(expected = IllegalArgumentException.class)
+    public void paramKeyLengthTooLarge_shouldThrow() {
+        final FirebaseEvent firebaseEvent = generateValidFirebaseEvent();
+        firebaseEvent.param(INVALID_PARAM_NAME, "");
+    }
 
     @Test
     public void paramKeyValid_shouldBeSafe() {
@@ -119,11 +134,11 @@ public class FirebaseEventTest {
         }
     }
 
-//    @Test(expected = IllegalArgumentException.class)
-//    public void paramValueLengthTooLarge_shouldThrow() {
-//        final FirebaseEvent firebaseEvent = generateValidFirebaseEvent();
-//        firebaseEvent.param("", INVALID_PARAM_VALUE);
-//    }
+    @Test(expected = IllegalArgumentException.class)
+    public void paramValueLengthTooLarge_shouldThrow() {
+        final FirebaseEvent firebaseEvent = generateValidFirebaseEvent();
+        firebaseEvent.param("", INVALID_PARAM_VALUE);
+    }
 
     @Test
     public void paramValueLengthValid_shouldBeSafe() {

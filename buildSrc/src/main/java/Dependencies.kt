@@ -20,6 +20,7 @@ object Versions {
     const val adjust = "4.11.4"
     const val junit = "4.12"
     const val mockito = "2.12.0"
+    const val powermoch = "1.6.1"
     const val robolectric = "3.5.1"
     const val espresso = "3.0.1"
     const val test_runner = "1.0.1"
