@@ -15,6 +15,8 @@ import java.util.HashMap;
 abstract class FirebaseWrapper {
 
     private static final String TAG = "FirebaseWrapper";
+    private static final long FIREBASE_LONG_DEFAULT = 0L;
+    private static final String FIREBASE_STRING_DEFAULT = "";
 
     // Instance of FirebaseWrapper that provides default values
     private static FirebaseWrapper instance;
@@ -25,7 +27,7 @@ abstract class FirebaseWrapper {
 
     static long getRcLong(Context context, String key) {
         if (instance == null) {
-            return 0L;
+            return FIREBASE_LONG_DEFAULT;
         }
         final Object value = instance.getRemoteConfigDefault(context).get(key);
         if (value instanceof Integer) {
@@ -33,19 +35,19 @@ abstract class FirebaseWrapper {
         } else if (value instanceof Long) {
             return (Long) value;
         }
-        return 0L;
+        return FIREBASE_LONG_DEFAULT;
     }
 
     // get Remote Config string
     static String getRcString(Context context, String key) {
         if (instance == null) {
-            return "";
+            return FIREBASE_STRING_DEFAULT;
         }
         final Object value = instance.getRemoteConfigDefault(context).get(key);
         if (value instanceof String) {
             return (String) value;
         }
-        return "";
+        return FIREBASE_STRING_DEFAULT;
     }
 
 
@@ -84,6 +86,6 @@ abstract class FirebaseWrapper {
     abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
 
     public static String getFcmToken() {
-        return "";
+        return FIREBASE_STRING_DEFAULT;
     }
 }
