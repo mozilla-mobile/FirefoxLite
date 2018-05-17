@@ -20,9 +20,9 @@ public class AppConfigWrapper {
 
     public static long getShareDialogLaunchTimeThreshold(Context context, final boolean needExtend) {
         if (needExtend) {
-            return getRateDialogLaunchTimeThreshold(context) +
+            return FirebaseHelper.getRcLong(context, FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD) +
                     getRateAppNotificationLaunchTimeThreshold(context) -
-                    FirebaseHelper.getRcLong(context, FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD);
+                    getRateDialogLaunchTimeThreshold(context);
         }
         return DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG;
     }

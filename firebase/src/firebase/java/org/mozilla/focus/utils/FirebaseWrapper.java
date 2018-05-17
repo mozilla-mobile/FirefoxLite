@@ -36,6 +36,8 @@ import io.fabric.sdk.android.Fabric;
 abstract class FirebaseWrapper {
 
     private static final String TAG = "FirebaseWrapper";
+    private static final long FIREBASE_LONG_DEFAULT = 0L;
+    private static final String FIREBASE_STRING_DEFAULT = "";
 
     // Instance of FirebaseWrapper that provides default values
     private static FirebaseWrapper instance;
@@ -75,7 +77,7 @@ abstract class FirebaseWrapper {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
             throwRcNotInitException();
 
-            return "";
+            return FIREBASE_STRING_DEFAULT;
         }
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
@@ -92,14 +94,14 @@ abstract class FirebaseWrapper {
             return config.getString(key);
         }
         throwGetValueException("getRcString");
-        return "";
+        return FIREBASE_STRING_DEFAULT;
     }
 
     static long getRcLong(Context context, String key) {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
             throwRcNotInitException();
-            return 0L;
+            return FIREBASE_LONG_DEFAULT;
 
         }
         // if remoteConfig is not initialized, we go to default config directly
@@ -111,7 +113,7 @@ abstract class FirebaseWrapper {
                 return (Long) value;
             }
             throwGetValueException("getRcLong");
-            return 0L;
+            return FIREBASE_LONG_DEFAULT;
         }
 
         final FirebaseRemoteConfig config = remoteConfig.get();
@@ -120,7 +122,7 @@ abstract class FirebaseWrapper {
             return config.getValue(key).asLong();
         }
         throwGetValueException("getRcLong");
-        return 0L;
+        return FIREBASE_LONG_DEFAULT;
 
 
     }
@@ -323,7 +325,7 @@ abstract class FirebaseWrapper {
             // If Firebase is not initialized, getInstance() will throw an exception here
             // Since  This method is for debugging, return empty string is acceptable
             Log.e(TAG, "getGcmToken: ", e);
-            return "";
+            return FIREBASE_STRING_DEFAULT;
         }
     }
 
