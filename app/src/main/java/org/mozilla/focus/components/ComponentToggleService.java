@@ -168,20 +168,15 @@ public class ComponentToggleService extends Service {
     }
 
     private void startToForeground() {
-        //  The notification channel id should not be necessary since this service should only be enabled for API 21~23
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                getApplicationContext(),
-                NotificationUtil.DEFAULT_CHANNEL_ID);
+        final NotificationCompat.Builder builder =
+                NotificationUtil.generateNotificationBuilder(getApplicationContext());
 
         final Notification notification = builder
                 .setContentTitle(getString(R.string.setting_default_browser_notification_title))
                 .setContentText(getString(R.string.setting_default_browser_notification_text))
-                .setBadgeIconType(R.drawable.ic_notification)
-                .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setContentIntent(buildIntent())
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();
 
         startForeground(FG_NOTIFICATION_ID, notification);
@@ -190,13 +185,11 @@ public class ComponentToggleService extends Service {
     private void removeFromForeground() {
         // to post a new notification so people can go to SettingsActivity easily
         // this notification will be removed by SettingsActivity if it is in foreground
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                getApplicationContext(),
-                NotificationUtil.DEFAULT_CHANNEL_ID);
+        final NotificationCompat.Builder builder =
+                NotificationUtil.generateNotificationBuilder(getApplicationContext());
+
         final Notification notification = builder
                 .setContentTitle(getString(R.string.setting_default_browser_notification_clickable_text))
-                .setBadgeIconType(R.drawable.ic_notification)
-                .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
                 .setContentIntent(buildIntent())
                 .build();
