@@ -35,6 +35,7 @@ android {
         versionName Versions.version_name
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
         testInstrumentationRunnerArgument 'disableAnalytics', 'true'
+        testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true
 
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
@@ -128,6 +129,7 @@ android {
                 includeNoLocationClasses = true
             }
         }
+        execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 
     // used by Room, to test migrations
@@ -253,6 +255,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-web:${Versions.espresso}"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    androidTestUtil "com.android.support.test:orchestrator:${Versions.test_runner}"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
