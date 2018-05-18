@@ -34,6 +34,7 @@ public class DialogUtils {
     private static final int REQUEST_RATE_RATE = 2;
     private static final int REQUEST_RATE_FEEDBACK = 3;
     private static final int REQUEST_DEFAULT_CLICK = 4;
+    private static final int REQUEST_PRIVACY_POLICY_CLICK = 5;
 
     public static void showRateAppDialog(final Context context) {
         if (context == null) {
@@ -208,7 +209,7 @@ public class DialogUtils {
     public static void showPrivacyPolicyUpdateNotification(Context context) {
 
         final Intent privacyPolicyUpdateNotice = IntentUtils.genPrivacyPolicyUpdateNotificationActionForBroadcastReceiver(context);
-        final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, privacyPolicyUpdateNotice,
+        final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_PRIVACY_POLICY_CLICK, privacyPolicyUpdateNotice,
                 PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
