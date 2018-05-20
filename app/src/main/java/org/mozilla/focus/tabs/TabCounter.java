@@ -131,8 +131,8 @@ public class TabCounter extends RelativeLayout {
 
     private static ImageView createBoxView(Context context, DisplayMetrics dm, ViewGroup parent) {
         final ImageView boxView = new ImageView(context);
+        boxView.setId(R.id.counter_box);
         boxView.setImageResource(R.drawable.tab_counter_box);
-        boxView.setId(R.id.tab_counter_box);
         parent.addView(boxView);
 
         final LayoutParams lp = (LayoutParams) boxView.getLayoutParams();
@@ -149,6 +149,7 @@ public class TabCounter extends RelativeLayout {
 
     private static TextView createTextView(Context context, DisplayMetrics dm, ViewGroup parent) {
         final TextView textView = new TextView(context);
+        textView.setId(R.id.counter_text);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorMenuIconForeground));
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_TEXT_SIZE_SP);
@@ -174,7 +175,7 @@ public class TabCounter extends RelativeLayout {
         final LayoutParams lp = (LayoutParams) barView.getLayoutParams();
         lp.width = applyDimension(COMPLEX_UNIT_DIP, BAR_WIDTH_DIP, dm);
         lp.height = applyDimension(COMPLEX_UNIT_DIP, BAR_HEIGHT_DIP, dm);
-        lp.addRule(RelativeLayout.BELOW, R.id.tab_counter_box);
+        lp.addRule(RelativeLayout.BELOW, R.id.counter_box);
         lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
         lp.topMargin = applyDimension(COMPLEX_UNIT_DIP, BAR_MARGIN_TOP_DIP, dm);
         barView.setLayoutParams(lp);

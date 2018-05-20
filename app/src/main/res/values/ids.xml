@@ -16,5 +16,6 @@
     <item name="first_run_bg_even" type="id" />
     <item name="status" type="id"/>
     <item name="row_id" type="id"/>
-    <item name="tab_counter_box" type="id"/>
+    <item name="counter_box" type="id"/>
+    <item name="counter_text" type="id"/>
 </resources>
