@@ -5,12 +5,16 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,6 +24,8 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.utils.DrawableUtils;
 
 import java.text.NumberFormat;
+
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 
 public class TabCounter extends RelativeLayout {
 
@@ -38,6 +44,14 @@ public class TabCounter extends RelativeLayout {
     private static final float ONE_DIGIT_SIZE_RATIO = 0.6f;
     private static final float TWO_DIGITS_SIZE_RATIO = 0.5f;
 
+    private static final int BOX_SIZE_DIP = 20;
+    private static final float BOX_MARGIN_TOP_DIP = 0.5f;
+    private static final int BOX_MARGIN_BOTTOM_DIP = 3;
+    private static final int TEXT_TEXT_SIZE_SP = 12;
+    private static final int BAR_WIDTH_DIP = 20;
+    private static final int BAR_HEIGHT_DIP = 2;
+    private static final int BAR_MARGIN_TOP_DIP = 1;
+
     public TabCounter(Context context) {
         this(context, null);
     }
@@ -49,21 +63,18 @@ public class TabCounter extends RelativeLayout {
     public TabCounter(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        @ColorInt int defaultMenuIconColor = context.getResources().getColor(R.color.colorMenuIconForeground);
-        final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabCounter, defStyle, 0);
-        @ColorInt int menuIconColor = typedArray.getColor(R.styleable.TabCounter_drawableColor, defaultMenuIconColor);
+        @ColorInt int defaultMenuIconColor =
+                ContextCompat.getColor(context, R.color.colorMenuIconForeground);
+        final TypedArray typedArray =
+                context.obtainStyledAttributes(attrs, R.styleable.TabCounter, defStyle, 0);
+        @ColorInt int menuIconColor =
+                typedArray.getColor(R.styleable.TabCounter_drawableColor, defaultMenuIconColor);
         typedArray.recycle();
 
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.button_tab_counter, this);
-
-        box = findViewById(R.id.counter_box);
-        bar = findViewById(R.id.counter_bar);
-        text = findViewById(R.id.counter_text);
-        text.setText(DEFAULT_TABS_COUNTER_TEXT);
-        final int shiftOneDpForDefaultText = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
-        text.setPadding(0, 0, 0, shiftOneDpForDefaultText);
+        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        box = createBoxView(context, displayMetrics, this);
+        text = createTextView(context, displayMetrics, this);
+        bar = createBarView(context, displayMetrics, this);
 
         if (menuIconColor != defaultMenuIconColor) {
             tintDrawables(menuIconColor);
@@ -72,10 +83,12 @@ public class TabCounter extends RelativeLayout {
         animationSet = createAnimatorSet();
     }
 
+    @UiThread
     public CharSequence getText() {
         return text.getText();
     }
 
+    @UiThread
     public void setCountWithAnimation(final int count) {
         // Don't animate from initial state.
         if (this.count == 0) {
@@ -107,12 +120,70 @@ public class TabCounter extends RelativeLayout {
         animationSet.start();
     }
 
+    @UiThread
     public void setCount(int count) {
         adjustTextSize(count);
 
         text.setPadding(0, 0, 0, 0);
         text.setText(formatForDisplay(count));
         this.count = count;
+    }
+
+    private static ImageView createBoxView(Context context, DisplayMetrics dm, ViewGroup parent) {
+        final ImageView boxView = new ImageView(context);
+        boxView.setImageResource(R.drawable.tab_counter_box);
+        boxView.setId(R.id.tab_counter_box);
+        parent.addView(boxView);
+
+        final LayoutParams lp = (LayoutParams) boxView.getLayoutParams();
+        final int size = applyDimension(COMPLEX_UNIT_DIP, BOX_SIZE_DIP, dm);
+        lp.width = size;
+        lp.height = size;
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        lp.topMargin = applyDimension(COMPLEX_UNIT_DIP, BOX_MARGIN_TOP_DIP, dm);
+        lp.bottomMargin = applyDimension(COMPLEX_UNIT_DIP, BOX_MARGIN_BOTTOM_DIP, dm);
+        boxView.setLayoutParams(lp);
+
+        return boxView;
+    }
+
+    private static TextView createTextView(Context context, DisplayMetrics dm, ViewGroup parent) {
+        final TextView textView = new TextView(context);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.colorMenuIconForeground));
+        textView.setTypeface(Typeface.DEFAULT_BOLD);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_TEXT_SIZE_SP);
+        textView.setText(DEFAULT_TABS_COUNTER_TEXT);
+        final int shiftOneDpForDefaultText = applyDimension(COMPLEX_UNIT_DIP, 1, dm);
+        textView.setPadding(0, 0, 0, shiftOneDpForDefaultText);
+        parent.addView(textView);
+
+        final LayoutParams lp = (LayoutParams) textView.getLayoutParams();
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        lp.topMargin = applyDimension(COMPLEX_UNIT_DIP, BOX_MARGIN_TOP_DIP, dm);
+        lp.bottomMargin = applyDimension(COMPLEX_UNIT_DIP, BOX_MARGIN_BOTTOM_DIP, dm);
+        textView.setLayoutParams(lp);
+
+        return textView;
+    }
+
+    private static ImageView createBarView(Context context, DisplayMetrics dm, ViewGroup parent) {
+        final ImageView barView = new ImageView(context);
+        barView.setImageResource(R.drawable.tab_counter_bar);
+        parent.addView(barView);
+
+        final LayoutParams lp = (LayoutParams) barView.getLayoutParams();
+        lp.width = applyDimension(COMPLEX_UNIT_DIP, BAR_WIDTH_DIP, dm);
+        lp.height = applyDimension(COMPLEX_UNIT_DIP, BAR_HEIGHT_DIP, dm);
+        lp.addRule(RelativeLayout.BELOW, R.id.tab_counter_box);
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lp.topMargin = applyDimension(COMPLEX_UNIT_DIP, BAR_MARGIN_TOP_DIP, dm);
+        barView.setLayoutParams(lp);
+
+        return barView;
+    }
+
+    private static int applyDimension(int unit, float value, DisplayMetrics displayMetrics) {
+        return (int) TypedValue.applyDimension(unit, value, displayMetrics);
     }
 
     private void tintDrawables(int menuIconColor) {
