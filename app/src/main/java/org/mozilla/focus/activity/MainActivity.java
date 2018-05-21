@@ -24,7 +24,6 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -120,9 +119,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         initBroadcastReceivers();
 
         mainMediator = new MainMediator(this);
-        screenNavigator = new ScreenNavigator(this);
-
-        getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
+        screenNavigator = new ScreenNavigator(this, mainMediator);
 
         SafeIntent intent = new SafeIntent(getIntent());
         AppLaunchMethod.parse(intent).sendLaunchTelemetry(this);
@@ -950,26 +947,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
             // but there is no promise about this.
             return (TabView) WebViewProvider.create(this.activity, null);
-        }
-    }
-
-    private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
-
-        boolean hasUrlFragmentOnly(Fragment top) {
-            final int stackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-            return (stackEntryCount == 1 && UrlInputFragment.FRAGMENT_TAG.equals(top.getTag()));
-        }
-
-        @Override
-        public void onBackStackChanged() {
-            final BrowserFragment fragment = getBrowserFragment();
-            final Fragment top = MainActivity.this.mainMediator.getTopFragment();
-
-            if (top == null || hasUrlFragmentOnly(top)) {
-                fragment.goForeground();
-            } else {
-                fragment.goBackground();
-            }
         }
     }
 }

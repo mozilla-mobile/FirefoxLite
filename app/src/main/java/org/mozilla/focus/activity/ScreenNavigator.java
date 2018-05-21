@@ -40,8 +40,8 @@ public class ScreenNavigator {
         }
     }
 
-    ScreenNavigator(MainActivity activity) {
-        this.mainMediator = new MainMediator(activity);
+    ScreenNavigator(MainActivity activity, MainMediator mediator) {
+        this.mainMediator = mediator;
         this.browserMediator = new BrowserMediator(activity, mainMediator);
     }
 
@@ -113,7 +113,7 @@ public class ScreenNavigator {
 
     private static class NothingNavigated extends ScreenNavigator {
         NothingNavigated() {
-            super(null);
+            super(null, null);
         }
 
         @Override
