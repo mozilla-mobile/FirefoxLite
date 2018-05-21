@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -33,10 +34,19 @@ class MainMediator {
             HomeFragment.FRAGMENT_TAG
     };
 
+    /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, adding fragment of
+     * this type will make browser fragment go to background */
+    private static final String TYPE_ATTACHED = "attached";
+
+    /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, browsing fragment
+     * will still be in foreground after adding this type of fragment. */
+    private static final String TYPE_FLOATING = "floating";
+
     private final MainActivity activity;
 
     MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
+        this.activity.getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
     }
 
     /**
@@ -66,7 +76,7 @@ class MainMediator {
         }
 
         String parent = homeFragmentAtTop() ? HomeFragment.FRAGMENT_TAG : BrowserFragment.FRAGMENT_TAG;
-        this.prepareUrlInput(url, parent).addToBackStack(UrlInputFragment.FRAGMENT_TAG).commit();
+        this.prepareUrlInput(url, parent).addToBackStack(TYPE_FLOATING).commit();
     }
 
     void dismissUrlInput() {
@@ -106,12 +116,7 @@ class MainMediator {
             return;
         }
 
-        fadeOutFragment(homeFragment, new Runnable() {
-            @Override
-            public void run() {
-                clearAllFragmentImmediate();
-            }
-        });
+        fadeOutFragment(homeFragment, this::clearAllFragmentImmediate);
     }
 
     private void fadeOutFragment(Fragment fragment, @Nullable final Runnable onAnimationEndCallback) {
@@ -203,7 +208,7 @@ class MainMediator {
 
         if (addToBackStack) {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-            transaction.addToBackStack(HomeFragment.FRAGMENT_TAG);
+            transaction.addToBackStack(TYPE_ATTACHED);
         } else {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
         }
@@ -241,5 +246,32 @@ class MainMediator {
 
     private boolean homeFragmentAtTop() {
         return getTopHomeFragment() != null;
+    }
+
+    private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
+
+        @Override
+        public void onBackStackChanged() {
+            FragmentManager manager = activity.getSupportFragmentManager();
+            int entryCount = manager.getBackStackEntryCount();
+
+            boolean isBrowserForeground = true;
+            for (int i = 0; i < entryCount; ++i) {
+                FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
+                if (!TextUtils.equals(entry.getName(), TYPE_FLOATING)) {
+                    isBrowserForeground = false;
+                    break;
+                }
+            }
+
+            Fragment fragment = manager.findFragmentById(R.id.browser);
+            if (fragment instanceof BrowserFragment) {
+                if (isBrowserForeground) {
+                    ((BrowserFragment) fragment).goForeground();
+                } else {
+                    ((BrowserFragment) fragment).goBackground();
+                }
+            }
+        }
     }
 }
