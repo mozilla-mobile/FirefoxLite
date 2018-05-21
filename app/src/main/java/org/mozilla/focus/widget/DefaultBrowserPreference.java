@@ -24,6 +24,7 @@ import android.widget.Switch;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.components.ComponentToggleService;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
@@ -227,9 +228,16 @@ public class DefaultBrowserPreference extends Preference {
             // to remove notification which created by Service
             NotificationManagerCompat.from(context).cancel(ComponentToggleService.NOTIFICATION_ID);
 
-            // if service finished its job, lets fire an intent to choose myself as default browser
             final boolean isDefaultBrowser = Browsers.isDefaultBrowser(context);
             final boolean hasDefaultBrowser = Browsers.hasDefaultBrowser(context);
+
+            // The default-browser-config should be cleared, if the service finished its job.
+            // if not been cleared, we regards it as 'fail'
+            if (hasDefaultBrowser && !isDefaultBrowser) {
+                TelemetryWrapper.onDefaultBrowserServiceFailed(context);
+            }
+
+            // if service finished its job, lets fire an intent to choose myself as default browser
             if (!isDefaultBrowser && !hasDefaultBrowser) {
                 pref.triggerWebOpen();
             }
