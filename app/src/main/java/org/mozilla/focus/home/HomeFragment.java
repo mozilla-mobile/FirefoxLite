@@ -417,7 +417,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 case R.id.btn_tab_tray:
                     listener.onNotified(HomeFragment.this,
                             FragmentListener.TYPE.SHOW_TAB_TRAY,
-                            null);
+                            FRAGMENT_TAG);
                     TelemetryWrapper.showTabTrayHome(getContext());
                     break;
 

@@ -43,6 +43,7 @@ import com.bumptech.glide.Glide;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.ScreenNavigator;
+import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
@@ -59,6 +60,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private static final boolean ENABLE_SWIPE_TO_DISMISS = false;
 
     private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
+
+    private static final String ARG_SRC_FRAGMENT = "src_fragment";
 
     private TabTrayContract.Presenter presenter;
 
@@ -80,15 +83,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private SlideAnimationCoordinator slideCoordinator = new SlideAnimationCoordinator(this);
 
-    private Runnable dismissRunnable = new Runnable() {
-        @Override
-        public void run() {
-            dismiss();
-        }
-    };
+    private Runnable dismissRunnable = this::dismiss;
 
-    public static TabTrayFragment newInstance() {
-        return new TabTrayFragment();
+    public static TabTrayFragment newInstance(String srcFragment) {
+        Bundle args = new Bundle();
+        args.putString(ARG_SRC_FRAGMENT, srcFragment);
+        TabTrayFragment fragment = new TabTrayFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -208,18 +210,15 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         }, false).dispatchUpdatesTo(adapter);
         adapter.setData(newTabs);
 
-        waitItemAnimation(new Runnable() {
-            @Override
-            public void run() {
-                Tab oldFocused = adapter.getFocusedTab();
-                List<Tab> oldTabs = adapter.getData();
-                int oldFocusedPosition = oldTabs.indexOf(oldFocused);
-                adapter.notifyItemChanged(oldFocusedPosition);
+        waitItemAnimation(() -> {
+            Tab oldFocused = adapter.getFocusedTab();
+            List<Tab> oldTabs1 = adapter.getData();
+            int oldFocusedPosition = oldTabs1.indexOf(oldFocused);
+            adapter.notifyItemChanged(oldFocusedPosition);
 
-                adapter.setFocusedTab(newFocusedTab);
-                int newFocusedPosition = oldTabs.indexOf(newFocusedTab);
-                adapter.notifyItemChanged(newFocusedPosition);
-            }
+            adapter.setFocusedTab(newFocusedTab);
+            int newFocusedPosition = oldTabs1.indexOf(newFocusedTab);
+            adapter.notifyItemChanged(newFocusedPosition);
         });
     }
 
@@ -251,6 +250,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void navigateToHome() {
+        if (isOpenedByHome()) {
+            return;
+        }
         ScreenNavigator.get(getContext()).popToHomeScreen(false);
     }
 
@@ -319,17 +321,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         List<Tab> tabs = adapter.getData();
         int focusedPosition = tabs.indexOf(adapter.getFocusedTab());
         final boolean shouldExpand = isPositionVisibleWhenCollapse(focusedPosition);
-        uiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (shouldExpand) {
-                    setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
-                    logoMan.setVisibility(View.VISIBLE);
-                    setIntercept(false);
-                } else {
-                    setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
-                    setIntercept(true);
-                }
+        uiHandler.postDelayed(() -> {
+            if (shouldExpand) {
+                setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
+                logoMan.setVisibility(View.VISIBLE);
+                setIntercept(false);
+            } else {
+                setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
+                setIntercept(true);
             }
         }, getResources().getInteger(R.integer.tab_tray_transition_time));
     }
@@ -346,21 +345,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void waitItemAnimation(final Runnable onAnimationEnd) {
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
-                if (animator == null) {
-                    return;
-                }
-
-                animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
-                    @Override
-                    public void onAnimationsFinished() {
-                        uiHandler.post(onAnimationEnd);
-                    }
-                });
+        uiHandler.post(() -> {
+            RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+            if (animator == null) {
+                return;
             }
+
+            animator.isRunning(() -> uiHandler.post(onAnimationEnd));
         });
     }
 
@@ -438,20 +429,19 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                     }
                 });
 
-        backgroundView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                boolean result = detector.onTouchEvent(event);
-                if (result) {
-                    v.performClick();
-                }
-                return result;
+        backgroundView.setOnTouchListener((v, event) -> {
+            boolean result = detector.onTouchEvent(event);
+            if (result) {
+                v.performClick();
             }
+            return result;
         });
     }
 
     private void onNewTabClicked() {
-        ScreenNavigator.get(getContext()).addHomeScreen(false);
+        if (!isOpenedByHome()) {
+            ScreenNavigator.get(getContext()).addHomeScreen(false);
+        }
         TelemetryWrapper.clickAddTabTray(getContext());
         postOnNextFrame(dismissRunnable);
     }
@@ -548,12 +538,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void postOnNextFrame(final Runnable runnable) {
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                uiHandler.post(runnable);
-            }
-        });
+        uiHandler.post(() -> uiHandler.post(runnable));
+    }
+
+    private boolean isOpenedByHome() {
+        Bundle args = getArguments();
+        return (args != null)
+                && args.containsKey(ARG_SRC_FRAGMENT)
+                && HomeFragment.FRAGMENT_TAG.equals(args.getString(ARG_SRC_FRAGMENT));
     }
 
     private static class SlideAnimationCoordinator {

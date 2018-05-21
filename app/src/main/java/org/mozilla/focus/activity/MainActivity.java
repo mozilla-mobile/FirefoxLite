@@ -789,7 +789,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
                 break;
             case SHOW_TAB_TRAY:
-                TabTray.show(getSupportFragmentManager());
+                if ((payload != null) && (payload instanceof String)) {
+                    TabTray.show(getSupportFragmentManager(), (String) payload);
+                }
                 break;
             case REFRESH_TOP_SITE:
                 HomeFragment homeFragment = this.mainMediator.getTopHomeFragment();
