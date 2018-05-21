@@ -10,8 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 public class TabTray {
-    public static void show(FragmentManager manager) {
-        TabTrayFragment.newInstance().show(manager, TabTrayFragment.FRAGMENT_TAG);
+    public static void show(FragmentManager manager, String srcFragment) {
+        TabTrayFragment.newInstance(srcFragment).show(manager, TabTrayFragment.FRAGMENT_TAG);
     }
 
     public static void dismiss(FragmentManager manager) {

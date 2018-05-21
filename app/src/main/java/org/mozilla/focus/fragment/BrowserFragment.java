@@ -853,7 +853,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 TelemetryWrapper.clickAddTabToolbar(getContext());
                 break;
             case R.id.btn_tab_tray:
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, FRAGMENT_TAG);
                 TelemetryWrapper.showTabTrayToolbar(getContext());
                 break;
             case R.id.btn_menu:
