@@ -34,6 +34,10 @@ class MainMediator {
             HomeFragment.FRAGMENT_TAG
     };
 
+    /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, pressing back when this
+     * type of fragment is in foreground will close the app */
+    private static final String TYPE_ROOT = "root";
+
     /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, adding fragment of
      * this type will make browser fragment go to background */
     private static final String TYPE_ATTACHED = "attached";
@@ -84,6 +88,17 @@ class MainMediator {
         if (top != null && UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
             this.activity.onBackPressed();
         }
+    }
+
+    boolean shouldFinish() {
+        FragmentManager manager = activity.getSupportFragmentManager();
+        int entryCount = manager.getBackStackEntryCount();
+        if (entryCount == 0) {
+            return true;
+        }
+
+        FragmentManager.BackStackEntry lastEntry = manager.getBackStackEntryAt(entryCount - 1);
+        return TYPE_ROOT.equals(lastEntry.getName());
     }
 
     private void clearBackStack(FragmentManager fm) {
@@ -211,6 +226,7 @@ class MainMediator {
             transaction.addToBackStack(TYPE_ATTACHED);
         } else {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
+            transaction.addToBackStack(TYPE_ROOT);
         }
 
         return transaction;
