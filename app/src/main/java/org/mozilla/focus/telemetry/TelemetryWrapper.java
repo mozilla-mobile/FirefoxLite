@@ -791,6 +791,16 @@ public final class TelemetryWrapper {
 
     }
 
+    public static void onDefaultBrowserServiceFailed(Context context) {
+        TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.DEFAULT_BROWSER)
+                .extra(Extra.SUCCESS, Boolean.toString(false))
+                .queue();
+
+        FirebaseEvent.create(Category.ACTION, Method.CHANGE, Object.DEFAULT_BROWSER)
+                .param(Extra.SUCCESS, Boolean.toString(false))
+                .queue(context);
+    }
+
     public static void promoteShareClickEvent(Context context, String value, String source) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.PROMOTE_SHARE, value)
                 .extra(Extra.SOURCE, source)
