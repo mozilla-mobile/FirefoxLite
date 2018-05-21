@@ -743,6 +743,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
+        if (mainMediator.shouldFinish()) {
+            finish();
+            return;
+        }
+
         super.onBackPressed();
     }
 
