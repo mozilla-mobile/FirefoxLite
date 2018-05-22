@@ -69,7 +69,8 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_toEndOf="@id/plus_sign"
-                android:layout_marginStart="@dimen/tab_tray_close_all_btn_margin_start">
+                android:layout_marginStart="@dimen/tab_tray_close_all_btn_margin_start"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/close_all_tabs_btn"
                     android:layout_width="wrap_content"
