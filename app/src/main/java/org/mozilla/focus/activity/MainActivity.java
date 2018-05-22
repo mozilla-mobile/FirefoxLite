@@ -510,7 +510,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.menu_screenshots:
                 onScreenshotsClicked();
-                TelemetryWrapper.clickMenuCapture();
+                TelemetryWrapper.clickMenuCapture(this);
                 break;
             case R.id.menu_preferences:
                 driveDefaultBrowser();
