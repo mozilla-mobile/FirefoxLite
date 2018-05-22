@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.ScreenNavigator;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
@@ -210,7 +211,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void updateTabCounter() {
         int tabCount = tabsSession != null ? tabsSession.getTabsCount() : 0;
-        tabCounter.setCount(tabCount);
+        if (isTabRestoredComplete()) {
+            tabCounter.setCount(tabCount);
+        }
 
         if (tabCount == 0) {
             tabCounter.setEnabled(false);
@@ -220,6 +223,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             tabCounter.setEnabled(true);
             tabCounter.setAlpha(1f);
         }
+    }
+
+    private boolean isTabRestoredComplete() {
+        return (getActivity() instanceof MainActivity)
+                && ((MainActivity) getActivity()).isTabRestoredComplete();
     }
 
     private class SiteItemClickListener implements View.OnClickListener, View.OnLongClickListener {
