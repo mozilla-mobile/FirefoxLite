@@ -26,7 +26,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -42,6 +42,8 @@ public class NavigationTest {
     private static final String TARGET_URL_SITE_1 = "file:///android_asset/gpl.html";
     private static final String TARGET_URL_SITE_2 = "file:///android_asset/licenses.html";
 
+    private SessionLoadedIdlingResource loadingIdlingResource;
+
     @Before
     public void setUp() {
         AndroidTestUtils.beforeTest();
@@ -50,13 +52,18 @@ public class NavigationTest {
 
     @After
     public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
+        if (loadingIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(loadingIdlingResource);
+        }
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
-        final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
+        loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
         // Click search field
         onView(withId(R.id.home_fragment_fake_input))
@@ -64,7 +71,7 @@ public class NavigationTest {
 
         // Enter site 1 url
         onView(withId(R.id.url_edit)).check(matches(isDisplayed()));
-        onView(withId(R.id.url_edit)).perform(typeText(TARGET_URL_SITE_1));
+        onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_1));
         onView(withId(R.id.url_edit)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
 
         // Check if site 1 url is loaded
@@ -78,7 +85,7 @@ public class NavigationTest {
         onView(withId(R.id.url_edit)).perform(clearText());
 
         // Enter site 2 url
-        onView(withId(R.id.url_edit)).perform(typeText(TARGET_URL_SITE_2));
+        onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_2));
         onView(withId(R.id.url_edit)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
 
         // Check if site 2 url is loaded

@@ -8,7 +8,6 @@ package org.mozilla.focus.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Keep;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
@@ -26,6 +25,11 @@ import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
+import java.io.IOException;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
@@ -41,15 +45,27 @@ import static org.hamcrest.core.AllOf.allOf;
 public class BrowsingIntentTest {
 
     private SessionLoadedIdlingResource loadingIdlingResource;
-    private static final String TARGET_URL_SITE_1 = "file:///android_asset/gpl.html";
-    private static final String TARGET_URL_SITE_2 = "file:///android_asset/licenses.html";
+    private static final String TEST_PATH = "/";
+    private static final String TARGET_URL_SITE_1 = "get_location.html";
+    private static final String TARGET_URL_SITE_2 = "file:///android_asset/gpl.html";
+
+    private MockWebServer webServer;
 
     @Rule
-    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() {
         AndroidTestUtils.beforeTest();
+        webServer = new MockWebServer();
+        try {
+            webServer.enqueue(new MockResponse()
+                    .setBody(AndroidTestUtils.readTestAsset(TARGET_URL_SITE_1))
+                    .addHeader("Set-Cookie", "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"));
+            webServer.start();
+        } catch (IOException e) {
+            throw new AssertionError("Could not start web server", e);
+        }
     }
 
     @After
@@ -57,7 +73,17 @@ public class BrowsingIntentTest {
         if (loadingIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
         }
-        activityTestRule.getActivity().finishAndRemoveTask();
+        try {
+            if (webServer != null) {
+                webServer.close();
+                webServer.shutdown();
+            }
+        } catch (IOException e) {
+            throw new AssertionError("Could not stop web server", e);
+        }
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test
@@ -72,7 +98,7 @@ public class BrowsingIntentTest {
         loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
-                .check(matches(withText(TARGET_URL_SITE_1)));
+                .check(matches(withText(webServer.url(TEST_PATH).toString())));
         /** We need to unregister the SessionLoadedIdlingResource immediately once the loading is done. If not doing so, the next espresso
          *  action "Click search button" will fail to pass the check "isIdleNow()" in SessionLoadedIdlingResource since getVisibleBrowserFragment() is null now.
          *  See also in {@link org.mozilla.focus.helper.SessionLoadedIdlingResource#isIdleNow() isIdleNow}.
@@ -95,14 +121,10 @@ public class BrowsingIntentTest {
         // Check if site 1 is loaded again
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
-                .check(matches(withText(TARGET_URL_SITE_1)));
+                .check(matches(withText(webServer.url(TEST_PATH).toString())));
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
-        // Click back to leave rocket
-        Espresso.pressBackUnconditionally();
-
     }
-
 
     @Test
     public void appHasOneTabAndReceiveBrowsingIntent_tabIncreasedAndBrowse() {
@@ -140,7 +162,7 @@ public class BrowsingIntentTest {
         // Check if target url is resolved and site 1 is loaded
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
-                .check(matches(withText(TARGET_URL_SITE_1)));
+                .check(matches(withText(webServer.url(TEST_PATH).toString())));
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Check if tab count is increased
@@ -153,8 +175,7 @@ public class BrowsingIntentTest {
         // Simulate third party app sending browsing url intent to rocket
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(TARGET_URL_SITE_1));
-        intent.setPackage(InstrumentationRegistry.getInstrumentation().getTargetContext().getPackageName());
+        intent.setData(Uri.parse(webServer.url(TEST_PATH).toString()));
         activityTestRule.launchActivity(intent);
     }
 }

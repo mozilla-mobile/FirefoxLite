@@ -55,9 +55,13 @@ public class HomeTest {
     }
 
     @After
-    public void tearDown() throws Exception {
-        // Remove activity from Recent Apps
-        activityRule.getActivity().finishAndRemoveTask();
+    public void tearDown() {
+        if (loadingIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(loadingIdlingResource);
+        }
+        if (activityRule.getActivity() != null) {
+            activityRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test

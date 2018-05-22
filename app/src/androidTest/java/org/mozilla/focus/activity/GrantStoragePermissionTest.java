@@ -8,13 +8,11 @@ package org.mozilla.focus.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.RootMatchers;
-import android.support.test.filters.SdkSuppress;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -50,7 +48,6 @@ import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 @RunWith(AndroidJUnit4.class)
-@SdkSuppress(minSdkVersion = Build.VERSION_CODES.M)
 public class GrantStoragePermissionTest {
 
     private static final String TEST_PATH = "/";
@@ -115,7 +112,12 @@ public class GrantStoragePermissionTest {
         if (sessionLoadedIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
         }
-        activityRule.getActivity().finishAndRemoveTask();
+        if (downloadCompleteIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(downloadCompleteIdlingResource);
+        }
+        if (activityRule.getActivity() != null) {
+            activityRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test
@@ -140,6 +142,8 @@ public class GrantStoragePermissionTest {
         final int displayWidth = displayMetrics.widthPixels;
         final int displayHeight = displayMetrics.heightPixels;
         onView(withId(R.id.main_content)).check(matches(isDisplayed())).perform(AndroidTestUtils.clickXY(displayWidth / 2, displayHeight / 2, Tap.LONG));
+
+        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
         // Initialize DownloadCompleteIdlingResource and register content observer
         downloadCompleteIdlingResource = new DownloadCompleteIdlingResource(activityRule.getActivity());

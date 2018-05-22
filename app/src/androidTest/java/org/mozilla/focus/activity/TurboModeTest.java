@@ -44,7 +44,9 @@ public class TurboModeTest {
 
     @After
     public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test

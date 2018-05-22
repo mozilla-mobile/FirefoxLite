@@ -25,6 +25,11 @@ import org.mozilla.focus.helper.ScreenshotIdlingResource;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
+import java.io.IOException;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
@@ -39,19 +44,48 @@ import static org.hamcrest.core.AllOf.allOf;
 @RunWith(AndroidJUnit4.class)
 public class TakeScreenshotTest {
 
+    private static final String TEST_PATH = "/";
+    private static final String HTML_FILE_GET_LOCATION = "get_location.html";
+
     private SessionLoadedIdlingResource sessionLoadedIdlingResource;
     private ScreenshotIdlingResource screenshotIdlingResource;
+    private MockWebServer webServer;
 
     @Rule
-    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class, true, false) {
+        @Override
+        protected void beforeActivityLaunched() {
+            super.beforeActivityLaunched();
+
+            webServer = new MockWebServer();
+            try {
+                webServer.enqueue(new MockResponse()
+                        .setBody(AndroidTestUtils.readTestAsset(HTML_FILE_GET_LOCATION))
+                        .addHeader("Set-Cookie", "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"));
+                webServer.start();
+            } catch (IOException e) {
+                throw new AssertionError("Could not start web server", e);
+            }
+        }
+
+        @Override
+        protected void afterActivityFinished() {
+            super.afterActivityFinished();
+
+            try {
+                webServer.close();
+                webServer.shutdown();
+            } catch (IOException e) {
+                throw new AssertionError("Could not stop web server", e);
+            }
+        }
+    };
 
     @Rule
     public final GrantPermissionRule writePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     @Rule
     public final GrantPermissionRule readPermissionRule = GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE);
-
-    private static final String TARGET_URL_SITE = "file:///android_asset/gpl.html";
 
     @Before
     public void setUp() {
@@ -66,7 +100,9 @@ public class TakeScreenshotTest {
         if (screenshotIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(screenshotIdlingResource);
         }
-        activityTestRule.getActivity().finishAndRemoveTask();
+        if (activityTestRule.getActivity() != null) {
+            activityTestRule.getActivity().finishAndRemoveTask();
+        }
     }
 
     @Test
@@ -80,11 +116,11 @@ public class TakeScreenshotTest {
         onView(allOf(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click());
 
         // Enter test site url
-        onView(allOf(withId(R.id.url_edit), isDisplayed())).perform(replaceText(TARGET_URL_SITE), pressImeActionButton());
+        onView(allOf(withId(R.id.url_edit), isDisplayed())).perform(replaceText(webServer.url(TEST_PATH).toString()), pressImeActionButton());
 
         // Check if test site is loaded
         IdlingRegistry.getInstance().register(sessionLoadedIdlingResource);
-        onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(TARGET_URL_SITE)));
+        onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(webServer.url(TEST_PATH).toString())));
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
         screenshotIdlingResource = new ScreenshotIdlingResource();
