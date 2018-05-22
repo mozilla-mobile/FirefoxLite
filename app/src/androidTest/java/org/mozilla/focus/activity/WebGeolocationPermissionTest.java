@@ -16,7 +16,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -99,11 +98,6 @@ public class WebGeolocationPermissionTest {
     @Before
     public void setUp() {
         AndroidTestUtils.beforeTest();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        activityRule.getActivity().finishAndRemoveTask();
     }
 
     @Test

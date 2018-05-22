@@ -48,11 +48,6 @@ public class NavigationTest {
         activityTestRule.launchActivity(new Intent());
     }
 
-    @After
-    public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
-    }
-
     @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
