@@ -15,7 +15,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,12 +51,6 @@ public class HomeTest {
     public void setUp() {
         // Set the share preferences and start the activity
         AndroidTestUtils.beforeTest();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        // Remove activity from Recent Apps
-        activityRule.getActivity().finishAndRemoveTask();
     }
 
     @Test

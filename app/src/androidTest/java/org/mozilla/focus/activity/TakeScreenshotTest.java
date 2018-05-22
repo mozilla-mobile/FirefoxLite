@@ -66,7 +66,6 @@ public class TakeScreenshotTest {
         if (screenshotIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(screenshotIdlingResource);
         }
-        activityTestRule.getActivity().finishAndRemoveTask();
     }
 
     @Test

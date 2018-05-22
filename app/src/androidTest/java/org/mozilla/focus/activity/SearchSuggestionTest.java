@@ -14,8 +14,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 
-import org.json.JSONException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,11 +53,6 @@ public class SearchSuggestionTest {
         SearchEngineManager.getInstance().loadSearchEngines(InstrumentationRegistry.getContext());
         AndroidTestUtils.beforeTest();
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-    }
-
-    @After
-    public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
     }
 
     @Test

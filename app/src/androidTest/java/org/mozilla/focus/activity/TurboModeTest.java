@@ -11,7 +11,6 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,11 +39,6 @@ public class TurboModeTest {
     public void setUp() {
         AndroidTestUtils.beforeTest(false);
         activityTestRule.launchActivity(new Intent());
-    }
-
-    @After
-    public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
     }
 
     @Test

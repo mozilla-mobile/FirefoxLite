@@ -115,7 +115,6 @@ public class GrantStoragePermissionTest {
         if (sessionLoadedIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
         }
-        activityRule.getActivity().finishAndRemoveTask();
     }
 
     @Test

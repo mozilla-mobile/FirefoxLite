@@ -49,11 +49,6 @@ public class ScreenNavigatorTest {
         activity = activityTestRule.launchActivity(new Intent());
     }
 
-    @After
-    public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
-    }
-
     /**
      * Test whether showBrowserScreen() can load and bring browser screen to foreground properly
      */

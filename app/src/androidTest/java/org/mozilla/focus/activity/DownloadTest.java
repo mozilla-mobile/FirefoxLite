@@ -67,7 +67,6 @@ public class DownloadTest {
     @After
     public void tearDown() throws Exception {
         clearDownloadFolder();
-        activityRule.getActivity().finishAndRemoveTask();
     }
 
 

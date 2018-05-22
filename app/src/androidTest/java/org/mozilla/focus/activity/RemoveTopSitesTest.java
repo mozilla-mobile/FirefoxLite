@@ -64,11 +64,6 @@ public class RemoveTopSitesTest {
         activityTestRule.launchActivity(new Intent());
     }
 
-    @After
-    public void tearDown() {
-        activityTestRule.getActivity().finishAndRemoveTask();
-    }
-
     @Test
     public void deleteTopSite_deleteSuccessfully() {
 
