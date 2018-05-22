@@ -70,7 +70,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
                 nexStep = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), fallbackTitle);
             }
 
-            TelemetryWrapper.clickRateAppNotification(context);
+            TelemetryWrapper.clickDefaultSettingNotification(context);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.DEFAULT_BROWSER);
 
@@ -78,8 +78,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             nexStep = new Intent(context, MainActivity.class);
             nexStep.putExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, true);
 
-
-            TelemetryWrapper.clickDefaultSettingNotification(context);
+            TelemetryWrapper.clickRateAppNotification(context);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
