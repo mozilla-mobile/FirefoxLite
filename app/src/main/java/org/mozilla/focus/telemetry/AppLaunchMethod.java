@@ -1,3 +1,5 @@
+
+
 package org.mozilla.focus.telemetry;
 
 import android.content.Context;
@@ -30,7 +32,7 @@ public enum AppLaunchMethod {
 
         @Override
         public void sendLaunchTelemetry(Context context) {
-            TelemetryWrapper.launchByHomeScreenShortcutEvent();
+            TelemetryWrapper.launchByHomeScreenShortcutEvent(context);
         }
     },
 
