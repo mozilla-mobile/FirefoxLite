@@ -267,8 +267,9 @@ public final class TelemetryWrapper {
         FirebaseEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.LAUNCHER).queue(context);
     }
 
-    public static void launchByHomeScreenShortcutEvent() {
+    public static void launchByHomeScreenShortcutEvent(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.SHORTCUT).queue();
+        FirebaseEvent.create(Category.ACTION, Method.LAUNCH, Object.APP, Value.SHORTCUT).queue(context);
     }
 
     public static void launchByTextSelectionSearchEvent(Context context) {
@@ -452,8 +453,9 @@ public final class TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.HISTORY).queue();
     }
 
-    public static void clickMenuCapture() {
+    public static void clickMenuCapture(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.CAPTURE).queue();
+        FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.MENU, Value.CAPTURE).queue(context);
     }
 
     public static void showPanelDownload() {
