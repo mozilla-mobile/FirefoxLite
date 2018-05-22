@@ -41,6 +41,8 @@ public final class TelemetryWrapper {
     private static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
 
     private static final int TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 2;
+    private static final int RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 2;
+    private static final int DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION = 2;
 
     private TelemetryWrapper() {
     }
@@ -765,10 +767,12 @@ public final class TelemetryWrapper {
     public static void clickRateAppNotification(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .extra(Extra.VERSION, String.valueOf(RATE_APP_NOTIFICATION_TELEMETRY_VERSION))
                 .queue();
 
         FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.FEEDBACK)
                 .param(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .param(Extra.VERSION, String.valueOf(RATE_APP_NOTIFICATION_TELEMETRY_VERSION))
                 .queue(context);
     }
 
@@ -785,10 +789,12 @@ public final class TelemetryWrapper {
     public static void clickDefaultSettingNotification(Context context) {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.DEFAULT_BROWSER)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .extra(Extra.VERSION, Integer.toString(DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION))
                 .queue();
 
         FirebaseEvent.create(Category.ACTION, Method.CLICK, Object.DEFAULT_BROWSER)
                 .param(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .param(Extra.VERSION, Integer.toString(DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION))
                 .queue(context);
 
     }
