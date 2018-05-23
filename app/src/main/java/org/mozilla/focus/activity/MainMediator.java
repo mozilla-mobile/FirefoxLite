@@ -197,9 +197,8 @@ class MainMediator {
         final FirstrunFragment fragment = this.activity.createFirstRunFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
-            transaction.replace(R.id.container,
-                    fragment,
-                    FirstrunFragment.FRAGMENT_TAG);
+            transaction.replace(R.id.container, fragment, FirstrunFragment.FRAGMENT_TAG)
+                    .addToBackStack(TYPE_ROOT);
         }
 
         return transaction;
