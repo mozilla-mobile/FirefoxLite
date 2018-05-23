@@ -66,10 +66,10 @@
   <string name="first_run_page4_title">无比强大的截图功能</string>
   <string name="first_run_page4_text">不但能截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
   <string name="first_run_upgrade_page_title">我们收到了您的反馈！</string>
-  <string name="first_run_upgrade_page_text1">1. 并开%s，看剧读文两不误！</string>
+  <string name="first_run_upgrade_page_text1">1. 打开%s，同时处理多个任务！</string>
   <string name="first_run_upgrade_page_text1_highlight">多个标签页</string>
-  <string name="first_run_upgrade_page_text2">2. 把爱看的网站%s，下次访问更快捷！</string>
-  <string name="first_run_upgrade_page_text2_highlight">放到桌面</string>
+  <string name="first_run_upgrade_page_text2">2. 把喜爱的网站 %s ，下次访问更快捷！</string>
+  <string name="first_run_upgrade_page_text2_highlight">添加到主屏幕</string>
   <string name="firstrun_close_button">了解！</string>
   <string name="firstrun_skip_button">跳过</string>
   <string name="firstrun_next_button">下一步</string>
