@@ -178,5 +178,5 @@
   <string name="new_background_tab_switch">Tukar</string>
   <string name="setting_default_browser_notification_title">Mengubah setelan…</string>
   <string name="setting_default_browser_notification_text">Mungkin memerlukan beberapa waktu</string>
-  <string name="setting_default_browser_notification_clickable_text">Ketuk untuk mengatur peramban baku</string>
+  <string name="setting_default_browser_notification_clickable_text">Atur sebagai peramban baku</string>
 </resources>
