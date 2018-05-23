@@ -63,7 +63,7 @@ public class ActivityRecreateLeakWatcherIdlingResource implements IdlingResource
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         if (LeakWatcher.getReference() != null && LeakWatcher.getReference().get() != null) {
             LeakWatcher.runGc();
-            hasLeak.set(LeakWatcher.getReference().get() == null);
+            hasLeak.set(LeakWatcher.getReference().get() != null);
         }
         isCompleted.set(true);
     }
