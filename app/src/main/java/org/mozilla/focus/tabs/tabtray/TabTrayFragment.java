@@ -59,7 +59,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public static final String FRAGMENT_TAG = "tab_tray";
 
     private static final boolean ENABLE_BACKGROUND_ALPHA_TRANSITION = true;
-    private static final boolean ENABLE_SWIPE_TO_DISMISS = false;
+    private static final boolean ENABLE_SWIPE_TO_DISMISS = true;
 
     private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
 
@@ -492,17 +492,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         if (closeTabsDialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
-                    .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            presenter.closeAllTabs();
-                        }
-                    }).setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
+                    .setPositiveButton(R.string.action_ok, (dialog, which) -> presenter.closeAllTabs())
+                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
+                    .show();
         } else {
             closeTabsDialog.show();
         }
