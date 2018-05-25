@@ -311,7 +311,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(final View view) {
                     final DownloadInfo download = (DownloadInfo) view.getTag();
 
-                    TelemetryWrapper.downloadOpenFile(mContext, false);
+                    TelemetryWrapper.downloadOpenFile(false);
 
                     ThreadUtils.postToBackgroundThread(new Runnable() {
                         @Override

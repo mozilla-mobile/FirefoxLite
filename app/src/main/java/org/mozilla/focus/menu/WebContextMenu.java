@@ -134,7 +134,7 @@ public class WebContextMenu {
                         return true;
                     }
                     case R.id.menu_image_share: {
-                        TelemetryWrapper.shareImageEvent(dialog.getContext());
+                        TelemetryWrapper.shareImageEvent();
                         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType("text/plain");
                         shareIntent.putExtra(Intent.EXTRA_TEXT, hitTarget.imageURL);
@@ -158,7 +158,7 @@ public class WebContextMenu {
                             callback.onDownloadStart(download);
                         }
 
-                        TelemetryWrapper.saveImageEvent(dialog.getContext());
+                        TelemetryWrapper.saveImageEvent();
                         return true;
                     }
                     case R.id.menu_link_copy:
@@ -168,7 +168,7 @@ public class WebContextMenu {
                         final Uri uri;
 
                         if (item.getItemId() == R.id.menu_link_copy) {
-                            TelemetryWrapper.copyLinkEvent(dialog.getContext());
+                            TelemetryWrapper.copyLinkEvent();
                             uri = Uri.parse(hitTarget.linkURL);
                         } else if (item.getItemId() == R.id.menu_image_copy) {
                             TelemetryWrapper.copyImageEvent();

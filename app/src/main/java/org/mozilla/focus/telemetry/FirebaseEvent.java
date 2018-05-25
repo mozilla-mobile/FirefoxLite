@@ -92,7 +92,7 @@ class FirebaseEvent {
      *
      * @param context used for FirebaseAnalytics.getInstance() call.
      */
-    public void queue(Context context) {
+    public void event(Context context) {
         if (context == null) {
             return;
         }

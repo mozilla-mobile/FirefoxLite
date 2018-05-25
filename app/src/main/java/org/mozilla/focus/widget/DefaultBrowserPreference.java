@@ -234,7 +234,7 @@ public class DefaultBrowserPreference extends Preference {
             // The default-browser-config should be cleared, if the service finished its job.
             // if not been cleared, we regards it as 'fail'
             if (hasDefaultBrowser && !isDefaultBrowser) {
-                TelemetryWrapper.onDefaultBrowserServiceFailed(context);
+                TelemetryWrapper.onDefaultBrowserServiceFailed();
             }
 
             // if service finished its job, lets fire an intent to choose myself as default browser

@@ -8,7 +8,6 @@ package org.mozilla.focus.tabs.tabtray;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -188,13 +187,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onTabClick(int tabPosition) {
         presenter.tabClicked(tabPosition);
-        TelemetryWrapper.clickTabFromTabTray(getContext());
+        TelemetryWrapper.clickTabFromTabTray();
     }
 
     @Override
     public void onTabCloseClick(int tabPosition) {
         presenter.tabCloseClicked(tabPosition);
-        TelemetryWrapper.closeTabFromTabTray(getContext());
+        TelemetryWrapper.closeTabFromTabTray();
     }
 
     @Override
@@ -474,7 +473,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         if (!isOpenedByHome()) {
             ScreenNavigator.get(getContext()).addHomeScreen(false);
         }
-        TelemetryWrapper.clickAddTabTray(getContext());
+        TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
     }
 
