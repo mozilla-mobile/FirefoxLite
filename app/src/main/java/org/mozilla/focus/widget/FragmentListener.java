@@ -16,8 +16,6 @@ import android.support.v4.app.Fragment;
 public interface FragmentListener {
 
     enum TYPE {
-        FRAGMENT_STARTED, // payload is the fragment tag
-        FRAGMENT_STOPPED, // payload is the fragment tag
         OPEN_PREFERENCE, // no payload
         SHOW_URL_INPUT, // no payload
         SHOW_MENU, // no payload

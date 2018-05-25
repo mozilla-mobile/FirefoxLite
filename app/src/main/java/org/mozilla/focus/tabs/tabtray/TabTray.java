@@ -5,13 +5,14 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 public class TabTray {
-    public static void show(FragmentManager manager, String srcFragment) {
-        TabTrayFragment.newInstance(srcFragment).show(manager, TabTrayFragment.FRAGMENT_TAG);
+    public static void show(FragmentManager manager) {
+        TabTrayFragment.newInstance().show(manager, TabTrayFragment.FRAGMENT_TAG);
     }
 
     public static void dismiss(FragmentManager manager) {
@@ -19,5 +20,9 @@ public class TabTray {
         if (tabTray != null) {
             ((DialogFragment) tabTray).dismissAllowingStateLoss();
         }
+    }
+
+    public static boolean isShowing(@Nullable FragmentManager manager) {
+        return manager != null && (manager.findFragmentByTag(TabTrayFragment.FRAGMENT_TAG) != null);
     }
 }

@@ -132,7 +132,7 @@ public class ScreenNavigatorTest {
         private Activity activity;
 
         MainThreadScreenNavigator(MainActivity activity) {
-            super(activity, new MainMediator(activity));
+            super(activity);
             this.activity = activity;
         }
 

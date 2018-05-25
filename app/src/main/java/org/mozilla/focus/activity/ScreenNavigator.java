@@ -5,11 +5,22 @@
 
 package org.mozilla.focus.activity;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
+import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.BrowserFragment;
+import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.urlinput.UrlInputFragment;
 
 import java.util.Arrays;
 
@@ -21,12 +32,31 @@ import java.util.Arrays;
  * 1. Move more methods from MainMediator to ScreenNavigator
  * 2. Finally remove MainMediator from MainActivity
  */
-public class ScreenNavigator {
+public class ScreenNavigator implements LifecycleObserver {
     private static final String LOG_TAG = "ScreenNavigator";
     private static final boolean LOG_NAVIGATION = false;
 
     private MainMediator mainMediator;
-    private BrowserMediator browserMediator;
+
+    private MainActivity activity;
+
+    private FragmentManager.FragmentLifecycleCallbacks lifecycleCallbacks = new FragmentManager.FragmentLifecycleCallbacks() {
+        @Override
+        public void onFragmentStarted(FragmentManager fm, Fragment f) {
+            super.onFragmentStarted(fm, f);
+            if (f instanceof UrlInputFragment) {
+                ScreenNavigator.this.mainMediator.toggleFakeUrlInput(false);
+            }
+        }
+
+        @Override
+        public void onFragmentStopped(FragmentManager fm, Fragment f) {
+            super.onFragmentStopped(fm, f);
+            if (f instanceof UrlInputFragment) {
+                ScreenNavigator.this.mainMediator.toggleFakeUrlInput(true);
+            }
+        }
+    };
 
     public static ScreenNavigator get(Context context) {
         if (context instanceof Provider) {
@@ -40,9 +70,25 @@ public class ScreenNavigator {
         }
     }
 
-    ScreenNavigator(MainActivity activity, MainMediator mediator) {
-        this.mainMediator = mediator;
-        this.browserMediator = new BrowserMediator(activity, mainMediator);
+    ScreenNavigator(@Nullable MainActivity activity) {
+        if (activity == null) {
+            return;
+        }
+        this.mainMediator = new MainMediator(activity);
+        this.activity = activity;
+        this.activity.getLifecycle().addObserver(this);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void registerListeners() {
+        this.activity.getSupportFragmentManager()
+                .registerFragmentLifecycleCallbacks(lifecycleCallbacks, false);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void unregisterListeners() {
+        this.activity.getSupportFragmentManager()
+                .unregisterFragmentLifecycleCallbacks(lifecycleCallbacks);
     }
 
     /**
@@ -53,7 +99,8 @@ public class ScreenNavigator {
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
 
-        this.browserMediator.raiseBrowserScreen(animate);
+        popAllScreens();
+        this.activity.sendBrowsingTelemetry();
     }
 
     /**
@@ -65,18 +112,24 @@ public class ScreenNavigator {
     public void showBrowserScreen(String url, boolean withNewTab, boolean isFromExternal) {
         logMethod(url, withNewTab);
 
-        this.browserMediator.showBrowserScreen(url, withNewTab, isFromExternal);
+        getBrowserFragment().loadUrl(url, withNewTab, isFromExternal, () -> raiseBrowserScreen(true));
     }
 
     void restoreBrowserScreen(@NonNull String tabId) {
-        this.browserMediator.showBrowserScreenForRestoreTabs(tabId);
+        logMethod();
+
+        getBrowserFragment().loadTab(tabId);
+        raiseBrowserScreen(false);
     }
 
     /**
      * @return Whether user can directly see browser fragment
      */
+    // TODO: Make geo dialog a view in browser fragment, so we can remove this method
     public boolean isBrowserInForeground() {
-        return this.mainMediator.getTopFragment() == null;
+        boolean result = (activity.getSupportFragmentManager().getBackStackEntryCount() == 0);
+        log("isBrowserInForeground: " + result);
+        return result;
     }
 
     /**
@@ -86,8 +139,11 @@ public class ScreenNavigator {
     public void addHomeScreen(boolean animate) {
         logMethod();
 
-        this.mainMediator.clearAllFragment(false);
-        this.mainMediator.showHomeScreen(animate, true);
+        boolean found = popScreensUntil(HomeFragment.FRAGMENT_TAG);
+        log("found exist home: " + found);
+        if (!found) {
+            this.mainMediator.showHomeScreen(animate, true);
+        }
     }
 
     /**
@@ -96,8 +152,71 @@ public class ScreenNavigator {
     public void popToHomeScreen(boolean animate) {
         logMethod();
 
-        this.mainMediator.clearAllFragment(false);
-        this.mainMediator.showHomeScreen(animate, false);
+        boolean found = popScreensUntil(HomeFragment.FRAGMENT_TAG);
+        log("found exist home: " + found);
+        if (!found) {
+            this.mainMediator.showHomeScreen(animate, false);
+        }
+    }
+
+    public void addFirstRunScreen() {
+        logMethod();
+        this.mainMediator.showFirstRun();
+    }
+
+    public void addUrlScreen(String url) {
+        logMethod();
+        this.mainMediator.showUrlInput(url);
+    }
+
+    public void popUrlScreen() {
+        logMethod();
+        this.mainMediator.dismissUrlInput();
+    }
+
+    @Nullable
+    public Fragment getTopFragment() {
+        FragmentManager manager = this.activity.getSupportFragmentManager();
+        int count = manager.getBackStackEntryCount();
+        if (count == 0) {
+            return getBrowserFragment();
+        }
+
+        String tag = this.mainMediator.getEntryTag(manager.getBackStackEntryAt(count - 1));
+        return manager.findFragmentByTag(tag);
+    }
+
+
+    private BrowserFragment getBrowserFragment() {
+        return (BrowserFragment) activity.getSupportFragmentManager().findFragmentById(R.id.browser);
+    }
+
+    public boolean canGoBack() {
+        boolean result = !mainMediator.shouldFinish();
+        log("canGoBack: " + result);
+        return result;
+    }
+
+    private void popAllScreens() {
+        popScreensUntil(null);
+    }
+
+    private boolean popScreensUntil(@Nullable String targetEntryName) {
+        boolean clearAll = (targetEntryName == null);
+        FragmentManager manager = activity.getSupportFragmentManager();
+        int entryCount = manager.getBackStackEntryCount();
+        boolean found = false;
+        while (entryCount > 0) {
+            FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(entryCount - 1);
+            if (!clearAll && TextUtils.equals(targetEntryName, this.mainMediator.getEntryTag(entry))) {
+                found = true;
+                break;
+            }
+            manager.popBackStack();
+            entryCount--;
+        }
+        manager.executePendingTransactions();
+        return found;
     }
 
     private void logMethod(Object... args) {
@@ -109,9 +228,15 @@ public class ScreenNavigator {
         }
     }
 
+    private void log(String msg) {
+        if (LOG_NAVIGATION) {
+            Log.d(LOG_TAG, msg);
+        }
+    }
+
     private static class NothingNavigated extends ScreenNavigator {
         NothingNavigated() {
-            super(null, null);
+            super(null);
         }
 
         @Override
