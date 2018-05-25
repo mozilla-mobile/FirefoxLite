@@ -103,7 +103,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View stopIcon;
     private View pinShortcut;
 
-    private MainMediator mainMediator;
     private ScreenNavigator screenNavigator;
 
     private boolean safeForFragmentTransactions = false;
@@ -126,8 +125,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         initViews();
         initBroadcastReceivers();
 
-        mainMediator = new MainMediator(this);
-        screenNavigator = new ScreenNavigator(this, mainMediator);
+        screenNavigator = new ScreenNavigator(this);
 
         SafeIntent intent = new SafeIntent(getIntent());
         AppLaunchMethod.parse(intent).sendLaunchTelemetry();
@@ -147,7 +145,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     pendingUrl = url;
-                    this.mainMediator.showFirstRun();
+                    this.screenNavigator.addFirstRunScreen();
                 } else {
                     boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
                             false);
@@ -159,9 +157,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
-                    this.mainMediator.showFirstRun();
+                    this.screenNavigator.addFirstRunScreen();
                 } else {
-                    this.mainMediator.showHomeScreen();
+                    this.screenNavigator.popToHomeScreen(false);
                 }
             }
         }
@@ -696,7 +694,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
-        if (mainMediator.shouldFinish()) {
+        if (!this.screenNavigator.canGoBack()) {
             finish();
             return;
         }
@@ -710,7 +708,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             this.screenNavigator.showBrowserScreen(pendingUrl, true, true);
             pendingUrl = null;
         } else {
-            this.mainMediator.showHomeScreen();
+            this.screenNavigator.popToHomeScreen(false);
         }
     }
 
@@ -731,30 +729,18 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     return;
                 }
                 final String url = (payload != null) ? payload.toString() : null;
-                this.mainMediator.showUrlInput(url);
+                this.screenNavigator.addUrlScreen(url);
                 break;
             case DISMISS_URL_INPUT:
-                this.mainMediator.dismissUrlInput();
-                break;
-            case FRAGMENT_STARTED:
-                if ((payload != null) && (payload instanceof String)) {
-                    this.mainMediator.onFragmentStarted(((String) payload).toLowerCase(Locale.ROOT));
-                }
-                break;
-            case FRAGMENT_STOPPED:
-                if ((payload != null) && (payload instanceof String)) {
-                    this.mainMediator.onFragmentStopped(((String) payload).toLowerCase(Locale.ROOT));
-                }
+                this.screenNavigator.popUrlScreen();
                 break;
             case SHOW_TAB_TRAY:
-                if ((payload != null) && (payload instanceof String)) {
-                    TabTray.show(getSupportFragmentManager(), (String) payload);
-                }
+                TabTray.show(getSupportFragmentManager());
                 break;
             case REFRESH_TOP_SITE:
-                HomeFragment homeFragment = this.mainMediator.getTopHomeFragment();
-                if (homeFragment != null) {
-                    homeFragment.updateTopSitesData();
+                Fragment fragment = this.screenNavigator.getTopFragment();
+                if (fragment instanceof HomeFragment) {
+                    ((HomeFragment) fragment).updateTopSitesData();
                 }
                 break;
             default:

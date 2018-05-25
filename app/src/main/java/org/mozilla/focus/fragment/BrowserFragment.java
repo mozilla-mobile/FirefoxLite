@@ -67,6 +67,7 @@ import org.mozilla.focus.tabs.TabsChromeListener;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.tabs.TabsViewListener;
+import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
@@ -561,12 +562,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.FRAGMENT_STARTED, FRAGMENT_TAG);
-    }
-
-    @Override
     public void onStop() {
         if (systemVisibility != NONE) {
             final Tab tab = tabsSession.getFocusTab();
@@ -579,7 +574,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
         dismissGeoDialog();
         super.onStop();
-        FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.FRAGMENT_STOPPED, FRAGMENT_TAG);
     }
 
     @Override
@@ -992,7 +986,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     private boolean isPopupWindowAllowed() {
-        return ScreenNavigator.get(getContext()).isBrowserInForeground();
+        return ScreenNavigator.get(getContext()).isBrowserInForeground() && !TabTray.isShowing(getFragmentManager());
     }
 
     private boolean isTabRestoredComplete() {

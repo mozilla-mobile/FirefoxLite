@@ -45,7 +45,6 @@ import com.bumptech.glide.Glide;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.ScreenNavigator;
-import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
@@ -62,8 +61,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private static final boolean ENABLE_SWIPE_TO_DISMISS = true;
 
     private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
-
-    private static final String ARG_SRC_FRAGMENT = "src_fragment";
 
     private TabTrayContract.Presenter presenter;
 
@@ -89,12 +86,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private Runnable dismissRunnable = this::dismiss;
 
-    public static TabTrayFragment newInstance(String srcFragment) {
-        Bundle args = new Bundle();
-        args.putString(ARG_SRC_FRAGMENT, srcFragment);
-        TabTrayFragment fragment = new TabTrayFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public static TabTrayFragment newInstance() {
+        return new TabTrayFragment();
     }
 
     @Override
@@ -268,9 +261,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void navigateToHome() {
-        if (isOpenedByHome()) {
-            return;
-        }
         ScreenNavigator.get(getContext()).popToHomeScreen(false);
     }
 
@@ -471,9 +461,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        if (!isOpenedByHome()) {
-            ScreenNavigator.get(getContext()).addHomeScreen(false);
-        }
+        ScreenNavigator.get(getContext()).addHomeScreen(false);
         TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
     }
@@ -586,13 +574,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private void postOnNextFrame(final Runnable runnable) {
         uiHandler.post(() -> uiHandler.post(runnable));
-    }
-
-    private boolean isOpenedByHome() {
-        Bundle args = getArguments();
-        return (args != null)
-                && args.containsKey(ARG_SRC_FRAGMENT)
-                && HomeFragment.FRAGMENT_TAG.equals(args.getString(ARG_SRC_FRAGMENT));
     }
 
     private static class SlideAnimationCoordinator {

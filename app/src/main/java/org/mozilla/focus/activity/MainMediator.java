@@ -11,9 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
@@ -46,18 +43,13 @@ class MainMediator {
      * will still be in foreground after adding this type of fragment. */
     private static final String TYPE_FLOATING = "floating";
 
+    private static final String ENTRY_SEPARATOR = "#";
+
     private final MainActivity activity;
 
     MainMediator(@NonNull MainActivity activity) {
         this.activity = activity;
         this.activity.getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
-    }
-
-    /**
-     * Show landing home screen when app is launched
-     */
-    void showHomeScreen() {
-        this.showHomeScreen(false, false);
     }
 
     void showHomeScreen(boolean animated, boolean addToBackStack) {
@@ -80,7 +72,9 @@ class MainMediator {
         }
 
         String parent = homeFragmentAtTop() ? HomeFragment.FRAGMENT_TAG : BrowserFragment.FRAGMENT_TAG;
-        this.prepareUrlInput(url, parent).addToBackStack(TYPE_FLOATING).commit();
+        this.prepareUrlInput(url, parent)
+                .addToBackStack(makeEntryName(UrlInputFragment.FRAGMENT_TAG, TYPE_FLOATING))
+                .commit();
     }
 
     void dismissUrlInput() {
@@ -98,90 +92,10 @@ class MainMediator {
         }
 
         FragmentManager.BackStackEntry lastEntry = manager.getBackStackEntryAt(entryCount - 1);
-        return TYPE_ROOT.equals(lastEntry.getName());
+        return TYPE_ROOT.equals(getEntryType(lastEntry));
     }
 
-    private void clearBackStack(FragmentManager fm) {
-        fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    private void clearAllFragmentImmediate() {
-        final FragmentManager fragmentMgr = this.activity.getSupportFragmentManager();
-        if (fragmentMgr.isStateSaved()) {
-            return;
-        }
-
-        final Fragment urlInputFrg = fragmentMgr.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-        final Fragment homeFrg = fragmentMgr.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-
-        // If UrlInputFragment exists, remove it and clear its transaction from back stack
-        FragmentTransaction clear = fragmentMgr.beginTransaction();
-        clear = (urlInputFrg == null) ? clear : clear.remove(urlInputFrg);
-        clear = (homeFrg == null) ? clear : clear.remove(homeFrg);
-        clear.commit();
-
-        clearBackStack(fragmentMgr);
-    }
-
-    void clearAllFragment(boolean animate) {
-        final FragmentManager manager = this.activity.getSupportFragmentManager();
-        final Fragment homeFragment = manager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-        if (!animate || homeFragment == null) {
-            clearAllFragmentImmediate();
-            return;
-        }
-
-        fadeOutFragment(homeFragment, this::clearAllFragmentImmediate);
-    }
-
-    private void fadeOutFragment(Fragment fragment, @Nullable final Runnable onAnimationEndCallback) {
-        View view = fragment.getView();
-        if (view == null) {
-            if (onAnimationEndCallback != null) {
-                onAnimationEndCallback.run();
-            }
-            return;
-        }
-
-        Animation currentAnim = view.getAnimation();
-        if (currentAnim != null && !currentAnim.hasEnded()) {
-            return;
-        }
-
-        Animation fadeOut = AnimationUtils.loadAnimation(view.getContext(),
-                R.anim.tab_transition_fade_out);
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (onAnimationEndCallback != null) {
-                    onAnimationEndCallback.run();
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-        view.startAnimation(fadeOut);
-    }
-
-    void onFragmentStarted(@NonNull String tag) {
-        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
-            toggleFakeUrlInput(false);
-        }
-    }
-
-    void onFragmentStopped(@NonNull String tag) {
-        if (UrlInputFragment.FRAGMENT_TAG.equals(tag)) {
-            toggleFakeUrlInput(true);
-        }
-    }
-
-    Fragment getTopFragment() {
+    private Fragment getTopFragment() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         for (final String tag : FRAGMENTS_SEQUENCE) {
             final Fragment fragment = fragmentManager.findFragmentByTag(tag);
@@ -198,7 +112,7 @@ class MainMediator {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
             transaction.replace(R.id.container, fragment, FirstrunFragment.FRAGMENT_TAG)
-                    .addToBackStack(TYPE_ROOT);
+                    .addToBackStack(makeEntryName(FirstrunFragment.FRAGMENT_TAG, TYPE_ROOT));
         }
 
         return transaction;
@@ -222,10 +136,10 @@ class MainMediator {
 
         if (addToBackStack) {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-            transaction.addToBackStack(TYPE_ATTACHED);
+            transaction.addToBackStack(makeEntryName(HomeFragment.FRAGMENT_TAG, TYPE_ATTACHED));
         } else {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-            transaction.addToBackStack(TYPE_ROOT);
+            transaction.addToBackStack(makeEntryName(HomeFragment.FRAGMENT_TAG, TYPE_ROOT));
         }
 
         return transaction;
@@ -239,7 +153,7 @@ class MainMediator {
         return transaction;
     }
 
-    private void toggleFakeUrlInput(boolean visible) {
+    void toggleFakeUrlInput(boolean visible) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment homeFragment =
                 (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
@@ -251,7 +165,7 @@ class MainMediator {
     /**
      * get HomeFragment if it's Top Fragment
      */
-    HomeFragment getTopHomeFragment() {
+    private HomeFragment getTopHomeFragment() {
         final Fragment topFragment = getTopFragment();
         if (topFragment != null && HomeFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
             return (HomeFragment) topFragment;
@@ -261,6 +175,26 @@ class MainMediator {
 
     private boolean homeFragmentAtTop() {
         return getTopHomeFragment() != null;
+    }
+
+    private String makeEntryName(String tag, String type) {
+        return tag + ENTRY_SEPARATOR + type;
+    }
+
+    String getEntryTag(FragmentManager.BackStackEntry entry) {
+        String split[] = entry.getName().split(ENTRY_SEPARATOR);
+        if (split.length != 2) {
+            throw new RuntimeException("illegal name passed to addToBackStack(): " + entry.getName());
+        }
+        return split[0];
+    }
+
+    private String getEntryType(FragmentManager.BackStackEntry entry) {
+        String split[] = entry.getName().split(ENTRY_SEPARATOR);
+        if (split.length != 2) {
+            throw new RuntimeException("illegal name passed to addToBackStack(): " + entry.getName());
+        }
+        return split[1];
     }
 
     private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
@@ -273,7 +207,7 @@ class MainMediator {
             boolean isBrowserForeground = true;
             for (int i = 0; i < entryCount; ++i) {
                 FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
-                if (!TextUtils.equals(entry.getName(), TYPE_FLOATING)) {
+                if (!TextUtils.equals(getEntryType(entry), TYPE_FLOATING)) {
                     isBrowserForeground = false;
                     break;
                 }
