@@ -39,6 +39,14 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String SHARE_APP_DIALOG_THRESHOLD = "share_app_dialog_threshold";
     static final String ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread";
 
+    private static final String FIREBASE_WEB_ID = "default_web_client_id";
+    private static final String FIREBASE_DB_URL = "firebase_database_url";
+    private static final String FIREBASE_CRASH_REPORT = "google_crash_reporting_api_key";
+    private static final String FIREBASE_APP_ID = "google_app_id";
+    private static final String FIREBASE_API_KEY = "google_api_key";
+    private static final String FIREBASE_PROJECT_ID = "project_id";
+
+
     private HashMap<String, Object> remoteConfigDefault;
     private static boolean changing = false;
     private static Boolean pending = null;
@@ -68,7 +76,23 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
 
     public static boolean bind(@NonNull final Context context, boolean enabled) {
+        checkIfApiReady(context);
         return enableFirebase(context.getApplicationContext(), enabled);
+    }
+
+    private static void checkIfApiReady(Context context) {
+        if (AppConstants.isBuiltWithFirebase()) {
+            final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
+            final String dbUrl = getStringResourceByName(context, FIREBASE_DB_URL);
+            final String crashReport = getStringResourceByName(context, FIREBASE_CRASH_REPORT);
+            final String appId = getStringResourceByName(context, FIREBASE_APP_ID);
+            final String apiKey = getStringResourceByName(context, FIREBASE_API_KEY);
+            final String projectId = getStringResourceByName(context, FIREBASE_PROJECT_ID);
+            if (webId.isEmpty() || dbUrl.isEmpty() || crashReport.isEmpty() ||
+                    appId.isEmpty() || apiKey.isEmpty() || projectId.isEmpty()) {
+                throw new IllegalStateException("Firebase related keys are not set");
+            }
+        }
     }
 
     /**
@@ -219,5 +243,16 @@ final public class FirebaseHelper extends FirebaseWrapper {
         return map;
     }
 
+    @NonNull
+    private static String getStringResourceByName(Context context, String aString) {
+        String packageName = context.getPackageName();
+        int resId = context.getResources()
+                .getIdentifier(aString, "string", packageName);
+        if (resId == 0) {
+            return "";
+        } else {
+            return context.getString(resId);
+        }
+    }
 
 }
