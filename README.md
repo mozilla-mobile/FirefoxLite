@@ -17,13 +17,17 @@ Build instructions
   git clone https://github.com/mozilla-tw/Rocket
   ```
 
-1. Import the project into Android Studio or build on the command line:
+2. Import the project into Android Studio or build on the command line:
 
   ```shell
   ./gradlew clean app:assembleFocusWebkitDebug
   ```
 
-1. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
+3. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
+
+4. If you want to run UI test, remove  `c "firebase"` from [build.gradle](https://github.com/mozilla-tw/Rocket/blob/master/app/build.gradle#L121)
+
+5. Some build types use Firebase, replace "firebase"  in [matchingFallbacks](https://github.com/mozilla-tw/Rocket/blob/master/app/build.gradle#L87) to "firebase_no_op" if you don't want it. Otherwise, you need to setup the environment variables (https://github.com/mozilla-tw/Rocket/blob/master/buildSrc/src/main/java/Dependencies.kt#L35)
 
 Docs
 ----
