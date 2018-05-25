@@ -846,15 +846,15 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 break;
             case R.id.btn_search:
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
-                TelemetryWrapper.clickToolbarSearch(getContext());
+                TelemetryWrapper.clickToolbarSearch();
                 break;
             case R.id.btn_open_new_tab:
                 ScreenNavigator.get(getContext()).addHomeScreen(true);
-                TelemetryWrapper.clickAddTabToolbar(getContext());
+                TelemetryWrapper.clickAddTabToolbar();
                 break;
             case R.id.btn_tab_tray:
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, FRAGMENT_TAG);
-                TelemetryWrapper.showTabTrayToolbar(getContext());
+                TelemetryWrapper.showTabTrayToolbar();
                 break;
             case R.id.btn_menu:
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
@@ -862,7 +862,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 break;
             case R.id.btn_capture:
                 onCaptureClicked();
-                TelemetryWrapper.clickToolbarCapture(getContext());
+                TelemetryWrapper.clickToolbarCapture();
                 break;
             case R.id.customtab_close:
                 BrowsingSession.getInstance().clearCustomTabConfig();

@@ -73,7 +73,7 @@ public class FirebaseEventTest {
     @Test
     public void nullContext_shouldBeSafe() {
         try {
-            generateValidFirebaseEvent().queue(null);
+            generateValidFirebaseEvent().event(null);
         } catch (Exception e) {
             fail("Should not have thrown any exception");
         }

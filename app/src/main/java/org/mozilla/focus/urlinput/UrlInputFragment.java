@@ -221,7 +221,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             boolean isOpenInNewTab = openUrl(url);
 
             if (isOpenInNewTab) {
-                TelemetryWrapper.addNewTabFromHome(getContext());
+                TelemetryWrapper.addNewTabFromHome();
             }
             TelemetryWrapper.urlBarEvent(isUrl, isSuggestion);
         }

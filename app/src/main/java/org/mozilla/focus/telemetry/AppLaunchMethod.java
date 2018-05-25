@@ -18,8 +18,8 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry(Context context) {
-            TelemetryWrapper.launchByAppLauncherEvent(context);
+        public void sendLaunchTelemetry() {
+            TelemetryWrapper.launchByAppLauncherEvent();
         }
     },
 
@@ -31,8 +31,8 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry(Context context) {
-            TelemetryWrapper.launchByHomeScreenShortcutEvent(context);
+        public void sendLaunchTelemetry() {
+            TelemetryWrapper.launchByHomeScreenShortcutEvent();
         }
     },
 
@@ -44,8 +44,8 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry(Context context) {
-            TelemetryWrapper.launchByTextSelectionSearchEvent(context);
+        public void sendLaunchTelemetry() {
+            TelemetryWrapper.launchByTextSelectionSearchEvent();
         }
     },
 
@@ -56,8 +56,8 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry(Context context) {
-            TelemetryWrapper.launchByExternalAppEvent(context);
+        public void sendLaunchTelemetry() {
+            TelemetryWrapper.launchByExternalAppEvent();
         }
     },
 
@@ -68,7 +68,7 @@ public enum AppLaunchMethod {
         }
 
         @Override
-        public void sendLaunchTelemetry(Context context) {
+        public void sendLaunchTelemetry() {
             // Do nothing
         }
     };
@@ -78,7 +78,7 @@ public enum AppLaunchMethod {
 
     abstract boolean match(@NonNull SafeIntent intent);
 
-    public abstract void sendLaunchTelemetry(Context context);
+    public abstract void sendLaunchTelemetry();
 
     public static AppLaunchMethod parse(SafeIntent intent) {
         if (intent != null) {

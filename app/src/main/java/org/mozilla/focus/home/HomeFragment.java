@@ -114,7 +114,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                             FragmentListener.TYPE.SHOW_URL_INPUT,
                             null);
                 }
-                TelemetryWrapper.showSearchBarHome(getContext());
+                TelemetryWrapper.showSearchBarHome();
             }
         });
 
@@ -241,7 +241,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 ViewParent viewParent = v.getParent();
                 if (viewParent instanceof ViewGroup) {
                     int index = ((ViewGroup) v.getParent()).indexOfChild(v);
-                    TelemetryWrapper.clickTopSiteOn(parent, index);
+                    TelemetryWrapper.clickTopSiteOn(index);
                 }
             }
         }
@@ -426,7 +426,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     listener.onNotified(HomeFragment.this,
                             FragmentListener.TYPE.SHOW_TAB_TRAY,
                             FRAGMENT_TAG);
-                    TelemetryWrapper.showTabTrayHome(getContext());
+                    TelemetryWrapper.showTabTrayHome();
                     break;
 
                 default:
