@@ -112,8 +112,8 @@ android {
         // special build type to develop Firebase related stuff
         firebase {
             initWith debug
+            applicationIdSuffix ".debug.firebase"
 
-            applicationIdSuffix ".debug.mozilla"
             versionNameSuffix applicationIdSuffix
             matchingFallbacks = ["debug", "firebase"]
         }
@@ -315,7 +315,7 @@ tasks.whenTaskAdded { task ->
 // -------------------------------------------------------------------------------------------------
 
 android.applicationVariants.all { variant ->
-    def variantName = variant.getName();
+    def variantName = variant.getName()
 
     print(variantName + ": ")
 
@@ -339,7 +339,9 @@ android.applicationVariants.all { variant ->
                     SystemEnv.firebase_database_url == null || SystemEnv.gcm_defaultSenderId == null ||
                     SystemEnv.google_api_key == null || SystemEnv.google_crash_reporting_api_key == null ||
                     SystemEnv.project_id == null) {
-                throw new GradleException("System variables for Firebase are required here since you are in firebase build type")
+                logger.warn("If you want to enable Firebase, please follow the steps:")
+                logger.warn("1. Download google-services.json and put it in the folder where you run below command.")
+                logger.warn("2. Run 'python./tools/firebase/firebase_setup.py' and follow the steps.\n")
             }
         }
     }
@@ -437,7 +439,7 @@ def getEnabledLocales() {
     def potentialLanguageDirs = resDir.listFiles(new FilenameFilter() {
         @Override
         boolean accept(File dir, String name) {
-            return name.startsWith("values-");
+            return name.startsWith("values-")
         }
     })
 
@@ -518,7 +520,7 @@ def getTranslatedLocales() {
     def potentialLanguageDirs = localesDir.listFiles(new FilenameFilter() {
         @Override
         boolean accept(File dir, String name) {
-            return !name.equals("templates");
+            return !name.equals("templates")
         }
     })
 
@@ -532,7 +534,7 @@ def getTranslatedLocales() {
             case "he":
                 return "iw"
             default:
-                return it;
+                return it
         }
     }.collect {
         return '"' + it + '"'
@@ -641,4 +643,3 @@ task checkstyle(type: Checkstyle) {
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
-
