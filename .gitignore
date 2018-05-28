@@ -49,3 +49,5 @@ l10n-repo/
 infer-out/
 
 .DS_Store
+
+google-services.json
