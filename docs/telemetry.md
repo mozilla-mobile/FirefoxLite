@@ -2,66 +2,21 @@
 
 ## Telemetry
 
-For clients that have "send anonymous usage data" enabled Focus sends a "core" ping and an "event" ping to Mozilla's telemetry service. Sending telemetry can be disabled in the app's settings. Builds of "Focus for Android" have telemetry enabled by default ("opt-out") while builds of "Klar for Android" have telemetry disabled by default.
+For clients that have "Send usage data" enabled Rocket sends a "core" ping and an "event" ping to understand the usage of the app. This can be disabled in the app's settings. It's enabled by default ("opt-out").
 
 ### Core ping
 
-Focus for Android creates and tries to send a "core" ping whenever the app goes to the background. This core ping uses the same format as Firefox for Android and is [documented in Firefox Source Docs](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/data/core-ping.html).
+Firefox Rocket creates and tries to send a "core" ping whenever the app goes to the background. This core ping uses the same format as Firefox for Android and is [documented in Firefox Source Docs](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/data/core-ping.html).
 
 ### Event ping
 
-In addition to the core ping an event ping for UI telemetry is generated and sent as soon as the app is sent to the background.
-
-#### Settings
-
-As part of the event ping the most recent state of the user's setting is sent (default values in **bold**):
-
-* Search engine selection (`pref_search_engine`: search engine identifier; *default value depends on user's locale*)
-* Block ad trackers (`pref_privacy_block_ads`: **true**/false)
-* Block analytics trackers (`pref_privacy_block_other`: true/**false**)
-* Block social trackers (`pref_privacy_block_social`: **true**/false)
-* Block content trackers (`pref_privacy_block_analytics`: **true**/false)
-* Block web fonts (`pref_performance_block_webfonts`: true/**false**)
-* Block images (`pref_performance_block_images`: true/**false**)
-* Locale override (`pref_locale`: **empty string**/<locale-code>). **empty string** indicates "System Default" locale is selected.
+In addition to the core ping an event ping for UI telemetry is generated and sent as soon as the app is sent to the background. The same information will be sent to [Firebase Analytics](https://firebase.google.com/terms/analytics/)
+You can find the list of events in the [wiki page](https://github.com/mozilla-tw/Rocket/wiki/Telemetry)
 
 #### Events
 
 The event ping contains a list of events ([see event format on Firefox Source Docs](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/collection/events.html)) for the following actions:
 
-* Start session - ("action", "foreground", "app")
-* Stop session - ("action", "background", "app")
-* (Browsing) URL entered: - ("action", "type_url", "search_bar")
-* (Browsing) Incoming normal browsing intent from third-party app - ("action", "intent_url", "app")
-* (Browsing) Incoming custom tab intent from third-party app - ("action", "intent_custom_tab", "app", options). Options is a list of enabled custom tab options as requested by the third-party app, e.g. [hasToolbarColor, hasCloseButton] etc.
-* (Browsing) Text selection action from third-party app ("action", "text_selection_intent", "app")
-* (Browsing) Long press on image or link, or image in link ("action", "long_press", "browser")
-* (CustomTab) Custom Tab close button clicked - ("action", "click", "custom_tab_close_but")
-* (CustomTab) Custom Tab action button clicked - ("action", "click", "custom_tab_action_bu")
-* (CustomTab) Browser Menu custom tab item selected - ("action", "open", "menu", "custom_tab")
-* (BrowserContextMenu) Context menu dismissed without any selection ("action", "cancel", "browser_contextmenu")
-* (BrowserContextMenu) Share Link menu item selected ("action", "share", "browser_contextmenu", "link")
-* (BrowserContextMenu) Copy link menu item selected ("action", "copy", "browser_contextmenu", "link")
-* (BrowserContextMenu) Share Image menu item selected ("action", "share", "browser_contextmenu", "image")
-* (BrowserContextMenu) Copy Image menu item selected ("action", "copy", "browser_contextmenu", "image")
-* (BrowserContextMenu) Save Image menu item selected ("action", "save", "browser_contextmenu", "image")
-* (Search) Query entered: - ("action", "type_query", "search_bar")
-* (Search) Query/Hint clicked: - ("action", "select_query", "search_bar")
-* (Erase) UI button clicked - ("action", "click", "erase_button")
-* (Erase) device’s back button pressed - ("action", "click", "back_button", "erase")
-* (Erase) Notification clicked - ("action", "click", "notification", "erase")
-* (Erase) Home screen shortcut clicked - ("action", "click", "shortcut", "erase")
-* Enable/Disable content blocking for session - ("action", "click", "blocking_switch", "true/false")
-* Notification: "Erase" action clicked: ("action", "click", "notification_action", "erase")
-* Notification: "Open" action clicked: ("action", "click", "notification_action", "open")
-* Setting changed: - ("action", "change", "settings", <key>, { "to": <value> })
-* Share URL with third-party app - ("action", "share", "menu")
-* Open default app for URL - ("action", "open", "menu", "default")
-* Open Firefox directly - ("action", "open", "menu", "firefox")
-* Open an app for this URL from a list of available apps - ("action", "open", "menu", "selection")
-* (Firstrun) Showing a first run page: ("action", "show", "firstrun", "<page>") (Page numbers start at 0. Initially when the firstrun tour is shown an event for the first page (0) is fired.
-* (Firstrun) Skip button is pressed: ("action", "click", "firstrun", "skip")
-* (Firstrun) Finish button on the last page of the tour is pressed: ("action", "click", "firstrun", "finish")
 
 #### Limits
 
