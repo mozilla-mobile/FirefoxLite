@@ -37,7 +37,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:${Versions.firebase}"
     implementation "com.google.firebase:firebase-config:${Versions.firebase}"
-    api "com.google.firebase:firebase-messaging:${Versions.firebase}"
+    api "com.google.firebase:firebase-messaging:${Versions.fcm}"
     implementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
 
 }
