@@ -270,6 +270,10 @@
     <string name="screenshot_saved">Screenshot saved</string>
     <string name="screenshot_failed">Failed to capture screenshot</string>
     <string name="screenshot_illustration">Capturing screenshot of entire page…</string>
+    <string name="screenshot_view">view</string>
+    <string name="screenshot_edit">edit</string>
+    <string name="screenshot_delete">delete</string>
+    <string name="screenshot_share">share</string>
 
     <!-- Snack bar message -->
     <string name="message_fallback_save_to_primary_external">No SD card detected. File was saved to internal storage.</string>
