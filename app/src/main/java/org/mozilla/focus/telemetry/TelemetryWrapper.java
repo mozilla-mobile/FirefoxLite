@@ -189,6 +189,7 @@ public final class TelemetryWrapper {
     public static void init(Context context) {
         // When initializing the telemetry library it will make sure that all directories exist and
         // are readable/writable.
+        EventBuilder.initFirebaseEventWhitelist(context);
         final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskWrites();
         try {
             final Resources resources = context.getResources();
@@ -728,6 +729,76 @@ public final class TelemetryWrapper {
             if (context != null) {
                 firebaseEvent.event(context);
             }
+        }
+
+        static void initFirebaseEventWhitelist(Context context) {
+
+
+            FirebaseEvent.clearValueWhitelist();
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_search_engine));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_ads));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_analytics));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_social));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_other));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_turbo_mode));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_performance_block_webfonts));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_performance_block_images));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_default_browser));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_telemetry));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_give_feedback));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_share_with_friends));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_about));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_help));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_rights));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_locale));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_webview_version));
+
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_focus_tab_id));
+
+            // data saving
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_ads));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_webfonts));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_images));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_tab_restore));
+
+            // storage and cache
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_storage_clear_browsing_data));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_removable_storage_available_on_create));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_storage_save_downloads_to));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_showed_storage_message));
+
+            // rate app
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_app_create_counter));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_rate_app_dialog));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_rate_app_notification));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_dismiss_rate_app_dialog));
+
+            //  share app
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_share_app_dialog));
+
+            // clear browsing data
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_browsing_history));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_form_history));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_cookies));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_cache));
+
+            // data saving path values
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_saving_path_sd_card));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_saving_path_internal_storage));
+
+            //  default browser
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_default_browser_setting));
+            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_setting_click_counter));
+
+
         }
     }
 }
