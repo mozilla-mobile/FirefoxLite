@@ -266,14 +266,25 @@
     <!-- Remove the item from Download file panel and delete the file -->
     <string name="delete_file">Delete file</string>
 
-    <!--Long Screenshot-->
+    <!-- Long Screenshot -->
+    <!-- Message in the Snackbar which is shown after a successful screenshot capture. -->
     <string name="screenshot_saved">Screenshot saved</string>
+    <!-- Message in the Toast which is shown after a failed screenshot capture. -->
     <string name="screenshot_failed">Failed to capture screenshot</string>
+    <!-- Message shown when screenshot is being captured. -->
     <string name="screenshot_illustration">Capturing screenshot of entire page…</string>
-    <string name="screenshot_view">view</string>
-    <string name="screenshot_edit">edit</string>
-    <string name="screenshot_delete">delete</string>
-    <string name="screenshot_share">share</string>
+    <!-- Available action in Snackbar that gives users a chance to view the captured screenshot
+    right after it is successfully captured. -->
+    <string name="screenshot_view">VIEW</string>
+    <!-- Available action in Snackbar that gives users a chance to edit the captured screenshot
+    right after it is successfully captured. -->
+    <string name="screenshot_edit">EDIT</string>
+    <!-- Available action in Snackbar that gives users a chance to delete the captured screenshot
+    right after it is successfully captured. -->
+    <string name="screenshot_delete">DELETE</string>
+    <!-- Available action in Snackbar that gives users a chance to share the captured screenshot
+    right after it is successfully captured. -->
+    <string name="screenshot_share">SHARE</string>
 
     <!-- Snack bar message -->
     <string name="message_fallback_save_to_primary_external">No SD card detected. File was saved to internal storage.</string>
