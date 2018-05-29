@@ -16,7 +16,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -85,7 +84,9 @@ import java.util.Locale;
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
-        TabRestoreMonitor, ScreenNavigator.Provider {
+        TabRestoreMonitor, ScreenNavigator.Provider, MainViewContract {
+
+    private MainPresenter mainPresenter;
 
     private String pendingUrl;
 
@@ -162,10 +163,38 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         restoreTabsFromPersistence();
         WebViewProvider.preload(this);
 
+        mainPresenter = new MainPresenter(this);
+
         if (Inject.getActivityNewlyCreatedFlag()) {
             Inject.setActivityNewlyCreatedFlag();
+
             runPromotion(intent);
         }
+    }
+
+    private void runPromotion(SafeIntent intent) {
+        Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
+
+        // TODO: I didn't use a builder here cause I want to use 'apply' after we can make this activity Kotlin.
+        mainPresenter.setDidShowRateDialog(history.contains(Settings.Event.ShowRateAppDialog));
+        mainPresenter.setDidShowShareDialog(history.contains(Settings.Event.ShowShareAppDialog));
+        final boolean didDismissRateDialog = history.contains(Settings.Event.DismissRateAppDialog);
+        mainPresenter.setDidDismissRateDialog(didDismissRateDialog);
+        mainPresenter.setDidShowRateAppNotification(history.contains(Settings.Event.ShowRateAppNotification));
+        mainPresenter.setSurveyEnabled(AppConfigWrapper.isSurveyNotificationEnabled() && !history.contains(Settings.Event.PostSurveyNotification));
+        if (mainPresenter.accumulateAppCreateCount()) {
+            history.add(Settings.Event.AppCreate);
+        }
+        mainPresenter.setAppCreateCount(history.getCount(Settings.Event.AppCreate));
+        mainPresenter.setRateAppDialogThreshold(AppConfigWrapper.getRateDialogLaunchTimeThreshold(this));
+        mainPresenter.setRateAppNotificationThreshold(AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(this));
+        mainPresenter.setShareAppDialogThreshold(AppConfigWrapper.getShareDialogLaunchTimeThreshold(this, didDismissRateDialog));
+
+        mainPresenter.setShouldShowPrivacyPolicyUpdate(NewFeatureNotice.getInstance(this).shouldShowPrivacyPolicyUpdate());
+        final boolean promoteFromIntent = intent.getExtras() != null && intent.getExtras().getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
+        mainPresenter.setShowRateAppDialogFromIntent(promoteFromIntent);
+
+        mainPresenter.runPromotion();
     }
 
     private void initBroadcastReceivers() {
@@ -253,9 +282,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final SafeIntent intent = new SafeIntent(unsafeIntent);
         AppLaunchMethod.parse(intent).sendLaunchTelemetry();
 
-        if (runPromotionFromIntent(intent)) {
-            // Don't run other promotion or other action if we already displayed above promotion
-            return;
+        final boolean promoteFromIntent = intent.getExtras() != null && intent.getExtras().getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
+        if (mainPresenter != null) {
+            mainPresenter.setShowRateAppDialogFromIntent(promoteFromIntent);
+            if (mainPresenter.runPromotionFromIntent()) {
+                // Don't run other promotion or other action if we already displayed above promotion
+                return;
+            }
         }
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -309,73 +342,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setUpMenu();
     }
 
-    private void runPromotion(final SafeIntent intent) {
-        if (runPromotionFromIntent(intent)) {
-            // Don't run other promotion if we already displayed above promotion
-            return;
-        }
-        final Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
 
-        final boolean didShowRateDialog = history.contains(Settings.Event.ShowRateAppDialog);
-        final boolean didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog);
-        final boolean didDismissRateDialog = history.contains(Settings.Event.DismissRateAppDialog);
-        final boolean didShowRateAppNotification = history.contains(Settings.Event.ShowRateAppNotification);
-        final boolean isSurveyEnabled = AppConfigWrapper.isSurveyNotificationEnabled() &&
-                !history.contains(Settings.Event.PostSurveyNotification);
-
-        if (!didShowRateDialog || !didShowShareDialog || isSurveyEnabled || !didShowRateAppNotification) {
-            history.add(Settings.Event.AppCreate);
-        }
-        final int appCreateCount = history.getCount(Settings.Event.AppCreate);
-
-        if (!didShowRateDialog &&
-                appCreateCount >= AppConfigWrapper.getRateDialogLaunchTimeThreshold(this)) {
-            DialogUtils.showRateAppDialog(this);
-            TelemetryWrapper.showFeedbackDialog();
-        } else if (didDismissRateDialog && !didShowRateAppNotification && appCreateCount >=
-                AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(this)) {
-            DialogUtils.showRateAppNotification(this);
-            TelemetryWrapper.showRateAppNotification();
-        } else if (!didShowShareDialog && appCreateCount >=
-                AppConfigWrapper.getShareDialogLaunchTimeThreshold(this, didDismissRateDialog)) {
-            DialogUtils.showShareAppDialog(this);
-            TelemetryWrapper.showPromoteShareDialog();
-        }
-
-        if (isSurveyEnabled &&
-                appCreateCount >= AppConfigWrapper.getSurveyNotificationLaunchTimeThreshold()) {
-            postSurveyNotification();
-            history.add(Settings.Event.PostSurveyNotification);
-        }
-
-        if (NewFeatureNotice.getInstance(this).shouldShowPrivacyPolicyUpdate()) {
-            DialogUtils.showPrivacyPolicyUpdateNotification(this);
-        }
-    }
-
-    // return true if promotion is already handled
-    @CheckResult
-    private boolean runPromotionFromIntent(final SafeIntent intent) {
-        if (intent == null) {
-            return false;
-        }
-        final Bundle bundle = intent.getExtras();
-        if (bundle == null) {
-            return false;
-        }
-        // When we receive this action, it means we need to show "Love Rocket" dialog
-        final boolean loveRocket = bundle.getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
-        if (loveRocket) {
-            DialogUtils.showRateAppDialog(this);
-            NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_FIREFOX);
-            // Reset extra after dialog displayed.
-            bundle.putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
-            return true;
-        }
-        return false;
-    }
-
-    private void postSurveyNotification() {
+    public void postSurveyNotification() {
         Intent intent = IntentUtils.createInternalOpenUrlIntent(this,
                 getSurveyUrl(), true);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -943,6 +911,51 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if (tabModelListForPersistence != null) {
             TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
+        }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
+        history.add(Settings.Event.PostSurveyNotification);
+
+    }
+
+    @Override
+    public void showRateAppDialog() {
+        DialogUtils.showRateAppDialog(this);
+        TelemetryWrapper.showFeedbackDialog();
+    }
+
+    @Override
+    public void showRateAppNotification() {
+        DialogUtils.showRateAppNotification(this);
+        TelemetryWrapper.showRateAppNotification();
+    }
+
+    @Override
+    public void showShareAppDialog() {
+        DialogUtils.showShareAppDialog(this);
+        TelemetryWrapper.showPromoteShareDialog();
+    }
+
+    @Override
+    public void showPrivacyPolicyUpdateNotification() {
+        DialogUtils.showPrivacyPolicyUpdateNotification(this);
+
+    }
+
+    @Override
+    public void showRateAppDialogFromIntent() {
+
+        DialogUtils.showRateAppDialog(this);
+        TelemetryWrapper.showFeedbackDialog();
+
+        NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_FIREFOX);
+
+        // Reset extra after dialog displayed.
+        if (getIntent().getExtras() != null) {
+            getIntent().getExtras().putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
         }
     }
 
