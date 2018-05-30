@@ -64,7 +64,6 @@ import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
@@ -76,6 +75,9 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
+import org.mozilla.rocket.promotion.PromotionModel;
+import org.mozilla.rocket.promotion.PromotionPresenter;
+import org.mozilla.rocket.promotion.PromotionViewContract;
 
 import java.io.File;
 import java.util.List;
@@ -84,9 +86,9 @@ import java.util.Locale;
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
-        TabRestoreMonitor, ScreenNavigator.Provider, MainViewContract {
+        TabRestoreMonitor, ScreenNavigator.Provider, PromotionViewContract {
 
-    private MainPresenter mainPresenter;
+    private PromotionModel promotionModel;
 
     private String pendingUrl;
 
@@ -163,38 +165,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         restoreTabsFromPersistence();
         WebViewProvider.preload(this);
 
-        mainPresenter = new MainPresenter(this);
+        promotionModel = new PromotionModel(this, isPromotionFromIntent(intent));
 
         if (Inject.getActivityNewlyCreatedFlag()) {
             Inject.setActivityNewlyCreatedFlag();
 
-            runPromotion(intent);
+            PromotionPresenter.runPromotion(this, promotionModel);
         }
-    }
-
-    private void runPromotion(SafeIntent intent) {
-        Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
-
-        // TODO: I didn't use a builder here cause I want to use 'apply' after we can make this activity Kotlin.
-        mainPresenter.setDidShowRateDialog(history.contains(Settings.Event.ShowRateAppDialog));
-        mainPresenter.setDidShowShareDialog(history.contains(Settings.Event.ShowShareAppDialog));
-        final boolean didDismissRateDialog = history.contains(Settings.Event.DismissRateAppDialog);
-        mainPresenter.setDidDismissRateDialog(didDismissRateDialog);
-        mainPresenter.setDidShowRateAppNotification(history.contains(Settings.Event.ShowRateAppNotification));
-        mainPresenter.setSurveyEnabled(AppConfigWrapper.isSurveyNotificationEnabled() && !history.contains(Settings.Event.PostSurveyNotification));
-        if (mainPresenter.accumulateAppCreateCount()) {
-            history.add(Settings.Event.AppCreate);
-        }
-        mainPresenter.setAppCreateCount(history.getCount(Settings.Event.AppCreate));
-        mainPresenter.setRateAppDialogThreshold(AppConfigWrapper.getRateDialogLaunchTimeThreshold(this));
-        mainPresenter.setRateAppNotificationThreshold(AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(this));
-        mainPresenter.setShareAppDialogThreshold(AppConfigWrapper.getShareDialogLaunchTimeThreshold(this, didDismissRateDialog));
-
-        mainPresenter.setShouldShowPrivacyPolicyUpdate(NewFeatureNotice.getInstance(this).shouldShowPrivacyPolicyUpdate());
-        final boolean promoteFromIntent = intent.getExtras() != null && intent.getExtras().getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
-        mainPresenter.setShowRateAppDialogFromIntent(promoteFromIntent);
-
-        mainPresenter.runPromotion();
     }
 
     private void initBroadcastReceivers() {
@@ -282,10 +259,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final SafeIntent intent = new SafeIntent(unsafeIntent);
         AppLaunchMethod.parse(intent).sendLaunchTelemetry();
 
-        final boolean promoteFromIntent = intent.getExtras() != null && intent.getExtras().getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
-        if (mainPresenter != null) {
-            mainPresenter.setShowRateAppDialogFromIntent(promoteFromIntent);
-            if (mainPresenter.runPromotionFromIntent()) {
+        final boolean promoteFromIntent = isPromotionFromIntent(intent);
+        if (promotionModel != null) {
+            promotionModel.setShowRateAppDialogFromIntent(promoteFromIntent);
+            if (PromotionPresenter.runPromotionFromIntent(this, promotionModel)) {
                 // Don't run other promotion or other action if we already displayed above promotion
                 return;
             }
@@ -957,6 +934,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (getIntent().getExtras() != null) {
             getIntent().getExtras().putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
         }
+    }
+
+    @Override
+    public boolean isPromotionFromIntent(SafeIntent intent) {
+        return intent != null &&
+                intent.getExtras() != null &&
+                intent.getExtras().getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
     }
 
     // a TabViewProvider and it should only be used in this activity
