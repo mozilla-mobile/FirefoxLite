@@ -39,6 +39,8 @@ import org.mozilla.telemetry.serialize.TelemetryPingSerializer;
 import org.mozilla.telemetry.storage.FileTelemetryStorage;
 import org.mozilla.telemetry.storage.TelemetryStorage;
 
+import static org.mozilla.focus.utils.NewFeatureNotice.PREF_KEY_INT_FEATURE_UPGRADE_VERSION;
+
 public final class TelemetryWrapper {
     private static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
 
@@ -133,10 +135,10 @@ public final class TelemetryWrapper {
         private static final String ENTER = "enter";
         private static final String EXIT = "exit";
         private static final String GEOLOCATION = "geolocation";
-        private static final String AUDIO = "audio";
-        private static final String VIDEO = "video";
-        private static final String MIDI = "midi";
-        private static final String EME = "eme";
+        static final String AUDIO = "audio";
+        static final String VIDEO = "video";
+        static final String MIDI = "midi";
+        static final String EME = "eme";
 
         private static final String LEARN_MORE = "learn_more";
 
@@ -723,15 +725,19 @@ public final class TelemetryWrapper {
         }
 
         void queue() {
-            telemetryEvent.queue();
 
             final Context context = TelemetryHolder.get().getConfiguration().getContext();
             if (context != null) {
+                telemetryEvent.queue();
+
                 firebaseEvent.event(context);
             }
         }
 
         static void initFirebaseEventWhitelist(Context context) {
+            if (context == null) {
+                return;
+            }
 
 
             FirebaseEvent.clearValueWhitelist();
@@ -798,7 +804,8 @@ public final class TelemetryWrapper {
             FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_default_browser_setting));
             FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_setting_click_counter));
 
-
+            // NewFeatureNotice
+            FirebaseEvent.addValueWhitelist(PREF_KEY_INT_FEATURE_UPGRADE_VERSION);
         }
     }
 }
