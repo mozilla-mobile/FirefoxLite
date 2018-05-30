@@ -197,6 +197,8 @@ dependencies {
     implementation Libs.design
     implementation Libs.cardview_v7
     implementation Libs.recyclerview_v7
+    // For App-bundle, we need Google Play Core Library to call api download modules
+    implementation 'com.google.android.play:core:1.2.0'
 
     implementation Libs.room_runtime
     annotationProcessor Libs.room_compiler
