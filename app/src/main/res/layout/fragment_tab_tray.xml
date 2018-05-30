@@ -81,10 +81,11 @@
                     android:text="@string/tab_tray_close_tabs_btn_text"
                     android:gravity="center|end"
                     android:background="?android:attr/selectableItemBackground"
-                    android:textColor="@color/tabTrayItemSubTitle"
+                    android:textColor="@color/tabTrayCloseAll"
                     android:textSize="@dimen/tab_tray_close_all_btn_text_size"
                     android:maxLines="2"
                     android:ellipsize="end"
+                    android:fontFamily="sans-serif-medium"
                     tools:ignore="RtlSymmetry" />
             </FrameLayout>
         </RelativeLayout>
