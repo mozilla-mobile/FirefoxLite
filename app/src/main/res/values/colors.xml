@@ -84,4 +84,5 @@
     <color name="tabTrayItemOutlineSelected">#0a84ff</color>
     <color name="tabTrayItemTitle">#272727</color>
     <color name="tabTrayItemSubTitle">#737373</color>
+    <color name="tabTrayCloseAll">#0a84ff</color>
 </resources>
