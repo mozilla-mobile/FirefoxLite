@@ -2,10 +2,7 @@ package org.mozilla.rocket.promotion
 
 
 import android.content.Context
-import org.mozilla.focus.utils.AppConfigWrapper
-import org.mozilla.focus.utils.NewFeatureNotice
-import org.mozilla.focus.utils.SafeIntent
-import org.mozilla.focus.utils.Settings
+import org.mozilla.focus.utils.*
 import kotlin.properties.Delegates
 
 interface PromotionViewContract {
@@ -15,10 +12,9 @@ interface PromotionViewContract {
     fun showShareAppDialog()
     fun showPrivacyPolicyUpdateNotification()
     fun showRateAppDialogFromIntent()
-    fun isPromotionFromIntent(safeIntent: SafeIntent): Boolean
 }
 
-class PromotionModel(context: Context, fromIntent: Boolean) {
+class PromotionModel(context: Context, safeIntent: SafeIntent) {
 
     // using a notnull delegate will make sure if the value is not set, it'll throw exception
     var didShowRateDialog by Delegates.notNull<Boolean>()
@@ -39,6 +35,8 @@ class PromotionModel(context: Context, fromIntent: Boolean) {
 
     init {
 
+        parseIntent(safeIntent)
+
         val history = Settings.getInstance(context).eventHistory
         didShowRateDialog = history.contains(Settings.Event.ShowRateAppDialog)
         didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog)
@@ -54,8 +52,11 @@ class PromotionModel(context: Context, fromIntent: Boolean) {
         shareAppDialogThreshold = AppConfigWrapper.getShareDialogLaunchTimeThreshold(context, didDismissRateDialog)
 
         shouldShowPrivacyPolicyUpdate = NewFeatureNotice.getInstance(context).shouldShowPrivacyPolicyUpdate()
-        showRateAppDialogFromIntent = fromIntent
 
+    }
+
+    fun parseIntent(safeIntent: SafeIntent?) {
+        showRateAppDialogFromIntent = safeIntent?.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false) ?: false
     }
 
 
