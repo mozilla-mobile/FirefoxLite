@@ -142,7 +142,7 @@ public class ScreenNavigator implements LifecycleObserver {
         boolean found = popScreensUntil(HomeFragment.FRAGMENT_TAG);
         log("found exist home: " + found);
         if (!found) {
-            this.mainMediator.showHomeScreen(animate, true);
+            this.mainMediator.showHomeScreen(animate, MainMediator.EntryData.TYPE_FLOATING);
         }
     }
 
@@ -154,8 +154,10 @@ public class ScreenNavigator implements LifecycleObserver {
 
         boolean found = popScreensUntil(HomeFragment.FRAGMENT_TAG);
         log("found exist home: " + found);
-        if (!found) {
-            this.mainMediator.showHomeScreen(animate, false);
+        if (found) {
+            this.mainMediator.updateForegroundType(MainMediator.EntryData.TYPE_ROOT);
+        } else {
+            this.mainMediator.showHomeScreen(animate, MainMediator.EntryData.TYPE_ROOT);
         }
     }
 
