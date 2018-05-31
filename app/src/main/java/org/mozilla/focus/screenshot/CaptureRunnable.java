@@ -10,6 +10,7 @@ import android.widget.Toast;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
+import org.mozilla.focus.utils.Settings;
 
 import java.lang.ref.WeakReference;
 
@@ -73,7 +74,11 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
             cancel(true);
             return;
         }
-        final int captureResultResource = TextUtils.isEmpty(path) ? R.string.screenshot_failed : R.string.screenshot_saved;
+        final boolean captureSuccess = !TextUtils.isEmpty(path);
+        if (captureSuccess) {
+            Settings.getInstance(refContext.get()).setHasUnreadMyShot(true);
+        }
+        final int captureResultResource = captureSuccess ? R.string.screenshot_saved : R.string.screenshot_failed ;
         screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
