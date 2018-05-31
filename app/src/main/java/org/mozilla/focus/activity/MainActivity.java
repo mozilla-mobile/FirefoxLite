@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,12 +82,14 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
+import org.mozilla.rocket.theme.ThemeManager;
 
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
+        ThemeManager.ThemeHost,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
         TabRestoreMonitor, ScreenNavigator.Provider, PromotionViewContract {
@@ -116,8 +119,25 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     private static final String LOG_TAG = "MainActivity";
 
+
+    private ThemeManager themeManager;
+
+    @Override
+    public ThemeManager getThemeManager() {
+        return themeManager;
+    }
+
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        themeManager.applyCurrentTheme(theme);
+//        theme.applyStyle(R.style.ThemeToy01, true);
+        return theme;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeManager = new ThemeManager(this);
         super.onCreate(savedInstanceState);
 
         asyncInitialize();

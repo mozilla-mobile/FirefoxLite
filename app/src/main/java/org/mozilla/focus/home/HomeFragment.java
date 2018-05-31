@@ -47,6 +47,7 @@ import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.rocket.theme.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +69,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private View btnMenu;
     private TabCounter tabCounter;
     private TextView fakeInput;
+    private HomeScreenBackground homeScreenBackground;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
@@ -119,17 +121,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         });
 
         SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
-        home_container.setOnSwipeListener(new OnSwipeListener.OnSwipeListenerAdapter() {
-            @Override
-            public void onSwipeUp() {
-                btnMenu.performClick();
-            }
+        home_container.setOnSwipeListener(new GestureListenerAdapter());
 
-            @Override
-            public void onSwipeDown() {
-                fakeInput.performClick();
-            }
-        });
+        homeScreenBackground = view.findViewById(R.id.home_background);
 
         return view;
     }
@@ -141,8 +135,30 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
+            return;
+        }
+        if (mainActivity instanceof ThemeManager.ThemeHost) {
+            ThemeManager.ThemeHost themeHost = mainActivity;
+            themeHost.getThemeManager().subscribeThemeChange(homeScreenBackground);
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         tabsSession.removeTabsChromeListener(this.tabsChromeListener);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
+            super.onDestroyView();
+            return;
+        }
+        if (mainActivity instanceof ThemeManager.ThemeHost) {
+            ThemeManager.ThemeHost themeHost = mainActivity;
+            themeHost.getThemeManager().unsubscribeThemeChange(homeScreenBackground);
+        }
         super.onDestroyView();
     }
 
@@ -469,6 +485,43 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
             // do nothing
+        }
+    }
+
+    private class GestureListenerAdapter extends OnSwipeListener.OnSwipeListenerAdapter {
+        @Override
+        public void onSwipeUp() {
+            btnMenu.performClick();
+        }
+
+        @Override
+        public void onSwipeDown() {
+            fakeInput.performClick();
+        }
+
+        @Override
+        public void onLongPress() {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
+                return;
+            }
+            if (mainActivity instanceof ThemeManager.ThemeHost) {
+                ThemeManager.ThemeHost themeHost = mainActivity;
+                themeHost.getThemeManager().resetDefaultTheme();
+            }
+        }
+
+        @Override
+        public boolean onDoubleTap() {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
+                return false;
+            }
+            if (mainActivity instanceof ThemeManager.ThemeHost) {
+                ThemeManager.ThemeHost themeHost = mainActivity;
+                themeHost.getThemeManager().toggleNextTheme();
+            }
+            return true;
         }
     }
 }
