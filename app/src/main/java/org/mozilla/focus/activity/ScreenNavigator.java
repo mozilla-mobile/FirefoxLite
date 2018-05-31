@@ -166,12 +166,26 @@ public class ScreenNavigator implements LifecycleObserver {
 
     public void addUrlScreen(String url) {
         logMethod();
-        this.mainMediator.showUrlInput(url);
+        Fragment top = getTopFragment();
+
+        String tag = BrowserFragment.FRAGMENT_TAG;
+        if (top instanceof HomeFragment) {
+            tag = HomeFragment.FRAGMENT_TAG;
+        } else if (top instanceof BrowserFragment) {
+            tag = BrowserFragment.FRAGMENT_TAG;
+        } else if (BuildConfig.DEBUG) {
+            throw new RuntimeException("unexpected caller of UrlInputFragment");
+        }
+
+        this.mainMediator.showUrlInput(url, tag);
     }
 
     public void popUrlScreen() {
         logMethod();
-        this.mainMediator.dismissUrlInput();
+        Fragment top = getTopFragment();
+        if (top instanceof UrlInputFragment) {
+            this.mainMediator.dismissUrlInput();
+        }
     }
 
     @Nullable

@@ -18,23 +18,12 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 
 import java.util.HashMap;
 
 class MainMediator {
     private static final String TAG = "MainMediator";
-
-    // For FragmentManager, there is no real top fragment.
-    // Instead, we define this sequence for fragments of MainActivity
-    // to define that, if there are two visible fragments, which one is top one.
-    private final static String[] FRAGMENTS_SEQUENCE = {
-            TabTrayFragment.FRAGMENT_TAG,
-            UrlInputFragment.FRAGMENT_TAG,
-            FirstrunFragment.FRAGMENT_TAG,
-            HomeFragment.FRAGMENT_TAG
-    };
 
     private EntryDataSet entryDataSet = new EntryDataSet();
 
@@ -46,16 +35,14 @@ class MainMediator {
     }
 
     void showHomeScreen(boolean animated, boolean addToBackStack) {
-        if (!homeFragmentAtTop()) {
-            this.prepareHomeScreen(animated, addToBackStack).commit();
-        }
+        this.prepareHomeScreen(animated, addToBackStack).commit();
     }
 
     void showFirstRun() {
         this.prepareFirstRun().commit();
     }
 
-    void showUrlInput(@Nullable String url) {
+    void showUrlInput(@Nullable String url, String sourceFragment) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
         if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
@@ -64,17 +51,13 @@ class MainMediator {
             return;
         }
 
-        String parent = homeFragmentAtTop() ? HomeFragment.FRAGMENT_TAG : BrowserFragment.FRAGMENT_TAG;
-        this.prepareUrlInput(url, parent)
+        this.prepareUrlInput(url, sourceFragment)
                 .addToBackStack(entryDataSet.add(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
                 .commit();
     }
 
     void dismissUrlInput() {
-        final Fragment top = getTopFragment();
-        if (top != null && UrlInputFragment.FRAGMENT_TAG.equals(top.getTag())) {
-            this.activity.onBackPressed();
-        }
+        this.activity.onBackPressed();
     }
 
     boolean shouldFinish() {
@@ -86,17 +69,6 @@ class MainMediator {
 
         FragmentManager.BackStackEntry lastEntry = manager.getBackStackEntryAt(entryCount - 1);
         return EntryData.TYPE_ROOT.equals(getEntryType(lastEntry));
-    }
-
-    private Fragment getTopFragment() {
-        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        for (final String tag : FRAGMENTS_SEQUENCE) {
-            final Fragment fragment = fragmentManager.findFragmentByTag(tag);
-            if (fragment != null && fragment.isVisible()) {
-                return fragment;
-            }
-        }
-        return null;
     }
 
     private FragmentTransaction prepareFirstRun() {
@@ -153,21 +125,6 @@ class MainMediator {
         if (homeFragment != null && homeFragment.isVisible()) {
             homeFragment.toggleFakeUrlInput(visible);
         }
-    }
-
-    /**
-     * get HomeFragment if it's Top Fragment
-     */
-    private HomeFragment getTopHomeFragment() {
-        final Fragment topFragment = getTopFragment();
-        if (topFragment != null && HomeFragment.FRAGMENT_TAG.equals(topFragment.getTag())) {
-            return (HomeFragment) topFragment;
-        }
-        return null;
-    }
-
-    private boolean homeFragmentAtTop() {
-        return getTopHomeFragment() != null;
     }
 
     String getEntryTag(FragmentManager.BackStackEntry entry) {
