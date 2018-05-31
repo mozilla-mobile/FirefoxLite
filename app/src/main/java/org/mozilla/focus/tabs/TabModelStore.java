@@ -128,16 +128,14 @@ public class TabModelStore {
 
         @Override
         protected Void doInBackground(TabModel... tabModelList) {
-            if (tabsDatabase != null) {
-                tabsDatabase.tabDao().deleteAllTabs();
+            if (tabModelList != null) {
+                Context context = contextRef.get();
+                if (context != null) {
+                    saveWebViewState(context, tabModelList);
+                }
 
-                if (tabModelList != null) {
-                    Context context = contextRef.get();
-                    if (context != null) {
-                        saveWebViewState(context, tabModelList);
-                    }
-
-                    tabsDatabase.tabDao().insertTabs(tabModelList);
+                if (tabsDatabase != null) {
+                    tabsDatabase.tabDao().deleteAllTabsAndInsertTabsInTransaction(tabModelList);
                 }
             }
 
