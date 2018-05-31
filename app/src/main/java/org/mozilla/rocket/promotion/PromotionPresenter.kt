@@ -2,6 +2,7 @@ package org.mozilla.rocket.promotion
 
 
 import android.content.Context
+import android.support.annotation.VisibleForTesting
 import org.mozilla.focus.utils.*
 import kotlin.properties.Delegates
 
@@ -14,7 +15,7 @@ interface PromotionViewContract {
     fun showRateAppDialogFromIntent()
 }
 
-class PromotionModel(context: Context, safeIntent: SafeIntent) {
+class PromotionModel {
 
     // using a notnull delegate will make sure if the value is not set, it'll throw exception
     var didShowRateDialog by Delegates.notNull<Boolean>()
@@ -33,11 +34,12 @@ class PromotionModel(context: Context, safeIntent: SafeIntent) {
 
     var showRateAppDialogFromIntent by Delegates.notNull<Boolean>()
 
-    init {
+    constructor(context: Context, safeIntent: SafeIntent) : this(context, Settings.getInstance(context).eventHistory, NewFeatureNotice.getInstance(context), safeIntent)
+    @VisibleForTesting
+    constructor(context: Context, history: Settings.EventHistory, newFeatureNotice: NewFeatureNotice, safeIntent: SafeIntent) {
 
         parseIntent(safeIntent)
 
-        val history = Settings.getInstance(context).eventHistory
         didShowRateDialog = history.contains(Settings.Event.ShowRateAppDialog)
         didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog)
         didDismissRateDialog = history.contains(Settings.Event.DismissRateAppDialog)
@@ -51,12 +53,12 @@ class PromotionModel(context: Context, safeIntent: SafeIntent) {
         rateAppNotificationThreshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(context)
         shareAppDialogThreshold = AppConfigWrapper.getShareDialogLaunchTimeThreshold(context, didDismissRateDialog)
 
-        shouldShowPrivacyPolicyUpdate = NewFeatureNotice.getInstance(context).shouldShowPrivacyPolicyUpdate()
+        shouldShowPrivacyPolicyUpdate = newFeatureNotice.shouldShowPrivacyPolicyUpdate()
 
     }
 
     fun parseIntent(safeIntent: SafeIntent?) {
-        showRateAppDialogFromIntent = safeIntent?.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false) ?: false
+        showRateAppDialogFromIntent = safeIntent?.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false) == true
     }
 
 
