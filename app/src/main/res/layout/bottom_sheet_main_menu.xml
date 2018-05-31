@@ -46,6 +46,13 @@
         <FrameLayout
             style="@style/MenuButtonContainer"
             android:id="@+id/menu_screenshots">
+            <ImageView
+                android:id="@+id/menu_my_shot_unread"
+                android:paddingStart="48dp"
+                android:paddingTop="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu_screenshots_new"/>
             <LinearLayout
                 style="@style/MenuButtonGroup">
                 <View

@@ -90,6 +90,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private String pendingUrl;
 
     private BottomSheetDialog menu;
+    private View myshotIndicator;
     private View nextButton;
     private View loadingButton;
     private View shareButton;
@@ -401,6 +402,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         menu = new BottomSheetDialog(this, R.style.BottomSheetTheme);
         menu.setContentView(sheet);
         menu.setCanceledOnTouchOutside(true);
+        myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
         shareButton = menu.findViewById(R.id.action_share);
@@ -426,9 +428,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void updateMenu() {
+        final boolean showUnread = Settings.getInstance(this).hasUnreadMyShot();
+        myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
-
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
         setEnable(shareButton, browserFragment != null);
@@ -628,6 +631,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onScreenshotsClicked() {
+        Settings.getInstance(this).setHasUnreadMyShot(false);
         showListPanel(ListPanelDialog.TYPE_SCREENSHOTS);
     }
 

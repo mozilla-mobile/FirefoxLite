@@ -159,6 +159,17 @@ public class Settings {
                 .apply();
     }
 
+
+    public boolean hasUnreadMyShot() {
+        return preferences.getBoolean(getPreferenceKey(R.string.pref_has_unread_my_shot), false);
+    }
+
+    public void setHasUnreadMyShot(boolean hasUnreadMyShot) {
+        preferences.edit()
+                .putBoolean(getPreferenceKey(R.string.pref_has_unread_my_shot), hasUnreadMyShot)
+                .apply();
+    }
+
     public boolean didShowShareAppDialog() {
         return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_share_app_dialog), DID_SHOW_SHARE_APP_DEFAULT);
     }
