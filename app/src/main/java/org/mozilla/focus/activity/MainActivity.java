@@ -108,6 +108,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private TabsSession tabsSession;
     private boolean isTabRestoredComplete = false;
+    public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -428,7 +429,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void updateMenu() {
-        final boolean showUnread = Settings.getInstance(this).hasUnreadMyShot();
+        final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled(this);
+        final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();

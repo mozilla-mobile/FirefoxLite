@@ -37,6 +37,7 @@ import io.fabric.sdk.android.Fabric;
 abstract class FirebaseWrapper {
 
     private static final String TAG = "FirebaseWrapper";
+    private static final boolean FIREBASE_BOOLEAN_DEFAULT = false;
     private static final long FIREBASE_LONG_DEFAULT = 0L;
     private static final String FIREBASE_STRING_DEFAULT = "";
 
@@ -124,6 +125,34 @@ abstract class FirebaseWrapper {
         }
         throwGetValueException("getRcLong");
         return FIREBASE_LONG_DEFAULT;
+
+
+    }
+
+
+    static boolean getRcBoolean(Context context, String key) {
+        if (instance == null) {
+            Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
+            throwRcNotInitException();
+            return FIREBASE_BOOLEAN_DEFAULT;
+        }
+        // if remoteConfig is not initialized, we go to default config directly
+        if (remoteConfig == null) {
+            final Object value = instance.getRemoteConfigDefault(context).get(key);
+            if (value instanceof Boolean) {
+                return (boolean) value;
+            }
+            throwGetValueException("getRcBoolean");
+            return FIREBASE_BOOLEAN_DEFAULT;
+        }
+
+        final FirebaseRemoteConfig config = remoteConfig.get();
+        if (config != null) {
+            // config.getValue will never return null (checked from FirebaseRemoteConfig‘s decompiled source)
+            return config.getValue(key).asBoolean();
+        }
+        throwGetValueException("getRcBoolean");
+        return FIREBASE_BOOLEAN_DEFAULT;
 
 
     }

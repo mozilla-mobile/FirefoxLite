@@ -15,6 +15,7 @@ import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.notification.RocketMessagingService;
 
 import java.lang.ref.WeakReference;
@@ -36,6 +37,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String RATE_APP_DIALOG_THRESHOLD = "rate_app_dialog_threshold";
     static final String RATE_APP_NOTIFICATION_THRESHOLD = "rate_app_notification_threshold";
     static final String SHARE_APP_DIALOG_THRESHOLD = "share_app_dialog_threshold";
+    static final String ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread";
 
     private HashMap<String, Object> remoteConfigDefault;
     private static boolean changing = false;
@@ -212,6 +214,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.RATE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG);
         map.put(FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION);
         map.put(FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG);
+        map.put(FirebaseHelper.ENABLE_MY_SHOT_UNREAD, MainActivity.ENABLE_MY_SHOT_UNREAD_DEFAULT);
         return map;
     }
 
