@@ -11,7 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 
+import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
@@ -19,7 +21,10 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 
+import java.util.HashMap;
+
 class MainMediator {
+    private static final String TAG = "MainMediator";
 
     // For FragmentManager, there is no real top fragment.
     // Instead, we define this sequence for fragments of MainActivity
@@ -31,19 +36,7 @@ class MainMediator {
             HomeFragment.FRAGMENT_TAG
     };
 
-    /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, pressing back when this
-     * type of fragment is in foreground will close the app */
-    private static final String TYPE_ROOT = "root";
-
-    /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, adding fragment of
-     * this type will make browser fragment go to background */
-    private static final String TYPE_ATTACHED = "attached";
-
-    /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, browsing fragment
-     * will still be in foreground after adding this type of fragment. */
-    private static final String TYPE_FLOATING = "floating";
-
-    private static final String ENTRY_SEPARATOR = "#";
+    private EntryDataSet entryDataSet = new EntryDataSet();
 
     private final MainActivity activity;
 
@@ -73,7 +66,7 @@ class MainMediator {
 
         String parent = homeFragmentAtTop() ? HomeFragment.FRAGMENT_TAG : BrowserFragment.FRAGMENT_TAG;
         this.prepareUrlInput(url, parent)
-                .addToBackStack(makeEntryName(UrlInputFragment.FRAGMENT_TAG, TYPE_FLOATING))
+                .addToBackStack(entryDataSet.add(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
                 .commit();
     }
 
@@ -92,7 +85,7 @@ class MainMediator {
         }
 
         FragmentManager.BackStackEntry lastEntry = manager.getBackStackEntryAt(entryCount - 1);
-        return TYPE_ROOT.equals(getEntryType(lastEntry));
+        return EntryData.TYPE_ROOT.equals(getEntryType(lastEntry));
     }
 
     private Fragment getTopFragment() {
@@ -112,7 +105,7 @@ class MainMediator {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
             transaction.replace(R.id.container, fragment, FirstrunFragment.FRAGMENT_TAG)
-                    .addToBackStack(makeEntryName(FirstrunFragment.FRAGMENT_TAG, TYPE_ROOT));
+                    .addToBackStack(entryDataSet.add(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
         }
 
         return transaction;
@@ -136,10 +129,10 @@ class MainMediator {
 
         if (addToBackStack) {
             transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-            transaction.addToBackStack(makeEntryName(HomeFragment.FRAGMENT_TAG, TYPE_ATTACHED));
+            transaction.addToBackStack(entryDataSet.add(HomeFragment.FRAGMENT_TAG, EntryData.TYPE_ATTACHED));
         } else {
             transaction.replace(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-            transaction.addToBackStack(makeEntryName(HomeFragment.FRAGMENT_TAG, TYPE_ROOT));
+            transaction.addToBackStack(entryDataSet.add(HomeFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
         }
 
         return transaction;
@@ -177,24 +170,12 @@ class MainMediator {
         return getTopHomeFragment() != null;
     }
 
-    private String makeEntryName(String tag, String type) {
-        return tag + ENTRY_SEPARATOR + type;
-    }
-
     String getEntryTag(FragmentManager.BackStackEntry entry) {
-        String split[] = entry.getName().split(ENTRY_SEPARATOR);
-        if (split.length != 2) {
-            throw new RuntimeException("illegal name passed to addToBackStack(): " + entry.getName());
-        }
-        return split[0];
+        return entryDataSet.get(entry).tag;
     }
 
     private String getEntryType(FragmentManager.BackStackEntry entry) {
-        String split[] = entry.getName().split(ENTRY_SEPARATOR);
-        if (split.length != 2) {
-            throw new RuntimeException("illegal name passed to addToBackStack(): " + entry.getName());
-        }
-        return split[1];
+        return entryDataSet.get(entry).type;
     }
 
     private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
@@ -207,11 +188,14 @@ class MainMediator {
             boolean isBrowserForeground = true;
             for (int i = 0; i < entryCount; ++i) {
                 FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
-                if (!TextUtils.equals(getEntryType(entry), TYPE_FLOATING)) {
+                if (!TextUtils.equals(getEntryType(entry), EntryData.TYPE_FLOATING)) {
                     isBrowserForeground = false;
                     break;
                 }
             }
+
+            entryDataSet.onBackStackChanged(manager);
+            entryDataSet.purge();
 
             Fragment fragment = manager.findFragmentById(R.id.browser);
             if (fragment instanceof BrowserFragment) {
@@ -219,6 +203,77 @@ class MainMediator {
                     ((BrowserFragment) fragment).goForeground();
                 } else {
                     ((BrowserFragment) fragment).goBackground();
+                }
+            }
+        }
+    }
+
+    private static class EntryData {
+        /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, pressing back when this
+         * type of fragment is in foreground will close the app */
+        private static final String TYPE_ROOT = "root";
+
+        /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, adding fragment of
+         * this type will make browser fragment go to background */
+        private static final String TYPE_ATTACHED = "attached";
+
+        /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, browsing fragment
+         * will still be in foreground after adding this type of fragment. */
+        private static final String TYPE_FLOATING = "floating";
+
+        String tag;
+        String type;
+    }
+
+    private static class EntryDataSet {
+        private HashMap<String, EntryData> data = new HashMap<>();
+        private HashMap<String, EntryData> backStackRecords = new HashMap<>();
+
+        String add(String tag, String type) {
+            EntryData data = new EntryData();
+            data.tag = tag;
+            data.type = type;
+
+            String key = Integer.toHexString(data.hashCode());
+            this.data.put(key, data);
+
+            logData("addNewEntry");
+            return key;
+        }
+
+        EntryData get(FragmentManager.BackStackEntry entry) {
+            return data.get(entry.getName());
+        }
+
+        void onBackStackChanged(FragmentManager manager) {
+            backStackRecords.clear();
+            int size = manager.getBackStackEntryCount();
+            for (int i = 0; i < size; ++i) {
+                FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
+                EntryData data = this.data.get(entry.getName());
+                backStackRecords.put(entry.getName(), data);
+            }
+        }
+
+        private void purge() {
+            HashMap<String, EntryData> tmp = data;
+            data = backStackRecords;
+            backStackRecords = tmp;
+            logData("purge");
+        }
+
+        private void logData(String action) {
+            if (!BuildConfig.DEBUG) {
+                return;
+            }
+
+            Log.d(TAG, "action: " + action);
+            if (this.data.isEmpty()) {
+                Log.d(TAG, "\tempty");
+            } else {
+                for (String key : this.data.keySet()) {
+                    Log.d(TAG, "\t" + key + ":(" + this.data.get(key).tag
+                            + ", " + this.data.get(key).type + ")");
                 }
             }
         }
