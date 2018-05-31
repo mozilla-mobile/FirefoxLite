@@ -163,7 +163,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         restoreTabsFromPersistence();
         WebViewProvider.preload(this);
 
-        promotionModel = new PromotionModel(this, isPromotionFromIntent(intent));
+        promotionModel = new PromotionModel(this, intent);
 
         if (Inject.getActivityNewlyCreatedFlag()) {
             Inject.setActivityNewlyCreatedFlag();
@@ -257,9 +257,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final SafeIntent intent = new SafeIntent(unsafeIntent);
         AppLaunchMethod.parse(intent).sendLaunchTelemetry();
 
-        final boolean promoteFromIntent = isPromotionFromIntent(intent);
         if (promotionModel != null) {
-            promotionModel.setShowRateAppDialogFromIntent(promoteFromIntent);
+            promotionModel.parseIntent(intent);
             if (PromotionPresenter.runPromotionFromIntent(this, promotionModel)) {
                 // Don't run other promotion or other action if we already displayed above promotion
                 return;
@@ -928,13 +927,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (getIntent().getExtras() != null) {
             getIntent().getExtras().putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
         }
-    }
-
-    @Override
-    public boolean isPromotionFromIntent(SafeIntent intent) {
-        return intent != null &&
-                intent.getExtras() != null &&
-                intent.getExtras().getBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
     }
 
     // a TabViewProvider and it should only be used in this activity
