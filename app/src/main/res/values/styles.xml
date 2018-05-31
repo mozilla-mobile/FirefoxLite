@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="AppThemeBase">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+    </style>
 
     <style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -88,14 +91,17 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
     </style>
+
     <style name="MenuButtonContainerSkeleton">
         <item name="android:layout_width">74dp</item>
         <item name="android:layout_height">74dp</item>
     </style>
+
     <style name="MenuButtonContainer" parent="MenuButtonContainerSkeleton">
         <item name="android:onClick">onMenuItemClicked</item>
         <item name="android:background">@drawable/round_rectangle_ripple</item>
     </style>
+
     <style name="MenuButtonGroup">
         <item name="android:paddingTop">12dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -103,6 +109,7 @@
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
+
     <style name="MenuButtonText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -113,14 +120,17 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:paddingTop">5dp</item>
     </style>
+
     <style name="MenuButtonIcon">
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:backgroundTint">@color/sheet_menu_button</item>
     </style>
+
     <style name="MenuToggleText" parent="MenuButtonText">
         <item name="android:textColor">@color/sheet_menu_toggle</item>
     </style>
+
     <style name="MenuToggleIcon" parent="MenuButtonIcon">
         <item name="android:backgroundTint">@color/sheet_menu_toggle</item>
     </style>
@@ -152,12 +162,14 @@
         <item name="android:textSize" tools:ignore="SpUsage">12dp</item>
         <item name="android:textColor">@color/selector_tint_panel_label</item>
     </style>
+
     <style name="ListPanelDrawable">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingEnd">6dp</item>
         <item name="android:tint">@color/selector_tint_panel_label</item>
     </style>
+
     <style name="ListPanelContainer">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">0dp</item>
@@ -175,6 +187,7 @@
     <style name="BrowserMenuStyle" parent="Base.TextAppearance.AppCompat">
         <item name="android:textStyle">normal</item>
     </style>
+
     <style name="DownloadListMainText">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>

@@ -18,21 +18,34 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import org.mozilla.focus.R;
+import org.mozilla.rocket.theme.ThemeManager;
 
-public class HomeScreenBackground extends View {
+public class HomeScreenBackground extends View implements ThemeManager.Themeable {
     private Paint paint;
 
     public HomeScreenBackground(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public HomeScreenBackground(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public HomeScreenBackground(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs, defStyleAttr, 0);
+    }
+
+    public HomeScreenBackground(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+
         init();
     }
 
@@ -54,4 +67,9 @@ public class HomeScreenBackground extends View {
         canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
     }
 
+    @Override
+    public void onThemeChanged() {
+        Drawable drawable = getContext().getTheme().getDrawable(R.drawable.bg_homescreen_color);
+        setBackground(drawable);
+    }
 }

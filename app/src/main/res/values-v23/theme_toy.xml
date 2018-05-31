@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ThemeToy.Light">
+        <!--<item name="android:windowLightStatusBar">true</item>-->
+    </style>
+
+    <style name="ThemeToy.Dark">
+        <!--<item name="android:windowLightStatusBar">false</item>-->
+    </style>
+
+</resources>

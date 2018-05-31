@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ThemeToy">
+        <attr name="themeGradientStart" format="color"/>
+        <attr name="themeGradientEnd" format="color"/>
+    </declare-styleable>
+
+
+    <style name="ThemeToy"/>
+
+    <style name="ThemeToyDefault" parent="ThemeToy.Light">
+        <item name="themeGradientStart">@color/themeGradientStart</item>
+        <item name="themeGradientEnd">@color/themeGradientEnd</item>
+    </style>
+
+    <style name="ThemeToy01" parent="ThemeToy.Dark">
+        <item name="themeGradientStart">@color/themeGradientStart01</item>
+        <item name="themeGradientEnd">@color/themeGradientEnd01</item>
+    </style>
+
+    <style name="ThemeToy02" parent="ThemeToy.Light">
+        <item name="themeGradientStart">@color/themeGradientStart02</item>
+        <item name="themeGradientEnd">@color/themeGradientEnd02</item>
+    </style>
+
+    <style name="ThemeToy03" parent="ThemeToy.Light">
+        <item name="themeGradientStart">@color/themeGradientStart03</item>
+        <item name="themeGradientEnd">@color/themeGradientEnd03</item>
+    </style>
+
+    <style name="ThemeToy04" parent="ThemeToy.Light">
+        <item name="themeGradientStart">@color/themeGradientStart04</item>
+        <item name="themeGradientEnd">@color/themeGradientEnd04</item>
+    </style>
+
+    <!-- Default theme color -->
+    <color name="themeGradientStart">#41B7E6</color>
+    <color name="themeGradientEnd">#95E2BD</color>
+
+    <color name="themeGradientStart01">#2C3A5F</color>
+    <color name="themeGradientEnd01">#536D86</color>
+
+    <color name="themeGradientStart02">#3BA589</color>
+    <color name="themeGradientEnd02">#43BB77</color>
+
+    <color name="themeGradientStart03">#B741E6</color>
+    <color name="themeGradientEnd03">#E295BD</color>
+
+    <color name="themeGradientStart04">#6893E3</color>
+    <color name="themeGradientEnd04">#BD95E2</color>
+
+</resources>

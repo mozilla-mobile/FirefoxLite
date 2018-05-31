@@ -30,6 +30,16 @@ public class SwipeMotionDetector implements View.OnTouchListener {
         private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
         @Override
+        public void onLongPress(MotionEvent e) {
+            onSwipeListener.onLongPress();
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            return onSwipeListener.onDoubleTap();
+        }
+
+        @Override
         public boolean onDown(MotionEvent e) {
             return true;
         }
