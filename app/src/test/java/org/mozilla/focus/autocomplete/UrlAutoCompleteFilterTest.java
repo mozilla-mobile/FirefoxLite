@@ -10,9 +10,8 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.widget.InlineAutocompleteEditText;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.mockito.Mockito.mock;
@@ -25,7 +24,8 @@ public class UrlAutoCompleteFilterTest {
     public void testAutocompletion() {
         final UrlAutoCompleteFilter filter = new UrlAutoCompleteFilter();
 
-        final Set<String> domains = new HashSet<>();
+        final Set<String> domains = new LinkedHashSet<>();
+
         Collections.addAll(domains, "mozilla.org", "google.com", "facebook.com");
         filter.onDomainsLoaded(domains);
 
