@@ -16,6 +16,7 @@ import java.util.HashMap;
 abstract class FirebaseWrapper {
 
     private static final String TAG = "FirebaseWrapper";
+    private static final boolean FIREBASE_BOOLEAN_DEFAULT = false;
     private static final long FIREBASE_LONG_DEFAULT = 0L;
     private static final String FIREBASE_STRING_DEFAULT = "";
 
@@ -49,6 +50,18 @@ abstract class FirebaseWrapper {
             return (String) value;
         }
         return FIREBASE_STRING_DEFAULT;
+    }
+
+    // get Remote Config boolean
+    static boolean getRcBoolean(Context context, String key) {
+        if (instance == null) {
+            return FIREBASE_BOOLEAN_DEFAULT;
+        }
+        final Object value = instance.getRemoteConfigDefault(context).get(key);
+        if (value instanceof Boolean) {
+            return (boolean) value;
+        }
+        return FIREBASE_BOOLEAN_DEFAULT;
     }
 
 
