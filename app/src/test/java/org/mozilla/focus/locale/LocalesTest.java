@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class LocalesTest {
     @Test
     public void testLanguage() {
-        assertEquals("en", Locales.getLanguage(Locale.getDefault()));
+        assertEquals("en", Locales.getLanguage(Locale.ENGLISH));
     }
 
     @Test
