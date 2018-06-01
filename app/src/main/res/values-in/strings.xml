@@ -130,6 +130,10 @@
   <string name="screenshot_saved">Tangkapan layar disimpan</string>
   <string name="screenshot_failed">Gagal membuat tangkapan layar</string>
   <string name="screenshot_illustration">Membuat tangkapan layar seluruh laman…</string>
+  <string name="screenshot_view">LIHAT</string>
+  <string name="screenshot_edit">EDIT</string>
+  <string name="screenshot_delete">HAPUS</string>
+  <string name="screenshot_share">BAGIKAN</string>
   <string name="message_fallback_save_to_primary_external">Kartu SD tidak terdeteksi. Berkas telah disimpan di internal.</string>
   <string name="message_start_to_save_to_removable_storage">Berkas telah disimpan di kartu SD</string>
   <string name="message_removable_storage_space_not_enough">Kartu SD hampir penuh. Berkas disimpan di internal.</string>
@@ -179,4 +183,6 @@
   <string name="setting_default_browser_notification_title">Mengubah setelan…</string>
   <string name="setting_default_browser_notification_text">Mungkin memerlukan beberapa waktu</string>
   <string name="setting_default_browser_notification_clickable_text">Atur sebagai peramban baku</string>
+  <string name="tab_tray_close_tabs_btn_text">Tutup semua</string>
+  <string name="tab_tray_close_tabs_dialog_msg">Tutup semua tab?</string>
 </resources>

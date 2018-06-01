@@ -130,6 +130,10 @@
   <string name="screenshot_saved">截图已保存</string>
   <string name="screenshot_failed">截图失败</string>
   <string name="screenshot_illustration">正在截取整个网页…</string>
+  <string name="screenshot_view">查看</string>
+  <string name="screenshot_edit">编辑</string>
+  <string name="screenshot_delete">删除</string>
+  <string name="screenshot_share">分享</string>
   <string name="message_fallback_save_to_primary_external">未检测到 SD 卡，文件已保存到内部存储。</string>
   <string name="message_start_to_save_to_removable_storage">文件已保存到 SD 卡</string>
   <string name="message_removable_storage_space_not_enough">SD 卡快满了。文件被保存到内部存储设备上。</string>
@@ -179,4 +183,6 @@
   <string name="setting_default_browser_notification_title">更改设置…</string>
   <string name="setting_default_browser_notification_text">这可能需要一段时间</string>
   <string name="setting_default_browser_notification_clickable_text">点按设为默认浏览器</string>
+  <string name="tab_tray_close_tabs_btn_text">关闭全部</string>
+  <string name="tab_tray_close_tabs_dialog_msg">关闭所有标签页？</string>
 </resources>
