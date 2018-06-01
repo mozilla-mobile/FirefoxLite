@@ -956,10 +956,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         @Override
         public TabView create() {
-            // FIXME: we should avoid casting here.
-            // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
-            // but there is no promise about this.
-            return (TabView) WebViewProvider.create(this.activity, null);
+            return WebViewProvider.create(this.activity, null);
         }
     }
 }

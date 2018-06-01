@@ -18,6 +18,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.webkit.TrackingProtectionWebViewClient;
 import org.mozilla.focus.webkit.WebkitView;
@@ -38,7 +39,7 @@ public class WebViewProvider {
         TrackingProtectionWebViewClient.triggerPreload(context);
     }
 
-    public static View create(Context context, AttributeSet attrs) {
+    public static TabView create(Context context, AttributeSet attrs) {
         WebView.enableSlowWholeDocumentDraw();
         final WebkitView webkitView = new WebkitView(context, attrs);
         final WebSettings settings = webkitView.getSettings();

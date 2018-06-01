@@ -45,7 +45,7 @@ public class InfoFragment extends WebFragment {
         final View view = inflater.inflate(R.layout.fragment_info, container, false);
         progressView = (ProgressBar) view.findViewById(R.id.progress);
         webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
-        webView = ((TabView) WebViewProvider.create(getContext(), null)).getView();
+        webView = (WebViewProvider.create(getContext(), null)).getView();
         webViewSlot.addView(webView);
 
         final String url = getInitialUrl();
