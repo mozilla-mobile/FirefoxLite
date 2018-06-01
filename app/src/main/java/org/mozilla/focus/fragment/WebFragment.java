@@ -64,7 +64,7 @@ public abstract class WebFragment extends LocaleAwareFragment {
         final View view = inflateLayout(inflater, container, savedInstanceState);
 
         webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
-        tabView = (TabView) WebViewProvider.create(getContext(), null);
+        tabView = WebViewProvider.create(getContext(), null);
 
         webViewSlot.addView(tabView.getView());
         isWebViewAvailable = true;
