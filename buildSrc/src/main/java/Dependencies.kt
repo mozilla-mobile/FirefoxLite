@@ -16,7 +16,7 @@ object Versions {
     const val findbugs = "3.0.1"
     const val lottie = "2.2.0"
     const val leakcanary = "1.5.4"
-    const val telemetry = "1.1.1"
+    const val telemetry = "0.5.1"
     const val adjust = "4.11.4"
     const val junit = "4.12"
     const val mockito = "2.12.0"
