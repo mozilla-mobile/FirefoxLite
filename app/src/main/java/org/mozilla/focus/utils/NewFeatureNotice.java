@@ -8,6 +8,7 @@ import android.support.annotation.VisibleForTesting;
 public class NewFeatureNotice {
 
     private static final String PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN = "firstrun_shown";
+    @VisibleForTesting
     public static final String PREF_KEY_INT_FEATURE_UPGRADE_VERSION = "firstrun_upgrade_version";
     private static final int MULTI_TAB_FROM_VERSION_1_0_TO_2_0 = 1;
     private static final int FIREBASE_FROM_VERSION_2_0_TO_2_1 = 2;
