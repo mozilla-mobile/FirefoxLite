@@ -1,26 +1,25 @@
 package org.mozilla.focus.telemetry;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.text.TextUtils;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.generated.LocaleList;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 
 import java.util.Locale;
 
+import static junit.framework.Assert.assertEquals;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.AUDIO;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.EME;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.MIDI;
@@ -28,9 +27,6 @@ import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.VIDEO;
 
 @RunWith(AndroidJUnit4.class)
 public class TelemetryWrapperTest {
-
-    @Rule
-    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() {
@@ -41,10 +37,24 @@ public class TelemetryWrapperTest {
 
     }
 
+    private void assertFirebaseEvent(@NonNull String category, @NonNull String method, @Nullable String object, String value) {
+        FirebaseEvent eventFromBuilder = new TelemetryWrapper.EventBuilder(category, method, object, value).firebaseEvent;
+        FirebaseEvent event = new FirebaseEvent(category, method, object, value);
+        assertEquals(event, eventFromBuilder);
+    }
+
+    private void assertFirebaseEvent(@NonNull String category, @NonNull String method, @Nullable String object, String value, String extraKey, String extraValue) {
+        FirebaseEvent eventFromBuilder = new TelemetryWrapper.EventBuilder(category, method, object, value).extra(extraKey, extraValue).firebaseEvent;
+        FirebaseEvent event = new FirebaseEvent(category, method, object, value).param(extraKey, extraValue);
+        assertEquals(event, eventFromBuilder);
+    }
 
     @Test
     public void toggleFirstRunPageEvent() {
-        TelemetryWrapper.toggleFirstRunPageEvent(false);
+
+        // TelemetryWrapper.toggleFirstRunPageEvent(false);
+        assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, TelemetryWrapper.Object.FIRSTRUN, TelemetryWrapper.Value.TURBO);
+
     }
 
     @Test
@@ -84,27 +94,26 @@ public class TelemetryWrapperTest {
 
     @Test
     public void settingsEvent() {
-        activityTestRule.launchActivity(new Intent());
-        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
+        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
         for (String key : pm.getAll().keySet()) {
-            TelemetryWrapper.settingsEvent(key, Boolean.TRUE.toString());
+            // TelemetryWrapper.settingsEvent(key, Boolean.FALSE.toString());
+            assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, TelemetryWrapper.Object.SETTING, key, TelemetryWrapper.Extra.TO, Boolean.FALSE.toString());
         }
-
     }
 
     @Test
     public void settingsClickEvent() {
-        activityTestRule.launchActivity(new Intent());
-        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
+        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
         for (String key : pm.getAll().keySet()) {
-            TelemetryWrapper.settingsClickEvent(key);
+            // TelemetryWrapper.settingsClickEvent(key);
+            assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CLICK, TelemetryWrapper.Object.SETTING, key);
         }
     }
 
     @Test
     public void settingsLearnMoreClickEvent() {
-        activityTestRule.launchActivity(new Intent());
-        Context context = activityTestRule.getActivity();
+
+        final Context context = InstrumentationRegistry.getTargetContext();
         TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_turbo_mode));
         TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_telemetry));
 
@@ -112,19 +121,18 @@ public class TelemetryWrapperTest {
 
     @Test
     public void settingsLocaleChangeEvent() {
-        activityTestRule.launchActivity(new Intent());
         final LocaleManager localeManager = LocaleManager.getInstance();
-        final MainActivity activity = activityTestRule.getActivity();
+        final Context context = InstrumentationRegistry.getTargetContext();
         for (String value : LocaleList.BUNDLED_LOCALES) {
             final Locale locale;
             if (TextUtils.isEmpty(value)) {
-                localeManager.resetToSystemLocale(activity);
-                locale = localeManager.getCurrentLocale(activity);
+                localeManager.resetToSystemLocale(context);
+                locale = localeManager.getCurrentLocale(context);
             } else {
                 locale = Locales.parseLocaleCode(value);
-                localeManager.setSelectedLocale(activity, value);
+                localeManager.setSelectedLocale(context, value);
             }
-            TelemetryWrapper.settingsLocaleChangeEvent(activity.getString(R.string.pref_key_locale), String.valueOf(locale), false);
+            TelemetryWrapper.settingsLocaleChangeEvent(context.getString(R.string.pref_key_locale), String.valueOf(locale), false);
         }
     }
 
@@ -568,4 +576,6 @@ public class TelemetryWrapperTest {
     public void showPromoteShareDialog() {
         TelemetryWrapper.showPromoteShareDialog();
     }
+
+
 }

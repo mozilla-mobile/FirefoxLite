@@ -42,7 +42,7 @@ import org.mozilla.telemetry.storage.TelemetryStorage;
 import static org.mozilla.focus.utils.NewFeatureNotice.PREF_KEY_INT_FEATURE_UPGRADE_VERSION;
 
 public final class TelemetryWrapper {
-    private static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
+    static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
 
     private static final int TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 2;
     private static final int RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 2;
@@ -51,123 +51,123 @@ public final class TelemetryWrapper {
     private TelemetryWrapper() {
     }
 
-    private static class Category {
-        private static final String ACTION = "action";
+    static class Category {
+            static final String ACTION = "action";
     }
 
-    private static class Method {
-        private static final String TYPE_QUERY = "type_query";
-        private static final String TYPE_SELECT_QUERY = "select_query";
-        private static final String CLICK = "click";
-        private static final String CANCEL = "cancel";
-        private static final String LONG_PRESS = "long_press";
-        private static final String CHANGE = "change";
-        private static final String CLEAR = "clear";
-        private static final String REMOVE = "remove";
-        private static final String DELETE = "delete";
-        private static final String EDIT = "edit";
-        private static final String PERMISSION = "permission";
-        private static final String FULLSCREEN = "fullscreen";
-        private static final String ADD = "add";
+    static class Method {
+        static final String TYPE_QUERY = "type_query";
+        static final String TYPE_SELECT_QUERY = "select_query";
+        static final String CLICK = "click";
+        static final String CANCEL = "cancel";
+        static final String LONG_PRESS = "long_press";
+        static final String CHANGE = "change";
+        static final String CLEAR = "clear";
+        static final String REMOVE = "remove";
+        static final String DELETE = "delete";
+        static final String EDIT = "edit";
+        static final String PERMISSION = "permission";
+        static final String FULLSCREEN = "fullscreen";
+        static final String ADD = "add";
 
-        private static final String FOREGROUND = "foreground";
-        private static final String BACKGROUND = "background";
-        private static final String SHARE = "share";
-        private static final String PIN_SHORTCUT = "pin_shortcut";
-        private static final String SAVE = "save";
-        private static final String COPY = "copy";
-        private static final String OPEN = "open";
-        private static final String INTENT_URL = "intent_url";
-        private static final String TEXT_SELECTION_INTENT = "text_selection_intent";
-        private static final String SHOW = "show";
-        private static final String LAUNCH = "launch";
+        static final String FOREGROUND = "foreground";
+        static final String BACKGROUND = "background";
+        static final String SHARE = "share";
+        static final String PIN_SHORTCUT = "pin_shortcut";
+        static final String SAVE = "save";
+        static final String COPY = "copy";
+        static final String OPEN = "open";
+        static final String INTENT_URL = "intent_url";
+        static final String TEXT_SELECTION_INTENT = "text_selection_intent";
+        static final String SHOW = "show";
+        static final String LAUNCH = "launch";
     }
 
-    private static class Object {
-        private static final String PANEL = "panel";
-        private static final String TOOLBAR = "toolbar";
-        private static final String HOME = "home";
-        private static final String CAPTURE = "capture";
-        private static final String SEARCH_SUGGESTION = "search_suggestion";
-        private static final String SEARCH_BAR = "search_bar";
-        private static final String TAB = "tab";
-        private static final String TABTRAY = "tab_tray";
+    static class Object {
+        static final String PANEL = "panel";
+        static final String TOOLBAR = "toolbar";
+        static final String HOME = "home";
+        static final String CAPTURE = "capture";
+        static final String SEARCH_SUGGESTION = "search_suggestion";
+        static final String SEARCH_BAR = "search_bar";
+        static final String TAB = "tab";
+        static final String TABTRAY = "tab_tray";
 
-        private static final String SETTING = "setting";
-        private static final String APP = "app";
-        private static final String MENU = "menu";
+        static final String SETTING = "setting";
+        static final String APP = "app";
+        static final String MENU = "menu";
 
-        private static final String BROWSER = "browser";
-        private static final String BROWSER_CONTEXTMENU = "browser_contextmenu";
-        private static final String FIRSTRUN = "firstrun";
+        static final String BROWSER = "browser";
+        static final String BROWSER_CONTEXTMENU = "browser_contextmenu";
+        static final String FIRSTRUN = "firstrun";
 
-        private static final String FEEDBACK = "feedback";
-        private static final String DEFAULT_BROWSER = "default_browser";
-        private static final String PROMOTE_SHARE = "promote_share";
+        static final String FEEDBACK = "feedback";
+        static final String DEFAULT_BROWSER = "default_browser";
+        static final String PROMOTE_SHARE = "promote_share";
     }
 
     public static class Value {
-        private static final String HOME = "home";
-        private static final String TOPSITE = "top_site";
-        private static final String DOWNLOAD = "download";
-        private static final String HISTORY = "history";
-        private static final String TURBO = "turbo";
-        private static final String BLOCK_IMAGE = "block_image";
-        private static final String CLEAR_CACHE = "clear_cache";
-        private static final String SETTINGS = "settings";
+        static final String HOME = "home";
+        static final String TOPSITE = "top_site";
+        static final String DOWNLOAD = "download";
+        static final String HISTORY = "history";
+        static final String TURBO = "turbo";
+        static final String BLOCK_IMAGE = "block_image";
+        static final String CLEAR_CACHE = "clear_cache";
+        static final String SETTINGS = "settings";
 
-        private static final String TABTRAY = "tab_tray";
-        private static final String TOOLBAR = "toolbar";
-        private static final String FORWARD = "forward";
-        private static final String RELOAD = "reload";
-        private static final String CAPTURE = "capture";
+        static final String TABTRAY = "tab_tray";
+        static final String TOOLBAR = "toolbar";
+        static final String FORWARD = "forward";
+        static final String RELOAD = "reload";
+        static final String CAPTURE = "capture";
 
-        private static final String SEARCH_BUTTON = "search_btn";
-        private static final String SEARCH_BOX = "search_box";
-        private static final String MINI_URLBAR = "mini_urlbar";
+        static final String SEARCH_BUTTON = "search_btn";
+        static final String SEARCH_BOX = "search_box";
+        static final String MINI_URLBAR = "mini_urlbar";
 
-        private static final String FILE = "file";
-        private static final String IMAGE = "image";
-        private static final String LINK = "link";
-        private static final String FINISH = "finish";
-        private static final String INFO = "info";
+        static final String FILE = "file";
+        static final String IMAGE = "image";
+        static final String LINK = "link";
+        static final String FINISH = "finish";
+        static final String INFO = "info";
 
-        private static final String ENTER = "enter";
-        private static final String EXIT = "exit";
-        private static final String GEOLOCATION = "geolocation";
+        static final String ENTER = "enter";
+        static final String EXIT = "exit";
+        static final String GEOLOCATION = "geolocation";
         static final String AUDIO = "audio";
         static final String VIDEO = "video";
         static final String MIDI = "midi";
         static final String EME = "eme";
 
-        private static final String LEARN_MORE = "learn_more";
+        static final String LEARN_MORE = "learn_more";
 
         public static final String DISMISS = "dismiss";
         public static final String POSITIVE = "positive";
         public static final String NEGATIVE = "negative";
         public static final String SHARE = "share";
 
-        private static final String LAUNCHER = "launcher";
-        private static final String EXTERNAL_APP = "external_app";
-        private static final String SHORTCUT = "shortcut";
+        static final String LAUNCHER = "launcher";
+        static final String EXTERNAL_APP = "external_app";
+        static final String SHORTCUT = "shortcut";
     }
 
-    private static class Extra {
-        private static final String TO = "to";
-        private static final String ON = "on";
-        private static final String DEFAULT = "default";
-        private static final String SUCCESS = "success";
-        private static final String SNACKBAR = "snackbar";
-        private static final String SOURCE = "source";
-        private static final String VERSION = "version";
-        private static final String TYPE = "type";
+    static class Extra {
+        static final String TO = "to";
+        static final String ON = "on";
+        static final String DEFAULT = "default";
+        static final String SUCCESS = "success";
+        static final String SNACKBAR = "snackbar";
+        static final String SOURCE = "source";
+        static final String VERSION = "version";
+        static final String TYPE = "type";
     }
 
     public static class Extra_Value {
         public static final String SETTING = "settings";
         public static final String CONTEXTUAL_HINTS = "contextual_hints";
         public static final String NOTIFICATION = "notification";
-        private static final String TEXT_SELECTION = "text_selection";
+        static final String TEXT_SELECTION = "text_selection";
     }
 
     public static boolean isTelemetryEnabled(Context context) {
@@ -806,6 +806,7 @@ public final class TelemetryWrapper {
 
             // NewFeatureNotice
             FirebaseEvent.addValueWhitelist(PREF_KEY_INT_FEATURE_UPGRADE_VERSION);
+            FirebaseEvent.addValueWhitelist("PERM_android.permission.WRITE_EXTERNAL_STORAGE");
         }
     }
 }

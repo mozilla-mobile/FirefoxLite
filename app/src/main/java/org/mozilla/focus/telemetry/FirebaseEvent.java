@@ -17,6 +17,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FirebaseHelper;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 class FirebaseEvent {
@@ -26,8 +27,10 @@ class FirebaseEvent {
     // underscores ("_"), and must start with an alphabetic character. The "firebase_", "google_"
     // and "ga_" prefixes are reserved and should not be used.
     // see: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event
+    @VisibleForTesting
     static final int MAX_LENGTH_EVENT_NAME = 40;
     // method+object shouldn't longer than 20 characters so value part can have enough space
+    @VisibleForTesting
     static final int MAX_LENGTH_EVENT_NAME_PREFIX = 20;
     static final String EVENT_NAME_SEPARATOR = "__";
 
@@ -47,7 +50,7 @@ class FirebaseEvent {
     private Bundle eventParam;
 
 
-    private FirebaseEvent(@NonNull String category, @NonNull String method, @Nullable String object, @Nullable String value) {
+    FirebaseEvent(@NonNull String category, @NonNull String method, @Nullable String object, @Nullable String value) {
 
         // append null string will append 'null'
         // Android Studio also said we don't need to use a String builder here.
@@ -149,4 +152,50 @@ class FirebaseEvent {
         existingPreferenceKey.add(preferenceKey);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof FirebaseEvent)) {
+            return false;
+        }
+        FirebaseEvent event = ((FirebaseEvent) obj);
+        return this.eventName.equals(event.eventName) &&
+                equalBundles(this.eventParam, event.eventParam);
+    }
+
+    private boolean equalBundles(Bundle a, Bundle b) {
+        if (a == b) {
+            return true;
+        }
+        if (a == null) {
+            return false;
+        }
+        if (a.size() != b.size()) {
+            return false;
+        }
+
+        if (!a.keySet().containsAll(b.keySet())) {
+            return false;
+        }
+
+        for (String key : a.keySet()) {
+            String valueOne = ((String) a.get(key));
+            String valueTwo = ((String) b.get(key));
+            if (!(valueOne != null && valueOne.equals(valueTwo))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(eventName, eventParam);
+    }
 }
