@@ -28,6 +28,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
@@ -112,6 +114,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private TabsSession tabsSession;
     private boolean isTabRestoredComplete = false;
     public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
+    private static final String LOG_TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -821,20 +824,33 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void showOpenSnackBar(Long rowId) {
         DownloadInfoManager.getInstance().queryByRowId(rowId, downloadInfoList -> {
-            if (downloadInfoList.size() > 0) {
-                final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
-                if (!downloadInfo.existInDownloadManager()) {
-                    // Should never happen
-                    final String msg = "File entry disappeared after being downloaded";
-                    throw new IllegalStateException(msg);
-                }
-                final View container = findViewById(R.id.container);
-                String completedStr = getString(R.string.download_completed, downloadInfo.getFileName());
-                Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.open, view -> IntentUtils.intentOpenFile(MainActivity.this, downloadInfo.getFileUri(), downloadInfo.getMimeType()))
-                        .show();
+            final boolean existInLocalDB = downloadInfoList.size() > 0;
+            if (!existInLocalDB) {
+                logOrCrash("Download Completed with unknown local row id");
+                return;
             }
+            final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
+            final boolean existInDownloadManager = downloadInfo.existInDownloadManager();
+            if (!existInDownloadManager) {
+                logOrCrash("Download Completed with unknown DownloadManager id");
+            }
+            final View container = findViewById(R.id.container);
+            String completedStr = getString(R.string.download_completed, downloadInfo.getFileName());
+            final Snackbar snackbar = Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG);
+            // Set the open action only if we can.
+            if (existInDownloadManager) {
+                snackbar.setAction(R.string.open, view -> IntentUtils.intentOpenFile(MainActivity.this, downloadInfo.getFileUri(), downloadInfo.getMimeType()));
+            }
+            snackbar.show();
         });
+    }
+
+    private void logOrCrash(String message) {
+        if (AppConstants.isReleaseBuild()) {
+            Log.e(LOG_TAG, message);
+        } else {
+            throw new IllegalStateException(message);
+        }
     }
 
     @Override
