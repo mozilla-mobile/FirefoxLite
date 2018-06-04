@@ -53,6 +53,7 @@ public class UrlMatcher implements SharedPreferences.OnSharedPreferenceChangeLis
         tempMap.put(context.getString(R.string.pref_key_privacy_block_analytics), "Analytics");
         tempMap.put(context.getString(R.string.pref_key_privacy_block_social), "Social");
         tempMap.put(context.getString(R.string.pref_key_privacy_block_other), "Content");
+        tempMap.put(context.getString(R.string.pref_key_privacy_block_abpindo), "ABPIndo");
 
         // This is a "fake" category - webfont handling is independent of the blocklists
         tempMap.put(context.getString(R.string.pref_key_performance_block_webfonts), WEBFONTS);
@@ -71,7 +72,7 @@ public class UrlMatcher implements SharedPreferences.OnSharedPreferenceChangeLis
 
     private boolean blockWebfonts = true;
 
-    public static UrlMatcher loadMatcher(final Context context, final int blockListFile, final int[] blockListOverrides, final int entityListFile) {
+    public static UrlMatcher loadMatcher(final Context context, final int blockListFile, final int[] blockListOverrides, final int entityListFile, final int abpindo_adserversListFile) {
         final Map<String, String> categoryPrefMap = loadDefaultPrefMap(context);
 
         final Map<String, Trie> categoryMap = new HashMap<>(5);
@@ -99,6 +100,14 @@ public class UrlMatcher implements SharedPreferences.OnSharedPreferenceChangeLis
         } catch (IOException e) {
             throw new IllegalStateException("Unable to parse entity list");
         }
+
+        try (final JsonReader jsonReader =
+                     new JsonReader(new InputStreamReader(context.getResources().openRawResource(abpindo_adserversListFile), StandardCharsets.UTF_8))) {
+            BlocklistProcessor.loadCategoryMap(jsonReader, categoryMap, BlocklistProcessor.ListType.BASE_LIST);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to parse abpindo list");
+        }
+
 
         return new UrlMatcher(context, categoryPrefMap, categoryMap, entityList);
     }
@@ -151,7 +160,8 @@ public class UrlMatcher implements SharedPreferences.OnSharedPreferenceChangeLis
         final String ads = context.getString(R.string.pref_key_privacy_block_ads);
         final String analytics = context.getString(R.string.pref_key_privacy_block_analytics);
         final String social = context.getString(R.string.pref_key_privacy_block_social);
-        return ads.equals(preferenceKey) || analytics.equals(preferenceKey) || social.equals(preferenceKey);
+        final String abpindo = context.getString(R.string.pref_key_privacy_block_abpindo);
+        return ads.equals(preferenceKey) || analytics.equals(preferenceKey) || social.equals(preferenceKey) || abpindo.equals(preferenceKey);
     }
 
     @VisibleForTesting

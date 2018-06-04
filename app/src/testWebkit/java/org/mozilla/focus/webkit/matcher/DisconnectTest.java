@@ -53,7 +53,7 @@ public class DisconnectTest {
     // http://robolectric.org/getting-started/#note-for-linux-and-mac-users
     @Test
     public void matches() throws Exception {
-        final UrlMatcher matcher = UrlMatcher.loadMatcher(RuntimeEnvironment.application, R.raw.blocklist, new int[] { R.raw.google_mapping }, R.raw.entitylist);
+        final UrlMatcher matcher = UrlMatcher.loadMatcher(RuntimeEnvironment.application, R.raw.blocklist, new int[] { R.raw.google_mapping }, R.raw.entitylist, R.raw.abpindo_adservers);
 
         // Enable everything
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
@@ -62,6 +62,7 @@ public class DisconnectTest {
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_analytics), true)
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_other), true)
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_social), true)
+                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_abpindo), true)
                 .apply();
 
         // We check that our google_mapping was loaded correctly. We do these checks per-category, so we have:
@@ -85,6 +86,7 @@ public class DisconnectTest {
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_ads), true)
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_analytics), true)
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_other), true)
+                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_abpindo), true)
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_social), false)
                 .apply();
 
@@ -108,6 +110,7 @@ public class DisconnectTest {
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_analytics), false)
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_other), false)
                 .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_social), false)
+                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_abpindo), false)
                 .apply();
 
         // ads:
