@@ -210,7 +210,7 @@ dependencies {
         transitive = false
     })
 
-    implementation Libs.telemetry
+    implementation "org.mozilla.components:telemetry:0.8"
 
     implementation Libs.adjust
     implementation Libs.play_services_analytics // Required by Adjust
