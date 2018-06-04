@@ -69,6 +69,7 @@ public final class TelemetryWrapper {
         static final String PERMISSION = "permission";
         static final String FULLSCREEN = "fullscreen";
         static final String ADD = "add";
+        static final String SWIPE = "swipe";
 
         static final String FOREGROUND = "foreground";
         static final String BACKGROUND = "background";
@@ -92,6 +93,7 @@ public final class TelemetryWrapper {
         static final String SEARCH_BAR = "search_bar";
         static final String TAB = "tab";
         static final String TABTRAY = "tab_tray";
+        static final String CLOSE_ALL = "close_all";
 
         static final String SETTING = "setting";
         static final String APP = "app";
@@ -581,6 +583,14 @@ public final class TelemetryWrapper {
 
     public static void closeTabFromTabTray() {
         new EventBuilder(Category.ACTION, Method.REMOVE, Object.TAB, Value.TABTRAY).queue();
+    }
+
+    public static void swipeTabFromTabTray() {
+        new EventBuilder(Category.ACTION, Method.SWIPE, Object.TAB, Value.TABTRAY).queue();
+    }
+
+    public static void closeAllTabFromTabTray() {
+        new EventBuilder(Category.ACTION, Method.CLICK, Object.CLOSE_ALL, Value.TABTRAY).queue();
     }
 
     public static void downloadRemoveFile() {

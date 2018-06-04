@@ -323,6 +323,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 presenter.tabCloseClicked(viewHolder.getAdapterPosition());
+                TelemetryWrapper.swipeTabFromTabTray();
             }
 
             @Override
@@ -481,7 +482,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         if (closeTabsDialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
-                    .setPositiveButton(R.string.action_ok, (dialog, which) -> presenter.closeAllTabs())
+                    .setPositiveButton(R.string.action_ok, (dialog, which) -> {
+                        presenter.closeAllTabs();
+                        TelemetryWrapper.closeAllTabFromTabTray();
+                    })
                     .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
                     .show();
         } else {
