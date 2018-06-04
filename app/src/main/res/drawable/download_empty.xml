@@ -17,7 +17,7 @@
         <path
             android:name="path-1"
             android:fillType="evenOdd"
-            android:strokeColor="@color/colorDownloadSubText"
+            android:strokeColor="#737373"
             android:strokeWidth="4"
             android:strokeLineJoin="round"
             android:strokeLineCap="round"
@@ -25,7 +25,7 @@
         <path
             android:name="path-1"
             android:fillType="evenOdd"
-            android:strokeColor="@color/colorDownloadSubText"
+            android:strokeColor="#737373"
             android:strokeWidth="1"
             android:strokeLineJoin="round"
             android:strokeLineCap="round"
@@ -33,21 +33,21 @@
         <path
             android:name="path-1"
             android:fillType="evenOdd"
-            android:strokeColor="@color/colorDownloadSubText"
+            android:strokeColor="#737373"
             android:strokeWidth="4"
             android:strokeLineJoin="round"
             android:strokeLineCap="round"
             android:pathData="M12 0v25" />
         <path
             android:fillType="evenOdd"
-            android:strokeColor="@color/colorDownloadSubText"
+            android:strokeColor="#737373"
             android:strokeWidth="4"
             android:strokeLineJoin="round"
             android:strokeLineCap="round"
             android:pathData="M 0 15 L 12.5 27 L 25 15 " />
         <path
             android:fillType="evenOdd"
-            android:strokeColor="@color/colorDownloadSubText"
+            android:strokeColor="#737373"
             android:strokeWidth="4"
             android:strokeLineJoin="round"
             android:strokeLineCap="round"

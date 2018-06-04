@@ -5,7 +5,8 @@
 <resources>
     <!-- We are overriding this value in values-sw600dp -->
     <bool name="is_tablet">false</bool>
-
+    <dimen name="tablet_bottom_sheet_width">480dp</dimen>
+    <dimen name="tablet_bottom_sheet_peekheight">320dp</dimen>
     <integer name="erase_animation_alpha_duration">250</integer>
     <integer name="erase_animation_scale_duration">100</integer>
     <integer name="erase_animation_translate_duration">100</integer>
