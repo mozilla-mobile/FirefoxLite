@@ -127,7 +127,7 @@ public class BlocklistProcessor {
 
                 if (listType == ListType.BASE_LIST) {
                     if (categoryMap.containsKey(categoryName)) {
-                        throw new IllegalStateException("Cannot insert already loaded category");
+                        throw new IllegalStateException("Cannot insert already loaded category: " + categoryName);
                     }
 
                     categoryTrie = Trie.createRootNode();
