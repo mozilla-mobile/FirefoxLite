@@ -29,7 +29,6 @@ android {
         applicationId "org.mozilla"
         minSdkVersion Versions.min_sdk
         targetSdkVersion Versions.target_sdk
-        resConfigs "en", "in"
         versionCode Versions.version_code
         versionName Versions.version_name
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
@@ -74,22 +73,12 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         beta {
             initWith release
-
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             matchingFallbacks = ["release"]
         }
         debug {
-            def userName = System.getenv("USER")
-            applicationIdSuffix ".debug." + userName
-            versionNameSuffix applicationIdSuffix
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
