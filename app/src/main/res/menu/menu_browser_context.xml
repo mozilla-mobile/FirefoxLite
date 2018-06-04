@@ -9,6 +9,12 @@
     <item
         android:id="@+id/menu_new_tab"
         android:title="@string/contextmenu_open_in_new_tab" />
+
+    <item
+        android:id="@+id/menu_private_browsing"
+        android:title="Open link by private browsing"
+        android:visible="false" />
+
     <item
         android:id="@+id/menu_link_share"
         android:title="@string/contextmenu_link_share" />

@@ -41,6 +41,7 @@ import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.FeatureModule;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -90,7 +91,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
 
@@ -137,6 +137,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public void onResume() {
         super.onResume();
         updateTopSitesData();
+
+        // update feature module state
+        final FeatureModule features = FeatureModule.getInstance();
+        features.refresh(getContext());
+
     }
 
     @Override
@@ -247,6 +252,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             final PopupMenu popupMenu = new PopupMenu(v.getContext(), v, Gravity.CLIP_HORIZONTAL);
             popupMenu.getMenuInflater().inflate(R.menu.menu_top_site_item, popupMenu.getMenu());
+            final FeatureModule features = FeatureModule.getInstance();
+            features.refresh(getContext());
+            if (features.isSupportPrivateBrowsing()) {
+                popupMenu.getMenu().findItem(R.id.private_browsing).setVisible(true);
+            }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
@@ -263,6 +273,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                                 BrowsingHistoryManager.getInstance().updateLastEntry(site, mTopSiteUpdateListener);
                                 TelemetryWrapper.removeTopSite(false);
                             }
+                            break;
+                        case R.id.private_browsing:
+                            getActivity().startActivity(FeatureModule.intentForPrivateBrowsing(site.getUrl()));
                             break;
                         default:
                             throw new IllegalStateException("Unhandled menu item");

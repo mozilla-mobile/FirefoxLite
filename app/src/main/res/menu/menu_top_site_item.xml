@@ -6,4 +6,8 @@
     <item
         android:id="@+id/remove"
         android:title="@string/remove" />
+    <item
+        android:id="@+id/private_browsing"
+        android:title="Private browsing"
+        android:visible="false" />
 </menu>
