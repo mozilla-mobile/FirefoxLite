@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/content_view_slot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <org.mozilla.focus.widget.AnimatedProgressBar
+        android:id="@+id/progress"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        app:shiftDuration="@integer/progress_shift_duration"
+        app:wrapShiftDrawable="true"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="top"
+        android:importantForAccessibility="yes"
+        android:progressDrawable="@drawable/private_progressbar"
+        tools:progress="50" />
+
+</FrameLayout>

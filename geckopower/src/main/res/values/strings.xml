@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">private-browsing</string>
+    <string name="accessibility_announcement_loading">Loading</string>
+    <string name="accessibility_announcement_loading_finished">Website loaded</string>
+</resources>

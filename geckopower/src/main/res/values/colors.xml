@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<resources>
+    <color name="colorPrimary">#ff272727</color>
+    <color name="colorPrimaryDark">#6c3b6e</color>
+
+    <color name="colorGradientStart">#ffa01142</color>
+    <color name="colorGradientCenter">#ff90116D</color>
+    <color name="colorGradientEnd">#ff5c1166</color>
+
+    <color name="colorProgressGradientStart">#FF9400FF</color>
+    <color name="colorProgressGradientEnd">#FFFF1AD9</color>
+
+</resources>
