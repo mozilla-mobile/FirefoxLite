@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.os.AsyncTask.SERIAL_EXECUTOR;
-
 public class TabModelStore {
 
     private static final String TAB_WEB_VIEW_STATE_FOLDER_NAME = "tabs_cache";
@@ -51,7 +49,10 @@ public class TabModelStore {
     }
 
     public void getSavedTabs(@NonNull final Context context, @Nullable final AsyncQueryListener listener) {
-        new QueryTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR);
+        //new QueryTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR);
+        if (listener != null) {
+            listener.onQueryComplete(new ArrayList<TabModel>(), null);
+        }
     }
 
     public void saveTabs(@NonNull final Context context,
@@ -64,7 +65,10 @@ public class TabModelStore {
                 .putString(context.getResources().getString(R.string.pref_key_focus_tab_id), focusTabId)
                 .apply();
 
-        new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabModelList.toArray(new TabModel[0]));
+        //new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabModelList.toArray(new TabModel[0]));
+        if (listener != null) {
+            listener.onSaveComplete();
+        }
     }
 
     private static class QueryTabsTask extends AsyncTask<Void, Void, List<TabModel>> {
