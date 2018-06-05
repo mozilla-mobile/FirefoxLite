@@ -107,9 +107,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         updateTabCounter();
 
         this.fakeInput = (TextView) view.findViewById(R.id.home_fragment_fake_input);
-        this.fakeInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        this.fakeInput.setOnClickListener(v -> {
                 final Activity parent = getActivity();
                 if (parent instanceof FragmentListener) {
                     ((FragmentListener) parent).onNotified(HomeFragment.this,
@@ -117,7 +115,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                             null);
                 }
                 TelemetryWrapper.showSearchBarHome();
-            }
         });
 
         SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
@@ -137,28 +134,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
-            return;
-        }
-        if (mainActivity instanceof ThemeManager.ThemeHost) {
-            ThemeManager.ThemeHost themeHost = mainActivity;
-            themeHost.getThemeManager().subscribeThemeChange(homeScreenBackground);
-        }
+        doWithActivity(getActivity(), themeManager -> themeManager.subscribeThemeChange(homeScreenBackground));
     }
 
     @Override
     public void onDestroyView() {
         tabsSession.removeTabsChromeListener(this.tabsChromeListener);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
-            super.onDestroyView();
-            return;
-        }
-        if (mainActivity instanceof ThemeManager.ThemeHost) {
-            ThemeManager.ThemeHost themeHost = mainActivity;
-            themeHost.getThemeManager().unsubscribeThemeChange(homeScreenBackground);
-        }
+        doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
         super.onDestroyView();
     }
 
@@ -249,14 +231,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             final PopupMenu popupMenu = new PopupMenu(v.getContext(), v, Gravity.CLIP_HORIZONTAL);
             popupMenu.getMenuInflater().inflate(R.menu.menu_top_site_item, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
+            popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.remove:
                             if (site.getId() < 0) {
-                                HomeFragment.this.presenter.removeSite(site);
-                                HomeFragment.this.removeDefaultSites(site);
+                                presenter.removeSite(site);
+                                removeDefaultSites(site);
                                 TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.orginalDefaultSites);
                                 BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
                                 TelemetryWrapper.removeTopSite(true);
@@ -271,7 +251,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     }
 
                     return true;
-                }
             });
             popupMenu.show();
 
@@ -279,25 +258,19 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private QueryHandler.AsyncQueryListener mTopSitesQueryListener = new QueryHandler.AsyncQueryListener() {
-        @Override
-        public void onQueryComplete(List sites) {
-            List<Site> querySites = new ArrayList<>();
-            for (Object site : sites) {
-                if (site instanceof Site) {
-                    querySites.add((Site) site);
-                }
+    private QueryHandler.AsyncQueryListener mTopSitesQueryListener = sites -> {
+        List<Site> querySites = new ArrayList<>();
+        for (Object site : sites) {
+            if (site instanceof Site) {
+                querySites.add((Site) site);
             }
-
-            HomeFragment.this.mergeQueryAndDefaultSites(querySites);
         }
+
+        mergeQueryAndDefaultSites(querySites);
     };
 
-    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = new QueryHandler.AsyncUpdateListener() {
-        @Override
-        public void onUpdateComplete(int result) {
-            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
-        }
+    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = result -> {
+        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
     };
 
     private void mergeQueryAndDefaultSites(List<Site> querySites) {
@@ -488,6 +461,20 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+    private interface DoWithThemeManager {
+        void doIt(ThemeManager themeManager);
+    }
+
+    private static void doWithActivity(Activity activity, DoWithThemeManager doWithThemeManager) {
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+            return;
+        }
+        if (activity instanceof ThemeManager.ThemeHost) {
+            ThemeManager.ThemeHost themeHost = (ThemeManager.ThemeHost) activity;
+            doWithThemeManager.doIt(themeHost.getThemeManager());
+        }
+    }
+
     private class GestureListenerAdapter extends OnSwipeListener.OnSwipeListenerAdapter {
         @Override
         public void onSwipeUp() {
@@ -501,26 +488,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public void onLongPress() {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
-                return;
-            }
-            if (mainActivity instanceof ThemeManager.ThemeHost) {
-                ThemeManager.ThemeHost themeHost = mainActivity;
-                themeHost.getThemeManager().resetDefaultTheme();
-            }
+            doWithActivity(getActivity(), ThemeManager::resetDefaultTheme);
         }
 
         @Override
         public boolean onDoubleTap() {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity == null || mainActivity.isFinishing() || mainActivity.isDestroyed()) {
-                return false;
-            }
-            if (mainActivity instanceof ThemeManager.ThemeHost) {
-                ThemeManager.ThemeHost themeHost = mainActivity;
-                themeHost.getThemeManager().toggleNextTheme();
-            }
+            doWithActivity(getActivity(), ThemeManager::toggleNextTheme);
             return true;
         }
     }
