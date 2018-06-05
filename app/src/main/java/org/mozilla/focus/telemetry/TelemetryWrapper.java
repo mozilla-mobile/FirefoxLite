@@ -17,6 +17,7 @@ import android.webkit.PermissionRequest;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.Browsers;
@@ -716,6 +717,7 @@ public final class TelemetryWrapper {
 
     static class EventBuilder {
         TelemetryEvent telemetryEvent;
+        @Nullable
         FirebaseEvent firebaseEvent;
 
         EventBuilder(@NonNull String category, @NonNull String method, @Nullable String object) {
@@ -725,12 +727,19 @@ public final class TelemetryWrapper {
 
         EventBuilder(@NonNull String category, @NonNull String method, @Nullable String object, String value) {
             telemetryEvent = TelemetryEvent.create(category, method, object, value);
-            firebaseEvent = FirebaseEvent.create(category, method, object, value);
+            if (HomeFragment.TOPSITES_PREF.equals(value)) {
+                firebaseEvent = null;
+            } else {
+                firebaseEvent = FirebaseEvent.create(category, method, object, value);
+            }
+
         }
 
         EventBuilder extra(String key, String value) {
             telemetryEvent.extra(key, value);
-            firebaseEvent.param(key, value);
+            if (firebaseEvent != null) {
+                firebaseEvent.param(key, value);
+            }
             return this;
         }
 
@@ -739,9 +748,12 @@ public final class TelemetryWrapper {
             final Context context = TelemetryHolder.get().getConfiguration().getContext();
             if (context != null) {
                 telemetryEvent.queue();
-
-                firebaseEvent.event(context);
+                if (firebaseEvent != null) {
+                    firebaseEvent.event(context);
+                }
             }
+            telemetryEvent = null;
+            firebaseEvent = null;
         }
 
         static void initFirebaseEventWhitelist(Context context) {
