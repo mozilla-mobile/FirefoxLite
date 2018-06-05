@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.ScreenNavigator;
+import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.search.SearchEngineManager;

@@ -44,7 +44,7 @@ import com.bumptech.glide.Glide;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.ScreenNavigator;
+import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.activity;
+package org.mozilla.focus.navigation;
 
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
@@ -17,6 +17,7 @@ import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
@@ -26,13 +27,13 @@ import java.util.Arrays;
 /**
  * Provide a simple and clear interface to navigate between home/browser/url fragments.
  * This class only manages the relation between fragments, and the detail of transaction was
- * handled by MainMediator
+ * handled by TransactionHelper
  */
 public class ScreenNavigator implements LifecycleObserver {
     private static final String LOG_TAG = "ScreenNavigator";
     private static final boolean LOG_NAVIGATION = false;
 
-    private MainMediator mainMediator;
+    private TransactionHelper transactionHelper;
 
     private MainActivity activity;
 
@@ -41,7 +42,7 @@ public class ScreenNavigator implements LifecycleObserver {
         public void onFragmentStarted(FragmentManager fm, Fragment f) {
             super.onFragmentStarted(fm, f);
             if (f instanceof UrlInputFragment) {
-                ScreenNavigator.this.mainMediator.toggleFakeUrlInput(false);
+                ScreenNavigator.this.transactionHelper.toggleFakeUrlInput(false);
             }
         }
 
@@ -49,7 +50,7 @@ public class ScreenNavigator implements LifecycleObserver {
         public void onFragmentStopped(FragmentManager fm, Fragment f) {
             super.onFragmentStopped(fm, f);
             if (f instanceof UrlInputFragment) {
-                ScreenNavigator.this.mainMediator.toggleFakeUrlInput(true);
+                ScreenNavigator.this.transactionHelper.toggleFakeUrlInput(true);
             }
         }
     };
@@ -70,7 +71,7 @@ public class ScreenNavigator implements LifecycleObserver {
         if (activity == null) {
             return;
         }
-        this.mainMediator = new MainMediator(activity);
+        this.transactionHelper = new TransactionHelper(activity);
         this.activity = activity;
         this.activity.getLifecycle().addObserver(this);
     }
@@ -95,7 +96,7 @@ public class ScreenNavigator implements LifecycleObserver {
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
 
-        this.mainMediator.popAllScreens();
+        this.transactionHelper.popAllScreens();
         this.activity.sendBrowsingTelemetry();
     }
 
@@ -135,10 +136,10 @@ public class ScreenNavigator implements LifecycleObserver {
     public void addHomeScreen(boolean animate) {
         logMethod();
 
-        boolean found = this.mainMediator.popScreensUntil(HomeFragment.FRAGMENT_TAG);
+        boolean found = this.transactionHelper.popScreensUntil(HomeFragment.FRAGMENT_TAG);
         log("found exist home: " + found);
         if (!found) {
-            this.mainMediator.showHomeScreen(animate, MainMediator.EntryData.TYPE_FLOATING);
+            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_FLOATING);
         }
     }
 
@@ -148,18 +149,18 @@ public class ScreenNavigator implements LifecycleObserver {
     public void popToHomeScreen(boolean animate) {
         logMethod();
 
-        boolean found = this.mainMediator.popScreensUntil(HomeFragment.FRAGMENT_TAG);
+        boolean found = this.transactionHelper.popScreensUntil(HomeFragment.FRAGMENT_TAG);
         log("found exist home: " + found);
         if (found) {
-            this.mainMediator.updateForegroundType(MainMediator.EntryData.TYPE_ROOT);
+            this.transactionHelper.updateForegroundType(TransactionHelper.EntryData.TYPE_ROOT);
         } else {
-            this.mainMediator.showHomeScreen(animate, MainMediator.EntryData.TYPE_ROOT);
+            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT);
         }
     }
 
     public void addFirstRunScreen() {
         logMethod();
-        this.mainMediator.showFirstRun();
+        this.transactionHelper.showFirstRun();
     }
 
     public void addUrlScreen(String url) {
@@ -175,14 +176,14 @@ public class ScreenNavigator implements LifecycleObserver {
             throw new RuntimeException("unexpected caller of UrlInputFragment");
         }
 
-        this.mainMediator.showUrlInput(url, tag);
+        this.transactionHelper.showUrlInput(url, tag);
     }
 
     public void popUrlScreen() {
         logMethod();
         Fragment top = getTopFragment();
         if (top instanceof UrlInputFragment) {
-            this.mainMediator.dismissUrlInput();
+            this.transactionHelper.dismissUrlInput();
         }
     }
 
@@ -194,7 +195,7 @@ public class ScreenNavigator implements LifecycleObserver {
             return getBrowserFragment();
         }
 
-        String tag = this.mainMediator.getFragmentTag(count - 1);
+        String tag = this.transactionHelper.getFragmentTag(count - 1);
         return manager.findFragmentByTag(tag);
     }
 
@@ -204,7 +205,7 @@ public class ScreenNavigator implements LifecycleObserver {
     }
 
     public boolean canGoBack() {
-        boolean result = !mainMediator.shouldFinish();
+        boolean result = !transactionHelper.shouldFinish();
         log("canGoBack: " + result);
         return result;
     }
