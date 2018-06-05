@@ -17,7 +17,6 @@ import android.webkit.PermissionRequest;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.Browsers;
@@ -40,7 +39,9 @@ import org.mozilla.telemetry.serialize.TelemetryPingSerializer;
 import org.mozilla.telemetry.storage.FileTelemetryStorage;
 import org.mozilla.telemetry.storage.TelemetryStorage;
 
-import static org.mozilla.focus.utils.NewFeatureNotice.PREF_KEY_INT_FEATURE_UPGRADE_VERSION;
+import java.util.HashMap;
+
+import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS;
 
 public final class TelemetryWrapper {
     static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
@@ -53,7 +54,7 @@ public final class TelemetryWrapper {
     }
 
     static class Category {
-            static final String ACTION = "action";
+        static final String ACTION = "action";
     }
 
     static class Method {
@@ -194,7 +195,6 @@ public final class TelemetryWrapper {
     public static void init(Context context) {
         // When initializing the telemetry library it will make sure that all directories exist and
         // are readable/writable.
-        EventBuilder.initFirebaseEventWhitelist(context);
         final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskWrites();
         try {
             final Resources resources = context.getResources();
@@ -291,13 +291,21 @@ public final class TelemetryWrapper {
     }
 
     public static void settingsEvent(String key, String value) {
-        new EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, key)
-                .extra(Extra.TO, value)
-                .queue();
+        // We only log whitelist-ed setting
+        final String validPrefKey = FirebaseEvent.getValidPrefKey(key);
+        if (validPrefKey != null) {
+            new EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, validPrefKey)
+                    .extra(Extra.TO, value)
+                    .queue();
+        }
+
     }
 
     public static void settingsClickEvent(String key) {
-        new EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, key).queue();
+        final String validPrefKey = FirebaseEvent.getValidPrefKey(key);
+        if (validPrefKey != null) {
+            new EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, key).queue();
+        }
     }
 
     public static void settingsLearnMoreClickEvent(String source) {
@@ -461,7 +469,7 @@ public final class TelemetryWrapper {
     }
 
     public static void clickMenuSettings() {
-        new EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.SETTINGS).queue();
+        new EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, SETTINGS).queue();
     }
 
     public static void clickMenuExit() {
@@ -717,29 +725,21 @@ public final class TelemetryWrapper {
 
     static class EventBuilder {
         TelemetryEvent telemetryEvent;
-        @Nullable
         FirebaseEvent firebaseEvent;
 
         EventBuilder(@NonNull String category, @NonNull String method, @Nullable String object) {
-            telemetryEvent = TelemetryEvent.create(category, method, object);
-            firebaseEvent = FirebaseEvent.create(category, method, object);
+            this(category, method, object, null);
         }
 
         EventBuilder(@NonNull String category, @NonNull String method, @Nullable String object, String value) {
+            lazyInit();
             telemetryEvent = TelemetryEvent.create(category, method, object, value);
-            if (HomeFragment.TOPSITES_PREF.equals(value)) {
-                firebaseEvent = null;
-            } else {
-                firebaseEvent = FirebaseEvent.create(category, method, object, value);
-            }
-
+            firebaseEvent = FirebaseEvent.create(category, method, object, value);
         }
 
         EventBuilder extra(String key, String value) {
             telemetryEvent.extra(key, value);
-            if (firebaseEvent != null) {
-                firebaseEvent.param(key, value);
-            }
+            firebaseEvent.param(key, value);
             return this;
         }
 
@@ -748,87 +748,72 @@ public final class TelemetryWrapper {
             final Context context = TelemetryHolder.get().getConfiguration().getContext();
             if (context != null) {
                 telemetryEvent.queue();
-                if (firebaseEvent != null) {
-                    firebaseEvent.event(context);
-                }
+                firebaseEvent.event(context);
             }
-            telemetryEvent = null;
-            firebaseEvent = null;
         }
 
-        static void initFirebaseEventWhitelist(Context context) {
+        static void lazyInit() {
+
+            if (FirebaseEvent.isInitialized()) {
+                return;
+            }
+            final Context context = TelemetryHolder.get().getConfiguration().getContext();
             if (context == null) {
                 return;
             }
+            final HashMap<String, String> prefKeyWhitelist = new HashMap<>();
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_search_engine), "search_engine");
 
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_privacy_block_ads), "privacy_ads");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_privacy_block_analytics), "privacy_analytics");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_privacy_block_social), "privacy_social");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_privacy_block_other), "privacy_other");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_turbo_mode), "turbo_mode");
 
-            FirebaseEvent.clearValueWhitelist();
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_performance_block_webfonts), "block_webfonts");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_performance_block_images), "block_images");
 
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_search_engine));
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_default_browser), "default_browser");
 
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_ads));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_analytics));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_social));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_privacy_block_other));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_turbo_mode));
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_telemetry), "telemetry");
 
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_performance_block_webfonts));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_performance_block_images));
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_give_feedback), "give_feedback");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_share_with_friends), "share_with_friends");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_about), "key_about");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_help), "help");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_rights), "rights");
 
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_default_browser));
-
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_telemetry));
-
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_give_feedback));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_share_with_friends));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_about));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_help));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_rights));
-
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_locale));
-
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_webview_version));
-
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_focus_tab_id));
-
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_webview_version), "webview_version");
             // data saving
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_ads));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_webfonts));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_images));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_data_saving_block_tab_restore));
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_data_saving_block_ads), "saving_block_ads");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_data_saving_block_webfonts), "data_webfont");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_data_saving_block_images), "data_images");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_data_saving_block_tab_restore), "tab_restore");
 
             // storage and cache
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_storage_clear_browsing_data));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_removable_storage_available_on_create));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_storage_save_downloads_to));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_showed_storage_message));
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_storage_clear_browsing_data), "clear_browsing_data)");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_removable_storage_available_on_create), "remove_storage");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_storage_save_downloads_to), "save_downloads_to");
+            prefKeyWhitelist.put(context.getString(R.string.pref_key_showed_storage_message), "storage_message)");
 
-            // rate app
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_app_create_counter));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_rate_app_dialog));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_rate_app_notification));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_dismiss_rate_app_dialog));
-
-            //  share app
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_share_app_dialog));
+            // rate / share app already have telemetry
 
             // clear browsing data
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_browsing_history));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_form_history));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_cookies));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_clear_cache));
+            prefKeyWhitelist.put(context.getString(R.string.pref_value_clear_browsing_history), "clear_browsing_his");
+            prefKeyWhitelist.put(context.getString(R.string.pref_value_clear_form_history), "clear_form_his");
+            prefKeyWhitelist.put(context.getString(R.string.pref_value_clear_cookies), "clear_cookies");
+            prefKeyWhitelist.put(context.getString(R.string.pref_value_clear_cache), "clear_cache");
 
             // data saving path values
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_saving_path_sd_card));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_value_saving_path_internal_storage));
+            prefKeyWhitelist.put(context.getString(R.string.pref_value_saving_path_sd_card), "path_sd_card");
+            prefKeyWhitelist.put(context.getString(R.string.pref_value_saving_path_internal_storage), "path_internal_storage");
 
-            //  default browser
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_did_show_default_browser_setting));
-            FirebaseEvent.addValueWhitelist(context.getString(R.string.pref_key_setting_click_counter));
+            //  default browser already have telemetry
 
-            // NewFeatureNotice
-            FirebaseEvent.addValueWhitelist(PREF_KEY_INT_FEATURE_UPGRADE_VERSION);
-            FirebaseEvent.addValueWhitelist("PERM_android.permission.WRITE_EXTERNAL_STORAGE");
+            // NewFeatureNotice already have telemetry
+
+            FirebaseEvent.setPrefKeyWhitelist(prefKeyWhitelist);
+
         }
     }
 }

@@ -101,6 +101,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // special handling for locale selection
         if (key.equals(getString(R.string.pref_key_locale))) {
             // Updating the locale leads to onSharedPreferenceChanged being triggered again in some
             // cases. To avoid an infinite loop we won't update the preference a second time. This
@@ -138,9 +139,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     .replace(R.id.container, new SettingsFragment())
                     .commit();
             return;
+        } else {
+            // For other events, we handle them here.
+            TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
         }
 
-        TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
 
         if (key.equals(getString(R.string.pref_key_storage_clear_browsing_data))) {
             //Clear browsing data Callback function is not here

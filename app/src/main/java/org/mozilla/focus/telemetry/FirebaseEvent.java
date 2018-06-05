@@ -16,9 +16,9 @@ import android.util.Log;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FirebaseHelper;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 class FirebaseEvent {
 
@@ -44,7 +44,7 @@ class FirebaseEvent {
     static final int MAX_LENGTH_PARAM_NAME = 40;
     static final int MAX_LENGTH_PARAM_VALUE = 100;
     private static final String TAG = "FirebaseEvent";
-    private static Set<String> existingPreferenceKey = new HashSet<>();
+    private static HashMap<String, String> prefKeyWhitelist = new HashMap<>();
 
     private String eventName;
     private Bundle eventParam;
@@ -59,21 +59,23 @@ class FirebaseEvent {
 
         final int prefixLength = eventNamePrefix.length();
 
+        // TODO: check eventName should start with[a-zA-Z] , contains only [a-zA-A0-9_], and shouldn't
+        // TODO: start with ^(?!(firebase_|google_|ga_)).*
+        // validate the length
         if (this.eventName.length() > MAX_LENGTH_EVENT_NAME) {
 
+            // we only care about prefixLength if the total length is too long
             if (prefixLength > MAX_LENGTH_EVENT_NAME_PREFIX) {
-                handleError("Event[" + this.eventName + "]'s prefixLength too long  " + prefixLength + " of " + MAX_LENGTH_EVENT_NAME_PREFIX);
+                throwOrWarn("Event[" + this.eventName + "]'s prefixLength too long  " + prefixLength + " of " + MAX_LENGTH_EVENT_NAME_PREFIX);
             }
 
-            // TODO: check eventName should start with[a-zA-Z] , contains only [a-zA-A0-9_], and shouldn't
-            // TODO: start with ^(?!(firebase_|google_|ga_)).*
-            if (value != null && isValueInWhiteList(value)) {
+            throwOrWarn("Event[" + this.eventName + "] exceeds Firebase event name limit " + this.eventName.length() + " of " + MAX_LENGTH_EVENT_NAME);
+
+            // fix the value if we just want to warn
+            if (value != null) {
                 int acceptValueLength = MAX_LENGTH_EVENT_NAME - eventNamePrefix.length();
                 int valueLength = value.length();
                 this.eventName = eventNamePrefix + value.substring(valueLength - acceptValueLength, valueLength);
-            } else {
-                // No matter if value is null nor not, if the length of event name is too long, handle the error hera.
-                handleError("Event[" + this.eventName + "] exceeds Firebase event name limit " + this.eventName.length() + " of " + MAX_LENGTH_EVENT_NAME);
             }
         }
     }
@@ -84,17 +86,13 @@ class FirebaseEvent {
 
     }
 
-    @CheckResult
-    public static FirebaseEvent create(@NonNull String category, @NonNull String method, @Nullable String object) {
-        return new FirebaseEvent(category, method, object, null);
-    }
-
     public FirebaseEvent param(String name, String value) {
         if (this.eventParam == null) {
             this.eventParam = new Bundle();
         }
+        // validate the size
         if (this.eventParam.size() >= MAX_PARAM_SIZE) {
-            handleError("Firebase event[" + eventName + "] has too many parameters");
+            throwOrWarn("Firebase event[" + eventName + "] has too many parameters");
         }
 
         this.eventParam.putString(safeParamLength(name, MAX_LENGTH_PARAM_NAME),
@@ -103,12 +101,14 @@ class FirebaseEvent {
         return this;
     }
 
+    // TODO: check param name should start with[a-zA-Z] , contains only [a-zA-A0-9_], and shouldn't
+    // TODO: start with ^(?!(firebase_|google_|ga_)).*
     private static String safeParamLength(@NonNull final String str, final int end) {
+        // validate the length
         if (str.length() > end) {
-            handleError("Exceeding limit of param content length:" + str.length() + " of " + end);
+            throwOrWarn("Exceeding limit of param content length:" + str.length() + " of " + end);
         }
-        // TODO: check param name should start with[a-zA-Z] , contains only [a-zA-A0-9_], and shouldn't
-        // TODO: start with ^(?!(firebase_|google_|ga_)).*
+        // fix the value if we just want to warn
         return str.substring(0,
                 Math.min(end, str.length()));
     }
@@ -132,7 +132,7 @@ class FirebaseEvent {
     }
 
 
-    private static void handleError(String msg) {
+    private static void throwOrWarn(String msg) {
         if (AppConstants.isReleaseBuild()) {
             Log.e(TAG, msg);
         } else {
@@ -140,16 +140,24 @@ class FirebaseEvent {
         }
     }
 
-    private static boolean isValueInWhiteList(@NonNull String value) {
-        return existingPreferenceKey.contains(value);
+    static String getValidPrefKey(@NonNull String value) {
+        return prefKeyWhitelist.get(value);
     }
 
-    static void clearValueWhitelist() {
-        existingPreferenceKey.clear();
+    /**
+     * @return the whitelisted pref key. This may be empty if not initialized.
+     */
+    @VisibleForTesting
+    static Map<String, String> getPrefKeyWhitelist() {
+        return prefKeyWhitelist;
     }
 
-    static void addValueWhitelist(String preferenceKey) {
-        existingPreferenceKey.add(preferenceKey);
+    static boolean isInitialized() {
+        return prefKeyWhitelist.size() != 0;
+    }
+
+    static void setPrefKeyWhitelist(HashMap<String, String> map) {
+        prefKeyWhitelist = map;
     }
 
     @Override
