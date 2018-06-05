@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.activity;
+package org.mozilla.focus.navigation;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -25,14 +25,14 @@ import org.mozilla.focus.urlinput.UrlInputFragment;
 import java.util.HashMap;
 import java.util.Map;
 
-class MainMediator {
-    private static final String TAG = "MainMediator";
+class TransactionHelper {
+    private static final String TAG = "TransactionHelper";
 
     private EntryDataSet entryDataSet = new EntryDataSet();
 
     private final MainActivity activity;
 
-    MainMediator(@NonNull MainActivity activity) {
+    TransactionHelper(@NonNull MainActivity activity) {
         this.activity = activity;
         this.activity.getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
     }
