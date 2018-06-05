@@ -204,7 +204,6 @@ class TransactionHelper {
             }
 
             entryDataSet.onBackStackChanged(manager);
-            entryDataSet.purge();
 
             Fragment fragment = manager.findFragmentById(R.id.browser);
             if (fragment instanceof BrowserFragment) {
@@ -238,8 +237,7 @@ class TransactionHelper {
     }
 
     private static class EntryDataSet {
-        private HashMap<String, EntryData> data = new HashMap<>();
-        private HashMap<String, EntryData> backStackRecords = new HashMap<>();
+        private HashMap<String, EntryData> dataMap = new HashMap<>();
 
         String add(String tag, @EntryData.EntryType int type) {
             EntryData data = new EntryData();
@@ -247,30 +245,24 @@ class TransactionHelper {
             data.type = type;
 
             String key = Integer.toHexString(data.hashCode());
-            this.data.put(key, data);
+            this.dataMap.put(key, data);
 
             logData("addNewEntry");
             return key;
         }
 
         EntryData get(FragmentManager.BackStackEntry entry) {
-            return data.get(entry.getName());
+            return dataMap.get(entry.getName());
         }
 
         void onBackStackChanged(FragmentManager manager) {
-            backStackRecords.clear();
+            HashMap<String, EntryData> newMap = new HashMap<>();
             int size = manager.getBackStackEntryCount();
             for (int i = 0; i < size; ++i) {
-                FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
-                EntryData data = this.data.get(entry.getName());
-                backStackRecords.put(entry.getName(), data);
+                String key = manager.getBackStackEntryAt(i).getName();
+                newMap.put(key, this.dataMap.get(key));
             }
-        }
-
-        private void purge() {
-            HashMap<String, EntryData> tmp = data;
-            data = backStackRecords;
-            backStackRecords = tmp;
+            dataMap = newMap;
             logData("purge");
         }
 
@@ -280,10 +272,10 @@ class TransactionHelper {
             }
 
             Log.d(TAG, "action: " + action);
-            if (this.data.isEmpty()) {
+            if (this.dataMap.isEmpty()) {
                 Log.d(TAG, "\tempty");
             } else {
-                for (Map.Entry<String, EntryData> entry : this.data.entrySet()) {
+                for (Map.Entry<String, EntryData> entry : this.dataMap.entrySet()) {
                     EntryData entryData = entry.getValue();
                     Log.d(TAG, "\t" + entry.getKey() + ":(" + entryData.tag
                             + ", " + entryData.type + ")");
