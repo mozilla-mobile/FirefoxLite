@@ -232,6 +232,7 @@ dependencies {
     implementation "org.mozilla.components:telemetry:${Versions.telemetry}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
+    implementation "com.android.installreferrer:installreferrer:${Versions.installreferrer}"
     implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
 
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
