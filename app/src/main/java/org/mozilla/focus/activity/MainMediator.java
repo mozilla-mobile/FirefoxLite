@@ -11,10 +11,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
@@ -36,14 +38,24 @@ class MainMediator {
     }
 
     void showHomeScreen(boolean animated, @EntryData.EntryType int type) {
+        if (isStateSaved()) {
+            return;
+        }
         this.prepareHomeScreen(animated, type).commit();
+        activity.getSupportFragmentManager().executePendingTransactions();
     }
 
     void showFirstRun() {
+        if (isStateSaved()) {
+            return;
+        }
         this.prepareFirstRun().commit();
     }
 
     void showUrlInput(@Nullable String url, String sourceFragment) {
+        if (isStateSaved()) {
+            return;
+        }
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
         if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
@@ -70,6 +82,40 @@ class MainMediator {
 
         FragmentManager.BackStackEntry lastEntry = manager.getBackStackEntryAt(entryCount - 1);
         return EntryData.TYPE_ROOT == getEntryType(lastEntry);
+    }
+
+    void updateForegroundType(@EntryData.EntryType int type) {
+        FragmentManager manager = activity.getSupportFragmentManager();
+        int size = manager.getBackStackEntryCount();
+        if (size == 0) {
+            return;
+        }
+        FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(size - 1);
+        if (entryDataSet.get(entry).type != type) {
+            entryDataSet.get(entry).type = type;
+        }
+    }
+
+    void popAllScreens() {
+        popScreensUntil(null);
+    }
+
+    boolean popScreensUntil(@Nullable String targetEntryName) {
+        boolean clearAll = (targetEntryName == null);
+        FragmentManager manager = activity.getSupportFragmentManager();
+        int entryCount = manager.getBackStackEntryCount();
+        boolean found = false;
+        while (entryCount > 0) {
+            FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(entryCount - 1);
+            if (!clearAll && TextUtils.equals(targetEntryName, getEntryTag(entry))) {
+                found = true;
+                break;
+            }
+            manager.popBackStack();
+            entryCount--;
+        }
+        manager.executePendingTransactions();
+        return found;
     }
 
     private FragmentTransaction prepareFirstRun() {
@@ -123,7 +169,12 @@ class MainMediator {
         }
     }
 
-    String getEntryTag(FragmentManager.BackStackEntry entry) {
+    String getFragmentTag(int backStackIndex) {
+        FragmentManager manager = activity.getSupportFragmentManager();
+        return getEntryTag(manager.getBackStackEntryAt(backStackIndex));
+    }
+
+    private String getEntryTag(FragmentManager.BackStackEntry entry) {
         return entryDataSet.get(entry).tag;
     }
 
@@ -131,16 +182,9 @@ class MainMediator {
         return entryDataSet.get(entry).type;
     }
 
-    public void updateForegroundType(@EntryData.EntryType int type) {
+    private boolean isStateSaved() {
         FragmentManager manager = activity.getSupportFragmentManager();
-        int size = manager.getBackStackEntryCount();
-        if (size == 0) {
-            return;
-        }
-        FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(size - 1);
-        if (entryDataSet.get(entry).type != type) {
-            entryDataSet.get(entry).type = type;
-        }
+        return manager == null || manager.isStateSaved();
     }
 
     private class BackStackListener implements FragmentManager.OnBackStackChangedListener {

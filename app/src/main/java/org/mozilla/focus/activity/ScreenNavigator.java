@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
@@ -25,12 +24,9 @@ import org.mozilla.focus.urlinput.UrlInputFragment;
 import java.util.Arrays;
 
 /**
- * This class tends to provide a simple and clear interface to fragments that need to
- * navigate to home/browser screen.
- *
- * TODO: Gradually improve this class
- * 1. Move more methods from MainMediator to ScreenNavigator
- * 2. Finally remove MainMediator from MainActivity
+ * Provide a simple and clear interface to navigate between home/browser/url fragments.
+ * This class only manages the relation between fragments, and the detail of transaction was
+ * handled by MainMediator
  */
 public class ScreenNavigator implements LifecycleObserver {
     private static final String LOG_TAG = "ScreenNavigator";
@@ -70,7 +66,7 @@ public class ScreenNavigator implements LifecycleObserver {
         }
     }
 
-    ScreenNavigator(@Nullable MainActivity activity) {
+    public ScreenNavigator(@Nullable MainActivity activity) {
         if (activity == null) {
             return;
         }
@@ -99,7 +95,7 @@ public class ScreenNavigator implements LifecycleObserver {
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
 
-        popAllScreens();
+        this.mainMediator.popAllScreens();
         this.activity.sendBrowsingTelemetry();
     }
 
@@ -115,7 +111,7 @@ public class ScreenNavigator implements LifecycleObserver {
         getBrowserFragment().loadUrl(url, withNewTab, isFromExternal, () -> raiseBrowserScreen(true));
     }
 
-    void restoreBrowserScreen(@NonNull String tabId) {
+    public void restoreBrowserScreen(@NonNull String tabId) {
         logMethod();
 
         getBrowserFragment().loadTab(tabId);
@@ -139,7 +135,7 @@ public class ScreenNavigator implements LifecycleObserver {
     public void addHomeScreen(boolean animate) {
         logMethod();
 
-        boolean found = popScreensUntil(HomeFragment.FRAGMENT_TAG);
+        boolean found = this.mainMediator.popScreensUntil(HomeFragment.FRAGMENT_TAG);
         log("found exist home: " + found);
         if (!found) {
             this.mainMediator.showHomeScreen(animate, MainMediator.EntryData.TYPE_FLOATING);
@@ -152,7 +148,7 @@ public class ScreenNavigator implements LifecycleObserver {
     public void popToHomeScreen(boolean animate) {
         logMethod();
 
-        boolean found = popScreensUntil(HomeFragment.FRAGMENT_TAG);
+        boolean found = this.mainMediator.popScreensUntil(HomeFragment.FRAGMENT_TAG);
         log("found exist home: " + found);
         if (found) {
             this.mainMediator.updateForegroundType(MainMediator.EntryData.TYPE_ROOT);
@@ -198,7 +194,7 @@ public class ScreenNavigator implements LifecycleObserver {
             return getBrowserFragment();
         }
 
-        String tag = this.mainMediator.getEntryTag(manager.getBackStackEntryAt(count - 1));
+        String tag = this.mainMediator.getFragmentTag(count - 1);
         return manager.findFragmentByTag(tag);
     }
 
@@ -211,28 +207,6 @@ public class ScreenNavigator implements LifecycleObserver {
         boolean result = !mainMediator.shouldFinish();
         log("canGoBack: " + result);
         return result;
-    }
-
-    private void popAllScreens() {
-        popScreensUntil(null);
-    }
-
-    private boolean popScreensUntil(@Nullable String targetEntryName) {
-        boolean clearAll = (targetEntryName == null);
-        FragmentManager manager = activity.getSupportFragmentManager();
-        int entryCount = manager.getBackStackEntryCount();
-        boolean found = false;
-        while (entryCount > 0) {
-            FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(entryCount - 1);
-            if (!clearAll && TextUtils.equals(targetEntryName, this.mainMediator.getEntryTag(entry))) {
-                found = true;
-                break;
-            }
-            manager.popBackStack();
-            entryCount--;
-        }
-        manager.executePendingTransactions();
-        return found;
     }
 
     private void logMethod(Object... args) {
