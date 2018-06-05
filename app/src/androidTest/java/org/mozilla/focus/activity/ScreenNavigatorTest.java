@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Keep;
 import android.support.test.espresso.Espresso;
@@ -16,7 +15,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,7 +52,7 @@ public class ScreenNavigatorTest {
      */
     @Test
     public void launch_showBrowserScreen_browserScreenDisplayed() {
-        MainThreadScreenNavigator navigator = new MainThreadScreenNavigator(activity);
+        ScreenNavigatorWrapper navigator = new ScreenNavigatorWrapper(activity);
         assertNewPageLoaded(navigator, TARGET_URL_SITE_1);
     }
 
@@ -70,15 +68,15 @@ public class ScreenNavigatorTest {
      */
     @Test
     public void browsing_addHomeAndBack_backToBrowsing() {
-        MainThreadScreenNavigator navigator = new MainThreadScreenNavigator(activity);
+        ScreenNavigatorWrapper navigator = new ScreenNavigatorWrapper(activity);
 
         // Prepare
         assertNewPageLoaded(navigator, TARGET_URL_SITE_1);
 
         // Add multiple home
-        navigator.addHomeScreen(false);
-        navigator.addHomeScreen(false);
-        onView(withId(R.id.home_fragment_fake_input)).check(matches(isDisplayed()));
+        navigator.addHomeScreen();
+        navigator.addHomeScreen();
+        onView(withId(R.id.home_container)).check(matches(isDisplayed()));
 
         // Back
         Espresso.pressBack();
@@ -99,26 +97,26 @@ public class ScreenNavigatorTest {
      */
     @Test(expected = NoActivityResumedException.class)
     public void addHome_popToHomeAndBack_activityFinished() {
-        MainThreadScreenNavigator navigator = new MainThreadScreenNavigator(activity);
+        ScreenNavigatorWrapper navigator = new ScreenNavigatorWrapper(activity);
 
         // Prepare
         assertNewPageLoaded(navigator, TARGET_URL_SITE_1);
 
         // Prepare
-        navigator.addHomeScreen(false);
+        navigator.addHomeScreen();
         onView(withId(R.id.home_fragment_fake_input)).check(matches(isDisplayed()));
 
         // Pop to home
-        navigator.popToHomeScreen(false);
+        navigator.popToHomeScreen();
 
         // Back should cause exception
         Espresso.pressBack();
     }
 
-    private void assertNewPageLoaded(MainThreadScreenNavigator navigator, String url) {
+    private void assertNewPageLoaded(ScreenNavigatorWrapper navigator, String url) {
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
-        navigator.showBrowserScreen(url, true, false);
+        navigator.showBrowserScreen(url);
 
         IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()));
@@ -128,52 +126,28 @@ public class ScreenNavigatorTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
     }
 
-    private static class MainThreadScreenNavigator extends ScreenNavigator {
-        private Activity activity;
+    private static class ScreenNavigatorWrapper {
+        private MainActivity activity;
 
-        MainThreadScreenNavigator(MainActivity activity) {
-            super(activity);
+        ScreenNavigatorWrapper(MainActivity activity) {
             this.activity = activity;
         }
 
-        @Override
-        public void raiseBrowserScreen(final boolean animate) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    MainThreadScreenNavigator.super.raiseBrowserScreen(animate);
-                }
-            });
+        void showBrowserScreen(final String url) {
+            activity.runOnUiThread(() -> activity.getScreenNavigator().showBrowserScreen(url,
+                    true, false));
         }
 
-        @Override
-        public void showBrowserScreen(final String url, final boolean withNewTab, boolean isFromExternal) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    MainThreadScreenNavigator.super.showBrowserScreen(url, withNewTab, false);
-                }
-            });
+        void addHomeScreen() {
+            activity.runOnUiThread(() -> activity.getScreenNavigator().addHomeScreen(false));
         }
 
-        @Override
-        public void addHomeScreen(final boolean animate) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    MainThreadScreenNavigator.super.addHomeScreen(animate);
-                }
-            });
+        void popToHomeScreen() {
+            activity.runOnUiThread(() -> activity.getScreenNavigator().popToHomeScreen(false));
         }
 
-        @Override
-        public void popToHomeScreen(final boolean animate) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    MainThreadScreenNavigator.super.popToHomeScreen(animate);
-                }
-            });
+        boolean isBrowserInForeground() {
+            return activity.getScreenNavigator().isBrowserInForeground();
         }
     }
 }
