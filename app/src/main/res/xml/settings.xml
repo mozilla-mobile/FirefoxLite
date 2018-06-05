@@ -65,4 +65,9 @@
         android:title="@string/menu_about"
         android:key="@string/pref_key_about" />
 
+    <org.mozilla.focus.widget.FeatureModulePreference
+        android:layout="@layout/focus_preference"
+        android:key="@string/pref_key_feature_module"
+        android:title="Get GECKO POWER" />
+
 </PreferenceScreen>
