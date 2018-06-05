@@ -21,8 +21,12 @@
             style="@style/MainMenuButton"
             app:drawableColor="@color/colorMenuIconDarkForeground" />
 
-        <include
-            layout="@layout/button_open_new_tab"
+        <ImageButton
+            android:id="@+id/btn_private_browsing"
+            style="@style/MainMenuButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_private_browsing"
             android:visibility="invisible" />
 
         <include

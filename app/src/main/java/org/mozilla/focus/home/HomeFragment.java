@@ -66,6 +66,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private View btnMenu;
+    private View btnPrivate;
     private TabCounter tabCounter;
     private TextView fakeInput;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
@@ -96,6 +97,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.btnMenu = view.findViewById(R.id.btn_menu);
         this.btnMenu.setOnClickListener(menuItemClickListener);
+        this.btnPrivate = view.findViewById(R.id.btn_private_browsing);
+        this.btnPrivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(FeatureModule.intentForPrivateBrowsing("https://duckduckgo.com"));
+            }
+        });
 
         tabsSession = TabsSessionProvider.getOrThrow(getActivity());
         tabsSession.addTabsChromeListener(this.tabsChromeListener);
@@ -141,7 +149,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         // update feature module state
         final FeatureModule features = FeatureModule.getInstance();
         features.refresh(getContext());
-
+        btnPrivate.setVisibility(features.isSupportPrivateBrowsing() ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
