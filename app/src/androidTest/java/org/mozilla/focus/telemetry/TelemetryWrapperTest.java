@@ -20,6 +20,10 @@ import org.mozilla.focus.locale.Locales;
 import java.util.Locale;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.mozilla.focus.telemetry.TelemetryWrapper.Object.SETTING;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.AUDIO;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.EME;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.MIDI;
@@ -96,8 +100,8 @@ public class TelemetryWrapperTest {
     public void settingsEvent() {
         SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
         for (String key : pm.getAll().keySet()) {
-            // TelemetryWrapper.settingsEvent(key, Boolean.FALSE.toString());
-            assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, TelemetryWrapper.Object.SETTING, key, TelemetryWrapper.Extra.TO, Boolean.FALSE.toString());
+
+            TelemetryWrapper.settingsEvent(key, Boolean.FALSE.toString());
         }
     }
 
@@ -105,8 +109,8 @@ public class TelemetryWrapperTest {
     public void settingsClickEvent() {
         SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
         for (String key : pm.getAll().keySet()) {
-            // TelemetryWrapper.settingsClickEvent(key);
-            assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CLICK, TelemetryWrapper.Object.SETTING, key);
+            // invalid events should be by pass
+            TelemetryWrapper.settingsClickEvent(key);
         }
     }
 
@@ -577,5 +581,21 @@ public class TelemetryWrapperTest {
         TelemetryWrapper.showPromoteShareDialog();
     }
 
+    @Test
+    public void validPrefKeyFromWhitelistShouldPass() {
+
+        // call lazyInit() to fill the whitelist
+        TelemetryWrapper.EventBuilder.lazyInit();
+
+        // make sure layInit() inits the whitelist successfully.
+        assertTrue(FirebaseEvent.getPrefKeyWhitelist().size() > 0);
+
+        // whitelist-ed pref key should worked with firebaseEvent and telemetryEvent
+        for (String validKey : FirebaseEvent.getPrefKeyWhitelist().values()) {
+            final TelemetryWrapper.EventBuilder builder = new TelemetryWrapper.EventBuilder(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, SETTING, validKey);
+            assertNotNull(builder.firebaseEvent);
+            assertNotNull(builder.telemetryEvent);
+        }
+    }
 
 }
