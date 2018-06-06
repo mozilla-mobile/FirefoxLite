@@ -10,5 +10,10 @@ package org.mozilla.focus.tabs;
  */
 
 public interface TabViewProvider {
+    int ENGINE_WEBKIT = 0;
+    int ENGINE_GECKO = 1;
+
     TabView create();
+
+    int getEngineType();
 }

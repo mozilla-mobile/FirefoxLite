@@ -1,5 +1,6 @@
 package org.mozilla.focus.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,6 +11,10 @@ import com.google.android.play.core.splitinstall.SplitInstallManagerFactory;
 import com.google.android.play.core.splitinstall.SplitInstallRequest;
 import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
+
+import org.mozilla.focus.tabs.TabView;
+import org.mozilla.focus.tabs.TabViewProvider;
+import org.mozilla.focus.web.WebViewProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +124,30 @@ public class FeatureModule {
                 });
     }
 
+    public TabViewProvider createTabVieProvider(final Activity activity) {
+        return new WebkitTabViewProvider(activity);
+    }
+
     public interface StatusListener {
         void onDone();
+    }
+
+    // a TabViewProvider and it should only be used in this activity
+    private static class WebkitTabViewProvider implements TabViewProvider {
+        private Activity activity;
+
+        WebkitTabViewProvider(@NonNull final Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public TabView create() {
+            return WebViewProvider.create(this.activity, null);
+        }
+
+        @Override
+        public int getEngineType() {
+            return TabViewProvider.ENGINE_WEBKIT;
+        }
     }
 }

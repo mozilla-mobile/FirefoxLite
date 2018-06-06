@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.activity;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -49,7 +48,6 @@ import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabModelStore;
-import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabViewProvider;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
@@ -60,6 +58,7 @@ import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
+import org.mozilla.focus.utils.FeatureModule;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
@@ -527,7 +526,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final int count = settings.getMenuPreferenceClickCount();
         final int threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold();
         // even if user above threshold and not set-as-default-browser, still don't show notification.
-        if ( count == threshold && !Browsers.isDefaultBrowser(this)) {
+        if (count == threshold && !Browsers.isDefaultBrowser(this)) {
             DialogUtils.showDefaultSettingNotification(this);
             TelemetryWrapper.showDefaultSettingNotification();
         }
@@ -870,7 +869,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public TabsSession getTabsSession() {
         // TODO: Find a proper place to allocate and init TabsSession
         if (tabsSession == null) {
-            final TabViewProvider provider = new MainTabViewProvider(this);
+            final TabViewProvider provider = FeatureModule.getInstance()
+                    .createTabVieProvider(this);
+
             tabsSession = new TabsSession(provider);
         }
         return tabsSession;
@@ -908,20 +909,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         if (tabModelListForPersistence != null) {
             TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
-        }
-    }
-
-    // a TabViewProvider and it should only be used in this activity
-    private static class MainTabViewProvider implements TabViewProvider {
-        private Activity activity;
-
-        MainTabViewProvider(@NonNull final Activity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        public TabView create() {
-            return WebViewProvider.create(this.activity, null);
         }
     }
 
