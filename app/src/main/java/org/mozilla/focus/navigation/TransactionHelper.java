@@ -28,7 +28,7 @@ import java.util.Map;
 class TransactionHelper {
     private static final String TAG = "TransactionHelper";
 
-    private EntryDataSet entryDataSet = new EntryDataSet();
+    private EntryDataMap entryDataMap = new EntryDataMap();
 
     private final MainActivity activity;
 
@@ -65,7 +65,7 @@ class TransactionHelper {
         }
 
         this.prepareUrlInput(url, sourceFragment)
-                .addToBackStack(entryDataSet.add(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
+                .addToBackStack(entryDataMap.add(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
                 .commit();
     }
 
@@ -91,8 +91,8 @@ class TransactionHelper {
             return;
         }
         FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(size - 1);
-        if (entryDataSet.get(entry).type != type) {
-            entryDataSet.get(entry).type = type;
+        if (entryDataMap.get(entry).type != type) {
+            entryDataMap.get(entry).type = type;
         }
     }
 
@@ -124,7 +124,7 @@ class TransactionHelper {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
             transaction.replace(R.id.container, fragment, FirstrunFragment.FRAGMENT_TAG)
-                    .addToBackStack(entryDataSet.add(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
+                    .addToBackStack(entryDataMap.add(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
         }
 
         return transaction;
@@ -147,7 +147,7 @@ class TransactionHelper {
         }
 
         transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-        transaction.addToBackStack(entryDataSet.add(HomeFragment.FRAGMENT_TAG, type));
+        transaction.addToBackStack(entryDataMap.add(HomeFragment.FRAGMENT_TAG, type));
 
         return transaction;
     }
@@ -175,11 +175,11 @@ class TransactionHelper {
     }
 
     private String getEntryTag(FragmentManager.BackStackEntry entry) {
-        return entryDataSet.get(entry).tag;
+        return entryDataMap.get(entry).tag;
     }
 
     private @EntryData.EntryType int getEntryType(FragmentManager.BackStackEntry entry) {
-        return entryDataSet.get(entry).type;
+        return entryDataMap.get(entry).type;
     }
 
     private boolean isStateSaved() {
@@ -203,7 +203,7 @@ class TransactionHelper {
                 }
             }
 
-            entryDataSet.onBackStackChanged(manager);
+            entryDataMap.refreshData(manager);
 
             Fragment fragment = manager.findFragmentById(R.id.browser);
             if (fragment instanceof BrowserFragment) {
@@ -236,9 +236,13 @@ class TransactionHelper {
         @EntryType int type;
     }
 
-    private static class EntryDataSet {
+    private static class EntryDataMap {
         private HashMap<String, EntryData> dataMap = new HashMap<>();
 
+        /**
+         * @return an unique string to be used to retrieve related info about this transaction from
+         * the data map
+         */
         String add(String tag, @EntryData.EntryType int type) {
             EntryData data = new EntryData();
             data.tag = tag;
@@ -255,7 +259,7 @@ class TransactionHelper {
             return dataMap.get(entry.getName());
         }
 
-        void onBackStackChanged(FragmentManager manager) {
+        void refreshData(FragmentManager manager) {
             HashMap<String, EntryData> newMap = new HashMap<>();
             int size = manager.getBackStackEntryCount();
             for (int i = 0; i < size; ++i) {
