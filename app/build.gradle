@@ -99,8 +99,10 @@ android {
         beta {
             initWith release
             matchingFallbacks = ["release"]
+            applicationIdSuffix ".beta." + System.getenv("USER")
         }
         debug {
+            applicationIdSuffix ".debug." + System.getenv("USER")
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
