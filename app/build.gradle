@@ -147,7 +147,7 @@ android {
     variantFilter { variant ->
         def flavors = variant.flavors*.name
         // We only need a gecko debug and beta build for now.
-        if (flavors.contains("preview") && variant.buildType.name != "beta") {
+        if (flavors.contains("preview")) {
             setIgnore(true)
         }
     }
@@ -166,8 +166,6 @@ android {
             java.srcDir 'src/focusRelease/java'
             manifest.srcFile 'src/focusRelease/AndroidManifest.xml'
         }
-
-        previewWebkitBeta.res.srcDir 'src/preview/res'
 
         // used by Room, to test migrations
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
