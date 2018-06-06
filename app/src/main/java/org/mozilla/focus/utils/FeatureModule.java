@@ -16,6 +16,7 @@ import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabViewProvider;
 import org.mozilla.focus.web.WebViewProvider;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -125,7 +126,18 @@ public class FeatureModule {
     }
 
     public TabViewProvider createTabVieProvider(final Activity activity) {
-        return new WebkitTabViewProvider(activity);
+        if (isSupportPrivateBrowsing()) {
+            try {
+                final Class c = Class.forName("org.mozilla.tabs.gecko.GeckoViewProvider");
+                final Constructor<?> cs = c.getConstructor(Activity.class);
+                return (TabViewProvider) cs.newInstance(activity);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new WebkitTabViewProvider(activity);
+            }
+        } else {
+            return new WebkitTabViewProvider(activity);
+        }
     }
 
     public interface StatusListener {
