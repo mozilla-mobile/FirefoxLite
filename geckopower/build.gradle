@@ -13,6 +13,10 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        // XXX: change version code automatically for easier uploading to Google play
+        String currentTime = (new Date()).time & 0xFFFFFF
+        versionCode currentTime.toInteger()
+        versionName Versions.version_name + "(" + currentTime + ")"
     }
 
     buildTypes {
