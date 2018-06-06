@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -33,6 +35,12 @@ android {
         versionName Versions.version_name
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
         multiDexEnabled true
+
+        // XXX: change version code automatically for easier uploading to Google play
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm")
+        String currentTime = sdf.format(Calendar.getInstance().time)
+        versionCode currentTime.toInteger()
+        versionName Versions.version_name + "(" + currentTime + ")"
 
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
         if (buddy_build_number?.trim()) {

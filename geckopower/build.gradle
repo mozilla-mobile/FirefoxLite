@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.dynamic-feature'
 
 android {
@@ -14,7 +16,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // XXX: change version code automatically for easier uploading to Google play
-        String currentTime = (new Date()).time & 0xFFFFFF
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm")
+        String currentTime = sdf.format(Calendar.getInstance().time)
         versionCode currentTime.toInteger()
         versionName Versions.version_name + "(" + currentTime + ")"
     }
@@ -23,6 +26,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        beta {
+            applicationIdSuffix ".beta." + System.getenv("USER")
+        }
+
+        debug {
+            applicationIdSuffix ".debug." + System.getenv("USER")
         }
     }
 
