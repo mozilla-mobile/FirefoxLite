@@ -31,8 +31,8 @@ import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private boolean localeUpdated;
-    private  static int debugClicks = 0;
-    private  static final int DEBUG_CLICKS_THRESHOLD = 19;
+    private static int debugClicks = 0;
+    private static final int DEBUG_CLICKS_THRESHOLD = 19;
 
 
     @Override
@@ -65,7 +65,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     private boolean debugingFirebase() {
         debugClicks++;
-        if ((AppConstants.isBetaBuild() || AppConstants.isFirebaseBuild()) && debugClicks > DEBUG_CLICKS_THRESHOLD) {
+        if (debugClicks > DEBUG_CLICKS_THRESHOLD) {
             final Intent debugShare = new Intent();
             debugShare.setAction(Intent.ACTION_SEND);
             debugShare.setType("text/plain");
