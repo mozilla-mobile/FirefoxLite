@@ -999,9 +999,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (current == null) {
                 return;
             }
-            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
-            WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
-            updateURL(item.getUrl());
+//            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
+//            WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() - 1);
+//            updateURL(item.getUrl());
             current.goBack();
         }
     }
@@ -1013,9 +1013,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (current == null) {
                 return;
             }
-            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
-            WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
-            updateURL(item.getUrl());
+//            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
+//            WebHistoryItem item = webBackForwardList.getItemAtIndex(webBackForwardList.getCurrentIndex() + 1);
+//            updateURL(item.getUrl());
             current.goForward();
         }
     }
