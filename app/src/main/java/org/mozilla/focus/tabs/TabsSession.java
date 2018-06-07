@@ -192,6 +192,7 @@ public class TabsSession {
     }
 
     private void updateFocusOnClosing(final Tab removedTab) {
+        removedTab.detach();
         if (TextUtils.isEmpty(removedTab.getParentId())) {
             focusRef.clear();
             notifier.notifyTabFocused(null, TabsChromeListener.FACTOR_NO_FOCUS);

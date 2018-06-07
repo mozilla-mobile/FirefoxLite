@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.ValueCallback;
@@ -77,6 +78,28 @@ public class WebkitView extends NestedWebView implements TabView {
 
         linkHandler = new LinkHandler(this, this);
         setOnLongClickListener(linkHandler);
+    }
+
+    @Override
+    public void onAttach(ViewGroup parent) {
+        final View view = getView();
+        final boolean hasParentView = (view != null && view.getParent() != null);
+        if (hasParentView) {
+            ViewGroup oldParent = (ViewGroup) view.getParent();
+            oldParent.removeView(getView());
+        }
+
+        parent.addView(getView());
+    }
+
+    @Override
+    public void onDetach() {
+        final View view = getView();
+        final boolean hasParentView = (view != null && view.getParent() != null);
+        if (hasParentView) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            parent.removeView(getView());
+        }
     }
 
     @Override

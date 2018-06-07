@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import org.mozilla.focus.persistence.TabModel;
 import org.mozilla.focus.web.DownloadCallback;
@@ -141,13 +140,7 @@ public class Tab {
      * To detach @see{android.view.View} of this tab, if any, is detached from its parent.
      */
     public void detach() {
-        final boolean hasParentView = (tabView != null)
-                && (tabView.getView() != null)
-                && (tabView.getView().getParent() != null);
-        if (hasParentView) {
-            ViewGroup parent = (ViewGroup) tabView.getView().getParent();
-            parent.removeView(tabView.getView());
-        }
+        tabView.onDetach();
     }
 
     /* package */ void destroy() {

@@ -460,8 +460,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (tabView == null) {
                 return;
             }
-            current.detach();
-            webViewSlot.removeView(tabView.getView());
+            //current.detach();
+            //webViewSlot.removeView(tabView.getView());
         }
     }
 
@@ -473,7 +473,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 return;
             }
             final View inView = tabView.getView();
-            webViewSlot.addView(inView);
+            if (inView.getParent() == null) {
+                webViewSlot.addView(inView);
+            }
         }
     }
 
@@ -1357,16 +1359,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (tabView == null) {
                 throw new RuntimeException("Tabview should be created at this moment and never be null");
             }
-            // ensure it does not have attach to parent earlier.
-            targetTab.detach();
-
-            @Nullable final View outView = findExistingTabView(webViewSlot);
-            webViewSlot.removeView(outView);
-
-            final View inView = tabView.getView();
-            webViewSlot.addView(inView);
-
-            startTransitionAnimation(null, inView, null);
+            targetTab.getTabView().onAttach(webViewSlot);
         }
 
         private void refreshChrome(Tab tab) {
