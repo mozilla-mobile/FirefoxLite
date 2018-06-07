@@ -17,6 +17,7 @@ import org.mozilla.focus.tabs.TabViewProvider;
 import org.mozilla.focus.web.WebViewProvider;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -123,6 +124,20 @@ public class FeatureModule {
                         callback.onDone();
                     }
                 });
+    }
+
+    public void preload(final Activity activity) {
+        if (isSupportPrivateBrowsing()) {
+            try {
+                final Class c = Class.forName("org.mozilla.tabs.gecko.GeckoViewProvider");
+                final Method method = c.getMethod("preload", Context.class);
+                method.invoke(null, activity.getApplicationContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        WebViewProvider.preload(activity);
     }
 
     public TabViewProvider createTabVieProvider(final Activity activity) {

@@ -69,7 +69,6 @@ import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
-import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 
@@ -146,7 +145,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             }
         }
         restoreTabsFromPersistence();
-        WebViewProvider.preload(this);
+        FeatureModule featureModule = FeatureModule.getInstance();
+        featureModule.refresh(this);
+        featureModule.preload(this);
 
         if (sIsNewCreated) {
             sIsNewCreated = false;
