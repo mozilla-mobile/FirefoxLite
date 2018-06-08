@@ -19,8 +19,8 @@ import org.mozilla.focus.tabs.TabChromeClient;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.rocket.geckopower.R;
+import org.mozilla.tabs.gecko.GeckoViewProvider;
 
 /**
  * Base implementation for fragments that use SINGLE TabView instance. Based on Android's WebViewFragment.
@@ -208,12 +208,8 @@ public class WebFragment extends Fragment {
     }
 
     private TabView createTabView(@NonNull final Activity activity) {
-        WebViewProvider.preload(activity.getApplicationContext());
-        return WebViewProvider.create(activity, null);
-    }
-
-    private void initGecko(final Activity activity) {
-
+        GeckoViewProvider.preload(activity.getApplicationContext());
+        return GeckoViewProvider.create(activity);
     }
 
     private class PrivateTabViewClient extends TabViewClient {
