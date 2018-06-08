@@ -11,7 +11,10 @@ import java.util.HashSet;
 
 public class ThemeManager {
 
+    private static final int ONBOARDING_VERSION = 1;
+
     private static final String PREF_KEY_STRING_CURRENT_THEME = "pref_key_string_current_theme";
+    private static final String PREF_KEY_INT_ONBOARDING_VERSION = "pref_key_int_onboarding_version";
 
     public interface Themeable {
         void onThemeChanged();
@@ -46,11 +49,11 @@ public class ThemeManager {
 
     public ThemeManager(ThemeHost themeHost) {
         baseContext = themeHost.getApplicationContext();
-        currentThemeSet = loadCurrentTheme(getSharedPreferences());
+        currentThemeSet = loadCurrentTheme(getSharedPreferences(baseContext));
     }
 
-    private SharedPreferences getSharedPreferences() {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext);
+    private static SharedPreferences getSharedPreferences(Context context) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences;
     }
 
@@ -60,9 +63,18 @@ public class ThemeManager {
     }
 
     private void setCurrentTheme(ThemeSet themeSet) {
-        saveCurrentTheme(getSharedPreferences(), themeSet);
+        saveCurrentTheme(getSharedPreferences(baseContext), themeSet);
         currentThemeSet = themeSet;
         dirty = true;
+    }
+
+    public static boolean shouldShowOnboarding(Context context) {
+        int currentOnBoardingVersion = getSharedPreferences(context).getInt(PREF_KEY_INT_ONBOARDING_VERSION, 0);
+        return currentOnBoardingVersion < ONBOARDING_VERSION;
+    }
+
+    public static void dismissOnboarding(Context context) {
+        getSharedPreferences(context).edit().putInt(PREF_KEY_INT_ONBOARDING_VERSION, ONBOARDING_VERSION).apply();
     }
 
     private static ThemeSet loadCurrentTheme(SharedPreferences sharedPreferences) {
@@ -91,16 +103,15 @@ public class ThemeManager {
         return nextTheme;
     }
 
-    public Resources.Theme applyCurrentTheme(Resources.Theme baseTheme) {
+    public void applyCurrentTheme(Resources.Theme baseTheme) {
         if (dirty) {
             dirty = false;
             baseTheme.applyStyle(currentThemeSet.style, true);
         }
-        return baseTheme;
     }
 
     public void toggleNextTheme() {
-        final ThemeSet currentTheme = loadCurrentTheme(getSharedPreferences());
+        final ThemeSet currentTheme = loadCurrentTheme(getSharedPreferences(baseContext));
         final ThemeSet nextTheme = findNextTheme(currentTheme);
 
         setCurrentTheme(nextTheme);

@@ -16,7 +16,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -67,6 +66,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private View btnMenu;
+    private View themeOnboardingLayer;
     private TabCounter tabCounter;
     private TextView fakeInput;
     private HomeScreenBackground homeScreenBackground;
@@ -119,6 +119,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());
+
+        if (ThemeManager.shouldShowOnboarding(view.getContext())) {
+            LayoutInflater.from(view.getContext()).inflate(R.layout.fragment_homescreen_themetoy, home_container);
+            themeOnboardingLayer = home_container.findViewById(R.id.fragment_homescreen_theme_onboarding);
+        }
 
         homeScreenBackground = view.findViewById(R.id.home_background);
 
@@ -475,7 +480,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private class GestureListenerAdapter extends OnSwipeListener.OnSwipeListenerAdapter {
+    private class GestureListenerAdapter implements OnSwipeListener {
+
         @Override
         public void onSwipeUp() {
             btnMenu.performClick();
@@ -494,6 +500,16 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public boolean onDoubleTap() {
             doWithActivity(getActivity(), ThemeManager::toggleNextTheme);
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed() {
+            if (themeOnboardingLayer != null) {
+                ((ViewGroup) themeOnboardingLayer.getParent()).removeView(themeOnboardingLayer);
+                themeOnboardingLayer = null;
+                ThemeManager.dismissOnboarding(getContext());
+            }
             return true;
         }
     }

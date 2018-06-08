@@ -402,4 +402,11 @@
 
     <!-- Confirm message shown on the dialog popped after user clicks close-all-tabs button -->
     <string name="tab_tray_close_tabs_dialog_msg">Close all tabs?</string>
+
+    <!-- This is the title of Themeing on-boarding dialog -->
+    <string name="themetoy_onboarding_title">Color your life!</string>
+
+    <!-- This is the description of Themeing on-boarding dialog -->
+    <string name="themetoy_onboarding_description">Double click on the home background to switch themes.</string>
+
 </resources>

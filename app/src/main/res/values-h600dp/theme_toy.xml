@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="themetoy_onboarding_weight_denominator">9</integer>
+    <integer name="themetoy_onboarding_weight_numerators">7</integer>
+</resources>

@@ -6,47 +6,27 @@
 package org.mozilla.focus.utils;
 
 public interface OnSwipeListener {
-    void onSwipeRight();
-
-    void onSwipeLeft();
-
-    void onSwipeUp();
-
-    void onSwipeDown();
-
-    void onLongPress();
-
-    boolean onDoubleTap();
-
-    class OnSwipeListenerAdapter implements OnSwipeListener {
-
-        @Override
-        public void onSwipeRight() {
-
-        }
-
-        @Override
-        public void onSwipeLeft() {
-
-        }
-
-        @Override
-        public void onSwipeUp() {
-
-        }
-
-        @Override
-        public void onSwipeDown() {
-
-        }
-
-        @Override
-        public void onLongPress() {
-        }
-
-        @Override
-        public boolean onDoubleTap() {
-            return false;
-        }
+    default void onSwipeRight() {
     }
+
+    default void onSwipeLeft() {
+    }
+
+    default void onSwipeUp() {
+    }
+
+    default void onSwipeDown() {
+    }
+
+    default void onLongPress() {
+    }
+
+    default boolean onDoubleTap() {
+        return false;
+    }
+
+    default boolean onSingleTapConfirmed() {
+        return false;
+    }
+
 }
