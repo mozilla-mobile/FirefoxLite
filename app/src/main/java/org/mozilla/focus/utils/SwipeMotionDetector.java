@@ -40,6 +40,11 @@ public class SwipeMotionDetector implements View.OnTouchListener {
         }
 
         @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            return onSwipeListener.onSingleTapConfirmed();
+        }
+
+        @Override
         public boolean onDown(MotionEvent e) {
             return true;
         }

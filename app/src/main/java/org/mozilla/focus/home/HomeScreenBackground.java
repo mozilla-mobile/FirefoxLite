@@ -32,20 +32,22 @@ public class HomeScreenBackground extends View implements ThemeManager.Themeable
     private Paint paint;
 
     public HomeScreenBackground(Context context) {
-        this(context, null);
+        super(context, null);
+        init();
     }
 
     public HomeScreenBackground(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs, 0);
+        init();
     }
 
     public HomeScreenBackground(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        super(context, attrs, defStyleAttr, 0);
+        init();
     }
 
     public HomeScreenBackground(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-
         init();
     }
 
@@ -55,7 +57,7 @@ public class HomeScreenBackground extends View implements ThemeManager.Themeable
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.home_pattern);
         paint = new Paint();
         Shader shader1 = new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-        int colors[] = {Color.parseColor("#FFFFFFFF"), Color.parseColor("#88FFFFFF"), Color.parseColor("#55FFFFFF"), Color.parseColor("#00FFFFFF")};
+        int colors[] = {Color.parseColor("#99FFFFFF"), Color.parseColor("#4dFFFFFF"), Color.parseColor("#1aFFFFFF"), Color.parseColor("#00FFFFFF")};
         float positions[] = {0.0f, 0.4f, 0.7f, 1f};
         Shader shader2 = new LinearGradient(0, rect.top, 0, rect.bottom, colors, positions, Shader.TileMode.CLAMP);
         paint.setShader(new ComposeShader(shader2, shader1, PorterDuff.Mode.MULTIPLY));

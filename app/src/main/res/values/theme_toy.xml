@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <integer name="themetoy_onboarding_weight_denominator">6</integer>
+    <integer name="themetoy_onboarding_weight_numerators">5</integer>
+
+
     <declare-styleable name="ThemeToy">
         <attr name="themeGradientStart" format="color"/>
         <attr name="themeGradientEnd" format="color"/>

@@ -131,7 +131,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
         themeManager.applyCurrentTheme(theme);
-//        theme.applyStyle(R.style.ThemeToy01, true);
         return theme;
     }
 
