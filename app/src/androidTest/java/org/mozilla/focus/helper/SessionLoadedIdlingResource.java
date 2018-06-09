@@ -7,6 +7,7 @@ package org.mozilla.focus.helper;
 import android.support.test.espresso.IdlingResource;
 
 import org.mozilla.focus.activity.MainActivity;
+import org.mozilla.focus.fragment.BrowserFragment;
 
 import java.lang.ref.WeakReference;
 
@@ -14,12 +15,12 @@ import java.lang.ref.WeakReference;
  * An IdlingResource implementation that waits until the BrowserFragment is not loading anymore.
  * Only after loading has completed further actions will be performed.
  */
-public class SessionLoadedIdlingResource implements IdlingResource {
+public class SessionLoadedIdlingResource implements IdlingResource, BrowserFragment.LoadStateListener {
     private ResourceCallback resourceCallback;
-    private WeakReference<MainActivity> activityWeakReference;
+    private boolean isCompleted;
 
     public SessionLoadedIdlingResource(MainActivity activity) {
-        activityWeakReference = new WeakReference<>(activity);
+        activity.getBrowserFragment().setIsLoadingListener(this);
     }
 
     @Override
@@ -29,18 +30,7 @@ public class SessionLoadedIdlingResource implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
-        final MainActivity mainActivity = activityWeakReference.get();
-        if (mainActivity == null || mainActivity.getVisibleBrowserFragment() == null) {
-            return false;
-        }
-        // FIXME: Maybe use an interface to wait for the state is better than depending on the activity directly
-        final boolean isLoading = mainActivity.getVisibleBrowserFragment().isLoading();
-        if (isLoading) {
-            return false;
-        } else {
-            invokeCallback();
-            return true;
-        }
+        return isCompleted;
     }
 
     private void invokeCallback() {
@@ -52,5 +42,14 @@ public class SessionLoadedIdlingResource implements IdlingResource {
     @Override
     public void registerIdleTransitionCallback(ResourceCallback callback) {
         this.resourceCallback = callback;
+    }
+
+    @Override
+    public void isLoadingChanged(boolean isLoading) {
+        if (!isLoading) {
+            invokeCallback();
+            isCompleted = true;
+        }
+
     }
 }
