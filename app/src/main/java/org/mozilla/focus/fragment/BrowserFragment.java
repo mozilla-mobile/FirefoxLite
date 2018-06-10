@@ -554,6 +554,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         captureStateListener = listener;
     }
 
+
     public CaptureRunnable.CaptureStateListener getCaptureStateListener() {
         return captureStateListener;
     }
