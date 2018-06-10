@@ -84,9 +84,10 @@ public class TakeScreenshotTest {
         // Check if test site is loaded
         IdlingRegistry.getInstance().register(sessionLoadedIdlingResource);
         onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(TARGET_URL_SITE)));
-        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
-        screenshotIdlingResource = new ScreenshotIdlingResource();
+
+        screenshotIdlingResource = new ScreenshotIdlingResource(activityTestRule.getActivity());
+
 
         // Click screen capture button
         onView(allOf(withId(R.id.btn_capture), isDisplayed())).perform(click());

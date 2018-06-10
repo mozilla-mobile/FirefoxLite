@@ -26,6 +26,8 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -89,7 +91,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     public static final String FRAGMENT_TAG = "browser";
 
-    /** Custom data that is passed when calling {@link TabsSession#addTab(String, Bundle)} */
+    /**
+     * Custom data that is passed when calling {@link TabsSession#addTab(String, Bundle)}
+     */
     public static final String EXTRA_NEW_TAB_SRC = "extra_bkg_tab_src";
     public static final int SRC_CONTEXT_MENU = 0;
 
@@ -140,6 +144,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     // Set an initial WeakReference so we never have to handle loadStateListenerWeakReference being null
     // (i.e. so we can always just .get()).
     private WeakReference<LoadStateListener> loadStateListenerWeakReference = new WeakReference<>(null);
+
+    private CaptureRunnable.CaptureStateListener captureStateListener;
 
     // pending action for file-choosing
     private FileChooseAction fileChooseAction;
@@ -528,6 +534,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         void isLoadingChanged(boolean isLoading);
     }
 
+    @VisibleForTesting
     /**
      * Set a (singular) LoadStateListener. Only one listener is supported at any given time. Setting
      * a new listener means any previously set listeners will be dropped. This is only intended
@@ -540,6 +547,15 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
      */
     public void setIsLoadingListener(final LoadStateListener listener) {
         loadStateListenerWeakReference = new WeakReference<>(listener);
+    }
+
+    @VisibleForTesting
+    public void setCaptureStateListener(final CaptureRunnable.CaptureStateListener listener) {
+        captureStateListener = listener;
+    }
+
+    public CaptureRunnable.CaptureStateListener getCaptureStateListener(){
+        return captureStateListener;
     }
 
     private void showLoadingAndCapture() {
@@ -714,9 +730,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     /**
-     * @param url target url
-     * @param openNewTab whether to load url in a new tab or not
-     * @param isFromExternal if this url is started from external VIEW intent
+     * @param url                 target url
+     * @param openNewTab          whether to load url in a new tab or not
+     * @param isFromExternal      if this url is started from external VIEW intent
      * @param onViewReadyCallback callback to notify that web view is ready for showing.
      */
     public void loadUrl(@NonNull final String url, boolean openNewTab,

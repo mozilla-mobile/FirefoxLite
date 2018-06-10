@@ -6,10 +6,17 @@ package org.mozilla.focus.helper;
 
 import android.support.test.espresso.IdlingResource;
 
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.screenshot.CaptureRunnable;
 
-public class ScreenshotIdlingResource implements IdlingResource {
+public class ScreenshotIdlingResource implements IdlingResource, CaptureRunnable.CaptureStateListener {
     private ResourceCallback resourceCallback;
+
+    private boolean completed;
+
+    public ScreenshotIdlingResource(MainActivity activity) {
+        activity.getBrowserFragment().setCaptureStateListener(this);
+    }
 
     @Override
     public String getName() {
@@ -18,13 +25,7 @@ public class ScreenshotIdlingResource implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
-        if (CaptureRunnable.isCompleted()) {
-            invokeCallback();
-            return true;
-        } else {
-
-            return false;
-        }
+        return completed;
     }
 
 
@@ -37,6 +38,12 @@ public class ScreenshotIdlingResource implements IdlingResource {
     @Override
     public void registerIdleTransitionCallback(ResourceCallback callback) {
         this.resourceCallback = callback;
+    }
+
+    @Override
+    public void onPromptScreenshotResult() {
+        completed = true;
+        invokeCallback();
     }
 }
 
