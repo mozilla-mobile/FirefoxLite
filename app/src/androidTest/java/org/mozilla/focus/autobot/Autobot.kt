@@ -36,6 +36,8 @@ import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.widget.TelemetrySwitchPreference
 
 inline fun setting(func: SettingRobot.() -> Unit) = SettingRobot().apply(func)
+inline fun session(func: SessionRobot.() -> Unit) = SessionRobot().apply(func)
+
 
 inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
 
@@ -79,9 +81,9 @@ class SessionRobot {
 
     }
 
-    fun takeScreenshot(): ScreenshotRobot {
+    infix fun takeScreenshot(func: ScreenshotRobot.() -> Unit) {
 
-        return ScreenshotRobot(activityTestRule).takeScreenshot()
+        ScreenshotRobot(activityTestRule).takeScreenshot().apply { func() }
     }
 
 }

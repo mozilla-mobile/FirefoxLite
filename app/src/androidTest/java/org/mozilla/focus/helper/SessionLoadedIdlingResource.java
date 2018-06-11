@@ -47,8 +47,8 @@ public class SessionLoadedIdlingResource implements IdlingResource, BrowserFragm
     @Override
     public void isLoadingChanged(boolean isLoading) {
         if (!isLoading) {
-            invokeCallback();
             isCompleted = true;
+            invokeCallback();
         }
 
     }
