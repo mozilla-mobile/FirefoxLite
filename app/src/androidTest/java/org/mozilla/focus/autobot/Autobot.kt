@@ -47,6 +47,7 @@ inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
 
 }
 
+
 class SessionRobot {
     @Rule
     val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
@@ -85,9 +86,7 @@ class SessionRobot {
 
         ScreenshotRobot(activityTestRule).takeScreenshot().apply { func() }
     }
-
 }
-
 
 class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
 
