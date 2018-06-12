@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Build;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 
@@ -45,26 +46,39 @@ public class FeatureModulePreference extends Preference {
             final boolean installed = FeatureModule.getInstance().isSupportPrivateBrowsing();
             switchView.setChecked(installed);
         }
+
+        Log.d("Rocket", "clear summary");
+        setSummary("May the Gecko be with you");
     }
 
     @Override
     protected void onClick() {
         final FeatureModule featureModule = FeatureModule.getInstance();
-        this.setEnabled(false);
+        setEnabled(false);
         if (featureModule.isSupportPrivateBrowsing()) {
             featureModule.uninstall(getContext(), new FeatureModule.StatusListener() {
                 @Override
                 public void onDone() {
-                    FeatureModulePreference.this.setEnabled(true);
+                    setEnabled(true);
                     update();
+                }
+
+                @Override
+                public void onProgress(String msg) {
                 }
             });
         } else {
             featureModule.install(getContext(), new FeatureModule.StatusListener() {
                 @Override
                 public void onDone() {
-                    FeatureModulePreference.this.setEnabled(true);
+                    setEnabled(true);
                     update();
+                }
+
+                @Override
+                public void onProgress(String msg) {
+                    Log.d("Rocket", msg);
+                    setSummary(msg);
                 }
             });
         }

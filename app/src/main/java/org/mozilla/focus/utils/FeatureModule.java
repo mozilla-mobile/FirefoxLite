@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.play.core.splitinstall.SplitInstallManager;
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory;
 import com.google.android.play.core.splitinstall.SplitInstallRequest;
+import com.google.android.play.core.splitinstall.SplitInstallSessionState;
+import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener;
+import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus;
 import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 
@@ -31,6 +35,8 @@ public class FeatureModule {
     private static FeatureModule sInstance;
     private boolean supportPrivateBrowsing = true;
 
+    private SplitInstallManager mgr = null;
+
     public synchronized static FeatureModule getInstance() {
         if (sInstance == null) {
             sInstance = new FeatureModule();
@@ -43,7 +49,10 @@ public class FeatureModule {
     }
 
     public void refresh(@NonNull final Context context) {
-        final SplitInstallManager mgr = SplitInstallManagerFactory.create(context);
+        if (mgr == null) {
+            mgr = SplitInstallManagerFactory.create(context);
+        }
+
         final Set<String> set = mgr.getInstalledModules();
 
         appPkgName = context.getPackageName();
@@ -77,10 +86,12 @@ public class FeatureModule {
             callback.onDone();
             return;
         }
+
         final SplitInstallRequest req = SplitInstallRequest
                 .newBuilder()
                 .addModule(DYNAMIC_FEATURE_GECKO_POWER)
                 .build();
+
         final List<String> modules = new ArrayList<>();
         modules.add(DYNAMIC_FEATURE_GECKO_POWER);
         mgr.startInstall(req)
@@ -88,12 +99,21 @@ public class FeatureModule {
                     @Override
                     public void onSuccess(Integer integer) {
                         refresh(context);
-                        callback.onDone();
+                        Log.d(TAG, "installing");
+                        final FeatureStateListener listener = new FeatureStateListener(
+                                context,
+                                mgr,
+                                callback,
+                                integer);
+                        mgr.registerListener(listener);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
+                        Toast.makeText(context, "Try install but failed", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
                         refresh(context);
                         callback.onDone();
                     }
@@ -102,6 +122,7 @@ public class FeatureModule {
 
     public void uninstall(final Context context, final StatusListener callback) {
         if (!isSupportPrivateBrowsing()) {
+            Toast.makeText(context, "Not supporting private browsing", Toast.LENGTH_SHORT).show();
             callback.onDone();
             return;
         }
@@ -113,6 +134,7 @@ public class FeatureModule {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Toast.makeText(context, "Uninstalling module", Toast.LENGTH_SHORT).show();
                         refresh(context);
                         callback.onDone();
                     }
@@ -120,6 +142,7 @@ public class FeatureModule {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
+                        Toast.makeText(context, "Try uninstall but failed", Toast.LENGTH_SHORT).show();
                         refresh(context);
                         callback.onDone();
                     }
@@ -157,6 +180,8 @@ public class FeatureModule {
 
     public interface StatusListener {
         void onDone();
+
+        void onProgress(String msg);
     }
 
     // a TabViewProvider and it should only be used in this activity
@@ -175,6 +200,88 @@ public class FeatureModule {
         @Override
         public int getEngineType() {
             return TabViewProvider.ENGINE_WEBKIT;
+        }
+    }
+
+    private class FeatureStateListener implements SplitInstallStateUpdatedListener {
+
+        private Context ctx;
+        private SplitInstallManager manager;
+        private int sessionId = 0;
+        private StatusListener callback;
+
+        FeatureStateListener(Context ctx,
+                             SplitInstallManager mgr,
+                             StatusListener listener,
+                             int id) {
+            this.ctx = ctx;
+            this.callback = listener;
+            this.manager = mgr;
+            this.sessionId = id;
+        }
+
+        @Override
+        public void onStateUpdate(SplitInstallSessionState state) {
+            if (state.sessionId() != this.sessionId) {
+                Log.d(TAG, String.format("my session(%d), not %d", this.sessionId, state.sessionId()));
+                return;
+            }
+
+            if (state.status() == SplitInstallSessionStatus.FAILED) {
+                Toast.makeText(ctx, "fail state: " + state, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "failed: " + state);
+                destroySelf();
+                return;
+            }
+
+            switch (state.status()) {
+                case SplitInstallSessionStatus.DOWNLOADING:
+                    long totalBytes = state.totalBytesToDownload();
+                    long progress = state.bytesDownloaded();
+                    String msg = String.format("downloading: %d/%d", progress, totalBytes);
+                    callback.onProgress(msg);
+                    break;
+                case SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION:
+                    try {
+                        ctx.startIntentSender(
+                                state.resolutionIntent().getIntentSender(),
+                                null, 0, 0, 0
+                        );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "Exception on user_confirmation, " + e);
+                        destroySelf();
+                    }
+
+                    break;
+                case SplitInstallSessionStatus.DOWNLOADED:
+                    Log.d(TAG, "module downloaded");
+                    destroySelf();
+                    break;
+                case SplitInstallSessionStatus.INSTALLING:
+                    callback.onProgress("Installing");
+                    Log.d(TAG, "on state installing");
+                    break;
+                case SplitInstallSessionStatus.INSTALLED:
+                    callback.onProgress("Installed");
+                    Log.d(TAG, "on state installed");
+                    destroySelf();
+                    break;
+                case SplitInstallSessionStatus.FAILED:
+                case SplitInstallSessionStatus.UNKNOWN:
+                case SplitInstallSessionStatus.CANCELED:
+                    destroySelf();
+                default:
+                    Log.d(TAG, "on state update: " + state);
+            }
+        }
+
+        private void destroySelf() {
+            FeatureModule.this.refresh(ctx);
+            if (callback != null) {
+                callback.onDone();
+            }
+            manager.unregisterListener(this);
         }
     }
 }
