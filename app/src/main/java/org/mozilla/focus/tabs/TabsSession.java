@@ -45,9 +45,11 @@ public class TabsSession {
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
 
+    public int engineType = TabViewProvider.ENGINE_WEBKIT;
+
     public TabsSession(@NonNull TabViewProvider provider) {
         this.tabViewProvider = provider;
-
+        this.engineType = provider.getEngineType();
         this.notifier = new Notifier(provider, this.tabsChromeListeners);
     }
 

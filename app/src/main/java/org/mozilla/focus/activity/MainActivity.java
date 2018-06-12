@@ -8,6 +8,7 @@ package org.mozilla.focus.activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.pm.ShortcutManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,6 +208,23 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter);
+        if (tabsSession != null) {
+            FeatureModule featureModule = FeatureModule.getInstance();
+            featureModule.refresh(this);
+            if (featureModule.isSupportPrivateBrowsing()
+                    && tabsSession.engineType != TabViewProvider.ENGINE_GECKO) {
+                new AlertDialog.Builder(this)
+                        .setMessage("Engine changed, restart app")
+                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        }
     }
 
     @Override
