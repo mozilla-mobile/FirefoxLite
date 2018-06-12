@@ -245,7 +245,7 @@ public final class GeckoJarReader {
         // We need to encode the package resource path, because it might contain illegal characters. For example:
         //   /mnt/asec2/[2]org.mozilla.fennec-1/pkg.apk
         // The round-trip through a URI does this for us.
-        final String resourcePath = context.getPackageResourcePath();
+        String resourcePath = org.mozilla.focus.utils.FeatureModule.getFeatureModuleApkPath(context);
         return computeJarURI(resourcePath, pathInsideJAR);
     }
 

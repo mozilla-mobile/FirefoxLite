@@ -292,8 +292,7 @@ public class GeckoThread extends Thread {
             res.updateConfiguration(config, null);
         }
 
-        final String resourcePath = context.getPackageResourcePath();
-
+        String resourcePath = org.mozilla.focus.utils.FeatureModule.getFeatureModuleApkPath(context);
         try {
             loadGeckoLibs(context, resourcePath);
             return;
@@ -323,8 +322,9 @@ public class GeckoThread extends Thread {
         // argv[0] is the program name, which for us is the package name.
         args.add(context.getPackageName());
         args.add("-greomni");
-        args.add(context.getPackageResourcePath());
 
+        String resourcePath = org.mozilla.focus.utils.FeatureModule.getFeatureModuleApkPath(context);
+        args.add(resourcePath);
         final GeckoProfile profile = getProfile();
         if (profile.isCustomProfile()) {
             args.add("-profile");

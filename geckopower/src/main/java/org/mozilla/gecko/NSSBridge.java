@@ -18,7 +18,8 @@ public class NSSBridge {
     @RobocopTarget
     static public String encrypt(Context context, String aValue)
       throws Exception {
-        String resourcePath = context.getPackageResourcePath();
+        String resourcePath = org.mozilla.focus.utils.FeatureModule.getFeatureModuleApkPath(context);
+
         GeckoLoader.loadNSSLibs(context, resourcePath);
 
         String path = GeckoProfile.get(context).getDir().toString();
@@ -28,7 +29,8 @@ public class NSSBridge {
     @RobocopTarget
     static public String encrypt(Context context, String profilePath, String aValue)
       throws Exception {
-        String resourcePath = context.getPackageResourcePath();
+        String resourcePath = org.mozilla.focus.utils.FeatureModule.getFeatureModuleApkPath(context);
+
         GeckoLoader.loadNSSLibs(context, resourcePath);
 
         return nativeEncrypt(profilePath, aValue);
@@ -37,7 +39,8 @@ public class NSSBridge {
     @RobocopTarget
     static public String decrypt(Context context, String aValue)
       throws Exception {
-        String resourcePath = context.getPackageResourcePath();
+        String resourcePath = org.mozilla.focus.utils.FeatureModule.getFeatureModuleApkPath(context);
+
         GeckoLoader.loadNSSLibs(context, resourcePath);
 
         String path = GeckoProfile.get(context).getDir().toString();
@@ -47,7 +50,8 @@ public class NSSBridge {
     @RobocopTarget
     static public String decrypt(Context context, String profilePath, String aValue)
       throws Exception {
-        String resourcePath = context.getPackageResourcePath();
+        String resourcePath = org.mozilla.focus.utils.FeatureModule.getFeatureModuleApkPath(context);
+
         GeckoLoader.loadNSSLibs(context, resourcePath);
 
         return nativeDecrypt(profilePath, aValue);
