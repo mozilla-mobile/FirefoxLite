@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MenuSheetRow"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="1dp"
+    tools:background="#3300FF00">
+
+    <FrameLayout
+        android:id="@+id/menu_blockimg"
+        style="@style/MenuButtonContainer">
+        <!--todo: the FrameLayout and LinearLayout can actually be merged now, but we' re
+        going to do this later since this is an uplift commit.-->
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuToggleIcon"
+                android:background="@drawable/menu_blockimg" />
+
+            <TextView
+                style="@style/MenuToggleText"
+                android:text="@string/label_menu_block_image" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_delete"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_delete" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_clear_cache" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_preferences"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_settings" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_settings" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_exit"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_exit" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_exit" />
+        </LinearLayout>
+    </FrameLayout>
+
+</org.mozilla.focus.widget.EqualDistributeRow>

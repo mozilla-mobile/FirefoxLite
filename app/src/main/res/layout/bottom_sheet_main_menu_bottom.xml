@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="48dp"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_vertical">
+
+    <RelativeLayout
+        android:id="@+id/action_next"
+        style="@style/BottomMenuButtonContainerWithMargin">
+
+        <View
+            style="@style/MenuButtonIcon"
+            android:background="@drawable/action_next"
+            android:contentDescription="@string/content_description_forward" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/action_loading"
+        style="@style/BottomMenuButtonContainerWithMargin">
+
+        <View
+            android:id="@+id/action_refresh"
+            style="@style/MenuButtonIcon"
+            android:background="@drawable/action_refresh"
+            android:contentDescription="@string/content_description_reload" />
+
+        <View
+            android:id="@+id/action_stop"
+            style="@style/MenuButtonIcon"
+            android:background="@drawable/edit_close"
+            android:contentDescription="@string/content_description_stop"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/action_pin_shortcut"
+        style="@style/BottomMenuButtonContainerWithMargin">
+
+        <View
+            style="@style/MenuButtonIcon"
+            android:background="@drawable/action_add_to_home" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/action_share"
+        style="@style/BottomMenuButtonContainer">
+
+        <View
+            style="@style/MenuButtonIcon"
+            android:background="@drawable/action_share" />
+    </RelativeLayout>
+</LinearLayout>
