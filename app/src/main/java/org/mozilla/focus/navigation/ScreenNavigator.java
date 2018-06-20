@@ -139,7 +139,7 @@ public class ScreenNavigator implements LifecycleObserver {
         boolean found = this.transactionHelper.popScreensUntil(HomeFragment.FRAGMENT_TAG);
         log("found exist home: " + found);
         if (!found) {
-            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_FLOATING);
+            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ATTACHED);
         }
     }
 
