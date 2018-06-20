@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/action_loading"
+style="@style/BottomMenuButtonContainerWithMargin">
+
+<View
+    android:id="@+id/action_refresh"
+    style="@style/MenuButtonIcon"
+    android:background="@drawable/action_refresh"
+    android:contentDescription="@string/content_description_reload" />
+
+<View
+    android:id="@+id/action_stop"
+    style="@style/MenuButtonIcon"
+    android:background="@drawable/edit_close"
+    android:contentDescription="@string/content_description_stop"
+    android:visibility="gone" />
+</RelativeLayout>
