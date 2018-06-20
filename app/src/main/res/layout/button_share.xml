@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_share"
+    style="@style/BottomMenuButtonContainer">
+
+    <View
+        style="@style/MenuButtonIcon"
+        android:background="@drawable/action_share" />
+</RelativeLayout>
