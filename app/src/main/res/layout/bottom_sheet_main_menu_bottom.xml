@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/fixed_menu_height"
+    android:layout_gravity="center_horizontal|bottom">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="48dp"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_vertical">
+    <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/browser_fixed_menu_horizontal_margin"
+        android:layout_marginStart="@dimen/browser_fixed_menu_horizontal_margin">
 
-    <include layout="@layout/button_next" />
+        <include layout="@layout/button_next" />
 
-    <include layout="@layout/button_loading" />
+        <include layout="@layout/button_loading" />
 
-    <include layout="@layout/button_pin_shortcut" />
+        <include layout="@layout/button_pin_shortcut" />
 
-    <include layout="@layout/button_share" />
-</LinearLayout>
+        <include layout="@layout/button_share" />
+    </org.mozilla.focus.widget.EqualDistributeRow>
+</FrameLayout>

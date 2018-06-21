@@ -203,6 +203,11 @@
         <item name="android:background">@drawable/round_rectangle_ripple</item>
     </style>
 
+    <style name="MainMenuBrowsingButton" parent="MainMenuButton">
+        <item name="android:onClick">onMenuItemClicked</item>
+        <item name="tint">@color/sheet_menu_button</item>
+    </style>
+
     <style name="HomeMenuButton" parent="MainMenuButton">
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">48dp</item>
