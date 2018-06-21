@@ -630,7 +630,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void onBookMarkClicked() {
         // TODO: 6/21/18 Implement add bookmark logic
         final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.bookmark_saved_edit, view -> {});
+        snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class)));
         snackbar.show();
     }
 
