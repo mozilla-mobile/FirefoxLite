@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/action_loading"
-style="@style/BottomMenuButtonContainerWithMargin">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/action_loading"
+    style="@style/MainMenuBrowsingButton">
 
-<View
-    android:id="@+id/action_refresh"
-    style="@style/MenuButtonIcon"
-    android:background="@drawable/action_refresh"
-    android:contentDescription="@string/content_description_reload" />
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/action_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/content_description_reload"
+        android:src="@drawable/action_refresh"
+        app:tint="@color/sheet_menu_button" />
 
-<View
-    android:id="@+id/action_stop"
-    style="@style/MenuButtonIcon"
-    android:background="@drawable/edit_close"
-    android:contentDescription="@string/content_description_stop"
-    android:visibility="gone" />
-</RelativeLayout>
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/action_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/content_description_stop"
+        android:src="@drawable/edit_close"
+        android:visibility="gone"
+        app:tint="@color/sheet_menu_button" />
+</FrameLayout>
