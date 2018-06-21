@@ -13,6 +13,7 @@
 
     <include layout="@layout/bottom_sheet_main_menu_row_1"/>
     <include layout="@layout/bottom_sheet_main_menu_row_2"/>
+    <include layout="@layout/bottom_sheet_main_menu_row_3"/>
 
     <View
         android:layout_width="match_parent"

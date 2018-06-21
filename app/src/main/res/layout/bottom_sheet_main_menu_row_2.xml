@@ -7,6 +7,22 @@
     tools:background="#3300FF00">
 
     <FrameLayout
+        android:id="@+id/menu_turbomode"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuToggleIcon"
+                android:background="@drawable/menu_speedmode" />
+
+            <TextView
+                style="@style/MenuToggleText"
+                android:text="@string/label_menu_turbo_mode" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/menu_blockimg"
         style="@style/MenuButtonContainer">
         <!--todo: the FrameLayout and LinearLayout can actually be merged now, but we' re
@@ -52,22 +68,6 @@
             <TextView
                 style="@style/MenuButtonText"
                 android:text="@string/label_menu_settings" />
-        </LinearLayout>
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/menu_exit"
-        style="@style/MenuButtonContainer">
-
-        <LinearLayout style="@style/MenuButtonGroup">
-
-            <View
-                style="@style/MenuButtonIcon"
-                android:background="@drawable/menu_exit" />
-
-            <TextView
-                style="@style/MenuButtonText"
-                android:text="@string/label_menu_exit" />
         </LinearLayout>
     </FrameLayout>
 

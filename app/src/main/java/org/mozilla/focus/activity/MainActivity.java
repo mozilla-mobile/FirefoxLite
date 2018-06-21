@@ -493,6 +493,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 onExitClicked();
                 TelemetryWrapper.clickMenuExit();
                 break;
+            case R.id.menu_bookmark:
+                onBookmarksClicked();
+                TelemetryWrapper.clickMenuBookmark();
+                break;
             case R.id.action_next:
             case R.id.action_loading:
             case R.id.action_bookmark:
@@ -597,6 +601,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onExitClicked() {
         finish();
+    }
+
+
+    private void onBookmarksClicked() {
+        // TODO: 6/21/18 Implement bookmark panel
     }
 
     private void onDownloadClicked() {

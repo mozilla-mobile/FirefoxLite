@@ -477,6 +477,10 @@ public final class TelemetryWrapper {
         new EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.EXIT).queue();
     }
 
+    public static void clickMenuBookmark() {
+        new EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.BOOKMARK).queue();
+    }
+
     public static void clickToolbarForward() {
         new EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.FORWARD).queue();
     }
