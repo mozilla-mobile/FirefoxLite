@@ -214,6 +214,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.EditBookmarkActivity"
+            android:label="@string/title_activity_edit_bookmark" />
+
     </application>
 
 </manifest>
