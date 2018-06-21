@@ -103,9 +103,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View nextButton;
     private View loadingButton;
     private View shareButton;
+    private View bookmarkIcon;
     private View refreshIcon;
     private View stopIcon;
     private View pinShortcut;
+    private View snackBarContainer;
 
     private ScreenNavigator screenNavigator;
 
@@ -336,6 +338,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         visibility |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(visibility);
 
+        snackBarContainer = findViewById(R.id.container);
         setUpMenu();
     }
 
@@ -372,6 +375,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
         shareButton = menu.findViewById(R.id.action_share);
+        bookmarkIcon = menu.findViewById(R.id.action_bookmark);
         refreshIcon = menu.findViewById(R.id.action_refresh);
         stopIcon = menu.findViewById(R.id.action_stop);
         pinShortcut = menu.findViewById(R.id.action_pin_shortcut);
@@ -401,6 +405,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
         setEnable(nextButton, canGoForward);
         setLoadingButton(browserFragment);
+        setEnable(bookmarkIcon, browserFragment != null);
         setEnable(shareButton, browserFragment != null);
         setEnable(pinShortcut, browserFragment != null);
     }
@@ -490,6 +495,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.action_next:
             case R.id.action_loading:
+            case R.id.action_bookmark:
             case R.id.action_share:
             case R.id.action_pin_shortcut:
                 onMenuBrowsingItemClicked(v);
@@ -561,6 +567,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 }
                 TelemetryWrapper.clickToolbarReload();
                 break;
+            case R.id.action_bookmark:
+                onBookMarkClicked();
+                TelemetryWrapper.clickToolbarBookmark();
+                break;
             case R.id.action_share:
                 onShraeClicked(browserFragment);
                 TelemetryWrapper.clickToolbarShare();
@@ -615,6 +625,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private void onBackClicked(final BrowserFragment browserFragment) {
         browserFragment.goBack();
+    }
+
+    private void onBookMarkClicked() {
+        // TODO: 6/21/18 Implement add bookmark logic
+        final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.bookmark_saved_edit, view -> {});
+        snackbar.show();
     }
 
     private void onNextClicked(final BrowserFragment browserFragment) {
@@ -840,9 +857,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             if (!existInDownloadManager) {
                 logOrCrash("Download Completed with unknown DownloadManager id");
             }
-            final View container = findViewById(R.id.container);
             String completedStr = getString(R.string.download_completed, downloadInfo.getFileName());
-            final Snackbar snackbar = Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG);
+            final Snackbar snackbar = Snackbar.make(snackBarContainer, completedStr, Snackbar.LENGTH_LONG);
             // Set the open action only if we can.
             if (existInDownloadManager) {
                 snackbar.setAction(R.string.open, view -> IntentUtils.intentOpenFile(MainActivity.this, downloadInfo.getFileUri(), downloadInfo.getMimeType()));
