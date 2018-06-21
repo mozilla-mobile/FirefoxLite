@@ -25,10 +25,11 @@ public class ListPanelDialog extends DialogFragment {
     public final static int TYPE_DOWNLOADS = 1;
     public final static int TYPE_HISTORY = 2;
     public final static int TYPE_SCREENSHOTS = 3;
-    private static final int UNUSED_REQUEST_CODE = -1;
+    public final static int TYPE_BOOKMARKS = 4;
 
     private NestedScrollView scrollView;
     private static final String TYPE = "TYPE";
+    private View bookmarksTouchArea;
     private View downloadsTouchArea;
     private View historyTouchArea;
     private View screenshotsTouchArea;
@@ -45,19 +46,7 @@ public class ListPanelDialog extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        switch (getArguments().getInt(TYPE)) {
-            case TYPE_DOWNLOADS:
-                showDownloads();
-                break;
-            case TYPE_HISTORY:
-                showHistory();
-                break;
-            case TYPE_SCREENSHOTS:
-                showScreenshots();
-                break;
-            default:
-                throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));
-        }
+        showItem(getArguments().getInt(TYPE));
     }
 
     @Override
@@ -112,11 +101,19 @@ public class ListPanelDialog extends DialogFragment {
                 dismissAllowingStateLoss();
             }
         });
+        bookmarksTouchArea = v.findViewById(R.id.bookmarks);
+        bookmarksTouchArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showItem(TYPE_BOOKMARKS);
+                TelemetryWrapper.showPanelBookmark();
+            }
+        });
         downloadsTouchArea = v.findViewById(R.id.downloads);
         downloadsTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDownloads();
+                showItem(TYPE_DOWNLOADS);
                 TelemetryWrapper.showPanelDownload();
             }
         });
@@ -124,7 +121,7 @@ public class ListPanelDialog extends DialogFragment {
         historyTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHistory();
+                showItem(TYPE_HISTORY);
                 TelemetryWrapper.showPanelHistory();
             }
         });
@@ -132,7 +129,7 @@ public class ListPanelDialog extends DialogFragment {
         screenshotsTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showScreenshots();
+                showItem(TYPE_SCREENSHOTS);
                 TelemetryWrapper.showPanelCapture();
             }
         });
@@ -144,24 +141,24 @@ public class ListPanelDialog extends DialogFragment {
         toggleSelectedItem();
     }
 
-    private void showDownloads() {
-        if (firstLaunch || getArguments().getInt(TYPE) != TYPE_DOWNLOADS) {
-            setSelectedItem(TYPE_DOWNLOADS);
-            showPanelFragment(DownloadsFragment.newInstance());
+    private void showItem(int type) {
+        if (firstLaunch || getArguments().getInt(TYPE) != type) {
+            setSelectedItem(type);
+            showPanelFragment(createFragmentByType(type));
         }
     }
 
-    private void showHistory() {
-        if (firstLaunch || getArguments().getInt(TYPE) != TYPE_HISTORY) {
-            setSelectedItem(TYPE_HISTORY);
-            showPanelFragment(BrowsingHistoryFragment.newInstance());
-        }
-    }
-
-    private void showScreenshots() {
-        if (firstLaunch || getArguments().getInt(TYPE) != TYPE_SCREENSHOTS) {
-            setSelectedItem(TYPE_SCREENSHOTS);
-            showPanelFragment(ScreenshotGridFragment.newInstance());
+    private PanelFragment createFragmentByType(int type) {
+        switch (type) {
+            default:
+            case TYPE_DOWNLOADS:
+                return DownloadsFragment.newInstance();
+            case TYPE_HISTORY:
+                return BrowsingHistoryFragment.newInstance();
+            case TYPE_SCREENSHOTS:
+                return ScreenshotGridFragment.newInstance();
+            case TYPE_BOOKMARKS:
+                return BookmarksFragment.newInstance();
         }
     }
 
@@ -171,10 +168,14 @@ public class ListPanelDialog extends DialogFragment {
 
     private void toggleSelectedItem() {
         firstLaunch = false;
+        bookmarksTouchArea.setSelected(false);
         downloadsTouchArea.setSelected(false);
         historyTouchArea.setSelected(false);
         screenshotsTouchArea.setSelected(false);
         switch (getArguments().getInt(TYPE)) {
+            case TYPE_BOOKMARKS:
+                bookmarksTouchArea.setSelected(true);
+                break;
             case TYPE_DOWNLOADS:
                 downloadsTouchArea.setSelected(true);
                 break;
