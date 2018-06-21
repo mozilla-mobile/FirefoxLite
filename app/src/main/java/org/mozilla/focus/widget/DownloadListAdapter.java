@@ -260,7 +260,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     final long rowid = (long) view.getTag(R.id.row_id);
                     int status = (int) view.getTag(R.id.status);
                     final PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                    popupMenu.getMenuInflater().inflate(R.menu.menu_delete, popupMenu.getMenu());
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_download, popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
