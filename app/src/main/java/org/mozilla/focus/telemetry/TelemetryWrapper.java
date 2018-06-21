@@ -125,6 +125,7 @@ public final class TelemetryWrapper {
         static final String FORWARD = "forward";
         static final String RELOAD = "reload";
         static final String CAPTURE = "capture";
+        static final String BOOKMARK = "bookmark";
 
         static final String SEARCH_BUTTON = "search_btn";
         static final String SEARCH_BOX = "search_box";
@@ -486,6 +487,10 @@ public final class TelemetryWrapper {
 
     public static void clickToolbarShare() {
         new EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue();
+    }
+
+    public static void clickToolbarBookmark() {
+        new EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.BOOKMARK).queue();
     }
 
     public static void clickAddToHome() {
