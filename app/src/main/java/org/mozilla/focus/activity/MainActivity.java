@@ -605,7 +605,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
 
     private void onBookmarksClicked() {
-        // TODO: 6/21/18 Implement bookmark panel
+        showListPanel(ListPanelDialog.TYPE_BOOKMARKS);
     }
 
     private void onDownloadClicked() {

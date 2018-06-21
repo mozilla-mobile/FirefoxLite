@@ -441,6 +441,10 @@ public final class TelemetryWrapper {
         new EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.CAPTURE).queue();
     }
 
+    public static void showPanelBookmark() {
+        new EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.BOOKMARK).queue();
+    }
+
     public static void showPanelDownload() {
         new EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.DOWNLOAD).queue();
     }
