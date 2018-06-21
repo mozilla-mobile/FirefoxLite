@@ -23,44 +23,28 @@
         android:layout_marginBottom="48dp"
         android:layout_gravity="bottom"
         android:background="@color/colorListPanelBottomDivider"/>
-    <LinearLayout
-        android:orientation="horizontal"
+    <org.mozilla.focus.widget.EqualDistributeRow
         android:background="@color/colorMenuBackground"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
-        <LinearLayout
-            style="@style/ListPanelContainer"
-            android:id="@+id/downloads">
-            <android.support.v7.widget.AppCompatImageView
-                style="@style/ListPanelDrawable"
-                app:srcCompat="@drawable/menu_download"
-                app:tint="@color/listpanel_icon_color" />
-            <TextView
-                style="@style/ListPanelText"
-                android:text="@string/label_menu_download"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/ListPanelContainer"
-            android:id="@+id/history">
-            <android.support.v7.widget.AppCompatImageView
-                style="@style/ListPanelDrawable"
-                app:srcCompat="@drawable/menu_history"
-                app:tint="@color/listpanel_icon_color" />
-            <TextView
-                style="@style/ListPanelText"
-                android:text="@string/label_menu_history"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/ListPanelContainer"
-            android:id="@+id/screenshots">
-            <android.support.v7.widget.AppCompatImageView
-                style="@style/ListPanelDrawable"
-                app:srcCompat="@drawable/menu_my_shots"
-                app:tint="@color/listpanel_icon_color" />
-            <TextView
-                style="@style/ListPanelText"
-                android:text="@string/label_menu_my_shots"/>
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_height="48dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp">
+        <android.support.v7.widget.AppCompatImageView
+            style="@style/ListPanelDrawable"
+            android:id="@+id/bookmarks"
+            app:srcCompat="@drawable/action_add_to_home" />
+        <android.support.v7.widget.AppCompatImageView
+            style="@style/ListPanelDrawable"
+            android:id="@+id/downloads"
+            app:srcCompat="@drawable/menu_download" />
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/history"
+            style="@style/ListPanelDrawable"
+            app:srcCompat="@drawable/menu_history" />
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/screenshots"
+            style="@style/ListPanelDrawable"
+            app:srcCompat="@drawable/menu_my_shots" />
+    </org.mozilla.focus.widget.EqualDistributeRow>
 </android.support.design.widget.CoordinatorLayout>

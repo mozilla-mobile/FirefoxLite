@@ -167,8 +167,8 @@
     <style name="ListPanelDrawable">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingEnd">6dp</item>
-        <item name="android:tint">@color/selector_tint_panel_label</item>
+        <item name="android:padding">12dp</item>
+        <item name="tint">@color/listpanel_icon_color</item>
     </style>
 
     <style name="ListPanelContainer">
