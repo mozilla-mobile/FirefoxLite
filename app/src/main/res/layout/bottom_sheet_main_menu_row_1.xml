@@ -6,6 +6,22 @@
     tools:background="#3300FF00">
 
     <FrameLayout
+        android:id="@+id/menu_bookmark"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@android:color/transparent" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_bookmark" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/menu_download"
         style="@style/MenuButtonContainer">
 
@@ -58,22 +74,6 @@
             <TextView
                 style="@style/MenuButtonText"
                 android:text="@string/label_menu_my_shots" />
-        </LinearLayout>
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/menu_turbomode"
-        style="@style/MenuButtonContainer">
-
-        <LinearLayout style="@style/MenuButtonGroup">
-
-            <View
-                style="@style/MenuToggleIcon"
-                android:background="@drawable/menu_speedmode" />
-
-            <TextView
-                style="@style/MenuToggleText"
-                android:text="@string/label_menu_turbo_mode" />
         </LinearLayout>
     </FrameLayout>
 </org.mozilla.focus.widget.EqualDistributeRow>
