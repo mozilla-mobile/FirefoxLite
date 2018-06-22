@@ -82,6 +82,7 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
+import org.mozilla.rocket.temp.TempInMemoryBookmarkRepository;
 import org.mozilla.rocket.theme.ThemeManager;
 
 import java.io.File;
@@ -637,7 +638,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onBookMarkClicked() {
-        // TODO: 6/21/18 Implement add bookmark logic
+        Tab currentTab = getTabsSession().getFocusTab();
+        if (currentTab == null) {
+            return;
+        }
+        TempInMemoryBookmarkRepository.getInstance().add(currentTab.getUrl(), currentTab.getTitle());
+        List<TempInMemoryBookmarkRepository.Bookmark> list = TempInMemoryBookmarkRepository.getInstance().list();
+        TempInMemoryBookmarkRepository.Bookmark item = list.get(list.size() -1);
         final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class)));
         snackbar.show();
