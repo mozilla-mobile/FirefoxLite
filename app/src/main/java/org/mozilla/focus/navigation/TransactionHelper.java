@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.animation.Animation;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
@@ -118,6 +119,18 @@ class TransactionHelper {
         return found;
     }
 
+    @Nullable
+    Fragment getLatestCommitFragment() {
+        FragmentManager manager = this.activity.getSupportFragmentManager();
+        int count = manager.getBackStackEntryCount();
+        if (count == 0) {
+            return null;
+        }
+
+        String tag = getFragmentTag(count - 1);
+        return manager.findFragmentByTag(tag);
+    }
+
     private FragmentTransaction prepareFirstRun() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final FirstrunFragment fragment = this.activity.createFirstRunFragment();
@@ -134,17 +147,10 @@ class TransactionHelper {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final HomeFragment fragment = this.activity.createHomeFragment();
 
-        // Two different ways to add HomeFragment.
-        // 1. If Fragments stack is empty, or only first-run - add HomeFragment to bottom of stack.
-        // 2. If we are browsing web pages and launch HomeFragment, hoist HomeFragment from bottom.
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (animated) {
-            transaction.setCustomAnimations(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out,
-                    R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
-        } else {
-            transaction.setCustomAnimations(0, 0, R.anim.tab_transition_fade_in,
-                    R.anim.tab_transition_fade_out);
-        }
+        int enterAnim = animated ? R.anim.tab_transition_fade_in : 0;
+        int exitAnim = (type == EntryData.TYPE_ROOT) ? 0 : R.anim.tab_transition_fade_out;
+        transaction.setCustomAnimations(enterAnim, 0, 0, exitAnim);
 
         transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
         transaction.addToBackStack(entryDataMap.add(HomeFragment.FRAGMENT_TAG, type));
@@ -169,7 +175,7 @@ class TransactionHelper {
         }
     }
 
-    String getFragmentTag(int backStackIndex) {
+    private String getFragmentTag(int backStackIndex) {
         FragmentManager manager = activity.getSupportFragmentManager();
         return getEntryTag(manager.getBackStackEntryAt(backStackIndex));
     }
@@ -188,31 +194,75 @@ class TransactionHelper {
     }
 
     private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
+        private Runnable stateRunnable;
 
         @Override
         public void onBackStackChanged() {
             FragmentManager manager = activity.getSupportFragmentManager();
-            int entryCount = manager.getBackStackEntryCount();
-
-            boolean isBrowserForeground = true;
-            for (int i = 0; i < entryCount; ++i) {
-                FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
-                if (getEntryType(entry) != EntryData.TYPE_FLOATING) {
-                    isBrowserForeground = false;
-                    break;
-                }
-            }
-
             entryDataMap.refreshData(manager);
 
             Fragment fragment = manager.findFragmentById(R.id.browser);
             if (fragment instanceof BrowserFragment) {
-                if (isBrowserForeground) {
-                    ((BrowserFragment) fragment).goForeground();
-                } else {
-                    ((BrowserFragment) fragment).goBackground();
+                setBrowserState((BrowserFragment) fragment, shouldKeepBrowserRunning(manager));
+            }
+        }
+
+        private boolean shouldKeepBrowserRunning(FragmentManager manager) {
+            int entryCount = manager.getBackStackEntryCount();
+            for (int i = entryCount - 1; i >= 0; --i) {
+                FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
+                if (getEntryType(entry) != EntryData.TYPE_FLOATING) {
+                    return false;
                 }
             }
+            return true;
+        }
+
+        private void setBrowserState(BrowserFragment browserFragment, final boolean isForeground) {
+            stateRunnable = () -> {
+                if (isForeground) {
+                    browserFragment.goForeground();
+                } else {
+                    browserFragment.goBackground();
+                }
+            };
+
+            FragmentAnimationAccessor actor = getTopAnimationAccessibleFragment();
+            Animation anim;
+            if (actor == null
+                    || ((anim = actor.getCustomEnterTransition()) == null)
+                    || anim.hasEnded()) {
+                executeStateRunnable();
+            } else {
+                anim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        executeStateRunnable();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+            }
+        }
+
+        private void executeStateRunnable() {
+            if (stateRunnable != null) {
+                stateRunnable.run();
+                stateRunnable = null;
+            }
+        }
+
+        @Nullable
+        FragmentAnimationAccessor getTopAnimationAccessibleFragment() {
+            Fragment top = TransactionHelper.this.getLatestCommitFragment();
+            if (top != null && top instanceof FragmentAnimationAccessor) {
+                return (FragmentAnimationAccessor) top;
+            }
+            return null;
         }
     }
 
