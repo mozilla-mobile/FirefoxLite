@@ -12,7 +12,9 @@ import android.support.v4.app.FragmentManager;
 
 public class TabTray {
     public static void show(FragmentManager manager) {
-        TabTrayFragment.newInstance().show(manager, TabTrayFragment.FRAGMENT_TAG);
+        if (!manager.isStateSaved()) {
+            TabTrayFragment.newInstance().show(manager, TabTrayFragment.FRAGMENT_TAG);
+        }
     }
 
     public static void dismiss(FragmentManager manager) {

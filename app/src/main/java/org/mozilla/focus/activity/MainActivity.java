@@ -668,7 +668,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if (data != null) {
                     String url = data.getStringExtra(ScreenshotViewerActivity.EXTRA_URL);
                     if (mDialogFragment != null) {
-                        mDialogFragment.dismiss();
+                        mDialogFragment.dismissAllowingStateLoss();
                     }
                     screenNavigator.showBrowserScreen(url, true, false);
                 }

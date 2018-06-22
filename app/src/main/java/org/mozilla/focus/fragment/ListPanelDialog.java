@@ -97,7 +97,7 @@ public class ListPanelDialog extends DialogFragment {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    ListPanelDialog.this.dismiss();
+                    ListPanelDialog.this.dismissAllowingStateLoss();
                 }
             }
 
@@ -109,7 +109,7 @@ public class ListPanelDialog extends DialogFragment {
         v.findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                dismissAllowingStateLoss();
             }
         });
         downloadsTouchArea = v.findViewById(R.id.downloads);
