@@ -189,14 +189,8 @@ public class ScreenNavigator implements LifecycleObserver {
 
     @Nullable
     public Fragment getTopFragment() {
-        FragmentManager manager = this.activity.getSupportFragmentManager();
-        int count = manager.getBackStackEntryCount();
-        if (count == 0) {
-            return getBrowserFragment();
-        }
-
-        String tag = this.transactionHelper.getFragmentTag(count - 1);
-        return manager.findFragmentByTag(tag);
+        Fragment latest = this.transactionHelper.getLatestCommitFragment();
+        return (latest == null) ? getBrowserFragment() : latest;
     }
 
 

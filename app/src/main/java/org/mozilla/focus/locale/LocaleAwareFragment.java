@@ -6,11 +6,17 @@
 package org.mozilla.focus.locale;
 
 import android.support.v4.app.Fragment;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import org.mozilla.focus.navigation.FragmentAnimationAccessor;
 
 import java.util.Locale;
 
-public abstract class LocaleAwareFragment extends Fragment {
+public abstract class LocaleAwareFragment extends Fragment implements FragmentAnimationAccessor {
     private Locale cachedLocale = null;
+    private Animation enterTransition;
+    private Animation exitTransition;
 
     /**
      * Is called whenever the application locale has changed. Your fragment must either update
@@ -39,5 +45,32 @@ public abstract class LocaleAwareFragment extends Fragment {
                 applyLocale();
             }
         }
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        Animation anim = null;
+        if (nextAnim != 0) {
+            anim = AnimationUtils.loadAnimation(getContext(), nextAnim);
+        }
+
+        if (enter) {
+            enterTransition = anim;
+        } else {
+            exitTransition = anim;
+        }
+
+        return anim;
+    }
+
+
+    @Override
+    public Animation getCustomEnterTransition() {
+        return enterTransition;
+    }
+
+    @Override
+    public Animation getCustomExitTransition() {
+        return exitTransition;
     }
 }
