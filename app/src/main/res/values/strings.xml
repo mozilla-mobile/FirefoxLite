@@ -269,23 +269,19 @@
     <string name="delete_file">Delete file</string>
 
     <!-- Long Screenshot -->
-    <!-- Message in the Snackbar which is shown after a successful screenshot capture. -->
+    <!-- Message that is shown for a few seconds after a successful screenshot capture. -->
     <string name="screenshot_saved">Screenshot saved</string>
-    <!-- Message in the Toast which is shown after a failed screenshot capture. -->
+    <!-- Message that is shown for a few seconds after a failed screenshot capture. -->
     <string name="screenshot_failed">Failed to capture screenshot</string>
     <!-- Message shown when screenshot is being captured. -->
     <string name="screenshot_illustration">Capturing screenshot of entire page…</string>
-    <!-- Available action in Snackbar that gives users a chance to view the captured screenshot
-    right after it is successfully captured. -->
+    <!-- The label of an action that gives users an option to view the captured screenshot. This is shown alongside the temporary message which notify users of a successful screenshot capture. -->
     <string name="screenshot_view">VIEW</string>
-    <!-- Available action in Snackbar that gives users a chance to edit the captured screenshot
-    right after it is successfully captured. -->
+    <!-- The label of an action that gives users an option to edit the captured screenshot. This is shown alongside the temporary message which notify users of a successful screenshot capture. -->
     <string name="screenshot_edit">EDIT</string>
-    <!-- Available action in Snackbar that gives users a chance to delete the captured screenshot
-    right after it is successfully captured. -->
+    <!-- The label of an action that gives users an option to delete the captured screenshot. This is shown alongside the temporary message which notify users of a successful screenshot capture. -->
     <string name="screenshot_delete">DELETE</string>
-    <!-- Available action in Snackbar that gives users a chance to share the captured screenshot
-    right after it is successfully captured. -->
+    <!-- The label of an action that gives users an option to share the captured screenshot. This is shown alongside the temporary message which notify users of a successful screenshot capture. -->
     <string name="screenshot_share">SHARE</string>
 
     <!-- Snack bar message -->
@@ -388,11 +384,11 @@
 
     <string name="survey_notification_url" translatable="false">https://qsurvey.mozilla.com/s3/Rocket-Existing-User-Survey&amp;sglocale=%1$s</string>
 
-    <!-- Snack bar message indicates there's a new tab loaded in the background -->
+    <!-- A message that is shown for a few seconds that indicates there's a new tab loaded in the background. -->
     <string name="new_background_tab_hint">New tab opened</string>
 
-    <!-- Snack bar button that switch the newly loaded background tab to the foreground -->
-    <string name="new_background_tab_switch">Switch</string>
+    <!-- The label of an action that gives users an option to switch the newly loaded background tab to the foreground. This is shown alongside the temporary message which notify users a new tab is opened. -->
+    <string name="new_background_tab_switch">SWITCH</string>
 
     <!-- Sticky notification to inform user we are in the process of changing default browser -->
     <string name="setting_default_browser_notification_title">Changing settings…</string>
@@ -411,25 +407,25 @@
     <!-- This is the description of Themeing on-boarding dialog -->
     <string name="themetoy_onboarding_description">Double click on the home background to switch themes.</string>
 
-    <!-- Message shown in a SnackBar after a bookmark is saved. -->
+    <!-- Message shown for a few seconds after a bookmark is saved. -->
     <string name="bookmark_saved">Bookmark saved</string>
-    <!-- Message shown in a Toast after a bookmark is removed. -->
+    <!-- Message shown for a few seconds after a bookmark is removed. -->
     <string name="bookmark_removed">Bookmark removed</string>
-    <!-- Optional action that is available in a SnackBar after a bookmark is saved. -->
+    <!-- An action that is shown along with bookmark_saved to give user an option to edit the saved bookmark. -->
     <string name="bookmark_saved_edit">EDIT</string>
-    <!-- Title of Bookmark editing page -->
+    <!-- Title of the bookmark editing page -->
     <string name="title_activity_edit_bookmark">Edit bookmark</string>
-    <!-- only action available to save after editing a bookmark. -->
+    <!-- The only action available in bookmark editing page. Press this label to save the edited bookmark. -->
     <string name="bookmark_edit_save">SAVE</string>
-    <!-- Edittext title of name field when editing a bookmark. -->
+    <!-- The label of the textbox where user can type the name of the bookmark -->
     <string name="bookmark_edit_name">Name</string>
-    <!-- Edittext title of url field when editing a bookmark. -->
+    <!-- The label of the textbox where user can type the url of the bookmark -->
     <string name="bookmark_edit_location">Location</string>
-    <!-- Message shown in the toast after bookmark edit is saved. -->
+    <!-- Message shown for a few seconds after bookmark edit is saved. -->
     <string name="bookmark_edit_success">Bookmark updated</string>
     <!-- Message shown in Bookmarks panel when the bookmark list is empty. -->
     <string name="bookmarks_empty_view_msg">No bookmarks</string>
-    <!-- Context menu label for editing an Bookmark item. -->
+    <!-- Label for editing a bookmark which is available next to the bookmark item. -->
     <string name="edit_bookmark">Edit</string>
 
 </resources>
