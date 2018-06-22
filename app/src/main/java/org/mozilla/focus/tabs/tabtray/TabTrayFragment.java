@@ -8,6 +8,7 @@ package org.mozilla.focus.tabs.tabtray;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -84,7 +85,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private SlideAnimationCoordinator slideCoordinator = new SlideAnimationCoordinator(this);
 
-    private Runnable dismissRunnable = this::dismiss;
+    private Runnable dismissRunnable = this::dismissAllowingStateLoss;
 
     public static TabTrayFragment newInstance() {
         return new TabTrayFragment();
@@ -265,8 +266,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void dismiss() {
-        super.dismiss();
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
         if (presenter != null) {
             presenter.tabTrayClosed();
         }
@@ -282,7 +283,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    dismiss();
+                    dismissAllowingStateLoss();
                 }
             }
 
