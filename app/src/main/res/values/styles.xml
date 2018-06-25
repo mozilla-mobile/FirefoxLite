@@ -213,4 +213,8 @@
         <item name="android:layout_width">48dp</item>
     </style>
 
+    <style name="BookmarkActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@color/bookmarkEditToolbarText</item>
+    </style>
+
 </resources>

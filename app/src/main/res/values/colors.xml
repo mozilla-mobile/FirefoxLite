@@ -9,8 +9,9 @@
     <color name="sharedColorAppPaletteWhite4">#FFF9F9FA</color>
     <color name="sharedColorAppPaletteWhite5">#FFE4E4E4</color>
     <color name="sharedColorAppPaletteMain">#FF0A84FF</color>
-    <color name="sharedColorAppPaletteMain2">#FF0A84FF</color>
+    <color name="sharedColorAppPaletteMain2">#330A84FF</color>
     <color name="sharedColorAppPaletteMain3">#FF0E86FF</color>
+    <color name="sharedColorAppPaletteMain4">#FF41B7E6</color>
     <color name="sharedColorAppPaletteBlack">#FF272727</color>
     <color name="sharedColorAppPaletteGray">#FF737373</color>
     <color name="sharedColorAppPaletteGray2">#FF757575</color>
@@ -70,7 +71,7 @@
 
     <color name="colorScreenshotViewerBackground">@color/sharedColorAppPaletteWhite4</color>
     <color name="colorScreenshotViewerToolBarBLineBorder">#62C6EE</color>
-    <color name="colorScreenshotViewerToolBarBackground">#41B7E6</color>
+    <color name="colorScreenshotViewerToolBarBackground">@color/sharedColorAppPaletteMain4</color>
     <color name="colorScreenshotViewerActionIconPressed">@color/sharedColorAppPaletteMain3</color>
     <color name="colorScreenshotViewerActionIconDisabled">#8DD3F0</color>
     <color name="colorScreenshotViewerActionIconBackgroundPressed">@color/sharedColorAppPaletteWhite2</color>
@@ -98,4 +99,7 @@
     <color name="tabTrayItemTitle">@color/sharedColorAppPaletteBlack</color>
     <color name="tabTrayItemSubTitle">@color/sharedColorAppPaletteGray</color>
     <color name="tabTrayCloseAll">@color/sharedColorAppPaletteMain</color>
+
+    <color name="bookmarkEditToolbarBackground">@color/sharedColorAppPaletteMain4</color>
+    <color name="bookmarkEditToolbarText">@color/bookmark_edit_action_text</color>
 </resources>
