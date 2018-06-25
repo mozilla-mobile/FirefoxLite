@@ -59,7 +59,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
             return;
         }
         this.prepareHomeScreen(animated, type).commit();
-        activity.getSupportFragmentManager().executePendingTransactions();
+        this.activity.getSupportFragmentManager().executePendingTransactions();
     }
 
     void showFirstRun() {
@@ -82,7 +82,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         }
 
         this.prepareUrlInput(url, sourceFragment)
-                .addToBackStack(entryDataMap.add(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
+                .addToBackStack(this.entryDataMap.add(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
                 .commit();
     }
 
@@ -91,7 +91,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
     }
 
     boolean shouldFinish() {
-        FragmentManager manager = activity.getSupportFragmentManager();
+        FragmentManager manager = this.activity.getSupportFragmentManager();
         int entryCount = manager.getBackStackEntryCount();
         if (entryCount == 0) {
             return true;
@@ -108,8 +108,8 @@ class TransactionHelper implements DefaultLifecycleObserver {
             return;
         }
         FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(size - 1);
-        if (entryDataMap.get(entry).type != type) {
-            entryDataMap.get(entry).type = type;
+        if (this.entryDataMap.get(entry).type != type) {
+            this.entryDataMap.get(entry).type = type;
         }
     }
 
@@ -119,7 +119,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     boolean popScreensUntil(@Nullable String targetEntryName) {
         boolean clearAll = (targetEntryName == null);
-        FragmentManager manager = activity.getSupportFragmentManager();
+        FragmentManager manager = this.activity.getSupportFragmentManager();
         int entryCount = manager.getBackStackEntryCount();
         boolean found = false;
         while (entryCount > 0) {
@@ -153,7 +153,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
             transaction.replace(R.id.container, fragment, FirstrunFragment.FRAGMENT_TAG)
-                    .addToBackStack(entryDataMap.add(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
+                    .addToBackStack(this.entryDataMap.add(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
         }
 
         return transaction;
@@ -169,7 +169,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         transaction.setCustomAnimations(enterAnim, 0, 0, exitAnim);
 
         transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-        transaction.addToBackStack(entryDataMap.add(HomeFragment.FRAGMENT_TAG, type));
+        transaction.addToBackStack(this.entryDataMap.add(HomeFragment.FRAGMENT_TAG, type));
 
         return transaction;
     }
@@ -192,20 +192,20 @@ class TransactionHelper implements DefaultLifecycleObserver {
     }
 
     private String getFragmentTag(int backStackIndex) {
-        FragmentManager manager = activity.getSupportFragmentManager();
+        FragmentManager manager = this.activity.getSupportFragmentManager();
         return getEntryTag(manager.getBackStackEntryAt(backStackIndex));
     }
 
     private String getEntryTag(FragmentManager.BackStackEntry entry) {
-        return entryDataMap.get(entry).tag;
+        return this.entryDataMap.get(entry).tag;
     }
 
     private @EntryData.EntryType int getEntryType(FragmentManager.BackStackEntry entry) {
-        return entryDataMap.get(entry).type;
+        return this.entryDataMap.get(entry).type;
     }
 
     private boolean isStateSaved() {
-        FragmentManager manager = activity.getSupportFragmentManager();
+        FragmentManager manager = this.activity.getSupportFragmentManager();
         return manager == null || manager.isStateSaved();
     }
 
@@ -288,9 +288,9 @@ class TransactionHelper implements DefaultLifecycleObserver {
         }
 
         private void executeStateRunnable() {
-            if (stateRunnable != null) {
-                stateRunnable.run();
-                stateRunnable = null;
+            if (this.stateRunnable != null) {
+                this.stateRunnable.run();
+                this.stateRunnable = null;
             }
         }
 
@@ -359,7 +359,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
                 String key = manager.getBackStackEntryAt(i).getName();
                 newMap.put(key, this.dataMap.get(key));
             }
-            dataMap = newMap;
+            this.dataMap = newMap;
             logData("purge");
         }
 

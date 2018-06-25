@@ -70,11 +70,10 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         if (activity == null) {
             return;
         }
-
-        this.transactionHelper = new TransactionHelper(activity);
-        this.activity.getLifecycle().addObserver(this.transactionHelper);
-
         this.activity = activity;
+        this.transactionHelper = new TransactionHelper(activity);
+
+        this.activity.getLifecycle().addObserver(this.transactionHelper);
         this.activity.getLifecycle().addObserver(this);
     }
 
