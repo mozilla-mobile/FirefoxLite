@@ -33,7 +33,7 @@
         <android.support.v7.widget.AppCompatImageView
             style="@style/ListPanelDrawable"
             android:id="@+id/bookmarks"
-            app:srcCompat="@drawable/action_add_to_home" />
+            app:srcCompat="@drawable/ic_bookmarks" />
         <android.support.v7.widget.AppCompatImageView
             style="@style/ListPanelDrawable"
             android:id="@+id/downloads"

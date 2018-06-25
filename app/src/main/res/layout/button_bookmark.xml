@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/action_bookmark"
+    app:tint="@color/ic_add_bookmark_tint"
     style="@style/MainMenuBrowsingButton"
-    android:src="@android:color/transparent" />
+    android:src="@drawable/ic_add_bookmark" />
