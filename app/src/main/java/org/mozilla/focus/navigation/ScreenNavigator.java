@@ -5,9 +5,8 @@
 
 package org.mozilla.focus.navigation;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
+import android.arch.lifecycle.DefaultLifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,7 +28,7 @@ import java.util.Arrays;
  * This class only manages the relation between fragments, and the detail of transaction was
  * handled by TransactionHelper
  */
-public class ScreenNavigator implements LifecycleObserver {
+public class ScreenNavigator implements DefaultLifecycleObserver {
     private static final String LOG_TAG = "ScreenNavigator";
     private static final boolean LOG_NAVIGATION = false;
 
@@ -71,19 +70,22 @@ public class ScreenNavigator implements LifecycleObserver {
         if (activity == null) {
             return;
         }
+
         this.transactionHelper = new TransactionHelper(activity);
+        this.activity.getLifecycle().addObserver(this.transactionHelper);
+
         this.activity = activity;
         this.activity.getLifecycle().addObserver(this);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public void registerListeners() {
+    @Override
+    public void onStart(@NonNull LifecycleOwner owner) {
         this.activity.getSupportFragmentManager()
                 .registerFragmentLifecycleCallbacks(lifecycleCallbacks, false);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    public void unregisterListeners() {
+    @Override
+    public void onStop(@NonNull LifecycleOwner owner) {
         this.activity.getSupportFragmentManager()
                 .unregisterFragmentLifecycleCallbacks(lifecycleCallbacks);
     }
