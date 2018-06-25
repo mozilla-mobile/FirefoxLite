@@ -35,10 +35,10 @@ android {
 
 dependencies {
 
-    implementation "com.google.firebase:firebase-core:${Versions.firebase}"
-    implementation "com.google.firebase:firebase-config:${Versions.firebase}"
-    api "com.google.firebase:firebase-messaging:${Versions.fcm}"
-    implementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+    firebaseImplementation "com.google.firebase:firebase-core:${Versions.firebase}"
+    firebaseImplementation "com.google.firebase:firebase-config:${Versions.firebase}"
+    firebaseApi "com.google.firebase:firebase-messaging:${Versions.fcm}"
+    firebaseImplementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
 
 }
 
