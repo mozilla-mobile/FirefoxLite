@@ -88,6 +88,7 @@ import org.mozilla.rocket.theme.ThemeManager;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         ThemeManager.ThemeHost,
@@ -654,9 +655,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
             bookmarkIcon.setActivated(false);
         } else {
-            repository.add(currentTab.getUrl(), currentTab.getTitle());
+            UUID itemId = repository.add(currentTab.getUrl(), currentTab.getTitle());
             final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class)));
+            snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
             snackbar.show();
             bookmarkIcon.setActivated(true);
         }

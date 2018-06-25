@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bookmark_edit_name"/>
     <EditText
+        android:id="@+id/bookmark_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
@@ -20,6 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bookmark_edit_location"/>
     <EditText
+        android:id="@+id/bookmark_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

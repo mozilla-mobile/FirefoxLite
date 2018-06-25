@@ -24,10 +24,11 @@ public class TempInMemoryBookmarkRepository {
         return bookmarkList.contains(new Bookmark(url));
     }
 
-    synchronized public void add(String url, String name) {
+    synchronized public UUID add(String url, String name) {
         Bookmark candidate = new Bookmark(url, name);
         bookmarkList.add(candidate);
         bookmarkMap.put(candidate.uuid, candidate);
+        return candidate.uuid;
     }
 
     synchronized public void removeSingle(UUID uuid) {
