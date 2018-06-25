@@ -13,7 +13,7 @@
 
             <View
                 style="@style/MenuButtonIcon"
-                android:background="@android:color/transparent" />
+                android:background="@drawable/ic_bookmarks" />
 
             <TextView
                 style="@style/MenuButtonText"
