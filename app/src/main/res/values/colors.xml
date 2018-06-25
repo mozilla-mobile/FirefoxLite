@@ -3,9 +3,22 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
+    <color name="sharedColorAppPaletteWhite">#FFFFFFFF</color>
+    <color name="sharedColorAppPaletteWhite2">#7FFFFFFF</color>
+    <color name="sharedColorAppPaletteWhite3">#33FFFFFF</color>
+    <color name="sharedColorAppPaletteWhite4">#FFF9F9FA</color>
+    <color name="sharedColorAppPaletteWhite5">#FFE4E4E4</color>
+    <color name="sharedColorAppPaletteMain">#FF0A84FF</color>
+    <color name="sharedColorAppPaletteMain2">#FF0A84FF</color>
+    <color name="sharedColorAppPaletteMain3">#FF0E86FF</color>
+    <color name="sharedColorAppPaletteBlack">#FF272727</color>
+    <color name="sharedColorAppPaletteGray">#FF737373</color>
+    <color name="sharedColorAppPaletteGray2">#FF757575</color>
+    <color name="sharedColorAppPaletteGray3">#FFB2B2B2</color>
+
     <color name="colorPrimary">#FF363B40</color>
     <color name="colorPrimaryDark">#6c3b6e</color>
-    <color name="colorAccent">#FF0A84FF</color>
+    <color name="colorAccent">@color/sharedColorAppPaletteMain</color>
 
     <color name="colorGradientStart">#FFA23B3F</color>
     <color name="colorGradientCenter">#FF83377B</color>
@@ -25,64 +38,64 @@
     <color name="colorInactiveGradientCenter">#FF493A50</color>
     <color name="colorInactiveGradientEnd">#FF383F53</color>
 
-    <color name="colorAutocompleteHighlight">#330A84FF</color>
+    <color name="colorAutocompleteHighlight">@color/sharedColorAppPaletteMain2</color>
 
-    <color name="colorFloatingActionButtonTint">#F9F9FA</color>
+    <color name="colorFloatingActionButtonTint">@color/sharedColorAppPaletteWhite4</color>
 
     <color name="colorUrlInputBackground">#B2000000</color>
 
-    <color name="snackbarBackground">#33FFFFFF</color>
-    <color name="snackbarTextColor">#ffffffff</color>
+    <color name="snackbarBackground">@color/sharedColorAppPaletteWhite3</color>
+    <color name="snackbarTextColor">@color/sharedColorAppPaletteWhite</color>
 
-    <color name="searchHintTextColor">#ffffffff</color>
+    <color name="searchHintTextColor">@color/sharedColorAppPaletteWhite</color>
 
-    <color name="onboarding_indicator_default">#7FFFFFFF</color>
-    <color name="onboarding_indicator_selected">#FFFFFFFF</color>
-    <color name="onboarding_text_highlight">#272727</color>
-    <color name="onboarding_text_normal">#737373</color>
+    <color name="onboarding_indicator_default">@color/sharedColorAppPaletteWhite2</color>
+    <color name="onboarding_indicator_selected">@color/sharedColorAppPaletteWhite</color>
+    <color name="onboarding_text_highlight">@color/sharedColorAppPaletteBlack</color>
+    <color name="onboarding_text_normal">@color/sharedColorAppPaletteGray</color>
 
-    <color name="colorMenuBackground">#F9F9FA</color>
-    <color name="colorMenuIconForeground">#272727</color>
-    <color name="colorMenuIconDarkForeground">#FFFFFFFF</color>
-    <color name="colorMenuLabelDefault">#737373</color>
-    <color name="colorMenuLabelActive">#0E86FF</color>
+    <color name="colorMenuBackground">@color/sharedColorAppPaletteWhite4</color>
+    <color name="colorMenuIconForeground">@color/sharedColorAppPaletteBlack</color>
+    <color name="colorMenuIconDarkForeground">@color/sharedColorAppPaletteWhite</color>
+    <color name="colorMenuLabelDefault">@color/sharedColorAppPaletteGray</color>
+    <color name="colorMenuLabelActive">@color/sharedColorAppPaletteMain3</color>
 
-    <color name="url_bg_active">#FFFFFF</color>
+    <color name="url_bg_active">@color/sharedColorAppPaletteWhite</color>
     <color name="url_bg_inactive">#EEEEEE</color>
     <color name="url_bg_disabled">#555555</color>
 
-    <color name="colorDownloadText">#272727</color>
-    <color name="colorDownloadSubText">#737373</color>
-    <color name="colorDownloadBackground">#F9F9FA</color>
+    <color name="colorDownloadText">@color/sharedColorAppPaletteBlack</color>
+    <color name="colorDownloadSubText">@color/sharedColorAppPaletteGray</color>
+    <color name="colorDownloadBackground">@color/sharedColorAppPaletteWhite4</color>
 
-    <color name="colorScreenshotViewerBackground">#F9F9FA</color>
+    <color name="colorScreenshotViewerBackground">@color/sharedColorAppPaletteWhite4</color>
     <color name="colorScreenshotViewerToolBarBLineBorder">#62C6EE</color>
     <color name="colorScreenshotViewerToolBarBackground">#41B7E6</color>
-    <color name="colorScreenshotViewerActionIconPressed">#0E86FF</color>
+    <color name="colorScreenshotViewerActionIconPressed">@color/sharedColorAppPaletteMain3</color>
     <color name="colorScreenshotViewerActionIconDisabled">#8DD3F0</color>
-    <color name="colorScreenshotViewerActionIconBackgroundPressed">#7FFFFFFF</color>
-    <color name="colorScreenshotViewerInfoDialogText">#757575</color>
+    <color name="colorScreenshotViewerActionIconBackgroundPressed">@color/sharedColorAppPaletteWhite2</color>
+    <color name="colorScreenshotViewerInfoDialogText">@color/sharedColorAppPaletteGray2</color>
     <color name="window_background_screenshot">#CC26384B</color>
-    <color name="colorScreenshotItemBorder">#B2B2B2</color>
+    <color name="colorScreenshotItemBorder">@color/sharedColorAppPaletteGray3</color>
     <color name="colorScreenshotItemBackground">#EDEDF0</color>
 
     <color name="colorUrlBarLockIcon">#12BC00</color>
-    <color name="colorSuggestionBox">#E4E4E4</color>
+    <color name="colorSuggestionBox">@color/sharedColorAppPaletteWhite5</color>
 
-    <color name="colorPromotionDialogDivider">#E4E4E4</color>
-    <color name="colorPromotionDialogSecBtn">#757575</color>
+    <color name="colorPromotionDialogDivider">@color/sharedColorAppPaletteWhite5</color>
+    <color name="colorPromotionDialogSecBtn">@color/sharedColorAppPaletteGray2</color>
 
     <color name="surveyNotificationAccent">#002275</color>
 
     <!-- Tab Tray -->
     <color name="tabTrayBackgroundTop">#2493DB</color>
     <color name="tabTrayBackgroundBottom">#63EAE8</color>
-    <color name="tabTrayForeground">#f9f9fa</color>
-    <color name="tabTrayItemBackground">@android:color/white</color>
-    <color name="tabTrayItemIconBackground">#b2b2b2</color>
-    <color name="tabTrayItemOutlineNormal">#e4e4e4</color>
-    <color name="tabTrayItemOutlineSelected">#0a84ff</color>
-    <color name="tabTrayItemTitle">#272727</color>
-    <color name="tabTrayItemSubTitle">#737373</color>
-    <color name="tabTrayCloseAll">#0a84ff</color>
+    <color name="tabTrayForeground">@color/sharedColorAppPaletteWhite4</color>
+    <color name="tabTrayItemBackground">@color/sharedColorAppPaletteWhite</color>
+    <color name="tabTrayItemIconBackground">@color/sharedColorAppPaletteGray3</color>
+    <color name="tabTrayItemOutlineNormal">@color/sharedColorAppPaletteWhite5</color>
+    <color name="tabTrayItemOutlineSelected">@color/sharedColorAppPaletteMain</color>
+    <color name="tabTrayItemTitle">@color/sharedColorAppPaletteBlack</color>
+    <color name="tabTrayItemSubTitle">@color/sharedColorAppPaletteGray</color>
+    <color name="tabTrayCloseAll">@color/sharedColorAppPaletteMain</color>
 </resources>
