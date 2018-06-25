@@ -45,8 +45,8 @@ public class TempInMemoryBookmarkRepository {
     }
 
     // Remove duplicates as well
-    synchronized public void removeAll(UUID uuid) {
-        Bookmark target = bookmarkMap.get(uuid);
+    synchronized public void removeAll(String url) {
+        Bookmark target = new Bookmark(url);
         int indexOfItemToRemove = bookmarkList.indexOf(target);
         while (indexOfItemToRemove != -1) {
             Bookmark candidate = bookmarkList.get(indexOfItemToRemove);
