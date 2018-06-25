@@ -409,6 +409,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setEnable(bookmarkIcon, browserFragment != null);
         setEnable(shareButton, browserFragment != null);
         setEnable(pinShortcut, browserFragment != null);
+        Tab current = getTabsSession().getFocusTab();
+        if (current == null) {
+            return;
+        }
+        boolean activateBookmark = TempInMemoryBookmarkRepository.getInstance().hasUrl(current.getUrl());
+        bookmarkIcon.setActivated(activateBookmark);
     }
 
     private boolean isTurboEnabled() {
@@ -642,12 +648,18 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (currentTab == null) {
             return;
         }
-        TempInMemoryBookmarkRepository.getInstance().add(currentTab.getUrl(), currentTab.getTitle());
-        List<TempInMemoryBookmarkRepository.Bookmark> list = TempInMemoryBookmarkRepository.getInstance().list();
-        TempInMemoryBookmarkRepository.Bookmark item = list.get(list.size() -1);
-        final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class)));
-        snackbar.show();
+        TempInMemoryBookmarkRepository repository = TempInMemoryBookmarkRepository.getInstance();
+        if (bookmarkIcon.isActivated()) {
+            repository.removeAll(currentTab.getUrl());
+            Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
+            bookmarkIcon.setActivated(false);
+        } else {
+            repository.add(currentTab.getUrl(), currentTab.getTitle());
+            final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class)));
+            snackbar.show();
+            bookmarkIcon.setActivated(true);
+        }
     }
 
     private void onNextClicked(final BrowserFragment browserFragment) {
