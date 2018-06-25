@@ -23,6 +23,7 @@ import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ class TransactionHelper {
 
     TransactionHelper(@NonNull MainActivity activity) {
         this.activity = activity;
-        this.activity.getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener());
+        this.activity.getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener(this));
     }
 
     void showHomeScreen(boolean animated, @EntryData.EntryType int type) {
@@ -193,33 +194,55 @@ class TransactionHelper {
         return manager == null || manager.isStateSaved();
     }
 
-    private class BackStackListener implements FragmentManager.OnBackStackChangedListener {
+    private static class BackStackListener implements FragmentManager.OnBackStackChangedListener {
         private Runnable stateRunnable;
+        private WeakReference<TransactionHelper> helperRef;
+
+        BackStackListener(TransactionHelper helper) {
+            this.helperRef = new WeakReference<>(helper);
+        }
 
         @Override
         public void onBackStackChanged() {
-            FragmentManager manager = activity.getSupportFragmentManager();
-            entryDataMap.refreshData(manager);
+            TransactionHelper helper = this.helperRef.get();
+            if (helper == null) {
+                return;
+            }
+
+            FragmentManager manager = helper.activity.getSupportFragmentManager();
+            helper.entryDataMap.refreshData(manager);
 
             Fragment fragment = manager.findFragmentById(R.id.browser);
             if (fragment instanceof BrowserFragment) {
-                setBrowserState((BrowserFragment) fragment, shouldKeepBrowserRunning(manager));
+                setBrowserState(shouldKeepBrowserRunning(manager));
             }
         }
 
         private boolean shouldKeepBrowserRunning(FragmentManager manager) {
+            TransactionHelper helper = this.helperRef.get();
+            if (helper == null) {
+                return false;
+            }
+
             int entryCount = manager.getBackStackEntryCount();
             for (int i = entryCount - 1; i >= 0; --i) {
                 FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(i);
-                if (getEntryType(entry) != EntryData.TYPE_FLOATING) {
+                if (helper.getEntryType(entry) != EntryData.TYPE_FLOATING) {
                     return false;
                 }
             }
             return true;
         }
 
-        private void setBrowserState(BrowserFragment browserFragment, final boolean isForeground) {
-            stateRunnable = () -> {
+        private void setBrowserState(boolean isForeground) {
+            this.stateRunnable = () -> {
+                TransactionHelper helper = this.helperRef.get();
+                if (helper == null) {
+                    return;
+                }
+
+                FragmentManager manager = helper.activity.getSupportFragmentManager();
+                BrowserFragment browserFragment = (BrowserFragment) manager.findFragmentById(R.id.browser);
                 if (isForeground) {
                     browserFragment.goForeground();
                 } else {
@@ -258,7 +281,12 @@ class TransactionHelper {
 
         @Nullable
         FragmentAnimationAccessor getTopAnimationAccessibleFragment() {
-            Fragment top = TransactionHelper.this.getLatestCommitFragment();
+            TransactionHelper helper = this.helperRef.get();
+            if (helper == null) {
+                return null;
+            }
+
+            Fragment top = helper.getLatestCommitFragment();
             if (top != null && top instanceof FragmentAnimationAccessor) {
                 return (FragmentAnimationAccessor) top;
             }
