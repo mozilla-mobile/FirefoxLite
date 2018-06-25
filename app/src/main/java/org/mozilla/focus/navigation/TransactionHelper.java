@@ -5,6 +5,8 @@
 
 package org.mozilla.focus.navigation;
 
+import android.arch.lifecycle.DefaultLifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,16 +29,29 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-class TransactionHelper {
+class TransactionHelper implements DefaultLifecycleObserver {
     private static final String TAG = "TransactionHelper";
 
     private EntryDataMap entryDataMap = new EntryDataMap();
 
     private final MainActivity activity;
+    private final BackStackListener backStackListener;
 
     TransactionHelper(@NonNull MainActivity activity) {
         this.activity = activity;
-        this.activity.getSupportFragmentManager().addOnBackStackChangedListener(new BackStackListener(this));
+        this.backStackListener = new BackStackListener(this);
+    }
+
+    @Override
+    public void onStart(@NonNull LifecycleOwner owner) {
+        this.activity.getSupportFragmentManager()
+                .addOnBackStackChangedListener(this.backStackListener);
+    }
+
+    @Override
+    public void onStop(@NonNull LifecycleOwner owner) {
+        this.activity.getSupportFragmentManager()
+                .removeOnBackStackChangedListener(this.backStackListener);
     }
 
     void showHomeScreen(boolean animated, @EntryData.EntryType int type) {
