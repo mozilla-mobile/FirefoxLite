@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/browsing_history_empty_view_container"
+        android:id="@+id/empty_view_container"
         android:layout_width="match_parent"
         android:layout_height="250dp">
 
@@ -31,4 +31,10 @@
             android:textSize="14sp"
             android:textStyle="italic" />
     </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:nestedScrollingEnabled="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

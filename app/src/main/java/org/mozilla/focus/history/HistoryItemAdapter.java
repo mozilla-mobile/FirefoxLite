@@ -19,12 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.fragment.PanelFragmentStatusListener;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.QueryHandler;
+import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.FragmentListener;
 
@@ -47,17 +49,13 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List mItems = new ArrayList();
     private RecyclerView mRecyclerView;
     private Context mContext;
-    private HistoryListener mHistoryListener;
+    private ItemClosingPanelFragmentStatusListener mHistoryListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
     private int mCurrentCount;
 
-    interface HistoryListener extends PanelFragmentStatusListener {
-        void onItemClicked();
-    }
-
-    public HistoryItemAdapter(RecyclerView recyclerView, Context context, HistoryListener historyListener) {
+    public HistoryItemAdapter(RecyclerView recyclerView, Context context, ItemClosingPanelFragmentStatusListener historyListener) {
         mRecyclerView = recyclerView;
         mContext = context;
         mHistoryListener = historyListener;
@@ -258,23 +256,6 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         cal1.setTimeInMillis(day1);
         cal2.setTimeInMillis(day2);
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-    }
-
-    private static class SiteItemViewHolder extends RecyclerView.ViewHolder {
-
-        private ViewGroup rootView;
-        private ImageView imgFav;
-        private TextView textMain, textSecondary;
-        private FrameLayout btnMore;
-
-        public SiteItemViewHolder(View itemView) {
-            super(itemView);
-            rootView = (ViewGroup) itemView.findViewById(R.id.history_item_root_view);
-            imgFav = (ImageView) itemView.findViewById(R.id.history_item_img_fav);
-            textMain = (TextView) itemView.findViewById(R.id.history_item_text_main);
-            textSecondary = (TextView) itemView.findViewById(R.id.history_item_text_secondary);
-            btnMore = (FrameLayout) itemView.findViewById(R.id.history_item_btn_more);
-        }
     }
 
     private static class DateItemViewHolder extends RecyclerView.ViewHolder {

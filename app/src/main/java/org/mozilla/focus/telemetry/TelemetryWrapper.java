@@ -641,8 +641,24 @@ public final class TelemetryWrapper {
         new EventBuilder(Category.ACTION, Method.REMOVE, Object.PANEL, Value.LINK).queue();
     }
 
+    public static void bookmarkRemoveItem() {
+        new EventBuilder(Category.ACTION, Method.REMOVE, Object.PANEL, Value.BOOKMARK).queue();
+    }
+
+    public static void bookmarkEditItem() {
+        new EventBuilder(Category.ACTION, Method.EDIT, Object.PANEL, Value.BOOKMARK).queue();
+    }
+
+    public static void bookmarkOpenItem() {
+        new EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.BOOKMARK).queue();
+    }
+
     public static void showHistoryContextMenu() {
         new EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.HISTORY).queue();
+    }
+
+    public static void showBookmarkContextMenu() {
+        new EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.BOOKMARK).queue();
     }
 
     public static void clearHistory() {

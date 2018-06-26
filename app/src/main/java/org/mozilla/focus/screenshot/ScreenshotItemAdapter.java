@@ -44,17 +44,13 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private Activity mActivity;
-    private StatusListener mStatusListener;
+    private PanelFragmentStatusListener mStatusListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
     private int mCurrentCount;
 
-    interface StatusListener extends PanelFragmentStatusListener {
-
-    }
-
-    public ScreenshotItemAdapter(RecyclerView recyclerView, Activity activity, StatusListener statusListener, GridLayoutManager layoutManager) {
+    public ScreenshotItemAdapter(RecyclerView recyclerView, Activity activity, PanelFragmentStatusListener statusListener, GridLayoutManager layoutManager) {
         mRecyclerView = recyclerView;
         mActivity = activity;
         mStatusListener = statusListener;
