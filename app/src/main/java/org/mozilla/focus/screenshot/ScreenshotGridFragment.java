@@ -21,9 +21,10 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.PanelFragment;
+import org.mozilla.focus.fragment.PanelFragmentStatusListener;
 
 
-public class ScreenshotGridFragment extends PanelFragment implements ScreenshotItemAdapter.StatusListener {
+public class ScreenshotGridFragment extends PanelFragment implements PanelFragmentStatusListener {
 
     private RecyclerView mContainerRecyclerView;
     private ViewGroup mContainerEmptyView;

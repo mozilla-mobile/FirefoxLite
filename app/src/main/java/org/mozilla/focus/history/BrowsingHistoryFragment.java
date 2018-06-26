@@ -16,13 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.FragmentListener;
 
 
-public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, HistoryItemAdapter.HistoryListener {
+public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, ItemClosingPanelFragmentStatusListener {
 
     private RecyclerView mRecyclerView;
     private ViewGroup mContainerEmptyView, mContainerRecyclerView;
