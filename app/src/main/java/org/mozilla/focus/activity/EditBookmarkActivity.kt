@@ -27,12 +27,41 @@ class EditBookmarkActivity : AppCompatActivity() {
     private val bookmark: TempInMemoryBookmarkRepository.Bookmark by lazy { TempInMemoryBookmarkRepository.getInstance().get(itemId) }
     private val name: EditText by lazy { findViewById<EditText>(R.id.bookmark_name) }
     private val location: EditText by lazy { findViewById<EditText>(R.id.bookmark_location) }
-    private val originalName: String by lazy { name.text.toString() }
-    private val originalLocation: String by lazy { location.text.toString() }
+    private val originalName: String by lazy { bookmark.name }
+    private val originalLocation: String by lazy { bookmark.address }
     private lateinit var save: MenuItem
     private var nameChanged: Boolean = false
     private var locationChanged: Boolean = false
     private var locationEmpty: Boolean = false
+    private val nameWatcher: TextWatcher = object: TextWatcher {
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            nameChanged = s.toString() != originalName
+            setupSave()
+        }
+    }
+    private val locationWatcher: TextWatcher = object: TextWatcher {
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            locationChanged = s.toString() != originalLocation
+            locationEmpty = TextUtils.isEmpty(s)
+            setupSave()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,48 +73,30 @@ class EditBookmarkActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(drawable)
         name.setText(bookmark.name)
         location.setText(bookmark.address)
-        name.addTextChangedListener(object: TextWatcher {
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        name.addTextChangedListener(nameWatcher)
+        location.addTextChangedListener(locationWatcher)
+    }
 
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                nameChanged = s.toString() != originalName
-                save.isEnabled = saveValid()
-            }
-        })
-        location.addTextChangedListener(object: TextWatcher {
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                locationChanged = s.toString() != originalLocation
-                locationEmpty = TextUtils.isEmpty(s)
-                save.isEnabled = saveValid()
-            }
-        })
-        // Lazy init
-        originalName
-        originalLocation
+    override fun onDestroy() {
+        name.removeTextChangedListener(nameWatcher)
+        location.removeTextChangedListener(locationWatcher)
+        super.onDestroy()
     }
 
     fun saveValid(): Boolean {
         return !locationEmpty && (nameChanged || locationChanged)
     }
 
+    fun setupSave() {
+        if (::save.isInitialized) {
+            save.isEnabled = saveValid()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         save = menu.add(Menu.NONE, SAVE_ACTION_ID, Menu.NONE, R.string.bookmark_edit_save)
         save.setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS)
-        save.isEnabled = false
+        setupSave()
         return true
     }
 
