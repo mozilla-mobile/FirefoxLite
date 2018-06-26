@@ -8,43 +8,45 @@
     android:layout_height="match_parent"
     android:id="@+id/container">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/main_content"
-        android:background="@color/colorMenuBackground"
-        android:paddingBottom="49dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="300dp"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="48dp"
-        android:layout_gravity="bottom"
-        android:background="@color/colorListPanelBottomDivider"/>
-    <org.mozilla.focus.widget.EqualDistributeRow
-        android:background="@color/colorMenuBackground"
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:paddingStart="50dp"
-        android:paddingEnd="50dp">
-        <android.support.v7.widget.AppCompatImageView
-            style="@style/ListPanelDrawable"
-            android:id="@+id/bookmarks"
-            app:srcCompat="@drawable/ic_bookmarks" />
-        <android.support.v7.widget.AppCompatImageView
-            style="@style/ListPanelDrawable"
-            android:id="@+id/downloads"
-            app:srcCompat="@drawable/menu_download" />
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/history"
-            style="@style/ListPanelDrawable"
-            app:srcCompat="@drawable/menu_history" />
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/screenshots"
-            style="@style/ListPanelDrawable"
-            app:srcCompat="@drawable/menu_my_shots" />
-    </org.mozilla.focus.widget.EqualDistributeRow>
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/main_content"
+            android:background="@color/colorMenuBackground"
+            android:paddingBottom="49dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="300dp" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="48dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorListPanelBottomDivider"/>
+        <org.mozilla.focus.widget.EqualDistributeRow
+            android:id="@+id/panel_bottom"
+            android:background="@color/colorMenuBackground"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp">
+            <android.support.v7.widget.AppCompatImageView
+                style="@style/ListPanelDrawable"
+                android:id="@+id/bookmarks"
+                app:srcCompat="@drawable/ic_bookmarks" />
+            <android.support.v7.widget.AppCompatImageView
+                style="@style/ListPanelDrawable"
+                android:id="@+id/downloads"
+                app:srcCompat="@drawable/menu_download" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/history"
+                style="@style/ListPanelDrawable"
+                app:srcCompat="@drawable/menu_history" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/screenshots"
+                style="@style/ListPanelDrawable"
+                app:srcCompat="@drawable/menu_my_shots" />
+        </org.mozilla.focus.widget.EqualDistributeRow>
 </android.support.design.widget.CoordinatorLayout>

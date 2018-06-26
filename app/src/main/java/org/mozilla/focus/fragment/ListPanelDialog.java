@@ -33,7 +33,10 @@ public class ListPanelDialog extends DialogFragment {
     private View downloadsTouchArea;
     private View historyTouchArea;
     private View screenshotsTouchArea;
+    private View divider;
+    private View panelBottom;
     private boolean firstLaunch = true;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     public static ListPanelDialog newInstance(int type) {
         ListPanelDialog listPanelDialog = new ListPanelDialog();
@@ -80,9 +83,13 @@ public class ListPanelDialog extends DialogFragment {
                 }
             }
         });
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(scrollView);
+        bottomSheetBehavior = BottomSheetBehavior.from(scrollView);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+
+            private float translationY = Integer.MIN_VALUE;
+            private int collapseHeight = -1;
+
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
@@ -92,7 +99,20 @@ public class ListPanelDialog extends DialogFragment {
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                float translationY = 0;
 
+                if (slideOffset < 0) {
+                    if (collapseHeight < 0) {
+                        collapseHeight = bottomSheetBehavior.getPeekHeight();
+                    }
+                    translationY = collapseHeight * -slideOffset;
+                }
+
+                if (Float.compare(this.translationY, translationY) != 0) {
+                    this.translationY = translationY;
+                    divider.setTranslationY(translationY);
+                    panelBottom.setTranslationY(translationY);
+                }
             }
         });
         v.findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
@@ -101,6 +121,8 @@ public class ListPanelDialog extends DialogFragment {
                 dismissAllowingStateLoss();
             }
         });
+        divider = v.findViewById(R.id.divider);
+        panelBottom = v.findViewById(R.id.panel_bottom);
         bookmarksTouchArea = v.findViewById(R.id.bookmarks);
         bookmarksTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
