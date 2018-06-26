@@ -6,10 +6,17 @@
 package org.mozilla.focus.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-public abstract class PanelFragment extends Fragment {
+public abstract class PanelFragment extends Fragment implements PanelFragmentStatusListener {
+
+    @IntDef({VIEW_TYPE_EMPTY, VIEW_TYPE_NON_EMPTY, ON_OPENING})
+    public @interface ViewStatus {}
+    public static final int VIEW_TYPE_EMPTY = 0;
+    public static final int VIEW_TYPE_NON_EMPTY = 1;
+    public static final int ON_OPENING = 2;
 
     protected void closePanel() {
         ((ListPanelDialog) getParentFragment()).dismiss();
@@ -25,4 +32,5 @@ public abstract class PanelFragment extends Fragment {
 
     public abstract void tryLoadMore();
 
+    public abstract void onStatus(@ViewStatus int status);
 }

@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.PanelFragment;
+import org.mozilla.focus.fragment.PanelFragmentStatusListener;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
@@ -51,9 +53,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean mIsLastPage;
     private int mCurrentCount;
 
-    public interface HistoryListener {
-        void onStatus(int status);
-
+    interface HistoryListener extends PanelFragmentStatusListener {
         void onItemClicked();
     }
 
@@ -234,7 +234,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         BrowsingHistoryManager.getInstance().query(mCurrentCount, PAGE_SIZE - (mCurrentCount % PAGE_SIZE), this);
     }
 
-    private void notifyStatusListener(int status) {
+    private void notifyStatusListener(@PanelFragment.ViewStatus int status) {
         if (mHistoryListener != null) {
             mHistoryListener.onStatus(status);
         }

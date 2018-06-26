@@ -25,9 +25,6 @@ import org.mozilla.focus.fragment.PanelFragment;
 
 public class ScreenshotGridFragment extends PanelFragment implements ScreenshotItemAdapter.StatusListener {
 
-    public static final int VIEW_TYPE_EMPTY = 0;
-    public static final int VIEW_TYPE_NON_EMPTY = 1;
-    public static final int ON_OPENING = 2;
     private RecyclerView mContainerRecyclerView;
     private ViewGroup mContainerEmptyView;
     private ScreenshotItemAdapter mAdapter;
@@ -74,7 +71,7 @@ public class ScreenshotGridFragment extends PanelFragment implements ScreenshotI
     }
 
     @Override
-    public void onStatus(int status) {
+    public void onStatus(@ViewStatus int status) {
         if (VIEW_TYPE_EMPTY == status) {
             mContainerRecyclerView.setVisibility(View.GONE);
             mContainerEmptyView.setVisibility(View.VISIBLE);
