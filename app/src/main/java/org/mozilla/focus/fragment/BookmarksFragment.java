@@ -31,4 +31,9 @@ public class BookmarksFragment extends PanelFragment {
     public void tryLoadMore() {
 
     }
+
+    @Override
+    public void onStatus(int status) {
+        // Do nothing for now
+    }
 }

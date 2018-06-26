@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.fragment.PanelFragment;
+import org.mozilla.focus.fragment.PanelFragmentStatusListener;
 import org.mozilla.focus.glide.GlideApp;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.provider.QueryHandler;
@@ -48,8 +50,8 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private boolean mIsLastPage;
     private int mCurrentCount;
 
-    public interface StatusListener {
-        void onStatus(int status);
+    interface StatusListener extends PanelFragmentStatusListener {
+
     }
 
     public ScreenshotItemAdapter(RecyclerView recyclerView, Activity activity, StatusListener statusListener, GridLayoutManager layoutManager) {
@@ -210,7 +212,7 @@ public class ScreenshotItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ScreenshotManager.getInstance().query(mCurrentCount, PAGE_SIZE - (mCurrentCount % PAGE_SIZE), this);
     }
 
-    private void notifyStatusListener(int status) {
+    private void notifyStatusListener(@PanelFragment.ViewStatus int status) {
         if (mStatusListener != null) {
             mStatusListener.onStatus(status);
         }

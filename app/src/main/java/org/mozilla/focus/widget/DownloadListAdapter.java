@@ -25,6 +25,7 @@ import android.widget.Toast;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
+import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.ThreadUtils;
@@ -46,9 +47,6 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final List<String> SPECIFIC_FILE_EXTENSION
             = Arrays.asList("apk", "zip", "gz", "tar", "7z", "rar", "war");
     private List<DownloadInfo> mDownloadInfo;
-    private static final int VIEW_TYPE_EMPTY = 0;
-    private static final int VIEW_TYPE_NON_EMPTY = 1;
-    private static final int ON_OPENING = 2;
     private static final int PAGE_SIZE = 20;
     private Context mContext;
     private int mItemCount = 0;
@@ -201,12 +199,12 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemViewType(int position) {
         if (isOpening) {
-            return ON_OPENING;
+            return PanelFragment.ON_OPENING;
         } else {
             if (mDownloadInfo.isEmpty()) {
-                return VIEW_TYPE_EMPTY;
+                return PanelFragment.VIEW_TYPE_EMPTY;
             } else {
-                return VIEW_TYPE_NON_EMPTY;
+                return PanelFragment.VIEW_TYPE_NON_EMPTY;
             }
         }
     }
@@ -215,10 +213,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView;
-        if (VIEW_TYPE_NON_EMPTY == viewType) {
+        if (PanelFragment.VIEW_TYPE_NON_EMPTY == viewType) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_menu_cell, parent, false);
             return new DownloadViewHolder(itemView);
-        } else if (ON_OPENING == viewType) {
+        } else if (PanelFragment.ON_OPENING == viewType) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.download_empty, parent, false);
             return new OnOpeningViewHolder(itemView);
 

@@ -24,9 +24,6 @@ import org.mozilla.focus.widget.FragmentListener;
 
 public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, HistoryItemAdapter.HistoryListener {
 
-    public static final int VIEW_TYPE_EMPTY = 0;
-    public static final int VIEW_TYPE_NON_EMPTY = 1;
-    public static final int ON_OPENING = 2;
     private RecyclerView mRecyclerView;
     private ViewGroup mContainerEmptyView, mContainerRecyclerView;
     private HistoryItemAdapter mAdapter;
@@ -85,7 +82,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     }
 
     @Override
-    public void onStatus(int status) {
+    public void onStatus(@ViewStatus int status) {
         if (VIEW_TYPE_EMPTY == status) {
             mContainerRecyclerView.setVisibility(View.GONE);
             mContainerEmptyView.setVisibility(View.VISIBLE);

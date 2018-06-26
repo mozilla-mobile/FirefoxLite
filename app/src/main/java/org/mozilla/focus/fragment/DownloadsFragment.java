@@ -81,6 +81,13 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
         }
     }
 
+    // TODO: 6/26/18 Currently DownloadsFragment handles everything in RecyclerView so it does
+    // nothing here. This is planned to be changed.
+    @Override
+    public void onStatus(int status) {
+        // Do nothing.
+    }
+
     @Override
     public void onResume() {
         super.onResume();
