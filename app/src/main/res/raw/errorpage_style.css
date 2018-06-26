@@ -10,10 +10,8 @@ body {
 }
 
 body {
-  /* background-size: 64px 32px; */
-  background-repeat: repeat-x;
 
-  background-color: #272727;
+  background: linear-gradient(to bottom, #363959 0%, #0F1126 100%);
   padding: 0 20px;
 
   font-weight: 300;
@@ -47,8 +45,8 @@ ul {
 h1.errorTitleText {
   margin: 0;
   text-align: center;
-  font-size: 25px;
-  color: #2AEEC1;
+  font-size: 14pt;
+  color: #00C8D7;
 }
 
 #errorTitle {
@@ -76,9 +74,9 @@ button {
   border: none;
   padding: 1rem;
   font-family: sans-serif;
-  background-color: #00A4DC;
+  background-color: #0A84FF;
   color: #FFFFFF;
-  border-radius: 2px;
+  border-radius: 4px;
   background-image: none;
   margin: auto;
 }
