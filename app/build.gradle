@@ -220,6 +220,8 @@ dependencies {
     implementation "com.android.support:cardview-v7:${Versions.support}"
     implementation "com.android.support:recyclerview-v7:${Versions.support}"
 
+    // Architecture components
+    implementation "android.arch.lifecycle:extensions:${Versions.lifecycle}"
     implementation "android.arch.lifecycle:common-java8:${Versions.lifecycle}"
     implementation "android.arch.persistence.room:runtime:${Versions.room}"
     kapt "android.arch.persistence.room:compiler:${Versions.room}"
@@ -250,6 +252,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:${Versions.uiautomator}"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
     androidTestImplementation "android.arch.persistence.room:testing:${Versions.room}"
+    androidTestImplementation "android.arch.core:core-testing:${Versions.arch_core}"
     androidTestImplementation("com.android.support.test.espresso:espresso-contrib:${Versions.espresso}", {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
