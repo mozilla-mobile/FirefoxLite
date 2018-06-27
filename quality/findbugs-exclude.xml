@@ -12,6 +12,11 @@
         <Class name="~.*\.*Test"/>
     </Match>
     <Match>
+        <Class name="~.*?Dao_Impl.*" />
+        <Method name="finalize" />
+        <Bug pattern="FI_MISSING_SUPER_CALL" />
+    </Match>
+    <Match>
         <Class name="org.mozilla.focus.glide.GlideOptions"/>
     </Match>
     <Match>
