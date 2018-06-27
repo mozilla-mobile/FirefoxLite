@@ -128,7 +128,10 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
                 }
 
                 line = total.toString();
-            } catch (IOException e) {
+            } catch (IOException | IndexOutOfBoundsException ignored) {
+                // IndexOutOfBoundsException sometimes is thrown by the okhttp library
+                // bundled within the android framework, we can only catch the exception here,
+                // or use the latest okhttp3.
             } finally {
                 if (r != null) {
                     try {
