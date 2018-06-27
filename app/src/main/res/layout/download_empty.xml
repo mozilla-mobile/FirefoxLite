@@ -2,29 +2,16 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:layout_gravity="top"
-    android:background="@color/colorMenuBackground"
-    android:orientation="vertical">
+<RelativeLayout style="@style/PanelEmptyHolderContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/download_empty" />
+<ImageView
+    style="@style/PanelEmptyHolderImage"
+    android:src="@drawable/download_empty"
+    tools:ignore="ContentDescription" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/img"
-        android:layout_centerHorizontal="true"
-        android:text="@string/no_downloads"
-        android:textColor="@color/colorDownloadSubText"
-        android:textSize="14sp"
-        android:textStyle="italic"
-        android:layout_marginTop="10dp"/>
-
+<TextView
+    android:text="@string/no_downloads"
+    style="@style/PanelEmptyHolderText"/>
 </RelativeLayout>

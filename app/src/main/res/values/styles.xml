@@ -179,4 +179,29 @@
         <item name="actionMenuTextColor">@color/bookmarkEditToolbarText</item>
     </style>
 
+    <style name="PanelEmptyHolderContainer">
+        <item name="android:id">@id/empty_view_container</item>
+        <item name="android:layout_width">match_parent</item>
+        <!-- To make is center, 300 (peekheight) - 48 - 48 = 204dp (left space) - 48 (top) = 156dp-->
+        <item name="android:layout_height">156dp</item>
+    </style>
+
+    <style name="PanelEmptyHolderImage">
+        <item name="android:id">@id/empty_view_image</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="PanelEmptyHolderText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_below">@id/empty_view_image</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textColor">@color/colorDownloadSubText</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

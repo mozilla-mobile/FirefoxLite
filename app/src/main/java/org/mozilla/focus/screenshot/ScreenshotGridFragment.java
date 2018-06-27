@@ -40,7 +40,7 @@ public class ScreenshotGridFragment extends PanelFragment implements PanelFragme
         View v = inflater.inflate(R.layout.fragment_screenshot_grid, container, false);
 
         mContainerRecyclerView = (RecyclerView) v.findViewById(R.id.screenshot_grid_recycler_view);
-        mContainerEmptyView = (ViewGroup) v.findViewById(R.id.screenshot_grid_empty_view_container);
+        mContainerEmptyView = (ViewGroup) v.findViewById(R.id.empty_view_container);
 
         TextView emptyText = (TextView) v.findViewById(R.id.screenshot_grid_empty_text);
         Drawable drawable = getResources().getDrawable(R.drawable.action_capture, null).mutate();

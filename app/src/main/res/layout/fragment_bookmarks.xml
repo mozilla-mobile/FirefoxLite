@@ -3,33 +3,22 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/browsing_history_btm_sheet_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/empty_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="250dp">
+        style="@style/PanelEmptyHolderContainer">
 
         <ImageView
-            android:id="@+id/browsing_history_empty_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_illustration_no_bookmarks" />
+            style="@style/PanelEmptyHolderImage"
+            android:src="@drawable/ic_illustration_no_bookmarks"
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/browsing_history_empty_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
             android:text="@string/bookmarks_empty_view_msg"
-            android:textColor="@color/colorDownloadSubText"
-            android:textSize="14sp"
-            android:textStyle="italic" />
+            style="@style/PanelEmptyHolderText"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

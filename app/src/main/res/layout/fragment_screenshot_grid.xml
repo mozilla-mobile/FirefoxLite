@@ -14,10 +14,7 @@
         android:nestedScrollingEnabled="false" />
 
     <RelativeLayout
-        android:id="@+id/screenshot_grid_empty_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:visibility="gone">
+        style="@style/PanelEmptyHolderContainer">
 
         <LinearLayout
             android:layout_width="match_parent"

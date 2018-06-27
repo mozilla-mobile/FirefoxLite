@@ -40,7 +40,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
         v.findViewById(R.id.browsing_history_btn_clear).setOnClickListener(this);
 
         mContainerRecyclerView = (ViewGroup) v.findViewById(R.id.browsing_history_recycler_view_container);
-        mContainerEmptyView = (ViewGroup) v.findViewById(R.id.browsing_history_empty_view_container);
+        mContainerEmptyView = (ViewGroup) v.findViewById(R.id.empty_view_container);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.browsing_history_recycler_view);
         return v;
     }
