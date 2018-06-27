@@ -9,6 +9,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 
 import org.mozilla.focus.Inject;
+import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
@@ -16,10 +17,12 @@ import org.mozilla.focus.utils.Settings;
 public class BeforeTestTask {
     private boolean enableRateAppPromotion;
     private boolean skipFirstRun;
+    private boolean clearBrowsingHistory;
 
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
         this.skipFirstRun = builder.skipFirstRun;
+        this.clearBrowsingHistory = builder.clearBrowsingHistory;
     }
 
     public void execute() {
@@ -40,6 +43,10 @@ public class BeforeTestTask {
                 settings.setRateAppDialogDidShow();
             }
         }
+        if (this.clearBrowsingHistory) {
+            //TODO: should consider using IdlingResource for DB operation or in-memory DB
+            BrowsingHistoryManager.getInstance().deleteAll(null);
+        }
 
         Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
         AndroidTestUtils.setFocusTabId("");
@@ -50,10 +57,12 @@ public class BeforeTestTask {
 
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
+        private boolean clearBrowsingHistory;
 
         public Builder() {
             this.enableRateAppPromotion = false;
             this.skipFirstRun = true;
+            this.clearBrowsingHistory = false;
         }
 
         public Builder setRateAppPromotionEnabled(boolean enable) {
@@ -63,6 +72,11 @@ public class BeforeTestTask {
 
         public Builder setSkipFirstRun(boolean skipFirstRun) {
             this.skipFirstRun = skipFirstRun;
+            return this;
+        }
+
+        public Builder clearBrowsingHistory() {
+            this.clearBrowsingHistory = true;
             return this;
         }
 
