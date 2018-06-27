@@ -14,6 +14,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
@@ -35,6 +36,7 @@ public class ListPanelDialog extends DialogFragment {
     private View screenshotsTouchArea;
     private View divider;
     private View panelBottom;
+    private TextView title;
     private boolean firstLaunch = true;
     private BottomSheetBehavior bottomSheetBehavior;
 
@@ -62,6 +64,8 @@ public class ListPanelDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_listpanel_dialog, container, false);
+        title = v.findViewById(R.id.title);
+        View bottomsheet = v.findViewById(R.id.bottom_sheet);
         scrollView = (NestedScrollView) v.findViewById(R.id.main_content);
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
 
@@ -83,7 +87,7 @@ public class ListPanelDialog extends DialogFragment {
                 }
             }
         });
-        bottomSheetBehavior = BottomSheetBehavior.from(scrollView);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
 
@@ -165,8 +169,23 @@ public class ListPanelDialog extends DialogFragment {
 
     private void showItem(int type) {
         if (firstLaunch || getArguments().getInt(TYPE) != type) {
+            title.setText(getTitle(type));
             setSelectedItem(type);
             showPanelFragment(createFragmentByType(type));
+        }
+    }
+
+    private int getTitle(int type) {
+        switch (type) {
+            default:
+            case TYPE_DOWNLOADS:
+                return R.string.label_menu_download;
+            case TYPE_HISTORY:
+                return R.string.label_menu_history;
+            case TYPE_SCREENSHOTS:
+                return R.string.label_menu_my_shots;
+            case TYPE_BOOKMARKS:
+                return R.string.label_menu_bookmark;
         }
     }
 

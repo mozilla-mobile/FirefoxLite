@@ -7,16 +7,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container">
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/main_content"
-            android:background="@color/colorMenuBackground"
-            android:paddingBottom="49dp"
+        <FrameLayout
+            android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorMenuBackground"
             app:layout_behavior="@string/bottom_sheet_behavior"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="300dp" />
+            app:behavior_peekHeight="300dp">
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/main_content"
+                android:paddingBottom="49dp"
+                android:layout_marginTop="48dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/title"
+                android:textColor="@color/sharedColorAppPaletteBlack"
+                android:textSize="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top" />
+        </FrameLayout>
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
