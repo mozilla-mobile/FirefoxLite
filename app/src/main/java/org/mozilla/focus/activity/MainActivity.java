@@ -7,6 +7,7 @@ package org.mozilla.focus.activity;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -47,7 +48,9 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.notification.RocketMessagingService;
+import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabModel;
+import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.Tab;
@@ -74,6 +77,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
@@ -82,13 +86,11 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
-import org.mozilla.rocket.temp.TempInMemoryBookmarkRepository;
 import org.mozilla.rocket.theme.ThemeManager;
 
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
         ThemeManager.ThemeHost,
@@ -122,6 +124,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     private static final String LOG_TAG = "MainActivity";
 
+    private BookmarkViewModel bookmarkViewModel;
 
     private ThemeManager themeManager;
 
@@ -196,6 +199,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
             PromotionPresenter.runPromotion(this, promotionModel);
         }
+
+        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
+                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)));
+
+        bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
     }
 
     private void initBroadcastReceivers() {
@@ -406,8 +414,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (current == null) {
             return;
         }
-        boolean activateBookmark = TempInMemoryBookmarkRepository.getInstance().hasUrl(current.getUrl());
-        bookmarkIcon.setActivated(activateBookmark);
+
+        bookmarkViewModel.getBookmarksByUrl(current.getUrl()).observe(this, bookmarks -> {
+            boolean activateBookmark = bookmarks != null && bookmarks.size() > 0;
+            bookmarkIcon.setActivated(activateBookmark);
+        });
     }
 
     private boolean isTurboEnabled() {
@@ -641,13 +652,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (currentTab == null) {
             return;
         }
-        TempInMemoryBookmarkRepository repository = TempInMemoryBookmarkRepository.getInstance();
         if (bookmarkIcon.isActivated()) {
-            repository.removeAll(currentTab.getUrl());
+            bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
             bookmarkIcon.setActivated(false);
         } else {
-            UUID itemId = repository.add(currentTab.getUrl(), currentTab.getTitle());
+            final String itemId = bookmarkViewModel.addBookmark(currentTab.getTitle(), currentTab.getUrl());
             final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
             snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
             snackbar.show();
