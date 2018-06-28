@@ -26,6 +26,7 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +40,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
     private AsyncTask queryTask;
 
-    public UrlInputPresenter(@NonNull SearchEngine searchEngine, String userAgent) {
+    UrlInputPresenter(@NonNull SearchEngine searchEngine, String userAgent) {
         this.searchEngine = searchEngine;
         this.userAgent = userAgent;
     }
@@ -116,30 +117,15 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
             String line = "";
             HttpURLConnection urlConnection = null;
-            BufferedReader r = null;
+
             try {
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestProperty("User-Agent", userAgent);
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                r = new BufferedReader(new InputStreamReader(in, "utf-8"));
-                StringBuilder total = new StringBuilder();
-                while ((line = r.readLine()) != null) {
-                    total.append(line).append('\n');
-                }
 
-                line = total.toString();
-            } catch (IOException | IndexOutOfBoundsException ignored) {
-                // IndexOutOfBoundsException sometimes is thrown by the okhttp library
-                // bundled within the android framework, we can only catch the exception here,
-                // or use the latest okhttp3.
+                line = readLines(urlConnection);
+            } catch (IOException ignored) {
+
             } finally {
-                if (r != null) {
-                    try {
-                        r.close();
-                    } catch (Exception e) {
-                        ;
-                    }
-                }
                 if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
@@ -155,13 +141,11 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
                 JSONArray suggestions = response.getJSONArray(1);
                 int size = suggestions.length();
                 suggests = new ArrayList<>(size);
-                try {
-                    for (int i = 0; i < Math.min(size, MAX_SUGGESTION_COUNT); i++) {
-                        suggests.add(suggestions.getString(i));
-                    }
-                } catch (JSONException e) {
+
+                for (int i = 0; i < Math.min(size, MAX_SUGGESTION_COUNT); i++) {
+                    suggests.add(suggestions.getString(i));
                 }
-            } catch (JSONException e) {
+            } catch (JSONException ignored) {
             } finally {
                 if (suggests == null) {
                     suggests = Collections.emptyList();
@@ -169,6 +153,33 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
             }
 
             return suggests;
+        }
+
+        private static String readLines(URLConnection connection) throws IOException {
+            InputStream inputStream;
+            try {
+                inputStream = connection.getInputStream();
+            } catch (IndexOutOfBoundsException ignored) {
+                // IndexOutOfBoundsException sometimes is thrown by the okHttp library
+                // bundled within the android framework, we can only catch the exception here,
+                // or use the latest okHttp3.
+                return "";
+            }
+
+            StringBuilder total = new StringBuilder();
+            try (BufferedReader bufferedReader = createReader(inputStream)) {
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    total.append(line).append('\n');
+                }
+            }
+
+            return total.toString();
+        }
+
+        private static BufferedReader createReader(InputStream stream) throws IOException {
+            InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream), "utf-8");
+            return new BufferedReader(reader);
         }
     }
 }
