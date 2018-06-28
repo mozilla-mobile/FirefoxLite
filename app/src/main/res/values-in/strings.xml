@@ -73,6 +73,7 @@
   <string name="firstrun_close_button">Oke, paham</string>
   <string name="firstrun_skip_button">Lewati</string>
   <string name="firstrun_next_button">Lanjut</string>
+  <string name="label_menu_bookmark">Markah</string>
   <string name="label_menu_download">Unduhan</string>
   <string name="label_menu_clear_cache">Bersihkan tembolok</string>
   <string name="label_menu_history">Riwayat</string>
@@ -179,10 +180,22 @@
   <string name="survey_notification_title">Kami membutuhkan Anda! %1$s</string>
   <string name="survey_notification_description">Wujudkan produk lebih baik bagi Indonesia</string>
   <string name="new_background_tab_hint">Tab baru dibuka</string>
-  <string name="new_background_tab_switch">Tukar</string>
+  <string name="new_background_tab_switch">PINDAH</string>
   <string name="setting_default_browser_notification_title">Mengubah setelan…</string>
   <string name="setting_default_browser_notification_text">Mungkin memerlukan beberapa waktu</string>
   <string name="setting_default_browser_notification_clickable_text">Atur sebagai peramban baku</string>
   <string name="tab_tray_close_tabs_btn_text">Tutup semua</string>
   <string name="tab_tray_close_tabs_dialog_msg">Tutup semua tab?</string>
+  <string name="themetoy_onboarding_title">Warnai hidup Anda!</string>
+  <string name="themetoy_onboarding_description">Ketuk dua kali pada latar beranda untuk mengganti tema.</string>
+  <string name="bookmark_saved">Markah tersimpan</string>
+  <string name="bookmark_removed">Markah dihapus</string>
+  <string name="bookmark_saved_edit">EDIT</string>
+  <string name="title_activity_edit_bookmark">Ubah markah</string>
+  <string name="bookmark_edit_save">SIMPAN</string>
+  <string name="bookmark_edit_name">Nama</string>
+  <string name="bookmark_edit_location">Lokasi</string>
+  <string name="bookmark_edit_success">Markah diperbarui</string>
+  <string name="bookmarks_empty_view_msg">Tidak ada markah</string>
+  <string name="edit_bookmark">Ubah</string>
 </resources>
