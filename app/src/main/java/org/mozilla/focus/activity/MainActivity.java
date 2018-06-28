@@ -113,7 +113,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private ScreenNavigator screenNavigator;
 
-    private boolean safeForFragmentTransactions = false;
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
@@ -253,17 +252,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        safeForFragmentTransactions = true;
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
 
-        safeForFragmentTransactions = false;
         TelemetryWrapper.stopSession();
 
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -751,7 +743,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public void onBackPressed() {
-        if (!safeForFragmentTransactions) {
+        if (getSupportFragmentManager().isStateSaved()) {
             return;
         }
 
@@ -791,7 +783,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 this.updateMenu();
                 break;
             case SHOW_URL_INPUT:
-                if (!safeForFragmentTransactions) {
+                if (getSupportFragmentManager().isStateSaved()) {
                     return;
                 }
                 final String url = (payload != null) ? payload.toString() : null;
@@ -924,8 +916,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         isTabRestoredComplete = true;
         getTabsSession().restoreTabs(tabModelList, currentTabId);
         Tab currentTab = getTabsSession().getFocusTab();
-        if (currentTab != null && safeForFragmentTransactions) {
-            screenNavigator.restoreBrowserScreen(currentTab.getId());
+        if (currentTab != null) {
+            screenNavigator.restoreBrowserScreen(currentTab.getId(), !getSupportFragmentManager().isStateSaved());
         }
     }
 

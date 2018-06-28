@@ -113,11 +113,13 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         getBrowserFragment().loadUrl(url, withNewTab, isFromExternal, () -> raiseBrowserScreen(true));
     }
 
-    public void restoreBrowserScreen(@NonNull String tabId) {
+    public void restoreBrowserScreen(@NonNull String tabId, boolean raiseToTop) {
         logMethod();
 
         getBrowserFragment().loadTab(tabId);
-        raiseBrowserScreen(false);
+        if (raiseToTop) {
+            raiseBrowserScreen(false);
+        }
     }
 
     /**
