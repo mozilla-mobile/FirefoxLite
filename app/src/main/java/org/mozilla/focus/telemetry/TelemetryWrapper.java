@@ -67,6 +67,7 @@ public final class TelemetryWrapper {
         static final String CANCEL = "cancel";
         static final String LONG_PRESS = "long_press";
         static final String CHANGE = "change";
+        static final String RESET = "reset";
         static final String CLEAR = "clear";
         static final String REMOVE = "remove";
         static final String DELETE = "delete";
@@ -111,6 +112,7 @@ public final class TelemetryWrapper {
         static final String FEEDBACK = "feedback";
         static final String DEFAULT_BROWSER = "default_browser";
         static final String PROMOTE_SHARE = "promote_share";
+        static final String THEMETOY = "themetoy";
     }
 
     public static class Value {
@@ -176,6 +178,7 @@ public final class TelemetryWrapper {
         public static final String CONTEXTUAL_HINTS = "contextual_hints";
         public static final String NOTIFICATION = "notification";
         static final String TEXT_SELECTION = "text_selection";
+        static final String DEFAULT = "default";
     }
 
     public static boolean isTelemetryEnabled(Context context) {
@@ -753,6 +756,18 @@ public final class TelemetryWrapper {
 
     public static void showPromoteShareDialog() {
         new EventBuilder(Category.ACTION, Method.SHOW, Object.PROMOTE_SHARE).queue();
+    }
+
+    public static void changeThemeTo(String themeName) {
+        new EventBuilder(Category.ACTION, Method.CHANGE, Object.THEMETOY)
+                .extra(Extra.TO, themeName)
+                .queue();
+    }
+
+    public static void resetThemeToDefault() {
+        new EventBuilder(Category.ACTION, Method.RESET, Object.THEMETOY)
+                .extra(Extra.TO, Extra_Value.DEFAULT)
+                .queue();
     }
 
     static class EventBuilder {
