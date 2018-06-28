@@ -8,6 +8,7 @@ package org.mozilla.focus.telemetry;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.webkit.PermissionRequest;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.provider.ScreenshotContract;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.Browsers;
@@ -28,6 +30,7 @@ import org.mozilla.telemetry.config.TelemetryConfiguration;
 import org.mozilla.telemetry.event.TelemetryEvent;
 import org.mozilla.telemetry.measurement.DefaultSearchMeasurement;
 import org.mozilla.telemetry.measurement.SearchesMeasurement;
+import org.mozilla.telemetry.measurement.TelemetryMeasurement;
 import org.mozilla.telemetry.net.HttpURLConnectionTelemetryClient;
 import org.mozilla.telemetry.net.TelemetryClient;
 import org.mozilla.telemetry.ping.TelemetryCorePingBuilder;
@@ -225,7 +228,7 @@ public final class TelemetryWrapper {
             final TelemetryScheduler scheduler = new JobSchedulerTelemetryScheduler();
 
             TelemetryHolder.set(new Telemetry(configuration, storage, client, scheduler)
-                    .addPingBuilder(new TelemetryCorePingBuilder(configuration))
+                    .addPingBuilder(new CustomCorePingBuilder(configuration))
                     .addPingBuilder(new TelemetryEventPingBuilder(configuration))
                     .setDefaultSearchProvider(createDefaultSearchProvider(context)));
         } finally {
@@ -814,6 +817,45 @@ public final class TelemetryWrapper {
 
             FirebaseEvent.setPrefKeyWhitelist(prefKeyWhitelist);
 
+        }
+    }
+
+    private static class CustomCorePingBuilder extends TelemetryCorePingBuilder {
+
+        public CustomCorePingBuilder(TelemetryConfiguration configuration) {
+            super(configuration);
+
+            addMeasurement(new CaptureCountMeasurement(configuration.getContext()));
+        }
+    }
+
+    private static final class CaptureCountMeasurement extends TelemetryMeasurement {
+
+        private static final String MEASUREMENT_CAPTURE_COUNT = "capture_count";
+
+        private final Context context;
+
+        CaptureCountMeasurement(Context context) {
+            super(MEASUREMENT_CAPTURE_COUNT);
+            this.context = context;
+        }
+
+        @Override
+        public java.lang.Object flush() {
+            int captureCount;
+            if ("main".equals(Thread.currentThread().getName())) {
+                throw new RuntimeException("Call from main thread exception");
+            }
+            try (Cursor cursor = context.getContentResolver().query(ScreenshotContract.Screenshot.CONTENT_URI, null, null, null, null)) {
+                if (cursor != null) {
+                    captureCount = cursor.getCount();
+                } else {
+                    captureCount = 0;
+                }
+            } catch (Exception e) {
+                captureCount = -1;
+            }
+            return captureCount;
         }
     }
 }
