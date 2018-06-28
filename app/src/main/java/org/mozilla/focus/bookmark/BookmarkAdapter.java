@@ -1,7 +1,5 @@
 package org.mozilla.focus.bookmark;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -10,24 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.EditBookmarkActivity;
-import org.mozilla.focus.activity.EditBookmarkActivityKt;
-import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
-import org.mozilla.focus.navigation.ScreenNavigator;
+import org.mozilla.focus.fragment.PanelFragmentStatusListener;
+import org.mozilla.focus.persistence.BookmarkModel;
 import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.rocket.temp.TempInMemoryBookmarkRepository;
 
-import java.util.UUID;
+import java.util.List;
 
 public class BookmarkAdapter extends RecyclerView.Adapter<SiteItemViewHolder> {
-    private ItemClosingPanelFragmentStatusListener listener;
-    private Context context;
+    private List<BookmarkModel> bookmarkModels;
+    private BookmarkPanelListener listener;
 
-    public BookmarkAdapter(Context context, ItemClosingPanelFragmentStatusListener listener) {
+    public BookmarkAdapter(List<BookmarkModel> bookmarkModels, BookmarkPanelListener listener) {
+        this.bookmarkModels = bookmarkModels;
         this.listener = listener;
-        this.context = context;
     }
 
     @NonNull
@@ -39,30 +34,29 @@ public class BookmarkAdapter extends RecyclerView.Adapter<SiteItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SiteItemViewHolder holder, int position) {
-        TempInMemoryBookmarkRepository.Bookmark item = TempInMemoryBookmarkRepository.getInstance().list().get(position);
-        holder.rootView.setTag(item.getUuid());
-        holder.textMain.setText(item.getName());
-        holder.textSecondary.setText(item.getAddress());
+        final BookmarkModel item = getItem(position);
+        if (item == null) {
+            return;
+        }
+
+        holder.rootView.setTag(item.getId());
+        holder.textMain.setText(item.getTitle());
+        holder.textSecondary.setText(item.getUrl());
         holder.rootView.setOnClickListener(v -> {
-            ScreenNavigator.get(context).showBrowserScreen(item.getAddress(), true, false);
-            listener.onItemClicked();
-            TelemetryWrapper.bookmarkOpenItem();
+            listener.onItemClicked(item.getUrl());
         });
-        final PopupMenu popupMenu = new PopupMenu(context, holder.btnMore);
-        popupMenu.setOnMenuItemClickListener( menuItem -> {
+        final PopupMenu popupMenu = new PopupMenu(holder.btnMore.getContext(), holder.btnMore);
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
             if (menuItem.getItemId() == R.id.remove) {
-                TempInMemoryBookmarkRepository.getInstance().removeSingle((UUID) holder.rootView.getTag());
-                notifyDataSetChanged();
-                TelemetryWrapper.bookmarkRemoveItem();
+                listener.onItemDeleted(item);
             }
             if (menuItem.getItemId() == R.id.edit) {
-                context.startActivity(new Intent(context, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, item.getUuid()));
-                TelemetryWrapper.bookmarkEditItem();
+                listener.onItemEdited(item);
             }
             return false;
         });
         popupMenu.inflate(R.menu.menu_bookmarks);
-        holder.btnMore.setOnClickListener( v -> {
+        holder.btnMore.setOnClickListener(v -> {
             popupMenu.show();
             TelemetryWrapper.showBookmarkContextMenu();
         });
@@ -70,12 +64,32 @@ public class BookmarkAdapter extends RecyclerView.Adapter<SiteItemViewHolder> {
 
     @Override
     public int getItemCount() {
-        int count = TempInMemoryBookmarkRepository.getInstance().list().size();
-        if (count == 0) {
+        return (bookmarkModels != null ? bookmarkModels.size() : 0);
+    }
+
+    public void setData(List<BookmarkModel> bookmarkModels) {
+        this.bookmarkModels = bookmarkModels;
+        if (getItemCount() == 0) {
             listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY);
         } else {
             listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY);
         }
-        return count;
+        notifyDataSetChanged();
+    }
+
+    private BookmarkModel getItem(int index) {
+        if (index >= 0 && bookmarkModels != null && bookmarkModels.size() > index) {
+            return bookmarkModels.get(index);
+        } else {
+            return null;
+        }
+    }
+
+    public interface BookmarkPanelListener extends PanelFragmentStatusListener {
+        void onItemClicked(String url);
+
+        void onItemDeleted(BookmarkModel bookmark);
+
+        void onItemEdited(BookmarkModel bookmark);
     }
 }

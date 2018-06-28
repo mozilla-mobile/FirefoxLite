@@ -5,7 +5,10 @@
 
 package org.mozilla.focus.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,16 +16,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.EditBookmarkActivity;
+import org.mozilla.focus.activity.EditBookmarkActivityKt;
 import org.mozilla.focus.bookmark.BookmarkAdapter;
-import org.mozilla.focus.history.HistoryItemAdapter;
+import org.mozilla.focus.navigation.ScreenNavigator;
+import org.mozilla.focus.persistence.BookmarkModel;
+import org.mozilla.focus.persistence.BookmarksDatabase;
+import org.mozilla.focus.repository.BookmarkRepository;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.viewmodel.BookmarkViewModel;
 
 import javax.annotation.Nonnull;
 
 
-public class BookmarksFragment extends PanelFragment implements ItemClosingPanelFragmentStatusListener {
+public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.BookmarkPanelListener {
     private RecyclerView recyclerView;
     private View emptyView;
-    private BookmarkAdapter mAdapter;
+    private BookmarkAdapter adapter;
+    private BookmarkViewModel viewModel;
 
     public static BookmarksFragment newInstance() {
         return new BookmarksFragment();
@@ -38,12 +49,25 @@ public class BookmarksFragment extends PanelFragment implements ItemClosingPanel
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new BookmarkAdapter(getContext(), this);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(layoutManager);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
+                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(getActivity())));
+
+        viewModel = ViewModelProviders.of(getActivity(), factory)
+                .get(BookmarkViewModel.class);
+        viewModel.getBookmarks().observe(this, bookmarks -> {
+            if (adapter != null) {
+                adapter.setData(bookmarks);
+            } else {
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                adapter = new BookmarkAdapter(bookmarks, BookmarksFragment.this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(layoutManager);
+            }
+        });
+
         onStatus(VIEW_TYPE_NON_EMPTY);
     }
 
@@ -67,7 +91,21 @@ public class BookmarksFragment extends PanelFragment implements ItemClosingPanel
     }
 
     @Override
-    public void onItemClicked() {
+    public void onItemClicked(String url) {
+        ScreenNavigator.get(getContext()).showBrowserScreen(url, true, false);
         closePanel();
+        TelemetryWrapper.bookmarkOpenItem();
+    }
+
+    @Override
+    public void onItemDeleted(BookmarkModel bookmark) {
+        viewModel.deleteBookmark(bookmark);
+        TelemetryWrapper.bookmarkRemoveItem();
+    }
+
+    @Override
+    public void onItemEdited(BookmarkModel bookmark) {
+        startActivity(new Intent(getContext(), EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, bookmark.getId()));
+        TelemetryWrapper.bookmarkEditItem();
     }
 }
