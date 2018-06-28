@@ -1,21 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
-   - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-
-    <path
-        android:fillColor="#272727"
-        android:fillType="evenOdd"
-        android:pathData="M19 18h-0.153l-4.826-4.607 2.033-2.032L20 14.927V17a1 1 0 0 1-1 1zM5 18a1 1 0 0
-1-1-1v-0.586l5.026-5.025L15.951 18H5zM5 6h14a1 1 0 0 1 1
-1v5.231l-3.026-2.733a1.497 1.497 0 0 0-1.997 0.111 l-2.402
-2.402-2.554-2.438c-0.109-0.098-0.237-0.157-0.363-0.217a1.465 1.465 0 0 0-1.509 0.143
-c-0.063 0.046 -0.135 0.072 -0.191 0.129 L4 13.586V7a1 1 0 0 1 1-1zm0.002-2A3.002 3.002
-0 0 0 2 7.002v9.996A3.002 3.002 0 0 0 5.002 20h13.996A3.002 3.002 0 0 0 22
-16.998V7.002A3.002 3.002 0 0 0 18.998 4H5.002z" />
+  <path
+      android:pathData="M4,4.5h16c0.8,0 1.5,0.7 1.5,1.5v12c0,0.8 -0.7,1.5 -1.5,1.5H4c-0.8,0 -1.5,-0.7 -1.5,-1.5V6C2.5,5.2 3.2,4.5 4,4.5z"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#000000"/>
+  <path
+      android:pathData="M2.5,18.5l4.8,-5.8c0.2,-0.2 0.6,-0.2 0.9,0c0,0 0,0 0,0l2.2,2.3c0.2,0.2 0.6,0.2 0.9,0c0,0 0,0 0,0l4,-5c0.2,-0.2 0.6,-0.2 0.9,0c0,0 0,0 0,0l5.7,5.7"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#000000"/>
 </vector>
