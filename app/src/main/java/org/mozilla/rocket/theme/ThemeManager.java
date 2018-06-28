@@ -27,7 +27,7 @@ public class ThemeManager {
         ThemeManager getThemeManager();
     }
 
-    enum ThemeSet {
+    public enum ThemeSet {
         Default(R.style.ThemeToyDefault),
 
         CatalinaBlue(R.style.ThemeToy01),
@@ -110,13 +110,15 @@ public class ThemeManager {
         }
     }
 
-    public void toggleNextTheme() {
+    public ThemeSet toggleNextTheme() {
         final ThemeSet currentTheme = loadCurrentTheme(getSharedPreferences(baseContext));
         final ThemeSet nextTheme = findNextTheme(currentTheme);
 
         setCurrentTheme(nextTheme);
 
         notifyThemeChange();
+
+        return nextTheme;
     }
 
     private void notifyThemeChange() {

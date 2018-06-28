@@ -494,12 +494,18 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public void onLongPress() {
-            doWithActivity(getActivity(), ThemeManager::resetDefaultTheme);
+            doWithActivity(getActivity(), (themeManager) -> {
+                themeManager.resetDefaultTheme();
+                TelemetryWrapper.resetThemeToDefault();
+            });
         }
 
         @Override
         public boolean onDoubleTap() {
-            doWithActivity(getActivity(), ThemeManager::toggleNextTheme);
+            doWithActivity(getActivity(), (themeManager) -> {
+                ThemeManager.ThemeSet themeSet = themeManager.toggleNextTheme();
+                TelemetryWrapper.changeThemeTo(themeSet.name());
+            });
             return true;
         }
 
