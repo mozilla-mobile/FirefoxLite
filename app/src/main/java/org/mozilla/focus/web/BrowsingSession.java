@@ -21,8 +21,6 @@ import java.lang.ref.WeakReference;
 public class BrowsingSession {
     private static BrowsingSession instance;
 
-    private final static boolean ENABLE_CUSTOM_TABS = false;
-
     public interface TrackingCountListener {
         void onTrackingCountChanged(int trackingCount);
     }
@@ -37,15 +35,8 @@ public class BrowsingSession {
     private int blockedTrackers;
     private WeakReference<TrackingCountListener> listenerWeakReference;
 
-    @Nullable
-    private CustomTabConfig customTabConfig;
-
     private BrowsingSession() {
         listenerWeakReference = new WeakReference<>(null);
-    }
-
-    public void clearCustomTabConfig() {
-        customTabConfig = null;
     }
 
     public void countBlockedTracker() {
@@ -57,38 +48,7 @@ public class BrowsingSession {
         }
     }
 
-    public void setTrackingCountListener(TrackingCountListener listener) {
-        listenerWeakReference = new WeakReference<>(listener);
-        listener.onTrackingCountChanged(blockedTrackers);
-    }
-
     public void resetTrackerCount() {
         blockedTrackers = 0;
-    }
-
-    public void loadCustomTabConfig(final @NonNull Context context, final @NonNull SafeIntent intent) {
-        if (ENABLE_CUSTOM_TABS && CustomTabConfig.isCustomTabIntent(intent)) {
-            customTabConfig = CustomTabConfig.parseCustomTabIntent(context, intent);
-        } else {
-            customTabConfig = null;
-        }
-    }
-
-    public boolean isCustomTab() {
-        //noinspection ConstantConditions
-        return (ENABLE_CUSTOM_TABS && customTabConfig != null);
-    }
-
-    @NonNull
-    public CustomTabConfig getCustomTabConfig() {
-        if (!isCustomTab()) {
-            throw new IllegalStateException("Can't retrieve custom tab config for normal browsing session");
-        }
-
-        if (customTabConfig == null) {
-            throw new IllegalStateException("Is loading custom tabs page, but configuration is not parsed yet");
-        }
-
-        return customTabConfig;
     }
 }

@@ -80,7 +80,6 @@ import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
-import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
@@ -389,12 +388,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         siteIdentity = (ImageView) view.findViewById(R.id.site_identity);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
-
-        if (BrowsingSession.getInstance().isCustomTab()) {
-            initialiseCustomTabUi(view);
-        } else {
-            initialiseNormalBrowserUi();
-        }
+        initialiseNormalBrowserUi();
 
         webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
 
@@ -473,69 +467,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private void initialiseNormalBrowserUi() {
         urlView.setOnClickListener(this);
-    }
-
-    private void initialiseCustomTabUi(final @NonNull View view) {
-        final CustomTabConfig customTabConfig = BrowsingSession.getInstance().getCustomTabConfig();
-
-        final int textColor;
-
-        final View toolbar = view.findViewById(R.id.urlbar);
-        if (customTabConfig.toolbarColor != null) {
-            toolbar.setBackgroundColor(customTabConfig.toolbarColor);
-
-            textColor = ColorUtils.getReadableTextColor(customTabConfig.toolbarColor);
-            urlView.setTextColor(textColor);
-        } else {
-            textColor = Color.WHITE;
-        }
-
-        final ImageView closeButton = (ImageView) view.findViewById(R.id.customtab_close);
-
-        closeButton.setVisibility(View.VISIBLE);
-        closeButton.setOnClickListener(this);
-
-        if (customTabConfig.closeButtonIcon != null) {
-            closeButton.setImageBitmap(customTabConfig.closeButtonIcon);
-        } else {
-            // Always set the icon in case it's been overridden by a previous CT invocation
-            final Drawable closeIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_close, textColor);
-
-            closeButton.setImageDrawable(closeIcon);
-        }
-
-        if (customTabConfig.disableUrlbarHiding) {
-            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-            params.setScrollFlags(0);
-        }
-
-        if (customTabConfig.actionButtonConfig != null) {
-            final ImageButton actionButton = (ImageButton) view.findViewById(R.id.customtab_actionbutton);
-            actionButton.setVisibility(View.VISIBLE);
-
-            actionButton.setImageBitmap(customTabConfig.actionButtonConfig.icon);
-            actionButton.setContentDescription(customTabConfig.actionButtonConfig.description);
-
-            final PendingIntent pendingIntent = customTabConfig.actionButtonConfig.pendingIntent;
-
-            actionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        final Intent intent = new Intent();
-                        intent.setData(Uri.parse(getUrl()));
-
-                        pendingIntent.send(getContext(), 0, intent);
-                    } catch (PendingIntent.CanceledException e) {
-                        // There's really nothing we can do here...
-                    }
-                }
-            });
-        }
-
-        // We need to tint some icons.. We already tinted the close button above. Let's tint our other icons too.
-        final Drawable tintedIcon = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.ic_lock, textColor);
-        siteIdentity.setImageDrawable(tintedIcon);
     }
 
     @Override
@@ -859,10 +790,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             case R.id.btn_capture:
                 onCaptureClicked();
                 TelemetryWrapper.clickToolbarCapture();
-                break;
-            case R.id.customtab_close:
-                BrowsingSession.getInstance().clearCustomTabConfig();
-                getActivity().finishAndRemoveTask();
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
