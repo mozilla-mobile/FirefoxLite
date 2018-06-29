@@ -20,8 +20,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<SiteItemViewHolder> {
     private List<BookmarkModel> bookmarkModels;
     private BookmarkPanelListener listener;
 
-    public BookmarkAdapter(List<BookmarkModel> bookmarkModels, BookmarkPanelListener listener) {
-        this.bookmarkModels = bookmarkModels;
+    public BookmarkAdapter(BookmarkPanelListener listener) {
         this.listener = listener;
     }
 

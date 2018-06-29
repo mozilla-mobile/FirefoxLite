@@ -657,6 +657,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
             bookmarkIcon.setActivated(false);
         } else {
+            if (TextUtils.isEmpty(currentTab.getUrl())) {
+                //TODO: Edge case - should add a hint for failing to add the bookmark
+                return;
+            }
             final String itemId = bookmarkViewModel.addBookmark(currentTab.getTitle(), currentTab.getUrl());
             final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
             snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
