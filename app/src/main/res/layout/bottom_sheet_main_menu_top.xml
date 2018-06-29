@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/fixed_menu_height"
+    android:layout_gravity="center_horizontal|bottom">
+
+    <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/favicon_initial_text_size"
+        android:layout_marginStart="@dimen/favicon_initial_text_size"
+        android:weightSum="3">
+
+        <FrameLayout
+            android:id="@+id/menu_turbomode"
+            style="@style/MenuButtonContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                style="@style/MenuButtonGroup"
+                android:orientation="horizontal"
+                android:paddingTop="0dp">
+
+                <View
+                    style="@style/MenuToggleIcon"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/menu_speedmode" />
+
+                <TextView
+                    style="@style/MenuToggleText"
+                    android:text="@string/label_menu_turbo_mode" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/menu_blockimg"
+            style="@style/MenuButtonContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <!--todo: the FrameLayout and LinearLayout can actually be merged now, but we' re
+            going to do this later since this is an uplift commit.-->
+            <LinearLayout
+                style="@style/MenuButtonGroup"
+                android:orientation="horizontal"
+                android:paddingTop="0dp">
+
+                <View
+                    style="@style/MenuToggleIcon"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/menu_blockimg" />
+
+                <TextView
+                    style="@style/MenuToggleText"
+                    android:text="@string/label_menu_block_image" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/menu_nightmode"
+            style="@style/MenuButtonContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                style="@style/MenuButtonGroup"
+                android:orientation="horizontal"
+                android:paddingTop="0dp">
+
+                <View
+                    style="@style/MenuToggleIcon"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/menu_nightmode" />
+
+                <TextView
+                    style="@style/MenuToggleText"
+                    android:text="@string/label_menu_night_mode" />
+            </LinearLayout>
+        </FrameLayout>
+
+
+    </org.mozilla.focus.widget.EqualDistributeRow>
+</FrameLayout>

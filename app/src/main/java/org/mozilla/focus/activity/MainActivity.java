@@ -513,6 +513,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case R.id.action_bookmark:
             case R.id.action_share:
             case R.id.action_pin_shortcut:
+            case R.id.menu_readermode:
+            case R.id.menu_nightmode:
                 onMenuBrowsingItemClicked(v);
                 break;
             default:
@@ -570,6 +572,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
         switch (v.getId()) {
+            case R.id.menu_nightmode:
+                Toast.makeText(this, "Comming soon!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_readermode:
+                browserFragment.loadReaderModePage();
+                break;
             case R.id.action_next:
                 onNextClicked(browserFragment);
                 TelemetryWrapper.clickToolbarForward();

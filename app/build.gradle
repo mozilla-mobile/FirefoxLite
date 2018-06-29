@@ -337,6 +337,16 @@ android.applicationVariants.all { variant ->
         buildConfigField 'String', 'ADJUST_TOKEN', 'null'
         println("Not setting adjust token (Not a focus release build)")
     }
+
+    def pocket_api_key = System.getenv("POCKET_API_KEY") ?: null
+    if (pocket_api_key != null) {
+        buildConfigField 'String', 'POCKET_API_KEY', '"' + pocket_api_key + '"'
+        println "Added pocket api key set from environment variable"
+    } else {
+        buildConfigField 'String', 'POCKET_API_KEY', 'null'
+        println("Not setting pocket api key (environment variable not set)")
+    }
+
     if (variant.buildType.name == "release" || variant.buildType.name == "beta"|| variant.buildType.name == "firebase") {
         variant.assemble.doFirst {
             if (SystemEnv.google_app_id == null || SystemEnv.default_web_client_id == null ||

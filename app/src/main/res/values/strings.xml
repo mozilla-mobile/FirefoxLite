@@ -191,11 +191,13 @@
     <string name="label_menu_bookmark">Bookmarks</string>
     <string name="label_menu_download">Downloads</string>
     <string name="label_menu_clear_cache">Clear cache</string>
+    <string name="label_menu_reader_mode">Reader mode</string>
     <string name="label_menu_history">History</string>
     <string name="label_menu_share">Share</string>
     <string name="label_menu_my_shots">My shots</string>
     <string name="label_menu_capture_page">Capture page</string>
     <string name="label_menu_turbo_mode">Turbo mode</string>
+    <string name="label_menu_night_mode">Night mode</string>
     <string name="label_menu_block_ads">Block Ads</string>
     <string name="label_menu_block_image">Block images</string>
     <string name="label_menu_settings">Settings</string>

@@ -23,7 +23,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.TrafficStats;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -33,6 +35,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.net.TrafficStatsCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -52,7 +55,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.util.StrictModeUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.download.EnqueueDownloadTask;
@@ -76,18 +86,31 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.ColorUtils;
 import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FileChooseAction;
+import org.mozilla.focus.utils.HtmlLoader;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.CustomTabConfig;
 import org.mozilla.focus.web.Download;
+import org.mozilla.focus.webkit.WebkitView;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
@@ -833,6 +856,36 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
     }
 
+    public void loadReaderModePage(){
+        if (TextUtils.isEmpty(BuildConfig.POCKET_API_KEY)) {
+            Toast.makeText(getContext(), "Not supported yet!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        Tab tab = tabsSession.getFocusTab();
+        new AsyncTask<String, Void, String[]>() {
+            @Override
+            protected void onPostExecute(String[] result) {
+
+                Map<String, String> substitutionMap = new HashMap<>(2);
+                substitutionMap.put("%topImageUrl%", result[1] == null ? "" : result[1]);
+                substitutionMap.put("%article-content%", result[0] == null ? "" : result[0]);
+
+                final String errorPage = HtmlLoader.loadResourceFile(getContext(), R.raw.article, substitutionMap);
+                ((WebkitView) tab.getTabView()).loadDataWithBaseURL(tab.getUrl(), errorPage, "text/html", "utf-8", tab.getUrl());
+            }
+
+            @Override
+            protected String[] doInBackground(String... strings) {
+                TrafficStats.setThreadStatsTag(10000);
+                String[] result = HttpRequest.get("https://text.getpocket.com/v3/text?consumer_key=" + BuildConfig.POCKET_API_KEY + "&output=json&url=" + strings[0]);
+                TrafficStats.clearThreadStatsTag();
+                return result;
+            }
+        }.execute(tab.getUrl());
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -1429,4 +1482,57 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             return TextUtils.isEmpty(url) ? "" : url;
         }
     }
+
+    private static class HttpRequest {
+
+        static String[] get(String uri) {
+
+            String line = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(uri);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader r = new BufferedReader(new InputStreamReader(in));
+                StringBuilder total = new StringBuilder();
+                while ((line = r.readLine()) != null) {
+                    total.append(line).append('\n');
+                }
+
+                line = total.toString();
+            } catch (MalformedURLException e) {
+            } catch (IOException e) {
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+
+            String[] result = new String[]{"", ""};
+            String article = null;
+            String topImageUrl = null;
+            if (TextUtils.isEmpty(line)) {
+                return result;
+            }
+
+            try {
+                JSONObject jsonObject = new JSONObject(line);
+                try {
+                    article = (String) jsonObject.get("article");
+                    topImageUrl = (String) jsonObject.get("topImageUrl");
+
+                } catch (JSONException e) {
+                }
+            } catch (JSONException e) {
+            }
+
+            result = new String[]{
+                    article,
+                    topImageUrl
+            };
+
+            return result;
+        }
+    }
+
 }
