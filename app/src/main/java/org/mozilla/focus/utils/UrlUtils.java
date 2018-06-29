@@ -22,6 +22,13 @@ import java.util.regex.Pattern;
 public class UrlUtils {
 
     private final static Pattern schemePattern = Pattern.compile("^.+://");
+    private final static String HTTP_SCHEME_PREFIX = "http://";
+    private final static String HTTPS_SCHEME_PREFIX = "https://";
+    private final static String[] HTTP_SCHEME_PREFIX_ARRAY = {HTTP_SCHEME_PREFIX, HTTPS_SCHEME_PREFIX};
+    private final static String WWW_PREFIX = "www.";
+    private final static String MOBILE_PREFIX = "mobile.";
+    private final static String M_PREFIX = "m.";
+    private final static String[] COMMON_SUBDOMAINS_PREFIX_ARRAY = {WWW_PREFIX, MOBILE_PREFIX, M_PREFIX};
 
     public static String normalize(@NonNull String input) {
         String trimmedInput = input.trim();
@@ -173,20 +180,26 @@ public class UrlUtils {
     }
 
     public static String stripCommonSubdomains(@Nullable String host) {
+        return stripPrefix(host, COMMON_SUBDOMAINS_PREFIX_ARRAY);
+    }
+
+    public static String stripHttp(@Nullable String host) {
+        return stripPrefix(host, HTTP_SCHEME_PREFIX_ARRAY);
+    }
+
+    public static String stripPrefix(@Nullable String host, @NonNull String[] prefixArray) {
         if (host == null) {
             return null;
         }
-
         // In contrast to desktop, we also strip mobile subdomains,
         // since its unlikely users are intentionally typing them
         int start = 0;
 
-        if (host.startsWith("www.")) {
-            start = 4;
-        } else if (host.startsWith("mobile.")) {
-            start = 7;
-        } else if (host.startsWith("m.")) {
-            start = 2;
+        for (String prefix : prefixArray) {
+            if (host.startsWith(prefix)) {
+                start = prefix.length();
+                break;
+            }
         }
 
         return host.substring(start);

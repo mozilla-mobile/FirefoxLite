@@ -13,6 +13,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -160,5 +161,22 @@ public class UrlUtilsTest {
         assertTrue(UrlUtils.isHttpOrHttps("https://www.mozilla.org"));
         assertTrue(UrlUtils.isHttpOrHttps("http://example.org"));
         assertTrue(UrlUtils.isHttpOrHttps("http://192.168.0.1"));
+    }
+
+    @Test
+    public void stripCommonSubdomains() {
+        assertEquals(UrlUtils.stripCommonSubdomains("m.mobile.com"), "mobile.com");
+        assertEquals(UrlUtils.stripCommonSubdomains("mobile.mozilla.org"), "mozilla.org");
+        assertEquals(UrlUtils.stripCommonSubdomains("www.synology.com"), "synology.com");
+        assertEquals(UrlUtils.stripCommonSubdomains("i.j.k"), "i.j.k");
+    }
+
+
+    @Test
+    public void stripHttp() {
+        assertEquals(UrlUtils.stripHttp("http://我的.首頁"), "我的.首頁");
+        assertEquals(UrlUtils.stripHttp("https://mobile.mozilla.org"), "mobile.mozilla.org");
+        assertEquals(UrlUtils.stripHttp("ftp://quickconnect.to"), "ftp://quickconnect.to");
+        assertEquals(UrlUtils.stripHttp("synology.com"), "synology.com");
     }
 }
