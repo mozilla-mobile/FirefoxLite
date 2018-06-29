@@ -59,8 +59,10 @@ class EditBookmarkActivity : AppCompatActivity() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            nameChanged = s.toString() != originalName
-            setupMenuItemSave()
+            if(::bookmark.isInitialized) {
+                nameChanged = s.toString() != originalName
+                setupMenuItemSave()
+            }
         }
     }
     private val locationWatcher: TextWatcher = object : TextWatcher {
@@ -73,9 +75,11 @@ class EditBookmarkActivity : AppCompatActivity() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            locationChanged = s.toString() != originalLocation
-            locationEmpty = TextUtils.isEmpty(s)
-            setupMenuItemSave()
+            if(::bookmark.isInitialized) {
+                locationChanged = s.toString() != originalLocation
+                locationEmpty = TextUtils.isEmpty(s)
+                setupMenuItemSave()
+            }
         }
     }
 
