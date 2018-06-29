@@ -9,6 +9,7 @@ object Versions {
     const val dicedmelon_jacoco_plugin = "0.1.3"
     const val gms_oss_licenses_plugin = "0.9.1"
     const val support = "27.1.1"
+    const val constraint = "1.1.2"
     const val arch_core = "1.1.1"
     const val lifecycle = "1.1.1"
     const val room = "1.1.1"

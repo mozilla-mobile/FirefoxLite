@@ -204,4 +204,51 @@
         <item name="android:textStyle">italic</item>
     </style>
 
+
+    <style name="NewEditTextBackgroundStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/sharedColorAppPaletteWhite</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="NewEditTextLabelStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@color/sharedColorAppPaletteWhite</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:textColor">@color/edit_bookmark_color_label</item>
+    </style>
+
+    <style name="NewEditTextInputStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">24dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:paddingEnd">35dp</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:background">@drawable/round</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/edit_bookmark_color_input</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+
+    <style name="NewEditTextClearStyle">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:background">@color/sharedColorAppPaletteWhite</item>
+        <item name="android:src">@drawable/action_close_tab</item>
+    </style>
+
+
 </resources>
