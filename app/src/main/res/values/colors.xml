@@ -13,9 +13,24 @@
     <color name="sharedColorAppPaletteMain3">#FF0E86FF</color>
     <color name="sharedColorAppPaletteMain4">#FF41B7E6</color>
     <color name="sharedColorAppPaletteBlack">#FF272727</color>
+    <color name="sharedColorAppPaletteBlack2">#33272727</color>
     <color name="sharedColorAppPaletteGray">#FF737373</color>
     <color name="sharedColorAppPaletteGray2">#FF757575</color>
     <color name="sharedColorAppPaletteGray3">#FFB2B2B2</color>
+    <color name="sharedColorAppPaletteGray4">#7FB2B2B2</color>
+    <color name="sharedColorAppPaletteGray5">#7F737373</color>
+
+    <color name="editBookmarkInputDisabled">#7F999EA1</color>
+    <color name="editBookmarkInputActive">@color/sharedColorAppPaletteBlack</color>
+    <color name="editBookmarkInputInactive">#FF999EA1</color>
+
+    <color name="editBookmarkLabelDisabled">@color/sharedColorAppPaletteGray5</color>
+    <color name="editBookmarkLabelActive">@color/sharedColorAppPaletteMain</color>
+    <color name="editBookmarkLabelInactive">@color/sharedColorAppPaletteGray</color>
+
+    <color name="editBookmarkOutlineDisabled">@color/sharedColorAppPaletteBlack2</color>
+    <color name="editBookmarkOutlineActive">@color/sharedColorAppPaletteMain</color>
+    <color name="editBookmarkOutlineInactive">@color/sharedColorAppPaletteBlack</color>
 
     <color name="colorPrimary">#FF363B40</color>
     <color name="colorPrimaryDark">#6c3b6e</color>

@@ -4,13 +4,13 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:color="@color/sharedColorAppPaletteBlack2"
+        android:color="@color/editBookmarkLabelDisabled"
         android:state_enabled="false" />
 
     <item
-        android:color="@color/sharedColorAppPaletteMain"
+        android:color="@color/editBookmarkLabelActive"
         android:state_activated="true" />
 
     <item
-        android:color="@color/sharedColorAppPaletteBlack"/>
+        android:color="@color/editBookmarkLabelInactive"/>
 </selector>

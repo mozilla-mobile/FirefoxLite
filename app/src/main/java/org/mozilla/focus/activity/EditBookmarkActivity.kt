@@ -12,7 +12,11 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_edit_bookmark.*
 import org.mozilla.focus.R
@@ -35,12 +39,16 @@ class EditBookmarkActivity : AppCompatActivity() {
     private lateinit var bookmark: BookmarkModel
     private val editTextName: EditText by lazy { findViewById<EditText>(R.id.bookmark_name) }
     private val editTextLocation: EditText by lazy { findViewById<EditText>(R.id.bookmark_location) }
+    private val labelName: TextView by lazy { findViewById<TextView>(R.id.bookmark_name_label) }
+    private val labelLocation: TextView by lazy { findViewById<TextView>(R.id.bookmark_location_label) }
     private val originalName: String by lazy { bookmark.title }
     private val originalLocation: String by lazy { bookmark.url }
     private lateinit var menuItemSave: MenuItem
     private var nameChanged: Boolean = false
     private var locationChanged: Boolean = false
     private var locationEmpty: Boolean = false
+    private val buttonClearName: ImageButton by lazy { findViewById<ImageButton>(R.id.bookmark_name_clear) }
+    private val buttonClearLocation: ImageButton by lazy { findViewById<ImageButton>(R.id.bookmark_location_clear) }
     private val nameWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
@@ -71,6 +79,13 @@ class EditBookmarkActivity : AppCompatActivity() {
         }
     }
 
+    private val focusChangeListener: OnFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
+        when (v.id) {
+            R.id.bookmark_location -> { labelLocation.isActivated = hasFocus }
+            R.id.bookmark_name -> { labelName.isActivated = hasFocus }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_bookmark)
@@ -81,6 +96,14 @@ class EditBookmarkActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(drawable)
         editTextName.addTextChangedListener(nameWatcher)
         editTextLocation.addTextChangedListener(locationWatcher)
+        editTextName.onFocusChangeListener = focusChangeListener
+        editTextLocation.onFocusChangeListener = focusChangeListener
+        buttonClearName.setOnClickListener {
+            editTextName.text.clear()
+        }
+        buttonClearLocation.setOnClickListener {
+            editTextLocation.text.clear()
+        }
 
         viewModel.getBookmarkById(itemId).observe(this, Observer<BookmarkModel> { bookmarkModel ->
             bookmarkModel?.apply {
