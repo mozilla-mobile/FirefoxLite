@@ -167,8 +167,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
                 final String url = intent.getDataString();
 
-                BrowsingSession.getInstance().loadCustomTabConfig(this, intent);
-
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     pendingUrl = url;
                     this.screenNavigator.addFirstRunScreen();
@@ -316,7 +314,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         // We do not care about the previous intent anymore. But let's remember this one.
         setIntent(unsafeIntent);
-        BrowsingSession.getInstance().loadCustomTabConfig(this, intent);
     }
 
     @Override
