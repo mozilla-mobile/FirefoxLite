@@ -658,7 +658,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 //TODO: Edge case - should add a hint for failing to add the bookmark
                 return;
             }
-            final String itemId = bookmarkViewModel.addBookmark(currentTab.getTitle(), currentTab.getUrl());
+            final String originalTitle = currentTab.getTitle();
+            final String title = TextUtils.isEmpty(originalTitle) ? UrlUtils.stripCommonSubdomains(UrlUtils.stripHttp(currentTab.getUrl())) : originalTitle;
+            final String itemId = bookmarkViewModel.addBookmark(title, currentTab.getUrl());
             final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
             snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
             snackbar.show();
