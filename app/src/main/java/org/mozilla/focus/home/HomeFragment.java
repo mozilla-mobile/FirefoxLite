@@ -506,9 +506,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public boolean onSingleTapConfirmed() {
             if (themeOnboardingLayer != null) {
+                ThemeManager.dismissOnboarding(themeOnboardingLayer.getContext().getApplicationContext());
                 ((ViewGroup) themeOnboardingLayer.getParent()).removeView(themeOnboardingLayer);
                 themeOnboardingLayer = null;
-                ThemeManager.dismissOnboarding(getContext());
             }
             return true;
         }
