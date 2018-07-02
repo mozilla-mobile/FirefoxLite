@@ -2,7 +2,6 @@
 <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MenuSheetRow"
-    android:layout_marginBottom="4dp"
     android:layout_marginTop="1dp"
     tools:background="#3300FF00">
 
