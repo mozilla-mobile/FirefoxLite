@@ -49,7 +49,7 @@ public class BookmarkRepository {
     }
 
     public void updateBookmark(BookmarkModel bookmark) {
-        ThreadUtils.postToBackgroundThread(() -> bookmarksDatabase.bookmarkDao().addBookmarks(bookmark));
+        ThreadUtils.postToBackgroundThread(() -> bookmarksDatabase.bookmarkDao().updateBookmark(bookmark));
     }
 
     public void deleteBookmark(BookmarkModel bookmark) {
