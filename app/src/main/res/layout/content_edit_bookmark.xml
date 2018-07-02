@@ -37,13 +37,13 @@
 
         <EditText
             android:id="@+id/bookmark_location"
+            android:inputType="textUri"
             style="@style/NewEditTextInputStyle" />
 
         <TextView
             android:id="@+id/bookmark_location_label"
             style="@style/NewEditTextLabelStyle"
             android:text="@string/bookmark_edit_location"
-            android:inputType="textUri"
             app:layout_constraintBottom_toTopOf="@+id/bookmark_location"
             app:layout_constraintLeft_toLeftOf="@+id/bookmark_location"
             app:layout_constraintTop_toTopOf="@+id/bookmark_location" />
