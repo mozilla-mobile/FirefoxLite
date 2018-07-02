@@ -87,13 +87,13 @@ public class BookmarkDaoTest {
     @Test
     public void updateBookmark_checkBookmarkChangedInDB() throws InterruptedException {
         // Given that we have a bookmark in the data source
-        bookmarksDatabase.bookmarkDao().addBookmarks(BOOKMARK);
+        bookmarksDatabase.bookmarkDao().addBookmarks(BOOKMARK, BOOKMARK_2);
 
         // When we are updating the title of the bookmark
         BookmarkModel updatedBookmark = new BookmarkModel(BOOKMARK.getId(), "new title", BOOKMARK.getUrl());
-        bookmarksDatabase.bookmarkDao().addBookmarks(updatedBookmark);
+        bookmarksDatabase.bookmarkDao().updateBookmark(updatedBookmark);
 
-        // The retrieved bookmark has the updated title
+        // The retrieved bookmark has the updated title and keeps the listing order
         List<BookmarkModel> dbBookmarks = LiveDataTestUtil.getValue(bookmarksDatabase.bookmarkDao().loadBookmarks());
         assertBookmarkEquals(updatedBookmark, dbBookmarks.get(0));
     }
