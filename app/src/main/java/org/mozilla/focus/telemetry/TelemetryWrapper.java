@@ -24,6 +24,7 @@ import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.DebugUtils;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.telemetry.Telemetry;
 import org.mozilla.telemetry.TelemetryHolder;
 import org.mozilla.telemetry.config.TelemetryConfiguration;
@@ -870,6 +871,25 @@ public final class TelemetryWrapper {
             super(configuration);
 
             addMeasurement(new CaptureCountMeasurement(configuration.getContext()));
+            addMeasurement(new ThemeToyMeasurement(configuration.getContext()));
+        }
+    }
+
+    private static final class ThemeToyMeasurement extends TelemetryMeasurement {
+
+        private static final String MEASUREMENT_CURRENT_THEME = "current_theme";
+
+        Context context;
+
+        ThemeToyMeasurement(Context context) {
+            super(MEASUREMENT_CURRENT_THEME);
+            this.context = context;
+        }
+
+        @Override
+        public java.lang.Object flush() {
+            final String currentThemeName = ThemeManager.getCurrentThemeName(context);
+            return currentThemeName;
         }
     }
 
