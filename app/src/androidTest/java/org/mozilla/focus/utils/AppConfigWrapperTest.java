@@ -1,36 +1,26 @@
 package org.mozilla.focus.utils;
 
-import android.content.Context;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.junit.runner.RunWith;
+import org.mozilla.focus.activity.MainActivity;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.mozilla.focus.utils.AppConfigWrapper.DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD;
 import static org.mozilla.focus.utils.AppConfigWrapper.SURVEY_NOTIFICATION_POST_THRESHOLD;
 import static org.mozilla.focus.utils.DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
 import static org.mozilla.focus.utils.DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION;
 import static org.mozilla.focus.utils.DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG;
 
+@RunWith(AndroidJUnit4.class)
 public class AppConfigWrapperTest {
 
-    @Mock
-    private Context context;
-
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
-    @Before
-    public void warmUp() {
-        when(context.getApplicationContext()).thenReturn(context);
-        FirebaseHelper.init(context, false);
-
-    }
 
     @Test
     public void getRateAppNotificationLaunchTimeThreshold() {
