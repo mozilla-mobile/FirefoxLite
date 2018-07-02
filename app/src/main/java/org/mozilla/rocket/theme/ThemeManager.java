@@ -77,6 +77,14 @@ public class ThemeManager {
         getSharedPreferences(context).edit().putInt(PREF_KEY_INT_ONBOARDING_VERSION, ONBOARDING_VERSION).apply();
     }
 
+    public static String getCurrentThemeName(Context context) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+
+        ThemeSet currentTheme = loadCurrentTheme(sharedPreferences);
+
+        return currentTheme.name();
+    }
+
     private static ThemeSet loadCurrentTheme(SharedPreferences sharedPreferences) {
         String currentThemeName = sharedPreferences.getString(PREF_KEY_STRING_CURRENT_THEME, ThemeSet.Default.name());
         ThemeSet currentTheme;
@@ -84,7 +92,7 @@ public class ThemeManager {
             currentTheme = ThemeSet.valueOf(currentThemeName);
         } catch (Exception e) {
             currentTheme = ThemeSet.Default;
-            sharedPreferences.edit().putString(PREF_KEY_STRING_CURRENT_THEME, currentTheme.name()).apply();
+            saveCurrentTheme(sharedPreferences, currentTheme);
         }
         return currentTheme;
     }
