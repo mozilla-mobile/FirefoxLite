@@ -66,4 +66,5 @@
     <dimen name="tab_tray_close_all_btn_text_size">14dp</dimen>
     <dimen name="tab_tray_close_all_btn_margin_start">17dp</dimen>
     <dimen name="tab_tray_close_all_btn_margin_end">18dp</dimen>
+    <dimen name="menu_text_padding">5dp</dimen>
 </resources>
