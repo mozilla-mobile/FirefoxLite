@@ -312,7 +312,7 @@ public final class TelemetryWrapper {
     public static void settingsClickEvent(String key) {
         final String validPrefKey = FirebaseEvent.getValidPrefKey(key);
         if (validPrefKey != null) {
-            new EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, key).queue();
+            new EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, validPrefKey).queue();
         }
     }
 
