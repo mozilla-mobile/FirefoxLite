@@ -13,4 +13,5 @@
     <dimen name="first_run_upgrade_title_margin_top">38dp</dimen>
     <dimen name="first_run_upgrade_title_margin_bottom">32dp</dimen>
     <dimen name="first_run_upgrade_image2_size">90dp</dimen>
+    <dimen name="menu_text_padding">0dp</dimen>
 </resources>

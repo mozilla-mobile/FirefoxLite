@@ -112,8 +112,8 @@
     </style>
 
     <style name="MenuButtonText">
-        <item name="android:paddingEnd">5dp</item>
-        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">@dimen/menu_text_padding</item>
+        <item name="android:paddingStart">@dimen/menu_text_padding</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize" tools:ignore="SpUsage">12dp</item>
