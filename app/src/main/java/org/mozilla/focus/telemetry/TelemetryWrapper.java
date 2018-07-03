@@ -504,8 +504,10 @@ public final class TelemetryWrapper {
         new EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue();
     }
 
-    public static void clickToolbarBookmark() {
-        new EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.BOOKMARK).queue();
+    public static void clickToolbarBookmark(boolean isAdd) {
+        new EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.BOOKMARK)
+                .extra(Extra.TO, Boolean.toString(isAdd))
+                .queue();
     }
 
     public static void clickAddToHome() {

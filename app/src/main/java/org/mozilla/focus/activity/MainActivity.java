@@ -581,7 +581,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case R.id.action_bookmark:
                 onBookMarkClicked();
-                TelemetryWrapper.clickToolbarBookmark();
                 break;
             case R.id.action_share:
                 onShraeClicked(browserFragment);
@@ -649,7 +648,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         if (currentTab == null) {
             return;
         }
-        if (bookmarkIcon.isActivated()) {
+        final boolean isActivated = bookmarkIcon.isActivated();
+        TelemetryWrapper.clickToolbarBookmark(!isActivated);
+        if (isActivated) {
             bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
             bookmarkIcon.setActivated(false);
