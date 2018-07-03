@@ -52,6 +52,8 @@ public class BeforeTestTask {
 
         Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
         AndroidTestUtils.setFocusTabId("");
+        // Disable theme on boarding
+        ThemeManager.dismissOnboarding(context);
     }
 
 
