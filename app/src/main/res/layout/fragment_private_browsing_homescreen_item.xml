@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/fixed_menu_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="center_horizontal|bottom">
+
+    <org.mozilla.focus.widget.EqualDistributeRow
+        android:id="@+id/home_screen_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin"
+        android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin">
+
+        <ImageButton
+            android:id="@+id/btn_tab_tray"
+            style="@style/HomeMenuButton"
+            android:tint="@android:color/white"
+            app:srcCompat="@drawable/private_browsing_mask" />
+
+        <include
+            style="@style/HomeMenuButton"
+            layout="@layout/button_open_new_tab"
+            android:visibility="invisible" />
+
+        <include
+            style="@style/HomeMenuButton"
+            layout="@layout/button_search"
+            android:visibility="invisible" />
+
+        <include
+            style="@style/HomeMenuButton"
+            layout="@layout/button_capture"
+            android:visibility="invisible" />
+
+        <include
+            style="@style/HomeMenuButton"
+            layout="@layout/button_more_white" />
+    </org.mozilla.focus.widget.EqualDistributeRow>
+</FrameLayout>

@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -50,6 +51,7 @@ import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.activity.PrivateBrowsingActivity;
 
 import java.util.List;
 
@@ -68,6 +70,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private View newTabBtn;
     private View logoMan;
     private View closeTabsBtn;
+    private View privateBrowsingBtn;
     private AlertDialog closeTabsDialog;
 
     private View backgroundView;
@@ -130,6 +133,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         recyclerView = view.findViewById(R.id.tab_tray);
         newTabBtn = view.findViewById(R.id.new_tab_button);
         closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
+        privateBrowsingBtn = view.findViewById(R.id.btn_private_browsing);
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
         return view;
@@ -149,6 +153,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         newTabBtn.setOnClickListener(this);
         closeTabsBtn.setOnClickListener(this);
+        privateBrowsingBtn.setOnClickListener(this);
         setupTapBackgroundToExpand();
 
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -171,6 +176,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
             case R.id.close_all_tabs_btn:
                 onCloseAllTabsClicked();
+                break;
+
+            case R.id.btn_private_browsing:
+                startActivity(new Intent(getContext(), PrivateBrowsingActivity.class));
+                getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 break;
 
             default:
