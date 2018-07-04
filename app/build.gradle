@@ -243,6 +243,8 @@ dependencies {
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
 
+    testImplementation "org.powermock:powermock-mockito-release-full:${Versions.powermoch}"
+
     androidTestImplementation("com.android.support.test.espresso:espresso-core:${Versions.espresso}", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

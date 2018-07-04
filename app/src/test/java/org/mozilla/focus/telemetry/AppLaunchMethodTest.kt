@@ -4,7 +4,7 @@ import android.content.Intent
 import org.junit.Assert
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
+import org.powermock.api.mockito.PowerMockito.mock
 import org.mozilla.focus.utils.SafeIntent
 
 class AppLaunchMethodTest {
