@@ -181,6 +181,10 @@
         <item name="actionMenuTextColor">@color/bookmarkEditToolbarText</item>
     </style>
 
+    <style name="PrivateActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@color/bookmarkEditToolbarText</item>
+    </style>
+
     <style name="PanelEmptyHolderContainer">
         <item name="android:id">@id/empty_view_container</item>
         <item name="android:layout_width">match_parent</item>

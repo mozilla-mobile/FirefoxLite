@@ -18,7 +18,7 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:name="org.mozilla.focus.FocusApplication">
 
@@ -79,6 +79,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.mozilla.rocket.activity.PrivateBrowsingActivity"
+            android:enabled="true"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:process=":privatebrowsing"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PrivateBrowsingTheme">
+
+
         </activity>
 
         <!-- SettingsActivity title is set dynamically for multilocale support -->
