@@ -36,11 +36,13 @@ public class SwipeMotionLayout extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (swipeMotionDetector != null) {
+        boolean shouldIntercept = super.onInterceptTouchEvent(ev);
+
+        if (shouldIntercept && swipeMotionDetector != null) {
             swipeMotionDetector.onTouch(this, ev);
         }
 
-        return super.onInterceptTouchEvent(ev);
+        return shouldIntercept;
     }
 
     public void setOnSwipeListener(OnSwipeListener onSwipeListener) {

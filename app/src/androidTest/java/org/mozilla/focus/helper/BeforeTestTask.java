@@ -12,6 +12,7 @@ import org.mozilla.focus.Inject;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.rocket.theme.ThemeManager;
 
 public class BeforeTestTask {
     private boolean enableRateAppPromotion;
@@ -30,6 +31,7 @@ public class BeforeTestTask {
 
         if (this.skipFirstRun) {
             NewFeatureNotice.getInstance(context).setMultiTabUpdateNoticeDidShow();
+            ThemeManager.dismissOnboarding(context);
         } else {
             NewFeatureNotice.getInstance(context).resetFirstRunDidShow();
         }
