@@ -123,6 +123,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (ThemeManager.shouldShowOnboarding(view.getContext())) {
             LayoutInflater.from(view.getContext()).inflate(R.layout.fragment_homescreen_themetoy, home_container);
             themeOnboardingLayer = home_container.findViewById(R.id.fragment_homescreen_theme_onboarding);
+            themeOnboardingLayer.setOnClickListener(v -> {
+                if (themeOnboardingLayer != null) {
+                    ThemeManager.dismissOnboarding(themeOnboardingLayer.getContext().getApplicationContext());
+                    ((ViewGroup) themeOnboardingLayer.getParent()).removeView(themeOnboardingLayer);
+                    themeOnboardingLayer = null;
+                }
+            });
         }
 
         homeScreenBackground = view.findViewById(R.id.home_background);
@@ -509,14 +516,5 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             return true;
         }
 
-        @Override
-        public boolean onSingleTapConfirmed() {
-            if (themeOnboardingLayer != null) {
-                ThemeManager.dismissOnboarding(themeOnboardingLayer.getContext().getApplicationContext());
-                ((ViewGroup) themeOnboardingLayer.getParent()).removeView(themeOnboardingLayer);
-                themeOnboardingLayer = null;
-            }
-            return true;
-        }
     }
 }
