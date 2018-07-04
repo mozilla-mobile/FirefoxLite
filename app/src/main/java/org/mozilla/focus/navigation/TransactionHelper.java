@@ -95,7 +95,13 @@ class TransactionHelper implements DefaultLifecycleObserver {
     }
 
     void popAllScreens() {
-        popScreensUntil(null, EntryData.TYPE_ROOT);
+        FragmentManager manager = this.activity.getSupportFragmentManager();
+        int entryCount = manager.getBackStackEntryCount();
+        while (entryCount > 0) {
+            manager.popBackStack();
+            entryCount--;
+        }
+        manager.executePendingTransactions();
     }
 
     boolean popScreensUntil(@Nullable String targetEntryName, @EntryData.EntryType int type) {
@@ -181,18 +187,12 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     private String getEntryTag(FragmentManager.BackStackEntry entry) {
         String result[] = entry.getName().split(ENTRY_TAG_SEPARATOR);
-        if (result.length == 2) {
-            return result[0];
-        }
-        return "";
+        return result[0];
     }
 
-    private int getEntryType(FragmentManager.BackStackEntry entry) {
+    private @EntryData.EntryType int getEntryType(FragmentManager.BackStackEntry entry) {
         String result[] = entry.getName().split(ENTRY_TAG_SEPARATOR);
-        if (result.length == 2) {
-            return Integer.valueOf(result[1]);
-        }
-        return -1;
+        return Integer.parseInt(result[1]);
     }
 
     private String makeEntryTag(String tag, @EntryData.EntryType int type) {
