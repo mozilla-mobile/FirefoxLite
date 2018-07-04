@@ -14,10 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.animation.Animation;
 
-import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.fragment.BrowserFragment;
@@ -25,16 +23,11 @@ import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 
-import java.util.HashMap;
-import java.util.Map;
-
 class TransactionHelper implements DefaultLifecycleObserver {
-    private static final String TAG = "TransactionHelper";
-
-    private EntryDataMap entryDataMap = new EntryDataMap();
-
     private final MainActivity activity;
     private BackStackListener backStackListener;
+
+    private static final String ENTRY_TAG_SEPARATOR = "#";
 
     TransactionHelper(@NonNull MainActivity activity) {
         this.activity = activity;
@@ -82,7 +75,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         }
 
         this.prepareUrlInput(url, sourceFragment)
-                .addToBackStack(this.entryDataMap.add(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
+                .addToBackStack(makeEntryTag(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
                 .commit();
     }
 
@@ -101,30 +94,20 @@ class TransactionHelper implements DefaultLifecycleObserver {
         return EntryData.TYPE_ROOT == getEntryType(lastEntry);
     }
 
-    void updateForegroundType(@EntryData.EntryType int type) {
-        FragmentManager manager = activity.getSupportFragmentManager();
-        int size = manager.getBackStackEntryCount();
-        if (size == 0) {
-            return;
-        }
-        FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(size - 1);
-        if (this.entryDataMap.get(entry).type != type) {
-            this.entryDataMap.get(entry).type = type;
-        }
-    }
-
     void popAllScreens() {
-        popScreensUntil(null);
+        popScreensUntil(null, EntryData.TYPE_ROOT);
     }
 
-    boolean popScreensUntil(@Nullable String targetEntryName) {
+    boolean popScreensUntil(@Nullable String targetEntryName, @EntryData.EntryType int type) {
         boolean clearAll = (targetEntryName == null);
         FragmentManager manager = this.activity.getSupportFragmentManager();
         int entryCount = manager.getBackStackEntryCount();
         boolean found = false;
         while (entryCount > 0) {
             FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(entryCount - 1);
-            if (!clearAll && TextUtils.equals(targetEntryName, getEntryTag(entry))) {
+            if (!clearAll
+                    && TextUtils.equals(targetEntryName, getEntryTag(entry))
+                    && type == getEntryType(entry)) {
                 found = true;
                 break;
             }
@@ -153,7 +136,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
             transaction.replace(R.id.container, fragment, FirstrunFragment.FRAGMENT_TAG)
-                    .addToBackStack(this.entryDataMap.add(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
+                    .addToBackStack(makeEntryTag(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
         }
 
         return transaction;
@@ -169,7 +152,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         transaction.setCustomAnimations(enterAnim, 0, 0, exitAnim);
 
         transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-        transaction.addToBackStack(this.entryDataMap.add(HomeFragment.FRAGMENT_TAG, type));
+        transaction.addToBackStack(makeEntryTag(HomeFragment.FRAGMENT_TAG, type));
 
         return transaction;
     }
@@ -197,11 +180,23 @@ class TransactionHelper implements DefaultLifecycleObserver {
     }
 
     private String getEntryTag(FragmentManager.BackStackEntry entry) {
-        return this.entryDataMap.get(entry).tag;
+        String result[] = entry.getName().split(ENTRY_TAG_SEPARATOR);
+        if (result.length == 2) {
+            return result[0];
+        }
+        return "";
     }
 
-    private @EntryData.EntryType int getEntryType(FragmentManager.BackStackEntry entry) {
-        return this.entryDataMap.get(entry).type;
+    private int getEntryType(FragmentManager.BackStackEntry entry) {
+        String result[] = entry.getName().split(ENTRY_TAG_SEPARATOR);
+        if (result.length == 2) {
+            return Integer.valueOf(result[1]);
+        }
+        return -1;
+    }
+
+    private String makeEntryTag(String tag, @EntryData.EntryType int type) {
+        return tag + ENTRY_TAG_SEPARATOR + type;
     }
 
     private boolean isStateSaved() {
@@ -224,8 +219,6 @@ class TransactionHelper implements DefaultLifecycleObserver {
             }
 
             FragmentManager manager = this.helper.activity.getSupportFragmentManager();
-            this.helper.entryDataMap.refreshData(manager);
-
             Fragment fragment = manager.findFragmentById(R.id.browser);
             if (fragment instanceof BrowserFragment) {
                 setBrowserState(shouldKeepBrowserRunning(this.helper), this.helper);
@@ -320,60 +313,5 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
         @IntDef({TYPE_ROOT, TYPE_ATTACHED, TYPE_FLOATING})
         @interface EntryType {}
-
-        String tag;
-        @EntryType int type;
-    }
-
-    private static class EntryDataMap {
-        private HashMap<String, EntryData> dataMap = new HashMap<>();
-
-        /**
-         * @return an unique string to be used to retrieve related info about this transaction from
-         * the data map
-         */
-        String add(String tag, @EntryData.EntryType int type) {
-            EntryData data = new EntryData();
-            data.tag = tag;
-            data.type = type;
-
-            String key = Integer.toHexString(data.hashCode());
-            this.dataMap.put(key, data);
-
-            logData("addNewEntry");
-            return key;
-        }
-
-        EntryData get(FragmentManager.BackStackEntry entry) {
-            return dataMap.get(entry.getName());
-        }
-
-        void refreshData(FragmentManager manager) {
-            HashMap<String, EntryData> newMap = new HashMap<>();
-            int size = manager.getBackStackEntryCount();
-            for (int i = 0; i < size; ++i) {
-                String key = manager.getBackStackEntryAt(i).getName();
-                newMap.put(key, this.dataMap.get(key));
-            }
-            this.dataMap = newMap;
-            logData("purge");
-        }
-
-        private void logData(String action) {
-            if (!BuildConfig.DEBUG) {
-                return;
-            }
-
-            Log.d(TAG, "action: " + action);
-            if (this.dataMap.isEmpty()) {
-                Log.d(TAG, "\tempty");
-            } else {
-                for (Map.Entry<String, EntryData> entry : this.dataMap.entrySet()) {
-                    EntryData entryData = entry.getValue();
-                    Log.d(TAG, "\t" + entry.getKey() + ":(" + entryData.tag
-                            + ", " + entryData.type + ")");
-                }
-            }
-        }
     }
 }
