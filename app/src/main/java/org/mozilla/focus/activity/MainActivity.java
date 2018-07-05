@@ -136,7 +136,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        themeManager.applyCurrentTheme(theme);
+
+        //  Oppo with android 5.1 call getTheme before activity onCreate invoked.
+        //  So themeManager is not initialized and cause NPE
+        if (themeManager != null) {
+            themeManager.applyCurrentTheme(theme);
+        }
+
         return theme;
     }
 
