@@ -93,8 +93,7 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
             return;
         }
         Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
-        if (refBrowserFragment != null &&
-                refBrowserFragment.get() != null) {
+        if (refBrowserFragment != null) {
             final BrowserFragment browserFragment = refBrowserFragment.get();
             if (browserFragment != null && browserFragment.getCaptureStateListener() != null) {
                 browserFragment.getCaptureStateListener().onPromptScreenshotResult();
