@@ -40,6 +40,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 import com.bumptech.glide.Glide;
@@ -183,6 +184,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 break;
 
             case R.id.btn_private_browsing:
+                privateBrowsingBtn.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pb_shrink));
+
                 startActivity(new Intent(getContext(), PrivateBrowsingActivity.class));
                 getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 break;
