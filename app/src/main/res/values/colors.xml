@@ -33,7 +33,7 @@
     <color name="editBookmarkOutlineInactive">@color/sharedColorAppPaletteBlack</color>
 
     <color name="colorPrimary">#FF363B40</color>
-    <color name="colorPrimaryDark">#6c3b6e</color>
+    <color name="colorPrimaryDark">#c85def</color>
     <color name="colorAccent">@color/sharedColorAppPaletteMain</color>
 
     <color name="colorGradientStart">#011E4B</color>

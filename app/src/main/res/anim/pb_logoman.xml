@@ -4,18 +4,11 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="480"
-    android:interpolator="@android:interpolator/accelerate_decelerate">
-    <scale
-        android:fromXScale="200%"
-        android:fromYScale="200%"
-        android:toXScale="100%"
-        android:toYScale="100%" />
+    android:interpolator="@anim/ease_in_interpolator">
     <translate
-        android:fromXDelta="-50%"
-        android:toXDelta="0%"
-        android:fromYDelta="-75%"
+        android:fromYDelta="100%"
         android:toYDelta="0%" />
     <alpha
-        android:fromAlpha="0.66"
+        android:fromAlpha="0.0"
         android:toAlpha="1.0" />
 </set>

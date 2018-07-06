@@ -16,6 +16,14 @@
         android:layout_height="match_parent"
         android:background="@drawable/background_home" />
 
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/logo_man"
+        android:layout_width="115.33dp"
+        android:layout_height="51.67dp"
+        android:layout_above="@+id/home_fragment_fake_input"
+        android:layout_alignEnd="@+id/home_fragment_fake_input"
+        app:srcCompat="@drawable/logo_man" />
+
     <include
         android:id="@+id/home_fragment_fake_input"
         layout="@layout/fragment_homescreen_item_fake_input"
@@ -27,9 +35,21 @@
         layout="@layout/fragment_homescreen_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/home_fragment_fake_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/home_title_bottom_margin" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@id/home_fragment_fake_input"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/home_padding_url_bar_to_title" />
+        android:fontFamily="casual"
+        android:textColor="@color/sharedColorAppPaletteWhite5"
+        android:text="Private Browsing"
+        android:textSize="16dp"
+        android:layout_marginBottom="48dp"
+        android:textStyle="italic" />
 
     <include layout="@layout/fragment_private_browsing_homescreen_item" />
 

@@ -52,7 +52,7 @@
                 style="@style/HomeMenuButton"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin"
-                android:tint="@color/colorPrimaryDark"
+                android:tint="@color/colorPrimary"
                 android:visibility="gone"
                 app:srcCompat="@drawable/private_browsing_mask"
                 tools:ignore="contentDescription" />

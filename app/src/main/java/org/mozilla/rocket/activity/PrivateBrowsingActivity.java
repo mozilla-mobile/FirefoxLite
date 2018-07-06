@@ -13,12 +13,14 @@ import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 public class PrivateBrowsingActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener {
 
     View backBtn;
+    View logoman;
 
     @Override
     protected void onResume() {
         super.onResume();
 
         backBtn.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pb_bounce));
+        logoman.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pb_logoman));
     }
 
     @Override
@@ -28,6 +30,7 @@ public class PrivateBrowsingActivity extends LocaleAwareAppCompatActivity implem
 
         backBtn = findViewById(R.id.btn_tab_tray);
         backBtn.setOnClickListener(this);
+        logoman = findViewById(R.id.logo_man);
 
         int visibility = getWindow().getDecorView().getSystemUiVisibility();
         // do not overwrite existing value
