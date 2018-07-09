@@ -26,6 +26,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
+import org.mozilla.rocket.privately.PrivateMode;
 
 import java.util.Locale;
 
@@ -33,6 +34,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private boolean localeUpdated;
     private static int debugClicks = 0;
     private static final int DEBUG_CLICKS_THRESHOLD = 19;
+    private final static String PREF_KEY_ROOT = "root_preferences";
 
 
     @Override
@@ -40,6 +42,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.settings);
+        if (AppConstants.isReleaseBuild() || AppConstants.isBetaBuild()) {
+            PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
+            Preference prefPrivateMode = findPreference(PrivateMode.PREF_KEY_PRIVATE_MODE_ENABLED);
+            rootPreferences.removePreference(prefPrivateMode);
+        }
     }
 
     @Override
