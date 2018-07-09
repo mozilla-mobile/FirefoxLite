@@ -9,6 +9,7 @@ class PrivateMode {
 
         private const val PREF_KEY_PRIVATE_MODE_ENABLED_DEFAULT = false
 
+        @JvmStatic
         fun isEnable(context: Context): Boolean {
             return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_KEY_PRIVATE_MODE_ENABLED, PREF_KEY_PRIVATE_MODE_ENABLED_DEFAULT)
         }

@@ -52,6 +52,7 @@ import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.activity.PrivateBrowsingActivity;
+import org.mozilla.rocket.privately.PrivateMode;
 
 import java.util.List;
 
@@ -134,6 +135,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         newTabBtn = view.findViewById(R.id.new_tab_button);
         closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
         privateBrowsingBtn = view.findViewById(R.id.btn_private_browsing);
+        if (PrivateMode.isEnable(getContext())) {
+            privateBrowsingBtn.setVisibility(View.VISIBLE);
+        }
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
         return view;
