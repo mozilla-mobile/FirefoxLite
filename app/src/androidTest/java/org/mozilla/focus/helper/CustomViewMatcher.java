@@ -6,6 +6,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+/** CustomViewMatcher is a help class to collect all customize view matchers that Espresso doesn't support **/
 public class CustomViewMatcher {
 
     public static Matcher<View> isActivate() {
