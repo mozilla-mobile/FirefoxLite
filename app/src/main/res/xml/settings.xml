@@ -2,7 +2,8 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="root_preferences">
     <!-- Empty default: we use an empty string to indicate "system default" language being selected -->
     <!--suppress AndroidDomInspection -->
     <org.mozilla.focus.widget.LocaleListPreference
@@ -64,5 +65,10 @@
         android:layout="@layout/focus_preference"
         android:title="@string/menu_about"
         android:key="@string/pref_key_about" />
+
+    <CheckBoxPreference
+        android:contentDescription="Private Mode is an experimental feature"
+        android:key="pref_key_private_mode_enabled"
+        android:title="Enable Private Mode" />
 
 </PreferenceScreen>
