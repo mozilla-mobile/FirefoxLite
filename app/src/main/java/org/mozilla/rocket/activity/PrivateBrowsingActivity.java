@@ -3,12 +3,17 @@ package org.mozilla.rocket.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
+import org.mozilla.rocket.widget.BetterBounceInterpolator;
 
 public class PrivateBrowsingActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener {
 
@@ -19,7 +24,21 @@ public class PrivateBrowsingActivity extends LocaleAwareAppCompatActivity implem
     protected void onResume() {
         super.onResume();
 
-        backBtn.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pb_bounce));
+        ScaleAnimation scaleAnimation = new ScaleAnimation(2.0f, 1.0f, 2.0f, 1.0f);
+        Animation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -0.5f,
+                Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -0.5f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
+        Animation alphaAnimation = new AlphaAnimation(0.66f, 1.0f);
+
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(translateAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        animationSet.setInterpolator(new BetterBounceInterpolator(1, -0.8d));
+        animationSet.setDuration(720);
+
+        backBtn.startAnimation(animationSet);
         logoman.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pb_logoman));
     }
 
