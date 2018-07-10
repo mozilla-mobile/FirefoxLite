@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class FileUtils {
-    private static final String WEBVIEW_DIRECTORY = "app_webview";
+    public static final String WEBVIEW_DIRECTORY = "app_webview";
     private static final String WEBVIEW_CACHE_DIRECTORY = "cache";
 
 

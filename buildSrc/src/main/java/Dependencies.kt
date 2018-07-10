@@ -17,7 +17,7 @@ object Versions {
     const val kotlin = "1.2.41"
     const val gms = "11.8.0"
     const val findbugs = "3.0.1"
-    const val lottie = "2.2.0"
+    const val lottie = "2.5.5"
     const val leakcanary = "1.5.4"
     const val telemetry = "0.5.1"
     const val adjust = "4.11.4"

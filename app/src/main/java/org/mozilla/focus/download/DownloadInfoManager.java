@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import org.mozilla.focus.components.RelocateService;
-import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.CursorUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 
