@@ -66,13 +66,14 @@
   <string name="first_run_page4_title">无比强大的截图功能</string>
   <string name="first_run_page4_text">不但能截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
   <string name="first_run_upgrade_page_title">我们收到了您的反馈！</string>
-  <string name="first_run_upgrade_page_text1">1. 打开%s，同时处理多个任务！</string>
+  <string name="first_run_upgrade_page_text1">1. 打开 %s ，同时处理多个任务！</string>
   <string name="first_run_upgrade_page_text1_highlight">多个标签页</string>
   <string name="first_run_upgrade_page_text2">2. 把喜爱的网站 %s ，下次访问更快捷！</string>
   <string name="first_run_upgrade_page_text2_highlight">添加到主屏幕</string>
   <string name="firstrun_close_button">了解！</string>
   <string name="firstrun_skip_button">跳过</string>
   <string name="firstrun_next_button">下一步</string>
+  <string name="label_menu_bookmark">书签</string>
   <string name="label_menu_download">下载项</string>
   <string name="label_menu_clear_cache">清除缓存</string>
   <string name="label_menu_history">历史记录</string>
@@ -89,7 +90,7 @@
   <string name="permission_dialog_msg_location">缺少权限。请允许 Firefox Rocket 获知您的位置。</string>
   <string name="permission_toast_location">无法获知您的位置。请授予获取您位置的权限。</string>
   <string name="permission_dialog_msg_storage">缺少权限。请允许 Firefox Rocket 获知您的位置。</string>
-  <string name="permission_toast_storage">无法使用存储设备。请授予在您的设备上存储照片和文件的权限。</string>
+  <string name="permission_toast_storage">无法使用存储。请授予在您的设备上存储照片和文件的权限。</string>
   <string name="geolocation_dialog_message">%1$s \n想要获知您的位置。</string>
   <string name="geolocation_dialog_allow">允许</string>
   <string name="geolocation_dialog_block">阻止</string>
@@ -136,7 +137,7 @@
   <string name="screenshot_share">分享</string>
   <string name="message_fallback_save_to_primary_external">未检测到 SD 卡，文件已保存到内部存储。</string>
   <string name="message_start_to_save_to_removable_storage">文件已保存到 SD 卡</string>
-  <string name="message_removable_storage_space_not_enough">SD 卡快满了。文件被保存到内部存储设备上。</string>
+  <string name="message_removable_storage_space_not_enough">SD 卡快满了。文件被保存到内部存储上。</string>
   <string name="screenshot_grid_empty_text_title">无截图</string>
   <string name="screenshot_grid_empty_text_msg_prefix">点按菜单上的</string>
   <string name="screenshot_grid_empty_text_msg_postfix">截取整个网页。</string>
@@ -153,7 +154,7 @@
   <string name="message_enable_block_image">无图模式已启用</string>
   <string name="message_disable_block_image">无图模式已禁用</string>
   <string name="message_clear_cache_fail">无法清除缓存</string>
-  <string name="message_storage_unavailable_cancel_download">无法访问存储设备。下载已取消。</string>
+  <string name="message_storage_unavailable_cancel_download">无法访问存储空间。下载已取消。</string>
   <string name="message_cleared_cached">%1$s 缓存已清除</string>
   <string name="message_cleared_browsing_data">浏览数据已清除</string>
   <string name="message_deleted_screenshot">截图已删除</string>
@@ -178,11 +179,23 @@
   <string name="your_rights_content5"><![CDATA["%1$s 还使用 Disconnect 公司提供的黑名单，该黑名单为该公司的独立作品，按 "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU &#36890;&#29992;&#20844;&#20849;&#35768;&#21487;&#35777;&#31532;&#19977;&#29256;</a>提供，可在<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#36825;&#37324;</a>找到。]]></string>
   <string name="survey_notification_title">我们需要你！%1$s</string>
   <string name="survey_notification_description">为用户打造更好的产品</string>
-  <string name="new_background_tab_hint">已打开新标签页</string>
+  <string name="new_background_tab_hint">新标签页已打开</string>
   <string name="new_background_tab_switch">切换过去</string>
   <string name="setting_default_browser_notification_title">更改设置…</string>
   <string name="setting_default_browser_notification_text">这可能需要一段时间</string>
   <string name="setting_default_browser_notification_clickable_text">点按设为默认浏览器</string>
   <string name="tab_tray_close_tabs_btn_text">关闭全部</string>
   <string name="tab_tray_close_tabs_dialog_msg">关闭所有标签页？</string>
+  <string name="themetoy_onboarding_title">给生活添上色彩！</string>
+  <string name="themetoy_onboarding_description">双击主页背景可切换主题。</string>
+  <string name="bookmark_saved">书签已保存</string>
+  <string name="bookmark_removed">书签已移除</string>
+  <string name="bookmark_saved_edit">编辑</string>
+  <string name="title_activity_edit_bookmark">编辑书签</string>
+  <string name="bookmark_edit_save">保存</string>
+  <string name="bookmark_edit_name">名称</string>
+  <string name="bookmark_edit_location">地址</string>
+  <string name="bookmark_edit_success">书签已更新</string>
+  <string name="bookmarks_empty_view_msg">无书签</string>
+  <string name="edit_bookmark">编辑</string>
 </resources>
