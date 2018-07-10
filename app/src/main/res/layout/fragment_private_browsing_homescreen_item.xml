@@ -2,9 +2,9 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_alignParentBottom="true"
     android:layout_gravity="center_horizontal|bottom">
 
@@ -13,14 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin"
-        android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin">
+        android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin"
+        android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin">
 
-        <ImageButton
-            android:id="@+id/btn_tab_tray"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/btn_tab_tray_private"
             style="@style/HomeMenuButton"
-            android:tint="@color/colorPrimaryDark"
-            app:srcCompat="@drawable/private_browsing_mask" />
+            android:clickable="true"
+            app:lottie_autoPlay="false"
+            app:lottie_fileName="mask.json"
+            app:lottie_loop="false" />
 
         <include
             style="@style/HomeMenuButton"

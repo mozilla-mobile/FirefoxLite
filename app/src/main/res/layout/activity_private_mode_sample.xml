@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.mozilla.rocket.privately.PrivateModeSampleActivity"
+    tools:showIn="@layout/activity_private_mode_sample">
+
+    <org.mozilla.focus.home.HomeScreenBackground
+        android:id="@+id/home_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_home" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/logo_man_private"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="logo_man_private.json"
+        app:lottie_loop="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/home_fragment_fake_input_private"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
+        android:text="@string/private_browsing_title"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <include
+        android:id="@+id/home_fragment_fake_input_private"
+        layout="@layout/fragment_homescreen_item_fake_input"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true" />
+
+    <FrameLayout
+        android:id="@+id/webview_private_slot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fd0"
+        android:layout_below="@+id/home_fragment_fake_input_private" />
+
+    <include layout="@layout/fragment_private_browsing_homescreen_item" />
+
+
+</RelativeLayout>
