@@ -52,7 +52,7 @@ import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabsSession;
 import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.rocket.activity.PrivateBrowsingActivity;
+import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.privately.PrivateMode;
 
 import java.util.List;
@@ -72,7 +72,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private View newTabBtn;
     private View logoMan;
     private View closeTabsBtn;
-    private View privateBrowsingBtn;
+    private View privateModeBtn;
     private AlertDialog closeTabsDialog;
 
     private View backgroundView;
@@ -135,9 +135,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         recyclerView = view.findViewById(R.id.tab_tray);
         newTabBtn = view.findViewById(R.id.new_tab_button);
         closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
-        privateBrowsingBtn = view.findViewById(R.id.btn_private_browsing);
+        privateModeBtn = view.findViewById(R.id.btn_private_browsing);
         if (PrivateMode.isEnable(getContext())) {
-            privateBrowsingBtn.setVisibility(View.VISIBLE);
+            privateModeBtn.setVisibility(View.VISIBLE);
         }
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
@@ -158,7 +158,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         newTabBtn.setOnClickListener(this);
         closeTabsBtn.setOnClickListener(this);
-        privateBrowsingBtn.setOnClickListener(this);
+        privateModeBtn.setOnClickListener(this);
         setupTapBackgroundToExpand();
 
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -184,9 +184,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 break;
 
             case R.id.btn_private_browsing:
-                privateBrowsingBtn.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pb_shrink));
+                privateModeBtn.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pb_shrink));
 
-                startActivity(new Intent(getContext(), PrivateBrowsingActivity.class));
+                startActivity(new Intent(getContext(), PrivateModeActivity.class));
                 getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 break;
 
