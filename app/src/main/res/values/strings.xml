@@ -428,4 +428,11 @@
     <!-- Label for editing a bookmark which is available next to the bookmark item. -->
     <string name="edit_bookmark">Edit</string>
 
+    <!-- Private Browsing-->
+    <string name="private_browsing_title">Private Browsing</string>
+    <string name="private_browsing_erase_action">Erase private browsing history</string>
+    <string name="private_browsing_erase_done">Your private browsing\nhistory has been erased.</string>
+
+
+
 </resources>
