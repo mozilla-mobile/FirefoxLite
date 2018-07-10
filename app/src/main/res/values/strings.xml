@@ -429,8 +429,13 @@
     <string name="edit_bookmark">Edit</string>
 
     <!-- Private Browsing-->
+    <!-- This is the title that, when in private browsing mode, will be shown in the Home page (The page with search box). -->
     <string name="private_browsing_title">Private Browsing</string>
-    <string name="private_browsing_erase_action">Erase private browsing history</string>
+    <!-- A notification will be shown when entering private browsing mode, this is the message of the notification notifying the user that tapping the notification will erase the private browsing history. -->
+    <string name="private_browsing_erase_message">Erase private browsing history</string>
+    <!-- A notification will be shown when entering private browsing mode, this is the label of the action that when tapped, will open Rocket. -->
+    <string name="private_browsing_open_action">OPEN</string>
+    <!-- A message shown briefly after user have cleared the private browsing history via tapping the notification. -->
     <string name="private_browsing_erase_done">Your private browsing\nhistory has been erased.</string>
 
 
