@@ -82,14 +82,14 @@
         </activity>
 
         <activity
-            android:name="org.mozilla.rocket.activity.PrivateBrowsingActivity"
+            android:name="org.mozilla.rocket.privately.PrivateModeActivity"
             android:enabled="true"
             android:exported="false"
             android:launchMode="singleTask"
-            android:process=":privatebrowsing"
+            android:process=":private_mode"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/PrivateBrowsingTheme">
+            android:theme="@style/PrivateModeTheme">
 
 
         </activity>

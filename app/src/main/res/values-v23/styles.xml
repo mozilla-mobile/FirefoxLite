@@ -9,7 +9,7 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="PrivateBrowsingTheme" parent="AppTheme">
+    <style name="PrivateModeTheme" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>

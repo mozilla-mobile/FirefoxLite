@@ -1,4 +1,4 @@
-package org.mozilla.rocket.activity;
+package org.mozilla.rocket.privately;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.rocket.widget.BetterBounceInterpolator;
 
-public class PrivateBrowsingActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener {
+public class PrivateModeActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener {
 
     View backBtn;
     View logoman;

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.mozilla.rocket.activity.PrivateBrowsingActivity"
+    tools:context="org.mozilla.rocket.privately.PrivateModeActivity"
     tools:showIn="@layout/activity_private_browsing">
 
     <org.mozilla.focus.home.HomeScreenBackground
