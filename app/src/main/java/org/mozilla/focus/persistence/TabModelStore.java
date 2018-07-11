@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.tabs.TabModel;
 import org.mozilla.focus.utils.FileUtils;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public class TabModelStore {
     private TabsDatabase tabsDatabase;
 
     public interface AsyncQueryListener {
-        void onQueryComplete(List<TabEntity> tabEntityList, String focusTabId);
+        void onQueryComplete(List<TabModel> tabModelList, String focusTabId);
     }
 
     public interface AsyncSaveListener {
@@ -53,7 +54,7 @@ public class TabModelStore {
     }
 
     public void saveTabs(@NonNull final Context context,
-                         @NonNull final List<TabEntity> tabEntityList,
+                         @NonNull final List<TabModel> tabModelList,
                          @Nullable final String focusTabId,
                          @Nullable final AsyncSaveListener listener) {
 
@@ -62,7 +63,7 @@ public class TabModelStore {
                 .putString(context.getResources().getString(R.string.pref_key_focus_tab_id), focusTabId)
                 .apply();
 
-        new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabEntityList.toArray(new TabEntity[0]));
+        new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabModelList.toArray(new TabModel[0]));
     }
 
     private static class QueryTabsTask extends AsyncTask<Void, Void, List<TabEntity>> {
