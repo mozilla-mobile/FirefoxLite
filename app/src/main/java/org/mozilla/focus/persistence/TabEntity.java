@@ -4,8 +4,6 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -37,26 +35,6 @@ public class TabEntity {
 
     @ColumnInfo(name = "tab_url")
     private String url;
-
-    /**
-     * Thumbnail bitmap for tab previewing.
-     */
-    @Ignore
-    private Bitmap thumbnail;
-
-    /**
-     * Favicon bitmap for tab tray item.
-     */
-    @Ignore
-    private Bitmap favicon;
-
-    /**
-     * ViewState for this Tab. Usually to fill by WebView.saveViewState(Bundle)
-     * Set it as @Ignore to avoid storing this field into database.
-     * It will be serialized to a file and save the uri path into webViewStateUri field.
-     */
-    @Ignore
-    private Bundle webViewState;
 
     @NonNull
     public String getId() {
@@ -91,30 +69,6 @@ public class TabEntity {
         this.url = url;
     }
 
-    public Bitmap getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(Bitmap thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public Bitmap getFavicon() {
-        return favicon;
-    }
-
-    public void setFavicon(Bitmap favicon) {
-        this.favicon = favicon;
-    }
-
-    public Bundle getWebViewState() {
-        return webViewState;
-    }
-
-    public void setWebViewState(Bundle webViewState) {
-        this.webViewState = webViewState;
-    }
-
     public boolean isValid() {
         final boolean hasId = !TextUtils.isEmpty(this.getId());
         final boolean hasUrl = !TextUtils.isEmpty(this.getUrl());
@@ -128,10 +82,7 @@ public class TabEntity {
                 "id='" + id + '\'' +
                 ", parentId='" + parentId + '\'' +
                 ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", thumbnail=" + thumbnail +
-                ", favicon=" + favicon +
-                ", webViewState=" + webViewState +
+                ", url='" + url +
                 '}';
     }
 }
