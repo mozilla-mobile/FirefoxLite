@@ -49,12 +49,12 @@ import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.persistence.BookmarksDatabase;
-import org.mozilla.focus.persistence.TabEntity;
+import org.mozilla.focus.persistence.TabModelStore;
 import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.persistence.TabModelStore;
+import org.mozilla.focus.tabs.TabModel;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabViewProvider;
 import org.mozilla.focus.tabs.TabsSession;
@@ -931,9 +931,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    public void onQueryComplete(List<TabEntity> tabEntityList, String currentTabId) {
+    public void onQueryComplete(List<TabModel> tabModelList, String currentTabId) {
         isTabRestoredComplete = true;
-        getTabsSession().restoreTabs(tabEntityList, currentTabId);
+        getTabsSession().restoreTabs(tabModelList, currentTabId);
         Tab currentTab = getTabsSession().getFocusTab();
         if (currentTab != null) {
             screenNavigator.restoreBrowserScreen(currentTab.getId(), !getSupportFragmentManager().isStateSaved());
@@ -950,13 +950,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
-        List<TabEntity> tabEntityListForPersistence = getTabsSession().getTabModelListForPersistence();
+        List<TabModel> tabModelListForPersistence = getTabsSession().getTabModelListForPersistence();
         final String currentTabId = (getTabsSession().getFocusTab() != null)
                 ? getTabsSession().getFocusTab().getId()
                 : null;
 
-        if (tabEntityListForPersistence != null) {
-            TabModelStore.getInstance(this).saveTabs(this, tabEntityListForPersistence, currentTabId, null);
+        if (tabModelListForPersistence != null) {
+            TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
         }
     }
 

@@ -19,7 +19,6 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
-import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.web.DownloadCallback;
 
@@ -72,7 +71,7 @@ public class TabsSession {
     }
 
     /**
-     * To append tabs from a list of TabEntity. If the specified focusTabId exists, the tab associate
+     * To append tabs from a list of TabModel. If the specified focusTabId exists, the tab associate
      * to the id will be focused, otherwise no tab will be focused.
      * <p>
      * This is asynchronous call.
@@ -80,9 +79,9 @@ public class TabsSession {
      *
      * @param models
      */
-    public void restoreTabs(@NonNull final List<TabEntity> models, String focusTabId) {
+    public void restoreTabs(@NonNull final List<TabModel> models, String focusTabId) {
         int insertPos = 0;
-        for (final TabEntity model : models) {
+        for (final TabModel model : models) {
             if (!model.isValid()) {
                 continue;
             }
@@ -104,10 +103,10 @@ public class TabsSession {
     /**
      * To get data of tabs to store in persistent storage.
      *
-     * @return created TabEntity of tabs in this session.
+     * @return created TabModel of tabs in this session.
      */
-    public List<TabEntity> getTabModelListForPersistence() {
-        final List<TabEntity> models = new ArrayList<>();
+    public List<TabModel> getTabModelListForPersistence() {
+        final List<TabModel> models = new ArrayList<>();
         for (final Tab tab : tabs) {
             models.add(tab.getSaveModel());
         }

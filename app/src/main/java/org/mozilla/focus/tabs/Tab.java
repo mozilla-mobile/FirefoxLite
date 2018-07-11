@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.web.DownloadCallback;
 
 import java.util.UUID;
@@ -31,32 +30,32 @@ public class Tab {
     private static TabViewClient sDefViewClient = new TabViewClient();
     private static TabChromeClient sDefChromeClient = new TabChromeClient();
 
-    private TabEntity tabEntity;
+    private TabModel tabModel;
     private TabView tabView;
     private TabViewClient tabViewClient = sDefViewClient;
     private TabChromeClient tabChromeClient = sDefChromeClient;
     private DownloadCallback downloadCallback;
 
     public Tab() {
-        this(new TabEntity(UUID.randomUUID().toString(), ""));
+        this(new TabModel(UUID.randomUUID().toString(), "", "", ""));
     }
 
-    public Tab(@NonNull TabEntity model) {
-        this.tabEntity = model;
+    public Tab(@NonNull TabModel model) {
+        this.tabModel = model;
     }
 
-    public TabEntity getSaveModel() {
-        if (tabEntity.getWebViewState() == null) {
-            tabEntity.setWebViewState(new Bundle());
+    public TabModel getSaveModel() {
+        if (tabModel.getWebViewState() == null) {
+            tabModel.setWebViewState(new Bundle());
         }
 
         if (tabView != null) {
-            tabEntity.setTitle(tabView.getTitle());
-            tabEntity.setUrl(tabView.getUrl());
-            tabView.saveViewState(tabEntity.getWebViewState());
+            tabModel.setTitle(tabView.getTitle());
+            tabModel.setUrl(tabView.getUrl());
+            tabView.saveViewState(tabModel.getWebViewState());
         }
 
-        return tabEntity;
+        return tabModel;
     }
 
     @Nullable
@@ -65,12 +64,12 @@ public class Tab {
     }
 
     public String getId() {
-        return this.tabEntity.getId();
+        return this.tabModel.getId();
     }
 
     public String getTitle() {
         if (tabView == null) {
-            return tabEntity.getTitle();
+            return tabModel.getTitle();
         } else {
             return tabView.getTitle();
         }
@@ -78,11 +77,11 @@ public class Tab {
 
     public String getUrl() {
         if (tabView == null) {
-            if (tabEntity == null) {
+            if (tabModel == null) {
                 Log.d(TAG, "trying to get url from a tab which has no view nor model");
                 return null;
             } else {
-                return tabEntity.getUrl();
+                return tabModel.getUrl();
             }
         } else {
             return tabView.getUrl();
@@ -91,8 +90,8 @@ public class Tab {
 
     @Nullable
     public Bitmap getFavicon() {
-        if (tabEntity != null) {
-            return tabEntity.getFavicon();
+        if (tabModel != null) {
+            return tabModel.getFavicon();
         }
         return null;
     }
@@ -175,24 +174,24 @@ public class Tab {
     }
 
     /* package */ void setParentId(@Nullable String id) {
-        this.tabEntity.setParentId(id);
+        this.tabModel.setParentId(id);
     }
 
     @Nullable
     /* package */ String getParentId() {
-        return this.tabEntity.getParentId();
+        return this.tabModel.getParentId();
     }
 
     /* package */ void setTitle(@NonNull String title) {
-        tabEntity.setTitle(title);
+        tabModel.setTitle(title);
     }
 
     /* package */ void setUrl(@NonNull String url) {
-        tabEntity.setUrl(url);
+        tabModel.setUrl(url);
     }
 
     /* package */ void setFavicon(Bitmap icon) {
-        tabEntity.setFavicon(icon);
+        tabModel.setFavicon(icon);
     }
 
     /* package */ TabView initializeView(@NonNull final TabViewProvider provider) {
@@ -204,8 +203,8 @@ public class Tab {
             tabView.setChromeClient(tabChromeClient);
             tabView.setDownloadCallback(downloadCallback);
 
-            if (tabEntity.getWebViewState() != null) {
-                tabView.restoreViewState(tabEntity.getWebViewState());
+            if (tabModel.getWebViewState() != null) {
+                tabView.restoreViewState(tabModel.getWebViewState());
             } else if (!TextUtils.isEmpty(url)) {
                 tabView.loadUrl(url);
             }
@@ -221,7 +220,7 @@ public class Tab {
             view.setDrawingCacheEnabled(true);
             final Bitmap bitmap = tabView.getDrawingCache(true);
             if (bitmap != null) {
-                tabEntity.setThumbnail(Bitmap.createBitmap(bitmap));
+                tabModel.setThumbnail(Bitmap.createBitmap(bitmap));
                 bitmap.recycle();
             }
             view.setDrawingCacheEnabled(false);
@@ -230,6 +229,6 @@ public class Tab {
 
     // TODO: not implement completely
     private Bitmap getThumbnail() {
-        return tabEntity.getThumbnail();
+        return tabModel.getThumbnail();
     }
 }
