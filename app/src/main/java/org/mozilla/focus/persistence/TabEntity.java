@@ -10,14 +10,14 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 @Entity(tableName = "tabs")
-public class TabModel {
+public class TabEntity {
 
     @Ignore
-    public TabModel(String id, String parentId) {
+    public TabEntity(String id, String parentId) {
         this(id, parentId, "", "");
     }
 
-    public TabModel(String id, String parentId, String title, String url) {
+    public TabEntity(String id, String parentId, String title, String url) {
         this.id = id;
         this.parentId = parentId;
         this.title = title;
@@ -124,7 +124,7 @@ public class TabModel {
 
     @Override
     public String toString() {
-        return "TabModel{" +
+        return "TabEntity{" +
                 "id='" + id + '\'' +
                 ", parentId='" + parentId + '\'' +
                 ", title='" + title + '\'' +

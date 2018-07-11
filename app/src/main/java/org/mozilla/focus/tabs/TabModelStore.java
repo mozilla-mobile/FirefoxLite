@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.persistence.TabModel;
+import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.FileUtils;
 
@@ -28,7 +28,7 @@ public class TabModelStore {
     private TabsDatabase tabsDatabase;
 
     public interface AsyncQueryListener {
-        void onQueryComplete(List<TabModel> tabModelList, String focusTabId);
+        void onQueryComplete(List<TabEntity> tabEntityList, String focusTabId);
     }
 
     public interface AsyncSaveListener {
@@ -55,7 +55,7 @@ public class TabModelStore {
     }
 
     public void saveTabs(@NonNull final Context context,
-                         @NonNull final List<TabModel> tabModelList,
+                         @NonNull final List<TabEntity> tabEntityList,
                          @Nullable final String focusTabId,
                          @Nullable final AsyncSaveListener listener) {
 
@@ -64,10 +64,10 @@ public class TabModelStore {
                 .putString(context.getResources().getString(R.string.pref_key_focus_tab_id), focusTabId)
                 .apply();
 
-        new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabModelList.toArray(new TabModel[0]));
+        new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, tabEntityList.toArray(new TabEntity[0]));
     }
 
-    private static class QueryTabsTask extends AsyncTask<Void, Void, List<TabModel>> {
+    private static class QueryTabsTask extends AsyncTask<Void, Void, List<TabEntity>> {
 
         private WeakReference<Context> contextRef;
         private TabsDatabase tabsDatabase;
@@ -80,41 +80,41 @@ public class TabModelStore {
         }
 
         @Override
-        protected List<TabModel> doInBackground(Void... voids) {
+        protected List<TabEntity> doInBackground(Void... voids) {
             if (tabsDatabase != null) {
-                List<TabModel> tabModelList = tabsDatabase.tabDao().getTabs();
+                List<TabEntity> tabEntityList = tabsDatabase.tabDao().getTabs();
                 Context context = contextRef.get();
-                if (context != null && tabModelList != null) {
-                    restoreWebViewState(context, tabModelList);
+                if (context != null && tabEntityList != null) {
+                    restoreWebViewState(context, tabEntityList);
                 }
-                return tabModelList;
+                return tabEntityList;
             }
 
             return null;
         }
 
-        private void restoreWebViewState(@NonNull Context context, @NonNull List<TabModel> tabModelList) {
+        private void restoreWebViewState(@NonNull Context context, @NonNull List<TabEntity> tabEntityList) {
             File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
-            for (TabModel tabModel : tabModelList) {
-                if (tabModel != null) {
-                    tabModel.setWebViewState(FileUtils.readBundleFromStorage(cacheDir, tabModel.getId()));
+            for (TabEntity tabEntity : tabEntityList) {
+                if (tabEntity != null) {
+                    tabEntity.setWebViewState(FileUtils.readBundleFromStorage(cacheDir, tabEntity.getId()));
                 }
             }
         }
 
         @Override
-        protected void onPostExecute(List<TabModel> tabModelList) {
+        protected void onPostExecute(List<TabEntity> tabEntityList) {
             Context context = contextRef.get();
             AsyncQueryListener listener = listenerRef.get();
             if (listener != null && context != null) {
                 String focusTabId = PreferenceManager.getDefaultSharedPreferences(context)
                         .getString(context.getResources().getString(R.string.pref_key_focus_tab_id), "");
-                listener.onQueryComplete(tabModelList, focusTabId);
+                listener.onQueryComplete(tabEntityList, focusTabId);
             }
         }
     }
 
-    private static class SaveTabsTask extends AsyncTask<TabModel, Void, Void> {
+    private static class SaveTabsTask extends AsyncTask<TabEntity, Void, Void> {
 
         private WeakReference<Context> contextRef;
         private TabsDatabase tabsDatabase;
@@ -127,29 +127,29 @@ public class TabModelStore {
         }
 
         @Override
-        protected Void doInBackground(TabModel... tabModelList) {
-            if (tabModelList != null) {
+        protected Void doInBackground(TabEntity... tabEntityList) {
+            if (tabEntityList != null) {
                 Context context = contextRef.get();
                 if (context != null) {
-                    saveWebViewState(context, tabModelList);
+                    saveWebViewState(context, tabEntityList);
                 }
 
                 if (tabsDatabase != null) {
-                    tabsDatabase.tabDao().deleteAllTabsAndInsertTabsInTransaction(tabModelList);
+                    tabsDatabase.tabDao().deleteAllTabsAndInsertTabsInTransaction(tabEntityList);
                 }
             }
 
             return null;
         }
 
-        private void saveWebViewState(@NonNull Context context, @NonNull TabModel[] tabModelList) {
+        private void saveWebViewState(@NonNull Context context, @NonNull TabEntity[] tabEntityList) {
             final File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
             final List<File> updateFileList = new ArrayList<>();
 
-            for (TabModel tabModel : tabModelList) {
-                if (tabModel != null && tabModel.getWebViewState() != null) {
-                    FileUtils.writeBundleToStorage(cacheDir, tabModel.getId(), tabModel.getWebViewState());
-                    updateFileList.add(new File(cacheDir, tabModel.getId()));
+            for (TabEntity tabEntity : tabEntityList) {
+                if (tabEntity != null && tabEntity.getWebViewState() != null) {
+                    FileUtils.writeBundleToStorage(cacheDir, tabEntity.getId(), tabEntity.getWebViewState());
+                    updateFileList.add(new File(cacheDir, tabEntity.getId()));
                 }
             }
 

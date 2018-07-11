@@ -8,7 +8,7 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-@Database(entities = {TabModel.class}, version = 2)
+@Database(entities = {TabEntity.class}, version = 2)
 public abstract class TabsDatabase extends RoomDatabase {
 
     private static volatile TabsDatabase instance;

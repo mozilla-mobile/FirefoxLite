@@ -49,7 +49,7 @@ import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.persistence.BookmarksDatabase;
-import org.mozilla.focus.persistence.TabModel;
+import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
@@ -78,7 +78,6 @@ import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
-import org.mozilla.focus.web.BrowsingSession;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 import org.mozilla.focus.widget.FragmentListener;
@@ -932,9 +931,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    public void onQueryComplete(List<TabModel> tabModelList, String currentTabId) {
+    public void onQueryComplete(List<TabEntity> tabEntityList, String currentTabId) {
         isTabRestoredComplete = true;
-        getTabsSession().restoreTabs(tabModelList, currentTabId);
+        getTabsSession().restoreTabs(tabEntityList, currentTabId);
         Tab currentTab = getTabsSession().getFocusTab();
         if (currentTab != null) {
             screenNavigator.restoreBrowserScreen(currentTab.getId(), !getSupportFragmentManager().isStateSaved());
@@ -951,13 +950,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
-        List<TabModel> tabModelListForPersistence = getTabsSession().getTabModelListForPersistence();
+        List<TabEntity> tabEntityListForPersistence = getTabsSession().getTabModelListForPersistence();
         final String currentTabId = (getTabsSession().getFocusTab() != null)
                 ? getTabsSession().getFocusTab().getId()
                 : null;
 
-        if (tabModelListForPersistence != null) {
-            TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
+        if (tabEntityListForPersistence != null) {
+            TabModelStore.getInstance(this).saveTabs(this, tabEntityListForPersistence, currentTabId, null);
         }
     }
 
