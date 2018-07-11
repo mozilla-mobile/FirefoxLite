@@ -1,0 +1,25 @@
+apply plugin: 'pmd'
+
+pmd {
+    toolVersion = '5.5.2'
+    ignoreFailures = true
+    ruleSetFiles = files("${project.rootDir}/quality/pmd-rules.xml")
+    ruleSets = []
+}
+
+tasks.create([ "type" : Pmd, "group": "verification", "name": "pmd"]) {
+    source 'src'
+    include '**/*.java'
+    exclude('**/gen/**',
+            '**/debug/**',
+            '**/androidTest/**',
+            '**/test**/**')
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "$projectDir.absolutePath/build/reports/pmd/pmd.html"
+        }
+    }
+}
