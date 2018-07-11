@@ -78,7 +78,7 @@ android {
     }
 
     // We have a three dimensional build configuration:
-    // BUILD TYPE (debug, beta, release)
+    // BUILD TYPE (debug, release)
 
     buildTypes {
         release {
@@ -86,13 +86,6 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             matchingFallbacks = ["firebase"]
-        }
-        beta {
-            initWith release
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            matchingFallbacks = ["release", "firebase"]
         }
         debug {
             def userName = System.getenv("USER")
@@ -163,8 +156,8 @@ android {
 
     variantFilter { variant ->
         def flavors = variant.flavors*.name
-        // We only need a gecko debug and beta build for now.
-        if (flavors.contains("preview") && variant.buildType.name != "beta") {
+        // We only need a nightly release for now
+        if (flavors.contains("preview") && variant.buildType.name != "release") {
             setIgnore(true)
         }
     }
@@ -184,7 +177,9 @@ android {
             manifest.srcFile 'src/focusRelease/AndroidManifest.xml'
         }
 
-        previewWebkitBeta.res.srcDir 'src/preview/res'
+        preview {
+            res.srcDir 'src/preview/res'
+        }
 
         // used by Room, to test migrations
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
@@ -266,7 +261,6 @@ dependencies {
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
-    betaImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
@@ -339,7 +333,7 @@ android.applicationVariants.all { variant ->
         buildConfigField 'String', 'ADJUST_TOKEN', 'null'
         println("Not setting adjust token (Not a focus release build)")
     }
-    if (variant.buildType.name == "release" || variant.buildType.name == "beta"|| variant.buildType.name == "firebase") {
+    if (variant.buildType.name == "release" || variant.buildType.name == "firebase") {
         variant.assemble.doFirst {
             if (SystemEnv.google_app_id == null || SystemEnv.default_web_client_id == null ||
                     SystemEnv.firebase_database_url == null || SystemEnv.gcm_defaultSenderId == null ||
