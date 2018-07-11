@@ -22,8 +22,8 @@ import static org.junit.Assert.assertEquals;
 public class TabDaoTest {
 
     private static final String TEST_DB_NAME = "migration-test";
-    private static final TabModel TAB = new TabModel("TEST_ID", "ID_HOME", "Yahoo TW", "https://tw.yahoo.com");
-    private static final TabModel TAB_2 = new TabModel("TEST_ID_2", TAB.getId(), "Google", "https://www.google.com");
+    private static final TabEntity TAB = new TabEntity("TEST_ID", "ID_HOME", "Yahoo TW", "https://tw.yahoo.com");
+    private static final TabEntity TAB_2 = new TabEntity("TEST_ID_2", TAB.getId(), "Google", "https://www.google.com");
 
     private TabsDatabase tabsDatabase;
 
@@ -51,7 +51,7 @@ public class TabDaoTest {
         tabsDatabase.tabDao().insertTabs(TAB);
 
         // The tab can be retrieved
-        List<TabModel> dbTabs = tabsDatabase.tabDao().getTabs();
+        List<TabEntity> dbTabs = tabsDatabase.tabDao().getTabs();
         assertTabEquals(TAB, dbTabs.get(0));
     }
 
@@ -61,7 +61,7 @@ public class TabDaoTest {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
 
         // The tab list can be retrieved
-        List<TabModel> dbTabs = tabsDatabase.tabDao().getTabs();
+        List<TabEntity> dbTabs = tabsDatabase.tabDao().getTabs();
         assertEquals(2, dbTabs.size());
         assertTabEquals(TAB, dbTabs.get(0));
         assertTabEquals(TAB_2, dbTabs.get(1));
@@ -73,11 +73,11 @@ public class TabDaoTest {
         tabsDatabase.tabDao().insertTabs(TAB);
 
         // When we are updating the title of the tab
-        TabModel updatedTab = new TabModel(TAB.getId(), TAB.getParentId(), "new title", TAB.getUrl());
+        TabEntity updatedTab = new TabEntity(TAB.getId(), TAB.getParentId(), "new title", TAB.getUrl());
         tabsDatabase.tabDao().insertTabs(updatedTab);
 
         // The retrieved tab has the updated title
-        List<TabModel> dbTabs = tabsDatabase.tabDao().getTabs();
+        List<TabEntity> dbTabs = tabsDatabase.tabDao().getTabs();
         assertTabEquals(updatedTab, dbTabs.get(0));
     }
 
@@ -90,7 +90,7 @@ public class TabDaoTest {
         tabsDatabase.tabDao().deleteTab(TAB);
 
         // The tab is no longer in the data source
-        List<TabModel> dbTabs = tabsDatabase.tabDao().getTabs();
+        List<TabEntity> dbTabs = tabsDatabase.tabDao().getTabs();
         assertEquals(0, dbTabs.size());
     }
 
@@ -103,7 +103,7 @@ public class TabDaoTest {
         tabsDatabase.tabDao().deleteAllTabs();
 
         // The tab is no longer in the data source
-        List<TabModel> dbTabs = tabsDatabase.tabDao().getTabs();
+        List<TabEntity> dbTabs = tabsDatabase.tabDao().getTabs();
         assertEquals(0, dbTabs.size());
     }
 
@@ -121,24 +121,24 @@ public class TabDaoTest {
 
         // MigrationTestHelper automatically verifies the schema changes, but not the data validity
         // Validate that the data was migrated properly.
-        List<TabModel> dbTabs = getMigratedRoomDatabase().tabDao().getTabs();
+        List<TabEntity> dbTabs = getMigratedRoomDatabase().tabDao().getTabs();
         assertEquals(2, dbTabs.size());
         assertTabEquals(TAB, dbTabs.get(0));
         assertTabEquals(TAB_2, dbTabs.get(1));
     }
 
-    private void insertTabV1(TabModel tabModel, SupportSQLiteDatabase db) {
+    private void insertTabV1(TabEntity tabEntity, SupportSQLiteDatabase db) {
         ContentValues values = new ContentValues();
-        values.put("tab_id", tabModel.getId());
-        values.put("tab_parent_id", tabModel.getParentId());
-        values.put("tab_title", tabModel.getTitle());
-        values.put("tab_url", tabModel.getUrl());
+        values.put("tab_id", tabEntity.getId());
+        values.put("tab_parent_id", tabEntity.getParentId());
+        values.put("tab_title", tabEntity.getTitle());
+        values.put("tab_url", tabEntity.getUrl());
         values.put("tab_thumbnail_uri", "");
         values.put("webview_state_uri", "");
         db.insert("tabs", SQLiteDatabase.CONFLICT_REPLACE, values);
     }
 
-    private void assertTabEquals(TabModel expectedTab, TabModel actualTab) {
+    private void assertTabEquals(TabEntity expectedTab, TabEntity actualTab) {
         assertEquals(expectedTab.getId(), actualTab.getId());
         assertEquals(expectedTab.getParentId(), actualTab.getParentId());
         assertEquals(expectedTab.getTitle(), actualTab.getTitle());

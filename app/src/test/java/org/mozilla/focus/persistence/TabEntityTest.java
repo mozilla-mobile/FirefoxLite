@@ -12,16 +12,16 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
-public class TabModelTest {
+public class TabEntityTest {
 
     @Test
     public void testSanity() {
-        Assert.assertFalse(new TabModel(null, null).isValid());
-        Assert.assertFalse(new TabModel(null, null, "title", "").isValid());
-        Assert.assertFalse(new TabModel(null, null, null, "url").isValid());
-        Assert.assertFalse(new TabModel("id", null, null, null).isValid());
+        Assert.assertFalse(new TabEntity(null, null).isValid());
+        Assert.assertFalse(new TabEntity(null, null, "title", "").isValid());
+        Assert.assertFalse(new TabEntity(null, null, null, "url").isValid());
+        Assert.assertFalse(new TabEntity("id", null, null, null).isValid());
 
-        Assert.assertTrue(new TabModel("id", null, null, "url").isValid());
-        Assert.assertTrue(new TabModel("id", null, "title", "url").isValid());
+        Assert.assertTrue(new TabEntity("id", null, null, "url").isValid());
+        Assert.assertTrue(new TabEntity("id", null, "title", "url").isValid());
     }
 }

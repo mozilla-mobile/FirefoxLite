@@ -19,7 +19,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mozilla.focus.persistence.TabModel;
+import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.tabs.utils.DefaultTabsChromeListener;
 import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.web.DownloadCallback;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.verify;
 public class TabsSessionTest {
 
     TabsSession session;
-    final List<TabModel> models = new ArrayList<>();
+    final List<TabEntity> models = new ArrayList<>();
 
     final String[] urls = new String[]{
             "https://mozilla.org",
@@ -55,7 +55,7 @@ public class TabsSessionTest {
 
         for (int i = 0; i < urls.length; i++) {
             // use url as id for convenience
-            final TabModel model = new TabModel(urls[i], "", urls[i], urls[i]);
+            final TabEntity model = new TabEntity(urls[i], "", urls[i], urls[i]);
             models.add(model);
         }
     }
