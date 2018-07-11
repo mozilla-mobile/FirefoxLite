@@ -54,7 +54,7 @@ import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabModelStore;
+import org.mozilla.focus.persistence.TabModelStore;
 import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.tabs.TabViewProvider;
 import org.mozilla.focus.tabs.TabsSession;
