@@ -1,0 +1,10 @@
+apply plugin: 'checkstyle'
+
+tasks.create([ "type" : Checkstyle, "name": "checkstyle"]) {
+    configFile file("${project.rootDir}/quality/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
