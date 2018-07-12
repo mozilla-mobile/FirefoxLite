@@ -26,19 +26,19 @@ import android.webkit.WebViewDatabase;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.focus.tabs.SiteIdentity;
-import org.mozilla.focus.tabs.TabChromeClient;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.DownloadCallback;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.rocket.tabs.SiteIdentity;
+import org.mozilla.rocket.tabs.TabChromeClient;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewClient;
+import org.mozilla.rocket.tabs.web.Download;
+import org.mozilla.rocket.tabs.web.DownloadCallback;
 
 public class WebkitView extends NestedWebView implements TabView {
     private static final String KEY_CURRENTURL = "currenturl";

@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.tabs.TabChromeClient;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.rocket.tabs.TabChromeClient;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewClient;
 
 public class InfoFragment extends WebFragment {
     private ProgressBar progressView;

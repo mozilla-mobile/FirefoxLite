@@ -12,8 +12,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebView;
 
-import org.mozilla.focus.tabs.TabChromeClient;
-import org.mozilla.focus.tabs.TabView;
+import org.mozilla.rocket.tabs.TabChromeClient;
+import org.mozilla.rocket.tabs.TabView;
 
 /* package */ class LinkHandler implements View.OnLongClickListener {
     private final TabView tabView;

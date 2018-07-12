@@ -13,13 +13,24 @@ import junit.framework.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.*
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.Mockito.*
-import org.mozilla.focus.tabs.*
-import org.mozilla.focus.tabs.utils.TabUtil
-import org.mozilla.focus.web.DownloadCallback
+import org.mockito.Captor
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
+import org.mozilla.rocket.tabs.SiteIdentity
+import org.mozilla.rocket.tabs.Tab
+import org.mozilla.rocket.tabs.TabChromeClient
+import org.mozilla.rocket.tabs.TabView
+import org.mozilla.rocket.tabs.TabViewClient
+import org.mozilla.rocket.tabs.TabViewProvider
+import org.mozilla.rocket.tabs.TabsSession
+import org.mozilla.rocket.tabs.utils.TabUtil
+import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)

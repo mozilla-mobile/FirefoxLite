@@ -48,12 +48,12 @@ import com.bumptech.glide.Glide;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.navigation.ScreenNavigator;
-import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.privately.PrivateMode;
+import org.mozilla.rocket.privately.PrivateModeActivity;
+import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.TabsSessionProvider;
 
 import java.util.List;
 

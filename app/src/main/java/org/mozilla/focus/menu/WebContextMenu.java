@@ -28,15 +28,15 @@ import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.GetImgHeaderTask;
 import org.mozilla.focus.fragment.BrowserFragment;
-import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionProvider;
-import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.web.Download;
-import org.mozilla.focus.web.DownloadCallback;
+import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.TabsSessionProvider;
+import org.mozilla.rocket.tabs.utils.TabUtil;
+import org.mozilla.rocket.tabs.web.Download;
+import org.mozilla.rocket.tabs.web.DownloadCallback;
 
 import java.util.List;
 

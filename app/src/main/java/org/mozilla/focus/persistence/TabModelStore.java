@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.tabs.TabModel;
 import org.mozilla.focus.utils.FileUtils;
+import org.mozilla.rocket.tabs.TabModel;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

@@ -16,11 +16,11 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabsChromeListener;
-import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsViewListener;
+import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabsChromeListener;
+import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.TabsViewListener;
 
 import java.util.ArrayList;
 import java.util.List;
