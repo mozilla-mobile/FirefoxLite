@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs;
+package org.mozilla.rocket.tabs;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -19,13 +19,13 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
-import org.mozilla.focus.tabs.utils.TabUtil;
-import org.mozilla.focus.web.DownloadCallback;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.mozilla.rocket.tabs.utils.TabUtil;
+import org.mozilla.rocket.tabs.web.DownloadCallback;
 
 /**
  * Class to help on tabs management, such as adding or removing tabs.

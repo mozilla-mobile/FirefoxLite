@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs;
+package org.mozilla.rocket.tabs;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import org.mozilla.focus.web.DownloadCallback;
+import org.mozilla.rocket.tabs.web.DownloadCallback;
 
 public interface TabView {
     class HitTarget {
@@ -87,7 +87,8 @@ public interface TabView {
 
     String getTitle();
 
-    @SiteIdentity.SecurityState int getSecurityState();
+    @SiteIdentity.SecurityState
+    int getSecurityState();
 
     void loadUrl(String url);
 
