@@ -31,8 +31,8 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.utils.FavIconUtils;
+import org.mozilla.rocket.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -259,6 +259,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     public interface TabClickListener {
         void onTabClick(int tabPosition);
+
         void onTabCloseClick(int tabPosition);
     }
 }

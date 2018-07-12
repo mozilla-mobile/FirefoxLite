@@ -19,8 +19,8 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.InfoFragment;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.rocket.tabs.TabView;
 
 /**
  * A generic activity that supports showing additional information in a WebView. This is useful

@@ -3,21 +3,18 @@ package org.mozilla.focus.download;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
-import org.mozilla.focus.utils.Constants;
-import org.mozilla.focus.web.Download;
+import org.mozilla.rocket.tabs.web.Download;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

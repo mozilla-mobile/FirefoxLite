@@ -16,12 +16,12 @@ import android.webkit.WebView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.locale.LocaleAwareFragment;
-import org.mozilla.focus.tabs.TabChromeClient;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.rocket.tabs.TabChromeClient;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewClient;
 
 /**
  * Base implementation for fragments that use SINGLE TabView instance. Based on Android's WebViewFragment.

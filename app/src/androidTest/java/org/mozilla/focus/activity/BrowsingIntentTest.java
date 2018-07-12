@@ -22,9 +22,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
-import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.TabsSessionProvider;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

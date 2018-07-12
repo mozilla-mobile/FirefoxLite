@@ -30,22 +30,22 @@ import org.json.JSONObject;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
+import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.QueryHandler;
-import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabCounter;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionProvider;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 
 import java.util.ArrayList;
@@ -414,7 +414,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     };
 
-    private class TabsChromeListener implements org.mozilla.focus.tabs.TabsChromeListener {
+    private class TabsChromeListener implements org.mozilla.rocket.tabs.TabsChromeListener {
 
         @Override
         public void onProgressChanged(@NonNull Tab tab, int progress) {

@@ -23,7 +23,7 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.notification.NotificationActionBroadcastReceiver;
-import org.mozilla.focus.tabs.TabView;
+import org.mozilla.rocket.tabs.TabView;
 
 import java.io.File;
 import java.net.URI;

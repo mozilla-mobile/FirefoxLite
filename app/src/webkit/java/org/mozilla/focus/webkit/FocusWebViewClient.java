@@ -16,11 +16,11 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import org.mozilla.focus.tabs.TabViewClient;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.rocket.tabs.TabViewClient;
 
 /**
  * WebViewClient layer that handles browser specific WebViewClient functionality, such as error pages

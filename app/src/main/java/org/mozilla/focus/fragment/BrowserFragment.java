@@ -11,7 +11,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,8 +19,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +26,6 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -49,42 +45,38 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.download.EnqueueDownloadTask;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
+import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
-import org.mozilla.focus.tabs.SiteIdentity;
-import org.mozilla.focus.tabs.Tab;
 import org.mozilla.focus.tabs.TabCounter;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabsChromeListener;
-import org.mozilla.focus.tabs.TabsSession;
-import org.mozilla.focus.tabs.TabsSessionProvider;
-import org.mozilla.focus.tabs.TabsViewListener;
 import org.mozilla.focus.tabs.tabtray.TabTray;
-import org.mozilla.focus.tabs.utils.TabUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.utils.ColorUtils;
-import org.mozilla.focus.utils.DrawableUtils;
 import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.web.BrowsingSession;
-import org.mozilla.focus.web.Download;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
+import org.mozilla.rocket.tabs.SiteIdentity;
+import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabsChromeListener;
+import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.TabsSessionProvider;
+import org.mozilla.rocket.tabs.TabsViewListener;
+import org.mozilla.rocket.tabs.utils.TabUtil;
+import org.mozilla.rocket.tabs.web.Download;
 
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
@@ -1281,7 +1273,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
     }
 
-    class DownloadCallback implements org.mozilla.focus.web.DownloadCallback {
+    class DownloadCallback implements org.mozilla.rocket.tabs.web.DownloadCallback {
 
         @Override
         public void onDownloadStart(@NonNull Download download) {

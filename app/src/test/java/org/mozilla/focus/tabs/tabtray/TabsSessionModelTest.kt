@@ -1,14 +1,17 @@
 package org.mozilla.focus.tabs.tabtray
 
 import junit.framework.Assert
+
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.*
+import org.mockito.Mockito.anyString
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.mozilla.focus.tabs.Tab
-import org.mozilla.focus.tabs.TabsSession
+import org.mozilla.rocket.tabs.Tab
+import org.mozilla.rocket.tabs.TabsSession
 
 class TabsSessionModelTest {
 
@@ -82,7 +85,7 @@ class TabsSessionModelTest {
         verify<TabsSession>(this.tabsSession).dropTab(target.id)
     }
 
-    private fun assumeTabs(list : List<Tab>) {
+    private fun assumeTabs(list: List<Tab>) {
         Mockito.`when`(tabsSession.tabs)
                 .thenReturn(list)
     }

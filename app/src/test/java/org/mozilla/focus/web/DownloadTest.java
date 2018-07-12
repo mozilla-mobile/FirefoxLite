@@ -5,14 +5,14 @@
 
 package org.mozilla.focus.web;
 
-import android.os.Environment;
 import android.os.Parcel;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mozilla.rocket.tabs.web.Download;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class DownloadTest {

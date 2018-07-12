@@ -14,10 +14,10 @@ import android.webkit.WebView;
 
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.focus.tabs.TabChromeClient;
-import org.mozilla.focus.tabs.TabView;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.FavIconUtils;
+import org.mozilla.rocket.tabs.TabChromeClient;
+import org.mozilla.rocket.tabs.TabView;
 
 /**
  * An @see{android.webkit.WebChromeClient} implementation to hand over any callback to TabChromeClient, if any.
