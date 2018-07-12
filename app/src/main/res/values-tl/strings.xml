@@ -198,4 +198,8 @@
   <string name="bookmark_edit_success">Na-update na ang bookmark</string>
   <string name="bookmarks_empty_view_msg">Walang mga bookmark</string>
   <string name="edit_bookmark">I-Edit</string>
+  <string name="private_browsing_title">Magbrowse ng Pribado</string>
+  <string name="private_browsing_erase_message">Burahin ang kasaysayan ng private browsing</string>
+  <string name="private_browsing_open_action">BUKSAN</string>
+  <string name="private_browsing_erase_done">Ang kasaysayan ng iyong private browsing\nay nabura na.</string>
 </resources>
