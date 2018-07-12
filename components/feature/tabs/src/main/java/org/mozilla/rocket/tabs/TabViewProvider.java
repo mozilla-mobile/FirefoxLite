@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs;
+package org.mozilla.rocket.tabs;
 
 /**
  * A class to create TabView instance.
  */
-
 public interface TabViewProvider {
     TabView create();
 }

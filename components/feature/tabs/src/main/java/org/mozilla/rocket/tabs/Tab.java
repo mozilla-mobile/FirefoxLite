@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs;
+package org.mozilla.rocket.tabs;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.mozilla.focus.web.DownloadCallback;
-
 import java.util.UUID;
+
+import org.mozilla.rocket.tabs.web.DownloadCallback;
 
 public class Tab {
 
@@ -178,7 +178,7 @@ public class Tab {
     }
 
     @Nullable
-    /* package */ String getParentId() {
+        /* package */ String getParentId() {
         return this.tabModel.getParentId();
     }
 

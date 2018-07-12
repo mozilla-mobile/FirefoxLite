@@ -1,4 +1,4 @@
-package org.mozilla.focus.tabs
+package org.mozilla.rocket.tabs
 
 import android.graphics.Bitmap
 import android.os.Bundle

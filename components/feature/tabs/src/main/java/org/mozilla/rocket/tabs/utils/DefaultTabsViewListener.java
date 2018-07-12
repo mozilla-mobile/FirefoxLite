@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs.utils;
+package org.mozilla.rocket.tabs.utils;
 
 import android.support.annotation.NonNull;
 
-import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabsViewListener;
+import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.TabsViewListener;
 
 /**
  * A sugar class implements TabsViewListener in empty implementation.
@@ -16,17 +16,14 @@ import org.mozilla.focus.tabs.TabsViewListener;
 public class DefaultTabsViewListener implements TabsViewListener {
     @Override
     public void onTabStarted(@NonNull Tab tab) {
-
     }
 
     @Override
     public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
-
     }
 
     @Override
     public void onURLChanged(@NonNull Tab tab, String url) {
-
     }
 
     @Override
@@ -36,6 +33,5 @@ public class DefaultTabsViewListener implements TabsViewListener {
 
     @Override
     public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
-
     }
 }

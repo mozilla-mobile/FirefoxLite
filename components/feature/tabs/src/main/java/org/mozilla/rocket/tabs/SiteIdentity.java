@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs;
+package org.mozilla.rocket.tabs;
 
 import android.support.annotation.IntDef;
 
@@ -14,5 +14,6 @@ public class SiteIdentity {
     public static final int SECURE = 2;
 
     @IntDef({UNKNOWN, INSECURE, SECURE})
-    public @interface SecurityState {}
+    public @interface SecurityState {
+    }
 }

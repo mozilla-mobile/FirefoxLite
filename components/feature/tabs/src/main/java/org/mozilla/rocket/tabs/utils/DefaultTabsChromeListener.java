@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs.utils;
+package org.mozilla.rocket.tabs.utils;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,9 +15,9 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
-import org.mozilla.focus.tabs.Tab;
-import org.mozilla.focus.tabs.TabView;
-import org.mozilla.focus.tabs.TabsChromeListener;
+import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabsChromeListener;
 
 /**
  * A sugar class implements TabsChromeListener in empty implementation.
@@ -25,47 +25,38 @@ import org.mozilla.focus.tabs.TabsChromeListener;
 public class DefaultTabsChromeListener implements TabsChromeListener {
     @Override
     public void onProgressChanged(@NonNull Tab tab, int progress) {
-
     }
 
     @Override
     public void onReceivedTitle(@NonNull Tab tab, String title) {
-
     }
 
     @Override
     public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
-
     }
 
     @Override
     public void onFocusChanged(@Nullable Tab tab, int factor) {
-
     }
 
     @Override
     public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
-
     }
 
     @Override
     public void onTabCountChanged(int count) {
-
     }
 
     @Override
     public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
-
     }
 
     @Override
     public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
-
     }
 
     @Override
     public void onExitFullScreen(@NonNull Tab tab) {
-
     }
 
     @Override
@@ -75,6 +66,5 @@ public class DefaultTabsChromeListener implements TabsChromeListener {
 
     @Override
     public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
-
     }
 }
