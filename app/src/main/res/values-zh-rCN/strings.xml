@@ -198,4 +198,8 @@
   <string name="bookmark_edit_success">书签已更新</string>
   <string name="bookmarks_empty_view_msg">无书签</string>
   <string name="edit_bookmark">编辑</string>
+  <string name="private_browsing_title">隐私浏览</string>
+  <string name="private_browsing_erase_message">清除隐私浏览历史</string>
+  <string name="private_browsing_open_action">打开</string>
+  <string name="private_browsing_erase_done">您的隐私浏览\n历史已被清除。</string>
 </resources>

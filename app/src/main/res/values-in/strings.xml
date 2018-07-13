@@ -198,4 +198,8 @@
   <string name="bookmark_edit_success">Markah diperbarui</string>
   <string name="bookmarks_empty_view_msg">Tidak ada markah</string>
   <string name="edit_bookmark">Ubah</string>
+  <string name="private_browsing_title">Penjelajahan Pribadi</string>
+  <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
+  <string name="private_browsing_open_action">BUKA</string>
+  <string name="private_browsing_erase_done">Riwayat penjelajahan pribadi Anda\ntelah dihapus.</string>
 </resources>
