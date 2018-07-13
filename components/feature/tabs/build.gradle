@@ -28,7 +28,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
     implementation "com.android.support:appcompat-v7:${Versions.support}"
+    testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
+    testImplementation "org.mockito:mockito-core:${Versions.mockito}"
     testImplementation "junit:junit:${Versions.junit}"
+
     androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:${Versions.espresso}"
 }
