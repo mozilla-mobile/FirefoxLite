@@ -19,6 +19,7 @@ import android.webkit.WebView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.webkit.DefaultWebView;
 import org.mozilla.focus.webkit.TrackingProtectionWebViewClient;
 import org.mozilla.focus.webkit.WebkitView;
 
@@ -45,9 +46,21 @@ public class WebViewProvider {
 
         setupView(webkitView);
         configureDefaultSettings(context, settings, webkitView);
+        applyMultiTabSettings(context, settings);
         applyAppSettings(context, settings);
 
         return webkitView;
+    }
+
+    public static View createDefaultWebView(Context context, AttributeSet attrs) {
+        final WebView webView = new DefaultWebView(context, attrs);
+        final WebSettings settings = webView.getSettings();
+
+        setupView(webView);
+        configureDefaultSettings(context, settings, webView);
+        applyAppSettings(context, settings);
+
+        return webView;
     }
 
     private static void setupView(WebView webView) {
@@ -56,7 +69,7 @@ public class WebViewProvider {
     }
 
     @SuppressLint("SetJavaScriptEnabled") // We explicitly want to enable JavaScript
-    private static void configureDefaultSettings(Context context, WebSettings settings, WebkitView webkitView) {
+    private static void configureDefaultSettings(Context context, WebSettings settings, WebView webkitView) {
         settings.setJavaScriptEnabled(true);
 
         // Enabling built in zooming shows the controls by default
@@ -95,11 +108,6 @@ public class WebViewProvider {
         //noinspection deprecation - This method is deprecated but let's call it in case WebView implementations still obey it.
         settings.setSavePassword(false);
 
-        // We have multi-tabs support
-        settings.setSupportMultipleWindows(true);
-        // then let Javascript open window
-        settings.setJavaScriptCanOpenWindowsAutomatically(true);
-
         // We accept third party cookies
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webkitView, true);
@@ -110,6 +118,12 @@ public class WebViewProvider {
         // We could consider calling setLoadsImagesAutomatically() here too (This will block images not loaded over the network too)
         settings.setBlockNetworkImage(Settings.getInstance(context).shouldBlockImages());
         settings.setLoadsImagesAutomatically(!Settings.getInstance(context).shouldBlockImages());
+    }
+
+    public static void applyMultiTabSettings(Context context, WebSettings settings) {
+        settings.setSupportMultipleWindows(true);
+        // then let Javascript open window
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
     }
 
     /**
