@@ -39,7 +39,13 @@ public class WebViewProvider {
         TrackingProtectionWebViewClient.triggerPreload(context);
     }
 
-    public static View create(Context context, AttributeSet attrs) {
+    public static View create(final Context context, final AttributeSet attrs) {
+        return create(context, attrs, null);
+    }
+
+    public static View create(final Context context,
+                              final AttributeSet attrs,
+                              final WebSettingsHook hook) {
         WebView.enableSlowWholeDocumentDraw();
         final WebkitView webkitView = new WebkitView(context, attrs);
         final WebSettings settings = webkitView.getSettings();
@@ -48,6 +54,10 @@ public class WebViewProvider {
         configureDefaultSettings(context, settings, webkitView);
         applyMultiTabSettings(context, settings);
         applyAppSettings(context, settings);
+
+        if (hook != null) {
+            hook.modify(settings);
+        }
 
         return webkitView;
     }
@@ -197,5 +207,12 @@ public class WebViewProvider {
             userAgentString = buildUserAgentString(context, context.getResources().getString(R.string.useragent_appname));
         }
         return userAgentString;
+    }
+
+    /**
+     * WebSettings hook for WebView creation
+     */
+    public interface WebSettingsHook {
+        void modify(final WebSettings settings);
     }
 }
