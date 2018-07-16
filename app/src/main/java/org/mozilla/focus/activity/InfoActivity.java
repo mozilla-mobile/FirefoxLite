@@ -12,15 +12,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.View;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.InfoFragment;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.rocket.tabs.TabView;
 
 /**
  * A generic activity that supports showing additional information in a WebView. This is useful
@@ -76,20 +73,6 @@ public class InfoActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        if (name.equals(TabView.class.getName())) {
-            final View view = WebViewProvider.create(this, attrs);
-
-            final TabView webView = (TabView) view;
-            webView.setContentBlockingEnabled(false);
-
-            return view;
-        }
-
-        return super.onCreateView(name, context, attrs);
     }
 
     @Override

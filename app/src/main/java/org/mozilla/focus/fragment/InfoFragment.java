@@ -5,26 +5,26 @@
 
 package org.mozilla.focus.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.rocket.tabs.TabChromeClient;
-import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.tabs.TabViewClient;
+import org.mozilla.focus.webkit.DefaultWebViewClient;
 
-public class InfoFragment extends WebFragment {
+public class InfoFragment extends DefaultWebFragment {
     private ProgressBar progressView;
-    private ViewGroup webViewSlot;
-    private View webView;
 
     private static final String ARGUMENT_URL = "url";
 
@@ -43,13 +43,13 @@ public class InfoFragment extends WebFragment {
     public View inflateLayout(LayoutInflater inflater, @Nullable ViewGroup container,
                               @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_info, container, false);
-        progressView = (ProgressBar) view.findViewById(R.id.progress);
-        webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
-        webView = ((TabView) WebViewProvider.create(getContext(), null)).getView();
+        progressView = view.findViewById(R.id.progress);
+        ViewGroup webViewSlot = view.findViewById(R.id.webview_slot);
+        webView = (WebView) WebViewProvider.createDefaultWebView(getContext(), null);
         webViewSlot.addView(webView);
 
         final String url = getInitialUrl();
-        if (!(url.startsWith("http://") || url.startsWith("https://"))) {
+        if (!TextUtils.isEmpty(url) && !(url.startsWith("http://") || url.startsWith("https://"))) {
             // Hide webview until content has loaded, if we're loading built in about/rights/etc
             // pages: this avoid a white flash (on slower devices) between the screen appearing,
             // and the about/right/etc content appearing. We don't do this for SUMO and other
@@ -61,49 +61,42 @@ public class InfoFragment extends WebFragment {
     }
 
     @Override
-    public TabViewClient createTabViewClient() {
-        return new TabViewClient() {
-
+    public WebViewClient createWebViewClient() {
+        return new DefaultWebViewClient(getContext().getApplicationContext()) {
             @Override
-            public void onPageStarted(final String url) {
-                progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading));
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
 
+                progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading));
                 progressView.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onPageFinished(boolean isSecure) {
-                progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading_finished));
+            public void onPageFinished(WebView view, final String url) {
+                super.onPageFinished(view, url);
 
+                progressView.announceForAccessibility(getString(R.string.accessibility_announcement_loading_finished));
                 progressView.setVisibility(View.INVISIBLE);
 
                 if (webView.getVisibility() != View.VISIBLE) {
                     webView.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public boolean handleExternalUrl(final String url) {
-                final TabView tabView = getTabView();
-
-                return tabView != null && IntentUtils.handleExternalUri(getContext(), url);
-            }
         };
     }
 
     @Override
-    public TabChromeClient createTabChromeClient() {
-        return new TabChromeClient() {
+    public WebChromeClient createWebChromeClient() {
+        return new WebChromeClient() {
             @Override
-            public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, Message msg) {
+            public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message msg) {
                 return false;
             }
 
             @Override
-            public void onProgressChanged(int progress) {
-                progressView.setProgress(progress);
+            public void onProgressChanged(WebView view, int newProgress) {
+                progressView.setProgress(newProgress);
             }
-
         };
     }
 
@@ -114,14 +107,12 @@ public class InfoFragment extends WebFragment {
     }
 
     public void goBack() {
-        final TabView tabView = getTabView();
-        if (tabView != null) {
-            tabView.goBack();
+        if (webView != null) {
+            webView.goBack();
         }
     }
 
     public boolean canGoBack() {
-        final TabView tabView = getTabView();
-        return tabView != null && tabView.canGoBack();
+        return webView != null && webView.canGoBack();
     }
 }
