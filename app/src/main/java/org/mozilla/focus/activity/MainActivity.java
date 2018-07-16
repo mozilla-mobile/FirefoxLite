@@ -936,8 +936,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         isTabRestoredComplete = true;
         getTabsSession().restoreTabs(tabModelList, currentTabId);
         Tab currentTab = getTabsSession().getFocusTab();
-        if (currentTab != null) {
-            screenNavigator.restoreBrowserScreen(currentTab.getId(), !getSupportFragmentManager().isStateSaved());
+        if (currentTab != null && !getSupportFragmentManager().isStateSaved()) {
+            screenNavigator.restoreBrowserScreen(currentTab.getId());
         }
     }
 
