@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,8 +11,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.mozilla.rocket.privately.PrivateModeActivity"
-    tools:showIn="@layout/activity_private_browsing">
+    tools:context="org.mozilla.rocket.privately.PrivateModeActivity">
 
     <org.mozilla.focus.home.HomeScreenBackground
         android:id="@+id/home_background"
@@ -44,14 +47,13 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/home_fragment_fake_input"
         android:layout_centerHorizontal="true"
-        android:fontFamily="casual"
-        android:textColor="@color/sharedColorAppPaletteWhite5"
-        android:text="Private Browsing"
-        android:textSize="16dp"
         android:layout_marginBottom="48dp"
+        android:fontFamily="casual"
+        android:text="Private Browsing"
+        android:textColor="@color/sharedColorAppPaletteWhite5"
+        android:textSize="16dp"
         android:textStyle="italic" />
 
     <include layout="@layout/fragment_private_browsing_homescreen_item" />
-
 
 </RelativeLayout>
