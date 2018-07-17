@@ -396,6 +396,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         return screenNavigator.isBrowserInForeground() ? getBrowserFragment() : null;
     }
 
+    private void openUrl(final boolean withNewTab, final Object payload) {
+        final String url = (payload != null) ? payload.toString() : null;
+        ScreenNavigator.get(this).showBrowserScreen(url, withNewTab, false);
+    }
+
     private void showMenu() {
         updateMenu();
         menu.show();
@@ -800,6 +805,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 break;
             case UPDATE_MENU:
                 this.updateMenu();
+                break;
+            case OPEN_URL_IN_CURRENT_TAB:
+                openUrl(false, payload);
+                break;
+            case OPEN_URL_IN_NEW_TAB:
+                openUrl(true, payload);
                 break;
             case SHOW_URL_INPUT:
                 if (getSupportFragmentManager().isStateSaved()) {

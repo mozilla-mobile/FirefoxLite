@@ -17,6 +17,8 @@ public interface FragmentListener {
 
     enum TYPE {
         OPEN_PREFERENCE, // no payload
+        OPEN_URL_IN_CURRENT_TAB, // payload is url in String
+        OPEN_URL_IN_NEW_TAB, // payload is url in String
         SHOW_URL_INPUT, // no payload
         SHOW_MENU, // no payload
         DISMISS_URL_INPUT, // payload is boolean value, true if commitAllowingStateLoss
