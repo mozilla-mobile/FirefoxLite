@@ -157,6 +157,12 @@ MISSING_LOCALES = {
         'local_name': 'K\'iche\'',
         'plural_rule': 'de',
         'team': 'anp <LL@li.org>\n'
+    },
+    'mai': {
+        'name': 'Maithili',
+        'local_name': 'मैथिली/মৈথিলী',
+        'plural_rule': 'bg',
+        'team': 'mai <LL@li.org>\n'
     }
 }
 
