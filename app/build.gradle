@@ -208,6 +208,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:${Versions.lifecycle}"
     implementation "android.arch.lifecycle:common-java8:${Versions.lifecycle}"
     implementation "android.arch.persistence.room:runtime:${Versions.room}"
+    implementation "android.arch.navigation:navigation-fragment:${Versions.navigation}"
     kapt "android.arch.persistence.room:compiler:${Versions.room}"
 
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
