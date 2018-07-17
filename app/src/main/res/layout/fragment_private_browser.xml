@@ -1,0 +1,67 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.mozilla.rocket.privately.browse.BrowserFragment">
+
+    <FrameLayout
+        android:id="@+id/browser_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <org.mozilla.focus.widget.ResizableKeyboardLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="49dp"
+            android:layout_marginTop="25dp"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:clipChildren="false"
+                app:elevation="0dp">
+
+                <FrameLayout
+                    android:id="@+id/urlbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:clipChildren="false"
+                    app:layout_scrollFlags="">
+
+                    <include layout="@layout/toolbar" />
+
+                    <!-- divider between appbar and web-vew, will be covered by progress bar -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/colorDivider"
+                        tools:background="#FF0000" />
+
+                    <org.mozilla.focus.widget.AnimatedProgressBar
+                        android:id="@+id/progress"
+                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="-1dp"
+                        android:importantForAccessibility="yes"
+                        android:progressDrawable="@drawable/photon_progressbar"
+                        app:shiftDuration="@integer/progress_shift_duration"
+                        app:wrapShiftDrawable="true"
+                        tools:progress="50" />
+                </FrameLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+        </org.mozilla.focus.widget.ResizableKeyboardLayout>
+
+    </FrameLayout>
+</FrameLayout>
