@@ -21,25 +21,55 @@ import java.nio.ByteBuffer;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class LocaleListPreference extends ListPreference {
     private static final String LOG_TAG = "GeckoLocaleList";
 
+    private static final Map<String, String> languageCodeToNameMap = new HashMap<>();
+    static {
+        // Only ICU 57 actually contains the Asturian name for Asturian, even Android 7.1 is still
+        // shipping with ICU 56, so we need to override the Asturian name (otherwise displayName will
+        // be the current locales version of Asturian, see:
+        // https://github.com/mozilla-mobile/focus-android/issues/634#issuecomment-303886118
+        languageCodeToNameMap.put("ast", "Asturianu");
+        // On an Android 8.0 device those languages are not known and we need to add the names
+        // manually. Loading the resources at runtime works without problems though.
+        languageCodeToNameMap.put("cak", "Kaqchikel");
+        languageCodeToNameMap.put("ia", "Interlingua");
+        languageCodeToNameMap.put("meh", "Tu´un savi ñuu Yasi'í Yuku Iti");
+        languageCodeToNameMap.put("mix", "Tu'un savi");
+        languageCodeToNameMap.put("trs", "Triqui");
+        languageCodeToNameMap.put("zam", "DíɁztè");
+        languageCodeToNameMap.put("oc", "occitan");
+        languageCodeToNameMap.put("an", "Aragonés");
+        languageCodeToNameMap.put("tt", "татарча");
+        languageCodeToNameMap.put("wo", "Wolof");
+        languageCodeToNameMap.put("anp", "अंगिका");
+        languageCodeToNameMap.put("ixl", "Ixil");
+        languageCodeToNameMap.put("pai", "Paa ipai");
+        languageCodeToNameMap.put("quy", "Chanka Qhichwa");
+        languageCodeToNameMap.put("ay", "Aimara");
+        languageCodeToNameMap.put("quc", "K'iche'");
+        languageCodeToNameMap.put("tsz", "P'urhepecha");
+    }
+
     /**
      * With thanks to <http://stackoverflow.com/a/22679283/22003> for the
      * initial solution.
-     * <p>
+     *
      * This class encapsulates an approach to checking whether a script
      * is usable on a device. We attempt to draw a character from the
      * script (e.g., ব). If the fonts on the device don't have the correct
      * glyph, Android typically renders whitespace (rather than .notdef).
-     * <p>
+     *
      * Pass in part of the name of the locale in its local representation,
      * and a whitespace character; this class performs the graphical comparison.
-     * <p>
+     *
      * See Bug 1023451 Comment 24 for extensive explanation.
      */
     private static class CharacterValidator {
@@ -128,14 +158,8 @@ public class LocaleListPreference extends ListPreference {
 
             final String displayName;
 
-            if (locale.getLanguage().equals("ast")) {
-                // Only ICU 57 actually contains the Asturian name for Asturian, even Android 7.1 is still
-                // shipping with ICU 56, so we need to override the Asturian name (otherwise displayName will
-                // be the current locales version of Asturian, see:
-                // https://github.com/mozilla-mobile/focus-android/issues/634#issuecomment-303886118
-                displayName = "Asturianu";
-            } else if ("en".equalsIgnoreCase(locale.getLanguage()) && "US".equalsIgnoreCase(locale.getCountry())) {
-                displayName = new Locale(locale.getLanguage()).getDisplayName(Locale.US);
+            if (languageCodeToNameMap.containsKey(locale.getLanguage())) {
+                displayName = languageCodeToNameMap.get(locale.getLanguage());
             } else {
                 displayName = locale.getDisplayName(locale);
             }
@@ -175,7 +199,7 @@ public class LocaleListPreference extends ListPreference {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof LocaleDescriptor) {
+            if (obj instanceof  LocaleDescriptor) {
                 return compareTo((LocaleDescriptor) obj) == 0;
             } else {
                 return false;
@@ -198,7 +222,7 @@ public class LocaleListPreference extends ListPreference {
          * this method.
          *
          * @return true if this locale can be used for displaying UI
-         * on this device without known issues.
+         *         on this device without known issues.
          */
         public boolean isUsable(CharacterValidator validator) {
             // Oh, for Java 7 switch statements.
@@ -237,7 +261,7 @@ public class LocaleListPreference extends ListPreference {
     /**
      * Not every locale we ship can be used on every device, due to
      * font or rendering constraints.
-     * <p>
+     *
      * This method filters down the list before generating the descriptor array.
      */
     private LocaleDescriptor[] getUsableLocales() {

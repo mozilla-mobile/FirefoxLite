@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -54,15 +55,124 @@ We can not simply ignore middle element in transition from android
 to Babel locale mapping.
 """
 
+MISSING_LOCALES = {
+    'ia': {
+        'name': "Interlingua",
+        'local_name': "Interlingua",
+        'plural_rule': 'es',
+        'team': 'ia <LL@li.org>\n'
+    },
+    'cak': {
+        'name': "Kaqchikel",
+        'local_name': "Kaqchikel",
+        'plural_rule': 'az',
+        'team': 'cak <LL@li.org>\n'
+    },
+    'zam': {
+        'name': "Miahuatlán Zapotec",
+        'local_name': "DíɁztè",
+        'plural_rule': 'az',
+        'team': 'zam <LL@li.org>\n'
+    },
+    'trs': {
+        'name': "Chicahuaxtla Triqui",
+        'local_name': "Triqui",
+        'plural_rule': 'az',
+        'team': 'trs <LL@li.org>\n'
+    },
+    'meh': {
+        'name': "Mixteco Yucuhiti",
+        'local_name': "Tu´un savi ñuu Yasi'í Yuku Iti",
+        'plural_rule': 'id',
+        'team': 'meh <LL@li.org>\n'
+    },
+    'mix': {
+        'name': "Mixtepec Mixtec",
+        'local_name': "Tu'un savi",
+        'plural_rule': 'id',
+        'team': 'mix <LL@li.org>\n'
+    },
+    'oc': {
+        'name': 'Occitan',
+        'local_name': 'occitan',
+        'plural_rule': 'fi',
+        'team': 'oc <LL@li.org>\n'
+    },
+    'an': {
+        'name': 'Aragonese',
+        'local_name': 'Aragonés',
+        'plural_rule': 'fi',
+        'team': 'an <LL@li.org>\n'
+    },
+    'wo': {
+        'name': 'Wolof',
+        'local_name': 'Wolof',
+        'plural_rule': 'id',
+        'team': 'wo <LL@li.org>\n'
+    },
+    'tt': {
+        'name': 'Tatar',
+        'local_name': 'татарча',
+        'plural_rule': 'fi',
+        'team': 'tt <LL@li.org>\n'
+    },
+    'anp': {
+        'name': 'Angika',
+        'local_name': 'अंगिका',
+        'plural_rule': 'bg',
+        'team': 'anp <LL@li.org>\n'
+    },
+    'tsz': {
+        'name': 'Purépecha',
+        'local_name': 'p\'urhepecha',
+        'plural_rule': 'de',
+        'team': 'anp <LL@li.org>\n'
+    },
+    'ixl': {
+        'name': 'Ixil',
+        'local_name': 'ixil',
+        'plural_rule': 'de',
+        'team': 'anp <LL@li.org>\n'
+    },
+    'pai': {
+        'name': 'Pai pai',
+        'local_name': 'paa ipai',
+        'plural_rule': 'lo',
+        'team': 'anp <LL@li.org>\n'
+    },
+    'quy': {
+        'name': 'Quechua Chanka',
+        'local_name': 'Chanka Qhichwa',
+        'plural_rule': 'pt',
+        'team': 'anp <LL@li.org>\n'
+    },
+    'ay': {
+        'name': 'Aymara',
+        'local_name': 'Aimara',
+        'plural_rule': 'de',
+        'team': 'anp <LL@li.org>\n'
+    },
+    'quc': {
+        'name': 'K\'iche\'',
+        'local_name': 'K\'iche\'',
+        'plural_rule': 'de',
+        'team': 'anp <LL@li.org>\n'
+    }
+}
+
 
 class Language(object):
-    """Represents a single language.
-    """
+    """Represents a single language."""
 
     def __init__(self, code, env=None):
         self.code = code
         self.env = env
-        self.locale = Locale.parse(code, sep='-') if code else None
+        if code and code in MISSING_LOCALES:
+            self.locale = Locale.parse(MISSING_LOCALES[code]['plural_rule'], sep='-')
+        elif code:
+            self.locale = Locale.parse(code, sep='-')
+        else:
+            self.locale = None
 
     def __unicode__(self):  # pragma: no cover
         return str(self.code)
