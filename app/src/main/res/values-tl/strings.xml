@@ -4,7 +4,7 @@
   <string name="action_ok">OK</string>
   <string name="urlbar_hint">Maghanap o ilagay ang address</string>
   <string name="menu_settings">Mga Setting</string>
-  <string name="menu_about">Tungkol sa</string>
+  <string name="menu_about">Detalye ng Firefox Rocket</string>
   <string name="menu_help">Tulong</string>
   <string name="menu_rights">Alamin ang Iyong mga Karapatan</string>
   <string name="menu_give_feedback">Magbigay ng feedback</string>
@@ -12,7 +12,7 @@
   <string name="share_dialog_title">Ibahagi sa pamamagitan ng</string>
   <string name="text_selection_search_action">Hanapin sa {{app_name}}</string>
   <string name="about_content_body">%1$s ay isang mabilis at magaan na browser na gawa ng Mozilla. Ang aming misyon ay mapanatiling malusog at bukas para sa lahat ang internet.</string>
-  <string name="about_link_learn_more">Alamin</string>
+  <string name="about_link_learn_more">Detalye</string>
   <string name="about_link_support">Tulong</string>
   <string name="about_link_your_rights">Ang Iyong mga Karapatan / Lisensya</string>
   <string name="about_link_privacy">Abiso sa Privacy</string>
@@ -20,7 +20,7 @@
   <string name="preference_language">Wika</string>
   <string name="preference_language_systemdefault">Default sa sistema</string>
   <string name="preference_dialog_title_search_engine">Default na search engine</string>
-  <string name="preference_data_saving_block_images">Harangan ang mga imahe</string>
+  <string name="preference_data_saving_block_images">Walang imahe</string>
   <string name="preference_privacy_storage_clear_browsing_data">Burahin ang browsing data</string>
   <string name="preference_privacy_storage_save_downloads_to">I-save ang downloads sa</string>
   <string name="preference_default_browser">Gawing default na browser</string>
@@ -28,8 +28,8 @@
   <string name="preference_turbo_mode">Turbo mode</string>
   <string name="preference_mozilla_telemetry">Ipadala ang mga datos ng paggamit</string>
   <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang Mozilla na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
-  <string name="preference_learn_more">Alamin</string>
-  <string name="preference_about">Tungkol sa %1$s</string>
+  <string name="preference_learn_more">Detalye</string>
+  <string name="preference_about">Detalye ng %1$s</string>
   <string name="content_description_clear_input">Burahin ang input</string>
   <string name="content_description_dismiss_input">Alisin</string>
   <string name="content_description_lock">Secure na koneksyon</string>
@@ -75,14 +75,14 @@
   <string name="firstrun_next_button">Susunod</string>
   <string name="label_menu_bookmark">Mga Bookmark</string>
   <string name="label_menu_download">Mga Download</string>
-  <string name="label_menu_clear_cache">Burahin ang laman ng cache</string>
+  <string name="label_menu_clear_cache">Burahin ang cache</string>
   <string name="label_menu_history">Kasaysayan</string>
   <string name="label_menu_share">Ibahagi</string>
   <string name="label_menu_my_shots">Mga kuha ko</string>
   <string name="label_menu_capture_page">Kunan ang page</string>
   <string name="label_menu_turbo_mode">Turbo mode</string>
   <string name="label_menu_block_ads">Hadlangan ang mga Ads</string>
-  <string name="label_menu_block_image">Harangan ang mga imahe</string>
+  <string name="label_menu_block_image">Walang imahe</string>
   <string name="label_menu_settings">Mga Setting</string>
   <string name="label_menu_exit">Lumabas</string>
   <string name="permission_dialog_setting">mga setting</string>

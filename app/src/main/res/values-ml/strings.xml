@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="action_cancel">റദ്ദാക്കു</string>
+  <string name="action_cancel">റദ്ദാക്കൂ</string>
   <string name="action_ok">ശരി</string>
-  <string name="urlbar_hint">അഡ്രസ്സ് അല്ലെങ്കില്‍ തെരയുക</string>
+  <string name="urlbar_hint">വിലാസം അല്ലെങ്കില്‍ തിരയുക</string>
   <string name="menu_settings">സജ്ജീകരണം‍</string>
   <string name="menu_about">കുറിച്ച്</string>
   <string name="menu_help">സഹായം</string>
@@ -27,7 +27,7 @@
   <string name="preference_default_browser_is_setting">സജ്ജീകരണം മാറ്റുന്നു…</string>
   <string name="preference_turbo_mode">വേഗ മോഡ്</string>
   <string name="preference_mozilla_telemetry">ഉപയോഗ ഡാറ്റ അയക്കുക</string>
-  <string name="preference_mozilla_telemetry_summary">%1$s എല്ലാവര്‍ക്കും മെച്ചപ്പെടുത്താനുള്ള ഡാറ്റ മാത്രം ശേഖരിക്കുവാന്‍ മോസില്ല ശ്രമിക്കുന്നു.</string>
+  <string name="preference_mozilla_telemetry_summary">%1$s എല്ലാവര്‍ക്കും മെച്ചപ്പെട്ടതാക്കാൻ ആവശ്യമുള്ള ഡാറ്റ മാത്രം ശേഖരിക്കാൻ മോസില്ല ശ്രമിക്കുന്നു.</string>
   <string name="preference_learn_more">കൂടുതല്‍ അറിയുക</string>
   <string name="preference_about">%1$s നെ കുറിച്ച്</string>
   <string name="content_description_clear_input">ഇന്‍പുട്ട് വെടിപ്പാക്കുക</string>
@@ -60,11 +60,11 @@
   <string name="first_run_page1_title">%1$s തെരഞ്ഞെടുത്തതിന് നന്ദി</string>
   <string name="first_run_page1_text">സ്വതന്ത്രമായ ഒരു വെബ്ബിനായി പ്രവർത്തിക്കുന്ന മോസില്ല, ഇന്തോനേഷ്യയ്ക്കായി പ്രത്യേകം തയ്യാറാക്കിയ ഒരു ബ്രൗസർ.</string>
   <string name="first_run_page2_title">എന്നത്തെക്കാളും വേഗത്തിൽ ബ്രൗസ് ചെയ്യൂ</string>
-  <string name="first_run_page2_text">ട്രാക്കിംഗ് പരസ്യങ്ങൾ തടയുന്നതിലൂടെ വളരെ വേഗത്തിൽ ബ്രൗസ് ചെയ്യാൻ ടർബോ രീതി ഉപയോഗിക്കൂ. സൈറ്റ് വികലമായി അനുഭവപ്പെട്ടാൽ മെനുവിലെ ടർബോ മോഡ് സ്വിച്ച് ഓഫാക്കൂ.</string>
-  <string name="first_run_page3_title">ഡേറ്റ ലാഭം = കാശ് ലാഭം</string>
-  <string name="first_run_page3_text">ട്രാക്കിംഗ് പരസ്യങ്ങൾ തടയുന്നത് ബ്രൗസിംഗിന്റെ വേഗത വര്‍ധിപ്പിക്കുക മാത്രമല്ല, അത് ഡാറ്റ സംരക്ഷിക്കുകയും ചെയ്യുന്നു. ചിത്രങ്ങൾ തടയുന്നതിലൂടെ കൂടുതല്‍ ഡാറ്റ സംരക്ഷിക്കൂ.</string>
+  <string name="first_run_page2_text">പിന്തുടരുന്ന പരസ്യങ്ങൾ തടയുന്നതിലൂടെ വളരെ വേഗത്തിൽ ബ്രൗസ് ചെയ്യാൻ ടർബോ രീതി ഉപയോഗിക്കൂ. സൈറ്റ് വികലമായി അനുഭവപ്പെട്ടാൽ മെനുവിലെ ടർബോ മോഡ് സ്വിച്ച് ഓഫാക്കൂ.</string>
+  <string name="first_run_page3_title">ഡാറ്റ ലാഭം = കാശ് ലാഭം</string>
+  <string name="first_run_page3_text">പിന്തുടരുന്ന പരസ്യങ്ങൾ തടയുന്നത് ബ്രൗസിംഗിന്റെ വേഗത വര്‍ധിപ്പിക്കുക മാത്രമല്ല, അത് ഡാറ്റ സംരക്ഷിക്കുകയും ചെയ്യുന്നു. ചിത്രങ്ങൾ തടയുന്നതിലൂടെ കൂടുതല്‍ ഡാറ്റ സംരക്ഷിക്കൂ.</string>
   <string name="first_run_page4_title">എല്ലാത്തിന്റെയും സ്ക്രീൻഷോട്ടെടുക്കൂ</string>
-  <string name="first_run_page4_text">മുഴുവൻ വെബ് പേജുകളുടേയും സ്ക്രീൻഷോട്ടുകളെടുക്കൂ. ഒരു സ്ക്രീൻഷോട്ട് ഓഫ്‌ലൈനായി കാണുകയോ (ഡാറ്റ ഉപയോഗിക്കാതെ) അല്ലെങ്കിൽ ആ വെബ് പേജ് വീണ്ടും സന്ദർശിക്കാനായി അമർത്തുകയോ ചെയ്യൂ.</string>
+  <string name="first_run_page4_text">മുഴുവൻ വെബ് പേജുകളുടേയും സ്ക്രീൻഷോട്ടുകളെടുക്കൂ. ഒരു സ്ക്രീൻഷോട്ട് ഓഫ്‌ലൈനായി (ഡാറ്റ ഉപയോഗിക്കാതെ) കാണൂ അല്ലെങ്കിൽ ആ വെബ് പേജ് വീണ്ടും സന്ദർശിക്കാനായി അമർത്തൂ.</string>
   <string name="first_run_upgrade_page_title">ഞങ്ങൾ താങ്കളുടെ പ്രതികരണം കേട്ടു!</string>
   <string name="first_run_upgrade_page_text1">1. ഒരേ സമയം %s തുറക്കുന്നതിലൂടെ വളരെയധികം കാര്യങ്ങൾ ചെയ്യൂ!</string>
   <string name="first_run_upgrade_page_text1_highlight">ഒന്നിലധികം ടാബുകൾ</string>
@@ -130,7 +130,7 @@
   <string name="delete_file">ഫയൽ നീക്കം ചെയ്യൂ</string>
   <string name="screenshot_saved">സ്ക്രീൻഷോട്ട് സംരക്ഷിച്ചു</string>
   <string name="screenshot_failed">സ്ക്രീൻഷോട്ടെടുക്കാനായില്ല</string>
-  <string name="screenshot_illustration">പേജിന്റെ മൊത്തം സ്ക്രീൻഷോട്ടെടുക്കുന്നു…</string>
+  <string name="screenshot_illustration">പേജിന്റെ മുഴുവൻ സ്ക്രീൻഷോട്ടെടുക്കുന്നു…</string>
   <string name="screenshot_view">കാണൂ</string>
   <string name="screenshot_edit">തിരുത്തൂ</string>
   <string name="screenshot_delete">നീക്കം ചെയ്യൂ</string>
@@ -149,8 +149,8 @@
   <string name="screenshot_image_viewer_dialog_info_url1">യുആർഎൽ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">ഈ ചിത്രം നീക്കം ചെയ്യണോ?</string>
   <string name="file_picker_title">അപ്‌ലോഡ് ചെയ്യാൻ ഒരു ഫയൽ തിരഞ്ഞെടുക്കൂ</string>
-  <string name="message_enable_turbo_mode">ടർബോ രീതി സജ്ജമാക്കൂ</string>
-  <string name="message_disable_turbo_mode">ടർബോ രീതി പ്രവർത്തനരഹിതമാക്കൂ</string>
+  <string name="message_enable_turbo_mode">ടർബോ രീതി സജ്ജമാക്കി</string>
+  <string name="message_disable_turbo_mode">ടർബോ രീതി പ്രവർത്തനരഹിതമാക്കി</string>
   <string name="message_enable_block_image">ഇപ്പോൾ ചിത്രങ്ങൾ തടയുന്നു</string>
   <string name="message_disable_block_image">ഇപ്പോൾ ചിത്രങ്ങൾ കാണിക്കുന്നു</string>
   <string name="message_clear_cache_fail">ക്യാഷ് വെടിപ്പാക്കാൻ സാധിച്ചില്ല</string>
@@ -196,7 +196,7 @@
   <string name="bookmark_edit_name">പേരു്</string>
   <string name="bookmark_edit_location">സ്ഥാനം</string>
   <string name="bookmark_edit_success">അടയാളക്കുറിപ്പ് പുതുക്കി</string>
-  <string name="bookmarks_empty_view_msg">അടയാളക്കുറിപ്പുകള്‍ ഇല്ല</string>
+  <string name="bookmarks_empty_view_msg">അടയാളക്കുറിപ്പുകളൊന്നുമില്ല</string>
   <string name="edit_bookmark">തിരുത്തുക</string>
   <string name="private_browsing_title">സ്വകാര്യ ബ്രൗസിങ്</string>
   <string name="private_browsing_erase_message">സ്വകാര്യ ബ്രൗസിങ്ങ് നാൾവഴി വെടിപ്പാക്കുക</string>
