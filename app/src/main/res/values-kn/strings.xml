@@ -42,6 +42,11 @@
   <string name="content_description_stop">ಜಾಲತಾಣವನ್ನು ಲೋಡಿಂಗ್ ನಿಲ್ಲಿಸಿ</string>
   <string name="content_description_customtab_exit">ಹಿಂದಿನ ಅನ್ವಯಕ್ಕೆ ಮರಳಿ</string>
   <string name="content_description_blocking_switch">ಜಾಡುಹಿಡಿಯುವರನ್ನು ನಿರ್ಬಂಧಿಸು</string>
+  <string name="external_app_prompt_no_app_title">ಕೊಂಡಿಯನ್ನು ತೆರೆಯುವ ಆಪ್ಅನ್ನು ಹುಡುಕಿ</string>
+  <string name="error_page_title">ಜಾಲಪುಟವು ಲಭ್ಯವಿಲ್ಲ</string>
+  <string name="error_page_recover_a">ನೀವು ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕವನ್ನು ಹೊಂದಿರುವುದನ್ನು ಖಾತರಿಪಡಿಸಿಕೊಳ್ಳಿ</string>
+  <string name="error_page_recover_b">ವಿಳಾಸವನ್ನು ಪರಿಶೀಲಿಸಿರಿ</string>
+  <string name="error_page_button">ಮರಳಿ ಪ್ರಯತ್ನಿಸಿ</string>
   <string name="error_page_title_unsupported_scheme">ವಿಳಾಸವನ್ನು ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲಾಗಿಲ್ಲ</string>
   <string name="contextmenu_link_share">ಕೊಂಡಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳಿ</string>
   <string name="contextmenu_link_copy">ವಿಳಾಸವನ್ನು ನಕಲಿಸು</string>
@@ -50,6 +55,9 @@
   <string name="contextmenu_image_save">ಚಿತ್ರವನ್ನು ಉಳಿಸು</string>
   <string name="contextmenu_open_in_new_tab">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಕೊಂಡಿಯನ್ನು ತೆರೆ</string>
   <string name="contextmenu_open_image_in_new_tab">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಚಿತ್ರವನ್ನು ತೆರೆ</string>
+  <string name="first_run_page1_title">%1$s ಆಯ್ಕೆಮಾಡಿದ್ದಕ್ಕೆ ವಂದನೆಗಳು</string>
+  <string name="first_run_page2_title">ಹಿಂದಿನಕ್ಕಿಂತೆ ವೇಗವಾಗಿ ಜಾಲಾಡಿ</string>
+  <string name="first_run_page3_title">ಡೆಟಾ ಉಳಿತಾಯ = ದುಡ್ಡು ಉಳಿತಾಯ</string>
   <string name="firstrun_close_button">ಸರಿ, ಗೊತ್ತಾಯಿತು!</string>
   <string name="firstrun_skip_button">ಸ್ಕಿಪ್</string>
   <string name="firstrun_next_button">ಮುಂದೆ</string>
@@ -99,6 +107,7 @@
   <string name="screenshot_grid_empty_text_title">ತೆರೆಚಿತ್ರಗಳು ಇಲ್ಲ</string>
   <string name="screenshot_grid_empty_text_msg_prefix">ಮೆಲ್ಲ ತಟ್ಟು</string>
   <string name="screenshot_image_viewer_dialog_title">ಮಾಹಿತಿ</string>
+  <string name="screenshot_image_viewer_dialog_info_time1">ದಿನಾಂಕ: %1$s</string>
   <string name="remove">ತೆಗೆದು ಹಾಕು</string>
   <string name="share_app_dialog_btn_share">ಹಂಚು</string>
   <string name="new_background_tab_hint">ಹೊಸ ಹಾಳೆ ತೆರೆಯಲಾಗಿದೆ</string>
