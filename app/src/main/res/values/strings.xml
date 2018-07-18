@@ -23,7 +23,8 @@
     <string name="share_dialog_title">Share via</string>
 
     <!-- This is the label of an action we offer when the user selects text in other third-party apps.
-         Clicking this action will launch Rocket and perform a search in the default search engine. -->
+         Clicking this action will launch Rocket and perform a search in the default search engine.
+         Please keep the "Firefox Rocket" part and don't localize the product name. -->
     <string name="text_selection_search_action">Search in Firefox Rocket</string>
 
     <!-- Content of about Rocket. Argument 1 is the major body of the content #about_content_body.
@@ -334,6 +335,7 @@
     <string name="privacy_policy_update_notification_action">To make Firefox Rocket better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
 
     <!--In-app Promotion, Rate the App-->
+    <!-- The title of the Message to prompt users to rate Rocket on Play Store, %1$s is the App name i.e. Rocket. -->
     <string name="rate_app_dialog_text_title">Love %1$s?</string>
     <string name="rate_app_dialog_text_content">Thank you for choosing our product. Your feedback is important to us.</string>
     <string name="rate_app_dialog_btn_go_rate">Yes, rate 5 stars!</string>
@@ -343,11 +345,13 @@
 
     <string name="rate_app_feedback_url" translatable="false">https://qsurvey.mozilla.com/s3/Firefox-Rocket-Input/</string>
 
-    <!--In-app Promotion, Share app-->
+    <!--In-app Promotion, Share app.-->
+    <!-- The title of the Message to prompt users to share Rocket with friends, %1$s is the App name i.e. Rocket. -->
     <string name="share_app_dialog_text_title">Share %1$s with friends!</string>
     <string name="share_app_dialog_text_content">- Fast and lightweight\n- Data saving\n- Powerful screenshots</string>
     <string name="share_app_dialog_btn_share">Share</string>
     <string name="share_app_google_play_url" translatable="false">https://mzl.la/2kScptw</string>
+    <!-- The message template used when user shares Rocket with friends. %1$s is the App name i.e. Rocket, and %2$s is the Google Play url.-->
     <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from Mozilla. %1$s %2$s</string>
 
     <!-- Text shown in the "Your rights" screen.
