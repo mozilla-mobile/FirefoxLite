@@ -16,10 +16,18 @@ import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
+import org.mozilla.rocket.tabs.TabsSession
+import org.mozilla.rocket.tabs.TabsSessionProvider
+import org.mozilla.rocket.tabs.utils.DefaultTabsChromeListener
+import org.mozilla.rocket.tabs.utils.DefaultTabsViewListener
 
 class BrowserFragment : LocaleAwareFragment() {
 
     private var listener: FragmentListener? = null
+
+    private lateinit var tabsSession: TabsSession
+    private lateinit var chromeListener: BrowserTabsChromeListener
+    private lateinit var viewListener: BrowserTabsViewListener
 
     private lateinit var displayUrlView: TextView
 
@@ -41,6 +49,12 @@ class BrowserFragment : LocaleAwareFragment() {
         if (fragmentActivity == null) {
             BuildConfig.DEBUG?.let { throw RuntimeException("No activity to use") }
         } else {
+            if (fragmentActivity is TabsSessionProvider.SessionHost) {
+                tabsSession = fragmentActivity.tabsSession
+                chromeListener = BrowserTabsChromeListener(this)
+                viewListener = BrowserTabsViewListener(this)
+            }
+
             registerData(fragmentActivity)
         }
     }
@@ -53,6 +67,20 @@ class BrowserFragment : LocaleAwareFragment() {
             val listener = activity as FragmentListener
             listener.onNotified(BrowserFragment@ this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        tabsSession.resume()
+        tabsSession.addTabsChromeListener(chromeListener)
+        tabsSession.addTabsViewListener(viewListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        tabsSession.removeTabsViewListener(viewListener)
+        tabsSession.removeTabsChromeListener(chromeListener)
+        tabsSession.pause()
     }
 
     override fun onAttach(context: Context) {
@@ -88,5 +116,11 @@ class BrowserFragment : LocaleAwareFragment() {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
 
         shared.getUrl().observe(this, Observer<String> { url -> loadUrl(url) })
+    }
+
+    class BrowserTabsChromeListener(val fragment: BrowserFragment) : DefaultTabsChromeListener() {
+    }
+
+    class BrowserTabsViewListener(val fragment: BrowserFragment) : DefaultTabsViewListener() {
     }
 }

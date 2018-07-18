@@ -17,8 +17,14 @@ import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
+import org.mozilla.rocket.tabs.TabsSession
+import org.mozilla.rocket.tabs.TabsSessionProvider
 
-class PrivateModeActivity : LocaleAwareAppCompatActivity(), FragmentListener {
+class PrivateModeActivity : LocaleAwareAppCompatActivity(),
+        FragmentListener,
+        TabsSessionProvider.SessionHost {
+
+    private var session: TabsSession? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +34,11 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(), FragmentListener {
         // do not overwrite existing value
         visibility = visibility or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
         window.decorView.systemUiVisibility = visibility
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        session?.destroy()
     }
 
     @Override
@@ -59,6 +70,15 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(), FragmentListener {
                 getNavController().navigateUp()
             }
         }
+    }
+
+    override fun getTabsSession(): TabsSession {
+        if (session == null) {
+            session = TabsSession(PrivateTabViewProvider(this))
+        }
+
+        // we just created it, it definitely not null
+        return session!!
     }
 
     private fun pushToBack() {
