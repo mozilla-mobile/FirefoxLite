@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/fixed_menu_height"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center_horizontal|bottom"
+    tools:background="#0000FF"
+    android:background="@color/privateBackground">
+
+    <org.mozilla.focus.widget.EqualDistributeRow
+        android:id="@+id/browser_screen_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/browser_fixed_menu_horizontal_margin"
+        android:layout_marginStart="@dimen/browser_fixed_menu_horizontal_margin">
+
+        <ImageButton
+            android:id="@+id/btn_mode"
+            style="@style/MainMenuButton"
+            android:tint="@color/colorPrimaryDark"
+            app:srcCompat="@drawable/private_browsing_mask" />
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            style="@style/MainMenuButton"
+            android:tint="@color/private_menu_button"
+            app:srcCompat="@drawable/action_next" />
+
+        <ImageButton
+            android:id="@+id/btn_search"
+            style="@style/MainMenuButton"
+            android:tint="@color/private_menu_button"
+            app:srcCompat="@drawable/action_search" />
+
+        <ImageButton
+            android:id="@+id/btn_refresh"
+            style="@style/MainMenuButton"
+            android:tint="@color/private_menu_button"
+            app:srcCompat="@drawable/ic_refresh" />
+
+        <ImageButton
+            android:id="@+id/btn_share"
+            style="@style/MainMenuButton"
+            android:tint="@color/private_menu_button"
+            app:srcCompat="@drawable/action_share" />
+
+    </org.mozilla.focus.widget.EqualDistributeRow>
+</FrameLayout>
+

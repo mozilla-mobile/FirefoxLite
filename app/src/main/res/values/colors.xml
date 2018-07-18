@@ -117,4 +117,7 @@
 
     <color name="bookmarkEditToolbarBackground">@color/sharedColorAppPaletteMain4</color>
     <color name="bookmarkEditToolbarText">@color/bookmark_edit_action_text</color>
+
+    <!-- Private Mode -->
+    <color name="privateBackground">#38383D</color>
 </resources>

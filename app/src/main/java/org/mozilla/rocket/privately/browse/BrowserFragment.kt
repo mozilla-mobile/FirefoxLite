@@ -3,24 +3,30 @@ package org.mozilla.rocket.privately.browse
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.ImageButton
 import android.widget.TextView
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
+import org.mozilla.focus.utils.UrlUtils
+import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
+import org.mozilla.rocket.tabs.Tab
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.DefaultTabsChromeListener
 import org.mozilla.rocket.tabs.utils.DefaultTabsViewListener
+import org.mozilla.rocket.tabs.utils.TabUtil
 
 class BrowserFragment : LocaleAwareFragment(),
         BackKeyHandleable {
@@ -31,11 +37,11 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var chromeListener: BrowserTabsChromeListener
     private lateinit var viewListener: BrowserTabsViewListener
 
+    private lateinit var tabViewSlot: ViewGroup
     private lateinit var displayUrlView: TextView
+    private lateinit var progressView: AnimatedProgressBar
 
-    override fun onCreate(savedState: Bundle?) {
-        super.onCreate(savedState)
-    }
+    private lateinit var btnNext: ImageButton
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -65,10 +71,21 @@ class BrowserFragment : LocaleAwareFragment(),
         super.onViewCreated(view, savedState)
 
         displayUrlView = view.findViewById(R.id.display_url)
-        displayUrlView.setOnClickListener {
-            val listener = activity as FragmentListener
-            listener.onNotified(BrowserFragment@ this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
-        }
+        displayUrlView.setOnClickListener { onSearchClicked() }
+
+        tabViewSlot = view.findViewById(R.id.tab_view_slot)
+        progressView = view.findViewById(R.id.progress)
+
+        view.findViewById<View>(R.id.btn_mode).setOnClickListener { onModeClicked() }
+        view.findViewById<View>(R.id.btn_search).setOnClickListener { onSearchClicked() }
+        view.findViewById<View>(R.id.btn_refresh).setOnClickListener { onRefreshClicked() }
+        view.findViewById<View>(R.id.btn_share).setOnClickListener { onShareClicked() }
+
+        btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton)
+                .also {
+                    it.isEnabled = false
+                    it.setOnClickListener { onNextClicked() }
+                }
     }
 
     override fun onResume() {
@@ -107,11 +124,15 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     override fun onBackPressed(): Boolean {
-        // FIXME: for development purpose. Handle back key until url bar is empty
-        if (displayUrlView.text != null && displayUrlView.text.isNotBlank()) {
-            displayUrlView.text = null
+        val focus = tabsSession.focusTab ?: return false
+        val tabView = focus.tabView ?: return false
+
+        if (tabView.canGoBack()) {
+            goBack()
             return true
         }
+
+        tabsSession.dropTab(focus.id)
         return false
     }
 
@@ -119,8 +140,31 @@ class BrowserFragment : LocaleAwareFragment(),
         url?.let {
             if (it.isNotBlank()) {
                 displayUrlView.text = url
+                if (tabsSession.tabsCount == 0) {
+                    tabsSession.addTab(url, TabUtil.argument(null, false, true))
+                } else {
+                    tabsSession.focusTab!!.tabView!!.loadUrl(url)
+                }
             }
         }
+    }
+
+    private fun goBack() {
+        val focus = tabsSession.focusTab ?: return
+        val tabView = focus.tabView ?: return
+        tabView.goBack()
+    }
+
+    private fun goForward() {
+        val focus = tabsSession.focusTab ?: return
+        val tabView = focus.tabView ?: return
+        tabView.goForward()
+    }
+
+    private fun reload() {
+        val focus = tabsSession.focusTab ?: return
+        val tabView = focus.tabView ?: return
+        tabView.reload()
     }
 
     private fun registerData(activity: FragmentActivity) {
@@ -129,9 +173,70 @@ class BrowserFragment : LocaleAwareFragment(),
         shared.getUrl().observe(this, Observer<String> { url -> loadUrl(url) })
     }
 
+    private fun onModeClicked() {
+        val listener = activity as FragmentListener
+        listener.onNotified(BrowserFragment@ this, TYPE.TOGGLE_PRIVATE_MODE, null)
+    }
+
+    private fun onNextClicked() {
+        goForward()
+    }
+
+    private fun onSearchClicked() {
+        val listener = activity as FragmentListener
+        listener.onNotified(BrowserFragment@ this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
+    }
+
+    private fun onRefreshClicked() {
+        reload()
+    }
+
+    private fun onShareClicked() {
+        val url = tabsSession.focusTab?.url ?: return
+        if (UrlUtils.isInternalErrorURL(url)) {
+            return
+        }
+
+        Intent().also {
+            it.action = Intent.ACTION_SEND
+            it.type = "text/plain"
+            it.putExtra(Intent.EXTRA_TEXT, url)
+        }.let {
+            startActivity(Intent.createChooser(it, getString(R.string.share_dialog_title)))
+        }
+    }
+
     class BrowserTabsChromeListener(val fragment: BrowserFragment) : DefaultTabsChromeListener() {
+        override fun onTabAdded(tab: Tab, arguments: Bundle?) {
+            super.onTabAdded(tab, arguments)
+            fragment.tabViewSlot.addView(tab.tabView!!.view)
+        }
+
+        override fun onProgressChanged(tab: Tab, progress: Int) {
+            super.onProgressChanged(tab, progress)
+            fragment.progressView.progress = progress
+        }
+
+        override fun onReceivedTitle(tab: Tab, title: String?) {
+            if (!fragment.displayUrlView.text.toString().equals(tab.getUrl())) {
+                fragment.displayUrlView.text = tab.url
+            }
+        }
     }
 
     class BrowserTabsViewListener(val fragment: BrowserFragment) : DefaultTabsViewListener() {
+        override fun onURLChanged(tab: Tab, url: String?) {
+            if (!UrlUtils.isInternalErrorURL(url)) {
+                fragment.displayUrlView.text = url
+            }
+        }
+
+
+        override fun onTabFinished(tab: Tab, isSecure: Boolean) {
+            super.onTabFinished(tab, isSecure)
+            val focus = fragment.tabsSession.focusTab ?: return
+            val tabView = focus.tabView ?: return
+            fragment.btnNext.isEnabled = tabView.canGoForward()
+        }
     }
 }
