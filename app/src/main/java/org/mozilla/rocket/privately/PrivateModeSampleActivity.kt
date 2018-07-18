@@ -152,6 +152,10 @@ class PrivateModeSampleActivity : LocaleAwareAppCompatActivity(), TabsSessionPro
         tabsSession?.addTab("https://www.google.com", TabUtil.argument(null, false, true))
         webViewSlot?.addView(getTabsSession()?.focusTab?.tabView?.view)
         ThreadUtils.postToBackgroundThread {
+            // Footprint.generate() needs I/O so put this call in a background thread
+            // Problem: if register is async, what will happen if un-register happens before register?
+            // A better solution may be: the foot print is always the same for all private session, so we can just generate it (per context) and use it there.
+            // In that case re00gister() call can be sync with unregister() call
             privateMode?.register(tabsSession?.focusTab, Footprint.generate(this@PrivateModeSampleActivity))
         }
 
