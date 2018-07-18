@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">અભીપ્રાય આપો</string>
   <string name="menu_share_with_friends">મિત્રો સાથે વહેંચો</string>
   <string name="share_dialog_title">આની મારફતે વહેંચો</string>
-  <string name="text_selection_search_action">{{app_name}} માં શોધો</string>
+  <string name="text_selection_search_action">%1$s માં શોધો</string>
   <string name="about_content_body">%1$s એ Mozilla દ્વારા ઉત્પાદિત કરવામાં આવેલું ઝડપી અને ઓછી જગ્યા રોકે તેવું છે. અમારું લક્ષ્ય એક યોગ્ય , બધાં વાપરી શકે તેવું ઇન્ટરનેટ પ્રસ્થાપિત કરવાનું છે.</string>
   <string name="about_link_learn_more">વધુ શીખો</string>
   <string name="about_link_support">સહાય</string>
@@ -147,12 +147,12 @@
   <string name="message_clear_cache_fail">કેશ સાફ કરવામાં અક્ષમ છે</string>
   <string name="message_deleted_screenshot">સ્ક્રીનશોટ કાઢી નાખ્યો</string>
   <string name="remove">દૂર કરો</string>
-  <string name="rate_app_dialog_text_title">{{app_name}} ગમ્યું?</string>
+  <string name="rate_app_dialog_text_title">%1$s ગમ્યું?</string>
   <string name="rate_app_dialog_text_content">અમારું ઉત્પાદન પસંદ કરવા બદલ આપનો આભાર. તમારો અભિપ્રાય અમારી માટે મહત્વનો છે.</string>
   <string name="rate_app_dialog_btn_go_rate">હા, 5 સ્ટાર્સ આપો!</string>
   <string name="rate_app_dialog_btn_feedback">ના, અભિપ્રાય મોકલો.</string>
   <string name="rate_app_notification_action_feedback">પ્રતિભાવ</string>
-  <string name="share_app_dialog_text_title">{{app_name}} મિત્રો સાથે વહેંચો!</string>
+  <string name="share_app_dialog_text_title">%1$s મિત્રો સાથે વહેંચો!</string>
   <string name="share_app_dialog_text_content">- ઝડપી અને ઓછી જગ્યા રોકે તેવું\n- ડેટાની બચત થાય તેવું\n- પ્રભાવશળી સ્ક્રીનશોટ્સ</string>
   <string name="share_app_dialog_btn_share">વહેંચો</string>
   <string name="survey_notification_title">અમને તમારી જરુર છે! %1$s</string>

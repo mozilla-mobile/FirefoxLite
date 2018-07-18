@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">ਸੁਝਾਅ ਦਿਓ</string>
   <string name="menu_share_with_friends">ਦੋਸਤਾਂ ਨਾਲ ਸਾਂਝਾ ਕਰੋ</string>
   <string name="share_dialog_title">ਇਸ ਦੇ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ</string>
-  <string name="text_selection_search_action">{{app_name}} ਵਿੱਚ ਖੋਜੋ</string>
+  <string name="text_selection_search_action">%1$s ਵਿੱਚ ਖੋਜੋ</string>
   <string name="about_link_learn_more">ਹੋਰ ਜਾਣੋ</string>
   <string name="about_link_support">ਸਹਾਇਤਾ</string>
   <string name="about_link_your_rights">ਤੁਹਾਡੇ ਹੱਕ / ਲਸੰਸ</string>
@@ -153,12 +153,12 @@
   <string name="message_cannot_find_screenshot">ਡਿਸਪਲੇਅ ਸਕ੍ਰੀਨਸ਼ਾਟ ਨਹੀਂ ਕਰ ਸਕਦਾ</string>
   <string name="remove">ਹਟਾਉ</string>
   <string name="privacy_policy_update_notification_title">ਉਤਪਾਦ ਅਪਡੇਟ ਨੋਟਿਸ</string>
-  <string name="rate_app_dialog_text_title">{{app_name}} ਚੰਗੀ ਲੱਗੀ?</string>
+  <string name="rate_app_dialog_text_title">%1$s ਚੰਗੀ ਲੱਗੀ?</string>
   <string name="rate_app_dialog_btn_go_rate">ਹਾਂਜੀ, 5 ਤਾਰਿਆਂ ਦੀ ਦਰਜਾਬੰਦੀ ਕਰੋ!</string>
   <string name="rate_app_notification_action_rate">5 ਤਾਰਾ ਦਰਜਾਬੰਦੀ</string>
   <string name="rate_app_dialog_btn_feedback">ਨਹੀਂ, ਮੋੜਵੀਂ ਰਾਇ ਭੇਜੋ।</string>
   <string name="rate_app_notification_action_feedback">FEEDBACK</string>
-  <string name="share_app_dialog_text_title">ਬੇਲੀਆਂ/ਸਹੇਲੀਆਂ ਨਾਲ {{app_name}} ਸਾੰਝੀ ਕਰੋ!</string>
+  <string name="share_app_dialog_text_title">ਬੇਲੀਆਂ/ਸਹੇਲੀਆਂ ਨਾਲ %1$s ਸਾੰਝੀ ਕਰੋ!</string>
   <string name="share_app_dialog_text_content">ਤੇਜ਼ ਅਤੇ ਹਲਕਾ - ਡਾਟਾ ਸੁਰੱਖਿਅਤ - ਸ਼ਕਤੀਸ਼ਾਲੀ ਸਕ੍ਰੀਨਸ਼ਾਟ</string>
   <string name="share_app_dialog_btn_share">ਸਾਂਝਾ ਕਰੋ</string>
   <string name="your_rights_content1">ਮੋਜ਼ੀਲਾ ਅਤੇ ਹੋਰ ਯੋਗਦਾਨੀਆਂ ਦੁਆਰਾ ਬਣਾਏ ਗਏ %1$s ਮੁਫ਼ਤ ਅਤੇ ਓਪਨ ਸੋਰਸ ਸਾਫਟਵੇਅਰ ਹੈ।</string>

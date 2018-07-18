@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">प्रतिक्रिया दिअ</string>
   <string name="menu_share_with_friends">संगी सँ साझा करू</string>
   <string name="share_dialog_title">द्वारा साझा करू</string>
-  <string name="text_selection_search_action">{{app_name}}मे खोजू</string>
+  <string name="text_selection_search_action">%1$sमे खोजू</string>
   <string name="about_content_body">"मोजिला द्वारा बनाएल गेल %1$s एकटा तेज आओऱ हलुक ब्राउजर अछि. हमर मिशन स्वस्थ आओर खुलल इंटरनेट क बढ़ावा देनाए अछि. "</string>
   <string name="about_link_learn_more">अधिक जानू</string>
   <string name="about_link_support">सहायता</string>
@@ -42,7 +42,7 @@
   <string name="rate_app_notification_action_rate">5 सितारा रेट करू</string>
   <string name="rate_app_dialog_btn_feedback">नहि, प्रतिक्रिया भेजू.</string>
   <string name="rate_app_notification_action_feedback">प्रतिक्रिया दिअ</string>
-  <string name="share_app_dialog_text_title">संगी सँ {{app_name}} साझा करू!</string>
+  <string name="share_app_dialog_text_title">संगी सँ %1$s साझा करू!</string>
   <string name="share_app_dialog_btn_share">साझा करू</string>
   <string name="survey_notification_title">%1$s हमरा अहाँक जरूरत अछि</string>
   <string name="survey_notification_description">इंडोनेशिया कलेल एकटा बेहतर प्रोडक्ट क आकार दिअ</string>
