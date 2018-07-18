@@ -1,5 +1,7 @@
 package org.mozilla.rocket.privately.browse
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,23 +13,22 @@ import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
-
-private const val ARGUMENT_INIT_URL = "_init_url_"
+import org.mozilla.rocket.privately.SharedViewModel
 
 class BrowserFragment : LocaleAwareFragment() {
 
     private var listener: FragmentListener? = null
-    private var pendingUrl: String = ""
 
     private lateinit var displayUrlView: TextView
+
+    override fun onCreate(savedState: Bundle?) {
+        super.onCreate(savedState)
+        registerData()
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-        if (savedInstanceState == null) {
-            pendingUrl = getInitUrl()
-        }
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_private_browser, container, false)
@@ -40,10 +41,6 @@ class BrowserFragment : LocaleAwareFragment() {
         displayUrlView.setOnClickListener {
             val listener = activity as FragmentListener
             listener.onNotified(BrowserFragment@ this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
-        }
-
-        if (pendingUrl.isNotBlank()) {
-            loadUrl(pendingUrl)
         }
     }
 
@@ -68,19 +65,17 @@ class BrowserFragment : LocaleAwareFragment() {
         unneeded.destroy()
     }
 
-    fun loadUrl(url: String) {
-        displayUrlView.text = url
-        pendingUrl = ""
-    }
-
-    private fun getInitUrl(): String {
-        return arguments?.getString(ARGUMENT_INIT_URL) ?: ""
-    }
-
-    companion object {
-        @JvmStatic
-        fun createArgument(url: String): Bundle {
-            return Bundle().apply { putString(ARGUMENT_INIT_URL, url) }
+    fun loadUrl(url: String?) {
+        url?.let {
+            if (it.isNotBlank()) {
+                displayUrlView.text = url
+            }
         }
+    }
+
+    private fun registerData() {
+        val shared = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+
+        shared.getUrl().observe(this, Observer<String> { url -> loadUrl(url) })
     }
 }
