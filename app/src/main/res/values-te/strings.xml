@@ -11,6 +11,7 @@
   <string name="menu_share_with_friends">మిత్రులతో పంచుకో</string>
   <string name="share_dialog_title">దీనిద్వారా పంచుకోండి</string>
   <string name="text_selection_search_action">%1$s‌తో వెతుకు</string>
+  <string name="about_content_body">%1$s అనేది మొజిల్లా వారు తయారుచేసిన వేగవంతమైన, తేలికైన విహారిణి. ఆరోగ్యకరమైన, స్వేచ్ఛాయుతమైన అంతర్జాలాన్ని వృద్ధిచేయడం మా ఆశయం.</string>
   <string name="about_link_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="about_link_support">తోడ్పాటు</string>
   <string name="about_link_your_rights">మీ హక్కులు / లైసెన్సులు</string>
@@ -26,6 +27,7 @@
   <string name="preference_default_browser_is_setting">అమరికలను మారుస్తోంది…</string>
   <string name="preference_turbo_mode">టర్బో రీతి</string>
   <string name="preference_mozilla_telemetry">వాడుక డేటాను పంపించు</string>
+  <string name="preference_mozilla_telemetry_summary">అందరికీ %1$s‌ని అందించడానికి మెరుగుపరచడానికి కావలసినంత తక్కువ మాత్రమే సేకరించడానికి మొజిల్లా ప్రయత్నిస్తుంది.</string>
   <string name="preference_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="preference_about">%1$s గురించి</string>
   <string name="content_description_clear_input">ఇన్‌పుట్ తుడిచివేయి</string>
@@ -56,11 +58,18 @@
   <string name="contextmenu_open_in_new_tab">లంకెను కొత్త ట్యాబులో తెరువు</string>
   <string name="contextmenu_open_image_in_new_tab">బొమ్మను కొత్త ట్యాబులో తెరువు</string>
   <string name="first_run_page1_title">%1$s‌ను ఎంచుకున్నందుకు కృతజ్ఞతలు</string>
+  <string name="first_run_page1_text">స్వేచ్ఛా, బహిరంగ జాలానికి కట్టుబడ్డ లాభాపేక్ష-లేని మొజిల్లా వారు భారతదేశం కోసం ప్రత్యేకంగా తయారుచేసిన విహరిణి.</string>
   <string name="first_run_page2_title">మునుపెన్నటి కంటే వేగంగా విహరించండి</string>
+  <string name="first_run_page2_text">ట్రాకింగ్ ప్రకటనలను నిరోధించడానికి టర్బో రీతిని వాడండి, అప్పుడు మీరు జ్వలించే వేగంతో విహరించవచ్చు. సైట్లు సరిగా పనిచేయట్లేనట్టు అనిపిస్తే, మెనూలో టర్బో రీతి తాకి ఆపివేసుకోండి.</string>
   <string name="first_run_page3_title">డేటా ఆదా = డబ్బు ఆదా</string>
+  <string name="first_run_page3_text">మీ జాడతెలుసుకునే ప్రకటనలను నిరోధించడం వల్ల కేవలం మీ విహరణ వేగం కావడమే కాదు, డేటా కూడా ఆదా అవుతుంది. బొమ్మలను నిరోధిస్తే మరికొంత ఆదా అవుతుంది.</string>
   <string name="first_run_page4_title">అన్నిటినీ తెరపట్టు తీసుకోండి</string>
+  <string name="first_run_page4_text">పూర్తి వెబ్ పేజీల తెరపట్లు తీసుకోండి. తెరపట్టును ఆఫ్‌లైనులో (డేటా వాడుకోకుండా) చూడండి లేదా వెబ్ పేజీను మళ్ళీ చూడడానికి దానిపై తాకండి.</string>
   <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందనను విన్నాము!</string>
+  <string name="first_run_upgrade_page_text1">1. ఒకేసారి %s తెరవడం ద్వారా మల్టీటాస్కింగు చెయ్యండి!</string>
   <string name="first_run_upgrade_page_text1_highlight">పలు ట్యాబులు</string>
+  <string name="first_run_upgrade_page_text2">2. మీ అభిమాన సైట్లను %s త్వరగా చేరుకోండి!</string>
+  <string name="first_run_upgrade_page_text2_highlight">ముంగిలి తెరకు చేర్చుకోవడం ద్వారా!</string>
   <string name="firstrun_close_button">సరే, అర్థమైంది!</string>
   <string name="firstrun_skip_button">దాటవేయి</string>
   <string name="firstrun_next_button">తదుపరి</string>
@@ -131,6 +140,7 @@
   <string name="message_removable_storage_space_not_enough">SD కార్డు దాదాపు నిండుకుంది. ఫైలు అంతర్గత నిల్వకు భద్రపరచబడింది.</string>
   <string name="screenshot_grid_empty_text_title">తెరపట్లు ఏమీ లేవు</string>
   <string name="screenshot_grid_empty_text_msg_prefix">తట్టండి</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">  పూర్తి వెబ్ పేజీని\nతెరపట్టు తీయడానికి.</string>
   <string name="screenshot_image_viewer_dialog_title">సమాచారం</string>
   <string name="screenshot_image_viewer_dialog_info_time1">తేదీ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">విభాజకత: %1$s</string>
@@ -151,7 +161,9 @@
   <string name="message_cannot_find_screenshot">తెరపట్టును చూపించలేము</string>
   <string name="remove">తొలగించు</string>
   <string name="privacy_policy_update_notification_title">ఉత్పత్తి తాజాకరణ గమనిక</string>
+  <string name="privacy_policy_update_notification_action">Firefox Rocket‌ని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. తెలుసుకోడానికి తాకండి.</string>
   <string name="rate_app_dialog_text_title">%1$s నచ్చిందా?</string>
+  <string name="rate_app_dialog_text_content">మా ఉత్పాదనను ఎంచుకున్నందుకు కృతజ్ఞతలు. మీ ప్రతిస్పందన మాకు చాలా ముఖ్యం.</string>
   <string name="rate_app_dialog_btn_go_rate">అవును, 5 చుక్కలు ఇవ్వు!</string>
   <string name="rate_app_notification_action_rate">5 చుక్కలు ఇవ్వండి</string>
   <string name="rate_app_dialog_btn_feedback">లేదు, ప్రతిస్పందనను పంపించు.</string>
@@ -159,7 +171,14 @@
   <string name="share_app_dialog_text_title">%1$s‌ను స్నేహితులతో పంచుకోండి!</string>
   <string name="share_app_dialog_text_content">- వేగవంతం, తేలికైనది\n- డేటా ఆదా\n- శక్తివంతమైన తెరపట్లు</string>
   <string name="share_app_dialog_btn_share">పంచుకో</string>
+  <string name="share_app_promotion_text">హలో, మొజిల్లా వారి ఈ వేగవంతమైన, తేలికైన విహారిణిని చూడండి. %1$s %2$s</string>
+  <string name="your_rights_content1">%1$s అనేది మొజిల్లా, ఇతర తోడ్పాటుదార్లు తయారుచేసిన స్వేచ్ఛా, ఓపెన్ సోర్సు సాఫ్ట్‌వేరు.</string>
+  <string name="your_rights_content2"><![CDATA["%1$s మీకు "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3118;&#3146;&#3100;&#3135;&#3122;&#3149;&#3122;&#3134; &#3114;&#3116;&#3149;&#3122;&#3135;&#3093;&#3149; &#3122;&#3144;&#3128;&#3142;&#3112;&#3149;&#3128;&#3137;</a>, ఇతర ఓపెన్ సోర్సు లైసెన్సుల నిబంధనల క్రింద లభిస్తుంది.]]></string>
+  <string name="your_rights_content3"><![CDATA["మొజిల్లా ఫౌండేషను, మొజిల్లా, Firefox లేదా %1$s లేదా మరే ఇతర పక్షాల ట్రేడుమార్కులపై హక్కులు గానీ లైసెన్సు గానీ మీకు జారీచేయలేదు. అదనపు సమాచారాన్ని "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3079;&#3093;&#3149;&#3093;&#3105;</a>" చూడవచ్చు."]]></string>
+  <string name="your_rights_content4"><![CDATA["%1$s కొరకు అదనపు సోర్సు కోడు వివిధ ఇతర స్వేచ్ఛా, ఓపెన్ సోర్సు "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3122;&#3144;&#3128;&#3142;&#3112;&#3149;&#3128;&#3137;&#3122;</a>" కింద లభిస్తుంది."]]></string>
+  <string name="your_rights_content5"><![CDATA["Disconnect, Inc. వారు అందించే నిరోధపు జాబితాలను కూడా విడి స్వతంత్ర కృతులుగా "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU &#3100;&#3112;&#3120;&#3122;&#3149; &#3114;&#3116;&#3149;&#3122;&#3135;&#3093;&#3149; &#3122;&#3144;&#3128;&#3142;&#3112;&#3149;&#3128;&#3137; v3</a>" ప్రకారం %1$s వాడుకుంటుంది, అవి "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#3079;&#3093;&#3149;&#3093;&#3105;</a>" లభిస్తాయి."]]></string>
   <string name="survey_notification_title">మీరు మాకు కావాలి! %1$s</string>
+  <string name="survey_notification_description">ఈ ఉత్పాదనను భారతదేశం కోసం మెరుగ్గా తీర్చిదిద్దండి</string>
   <string name="new_background_tab_hint">కొత్త ట్యాబు తెరుచుకుంది</string>
   <string name="new_background_tab_switch">మారు</string>
   <string name="setting_default_browser_notification_title">అమరికలు మారుస్తున్నాం…</string>
@@ -168,6 +187,7 @@
   <string name="tab_tray_close_tabs_btn_text">అన్నింటినీ మూసివేయి</string>
   <string name="tab_tray_close_tabs_dialog_msg">ట్యాబులన్నింటినీ మూసివేయాలా?</string>
   <string name="themetoy_onboarding_title">మీ జీవితానికి రంగులద్దండి!</string>
+  <string name="themetoy_onboarding_description">అలంకారాన్ని మార్చుకోడానికి ముంగిలి వెనుతలంపై రెండుసార్లు నొక్కండి.</string>
   <string name="bookmark_saved">ఇష్టాంశం భద్రమయింది</string>
   <string name="bookmark_removed">ఇష్టాంశం తొలగించబడింది</string>
   <string name="bookmark_saved_edit">మార్చు</string>
