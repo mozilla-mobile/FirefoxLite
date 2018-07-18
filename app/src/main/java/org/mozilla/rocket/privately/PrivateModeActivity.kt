@@ -5,6 +5,7 @@
 
 package org.mozilla.rocket.privately
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -16,7 +17,6 @@ import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
-import org.mozilla.rocket.privately.browse.BrowserFragment
 
 class PrivateModeActivity : LocaleAwareAppCompatActivity(), FragmentListener {
 
@@ -93,13 +93,15 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(), FragmentListener {
 
     private fun openUrl(payload: Any?) {
         val url = payload?.toString() ?: ""
+
+        ViewModelProviders.of(this)
+                .get(SharedViewModel::class.java)
+                .setUrl(url)
+
         dismissUrlInput()
         val controller = getNavController()
         if (controller.currentDestination.id == R.id.fragment_private_home_screen) {
-            controller.navigate(R.id.action_private_home_to_browser,
-                    BrowserFragment.createArgument(url))
-        } else {
-            // TODO: notify BrowserFragment
+            controller.navigate(R.id.action_private_home_to_browser)
         }
     }
 
