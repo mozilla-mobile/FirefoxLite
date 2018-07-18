@@ -9,16 +9,24 @@
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        tools:background="#FF0000">
 
         <org.mozilla.focus.widget.ResizableKeyboardLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="49dp"
+            android:layout_marginBottom="48dp"
             android:layout_marginTop="25dp"
             android:clipChildren="false"
             android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/tab_view_slot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="26dp"
+                tools:background="#333333" />
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
@@ -42,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="bottom"
-                        android:background="@color/colorDivider"
+                        android:background="@color/privateBackground"
                         tools:background="#FF0000" />
 
                     <org.mozilla.focus.widget.AnimatedProgressBar
@@ -62,6 +70,8 @@
             </android.support.design.widget.AppBarLayout>
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
+
+        <include layout="@layout/fragment_private_browser_item_menu_button" />
 
     </FrameLayout>
 </FrameLayout>
