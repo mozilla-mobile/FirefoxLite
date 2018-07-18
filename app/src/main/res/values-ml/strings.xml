@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">പ്രതികരണം നല്‍കുക</string>
   <string name="menu_share_with_friends">സുഹൃത്തുക്കളുമായി പങ്കിടൂ</string>
   <string name="share_dialog_title">ഇതുവഴി പങ്കിടൂ</string>
-  <string name="text_selection_search_action">{{app_name}} ഇതിൽ തിരയൂ</string>
+  <string name="text_selection_search_action">%1$s ഇതിൽ തിരയൂ</string>
   <string name="about_content_body">%1$s മോസില്ല നിർമ്മിച്ച ഒരു വേഗമേറിയതും ലഘുവുമായിട്ടുള്ള ബ്രൗസറാണ്. ഞങ്ങളുടെ ലക്ഷ്യം ഒരു ആരോഗ്യമുള്ള തുറന്ന ഇന്റർനെറ്റിന്റെ വളർച്ചയാണ്.</string>
   <string name="about_link_learn_more">കൂടുതല്‍ അറിയുക</string>
   <string name="about_link_support">പിന്തുണ</string>
@@ -162,16 +162,16 @@
   <string name="remove">നീക്കം ചെയ്യൂ</string>
   <string name="privacy_policy_update_notification_title">ഉല്പന്നത്തിന്റെ പുതുക്കൽ നോട്ടീസ്</string>
   <string name="privacy_policy_update_notification_action">ഫയർഫോക്സ് റോക്കറ്റ് താങ്കൾക്കും മറ്റെല്ലാവർക്കും മികച്ചതാക്കാൻ, ഞങ്ങൾ ഞങ്ങളുടെ സ്വകാര്യതാനയത്തിൽ കുറച്ച് മാറ്റങ്ങൾ വരുത്തി. കൂടുതൽ അറിയാൻ അമർത്തൂ.</string>
-  <string name="rate_app_dialog_text_title">{{app_name}} ഇഷ്ടപ്പെടന്നോ?</string>
+  <string name="rate_app_dialog_text_title">%1$s ഇഷ്ടപ്പെടന്നോ?</string>
   <string name="rate_app_dialog_text_content">ഞങ്ങളുടെ ഉല്പന്നം തിരഞ്ഞെടുത്തതിനു നന്ദി. താങ്കളുടെ പ്രതികരണം ഞങ്ങൾക്ക് വിലപ്പെട്ടത്താണ്.</string>
   <string name="rate_app_dialog_btn_go_rate">ശരി, 5 നക്ഷത്രങ്ങൾ റേറ്റ് ചെയ്യൂ!</string>
   <string name="rate_app_notification_action_rate">5 നക്ഷത്രങ്ങൾ റേറ്റ് ചെയ്യൂ</string>
   <string name="rate_app_dialog_btn_feedback">വേണ്ട, പ്രതികരണം അയയ്ക്കൂ.</string>
   <string name="rate_app_notification_action_feedback">പ്രതികരണം</string>
-  <string name="share_app_dialog_text_title">{{app_name}} കൂട്ടുകാരുമായി പങ്കുവെക്കുക!</string>
+  <string name="share_app_dialog_text_title">%1$s കൂട്ടുകാരുമായി പങ്കുവെക്കുക!</string>
   <string name="share_app_dialog_text_content">- വേഗമേറിയതും ലഘുവും\n- ഡാറ്റാ ലാഭിക്കുന്നത്\n- കിടിലം സ്ക്രീൻഷോട്ടുകൾ</string>
   <string name="share_app_dialog_btn_share">പങ്കിടുക</string>
-  <string name="share_app_promotion_text">ഏയ്, മോസില്ലയിൽ നിന്നുള്ള വേഗമേറിയതും ലഘുവുമായ ഈ ബ്രൗസർ ഒന്ന് നോക്കൂ. {{app_name}} {{share_app_google_play_url}}</string>
+  <string name="share_app_promotion_text">ഏയ്, മോസില്ലയിൽ നിന്നുള്ള വേഗമേറിയതും ലഘുവുമായ ഈ ബ്രൗസർ ഒന്ന് നോക്കൂ. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s മോസില്ലയും മറ്റ് പങ്കാളികളും ചേർന്ന് നിർമ്മിച്ച ഒരു സ്വതന്ത്രസോഫ്റ്റ്‌വെയറാണ്.</string>
   <string name="your_rights_content2"><![CDATA["%1$s താങ്കൾക്ക് "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3374;&#3403;&#3384;&#3391;&#3378;&#3405;&#3378; &#3370;&#3372;&#3405;&#3378;&#3391;&#3349;&#3405; &#3378;&#3400;&#3384;&#3451;&#3384;&#3391;&#3378;&#3399;&#3375;&#3393;&#3330;</a>" മറ്റ് സ്വതന്ത്ര ലൈസൻസുകളിലേയും ഉപാധികളോടെയാണ് ലഭ്യമാക്കിയിരിക്കുന്നത്."]]></string>
   <string name="your_rights_content3"><![CDATA["താങ്കൾക്ക് മോസില്ല ഫൗണ്ടേഷന്റെയോ, മോസില്ല, ഫയർഫോക്സ് അല്ലെങ്കിൽ %1$s എന്നിവയുടെയോ പേര് അല്ലെങ്കിൽ ലോഗോ എന്നിങ്ങനെ ഒരു ട്രേഡ്മാർക്കിന്മേലും യാതൊരു വിധത്തിലുള്ള അവകാശമോ അനുമതിയോ നൽകപ്പെട്ടിട്ടില്ല. കൂടുതൽ വിവരങ്ങൾ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3335;&#3381;&#3391;&#3359;&#3398;</a>" കാണാം."]]></string>

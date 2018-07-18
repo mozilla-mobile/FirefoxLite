@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ</string>
   <string name="menu_share_with_friends">ಸ್ನೇಹಿತರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ</string>
   <string name="share_dialog_title">ಇದರ ಮೂಲಕ ಹಂಚು</string>
-  <string name="text_selection_search_action">ಇದರಲ್ಲಿ ಹುಡುಕು {{app_name}}</string>
+  <string name="text_selection_search_action">ಇದರಲ್ಲಿ ಹುಡುಕು %1$s</string>
   <string name="about_content_body">%1$s ಅತ್ಯಂತ ವೇಗವಾದ ಮತ್ತು ಹಗುರ ಬ್ರೌಸರ್ ಅನ್ನು Mozilla ಉತ್ಪಾದಿಸಿದೆ. ನಮ್ಮ ಧ್ಯೇಯ ಆರೋಗ್ಯಕರ, ತೆರೆದ ಇಂಟರ್ನೆಟ್ ಅನ್ನು ಬೆಳೆಸುವುದು.</string>
   <string name="about_link_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
   <string name="about_link_support">ಬೆಂಬಲ</string>

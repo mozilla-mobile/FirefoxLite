@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">राय दें</string>
   <string name="menu_share_with_friends">दोस्तों के साथ साझा करें</string>
   <string name="share_dialog_title">इससे साझा करें</string>
-  <string name="text_selection_search_action">{{app_name}} में खोजें</string>
+  <string name="text_selection_search_action">%1$s में खोजें</string>
   <string name="about_content_body">%1$s Mozilla द्वारा निर्मित तीव्र तथा हल्का ब्राउज़र है. हमारा लक्ष्य एक स्वस्थ, मुक्त इंटरनेट को बढ़ावा देना है.</string>
   <string name="about_link_learn_more">अधिक जानें</string>
   <string name="about_link_support">समर्थन</string>
