@@ -1,7 +1,7 @@
 package org.mozilla.rocket.promotion
 
 import android.content.Context
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
