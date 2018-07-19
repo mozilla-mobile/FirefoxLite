@@ -121,7 +121,7 @@ android {
 
     productFlavors {
         focus {
-            resConfigs "en", "in"
+            resConfigs Localization.KEPT_LOCALE
             dimension "product"
 
             applicationIdSuffix ".rocket"
@@ -337,10 +337,12 @@ android.applicationVariants.all { variant ->
 
 tasks.whenTaskAdded { task ->
     if (name.contains("compile")) {
-        task.dependsOn generateLocaleList
+        task.dependsOn generatePreviewLocaleList
+        task.dependsOn generateFocusLocaleList
     }
 }
 
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
+
