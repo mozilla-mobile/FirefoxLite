@@ -46,3 +46,9 @@ object SystemEnv {
     val google_crash_reporting_api_key: String? = System.getenv("google_crash_reporting_api_key")
     val project_id: String? = System.getenv("project_id")
 }
+
+object Localization {
+    val KEPT_LOCALE: Array<String> = arrayOf("en", "in")
+    // todo Maybe map from KEPT_LOCALE to ENABLED_LOCALE? Not sure if that is very valuable when scaled though.
+    val ENABLED_LOCALE: Array<String> = arrayOf("en-US", "in")
+}

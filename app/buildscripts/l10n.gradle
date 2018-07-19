@@ -1,3 +1,4 @@
+import org.mozilla.rocket.GenerateLocaleTask
 // -------------------------------------------------------------------------------------------------
 // L10N: Generate list of locales
 // Focus provides its own (Android independent) locale switcher. That switcher requires a list
@@ -45,30 +46,23 @@ def getEnabledLocales() {
     return langs
 }
 
-def generatedLocaleListDir = 'src/main/java/org/mozilla/focus/generated'
-def generatedLocaleListFilename = 'LocaleList.java'
+task generatePreviewLocaleList(type: GenerateLocaleTask) {
+    directory = getGenerateDirectory("preview")
+    locales = getEnabledLocales()
+}
 
-task generateLocaleList {
-    doLast {
-        def dir = file(generatedLocaleListDir)
-        dir.mkdir()
-        def localeList = file(new File(dir, generatedLocaleListFilename))
+def addQuotes = { i -> '"' + i + '"'}
 
-        localeList.delete()
-        localeList.createNewFile()
-        localeList << "package org.mozilla.focus.generated;" << "\n" << "\n"
-        localeList << "import java.util.Arrays;" << "\n"
-        localeList << "import java.util.Collections;" << "\n"
-        localeList << "import java.util.List;" << "\n"
-        localeList << "\n"
-        localeList << "public class LocaleList {" << "\n"
-        // findbugs doesn't like "public static final String[]", see http://findbugs.sourceforge.net/bugDescriptions.html#MS_MUTABLE_ARRAY
-        localeList << "    public static final List<String> BUNDLED_LOCALES = Collections.unmodifiableList(Arrays.asList(new String[] { "
-        localeList << getEnabledLocales().join(", ") + " }));" << "\n"
-        localeList << "}" << "\n"
-    }
+task generateFocusLocaleList(type: GenerateLocaleTask) {
+    directory = getGenerateDirectory("focus")
+    locales = Localization.ENABLED_LOCALE.toList().stream().map(addQuotes).toArray()
 }
 
 clean.doLast {
-    file(generatedLocaleListDir).deleteDir()
+    file(getGenerateDirectory("preview")).deleteDir()
+    file(getGenerateDirectory("focus")).deleteDir()
+}
+
+static def getGenerateDirectory(String flavor) {
+    return 'src/'+ flavor + '/java/org/mozilla/focus/generated'
 }
