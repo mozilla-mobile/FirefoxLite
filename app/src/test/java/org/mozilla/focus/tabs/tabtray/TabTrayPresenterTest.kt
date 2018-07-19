@@ -9,7 +9,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Message
 import android.view.View
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
