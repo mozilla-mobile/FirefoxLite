@@ -13,6 +13,7 @@ import android.widget.TextView
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
+import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
@@ -21,7 +22,8 @@ import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.DefaultTabsChromeListener
 import org.mozilla.rocket.tabs.utils.DefaultTabsViewListener
 
-class BrowserFragment : LocaleAwareFragment() {
+class BrowserFragment : LocaleAwareFragment(),
+        BackKeyHandleable {
 
     private var listener: FragmentListener? = null
 
@@ -102,6 +104,15 @@ class BrowserFragment : LocaleAwareFragment() {
         // about the new language. See issue #666.
         val unneeded = WebView(getContext())
         unneeded.destroy()
+    }
+
+    override fun onBackPressed(): Boolean {
+        // FIXME: for development purpose. Handle back key until url bar is empty
+        if (displayUrlView.text != null && displayUrlView.text.isNotBlank()) {
+            displayUrlView.text = null
+            return true
+        }
+        return false
     }
 
     fun loadUrl(url: String?) {
