@@ -4,11 +4,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.TextView
+import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.widget.FragmentListener
@@ -23,7 +25,6 @@ class BrowserFragment : LocaleAwareFragment() {
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-        registerData()
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -32,6 +33,16 @@ class BrowserFragment : LocaleAwareFragment() {
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_private_browser, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val fragmentActivity = activity
+        if (fragmentActivity == null) {
+            BuildConfig.DEBUG?.let { throw RuntimeException("No activity to use") }
+        } else {
+            registerData(fragmentActivity)
+        }
     }
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
@@ -73,8 +84,8 @@ class BrowserFragment : LocaleAwareFragment() {
         }
     }
 
-    private fun registerData() {
-        val shared = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+    private fun registerData(activity: FragmentActivity) {
+        val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
 
         shared.getUrl().observe(this, Observer<String> { url -> loadUrl(url) })
     }
