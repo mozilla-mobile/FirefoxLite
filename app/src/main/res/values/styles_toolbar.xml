@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<resources>
+
+    <attr name="toolBarAppearance" format="reference" />
+    <attr name="siteIdentityAppearance" format="reference" />
+    <attr name="displayUrlAppearance" format="reference" />
+
+    <style name="ToolBarStyle">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="ToolBarPrivateStyle">
+        <item name="android:background">#38383D</item>
+    </style>
+
+    <style name="SiteIdentityStyle">
+        <item name="android:src">@drawable/site_identity</item>
+    </style>
+
+    <style name="SiteIdentityPrivateStyle">
+        <item name="android:src">@drawable/site_identity_private</item>
+    </style>
+
+    <style name="DisplayUrlStyle">
+    </style>
+
+    <style name="DisplayUrlPrivateStyle" parent="DisplayUrlStyle">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+</resources>

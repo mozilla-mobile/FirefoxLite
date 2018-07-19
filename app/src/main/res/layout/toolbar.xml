@@ -4,6 +4,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?toolBarAppearance"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -22,18 +23,19 @@
         android:visibility="gone" />
 
     <ImageView
+        style="?siteIdentityAppearance"
         android:id="@+id/site_identity"
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="6dp"
         android:contentDescription="@string/content_description_lock"
-        android:scaleType="centerInside"
-        android:src="@drawable/site_identity" />
+        android:scaleType="centerInside" />
 
     <!-- lint: We need to use singleLine=true for the fading edge to work (which is officially deprecated,
          but still needed), hence we ignore deprecated warnings here.. -->
     <TextView
+        style="?displayUrlAppearance"
         android:id="@+id/display_url"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -45,7 +47,6 @@
         android:lineSpacingExtra="2sp"
         android:requiresFadingEdge="horizontal"
         android:singleLine="true"
-        android:textColor="#272727"
         android:textSize="12sp"
         tools:ignore="Deprecated" />
 
