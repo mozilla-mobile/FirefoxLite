@@ -4,10 +4,6 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="AppThemeBase">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-    </style>
-
     <style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -22,9 +18,21 @@
 
     </style>
 
+    <style name="AppTheme" parent="AppThemeBase">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+
+        <item name="toolBarAppearance">@style/ToolBarStyle</item>
+        <item name="siteIdentityAppearance">@style/SiteIdentityStyle</item>
+        <item name="displayUrlAppearance">@style/DisplayUrlStyle</item>
+    </style>
+
     <style name="PrivateModeTheme" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+
+        <item name="toolBarAppearance">@style/ToolBarPrivateStyle</item>
+        <item name="siteIdentityAppearance">@style/SiteIdentityPrivateStyle</item>
+        <item name="displayUrlAppearance">@style/DisplayUrlPrivateStyle</item>
     </style>
 
     <style name="BottomSheetTheme" parent="AppTheme">
