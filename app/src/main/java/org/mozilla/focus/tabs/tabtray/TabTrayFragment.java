@@ -40,7 +40,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 import com.bumptech.glide.Glide;
@@ -50,7 +49,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.privately.PrivateMode;
-import org.mozilla.rocket.privately.PrivateModeActivity;
+import org.mozilla.rocket.privately.PrivateModeSampleActivity;
 import org.mozilla.rocket.tabs.Tab;
 import org.mozilla.rocket.tabs.TabsSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
@@ -184,9 +183,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 break;
 
             case R.id.btn_private_browsing:
-                privateModeBtn.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pb_shrink));
-
-                startActivity(new Intent(getContext(), PrivateModeActivity.class));
+                final Intent intent = new Intent(getContext(), PrivateModeSampleActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 break;
 

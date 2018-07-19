@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,7 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class FileUtils {
-    private static final String WEBVIEW_DIRECTORY = "app_webview";
+    public static final String WEBVIEW_DIRECTORY = "app_webview";
     private static final String WEBVIEW_CACHE_DIRECTORY = "cache";
 
 
@@ -146,7 +145,7 @@ public class FileUtils {
         return true;
     }
 
-    private static boolean deleteDirectory(File directory) {
+    public static boolean deleteDirectory(File directory) {
         return deleteContent(directory) && directory.delete();
     }
 
