@@ -11,10 +11,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.urlinput.UrlInputFragment
+import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.tabs.TabsSession
@@ -67,6 +69,15 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
             if (controller.currentDestination.id == R.id.fragment_private_home_screen) {
                 super.onBackPressed()
             } else {
+                // To find the last added fragment, and to give a opportunity of handling back-key.
+                // XXX: The way to find target fragment might be unstable, but this is all we have now.
+                val host = getNavHost()
+                val lastAddedFragment = host.childFragmentManager.findFragmentById(R.id.private_nav_host_fragment)
+                if (lastAddedFragment is BackKeyHandleable) {
+                    if (lastAddedFragment.onBackPressed()) {
+                        return
+                    }
+                }
                 getNavController().navigateUp()
             }
         }
@@ -129,6 +140,8 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         val frg = supportFragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG)
         return ((frg != null) && frg.isAdded && !frg.isRemoving)
     }
+
+    private fun getNavHost() = supportFragmentManager.findFragmentById(R.id.private_nav_host_fragment) as NavHostFragment
 
     private fun getNavController() = Navigation.findNavController(this, R.id.private_nav_host_fragment)
 }
