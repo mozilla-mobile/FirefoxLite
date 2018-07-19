@@ -86,9 +86,10 @@
             android:enabled="true"
             android:exported="false"
             android:launchMode="singleTask"
+            android:excludeFromRecents="true"
             android:process=":private_mode"
-            android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"
+            android:taskAffinity=""
             android:theme="@style/PrivateModeTheme">
 
 
@@ -206,6 +207,10 @@
             android:exported="false">
             <!-- The enabled state should be converted to resource value and diff in 21~23 and 24~ -->
         </service>
+
+        <service
+            android:name="org.mozilla.rocket.component.PrivateSessionNotificationService"
+            android:process=":private_mode" />
 
         <activity
             android:enabled="false"

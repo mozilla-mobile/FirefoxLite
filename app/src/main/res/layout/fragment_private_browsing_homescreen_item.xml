@@ -4,7 +4,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_alignParentBottom="true"
     android:layout_gravity="center_horizontal|bottom">
 
@@ -13,14 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin"
-        android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin">
+        android:layout_marginEnd="@dimen/tab_tray_bottom_sheet_start_margin"
+        android:layout_marginStart="@dimen/tab_tray_bottom_sheet_start_margin">
 
-        <ImageButton
-            android:id="@+id/btn_tab_tray"
+        <include
             style="@style/HomeMenuButton"
-            android:tint="@color/colorPrimaryDark"
-            app:srcCompat="@drawable/private_browsing_mask" />
+            layout="@layout/button_private_to_normal" />
 
         <include
             style="@style/HomeMenuButton"
@@ -39,6 +36,7 @@
 
         <include
             style="@style/HomeMenuButton"
-            layout="@layout/button_more_white" />
+            layout="@layout/button_more_white"
+            android:visibility="invisible"/>
     </org.mozilla.focus.widget.EqualDistributeRow>
 </FrameLayout>

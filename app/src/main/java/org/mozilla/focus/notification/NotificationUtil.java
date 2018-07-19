@@ -20,7 +20,7 @@ import org.mozilla.focus.R;
 
 public class NotificationUtil {
 
-    public static final String DEFAULT_CHANNEL_ID = "default_channel_id";
+    private static final String DEFAULT_CHANNEL_ID = "default_channel_id";
 
     /**
      * To ensure we can generate a Notification Builder with same style
@@ -56,25 +56,30 @@ public class NotificationUtil {
         final NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        configNotificationChannel(context, notificationManager);
-
         if (notificationManager != null) {
             notificationManager.notify(id, builder.build());
         }
 
     }
 
-    // Configure the notification channel if needed
-    private static void configNotificationChannel(Context context, NotificationManager notificationManager) {
-        // NotificationChannel API is only available for Android O and above, so we need to add the check here so IDE won't complain
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final String channelName = context.getString(R.string.app_name);
-            // IMPORTANCE_HIGH makes notifications can show heads-up for Android 8 and above
-            final NotificationChannel notificationChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(notificationChannel);
+    // Configure the default notification channel if needed
+    // See: https://developer.android.com/training/notify-user/channels#CreateChannel
+    public static void init(Context context) {
+
+        final NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            // NotificationChannel API is only available for Android O and above, so we need to add the check here so IDE won't complain
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                final String channelName = context.getString(R.string.app_name);
+                // IMPORTANCE_HIGH makes notifications can show heads-up for Android 8 and above
+                final NotificationChannel notificationChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
+                notificationChannel.enableLights(true);
+                notificationChannel.setLightColor(Color.RED);
+                notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
+
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
         }
     }
 }

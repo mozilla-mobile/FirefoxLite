@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pm_home_back"
+    style="@style/HomeMenuButton"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_horizontal">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/pm_home_mask"
+        style="@style/MainMenuButton"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="mask.json"
+        app:lottie_loop="false" />
+</RelativeLayout>

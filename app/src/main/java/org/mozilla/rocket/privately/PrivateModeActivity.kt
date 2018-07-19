@@ -21,6 +21,7 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
+import org.mozilla.rocket.component.PrivateSessionNotificationService
 
 class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         FragmentListener,
@@ -30,12 +31,12 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        handleIntent(intent)
+
         setContentView(R.layout.activity_private_mode)
 
-        var visibility = window.decorView.systemUiVisibility
-        // do not overwrite existing value
-        visibility = visibility or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-        window.decorView.systemUiVisibility = visibility
+        makeStatusBarTransparent()
     }
 
     override fun onDestroy() {
@@ -79,6 +80,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
                     }
                 }
                 getNavController().navigateUp()
+                stopPrivateMode()
             }
         }
     }
@@ -90,6 +92,12 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
         // we just created it, it definitely not null
         return session!!
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+
     }
 
     private fun pushToBack() {
@@ -134,6 +142,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         if (controller.currentDestination.id == R.id.fragment_private_home_screen) {
             controller.navigate(R.id.action_private_home_to_browser)
         }
+        startPrivateMode()
     }
 
     private fun isUrlInputDisplaying(): Boolean {
@@ -144,4 +153,31 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun getNavHost() = supportFragmentManager.findFragmentById(R.id.private_nav_host_fragment) as NavHostFragment
 
     private fun getNavController() = Navigation.findNavController(this, R.id.private_nav_host_fragment)
+
+    private fun makeStatusBarTransparent() {
+        var visibility = window.decorView.systemUiVisibility
+        // do not overwrite existing value
+        visibility = visibility or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        window.decorView.systemUiVisibility = visibility
+    }
+
+    private fun startPrivateMode() {
+        PrivateSessionNotificationService.start(this)
+    }
+
+
+    private fun stopPrivateMode() {
+        PrivateSessionNotificationService.stop(this)
+        PrivateMode.sanitize(this.applicationContext)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+
+        if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
+            stopPrivateMode()
+            finishAndRemoveTask()
+        }
+    }
+
+
 }

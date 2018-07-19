@@ -14,45 +14,44 @@
     tools:context="org.mozilla.rocket.privately.PrivateModeActivity">
 
     <org.mozilla.focus.home.HomeScreenBackground
-        android:id="@+id/home_background"
+        android:id="@+id/pm_home_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_home" />
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/logo_man"
-        android:layout_width="115.33dp"
-        android:layout_height="51.67dp"
-        android:layout_above="@+id/home_fragment_fake_input"
-        android:layout_alignEnd="@+id/home_fragment_fake_input"
-        app:srcCompat="@drawable/logo_man" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/pm_home_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="logo_man_private.json"
+        app:lottie_loop="false" />
+
 
     <include
-        android:id="@+id/home_fragment_fake_input"
-        layout="@layout/fragment_homescreen_item_fake_input"
-        android:layout_width="306dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true" />
-
-    <include
+        android:id="@+id/pm_home_brand_logo"
         layout="@layout/fragment_homescreen_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/home_fragment_fake_input"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/home_title_bottom_margin" />
+        android:layout_marginTop="@dimen/pm_home_title_margin" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/home_fragment_fake_input"
+        android:layout_below="@+id/pm_home_brand_logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
-        android:fontFamily="casual"
-        android:text="Private Browsing"
-        android:textColor="@color/sharedColorAppPaletteWhite5"
-        android:textSize="16dp"
-        android:textStyle="italic" />
+        android:fontFamily="sans-serif-light"
+        android:text="@string/private_browsing_title"
+        android:textColor="@color/sharedColorAppPaletteWhite"
+        android:textSize="20sp" />
+
+    <include
+        android:id="@+id/pm_home_fake_input"
+        layout="@layout/fragment_homescreen_item_fake_input"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true" />
 
     <include layout="@layout/fragment_private_browsing_homescreen_item" />
 
