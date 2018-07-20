@@ -4,11 +4,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.privately
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.preference.PreferenceManager
 import org.mozilla.focus.utils.FileUtils
 import org.mozilla.focus.utils.ThreadUtils
+import org.mozilla.rocket.component.PrivateSessionNotificationService
 import java.io.File
 
 
@@ -45,6 +47,26 @@ class PrivateMode {
                     clean(dir, context)
                 }
             }
+        }
+
+        /**
+         * A helper function to report whether this service is alive
+         *
+         * @param context
+         * @return true if this service is alive
+         */
+        @JvmStatic
+        fun hasPrivateTab(context: Context): Boolean {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            // Although this method is no longer available to third party applications.  For backwards compatibility,
+            // it will still return the caller's own services.
+            for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (PrivateSessionNotificationService::class.java.name == service.service.className) {
+                    return true
+                }
+            }
+
+            return false
         }
 
         private fun clean(dir: File, context: Context) {
