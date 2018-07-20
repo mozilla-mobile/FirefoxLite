@@ -175,7 +175,7 @@ public class DialogUtils {
         final Intent openRocket = IntentUtils.genFeedbackNotificationClickForBroadcastReceiver(context);
         final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_RATE_CLICK, openRocket,
                 PendingIntent.FLAG_ONE_SHOT);
-        final String string = context.getString(R.string.rate_app_dialog_text_title) + "\uD83D\uDE00";
+        final String string = context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)) + "\uD83D\uDE00";
         final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
                 .setContentText(string);
 
