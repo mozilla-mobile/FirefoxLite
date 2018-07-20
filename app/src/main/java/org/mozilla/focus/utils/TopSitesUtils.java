@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.locale.Locales;
@@ -55,21 +56,7 @@ public class TopSitesUtils {
     private static String loadDefaultSitesFromAssets(Context context) {
         String json = "[]";
         try {
-            final Locale locale = Locale.getDefault();
-            final String fileName = "topsites.json";
-            final String localPath = "topsites/" + Locales.getLanguage(locale);
-            final String defaultPath = "topsites/topsites_default.json";
-
-            final AssetManager assetManager = context.getAssets();
-            final List<String> localFiles = Arrays.asList(assetManager.list(localPath));
-
-            InputStream is;
-            if (localFiles.contains(fileName)) {
-                is = assetManager.open(localPath + "/" + fileName);
-            } else {
-                is = assetManager.open(defaultPath);
-            }
-
+            InputStream is = context.getResources().openRawResource(R.raw.topsites_default);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
