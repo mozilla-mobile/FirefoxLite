@@ -10,9 +10,19 @@
     </style>
 
     <style name="PrivateModeTheme" parent="AppTheme">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@color/privateBackground</item>
         <item name="android:windowLightStatusBar">false</item>
+
+        <item name="colorProgressBarStartGradient">#FF9400FF</item>
+        <item name="colorProgressBarEndGradient">#FFFF1AD9</item>
+        <item name="toolBarAppearance">@style/ToolBarPrivateStyle</item>
+        <item name="siteIdentityAppearance">@style/SiteIdentityPrivateStyle</item>
+        <item name="displayUrlAppearance">@style/DisplayUrlPrivateStyle</item>
+    </style>
+
+    <style name="PrivateActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@color/bookmarkEditToolbarText</item>
     </style>
 
 </resources>
