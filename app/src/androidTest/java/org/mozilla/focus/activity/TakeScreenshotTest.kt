@@ -8,12 +8,14 @@ package org.mozilla.focus.activity
 import android.support.annotation.Keep
 import android.support.test.runner.AndroidJUnit4
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
 
 @Keep
+@Ignore
 @RunWith(AndroidJUnit4::class)
 class TakeScreenshotTest {
 
