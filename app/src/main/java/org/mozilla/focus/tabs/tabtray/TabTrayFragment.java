@@ -7,6 +7,8 @@ package org.mozilla.focus.tabs.tabtray;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -72,6 +74,16 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private View logoMan;
     private View closeTabsBtn;
     private View privateModeBtn;
+    private View privateModeBadge;
+    final Observer<Boolean> privateModeBadgeObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable final Boolean hasPrivateTab) {
+            // Update the UI, in this case, a TextView.
+            if (privateModeBadge != null) {
+                privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
+            }
+        }
+    };
     private AlertDialog closeTabsDialog;
 
     private View backgroundView;
@@ -90,6 +102,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private SlideAnimationCoordinator slideCoordinator = new SlideAnimationCoordinator(this);
 
     private Runnable dismissRunnable = this::dismissAllowingStateLoss;
+
+    private TabTrayViewModel tabTrayViewModel = null;
 
     public static TabTrayFragment newInstance() {
         return new TabTrayFragment();
@@ -135,6 +149,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         newTabBtn = view.findViewById(R.id.new_tab_button);
         closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
         privateModeBtn = view.findViewById(R.id.btn_private_browsing);
+        privateModeBadge = view.findViewById(R.id.badge_in_private_mode);
+        tabTrayViewModel = ViewModelProviders.of(this).get(TabTrayViewModel.class);
+        tabTrayViewModel.hasPrivateTab().observe(this, privateModeBadgeObserver);
         if (PrivateMode.isEnable(getContext())) {
             privateModeBtn.setVisibility(View.VISIBLE);
         }
@@ -172,6 +189,12 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        tabTrayViewModel.hasPrivateTab().setValue(PrivateMode.hasPrivateTab(getContext()));
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.new_tab_button:
@@ -183,9 +206,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 break;
 
             case R.id.btn_private_browsing:
-                final Intent intent = new Intent(getContext(), PrivateModeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                startActivity(new Intent(getContext(), PrivateModeActivity.class));
                 getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 break;
 

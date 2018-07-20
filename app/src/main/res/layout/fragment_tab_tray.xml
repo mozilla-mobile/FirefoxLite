@@ -61,6 +61,7 @@
                     android:layout_alignTop="@+id/btn_private_browsing"
                     android:paddingEnd="-10dp"
                     android:paddingTop="6dp"
+                    android:visibility="invisible"
                     android:src="@drawable/ic_menu_private_mode" />
 
                 <ImageView
