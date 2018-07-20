@@ -75,15 +75,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private View closeTabsBtn;
     private View privateModeBtn;
     private View privateModeBadge;
-    final Observer<Boolean> privateModeBadgeObserver = new Observer<Boolean>() {
-        @Override
-        public void onChanged(@Nullable final Boolean hasPrivateTab) {
-            // Update the UI, in this case, a TextView.
-            if (privateModeBadge != null) {
-                privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
-            }
-        }
-    };
+
     private AlertDialog closeTabsDialog;
 
     private View backgroundView;
@@ -151,7 +143,12 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         privateModeBtn = view.findViewById(R.id.btn_private_browsing);
         privateModeBadge = view.findViewById(R.id.badge_in_private_mode);
         tabTrayViewModel = ViewModelProviders.of(this).get(TabTrayViewModel.class);
-        tabTrayViewModel.hasPrivateTab().observe(this, privateModeBadgeObserver);
+        tabTrayViewModel.hasPrivateTab().observe(this, hasPrivateTab -> {
+            // Update the UI, in this case, a TextView.
+            if (privateModeBadge != null) {
+                privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
+            }
+        });
         if (PrivateMode.isEnable(getContext())) {
             privateModeBtn.setVisibility(View.VISIBLE);
         }
