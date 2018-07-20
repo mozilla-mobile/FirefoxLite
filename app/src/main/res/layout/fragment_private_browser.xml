@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/privateBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.mozilla.rocket.privately.browse.BrowserFragment">
@@ -9,7 +10,6 @@
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         tools:background="#FF0000">
 
         <org.mozilla.focus.widget.ResizableKeyboardLayout
