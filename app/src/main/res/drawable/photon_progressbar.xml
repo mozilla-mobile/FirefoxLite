@@ -10,9 +10,9 @@
             android:scaleWidth="100%">
             <shape>
                 <gradient
-                    android:centerColor="@color/colorProgressGradientEnd"
-                    android:endColor="@color/colorProgressGradientStart"
-                    android:startColor="@color/colorProgressGradientStart" />
+                    android:centerColor="?colorProgressBarEndGradient"
+                    android:endColor="?colorProgressBarStartGradient"
+                    android:startColor="?colorProgressBarStartGradient" />
             </shape>
         </scale>
     </item>

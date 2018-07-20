@@ -10,6 +10,9 @@
     <attr name="siteIdentityAppearance" format="reference" />
     <attr name="displayUrlAppearance" format="reference" />
 
+    <attr name="colorProgressBarStartGradient" format="color" />
+    <attr name="colorProgressBarEndGradient" format="color" />
+
     <style name="ToolBarStyle">
         <item name="android:background">@android:color/transparent</item>
     </style>

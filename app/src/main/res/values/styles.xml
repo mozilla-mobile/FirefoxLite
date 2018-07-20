@@ -21,6 +21,8 @@
     <style name="AppTheme" parent="AppThemeBase">
         <item name="android:statusBarColor">@color/colorPrimary</item>
 
+        <item name="colorProgressBarStartGradient">#00DCFC</item>
+        <item name="colorProgressBarEndGradient">#00DCFC</item>
         <item name="toolBarAppearance">@style/ToolBarStyle</item>
         <item name="siteIdentityAppearance">@style/SiteIdentityStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlStyle</item>
@@ -30,6 +32,8 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
 
+        <item name="colorProgressBarStartGradient">#FF9400FF</item>
+        <item name="colorProgressBarEndGradient">#FFFF1AD9</item>
         <item name="toolBarAppearance">@style/ToolBarPrivateStyle</item>
         <item name="siteIdentityAppearance">@style/SiteIdentityPrivateStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlPrivateStyle</item>
