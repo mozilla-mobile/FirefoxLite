@@ -103,8 +103,9 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
     /**
      * Load target url on current/new tab and clear every thing above browser fragment
-     * @param url target url
-     * @param withNewTab whether to open and load target url in a new tab
+     *
+     * @param url            target url
+     * @param withNewTab     whether to open and load target url in a new tab
      * @param isFromExternal if this url is started from external VIEW intent
      */
     public void showBrowserScreen(String url, boolean withNewTab, boolean isFromExternal) {

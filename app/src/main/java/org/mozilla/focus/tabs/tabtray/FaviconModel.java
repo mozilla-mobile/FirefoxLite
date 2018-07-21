@@ -11,7 +11,8 @@ import org.mozilla.focus.utils.FavIconUtils;
 
 public class FaviconModel {
     String url;
-    @FavIconUtils.FavIconType int type;
+    @FavIconUtils.FavIconType
+    int type;
     Bitmap originalIcon;
 
     FaviconModel(String url, @FavIconUtils.FavIconType int type, Bitmap favicon) {

@@ -14,17 +14,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
-import org.mozilla.focus.fragment.PanelFragmentStatusListener;
-import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;

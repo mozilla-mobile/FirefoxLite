@@ -19,9 +19,9 @@ import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
+import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
-import org.mozilla.rocket.component.PrivateSessionNotificationService
 
 class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         FragmentListener,

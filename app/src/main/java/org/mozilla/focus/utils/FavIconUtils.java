@@ -27,8 +27,10 @@ public class FavIconUtils {
     public static final int TYPE_ORIGINAL = 0;
     public static final int TYPE_SCALED_DOWN = 1;
     public static final int TYPE_GENERATED = 2;
+
     @IntDef({TYPE_ORIGINAL, TYPE_SCALED_DOWN, TYPE_GENERATED})
-    public @interface FavIconType {}
+    public @interface FavIconType {
+    }
 
     @FavIconType
     public static int getFavIconType(Resources res, Bitmap source) {

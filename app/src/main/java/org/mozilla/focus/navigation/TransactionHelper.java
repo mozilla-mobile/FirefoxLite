@@ -190,7 +190,8 @@ class TransactionHelper implements DefaultLifecycleObserver {
         return result[0];
     }
 
-    private @EntryData.EntryType int getEntryType(FragmentManager.BackStackEntry entry) {
+    private @EntryData.EntryType
+    int getEntryType(FragmentManager.BackStackEntry entry) {
         String result[] = entry.getName().split(ENTRY_TAG_SEPARATOR);
         return Integer.parseInt(result[1]);
     }
@@ -254,7 +255,8 @@ class TransactionHelper implements DefaultLifecycleObserver {
             } else {
                 anim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) {}
+                    public void onAnimationStart(Animation animation) {
+                    }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
@@ -262,7 +264,8 @@ class TransactionHelper implements DefaultLifecycleObserver {
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation) {}
+                    public void onAnimationRepeat(Animation animation) {
+                    }
                 });
             }
         }
@@ -299,19 +302,26 @@ class TransactionHelper implements DefaultLifecycleObserver {
     }
 
     static class EntryData {
-        /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, pressing back when this
-         * type of fragment is in foreground will close the app */
+        /**
+         * argument passed to {@link FragmentTransaction#addToBackStack(String)}, pressing back when this
+         * type of fragment is in foreground will close the app
+         */
         static final int TYPE_ROOT = 0;
 
-        /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, adding fragment of
-         * this type will make browser fragment go to background */
+        /**
+         * argument passed to {@link FragmentTransaction#addToBackStack(String)}, adding fragment of
+         * this type will make browser fragment go to background
+         */
         static final int TYPE_ATTACHED = 1;
 
-        /** argument passed to {@link FragmentTransaction#addToBackStack(String)}, browsing fragment
-         * will still be in foreground after adding this type of fragment. */
+        /**
+         * argument passed to {@link FragmentTransaction#addToBackStack(String)}, browsing fragment
+         * will still be in foreground after adding this type of fragment.
+         */
         static final int TYPE_FLOATING = 2;
 
         @IntDef({TYPE_ROOT, TYPE_ATTACHED, TYPE_FLOATING})
-        @interface EntryType {}
+        @interface EntryType {
+        }
     }
 }

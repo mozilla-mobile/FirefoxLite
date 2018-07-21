@@ -26,7 +26,7 @@ class FocusApplication : LocaleAwareApplication() {
 
     override fun getCacheDir(): File {
         if (isInPrivateProcess()) {
-            return File(super.getCacheDir().absolutePath +"-"+ PRIVATE_PROCESS_NAME)
+            return File(super.getCacheDir().absolutePath + "-" + PRIVATE_PROCESS_NAME)
         }
         return super.getCacheDir()
     }

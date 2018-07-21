@@ -334,7 +334,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         try {
                             startActivity(Intent.createChooser(share, null));
-                            TelemetryWrapper.shareCaptureImage( false);
+                            TelemetryWrapper.shareCaptureImage(false);
                         } catch (ActivityNotFoundException e) {
                         }
                     }

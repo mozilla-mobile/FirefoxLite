@@ -16,7 +16,11 @@ import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryContract.BrowsingHistory;
 import org.mozilla.focus.provider.QueryHandler;
-import org.mozilla.focus.provider.QueryHandler.*;
+import org.mozilla.focus.provider.QueryHandler.AsyncDeleteListener;
+import org.mozilla.focus.provider.QueryHandler.AsyncDeleteWrapper;
+import org.mozilla.focus.provider.QueryHandler.AsyncInsertListener;
+import org.mozilla.focus.provider.QueryHandler.AsyncQueryListener;
+import org.mozilla.focus.provider.QueryHandler.AsyncUpdateListener;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

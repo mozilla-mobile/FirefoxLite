@@ -7,7 +7,6 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 public final class DebugUtils {

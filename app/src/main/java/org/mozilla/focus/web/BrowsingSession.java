@@ -5,12 +5,6 @@
 
 package org.mozilla.focus.web;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import org.mozilla.focus.utils.SafeIntent;
-
 import java.lang.ref.WeakReference;
 
 /**
