@@ -130,7 +130,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         }
         val urlFragment: UrlInputFragment = UrlInputFragment.create(url, null)
         val transaction = frgMgr.beginTransaction()
-        transaction.add(R.id.private_nav_host_fragment, urlFragment, UrlInputFragment.FRAGMENT_TAG)
+        transaction.add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                 .addToBackStack(UrlInputFragment.FRAGMENT_TAG)
                 .commit()
 
