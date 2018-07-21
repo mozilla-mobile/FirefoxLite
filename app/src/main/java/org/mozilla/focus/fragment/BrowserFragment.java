@@ -1080,7 +1080,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 return;
             }
 
-            webContextMenu = WebContextMenu.show(getActivity(), downloadCallback, hitTarget);
+            webContextMenu = WebContextMenu.show(false, getActivity(), downloadCallback, hitTarget);
         }
 
         @Override

@@ -49,7 +49,11 @@ public class WebContextMenu {
         return titleView;
     }
 
-    public static Dialog show(final @NonNull Activity activity, final @NonNull DownloadCallback callback, final @NonNull TabView.HitTarget hitTarget) {
+    public static Dialog show(final boolean inPrivate,
+                              final @NonNull Activity activity,
+                              final @NonNull DownloadCallback callback,
+                              final @NonNull TabView.HitTarget hitTarget) {
+
         if (!(hitTarget.isLink || hitTarget.isImage)) {
             // We don't support any other classes yet:
             throw new IllegalStateException("WebContextMenu can only handle long-press on images and/or links.");
@@ -85,7 +89,7 @@ public class WebContextMenu {
         dialog.setOwnerActivity(activity);
 
         final NavigationView menu = view.findViewById(R.id.context_menu);
-        setupMenuForHitTarget(dialog, menu, callback, hitTarget);
+        setupMenuForHitTarget(inPrivate, dialog, menu, callback, hitTarget);
 
         dialog.show();
         return dialog;
@@ -96,7 +100,8 @@ public class WebContextMenu {
      * has already been created - we need the dialog in order to be able to dismiss it in the
      * menu callbacks.
      */
-    private static void setupMenuForHitTarget(final @NonNull Dialog dialog,
+    private static void setupMenuForHitTarget(final @NonNull boolean inPrivate,
+                                              final @NonNull Dialog dialog,
                                               final @NonNull NavigationView navigationView,
                                               final @NonNull DownloadCallback callback,
                                               final @NonNull TabView.HitTarget hitTarget) {
@@ -104,6 +109,10 @@ public class WebContextMenu {
 
         final String targetUrl = hitTarget.isLink ? hitTarget.linkURL : hitTarget.imageURL;
         boolean canOpenInNewTab = canOpenInNewTab(dialog.getOwnerActivity(), targetUrl);
+
+        // so far, Private Mode does not support multiple tabs
+        canOpenInNewTab = canOpenInNewTab && !inPrivate;
+
         navigationView.getMenu().findItem(R.id.menu_new_tab).setVisible(canOpenInNewTab && hitTarget.isLink);
         navigationView.getMenu().findItem(R.id.menu_new_tab_image).setVisible(canOpenInNewTab && !hitTarget.isLink && hitTarget.isImage);
 
