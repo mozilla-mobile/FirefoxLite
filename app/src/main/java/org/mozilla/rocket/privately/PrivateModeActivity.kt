@@ -28,6 +28,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         TabsSessionProvider.SessionHost {
 
     private var session: TabsSession? = null
+    private lateinit var privateModeViewModel: PrivateModeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,13 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         setContentView(R.layout.activity_private_mode)
 
         makeStatusBarTransparent()
+
+        initViewModel()
+    }
+
+    private fun initViewModel() {
+        privateModeViewModel = ViewModelProviders.of(this).get(PrivateModeViewModel::class.java)
+        privateModeViewModel.urlInputState().value = false
     }
 
     override fun onDestroy() {
@@ -65,6 +73,9 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         val cnt = supportFragmentManager.backStackEntryCount
         if (cnt != 0) {
             supportFragmentManager.popBackStack()
+            // normally this means we are hiding the keyboard
+            privateModeViewModel.urlInputState().value = false
+
         } else {
             val controller = getNavController()
             if (controller.currentDestination.id == R.id.fragment_private_home_screen) {
@@ -122,19 +133,22 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         transaction.add(R.id.private_nav_host_fragment, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                 .addToBackStack(UrlInputFragment.FRAGMENT_TAG)
                 .commit()
+
+        privateModeViewModel.urlInputState().value = true
     }
 
     private fun dismissUrlInput() {
         if (isUrlInputDisplaying()) {
             supportFragmentManager.popBackStack()
         }
+        privateModeViewModel.urlInputState().value = false
     }
 
     private fun openUrl(payload: Any?) {
         val url = payload?.toString() ?: ""
 
         ViewModelProviders.of(this)
-                .get(SharedViewModel::class.java)
+                .get(PrivateModeViewModel::class.java)
                 .setUrl(url)
 
         dismissUrlInput()

@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.privately.home
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import org.mozilla.focus.utils.ThreadUtils
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
+import org.mozilla.rocket.privately.PrivateModeViewModel
 
 
 class PrivateHomeFragment : LocaleAwareFragment() {
@@ -52,7 +55,23 @@ class PrivateHomeFragment : LocaleAwareFragment() {
             }
         }
 
+        observeViewModel()
+
         return view
+    }
+
+    private fun observeViewModel() {
+        activity?.apply {
+            // since the view model is of the activity, use the fragment's activity instead of the fragment itself
+            ViewModelProviders.of(this).get(PrivateModeViewModel::class.java)
+                    .urlInputState()
+                    .observe(this, Observer<Boolean> {
+                        it?.apply {
+                            toggleFakeUrlInput(it)
+                        }
+                    })
+        }
+
     }
 
     @Override
@@ -79,5 +98,15 @@ class PrivateHomeFragment : LocaleAwareFragment() {
     private fun animatePrivateHome() {
         lottieMask.playAnimation()
         logoMan.playAnimation()
+    }
+
+    private fun toggleFakeUrlInput(inEditMode: Boolean) {
+        if (inEditMode) {
+            logoMan.visibility = View.INVISIBLE
+            fakeInput.visibility = View.INVISIBLE
+        } else {
+            logoMan.visibility = View.VISIBLE
+            fakeInput.visibility = View.VISIBLE
+        }
     }
 }
