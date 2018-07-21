@@ -27,6 +27,6 @@ data class TabModel(
     var webViewState: Bundle? = null
 
     fun isValid(): Boolean {
-        return id.isNotBlank() && url?.isNotBlank()!!
+        return id.isNotBlank() && (url?.isNotBlank() ?: false)
     }
 }
