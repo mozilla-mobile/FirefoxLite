@@ -9,7 +9,11 @@ import android.content.Context;
 import android.net.Uri;
 
 import org.mozilla.focus.provider.QueryHandler;
-import org.mozilla.focus.provider.QueryHandler.*;
+import org.mozilla.focus.provider.QueryHandler.AsyncDeleteListener;
+import org.mozilla.focus.provider.QueryHandler.AsyncDeleteWrapper;
+import org.mozilla.focus.provider.QueryHandler.AsyncInsertListener;
+import org.mozilla.focus.provider.QueryHandler.AsyncQueryListener;
+import org.mozilla.focus.provider.QueryHandler.AsyncUpdateListener;
 import org.mozilla.focus.provider.ScreenshotContract.Screenshot;
 
 /**

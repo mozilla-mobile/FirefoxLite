@@ -32,7 +32,6 @@ import java.util.Locale;
 public class TopSitesUtils {
 
     /**
-     *
      * get default topsites data from assets and restore it to SharedPreferences
      *
      * @param context

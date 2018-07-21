@@ -202,7 +202,7 @@ public class IntentUtils {
         context.startActivity(pageView);
     }
 
-    @SuppressWarnings({ "SameParameterValue", "WeakerAccess" })
+    @SuppressWarnings({"SameParameterValue", "WeakerAccess"})
     public static void openUrl(Context context, String url, boolean openInNewTab) {
         context.startActivity(createInternalOpenUrlIntent(context, url, openInNewTab));
     }

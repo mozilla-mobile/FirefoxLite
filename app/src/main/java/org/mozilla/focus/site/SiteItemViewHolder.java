@@ -18,8 +18,8 @@ public class SiteItemViewHolder extends RecyclerView.ViewHolder {
     public SiteItemViewHolder(View itemView) {
         super(itemView);
         rootView = itemView.findViewById(R.id.history_item_root_view);
-        imgFav =  itemView.findViewById(R.id.history_item_img_fav);
-        textMain =  itemView.findViewById(R.id.history_item_text_main);
+        imgFav = itemView.findViewById(R.id.history_item_img_fav);
+        textMain = itemView.findViewById(R.id.history_item_text_main);
         textSecondary = itemView.findViewById(R.id.history_item_text_secondary);
         btnMore = itemView.findViewById(R.id.history_item_btn_more);
     }

@@ -12,7 +12,6 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.EditText
 import android.widget.ImageButton
@@ -59,7 +58,7 @@ class EditBookmarkActivity : AppCompatActivity() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            if(::bookmark.isInitialized) {
+            if (::bookmark.isInitialized) {
                 nameChanged = s.toString() != originalName
                 setupMenuItemSave()
             }
@@ -75,7 +74,7 @@ class EditBookmarkActivity : AppCompatActivity() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            if(::bookmark.isInitialized) {
+            if (::bookmark.isInitialized) {
                 locationChanged = s.toString() != originalLocation
                 locationEmpty = TextUtils.isEmpty(s)
                 setupMenuItemSave()
@@ -85,8 +84,12 @@ class EditBookmarkActivity : AppCompatActivity() {
 
     private val focusChangeListener: OnFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
         when (v.id) {
-            R.id.bookmark_location -> { labelLocation.isActivated = hasFocus }
-            R.id.bookmark_name -> { labelName.isActivated = hasFocus }
+            R.id.bookmark_location -> {
+                labelLocation.isActivated = hasFocus
+            }
+            R.id.bookmark_name -> {
+                labelName.isActivated = hasFocus
+            }
         }
     }
 

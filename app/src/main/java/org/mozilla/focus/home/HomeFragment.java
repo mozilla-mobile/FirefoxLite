@@ -108,13 +108,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.fakeInput = (TextView) view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(v -> {
-                final Activity parent = getActivity();
-                if (parent instanceof FragmentListener) {
-                    ((FragmentListener) parent).onNotified(HomeFragment.this,
-                            FragmentListener.TYPE.SHOW_URL_INPUT,
-                            null);
-                }
-                TelemetryWrapper.showSearchBarHome();
+            final Activity parent = getActivity();
+            if (parent instanceof FragmentListener) {
+                ((FragmentListener) parent).onNotified(HomeFragment.this,
+                        FragmentListener.TYPE.SHOW_URL_INPUT,
+                        null);
+            }
+            TelemetryWrapper.showSearchBarHome();
         });
 
         SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
@@ -244,25 +244,25 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             final PopupMenu popupMenu = new PopupMenu(v.getContext(), v, Gravity.CLIP_HORIZONTAL);
             popupMenu.getMenuInflater().inflate(R.menu.menu_top_site_item, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case R.id.remove:
-                            if (site.getId() < 0) {
-                                presenter.removeSite(site);
-                                removeDefaultSites(site);
-                                TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.orginalDefaultSites);
-                                BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
-                                TelemetryWrapper.removeTopSite(true);
-                            } else {
-                                site.setViewCount(1);
-                                BrowsingHistoryManager.getInstance().updateLastEntry(site, mTopSiteUpdateListener);
-                                TelemetryWrapper.removeTopSite(false);
-                            }
-                            break;
-                        default:
-                            throw new IllegalStateException("Unhandled menu item");
-                    }
+                switch (item.getItemId()) {
+                    case R.id.remove:
+                        if (site.getId() < 0) {
+                            presenter.removeSite(site);
+                            removeDefaultSites(site);
+                            TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.orginalDefaultSites);
+                            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                            TelemetryWrapper.removeTopSite(true);
+                        } else {
+                            site.setViewCount(1);
+                            BrowsingHistoryManager.getInstance().updateLastEntry(site, mTopSiteUpdateListener);
+                            TelemetryWrapper.removeTopSite(false);
+                        }
+                        break;
+                    default:
+                        throw new IllegalStateException("Unhandled menu item");
+                }
 
-                    return true;
+                return true;
             });
             popupMenu.show();
 

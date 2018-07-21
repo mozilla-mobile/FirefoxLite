@@ -18,8 +18,8 @@ import android.view.ViewGroup;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
-import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.widget.FragmentListener;
 
 
