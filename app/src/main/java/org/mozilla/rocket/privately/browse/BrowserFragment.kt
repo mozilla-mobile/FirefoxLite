@@ -20,7 +20,7 @@ import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
-import org.mozilla.rocket.privately.PrivateModeViewModel
+import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Tab
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
@@ -168,7 +168,7 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     private fun registerData(activity: FragmentActivity) {
-        val shared = ViewModelProviders.of(activity).get(PrivateModeViewModel::class.java)
+        val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
 
         shared.getUrl().observe(this, Observer<String> { url -> loadUrl(url) })
     }

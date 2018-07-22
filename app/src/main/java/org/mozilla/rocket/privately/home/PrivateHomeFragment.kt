@@ -18,7 +18,7 @@ import org.mozilla.focus.utils.ThreadUtils
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
-import org.mozilla.rocket.privately.PrivateModeViewModel
+import org.mozilla.rocket.privately.SharedViewModel
 
 
 class PrivateHomeFragment : LocaleAwareFragment() {
@@ -63,7 +63,7 @@ class PrivateHomeFragment : LocaleAwareFragment() {
     private fun observeViewModel() {
         activity?.apply {
             // since the view model is of the activity, use the fragment's activity instead of the fragment itself
-            ViewModelProviders.of(this).get(PrivateModeViewModel::class.java)
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
                     .urlInputState()
                     .observe(this, Observer<Boolean> {
                         it?.apply {
