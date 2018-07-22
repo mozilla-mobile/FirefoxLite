@@ -13,7 +13,7 @@ import android.arch.lifecycle.ViewModel
 * This is also used for state sharing among PrivateModeActivity and it's fragments.
 *
 * */
-class PrivateModeViewModel : ViewModel() {
+class SharedViewModel : ViewModel() {
 
     private var isUrlInputShowing = MutableLiveData<Boolean>()
     private val url: MutableLiveData<String> = MutableLiveData()

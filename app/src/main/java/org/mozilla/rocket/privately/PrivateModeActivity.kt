@@ -28,7 +28,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         TabsSessionProvider.SessionHost {
 
     private var session: TabsSession? = null
-    private lateinit var privateModeViewModel: PrivateModeViewModel
+    private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +43,8 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     }
 
     private fun initViewModel() {
-        privateModeViewModel = ViewModelProviders.of(this).get(PrivateModeViewModel::class.java)
-        privateModeViewModel.urlInputState().value = false
+        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
+        sharedViewModel.urlInputState().value = false
     }
 
     override fun onDestroy() {
@@ -74,7 +74,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         if (cnt != 0) {
             supportFragmentManager.popBackStack()
             // normally this means we are hiding the keyboard
-            privateModeViewModel.urlInputState().value = false
+            sharedViewModel.urlInputState().value = false
 
         } else {
             val controller = getNavController()
@@ -134,21 +134,21 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
                 .addToBackStack(UrlInputFragment.FRAGMENT_TAG)
                 .commit()
 
-        privateModeViewModel.urlInputState().value = true
+        sharedViewModel.urlInputState().value = true
     }
 
     private fun dismissUrlInput() {
         if (isUrlInputDisplaying()) {
             supportFragmentManager.popBackStack()
         }
-        privateModeViewModel.urlInputState().value = false
+        sharedViewModel.urlInputState().value = false
     }
 
     private fun openUrl(payload: Any?) {
         val url = payload?.toString() ?: ""
 
         ViewModelProviders.of(this)
-                .get(PrivateModeViewModel::class.java)
+                .get(SharedViewModel::class.java)
                 .setUrl(url)
 
         dismissUrlInput()
