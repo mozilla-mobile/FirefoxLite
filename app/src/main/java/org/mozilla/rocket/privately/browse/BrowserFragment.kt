@@ -1,20 +1,25 @@
 package org.mozilla.rocket.privately.browse
 
+import android.app.DownloadManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.webkit.WebView
 import android.widget.ImageButton
 import android.widget.TextView
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
+import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.utils.UrlUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -22,11 +27,14 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Tab
+import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.DefaultTabsChromeListener
 import org.mozilla.rocket.tabs.utils.DefaultTabsViewListener
 import org.mozilla.rocket.tabs.utils.TabUtil
+import org.mozilla.rocket.tabs.web.Download
+import org.mozilla.rocket.tabs.web.DownloadCallback
 
 class BrowserFragment : LocaleAwareFragment(),
         BackKeyHandleable {
@@ -222,6 +230,16 @@ class BrowserFragment : LocaleAwareFragment(),
                 fragment.displayUrlView.text = tab.url
             }
         }
+
+        override fun onLongPress(tab: Tab, hitTarget: HitTarget?) {
+            val activity = fragment.activity
+            if (activity != null && hitTarget != null) {
+                WebContextMenu.show(true,
+                        activity,
+                        PrivateDownloadCallback(activity, tab.url),
+                        hitTarget)
+            }
+        }
     }
 
     class BrowserTabsViewListener(val fragment: BrowserFragment) : DefaultTabsViewListener() {
@@ -237,6 +255,23 @@ class BrowserFragment : LocaleAwareFragment(),
             val focus = fragment.tabsSession.focusTab ?: return
             val tabView = focus.tabView ?: return
             fragment.btnNext.isEnabled = tabView.canGoForward()
+        }
+    }
+
+    class PrivateDownloadCallback(val context: Context, val refererUrl: String) : DownloadCallback {
+        override fun onDownloadStart(download: Download) {
+            if (!TextUtils.isEmpty(download.url)) {
+                val cookie = CookieManager.getInstance().getCookie(download.getUrl());
+                val request = DownloadManager.Request(Uri.parse(download.url))
+                        .addRequestHeader("User-Agent", download.getUserAgent())
+                        .addRequestHeader("Cookie", cookie)
+                        .addRequestHeader("Referer", refererUrl)
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                        .setMimeType(download.getMimeType())
+
+                val mgr = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                mgr.enqueue(request)
+            }
         }
     }
 }
