@@ -90,7 +90,8 @@
             android:process=":private_mode"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:theme="@style/PrivateModeTheme">
+            android:theme="@style/PrivateModeTheme"
+            android:windowSoftInputMode="adjustResize">
 
 
         </activity>
