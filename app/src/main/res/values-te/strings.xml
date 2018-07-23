@@ -23,7 +23,7 @@
   <string name="preference_data_saving_block_images">బొమ్మలను నిరోధించు</string>
   <string name="preference_privacy_storage_clear_browsing_data">విహరణ చరిత్రను తుడిచేయి</string>
   <string name="preference_privacy_storage_save_downloads_to">దింపుకోళ్ళను ఇక్కడ భద్రపరుచు</string>
-  <string name="preference_default_browser">అప్రమేయ విహారిణిగా చేయి</string>
+  <string name="preference_default_browser">అప్రమేయ విహారిణిగా చేయాలా</string>
   <string name="preference_default_browser_is_setting">అమరికలను మారుస్తోంది…</string>
   <string name="preference_turbo_mode">టర్బో రీతి</string>
   <string name="preference_mozilla_telemetry">వాడుక డేటాను పంపించు</string>
@@ -194,7 +194,7 @@
   <string name="title_activity_edit_bookmark">ఇష్టాంశాన్ని సవరించు</string>
   <string name="bookmark_edit_save">భద్రపరుచు</string>
   <string name="bookmark_edit_name">పేరు</string>
-  <string name="bookmark_edit_location">ప్రాంతం</string>
+  <string name="bookmark_edit_location">చిరునామా</string>
   <string name="bookmark_edit_success">ఇష్టాంశం తాజాకరించబడింది</string>
   <string name="bookmarks_empty_view_msg">ఇష్టాంశాలేమీ లేవు</string>
   <string name="edit_bookmark">మార్చు</string>

@@ -22,7 +22,7 @@
   <string name="preference_dialog_title_search_engine">സ്വതവേയുള്ള സെര്‍ച്ച് എഞ്ചിന്‍</string>
   <string name="preference_data_saving_block_images">ചിത്രങ്ങള്‍ തടയുക</string>
   <string name="preference_privacy_storage_clear_browsing_data">ബ്രൗസിങ്ങ് ഡാറ്റ മായ്കുക</string>
-  <string name="preference_privacy_storage_save_downloads_to">ലേയ്ക്ക് ഡൌണ്‍ലോഡ് സൂക്ഷിക്കുക</string>
+  <string name="preference_privacy_storage_save_downloads_to">ഡൗൺലോഡുകൾ സൂക്ഷിക്കേണ്ട സ്ഥലം</string>
   <string name="preference_default_browser">സ്വതേയുള്ള ബ്രൗസര്‍ ആക്കുക</string>
   <string name="preference_default_browser_is_setting">സജ്ജീകരണം മാറ്റുന്നു…</string>
   <string name="preference_turbo_mode">വേഗ മോഡ്</string>
@@ -162,7 +162,7 @@
   <string name="remove">നീക്കം ചെയ്യൂ</string>
   <string name="privacy_policy_update_notification_title">ഉല്പന്നത്തിന്റെ പുതുക്കൽ നോട്ടീസ്</string>
   <string name="privacy_policy_update_notification_action">ഫയർഫോക്സ് റോക്കറ്റ് താങ്കൾക്കും മറ്റെല്ലാവർക്കും മികച്ചതാക്കാൻ, ഞങ്ങൾ ഞങ്ങളുടെ സ്വകാര്യതാനയത്തിൽ കുറച്ച് മാറ്റങ്ങൾ വരുത്തി. കൂടുതൽ അറിയാൻ അമർത്തൂ.</string>
-  <string name="rate_app_dialog_text_title">%1$s ഇഷ്ടപ്പെടന്നോ?</string>
+  <string name="rate_app_dialog_text_title">%1$s ഇഷ്ടമായോ?</string>
   <string name="rate_app_dialog_text_content">ഞങ്ങളുടെ ഉല്പന്നം തിരഞ്ഞെടുത്തതിനു നന്ദി. താങ്കളുടെ പ്രതികരണം ഞങ്ങൾക്ക് വിലപ്പെട്ടത്താണ്.</string>
   <string name="rate_app_dialog_btn_go_rate">ശരി, 5 നക്ഷത്രങ്ങൾ റേറ്റ് ചെയ്യൂ!</string>
   <string name="rate_app_notification_action_rate">5 നക്ഷത്രങ്ങൾ റേറ്റ് ചെയ്യൂ</string>
@@ -200,6 +200,6 @@
   <string name="edit_bookmark">തിരുത്തുക</string>
   <string name="private_browsing_title">സ്വകാര്യ ബ്രൗസിങ്</string>
   <string name="private_browsing_erase_message">സ്വകാര്യ ബ്രൗസിങ്ങ് നാൾവഴി വെടിപ്പാക്കുക</string>
-  <string name="private_browsing_open_action">തുറക്കു</string>
+  <string name="private_browsing_open_action">തുറക്കൂ</string>
   <string name="private_browsing_erase_done">നിങ്ങളുടെ സ്വകാര്യ ബ്രൌസിങ്ങ്\nനാള്‍വഴി മായ്ചു.</string>
 </resources>
