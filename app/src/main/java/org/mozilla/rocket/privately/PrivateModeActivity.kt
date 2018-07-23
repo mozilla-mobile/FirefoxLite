@@ -183,6 +183,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun stopPrivateMode() {
         PrivateSessionNotificationService.stop(this)
         PrivateMode.sanitize(this.applicationContext)
+        session?.focusTab?.tabView?.cleanup()
     }
 
     private fun handleIntent(intent: Intent?) {
