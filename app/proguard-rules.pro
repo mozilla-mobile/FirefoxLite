@@ -99,6 +99,10 @@ public static java.lang.String TABLENAME;
 }
 
 
+# For Fragments which be created by xml of Android Navigation Architecture Components
+-keep public class org.mozilla.rocket.** extends android.support.v4.app.Fragment
+
+
 # Integrate buddybuild leakcanary
 -dontwarn com.squareup.haha.guava.**
 -dontwarn com.squareup.haha.perflib.**
