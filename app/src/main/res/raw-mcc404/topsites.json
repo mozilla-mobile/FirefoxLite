@@ -1,0 +1,59 @@
+[
+  {
+    "id": -1,
+    "url": "https://m.youtube.com/",
+    "title": "Youtube",
+    "favicon": "ic_youtube.png",
+    "viewCount": 20
+  },
+  {
+    "id": -2,
+    "url": "https://m.facebook.com/",
+    "title": "Facebook",
+    "favicon": "ic_facebook.png",
+    "viewCount": 18
+  },
+  {
+    "id": -3,
+    "url": "https://www.amazon.in/",
+    "title": "Amazon",
+    "favicon": "ic_amazon_in.jpg",
+    "viewCount": 16
+  },
+  {
+    "id": -4,
+    "url": "https://www.wikipedia.org/",
+    "title": "Wikipedia",
+    "favicon": "ic_wikipedia.png",
+    "viewCount": 14
+  },
+  {
+    "id": -5,
+    "url": "https://www.flipkart.com",
+    "title": "Flipkart",
+    "favicon": "ic_flipkart.png",
+    "viewCount": 12
+  },
+  {
+    "id": -6,
+    "url": "https://m.indiatimes.com/",
+    "title": "Indiatimes",
+    "favicon": "ic_indiatimes.ico",
+    "viewCount": 10
+  },
+  {
+    "id": -7,
+    "url": "https://www.instagram.com/",
+    "title": "Instagram",
+    "favicon": "ic_instagram.png",
+    "viewCount": 8
+  },
+  {
+    "id": -8,
+    "url": "https://www.hotstar.com/",
+    "title": "Hotstar",
+    "favicon": "ic_hotstar.png",
+    "viewCount": 6
+  }
+
+]

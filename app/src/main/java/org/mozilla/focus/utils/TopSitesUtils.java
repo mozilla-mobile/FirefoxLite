@@ -17,14 +17,11 @@ import org.json.JSONObject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.locale.Locales;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by ylai on 2017/8/14.
@@ -56,7 +53,7 @@ public class TopSitesUtils {
     private static String loadDefaultSitesFromAssets(Context context) {
         String json = "[]";
         try {
-            InputStream is = context.getResources().openRawResource(R.raw.topsites_default);
+            InputStream is = context.getResources().openRawResource(R.raw.topsites);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
