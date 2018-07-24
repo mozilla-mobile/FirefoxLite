@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebView
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
@@ -36,6 +37,9 @@ import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
 
+private const val SITE_GLOBE = 0
+private const val SITE_LOCK = 1
+
 class BrowserFragment : LocaleAwareFragment(),
         BackKeyHandleable {
 
@@ -48,6 +52,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var tabViewSlot: ViewGroup
     private lateinit var displayUrlView: TextView
     private lateinit var progressView: AnimatedProgressBar
+    private lateinit var siteIdentity: ImageView
 
     private lateinit var btnNext: ImageButton
 
@@ -80,6 +85,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
         displayUrlView = view.findViewById(R.id.display_url)
         displayUrlView.setOnClickListener { onSearchClicked() }
+
+        siteIdentity = view.findViewById(R.id.site_identity)
 
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
@@ -249,12 +256,19 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         }
 
+        override fun onTabStarted(tab: Tab) {
+            super.onTabStarted(tab)
+            fragment.siteIdentity.setImageLevel(SITE_GLOBE)
+        }
 
         override fun onTabFinished(tab: Tab, isSecure: Boolean) {
             super.onTabFinished(tab, isSecure)
             val focus = fragment.tabsSession.focusTab ?: return
             val tabView = focus.tabView ?: return
             fragment.btnNext.isEnabled = tabView.canGoForward()
+
+            val level = if (isSecure) SITE_LOCK else SITE_GLOBE
+            fragment.siteIdentity.setImageLevel(level)
         }
     }
 
