@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">Kirimkan masukan</string>
   <string name="menu_share_with_friends">Bagikan dengan teman</string>
   <string name="share_dialog_title">Bagikan via</string>
-  <string name="text_selection_search_action">Cari di {{app_name}}</string>
+  <string name="text_selection_search_action">Cari di Firefox Rocket</string>
   <string name="about_content_body">%1$s adalah sebuah peramban cepat dan ringan buatan Mozilla. Misi kami adalah untuk mendorong internet yang sehat dan terbuka.</string>
   <string name="about_link_learn_more">Pelajari lebih lanjut</string>
   <string name="about_link_support">Dukungan</string>
@@ -162,16 +162,16 @@
   <string name="remove">Hapus</string>
   <string name="privacy_policy_update_notification_title">Pemberitahuan Pembaruan Produk</string>
   <string name="privacy_policy_update_notification_action">Untuk membuat Firefox Rocket lebih baik untuk Anda dan setiap orang, kami membuat beberapa perubahan pada kebijakan privasi kami. Ketuk untuk mempelajari lebih lanjut.</string>
-  <string name="rate_app_dialog_text_title">Suka {{app_name}}?</string>
+  <string name="rate_app_dialog_text_title">Suka %1$s?</string>
   <string name="rate_app_dialog_text_content">Terima kasih telah memilih produk kami. Masukan Anda sangat penting bagi kami.</string>
   <string name="rate_app_dialog_btn_go_rate">Tentu, beri 5 bintang!</string>
   <string name="rate_app_notification_action_rate">BERI NILAI 5 BINTANG</string>
   <string name="rate_app_dialog_btn_feedback">Tidak, kirimkan masukan.</string>
   <string name="rate_app_notification_action_feedback">MASUKAN</string>
-  <string name="share_app_dialog_text_title">Bagikan {{app_name}} dengan teman!</string>
+  <string name="share_app_dialog_text_title">Bagikan %1$s dengan teman!</string>
   <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Tangkapan layar yang canggih</string>
   <string name="share_app_dialog_btn_share">Bagikan</string>
-  <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari Mozilla! {{app_name}} {{share_app_google_play_url}}</string>
+  <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari Mozilla! %1$s %2$s</string>
   <string name="your_rights_content1">%1$s adalah perangkat lunak bebas dan sumber terbuka yang dibuat oleh Mozilla dan kontributor lainnya.</string>
   <string name="your_rights_content2"><![CDATA["%1$s tersedia untuk Anda di bawah persyaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Lisensi Publik Mozilla</a>" dan lisensi sumber terbuka lainnya."]]></string>
   <string name="your_rights_content3"><![CDATA["Anda tidak diberi izin atau lisensi apa pun atas merek dagang Mozilla Foundation atau pihak mana pun, termasuk nama atau logo Mozilla, Firefox, atau %1$s. Informasi lebih lanjut bisa ditemukan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di sini</a>.]]></string>
