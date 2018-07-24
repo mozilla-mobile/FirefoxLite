@@ -21,6 +21,7 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.UrlUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -191,6 +192,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private fun onModeClicked() {
         val listener = activity as FragmentListener
         listener.onNotified(BrowserFragment@ this, TYPE.TOGGLE_PRIVATE_MODE, null)
+        TelemetryWrapper.togglePrivateMode(false)
     }
 
     private fun onNextClicked() {

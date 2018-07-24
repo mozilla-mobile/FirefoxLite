@@ -92,6 +92,7 @@ public final class TelemetryWrapper {
     }
 
     static class Object {
+        public static final String PRIVATE_MODE = "private_mode";
         static final String PANEL = "panel";
         static final String TOOLBAR = "toolbar";
         static final String HOME = "home";
@@ -576,6 +577,10 @@ public final class TelemetryWrapper {
         telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.getIdentifier());
     }
 
+    public static void togglePrivateMode(boolean enter) {
+        new EventBuilder(Category.ACTION, Method.CHANGE, Object.PRIVATE_MODE, enter ? Value.ENTER : Value.EXIT).queue();
+    }
+
     public static void searchSuggestionLongClick() {
         new EventBuilder(Category.ACTION, Method.LONG_PRESS, Object.SEARCH_SUGGESTION).queue();
     }
@@ -770,6 +775,12 @@ public final class TelemetryWrapper {
     public static void resetThemeToDefault() {
         new EventBuilder(Category.ACTION, Method.RESET, Object.THEMETOY)
                 .extra(Extra.TO, Extra_Value.DEFAULT)
+                .queue();
+    }
+
+    public static void erasePrivateModeNotification() {
+        new EventBuilder(Category.ACTION, Method.CLEAR, Object.PRIVATE_MODE)
+                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue();
     }
 
