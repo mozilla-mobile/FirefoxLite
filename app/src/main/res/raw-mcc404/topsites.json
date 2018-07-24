@@ -17,7 +17,7 @@
     "id": -3,
     "url": "https://www.amazon.in/",
     "title": "Amazon",
-    "favicon": "ic_amazon_in.jpg",
+    "favicon": "ic_amazon_in.png",
     "viewCount": 16
   },
   {
@@ -38,7 +38,7 @@
     "id": -6,
     "url": "https://m.indiatimes.com/",
     "title": "Indiatimes",
-    "favicon": "ic_indiatimes.ico",
+    "favicon": "ic_indiatimes.png",
     "viewCount": 10
   },
   {
