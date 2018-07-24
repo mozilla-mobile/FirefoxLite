@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">提供反馈</string>
   <string name="menu_share_with_friends">与朋友分享</string>
   <string name="share_dialog_title">分享</string>
-  <string name="text_selection_search_action">在 Firefox Rocket 中搜索</string>
+  <string name="text_selection_search_action">在 {{app_name}} 中搜索</string>
   <string name="about_content_body">%1$s 是由 Mozilla 出品的快速而轻量的浏览器。我们以营造健康、开放的互联网为己任。</string>
   <string name="about_link_learn_more">详细了解</string>
   <string name="about_link_support">技术支持</string>
@@ -162,16 +162,16 @@
   <string name="remove">移除</string>
   <string name="privacy_policy_update_notification_title">产品更新通知</string>
   <string name="privacy_policy_update_notification_action">为了让 Firefox Rocket 更适合您和每个人，我们对隐私政策进行了一些修改。点击以了解更多信息。</string>
-  <string name="rate_app_dialog_text_title">喜欢 %1$s 吗？</string>
+  <string name="rate_app_dialog_text_title">喜欢 {{app_name}} 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
   <string name="rate_app_dialog_btn_go_rate">是的，5 星好评！</string>
   <string name="rate_app_notification_action_rate">5 星好评</string>
   <string name="rate_app_dialog_btn_feedback">不，发送反馈。</string>
   <string name="rate_app_notification_action_feedback">反馈</string>
-  <string name="share_app_dialog_text_title">与朋友分享 %1$s！</string>
+  <string name="share_app_dialog_text_title">与朋友分享 {{app_name}}！</string>
   <string name="share_app_dialog_text_content">- 快速且轻量级\n- 节约流量\n- 强大的截图功能</string>
   <string name="share_app_dialog_btn_share">分享</string>
-  <string name="share_app_promotion_text">嘿，来试试出自 Mozilla 的超快轻量级浏览器吧！%1$s %2$s</string>
+  <string name="share_app_promotion_text">嘿，来试试出自 Mozilla 的超快轻量级浏览器吧！{{app_name}} {{share_app_google_play_url}}</string>
   <string name="your_rights_content1">%1$s 是由 Mozilla 和其他贡献者提供的自由且开源软件。</string>
   <string name="your_rights_content2"><![CDATA["%1$s 根据 "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Mozilla &#20844;&#20849;&#35768;&#21487;&#35777;</a>以及其他开源许可证向您提供。]]></string>
   <string name="your_rights_content3"><![CDATA[您没有得到 Mozilla 基金会或任何其他方面（包括 Mozilla、Firefox 或 %1$s 的名称或标志）的商标授权。更多信息参见<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#27492;&#22788;</a>。]]></string>

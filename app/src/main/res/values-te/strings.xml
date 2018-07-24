@@ -8,9 +8,9 @@
   <string name="menu_help">సహాయం</string>
   <string name="menu_rights">మీ హక్కులు</string>
   <string name="menu_give_feedback">ప్రతిస్పందనను తెలియజేయండి</string>
-  <string name="menu_share_with_friends">మిత్రులతో పంచుకో</string>
+  <string name="menu_share_with_friends">మిత్రులతో పంచుకోండి</string>
   <string name="share_dialog_title">దీనిద్వారా పంచుకోండి</string>
-  <string name="text_selection_search_action">Firefox Rocket‌తో వెతుకు</string>
+  <string name="text_selection_search_action">{{app_name}}‌తో వెతుకు</string>
   <string name="about_content_body">%1$s అనేది మొజిల్లా వారు తయారుచేసిన వేగవంతమైన, తేలికైన విహారిణి. ఆరోగ్యకరమైన, స్వేచ్ఛాయుతమైన అంతర్జాలాన్ని వృద్ధిచేయడం మా ఆశయం.</string>
   <string name="about_link_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="about_link_support">తోడ్పాటు</string>
@@ -27,7 +27,7 @@
   <string name="preference_default_browser_is_setting">అమరికలను మారుస్తోంది…</string>
   <string name="preference_turbo_mode">టర్బో రీతి</string>
   <string name="preference_mozilla_telemetry">వాడుక డేటాను పంపించు</string>
-  <string name="preference_mozilla_telemetry_summary">అందరికీ %1$s‌ని అందించడానికి మెరుగుపరచడానికి కావలసినంత తక్కువ మాత్రమే సేకరించడానికి మొజిల్లా ప్రయత్నిస్తుంది.</string>
+  <string name="preference_mozilla_telemetry_summary">అందరికీ %1$s‌ని మెరుగ్గా అందించడానికి కావలసినంత తక్కువ సమాచారాన్ని మాత్రమే సేకరించడానికి మొజిల్లా ప్రయత్నిస్తుంది.</string>
   <string name="preference_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="preference_about">%1$s గురించి</string>
   <string name="content_description_clear_input">ఇన్‌పుట్ తుడిచివేయి</string>
@@ -162,16 +162,16 @@
   <string name="remove">తొలగించు</string>
   <string name="privacy_policy_update_notification_title">ఉత్పత్తి తాజాకరణ గమనిక</string>
   <string name="privacy_policy_update_notification_action">Firefox Rocket‌ని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. తెలుసుకోడానికి తాకండి.</string>
-  <string name="rate_app_dialog_text_title">%1$s నచ్చిందా?</string>
+  <string name="rate_app_dialog_text_title">{{app_name}} నచ్చిందా?</string>
   <string name="rate_app_dialog_text_content">మా ఉత్పాదనను ఎంచుకున్నందుకు కృతజ్ఞతలు. మీ ప్రతిస్పందన మాకు చాలా ముఖ్యం.</string>
   <string name="rate_app_dialog_btn_go_rate">అవును, 5 చుక్కలు ఇవ్వు!</string>
   <string name="rate_app_notification_action_rate">5 చుక్కలు ఇవ్వండి</string>
   <string name="rate_app_dialog_btn_feedback">లేదు, ప్రతిస్పందనను పంపించు.</string>
   <string name="rate_app_notification_action_feedback">ప్రతిస్పందన</string>
-  <string name="share_app_dialog_text_title">%1$s‌ను స్నేహితులతో పంచుకోండి!</string>
+  <string name="share_app_dialog_text_title">{{app_name}}‌ను స్నేహితులతో పంచుకోండి!</string>
   <string name="share_app_dialog_text_content">- వేగవంతం, తేలికైనది\n- డేటా ఆదా\n- శక్తివంతమైన తెరపట్లు</string>
   <string name="share_app_dialog_btn_share">పంచుకో</string>
-  <string name="share_app_promotion_text">హలో, మొజిల్లా వారి ఈ వేగవంతమైన, తేలికైన విహారిణిని చూడండి. %1$s %2$s</string>
+  <string name="share_app_promotion_text">హలో, మొజిల్లా వారి ఈ వేగవంతమైన, తేలికైన విహారిణిని చూడండి. {{app_name}} {{share_app_google_play_url}}</string>
   <string name="your_rights_content1">%1$s అనేది మొజిల్లా, ఇతర తోడ్పాటుదార్లు తయారుచేసిన స్వేచ్ఛా, ఓపెన్ సోర్సు సాఫ్ట్‌వేరు.</string>
   <string name="your_rights_content2"><![CDATA["%1$s మీకు "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3118;&#3146;&#3100;&#3135;&#3122;&#3149;&#3122;&#3134; &#3114;&#3116;&#3149;&#3122;&#3135;&#3093;&#3149; &#3122;&#3144;&#3128;&#3142;&#3112;&#3149;&#3128;&#3137;</a>, ఇతర ఓపెన్ సోర్సు లైసెన్సుల నిబంధనల క్రింద లభిస్తుంది.]]></string>
   <string name="your_rights_content3"><![CDATA["మొజిల్లా ఫౌండేషను, మొజిల్లా, Firefox లేదా %1$s లేదా మరే ఇతర పక్షాల ట్రేడుమార్కులపై హక్కులు గానీ లైసెన్సు గానీ మీకు జారీచేయలేదు. అదనపు సమాచారాన్ని "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3079;&#3093;&#3149;&#3093;&#3105;</a>" చూడవచ్చు."]]></string>
