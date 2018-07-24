@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
@@ -208,6 +209,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun handleIntent(intent: Intent?): Boolean {
 
         if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
+            TelemetryWrapper.erasePrivateModeNotification()
             stopPrivateMode()
             finishAndRemoveTask()
             return true

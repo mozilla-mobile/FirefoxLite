@@ -202,6 +202,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 break;
 
             case R.id.btn_private_browsing:
+                TelemetryWrapper.togglePrivateMode(true);
                 startActivity(new Intent(getContext(), PrivateModeActivity.class));
                 getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 break;
