@@ -28,6 +28,7 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Tab
+import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
@@ -49,6 +50,8 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var chromeListener: BrowserTabsChromeListener
     private lateinit var viewListener: BrowserTabsViewListener
 
+    private lateinit var browserContainer: ViewGroup
+    private lateinit var videoContainer: ViewGroup
     private lateinit var tabViewSlot: ViewGroup
     private lateinit var displayUrlView: TextView
     private lateinit var progressView: AnimatedProgressBar
@@ -88,6 +91,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
         siteIdentity = view.findViewById(R.id.site_identity)
 
+        browserContainer = view.findViewById(R.id.browser_container)
+        videoContainer = view.findViewById(R.id.video_container)
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
 
@@ -222,6 +227,9 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     class BrowserTabsChromeListener(val fragment: BrowserFragment) : DefaultTabsChromeListener() {
+
+        var callback: FullscreenCallback? = null
+
         override fun onTabAdded(tab: Tab, arguments: Bundle?) {
             super.onTabAdded(tab, arguments)
             fragment.tabViewSlot.addView(tab.tabView!!.view)
@@ -246,6 +254,34 @@ class BrowserFragment : LocaleAwareFragment(),
                         PrivateDownloadCallback(activity, tab.url),
                         hitTarget)
             }
+        }
+
+        override fun onEnterFullScreen(tab: Tab, callback: FullscreenCallback, fullscreenContent: View?) {
+            with(fragment) {
+                browserContainer.visibility = View.INVISIBLE
+                videoContainer.visibility = View.VISIBLE
+                videoContainer.addView(fullscreenContent)
+            }
+        }
+
+        override fun onExitFullScreen(tab: Tab) {
+            with(fragment) {
+                browserContainer.visibility = View.VISIBLE
+                videoContainer.visibility = View.INVISIBLE
+                videoContainer.removeAllViews()
+            }
+
+            callback?.let { it.fullScreenExited() }
+            callback = null
+
+            // WebView gets focus, but unable to open the keyboard after exit Fullscreen for Android 7.0+
+            // We guess some component in WebView might lock focus
+            // So when user touches the input text box on Webview, it will not trigger to open the keyboard
+            // It may be a WebView bug.
+            // The workaround is clearing WebView focus
+            // The WebView will be normal when it gets focus again.
+            // If android change behavior after, can remove this.
+            tab.tabView?.let { if (it is WebView) it.clearFocus() }
         }
     }
 
