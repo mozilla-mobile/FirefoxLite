@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ</string>
   <string name="menu_share_with_friends">ಸ್ನೇಹಿತರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ</string>
   <string name="share_dialog_title">ಇದರ ಮೂಲಕ ಹಂಚು</string>
-  <string name="text_selection_search_action">ಇದರಲ್ಲಿ ಹುಡುಕು {{app_name}}</string>
+  <string name="text_selection_search_action">ಇದರಲ್ಲಿ ಹುಡುಕು Firefox Rocket</string>
   <string name="about_content_body">%1$s ಅತ್ಯಂತ ವೇಗವಾದ ಮತ್ತು ಹಗುರ ಬ್ರೌಸರ್ ಅನ್ನು Mozilla ಉತ್ಪಾದಿಸಿದೆ. ನಮ್ಮ ಧ್ಯೇಯ ಆರೋಗ್ಯಕರ, ತೆರೆದ ಇಂಟರ್ನೆಟ್ ಅನ್ನು ಬೆಳೆಸುವುದು.</string>
   <string name="about_link_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
   <string name="about_link_support">ಬೆಂಬಲ</string>
@@ -162,16 +162,16 @@
   <string name="remove">ತೆಗೆದು ಹಾಕು</string>
   <string name="privacy_policy_update_notification_title">ಉತ್ಪನ್ನದ ಪರಿಷ್ಕರಣೆಯ ಸೂಚನೆ</string>
   <string name="privacy_policy_update_notification_action">ಫೈರ್‍ಫಾಕ್ಸ್ ರಾಕೆಟ್ ಅನ್ನು ನಿಮಗೆ ಮತ್ತು ಎಲ್ಲರಿಗಾಗಿ ಉತ್ತಮಗೊಳಿಸಲು, ನಾವು ಖಾಸಗಿತನದ ನೀತಿಗಳಲ್ಲಿ ಕೆಲವೊಂದು ಬದಲಾವಣೆಗಳನ್ನು ತಂದಿದ್ದೇವೆ. ಹೆಚ್ಚಿಗೆ ತಿಳಿಯಲು ಮೆಲ್ಲ ತಟ್ಟಿ.</string>
-  <string name="rate_app_dialog_text_title">{{app_name}} ಇಷ್ಟವೇ?</string>
+  <string name="rate_app_dialog_text_title">%1$s ಇಷ್ಟವೇ?</string>
   <string name="rate_app_dialog_text_content">ನಮ್ಮ ಉತ್ಪನ್ನವನ್ನು ಆಯ್ಕೆ ಮಾಡಿಕೊಂಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆ ನಮಗೆ ತುಂಬಾ ಮುಖ್ಯವಾಗುತ್ತದೆ.</string>
   <string name="rate_app_dialog_btn_go_rate">ಹೌದು, 5 ನಕ್ಷತ್ರಗಳ ಬೆಲೆಕಟ್ಟಿ!</string>
   <string name="rate_app_notification_action_rate">ಬೆಲೆ 5 ನಕ್ಷತ್ರಗಳು</string>
   <string name="rate_app_dialog_btn_feedback">ಇಲ್ಲ, ಅಭಿಪ್ರಾಯವನ್ನು ಕಳುಹಿಸಿ.</string>
   <string name="rate_app_notification_action_feedback">ಪ್ರತಿಕ್ರಿಯ</string>
-  <string name="share_app_dialog_text_title">ನಿಮ್ಮ ಗೆಳೆಯರೊಂದಿಗೆ {{app_name}} ಅನ್ನು ಹಂಚಿಕೊಳ್ಳಿ!</string>
+  <string name="share_app_dialog_text_title">ನಿಮ್ಮ ಗೆಳೆಯರೊಂದಿಗೆ %1$s ಅನ್ನು ಹಂಚಿಕೊಳ್ಳಿ!</string>
   <string name="share_app_dialog_text_content">- ವೇಗ ಮತ್ತು ಹಗುರವಾದದ್ದು\n- ದತ್ತಾಂಶ ಉಳಿಸುವಂತದ್ದು\n- ಶಕ್ತಿಯುತವಾದ ತೆರೆಚಿತ್ರಗಳು</string>
   <string name="share_app_dialog_btn_share">ಹಂಚು</string>
-  <string name="share_app_promotion_text">ಹೇ, ಮೊಝಿಲ್ಲಾದ ವೇಗದ ಮತ್ತು ಹಗುರವಾದ ಬ್ರೌಸರ್ ಒಮ್ಮೆ ನೋಡಿ. {{app_name}} {{share_app_google_play_url}}</string>
+  <string name="share_app_promotion_text">ಹೇ, ಮೊಝಿಲ್ಲಾದ ವೇಗದ ಮತ್ತು ಹಗುರವಾದ ಬ್ರೌಸರ್ ಒಮ್ಮೆ ನೋಡಿ. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s ಒಂದು ಮುಕ್ತ ಹಾಗೂ ಸ್ವತಂತ್ರ ತಂತ್ರಾಂಶವಾಗಿದ್ದು ಮೋಝಿಲ್ಲಾ ಮತ್ತು ಇತರೆ ಕೊಡುಗೆದಾರರಿಂದ ಮಾಡಲ್ಪಟ್ಟಿದೆ.</string>
   <string name="your_rights_content2"><![CDATA["%1$s ಅನ್ನು ನಿಮಗಾಗಿ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3246;&#3274;&#3229;&#3263;&#3250;&#3277;&#3250;&#3262; &#3256;&#3262;&#3248;&#3277;&#3253;&#3228;&#3240;&#3263;&#3221; &#3242;&#3248;&#3253;&#3262;&#3240;&#3223;&#3263;</a>" ಮತ್ತು ಇತರೆ ಮುಕ್ತ ತಂತ್ರಾಂಶ ಪರವಾನಗಿಗಳ ಕರಾರುಗಳೊಂದಿಗೆ ಲಭ್ಯವಾಗಿಸಲಾಗಿದೆ."]]></string>
   <string name="your_rights_content3"><![CDATA["ನಿಮಗೆ ಮೊಝಿಲ್ಲಾ ಫೌಂಡೇಷನ್ ಅಥವಾ ಯಾವುದೇ ಪಕ್ಷದ, ಮೊಝಿಲ್ಲಾ, ಫೈರ್‍ಫಾಕ್ಸ್ ಅಥವಾ %1$s ಹೆಸರುಗಳು ಅಥವಾ ಲೋಗೋಗಳ ಯಾವುದೇ ಹಕ್ಕುಗಳು ಅಥವಾ ಪರವಾನಗಿಯನ್ನು ನೀಡಲಾಗಿಲ್ಲ. ಹೆಚ್ಚಿನ ಮಾಹಿತಿಯನ್ನು "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3207;&#3250;&#3277;&#3250;&#3263;</a>" ಕಾಣಬಹುದಾಗಿದೆ."]]></string>
