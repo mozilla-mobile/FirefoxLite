@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">提供反馈</string>
   <string name="menu_share_with_friends">与朋友分享</string>
   <string name="share_dialog_title">分享</string>
-  <string name="text_selection_search_action">在 %1$s 中搜索</string>
+  <string name="text_selection_search_action">在 Firefox Rocket 中搜索</string>
   <string name="about_content_body">%1$s 是由 Mozilla 出品的快速而轻量的浏览器。我们以营造健康、开放的互联网为己任。</string>
   <string name="about_link_learn_more">详细了解</string>
   <string name="about_link_support">技术支持</string>

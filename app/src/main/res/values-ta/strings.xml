@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">கருத்து தெரிவிக்கவும்</string>
   <string name="menu_share_with_friends">நண்பர்களுடன் பகிரவும்</string>
   <string name="share_dialog_title">இதன்வழியாக பகிரவும்</string>
-  <string name="text_selection_search_action">%1$s செயலியில் தேடவும்</string>
+  <string name="text_selection_search_action">Firefox Rocket செயலியில் தேடவும்</string>
   <string name="about_content_body">%1$s மொசில்லாவால் தயாரிக்கப்பட்ட ஒரு விரைவான இலேசான உலாவி. ஆரோக்கியமான திறந்த இணையத்தை கிடைக்கச் செய்வதே எங்களின் நோக்கம்.</string>
   <string name="about_link_learn_more">மேலும் அறிய</string>
   <string name="about_link_support">ஆதரவு</string>

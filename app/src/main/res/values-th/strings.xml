@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">เสนอข้อคิดเห็น</string>
   <string name="menu_share_with_friends">แบ่งปันกับเพื่อน</string>
   <string name="share_dialog_title">แบ่งปันผ่าน</string>
-  <string name="text_selection_search_action">ค้นหาใน %1$s</string>
+  <string name="text_selection_search_action">ค้นหาใน Firefox Rocket</string>
   <string name="about_content_body">%1$s เป็นเว็บเบราว์เซอร์ที่เร็วและเบาสร้างโดย Mozilla ภารกิจของเราคือทำให้อินเทอร์เน็ตเปิดกว้าง เร็วขึ้น สุขภาพดีขึ้น</string>
   <string name="about_link_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="about_link_support">การสนับสนุน</string>
