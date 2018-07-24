@@ -71,7 +71,14 @@
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
 
-        <include layout="@layout/fragment_private_browser_item_menu_button" />
-
     </FrameLayout>
+
+    <include layout="@layout/fragment_private_browser_item_menu_button" />
+
+    <FrameLayout
+        android:id="@+id/video_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:visibility="gone" />
 </FrameLayout>
