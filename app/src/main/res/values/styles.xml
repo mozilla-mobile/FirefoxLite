@@ -16,19 +16,19 @@
 
         <item name="popupMenuStyle">@style/PopupMenu</item>
 
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme" parent="AppThemeBase">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-
+    <style name="NormalModeTheme.Base" parent="AppThemeBase">
         <item name="colorProgressBarStartGradient">#00DCFC</item>
         <item name="colorProgressBarEndGradient">#00DCFC</item>
         <item name="toolBarAppearance">@style/ToolBarStyle</item>
         <item name="siteIdentityAppearance">@style/SiteIdentityStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlStyle</item>
     </style>
+    <style name="NormalModeTheme" parent="NormalModeTheme.Base"/>
 
-    <style name="PrivateModeTheme" parent="AppTheme">
+    <style name="PrivateModeTheme.Base" parent="AppThemeBase">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
 
@@ -38,6 +38,10 @@
         <item name="siteIdentityAppearance">@style/SiteIdentityPrivateStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlPrivateStyle</item>
     </style>
+    <style name="PrivateModeTheme" parent="PrivateModeTheme.Base"/>
+
+    <!-- Compatibility for other styles, let them keep using AppTheme as parent -->
+    <style name="AppTheme" parent="NormalModeTheme"/>
 
     <style name="BottomSheetTheme" parent="AppTheme">
         <item name="android:backgroundDimEnabled">true</item>
