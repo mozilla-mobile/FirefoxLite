@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">Magbigay ng feedback</string>
   <string name="menu_share_with_friends">Ibahagi sa mga kaibigan</string>
   <string name="share_dialog_title">Ibahagi sa pamamagitan ng</string>
-  <string name="text_selection_search_action">Hanapin sa Firefox Rocket</string>
+  <string name="text_selection_search_action">Hanapin sa {{app_name}}</string>
   <string name="about_content_body">%1$s ay isang mabilis at magaan na browser na gawa ng Mozilla. Ang aming misyon ay mapanatiling malusog at bukas para sa lahat ang internet.</string>
   <string name="about_link_learn_more">Detalye</string>
   <string name="about_link_support">Tulong</string>
@@ -162,16 +162,16 @@
   <string name="remove">Alisin</string>
   <string name="privacy_policy_update_notification_title">Abiso sa Update ng Produkto</string>
   <string name="privacy_policy_update_notification_action">Upang mapaigi ng lubusan ang Firefox Rocket, may mga pagbabagong ginawa sa abisong pang-privacy. Mag-tap dito para malaman kung anu-anong pagbabago ang mga ito.</string>
-  <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
+  <string name="rate_app_dialog_text_title">Naibigan mo ba ang {{app_name}}?</string>
   <string name="rate_app_dialog_text_content">Maraming salamat sa iyong pagtangkilik sa aming produkto. Ang iyong feedback ay napakahalaga sa amin.</string>
   <string name="rate_app_dialog_btn_go_rate">Oo, bigyan ng 5 stars!</string>
   <string name="rate_app_notification_action_rate">BIGYAN NG 5 STARS</string>
   <string name="rate_app_dialog_btn_feedback">Hindi, magpadala ng feedback.</string>
   <string name="rate_app_notification_action_feedback">FEEDBACK</string>
-  <string name="share_app_dialog_text_title">Ibahagi ang %1$s sa iyong mga kaibigan!</string>
+  <string name="share_app_dialog_text_title">Ibahagi ang {{app_name}} sa iyong mga kaibigan!</string>
   <string name="share_app_dialog_text_content">- Mabilis at magaan\n- Matipid sa data\n- Makapangyarihang screenshots</string>
   <string name="share_app_dialog_btn_share">Ibahagi</string>
-  <string name="share_app_promotion_text">Hoy, tingnan itong mabilis at magaan na browser mula sa Mozilla. %1$s %2$s</string>
+  <string name="share_app_promotion_text">Hoy, tingnan itong mabilis at magaan na browser mula sa Mozilla. {{app_name}} {{share_app_google_play_url}}</string>
   <string name="your_rights_content1">%1$s ay libre at open source na software na gawa ng Mozilla at ng iba pang mga taga-ambag.</string>
   <string name="your_rights_content2"><![CDATA["%1$s ay gawa mula sa mga panuntunan ng "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Mozilla Public License</a>" at iba pang open source na mga lisensya."]]></string>
   <string name="your_rights_content3"><![CDATA["You are not granted any rights or licenses to the trademarks of the Mozilla Foundation or any party, including the Mozilla, Firefox or %1$s names or logos. Additional information may be found "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">here</a>.]]></string>

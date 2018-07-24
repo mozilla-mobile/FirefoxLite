@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">เสนอข้อคิดเห็น</string>
   <string name="menu_share_with_friends">แบ่งปันกับเพื่อน</string>
   <string name="share_dialog_title">แบ่งปันผ่าน</string>
-  <string name="text_selection_search_action">ค้นหาใน Firefox Rocket</string>
+  <string name="text_selection_search_action">ค้นหาใน {{app_name}}</string>
   <string name="about_content_body">%1$s เป็นเว็บเบราว์เซอร์ที่เร็วและเบาสร้างโดย Mozilla ภารกิจของเราคือทำให้อินเทอร์เน็ตเปิดกว้าง เร็วขึ้น สุขภาพดีขึ้น</string>
   <string name="about_link_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="about_link_support">การสนับสนุน</string>
@@ -162,16 +162,16 @@
   <string name="remove">เอาออก</string>
   <string name="privacy_policy_update_notification_title">การแจ้งอัปเดตผลิตภัณฑ์</string>
   <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Rocket ดีขึ้นสำหรับคุณและคนอื่นๆ เราเปลี่ยนแปลงนโยบายความเป็นส่วนตัวของเรา แตะเพื่อดูเพิ่ม</string>
-  <string name="rate_app_dialog_text_title">รัก %1$s?</string>
+  <string name="rate_app_dialog_text_title">รัก {{app_name}}?</string>
   <string name="rate_app_dialog_text_content">ขอขอบคุณที่เลือกผลิตภัณฑ์ของเรา คำติชมของคุณเป็นสิ่งสำคัญสำหรับเรา</string>
   <string name="rate_app_dialog_btn_go_rate">ใช่ ให้คะแนน 5 ดาว!</string>
   <string name="rate_app_notification_action_rate">ให้คะแนน 5 ดาว</string>
   <string name="rate_app_dialog_btn_feedback">ไม่ ส่งข้อคิดเห็น</string>
   <string name="rate_app_notification_action_feedback">ข้อคิดเห็น</string>
-  <string name="share_app_dialog_text_title">แบ่งปัน %1$s กับเพื่อน!</string>
+  <string name="share_app_dialog_text_title">แบ่งปัน {{app_name}} กับเพื่อน!</string>
   <string name="share_app_dialog_text_content">- เร็วและเบา\n- ประหยัดการรับส่งข้อมูล\n- ตัวจับภาพหน้าจอที่ทรงพลัง</string>
   <string name="share_app_dialog_btn_share">แบ่งปัน</string>
-  <string name="share_app_promotion_text">นี่แน่ะ! ลองดูเว็บเบราว์เซอร์ %1$s ที่เร็วและเบาจาก Mozilla %2$s</string>
+  <string name="share_app_promotion_text">นี่แน่ะ! ลองดูเว็บเบราว์เซอร์ {{app_name}} ที่เร็วและเบาจาก Mozilla {{share_app_google_play_url}}</string>
   <string name="your_rights_content1">%1$s เป็นซอฟต์แวร์เสรีและเปิดต้นฉบับที่สร้างขึ้นโดย Mozilla และผู้มีส่วนร่วมอื่น ๆ</string>
   <string name="your_rights_content2"><![CDATA["%1$s ให้คุณใช้ภายใต้เงื่อนไขของ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Mozilla Public License</a>" และสัญญาอนุญาตการเปิดต้นฉบับอื่น ๆ"]]></string>
   <string name="your_rights_content3"><![CDATA["คุณไม่ได้รับสิทธิหรือสัญญาอนุญาตใด ๆ ในเครื่องหมายการค้าของมูลนิธิ Mozilla หรือบุคคลใด ๆ รวมทั้งชื่อหรือโลโก้ Mozilla, Firefox หรือ %1$s ข้อมูลเพิ่มเติมอาจพบได้ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3607;&#3637;&#3656;&#3609;&#3637;&#3656;</a>]]></string>
