@@ -1,9 +1,22 @@
 import org.mozilla.rocket.GenerateLocaleTask
+import groovy.transform.Field
 // -------------------------------------------------------------------------------------------------
 // L10N: Generate list of locales
 // Focus provides its own (Android independent) locale switcher. That switcher requires a list
 // of locale codes. We generate that list here to avoid having to manually maintain a list of locales:
 // -------------------------------------------------------------------------------------------------
+
+@Field Closure removeR = {
+    if (it.length() > 3 && it.contains("-r")) {
+        // Android resource dirs add an "r" prefix to the region - we need to strip that for java usage
+        // Add 1 to have the index of the r, without the dash
+        def regionPrefixPosition = it.indexOf("-r") + 1
+
+        return it.substring(0, regionPrefixPosition) + it.substring(regionPrefixPosition + 1)
+    } else {
+        return it
+    }
+}
 
 def getEnabledLocales() {
     def resDir = file('src/main/res')
@@ -25,16 +38,9 @@ def getEnabledLocales() {
     }.collect {
         return it.substring("values-".length())
     }.collect {
-        if (it.length() > 3 && it.contains("-r")) {
-            // Android resource dirs add an "r" prefix to the region - we need to strip that for java usage
-            // Add 1 to have the index of the r, without the dash
-            def regionPrefixPosition = it.indexOf("-r") + 1
-
-            return it.substring(0, regionPrefixPosition) + it.substring(regionPrefixPosition + 1)
-        } else {
-            return it
-        }
-    }.collect {
+        removeR
+    }
+    .collect {
         return '"' + it + '"'
     }
 
@@ -55,7 +61,9 @@ def addQuotes = { i -> '"' + i + '"'}
 
 task generateFocusLocaleList(type: GenerateLocaleTask) {
     directory = getGenerateDirectory("focus")
-    locales = Localization.ENABLED_LOCALE.toList().stream().map(addQuotes).toArray()
+    def keptLocaleList = Localization.KEPT_LOCALE.toList()
+    keptLocaleList.add("en-US")
+    locales = keptLocaleList.stream().map(addQuotes).map(removeR).toArray()
 }
 
 clean.doLast {
