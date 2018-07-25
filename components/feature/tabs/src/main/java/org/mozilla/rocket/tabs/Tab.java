@@ -35,6 +35,7 @@ public class Tab {
     private TabViewClient tabViewClient = sDefViewClient;
     private TabChromeClient tabChromeClient = sDefChromeClient;
     private DownloadCallback downloadCallback;
+    private TabView.FindListener findListener;
 
     public Tab() {
         this(new TabModel(UUID.randomUUID().toString(), "", "", ""));
@@ -116,6 +117,13 @@ public class Tab {
         downloadCallback = callback;
     }
 
+    void setFindListener(TabView.FindListener findListener) {
+        this.findListener = findListener;
+        if (tabView != null) {
+            tabView.setFindListener(findListener);
+        }
+    }
+
     public void setContentBlockingEnabled(final boolean enabled) {
         if (tabView != null) {
             tabView.setContentBlockingEnabled(enabled);
@@ -151,6 +159,7 @@ public class Tab {
 
     /* package */ void destroy() {
         setDownloadCallback(null);
+        setFindListener(null);
         setTabViewClient(null);
 
         if (tabView != null) {
@@ -202,6 +211,7 @@ public class Tab {
             tabView.setViewClient(tabViewClient);
             tabView.setChromeClient(tabChromeClient);
             tabView.setDownloadCallback(downloadCallback);
+            tabView.setFindListener(findListener);
 
             if (tabModel.getWebViewState() != null) {
                 tabView.restoreViewState(tabModel.getWebViewState());

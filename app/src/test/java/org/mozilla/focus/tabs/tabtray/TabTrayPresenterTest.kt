@@ -134,6 +134,10 @@ class TabTrayPresenterTest {
 
         }
 
+        override fun setFindListener(callback: TabView.FindListener?) {
+
+        }
+
         override fun onPause() {
 
         }
