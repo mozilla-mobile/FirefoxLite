@@ -176,7 +176,7 @@ public class DialogUtils {
         final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_RATE_CLICK, openRocket,
                 PendingIntent.FLAG_ONE_SHOT);
         final String string = context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)) + "\uD83D\uDE00";
-        final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
+        final NotificationCompat.Builder builder = NotificationUtil.importantBuilder(context, openRocketPending)
                 .setContentText(string);
 
         // Send this intent in Broadcast receiver so we can cancel the notification there.
@@ -206,7 +206,7 @@ public class DialogUtils {
                 PendingIntent.FLAG_ONE_SHOT);
 
         final String title = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A";
-        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
+        NotificationCompat.Builder builder = NotificationUtil.importantBuilder(context, openRocketPending)
                 .setContentTitle(title);
 
         // Show notification
@@ -220,7 +220,7 @@ public class DialogUtils {
         final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_PRIVACY_POLICY_CLICK, privacyPolicyUpdateNotice,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(context, openRocketPending)
+        NotificationCompat.Builder builder = NotificationUtil.importantBuilder(context, openRocketPending)
                 .setContentTitle(context.getString(R.string.privacy_policy_update_notification_title))
                 .setContentText(context.getString(R.string.privacy_policy_update_notification_action))
                 .setStyle(new NotificationCompat.BigTextStyle()

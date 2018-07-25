@@ -169,14 +169,13 @@ public class ComponentToggleService extends Service {
 
     private void startToForeground() {
         final NotificationCompat.Builder builder =
-                NotificationUtil.generateNotificationBuilder(getApplicationContext());
+                NotificationUtil.importantBuilder(getApplicationContext(), buildIntent());
 
         final Notification notification = builder
                 .setContentTitle(getString(R.string.setting_default_browser_notification_title))
                 .setContentText(getString(R.string.setting_default_browser_notification_text))
                 .setAutoCancel(false)
                 .setOngoing(true)
-                .setContentIntent(buildIntent())
                 .build();
 
         startForeground(FG_NOTIFICATION_ID, notification);
@@ -186,12 +185,11 @@ public class ComponentToggleService extends Service {
         // to post a new notification so people can go to SettingsActivity easily
         // this notification will be removed by SettingsActivity if it is in foreground
         final NotificationCompat.Builder builder =
-                NotificationUtil.generateNotificationBuilder(getApplicationContext());
+                NotificationUtil.importantBuilder(getApplicationContext(), buildIntent());
 
         final Notification notification = builder
                 .setContentTitle(getString(R.string.setting_default_browser_notification_clickable_text))
                 .setAutoCancel(true)
-                .setContentIntent(buildIntent())
                 .build();
 
         NotificationManagerCompat.from(getApplicationContext())

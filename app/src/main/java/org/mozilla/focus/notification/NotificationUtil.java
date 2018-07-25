@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.os.BuildCompat;
 
 import org.mozilla.focus.R;
 
@@ -28,29 +27,31 @@ public class NotificationUtil {
      * @param context
      * @return
      */
-    public static NotificationCompat.Builder generateNotificationBuilder(Context context) {
+    public static NotificationCompat.Builder baseBuilder(Context context, PendingIntent pendingIntent) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setColor(ContextCompat.getColor(context, R.color.surveyNotificationAccent))
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
-        return builder;
-    }
-
-    public static NotificationCompat.Builder generateNotificationBuilder(Context context, PendingIntent pendingIntent) {
-        final NotificationCompat.Builder builder = generateNotificationBuilder(context);
-        // DEFAULT_VIBRATE makes notifications can show heads-up for Android 7 and below
-        builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
-        builder.setContentIntent(pendingIntent);
-
-        if (BuildCompat.isAtLeastN()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             builder.setShowWhen(false);
         }
 
         return builder;
     }
+
+    // DEFAULT_VIBRATE makes notifications can show heads-up for Android 7 and below
+    public static NotificationCompat.Builder importantBuilder(Context context, PendingIntent pendingIntent) {
+
+        final NotificationCompat.Builder builder = baseBuilder(context, pendingIntent)
+                .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        return builder;
+    }
+
 
     public static void sendNotification(Context context, int id, NotificationCompat.Builder builder) {
         final NotificationManager notificationManager =
