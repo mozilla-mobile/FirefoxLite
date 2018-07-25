@@ -33,7 +33,7 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        final NotificationCompat.Builder builder = NotificationUtil.generateNotificationBuilder(this, pendingIntent);
+        final NotificationCompat.Builder builder = NotificationUtil.importantBuilder(this, pendingIntent);
 
         if (title != null) {
             builder.setContentTitle(title);

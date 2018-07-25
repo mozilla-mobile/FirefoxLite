@@ -44,12 +44,10 @@ class PrivateSessionNotificationService : Service() {
 
 
     private fun showNotification() {
-        val builder = NotificationUtil.generateNotificationBuilder(applicationContext, buildIntent(true))
 
-        builder.setContentTitle(getString(R.string.private_browsing_erase_message))
-
-        val startPrivateModeActivity = buildIntent(false)
-        builder.addAction(R.drawable.private_browsing_mask, getString(R.string.private_browsing_open_action), startPrivateModeActivity)
+        val builder = NotificationUtil.baseBuilder(applicationContext, buildIntent(true))
+                .setContentTitle(getString(R.string.private_browsing_erase_message))
+                .addAction(R.drawable.private_browsing_mask, getString(R.string.private_browsing_open_action), buildIntent(false))
 
         startForeground(NotificationId.PRIVATE_MODE, builder.build())
     }
