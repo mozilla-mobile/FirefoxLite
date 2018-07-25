@@ -248,6 +248,17 @@ public class WebkitView extends NestedWebView implements TabView {
         this.downloadCallback = callback;
     }
 
+    @Override
+    public void setFindListener(TabView.FindListener listener) {
+        final WebView.FindListener findListener;
+        if (listener == null) {
+            findListener = null;
+        } else {
+            findListener = listener::onFindResultReceived;
+        }
+        setFindListener(findListener);
+    }
+
     public void loadUrl(String url) {
         debugOverlay.onLoadUrlCalled();
 
