@@ -69,6 +69,6 @@
     <dimen name="tab_tray_close_all_btn_margin_end">16dp</dimen>
     <dimen name="menu_text_padding">5dp</dimen>
 
-    <dimen name="tab_tray_bottom_sheet_start_margin">24dp</dimen>
+    <dimen name="tab_tray_bottom_sheet_start_margin">40dp</dimen>
     <dimen name="pm_home_title_margin">68dp</dimen>
 </resources>
