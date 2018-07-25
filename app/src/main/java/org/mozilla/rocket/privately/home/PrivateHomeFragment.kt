@@ -10,11 +10,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
-import org.mozilla.focus.utils.ThreadUtils
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
@@ -71,16 +72,6 @@ class PrivateHomeFragment : LocaleAwareFragment() {
                         }
                     })
         }
-
-    }
-
-    @Override
-    override fun onResume() {
-        super.onResume()
-        // Use onCreateAnimator or onCreateAnimation or NavController's addOnNavigatedListener to listen to fragment added complete events
-        ThreadUtils.postToMainThreadDelayed({ animatePrivateHome() }, 500)
-
-
     }
 
     override fun applyLocale() {
@@ -108,5 +99,26 @@ class PrivateHomeFragment : LocaleAwareFragment() {
             logoMan.visibility = View.VISIBLE
             fakeInput.visibility = View.VISIBLE
         }
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
+
+        val anim = AnimationUtils.loadAnimation(activity, R.anim.pb_enter)
+
+        anim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                if (enter) {
+                    animatePrivateHome()
+                }
+            }
+        })
+
+        return anim
     }
 }
