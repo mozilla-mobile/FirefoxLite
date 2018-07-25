@@ -21,8 +21,10 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/pm_home_logo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pm_home_fake_input"
+        android:layout_alignEnd="@id/pm_home_fake_input"
         app:lottie_autoPlay="false"
         app:lottie_fileName="logo_man_private.json"
         app:lottie_loop="false" />
