@@ -7,7 +7,6 @@ package org.mozilla.focus.notification;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,12 +26,11 @@ public class NotificationUtil {
      * @param context
      * @return
      */
-    public static NotificationCompat.Builder baseBuilder(Context context, PendingIntent pendingIntent) {
+    public static NotificationCompat.Builder baseBuilder(Context context) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setColor(ContextCompat.getColor(context, R.color.surveyNotificationAccent))
-                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -43,9 +41,9 @@ public class NotificationUtil {
     }
 
     // DEFAULT_VIBRATE makes notifications can show heads-up for Android 7 and below
-    public static NotificationCompat.Builder importantBuilder(Context context, PendingIntent pendingIntent) {
+    public static NotificationCompat.Builder importantBuilder(Context context) {
 
-        final NotificationCompat.Builder builder = baseBuilder(context, pendingIntent)
+        final NotificationCompat.Builder builder = baseBuilder(context)
                 .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
