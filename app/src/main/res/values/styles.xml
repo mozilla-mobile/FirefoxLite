@@ -279,5 +279,11 @@
         <item name="android:src">@drawable/action_close_tab</item>
     </style>
 
+    <style name="FakeInput">
+        <item name="android:layout_marginStart">27dp</item>
+        <item name="android:layout_marginEnd">27dp</item>
+
+    </style>
+
 
 </resources>
