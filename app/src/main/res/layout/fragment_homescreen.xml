@@ -15,8 +15,9 @@
 
     <include layout="@layout/fragment_homescreen_item_fake_input"
         android:id="@+id/home_fragment_fake_input"
-        android:layout_width="306dp"
-        android:layout_height="48dp"
+        style="@style/FakeInput"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fake_input_height"
         android:layout_above="@id/main_list"
         android:layout_centerHorizontal="true"/>
 

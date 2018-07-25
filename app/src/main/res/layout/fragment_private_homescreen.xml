@@ -33,14 +33,16 @@
         layout="@layout/fragment_homescreen_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/pm_home_title_margin" />
+        android:layout_above="@+id/pm_home_brand_title"
+        android:layout_centerHorizontal="true" />
 
     <TextView
+        android:id="@+id/pm_home_brand_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pm_home_brand_logo"
+        android:layout_above="@+id/pm_home_fake_input"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/pm_home_title_margin"
         android:fontFamily="sans-serif-light"
         android:text="@string/private_browsing_title"
         android:textColor="@color/sharedColorAppPaletteWhite"
@@ -48,9 +50,10 @@
 
     <include
         android:id="@+id/pm_home_fake_input"
+        style="@style/FakeInput"
         layout="@layout/fragment_homescreen_item_fake_input"
-        android:layout_width="306dp"
-        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fake_input_height"
         android:layout_centerInParent="true" />
 
     <include layout="@layout/fragment_private_browsing_homescreen_item" />
