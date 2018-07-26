@@ -29,6 +29,7 @@
   <string name="preference_mozilla_telemetry">发送统计数据</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla 力争仅收集用来为大众改进 %1$s 所必需的数据。</string>
   <string name="preference_learn_more">详细了解</string>
+  <string name="preference_about">关于 %1$s</string>
   <string name="content_description_clear_input">清除输入内容</string>
   <string name="content_description_dismiss_input">取消输入</string>
   <string name="content_description_lock">安全连接</string>
@@ -170,7 +171,7 @@
   <string name="share_app_dialog_text_title">与朋友分享 %1$s！</string>
   <string name="share_app_dialog_text_content">- 快速且轻量级\n- 节约流量\n- 强大的截图功能</string>
   <string name="share_app_dialog_btn_share">分享</string>
-  <string name="share_app_promotion_text">嘿，来试试出自 Mozilla 的超快轻量级浏览器吧！%1$s %2$s</string>
+  <string name="share_app_promotion_text">嘿，来试试 Mozilla 出品的这款超快、轻量级浏览器吧！%1$s %2$s</string>
   <string name="your_rights_content1">%1$s 是由 Mozilla 和其他贡献者提供的自由且开源软件。</string>
   <string name="your_rights_content2"><![CDATA["%1$s 根据 "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Mozilla &#20844;&#20849;&#35768;&#21487;&#35777;</a>以及其他开源许可证向您提供。]]></string>
   <string name="your_rights_content3"><![CDATA[您没有得到 Mozilla 基金会或任何其他方面（包括 Mozilla、Firefox 或 %1$s 的名称或标志）的商标授权。更多信息参见<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#27492;&#22788;</a>。]]></string>

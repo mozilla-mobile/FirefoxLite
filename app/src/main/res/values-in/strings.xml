@@ -29,6 +29,7 @@
   <string name="preference_mozilla_telemetry">Kirim data penggunaan</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla hanya akan mengumpulkan data yang diperlukan saja untuk memperbaiki %1$s bagi Anda.</string>
   <string name="preference_learn_more">Pelajari lebih lanjut</string>
+  <string name="preference_about">Tentang %1$s</string>
   <string name="content_description_clear_input">Bersihkan masukan</string>
   <string name="content_description_dismiss_input">Abaikan</string>
   <string name="content_description_lock">Sambungan aman</string>
@@ -170,7 +171,7 @@
   <string name="share_app_dialog_text_title">Bagikan %1$s dengan teman!</string>
   <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Tangkapan layar yang canggih</string>
   <string name="share_app_dialog_btn_share">Bagikan</string>
-  <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari Mozilla! %1$s %2$s</string>
+  <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari Mozilla. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s adalah perangkat lunak bebas dan sumber terbuka yang dibuat oleh Mozilla dan kontributor lainnya.</string>
   <string name="your_rights_content2"><![CDATA["%1$s tersedia untuk Anda di bawah persyaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Lisensi Publik Mozilla</a>" dan lisensi sumber terbuka lainnya."]]></string>
   <string name="your_rights_content3"><![CDATA["Anda tidak diberi izin atau lisensi apa pun atas merek dagang Mozilla Foundation atau pihak mana pun, termasuk nama atau logo Mozilla, Firefox, atau %1$s. Informasi lebih lanjut bisa ditemukan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di sini</a>.]]></string>

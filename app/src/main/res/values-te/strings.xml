@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">ప్రతిస్పందనను తెలియజేయండి</string>
   <string name="menu_share_with_friends">మిత్రులతో పంచుకోండి</string>
   <string name="share_dialog_title">దీనిద్వారా పంచుకోండి</string>
-  <string name="text_selection_search_action">Firefox Rocket‌తో వెతుకు</string>
+  <string name="text_selection_search_action">Firefox Rocketతో వెతుకు</string>
   <string name="about_content_body">%1$s అనేది మొజిల్లా వారు తయారుచేసిన వేగవంతమైన, తేలికైన విహారిణి. ఆరోగ్యకరమైన, స్వేచ్ఛాయుతమైన అంతర్జాలాన్ని వృద్ధిచేయడం మా ఆశయం.</string>
   <string name="about_link_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="about_link_support">తోడ్పాటు</string>
@@ -29,6 +29,7 @@
   <string name="preference_mozilla_telemetry">వాడుక డేటాను పంపించు</string>
   <string name="preference_mozilla_telemetry_summary">అందరికీ %1$s‌ని మెరుగ్గా అందించడానికి కావలసినంత తక్కువ సమాచారాన్ని మాత్రమే సేకరించడానికి మొజిల్లా ప్రయత్నిస్తుంది.</string>
   <string name="preference_learn_more">ఇంకా తెలుసుకోండి</string>
+  <string name="preference_about">%1$s గురించి</string>
   <string name="content_description_clear_input">ఇన్‌పుట్ తుడిచివేయి</string>
   <string name="content_description_dismiss_input">విస్మరించు</string>
   <string name="content_description_lock">సురక్షిత అనుసంధానం</string>

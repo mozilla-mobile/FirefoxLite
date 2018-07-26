@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ</string>
   <string name="menu_share_with_friends">ಸ್ನೇಹಿತರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ</string>
   <string name="share_dialog_title">ಇದರ ಮೂಲಕ ಹಂಚು</string>
-  <string name="text_selection_search_action">ಇದರಲ್ಲಿ ಹುಡುಕು Firefox Rocket</string>
+  <string name="text_selection_search_action">ಫೈರ್ಫಾಕ್ಸ್ ರಾಕೆಟ್‍ನಲ್ಲಿ ಹುಡುಕು</string>
   <string name="about_content_body">%1$s ಅತ್ಯಂತ ವೇಗವಾದ ಮತ್ತು ಹಗುರ ಬ್ರೌಸರ್ ಅನ್ನು Mozilla ಉತ್ಪಾದಿಸಿದೆ. ನಮ್ಮ ಧ್ಯೇಯ ಆರೋಗ್ಯಕರ, ತೆರೆದ ಇಂಟರ್ನೆಟ್ ಅನ್ನು ಬೆಳೆಸುವುದು.</string>
   <string name="about_link_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
   <string name="about_link_support">ಬೆಂಬಲ</string>
@@ -29,6 +29,7 @@
   <string name="preference_mozilla_telemetry">ಬಳಕೆಯ ದತ್ತಾಂಶ ಕಳುಹಿಸಿ</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla ಎಲ್ಲರಿಗಾಗಿ %1$s ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಿ ಕೊಡುವುದಕ್ಕೆ ಬೇಕಾದ್ದನ್ನು ಮಾತ್ರ ಸಂಗ್ರಹಿಸುತ್ತದೆ.</string>
   <string name="preference_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
+  <string name="preference_about">%1$s ನ ಬಗ್ಗೆ</string>
   <string name="content_description_clear_input">ಇನ್ಪುಟ್ ತೆರವುಗೊಳಿಸಿ</string>
   <string name="content_description_dismiss_input">ವಜಾಗೊಳಿಸು‍</string>
   <string name="content_description_lock">ಸುರಕ್ಷಿತ ಸಂಪರ್ಕ</string>
@@ -118,7 +119,7 @@
   <string name="unknown">ಗೊತ್ತಿರದ</string>
   <string name="setting_dialog_sd_card">ಎಸ್‍ಡಿ ಕಾರ್ಡ್</string>
   <string name="setting_dialog_internal_storage">ಆಂತರಿಕ ಶೇಖರಣೆ</string>
-  <string name="browsing_history_clear_btn">ತೆರೆವುಗೊಳಿಸು ಜಾಲಾಡು ಇತಿಹಾಸ</string>
+  <string name="browsing_history_clear_btn">ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸ ತೆರೆವುಗೊಳಿಸು</string>
   <string name="browsing_history_empty_view_msg">ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸ ಇಲ್ಲ</string>
   <string name="browsing_history_date_today">ಇಂದು</string>
   <string name="browsing_history_date_yesterday">ನಿನ್ನೆ</string>
@@ -139,7 +140,7 @@
   <string name="message_removable_storage_space_not_enough">ಎಸ್‍ಡಿ ಕಾರ್ಡ್ ಬಹುತೇಕ ತುಂಬಿದೆ. ಕಡತವನ್ನು ಆಂತರಿಕ ಶೇಖರಣೆಯಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ.</string>
   <string name="screenshot_grid_empty_text_title">ತೆರೆಚಿತ್ರಗಳು ಇಲ್ಲ</string>
   <string name="screenshot_grid_empty_text_msg_prefix">ಮೆಲ್ಲ ತಟ್ಟು</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">" ಇಡೀ ಜಾಲ ಪುಟವನ್ನು ಸೆರೆಹಿಡುಯುವ \nಮೆನುವಿನ ಮೇಲೆ."</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">" ಇಡೀ ಜಾಲ ಪುಟವನ್ನು ಸೆರೆಹಿಡಿಯುವ \nಮೆನುವಿನ ಮೇಲೆ.\n"</string>
   <string name="screenshot_image_viewer_dialog_title">ಮಾಹಿತಿ</string>
   <string name="screenshot_image_viewer_dialog_info_time1">ದಿನಾಂಕ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">ರೆಸಲ್ಯೂಶನ್: %1$s</string>
@@ -150,7 +151,7 @@
   <string name="file_picker_title">ಅಪ್ಲೋಡ್ ಮಾಡಲು ಕಡತವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="message_enable_turbo_mode">ಟರ್ಬೋ ಸ್ಥಿತಿ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</string>
   <string name="message_disable_turbo_mode">ಟರ್ಬೋ ಸ್ಥಿತಿ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</string>
-  <string name="message_enable_block_image">ಈಗ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ</string>
+  <string name="message_enable_block_image">ಈಗ ಚಿತ್ರಗಳನ್ನು ತಡೆಹಿಡಿಯಲಾಗುತ್ತಿದೆ</string>
   <string name="message_disable_block_image">ಈಗ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ</string>
   <string name="message_clear_cache_fail">ಕ್ಯಾಶೆ ತೆರವುಗೊಳಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ</string>
   <string name="message_storage_unavailable_cancel_download">ಶೇಖರಣೆ ಲಭ್ಯವಿಲ್ಲ. ಡೌನ್‍ಲೋಡ್ ನಿಲ್ಲಿಸಲಾಗಿದೆ.</string>
