@@ -44,6 +44,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
     private static final String ARGUMENT_URL = "url";
     private static final String ARGUMENT_PARENT_FRAGMENT = "parent_frag_tag";
+    private static final String ARGUMENT_ALLOW_SUGGESTION = "allow_suggestion";
 
     private static final int REQUEST_THROTTLE_THRESHOLD = 300;
 
@@ -53,10 +54,11 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
      * Create a new UrlInputFragment and animate the url input view from the position/size of the
      * fake url bar view.
      */
-    public static UrlInputFragment create(@Nullable String url, String parentFragmentTag) {
+    public static UrlInputFragment create(@Nullable String url, String parentFragmentTag, final boolean allowSuggestion) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_URL, url);
         arguments.putString(ARGUMENT_PARENT_FRAGMENT, parentFragmentTag);
+        arguments.putBoolean(ARGUMENT_ALLOW_SUGGESTION, allowSuggestion);
 
         UrlInputFragment fragment = new UrlInputFragment();
         fragment.setArguments(arguments);
@@ -72,6 +74,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
     private boolean autoCompleteInProgress;
     private View dismissView;
     private long lastRequestTime;
+    private boolean allowSuggestion;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -174,6 +177,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
             urlView.setText(url);
             clearView.setVisibility(TextUtils.isEmpty(url) ? View.GONE : View.VISIBLE);
         }
+        allowSuggestion = args.getBoolean(ARGUMENT_ALLOW_SUGGESTION, true);
     }
 
     private void onSuggestionClicked(CharSequence tag) {
@@ -294,7 +298,9 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         if (autoCompleteInProgress) {
             return;
         }
-        UrlInputFragment.this.presenter.onInput(originalText, detectThrottle());
+        if (allowSuggestion) {
+            UrlInputFragment.this.presenter.onInput(originalText, detectThrottle());
+        }
         final int visibility = TextUtils.isEmpty(originalText) ? View.GONE : View.VISIBLE;
         UrlInputFragment.this.clearView.setVisibility(visibility);
     }

@@ -129,7 +129,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
             // fake URL bar. Just ignore it.
             return
         }
-        val urlFragment: UrlInputFragment = UrlInputFragment.create(url, null)
+        val urlFragment: UrlInputFragment = UrlInputFragment.create(url, null, false)
         val transaction = frgMgr.beginTransaction()
         transaction.add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
                 .addToBackStack(UrlInputFragment.FRAGMENT_TAG)
