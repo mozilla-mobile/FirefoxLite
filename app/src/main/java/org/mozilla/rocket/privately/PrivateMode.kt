@@ -55,6 +55,7 @@ class PrivateMode {
          * @param context
          * @return true if this service is alive
          */
+        @Suppress("deprecation")
         @JvmStatic
         fun hasPrivateTab(context: Context): Boolean {
             val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
