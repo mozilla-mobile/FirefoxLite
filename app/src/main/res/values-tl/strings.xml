@@ -29,6 +29,7 @@
   <string name="preference_mozilla_telemetry">Ipadala ang mga datos ng paggamit</string>
   <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang Mozilla na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
   <string name="preference_learn_more">Detalye</string>
+  <string name="preference_about">Detalye ng %1$s</string>
   <string name="content_description_clear_input">Burahin ang input</string>
   <string name="content_description_dismiss_input">Alisin</string>
   <string name="content_description_lock">Secure na koneksyon</string>
@@ -167,10 +168,10 @@
   <string name="rate_app_notification_action_rate">BIGYAN NG 5 STARS</string>
   <string name="rate_app_dialog_btn_feedback">Hindi, magpadala ng feedback.</string>
   <string name="rate_app_notification_action_feedback">FEEDBACK</string>
-  <string name="share_app_dialog_text_title">Ibahagi ang %1$s sa iyong mga kaibigan!</string>
+  <string name="share_app_dialog_text_title">Ibalita ang %1$s sa iyong mga kaibigan!</string>
   <string name="share_app_dialog_text_content">- Mabilis at magaan\n- Matipid sa data\n- Makapangyarihang screenshots</string>
   <string name="share_app_dialog_btn_share">Ibahagi</string>
-  <string name="share_app_promotion_text">Hoy, tingnan itong mabilis at magaan na browser mula sa Mozilla. %1$s %2$s</string>
+  <string name="share_app_promotion_text">"Hoy, tingnan itong mabilis at magaan na browser mula sa Mozilla.  %1$s %2$s"</string>
   <string name="your_rights_content1">%1$s ay libre at open source na software na gawa ng Mozilla at ng iba pang mga taga-ambag.</string>
   <string name="your_rights_content2"><![CDATA["%1$s ay gawa mula sa mga panuntunan ng "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Mozilla Public License</a>" at iba pang open source na mga lisensya."]]></string>
   <string name="your_rights_content3"><![CDATA["You are not granted any rights or licenses to the trademarks of the Mozilla Foundation or any party, including the Mozilla, Firefox or %1$s names or logos. Additional information may be found "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">here</a>.]]></string>

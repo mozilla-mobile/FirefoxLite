@@ -8,10 +8,10 @@
   <string name="menu_help">ช่วยเหลือ</string>
   <string name="menu_rights">สิทธิของคุณ</string>
   <string name="menu_give_feedback">เสนอข้อคิดเห็น</string>
-  <string name="menu_share_with_friends">แบ่งปันกับเพื่อน</string>
+  <string name="menu_share_with_friends">แบ่งปันกับเพื่อน ๆ</string>
   <string name="share_dialog_title">แบ่งปันผ่าน</string>
   <string name="text_selection_search_action">ค้นหาใน Firefox Rocket</string>
-  <string name="about_content_body">%1$s เป็นเว็บเบราว์เซอร์ที่เร็วและเบาสร้างโดย Mozilla ภารกิจของเราคือทำให้อินเทอร์เน็ตเปิดกว้าง เร็วขึ้น สุขภาพดีขึ้น</string>
+  <string name="about_content_body">%1$s เป็นเบราว์เซอร์ที่เร็วและเบาที่สร้างขึ้นโดย Mozilla ภารกิจของเราคือส่งเสริมอินเทอร์เน็ตที่สมบูรณ์และเปิดกว้าง</string>
   <string name="about_link_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="about_link_support">การสนับสนุน</string>
   <string name="about_link_your_rights">สิทธิของคุณ / สัญญาอนุญาต</string>
@@ -20,7 +20,7 @@
   <string name="preference_language">ภาษา</string>
   <string name="preference_language_systemdefault">ค่าเริ่มต้นของระบบ</string>
   <string name="preference_dialog_title_search_engine">เครื่องมือค้นหาเริ่มต้น</string>
-  <string name="preference_data_saving_block_images">ไม่แสดงภาพ</string>
+  <string name="preference_data_saving_block_images">ปิดกั้นภาพ</string>
   <string name="preference_privacy_storage_clear_browsing_data">ล้างข้อมูลการท่องเว็บ</string>
   <string name="preference_privacy_storage_save_downloads_to">บันทึกการดาวน์โหลดไปยัง</string>
   <string name="preference_default_browser">ทำให้เป็นเบราว์เซอร์เริ่มต้น</string>
@@ -29,6 +29,7 @@
   <string name="preference_mozilla_telemetry">ส่งข้อมูลการใช้งาน</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla มุ่งมั่นที่จะเก็บรวบรวมเฉพาะสิ่งที่เราจำเป็นต้องให้บริการและปรับปรุง %1$s สำหรับทุกคน</string>
   <string name="preference_learn_more">เรียนรู้เพิ่มเติม</string>
+  <string name="preference_about">เกี่ยวกับ %1$s</string>
   <string name="content_description_clear_input">ล้างข้อมูลที่ป้อน</string>
   <string name="content_description_dismiss_input">ยกเลิก</string>
   <string name="content_description_lock">การเชื่อมต่อปลอดภัย</string>
@@ -59,10 +60,10 @@
   <string name="first_run_page1_title">ขอบคุณที่เลือก %1$s</string>
   <string name="first_run_page1_text">เบราว์เซอร์ที่สร้างขึ้นโดยเฉพาะสำหรับอินโดนีเซียโดย Mozilla องค์กรไม่แสวงหาผลกำไรที่มุ่งมั่นเพื่อเว็บเสรีและเปิดกว้าง</string>
   <string name="first_run_page2_title">ท่องเว็บได้เร็วขึ้นกว่าที่เคย</string>
-  <string name="first_run_page2_text">ใช้โหมดเทอร์โบเพื่อปิดกั้นโฆษณาที่แกะรอยข้อมูลของคุณ จึงเปิดเว็บได้อย่างรวดเร็ว; ถ้าเว็บไซต์ดูเหมือนจะพัง ก็เพียงแค่แตะปิดโหมดเทอร์โบในเมนู</string>
+  <string name="first_run_page2_text">ใช้โหมดเทอร์โบเพื่อปิดกั้นโฆษณาที่ติดตามข้อมูลของคุณ ทำให้เปิดเว็บได้อย่างรวดเร็ว; ถ้าเว็บไซต์ทำงานผิดปกติ ก็สามารถแตะปิดโหมดเทอร์โบในเมนูได้</string>
   <string name="first_run_page3_title">ประหยัดข้อมูล = ประหยัดเงิน</string>
   <string name="first_run_page3_text">การปิดกั้นโฆษณาที่ตามรอยคุณไม่เพียงแต่ทำให้เปิดเว็บเร็ว แต่ยังช่วยประหยัดการรับส่งข้อมูล และยังประหยัดได้มากกว่านั้นอีกด้วยการปิดกั้นรูปภาพ</string>
-  <string name="first_run_page4_title">จับภาพหน้าจอของทุกสิ่ง</string>
+  <string name="first_run_page4_title">จับภาพหน้าจอทุกอย่าง</string>
   <string name="first_run_page4_text">จับภาพของทั้งหน้าเว็บ ดูภาพหน้าจอโดยไม่ต้องต่อเน็ตหรือแตะเพื่อเปิดหน้าเว็บอีกครั้ง</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
   <string name="first_run_upgrade_page_text1">1. ทำงานหลายอย่างโดยเปิด %s ในเวลาเดียวกัน!</string>
@@ -77,7 +78,7 @@
   <string name="label_menu_clear_cache">ล้างแคช</string>
   <string name="label_menu_history">ประวัติ</string>
   <string name="label_menu_share">แบ่งปัน</string>
-  <string name="label_menu_my_shots">ภาพหน้าจอ</string>
+  <string name="label_menu_my_shots">ภาพหน้าจอของฉัน</string>
   <string name="label_menu_capture_page">จับภาพหน้า</string>
   <string name="label_menu_turbo_mode">โหมดเทอร์โบ</string>
   <string name="label_menu_block_ads">ปิดกั้นโฆษณา</string>
@@ -134,12 +135,12 @@
   <string name="screenshot_edit">แก้ไข</string>
   <string name="screenshot_delete">ลบ</string>
   <string name="screenshot_share">แบ่งปัน</string>
-  <string name="message_fallback_save_to_primary_external">ไม่พบการ์ด SD จึงบันทึกไฟล์ลงหน่วยความจำภายใน</string>
-  <string name="message_start_to_save_to_removable_storage">บันทึกไฟล์ลงการ์ด SD แล้ว</string>
-  <string name="message_removable_storage_space_not_enough">การ์ด SD ใกล้เต็มแล้ว จึงได้บันทึกไฟล์ลงหน่วยความจำภายใน</string>
+  <string name="message_fallback_save_to_primary_external">ไม่พบการ์ด SD ไฟล์ถูกบันทึกไปยังที่เก็บข้อมูลภายใน</string>
+  <string name="message_start_to_save_to_removable_storage">บันทึกไฟล์ไปยังการ์ด SD แล้ว</string>
+  <string name="message_removable_storage_space_not_enough">การ์ด SD ใกล้เต็ม ไฟล์ถูกบันทึกไปยังที่เก็บข้อมูลภายใน</string>
   <string name="screenshot_grid_empty_text_title">ไม่มีภาพหน้าจอ</string>
   <string name="screenshot_grid_empty_text_msg_prefix">แตะ</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">" ในเมนูเพื่อจับภาพหน้าจอ\nแบบเต็มหน้าเว็บ"</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">  ในเมนูเพื่อจับภาพหน้าเว็บทั้งหน้า</string>
   <string name="screenshot_image_viewer_dialog_title">ข้อมูล</string>
   <string name="screenshot_image_viewer_dialog_info_time1">วันที่: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">ความละเอียด: %1$s</string>
@@ -150,27 +151,27 @@
   <string name="file_picker_title">เลือกไฟล์ที่จะอัปโหลด</string>
   <string name="message_enable_turbo_mode">เปิดใช้งานโหมดเทอร์โบแล้ว</string>
   <string name="message_disable_turbo_mode">ปิดใช้งานโหมดเทอร์โบแล้ว</string>
-  <string name="message_enable_block_image">เปิดการปิดกั้นภาพแล้ว</string>
-  <string name="message_disable_block_image">เปิดการแสดงภาพแล้ว</string>
+  <string name="message_enable_block_image">ขณะนี้กำลังปิดกั้นภาพ</string>
+  <string name="message_disable_block_image">ขณะนี้กำลังแสดงภาพ</string>
   <string name="message_clear_cache_fail">ไม่สามารถล้างแคช</string>
-  <string name="message_storage_unavailable_cancel_download">เข้าถึงที่เก็บข้อมูลไม่ได้ ยกเลิกการดาวน์โหลด</string>
+  <string name="message_storage_unavailable_cancel_download">ไม่สามารถเข้าถึงที่เก็บข้อมูล การดาวน์โหลดถูกยกเลิก</string>
   <string name="message_cleared_cached">ล้างแคชแล้ว %1$s</string>
   <string name="message_cleared_browsing_data">ล้างข้อมูลการท่องเว็บแล้ว</string>
   <string name="message_deleted_screenshot">ลบภาพหน้าจอแล้ว</string>
   <string name="message_cannot_find_screenshot">ไม่สามารถแสดงผลภาพหน้าจอ</string>
   <string name="remove">เอาออก</string>
   <string name="privacy_policy_update_notification_title">การแจ้งอัปเดตผลิตภัณฑ์</string>
-  <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Rocket ดีขึ้นสำหรับคุณและคนอื่นๆ เราเปลี่ยนแปลงนโยบายความเป็นส่วนตัวของเรา แตะเพื่อดูเพิ่ม</string>
+  <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Rocket ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="rate_app_dialog_text_title">รัก %1$s?</string>
   <string name="rate_app_dialog_text_content">ขอขอบคุณที่เลือกผลิตภัณฑ์ของเรา คำติชมของคุณเป็นสิ่งสำคัญสำหรับเรา</string>
   <string name="rate_app_dialog_btn_go_rate">ใช่ ให้คะแนน 5 ดาว!</string>
   <string name="rate_app_notification_action_rate">ให้คะแนน 5 ดาว</string>
   <string name="rate_app_dialog_btn_feedback">ไม่ ส่งข้อคิดเห็น</string>
   <string name="rate_app_notification_action_feedback">ข้อคิดเห็น</string>
-  <string name="share_app_dialog_text_title">แบ่งปัน %1$s กับเพื่อน!</string>
+  <string name="share_app_dialog_text_title">แบ่งปัน %1$s กับเพื่อน ๆ!</string>
   <string name="share_app_dialog_text_content">- เร็วและเบา\n- ประหยัดการรับส่งข้อมูล\n- ตัวจับภาพหน้าจอที่ทรงพลัง</string>
   <string name="share_app_dialog_btn_share">แบ่งปัน</string>
-  <string name="share_app_promotion_text">นี่แน่ะ! ลองดูเว็บเบราว์เซอร์ %1$s ที่เร็วและเบาจาก Mozilla %2$s</string>
+  <string name="share_app_promotion_text">เฮ้ ลองดูเบราว์เซอร์ %1$s ที่เร็วและเบาจาก Mozilla %2$s</string>
   <string name="your_rights_content1">%1$s เป็นซอฟต์แวร์เสรีและเปิดต้นฉบับที่สร้างขึ้นโดย Mozilla และผู้มีส่วนร่วมอื่น ๆ</string>
   <string name="your_rights_content2"><![CDATA["%1$s ให้คุณใช้ภายใต้เงื่อนไขของ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">Mozilla Public License</a>" และสัญญาอนุญาตการเปิดต้นฉบับอื่น ๆ"]]></string>
   <string name="your_rights_content3"><![CDATA["คุณไม่ได้รับสิทธิหรือสัญญาอนุญาตใด ๆ ในเครื่องหมายการค้าของมูลนิธิ Mozilla หรือบุคคลใด ๆ รวมทั้งชื่อหรือโลโก้ Mozilla, Firefox หรือ %1$s ข้อมูลเพิ่มเติมอาจพบได้ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3607;&#3637;&#3656;&#3609;&#3637;&#3656;</a>]]></string>
@@ -197,4 +198,8 @@
   <string name="bookmark_edit_success">อัปเดตที่คั่นหน้าแล้ว</string>
   <string name="bookmarks_empty_view_msg">ไม่มีที่คั่นหน้า</string>
   <string name="edit_bookmark">แก้ไข</string>
+  <string name="private_browsing_title">การท่องเว็บแบบส่วนตัว</string>
+  <string name="private_browsing_erase_message">ล้างประวัติการท่องเว็บแบบส่วนตัว</string>
+  <string name="private_browsing_open_action">เปิด</string>
+  <string name="private_browsing_erase_done">ล้างประวัติการท่องเว็บแบบส่วนตัวของคุณแล้ว</string>
 </resources>
