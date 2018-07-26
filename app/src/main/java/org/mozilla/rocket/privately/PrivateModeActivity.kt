@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
+import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import org.mozilla.focus.R
@@ -183,6 +184,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun stopPrivateMode() {
         PrivateSessionNotificationService.stop(this)
         PrivateMode.sanitize(this.applicationContext)
+        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
     private fun handleIntent(intent: Intent?) {
