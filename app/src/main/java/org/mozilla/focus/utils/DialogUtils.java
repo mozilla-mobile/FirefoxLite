@@ -146,7 +146,7 @@ public class DialogUtils {
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
-                sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text, context.getString(R.string.app_name), context.getString(R.string.share_app_google_play_url)));
+                sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text, context.getString(R.string.app_name), context.getString(R.string.share_app_google_play_url), context.getString(R.string.mozilla)));
                 context.startActivity(Intent.createChooser(sendIntent, null));
                 if (dialog != null) {
                     dialog.dismiss();

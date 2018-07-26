@@ -10,7 +10,6 @@
   <string name="menu_give_feedback">અભીપ્રાય આપો</string>
   <string name="menu_share_with_friends">મિત્રો સાથે વહેંચો</string>
   <string name="share_dialog_title">આની મારફતે વહેંચો</string>
-  <string name="about_content_body">%1$s એ Mozilla દ્વારા ઉત્પાદિત કરવામાં આવેલું ઝડપી અને ઓછી જગ્યા રોકે તેવું છે. અમારું લક્ષ્ય એક યોગ્ય , બધાં વાપરી શકે તેવું ઇન્ટરનેટ પ્રસ્થાપિત કરવાનું છે.</string>
   <string name="about_link_learn_more">વધુ શીખો</string>
   <string name="about_link_support">સહાય</string>
   <string name="about_link_your_rights">તમારા અધિકારો / પરવાનગીઓ</string>
@@ -26,7 +25,6 @@
   <string name="preference_default_browser_is_setting">સેટીંગ્સ બદલી રહ્યા છીએ…</string>
   <string name="preference_turbo_mode">ટર્બો મોડ</string>
   <string name="preference_mozilla_telemetry">ઉપયોગ ડેટા મોકલો</string>
-  <string name="preference_mozilla_telemetry_summary">Mozilla માત્ર દરેકને માટે %1$s પ્રદાન અને સુધારવાની જરૂર છે તે એકત્રિત કરવાનો પ્રયત્ન કરે છે.</string>
   <string name="preference_learn_more">વધુ શીખો</string>
   <string name="preference_about">%1$s વિશે</string>
   <string name="content_description_clear_input">ઇનપુટ સાફ કરો</string>
@@ -57,7 +55,6 @@
   <string name="contextmenu_open_in_new_tab">નવી ટૅબમાં કડી ખોલો</string>
   <string name="contextmenu_open_image_in_new_tab">નવી ટૅબમાં છબી ખોલો</string>
   <string name="first_run_page1_title">%1$s પસંદગી માટે આભાર</string>
-  <string name="first_run_page1_text">Mozilla દ્વારા ઇન્ડોનેશિયા માટે બનાવાયેલા એક બ્રાઉઝર, બિન નફાકારક એક મફત અને ખુલ્લા વેબ માટે પ્રતિબદ્ધ છે.</string>
   <string name="first_run_page2_title">ક્યારેય કરતાં વધુ ઝડપી બ્રાઉઝ કરો</string>
   <string name="first_run_page2_text">ટ્રેકિંગ જાહેરાતોને અવરોધિત કરવા ટર્બો મોડનો ઉપયોગ કરો કે જેનાથી તમે ખૂબ ઝડપથી બ્રાઉઝ કરી શકશો. જો વેબસાઉટમાં ભંગાણ દેખાય તો મેનુમાં જઇને ટર્બો મોડ બંધ કરો.</string>
   <string name="first_run_page3_title">ડેટા બચાવો = પૈસા બચાવો</string>
@@ -168,9 +165,6 @@
   <string name="rate_app_notification_action_feedback">પ્રતિભાવ</string>
   <string name="share_app_dialog_text_content">- ઝડપી અને ઓછી જગ્યા રોકે તેવું\n- ડેટાની બચત થાય તેવું\n- પ્રભાવશળી સ્ક્રીનશોટ્સ</string>
   <string name="share_app_dialog_btn_share">વહેંચો</string>
-  <string name="your_rights_content1">%1$s Mozilla અને અન્ય યોગદાનકર્તાઓ દ્વારા બનાવવામાં આવેલ મફત અને ઓપન સોર્સ સૉફ્ટવેર છે.</string>
-  <string name="your_rights_content2"><![CDATA["%1$s એ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">"Mozilla &#2744;&#2750;&#2736;&#2765;&#2741;&#2716;&#2728;&#2751;&#2709; &#2730;&#2736;&#2741;&#2750;&#2728;&#2711;&#2752;&#2728;&#2752; &#2742;&#2736;&#2724;&#2763; &#2730;&#2736; "</a>" અને બીજી ઓપનસોર્સ પરવાનગીનાં આધાર પર તમારાં માટે ઉપ્લબ્ધ કરવામાં આવેલ છે."]]></string>
-  <string name="your_rights_content3"><![CDATA["તમને Mozilla ફાઉન્ડેશન અથવા અન્ય કોઇ પક્ષ, Mozilla, Firefox કે %1$s નામ અથવા લોગો સહિતનાં વ્યાપાર ચિહ્નનાં કોઇ અધિકાર કે પરવાનગી આપવામાં આવેલ નથી. વધારાની માહિતી "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2693;&#2745;&#2751;&#2690;&#2735;&#2750; &#2734;&#2739;&#2742;&#2759;</a>.]]></string>
   <string name="your_rights_content4"><![CDATA[બીજા વિભિન્ન પ્રકારનાં નિઃશુલ્ક અને ઓપન સોર્સ<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2728;&#2752; &#2730;&#2736;&#2741;&#2750;&#2728;&#2711;&#2752; &#2745;&#2759;&#2720;&#2739;</a>%1$s માટે વધારાનાં સોર્સ કોડ ઉપ્લબ્ધ છે.]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s એ Disconnect, Inc. દ્વારા આપવામાં આવેલ બ્લોકલિસ્ટનો ઉપયોગ પણ કરે છે કે જે "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU &#2716;&#2728;&#2736;&#2738; &#2730;&#2732;&#2765;&#2738;&#2751;&#2709; &#2738;&#2750;&#2735;&#2744;&#2759;&#2690;&#2744; v3</a>",હેઠળ અલગથી અને સ્વતન્તર રીતે કામ કરે છે, અને અહિંયા "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#2697;&#2730;&#2765;&#2738;&#2732;&#2765;&#2727; &#2715;&#2759;</a>.]]></string>
   <string name="survey_notification_title">અમને તમારી જરુર છે! %1$s</string>

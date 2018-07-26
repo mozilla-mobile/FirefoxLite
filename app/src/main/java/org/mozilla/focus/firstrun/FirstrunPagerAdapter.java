@@ -66,7 +66,7 @@ public class FirstrunPagerAdapter extends PagerAdapter {
                         "first_run_img_4.json"),
                 new FirstrunPage(
                         context.getString(R.string.first_run_page1_title, context.getString(R.string.app_name)),
-                        context.getString(R.string.first_run_page1_text),
+                        context.getString(R.string.first_run_page1_text, context.getString(R.string.mozilla)),
                         "first_run_img_1.json")
         };
     }
