@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">उपयोग डेटा भेजियै</string>
   <string name="preference_mozilla_telemetry_summary">मोजिला खलि ओ चीज के जमा करै छै जकरा %1$s मे सभक लेली सुधार करै के आवश्यक्ता छै.</string>
   <string name="preference_learn_more">बेसी जानकारी</string>
-  <string name="preference_about">%1$s कऽ बारो मे, मदद</string>
   <string name="content_description_clear_input">इनपुट मेटैइयै</string>
   <string name="content_description_dismiss_input">रद्द करियै</string>
   <string name="content_description_lock">सुरक्षित कनेक्सन</string>

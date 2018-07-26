@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">ব্যবহারের তথ্য পাঠান</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla কেবলমাত্র সেটাই সংগ্রহ করার চেষ্টা করে যা প্রত্যেকের জন্য %1$sকে প্রদান এবং উন্নতি করতে লাগে।</string>
   <string name="preference_learn_more">আরও জানুন</string>
-  <string name="preference_about">%1$s সম্বন্ধে</string>
   <string name="content_description_clear_input">ইনপুট মুছে ফেলুন</string>
   <string name="content_description_dismiss_input">খারিজ করুন</string>
   <string name="content_description_lock">সুরক্ষিত সংযোগ</string>

@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">ಬಳಕೆಯ ದತ್ತಾಂಶ ಕಳುಹಿಸಿ</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla ಎಲ್ಲರಿಗಾಗಿ %1$s ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಿ ಕೊಡುವುದಕ್ಕೆ ಬೇಕಾದ್ದನ್ನು ಮಾತ್ರ ಸಂಗ್ರಹಿಸುತ್ತದೆ.</string>
   <string name="preference_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
-  <string name="preference_about">%1$s ನ ಬಗ್ಗೆ</string>
   <string name="content_description_clear_input">ಇನ್ಪುಟ್ ತೆರವುಗೊಳಿಸಿ</string>
   <string name="content_description_dismiss_input">ವಜಾಗೊಳಿಸು‍</string>
   <string name="content_description_lock">ಸುರಕ್ಷಿತ ಸಂಪರ್ಕ</string>

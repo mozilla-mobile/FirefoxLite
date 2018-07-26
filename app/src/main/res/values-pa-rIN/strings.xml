@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">ਵਰਤੋਂ ਸਬੰਧੀ ਡੇਟਾ ਭੇਜੋ</string>
   <string name="preference_mozilla_telemetry_summary">ਮੌਜ਼ਿਲਾ ਭਰਪੂਰ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ ਕਿ ਸਿਰਫ ਉਹੀ ਕੁੱਝ ਇਕੱਠਾ ਕੀਤਾ ਜਾਵੇ ਜੋ ਕਿ %1$s ਨੂੰ ਹਰੇਕ ਲਈ ਮੁਹੱਈਆ ਕਰਾਉਣ ਅਤੇ ਹੋਰ ਸੁਧਾਰਨ ਲਈ ਲੋੜੀਂਦਾ ਹੋਵੇ।</string>
   <string name="preference_learn_more">ਹੋਰ ਜਾਣੋ</string>
-  <string name="preference_about">%1$s ਦੇ ਬਾਰੇ</string>
   <string name="content_description_clear_input">ਇਨਪੁਟ ਨੂੰ ਹਟਾਓ</string>
   <string name="content_description_dismiss_input">ਖਾਰਜ ਕਰੋ</string>
   <string name="content_description_lock">ਸੁਰੱਖਿਅਤ ਕਨੈਕਸ਼ਨ</string>
