@@ -107,19 +107,22 @@ public class SupportUtils {
         final Map<String, String> substitutionMap = new ArrayMap<>();
 
         final String appName = context.getResources().getString(R.string.app_name);
+        final String mozilla = context.getResources().getString(R.string.mozilla);
+        final String firefox = context.getResources().getString(R.string.firefox);
+        final String mpl = context.getResources().getString(R.string.mpl);
         final String mplUrl = "https://www.mozilla.org/en-US/MPL/";
         final String trademarkPolicyUrl = "https://www.mozilla.org/foundation/trademarks/policy/";
         final String gplUrl = "file:///android_asset/gpl.html";
         final String trackingProtectionUrl = "https://wiki.mozilla.org/Security/Tracking_protection#Lists";
         final String licensesUrl = "file:///android_asset/licenses.html";
 
-        final String content1 = resources.getString(R.string.your_rights_content1, appName);
+        final String content1 = resources.getString(R.string.your_rights_content1, appName, mozilla);
         substitutionMap.put("%your-rights-content1%", content1);
 
-        final String content2 = resources.getString(R.string.your_rights_content2, appName, mplUrl);
+        final String content2 = resources.getString(R.string.your_rights_content2, appName, mplUrl, mpl);
         substitutionMap.put("%your-rights-content2%", content2);
 
-        final String content3 = resources.getString(R.string.your_rights_content3, appName, trademarkPolicyUrl);
+        final String content3 = resources.getString(R.string.your_rights_content3, appName, trademarkPolicyUrl, mozilla, firefox);
         substitutionMap.put("%your-rights-content3%", content3);
 
         final String content4 = resources.getString(R.string.your_rights_content4, appName, licensesUrl);
@@ -140,7 +143,8 @@ public class SupportUtils {
 
         final Map<String, String> substitutionMap = new ArrayMap<>();
         final String appName = webView.getContext().getResources().getString(R.string.app_name);
-        final String aboutBody = webView.getContext().getResources().getString(R.string.about_content_body, appName);
+        final String mozilla = webView.getContext().getResources().getString(R.string.mozilla);
+        final String aboutBody = webView.getContext().getResources().getString(R.string.about_content_body, appName, mozilla);
 
         final String aboutURI = SupportUtils.getAboutURI();
         final String learnMoreURL = SupportUtils.getManifestoURL();

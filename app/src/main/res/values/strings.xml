@@ -3,6 +3,9 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
+    <string name="mozilla" translatable="false">Mozilla</string>
+    <string name="firefox" translatable="false">Firefox</string>
+    <string name="mpl" translatable="false">Mozilla Public License</string>
     <!-- Label used for buttons, e.g. in dialogs -->
     <string name="action_cancel">CANCEL</string>
     <!-- Label used for buttons, e.g. in dialogs -->
@@ -27,7 +30,7 @@
          Please keep the "Firefox Rocket" part and don't localize the product name. -->
     <string name="text_selection_search_action">Search in Firefox Rocket</string>
 
-    <!-- Content of about Rocket. Argument 1 is the major body of the content #about_content_body.
+    <!-- Content of "about Rocket". Argument 1 is the major body of the content #about_content_body.
          Argument 2,4,6,8 is the urls.
          Argument 3,5,7,9 is the Label of the urls. -->
     <string name="about_content" translatable="false"><![CDATA[
@@ -38,8 +41,10 @@
 <a href="%8$s">%9$s</a><br/><br/>
     ]]></string>
 
-    <!-- Content of about Rocket. Argument 1 is the app name of the content. i.e.x. Firefox Rocket -->
-    <string name="about_content_body">%1$s is a fast and lightweight browser produced by Mozilla. Our mission is to foster a healthy, open internet.</string>
+    <!-- Content of about Rocket.
+    %1$s is the app name of the content. i.e.x. Firefox Rocket
+    %2$s is "Mozilla" -->
+    <string name="about_content_body">%1$s is a fast and lightweight browser produced by %2$s. Our mission is to foster a healthy, open internet.</string>
     <string name="about_link_learn_more">Learn more</string>
     <string name="about_link_support">Support</string>
     <string name="about_link_your_rights">Your Rights / Licenses</string>
@@ -75,11 +80,12 @@
 
     <string name="preference_mozilla_telemetry">Send usage data</string>
 
-    <!-- Item in Preferences that shows the app name wants to send telemetry. Parameter 1 is the app name, i.e. Firefox Rocket. -->
-    <string name="preference_mozilla_telemetry_summary">Mozilla strives to collect only what we need to provide and improve %1$s for everyone.</string>
+    <!-- Item in Preferences that shows the app name wants to send telemetry. Parameter %1$s is the app name, i.e. Firefox Rocket.
+    %2$s is "Mozilla"-->
+    <string name="preference_mozilla_telemetry_summary">%2$s strives to collect only what we need to provide and improve %1$s for everyone.</string>
     <string name="preference_learn_more">Learn more</string>
 
-    <!-- Item in Preferences that shows the about page. Parameter 1 is the app name, i.e. Firefox Rocket. -->
+    <!-- Item in Preferences that shows the about page. -->
     <string name="preference_about">About</string>
 
     <!-- Content description (not visible, for screen readers etc.): Clear text in URL bar -->
@@ -164,7 +170,8 @@
     <!-- First run tour -->
     <!-- title for first page of FirstRun, Argument 1 will be formatted by product name -->
     <string name="first_run_page1_title">Thanks for choosing %1$s</string>
-    <string name="first_run_page1_text">A browser made by Mozilla, the non-profit committed to a free and open web.</string>
+    <!-- Message for first page of FirstRun, %1$s will be "Mozilla" -->
+    <string name="first_run_page1_text">A browser made by %1$s, the non-profit committed to a free and open web.</string>
     <string name="first_run_page2_title">Browse faster than ever</string>
     <string name="first_run_page2_text">Use turbo mode to block tracking ads so you can browse at blazing speeds. If sites seem broken, just tap off the turbo mode switch in the menu.</string>
     <string name="first_run_page3_title">Save data = Save money</string>
@@ -351,22 +358,26 @@
     <string name="share_app_dialog_text_content">- Fast and lightweight\n- Data saving\n- Powerful screenshots</string>
     <string name="share_app_dialog_btn_share">Share</string>
     <string name="share_app_google_play_url" translatable="false">https://mzl.la/2kScptw</string>
-    <!-- The message template used when user shares Rocket with friends. %1$s is the App name i.e. Rocket, and %2$s is the Google Play url.-->
-    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from Mozilla. %1$s %2$s</string>
-
-    <!-- Text shown in the "Your rights" screen.
-    %1$s will be replaced with the name of the app (e.g. Firefox Rocket)-->
-    <string name="your_rights_content1"><![CDATA[%1$s is free and open source software made by Mozilla and other contributors.]]></string>
+    <!-- The message template used when user shares Rocket with friends. %1$s is the App name i.e. Rocket, and %2$s is the Google Play url, and %3$s is "Mozilla"-->
+    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from %3$s. %1$s %2$s</string>
 
     <!-- Text shown in the "Your rights" screen.
     %1$s will be replaced with the name of the app (e.g. Firefox Rocket)
-    %2$s will be replaced with a URL linking to the MPL (e.g. https://www.mozilla.org/en-US/MPL/) -->
-    <string name="your_rights_content2"><![CDATA[%1$s is made available to you under the terms of the <a href="%2$s">Mozilla Public License</a> and other open source licenses.]]></string>
+    %2$s will be replaced by "Mozilla"-->
+    <string name="your_rights_content1"><![CDATA[%1$s is free and open source software made by %2$s and other contributors.]]></string>
 
     <!-- Text shown in the "Your rights" screen.
     %1$s will be replaced with the name of the app (e.g. Firefox Rocket)
-    %2$s will be replaced with a URL linking to the trademark policy (e.g. https://www.mozilla.org/foundation/trademarks/policy/) -->
-    <string name="your_rights_content3"><![CDATA[You are not granted any rights or licenses to the trademarks of the Mozilla Foundation or any party, including the Mozilla, Firefox or %1$s names or logos. Additional information may be found <a href="%2$s">here</a>.]]></string>
+    %2$s will be replaced with a URL linking to the MPL (e.g. https://www.mozilla.org/en-US/MPL/)
+    %3$s will be replaced by "Mozilla Public License" -->
+    <string name="your_rights_content2"><![CDATA[%1$s is made available to you under the terms of the <a href="%2$s">%3$s</a> and other open source licenses.]]></string>
+
+    <!-- Text shown in the "Your rights" screen.
+    %1$s will be replaced with the name of the app (e.g. Firefox Rocket)
+    %2$s will be replaced with a URL linking to the trademark policy (e.g. https://www.mozilla.org/foundation/trademarks/policy/)
+    %3$s will be replaced by "Mozilla"
+    %4$s will be replaced by "Firefox"-->
+    <string name="your_rights_content3"><![CDATA[You are not granted any rights or licenses to the trademarks of the Mozilla Foundation or any party, including the %3$s, %4$s or %1$s names or logos. Additional information may be found <a href="%2$s">here</a>.]]></string>
 
     <!-- Text shown in the "Your rights" screen.
     %1$s will be replaced with the name of the app (e.g. Firefox Rocket)
