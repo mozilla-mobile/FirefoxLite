@@ -10,7 +10,6 @@
   <string name="menu_give_feedback">प्रतिक्रिया दियै</string>
   <string name="menu_share_with_friends">संगी सँ शेयर करियै</string>
   <string name="share_dialog_title">एकरा द्वारा शेयर करियै</string>
-  <string name="text_selection_search_action">{{app_name}} मे खोजियै</string>
   <string name="about_content_body">%1$s मोजिला द्वारा बनाएल गेल एगो तेज आरु हल्लुक ब्राउजर छै. हमर मिशन स्वस्थ आरु खुलल इंटरनेट क बढ़ावा देनाय छै.</string>
   <string name="about_link_learn_more">बेसी जानकारी</string>
   <string name="about_link_support">समर्थन</string>
@@ -162,16 +161,13 @@
   <string name="remove">हटाइयै</string>
   <string name="privacy_policy_update_notification_title">उत्पाद अपडेट सूचना</string>
   <string name="privacy_policy_update_notification_action">फ़ायरफ़ॉक्स रॉकेट कअ तोहरो आरु हर एक खतिर बेटर बनबे लअ, हम अपनो गोपनीयता नीति मे बदलाओ करलियै यै. अधिक जानै लअ टेप करिइयै.</string>
-  <string name="rate_app_dialog_text_title">{{app_name}}पसंद छै?</string>
   <string name="rate_app_dialog_text_content">हमरो उत्पाद क चुने ल धन्यवाद. अपनो कअ प्रतिक्रिया हमारा ल जरुरी छै.</string>
   <string name="rate_app_dialog_btn_go_rate">हौं, 5 सितारा रेट करियै!</string>
   <string name="rate_app_notification_action_rate">5 सितारा रेट करियै</string>
   <string name="rate_app_dialog_btn_feedback">नय,प्रतिक्रिया भेजिइयै.</string>
   <string name="rate_app_notification_action_feedback">प्रतिक्रिया</string>
-  <string name="share_app_dialog_text_title">संगी सँ {{app_name}} शेयर करियै!</string>
   <string name="share_app_dialog_text_content">- तेज आरु हल्का\n- डेटा क बचत\n- शक्तिशाली स्क्रीनशॉट</string>
   <string name="share_app_dialog_btn_share">शेयर</string>
-  <string name="share_app_promotion_text">हे, मोज़िला के इ तेज आरु हल्का ब्राउज़र क देखिइयै. {{app_name}} {{share_app_google_play_url}}</string>
   <string name="your_rights_content1">%1$s मोज़िला आरू दोसरो योगदानकर्ता द्वारा बनाएल गेलो स्वतंत्र आरू मुक्त स्रोत सॉफ्टवेयर छियै.</string>
   <string name="your_rights_content2"><![CDATA["%1$s "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2350;&#2379;&#2332;&#2364;&#2367;&#2354;&#2366; &#2360;&#2366;&#2352;&#2381;&#2357;&#2332;&#2344;&#2367;&#2325; &#2354;&#2366;&#2311;&#2360;&#2375;&#2306;&#2360;</a>" आरू दोसरो मुक्त स्रोत लाइसेंस केरो नियम के अंतर्गत अहाँ के उपलब्ध करैलो जाए छै."]]></string>
   <string name="your_rights_content3"><![CDATA["तोहरो मोज़िला फाउंडेशन या मोज़िला, फ़ायरफ़ॉक्स या %1$s नाम या लोग समेत कोनो पार्टी के ट्रेडमार्क खातिर कोय अधिकार या लाइसेंस नय देल गेल छै.अतिरिक्त जानकारी "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">" &#2326;&#2340;&#2367;&#2352; "</a>पर मिल सकै छै.]]></string>

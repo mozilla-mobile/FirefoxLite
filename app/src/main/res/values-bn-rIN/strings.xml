@@ -10,7 +10,6 @@
   <string name="menu_give_feedback">প্রতিক্রিয়া জানান</string>
   <string name="menu_share_with_friends">বন্ধুদের সাথে শেয়ার করুন</string>
   <string name="share_dialog_title">এর দ্বারা শেয়ার করুন</string>
-  <string name="text_selection_search_action">{{app_name}} এ খুঁজুন</string>
   <string name="about_content_body">%1$s Mozilla-র তৈরি একটি দ্রুত এবং হালকা ব্রাউজার। আমাদের লক্ষ্য হল একটি ভালো, মুক্ত ইন্টারনেটের উন্নতিবিধান করা।</string>
   <string name="about_link_learn_more">আরও জানুন</string>
   <string name="about_link_support">সহায়তা</string>
@@ -162,16 +161,13 @@
   <string name="remove">অপসারণ</string>
   <string name="privacy_policy_update_notification_title">প্রোডাক্ট আপডেটের বিজ্ঞপ্তি</string>
   <string name="privacy_policy_update_notification_action">আপনার এবং প্রত্যেকের জন্য Firefox Rocketকে আরও ভাল করার জন্য, আমরা আমাদের গোপনীয়তা নীতিতে কিছু পরিবর্তন করেছি। আরও জানতে ট্যাপ করুন।</string>
-  <string name="rate_app_dialog_text_title">{{app_name}} কে ভালোবাসেন কি?</string>
   <string name="rate_app_dialog_text_content">আমাদের প্রোডাক্ট নির্বাচন করার জন্য আপনাকে ধন্যবাদ। আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ।</string>
   <string name="rate_app_dialog_btn_go_rate">হ্যাঁ, 5 তারকার রেট দিন!</string>
   <string name="rate_app_notification_action_rate">5 তারকার রেট দিন</string>
   <string name="rate_app_dialog_btn_feedback">না, প্রতিক্রিয়া পাঠান।</string>
   <string name="rate_app_notification_action_feedback">প্রতিক্রিয়া</string>
-  <string name="share_app_dialog_text_title">আপনার বন্ধুদের সাথে {{app_name}} শেয়ার করুন!</string>
   <string name="share_app_dialog_text_content">- দ্রুত এবং হালকা\n- ডেটা সংরক্ষণ করে\n- জোরাল স্ক্রিনশট</string>
   <string name="share_app_dialog_btn_share">শেয়ার করুন</string>
-  <string name="share_app_promotion_text">আরে, Mozilla-র এই দ্রুত এবং হালকা ব্রাউজারটি দেখুন। {{app_name}} {{share_app_google_play_url}}</string>
   <string name="your_rights_content1">Mozilla এবং অন্যান্য অবদানকারীর দ্বারা তৈরি %1$s হল বিনামূল্যের এবং ওপেন সোর্স সফ্টওয়্যার।</string>
   <string name="your_rights_content2"><![CDATA["%1$s আপনার কাছে "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">"Mozilla Public License "</a>" এবং অন্যান্য ওপেন সোর্স লাইসেন্সের শর্তাবলী অনুসারে উপলব্ধ করা হয়েছে।"]]></string>
   <string name="your_rights_content3"><![CDATA["Mozilla, Firefox বা %1$s নাম বা লোগো সহ Mozilla ফাউন্ডেশন বা কোনও পক্ষের ট্রেডমার্কে উপর কোন অধিকার বা লাইসেন্স আপনাকে মঞ্জুর করা হয়নি। "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">here</a>" এ অতিরিক্ত তথ্য পাওয়া যেতে পারে।"]]></string>

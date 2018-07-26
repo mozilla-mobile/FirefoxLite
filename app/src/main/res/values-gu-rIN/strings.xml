@@ -10,7 +10,6 @@
   <string name="menu_give_feedback">અભીપ્રાય આપો</string>
   <string name="menu_share_with_friends">મિત્રો સાથે વહેંચો</string>
   <string name="share_dialog_title">આની મારફતે વહેંચો</string>
-  <string name="text_selection_search_action">{{app_name}} માં શોધો</string>
   <string name="about_content_body">%1$s એ Mozilla દ્વારા ઉત્પાદિત કરવામાં આવેલું ઝડપી અને ઓછી જગ્યા રોકે તેવું છે. અમારું લક્ષ્ય એક યોગ્ય , બધાં વાપરી શકે તેવું ઇન્ટરનેટ પ્રસ્થાપિત કરવાનું છે.</string>
   <string name="about_link_learn_more">વધુ શીખો</string>
   <string name="about_link_support">સહાય</string>
@@ -162,16 +161,13 @@
   <string name="remove">દૂર કરો</string>
   <string name="privacy_policy_update_notification_title">ઉત્પાદન અધ્યતન બનાવવાની સૂચના</string>
   <string name="privacy_policy_update_notification_action">Firefox Rocket ને તમારાં માટે અને બીજા બધાં માટે વધુ સારુ બનાવવા, અમે ખાનગી પાૅલીસિમાં અમુક સુધારા કરેલ છે. વધું જાણવાં માટે આ દબાવો.</string>
-  <string name="rate_app_dialog_text_title">{{app_name}} ગમ્યું?</string>
   <string name="rate_app_dialog_text_content">અમારું ઉત્પાદન પસંદ કરવા બદલ આપનો આભાર. તમારો અભિપ્રાય અમારી માટે મહત્વનો છે.</string>
   <string name="rate_app_dialog_btn_go_rate">હા, 5 સ્ટાર્સ આપો!</string>
   <string name="rate_app_notification_action_rate">5 સ્ટાર્સ આપો</string>
   <string name="rate_app_dialog_btn_feedback">ના, અભિપ્રાય મોકલો.</string>
   <string name="rate_app_notification_action_feedback">પ્રતિભાવ</string>
-  <string name="share_app_dialog_text_title">{{app_name}} મિત્રો સાથે વહેંચો!</string>
   <string name="share_app_dialog_text_content">- ઝડપી અને ઓછી જગ્યા રોકે તેવું\n- ડેટાની બચત થાય તેવું\n- પ્રભાવશળી સ્ક્રીનશોટ્સ</string>
   <string name="share_app_dialog_btn_share">વહેંચો</string>
-  <string name="share_app_promotion_text">Mozilla દ્વારા બનાવવામાં આવેલું ઝડપી અને ઓછી જગ્યા રોકે તેવું આ બ્રાઉઝર જુઓ. {{app_name}} {{share_app_google_play_url}}</string>
   <string name="your_rights_content1">%1$s Mozilla અને અન્ય યોગદાનકર્તાઓ દ્વારા બનાવવામાં આવેલ મફત અને ઓપન સોર્સ સૉફ્ટવેર છે.</string>
   <string name="your_rights_content2"><![CDATA["%1$s એ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">"Mozilla &#2744;&#2750;&#2736;&#2765;&#2741;&#2716;&#2728;&#2751;&#2709; &#2730;&#2736;&#2741;&#2750;&#2728;&#2711;&#2752;&#2728;&#2752; &#2742;&#2736;&#2724;&#2763; &#2730;&#2736; "</a>" અને બીજી ઓપનસોર્સ પરવાનગીનાં આધાર પર તમારાં માટે ઉપ્લબ્ધ કરવામાં આવેલ છે."]]></string>
   <string name="your_rights_content3"><![CDATA["તમને Mozilla ફાઉન્ડેશન અથવા અન્ય કોઇ પક્ષ, Mozilla, Firefox કે %1$s નામ અથવા લોગો સહિતનાં વ્યાપાર ચિહ્નનાં કોઇ અધિકાર કે પરવાનગી આપવામાં આવેલ નથી. વધારાની માહિતી "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2693;&#2745;&#2751;&#2690;&#2735;&#2750; &#2734;&#2739;&#2742;&#2759;</a>.]]></string>
