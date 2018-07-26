@@ -342,6 +342,14 @@ tasks.whenTaskAdded { task ->
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        kotlinOptions.allWarningsAsErrors = true
+    }
+}
+
+
+
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
