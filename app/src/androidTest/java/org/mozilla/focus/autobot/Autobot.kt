@@ -21,7 +21,7 @@ import android.support.test.rule.GrantPermissionRule
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Switch
-import junit.framework.Assert
+import org.junit.Assert
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.core.Is
