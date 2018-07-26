@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">பயனளவு தரவை அனுப்பு</string>
   <string name="preference_mozilla_telemetry_summary">அனைவருக்கும் %1$s வழங்க மற்றும் மேம்படுத்த தேவையானதை மட்டும் சேகரிக்க மொசில்லா உறுதிபூண்டுள்ளது.</string>
   <string name="preference_learn_more">மேலும் அறிய</string>
-  <string name="preference_about">%1$s பற்றி</string>
   <string name="content_description_clear_input">துள்ளிய உள்ளீடு</string>
   <string name="content_description_dismiss_input">நிராகரி</string>
   <string name="content_description_lock">பாதுகாப்பான இணைப்பு</string>

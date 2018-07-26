@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">ഉപയോഗ ഡാറ്റ അയക്കുക</string>
   <string name="preference_mozilla_telemetry_summary">%1$s എല്ലാവര്‍ക്കും മെച്ചപ്പെട്ടതാക്കാൻ ആവശ്യമുള്ള ഡാറ്റ മാത്രം ശേഖരിക്കാൻ മോസില്ല ശ്രമിക്കുന്നു.</string>
   <string name="preference_learn_more">കൂടുതല്‍ അറിയുക</string>
-  <string name="preference_about">%1$s നെ കുറിച്ച്</string>
   <string name="content_description_clear_input">ഇന്‍പുട്ട് വെടിപ്പാക്കുക</string>
   <string name="content_description_dismiss_input">കളയുക</string>
   <string name="content_description_lock">സുരക്ഷിതമായ കണക്ഷന്‍</string>

@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">వాడుక డేటాను పంపించు</string>
   <string name="preference_mozilla_telemetry_summary">అందరికీ %1$s‌ని మెరుగ్గా అందించడానికి కావలసినంత తక్కువ సమాచారాన్ని మాత్రమే సేకరించడానికి మొజిల్లా ప్రయత్నిస్తుంది.</string>
   <string name="preference_learn_more">ఇంకా తెలుసుకోండి</string>
-  <string name="preference_about">%1$s గురించి</string>
   <string name="content_description_clear_input">ఇన్‌పుట్ తుడిచివేయి</string>
   <string name="content_description_dismiss_input">విస్మరించు</string>
   <string name="content_description_lock">సురక్షిత అనుసంధానం</string>

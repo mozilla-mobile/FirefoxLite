@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">Ipadala ang mga datos ng paggamit</string>
   <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang Mozilla na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
   <string name="preference_learn_more">Detalye</string>
-  <string name="preference_about">Detalye ng %1$s</string>
   <string name="content_description_clear_input">Burahin ang input</string>
   <string name="content_description_dismiss_input">Alisin</string>
   <string name="content_description_lock">Secure na koneksyon</string>

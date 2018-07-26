@@ -29,7 +29,6 @@
   <string name="preference_mozilla_telemetry">ส่งข้อมูลการใช้งาน</string>
   <string name="preference_mozilla_telemetry_summary">Mozilla มุ่งมั่นที่จะเก็บรวบรวมเฉพาะสิ่งที่เราจำเป็นต้องให้บริการและปรับปรุง %1$s สำหรับทุกคน</string>
   <string name="preference_learn_more">เรียนรู้เพิ่มเติม</string>
-  <string name="preference_about">เกี่ยวกับ %1$s</string>
   <string name="content_description_clear_input">ล้างข้อมูลที่ป้อน</string>
   <string name="content_description_dismiss_input">ยกเลิก</string>
   <string name="content_description_lock">การเชื่อมต่อปลอดภัย</string>
