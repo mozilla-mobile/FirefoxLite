@@ -51,3 +51,6 @@ infer-out/
 .DS_Store
 
 google-services.json
+
+# Fastlane for screenshot
+fastlane/
