@@ -22,7 +22,7 @@ android {
         versionName Versions.version_name
         testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
         testInstrumentationRunnerArgument 'disableAnalytics', 'true'
-        testInstrumentationRunnerArguments clearPackageData: 'true'
+        testInstrumentationRunnerArguments clearPackageData: 'true', notAnnotation: 'org.mozilla.focus.annotation.ScreengrabOnly'
         multiDexEnabled true
 
         vectorDrawables {
@@ -266,6 +266,8 @@ dependencies {
     })
     androidTestImplementation "com.android.support.test.espresso:espresso-web:${Versions.espresso}"
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:${Versions.espresso}"
+    androidTestImplementation "tools.fastlane:screengrab:${Versions.fastlane_screengrab}"
+    androidTestImplementation "com.jraska:falcon:${Versions.jraska_falcon}"
     androidTestUtil "com.android.support.test:orchestrator:${Versions.test_runner}"
 
     // LeakCanary
