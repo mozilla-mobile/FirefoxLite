@@ -14,6 +14,15 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_homescreen_color" />
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintDimensionRatio="H,2:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"/>
+
     <include layout="@layout/fragment_homescreen_item_fake_input"
         android:id="@+id/home_fragment_fake_input"
         style="@style/FakeInput"
