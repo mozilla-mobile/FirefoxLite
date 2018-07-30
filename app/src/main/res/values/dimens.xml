@@ -44,7 +44,7 @@
 
     <dimen name="home_title_bottom_margin">72dp</dimen>
     <dimen name="home_padding_url_bar_to_title">60dp</dimen>
-    <dimen name="home_padding_url_bar_to_top_sites">36dp</dimen>
+    <dimen name="home_padding_url_bar_to_top_sites">24dp</dimen>
 
     <dimen name="top_site_width">296dp</dimen>
     <dimen name="top_site_font_size" tools:ignore="SpUsage">11dp</dimen>
