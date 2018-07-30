@@ -6,6 +6,7 @@
 package org.mozilla.focus.widget;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
@@ -14,7 +15,7 @@ import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.SwipeMotionDetector;
 
 
-public class SwipeMotionLayout extends RelativeLayout {
+public class SwipeMotionLayout extends ConstraintLayout {
 
     private SwipeMotionDetector swipeMotionDetector;
 
@@ -27,11 +28,7 @@ public class SwipeMotionLayout extends RelativeLayout {
     }
 
     public SwipeMotionLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public SwipeMotionLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
     }
 
     @Override
