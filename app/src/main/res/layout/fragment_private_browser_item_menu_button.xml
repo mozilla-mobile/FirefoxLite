@@ -45,10 +45,10 @@
             app:srcCompat="@drawable/ic_refresh" />
 
         <ImageButton
-            android:id="@+id/btn_share"
+            android:id="@+id/btn_delete"
             style="@style/MainMenuButton"
             android:tint="@color/private_menu_button"
-            app:srcCompat="@drawable/action_share" />
+            app:srcCompat="@drawable/ic_delete" />
 
     </org.mozilla.focus.widget.EqualDistributeRow>
 </FrameLayout>

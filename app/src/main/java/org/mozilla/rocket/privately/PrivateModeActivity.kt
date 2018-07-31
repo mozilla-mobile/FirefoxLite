@@ -73,6 +73,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
             TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
+            TYPE.DROP_BROWSING_PAGES -> dropBrowserFragment()
             else -> {
             }
         }
@@ -99,8 +100,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
                         return
                     }
                 }
-                getNavController().navigateUp()
-                stopPrivateMode()
+                dropBrowserFragment()
             }
         }
     }
@@ -121,8 +121,11 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         if (exitEarly) {
             return
         }
+    }
 
-
+    private fun dropBrowserFragment() {
+        getNavController().navigateUp()
+        stopPrivateMode()
     }
 
     private fun pushToBack() {

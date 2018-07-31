@@ -25,6 +25,7 @@ public interface FragmentListener {
         UPDATE_MENU, // no payload
         REFRESH_TOP_SITE, // no payload
         TOGGLE_PRIVATE_MODE, // no payload
+        DROP_BROWSING_PAGES, // no payload
         SHOW_TAB_TRAY, // no payload
     }
 
