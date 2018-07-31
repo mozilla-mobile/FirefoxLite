@@ -217,7 +217,7 @@ dependencies {
         transitive = false
     })
 
-    implementation "org.mozilla.components:telemetry:${Versions.telemetry}"
+    implementation "org.mozilla.components:telemetry:${Versions.android_components}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
