@@ -10,4 +10,12 @@ package org.mozilla.rocket.tabs;
  */
 public interface TabViewProvider {
     TabView create();
+
+    /**
+     * To clean up some persistent data which effect provided TabView, but not directly inside the TabView.
+     * <p>
+     * For instance, a cookie effect a @see{android.webkit.WebView} but it is stores in another place.
+     * A TabViewProvider knows its real implementation, and this is the interface for caller to clean up.
+     */
+    void purify();
 }
