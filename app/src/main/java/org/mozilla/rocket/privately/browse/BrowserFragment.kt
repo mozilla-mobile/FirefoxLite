@@ -99,7 +99,7 @@ class BrowserFragment : LocaleAwareFragment(),
         view.findViewById<View>(R.id.btn_mode).setOnClickListener { onModeClicked() }
         view.findViewById<View>(R.id.btn_search).setOnClickListener { onSearchClicked() }
         view.findViewById<View>(R.id.btn_refresh).setOnClickListener { onRefreshClicked() }
-        view.findViewById<View>(R.id.btn_share).setOnClickListener { onShareClicked() }
+        view.findViewById<View>(R.id.btn_delete).setOnClickListener { onDeleteClicked() }
 
         btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton)
                 .also {
@@ -211,19 +211,12 @@ class BrowserFragment : LocaleAwareFragment(),
         reload()
     }
 
-    private fun onShareClicked() {
-        val url = tabsSession.focusTab?.url ?: return
-        if (UrlUtils.isInternalErrorURL(url)) {
-            return
+    private fun onDeleteClicked() {
+        val listener = activity as FragmentListener
+        for (tab in tabsSession.tabs) {
+            tabsSession.dropTab(tab.id)
         }
-
-        Intent().also {
-            it.action = Intent.ACTION_SEND
-            it.type = "text/plain"
-            it.putExtra(Intent.EXTRA_TEXT, url)
-        }.let {
-            startActivity(Intent.createChooser(it, getString(R.string.share_dialog_title)))
-        }
+        listener.onNotified(BrowserFragment@ this, TYPE.DROP_BROWSING_PAGES, null)
     }
 
     class BrowserTabsChromeListener(val fragment: BrowserFragment) : DefaultTabsChromeListener() {
