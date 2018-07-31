@@ -29,10 +29,13 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         TabsSessionProvider.SessionHost {
 
     private var session: TabsSession? = null
+    private lateinit var tabViewProvider: PrivateTabViewProvider
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        tabViewProvider = PrivateTabViewProvider(this)
 
         handleIntent(intent)
 
@@ -99,7 +102,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     override fun getTabsSession(): TabsSession {
         if (session == null) {
-            session = TabsSession(PrivateTabViewProvider(this))
+            session = TabsSession(tabViewProvider)
         }
 
         // we just created it, it definitely not null
@@ -184,6 +187,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun stopPrivateMode() {
         PrivateSessionNotificationService.stop(this)
         PrivateMode.sanitize(this.applicationContext)
+        tabViewProvider.purify()
         Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
