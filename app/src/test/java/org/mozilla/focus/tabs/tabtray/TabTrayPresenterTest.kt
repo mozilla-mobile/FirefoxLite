@@ -97,6 +97,9 @@ class TabTrayPresenterTest {
         override fun create(): TabView {
             return DefaultTabView()
         }
+
+        override fun purify() {
+        }
     }
 
     private class DefaultTabView : TabView {

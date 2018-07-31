@@ -1032,5 +1032,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // but there is no promise about this.
             return (TabView) WebViewProvider.create(this.activity, null);
         }
+
+        @Override
+        public void purify() {
+            // per current requirement, we do not need purify in normal-mode-browsing.
+        }
     }
 }

@@ -12,6 +12,10 @@ class PrivateTabViewProvider(private val host: Activity) : TabViewProvider {
         return WebViewProvider.create(host, null, WebViewSettingsHook) as TabView
     }
 
+    override fun purify() {
+        create().cleanup()
+    }
+
     object WebViewSettingsHook : WebViewProvider.WebSettingsHook {
         override fun modify(settings: WebSettings?) {
             if (settings == null) {
