@@ -94,8 +94,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         clearView = view.findViewById(R.id.clear);
         clearView.setOnClickListener(this);
 
-        urlAutoCompleteFilter = new UrlAutoCompleteFilter();
-        urlAutoCompleteFilter.loadDomainsInBackground(getContext().getApplicationContext());
+        urlAutoCompleteFilter = new UrlAutoCompleteFilter(getContext().getApplicationContext());
 
         suggestionView = (FlowLayout) view.findViewById(R.id.search_suggestion);
 
