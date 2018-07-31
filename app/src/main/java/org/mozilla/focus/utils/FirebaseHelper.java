@@ -43,6 +43,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String RATE_APP_NOTIFICATION_THRESHOLD = "rate_app_notification_threshold";
     static final String SHARE_APP_DIALOG_THRESHOLD = "share_app_dialog_threshold";
     static final String ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread";
+    static final String BANNER_MANIFEST = "banner_manifest";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
     private static final String FIREBASE_DB_URL = "firebase_database_url";

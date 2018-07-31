@@ -6,14 +6,19 @@
 package org.mozilla.focus.home;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +27,7 @@ import android.view.ViewParent;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -37,6 +43,8 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -74,8 +82,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
     private TabsSession tabsSession;
-
     private final TabsChromeListener tabsChromeListener = new TabsChromeListener();
+    private RecyclerView banner;
+    private ImageView logo;
+    private BroadcastReceiver receiver;
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -87,6 +97,25 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         super.onCreate(bundle);
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
+    }
+
+    private void showBanner(boolean enabled) {
+        if (enabled) {
+            banner.setVisibility(View.VISIBLE);
+            logo.setVisibility(View.INVISIBLE);
+        } else {
+            banner.setVisibility(View.INVISIBLE);
+            logo.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setUpBanner(Context context) {
+        String manifest = AppConfigWrapper.getBannerRootConfig(context);
+        if (TextUtils.isEmpty(manifest)) {
+            showBanner(false);
+        } else {
+            showBanner(true);
+        }
     }
 
     @Override
@@ -116,6 +145,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             TelemetryWrapper.showSearchBarHome();
         });
+        this.banner = view.findViewById(R.id.banner);
+        this.logo = view.findViewById(R.id.home_fragment_title);
 
         SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());
@@ -140,13 +171,35 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Override
     public void onResume() {
         super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(FirebaseHelper.FIREBASE_READY);
+        this.receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                setUpBanner(context);
+            }
+        };
+        Context context = getContext();
+        if (context != null) {
+            LocalBroadcastManager.getInstance(context).registerReceiver(this.receiver, intentFilter);
+        }
         updateTopSitesData();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Context context = getContext();
+        if (context != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(this.receiver);
+        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         doWithActivity(getActivity(), themeManager -> themeManager.subscribeThemeChange(homeScreenBackground));
+        setUpBanner(getContext());
     }
 
     @Override
