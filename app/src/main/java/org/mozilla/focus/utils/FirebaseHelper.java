@@ -6,12 +6,14 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.mozilla.focus.R;
@@ -33,6 +35,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
     // keys for remote config default value
     public static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
     public static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
+
+    // Key for local broadcast
+    public static final String FIREBASE_READY = "Firebase_ready";
 
     static final String RATE_APP_DIALOG_THRESHOLD = "rate_app_dialog_threshold";
     static final String RATE_APP_NOTIFICATION_THRESHOLD = "rate_app_notification_threshold";
@@ -192,6 +197,12 @@ final public class FirebaseHelper extends FirebaseWrapper {
             StrictMode.setVmPolicy(cacheVmPolicy);
 
             return null;
+        }
+
+        protected void onPostExecute(Void result) {
+            if (pending == null) {
+                LocalBroadcastManager.getInstance(weakApplicationContext.get()).sendBroadcast(new Intent(FIREBASE_READY));
+            }
         }
 
     }
