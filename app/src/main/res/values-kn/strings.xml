@@ -11,6 +11,7 @@
   <string name="menu_share_with_friends">ಸ್ನೇಹಿತರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ</string>
   <string name="share_dialog_title">ಇದರ ಮೂಲಕ ಹಂಚು</string>
   <string name="text_selection_search_action">ಫೈರ್ಫಾಕ್ಸ್ ರಾಕೆಟ್‍ನಲ್ಲಿ ಹುಡುಕು</string>
+  <string name="about_content_body">%1$s ಅತ್ಯಂತ ವೇಗವಾದ ಮತ್ತು ಹಗುರ ಬ್ರೌಸರ್ ಅನ್ನು %2$s ಉತ್ಪಾದಿಸಿದೆ. ನಮ್ಮ ಧ್ಯೇಯ ಆರೋಗ್ಯಕರ, ತೆರೆದ ಇಂಟರ್ನೆಟ್ ಅನ್ನು ಬೆಳೆಸುವುದು.</string>
   <string name="about_link_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
   <string name="about_link_support">ಬೆಂಬಲ</string>
   <string name="about_link_your_rights">ನಿಮ್ಮ ಹಕ್ಕುಗಳು/ ಪರವಾನಗಿಗಳು</string>
@@ -26,8 +27,9 @@
   <string name="preference_default_browser_is_setting">ಸಿದ್ಧತೆಗಳನ್ನು ಬದಲಿಸುವುದು…</string>
   <string name="preference_turbo_mode">ಟರ್ಬೋ ಮೋಡ್</string>
   <string name="preference_mozilla_telemetry">ಬಳಕೆಯ ದತ್ತಾಂಶ ಕಳುಹಿಸಿ</string>
+  <string name="preference_mozilla_telemetry_summary">%2$s ಎಲ್ಲರಿಗಾಗಿ %1$s ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಿ ಕೊಡುವುದಕ್ಕೆ ಬೇಕಾದ್ದನ್ನು ಮಾತ್ರ ಸಂಗ್ರಹಿಸುತ್ತದೆ.</string>
   <string name="preference_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
-  <string name="preference_about">%1$s ನ ಬಗ್ಗೆ</string>
+  <string name="preference_about">ನ ಬಗ್ಗೆ</string>
   <string name="content_description_clear_input">ಇನ್ಪುಟ್ ತೆರವುಗೊಳಿಸಿ</string>
   <string name="content_description_dismiss_input">ವಜಾಗೊಳಿಸು‍</string>
   <string name="content_description_lock">ಸುರಕ್ಷಿತ ಸಂಪರ್ಕ</string>
@@ -56,6 +58,7 @@
   <string name="contextmenu_open_in_new_tab">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಕೊಂಡಿಯನ್ನು ತೆರೆ</string>
   <string name="contextmenu_open_image_in_new_tab">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಚಿತ್ರವನ್ನು ತೆರೆ</string>
   <string name="first_run_page1_title">%1$s ಆಯ್ಕೆಮಾಡಿದ್ದಕ್ಕೆ ವಂದನೆಗಳು</string>
+  <string name="first_run_page1_text">ಸ್ವತಂತ್ರ ಮತ್ತು ಮುಕ್ತ ಜಾಲಕ್ಕಾಗಿ ಬದ್ಧವಾಗಿರುವ ಲಾಭರಹಿತ ಸಂಸ್ಥೆಯಾದ, %1$s ಅಭಿವೃದ್ಧಿಪಡಿಸಿದ ಒಂದು ಬ್ರೌಸರ್.</string>
   <string name="first_run_page2_title">ಹಿಂದಿನಕ್ಕಿಂತೆ ವೇಗವಾಗಿ ಜಾಲಾಡಿ</string>
   <string name="first_run_page2_text">ಟರ್ಬೋ ಸ್ಥಿತಿ ಬಳಸಿ ಜಾಲಾಟದ ಜಾಡುಹಿಡಿಯುವ ಜಾಹೀರಾತುಗಳನ್ನು ತಡೆಯುವುದರ ಮೂಲಕ ಮಿಂಚಿನವೇಗಗಳಲ್ಲಿ ಜಾಲಾಡಿ. ನಿಮ್ಮ ಜಾಲತಾಣಗಳು ಮುರಿದಂತೆ ಕಂಡುಬಂದಲ್ಲಿ, ಮೆನುವಿನಲ್ಲಿ ಟರ್ಬೋ ಸ್ಥಿತಿಯನ್ನು ತಟ್ಟಿ ಸ್ಥಗಿತಗೊಳಿಸಿ.</string>
   <string name="first_run_page3_title">ಡೆಟಾ ಉಳಿತಾಯ = ದುಡ್ಡು ಉಳಿತಾಯ</string>
@@ -168,6 +171,10 @@
   <string name="share_app_dialog_text_title">ನಿಮ್ಮ ಗೆಳೆಯರೊಂದಿಗೆ %1$s ಅನ್ನು ಹಂಚಿಕೊಳ್ಳಿ!</string>
   <string name="share_app_dialog_text_content">- ವೇಗ ಮತ್ತು ಹಗುರವಾದದ್ದು\n- ದತ್ತಾಂಶ ಉಳಿಸುವಂತದ್ದು\n- ಶಕ್ತಿಯುತವಾದ ತೆರೆಚಿತ್ರಗಳು</string>
   <string name="share_app_dialog_btn_share">ಹಂಚು</string>
+  <string name="share_app_promotion_text">ಹೇ, %3$s ದ ವೇಗದ ಮತ್ತು ಹಗುರವಾದ ಬ್ರೌಸರ್ ಅನ್ನು ಒಮ್ಮೆ ನೋಡಿ. %1$s %2$s</string>
+  <string name="your_rights_content1">%1$s ಒಂದು ಮುಕ್ತ ಹಾಗೂ ಸ್ವತಂತ್ರ ತಂತ್ರಾಂಶವಾಗಿದ್ದು %2$s ಮತ್ತು ಇತರೆ ಕೊಡುಗೆದಾರರಿಂದ ಮಾಡಲ್ಪಟ್ಟಿದೆ.</string>
+  <string name="your_rights_content2"><![CDATA["%1$s ಅನ್ನು ನಿಮಗಾಗಿ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s &#3256;&#3262;&#3248;&#3277;&#3253;&#3228;&#3240;&#3263;&#3221; &#3242;&#3248;&#3253;&#3262;&#3240;&#3223;&#3263;</a>" ಮತ್ತು ಇತರೆ ಮುಕ್ತ ತಂತ್ರಾಂಶ ಪರವಾನಗಿಗಳ ಕರಾರುಗಳೊಂದಿಗೆ ಲಭ್ಯವಾಗಿಸಲಾಗಿದೆ."]]></string>
+  <string name="your_rights_content3"><![CDATA["ನಿಮಗೆ ಮೊಝಿಲ್ಲಾ ಫೌಂಡೇಷನ್ ಅಥವಾ ಯಾವುದೇ ಪಕ್ಷದ, ಇವನ್ನೂ ಒಳಗೊಂಡಂತೆ %3$s, %4$s ಅಥವಾ %1$s ಹೆಸರುಗಳು ಅಥವಾ ಲೋಗೋಗಳ ಯಾವುದೇ ಹಕ್ಕುಗಳು ಅಥವಾ ಪರವಾನಗಿಯನ್ನು ನೀಡಲಾಗಿಲ್ಲ. ಹೆಚ್ಚಿನ ಮಾಹಿತಿಯನ್ನು "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3207;&#3250;&#3277;&#3250;&#3263;</a>" ಕಾಣಬಹುದಾಗಿದೆ."]]></string>
   <string name="your_rights_content4"><![CDATA["%1$s ಗೆ ಹೆಚ್ಚಿನ ಸೋರ್ಸ್ ಕೋಡ್ ಅನೇಕ ಇತರೆ ಮುಕ್ತ ಮತ್ತು ಸ್ವತಂತ್ರ ತಂತ್ರಾಂಶ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3242;&#3248;&#3253;&#3262;&#3240;&#3223;&#3263;&#3223;&#3251;</a>" ಮೂಲಕ ಲಭ್ಯವಿವೆ."]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s ಡಿಸ್ಕನೆಕ್ಟ್, ಇಂಕ್. ಲಭ್ಯವಾಗಿಸಿರುವ ಬ್ಲಾಕ್‍ಲಿಸ್ಟ್‍‍ಗಳನ್ನೂ ಬೇರೆಯ ಮತ್ತು ಸ್ವತಂತ್ರ ಕೆಲಸಗಳಾಗಿ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>" ನ ಅಡಿ ಬಳಸುತ್ತದೆ, ಮತ್ತು "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#3207;&#3250;&#3277;&#3250;&#3263;</a>" ಲಭ್ಯವಿದೆ."]]></string>
   <string name="survey_notification_title">ನಮಗೆ ನಿಮ್ಮ ಅಗತ್ಯವಿದೆ! %1$s</string>
