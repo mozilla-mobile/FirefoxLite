@@ -11,6 +11,7 @@
   <string name="menu_share_with_friends">แบ่งปันกับเพื่อน ๆ</string>
   <string name="share_dialog_title">แบ่งปันผ่าน</string>
   <string name="text_selection_search_action">ค้นหาใน Firefox Rocket</string>
+  <string name="about_content_body">%1$s เป็นเบราว์เซอร์ที่เร็วและเบาที่สร้างขึ้นโดย %2$s ภารกิจของเราคือส่งเสริมอินเทอร์เน็ตที่สมบูรณ์และเปิดกว้าง</string>
   <string name="about_link_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="about_link_support">การสนับสนุน</string>
   <string name="about_link_your_rights">สิทธิของคุณ / สัญญาอนุญาต</string>
@@ -26,8 +27,9 @@
   <string name="preference_default_browser_is_setting">กำลังเปลี่ยนการตั้งค่า…</string>
   <string name="preference_turbo_mode">โหมดเทอร์โบ</string>
   <string name="preference_mozilla_telemetry">ส่งข้อมูลการใช้งาน</string>
+  <string name="preference_mozilla_telemetry_summary">%2$s มุ่งมั่นที่จะเก็บรวบรวมเฉพาะสิ่งที่เราจำเป็นต้องให้บริการและปรับปรุง %1$s สำหรับทุกคน</string>
   <string name="preference_learn_more">เรียนรู้เพิ่มเติม</string>
-  <string name="preference_about">เกี่ยวกับ %1$s</string>
+  <string name="preference_about">เกี่ยวกับ</string>
   <string name="content_description_clear_input">ล้างข้อมูลที่ป้อน</string>
   <string name="content_description_dismiss_input">ยกเลิก</string>
   <string name="content_description_lock">การเชื่อมต่อปลอดภัย</string>
@@ -56,6 +58,7 @@
   <string name="contextmenu_open_in_new_tab">เปิดลิงก์ในแท็บใหม่</string>
   <string name="contextmenu_open_image_in_new_tab">เปิดภาพในแท็บใหม่</string>
   <string name="first_run_page1_title">ขอบคุณที่เลือก %1$s</string>
+  <string name="first_run_page1_text">เบราว์เซอร์ที่สร้างขึ้นโดย %1$s องค์กรไม่แสวงหาผลกำไรที่มุ่งมั่นเพื่อเว็บเสรีและเปิดกว้าง</string>
   <string name="first_run_page2_title">ท่องเว็บได้เร็วขึ้นกว่าที่เคย</string>
   <string name="first_run_page2_text">ใช้โหมดเทอร์โบเพื่อปิดกั้นโฆษณาที่ติดตามข้อมูลของคุณ ทำให้เปิดเว็บได้อย่างรวดเร็ว; ถ้าเว็บไซต์ทำงานผิดปกติ ก็สามารถแตะปิดโหมดเทอร์โบในเมนูได้</string>
   <string name="first_run_page3_title">ประหยัดข้อมูล = ประหยัดเงิน</string>
@@ -137,7 +140,7 @@
   <string name="message_removable_storage_space_not_enough">การ์ด SD ใกล้เต็ม ไฟล์ถูกบันทึกไปยังที่เก็บข้อมูลภายใน</string>
   <string name="screenshot_grid_empty_text_title">ไม่มีภาพหน้าจอ</string>
   <string name="screenshot_grid_empty_text_msg_prefix">แตะ</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">  ในเมนูเพื่อจับภาพหน้าเว็บทั้งหน้า</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">" ในเมนูเพื่อจับภาพหน้าเว็บทั้งหน้า"</string>
   <string name="screenshot_image_viewer_dialog_title">ข้อมูล</string>
   <string name="screenshot_image_viewer_dialog_info_time1">วันที่: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">ความละเอียด: %1$s</string>
@@ -168,6 +171,10 @@
   <string name="share_app_dialog_text_title">แบ่งปัน %1$s กับเพื่อน ๆ!</string>
   <string name="share_app_dialog_text_content">- เร็วและเบา\n- ประหยัดการรับส่งข้อมูล\n- ตัวจับภาพหน้าจอที่ทรงพลัง</string>
   <string name="share_app_dialog_btn_share">แบ่งปัน</string>
+  <string name="share_app_promotion_text">เฮ้ ลองดูเบราว์เซอร์ที่เร็วและเบานี้จาก %3$s %1$s %2$s</string>
+  <string name="your_rights_content1">%1$s เป็นซอฟต์แวร์เสรีและเปิดต้นฉบับที่สร้างขึ้นโดย %2$s และผู้มีส่วนร่วมอื่น ๆ</string>
+  <string name="your_rights_content2"><![CDATA["%1$s ให้คุณใช้ภายใต้เงื่อนไขของ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" และสัญญาอนุญาตการเปิดต้นฉบับอื่น ๆ"]]></string>
+  <string name="your_rights_content3"><![CDATA["คุณไม่ได้รับสิทธิหรือสัญญาอนุญาตใด ๆ ในเครื่องหมายการค้าของมูลนิธิ Mozilla หรือบุคคลใด ๆ รวมทั้งชื่อหรือโลโก้ %3$s, %4$s หรือ %1$s ข้อมูลเพิ่มเติมอาจพบได้ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3607;&#3637;&#3656;&#3609;&#3637;&#3656;</a>]]></string>
   <string name="your_rights_content4"><![CDATA["โค้ดต้นฉบับเพิ่มเติมสำหรับ %1$s ใช้ได้ภายใต้ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3626;&#3633;&#3597;&#3597;&#3634;&#3629;&#3609;&#3640;&#3597;&#3634;&#3605;</a>" เสรีและเปิดต้นฉบับต่าง ๆ"]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s ยังใช้รายการปิดกั้นที่ให้บริการโดย Disconnect, Inc. ซึ่งเป็นงานแยกและเป็นอิสระภายใต้ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>" และใช้ได้ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#3607;&#3637;&#3656;&#3609;&#3637;&#3656;</a>]]></string>
   <string name="survey_notification_title">เราต้องการคุณ! %1$s</string>

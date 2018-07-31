@@ -10,6 +10,8 @@
   <string name="menu_give_feedback">ਸੁਝਾਅ ਦਿਓ</string>
   <string name="menu_share_with_friends">ਦੋਸਤਾਂ ਨਾਲ ਸਾਂਝਾ ਕਰੋ</string>
   <string name="share_dialog_title">ਇਸ ਦੇ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ</string>
+  <string name="text_selection_search_action">Firefox Rocket ਵਿੱਚ ਖੋਜੋ</string>
+  <string name="about_content_body">%2$s ਵੱਲੋਂ ਬਣਾਇਆ ਗਿਆ %1$s ਇੱਕ ਹਲਕਾ ਅਤੇ ਤੇਜ਼ ਬਰਾਊਜ਼ਰ ਹੈ। ਸਾਡਾ ਟੀਚਾ ਇੱਕ ਸਿਹਤਮੰਦ ਅਤੇ ਖੁੱਲ੍ਹੇ-ਡੁੱਲ੍ਹੇ ਇੰਟਰਨੈੱਟ ਨੂੰ ਵਧਾਉਣਾ ਫੁਲਾਉਣਾ ਹੈ।</string>
   <string name="about_link_learn_more">ਹੋਰ ਜਾਣੋ</string>
   <string name="about_link_support">ਸਹਾਇਤਾ</string>
   <string name="about_link_your_rights">ਤੁਹਾਡੇ ਹੱਕ / ਲਸੰਸ</string>
@@ -25,8 +27,9 @@
   <string name="preference_default_browser_is_setting">ਸੈਟਿੰਗਾਂ ਬਦਲੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ…</string>
   <string name="preference_turbo_mode">ਟਰਬੋ ਮੋਡ</string>
   <string name="preference_mozilla_telemetry">ਵਰਤੋਂ ਸਬੰਧੀ ਡੇਟਾ ਭੇਜੋ</string>
+  <string name="preference_mozilla_telemetry_summary">%2$s ਭਰਪੂਰ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ ਕਿ ਸਿਰਫ ਉਹੀ ਕੁੱਝ ਇਕੱਠਾ ਕੀਤਾ ਜਾਵੇ ਜੋ ਕਿ %1$s ਨੂੰ ਹਰੇਕ ਲਈ ਮੁਹੱਈਆ ਕਰਾਉਣ ਅਤੇ ਹੋਰ ਸੁਧਾਰਨ ਲਈ ਲੋੜੀਂਦਾ ਹੋਵੇ।</string>
   <string name="preference_learn_more">ਹੋਰ ਜਾਣੋ</string>
-  <string name="preference_about">%1$s ਦੇ ਬਾਰੇ</string>
+  <string name="preference_about">ਦੇ ਬਾਰੇ</string>
   <string name="content_description_clear_input">ਇਨਪੁਟ ਨੂੰ ਹਟਾਓ</string>
   <string name="content_description_dismiss_input">ਖਾਰਜ ਕਰੋ</string>
   <string name="content_description_lock">ਸੁਰੱਖਿਅਤ ਕਨੈਕਸ਼ਨ</string>
@@ -55,10 +58,13 @@
   <string name="contextmenu_open_in_new_tab">ਲਿੰਕ ਨੂੰ ਨਵੀਂ ਟੈਬ ਵਿੱਚ ਖੋਲ੍ਹੋ</string>
   <string name="contextmenu_open_image_in_new_tab">ਚਿੱਤਰ ਨੂੰ ਨਵੀਂ ਟੈਬ ਵਿੱਚ ਖੋਲ੍ਹੋ</string>
   <string name="first_run_page1_title">%1$s ਨੂੰ ਚੁਣਨ ਲਈ ਧੰਨਵਾਦ ਜੀ</string>
+  <string name="first_run_page1_text">ਇੱਕ ਗੈਰ-ਮੁਨਾਫ਼ਾ ਸੰਸਥਾ ਦੇ ਤੌਰ ਤੇ ਮੁਫਤ ਅਤੇ ਖੁੱਲ੍ਹੇ-ਡੁੱਲ੍ਹੇ ਵੈੱਬ ਲਈ ਵਚਨਵੱਧ %1$s ਦੇ ਵੱਲੋਂ ਬਣਾਇਆ ਗਿਆ ਬਰਾਊਜ਼ਰ।</string>
   <string name="first_run_page2_title">ਸੱਭ ਤੋਂ ਤੇਜ ਬਰਾਊਜ਼ ਕਰੋ</string>
   <string name="first_run_page2_text">ਤੁਹਾਡੀ ਪੈੜ੍ਹ ਨੱਪਣ ਵਾਲੀਆਂ ਮਸ਼ਹੂਰੀਆਂ ਤੇ ਰੋਕ ਲਾਉਣ ਲਈ ਟਰਬੋ ਮੋਡ ਵਰਤੋ ਤਾਂ ਕਿ ਤੁਸੀਂ ਬਿਜਲੀ ਦੀ ਤੇਜੀ ਨਾਲ ਬਰਾਊਜ਼ ਕਰ ਸਕੋ। ਜੇ ਸਾਈਟਾਂ ਕਿਤੇ ਵਿੱਚ ਖੜੋਤ ਆਉਂਦੀ ਦਿਸੇ ਤਾਂ ਮੇਨੂ ਵਿੱਚੋਂ ਬੱਸ ਟਰਬੋ ਮੋਡ ਬਟਨ ਛੂਹ ਕੇ ਬੰਦ ਕਰ ਦਿਉ।</string>
   <string name="first_run_page3_title">ਡੇਟਾ ਦੀ ਬੱਚਤ = ਪੈਸੇ ਦੀ ਬੱਚਤ</string>
+  <string name="first_run_page3_text">ਤੁਹਾਡੀ ਪੈੜ੍ਹ ਨੱਪਣ ਵਾਲੀਆਂ ਮਸ਼ਹੂਰੀਆਂ ਤੇ ਪਾਬੰਦੀ ਨਾਲ ਨਾ ਸਿਰਫ ਬਰਾਊਜ਼ ਕਰਨ ਵਿੱਚ ਤੇਜੀ ਆਉਂਦੀ ਹੈ, ਬਲਕਿ ਇਸ ਨਾਲ ਡੇਟਾ ਦੀ ਵੀ ਬੱਚਤ ਹੁੰਦੀ ਹੈ।ਜੇ ਤੁਸੀਂ ਤਸਵੀਰਾਂ ਤੇ ਪਾਬੰਦੀ ਲਾ ਦਿਉ ਤਾਂ ਬੱਚਤ ਹੋਰ ਵੀ ਜਿਆਦਾ ਹੁੰਦੀ ਹੈ।</string>
   <string name="first_run_page4_title">ਸਭ ਕੁਝ ਸਕ੍ਰੀਨਸ਼ਾਟ ਕਰੋ</string>
+  <string name="first_run_page4_text">ਸਾਰੇ ਵੈੱਬ ਵਰਕੇ ਦੀ ਤਸਵੀਰ ਖਿੱਚ ਲਉ। ਇਸ ਤਸਵੀਰ ਨੂੰ ਔਫਲਾਇਨ (ਡੇਟਾ ਵਰਤੇ ਬਗੈਰ) ਵੇਖੋ ਜਾਂ ਮੁੜ ਕੇ ਉਸ ਵਰਕੇ ਤੇ ਜਾਣ ਲਈ ਇਸ ਤੇ ਉਂਗਲ ਲਾਉ।</string>
   <string name="first_run_upgrade_page_title">ਅਸੀਂ ਤੁਹਾਡਾ ਸੁਝਾਅ ਸੁਣਿਆ!</string>
   <string name="first_run_upgrade_page_text1">1. ਇਕੋ ਸਮੇਂ ਵਿੱਚ %s ਖੋਲ੍ਹਣ ਨਾਲ ਮਲਟੀਟਾਸਕ!</string>
   <string name="first_run_upgrade_page_text1_highlight">ਬਹੁਤ ਟੈਬ</string>
@@ -156,13 +162,19 @@
   <string name="remove">ਹਟਾਉ</string>
   <string name="privacy_policy_update_notification_title">ਉਤਪਾਦ ਅਪਡੇਟ ਨੋਟਿਸ</string>
   <string name="privacy_policy_update_notification_action">ਤੁਹਾਡੇ ਲਈ ਤੇ ਹਰੇਕ ਲਈ ਫਾਇਰਫੌਕਸ ਰੌਕੇਟ ਨੂੰ ਵਧੀਆ ਬਣਾਉਣ ਲਈ, ਅਸੀਂ ਆਪਣੀ ਪਰਦੇਦਾਰੀ ਨੀਤੀ ਵਿੱਚ ਕੁੱਝ ਬਦਲਾਅ ਕੀਤੇ ਹਨ। ਹੋਰ ਜਾਨਣ ਲਈ ਛੂਹੋ।</string>
+  <string name="rate_app_dialog_text_title">%1$s ਚੰਗੀ ਲੱਗੀ?</string>
   <string name="rate_app_dialog_text_content">ਸਾਡੀ ਉਪਜ ਚੁਣਨ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ। ਤੁਹਾਡੀ ਮੋੜਵੀਂ ਰਾਇ ਸਾਡੇ ਲਈ ਮਾਅਨੇ ਰੱਖਦੀ ਹੈ।</string>
   <string name="rate_app_dialog_btn_go_rate">ਹਾਂਜੀ, 5 ਤਾਰਿਆਂ ਦੀ ਦਰਜਾਬੰਦੀ ਕਰੋ!</string>
   <string name="rate_app_notification_action_rate">5 ਤਾਰਾ ਦਰਜਾਬੰਦੀ</string>
   <string name="rate_app_dialog_btn_feedback">ਨਹੀਂ, ਮੋੜਵੀਂ ਰਾਇ ਭੇਜੋ।</string>
   <string name="rate_app_notification_action_feedback">FEEDBACK</string>
+  <string name="share_app_dialog_text_title">ਬੇਲੀਆਂ/ਸਹੇਲੀਆਂ ਨਾਲ %1$s ਸਾੰਝੀ ਕਰੋ!</string>
   <string name="share_app_dialog_text_content">ਤੇਜ਼ ਅਤੇ ਹਲਕਾ - ਡਾਟਾ ਸੁਰੱਖਿਅਤ - ਸ਼ਕਤੀਸ਼ਾਲੀ ਸਕ੍ਰੀਨਸ਼ਾਟ</string>
   <string name="share_app_dialog_btn_share">ਸਾਂਝਾ ਕਰੋ</string>
+  <string name="share_app_promotion_text">ਜ਼ਰਾ, %3$s ਦਾ ਇਹ ਤੇਜ਼ ਅਤੇ ਹਲਕਾ ਫੁਲਕਾ ਬਰਾਊਜ਼ਰ ਅਜਮਾ ਕੇ ਦੇਖੋ। %1$s %2$s</string>
+  <string name="your_rights_content1">%2$s ਅਤੇ ਹੋਰ ਯੋਗਦਾਨੀਆਂ ਵੱਲੋਂ ਬਣਾਇਆ ਗਿਆ %1$s ਇੱਕ ਮੁਫ਼ਤ ਅਤੇ ਓਪਨ ਸੋਰਸ ਸਾਫਟਵੇਅਰ ਹੈ।</string>
+  <string name="your_rights_content2"><![CDATA["%1$s ਤੁਹਾਨੂੰ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" ਅਤੇ ਹੋਰ ਖੁੱਲ੍ਹੇ ਵਸੀਲਿਆਂ (ਓਪਨ ਸੋਰਸ) ਦੇ ਲਸੰਸਾਂ ਦੀਆਂ ਸ਼ਰਤਾਂ ਹੇਠ ਮੁਹੱਈਆ ਕਰਵਾਇਆ ਗਿਆ ਹੈ।"]]></string>
+  <string name="your_rights_content4"><![CDATA["%1$s ਲਈ ਹੋਰ ਸੋਰਸ ਕੋਡ ਹੋਰ ਕਈ ਮੁਫਤ ਅਤੇ ਖੁੱਲ੍ਹੇ ਵਸੀਲਿਆਂ (ਓਪਨ ਸੋਰਸ) ਦੇ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2610;&#2616;&#2672;&#2616;&#2622;&#2562;</a>" ਹੇਠ ਮਿਲਦਾ ਹੈ।"]]></string>
   <string name="survey_notification_title">ਸਾਨੂੰ ਤੁਹਾਡੀ ਲੋੜ ਹੈ! %1$s</string>
   <string name="survey_notification_description">ਇੰਡੋਨੇਸ਼ੀਆ ਲਈ ਆਕਾਰ ਇੱਕ ਵਧੀਆ ਉਤਪਾਦ ਹੈ</string>
   <string name="new_background_tab_hint">ਨਵਾਂ ਪੱਲ੍ਹਾ ਖੋਲ੍ਹਿਆ ਗਿਆ</string>

@@ -11,6 +11,7 @@
   <string name="menu_share_with_friends">Ibahagi sa mga kaibigan</string>
   <string name="share_dialog_title">Ibahagi sa pamamagitan ng</string>
   <string name="text_selection_search_action">Hanapin sa Firefox Rocket</string>
+  <string name="about_content_body">%1$s ay isang mabilis at magaan na browser na gawa ng %2$s. Ang aming misyon ay mapanatiling malusog at bukas para sa lahat ang internet.</string>
   <string name="about_link_learn_more">Detalye</string>
   <string name="about_link_support">Tulong</string>
   <string name="about_link_your_rights">Ang Iyong mga Karapatan / Lisensya</string>
@@ -26,8 +27,9 @@
   <string name="preference_default_browser_is_setting">Kasalukuyang binabago ang mga setting…</string>
   <string name="preference_turbo_mode">Turbo mode</string>
   <string name="preference_mozilla_telemetry">Ipadala ang mga datos ng paggamit</string>
+  <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang %2$s na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
   <string name="preference_learn_more">Detalye</string>
-  <string name="preference_about">Detalye ng %1$s</string>
+  <string name="preference_about">Tungkol sa</string>
   <string name="content_description_clear_input">Burahin ang input</string>
   <string name="content_description_dismiss_input">Alisin</string>
   <string name="content_description_lock">Secure na koneksyon</string>
@@ -56,6 +58,7 @@
   <string name="contextmenu_open_in_new_tab">Buksan ang link sa panibagong tab</string>
   <string name="contextmenu_open_image_in_new_tab">Buksan ang imahe sa panibagong tab</string>
   <string name="first_run_page1_title">Salamat sa pagpili ng %1$s</string>
+  <string name="first_run_page1_text">Ang browser na sadyang ginawa para sa Pilipinas mula sa %1$s, ang non-profit na nagtataguyod ng isang malaya at bukas na web.</string>
   <string name="first_run_page2_title">Mag-browse nang mas matulin</string>
   <string name="first_run_page2_text">Gamitin ang turbo mode para harangin ang mga tracking ads at para makapag-browse nang mas matulin. Kung hindi lalabas ng tama ang mga website, i-tap lang ang turbo mode mula sa menu para ito ay mag-off.</string>
   <string name="first_run_page3_title">Naipong data = Naipong pera</string>
@@ -168,6 +171,10 @@
   <string name="share_app_dialog_text_title">Ibalita ang %1$s sa iyong mga kaibigan!</string>
   <string name="share_app_dialog_text_content">- Mabilis at magaan\n- Matipid sa data\n- Makapangyarihang screenshots</string>
   <string name="share_app_dialog_btn_share">Ibahagi</string>
+  <string name="share_app_promotion_text">Hoy, tingnan itong mabilis at magaan na browser mula sa %3$s. %1$s %2$s</string>
+  <string name="your_rights_content1">%1$s ay libre at open source na software na gawa ng %2$s at ng iba pang mga taga-ambag.</string>
+  <string name="your_rights_content2"><![CDATA["%1$s ay gawa mula sa mga panuntunan ng "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" at iba pang open source na mga lisensya."]]></string>
+  <string name="your_rights_content3"><![CDATA["You are not granted any rights or licenses to the trademarks of the Mozilla Foundation or any party, including the %3$s, %4$s or %1$s names or logos. Additional information may be found "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">here</a>.]]></string>
   <string name="your_rights_content4"><![CDATA["Additional source code for %1$s is available under various other free and open source "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">licenses</a>.]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s ay gumagamit din ng blocklists mula sa Disconnect, Inc. na kabilang sa "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>", at makikita "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">dito</a>.]]></string>
   <string name="survey_notification_title">Kailangan ka namin! %1$s</string>
