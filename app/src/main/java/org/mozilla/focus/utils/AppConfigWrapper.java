@@ -54,4 +54,8 @@ public class AppConfigWrapper {
     public static String getRateAppDialogContent(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT);
     }
+
+    public static String getBannerRootConfig(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.BANNER_MANIFEST);
+    }
 }
