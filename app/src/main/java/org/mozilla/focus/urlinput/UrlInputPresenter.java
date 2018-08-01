@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.urlinput;
 
-import android.net.TrafficStats;
 import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -16,17 +15,9 @@ import org.json.JSONException;
 import org.mozilla.focus.network.SocketTags;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.httptask.SimpleLoadUrlTask;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,12 +70,12 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
             queryTask = null;
         }
 
-        queryTask = new QueryTask(view).execute(searchEngine.buildSearchSuggestionUrl(input.toString()), userAgent);
+        queryTask = new QueryTask(view).execute(searchEngine.buildSearchSuggestionUrl(input.toString()), userAgent, Integer.toString(SocketTags.SEARCH_SUGGESTION));
 
 
     }
 
-    private static class QueryTask extends AsyncTask<String, Void, List<CharSequence>> {
+    private static class QueryTask extends SimpleLoadUrlTask {
 
         private WeakReference<UrlInputContract.View> viewWeakReference;
 
@@ -93,48 +84,10 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
         }
 
         @Override
-        protected List<CharSequence> doInBackground(String... strings) {
-            TrafficStats.setThreadStatsTag(SocketTags.SEARCH_SUGGESTION);
-            try {
-                return HttpRequest.get(new URL(strings[0]), strings[1]);
-            } catch (MalformedURLException ex) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<CharSequence> strings) {
-            UrlInputContract.View view = viewWeakReference.get();
-            if (view != null && strings != null) {
-                view.setSuggestions(strings);
-            }
-        }
-    }
-
-    private static class HttpRequest {
-
-        static List<CharSequence> get(URL url, final String userAgent) {
-
-            String line = "";
-            HttpURLConnection urlConnection = null;
-
-            try {
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestProperty("User-Agent", userAgent);
-
-                line = readLines(urlConnection);
-            } catch (IOException ignored) {
-
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-
+        protected void onPostExecute(String line) {
             if (TextUtils.isEmpty(line)) {
-                return Collections.emptyList();
+                return;
             }
-
             List<CharSequence> suggests = null;
             try {
                 JSONArray response = new JSONArray(line);
@@ -152,34 +105,10 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
                 }
             }
 
-            return suggests;
-        }
-
-        private static String readLines(URLConnection connection) throws IOException {
-            InputStream inputStream;
-            try {
-                inputStream = connection.getInputStream();
-            } catch (IndexOutOfBoundsException ignored) {
-                // IndexOutOfBoundsException sometimes is thrown by the okHttp library
-                // bundled within the android framework, we can only catch the exception here,
-                // or use the latest okHttp3.
-                return "";
+            UrlInputContract.View view = viewWeakReference.get();
+            if (view != null) {
+                view.setSuggestions(suggests);
             }
-
-            StringBuilder total = new StringBuilder();
-            try (BufferedReader bufferedReader = createReader(inputStream)) {
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    total.append(line).append('\n');
-                }
-            }
-
-            return total.toString();
-        }
-
-        private static BufferedReader createReader(InputStream stream) throws IOException {
-            InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream), "utf-8");
-            return new BufferedReader(reader);
         }
     }
 }
