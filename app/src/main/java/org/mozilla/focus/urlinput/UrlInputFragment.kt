@@ -14,8 +14,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import mozilla.components.browser.domains.DomainAutoCompleteProvider
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
-import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter
 import org.mozilla.focus.home.HomeFragment
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -25,24 +27,23 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.focus.widget.FragmentListener
-import org.mozilla.focus.widget.InlineAutocompleteEditText
+
 import java.util.Locale
 
 /**
  * Fragment for displaying he URL input controls.
  */
-class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener, View.OnLongClickListener, InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener, InlineAutocompleteEditText.OnTextChangeListener {
+class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener, View.OnLongClickListener {
 
+    private val autoCompleteProvider: DomainAutoCompleteProvider = DomainAutoCompleteProvider()
     private lateinit var presenter: UrlInputContract.Presenter
 
     private lateinit var urlView: InlineAutocompleteEditText
     private lateinit var suggestionView: FlowLayout
     private lateinit var clearView: View
-
-    private lateinit var urlAutoCompleteFilter: UrlAutoCompleteFilter
-    private var autoCompleteInProgress: Boolean = false
     private lateinit var dismissView: View
     private var lastRequestTime: Long = 0
+    private var autoCompleteInProgress: Boolean = false
     private var allowSuggestion: Boolean = false
 
     override fun onCreate(bundle: Bundle?) {
@@ -50,6 +51,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         val userAgent = WebViewProvider.getUserAgentString(activity)
         this.presenter = UrlInputPresenter(SearchEngineManager.getInstance()
                 .getDefaultSearchEngine(activity), userAgent)
+
+        context?.let {
+            autoCompleteProvider.initialize(it.applicationContext, true, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,13 +66,11 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         clearView = view.findViewById(R.id.clear)
         clearView.setOnClickListener(this)
 
-        urlAutoCompleteFilter = UrlAutoCompleteFilter(context?.applicationContext)
-
         suggestionView = view.findViewById<View>(R.id.search_suggestion) as FlowLayout
 
         urlView = view.findViewById<View>(R.id.url_edit) as InlineAutocompleteEditText
-        urlView.setOnTextChangeListener(this)
-        urlView.setOnFilterListener(this)
+        urlView.setOnTextChangeListener(::onTextChange)
+        urlView.setOnCommitListener(::onCommit)
         urlView.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             // Avoid showing keyboard again when returning to the previous page by back key.
             if (hasFocus) {
@@ -77,7 +80,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             }
         }
 
-        urlView.setOnCommitListener(this)
+        urlView.setOnFilterListener(::onFilter)
+        urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
 
         initByArguments()
 
@@ -138,7 +142,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private fun onSuggestionClicked(tag: CharSequence) {
         setUrlText(tag)
-        onCommit(true)
+        onCommit()
     }
 
     private fun dismiss() {
@@ -153,8 +157,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
     }
 
-    override fun onCommit(isSuggestion: Boolean) {
-        val input = if (isSuggestion) urlView.originalText else urlView.text.toString()
+    private fun onCommit() {
+        val input = urlView.autocompleteResult.formattedText.let {
+            if (it.isEmpty()) urlView.text.toString() else it
+        }
         if (!input.trim { it <= ' ' }.isEmpty()) {
             ViewUtils.hideKeyboard(urlView)
 
@@ -170,7 +176,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             if (isOpenInNewTab) {
                 TelemetryWrapper.addNewTabFromHome()
             }
-            TelemetryWrapper.urlBarEvent(isUrl, isSuggestion)
+            TelemetryWrapper.urlBarEvent(isUrl, !urlView.autocompleteResult.isEmpty)
         }
     }
 
@@ -202,10 +208,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     override fun setUrlText(text: CharSequence?) {
         text?.let {
-            this.urlView.setOnTextChangeListener(null)
             this.urlView.setText(text)
             this.urlView.setSelection(text.length)
-            this.urlView.setOnTextChangeListener(this)
         }
     }
 
@@ -237,7 +241,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
     }
 
-    override fun onFilter(searchText: String, view: InlineAutocompleteEditText?) {
+    private fun onFilter(searchText: String, view: InlineAutocompleteEditText?) {
         // If the UrlInputFragment has already been hidden, don't bother with filtering. Because of the text
         // input architecture on Android it's possible for onFilter() to be called after we've already
         // hidden the Fragment, see the relevant bug for more background:
@@ -246,12 +250,15 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             return
         }
         autoCompleteInProgress = true
-        urlAutoCompleteFilter.onFilter(searchText, view)
+        val result = autoCompleteProvider.autocomplete(searchText)
+        view?.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size) { result.url })
         autoCompleteInProgress = false
     }
 
-    override fun onTextChange(originalText: String, autocompleteText: String) {
+    private fun onTextChange(originalText: String, autocompleteText: String) {
         if (autoCompleteInProgress) {
+            // remove this before merge
+            Toast.makeText(context, autocompleteText, Toast.LENGTH_LONG).show()
             return
         }
         if (allowSuggestion) {
@@ -275,7 +282,6 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         private const val ARGUMENT_URL = "url"
         private const val ARGUMENT_PARENT_FRAGMENT = "parent_frag_tag"
         private const val ARGUMENT_ALLOW_SUGGESTION = "allow_suggestion"
-
         private const val REQUEST_THROTTLE_THRESHOLD = 300
 
         /**
