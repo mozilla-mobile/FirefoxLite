@@ -3,6 +3,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <org.mozilla.focus.widget.ResizableKeyboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/background"
     android:layout_width="match_parent"
@@ -28,7 +29,7 @@
             android:orientation="horizontal"
             android:transitionName="urlbar">
 
-            <org.mozilla.focus.widget.InlineAutocompleteEditText
+            <mozilla.components.ui.autocomplete.InlineAutocompleteEditText
                 android:id="@+id/url_edit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -42,9 +43,9 @@
                 android:lines="1"
                 android:requiresFadingEdge="horizontal"
                 android:selectAllOnFocus="true"
+                app:autocompleteBackgroundColor="@color/colorAutocompleteHighlight"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/darker_gray"
-                android:textColorHighlight="@color/colorAutocompleteHighlight"
                 android:textSize="15sp" />
 
             <ImageButton
