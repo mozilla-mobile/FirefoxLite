@@ -27,7 +27,11 @@ import org.mozilla.focus.R;
 
 public class ViewUtils {
 
+
     public final static int SYSTEM_UI_VISIBILITY_NONE = -1;
+
+    public static final int IME_FLAG_NO_PERSONALIZED_LEARNING = 0x01000000;
+
 
     public static void showKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext()
