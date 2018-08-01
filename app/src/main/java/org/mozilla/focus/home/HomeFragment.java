@@ -18,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +39,7 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
+import org.mozilla.focus.network.SocketTags;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -48,18 +48,22 @@ import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.rocket.tabs.Tab;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
 
@@ -109,13 +113,84 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+    private static class LoadRootConfigTask extends SimpleLoadUrlTask {
+
+        private AtomicInteger countdown;
+        private String userAgent;
+
+        private interface OnRootConfigLoadedListener {
+            void onRootConfigLoaded(String[] configArray);
+        }
+
+        WeakReference<OnRootConfigLoadedListener> onRootConfigLoadedListenerRef;
+
+        LoadRootConfigTask(WeakReference<OnRootConfigLoadedListener> onConfigLoadedListenerRef) {
+            this.onRootConfigLoadedListenerRef = onConfigLoadedListenerRef;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            // Intercept UA;
+            userAgent = strings[1];
+            return super.doInBackground(strings);
+        }
+
+        @Override
+        protected void onPostExecute(String line) {
+            OnRootConfigLoadedListener onRootConfigLoadedListener = onRootConfigLoadedListenerRef.get();
+            if (onRootConfigLoadedListener == null) {
+                return;
+            }
+            try {
+                JSONArray jsonArray = new JSONArray(line);
+                int length = jsonArray.length();
+                String[] configArray = new String[length];
+                countdown = new AtomicInteger(length);
+                LoadConfigTask.OnConfigLoadedListener onConfigLoadedListener = (config, index) -> {
+                    configArray[index] = config;
+                    if (countdown.decrementAndGet() == 0) {
+                        onRootConfigLoadedListener.onRootConfigLoaded(configArray);
+                    }
+                };
+                for (int i = 0 ; i < length ; i++) {
+                    new LoadConfigTask(new WeakReference<>(onConfigLoadedListener), i).execute(jsonArray.getString(i), userAgent, Integer.toString(SocketTags.BANNER));
+                }
+            } catch (JSONException e) {
+                onRootConfigLoadedListener.onRootConfigLoaded(null);
+            }
+        }
+    }
+
+    private static class LoadConfigTask extends SimpleLoadUrlTask {
+
+        private interface OnConfigLoadedListener {
+            void onConfigLoaded(String config, int index);
+        }
+
+        private WeakReference<OnConfigLoadedListener> onConfigLoadedListenerRef;
+        private int index;
+
+        LoadConfigTask(WeakReference<OnConfigLoadedListener> onConfigLoadedListenerRef, int index) {
+            this.onConfigLoadedListenerRef = onConfigLoadedListenerRef;
+            this.index = index;
+        }
+
+        @Override
+        protected void onPostExecute(String line) {
+            OnConfigLoadedListener onConfigLoadedListener = onConfigLoadedListenerRef.get();
+            if (onConfigLoadedListener != null) {
+                onConfigLoadedListener.onConfigLoaded(line, index);
+            }
+        }
+    }
+
     private void setUpBanner(Context context) {
         String manifest = AppConfigWrapper.getBannerRootConfig(context);
-        if (TextUtils.isEmpty(manifest)) {
-            showBanner(false);
-        } else {
-            showBanner(true);
-        }
+        LoadRootConfigTask.OnRootConfigLoadedListener onRootConfigLoadedListener = configArray -> {
+            // TODO: 8/1/18 Initialize banner
+            showBanner(configArray != null);
+        };
+        new LoadRootConfigTask(new WeakReference<>(onRootConfigLoadedListener)).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
     }
 
     @Override
