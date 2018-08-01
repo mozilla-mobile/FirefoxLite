@@ -1,5 +1,7 @@
-include ':feature-tabs'
+include ':feature-tabs', ':HttpRequest', ':httptask'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
+project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
+project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
 
 include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'
