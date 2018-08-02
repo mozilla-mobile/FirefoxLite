@@ -5,7 +5,7 @@
     tools:background="@drawable/round_rectangle_ripple"
     tools:layout_height="40dp"
     tools:layout_width="40dp"
-    tools:parentTag="org.mozilla.focus.tabs.TabCounter">
+    tools:parentTag="incubator.org.mozilla.components.ui.tabcounter.TabCounter">
 
     <FrameLayout
         android:id="@+id/counter_root"

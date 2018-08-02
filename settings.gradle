@@ -1,4 +1,4 @@
-include ':feature-tabs'
+include ':feature-tabs', ':ui-tabcounter'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 
 include ':app', ':firebase'

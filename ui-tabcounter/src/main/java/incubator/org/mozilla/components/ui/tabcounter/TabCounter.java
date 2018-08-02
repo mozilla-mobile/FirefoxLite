@@ -1,4 +1,4 @@
-package org.mozilla.focus.tabs;
+package incubator.org.mozilla.components.ui.tabcounter;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -16,10 +16,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.mozilla.focus.R;
-import org.mozilla.focus.utils.DrawableUtils;
-
 import java.text.NumberFormat;
+
+import mozilla.components.support.utils.DrawableUtils;
 
 public class TabCounter extends RelativeLayout {
 
@@ -49,7 +48,7 @@ public class TabCounter extends RelativeLayout {
     public TabCounter(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        @ColorInt int defaultMenuIconColor = context.getResources().getColor(R.color.colorMenuIconForeground);
+        @ColorInt int defaultMenuIconColor = context.getResources().getColor(R.color.sharedColorAppPaletteBlack);
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabCounter, defStyle, 0);
         @ColorInt int menuIconColor = typedArray.getColor(R.styleable.TabCounter_drawableColor, defaultMenuIconColor);
         typedArray.recycle();
@@ -116,10 +115,10 @@ public class TabCounter extends RelativeLayout {
     }
 
     private void tintDrawables(int menuIconColor) {
-        final Drawable tabCounterBox = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_box, menuIconColor);
+        final Drawable tabCounterBox = DrawableUtils.INSTANCE.loadAndTintDrawable(getContext(), R.drawable.tab_counter_box, menuIconColor);
         box.setImageDrawable(tabCounterBox);
 
-        final Drawable tabCounterBar = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_bar, menuIconColor);
+        final Drawable tabCounterBar = DrawableUtils.INSTANCE.loadAndTintDrawable(getContext(), R.drawable.tab_counter_bar, menuIconColor);
         bar.setImageDrawable(tabCounterBar);
 
         text.setTextColor(menuIconColor);
