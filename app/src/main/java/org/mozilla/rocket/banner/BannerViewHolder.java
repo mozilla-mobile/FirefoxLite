@@ -1,0 +1,17 @@
+package org.mozilla.rocket.banner;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
+import org.json.JSONException;
+
+public abstract class BannerViewHolder extends RecyclerView.ViewHolder  {
+
+    BannerViewHolder(View itemView) {
+        super(itemView);
+    }
+
+    // JSONException should never happen, see BannerAdapter's constructor.
+    public abstract void onBindViewHolder(Context context, BannerDAO bannerDAO);
+}

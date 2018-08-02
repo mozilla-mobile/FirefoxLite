@@ -16,8 +16,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,20 +56,26 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.httptask.SimpleLoadUrlTask;
+import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.tabs.Tab;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
+import org.mozilla.rocket.util.Logger;
 
 import java.lang.ref.WeakReference;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
+    private static final String TAG = "HomeFragment";
 
     public static final String FRAGMENT_TAG = "homescreen";
     public static final String TOPSITES_PREF = "topsites_pref";
@@ -74,6 +84,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 6;
 
     private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
+    public static final String BANNER_MANIFEST_DEFAULT = "";
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -90,6 +101,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private RecyclerView banner;
     private ImageView logo;
     private BroadcastReceiver receiver;
+    private LoadRootConfigTask.OnRootConfigLoadedListener onRootConfigLoadedListener;
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -137,6 +149,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         protected void onPostExecute(String line) {
+            // Improper root Manifest Url;
+            if (line == null) {
+                return;
+            }
             OnRootConfigLoadedListener onRootConfigLoadedListener = onRootConfigLoadedListenerRef.get();
             if (onRootConfigLoadedListener == null) {
                 return;
@@ -186,9 +202,26 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void setUpBanner(Context context) {
         String manifest = AppConfigWrapper.getBannerRootConfig(context);
-        LoadRootConfigTask.OnRootConfigLoadedListener onRootConfigLoadedListener = configArray -> {
-            // TODO: 8/1/18 Initialize banner
-            showBanner(configArray != null);
+        if (TextUtils.isEmpty(manifest)) {
+            return;
+        }
+        // Not using a local variable to prevent reference to be cleared before returning.
+        onRootConfigLoadedListener = configArray -> {
+            try {
+                if (configArray == null) {
+                    return;
+                }
+                BannerAdapter bannerAdapter = new BannerAdapter(configArray, arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg));
+                banner.setAdapter(bannerAdapter);
+                banner.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+                SnapHelper snapHelper = new PagerSnapHelper();
+                snapHelper.attachToRecyclerView(banner);
+                showBanner(true);
+            } catch (JSONException e) {
+                Logger.throwOrWarn(TAG, "Invalid Config: " + e.getMessage());
+            } finally {
+                onRootConfigLoadedListener = null;
+            }
         };
         new LoadRootConfigTask(new WeakReference<>(onRootConfigLoadedListener)).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
     }
