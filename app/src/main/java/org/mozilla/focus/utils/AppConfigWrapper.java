@@ -46,4 +46,12 @@ public class AppConfigWrapper {
     public static boolean isSurveyNotificationEnabled() {
         return SURVEY_NOTIFICATION_ENABLED;
     }
+
+    public static String getRateAppDialogTitle(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE);
+    }
+
+    public static String getRateAppDialogContent(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT);
+    }
 }
