@@ -74,7 +74,7 @@ abstract class FirebaseWrapper {
 
 
     // get Remote Config string
-    public static String getRcString(@NonNull Context context, @NonNull String key) {
+    static String getRcString(@NonNull Context context, @NonNull String key) {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
             throwRcNotInitException();
