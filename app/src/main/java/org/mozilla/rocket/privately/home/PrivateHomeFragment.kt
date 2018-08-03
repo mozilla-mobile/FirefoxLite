@@ -4,9 +4,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.privately.home
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -101,24 +104,25 @@ class PrivateHomeFragment : LocaleAwareFragment() {
         }
     }
 
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        if (enter) {
+            val anim = AnimationUtils.loadAnimation(activity, R.anim.pb_enter)
 
-        val anim = AnimationUtils.loadAnimation(activity, R.anim.pb_enter)
+            anim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                }
 
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-            }
+                override fun onAnimationRepeat(animation: Animation?) {
+                }
 
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                if (enter) {
+                override fun onAnimationEnd(animation: Animation?) {
                     animatePrivateHome()
                 }
-            }
-        })
+            })
 
-        return anim
+            return anim
+        } else {
+            return super.onCreateAnimation(transit, enter, nextAnim)
+        }
     }
 }
