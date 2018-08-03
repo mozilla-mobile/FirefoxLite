@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.support.annotation.ColorInt
+import android.support.annotation.VisibleForTesting
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -22,7 +23,7 @@ class TabCounter @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     private val animationSet: AnimatorSet
     private var count: Int = 0
-    private var currentTextRatio: Float = 0.toFloat()
+    @VisibleForTesting var currentTextRatio: Float = 0.toFloat()
 
     init {
 
@@ -229,11 +230,11 @@ class TabCounter @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     companion object {
 
-        private val MAX_VISIBLE_TABS = 99
-        private val SO_MANY_TABS_OPEN = "∞"
-        private val DEFAULT_TABS_COUNTER_TEXT = ":)"
+        @VisibleForTesting  val MAX_VISIBLE_TABS = 99
+        @VisibleForTesting  val SO_MANY_TABS_OPEN = "∞"
+        @VisibleForTesting  val DEFAULT_TABS_COUNTER_TEXT = ":)"
 
-        private val ONE_DIGIT_SIZE_RATIO = 0.6f
-        private val TWO_DIGITS_SIZE_RATIO = 0.5f
+        @VisibleForTesting val ONE_DIGIT_SIZE_RATIO = 0.6f
+        @VisibleForTesting val TWO_DIGITS_SIZE_RATIO = 0.5f
     }
 }

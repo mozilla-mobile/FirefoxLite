@@ -26,9 +26,19 @@ android {
         }
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+
 }
 
 dependencies {
     implementation "org.mozilla.components:utils:${Versions.android_components}"
+
+    testImplementation "junit:junit:${Versions.junit}"
+    testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
 
 }
