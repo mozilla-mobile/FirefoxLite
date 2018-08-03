@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorMenuIconForeground">@color/sharedColorAppPaletteBlack</color>
-    <color name="sharedColorAppPaletteBlack">#FF272727</color>
+    <color name="default_tabcounter_tint">#FF272727</color>
 </resources>

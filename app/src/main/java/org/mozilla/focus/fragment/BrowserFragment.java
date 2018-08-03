@@ -83,6 +83,7 @@ import java.util.WeakHashMap;
 
 import incubator.org.mozilla.components.ui.tabcounter.TabCounter;
 
+
 /**
  * Fragment for displaying the browser UI.
  */
