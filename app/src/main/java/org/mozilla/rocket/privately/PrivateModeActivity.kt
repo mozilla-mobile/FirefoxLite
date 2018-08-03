@@ -53,6 +53,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
+        stopPrivateMode()
         session?.destroy()
     }
 

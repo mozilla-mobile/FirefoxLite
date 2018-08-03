@@ -47,22 +47,32 @@ class PrivateSessionNotificationService : Service() {
 
         val builder = NotificationUtil.baseBuilder(applicationContext)
                 .setContentTitle(getString(R.string.private_browsing_erase_message))
-                .setContentIntent(buildIntent(true))
-                .addAction(R.drawable.private_browsing_mask, getString(R.string.private_browsing_open_action), buildIntent(false))
+                .setContentIntent(buildPendingIntent(true))
+                .addAction(R.drawable.private_browsing_mask, getString(R.string.private_browsing_open_action), buildPendingIntent(false))
 
         startForeground(NotificationId.PRIVATE_MODE, builder.build())
     }
 
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        startActivity(buildIntent(true))
+        super.onTaskRemoved(rootIntent)
 
-    private fun buildIntent(sanitize: Boolean): PendingIntent {
-        val intent = Intent(applicationContext, PrivateModeActivity::class.java)
-        if (sanitize) {
-            intent.action = PrivateMode.INTENT_EXTRA_SANITIZE
-        }
+    }
+
+    private fun buildPendingIntent(sanitize: Boolean): PendingIntent {
+        val intent = buildIntent(sanitize)
         return PendingIntent.getActivity(applicationContext,
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    private fun buildIntent(sanitize: Boolean): Intent {
+        val intent = Intent(applicationContext, PrivateModeActivity::class.java)
+        if (sanitize) {
+            intent.action = PrivateMode.INTENT_EXTRA_SANITIZE
+        }
+        return intent
     }
 
     companion object {
