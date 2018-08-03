@@ -35,7 +35,6 @@ import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.QueryHandler;
-import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
@@ -52,6 +51,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import incubator.org.mozilla.components.ui.tabcounter.TabCounter;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
 

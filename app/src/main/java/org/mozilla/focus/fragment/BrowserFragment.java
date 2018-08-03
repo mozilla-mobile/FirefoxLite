@@ -57,7 +57,6 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
-import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
@@ -81,6 +80,9 @@ import org.mozilla.rocket.tabs.web.Download;
 
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
+
+import incubator.org.mozilla.components.ui.tabcounter.TabCounter;
+
 
 /**
  * Fragment for displaying the browser UI.

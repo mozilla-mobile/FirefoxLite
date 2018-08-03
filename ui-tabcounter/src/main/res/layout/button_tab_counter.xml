@@ -5,7 +5,7 @@
     tools:background="@drawable/round_rectangle_ripple"
     tools:layout_height="40dp"
     tools:layout_width="40dp"
-    tools:parentTag="org.mozilla.focus.tabs.TabCounter">
+    tools:parentTag="incubator.org.mozilla.components.ui.tabcounter.TabCounter">
 
     <FrameLayout
         android:id="@+id/counter_root"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/colorMenuIconForeground"
+            android:textColor="@color/default_tabcounter_tint"
             android:textStyle="bold"
             android:textSize="12sp"
             tools:text="18" />
