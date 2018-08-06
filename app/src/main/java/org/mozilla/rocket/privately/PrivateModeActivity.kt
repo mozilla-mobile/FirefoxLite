@@ -8,6 +8,7 @@ package org.mozilla.rocket.privately
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.CheckResult
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -37,7 +38,10 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
         tabViewProvider = PrivateTabViewProvider(this)
 
-        handleIntent(intent)
+        val exitEarly = handleIntent(intent)
+        if (exitEarly) {
+            return
+        }
 
         setContentView(R.layout.activity_private_mode)
 
@@ -112,7 +116,12 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        handleIntent(intent)
+
+        val exitEarly = handleIntent(intent)
+        if (exitEarly) {
+            return
+        }
+
 
     }
 
@@ -192,12 +201,15 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
-    private fun handleIntent(intent: Intent?) {
+    @CheckResult
+    private fun handleIntent(intent: Intent?): Boolean {
 
         if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
             stopPrivateMode()
             finishAndRemoveTask()
+            return true
         }
+        return false
     }
 
 
