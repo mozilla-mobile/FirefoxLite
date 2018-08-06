@@ -48,6 +48,7 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
@@ -64,14 +65,13 @@ import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.Logger;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
@@ -201,29 +201,67 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setUpBanner(Context context) {
+        // 1. Read from cache first
+        String[] fromCache = readFromCache(context);
+        if (fromCache.length != 0) {
+            setUpBannerFromConfig(fromCache);
+        }
+        // 2. Load item for next initialization
         String manifest = AppConfigWrapper.getBannerRootConfig(context);
         if (TextUtils.isEmpty(manifest)) {
-            return;
-        }
-        // Not using a local variable to prevent reference to be cleared before returning.
-        onRootConfigLoadedListener = configArray -> {
-            try {
-                if (configArray == null) {
+            deleteCache(context);
+            banner.setAdapter(null);
+            showBanner(false);
+        } else {
+            // Not using a local variable to prevent reference to be cleared before returning.
+            onRootConfigLoadedListener = configArray -> {
+                if (Arrays.equals(fromCache, configArray)) {
                     return;
                 }
-                BannerAdapter bannerAdapter = new BannerAdapter(configArray, arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg));
-                banner.setAdapter(bannerAdapter);
-                banner.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-                SnapHelper snapHelper = new PagerSnapHelper();
-                snapHelper.attachToRecyclerView(banner);
-                showBanner(true);
-            } catch (JSONException e) {
-                Logger.throwOrWarn(TAG, "Invalid Config: " + e.getMessage());
-            } finally {
+                writeToCache(context, configArray);
+                setUpBannerFromConfig(configArray);
                 onRootConfigLoadedListener = null;
-            }
-        };
-        new LoadRootConfigTask(new WeakReference<>(onRootConfigLoadedListener)).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
+            };
+            new LoadRootConfigTask(new WeakReference<>(onRootConfigLoadedListener)).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
+        }
+    }
+
+    private void setUpBannerFromConfig(String[] configArray) {
+        try {
+            BannerAdapter bannerAdapter = new BannerAdapter(configArray, arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg));
+            banner.setAdapter(bannerAdapter);
+            showBanner(true);
+        } catch (JSONException e) {
+            Logger.throwOrWarn(TAG, "Invalid Config: " + e.getMessage());
+        }
+    }
+
+    private void writeToCache(Context context, String[] configArray) {
+        FileUtils.writeStringToFile(context.getCacheDir(), CURRENT_BANNER_CONFIG, stringArrayToString(configArray));
+    }
+
+    private String[] readFromCache(Context context) {
+        return stringToStringArray(FileUtils.readStringFromFile(context.getCacheDir(), CURRENT_BANNER_CONFIG));
+    }
+
+    private void deleteCache(Context context) {
+        if (new File(context.getCacheDir(), CURRENT_BANNER_CONFIG).delete()) {
+            Logger.throwOrWarn(TAG, "Failed to delete file");
+        }
+    }
+
+    private static final String UNIT_SEPARATOR = Character.toString((char) 0x1F);
+    private static final String CURRENT_BANNER_CONFIG = "CURRENT_BANNER_CONFIG";
+
+    private String stringArrayToString(String[] stringArray) {
+        return TextUtils.join(UNIT_SEPARATOR, stringArray);
+    }
+
+    private String[] stringToStringArray(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return new String[]{};
+        }
+        return string.split(UNIT_SEPARATOR);
     }
 
     @Override
@@ -255,6 +293,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         });
         this.banner = view.findViewById(R.id.banner);
         this.logo = view.findViewById(R.id.home_fragment_title);
+        banner.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(banner);
 
         SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());

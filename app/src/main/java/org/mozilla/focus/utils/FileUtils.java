@@ -18,6 +18,7 @@ import android.webkit.WebStorage;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,6 +29,8 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -243,6 +246,37 @@ public class FileUtils {
         }
 
         return bundle;
+    }
+
+    public static void writeStringToFile(@NonNull final File dir,
+                                         @NonNull final String fileName,
+                                         @NonNull final String string) {
+        ensureDir(dir);
+
+        final File outputFile = new File(dir, fileName);
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.UTF_8))) {
+            writer.write(string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String readStringFromFile(@NonNull final File dir,
+                                         @NonNull final String fileName) {
+        ensureDir(dir);
+
+        final File inputFile = new File(dir, fileName);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), StandardCharsets.UTF_8))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Assume we already have read external storage permission
