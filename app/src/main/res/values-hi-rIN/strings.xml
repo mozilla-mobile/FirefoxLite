@@ -20,7 +20,7 @@
   <string name="preference_language">भाषा</string>
   <string name="preference_language_systemdefault">सिस्टम तयशुदा</string>
   <string name="preference_dialog_title_search_engine">तयशुदा खोज इंजन</string>
-  <string name="preference_data_saving_block_images">चित्र अवरोधित करें</string>
+  <string name="preference_data_saving_block_images">चित्र ब्लॉक करें</string>
   <string name="preference_privacy_storage_clear_browsing_data">ब्राउज़िंग डेटा मिटायें</string>
   <string name="preference_privacy_storage_save_downloads_to">डाउनलोड्स को सहेजें</string>
   <string name="preference_default_browser">तयशुदा ब्राउज़र बनायें</string>
@@ -40,9 +40,9 @@
   <string name="content_description_reload">वेबसाइट पुनः लोड करें</string>
   <string name="content_description_back">पीछे आयें</string>
   <string name="content_description_stop">वेबसाइट लोडिंग रोकें</string>
-  <string name="content_description_customtab_exit">पिछले एप पर वापस जाएँ</string>
+  <string name="content_description_customtab_exit">पिछले ऐप पर वापस जाएँ</string>
   <string name="content_description_blocking_switch">ट्रैकर्स को ब्लॉक करें</string>
-  <string name="external_app_prompt_no_app_title">लिंक खोलने हेतु कोई एप्प तलाशें</string>
+  <string name="external_app_prompt_no_app_title">लिंक खोलने हेतु कोई ऐप तलाशें</string>
   <string name="external_app_prompt_no_app">आपके उपकरण पर कोई भी ऐप इस लिंक को खोलने में सक्षम नहीं हैं।आप %2$s को खोजने हेतु एक ऐप के लिए %1$s को छोड़ सकते हैं जो कर सकता हैं।</string>
   <string name="error_page_title">वेबपेज उपलब्ध नहीं है</string>
   <string name="error_page_recover_a">सुनिश्चित करें की आप इंटरनेट से जुड़े हुए हैं</string>
@@ -60,9 +60,9 @@
   <string name="first_run_page1_title">%1$s चुनने के लिए धन्यवाद</string>
   <string name="first_run_page1_text">गैर-लाभकारी %1$s द्वारा निर्मित एक ब्राउज़र, एक मुफ्त तथा खुले वेब के लिए समर्पित ।</string>
   <string name="first_run_page2_title">पहले से तेज ब्राउज़ करें</string>
-  <string name="first_run_page2_text">ट्रैकिंग विज्ञापनों को ब्लॉक करने के लिए टर्बो प्रणाली का उपयोग करें ताकि आप तेज गति से ब्राउज़ कर सकें। यदि साइटें टूटी लगती हैं, तो विकल्प सूची में टर्बो प्रणाली बटन को बंद करें।</string>
+  <string name="first_run_page2_text">ट्रैकिंग विज्ञापनों को ब्लॉक करने के लिए टर्बो प्रणाली का उपयोग करें ताकि आप तेज गति से ब्राउज़ कर सकें। यदि साइटें टूटी लगती हैं, तो विकल्प सूची में टर्बो मोड बटन को दबाएँ।</string>
   <string name="first_run_page3_title">डेटा सहेजें = पैसे बचाएँ</string>
-  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों को ब्लॉक करना न केवल ब्राउज़िंग को गति देता है, यह डेटा बचाता है। जब आप छवियों को ब्लॉक करते हैं तो और भी सहेजें।</string>
+  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों को ब्लॉक करना न केवल ब्राउज़िंग को गति देता है, यह डेटा बचाता है। जब आप चित्र को ब्लॉक करते हैं तो और भी सहेजें।</string>
   <string name="first_run_page4_title">सबकुछ स्क्रीनशॉट लें</string>
   <string name="first_run_page4_text">पूरे वेब पृष्ठों का स्क्रीनशॉट लें। एक स्क्रीनशॉट को ऑफ़लाइन देखें (बिना डेटा का उपयोग किए) या वेब पृष्ठ पर फिर से जाने के लिए इसे टैप करें।</string>
   <string name="first_run_upgrade_page_title">हमने आपकी राय सुनी!</string>
@@ -87,9 +87,9 @@
   <string name="label_menu_exit">निकास</string>
   <string name="permission_dialog_setting">सेटिंग्स</string>
   <string name="permission_dialog_not_now">अभी नहीं</string>
-  <string name="permission_dialog_msg_location">अनुपलब्ध अनुमतियाँ। फ़ायरफ़ॉक्स रॉकेट को आपके स्थान तक पहुँचने की अनुमति दें।</string>
+  <string name="permission_dialog_msg_location">अनुपलब्ध अनुमतियाँ। Firefox Rocket को आपके स्थान तक पहुँचने की अनुमति दें।</string>
   <string name="permission_toast_location">स्थान उपलब्ध नहीं है। अपने स्थान तक पहुँचने के लिए अनुमति दें।</string>
-  <string name="permission_dialog_msg_storage">अनुपलब्ध अनुमतियाँ। फ़ायरफ़ॉक्स रॉकेट को आपके स्थान तक पहुँचने की अनुमति दें।</string>
+  <string name="permission_dialog_msg_storage">अनुपलब्ध अनुमतियाँ। Firefox Rocket को आपके स्थान तक पहुँचने की अनुमति दें।</string>
   <string name="permission_toast_storage">संग्रहण उपलब्ध नहीं है। अपने डिवाइस पर फ़ोटो और फ़ाइलें संग्रहीत करने की अनुमति दें।</string>
   <string name="geolocation_dialog_message">%1$s\nआपके स्थान की जानकारी प्राप्त करना चाहता है।</string>
   <string name="geolocation_dialog_allow">अनुमति दें</string>
@@ -125,22 +125,22 @@
   <string name="browsing_history_date_yesterday">कल</string>
   <string name="browsing_history_menu_delete">मिटाएँ</string>
   <string name="browsing_history_dialog_confirm_clear_message">सभी ब्राउज़िंग इतिहास मिटायें?</string>
-  <string name="browsing_history_dialog_btn_clear">साफ करें</string>
+  <string name="browsing_history_dialog_btn_clear">मिटायें</string>
   <string name="remove_from_list">सूची से हटाएँ</string>
   <string name="delete_file">फाइल मिटायें</string>
   <string name="screenshot_saved">स्क्रीनशॉट सहेजा गया</string>
-  <string name="screenshot_failed">स्क्रीनशॉट कैप्चर करने में विफल</string>
+  <string name="screenshot_failed">स्क्रीनशॉट कैद करने में विफल</string>
   <string name="screenshot_illustration">पुरे पृष्ठ का स्क्रीनशॉट लिया जा रहा…</string>
   <string name="screenshot_view">देखें</string>
   <string name="screenshot_edit">संपादित</string>
   <string name="screenshot_delete">हटायें</string>
   <string name="screenshot_share">साझा करें</string>
   <string name="message_fallback_save_to_primary_external">कोई एसडी कार्ड नहीं पाया गया। फाइल को इंटरनल संग्रहण में सहेज दिया गया।</string>
-  <string name="message_start_to_save_to_removable_storage">फ़ाइल एसडी कार्ड में सहेज गया</string>
+  <string name="message_start_to_save_to_removable_storage">फ़ाइल एसडी कार्ड में सहेजा गया</string>
   <string name="message_removable_storage_space_not_enough">एसडी कार्ड लगभग भर चूका है। फाइल को इंटरनल संग्रहण में सहेज दिया गया।</string>
   <string name="screenshot_grid_empty_text_title">"कोई स्क्रीनशॉट नहीं "</string>
-  <string name="screenshot_grid_empty_text_msg_prefix">"टैप करें  "</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">"  मेनू पर संपूर्ण वेब पेज कैप्चर करने के लिए। "</string>
+  <string name="screenshot_grid_empty_text_msg_prefix">दबाएँ</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">"मेनू पर संपूर्ण वेब पेज कैद करने के लिए। "</string>
   <string name="screenshot_image_viewer_dialog_title">जानकारी</string>
   <string name="screenshot_image_viewer_dialog_info_time1">दिनांक: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">रिज़ॉल्यूशन: %1$s</string>
@@ -161,9 +161,9 @@
   <string name="message_cannot_find_screenshot">स्क्रीनशॉट प्रदर्शित नहीं किया जा सकता</string>
   <string name="remove">हटाएँ</string>
   <string name="privacy_policy_update_notification_title">प्रोडक्ट अद्यतन सूचना</string>
-  <string name="privacy_policy_update_notification_action">फ़ायरफ़ॉक्स रॉकेट को आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए टैप करें।</string>
+  <string name="privacy_policy_update_notification_action">Firefox Rocket आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएँ।</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद आया?</string>
-  <string name="rate_app_dialog_text_content">हमारे प्रोडक्ट को चुनने के लिए धन्यवाद । आपका प्रतिक्रिया हमारे लिए महत्वपूर्ण है ।</string>
+  <string name="rate_app_dialog_text_content">हमारे प्रोडक्ट को चुनने के लिए धन्यवाद। आपका प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
   <string name="rate_app_dialog_btn_go_rate">हाँ，5 स्टार रेट करें!</string>
   <string name="rate_app_notification_action_rate">5 स्टार रेट करें</string>
   <string name="rate_app_dialog_btn_feedback">नहीं, प्रतिक्रिया भेजें।</string>
@@ -171,17 +171,17 @@
   <string name="share_app_dialog_text_title">दोस्तों के साथ %1$s साझा करें!</string>
   <string name="share_app_dialog_text_content">- तीव्र एवं हल्का\n- डेटा बचानेवाला\n- शक्तिशाली स्क्रीनशॉट</string>
   <string name="share_app_dialog_btn_share">साझा करें</string>
-  <string name="share_app_promotion_text">सुनो, %3$s द्वारा निर्मित तीव्र तथा हलके ब्राउज़र का जायजा लो. %1$s %2$s</string>
-  <string name="your_rights_content1">%1$s %2$s तथा अन्य योगदानकर्ताओं द्वारा निर्मित मुफ्त एवं ओपेन सोर्स सॉफ्टवेयर है ।</string>
-  <string name="your_rights_content2"><![CDATA["%1$s "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" तथा अन्य ओपन सोर्स लाइसेंस की शर्तों के तहत आपके लिए उपलब्ध कराया जाता है ।"]]></string>
-  <string name="your_rights_content3"><![CDATA["Mozilla फ़ाउंडेशन या किसी भी पार्टी के ट्रेडमार्क साथ ही %3$s, %4$s या %1$s के नाम अथवा लोगो, के लिए कोई अधिकार या लाइसेंस आपको नहीं दिया जाता है . अधिक जानकारी "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2351;&#2361;&#2366;&#2305;</a>से पा सकते हैं ।]]></string>
-  <string name="your_rights_content4"><![CDATA["%1$s के लिए अतिरिक्त स्रोत कोड विभिन्न अन्य मुफ़्त और मुक्त स्रोत "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2354;&#2366;&#2351;&#2360;&#2375;&#2306;&#2360;</a>" के तहत उपलब्ध है। "]]></string>
+  <string name="share_app_promotion_text">सुनो, %3$s द्वारा निर्मित तीव्र तथा हलके ब्राउज़र का जायजा लें। %1$s %2$s</string>
+  <string name="your_rights_content1">%1$s %2$s तथा अन्य योगदानकर्ताओं द्वारा निर्मित मुफ्त एवं ओपन सोर्स सॉफ्टवेयर है।</string>
+  <string name="your_rights_content2"><![CDATA["%1$s "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" तथा अन्य ओपन सोर्स लाइसेंस की शर्तों के तहत आपके लिए उपलब्ध कराया जाता है।"]]></string>
+  <string name="your_rights_content3"><![CDATA["Mozilla फ़ाउंडेशन या किसी भी पार्टी के ट्रेडमार्क साथ ही %3$s, %4$s या %1$s के नाम अथवा लोगो, के लिए कोई अधिकार या लाइसेंस आपको नहीं दिया जाता है। अधिक जानकारी "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2351;&#2361;&#2366;&#2305;</a>से पा सकते हैं।]]></string>
+  <string name="your_rights_content4"><![CDATA["%1$s के लिए अतिरिक्त स्रोत कोड विभिन्न अन्य मुफ़्त और ओपन सोर्स "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2354;&#2366;&#2351;&#2360;&#2375;&#2306;&#2360;</a>" के तहत उपलब्ध है। "]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s Disconnect, Inc. द्वारा प्रदान की गई ब्लॉकलिस्ट का भी उपयोग करता है जो "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2332;&#2368;&#2319;&#2344;&#2351;&#2370; &#2360;&#2366;&#2350;&#2366;&#2344;&#2381;&#2351; &#2354;&#2379;&#2325; &#2354;&#2366;&#2351;&#2360;&#2375;&#2306;&#2360; v3</a>" के तहत अलग और स्वतंत्र काम करता है, और "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#2351;&#2361;&#2366;&#2305;</a>" उपलब्ध है।"]]></string>
   <string name="survey_notification_title">%1$s हमे आपकी जरुरत है!</string>
   <string name="survey_notification_description">भारत के लिए एक बेहतर उत्पाद विकसित करें।</string>
   <string name="new_background_tab_hint">नया टैब खुला</string>
   <string name="new_background_tab_switch">स्विच</string>
-  <string name="setting_default_browser_notification_title">सेटिंग्स परिवर्तित् किया जा रहा है…</string>
+  <string name="setting_default_browser_notification_title">सेटिंग्स बदले जा रहे हैं…</string>
   <string name="setting_default_browser_notification_text">इसमें कुछ समय लग सकता है</string>
   <string name="setting_default_browser_notification_clickable_text">तयशुदा ब्राउज़र सेट करने के लिए दबाएँ</string>
   <string name="tab_tray_close_tabs_btn_text">सभी बंद करें</string>
