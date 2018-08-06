@@ -164,10 +164,10 @@
   <string name="privacy_policy_update_notification_action">ಫೈರ್‍ಫಾಕ್ಸ್ ರಾಕೆಟ್ ಅನ್ನು ನಿಮಗೆ ಮತ್ತು ಎಲ್ಲರಿಗಾಗಿ ಉತ್ತಮಗೊಳಿಸಲು, ನಾವು ಖಾಸಗಿತನದ ನೀತಿಗಳಲ್ಲಿ ಕೆಲವೊಂದು ಬದಲಾವಣೆಗಳನ್ನು ತಂದಿದ್ದೇವೆ. ಹೆಚ್ಚಿಗೆ ತಿಳಿಯಲು ಮೆಲ್ಲ ತಟ್ಟಿ.</string>
   <string name="rate_app_dialog_text_title">%1$s ಇಷ್ಟವೇ?</string>
   <string name="rate_app_dialog_text_content">ನಮ್ಮ ಉತ್ಪನ್ನವನ್ನು ಆಯ್ಕೆ ಮಾಡಿಕೊಂಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆ ನಮಗೆ ತುಂಬಾ ಮುಖ್ಯವಾಗುತ್ತದೆ.</string>
-  <string name="rate_app_dialog_btn_go_rate">ಹೌದು, 5 ನಕ್ಷತ್ರಗಳ ಬೆಲೆಕಟ್ಟಿ!</string>
+  <string name="rate_app_dialog_btn_go_rate">ಹೌದು, 5 ನಕ್ಷತ್ರಗಳನ್ನು ನೀಡಿ!</string>
   <string name="rate_app_notification_action_rate">ಬೆಲೆ 5 ನಕ್ಷತ್ರಗಳು</string>
   <string name="rate_app_dialog_btn_feedback">ಇಲ್ಲ, ಅಭಿಪ್ರಾಯವನ್ನು ಕಳುಹಿಸಿ.</string>
-  <string name="rate_app_notification_action_feedback">ಪ್ರತಿಕ್ರಿಯ</string>
+  <string name="rate_app_notification_action_feedback">ಪ್ರತಿಕ್ರಿಯೆ</string>
   <string name="share_app_dialog_text_title">ನಿಮ್ಮ ಗೆಳೆಯರೊಂದಿಗೆ %1$s ಅನ್ನು ಹಂಚಿಕೊಳ್ಳಿ!</string>
   <string name="share_app_dialog_text_content">- ವೇಗ ಮತ್ತು ಹಗುರವಾದದ್ದು\n- ದತ್ತಾಂಶ ಉಳಿಸುವಂತದ್ದು\n- ಶಕ್ತಿಯುತವಾದ ತೆರೆಚಿತ್ರಗಳು</string>
   <string name="share_app_dialog_btn_share">ಹಂಚು</string>
