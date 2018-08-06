@@ -1,7 +1,7 @@
 [
   {
     "id": -3,
-    "url": "http://m.tribunnews.com/",
+    "url": "https://m.tribunnews.com/",
     "title": "Tribunnews",
     "favicon": "ic_tribunnews.png",
     "viewCount": 20
@@ -36,14 +36,14 @@
   },
   {
     "id": -6,
-    "url": "http://m.liputan6.com/",
+    "url": "https://m.liputan6.com/",
     "title": "Liputan6",
     "favicon": "ic_liputan6.png",
     "viewCount": 10
   },
   {
     "id": -7,
-    "url": "http://www.kompas.com/",
+    "url": "https://www.kompas.com/",
     "title": "Kompas",
     "favicon": "ic_kompas.png",
     "viewCount": 8
