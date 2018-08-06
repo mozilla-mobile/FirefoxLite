@@ -376,7 +376,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 
 
 afterEvaluate {
-    check.dependsOn 'findbugs', 'pmd', 'checkstyle', 'checkTelemetryDocDirty'
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle', 'checkTelemetryDocDirty', 'ktlint'
 }
 
 task checkTelemetryDocDirty() {
