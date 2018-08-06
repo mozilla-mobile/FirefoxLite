@@ -15,6 +15,7 @@ object Versions {
     const val room = "1.1.1"
     const val glide = "4.0.0"
     const val kotlin = "1.2.71"
+    const val ktlint = "0.21.0"
     const val gms = "11.8.0"
     const val navigation = "1.0.0-alpha03"
     const val findbugs = "3.0.1"
