@@ -150,7 +150,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         protected void onPostExecute(String line) {
             // Improper root Manifest Url;
-            if (line == null) {
+            if (line == null || TextUtils.isEmpty(line)) {
                 return;
             }
             OnRootConfigLoadedListener onRootConfigLoadedListener = onRootConfigLoadedListenerRef.get();
