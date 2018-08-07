@@ -99,7 +99,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TabsSession tabsSession;
     private final TabsChromeListener tabsChromeListener = new TabsChromeListener();
     private RecyclerView banner;
-    private ImageView logo;
     private BroadcastReceiver receiver;
     private LoadRootConfigTask.OnRootConfigLoadedListener onRootConfigLoadedListener;
 
@@ -118,10 +117,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showBanner(boolean enabled) {
         if (enabled) {
             banner.setVisibility(View.VISIBLE);
-            logo.setVisibility(View.INVISIBLE);
         } else {
             banner.setVisibility(View.INVISIBLE);
-            logo.setVisibility(View.VISIBLE);
         }
     }
 
@@ -292,7 +289,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             TelemetryWrapper.showSearchBarHome();
         });
         this.banner = view.findViewById(R.id.banner);
-        this.logo = view.findViewById(R.id.home_fragment_title);
         banner.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(banner);
