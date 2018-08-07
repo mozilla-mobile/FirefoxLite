@@ -6,4 +6,5 @@
     <dimen name="home_padding_url_bar_to_title">43dp</dimen>
     <dimen name="home_padding_url_bar_to_top_sites">36dp</dimen>
     <dimen name="firstrun_icon_bottom_margin">40dp</dimen>
+    <dimen name="banner_text_to_bottom">20dp</dimen>
 </resources>

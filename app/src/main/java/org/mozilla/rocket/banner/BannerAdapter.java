@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
 
-    @IntDef({BasicViewHolder.VIEW_TYPE, SingleButtonViewHolder.VIEW_TYPE})
+    @IntDef({BasicViewHolder.VIEW_TYPE, SingleButtonViewHolder.VIEW_TYPE, FourSitesViewHolder.VIEW_TYPE})
     @interface ViewType {}
 
     private Context context;
@@ -45,6 +45,8 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
         switch (DAOs[position].type) {
             case SingleButtonViewHolder.VIEW_TYPE_NAME:
                 return SingleButtonViewHolder.VIEW_TYPE;
+            case FourSitesViewHolder.VIEW_TYPE_NAME:
+                return FourSitesViewHolder.VIEW_TYPE;
             case BasicViewHolder.VIEW_TYPE_NAME:
             default:
                 return BasicViewHolder.VIEW_TYPE;
@@ -57,6 +59,8 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
         switch (viewType) {
             case SingleButtonViewHolder.VIEW_TYPE:
                 return new SingleButtonViewHolder(parent, onClickListener);
+            case FourSitesViewHolder.VIEW_TYPE:
+                return new FourSitesViewHolder(parent, onClickListener);
             case BasicViewHolder.VIEW_TYPE:
             default:
                 return new BasicViewHolder(parent, onClickListener);
