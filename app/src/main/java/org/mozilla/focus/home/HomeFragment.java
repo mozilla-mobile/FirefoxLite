@@ -193,6 +193,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         protected void onPostExecute(String line) {
+            // Trim \n \r since these will not be written to cache.
+            line = line.replace("\n", "").replace("\r", "");
             OnConfigLoadedListener onConfigLoadedListener = onConfigLoadedListenerRef.get();
             if (onConfigLoadedListener != null) {
                 onConfigLoadedListener.onConfigLoaded(line, index);
