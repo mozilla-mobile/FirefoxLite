@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/banner_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_above="@id/banner_texts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/banner_icon_1"
+            layout="@layout/four_site_icon_item"/>
+        <include
+            android:id="@+id/banner_icon_2"
+            layout="@layout/four_site_icon_item"/>
+        <include
+            android:id="@+id/banner_icon_3"
+            layout="@layout/four_site_icon_item"/>
+        <include
+            android:id="@+id/banner_icon_4"
+            layout="@layout/four_site_icon_item"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/banner_texts"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/banner_text_to_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/banner_label_1"
+            layout="@layout/four_site_text_item"/>
+        <include
+            android:id="@+id/banner_label_2"
+            layout="@layout/four_site_text_item"/>
+        <include
+            android:id="@+id/banner_label_3"
+            layout="@layout/four_site_text_item"/>
+        <include
+            android:id="@+id/banner_label_4"
+            layout="@layout/four_site_text_item"/>
+    </LinearLayout>
+
+</RelativeLayout>

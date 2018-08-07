@@ -7,6 +7,7 @@
     <dimen name="top_site_width">320dp</dimen>
     <dimen name="top_site_font_size" tools:ignore="SpUsage">12dp</dimen>
     <dimen name="top_site_textview_width">65dp</dimen>
+    <dimen name="four_site_item_height">40dp</dimen>
 
     <dimen name="menu_layout_margin">20dp</dimen>
 
