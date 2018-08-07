@@ -14,6 +14,7 @@
     <color name="sharedColorAppPaletteMain4">#FF41B7E6</color>
     <color name="sharedColorAppPaletteBlack">#FF272727</color>
     <color name="sharedColorAppPaletteBlack2">#33272727</color>
+    <color name="sharedColorAppPaletteBlack3">#FF000000</color>
     <color name="sharedColorAppPaletteGray">#FF737373</color>
     <color name="sharedColorAppPaletteGray2">#FF757575</color>
     <color name="sharedColorAppPaletteGray3">#FFB2B2B2</color>

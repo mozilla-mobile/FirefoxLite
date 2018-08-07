@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/banner_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:gravity="center"
+        android:background="@color/sharedColorAppPaletteBlack3"
+        android:textColor="@color/sharedColorAppPaletteWhite"
+        android:id="@+id/button"
+        android:layout_width="96dp"
+        android:layout_height="38dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="22dp"/>
+
+</RelativeLayout>

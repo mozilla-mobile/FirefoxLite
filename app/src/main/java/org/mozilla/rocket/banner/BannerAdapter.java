@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
 
-    @IntDef({BasicViewHolder.VIEW_TYPE})
+    @IntDef({BasicViewHolder.VIEW_TYPE, SingleButtonViewHolder.VIEW_TYPE})
     @interface ViewType {}
 
     private Context context;
@@ -36,8 +36,6 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
             BannerDAO thisDAO = new BannerDAO();
             thisDAO.type = jsonObject.getString(BannerDAO.TYPE_KEY);
             thisDAO.values = jsonObject.getJSONArray(BannerDAO.VALUES_KEY);
-            // To be used in the future
-            // thisDAO.version = jsonObject.getInt(BannerDAO.VERSION_KEY);
             this.DAOs[i] = thisDAO;
         }
     }
@@ -45,6 +43,8 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
     @Override
     public int getItemViewType(int position) {
         switch (DAOs[position].type) {
+            case SingleButtonViewHolder.VIEW_TYPE_NAME:
+                return SingleButtonViewHolder.VIEW_TYPE;
             case BasicViewHolder.VIEW_TYPE_NAME:
             default:
                 return BasicViewHolder.VIEW_TYPE;
@@ -55,6 +55,8 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
     @Override
     public BannerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @ViewType int viewType) {
         switch (viewType) {
+            case SingleButtonViewHolder.VIEW_TYPE:
+                return new SingleButtonViewHolder(parent, onClickListener);
             case BasicViewHolder.VIEW_TYPE:
             default:
                 return new BasicViewHolder(parent, onClickListener);
