@@ -1,6 +1,8 @@
 package org.mozilla.rocket.banner;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -8,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.json.JSONException;
 import org.mozilla.focus.R;
+import org.mozilla.rocket.glide.transformation.PorterDuffTransformation;
 
 class FourSitesViewHolder extends BannerViewHolder {
     static final int VIEW_TYPE = 2;
@@ -47,9 +51,10 @@ class FourSitesViewHolder extends BannerViewHolder {
                 }
             });
             for (int i = 0; i < icons.length; i++) {
+                PorterDuffColorFilter alphaToWhitePorterDuff = new PorterDuffColorFilter(context.getResources().getColor(R.color.sharedColorAppPaletteWhite), PorterDuff.Mode.DST_OVER);
                 Glide.with(context)
                         .load(bannerDAO.values.getString(1 + i))
-                        .apply(new RequestOptions().circleCrop())
+                        .apply(new RequestOptions().transforms(new PorterDuffTransformation(alphaToWhitePorterDuff), new CircleCrop()))
                         .into(icons[i]);
             }
             for (int i = 0; i < icons.length; i++) {
