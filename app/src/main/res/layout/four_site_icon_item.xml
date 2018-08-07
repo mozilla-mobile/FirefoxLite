@@ -2,6 +2,6 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/four_site_item_width_with_padding"
     android:layout_height="@dimen/four_site_item_height"
-    android:paddingStart="17dp"
-    android:paddingEnd="17dp">
+    android:paddingStart="@dimen/four_site_item_horizontal_padding"
+    android:paddingEnd="@dimen/four_site_item_horizontal_padding">
 </ImageView>

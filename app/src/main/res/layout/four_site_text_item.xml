@@ -8,4 +8,7 @@
     android:maxLines="2"
     android:fontFamily="sans-serif-medium"
     android:gravity="center_horizontal"
+    android:shadowColor="#FF000000"
+    android:shadowDy="3"
+    android:shadowRadius="5"
     tools:ignore="SpUsage" />
