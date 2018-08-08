@@ -18,6 +18,7 @@ import com.bumptech.glide.request.transition.Transition;
 import org.json.JSONException;
 import org.mozilla.focus.R;
 import org.mozilla.rocket.glide.transformation.PorterDuffTransformation;
+import org.mozilla.rocket.glide.transformation.ShrinkSizeTransformation;
 
 class FourSitesViewHolder extends BannerViewHolder {
     static final int VIEW_TYPE = 2;
@@ -54,7 +55,7 @@ class FourSitesViewHolder extends BannerViewHolder {
                 PorterDuffColorFilter alphaToWhitePorterDuff = new PorterDuffColorFilter(context.getResources().getColor(R.color.sharedColorAppPaletteWhite), PorterDuff.Mode.DST_OVER);
                 Glide.with(context)
                         .load(bannerDAO.values.getString(1 + i))
-                        .apply(new RequestOptions().transforms(new PorterDuffTransformation(alphaToWhitePorterDuff), new CircleCrop()))
+                        .apply(new RequestOptions().transforms(new ShrinkSizeTransformation(0.62f), new PorterDuffTransformation(alphaToWhitePorterDuff), new CircleCrop()))
                         .into(icons[i]);
             }
             for (int i = 0; i < icons.length; i++) {
