@@ -163,6 +163,18 @@ MISSING_LOCALES = {
         'local_name': 'मैथिली/মৈথিলী',
         'plural_rule': 'bg',
         'team': 'mai <LL@li.org>\n'
+    },
+    'jv': {
+        'name': 'Javanese',
+        'local_name': 'Javanese',
+        'plural_rule': 'id',
+        'team': 'jv <LL@li.org>\n'
+    },
+    'su': {
+        'name': 'Sundanese',
+        'local_name': 'Sundanese',
+        'plural_rule': 'id',
+        'team': 'su <LL@li.org>\n'
     }
 }
 
