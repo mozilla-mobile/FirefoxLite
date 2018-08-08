@@ -8,8 +8,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
-import android.support.annotation.DrawableRes
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -35,9 +33,9 @@ class TabCounter @JvmOverloads constructor(
     init {
 
         // Default TabCounter tint, could be override by the caller
-        @ColorInt val defaultTabCounterTint = context.resources.getColor(R.color.mozac_ui_tabcounter_default_tint)
+        val defaultTabCounterTint = context.resources.getColor(R.color.mozac_ui_tabcounter_default_tint)
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabCounter, defStyle, 0)
-        @ColorInt val tabCounterTint = typedArray.getColor(R.styleable.TabCounter_drawableColor, defaultTabCounterTint)
+        val tabCounterTint = typedArray.getColor(R.styleable.TabCounter_drawableColor, defaultTabCounterTint)
         typedArray.recycle()
 
         val inflater = LayoutInflater.from(context)
@@ -269,7 +267,7 @@ class TabCounter @JvmOverloads constructor(
         }
     }
 
-    fun loadAndTintDrawable(context: Context, @DrawableRes resourceId: Int, @ColorInt color: Int): Drawable {
+    fun loadAndTintDrawable(context: Context, resourceId: Int, color: Int): Drawable {
         val drawable = context.resources.getDrawable(resourceId, context.theme)
         val wrapped = DrawableCompat.wrap(drawable.mutate())
         DrawableCompat.setTint(wrapped, color)
