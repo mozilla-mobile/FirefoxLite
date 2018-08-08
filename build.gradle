@@ -18,6 +18,19 @@ buildscript {
     }
 }
 
+plugins {
+    id("io.gitlab.arturbosch.detekt").version("1.0.0.RC7-3")
+}
+
+detekt {
+    version = "1.0.0.RC7-3"
+    defaultProfile {
+        input = "$projectDir/components"
+        config = file("$projectDir/tools/detekt/detek.yml")
+        filters = ".*/resources/.*,.*/build/.*"
+    }
+}
+
 allprojects {
     repositories {
         jcenter()

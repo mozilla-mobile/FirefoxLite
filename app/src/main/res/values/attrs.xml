@@ -17,8 +17,5 @@
         <attr name="spacing" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="TabCounter">
-        <attr name="drawableColor" format="color" />
-    </declare-styleable>
 
 </resources>
