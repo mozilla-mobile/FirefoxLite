@@ -72,6 +72,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
@@ -99,8 +101,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TabsSession tabsSession;
     private final TabsChromeListener tabsChromeListener = new TabsChromeListener();
     private RecyclerView banner;
+    private LinearLayoutManager bannerLayoutManager;
     private BroadcastReceiver receiver;
     private LoadRootConfigTask.OnRootConfigLoadedListener onRootConfigLoadedListener;
+    private Timer timer;
+    private static final int SCROLL_PERIOD = 10000;
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -291,7 +296,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             TelemetryWrapper.showSearchBarHome();
         });
         this.banner = view.findViewById(R.id.banner);
-        banner.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        bannerLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        banner.setLayoutManager(bannerLayoutManager);
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(banner);
 
@@ -331,6 +337,24 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             LocalBroadcastManager.getInstance(context).registerReceiver(this.receiver, intentFilter);
         }
         updateTopSitesData();
+        setupBannerTimer();
+    }
+
+    private void setupBannerTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                RecyclerView.Adapter adapter = banner.getAdapter();
+                if (adapter == null) {
+                    cancel();
+                    return;
+                }
+                int nextPage = (bannerLayoutManager.findFirstVisibleItemPosition() + 1) % adapter.getItemCount();
+                banner.smoothScrollToPosition(nextPage);
+            }
+        }, SCROLL_PERIOD, SCROLL_PERIOD);
     }
 
     @Override
@@ -340,6 +364,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (context != null) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this.receiver);
         }
+        timer.cancel();
+        timer = null;
     }
 
     @Override
