@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/four_site_item_width_with_padding"
-    android:layout_height="@dimen/four_site_item_height"
-    android:paddingStart="@dimen/four_site_item_horizontal_padding"
-    android:paddingEnd="@dimen/four_site_item_horizontal_padding">
+    android:layout_width="@dimen/four_site_item_size"
+    android:layout_height="@dimen/four_site_item_size"
+    android:padding="2dp"
+    android:layout_marginStart="@dimen/four_site_item_margin"
+    android:layout_marginEnd="@dimen/four_site_item_margin"
+    android:background="@drawable/black_oval">
 </ImageView>
