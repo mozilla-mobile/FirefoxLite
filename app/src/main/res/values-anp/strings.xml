@@ -138,9 +138,9 @@
   <string name="message_fallback_save_to_primary_external">एसडी कार्ड नै मिलल. फ़ाइल क इंटरनल एस्टोरेज में सेव करल गेल छै</string>
   <string name="message_start_to_save_to_removable_storage">एसडी कार्ड मे फाइल सवे करल गेल छै</string>
   <string name="message_removable_storage_space_not_enough">एसडी कार्ड लगभग भैर गेलै. फ़ाइल क इंटरनल एस्टोरेज में सेव करल गेल रहै.</string>
-  <string name="screenshot_grid_empty_text_title">कोय स्क्रीनशॉट नै</string>
+  <string name="screenshot_grid_empty_text_title">कोय स्क्रीनशॉट नै छकै</string>
   <string name="screenshot_grid_empty_text_msg_prefix">टेप</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">" पुरे वेबपेज केपचर करै ल मेनु दबाइयै."</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">मेनु पे पुरे वेबपेज केपचर करै ल दाबइयै.</string>
   <string name="screenshot_image_viewer_dialog_title">जानकारी</string>
   <string name="screenshot_image_viewer_dialog_info_time1">तारीख: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">रिजोल्युसन: %1$s</string>
