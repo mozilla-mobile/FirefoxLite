@@ -10,12 +10,16 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.IdlingResource
 import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.action.ViewActions.*
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.pressImeActionButton
+import android.support.test.espresso.action.ViewActions.replaceText
 import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.v7.widget.RecyclerView
@@ -38,15 +42,12 @@ import org.mozilla.focus.widget.TelemetrySwitchPreference
 inline fun setting(func: SettingRobot.() -> Unit) = SettingRobot().apply(func)
 inline fun session(func: SessionRobot.() -> Unit) = SessionRobot().apply(func)
 
-
 inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
 
     IdlingRegistry.getInstance().register(ir)
     pendingCheck()
     IdlingRegistry.getInstance().unregister(ir)
-
 }
-
 
 class SessionRobot {
     @Rule
@@ -57,7 +58,6 @@ class SessionRobot {
 
     @Rule
     val readPermissionRule = GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE)
-
 
     private var sessionLoadedIdlingResource: SessionLoadedIdlingResource? = null
 
@@ -78,8 +78,6 @@ class SessionRobot {
         onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(url)))
 
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource)
-
-
     }
 
     infix fun takeScreenshot(func: ScreenshotRobot.() -> Unit) {
@@ -91,7 +89,6 @@ class SessionRobot {
 class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
 
     private var screenshotIdlingResource: ScreenshotIdlingResource? = null
-
 
     fun takeScreenshot(): ScreenshotRobot {
         screenshotIdlingResource = ScreenshotIdlingResource(activityTestRule.getActivity())
@@ -109,7 +106,6 @@ class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
         IdlingRegistry.getInstance().unregister(screenshotIdlingResource)
         return this
     }
-
 
     fun clickMenuMyShots() {
         // Click my shot
@@ -131,8 +127,6 @@ class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
         onView(withId(R.id.screenshot_viewer_btn_share)).check(matches(isDisplayed()))
         onView(withId(R.id.screenshot_viewer_btn_info)).check(matches(isDisplayed()))
         onView(withId(R.id.screenshot_viewer_btn_delete)).check(matches(isDisplayed()))
-
-
     }
 
     fun longClickAndDeleteTheFirstItemInMyShots() {
@@ -146,8 +140,6 @@ class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
         // Check if come back to my shots panel
         onView(withId(R.id.screenshots)).check(matches(isDisplayed()))
     }
-
-
 }
 
 class SettingRobot {
@@ -160,7 +152,6 @@ class SettingRobot {
 
     private lateinit var leakWatchIdlingResource: ActivityRecreateLeakWatcherIdlingResource
 
-
     init {
         // make sure the pref is on when started
         resetPref()
@@ -170,9 +161,7 @@ class SettingRobot {
         FirebaseHelper.init(settingsActivity.activity, true)
 
         FirebaseHelper.injectEnablerCallback(Delay())
-
     }
-
 
     fun isChecked(): SettingRobot {
         interaction.check(ViewAssertions.matches(ViewMatchers.isChecked()))
@@ -183,7 +172,6 @@ class SettingRobot {
         interaction.check(ViewAssertions.matches(ViewMatchers.isNotChecked()))
         return this
     }
-
 
     fun click(): SettingRobot {
         interaction.perform(ViewActions.click())
@@ -213,19 +201,16 @@ class SettingRobot {
             // call onView to sync and wait for idling resource
             Espresso.onView(ViewMatchers.isRoot())
             Assert.assertFalse(leakWatchIdlingResource.hasLeak())
-
         }
 
         return this
     }
-
 
     private fun resetPref() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val prefName = context.getString(R.string.pref_key_telemetry)
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferences.edit().putBoolean(prefName, true).apply()
-
     }
 
     class Delay : FirebaseHelper.BlockingEnablerCallback {
@@ -235,8 +220,6 @@ class SettingRobot {
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
-
         }
     }
 }
-

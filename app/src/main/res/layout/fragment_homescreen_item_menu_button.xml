@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +17,7 @@
         android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin"
         android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin">
 
-        <org.mozilla.focus.tabs.TabCounter
+        <org.mozilla.components.ui.tabcounter.TabCounter
             android:id="@+id/btn_tab_tray"
             style="@style/HomeMenuButton"
             app:drawableColor="@color/colorMenuIconDarkForeground" />

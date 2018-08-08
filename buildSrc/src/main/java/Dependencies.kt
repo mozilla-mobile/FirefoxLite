@@ -20,7 +20,7 @@ object Versions {
     const val findbugs = "3.0.1"
     const val lottie = "2.5.5"
     const val leakcanary = "1.5.4"
-    const val android_components = "0.10"
+    const val android_components = "0.16.1"
     const val adjust = "4.11.4"
     const val junit = "4.12"
     const val mockito = "2.12.0"
@@ -34,7 +34,6 @@ object Versions {
     const val crashlytics = "2.9.3"
     const val google_services_plugin = "3.1.1"
     const val fabric_plugin = "1.25.1"
-
 }
 
 object SystemEnv {

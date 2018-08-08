@@ -29,5 +29,4 @@ class SharedViewModel : ViewModel() {
     fun getUrl(): LiveData<String> {
         return url
     }
-
 }

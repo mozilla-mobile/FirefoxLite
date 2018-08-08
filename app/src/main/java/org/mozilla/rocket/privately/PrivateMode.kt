@@ -13,7 +13,6 @@ import org.mozilla.focus.utils.ThreadUtils
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import java.io.File
 
-
 // Describe when to clear the private mode session
 class PrivateMode {
 

@@ -12,7 +12,6 @@ import org.mozilla.focus.utils.Settings
 
 class PromotionModelTest {
 
-
     @Test
     fun intentHasValidExtraShouldShouldRateAppDialog() {
 
@@ -28,7 +27,5 @@ class PromotionModelTest {
 
         promotionModel.parseIntent(safeIntent)
         assertEquals(true, promotionModel.showRateAppDialogFromIntent)
-
     }
-
 }

@@ -23,7 +23,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/round_rectangle_ripple"
+            android:background="@drawable/mozac_ui_tabcounter_round_rectangle_ripple"
             android:padding="11dp"
             android:src="@drawable/edit_close"
             android:tint="@color/colorScreenshotItemBorder" />
