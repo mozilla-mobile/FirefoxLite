@@ -75,9 +75,9 @@
 
     <dimen name="fake_input_height">48dp</dimen>
 
-    <dimen name="four_site_item_width_with_padding">74dp</dimen>
     <dimen name="banner_icon_to_text">4dp</dimen>
     <dimen name="banner_text_to_bottom">8dp</dimen>
-    <dimen name="four_site_item_height">40dp</dimen>
-    <dimen name="four_site_item_horizontal_padding">17dp</dimen>
+    <dimen name="four_site_item_width_with_margin">74dp</dimen>>
+    <dimen name="four_site_item_size">40dp</dimen>
+    <dimen name="four_site_item_margin">17dp</dimen>
 </resources>
