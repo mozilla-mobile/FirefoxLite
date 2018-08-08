@@ -32,7 +32,7 @@
         android:gravity="center"
         android:textAlignment="center"
         android:lineSpacingExtra="1dp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/topSiteItemText"
         android:textStyle="normal"
         android:textSize="@dimen/top_site_font_size"
         android:maxLines="2"

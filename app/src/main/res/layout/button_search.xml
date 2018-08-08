@@ -2,4 +2,5 @@
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/btn_search"
     style="@style/MainMenuButton"
-    android:src="@drawable/action_search" />
+    android:src="@drawable/action_search"
+    android:tint="@color/browserMenuButton"/>

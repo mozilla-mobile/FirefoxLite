@@ -121,4 +121,15 @@
 
     <!-- Private Mode -->
     <color name="privateBackground">#38383D</color>
+    
+    <color name="homeFakeInputBackground">#FFF9F9F9</color>
+    <color name="homeFakeInputBorder">#E0E0E0</color>
+    <color name="homeFakeInputText">@color/sharedColorAppPaletteGray3</color>
+    <color name="topSiteItemText">@color/sharedColorAppPaletteWhite</color>
+    <color name="homeMenuButton">@color/sharedColorAppPaletteWhite</color>
+    <color name="urlBarBackgroundNormal">@android:color/transparent</color>
+    <color name="urlBarText">@color/sharedColorAppPaletteBlack</color>
+    <color name="browserFragmentBackground">@color/sharedColorAppPaletteWhite</color>
+    <color name="browserMenuButton">@color/sharedColorAppPaletteBlack</color>
+
 </resources>

@@ -14,7 +14,7 @@
     <attr name="colorProgressBarEndGradient" format="color" />
 
     <style name="ToolBarStyle">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/urlBarBackgroundNormal</item>
     </style>
 
     <style name="ToolBarPrivateStyle">
@@ -30,6 +30,7 @@
     </style>
 
     <style name="DisplayUrlStyle">
+        <item name="android:textColor">@color/urlBarText</item>
     </style>
 
     <style name="DisplayUrlPrivateStyle" parent="DisplayUrlStyle">

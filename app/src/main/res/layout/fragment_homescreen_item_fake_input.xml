@@ -9,5 +9,5 @@
     android:gravity="center"
     android:background="@drawable/urlbar_background"
     android:text="@string/urlbar_hint"
-    android:textColor="#B2B2B2"
+    android:textColor="@color/homeFakeInputText"
     android:textSize="14sp" />

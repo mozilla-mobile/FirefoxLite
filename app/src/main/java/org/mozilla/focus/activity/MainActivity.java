@@ -29,6 +29,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.pm.ShortcutManagerCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -508,8 +509,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 TelemetryWrapper.clickMenuSettings();
                 break;
             case R.id.menu_exit:
-                onExitClicked();
-                TelemetryWrapper.clickMenuExit();
+                // FIXME: experiment only for test night mode ux
+                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                recreate();
+//                onExitClicked();
+//                TelemetryWrapper.clickMenuExit();
                 break;
             case R.id.menu_bookmark:
                 onBookmarksClicked();

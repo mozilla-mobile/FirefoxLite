@@ -2,5 +2,5 @@
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/btn_menu"
     style="@style/MainMenuButton"
-    android:tint="@android:color/white"
+    android:tint="@color/homeMenuButton"
     android:src="@drawable/action_menu" />

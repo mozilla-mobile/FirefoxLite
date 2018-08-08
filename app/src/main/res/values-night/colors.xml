@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<resources>
+    <color name="colorWhiteOpacity5">#0DFFFFFF</color>
+    <color name="colorWhiteOpacity60">#99FFFFFF</color>
+    <color name="colorWhiteOpacity70">#B3FFFFFF</color>
+    <color name="colorWhiteOpacity80">#CCFFFFFF</color>
+    <!-- HomeFragment -->
+    <color name="homeFakeInputBackground">#253058</color>
+    <color name="homeFakeInputBorder">#1E2950</color>
+    <color name="homeFakeInputText">@color/colorWhiteOpacity70</color>
+    <color name="topSiteItemText">@color/colorWhiteOpacity80</color>
+    <!-- Tab counter color in HomeFragment -->
+    <color name="colorMenuIconDarkForeground">@color/colorWhiteOpacity70</color>
+    <color name="homeMenuButton">@color/colorWhiteOpacity70</color>
+
+    <!-- BrowserFragment -->
+    <color name="urlBarBackgroundNormal">#38383D</color>
+    <color name="urlBarText">@color/colorWhiteOpacity80</color>
+    <color name="browserFragmentBackground">#27272A</color>
+    <color name="colorMenuIconForeground">@color/colorWhiteOpacity70</color>
+    <color name="browserMenuButton">@color/colorWhiteOpacity70</color>
+
+    <color name="url_bg_active">@color/urlBarBackgroundNormal</color>
+    <color name="url_bg_inactive">@color/urlBarBackgroundNormal</color><!--TODO confirm browser transition bg color -->
+
+    <color name="colorDivider">#2A2A2E</color> <!--TODO confirm: also affect bottom sheet divider -->
+
+    <color name="themeGradientStart">#103266</color>
+    <color name="themeGradientEnd">#140623</color>
+
+    <!-- TabTrayFragment -->
+    <color name="tabTrayForeground">@color/browserFragmentBackground</color>
+    <color name="tabTrayItemBackground">@color/colorWhiteOpacity5</color>
+    <color name="tabTrayItemOutlineNormal">@color/colorWhiteOpacity5</color> <!--TODO confirm: also affect tab tray bottom divider -->
+    <color name="tabTrayItemTitle">@color/colorWhiteOpacity70</color>
+    <color name="tabTrayItemSubTitle">@color/colorWhiteOpacity70</color>
+</resources>

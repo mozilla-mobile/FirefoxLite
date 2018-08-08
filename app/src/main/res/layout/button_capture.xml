@@ -2,4 +2,5 @@
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MainMenuButton"
     android:id="@+id/btn_capture"
-    android:src="@drawable/action_capture"/>
+    android:src="@drawable/action_capture"
+    android:tint="@color/browserMenuButton" />

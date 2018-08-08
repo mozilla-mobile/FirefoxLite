@@ -69,7 +69,7 @@
                     style="@style/MainMenuButton"
                     android:layout_centerInParent="true"
                     android:padding="8dp"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/browserMenuButton"
                     app:srcCompat="@drawable/ic_menu_mask"
                     tools:ignore="contentDescription" />
             </RelativeLayout>
@@ -88,6 +88,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:scaleType="center"
+                android:tint="@color/browserMenuButton"
                 app:srcCompat="@drawable/action_add"
                 tools:ignore="contentDescription" />
 

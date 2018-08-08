@@ -3,9 +3,9 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FFF9F9F9" />
+    <solid android:color="@color/homeFakeInputBackground" />
     <stroke
         android:width="1dip"
-        android:color="#E0E0E0" />
+        android:color="@color/homeFakeInputBorder" />
     <corners android:radius="2dp" />
 </shape>
