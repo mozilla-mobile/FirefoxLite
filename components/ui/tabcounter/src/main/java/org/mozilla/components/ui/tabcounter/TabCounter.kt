@@ -7,7 +7,10 @@ package org.mozilla.components.ui.tabcounter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
+import android.support.annotation.DrawableRes
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -15,7 +18,6 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import mozilla.components.support.utils.DrawableUtils
 import java.text.NumberFormat
 
 class TabCounter @JvmOverloads constructor(
@@ -105,11 +107,11 @@ class TabCounter @JvmOverloads constructor(
     }
 
     private fun tintDrawables(tabCounterTint: Int) {
-        val tabCounterBox = DrawableUtils.loadAndTintDrawable(context,
+        val tabCounterBox = loadAndTintDrawable(context,
                 R.drawable.mozac_ui_tabcounter_box, tabCounterTint)
         box.setImageDrawable(tabCounterBox)
 
-        val tabCounterBar = DrawableUtils.loadAndTintDrawable(context,
+        val tabCounterBar = loadAndTintDrawable(context,
                 R.drawable.mozac_ui_tabcounter_bar, tabCounterTint)
         bar.setImageDrawable(tabCounterBar)
 
@@ -265,6 +267,13 @@ class TabCounter @JvmOverloads constructor(
                 }
             })
         }
+    }
+
+    fun loadAndTintDrawable(context: Context, @DrawableRes resourceId: Int, @ColorInt color: Int): Drawable {
+        val drawable = context.resources.getDrawable(resourceId, context.theme)
+        val wrapped = DrawableCompat.wrap(drawable.mutate())
+        DrawableCompat.setTint(wrapped, color)
+        return wrapped
     }
 
     companion object {
