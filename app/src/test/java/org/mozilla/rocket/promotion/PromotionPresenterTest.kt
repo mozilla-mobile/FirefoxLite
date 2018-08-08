@@ -12,7 +12,6 @@ class PromotionPresenterTest {
     private val model = mock(PromotionModel::class.java)
     private val view = mock(PromotionViewContract::class.java)
 
-
     @Test
     fun extendShareIfDismissRate1() {
 
@@ -22,9 +21,7 @@ class PromotionPresenterTest {
         settingShareAppDialogThreshold = settingRateAppNotificationThreshold + 4L
 
         verifyLaunch(20)
-
     }
-
 
     @Test
     fun extendShareIfDismissRate2() {
@@ -34,9 +31,7 @@ class PromotionPresenterTest {
         settingShareAppDialogThreshold = settingRateAppNotificationThreshold + 2L
 
         verifyLaunch(10)
-
     }
-
 
     private fun verifyLaunch(times: Int) {
 
@@ -44,7 +39,6 @@ class PromotionPresenterTest {
         Mockito.`when`(model.rateAppNotificationThreshold).thenReturn(settingRateAppNotificationThreshold)
         Mockito.`when`(model.shareAppDialogThreshold).thenReturn(settingShareAppDialogThreshold)
         Mockito.`when`(model.didShowRateDialog).thenReturn(false)
-
 
         for (i in 1..times) {
             Mockito.`when`(model.appCreateCount).thenReturn(i)
@@ -55,7 +49,6 @@ class PromotionPresenterTest {
                     Mockito.verify(view, Mockito.times(0)).showRateAppDialog()
                     Mockito.verify(view, Mockito.times(0)).showRateAppNotification()
                     Mockito.verify(view, Mockito.times(0)).showShareAppDialog()
-
                 }
                 i == settingRateAppDialogThreshold.toInt() -> {
                     Mockito.verify(view, Mockito.times(1)).showRateAppDialog()
@@ -63,7 +56,6 @@ class PromotionPresenterTest {
                     Mockito.verify(view, Mockito.times(0)).showShareAppDialog()
                     Mockito.`when`(model.didShowRateDialog).thenReturn(true)
                     Mockito.`when`(model.didDismissRateDialog).thenReturn(true)
-
                 }
                 i == settingRateAppNotificationThreshold.toInt() -> {
                     Mockito.verify(view, Mockito.times(1)).showRateAppDialog()
@@ -84,7 +76,6 @@ class PromotionPresenterTest {
                 }
             }
         }
-
     }
 
     @Test
@@ -109,11 +100,8 @@ class PromotionPresenterTest {
         PromotionPresenter.runPromotion(view, model)
         Mockito.verify(view, Mockito.times(0)).showPrivacyPolicyUpdateNotification()
 
-
         Mockito.`when`(model.shouldShowPrivacyPolicyUpdate).thenReturn(true)
         PromotionPresenter.runPromotion(view, model)
         Mockito.verify(view, Mockito.times(1)).showPrivacyPolicyUpdateNotification()
-
     }
-
 }

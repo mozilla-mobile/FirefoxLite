@@ -28,14 +28,12 @@ class TakeScreenshotTest {
         private val TARGET_URL_SITE = "file:///android_asset/gpl.html"
     }
 
-
     @Test
     fun takeScreenshot_screenshotIsCaptured() {
 
         session {
 
             loadPage(TARGET_URL_SITE)
-
         } takeScreenshot {
 
             clickMenuMyShots()
@@ -44,7 +42,5 @@ class TakeScreenshotTest {
 
             longClickAndDeleteTheFirstItemInMyShots()
         }
-
     }
-
 }

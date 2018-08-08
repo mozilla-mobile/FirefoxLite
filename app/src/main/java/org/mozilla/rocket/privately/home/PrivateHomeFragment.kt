@@ -21,7 +21,6 @@ import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
 
-
 class PrivateHomeFragment : LocaleAwareFragment() {
 
     private lateinit var btnBack: RelativeLayout

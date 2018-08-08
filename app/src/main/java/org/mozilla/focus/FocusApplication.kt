@@ -21,7 +21,6 @@ import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import java.io.File
 
-
 class FocusApplication : LocaleAwareApplication() {
 
     override fun getCacheDir(): File {
@@ -63,7 +62,6 @@ class FocusApplication : LocaleAwareApplication() {
         DownloadInfoManager.init(this)
         // initialize the NotificationUtil to configure the default notification channel. This is required for API 26+
         NotificationUtil.init(this)
-
     }
 
     private fun isInPrivateProcess(): Boolean {
