@@ -1,1 +1,1 @@
-{"default": ["google", "yahoo-id", "duckduckgo"]}
+{ "default": ["google", "yahoo", "duckduckgo"], "id": ["google", "yahoo-id", "duckduckgo"]}
