@@ -54,7 +54,9 @@ class PrivateSessionNotificationService : Service() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        startActivity(buildIntent(true))
+        val buildIntent = buildIntent(true)
+        buildIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(buildIntent)
         super.onTaskRemoved(rootIntent)
 
     }
