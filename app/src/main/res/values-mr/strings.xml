@@ -12,4 +12,6 @@
   <string name="about_link_learn_more">अधिक जाणून घ्या</string>
   <string name="about_link_support">आधार</string>
   <string name="about_link_privacy">गोपनीयता सूचना</string>
+  <string name="private_browsing_erase_message">खाजगी ब्राऊजिंग इतिहास पुसा</string>
+  <string name="private_browsing_erase_done">आपला ब्राउझिंग इतिहास\nमिटवला गेला आहे.</string>
 </resources>
