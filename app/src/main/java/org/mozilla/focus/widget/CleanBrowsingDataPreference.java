@@ -60,7 +60,7 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
                 } else if (resources.getString(R.string.pref_value_clear_cookies).equals(value)) {
                     CookieManager.getInstance().removeAllCookies(null);
                     // Also clear cookies in private mode process if the process exist
-                    if(PrivateMode.isPrivateModeProcessRunning(getContext())){
+                    if (PrivateMode.isPrivateModeProcessRunning(getContext())) {
                         // If there's a private mode process running, below intent will reach
                         // PrivateModeActivity's onNewIntent, thus the activity won't appear again.
                         // (assume that onNewIntent will always runs before onStart()
