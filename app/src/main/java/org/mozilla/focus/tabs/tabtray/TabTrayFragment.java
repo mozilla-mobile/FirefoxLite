@@ -187,7 +187,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onResume() {
         super.onResume();
-        tabTrayViewModel.hasPrivateTab().setValue(PrivateMode.hasPrivateTab(getContext()));
+        tabTrayViewModel.hasPrivateTab().setValue(PrivateMode.isPrivateModeProcessRunning(getContext()));
     }
 
     @Override
