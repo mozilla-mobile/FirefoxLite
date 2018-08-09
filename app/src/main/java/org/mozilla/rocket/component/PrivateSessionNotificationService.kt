@@ -54,7 +54,7 @@ class PrivateSessionNotificationService : Service() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        val buildIntent = buildIntent(true)
+        val buildIntent = buildIntent(this, true)
         buildIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(buildIntent)
         super.onTaskRemoved(rootIntent)
@@ -62,19 +62,11 @@ class PrivateSessionNotificationService : Service() {
     }
 
     private fun buildPendingIntent(sanitize: Boolean): PendingIntent {
-        val intent = buildIntent(sanitize)
+        val intent = buildIntent(this, sanitize)
         return PendingIntent.getActivity(applicationContext,
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    private fun buildIntent(sanitize: Boolean): Intent {
-        val intent = Intent(applicationContext, PrivateModeActivity::class.java)
-        if (sanitize) {
-            intent.action = PrivateMode.INTENT_EXTRA_SANITIZE
-        }
-        return intent
     }
 
     companion object {
@@ -94,6 +86,15 @@ class PrivateSessionNotificationService : Service() {
         /* package */ internal fun stop(context: Context) {
             val intent = Intent(context, PrivateSessionNotificationService::class.java)
             context.stopService(intent)
+        }
+
+        @JvmStatic
+        fun buildIntent(applicationContext: Context, sanitize: Boolean): Intent {
+            val intent = Intent(applicationContext, PrivateModeActivity::class.java)
+            if (sanitize) {
+                intent.action = PrivateMode.INTENT_EXTRA_SANITIZE
+            }
+            return intent
         }
     }
 
