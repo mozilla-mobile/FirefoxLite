@@ -7,6 +7,7 @@ package org.mozilla.focus.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
@@ -21,6 +22,8 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.rocket.component.PrivateSessionNotificationService;
+import org.mozilla.rocket.privately.PrivateMode;
 
 import java.util.Set;
 
@@ -56,6 +59,12 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
                     TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
                 } else if (resources.getString(R.string.pref_value_clear_cookies).equals(value)) {
                     CookieManager.getInstance().removeAllCookies(null);
+                    // Also clear cookies in private mode process if the process exist
+                    if(PrivateMode.isPrivateModeProcessRunning(getContext())){
+                        final Intent intent = PrivateSessionNotificationService.
+                                buildIntent(getContext().getApplicationContext(), true);
+                        getContext().startActivity(intent);
+                    }
                 } else if (resources.getString(R.string.pref_value_clear_cache).equals(value)) {
                     FileUtils.clearCache(getContext());
                 } else if (resources.getString(R.string.pref_value_clear_form_history).equals(value)) {

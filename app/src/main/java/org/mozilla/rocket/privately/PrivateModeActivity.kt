@@ -41,6 +41,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
         val exitEarly = handleIntent(intent)
         if (exitEarly) {
+            pushToBack()
             return
         }
 
