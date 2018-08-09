@@ -36,6 +36,7 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
             BannerDAO thisDAO = new BannerDAO();
             thisDAO.type = jsonObject.getString(BannerDAO.TYPE_KEY);
             thisDAO.values = jsonObject.getJSONArray(BannerDAO.VALUES_KEY);
+            thisDAO.id = jsonObject.getString(BannerDAO.ID_KEY);
             this.DAOs[i] = thisDAO;
         }
     }

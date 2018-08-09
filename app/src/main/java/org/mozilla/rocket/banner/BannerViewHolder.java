@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import org.json.JSONException;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public abstract class BannerViewHolder extends RecyclerView.ViewHolder  {
 
@@ -14,4 +14,12 @@ public abstract class BannerViewHolder extends RecyclerView.ViewHolder  {
 
     // JSONException should never happen, see BannerAdapter's constructor.
     public abstract void onBindViewHolder(Context context, BannerDAO bannerDAO);
+
+    public void sendClickItemTelemetry(String pageId, int itemPosition) {
+        TelemetryWrapper.clickBannerItem(pageId, itemPosition);
+    }
+
+    public void sendClickBackgroundTelemetry(String pageId) {
+        TelemetryWrapper.clickBannerBackground(pageId);
+    }
 }
