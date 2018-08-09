@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="action_cancel">रद्द करा</string>
+  <string name="action_ok">ठीक आहे</string>
+  <string name="urlbar_hint">पत्ता शोधा किंवा द्या</string>
+  <string name="menu_settings">सेटिंग</string>
+  <string name="menu_about">याबद्दल</string>
+  <string name="menu_help">मदत</string>
+  <string name="menu_rights">आपले हक्क</string>
+  <string name="menu_give_feedback">प्रतिक्रिया द्या</string>
+  <string name="text_selection_search_action">Firefox Rocket मध्ये शोधा</string>
+  <string name="about_link_learn_more">अधिक जाणून घ्या</string>
+  <string name="about_link_support">आधार</string>
+  <string name="about_link_privacy">गोपनीयता सूचना</string>
+</resources>
