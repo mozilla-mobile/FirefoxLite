@@ -19,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_edit_bookmark.*
 import org.mozilla.focus.R
+import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.persistence.BookmarksDatabase
 import org.mozilla.focus.repository.BookmarkRepository
@@ -27,7 +28,7 @@ import org.mozilla.focus.viewmodel.BookmarkViewModel
 private const val SAVE_ACTION_ID = 1
 const val ITEM_UUID_KEY = "ITEM_UUID_KEY"
 
-class EditBookmarkActivity : AppCompatActivity() {
+class EditBookmarkActivity : LocaleAwareAppCompatActivity() {
 
     private val itemId: String by lazy { intent.getStringExtra(ITEM_UUID_KEY) }
     private val viewModelFactory: BookmarkViewModel.Factory by lazy {
@@ -125,6 +126,9 @@ class EditBookmarkActivity : AppCompatActivity() {
         editTextName.removeTextChangedListener(nameWatcher)
         editTextLocation.removeTextChangedListener(locationWatcher)
         super.onDestroy()
+    }
+
+    override fun applyLocale() {
     }
 
     private fun isSaveValid(): Boolean {
