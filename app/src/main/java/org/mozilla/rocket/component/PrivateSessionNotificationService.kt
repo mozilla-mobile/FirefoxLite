@@ -45,7 +45,7 @@ class PrivateSessionNotificationService : Service() {
 
     private fun showNotification() {
 
-        val builder = NotificationUtil.baseBuilder(applicationContext)
+        val builder = NotificationUtil.baseBuilder(applicationContext, NotificationUtil.Channel.PRIVATE)
                 .setContentTitle(getString(R.string.private_browsing_erase_message))
                 .setContentIntent(buildPendingIntent(true))
                 .addAction(R.drawable.private_browsing_mask, getString(R.string.private_browsing_open_action), buildPendingIntent(false))
