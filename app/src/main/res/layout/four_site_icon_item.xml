@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visibility="invisible"
     android:layout_width="@dimen/four_site_item_size"
     android:layout_height="@dimen/four_site_item_size"
     android:padding="2dp"
