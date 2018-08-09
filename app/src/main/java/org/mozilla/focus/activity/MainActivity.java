@@ -1018,7 +1018,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     // a TabViewProvider and it should only be used in this activity
-    private static class MainTabViewProvider implements TabViewProvider {
+    private static class MainTabViewProvider extends TabViewProvider {
         private Activity activity;
 
         MainTabViewProvider(@NonNull final Activity activity) {
@@ -1031,11 +1031,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
             // but there is no promise about this.
             return (TabView) WebViewProvider.create(this.activity, null);
-        }
-
-        @Override
-        public void purify() {
-            // per current requirement, we do not need purify in normal-mode-browsing.
         }
     }
 }

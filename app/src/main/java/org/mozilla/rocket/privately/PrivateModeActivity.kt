@@ -23,6 +23,7 @@ import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
@@ -202,7 +203,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun stopPrivateMode() {
         PrivateSessionNotificationService.stop(this)
         PrivateMode.sanitize(this.applicationContext)
-        tabViewProvider.purify()
+        TabViewProvider.purify(this)
         Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
