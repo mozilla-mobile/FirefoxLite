@@ -357,7 +357,7 @@
       "default": {
         "searchDefault": "Google",
         "visibleDefaultEngines": [
-          "google", "yahoo-id", "bing", "twitter", "wikipedia-id"
+          "google", "yahoo-id", "bing", "twitter"
         ]
       }
     },
