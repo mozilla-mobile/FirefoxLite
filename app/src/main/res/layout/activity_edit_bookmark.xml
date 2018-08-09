@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="org.mozilla.focus.activity.EditBookmarkActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -14,6 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
+            app:title="@string/title_activity_edit_bookmark"
             android:background="@color/bookmarkEditToolbarBackground" />
 
     </android.support.design.widget.AppBarLayout>
