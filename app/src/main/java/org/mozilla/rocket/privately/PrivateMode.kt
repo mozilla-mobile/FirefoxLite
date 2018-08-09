@@ -57,7 +57,7 @@ class PrivateMode {
          */
         @Suppress("deprecation")
         @JvmStatic
-        fun hasPrivateTab(context: Context): Boolean {
+        fun isPrivateModeProcessRunning(context: Context): Boolean {
             val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             // Although this method is no longer available to third party applications.  For backwards compatibility,
             // it will still return the caller's own services.
