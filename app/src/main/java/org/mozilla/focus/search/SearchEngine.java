@@ -7,6 +7,8 @@ package org.mozilla.focus.search;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,8 @@ public class SearchEngine {
     private static final String OS_PARAM_OUTPUT_ENCODING = "\\{outputEncoding\\??\\}";
     private static final String OS_PARAM_OPTIONAL = "\\{(?:\\w+:)?\\w+\\?\\}";
 
+    private static final String EMPTY_STRING = "";
+    private static final String UNDERSCORE = "_";
     private final String identifier;
     /* package */ String name;
     /* package */ Bitmap icon;
@@ -84,7 +88,13 @@ public class SearchEngine {
      * @return
      */
     private String paramSubstitution(String template, String query) {
-        final String locale = Locale.getDefault().toString();
+        final String locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String country = Locale.getDefault().getCountry();
+            locale = Locale.getDefault().getLanguage() + (TextUtils.isEmpty(country) ? EMPTY_STRING : UNDERSCORE + country);
+        } else {
+            locale = Locale.getDefault().toString();
+        }
 
         template = template.replaceAll(MOZ_PARAM_LOCALE, locale);
         template = template.replaceAll(MOZ_PARAM_DIST_ID, "");

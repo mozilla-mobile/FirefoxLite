@@ -10,6 +10,7 @@
   <Param name="q" value="{searchTerms}"/>
   <Param name="ie" value="utf-8"/>
   <Param name="oe" value="utf-8"/>
+  <Param name="hl" value="{language}"/>
 </Url>
 <Url type="text/html" method="GET" template="https://www.google.com/search">
   <Param name="q" value="{searchTerms}"/>
