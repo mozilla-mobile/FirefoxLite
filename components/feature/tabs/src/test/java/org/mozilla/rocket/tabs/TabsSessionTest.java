@@ -361,8 +361,7 @@ public class TabsSessionTest {
         Assert.assertNull(session.getFocusTab());
     }
 
-    private static class DefaultTabViewProvider implements TabViewProvider {
-
+    private static class DefaultTabViewProvider extends TabViewProvider {
         @Override
         public TabView create() {
             return new DefaultTabView();

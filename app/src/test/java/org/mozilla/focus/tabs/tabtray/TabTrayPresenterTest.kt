@@ -92,13 +92,10 @@ class TabTrayPresenterTest {
         Assert.assertEquals(4, tabListCaptor.value.size)
     }
 
-    private class DefaultTabViewProvider : TabViewProvider {
+    private class DefaultTabViewProvider : TabViewProvider() {
 
         override fun create(): TabView {
             return DefaultTabView()
-        }
-
-        override fun purify() {
         }
     }
 
