@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,11 +53,19 @@ class FourSitesViewHolder extends BannerViewHolder {
                 }
             });
             for (int i = 0; i < icons.length; i++) {
+                final int itemIndex = i;
                 PorterDuffColorFilter alphaToWhitePorterDuff = new PorterDuffColorFilter(context.getResources().getColor(R.color.sharedColorAppPaletteWhite), PorterDuff.Mode.DST_OVER);
                 Glide.with(context)
                         .load(bannerDAO.values.getString(1 + i))
                         .apply(new RequestOptions().transforms(new ShrinkSizeTransformation(0.62f), new PorterDuffTransformation(alphaToWhitePorterDuff), new CircleCrop()))
-                        .into(icons[i]);
+                        .into(new SimpleTarget<Drawable>() {
+                            @Override
+                            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                                icons[itemIndex].setImageDrawable(resource);
+                                icons[itemIndex].setVisibility(View.VISIBLE);
+                                textViews[itemIndex].setVisibility(View.VISIBLE);
+                            }
+                        });
             }
             for (int i = 0; i < icons.length; i++) {
                 textViews[i].setText(bannerDAO.values.getString(9 + i));
