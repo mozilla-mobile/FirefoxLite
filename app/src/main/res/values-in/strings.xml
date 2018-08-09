@@ -11,6 +11,7 @@
   <string name="menu_share_with_friends">Bagikan dengan teman</string>
   <string name="share_dialog_title">Bagikan via</string>
   <string name="text_selection_search_action">Cari di Firefox Rocket</string>
+  <string name="about_content_body">%1$s adalah sebuah peramban cepat dan ringan buatan %2$s. Misi kami adalah untuk mendorong internet yang sehat dan terbuka.</string>
   <string name="about_link_learn_more">Pelajari lebih lanjut</string>
   <string name="about_link_support">Dukungan</string>
   <string name="about_link_your_rights">Hak / Izin Anda</string>
@@ -26,6 +27,7 @@
   <string name="preference_default_browser_is_setting">Mengubah setelan…</string>
   <string name="preference_turbo_mode">Mode turbo</string>
   <string name="preference_mozilla_telemetry">Kirim data penggunaan</string>
+  <string name="preference_mozilla_telemetry_summary">%2$s hanya akan mengumpulkan data yang diperlukan saja untuk memperbaiki %1$s bagi Anda.</string>
   <string name="preference_learn_more">Pelajari lebih lanjut</string>
   <string name="preference_about">Tentang</string>
   <string name="content_description_clear_input">Bersihkan masukan</string>
@@ -56,6 +58,7 @@
   <string name="contextmenu_open_in_new_tab">Buka tautan di tab baru</string>
   <string name="contextmenu_open_image_in_new_tab">Buka gambar di tab baru</string>
   <string name="first_run_page1_title">Terima kasih telah memilih %1$s</string>
+  <string name="first_run_page1_text">Peramban yang dibuat oleh %1$s, organisasi nirlaba yang berkomitmen pada web bebas dan terbuka.</string>
   <string name="first_run_page2_title">Menjelajah secepat kilat</string>
   <string name="first_run_page2_text">Gunakan mode turbo untuk memblokir iklan pelacak sehingga Anda dapat menjelajah dengan super cepat. Jika situs terasa bermasalah, cukup nonaktifkan lewat menu.</string>
   <string name="first_run_page3_title">Hemat data = Hemat uang</string>
@@ -168,6 +171,10 @@
   <string name="share_app_dialog_text_title">Bagikan %1$s dengan teman!</string>
   <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Tangkapan layar yang canggih</string>
   <string name="share_app_dialog_btn_share">Bagikan</string>
+  <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari %3$s. %1$s %2$s</string>
+  <string name="your_rights_content1">%1$s adalah perangkat lunak bebas dan sumber terbuka yang dibuat oleh %2$s dan kontributor lainnya.</string>
+  <string name="your_rights_content2"><![CDATA["%1$s tersedia untuk Anda di bawah persyaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" dan lisensi sumber terbuka lainnya."]]></string>
+  <string name="your_rights_content3"><![CDATA["Anda tidak diberi izin atau lisensi apa pun atas merek dagang Mozilla Foundation atau pihak mana pun, termasuk nama atau logo %3$s, %4$s, atau %1$s. Informasi lebih lanjut bisa ditemukan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di sini</a>.]]></string>
   <string name="your_rights_content4"><![CDATA["Kode sumber tambahan untuk %1$s tersedia dalam berbagai "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">lisensi</a>" bebas dan sumber terbuka lainnya."]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s juga menggunakan daftar blokir yang disediakan oleh Disconnect, Inc. sebagai hasil karya terpisah dan independen di bawah "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>", dan tersedia "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">di sini</a>.]]></string>
   <string name="survey_notification_title">Kami membutuhkan Anda! %1$s</string>

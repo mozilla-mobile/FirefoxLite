@@ -139,8 +139,8 @@
   <string name="message_start_to_save_to_removable_storage">फ़ाइल एसडी कार्ड में सहेजा गया</string>
   <string name="message_removable_storage_space_not_enough">एसडी कार्ड लगभग भर चूका है। फाइल को इंटरनल संग्रहण में सहेज दिया गया।</string>
   <string name="screenshot_grid_empty_text_title">"कोई स्क्रीनशॉट नहीं "</string>
-  <string name="screenshot_grid_empty_text_msg_prefix">दबाएँ</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">"मेनू पर संपूर्ण वेब पेज कैद करने के लिए। "</string>
+  <string name="screenshot_grid_empty_text_msg_prefix">"दबाएँ  "</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">"  मेनू पर संपूर्ण वेब पेज कैद करने के लिए। "</string>
   <string name="screenshot_image_viewer_dialog_title">जानकारी</string>
   <string name="screenshot_image_viewer_dialog_info_time1">दिनांक: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">रिज़ॉल्यूशन: %1$s</string>
