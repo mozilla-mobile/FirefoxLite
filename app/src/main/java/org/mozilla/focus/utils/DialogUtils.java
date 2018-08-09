@@ -42,40 +42,27 @@ public class DialogUtils {
         }
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                Settings.getInstance(context).setRateAppDialogDidDismiss();
-                telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
-            }
+        dialog.setOnCancelListener(dialogInterface -> {
+            Settings.getInstance(context).setRateAppDialogDidDismiss();
+            telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
         });
 
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_rate_app_dialog, (ViewGroup) null);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_rate_app_dialog, null);
 
         final TextView textView = dialogView.findViewById(R.id.rate_app_dialog_textview_title);
         textView.setText(context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));
 
-        dialogView.findViewById(R.id.dialog_rate_app_btn_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialog != null) {
-                    Settings.getInstance(context).setRateAppDialogDidDismiss();
-                    dialog.dismiss();
-                    telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
-                }
-            }
+        dialogView.findViewById(R.id.dialog_rate_app_btn_close).setOnClickListener(v -> {
+            Settings.getInstance(context).setRateAppDialogDidDismiss();
+            dialog.dismiss();
+            telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
         });
-        dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate).setOnClickListener(v -> {
 
-                IntentUtils.goToPlayStore(context);
+            IntentUtils.goToPlayStore(context);
 
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-                telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
-            }
+            dialog.dismiss();
+            telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
         });
         final String title = AppConfigWrapper.getRateAppDialogTitle(context);
         if (title != null) {
@@ -87,17 +74,12 @@ public class DialogUtils {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
         }
 
-        dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Users set negative feedback, don't ask them to share in the future
-                Settings.getInstance(context).setShareAppDialogDidShow();
-                IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url), true);
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-                telemetryFeedback(context, TelemetryWrapper.Value.NEGATIVE);
-            }
+        dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(v -> {
+            // Users set negative feedback, don't ask them to share in the future
+            Settings.getInstance(context).setShareAppDialogDidShow();
+            IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url), true);
+            dialog.dismiss();
+            telemetryFeedback(context, TelemetryWrapper.Value.NEGATIVE);
         });
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
@@ -119,40 +101,25 @@ public class DialogUtils {
         }
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
-            }
-        });
+        dialog.setOnCancelListener(dialogInterface -> telemetryShareApp(context, TelemetryWrapper.Value.DISMISS));
 
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, (ViewGroup) null);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, null);
 
         final TextView textView = dialogView.findViewById(R.id.share_app_dialog_textview_title);
         textView.setText(context.getString(R.string.share_app_dialog_text_title, context.getString(R.string.app_name)));
 
-        dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                    telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
-                }
-            }
+        dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(v -> {
+            dialog.dismiss();
+            telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
         });
-        dialogView.findViewById(R.id.dialog_share_app_btn_share).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
-                sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text, context.getString(R.string.app_name), context.getString(R.string.share_app_google_play_url), context.getString(R.string.mozilla)));
-                context.startActivity(Intent.createChooser(sendIntent, null));
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-                telemetryShareApp(context, TelemetryWrapper.Value.SHARE);
-            }
+        dialogView.findViewById(R.id.dialog_share_app_btn_share).setOnClickListener(v -> {
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.setType("text/plain");
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+            sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text, context.getString(R.string.app_name), context.getString(R.string.share_app_google_play_url), context.getString(R.string.mozilla)));
+            context.startActivity(Intent.createChooser(sendIntent, null));
+            dialog.dismiss();
+            telemetryShareApp(context, TelemetryWrapper.Value.SHARE);
         });
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
