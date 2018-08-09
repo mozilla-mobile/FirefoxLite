@@ -67,8 +67,10 @@ class FourSitesViewHolder extends BannerViewHolder {
         }
         for (int i = 0; i < icons.length; i++) {
             final int index = 5 + i;
+            final int itemPosition = i;
             icons[i].setOnClickListener(v -> {
                 try {
+                    sendClickItemTelemetry(bannerDAO.id, itemPosition);
                     onClickListener.onClick(bannerDAO.values.getString(index));
                 } catch (JSONException e) {
                     // Invalid manifest
@@ -76,5 +78,8 @@ class FourSitesViewHolder extends BannerViewHolder {
                 }
             });
         }
+        background.setOnClickListener(v -> {
+            sendClickBackgroundTelemetry(bannerDAO.id);
+        });
     }
 }

@@ -115,6 +115,7 @@ public final class TelemetryWrapper {
         static final String DEFAULT_BROWSER = "default_browser";
         static final String PROMOTE_SHARE = "promote_share";
         static final String THEMETOY = "themetoy";
+        static final String BANNER = "banner";
     }
 
     public static class Value {
@@ -162,6 +163,10 @@ public final class TelemetryWrapper {
         static final String LAUNCHER = "launcher";
         static final String EXTERNAL_APP = "external_app";
         static final String SHORTCUT = "shortcut";
+
+        static final String BACKGROUND = "background";
+        static final String ITEM = "item";
+        static final String PAGE = "page";
     }
 
     static class Extra {
@@ -173,6 +178,7 @@ public final class TelemetryWrapper {
         static final String SOURCE = "source";
         static final String VERSION = "version";
         static final String TYPE = "type";
+        static final String DIRECTION = "direction";
     }
 
     public static class Extra_Value {
@@ -781,6 +787,26 @@ public final class TelemetryWrapper {
     public static void erasePrivateModeNotification() {
         new EventBuilder(Category.ACTION, Method.CLEAR, Object.PRIVATE_MODE)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue();
+    }
+
+    public static void clickBannerBackground(String pageId) {
+        new EventBuilder(Category.ACTION, Method.CLICK, Object.BANNER, Value.BACKGROUND)
+                .extra(Extra.SOURCE, pageId)
+                .queue();
+    }
+
+    public static void clickBannerItem(String pageId, int itemPosition) {
+        new EventBuilder(Category.ACTION, Method.CLICK, Object.BANNER, Value.ITEM)
+                .extra(Extra.SOURCE, pageId)
+                .extra(Extra.ON, Integer.toString(itemPosition))
+                .queue();
+    }
+
+    public static void swipeBannerItem(int directionX, int toItemPosition) {
+        new EventBuilder(Category.ACTION, Method.SWIPE, Object.BANNER, Value.PAGE)
+                .extra(Extra.DIRECTION, Integer.toString(directionX))
+                .extra(Extra.TO, Integer.toString(toItemPosition))
                 .queue();
     }
 

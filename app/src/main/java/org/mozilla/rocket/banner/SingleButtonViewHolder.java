@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +16,7 @@ import org.mozilla.focus.R;
 class SingleButtonViewHolder extends BannerViewHolder {
     static final int VIEW_TYPE = 1;
     static final String VIEW_TYPE_NAME = "single_button";
+    static final int BUTTON_INDEX = 0;
     private ViewGroup background;
     private OnClickListener onClickListener;
     private TextView button;
@@ -44,11 +44,15 @@ class SingleButtonViewHolder extends BannerViewHolder {
         }
         button.setOnClickListener(v -> {
             try {
+                sendClickItemTelemetry(bannerDAO.id, BUTTON_INDEX);
                 onClickListener.onClick(bannerDAO.values.getString(1));
             } catch (JSONException e) {
                 // Invalid manifest
                 e.printStackTrace();
             }
+        });
+        background.setOnClickListener(v -> {
+            sendClickBackgroundTelemetry(bannerDAO.id);
         });
     }
 }

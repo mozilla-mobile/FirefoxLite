@@ -30,7 +30,6 @@ import android.view.ViewParent;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -298,7 +297,22 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.banner = view.findViewById(R.id.banner);
         bannerLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         banner.setLayoutManager(bannerLayoutManager);
-        SnapHelper snapHelper = new PagerSnapHelper();
+        SnapHelper snapHelper = new PagerSnapHelper() {
+
+            private void sendTelemetry(int superRet, int velocityX) {
+                final int itemCount = banner.getAdapter().getItemCount();
+                int boundedTarget = superRet < itemCount ? superRet : itemCount - 1;
+                TelemetryWrapper.swipeBannerItem(velocityX / Math.abs(velocityX), boundedTarget);
+            }
+
+            @Override
+            public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX,
+                                              int velocityY) {
+                final int superRet = super.findTargetSnapPosition(layoutManager, velocityX, velocityY);
+                sendTelemetry(superRet, velocityX);
+                return superRet;
+            }
+        };
         snapHelper.attachToRecyclerView(banner);
 
         SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);

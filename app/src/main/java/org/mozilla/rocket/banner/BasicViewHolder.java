@@ -31,6 +31,7 @@ class BasicViewHolder extends BannerViewHolder {
             e.printStackTrace();
         }
         background.setOnClickListener(v -> {
+            sendClickBackgroundTelemetry(bannerDAO.id);
             try {
                 onClickListener.onClick(bannerDAO.values.getString(1));
             } catch (JSONException e) {
