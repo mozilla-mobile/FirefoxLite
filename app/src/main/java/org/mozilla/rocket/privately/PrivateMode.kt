@@ -21,14 +21,11 @@ class PrivateMode {
 
     // Provide common resources, and helper functions
     companion object {
-        const val PREF_KEY_PRIVATE_MODE_ENABLED = "pref_key_private_mode_enabled"
         const val PREF_KEY_SANITIZE_REMINDER = "pref_key_sanitize_reminder"
 
         const val INTENT_EXTRA_SANITIZE = "intent_extra_sanitize"
         const val PRIVATE_PROCESS_NAME = "private_mode"
         const val WEBVIEW_FOLDER_NAME = "webview"
-
-        private const val PREF_KEY_PRIVATE_MODE_ENABLED_DEFAULT = false
 
         // Private Mode is currently behind a pref and is default off.
         // The option to enable it is on Nightly. The logic is in SettingsFragment.
