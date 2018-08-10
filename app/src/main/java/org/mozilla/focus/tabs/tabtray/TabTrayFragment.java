@@ -148,9 +148,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
             }
         });
-        if (PrivateMode.isEnable(getContext())) {
-            privateModeBtn.setVisibility(View.VISIBLE);
-        }
+        privateModeBtn.setVisibility(PrivateMode.isEnable(getContext()) ? View.VISIBLE : View.INVISIBLE);
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
         return view;

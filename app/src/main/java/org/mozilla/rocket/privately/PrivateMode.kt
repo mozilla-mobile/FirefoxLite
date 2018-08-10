@@ -8,7 +8,9 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.preference.PreferenceManager
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.FileUtils
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.ThreadUtils
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import java.io.File
@@ -32,7 +34,7 @@ class PrivateMode {
         // The option to enable it is on Nightly. The logic is in SettingsFragment.
         @JvmStatic
         fun isEnable(context: Context): Boolean {
-            return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_KEY_PRIVATE_MODE_ENABLED, PREF_KEY_PRIVATE_MODE_ENABLED_DEFAULT)
+            return AppConfigWrapper.isPrivateModeEnabled(context);
         }
 
         @JvmStatic
