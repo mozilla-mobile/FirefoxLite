@@ -76,6 +76,10 @@
 
             </android.support.design.widget.AppBarLayout>
 
+            <include
+                layout="@layout/find_in_page"
+                android:visibility="gone" />
+
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </FrameLayout>
 

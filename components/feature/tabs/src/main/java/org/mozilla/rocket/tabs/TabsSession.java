@@ -18,6 +18,7 @@ import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class TabsSession {
     private List<TabsViewListener> tabsViewListeners = new ArrayList<>();
     private List<TabsChromeListener> tabsChromeListeners = new ArrayList<>();
     private DownloadCallback downloadCallback;
+    private TabView.FindListener findListener;
 
     public TabsSession(@NonNull TabViewProvider provider) {
         this.tabViewProvider = provider;
@@ -291,6 +293,15 @@ public class TabsSession {
         }
     }
 
+    public void setFindListener(@Nullable TabView.FindListener findListener){
+        this.findListener = findListener;
+        if(hasTabs()){
+            for (final Tab tab : tabs) {
+                tab.setFindListener(this.findListener);
+            }
+        }
+    }
+
     /**
      * To destroy this session, and it also destroy any tabs in this session.
      * This method should be called after any View has been removed from view system.
@@ -324,6 +335,7 @@ public class TabsSession {
         tab.setTabViewClient(new TabViewClientImpl(tab));
         tab.setTabChromeClient(new TabChromeClientImpl(tab));
         tab.setDownloadCallback(downloadCallback);
+        tab.setFindListener(findListener);
     }
 
     private String addTabInternal(@Nullable final String url,
