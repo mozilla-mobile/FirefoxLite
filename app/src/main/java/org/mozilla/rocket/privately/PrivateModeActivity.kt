@@ -61,35 +61,11 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
                 if (it) {
 
                 } else {
-                    Log.d("aaa", "-----hasPrivateModeActivityx")
                     session?.destroy()
-                    finishAndRemoveTask()
+                    finishAffinity()
                 }
             }
         }
-
-        PrivateMode.hasPrivateSession.observeForever {
-            it?.apply {
-                if (it) {
-                    val context = this@PrivateModeActivity
-                    val intent = Intent(context, PrivateSessionNotificationService::class.java)
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        context.startForegroundService(intent)
-                    } else {
-                        context.startService(intent)
-                    }
-                } else {
-                    PrivateSessionBackgroundService.purify(this@PrivateModeActivity)
-                    Toast.makeText(this@PrivateModeActivity, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        PrivateMode.hasPrivateModeActivity.value = false
     }
 
     @Override
@@ -118,7 +94,6 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
             sharedViewModel.urlInputState().value = false
 
         } else {
-            PrivateMode.hasPrivateSession.value = false
             val controller = getNavController()
             if (controller.currentDestination.id == R.id.fragment_private_home_screen) {
                 super.onBackPressed()
@@ -153,11 +128,11 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     private fun dropBrowserFragment() {
         getNavController().navigateUp()
+        PrivateMode.hasPrivateSession.value = false
     }
 
     private fun pushToBack() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)
         overridePendingTransition(0, R.anim.pb_exit)
     }

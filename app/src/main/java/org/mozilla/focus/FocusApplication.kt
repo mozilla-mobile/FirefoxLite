@@ -7,7 +7,10 @@ package org.mozilla.focus
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.preference.PreferenceManager
+import android.widget.Toast
 import com.squareup.leakcanary.LeakCanary
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
@@ -17,9 +20,11 @@ import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
+import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
+import org.mozilla.rocket.privately.PrivateSessionBackgroundService
 import java.io.File
 
 
@@ -64,6 +69,25 @@ class FocusApplication : LocaleAwareApplication() {
         DownloadInfoManager.init(this)
         // initialize the NotificationUtil to configure the default notification channel. This is required for API 26+
         NotificationUtil.init(this)
+
+        if (PrivateMode.isInPrivateProcess(this)){
+            PrivateMode.hasPrivateSession.observeForever {
+                it?.apply {
+                    if (it) {
+                        val intent = Intent(this@FocusApplication, PrivateSessionNotificationService::class.java)
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            this@FocusApplication.startForegroundService(intent)
+                        } else {
+                            this@FocusApplication.startService(intent)
+                        }
+                    } else {
+                        PrivateSessionBackgroundService.purify(this@FocusApplication)
+                        Toast.makeText(this@FocusApplication, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
     }
 
 }

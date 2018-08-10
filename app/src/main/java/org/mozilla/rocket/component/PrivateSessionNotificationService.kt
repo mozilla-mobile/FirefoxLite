@@ -34,17 +34,18 @@ class PrivateSessionNotificationService : Service() {
         return null
     }
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         PrivateMode.hasPrivateSession.observeForever {
             it?.apply {
                 if (it) {
                     showNotification()
                 } else {
                     stopForeground(true)
+                    stopSelf()
                 }
             }
         }
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
