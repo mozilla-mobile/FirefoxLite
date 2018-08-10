@@ -53,7 +53,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
     private static final String FIREBASE_APP_ID = "google_app_id";
     private static final String FIREBASE_API_KEY = "google_api_key";
     private static final String FIREBASE_PROJECT_ID = "project_id";
-    private static final boolean BOOLEAN_DEFAULT = false;
 
 
     private HashMap<String, Object> remoteConfigDefault;
@@ -256,7 +255,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG);
         map.put(FirebaseHelper.ENABLE_MY_SHOT_UNREAD, MainActivity.ENABLE_MY_SHOT_UNREAD_DEFAULT);
         map.put(FirebaseHelper.BANNER_MANIFEST, HomeFragment.BANNER_MANIFEST_DEFAULT);
-        map.put(FirebaseHelper.ENABLE_PRIVATE_MODE, BOOLEAN_DEFAULT);
+        map.put(FirebaseHelper.ENABLE_PRIVATE_MODE, AppConfigWrapper.PRIVATE_MODE_ENABLED_DEFAULT);
 
         return map;
     }

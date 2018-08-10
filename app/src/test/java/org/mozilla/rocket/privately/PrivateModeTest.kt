@@ -5,9 +5,11 @@
 package org.mozilla.rocket.privately
 
 import android.preference.PreferenceManager
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
@@ -16,11 +18,7 @@ import org.robolectric.RuntimeEnvironment
 class PrivateModeTest {
 
     @Test
-    fun `Private mode should be disable if it's pref off`() {
-        PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
-                .edit()
-                .putBoolean(PrivateMode.PREF_KEY_PRIVATE_MODE_ENABLED, true)
-                .apply()
-        assertTrue(PrivateMode.isEnable(RuntimeEnvironment.application))
+    fun `Private mode is default off`() {
+        assertFalse(PrivateMode.isEnable(RuntimeEnvironment.application))
     }
 }
