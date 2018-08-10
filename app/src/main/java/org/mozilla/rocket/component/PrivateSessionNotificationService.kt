@@ -15,6 +15,7 @@ import org.mozilla.focus.notification.NotificationId
 import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.privately.PrivateModeActivity
+import org.mozilla.rocket.tabs.TabViewProvider
 
 
 /**
@@ -36,10 +37,15 @@ class PrivateSessionNotificationService : Service() {
         val action = intent?.action ?: return Service.START_NOT_STICKY
         when (action) {
             ACTION_START -> showNotification()
+            ACTION_PURIFY -> callPurify(this.applicationContext)
             else -> throw IllegalStateException("Unknown intent: $intent")
         }
 
         return Service.START_NOT_STICKY
+    }
+
+    private fun callPurify(applicationContext: Context) {
+        TabViewProvider.purify(applicationContext)
     }
 
 
@@ -71,6 +77,7 @@ class PrivateSessionNotificationService : Service() {
 
     companion object {
         private val ACTION_START = "start"
+        private val ACTION_PURIFY = "purify"
 
         fun start(context: Context) {
             val intent = Intent(context, PrivateSessionNotificationService::class.java)
@@ -81,6 +88,12 @@ class PrivateSessionNotificationService : Service() {
             } else {
                 context.startService(intent)
             }
+        }
+
+        fun purify(context: Context) {
+            val intent = Intent(context, PrivateSessionNotificationService::class.java)
+            intent.action = ACTION_PURIFY
+            context.startService(intent)
         }
 
         /* package */ internal fun stop(context: Context) {
