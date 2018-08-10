@@ -202,7 +202,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     private fun stopPrivateMode() {
         PrivateSessionNotificationService.stop(this)
-        PrivateMode.sanitize(this.applicationContext)
+        PrivateMode.clearWebViewCache(this.applicationContext)
         TabViewProvider.purify(this)
         Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }

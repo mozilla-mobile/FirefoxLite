@@ -35,8 +35,9 @@ class PrivateMode {
             return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_KEY_PRIVATE_MODE_ENABLED, PREF_KEY_PRIVATE_MODE_ENABLED_DEFAULT)
         }
 
+        // Clearing the cache will make the next webview startup using new Cookie and WebDatabase.
         @JvmStatic
-        fun sanitize(context: Context) {
+        fun clearWebViewCache(context: Context) {
             ThreadUtils.postToBackgroundThread {
 
                 context.applicationContext.cacheDir?.let { dir ->
