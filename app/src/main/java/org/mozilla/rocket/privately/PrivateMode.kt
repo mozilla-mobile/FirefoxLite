@@ -7,6 +7,7 @@ package org.mozilla.rocket.privately
 import android.app.ActivityManager
 import android.app.PendingIntent
 import android.app.Service
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
@@ -29,6 +30,10 @@ class PrivateMode {
 
     // Provide common resources, and helper functions
     companion object {
+
+        val hasPrivateSession = MutableLiveData<Boolean>()
+        val hasPrivateModeActivity = MutableLiveData<Boolean>()
+
         const val PREF_KEY_PRIVATE_MODE_ENABLED = "pref_key_private_mode_enabled"
         const val PREF_KEY_SANITIZE_REMINDER = "pref_key_sanitize_reminder"
 
@@ -123,26 +128,20 @@ class PrivateSessionBackgroundService : Service() {
         val action = intent?.action ?: return Service.START_NOT_STICKY
         when (action) {
             ACTION_PURIFY -> callPurify()
-            ACTION_END_PRIVATE_MODE -> callEndPrivateMode()
             else -> throw IllegalStateException("Unknown intent: $intent")
         }
 
         return Service.START_NOT_STICKY
     }
 
-    private fun callEndPrivateMode() {
-        TabViewProvider.purify(applicationContext)
-        startActivity(Intent(this, MainActivity::class.java))
-    }
-
     private fun callPurify() {
+        PrivateMode.clearWebViewCache(applicationContext)
         TabViewProvider.purify(applicationContext)
     }
 
     companion object {
 
         private const val ACTION_PURIFY = "purify"
-        private const val ACTION_END_PRIVATE_MODE = "end_private_mode"
 
         @JvmStatic
         fun purify(context: Context) {
@@ -150,12 +149,5 @@ class PrivateSessionBackgroundService : Service() {
             intent.action = ACTION_PURIFY
             context.startService(intent)
         }
-
-        fun genEndingIntent(context: Context): Intent {
-            val intent = Intent(context, PrivateSessionBackgroundService::class.java)
-            intent.action = ACTION_END_PRIVATE_MODE
-            return intent
-        }
     }
-
 }

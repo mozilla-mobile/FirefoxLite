@@ -142,7 +142,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         privateModeBtn = view.findViewById(R.id.btn_private_browsing);
         privateModeBadge = view.findViewById(R.id.badge_in_private_mode);
         tabTrayViewModel = ViewModelProviders.of(this).get(TabTrayViewModel.class);
-        tabTrayViewModel.hasPrivateTab().observe(this, hasPrivateTab -> {
+        tabTrayViewModel.getHasPrivateTab().observe(this, hasPrivateTab -> {
             // Update the UI, in this case, a TextView.
             if (privateModeBadge != null) {
                 privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
@@ -187,7 +187,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onResume() {
         super.onResume();
-        tabTrayViewModel.hasPrivateTab().setValue(PrivateMode.hasPrivateSession(getContext()));
+        tabTrayViewModel.getHasPrivateTab().setValue(PrivateMode.hasPrivateSession(getContext()));
     }
 
     @Override

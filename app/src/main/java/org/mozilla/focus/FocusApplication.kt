@@ -46,7 +46,7 @@ class FocusApplication : LocaleAwareApplication() {
             // You should not init your app in this process.
             return
         }
-        LeakCanary.install(this)
+//        LeakCanary.install(this)
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 

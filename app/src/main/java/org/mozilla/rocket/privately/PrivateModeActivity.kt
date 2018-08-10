@@ -5,11 +5,14 @@
 
 package org.mozilla.rocket.privately
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.CheckResult
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.Navigation
@@ -23,6 +26,7 @@ import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
@@ -40,10 +44,6 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         tabViewProvider = PrivateTabViewProvider(this)
 
         handleIntent(intent)
-//        if (exitEarly) {
-//            pushToBack()
-//            return
-//        }
 
         setContentView(R.layout.activity_private_mode)
 
@@ -55,12 +55,41 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun initViewModel() {
         sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         sharedViewModel.urlInputState().value = false
+
+        PrivateMode.hasPrivateModeActivity.observeForever {
+            it?.apply {
+                if (it) {
+
+                } else {
+                    Log.d("aaa", "-----hasPrivateModeActivityx")
+                    session?.destroy()
+                    finishAndRemoveTask()
+                }
+            }
+        }
+
+        PrivateMode.hasPrivateSession.observeForever {
+            it?.apply {
+                if (it) {
+                    val context = this@PrivateModeActivity
+                    val intent = Intent(context, PrivateSessionNotificationService::class.java)
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(intent)
+                    } else {
+                        context.startService(intent)
+                    }
+                } else {
+                    PrivateSessionBackgroundService.purify(this@PrivateModeActivity)
+                    Toast.makeText(this@PrivateModeActivity, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        erase()
-        session?.destroy()
+        PrivateMode.hasPrivateModeActivity.value = false
     }
 
     @Override
@@ -89,6 +118,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
             sharedViewModel.urlInputState().value = false
 
         } else {
+            PrivateMode.hasPrivateSession.value = false
             val controller = getNavController()
             if (controller.currentDestination.id == R.id.fragment_private_home_screen) {
                 super.onBackPressed()
@@ -118,17 +148,11 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
-        val exitEarly = handleIntent(intent)
-        if (exitEarly) {
-            return
-        }
+        handleIntent(intent)
     }
 
     private fun dropBrowserFragment() {
         getNavController().navigateUp()
-        erase()
-        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
     private fun pushToBack() {
@@ -176,7 +200,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         if (controller.currentDestination.id == R.id.fragment_private_home_screen) {
             controller.navigate(R.id.action_private_home_to_browser)
         }
-        startPrivateMode()
+        PrivateMode.hasPrivateSession.value = true
     }
 
     private fun isUrlInputDisplaying(): Boolean {
@@ -195,28 +219,14 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         window.decorView.systemUiVisibility = visibility
     }
 
-    private fun startPrivateMode() {
-        PrivateSessionNotificationService.start(this)
-    }
-
-    // We only have one private session/tab.
-    private fun erase() {
-        PrivateSessionBackgroundService.purify(this)
-        PrivateMode.clearWebViewCache(this.applicationContext)
-    }
-
-    private fun handleIntent(intent: Intent?): Boolean {
+    private fun handleIntent(intent: Intent?) {
 
         if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
-            PrivateSessionNotificationService.stop(this)
-            erase()
+            PrivateMode.hasPrivateSession.value = false
+            PrivateMode.hasPrivateModeActivity.value = false
             TelemetryWrapper.erasePrivateModeNotification()
-            Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
-            finishAndRemoveTask()
-            return true
+        } else {
+            PrivateMode.hasPrivateModeActivity.value = true
         }
-        return false
     }
-
-
 }

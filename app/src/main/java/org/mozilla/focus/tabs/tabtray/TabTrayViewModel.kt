@@ -5,12 +5,5 @@ import android.arch.lifecycle.ViewModel
 
 
 class TabTrayViewModel : ViewModel() {
-    private var hasPrivateTab = MutableLiveData<Boolean>()
-
-    fun hasPrivateTab(): MutableLiveData<Boolean> {
-
-        return hasPrivateTab
-    }
-
-
+    var hasPrivateTab = MutableLiveData<Boolean>()
 }
