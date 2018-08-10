@@ -48,24 +48,26 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/btn_private_browsing"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/tab_tray_bottom_sheet_start_margin"
+                android:visibility="invisible"
                 android:layout_alignParentStart="true">
 
                 <ImageView
                     android:id="@+id/badge_in_private_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/btn_private_browsing"
-                    android:layout_alignTop="@+id/btn_private_browsing"
+                    android:layout_alignEnd="@+id/img_private_browsing"
+                    android:layout_alignTop="@+id/img_private_browsing"
                     android:paddingEnd="-10dp"
                     android:paddingTop="6dp"
                     android:visibility="invisible"
                     android:src="@drawable/ic_menu_private_mode" />
 
                 <ImageView
-                    android:id="@+id/btn_private_browsing"
+                    android:id="@+id/img_private_browsing"
                     style="@style/MainMenuButton"
                     android:layout_centerInParent="true"
                     android:padding="8dp"
