@@ -214,6 +214,12 @@
 
         <service
             android:name="org.mozilla.rocket.component.PrivateSessionNotificationService"
+            android:exported="false"
+            android:process=":private_mode" />
+
+        <service
+            android:name="org.mozilla.rocket.privately.PrivateSessionBackgroundService"
+            android:exported="false"
             android:process=":private_mode" />
 
         <activity

@@ -23,7 +23,6 @@ import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
-import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
@@ -40,11 +39,11 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
         tabViewProvider = PrivateTabViewProvider(this)
 
-        val exitEarly = handleIntent(intent)
-        if (exitEarly) {
-            pushToBack()
-            return
-        }
+        handleIntent(intent)
+//        if (exitEarly) {
+//            pushToBack()
+//            return
+//        }
 
         setContentView(R.layout.activity_private_mode)
 
@@ -60,7 +59,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        stopPrivateMode()
+        erase()
         session?.destroy()
     }
 
@@ -128,7 +127,8 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
 
     private fun dropBrowserFragment() {
         getNavController().navigateUp()
-        stopPrivateMode()
+        erase()
+        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
     private fun pushToBack() {
@@ -199,20 +199,19 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         PrivateSessionNotificationService.start(this)
     }
 
-
-    private fun stopPrivateMode() {
-        PrivateSessionNotificationService.stop(this)
+    // We only have one private session/tab.
+    private fun erase() {
+        PrivateSessionBackgroundService.purify(this)
         PrivateMode.clearWebViewCache(this.applicationContext)
-        TabViewProvider.purify(this)
-        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
-    @CheckResult
     private fun handleIntent(intent: Intent?): Boolean {
 
         if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
+            PrivateSessionNotificationService.stop(this)
+            erase()
             TelemetryWrapper.erasePrivateModeNotification()
-            stopPrivateMode()
+            Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
             finishAndRemoveTask()
             return true
         }

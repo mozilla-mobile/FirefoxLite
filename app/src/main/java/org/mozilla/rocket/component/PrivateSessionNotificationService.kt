@@ -37,34 +37,23 @@ class PrivateSessionNotificationService : Service() {
         val action = intent?.action ?: return Service.START_NOT_STICKY
         when (action) {
             ACTION_START -> showNotification()
-            ACTION_PURIFY -> callPurify(this.applicationContext)
             else -> throw IllegalStateException("Unknown intent: $intent")
         }
-
         return Service.START_NOT_STICKY
-    }
-
-    private fun callPurify(applicationContext: Context) {
-        TabViewProvider.purify(applicationContext)
     }
 
 
     private fun showNotification() {
 
-        val builder = NotificationUtil.baseBuilder(applicationContext, NotificationUtil.Channel.PRIVATE)
-                .setContentTitle(getString(R.string.private_browsing_erase_message))
-                .setContentIntent(buildPendingIntent(true))
-                .addAction(R.drawable.private_browsing_mask, getString(R.string.private_browsing_open_action), buildPendingIntent(false))
+        val builder =
+                NotificationUtil.baseBuilder(applicationContext, NotificationUtil.Channel.PRIVATE)
+                        .setContentTitle(getString(R.string.private_browsing_erase_message))
+                        .setContentIntent(buildPendingIntent(true))
+                        .addAction(R.drawable.private_browsing_mask,
+                                getString(R.string.private_browsing_open_action),
+                                buildPendingIntent(false))
 
         startForeground(NotificationId.PRIVATE_MODE, builder.build())
-    }
-
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        val buildIntent = buildIntent(this, true)
-        buildIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(buildIntent)
-        super.onTaskRemoved(rootIntent)
-
     }
 
     private fun buildPendingIntent(sanitize: Boolean): PendingIntent {
@@ -75,9 +64,14 @@ class PrivateSessionNotificationService : Service() {
                 PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        TabViewProvider.purify(this)
+        stop(this)
+        super.onTaskRemoved(rootIntent)
+    }
+
     companion object {
-        private val ACTION_START = "start"
-        private val ACTION_PURIFY = "purify"
+        private const val ACTION_START = "start"
 
         fun start(context: Context) {
             val intent = Intent(context, PrivateSessionNotificationService::class.java)
@@ -88,12 +82,6 @@ class PrivateSessionNotificationService : Service() {
             } else {
                 context.startService(intent)
             }
-        }
-
-        fun purify(context: Context) {
-            val intent = Intent(context, PrivateSessionNotificationService::class.java)
-            intent.action = ACTION_PURIFY
-            context.startService(intent)
         }
 
         /* package */ internal fun stop(context: Context) {
@@ -110,5 +98,4 @@ class PrivateSessionNotificationService : Service() {
             return intent
         }
     }
-
 }
