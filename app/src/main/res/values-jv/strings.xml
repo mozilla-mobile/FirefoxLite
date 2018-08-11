@@ -1,4 +1,24 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+  <string name="action_cancel">BATAL</string>
   <string name="action_ok">OKÉ</string>
+  <string name="urlbar_hint">Golèk utawa lebokaké alamat</string>
+  <string name="menu_settings">Setélan</string>
+  <string name="menu_about">Ngenani</string>
+  <string name="menu_help">Pitulung</string>
+  <string name="menu_rights">Hak Sampéyan</string>
+  <string name="menu_give_feedback">Wénéhi tanggepan</string>
+  <string name="menu_share_with_friends">Dumké karo kanca-kanca</string>
+  <string name="share_dialog_title">Dumké liwat</string>
+  <string name="text_selection_search_action">Golèk ing Firefox Rocket</string>
+  <string name="about_content_body">%1$s iku peramban sing ènthèng lan bantèr digawé déning %2$s. Misi kita iki kanggo ngopèni internèt sing séhat lan kebuka.</string>
+  <string name="about_link_support">Dhukungan</string>
+  <string name="about_link_your_rights">Hak Sampeyan / Lisensi</string>
+  <string name="preference_language">Basa</string>
+  <string name="preference_language_systemdefault">Gawan sistem</string>
+  <string name="first_run_page3_title">Irit dhata = Irit dhuwit</string>
+  <string name="screenshot_edit">BESUT</string>
+  <string name="bookmark_saved_edit">BESUT</string>
+  <string name="bookmark_edit_save">SIMPEN</string>
+  <string name="bookmark_edit_name">Jeneng</string>
 </resources>
