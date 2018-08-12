@@ -15,7 +15,7 @@
   <string name="about_link_learn_more">Lenyepan</string>
   <string name="about_link_support">Pangrojong</string>
   <string name="about_link_your_rights">Hak Anjeun / Lisénsi</string>
-  <string name="about_link_privacy">Iber Privasi</string>
+  <string name="about_link_privacy">Iber Salindungan</string>
   <string name="preference_search_engine_default">Mesin pamaluruh baku</string>
   <string name="preference_language">Basa</string>
   <string name="preference_language_systemdefault">Bawaan sistem</string>
@@ -34,7 +34,7 @@
   <string name="content_description_dismiss_input">Tutup</string>
   <string name="content_description_lock">Sambungan aman</string>
   <string name="accessibility_announcement_loading">Ngamuat</string>
-  <string name="accessibility_announcement_loading_finished">Raramatloka wéb geus dimuat</string>
+  <string name="accessibility_announcement_loading_finished">Raramatloka geus dimuat</string>
   <string name="content_description_menu">Pilihan séjén</string>
   <string name="content_description_forward">Maju</string>
   <string name="content_description_reload">Muat ulang raramatloka</string>
@@ -68,7 +68,7 @@
   <string name="first_run_upgrade_page_title">Pangdeudeul anjeun geus katampa!</string>
   <string name="first_run_upgrade_page_text1">1. Ngagawéan sakaligus kalawan muka %s babarengan!</string>
   <string name="first_run_upgrade_page_text1_highlight">bebedan tab</string>
-  <string name="first_run_upgrade_page_text2">2. Sorang situs karesep anjeun kalayan gancang ku %s</string>
+  <string name="first_run_upgrade_page_text2">2. Sorang loka karesep anjeun kalayan gancang ku %s</string>
   <string name="first_run_upgrade_page_text2_highlight">nambahkeun kabéh kana tepas!</string>
   <string name="firstrun_close_button">Okéh, ngarti!</string>
   <string name="firstrun_skip_button">Liwat</string>
@@ -88,7 +88,7 @@
   <string name="permission_dialog_setting">setélan</string>
   <string name="permission_dialog_not_now">Moal waka</string>
   <string name="permission_dialog_msg_location">Can aya idin. Idinan Firefox Rocket ngaksés perenah anjeun.</string>
-  <string name="permission_toast_location">Lokasi teu sayaga. Idinan pikeun ngaksés perenah anjeun.</string>
+  <string name="permission_toast_location">Perenah teu sayaga. Idinan pikeun ngaksés perenah anjeun.</string>
   <string name="permission_dialog_msg_storage">Can aya idin. Idinan Firefox Rocket pikeun ngaksés perenah anjeun.</string>
   <string name="permission_toast_storage">Paneundeunan teu sayaga. Idinan pikeun nyimpen sarupaning foto jeung koropak na parangkat anjeun.</string>
   <string name="geolocation_dialog_message">%1$s\nhayang nénjo perenah anjeun.</string>
@@ -139,9 +139,9 @@
   <string name="message_start_to_save_to_removable_storage">Berkas diteundeun kana kartu mémori</string>
   <string name="message_removable_storage_space_not_enough">Kartu mémori méh pinuh. Koropak geus disimpen kana paneundeunan internal.</string>
   <string name="screenshot_grid_empty_text_title">Euweuh téwakan layar</string>
-  <string name="screenshot_grid_empty_text_msg_prefix">Toél</string>
+  <string name="screenshot_grid_empty_text_msg_prefix">"Toél "</string>
   <string name="screenshot_grid_empty_text_msg_postfix">  na menu pikeun néwak\nsaeusi kaca.</string>
-  <string name="screenshot_image_viewer_dialog_title">Inpo</string>
+  <string name="screenshot_image_viewer_dialog_title">Émbaran</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Kaping: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Résolusi: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">Ukuran: %1$s</string>
@@ -161,7 +161,7 @@
   <string name="message_cannot_find_screenshot">Teu bisa midangkeun téwakan layar</string>
   <string name="remove">Piceun</string>
   <string name="privacy_policy_update_notification_title">Iber Apdétan Prodak</string>
-  <string name="privacy_policy_update_notification_action">Ajang ngajadikeun Firefox Rocket leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan privasi kami. Toél baé pikeun ngaleunyeupanana.</string>
+  <string name="privacy_policy_update_notification_action">Ajang ngajadikeun Firefox Rocket leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun ngaleunyeupanana.</string>
   <string name="rate_app_dialog_text_title">Bogoh %1$s?</string>
   <string name="rate_app_dialog_text_content">Hatur nuhun geus milih prodak kami. Pangdeudeul anjeun kacida utama pikeun kami.</string>
   <string name="rate_app_dialog_btn_go_rate">Nya, peunteun 5 béntang!</string>
@@ -174,7 +174,7 @@
   <string name="share_app_promotion_text">Hayu urang cobaan panyungsi gancang tur hampang ti %3$s. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s téh aplikasi bébas sarta sumber nembrak nu dijieun ku %2$s jeung kontributor séjénna.</string>
   <string name="your_rights_content2"><![CDATA["%1$s dijieunna pikeun anjeun kalayan dina pasaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" jeung lisénsi sumber nembrak nu séjén."]]></string>
-  <string name="your_rights_content3"><![CDATA["Anjeun teu dibéré idin atawa lisénsi nanaon kana mérek dagang Mozilla Foundation atawa pihak mana ogé, kaasup ngaran atawa logo %3$s, %4$s, atawa %1$s. Inpormasi leuwih jero bisa dipanggihan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di dieu</a>.]]></string>
+  <string name="your_rights_content3"><![CDATA["Anjeun teu dibéré idin atawa lisénsi nanaon kana mérek dagang Mozilla Foundation atawa pihak mana ogé, kaasup ngaran atawa logo %3$s, %4$s, atawa %1$s. Émbaran leuwih jero bisa dipanggihan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di dieu</a>.]]></string>
   <string name="your_rights_content4"><![CDATA["Kodeu sumber tambahan pikeun %1$s nyangkaruk dina rupa-rupa "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">lis&#233;nsi</a>" bébas jeung sumber nembrak nu séjén."]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s ogé ngagunakeun daptar peungpeukan nu disayagakeun ku Disconnect, Inc. minangka hasil karya nu misah jeung indepénden di handapeun "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>", sarta sayaga "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">di dieu</a>.]]></string>
   <string name="survey_notification_title">Kami butuh anjeun! %1$s</string>
@@ -198,8 +198,8 @@
   <string name="bookmark_edit_success">Markah diapdét</string>
   <string name="bookmarks_empty_view_msg">Euweuh markah</string>
   <string name="edit_bookmark">Édit</string>
-  <string name="private_browsing_title">Langlangan Pribadi</string>
-  <string name="private_browsing_erase_message">Pupus jujutan langlangan pribadi</string>
+  <string name="private_browsing_title">Langlangan Nyalindung</string>
+  <string name="private_browsing_erase_message">Pupus jujutan langlangan nyalindung</string>
   <string name="private_browsing_open_action">BUKA</string>
-  <string name="private_browsing_erase_done">Jujutan langlangan pribadi\nanjeun geus dipupus.</string>
+  <string name="private_browsing_erase_done">Jujutan langlangan nyalindung\nanjeun geus dihapus.</string>
 </resources>
