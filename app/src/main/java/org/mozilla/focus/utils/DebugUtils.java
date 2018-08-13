@@ -32,7 +32,7 @@ public final class DebugUtils {
         try {
             final String userAgent = webvView.getSettings().getUserAgentString();
             webViewVersion = parseWebViewVersion(userAgent);
-        } catch (Exception e) {
+        } catch (Throwable error) {
             webViewVersion = UNKNOWN_WEBVIEW_VERSION;
         }
         return webViewVersion;
