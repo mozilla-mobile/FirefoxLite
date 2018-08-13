@@ -31,6 +31,7 @@ import org.mozilla.telemetry.config.TelemetryConfiguration;
 import org.mozilla.telemetry.event.TelemetryEvent;
 import org.mozilla.telemetry.measurement.DefaultSearchMeasurement;
 import org.mozilla.telemetry.measurement.SearchesMeasurement;
+import org.mozilla.telemetry.measurement.SettingsMeasurement;
 import org.mozilla.telemetry.measurement.TelemetryMeasurement;
 import org.mozilla.telemetry.net.HttpURLConnectionTelemetryClient;
 import org.mozilla.telemetry.net.TelemetryClient;
@@ -44,6 +45,9 @@ import org.mozilla.telemetry.storage.FileTelemetryStorage;
 import org.mozilla.telemetry.storage.TelemetryStorage;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS;
 
@@ -232,6 +236,7 @@ public final class TelemetryWrapper {
                             resources.getString(R.string.pref_key_storage_save_downloads_to),
                             resources.getString(R.string.pref_key_webview_version),
                             resources.getString(R.string.pref_key_locale))
+                    .setSettingsProvider(new CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
                     .setUploadEnabled(telemetryEnabled);
 
@@ -241,7 +246,7 @@ public final class TelemetryWrapper {
             final TelemetryScheduler scheduler = new JobSchedulerTelemetryScheduler();
 
             TelemetryHolder.set(new Telemetry(configuration, storage, client, scheduler)
-                    .addPingBuilder(new CustomCorePingBuilder(configuration))
+                    .addPingBuilder(new TelemetryCorePingBuilder(configuration))
                     .addPingBuilder(new TelemetryEventPingBuilder(configuration))
                     .setDefaultSearchProvider(createDefaultSearchProvider(context)));
         } finally {
@@ -914,13 +919,44 @@ public final class TelemetryWrapper {
         }
     }
 
-    private static class CustomCorePingBuilder extends TelemetryCorePingBuilder {
+    private static class CustomSettingsProvider extends SettingsMeasurement.SharedPreferenceSettingsProvider {
 
-        public CustomCorePingBuilder(TelemetryConfiguration configuration) {
-            super(configuration);
+        private Map<String, java.lang.Object> custom = new HashMap<>(2);
 
-            addMeasurement(new CaptureCountMeasurement(configuration.getContext()));
-            addMeasurement(new ThemeToyMeasurement(configuration.getContext()));
+        @Override
+        public void update(TelemetryConfiguration configuration) {
+            super.update(configuration);
+
+            Context context = configuration.getContext();
+            addCustomPing(configuration, new ThemeToyMeasurement(context));
+            addCustomPing(configuration, new CaptureCountMeasurement(context));
+        }
+
+
+        void addCustomPing(TelemetryConfiguration configuration, TelemetryMeasurement measurement) {
+            Set<String> preferenceKeys = configuration.getPreferencesImportantForTelemetry();
+            if (preferenceKeys == null) {
+                configuration.setPreferencesImportantForTelemetry(new String[]{});
+                preferenceKeys = configuration.getPreferencesImportantForTelemetry();
+            }
+            preferenceKeys.add(measurement.getFieldName());
+            custom.put(measurement.getFieldName(), measurement.flush());
+        }
+
+        @Override
+        public boolean containsKey(String key) {
+            return super.containsKey(key) | custom.containsKey(key);
+        }
+
+        @Override
+        public java.lang.Object getValue(String key) {
+            java.lang.Object value = custom.get(key);
+
+            if (value != null) {
+                return value;
+            } else {
+                return super.getValue(key);
+            }
         }
     }
 
