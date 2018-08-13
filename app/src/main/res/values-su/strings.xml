@@ -168,7 +168,7 @@
   <string name="rate_app_notification_action_rate">PEUNTEUN 5 BÉNTANG</string>
   <string name="rate_app_dialog_btn_feedback">Teu, kirim pangdeudeul.</string>
   <string name="rate_app_notification_action_feedback">PANGDEUDEUL</string>
-  <string name="share_app_dialog_text_title">Bagikeun %1$s jeung babaturan!</string>
+  <string name="share_app_dialog_text_title">Bagikeun %1$s ka babaturan!</string>
   <string name="share_app_dialog_text_content">- Gancang tur hampang\n- Rikrik data\n- Téwakan layar bedas</string>
   <string name="share_app_dialog_btn_share">Bagikeun</string>
   <string name="share_app_promotion_text">Hayu urang cobaan panyungsi gancang tur hampang ti %3$s. %1$s %2$s</string>
@@ -180,7 +180,7 @@
   <string name="survey_notification_title">Kami butuh anjeun! %1$s</string>
   <string name="survey_notification_description">Parengkeun prodak leuwih hadé pikeun Indonésia</string>
   <string name="new_background_tab_hint">Tab anyar dibuka</string>
-  <string name="new_background_tab_switch">GANTI</string>
+  <string name="new_background_tab_switch">GILIR</string>
   <string name="setting_default_browser_notification_title">Ngarobah setélan…</string>
   <string name="setting_default_browser_notification_text">Meureun merlukeun sawatara waktu</string>
   <string name="setting_default_browser_notification_clickable_text">Toél pikeun ngatur panyungsi baku</string>
