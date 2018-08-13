@@ -129,6 +129,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private fun dropBrowserFragment() {
         getNavController().navigateUp()
         stopPrivateMode()
+        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
     private fun pushToBack() {
@@ -204,7 +205,6 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         PrivateSessionNotificationService.stop(this)
         PrivateMode.sanitize(this.applicationContext)
         TabViewProvider.purify(this)
-        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
     @CheckResult
@@ -213,6 +213,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
             TelemetryWrapper.erasePrivateModeNotification()
             stopPrivateMode()
+            Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
             finishAndRemoveTask()
             return true
         }
