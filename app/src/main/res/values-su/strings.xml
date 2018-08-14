@@ -47,7 +47,7 @@
   <string name="error_page_title">Kaca wéb teu sayaga</string>
   <string name="error_page_recover_a">Pastikeun anjeun keur nyambung kana internét</string>
   <string name="error_page_recover_b">Pariksa alamat</string>
-  <string name="error_page_button">COBAAN DEUI</string>
+  <string name="error_page_button">PECAKAN DEUI</string>
   <string name="error_page_title_unsupported_scheme">Alamat teu kaharti</string>
   <string name="error_page_content_text_unsupported_scheme">Sigana anjeun kudu masang aplikasi séjén pikeun muka ieu alamat.</string>
   <string name="contextmenu_link_share">Bagikeun tutumbu</string>
