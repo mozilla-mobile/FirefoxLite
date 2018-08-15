@@ -18,6 +18,19 @@ buildscript {
     }
 }
 
+plugins {
+    id("io.gitlab.arturbosch.detekt").version("1.0.0.RC7-3")
+}
+
+detekt {
+    version = "1.0.0.RC7-3"
+    defaultProfile {
+        input = "$projectDir/components"
+        config = file("$projectDir/tools/detekt/detek.yml")
+        filters = ".*/resources/.*,.*/build/.*"
+    }
+}
+
 allprojects {
     repositories {
         jcenter()
@@ -27,4 +40,26 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    ktlint "com.github.shyiko:ktlint:0.21.0"
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "**/*.kt"
+}
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "-F", "**/*.kt"
 }

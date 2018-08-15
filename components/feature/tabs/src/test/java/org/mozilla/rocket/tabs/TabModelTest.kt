@@ -48,6 +48,5 @@ class TabModelTest {
         TabModel(UUID.randomUUID().toString(), "", "", null).let { model ->
             assertEquals(false, model.isValid())
         }
-
     }
 }

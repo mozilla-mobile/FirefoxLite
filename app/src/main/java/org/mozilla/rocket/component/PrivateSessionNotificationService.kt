@@ -16,7 +16,6 @@ import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.privately.PrivateModeActivity
 
-
 /**
  * A service to toggle ConfigActivity on-off to clear Default browser config.
  *
@@ -42,7 +41,6 @@ class PrivateSessionNotificationService : Service() {
         return Service.START_NOT_STICKY
     }
 
-
     private fun showNotification() {
 
         val builder = NotificationUtil.baseBuilder(applicationContext, NotificationUtil.Channel.PRIVATE)
@@ -58,7 +56,6 @@ class PrivateSessionNotificationService : Service() {
         buildIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(buildIntent)
         super.onTaskRemoved(rootIntent)
-
     }
 
     private fun buildPendingIntent(sanitize: Boolean): PendingIntent {
@@ -97,5 +94,4 @@ class PrivateSessionNotificationService : Service() {
             return intent
         }
     }
-
 }

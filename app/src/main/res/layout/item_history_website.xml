@@ -7,7 +7,7 @@
     android:id="@+id/history_item_root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/round_rectangle_ripple">
+    android:background="@drawable/mozac_ui_tabcounter_round_rectangle_ripple">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -4,10 +4,11 @@ import android.graphics.Bitmap
 import android.os.Bundle
 
 data class TabModel(
-        val id: String,
-        var parentId: String?,
-        var title: String?,
-        var url: String?) {
+    val id: String,
+    var parentId: String?,
+    var title: String?,
+    var url: String?
+) {
 
     /**
      * Favicon bitmap for tab tray item.

@@ -121,7 +121,7 @@
 
     <style name="MenuButtonContainer" parent="MenuButtonContainerSkeleton">
         <item name="android:onClick">onMenuItemClicked</item>
-        <item name="android:background">@drawable/round_rectangle_ripple</item>
+        <item name="android:background">@drawable/mozac_ui_tabcounter_round_rectangle_ripple</item>
     </style>
 
     <style name="MenuButtonGroup">
@@ -186,7 +186,7 @@
     <style name="MainMenuButton">
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">40dp</item>
-        <item name="android:background">@drawable/round_rectangle_ripple</item>
+        <item name="android:background">@drawable/mozac_ui_tabcounter_round_rectangle_ripple</item>
     </style>
 
     <style name="MainMenuBrowsingButton" parent="MainMenuButton">

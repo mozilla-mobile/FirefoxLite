@@ -11,7 +11,6 @@ import org.mozilla.focus.utils.AppConstants
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
-
 @RunWith(RobolectricTestRunner::class)
 class PrivateModeTest {
 

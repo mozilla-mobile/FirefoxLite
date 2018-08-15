@@ -53,7 +53,6 @@ class TabTrayPresenterTest {
         tabTrayPresenter = TabTrayPresenter(tabTrayContractView, tabsSessionModel)
     }
 
-
     @Test
     fun viewReady_showFocusedTab() {
         Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf())
@@ -104,11 +103,9 @@ class TabTrayPresenterTest {
         private var url: String? = null
 
         override fun setContentBlockingEnabled(enabled: Boolean) {
-
         }
 
         override fun setImageBlockingEnabled(enabled: Boolean) {
-
         }
 
         override fun isBlockingEnabled(): Boolean {
@@ -116,39 +113,30 @@ class TabTrayPresenterTest {
         }
 
         override fun performExitFullScreen() {
-
         }
 
         override fun setViewClient(viewClient: TabViewClient?) {
-
         }
 
         override fun setChromeClient(chromeClient: TabChromeClient?) {
-
         }
 
         override fun setDownloadCallback(callback: DownloadCallback?) {
-
         }
 
         override fun onPause() {
-
         }
 
         override fun onResume() {
-
         }
 
         override fun destroy() {
-
         }
 
         override fun reload() {
-
         }
 
         override fun stopLoading() {
-
         }
 
         override fun getUrl(): String? {
@@ -169,15 +157,12 @@ class TabTrayPresenterTest {
         }
 
         override fun cleanup() {
-
         }
 
         override fun goForward() {
-
         }
 
         override fun goBack() {
-
         }
 
         override fun canGoForward(): Boolean {
@@ -189,15 +174,12 @@ class TabTrayPresenterTest {
         }
 
         override fun restoreViewState(inState: Bundle) {
-
         }
 
         override fun saveViewState(outState: Bundle) {
-
         }
 
         override fun insertBrowsingHistory() {
-
         }
 
         override fun getView(): View? {
@@ -205,7 +187,6 @@ class TabTrayPresenterTest {
         }
 
         override fun buildDrawingCache(autoScale: Boolean) {
-
         }
 
         override fun getDrawingCache(autoScale: Boolean): Bitmap? {

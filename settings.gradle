@@ -1,7 +1,12 @@
-include ':feature-tabs', ':HttpRequest', ':httptask'
+
+include ':feature-tabs'
+include ':HttpRequest'
+include ':httptask'
+include ':ui-tabcounter'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
+project(':ui-tabcounter').projectDir = new File(rootDir, 'components/ui/tabcounter')
 
 include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'

@@ -44,7 +44,6 @@ import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.network.SocketTags;
 import org.mozilla.focus.provider.QueryHandler;
-import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.FileUtils;
@@ -74,6 +73,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.mozilla.components.ui.tabcounter.TabCounter;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
     private static final String TAG = "HomeFragment";
