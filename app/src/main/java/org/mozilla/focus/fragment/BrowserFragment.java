@@ -45,6 +45,7 @@ import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
+import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,6 +66,7 @@ import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -260,7 +262,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                         break;
                     case ACTION_GEO_LOCATION:
                         if (geolocationCallback != null) {
-                            rejectGeoRequest();
+                            rejectGeoRequest(false);
                         }
                         break;
                     case ACTION_CAPTURE:
@@ -645,8 +647,14 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (geoDialog != null && geoDialog.isShowing()) {
             return;
         }
-        geoDialog = buildGeoPromptDialog();
-        geoDialog.show();
+
+        Boolean allowed = GeoPermissionCache.getAllowed(geolocationOrigin);
+        if (allowed != null) {
+            geolocationCallback.invoke(geolocationOrigin, allowed, false);
+        } else {
+            geoDialog = buildGeoPromptDialog();
+            geoDialog.show();
+        }
     }
 
     public void dismissGeoDialog() {
@@ -657,40 +665,52 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     private AlertDialog buildGeoPromptDialog() {
+        View customContent = LayoutInflater.from(getContext()).inflate(R.layout.dialog_permission_request, null);
+        CheckedTextView checkBox = customContent.findViewById(R.id.cache_my_decision);
+        checkBox.setOnClickListener(v -> {
+            checkBox.toggle();
+        });
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(getString(R.string.geolocation_dialog_message, geolocationOrigin))
+        builder.setView(customContent)
+                .setMessage(getString(R.string.geolocation_dialog_message, geolocationOrigin))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.geolocation_dialog_allow), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        acceptGeoRequest();
+                        acceptGeoRequest(checkBox.isChecked());
                     }
                 })
                 .setNegativeButton(getString(R.string.geolocation_dialog_block), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        rejectGeoRequest();
+                        rejectGeoRequest(checkBox.isChecked());
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        rejectGeoRequest();
+                        rejectGeoRequest(false);
                     }
                 });
         return builder.create();
     }
 
-    private void acceptGeoRequest() {
+    private void acceptGeoRequest(boolean cacheIt) {
         if (geolocationCallback == null) {
             return;
+        }
+        if (cacheIt) {
+            GeoPermissionCache.putAllowed(geolocationOrigin, Boolean.TRUE);
         }
         geolocationCallback.invoke(geolocationOrigin, true, false);
         geolocationOrigin = "";
         geolocationCallback = null;
     }
 
-    private void rejectGeoRequest() {
+    private void rejectGeoRequest(boolean cacheIt) {
         if (geolocationCallback == null) {
             return;
+        }
+        if (cacheIt) {
+            GeoPermissionCache.putAllowed(geolocationOrigin, Boolean.FALSE);
         }
         geolocationCallback.invoke(geolocationOrigin, false, false);
         geolocationOrigin = "";

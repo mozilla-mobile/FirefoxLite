@@ -72,6 +72,7 @@ import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
+import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 import org.mozilla.focus.widget.FragmentListener;
@@ -617,6 +618,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onExitClicked() {
+        GeoPermissionCache.clear();
         finish();
     }
 

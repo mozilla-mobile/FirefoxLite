@@ -219,6 +219,7 @@
     <!-- When the webpage request access to geolocation a dialog will popup.
         This is the title of the permission request dialog. Argument 1 is the url of the website. -->
     <string name="geolocation_dialog_message">%1$s \nwants to access your location.</string>
+    <string name="geolocation_dialog_message_cache_it">Don\'t ask again for this site until exit</string>
     <string name="geolocation_dialog_allow">ALLOW</string>
     <string name="geolocation_dialog_block">BLOCK</string>
 
