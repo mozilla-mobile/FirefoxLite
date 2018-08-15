@@ -2,8 +2,8 @@
 <resources>
   <string name="action_cancel">റദ്ദാക്കൂ</string>
   <string name="action_ok">ശരി</string>
-  <string name="urlbar_hint">വിലാസം അല്ലെങ്കില്‍ തിരയുക</string>
-  <string name="menu_settings">സജ്ജീകരണം‍</string>
+  <string name="urlbar_hint">തിരയുക, അല്ലെങ്കിൽ വിലാസം നൽകുക</string>
+  <string name="menu_settings">സജ്ജീകരണങ്ങൾ</string>
   <string name="menu_about">കുറിച്ച്</string>
   <string name="menu_help">സഹായം</string>
   <string name="menu_rights">താങ്കളുടെ അവകാശങ്ങള്‍</string>
@@ -11,7 +11,7 @@
   <string name="menu_share_with_friends">സുഹൃത്തുക്കളുമായി പങ്കിടൂ</string>
   <string name="share_dialog_title">ഇതുവഴി പങ്കിടൂ</string>
   <string name="text_selection_search_action">Firefox Rocket ഇതിൽ തിരയൂ</string>
-  <string name="about_content_body">%1$s %2$s നിർമ്മിച്ച ഒരു വേഗമേറിയതും ലഘുവുമായിട്ടുള്ള ബ്രൗസറാണ്. ഞങ്ങളുടെ ലക്ഷ്യം ഒരു ആരോഗ്യമുള്ള തുറന്ന ഇന്റർനെറ്റിന്റെ വളർച്ചയാണ്.</string>
+  <string name="about_content_body">%1$s %2$s നിർമ്മിച്ച വേഗമേറിയ ചെറിയ ബ്രൗസറാണ്. ഞങ്ങളുടെ ലക്ഷ്യം ആരോഗ്യമുള്ള തുറന്ന ഇന്റർനെറ്റിന്റെ വളർച്ചയാണ്.</string>
   <string name="about_link_learn_more">കൂടുതല്‍ അറിയുക</string>
   <string name="about_link_support">പിന്തുണ</string>
   <string name="about_link_your_rights">നിങ്ങളുടെ അവകാശങ്ങള്‍/ ലൈസന്‍സുകള്‍</string>
@@ -29,7 +29,7 @@
   <string name="preference_mozilla_telemetry">ഉപയോഗ ഡാറ്റ അയക്കുക</string>
   <string name="preference_mozilla_telemetry_summary">%1$s എല്ലാവര്‍ക്കും മെച്ചപ്പെട്ടതാക്കാൻ ആവശ്യമുള്ള ഡാറ്റ മാത്രം ശേഖരിക്കാൻ %2$s ശ്രമിക്കുന്നു.</string>
   <string name="preference_learn_more">കൂടുതല്‍ അറിയുക</string>
-  <string name="preference_about">നെ കുറിച്ച്</string>
+  <string name="preference_about">കുറിച്ച്</string>
   <string name="content_description_clear_input">ഇന്‍പുട്ട് വെടിപ്പാക്കുക</string>
   <string name="content_description_dismiss_input">കളയുക</string>
   <string name="content_description_lock">സുരക്ഷിതമായ കണക്ഷന്‍</string>
@@ -174,6 +174,7 @@
   <string name="share_app_promotion_text">ഏയ്, %3$sൽ നിന്നുള്ള വേഗമേറിയതും ലഘുവുമായ ഈ ബ്രൗസർ ഒന്ന് നോക്കൂ. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s %2$sയും മറ്റ് പങ്കാളികളും ചേർന്ന് നിർമ്മിച്ച ഒരു സ്വതന്ത്രസോഫ്റ്റ്‌വെയറാണ്.</string>
   <string name="your_rights_content2"><![CDATA["%1$s താങ്കൾക്ക് "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" മറ്റ് സ്വതന്ത്ര ലൈസൻസുകളിലേയും ഉപാധികളോടെയാണ് ലഭ്യമാക്കിയിരിക്കുന്നത്."]]></string>
+  <string name="your_rights_content3"><![CDATA["മോസില്ല ഫൗണ്ടേഷനുമായി ബന്ധപ്പെട്ട %3$s, %4$s, %1$s എന്നിവയുടെ പേരകളും ലോഗോകളും അടക്കം ഒന്നിന്റേയും മുകളിൽ അവകാശമൊ ട്രൈഡ്മാർക്ക് ഉപയോഗിക്കാനുള്ള അനുമതിയൊ നിങ്ങൾക്ക് നൽകപ്പെട്ടിട്ടില്ല. കൂടുതൽ വിവരങ്ങൾ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">"&#3335;&#3381;&#3391;&#3359;&#3398; "</a>" നോക്കുക"]]></string>
   <string name="your_rights_content4"><![CDATA["%1$s എന്നതിന്റെ കൂടുതൽ സോഴ്സ് കോഡ് മറ്റു പല സ്വതന്ത്ര "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3378;&#3400;&#3384;&#3451;&#3384;&#3393;&#3349;&#3454;</a>" പ്രകാരം ലഭ്യമാണ്."]]></string>
   <string name="your_rights_content5"><![CDATA[<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#3335;&#3381;&#3391;&#3359;&#3398;</a>" ലഭ്യമായിട്ടുള്ളതും, "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU &#3384;&#3390;&#3452;&#3381;&#3405;&#3381;&#3356;&#3368;&#3391;&#3349; &#3333;&#3368;&#3393;&#3381;&#3390;&#3366;&#3370;&#3364;&#3405;&#3376;&#3364;&#3405;&#3364;&#3391;&#3368;&#3405;&#3377;&#3398; 3&#3390;&#3330; &#3370;&#3364;&#3391;&#3370;&#3405;&#3370;&#3405;</a>" പ്രകാരം Disconnect, Inc. സ്വതന്ത്രവും വേറിട്ടതുമായി പുറത്തിറക്കിയിട്ടുള്ള തടയൽ പട്ടികകളും %1$s ഉപയോഗിക്കുന്നു."]]></string>
   <string name="survey_notification_title">ഞങ്ങൾക്ക് താങ്കളെ വേണം! %1$s</string>
