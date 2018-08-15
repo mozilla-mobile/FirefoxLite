@@ -8,7 +8,7 @@ from os import path, listdir, stat
 from sys import exit
 import argparse
 
-SIZE_LIMIT = 2.75 * 1024 * 1024
+SIZE_LIMIT = 2.80 * 1024 * 1024
 parser = argparse.ArgumentParser(description='Determine Path')
 parser.add_argument('product', choices=['focus', 'preview'], default='focus')
 parser.add_argument('engine', choices=['webkit'], default='webkit')
