@@ -39,7 +39,7 @@
             app:srcCompat="@drawable/action_search" />
 
         <ImageButton
-            android:id="@+id/btn_refresh"
+            android:id="@+id/btn_load"
             style="@style/MainMenuButton"
             android:tint="@color/private_menu_button"
             app:srcCompat="@drawable/ic_refresh" />

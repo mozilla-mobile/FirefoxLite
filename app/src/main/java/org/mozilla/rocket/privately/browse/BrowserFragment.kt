@@ -4,7 +4,6 @@ import android.app.DownloadManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
@@ -58,7 +57,10 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var progressView: AnimatedProgressBar
     private lateinit var siteIdentity: ImageView
 
+    private lateinit var btnLoad: ImageButton
     private lateinit var btnNext: ImageButton
+
+    private var isLoading: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -99,8 +101,10 @@ class BrowserFragment : LocaleAwareFragment(),
 
         view.findViewById<View>(R.id.btn_mode).setOnClickListener { onModeClicked() }
         view.findViewById<View>(R.id.btn_search).setOnClickListener { onSearchClicked() }
-        view.findViewById<View>(R.id.btn_refresh).setOnClickListener { onRefreshClicked() }
         view.findViewById<View>(R.id.btn_delete).setOnClickListener { onDeleteClicked() }
+
+        btnLoad = (view.findViewById<ImageButton>(R.id.btn_load))
+                .also { it.setOnClickListener { onLoadClicked() } }
 
         btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton)
                 .also {
@@ -182,6 +186,12 @@ class BrowserFragment : LocaleAwareFragment(),
         tabView.goForward()
     }
 
+    private fun stop() {
+        val focus = tabsSession.focusTab ?: return
+        val tabView = focus.tabView ?: return
+        tabView.stopLoading()
+    }
+
     private fun reload() {
         val focus = tabsSession.focusTab ?: return
         val tabView = focus.tabView ?: return
@@ -209,8 +219,11 @@ class BrowserFragment : LocaleAwareFragment(),
         listener.onNotified(BrowserFragment@ this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
     }
 
-    private fun onRefreshClicked() {
-        reload()
+    private fun onLoadClicked() {
+        when (isLoading) {
+            true -> stop()
+            else -> reload()
+        }
     }
 
     private fun onDeleteClicked() {
@@ -290,6 +303,8 @@ class BrowserFragment : LocaleAwareFragment(),
         override fun onTabStarted(tab: Tab) {
             super.onTabStarted(tab)
             fragment.siteIdentity.setImageLevel(SITE_GLOBE)
+            fragment.isLoading = true
+            fragment.btnLoad.setImageResource(R.drawable.ic_close)
         }
 
         override fun onTabFinished(tab: Tab, isSecure: Boolean) {
@@ -300,6 +315,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
             val level = if (isSecure) SITE_LOCK else SITE_GLOBE
             fragment.siteIdentity.setImageLevel(level)
+            fragment.isLoading = false
+            fragment.btnLoad.setImageResource(R.drawable.ic_refresh)
         }
     }
 
