@@ -229,6 +229,7 @@ public class Settings {
         public static final String ShowRateAppNotification = "show_rate_app_notification";
 
         public static final String PostSurveyNotification = "post_survey_notification";
+        public static final String ShowMyShotOnBoardingDialog = "show_my_shot_on_boarding_dialog";
     }
 
     public static class EventHistory {

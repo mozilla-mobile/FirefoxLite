@@ -121,4 +121,6 @@
 
     <!-- Private Mode -->
     <color name="privateBackground">#38383D</color>
+
+    <color name="myShotOnBoardingBackground">#B3111111</color>
 </resources>

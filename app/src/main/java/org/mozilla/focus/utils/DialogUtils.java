@@ -5,15 +5,19 @@
 
 package org.mozilla.focus.utils;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
@@ -22,6 +26,7 @@ import org.mozilla.focus.activity.SettingsActivity;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.widget.FocusView;
 
 public class DialogUtils {
 
@@ -199,5 +204,52 @@ public class DialogUtils {
         // Show notification
         NotificationUtil.sendNotification(context, NotificationId.PRIVACY_POLICY_UPDATE, builder);
         NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow();
+    }
+
+    public static Dialog showMyShotOnBoarding(@NonNull final Activity activity, @NonNull final View targetView, @NonNull final DialogInterface.OnCancelListener cancelListener) {
+        int [] location = new int[2];
+        int centerX, centerY;
+        // Get target view's position
+        targetView.getLocationInWindow(location);
+
+        // Get spotlight circle's center
+        centerX = location[0] + targetView.getMeasuredWidth() / 2;
+        centerY = location[1] + targetView.getMeasuredHeight() / 2;
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.TabTrayTheme);
+
+        // Inflate my shot on boarding view
+        final ViewGroup root = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.myshot_onboarding, null);
+
+        // Initialize FocusView and add it to my shot on boarding view's index 0(the bottom of Z-order)
+        final FocusView focusView = new FocusView(activity, centerX, centerY, activity.getResources().getDimensionPixelSize(R.dimen.myshot_focus_view_radius));
+        root.addView(focusView, 0);
+
+        // Add a mock my shot menu view to determine the position of hint image and text. Also consuming the click event.
+        final View myShotMockView = root.findViewById(R.id.my_shot_mock_menu);
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myShotMockView.getLayoutParams();
+        params.width = targetView.getMeasuredWidth();
+        params.height = targetView.getMeasuredHeight();
+        params.setMargins(location[0], location[1] - ViewUtils.getStatusBarHeight(activity), 0, 0);
+
+        builder.setView(root);
+
+        final Dialog dialog = builder.create();
+        dialog.show();
+
+        // Press back key will dismiss on boarding view and menu view
+        dialog.setOnCancelListener(cancelListener);
+
+        // Click my shot mock view will dismiss on boarding view and open my shot panel
+        myShotMockView.setOnClickListener(v -> {
+            dialog.dismiss();
+            targetView.performClick();
+        });
+        // Click outside of the my shot mock view will dismiss on boarding view
+        root.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        return dialog;
+
     }
 }

@@ -63,6 +63,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.widget.AnimatedProgressBar;
@@ -1361,6 +1362,18 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private String getLastInsertedUrl(Tab tab) {
             String url = lastInsertedUrls.get(tab);
             return TextUtils.isEmpty(url) ? "" : url;
+        }
+    }
+
+    public void showMyShotOnBoarding() {
+        final Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        final Settings.EventHistory eventHistory = Settings.getInstance(activity).getEventHistory();
+        if (!eventHistory.contains(Settings.Event.ShowMyShotOnBoardingDialog)) {
+            eventHistory.add(Settings.Event.ShowMyShotOnBoardingDialog);
+            FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MY_SHOT_ON_BOARDING, null);
         }
     }
 }

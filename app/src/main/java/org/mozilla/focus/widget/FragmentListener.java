@@ -27,6 +27,7 @@ public interface FragmentListener {
         TOGGLE_PRIVATE_MODE, // no payload
         DROP_BROWSING_PAGES, // no payload
         SHOW_TAB_TRAY, // no payload
+        SHOW_MY_SHOT_ON_BOARDING, // no payload
     }
 
     void onNotified(@NonNull Fragment from,
