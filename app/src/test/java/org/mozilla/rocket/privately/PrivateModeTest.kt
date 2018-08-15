@@ -4,12 +4,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.privately
 
-import android.preference.PreferenceManager
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.utils.AppConstants
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
@@ -18,7 +16,11 @@ import org.robolectric.RuntimeEnvironment
 class PrivateModeTest {
 
     @Test
-    fun `Private mode is default off`() {
-        assertFalse(PrivateMode.isEnable(RuntimeEnvironment.application))
+    fun `Private mode is default off in Release and Beta build type and is default on in Firebase and Debug build type`() {
+        if (AppConstants.isReleaseBuild() || AppConstants.isBetaBuild()) {
+            Assert.assertFalse(PrivateMode.isEnable(RuntimeEnvironment.application))
+        } else {
+            Assert.assertTrue(PrivateMode.isEnable(RuntimeEnvironment.application))
+        }
     }
 }

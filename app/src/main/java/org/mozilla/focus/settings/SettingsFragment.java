@@ -42,6 +42,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.settings);
+        if (AppConstants.isReleaseBuild() || AppConstants.isBetaBuild()) {
+            PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
+            Preference prefPrivateMode = findPreference(PrivateMode.PREF_KEY_PRIVATE_MODE_ENABLED);
+            rootPreferences.removePreference(prefPrivateMode);
+        }
     }
 
     @Override
