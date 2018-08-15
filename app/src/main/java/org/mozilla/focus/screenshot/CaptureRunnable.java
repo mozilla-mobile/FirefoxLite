@@ -48,7 +48,7 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
             if (screenCaptureDialogFragment != null) {
                 screenCaptureDialogFragment.dismiss();
             }
-            promptScreenshotResult(R.string.screenshot_failed);
+            promptScreenshotResult(false);
         }
     }
 
@@ -73,11 +73,10 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
         if (captureSuccess) {
             Settings.getInstance(refContext.get()).setHasUnreadMyShot(true);
         }
-        final int captureResultResource = captureSuccess ? R.string.screenshot_saved : R.string.screenshot_failed;
         screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                promptScreenshotResult(captureResultResource);
+                promptScreenshotResult(captureSuccess);
             }
         });
         if (TextUtils.isEmpty(path)) {
@@ -87,18 +86,26 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
         }
     }
 
-    private void promptScreenshotResult(int snackbarTitleId) {
+    private void promptScreenshotResult(final boolean success) {
         Context context = refContext.get();
         if (context == null) {
             return;
         }
-        Toast.makeText(context, snackbarTitleId, Toast.LENGTH_SHORT).show();
+
         if (refBrowserFragment != null) {
             final BrowserFragment browserFragment = refBrowserFragment.get();
             if (browserFragment != null && browserFragment.getCaptureStateListener() != null) {
                 browserFragment.getCaptureStateListener().onPromptScreenshotResult();
             }
+
+            if (browserFragment != null && success
+                    && !Settings.getInstance(context).getEventHistory().contains(Settings.Event.ShowMyShotOnBoardingDialog)) {
+                // My shot on boarding didn't show before and capture is succeed, skip to show toast
+                browserFragment.showMyShotOnBoarding();
+                return;
+            }
         }
+        Toast.makeText(context, success ? R.string.screenshot_saved : R.string.screenshot_failed, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -6,6 +6,7 @@
 package org.mozilla.focus.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
@@ -20,6 +21,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
@@ -106,6 +108,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View nextButton;
     private View loadingButton;
     private View shareButton;
+    private View myshotButton;
     private View bookmarkIcon;
     private View refreshIcon;
     private View stopIcon;
@@ -126,6 +129,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private BookmarkViewModel bookmarkViewModel;
 
     private ThemeManager themeManager;
+
+    private boolean pendingMyShotOnBoarding;
+    private Dialog myshotOnBoardingDialog;
 
     @Override
     public ThemeManager getThemeManager() {
@@ -384,6 +390,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         refreshIcon = menu.findViewById(R.id.action_refresh);
         stopIcon = menu.findViewById(R.id.action_stop);
         pinShortcut = menu.findViewById(R.id.action_pin_shortcut);
+        myshotButton = menu.findViewById(R.id.menu_screenshots);
         final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
         if (!requestPinShortcutSupported) {
             pinShortcut.setVisibility(View.GONE);
@@ -410,6 +417,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled(this);
         final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
+        if (pendingMyShotOnBoarding) {
+            myshotButton.post(() -> myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(MainActivity.this, myshotButton, dialog -> dismissAllMenus()));
+            pendingMyShotOnBoarding = false;
+        }
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
         setEnable(nextButton, canGoForward);
@@ -454,6 +465,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         if (mDialogFragment != null) {
             mDialogFragment.dismissAllowingStateLoss();
+        }
+        if (myshotOnBoardingDialog != null) {
+            myshotOnBoardingDialog.dismiss();
+            myshotOnBoardingDialog = null;
         }
     }
 
@@ -832,6 +847,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                     ((HomeFragment) fragment).updateTopSitesData();
                 }
                 break;
+            case SHOW_MY_SHOT_ON_BOARDING:
+                showMyShotOnBoarding();
+                break;
             default:
                 break;
         }
@@ -1033,4 +1051,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return (TabView) WebViewProvider.create(this.activity, null);
         }
     }
+
+    @UiThread
+    private void showMyShotOnBoarding() {
+        pendingMyShotOnBoarding = true;
+        showMenu();
+    }
+
 }

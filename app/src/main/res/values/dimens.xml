@@ -80,4 +80,6 @@
     <dimen name="four_site_item_width_with_margin">74dp</dimen>>
     <dimen name="four_site_item_size">40dp</dimen>
     <dimen name="four_site_item_margin">17dp</dimen>
+
+    <dimen name="myshot_focus_view_radius">52dp</dimen>
 </resources>
