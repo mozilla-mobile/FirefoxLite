@@ -453,6 +453,7 @@
     <!-- A message shown briefly after user have cleared the private browsing history via tapping the notification. -->
     <string name="private_browsing_erase_done">Your private browsing\nhistory has been erased.</string>
 
-
+    <!-- Message shown when user using screenshot at the first time. Guide them how to go to "My shots". -->
+    <string name="my_shot_on_boarding_message">View your screenshots here!</string>
 
 </resources>
