@@ -308,10 +308,17 @@
         Final result: 'Tap [image] on the menu to capture an entire web page'. -->
     <string name="screenshot_grid_empty_text_msg_postfix">&#160;&#160;on the menu to capture\nan entire web page.</string>
 
+    <!-- Title of the subpage showing screenshot info. -->
     <string name="screenshot_image_viewer_dialog_title">Info</string>
+    <!-- A row displaying the date of the screenshot along with the sub-title Date -->
     <string name="screenshot_image_viewer_dialog_info_time1">Date: %1$s</string>
+    <!-- A row displaying the category of the screenshot along with the sub-title Category %1$s is the category. -->
+    <string name="screenshot_image_viewer_dialog_info_category">Category: %1$s</string>
+    <!-- A row displaying the resolution of the screenshot along with the sub-title Resolution %1$s is the resolution. -->
     <string name="screenshot_image_viewer_dialog_info_resolution1">Resolution: %1$s</string>
+    <!-- A row displaying the size of the screenshot along with the sub-title Size %1$s is the size. -->
     <string name="screenshot_image_viewer_dialog_info_size1">Size: %1$s</string>
+    <!-- A row displaying the title of the screenshot along with the sub-title Title. %1$s is the title. -->
     <string name="screenshot_image_viewer_dialog_info_title1">Title: %1$s</string>
     <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
     <string name="screenshot_image_viewer_dialog_delete_msg">Delete this image?</string>
@@ -415,7 +422,7 @@
 
     <!-- Confirm message shown on the dialog popped after user clicks close-all-tabs button -->
     <string name="tab_tray_close_tabs_dialog_msg">Close all tabs?</string>
-    
+
     <!-- This is the title of Themeing on-boarding dialog -->
     <string name="themetoy_onboarding_title">Color your life!</string>
 
@@ -453,7 +460,8 @@
     <!-- A message shown briefly after user have cleared the private browsing history via tapping the notification. -->
     <string name="private_browsing_erase_done">Your private browsing\nhistory has been erased.</string>
 
-    <!-- Message shown when user using screenshot at the first time. Guide them how to go to "My shots". -->
+    <!-- Message shown when the user is using screenshot at the first time. Guide them how to go to "My shots". -->
     <string name="my_shot_on_boarding_message">View your screenshots here!</string>
+    <string name="my_shot_on_boarding_category_message">To improve your product experience, we collect information about your screenshots\' categories.</string>
 
 </resources>
