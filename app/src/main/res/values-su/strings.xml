@@ -92,7 +92,7 @@
   <string name="permission_dialog_msg_storage">Can aya idin. Idinan Firefox Rocket pikeun ngaksés perenah anjeun.</string>
   <string name="permission_toast_storage">Paneundeunan teu sayaga. Idinan pikeun nyimpen sarupaning foto jeung koropak na parangkat anjeun.</string>
   <string name="geolocation_dialog_message">%1$s\nhayang nénjo perenah anjeun.</string>
-  <string name="geolocation_dialog_allow">IDINAN</string>
+  <string name="geolocation_dialog_allow">HEUGBAÉ</string>
   <string name="geolocation_dialog_block">PEUNGPEUK</string>
   <string name="setting_dialog_clear_data">Beresihan Data</string>
   <string name="setting_dialog_cancel">Bolay</string>
