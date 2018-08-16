@@ -9,12 +9,11 @@ import android.graphics.Path
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
-
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.ViewUtils
 
 class FocusView : View {
-    private var transparentPaint: Paint = Paint()
+    private val transparentPaint: Paint = Paint()
     private val path = Path()
     private var centerX: Int = 0
     private var centerY: Int = 0

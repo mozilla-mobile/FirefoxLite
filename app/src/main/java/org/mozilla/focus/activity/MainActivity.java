@@ -72,6 +72,7 @@ import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
+import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.WebViewProvider;
@@ -418,7 +419,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
         if (pendingMyShotOnBoarding) {
-            myshotButton.post(() -> myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(MainActivity.this, myshotButton, dialog -> dismissAllMenus()));
+            myshotButton.post(() -> myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
+                    MainActivity.this,
+                    myshotButton,
+                    dialog -> dismissAllMenus(),
+                    v -> {
+                        final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
+                        this.screenNavigator.showBrowserScreen(url, true, false);
+                        dismissAllMenus();
+                    }));
             pendingMyShotOnBoarding = false;
         }
         final BrowserFragment browserFragment = getVisibleBrowserFragment();

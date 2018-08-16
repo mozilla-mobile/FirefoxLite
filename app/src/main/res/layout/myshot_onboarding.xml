@@ -12,10 +12,10 @@
         android:id="@+id/my_shot_img_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/my_shot_mock_menu"
         android:layout_alignEnd="@id/my_shot_mock_menu"
-        android:layout_marginBottom="45dp"
+        android:layout_alignBottom="@id/my_shot_mock_menu"
         android:layout_marginEnd="45dp"
+        android:layout_marginBottom="45dp"
         android:scaleType="fitXY"
         android:src="@drawable/pointing" />
 
@@ -24,11 +24,50 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/my_shot_img_hand"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp"
-        android:layout_marginEnd="54dp"
         android:layout_marginStart="54dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="14dp"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/my_shot_on_boarding_message"
         android:textColor="@color/sharedColorAppPaletteWhite"
         android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/my_shot_category_learn_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/my_shot_mock_navigation_bar"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/my_shot_on_boarding_category_message"
+            android:textAlignment="center"
+            android:textColor="@color/sharedColorAppPaletteWhite"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:ellipsize="end"
+            android:text="@string/preference_learn_more"
+            android:textColor="#0A84FF"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/my_shot_mock_navigation_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

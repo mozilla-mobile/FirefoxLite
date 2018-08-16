@@ -278,6 +278,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_resolution1, "")));
         mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_size1, "")));
         mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_title1, "")));
+        mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_category, "")));
         mInfoItems.add(new ImageInfo(getString(R.string.screenshot_image_viewer_dialog_info_url1, "")));
     }
 
@@ -518,7 +519,8 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             infoItems.get(1).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format(Locale.getDefault(), "%dx%d", width, height));
             infoItems.get(2).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_size1, fileSizeText);
             infoItems.get(3).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_title1, screenshot.getTitle());
-            infoItems.get(4).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_url1, screenshot.getUrl());
+            infoItems.get(4).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_category, ScreenshotManager.getInstance().getCategory(screenshot.getUrl()));
+            infoItems.get(5).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_url1, screenshot.getUrl());
 
             if (imageSource != null) {
                 activity.mImgScreenshot.setImage(imageSource, ImageViewState.ALIGN_TOP);
