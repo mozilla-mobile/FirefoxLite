@@ -41,6 +41,9 @@
   <string name="content_description_stop">वेबसाइट लोड करणे थांबवा</string>
   <string name="content_description_customtab_exit">मागील अॅप वर परत या</string>
   <string name="content_description_blocking_switch">ट्रॅकरला ब्लॉक करा</string>
+  <string name="geolocation_dialog_allow">ALLOW</string>
+  <string name="geolocation_dialog_block">BLOCK</string>
+  <string name="setting_dialog_cache">कॅशे</string>
   <string name="private_browsing_erase_message">खाजगी ब्राऊजिंग इतिहास पुसा</string>
   <string name="private_browsing_erase_done">आपला ब्राउझिंग इतिहास\nमिटवला गेला आहे.</string>
 </resources>
