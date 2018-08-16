@@ -310,16 +310,17 @@
 
     <!-- Title of the subpage showing screenshot info. -->
     <string name="screenshot_image_viewer_dialog_title">Info</string>
-    <!-- A row displaying the date of the screenshot along with the sub-title Date -->
+    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Date: When the screenshot is taken. -->
     <string name="screenshot_image_viewer_dialog_info_time1">Date: %1$s</string>
-    <!-- A row displaying the category of the screenshot along with the sub-title Category %1$s is the category. -->
+    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Category: Which category does the screenshotted page falls in. -->
     <string name="screenshot_image_viewer_dialog_info_category">Category: %1$s</string>
-    <!-- A row displaying the resolution of the screenshot along with the sub-title Resolution %1$s is the resolution. -->
+    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Resolution: The height and the width of the screenshot. -->
     <string name="screenshot_image_viewer_dialog_info_resolution1">Resolution: %1$s</string>
-    <!-- A row displaying the size of the screenshot along with the sub-title Size %1$s is the size. -->
+    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Size: The disk size of the saved screenshot file. -->
     <string name="screenshot_image_viewer_dialog_info_size1">Size: %1$s</string>
-    <!-- A row displaying the title of the screenshot along with the sub-title Title. %1$s is the title. -->
+    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Title: The title of the screenshotted web page. -->
     <string name="screenshot_image_viewer_dialog_info_title1">Title: %1$s</string>
+    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is URL: The url of the screenshotted web page. -->
     <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
     <string name="screenshot_image_viewer_dialog_delete_msg">Delete this image?</string>
 
@@ -460,8 +461,9 @@
     <!-- A message shown briefly after user have cleared the private browsing history via tapping the notification. -->
     <string name="private_browsing_erase_done">Your private browsing\nhistory has been erased.</string>
 
-    <!-- Message shown when the user is using screenshot at the first time. Guide them how to go to "My shots". -->
+    <!-- Message shown when the user is using screenshot for the first time. Guide them how to go to "My shots". -->
     <string name="my_shot_on_boarding_message">View your screenshots here!</string>
+    <!-- The notice shown along with the message when the user captures screenshot for the first time -->
     <string name="my_shot_on_boarding_category_message">To improve your product experience, we collect information about your screenshots\' categories.</string>
 
 </resources>
