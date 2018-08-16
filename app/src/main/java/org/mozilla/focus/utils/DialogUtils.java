@@ -206,8 +206,8 @@ public class DialogUtils {
         NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow();
     }
 
-    public static Dialog showMyShotOnBoarding(@NonNull final Activity activity, @NonNull final View targetView, @NonNull final DialogInterface.OnCancelListener cancelListener) {
-        int [] location = new int[2];
+    public static Dialog showMyShotOnBoarding(@NonNull final Activity activity, @NonNull final View targetView, @NonNull final DialogInterface.OnCancelListener cancelListener, View.OnClickListener learnMore) {
+        int[] location = new int[2];
         int centerX, centerY;
         // Get target view's position
         targetView.getLocationInWindow(location);
@@ -231,7 +231,7 @@ public class DialogUtils {
         params.width = targetView.getMeasuredWidth();
         params.height = targetView.getMeasuredHeight();
         params.setMargins(location[0], location[1] - ViewUtils.getStatusBarHeight(activity), 0, 0);
-
+        root.findViewById(R.id.my_shot_category_learn_more).setOnClickListener(learnMore);
         builder.setView(root);
 
         final Dialog dialog = builder.create();

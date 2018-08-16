@@ -1,0 +1,120 @@
+{
+  "Search Engine": [
+    "google.com",
+    "baidu.com",
+    "google.co.in",
+    "google.co.jp",
+    "yandex.ru",
+    "google.ru",
+    "google.co.uk",
+    "google.com.br",
+    "google.com.hk",
+    "google.fr",
+    "google.de",
+    "bing.com",
+    "google.co.id"
+  ],
+  "Video": [
+    "youtube.com",
+    "netflix.com",
+    "twitch.tv",
+    "vidio.com",
+    "vimeo.com",
+    "vidmax.com",
+    "viddler.com",
+    "video.google.com"
+  ],
+  "Social Network": [
+    "facebook.com",
+    "twitter.com",
+    "instagram.com",
+    "vk.com",
+    "linkedin.com",
+    "t.co",
+    "pinterest.com",
+    "plus.google.com"
+  ],
+  "Web Portal": [
+    "yahoo.com",
+    "qq.com",
+    "sohu.com",
+    "sina.com.cn",
+    "weibo.com",
+    "yahoo.co.jp",
+    "msn.com",
+    "liputan6.com",
+    "uzone.id",
+    "merdeka.com",
+    "kapanlagi.com",
+    "brilio.net",
+    "tempo.co",
+    "viva.co.id",
+    "suara.com",
+    "dream.co.id"
+  ],
+  "Web Portal (Articles)": [
+    "tribunnews.com",
+    "detik.com",
+    "kompas.com",
+    "sindonews.com",
+    "okezone.com",
+    "idntimes.com",
+    "cnnindonesia.com",
+    "tirto.id",
+    "bola.com",
+    "bolasport.com",
+    "bola.net",
+    "grid.id",
+    "bintang.com",
+    "alodokter.com"
+  ],
+  "Shopping": [
+    "taobao.com",
+    "amazon.com",
+    "tmall.com",
+    "jd.com",
+    "login.tmall.com",
+    "ebay.com",
+    "pages.tmall.com",
+    "aliexpress.com",
+    "tokopedia.com",
+    "bukalapak.com",
+    "blibli.com",
+    "shopee.co.id",
+    "olx.co.id",
+    "lazada.co.id"
+  ],
+  "Collaborative": [
+    "wikipedia.org",
+    "reddit.com",
+    "csdn.net",
+    "kaskus.co.id",
+    "kumparan.com",
+    "kompasiana.com"
+  ],
+  "Email": [
+    "live.com",
+    "mail.ru",
+    "mail.google.com",
+    "mail.yahoo.com",
+    "rediff.com",
+    "mail.com",
+    "gmx.com"
+  ],
+  "Weblogs": [
+    "blogspot.com",
+    "wordpress.com",
+    "tumblr.com",
+    "blogger.com",
+    "wordpress.org",
+    "squarespace.com"
+  ],
+  "Banking": [
+    "alipay.com",
+    "klikbca.com",
+    "bni.co.id",
+    "bri.co.id",
+    "bi.go.id",
+    "syariahmandiri.co.id"
+  ]
+}

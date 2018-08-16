@@ -106,7 +106,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      *
      * @param url            target url
      * @param withNewTab     whether to open and load target url in a new tab
-     * @param isFromExternal if this url is started from external VIEW intent
+     * @param isFromExternal if this url is started from external VIEW intent, if true, the app will finish when the user click back key
      */
     public void showBrowserScreen(String url, boolean withNewTab, boolean isFromExternal) {
         logMethod(url, withNewTab);
