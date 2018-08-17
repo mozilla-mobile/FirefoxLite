@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">  na menu pikeun néwak\nsaeusi kaca.</string>
   <string name="screenshot_image_viewer_dialog_title">Émbaran</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Kaping: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">Kategori: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Résolusi: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">Ukuran: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">Judul: %1$s</string>
@@ -202,4 +203,6 @@
   <string name="private_browsing_erase_message">Pupus jujutan langlangan nyalindung</string>
   <string name="private_browsing_open_action">BUKA</string>
   <string name="private_browsing_erase_done">Jujutan langlangan nyalindung\nanjeun geus dihapus.</string>
+  <string name="my_shot_on_boarding_message">Ilikan téwakan layar anjeun di dieu!</string>
+  <string name="my_shot_on_boarding_category_message">Pikeun ngaropéa pangalaman prodak anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
 </resources>

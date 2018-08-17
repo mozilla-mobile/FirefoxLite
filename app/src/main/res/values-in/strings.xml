@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">  pada menu untuk menangkap\nkeseluruhan laman.</string>
   <string name="screenshot_image_viewer_dialog_title">Info</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Tanggal: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">Kategori: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Resolusi: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">Ukuran: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">Judul: %1$s</string>
@@ -202,4 +203,6 @@
   <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
   <string name="private_browsing_open_action">BUKA</string>
   <string name="private_browsing_erase_done">Riwayat penjelajahan pribadi Anda\ntelah dihapus.</string>
+  <string name="my_shot_on_boarding_message">Lihat tangkapan layar Anda di sini!</string>
+  <string name="my_shot_on_boarding_category_message">Untuk meningkatkan pengalaman produk, kami mengumpulkan informasi tentang kategori tangkapan layar Anda.</string>
 </resources>
