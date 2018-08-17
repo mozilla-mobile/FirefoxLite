@@ -71,4 +71,8 @@ public class Inject {
     public static void setActivityNewlyCreatedFlag() {
         sIsNewCreated = false;
     }
+
+    public static boolean isUnderEspressoTest() {
+        return false;
+    }
 }

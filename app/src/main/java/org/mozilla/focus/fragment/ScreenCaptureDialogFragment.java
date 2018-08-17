@@ -22,6 +22,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieComposition;
 import com.airbnb.lottie.OnCompositionLoadedListener;
 
+import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 
 public class ScreenCaptureDialogFragment extends DialogFragment {
@@ -57,6 +58,11 @@ public class ScreenCaptureDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_capture_screen, container, false);
         mLottieAnimationView = (LottieAnimationView) view.findViewById(R.id.animation_view);
+        if (!Inject.isUnderEspressoTest()) {
+            // Since Lottie 2.5.0, infinite animation may affect ScreenshotCaptureTask to be finished on bitrise.
+            // We don't play animation during testing
+            mLottieAnimationView.playAnimation();
+        }
         return view;
     }
 

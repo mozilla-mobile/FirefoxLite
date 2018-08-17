@@ -19,7 +19,6 @@
         android:layout_centerHorizontal="true"
         android:layout_width="85dp"
         android:layout_height="85dp"
-        app:lottie_autoPlay="true"
         app:lottie_fileName="screenshots-loading.json"
         app:lottie_loop="true" />
 
