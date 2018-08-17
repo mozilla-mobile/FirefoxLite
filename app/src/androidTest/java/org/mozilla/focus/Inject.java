@@ -82,4 +82,7 @@ public class Inject {
         // Do nothing in testing
     }
 
+    public static boolean isUnderEspressoTest() {
+        return true;
+    }
 }

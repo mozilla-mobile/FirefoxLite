@@ -49,15 +49,9 @@ inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
 
 
 class SessionRobot {
+
     @Rule
     val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
-
-    @Rule
-    val writePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-    @Rule
-    val readPermissionRule = GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE)
-
 
     private var sessionLoadedIdlingResource: SessionLoadedIdlingResource? = null
 
@@ -91,7 +85,6 @@ class SessionRobot {
 class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
 
     private var screenshotIdlingResource: ScreenshotIdlingResource? = null
-
 
     fun takeScreenshot(): ScreenshotRobot {
         screenshotIdlingResource = ScreenshotIdlingResource(activityTestRule.getActivity())
