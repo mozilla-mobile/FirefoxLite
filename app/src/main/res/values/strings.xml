@@ -310,17 +310,17 @@
 
     <!-- Title of the subpage showing screenshot info. -->
     <string name="screenshot_image_viewer_dialog_title">Info</string>
-    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Date: When the screenshot is taken. -->
+    <!-- A row displaying an attribute of a screenshot and the attribute name. %1$s is the attribute and the name of this attribute is Date: When the screenshot is taken. -->
     <string name="screenshot_image_viewer_dialog_info_time1">Date: %1$s</string>
-    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Category: Which category does the screenshotted page falls in. -->
+    <!-- A row displaying an attribute of a screenshot and the attribute name. %1$s is the attribute and the name of this attribute is Category: Which category does the screenshotted page fall in. -->
     <string name="screenshot_image_viewer_dialog_info_category">Category: %1$s</string>
-    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Resolution: The height and the width of the screenshot. -->
+    <!-- A row displaying an attribute of a screenshot and the attribute name. %1$s is the attribute and the name of this attribute is Resolution: The height and the width of the screenshot. -->
     <string name="screenshot_image_viewer_dialog_info_resolution1">Resolution: %1$s</string>
-    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Size: The disk size of the saved screenshot file. -->
+    <!-- A row displaying an attribute of a screenshot and the attribute name. %1$s is the attribute and the name of this attribute is Size: The disk size of the saved screenshot file. -->
     <string name="screenshot_image_viewer_dialog_info_size1">Size: %1$s</string>
-    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is Title: The title of the screenshotted web page. -->
+    <!-- A row displaying an attribute of a screenshot and the attribute name. %1$s is the attribute and the name of this attribute is Title: The title of the screenshotted web page. -->
     <string name="screenshot_image_viewer_dialog_info_title1">Title: %1$s</string>
-    <!-- A row displaying an attibute of a screenshot and the attribute's name. %1$s is the attribute and the name of this attribute is URL: The url of the screenshotted web page. -->
+    <!-- A row displaying an attribute of a screenshot and the attribute name. %1$s is the attribute and the name of this attribute is URL: The url of the screenshotted web page. -->
     <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
     <string name="screenshot_image_viewer_dialog_delete_msg">Delete this image?</string>
 
