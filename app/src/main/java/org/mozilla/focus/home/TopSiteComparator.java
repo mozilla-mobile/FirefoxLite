@@ -14,7 +14,7 @@ import java.util.Comparator;
  * Created by ylai on 2017/8/16.
  */
 
-public class TopSideComparator implements Comparator<Site>, Serializable {
+public class TopSiteComparator implements Comparator<Site>, Serializable {
     @Override
     public int compare(Site site1, Site site2) {
         long viewCount1 = site1.getViewCount();

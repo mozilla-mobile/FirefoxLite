@@ -19,9 +19,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -117,7 +115,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private HomeScreenBackground homeScreenBackground;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
-    private JSONArray orginalDefaultSites = null;
+    private JSONArray originalDefaultSites = null;
     private SessionManager sessionManager;
     private final TabsChromeListener tabsChromeListener = new TabsChromeListener();
     private RecyclerView banner;
@@ -532,7 +530,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                         if (site.getId() < 0) {
                             presenter.removeSite(site);
                             removeDefaultSites(site);
-                            TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.orginalDefaultSites);
+                            TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.originalDefaultSites);
                             BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
                             TelemetryWrapper.removeTopSite(true);
                         } else {
@@ -570,7 +568,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void mergeQueryAndDefaultSites(List<Site> querySites) {
         //if query data are equal to the default data, merge them
-        initDefaultSitesFromJSONArray(this.orginalDefaultSites);
+        initDefaultSitesFromJSONArray(this.originalDefaultSites);
         List<Site> topSites = new ArrayList<>(this.presenter.getSites());
         for (Site topSite : topSites) {
             Iterator<Site> querySitesIterator = querySites.iterator();
@@ -584,8 +582,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         topSites.addAll(querySites);
-        TopSideComparator topSideComparator = new TopSideComparator();
-        Collections.sort(topSites, topSideComparator);
+        TopSiteComparator topSiteComparator = new TopSiteComparator();
+        Collections.sort(topSites, topSiteComparator);
 
         if (topSites.size() > TOP_SITES_QUERY_LIMIT) {
             List<Site> removeSites = topSites.subList(TOP_SITES_QUERY_LIMIT, topSites.size());
@@ -604,17 +602,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         //if no default sites data in SharedPreferences, load data from assets.
         if (obj_sites == null) {
-            this.orginalDefaultSites = TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
+            this.originalDefaultSites = TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
         } else {
             try {
-                this.orginalDefaultSites = new JSONArray(obj_sites);
+                this.originalDefaultSites = new JSONArray(obj_sites);
             } catch (JSONException e) {
                 e.printStackTrace();
                 return;
             }
         }
 
-        initDefaultSitesFromJSONArray(this.orginalDefaultSites);
+        initDefaultSitesFromJSONArray(this.originalDefaultSites);
     }
 
     private void initDefaultSitesFromJSONArray(JSONArray jsonDefault) {
@@ -633,18 +631,18 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         if (isRemove) {
-            TopSitesUtils.saveDefaultSites(getContext(), this.orginalDefaultSites);
+            TopSitesUtils.saveDefaultSites(getContext(), this.originalDefaultSites);
         }
     }
 
     private void removeDefaultSites(Site removeSite) {
         try {
-            if (this.orginalDefaultSites != null) {
-                for (int i = 0; i < this.orginalDefaultSites.length(); i++) {
-                    long id = ((JSONObject) this.orginalDefaultSites.get(i)).getLong("id");
+            if (this.originalDefaultSites != null) {
+                for (int i = 0; i < this.originalDefaultSites.length(); i++) {
+                    long id = ((JSONObject) this.originalDefaultSites.get(i)).getLong("id");
 
                     if (id == removeSite.getId()) {
-                        this.orginalDefaultSites.remove(i);
+                        this.originalDefaultSites.remove(i);
                         break;
                     }
                 }
