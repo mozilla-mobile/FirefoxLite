@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">  పూర్తి వెబ్ పేజీని\nతెరపట్టు తీయడానికి.</string>
   <string name="screenshot_image_viewer_dialog_title">సమాచారం</string>
   <string name="screenshot_image_viewer_dialog_info_time1">తేదీ: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">వర్గం: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">విభాజకత: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">పరిమాణం: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">శీర్షిక: %1$s</string>
@@ -202,4 +203,6 @@
   <string name="private_browsing_erase_message">అంతరంగిక విహరణ చరిత్రను తుడిచివేయి</string>
   <string name="private_browsing_open_action">తెరువు</string>
   <string name="private_browsing_erase_done">మీ అంతరంగిక విహరణ\nచరిత్ర తొలగించబడింది.</string>
+  <string name="my_shot_on_boarding_message">మీ తెరపట్లను ఇక్కడ చూడండి!</string>
+  <string name="my_shot_on_boarding_category_message">మీ అనుభవాన్ని మెరుగుపరచడానికి, మేము మీ తెరపట్ల వర్గాల సమాచారాన్ని సేకరిస్తాము.</string>
 </resources>
