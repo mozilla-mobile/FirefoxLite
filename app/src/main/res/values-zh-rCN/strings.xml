@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">截取整个网页。</string>
   <string name="screenshot_image_viewer_dialog_title">信息</string>
   <string name="screenshot_image_viewer_dialog_info_time1">日期：%1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">类别：%1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">分辨率：%1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">大小：%1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">标题：%1$s</string>
@@ -202,4 +203,6 @@
   <string name="private_browsing_erase_message">清除隐私浏览历史</string>
   <string name="private_browsing_open_action">打开</string>
   <string name="private_browsing_erase_done">您的隐私浏览\n历史已被清除。</string>
+  <string name="my_shot_on_boarding_message">在这里查看您的截图！</string>
+  <string name="my_shot_on_boarding_category_message">为了改善您的产品体验，我们会收集有关您的屏幕截图类别的信息。</string>
 </resources>
