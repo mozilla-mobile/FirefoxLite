@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">मेनु पे पुरे वेबपेज केपचर करै ल दाबइयै.</string>
   <string name="screenshot_image_viewer_dialog_title">जानकारी</string>
   <string name="screenshot_image_viewer_dialog_info_time1">तारीख: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">श्रेणी: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">रिजोल्युसन: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">आकार: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">नाम: %1$s</string>
@@ -202,4 +203,5 @@
   <string name="private_browsing_erase_message">निजी ब्राउज़िंग इतिहास मेटैइयै</string>
   <string name="private_browsing_open_action">खोलियै</string>
   <string name="private_browsing_erase_done">अपने के ब्रॉउजिंग इतिहास मेटाए देलो गेलए.</string>
+  <string name="my_shot_on_boarding_message">यहां अपनो स्क्रीनशॉट देखियै!</string>
 </resources>
