@@ -67,7 +67,7 @@ public class HomeTest {
         try {
             // Get test top sites
             final JSONArray jsonDefault = new JSONArray(Inject.getDefaultTopSites(context));
-            final List<Site> defaultSites = TopSitesUtils.paresJsonToList(context, jsonDefault);
+            final List<Site> defaultSites = TopSitesUtils.paresJsonToList(jsonDefault);
 
             // Check the title of the sample top site is correct
             onView(withId(R.id.main_list))

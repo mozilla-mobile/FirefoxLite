@@ -158,7 +158,7 @@ public class RemoveTopSitesTest {
 
     private void prepareTopSiteList() throws JSONException {
         final JSONArray jsonArray = new JSONArray(Inject.getDefaultTopSites(context));
-        siteList = TopSitesUtils.paresJsonToList(context, jsonArray);
+        siteList = TopSitesUtils.paresJsonToList(jsonArray);
 
         Assert.assertNotNull(siteList);
         Assert.assertTrue(siteList.size() > 0);

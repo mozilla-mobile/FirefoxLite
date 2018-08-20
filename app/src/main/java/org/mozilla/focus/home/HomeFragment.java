@@ -593,18 +593,20 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void initDefaultSites() {
-        // use different implementation to provide default top sites.
+        // We use different implementations to provide default top sites.
+        // plain text is used as a mock in androidTest while
+        // in main it's loading from the cached SharedPreference
         String obj_sites = Inject.getDefaultTopSites(getContext());
 
-        //if no default sites data in SharedPreferences, load data from assets.
+        // If not cached, init data from assets.
         if (obj_sites == null) {
             this.originalDefaultSites = TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
         } else {
             try {
                 this.originalDefaultSites = new JSONArray(obj_sites);
             } catch (JSONException e) {
-                e.printStackTrace();
-                return;
+                // We can't recover from illegal top sites.
+                throw new IllegalArgumentException(e.getMessage());
             }
         }
 
@@ -612,7 +614,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void initDefaultSitesFromJSONArray(JSONArray jsonDefault) {
-        List<Site> defaultSites = TopSitesUtils.paresJsonToList(getContext(), jsonDefault);
+        List<Site> defaultSites = TopSitesUtils.paresJsonToList(jsonDefault);
         this.presenter.setSites(defaultSites);
     }
 
