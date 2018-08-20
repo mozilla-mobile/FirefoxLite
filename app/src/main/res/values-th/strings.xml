@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">" ในเมนูเพื่อจับภาพหน้าเว็บทั้งหน้า"</string>
   <string name="screenshot_image_viewer_dialog_title">ข้อมูล</string>
   <string name="screenshot_image_viewer_dialog_info_time1">วันที่: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">หมวดหมู่: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">ความละเอียด: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">ขนาด: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">ชื่อเรื่อง: %1$s</string>
@@ -202,4 +203,6 @@
   <string name="private_browsing_erase_message">ล้างประวัติการท่องเว็บแบบส่วนตัว</string>
   <string name="private_browsing_open_action">เปิด</string>
   <string name="private_browsing_erase_done">ล้างประวัติการท่องเว็บแบบส่วนตัวของคุณแล้ว</string>
+  <string name="my_shot_on_boarding_message">ดูภาพหน้าจอของคุณที่นี่!</string>
+  <string name="my_shot_on_boarding_category_message">เพื่อปรับปรุงประสบการณ์ผลิตภัณฑ์ของคุณ เราเก็บรวบรวมข้อมูลเกี่ยวกับหมวดหมู่ของภาพหน้าจอของคุณ</string>
 </resources>

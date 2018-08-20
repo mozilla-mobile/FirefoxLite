@@ -91,7 +91,7 @@
   <string name="permission_toast_location">स्थान उपलब्ध नै छै. अपनो स्थान तक पहुंचै ल अनुमति दियै.</string>
   <string name="permission_dialog_msg_storage">प्रमिशन गुम भे गेलै. फ़ायरफ़ॉक्स रॉकेट क अपनो पता तक पहुंचने लअ अनुमति दियै.</string>
   <string name="permission_toast_storage">स्ट्रोरेज उपलब्ध नै छै. अपनो डिवाइस पर फोटोस आरु फाइल्स कअ स्टोर करे ल अनुमति दियै.</string>
-  <string name="geolocation_dialog_message">%1$s\nतोहरो पता तक पहुंचे लअ चाहे छै.</string>
+  <string name="geolocation_dialog_message">%1$s तोहरो पता तक पहुंचे लअ चाहे छै.</string>
   <string name="geolocation_dialog_allow">अनुमति दियै</string>
   <string name="geolocation_dialog_block">ब्लोक</string>
   <string name="setting_dialog_clear_data">डाटा मेटैइयै</string>
@@ -204,4 +204,5 @@
   <string name="private_browsing_open_action">खोलियै</string>
   <string name="private_browsing_erase_done">अपने के ब्रॉउजिंग इतिहास मेटाए देलो गेलए.</string>
   <string name="my_shot_on_boarding_message">यहां अपनो स्क्रीनशॉट देखियै!</string>
+  <string name="my_shot_on_boarding_category_message">अपनो उत्पाद अनुभव क बेहतर बनबै ल, हम आपनो स्क्रीनशॉट श्रेणियों क बारो मे जानकारी जमा करै छि.</string>
 </resources>
