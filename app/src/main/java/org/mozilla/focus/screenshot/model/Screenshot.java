@@ -5,6 +5,8 @@
 
 package org.mozilla.focus.screenshot.model;
 
+import org.mozilla.focus.screenshot.ScreenshotManager;
+
 import java.io.Serializable;
 
 /**
@@ -66,6 +68,10 @@ public class Screenshot implements Serializable {
 
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public String getCategory() {
+        return ScreenshotManager.getInstance().getCategory(this.url);
     }
 
     @Override

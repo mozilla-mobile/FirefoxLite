@@ -57,6 +57,7 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
+import org.mozilla.focus.screenshot.ScreenshotManager;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -797,7 +798,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 break;
             case R.id.btn_capture:
                 onCaptureClicked();
-                TelemetryWrapper.clickToolbarCapture();
+                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(getUrl()));
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
