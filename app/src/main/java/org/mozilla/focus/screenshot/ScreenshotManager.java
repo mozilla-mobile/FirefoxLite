@@ -84,7 +84,7 @@ public class ScreenshotManager {
     }
 
     @VisibleForTesting
-    void initScreenShotCateogry(Context context) throws IOException, JSONException {
+    public void initScreenShotCateogry(Context context) throws IOException, JSONException {
         if (categories.size() != 0) {
             return;
         }
@@ -127,4 +127,8 @@ public class ScreenshotManager {
         }
     }
 
+    @VisibleForTesting
+    public HashMap<String, String> getCategories() {
+        return categories;
+    }
 }

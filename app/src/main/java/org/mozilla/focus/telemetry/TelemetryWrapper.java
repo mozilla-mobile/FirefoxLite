@@ -50,7 +50,7 @@ import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS;
 public final class TelemetryWrapper {
     static final String TELEMETRY_APP_NAME_ZERDA = "Zerda";
 
-    private static final int TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 2;
+    private static final int TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 3;
     private static final int RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 2;
     private static final int DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION = 2;
 
@@ -179,6 +179,7 @@ public final class TelemetryWrapper {
         static final String VERSION = "version";
         static final String TYPE = "type";
         static final String DIRECTION = "direction";
+        static final String CATEGORY = "category";
     }
 
     public static class Extra_Value {
@@ -521,9 +522,10 @@ public final class TelemetryWrapper {
         new EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK).queue();
     }
 
-    public static void clickToolbarCapture() {
+    public static void clickToolbarCapture(String category) {
         new EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE)
                 .extra(Extra.VERSION, Integer.toString(TOOL_BAR_CAPTURE_TELEMETRY_VERSION))
+                .extra(Extra.CATEGORY, category)
                 .queue();
     }
 
@@ -689,28 +691,36 @@ public final class TelemetryWrapper {
         new EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.CAPTURE).queue();
     }
 
-    public static void openCaptureLink() {
-        new EventBuilder(Category.ACTION, Method.OPEN, Object.CAPTURE, Value.LINK).queue();
+    public static void openCaptureLink(String category) {
+        new EventBuilder(Category.ACTION, Method.OPEN, Object.CAPTURE, Value.LINK)
+                .extra(Extra.CATEGORY, category)
+                .queue();
     }
 
-    public static void editCaptureImage(boolean editAppResolved) {
+    public static void editCaptureImage(boolean editAppResolved, String category) {
         new EventBuilder(Category.ACTION, Method.EDIT, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SUCCESS, Boolean.toString(editAppResolved))
+                .extra(Extra.CATEGORY, category)
                 .queue();
     }
 
-    public static void shareCaptureImage(boolean fromSnackBar) {
+    public static void shareCaptureImage(boolean fromSnackBar, String category) {
         new EventBuilder(Category.ACTION, Method.SHARE, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SNACKBAR, Boolean.toString(fromSnackBar))
+                .extra(Extra.CATEGORY, category)
                 .queue();
     }
 
-    public static void showCaptureInfo() {
-        new EventBuilder(Category.ACTION, Method.SHOW, Object.CAPTURE, Value.INFO).queue();
+    public static void showCaptureInfo(String category) {
+        new EventBuilder(Category.ACTION, Method.SHOW, Object.CAPTURE, Value.INFO)
+                .extra(Extra.CATEGORY, category)
+                .queue();
     }
 
-    public static void deleteCaptureImage() {
-        new EventBuilder(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE).queue();
+    public static void deleteCaptureImage(String category) {
+        new EventBuilder(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE)
+                .extra(Extra.CATEGORY, category)
+                .queue();
     }
 
     public static void feedbackClickEvent(String value, String source) {

@@ -9,6 +9,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.generated.LocaleList
 import org.mozilla.focus.locale.LocaleManager
 import org.mozilla.focus.locale.Locales
+import org.mozilla.focus.screenshot.ScreenshotManager
 
 import java.util.Locale
 
@@ -310,7 +311,11 @@ class TelemetryWrapperTest {
 
     @Test
     fun clickToolbarCapture() {
-        TelemetryWrapper.clickToolbarCapture()
+        val sm = ScreenshotManager()
+        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.categories.values.forEach {
+            TelemetryWrapper.clickToolbarCapture(it)
+        }
     }
 
     @Test
@@ -459,29 +464,49 @@ class TelemetryWrapperTest {
 
     @Test
     fun openCaptureLink() {
-        TelemetryWrapper.openCaptureLink()
+        val sm = ScreenshotManager()
+        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.categories.values.forEach {
+            TelemetryWrapper.openCaptureLink(it)
+        }
     }
 
     @Test
     fun editCaptureImage() {
-        TelemetryWrapper.editCaptureImage(true)
-        TelemetryWrapper.editCaptureImage(false)
+        val sm = ScreenshotManager()
+        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.categories.values.forEach {
+            TelemetryWrapper.editCaptureImage(true, it)
+            TelemetryWrapper.editCaptureImage(false, it)
+        }
     }
 
     @Test
     fun shareCaptureImage() {
-        TelemetryWrapper.shareCaptureImage(true)
-        TelemetryWrapper.shareCaptureImage(false)
+        val sm = ScreenshotManager()
+        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.categories.values.forEach {
+            TelemetryWrapper.shareCaptureImage(true, it)
+            TelemetryWrapper.shareCaptureImage(false, it)
+        }
     }
 
     @Test
     fun showCaptureInfo() {
-        TelemetryWrapper.showCaptureInfo()
+        val sm = ScreenshotManager()
+        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.categories.values.forEach {
+            TelemetryWrapper.showCaptureInfo(it)
+        }
     }
 
     @Test
     fun deleteCaptureImage() {
-        TelemetryWrapper.deleteCaptureImage()
+        val sm = ScreenshotManager()
+        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.categories.values.forEach {
+            TelemetryWrapper.deleteCaptureImage(it)
+        }
     }
 
     @Test
