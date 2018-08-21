@@ -31,7 +31,7 @@ public class HistoryProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDbHelper = HistoryDatabaseHelper.getsInstacne(getContext());
+        mDbHelper = HistoryDatabaseHelper.getsInstance(getContext());
         return true;
     }
 
