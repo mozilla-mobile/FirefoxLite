@@ -76,7 +76,7 @@ public class HistoryDatabaseHelper {
         mOpenHelper = new OpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized HistoryDatabaseHelper getsInstacne(Context context) {
+    public static synchronized HistoryDatabaseHelper getsInstance(Context context) {
         if (sInstacne == null) {
             sInstacne = new HistoryDatabaseHelper(context);
         }
