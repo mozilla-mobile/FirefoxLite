@@ -75,7 +75,8 @@ class FocusWebChromeClient extends WebChromeClient {
         site.setTitle(view.getTitle());
         site.setUrl(url);
         site.setFavIcon(refinedBitmap);
-        BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
+        // TODO: 8/21/18 Save bitmap to file and save uri to db
+        //BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
 
         if (this.tabChromeClient != null) {
             this.tabChromeClient.onReceivedIcon(this.host, icon);

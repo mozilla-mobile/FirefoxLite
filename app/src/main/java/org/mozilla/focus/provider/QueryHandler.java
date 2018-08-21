@@ -165,9 +165,6 @@ public class QueryHandler extends AsyncQueryHandler {
         if (site.getLastViewTimestamp() != 0) {
             values.put(HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP, site.getLastViewTimestamp());
         }
-        if (site.getFavIcon() != null) {
-            values.put(HistoryContract.BrowsingHistory.FAV_ICON, bitmapToBytes(site.getFavIcon()));
-        }
         return values;
     }
 
@@ -195,7 +192,8 @@ public class QueryHandler extends AsyncQueryHandler {
         site.setUrl(cursor.getString(cursor.getColumnIndex(HistoryContract.BrowsingHistory.URL)));
         site.setViewCount(cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory.VIEW_COUNT)));
         site.setLastViewTimestamp(cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP)));
-        site.setFavIcon(bytesToBitmap(cursor.getBlob(cursor.getColumnIndex(HistoryContract.BrowsingHistory.FAV_ICON))));
+        // TODO: 8/21/18 Set favicon uri
+        // site.setFavIconUri(bytesToBitmap(cursor.getBlob(cursor.getColumnIndex(HistoryContract.BrowsingHistory.FAV_ICON))));
         return site;
     }
 

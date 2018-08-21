@@ -33,6 +33,9 @@ public class HistoryContract {
         public static final String URL = "url";
         public static final String VIEW_COUNT = "view_count";
         public static final String LAST_VIEW_TIMESTAMP = "last_view_timestamp";
+        // v1
         public static final String FAV_ICON = "fav_icon";
+        // v2
+        public static final String FAV_ICON_URI = "fav_icon_uri";
     }
 }
