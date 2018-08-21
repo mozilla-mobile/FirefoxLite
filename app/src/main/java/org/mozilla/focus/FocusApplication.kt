@@ -17,12 +17,15 @@ import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
+import org.mozilla.rocket.partner.PartnerActivator
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import java.io.File
 
 
 class FocusApplication : LocaleAwareApplication() {
+
+    lateinit var partnerActivator : PartnerActivator
 
     override fun getCacheDir(): File {
         if (isInPrivateProcess()) {
@@ -64,6 +67,8 @@ class FocusApplication : LocaleAwareApplication() {
         // initialize the NotificationUtil to configure the default notification channel. This is required for API 26+
         NotificationUtil.init(this)
 
+        partnerActivator = PartnerActivator(this)
+        partnerActivator.launch()
     }
 
     private fun isInPrivateProcess(): Boolean {
