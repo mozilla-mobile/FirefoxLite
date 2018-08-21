@@ -111,12 +111,7 @@ public class Site {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Site) {
-            if (((Site) obj).getId() == this.getId()) {
-                return true;
-            }
-        }
-        return false;
+        return obj instanceof Site && ((Site) obj).getId() == this.getId();
     }
 
     @Override
