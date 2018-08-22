@@ -174,6 +174,10 @@
   <string name="share_app_dialog_btn_share">सामयिक करा</string>
   <string name="share_app_promotion_text">अरे %3$s कडून हा जलद आणि हलका ब्राउझर पहा. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s %2$s आणि इतर योगदानकर्त्यांनी बनवलेले मोफत आणि खुल्या स्रोताचे सॉफ्टवेअर आहे.</string>
+  <string name="your_rights_content2"><![CDATA["%1$s आपल्याला "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" आणि इतर खुल्या स्त्रोत परवान्यांच्या नियमांतर्गत उपलब्ध करून दिले गेले आहे."]]></string>
+  <string name="your_rights_content3"><![CDATA["%3$s, %4$s किंवा %1$s यांच्या नाव व चिन्हांसह Mozilla Foundation किंवा इतर पार्टीच्या व्यापारचिन्हाचे हक्क किंवा परवाने आपणास दिलेले नाहीत. अधिक माहिती "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2311;&#2341;&#2375;</a>" मिळेल."]]></string>
+  <string name="your_rights_content4"><![CDATA["%1$s साठी अधिक स्रोत कोड इतर अनेक मुक्त आणि खुल्या स्त्रोताच्या "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2346;&#2352;&#2357;&#2366;&#2344;&#2381;&#2351;&#2366;&#2306;&#2340;&#2352;&#2381;&#2327;&#2340;</a>" उपलब्ध आहे."]]></string>
+  <string name="your_rights_content5"><![CDATA["%1$s Disconnect, Inc. यांनी पुरवलेले अवरोध तक्ते स्वतंत्र व विभक्त कार्य म्हणून पण वापरते जे "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>" अंतर्गत उपलब्ध आहे आणि "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#2311;&#2341;&#2370;&#2344;</a>" मिळवता येते."]]></string>
   <string name="survey_notification_title">आम्हाला तुुमची गरज आहे! %1$s</string>
   <string name="survey_notification_description">इंडोनेशियासाठी एक चांगले उत्पादन तयार करा</string>
   <string name="new_background_tab_hint">नवीन टॅब उघडले</string>
@@ -184,6 +188,7 @@
   <string name="tab_tray_close_tabs_btn_text">सर्व बंद करा</string>
   <string name="tab_tray_close_tabs_dialog_msg">सर्व टॅब बंद करायच्या?</string>
   <string name="themetoy_onboarding_title">आपले जीवन रंगवा!</string>
+  <string name="themetoy_onboarding_description">थिम बदलण्यासाठी मुख्य पृष्ठभागावर दोन वेळा क्लिक करा.</string>
   <string name="bookmark_saved">वाचनखुण जतन केली</string>
   <string name="bookmark_removed">वाचनखूण काढले</string>
   <string name="bookmark_saved_edit">संपादित करा</string>
