@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
 import org.mozilla.rocket.tabs.TabView;
@@ -67,9 +68,10 @@ class FocusWebChromeClient extends WebChromeClient {
             return;
         }
 
-        final Bitmap refinedBitmap = FavIconUtils.getRefinedBitmap(view.getResources(),
+        final Bitmap refinedBitmap = DimenUtils.getRefinedBitmap(view.getResources(),
                 icon,
                 FavIconUtils.getRepresentativeCharacter(url));
+        // TODO: 8/23/18 Save Bitmap or generate icon if texture imperfect.
 
         final Site site = new Site();
         site.setTitle(view.getTitle());

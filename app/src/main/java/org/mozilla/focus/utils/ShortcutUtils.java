@@ -38,10 +38,10 @@ public class ShortcutUtils {
 
         if (bitmap == null) {
             // if favicon is not ready, we use the default initial icon with white color
-            icon = FavIconUtils.getInitialBitmap(resources, null, representativeCharacter);
+            icon = DimenUtils.getInitialBitmap(resources, null, representativeCharacter);
         } else {
             // if favicon is ready, resize it using size that fits shortcut better
-            icon = FavIconUtils.getRefinedShortcutIcon(resources, bitmap, representativeCharacter);
+            icon = DimenUtils.getRefinedShortcutIcon(resources, bitmap, representativeCharacter);
         }
         // label must not be empty
         String label = title;
