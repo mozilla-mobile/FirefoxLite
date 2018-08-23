@@ -86,13 +86,13 @@
   <string name="label_menu_settings">Mga Setting</string>
   <string name="label_menu_exit">Lumabas</string>
   <string name="permission_dialog_setting">mga setting</string>
-  <string name="permission_dialog_not_now">hindi ngayon</string>
+  <string name="permission_dialog_not_now">huwag ngayon</string>
   <string name="permission_dialog_msg_location">Hindi mahanap na permiso. Bigyan ng permiso ang Firefox Rocket para malaman ang iyong lokasyon.</string>
   <string name="permission_toast_location">Hindi makita ang iyong lokasyon. Pakibigyan ng pahintulot ang app na malaman ang iyong lokasyon.</string>
   <string name="permission_dialog_msg_storage">Kulang ang mga permission. Bigyang pahintulot ang Firefox Rocket upang malaman ang iyong lokasyon.</string>
   <string name="permission_toast_storage">Hindi magamit ang sisidlan. Pakibigyan ng pahintulot ang app na magamit ang sisidlan para makapagtago ng mga larawan at files sa iyong device.</string>
   <string name="geolocation_dialog_message">%1$s \nay gustong alamin ang iyong lokasyon.</string>
-  <string name="geolocation_dialog_allow">ALLOW</string>
+  <string name="geolocation_dialog_allow">PAYAGAN</string>
   <string name="geolocation_dialog_block">HARANGIN</string>
   <string name="setting_dialog_clear_data">Burahin ang mga datos</string>
   <string name="setting_dialog_cancel">Kanselahin</string>
@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">  sa menu para kunin\nng buong web page.</string>
   <string name="screenshot_image_viewer_dialog_title">Info</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Petsa: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">Kategorya: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Resolution: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">Laki: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">Pamagat: %1$s</string>
@@ -202,4 +203,6 @@
   <string name="private_browsing_erase_message">Burahin ang kasaysayan ng private browsing</string>
   <string name="private_browsing_open_action">BUKSAN</string>
   <string name="private_browsing_erase_done">Ang kasaysayan ng iyong private browsing\nay nabura na.</string>
+  <string name="my_shot_on_boarding_message">Tingnan ang mga screenshot dito!</string>
+  <string name="my_shot_on_boarding_category_message">Para mapabuti ang produktong ito, kami ay maaaring mangolekta ng impormasyon tungkol sa iyong screen.</string>
 </resources>

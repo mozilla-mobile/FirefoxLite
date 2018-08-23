@@ -143,6 +143,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">"  मेनू पर संपूर्ण वेब पेज कैद करने के लिए। "</string>
   <string name="screenshot_image_viewer_dialog_title">जानकारी</string>
   <string name="screenshot_image_viewer_dialog_info_time1">दिनांक: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">श्रेणी: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">रिज़ॉल्यूशन: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">माप: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">शीर्षक: %1$s</string>
@@ -202,4 +203,6 @@
   <string name="private_browsing_erase_message">निजी ब्राउज़िंग इतिहास मिटाएं</string>
   <string name="private_browsing_open_action">खोलें</string>
   <string name="private_browsing_erase_done">आपका निजी ब्राउज़िंग \nइतिहास मिटा दिया गया है।</string>
+  <string name="my_shot_on_boarding_message">अपने स्क्रीनशॉटों को यहाँ देखें!</string>
+  <string name="my_shot_on_boarding_category_message">आपके प्रोडक्ट अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट\' श्रेणियों के बारे में जानकारियाँ जमा करते हैंl</string>
 </resources>
