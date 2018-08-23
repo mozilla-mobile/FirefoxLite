@@ -21,7 +21,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.UrlUtils
+import org.mozilla.urlutils.UrlUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener

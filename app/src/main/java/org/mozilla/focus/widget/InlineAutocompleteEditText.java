@@ -30,7 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.urlutils.UrlUtils;
 
 public class InlineAutocompleteEditText extends android.support.v7.widget.AppCompatEditText {
     public interface OnCommitListener {

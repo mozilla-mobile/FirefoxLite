@@ -22,7 +22,7 @@ import org.mozilla.focus.provider.QueryHandler.AsyncUpdateListener;
 import org.mozilla.focus.provider.ScreenshotContract.Screenshot;
 import org.mozilla.focus.utils.IOUtils;
 import org.mozilla.focus.utils.ThreadUtils;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.urlutils.UrlUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
