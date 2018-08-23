@@ -9,7 +9,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.generated.LocaleList
 import org.mozilla.focus.locale.LocaleManager
 import org.mozilla.focus.locale.Locales
-import org.mozilla.focus.screenshot.ScreenshotManager
 
 import java.util.Locale
 
