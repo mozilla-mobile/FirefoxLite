@@ -5,23 +5,15 @@
 
 package org.mozilla.focus.utils;
 
-import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import org.mozilla.focus.search.SearchEngine;
-import org.mozilla.focus.search.SearchEngineManager;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 public class UrlUtils {
 
-    private final static Pattern schemePattern = Pattern.compile("^.+://");
     private final static String HTTP_SCHEME_PREFIX = "http://";
     private final static String HTTPS_SCHEME_PREFIX = "https://";
     private final static String[] HTTP_SCHEME_PREFIX_ARRAY = {HTTP_SCHEME_PREFIX, HTTPS_SCHEME_PREFIX};
@@ -29,69 +21,6 @@ public class UrlUtils {
     private final static String MOBILE_PREFIX = "mobile.";
     private final static String M_PREFIX = "m.";
     private final static String[] COMMON_SUBDOMAINS_PREFIX_ARRAY = {WWW_PREFIX, MOBILE_PREFIX, M_PREFIX};
-
-    public static String normalize(@NonNull String input) {
-        String trimmedInput = input.trim();
-        Uri uri = Uri.parse(trimmedInput);
-
-        // for supported/predefined url, no need to normalize it
-        for (final String s : SupportUtils.SUPPORTED_URLS) {
-            if (s.equals(input)) {
-                return input;
-            }
-        }
-
-        if (TextUtils.isEmpty(uri.getScheme())) {
-            uri = Uri.parse("http://" + trimmedInput);
-        }
-
-        return uri.toString();
-    }
-
-    /**
-     * Is the given string a URL or should we perform a search?
-     * <p>
-     * TODO: This is a super simple and probably stupid implementation.
-     */
-    public static boolean isUrl(@Nullable String url) {
-        if (TextUtils.isEmpty(url)) {
-            return false;
-        }
-
-        final String trimmedUrl = url.trim().toLowerCase(Locale.getDefault());
-        if (trimmedUrl.contains(" ")) {
-            return false;
-        }
-
-        for (final String s : SupportUtils.SUPPORTED_URLS) {
-            if (s.equals(trimmedUrl)) {
-                return true;
-            }
-        }
-
-        Uri uri = schemePattern.matcher(trimmedUrl).find()
-                ? Uri.parse(trimmedUrl)
-                : Uri.parse("http://" + trimmedUrl);
-
-        final String host = TextUtils.isEmpty(uri.getHost()) ? "" : uri.getHost();
-        switch (uri.getScheme()) {
-            case "http":
-            case "https":
-                // localhost allows zero dot
-                if (!host.contains(".")) {
-                    return host.equals("localhost");
-                }
-
-                // .a.b.c  and a.b.c. are not allowed
-                return !host.startsWith(".") && !host.endsWith(".");
-            case "file":
-                // only "file" scheme allows empty domain
-                return !TextUtils.isEmpty(uri.getPath());
-            default:
-                //  unknown schema will treated as app link
-                return true;
-        }
-    }
 
     public static boolean isHttpOrHttps(String url) {
         if (TextUtils.isEmpty(url)) {

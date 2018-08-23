@@ -8,7 +8,11 @@ package org.mozilla.focus.utils;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.text.TextUtils;
 import android.webkit.WebView;
 
 import org.mozilla.focus.R;
@@ -18,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class SupportUtils {
     public static final String BLANK_URL = "about:blank";
@@ -26,6 +31,8 @@ public class SupportUtils {
     public static final String PRIVACY_URL = "https://www.mozilla.org/privacy/firefox-rocket";
     public static final String ABOUT_URI = "file:///android_res/raw/about.html";
 
+    private final static Pattern schemePattern = Pattern.compile("^.+://");
+
     static final String[] SUPPORTED_URLS = new String[]{
             BLANK_URL,
             FOCUS_ABOUT_URL,
@@ -33,6 +40,69 @@ public class SupportUtils {
             PRIVACY_URL,
             ABOUT_URI
     };
+
+    public static String normalize(@NonNull String input) {
+        String trimmedInput = input.trim();
+        Uri uri = Uri.parse(trimmedInput);
+
+        // for supported/predefined url, no need to normalize it
+        for (final String s : SupportUtils.SUPPORTED_URLS) {
+            if (s.equals(input)) {
+                return input;
+            }
+        }
+
+        if (TextUtils.isEmpty(uri.getScheme())) {
+            uri = Uri.parse("http://" + trimmedInput);
+        }
+
+        return uri.toString();
+    }
+
+    /**
+     * Is the given string a URL or should we perform a search?
+     * <p>
+     * TODO: This is a super simple and probably stupid implementation.
+     */
+    public static boolean isUrl(@Nullable String url) {
+        if (TextUtils.isEmpty(url)) {
+            return false;
+        }
+
+        final String trimmedUrl = url.trim().toLowerCase(Locale.getDefault());
+        if (trimmedUrl.contains(" ")) {
+            return false;
+        }
+
+        for (final String s : SupportUtils.SUPPORTED_URLS) {
+            if (s.equals(trimmedUrl)) {
+                return true;
+            }
+        }
+
+        Uri uri = schemePattern.matcher(trimmedUrl).find()
+                ? Uri.parse(trimmedUrl)
+                : Uri.parse("http://" + trimmedUrl);
+
+        final String host = TextUtils.isEmpty(uri.getHost()) ? "" : uri.getHost();
+        switch (uri.getScheme()) {
+            case "http":
+            case "https":
+                // localhost allows zero dot
+                if (!host.contains(".")) {
+                    return host.equals("localhost");
+                }
+
+                // .a.b.c  and a.b.c. are not allowed
+                return !host.startsWith(".") && !host.endsWith(".");
+            case "file":
+                // only "file" scheme allows empty domain
+                return !TextUtils.isEmpty(uri.getPath());
+            default:
+                //  unknown schema will treated as app link
+                return true;
+        }
+    }
 
     public static boolean isTemplateSupportPages(String url) {
         final boolean isTemplate;
