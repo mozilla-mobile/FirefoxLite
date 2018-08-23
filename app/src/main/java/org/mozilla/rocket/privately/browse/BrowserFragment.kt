@@ -231,7 +231,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun onDeleteClicked() {
         val listener = activity as FragmentListener
-        for (tab in tabsSession.tabs) {
+        for (tab in tabsSession.getTabs()) {
             tabsSession.dropTab(tab.id)
         }
         listener.onNotified(BrowserFragment@ this, TYPE.DROP_BROWSING_PAGES, null)
@@ -252,7 +252,7 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         override fun onReceivedTitle(tab: Tab, title: String?) {
-            if (!fragment.displayUrlView.text.toString().equals(tab.getUrl())) {
+            if (!fragment.displayUrlView.text.toString().equals(tab.url)) {
                 fragment.displayUrlView.text = tab.url
             }
         }
@@ -330,7 +330,7 @@ class BrowserFragment : LocaleAwareFragment(),
         }
     }
 
-    class PrivateDownloadCallback(val context: Context, val refererUrl: String) : DownloadCallback {
+    class PrivateDownloadCallback(val context: Context, val refererUrl: String?) : DownloadCallback {
         override fun onDownloadStart(download: Download) {
             if (!TextUtils.isEmpty(download.url)) {
                 val cookie = CookieManager.getInstance().getCookie(download.getUrl());

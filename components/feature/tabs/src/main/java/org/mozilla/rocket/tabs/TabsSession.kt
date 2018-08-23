@@ -333,7 +333,7 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
                                arguments: Bundle?): String {
 
         val tab = Tab()
-        tab.setUrl(url!!)
+        tab.url = url!!
 
         bindCallback(tab)
 
