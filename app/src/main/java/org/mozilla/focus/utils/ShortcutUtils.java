@@ -20,6 +20,8 @@ import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.support.v4.graphics.drawable.IconCompat;
 import android.text.TextUtils;
 
+import org.mozilla.icon.FavIconUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 

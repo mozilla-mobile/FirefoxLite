@@ -8,7 +8,7 @@ package org.mozilla.focus.tabs.tabtray;
 import android.graphics.Bitmap;
 
 import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FavIconUtils;
+import org.mozilla.icon.FavIconUtils;
 
 public class FaviconModel {
     String url;

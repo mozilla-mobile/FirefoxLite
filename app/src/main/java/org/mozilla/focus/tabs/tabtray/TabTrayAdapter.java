@@ -32,7 +32,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FavIconUtils;
+import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.Tab;
 
 import java.util.ArrayList;

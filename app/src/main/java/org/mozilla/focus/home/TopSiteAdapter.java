@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.focus.utils.FavIconUtils;
+import org.mozilla.icon.FavIconUtils;
 
 import java.util.ArrayList;
 import java.util.List;

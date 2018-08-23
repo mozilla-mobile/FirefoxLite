@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.IntDef;
 
 import org.mozilla.focus.R;
+import org.mozilla.icon.FavIconUtils;
 
 public class DimenUtils {
 
