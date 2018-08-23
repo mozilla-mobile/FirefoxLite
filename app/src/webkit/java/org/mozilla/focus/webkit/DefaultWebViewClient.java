@@ -7,7 +7,7 @@ import android.webkit.WebView;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.urlutils.UrlUtils;
 
 public class DefaultWebViewClient extends TrackingProtectionWebViewClient {
 

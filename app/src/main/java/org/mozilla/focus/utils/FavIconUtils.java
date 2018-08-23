@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.mozilla.focus.R;
+import org.mozilla.urlutils.UrlUtils;
 
 /**
  * Created by hart on 31/08/2017.

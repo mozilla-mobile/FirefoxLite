@@ -19,7 +19,7 @@ import android.webkit.WebViewClient;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.urlutils.UrlUtils;
 
 /**
  * Base implementation for fragments that use a WebView instance. Based on Android's WebViewFragment.

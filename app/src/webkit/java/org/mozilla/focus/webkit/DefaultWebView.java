@@ -12,7 +12,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.urlutils.UrlUtils;
 
 public class DefaultWebView extends NestedWebView {
 

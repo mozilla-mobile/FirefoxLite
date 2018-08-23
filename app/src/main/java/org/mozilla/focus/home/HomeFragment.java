@@ -53,7 +53,7 @@ import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;

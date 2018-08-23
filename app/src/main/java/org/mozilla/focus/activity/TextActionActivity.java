@@ -16,7 +16,7 @@ import android.support.annotation.RequiresApi;
 import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.SearchUtils;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.urlutils.UrlUtils;
 
 /**
  * Activity for receiving and processing an ACTION_PROCESS_TEXT intent.
