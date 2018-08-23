@@ -358,7 +358,6 @@ public class WebkitView extends NestedWebView implements TabView {
                         Site site = new Site();
                         site.setUrl(url);
                         site.setTitle(getTitle());
-                        site.setFavIcon(DimenUtils.getInitialBitmap(getResources(), null, FavIconUtils.getRepresentativeCharacter(url)));
                         site.setLastViewTimestamp(System.currentTimeMillis());
                         BrowsingHistoryManager.getInstance().insert(site, null);
                     }

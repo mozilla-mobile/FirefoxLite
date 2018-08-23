@@ -6,6 +6,9 @@
 package org.mozilla.focus.home;
 
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
@@ -13,9 +16,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.icon.FavIconUtils;
 
 import java.util.ArrayList;
@@ -51,18 +60,39 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         return result;
     }
 
+    private void setImageViewWithBackground(ImageView imageView, Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
+        setBackgroundColor(imageView, bitmap);
+    }
+
+    private void defaultSetImageViewWithBackground(ImageView imageView, String url, int backgroundColor) {
+        final Resources resources = imageView.getResources();
+        final Bitmap bitmap = DimenUtils.getInitialBitmap(resources, FavIconUtils.getRepresentativeCharacter(url), backgroundColor);
+        setImageViewWithBackground(imageView, bitmap);
+    }
+
     @Override
     public void onBindViewHolder(SiteViewHolder holder, int position) {
         final Site site = sites.get(position);
         holder.text.setText(site.getTitle());
-        holder.img.setImageBitmap(site.getFavIcon());
-        int dominantColor = FavIconUtils.getDominantColor(site.getFavIcon());
-        int alpha = (dominantColor & 0xFF000000);
-        // Add 25% white to dominant Color
-        int red = addWhiteToColorCode((dominantColor & 0x00FF0000) >> 16, 0.25f) << 16;
-        int green = addWhiteToColorCode((dominantColor & 0x0000FF00) >> 8, 0.25f) << 8;
-        int blue = addWhiteToColorCode((dominantColor & 0x000000FF), 0.25f);
-        ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(alpha + red + green + blue));
+        String favIconUri = site.getFavIconUri();
+        if (favIconUri != null) {
+            Glide.with(holder.img.getContext())
+                    .asBitmap()
+                    .load(favIconUri)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            if (DimenUtils.iconTooBlurry(holder.img.getResources(), resource.getWidth())) {
+                                defaultSetImageViewWithBackground(holder.img, site.getUrl(), FavIconUtils.getDominantColor(resource));
+                            } else {
+                                setImageViewWithBackground(holder.img, resource);
+                            }
+                        }
+                    });
+        } else {
+            defaultSetImageViewWithBackground(holder.img, site.getUrl(), Color.WHITE);
+        }
 
         // let click listener knows which site is clicked
         holder.itemView.setTag(site);
@@ -73,6 +103,16 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         if (longClickListener != null) {
             holder.itemView.setOnLongClickListener(longClickListener);
         }
+    }
+
+    private void setBackgroundColor(ImageView imageView, Bitmap favicon) {
+        int dominantColor = FavIconUtils.getDominantColor(favicon);
+        int alpha = (dominantColor & 0xFF000000);
+        // Add 25% white to dominant Color
+        int red = addWhiteToColorCode((dominantColor & 0x00FF0000) >> 16, 0.25f) << 16;
+        int green = addWhiteToColorCode((dominantColor & 0x0000FF00) >> 8, 0.25f) << 8;
+        int blue = addWhiteToColorCode((dominantColor & 0x000000FF), 0.25f);
+        ViewCompat.setBackgroundTintList(imageView, ColorStateList.valueOf(alpha + red + green + blue));
     }
 
     @Override

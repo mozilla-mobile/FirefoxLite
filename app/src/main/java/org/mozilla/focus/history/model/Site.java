@@ -93,14 +93,6 @@ public class Site {
         this.lastViewTimestamp = timestamp;
     }
 
-    public Bitmap getFavIcon() {
-        return this.favIcon;
-    }
-
-    public void setFavIcon(Bitmap favIcon) {
-        this.favIcon = favIcon;
-    }
-
     public String getFavIconUri() {
         return favIconUri;
     }

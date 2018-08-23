@@ -5,7 +5,10 @@
 
 package org.mozilla.icon;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,6 +18,15 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.mozilla.urlutils.UrlUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by hart on 31/08/2017.
@@ -171,4 +183,136 @@ public class FavIconUtils {
         return snippet;
     }
 
+    public static class SaveBitmapRunnable implements Runnable {
+
+        public interface OnBitmapSavedCallback {
+            void onBitmapSaved(String s);
+        }
+
+        private WeakReference<Context> context;
+        private String url;
+        private Bitmap bitmap;
+        private WeakReference<OnBitmapSavedCallback> onBitmapSavedCallback;
+
+
+        public SaveBitmapRunnable(Context context, String url, Bitmap bitmap, OnBitmapSavedCallback onBitmapSavedCallback) {
+            this.context = new WeakReference<>(context);
+            this.url = url;
+            this.bitmap = bitmap;
+            this.onBitmapSavedCallback = new WeakReference<>(onBitmapSavedCallback);
+        }
+
+        @Override
+        public void run() {
+            Context context = this.context.get();
+            if (context == null) {
+                return;
+            }
+            String uri = saveBitmapToDirectory(context.getCacheDir(), url, bitmap);
+            OnBitmapSavedCallback bitmapSavedCallback = onBitmapSavedCallback.get();
+            if (bitmapSavedCallback == null) {
+                return;
+            }
+            bitmapSavedCallback.onBitmapSaved(uri);
+        }
+    }
+
+    public static String saveBitmapToDirectory(@NonNull final File dir,
+                                               @NonNull final String url,
+                                               @NonNull final Bitmap bitmap) {
+        // Use encoded url as default if No MD5 algorithm
+        String fileName = Uri.encode(url);
+        try {
+            fileName = generateMD5(url);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return FavIconUtils.saveBitmapToFile(dir, fileName, bitmap);
+    }
+
+    private static String saveBitmapToFile(@NonNull final File dir,
+                                           @NonNull final String fileName,
+                                           @NonNull final Bitmap bitmap) {
+        ensureDir(dir);
+
+        try {
+            //create a file to write bitmap data
+            File file = new File(dir, fileName);
+            if (file.exists() && !file.delete()) {
+                return Uri.fromFile(file).toString();
+            }
+            if (!file.createNewFile()) {
+               if (file.exists()) {
+                   return Uri.fromFile(file).toString();
+               } else {
+                   return null;
+               }
+            }
+            //Convert bitmap to byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+            byte[] bitmapData = bos.toByteArray();
+
+            //write the bytes in file
+            try (FileOutputStream fos = new FileOutputStream(file) ) {
+                fos.write(bitmapData);
+                fos.flush();
+            }
+            return Uri.fromFile(file).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Bitmap getIconFromAssets(Context context, String path) {
+        AssetManager assetManager = context.getAssets();
+
+        InputStream istream;
+        Bitmap bitmap = null;
+        try {
+            istream = assetManager.open(path);
+            bitmap = BitmapFactory.decodeStream(istream);
+        } catch (IOException e) {
+            // handle exception
+        }
+
+        return bitmap;
+
+    }
+
+
+    public static Bitmap getBitmapFromUri(Context context, @NonNull final String uri) {
+        final String assetIndicator = "//android_asset/";
+        if (uri.contains(assetIndicator)) {
+            return getIconFromAssets(context, uri.substring(uri.indexOf(assetIndicator) + assetIndicator.length()));
+        }
+        return BitmapFactory.decodeFile(Uri.parse(uri).getPath(), new BitmapFactory.Options());
+    }
+
+    public static String generateMD5(String string) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.update(string.getBytes(Charset.defaultCharset()));
+        byte[] result = messageDigest.digest();
+        StringBuilder sb = new StringBuilder();
+        for (byte character : result) {
+            sb.append(String.format("%02X", character));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * To ensure a directory exists and writable
+     *
+     * @param dir directory as File type
+     * @return true if the directory is writable
+     */
+    public static boolean ensureDir(@NonNull File dir) {
+        if (dir.mkdirs()) {
+            return true;
+        } else {
+            return dir.exists() && dir.isDirectory() && dir.canWrite();
+        }
+    }
 }

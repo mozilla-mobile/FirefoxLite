@@ -76,21 +76,6 @@ public class TopSitesUtils {
                 .apply();
     }
 
-    public static Bitmap getIconFromAssets(Context context, String fileName) {
-        AssetManager assetManager = context.getAssets();
-
-        InputStream istream;
-        Bitmap bitmap = null;
-        try {
-            istream = assetManager.open("topsites/icon/" + fileName);
-            bitmap = BitmapFactory.decodeStream(istream);
-        } catch (IOException e) {
-            // handle exception
-        }
-
-        return bitmap;
-    }
-
     public static List<Site> paresJsonToList(Context context, JSONArray jsonArray) {
         List<Site> defaultSites = new ArrayList<>();
         try {
@@ -104,7 +89,7 @@ public class TopSitesUtils {
                     site.setViewCount(json_site.getLong("viewCount"));
                     site.setLastViewTimestamp(json_site.getLong("lastViewTimestamp"));
                     String icon_name = json_site.getString("favicon");
-                    site.setFavIcon(TopSitesUtils.getIconFromAssets(context, icon_name));
+                    site.setFavIconUri("file:///android_asset/topsites/icon/" + icon_name);
                     defaultSites.add(site);
                 }
             }

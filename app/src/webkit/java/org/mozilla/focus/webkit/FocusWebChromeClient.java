@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.PermissionRequest;
+import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -16,9 +17,14 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
 import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.urlutils.UrlUtils;
+
+import java.io.File;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * An @see{android.webkit.WebChromeClient} implementation to hand over any callback to TabChromeClient, if any.
@@ -67,22 +73,21 @@ class FocusWebChromeClient extends WebChromeClient {
         if (TextUtils.isEmpty(url)) {
             return;
         }
+        final String title = view.getTitle();
 
-        final Bitmap refinedBitmap = DimenUtils.getRefinedBitmap(view.getResources(),
-                icon,
-                FavIconUtils.getRepresentativeCharacter(url));
-        // TODO: 8/23/18 Save Bitmap or generate icon if texture imperfect.
-
-        final Site site = new Site();
-        site.setTitle(view.getTitle());
-        site.setUrl(url);
-        site.setFavIcon(refinedBitmap);
-        // TODO: 8/21/18 Save bitmap to file and save uri to db
-        //BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
+        new Thread(new FavIconUtils.SaveBitmapRunnable(view.getContext(), url, icon, fileUri -> updateHistory(title, url, fileUri))).start();
 
         if (this.tabChromeClient != null) {
             this.tabChromeClient.onReceivedIcon(this.host, icon);
         }
+    }
+
+    private static void updateHistory(String title, String url, String fileUri) {
+        final Site site = new Site();
+        site.setTitle(title);
+        site.setUrl(url);
+        site.setFavIconUri(fileUri);
+        BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
     }
 
     @Override
