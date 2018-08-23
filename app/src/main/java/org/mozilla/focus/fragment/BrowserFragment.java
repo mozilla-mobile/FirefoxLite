@@ -66,6 +66,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
@@ -759,7 +760,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void loadUrl(@NonNull final String url, boolean openNewTab,
                         boolean isFromExternal, final Runnable onViewReadyCallback) {
         updateURL(url);
-        if (UrlUtils.isUrl(url)) {
+        if (SupportUtils.isUrl(url)) {
             if (openNewTab) {
                 tabsSession.addTab(url, TabUtil.argument(null, isFromExternal, true));
 

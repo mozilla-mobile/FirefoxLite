@@ -780,7 +780,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final String url = focusTab.getUrl();
         // If we pin an invalid url as shortcut, the app will not function properly.
         // TODO: only enable the bottom menu item if the page is valid and loaded.
-        if (!UrlUtils.isUrl(url)) {
+        if (!SupportUtils.isUrl(url)) {
             return;
         }
         final Bitmap bitmap = focusTab.getFavicon();

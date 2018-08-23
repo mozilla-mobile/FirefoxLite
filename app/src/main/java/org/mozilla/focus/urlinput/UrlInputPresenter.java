@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.mozilla.focus.network.SocketTags;
 import org.mozilla.focus.search.SearchEngine;
-import org.mozilla.focus.utils.UrlUtils;
+import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 
 import java.lang.ref.WeakReference;
@@ -61,7 +61,7 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
         }
 
         // No need to provide suggestion for Url input
-        if (UrlUtils.isUrl(input.toString())) {
+        if (SupportUtils.isUrl(input.toString())) {
             return;
         }
 

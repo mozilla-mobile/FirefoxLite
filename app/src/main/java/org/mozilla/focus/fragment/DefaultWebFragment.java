@@ -18,6 +18,7 @@ import android.webkit.WebViewClient;
 
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.UrlUtils;
 
 /**
@@ -168,11 +169,11 @@ public abstract class DefaultWebFragment extends LocaleAwareFragment {
     public void loadUrl(@NonNull final String url) {
         final WebView webView = getWebView();
         if (webView != null) {
-            if (UrlUtils.isUrl(url)) {
+            if (SupportUtils.isUrl(url)) {
                 this.pendingUrl = null; // clear pending url
 
                 // in case of any unexpected path to here, to normalize URL in beta/release build
-                final String target = AppConstants.isDevBuild() ? url : UrlUtils.normalize(url);
+                final String target = AppConstants.isDevBuild() ? url : SupportUtils.normalize(url);
                 webView.loadUrl(target);
             } else if (AppConstants.isDevBuild()) {
                 // throw exception to highlight this issue, except release build.

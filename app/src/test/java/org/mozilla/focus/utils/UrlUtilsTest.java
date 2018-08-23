@@ -63,59 +63,6 @@ public class UrlUtilsTest {
     }
 
     @Test
-    public void testIsUrl() {
-        assertTrue(UrlUtils.isUrl("http://www.mozilla.org"));
-        assertTrue(UrlUtils.isUrl("https://www.mozilla.org"));
-        assertTrue(UrlUtils.isUrl("https://www.mozilla.org "));
-        assertTrue(UrlUtils.isUrl(" https://www.mozilla.org"));
-        assertTrue(UrlUtils.isUrl(" https://www.mozilla.org "));
-        assertTrue(UrlUtils.isUrl("https://www.mozilla.org/en-US/internet-health/"));
-        assertTrue(UrlUtils.isUrl("file:///mnt/sdcard/"));
-        assertTrue(UrlUtils.isUrl("file:///"));
-        assertTrue(UrlUtils.isUrl("file:///mnt"));
-        assertTrue(UrlUtils.isUrl("mozilla.org"));
-        assertTrue(UrlUtils.isUrl("192.168.1.1"));
-        assertTrue(UrlUtils.isUrl("192.168.1.1:4000"));
-        assertTrue(UrlUtils.isUrl("192.168.1.1/a/../b"));
-        assertTrue(UrlUtils.isUrl("http://192.168.1.1"));
-        assertTrue(UrlUtils.isUrl("http://192.168.1.1:4000"));
-        assertTrue(UrlUtils.isUrl("http://192.168.1.1/a/../b"));
-        assertTrue(UrlUtils.isUrl("localhost"));
-        assertTrue(UrlUtils.isUrl("http://localhost"));
-        assertTrue(UrlUtils.isUrl("about:blank"));
-        assertTrue(UrlUtils.isUrl("focusabout:"));
-
-        assertFalse(UrlUtils.isUrl("Hello World"));
-        assertFalse(UrlUtils.isUrl("Mozilla"));
-        assertFalse(UrlUtils.isUrl(""));
-        assertFalse(UrlUtils.isUrl(" "));
-        assertFalse(UrlUtils.isUrl(":"));
-        assertFalse(UrlUtils.isUrl("."));
-        assertFalse(UrlUtils.isUrl("::"));
-        assertFalse(UrlUtils.isUrl("..."));
-        assertFalse(UrlUtils.isUrl("file://:"));
-    }
-
-    @Test
-    public void testNormalize() {
-        assertEquals("http://www.mozilla.org", UrlUtils.normalize("http://www.mozilla.org"));
-        assertEquals("https://www.mozilla.org", UrlUtils.normalize("https://www.mozilla.org"));
-        assertEquals("https://www.mozilla.org/en-US/internet-health/", UrlUtils.normalize("https://www.mozilla.org/en-US/internet-health/"));
-        assertEquals("file:///mnt/sdcard/", UrlUtils.normalize("file:///mnt/sdcard/"));
-
-        assertEquals("http://mozilla.org", UrlUtils.normalize("mozilla.org"));
-        assertEquals("http://mozilla.org", UrlUtils.normalize("http://mozilla.org "));
-        assertEquals("http://mozilla.org", UrlUtils.normalize(" http://mozilla.org "));
-        assertEquals("http://mozilla.org", UrlUtils.normalize(" http://mozilla.org"));
-        assertEquals("http://localhost", UrlUtils.normalize("localhost"));
-
-        // for supported/predefined url, we should not change them at all.
-        for (final String supported : SupportUtils.SUPPORTED_URLS) {
-            assertEquals(supported, UrlUtils.normalize(supported));
-        }
-    }
-
-    @Test
     public void testIsSearchQuery() {
         assertTrue(UrlUtils.isSearchQuery("hello world"));
 
