@@ -27,15 +27,15 @@ internal val MSG_FOCUS_TAB = 0x1001
 internal val MSG_ADDED_TAB = 0x1002
 
 /**
- * Class to help on tabs management, such as adding or removing tabs.
+ * Class to help on sessions management, such as adding or removing sessions.
  */
-class TabsSession(private val tabViewProvider: TabViewProvider) {
+class SessionManager(private val tabViewProvider: TabViewProvider) {
 
-    private val tabs = LinkedList<Tab>()
+    private val sessions = LinkedList<Session>()
 
     private val notifier: Notifier
 
-    private var focusRef = WeakReference<Tab>(null)
+    private var focusRef = WeakReference<Session>(null)
 
     private val tabsViewListeners = ArrayList<TabsViewListener>()
     private val tabsChromeListeners = ArrayList<TabsChromeListener>()
@@ -43,22 +43,22 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
     private var findListener: FindListener? = null
 
     /**
-     * To get count of tabs in this session.
+     * To get count of sessions in this session.
      *
      * @return count in integer
      */
     val tabsCount: Int
-        get() = tabs.size
+        get() = sessions.size
 
     /**
-     * To get data of tabs to store in persistent storage.
+     * To get data of sessions to store in persistent storage.
      *
-     * @return created TabModel of tabs in this session.
+     * @return created TabModel of sessions in this session.
      */
     val tabModelListForPersistence: List<TabModel>
         get() {
             val models = ArrayList<TabModel>()
-            for (tab in tabs) {
+            for (tab in sessions) {
                 models.add(tab.saveModel)
             }
             return models
@@ -69,7 +69,7 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
      *
      * @return current focused tab. Return null if there is not any tab.
      */
-    val focusTab: Tab?
+    val focusSession: Session?
         get() = focusRef.get()
 
     init {
@@ -77,17 +77,17 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
     }
 
     /**
-     * Copy reference of tabs which are held by this session.
+     * Copy reference of sessions which are held by this session.
      *
      * @return new List which is safe to change its order without effect this session
      */
-    fun getTabs(): List<Tab> {
+    fun getTabs(): List<Session> {
         // create a new list, in case of caller modify this list
-        return ArrayList(tabs)
+        return ArrayList(sessions)
     }
 
     /**
-     * To append tabs from a list of TabModel. If the specified focusTabId exists, the tab associate
+     * To append sessions from a list of TabModel. If the specified focusTabId exists, the tab associate
      * to the id will be focused, otherwise no tab will be focused.
      *
      *
@@ -103,23 +103,23 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
                 continue
             }
 
-            val tab = Tab(model)
+            val tab = Session(model)
             bindCallback(tab)
-            tabs.add(insertPos++, tab)
+            sessions.add(insertPos++, tab)
         }
 
-        if (tabs.size > 0 && tabs.size == models.size) {
-            focusRef = WeakReference<Tab>(getTab(focusTabId))
+        if (sessions.size > 0 && sessions.size == models.size) {
+            focusRef = WeakReference<Session>(getTab(focusTabId))
         }
 
         for (l in tabsChromeListeners) {
-            l.onTabCountChanged(tabs.size)
+            l.onTabCountChanged(sessions.size)
         }
     }
 
     /**
      * Add a tab, its attributes are controlled by arguments. The default attributes of a new tab
-     * is defined by @see{org.mozilla.focus.tabs.utils.TabUtil}. Usually it 1) has no parent
+     * is defined by @see{org.mozilla.focus.sessions.utils.TabUtil}. Usually it 1) has no parent
      * 2) is not opened from external app 3) will not change focus
      *
      * @param url       initial url for this tab
@@ -160,13 +160,13 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
         val tab = getTab(id) ?: return
 
         val oldIndex = getTabIndex(id)
-        tabs.remove(tab)
+        sessions.remove(tab)
         tab.destroy()
 
         // Update child's parent id to its ancestor
         // TODO: in our current design, the parent of a tab are always locate at left(index -1).
         // hence no need to loop whole list.
-        for (t in tabs) {
+        for (t in sessions) {
             if (TextUtils.equals(t.parentId, tab.id)) {
                 t.parentId = tab.parentId
             }
@@ -175,30 +175,30 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
         // if the removing tab was focused, we need to update focus
         if (tab === focusRef.get()) {
             if (isDrop) {
-                val nextIdx = Math.min(oldIndex, tabs.size - 1)
+                val nextIdx = Math.min(oldIndex, sessions.size - 1)
                 focusRef = if (nextIdx == -1)
-                    WeakReference<Tab>(null)
+                    WeakReference<Session>(null)
                 else
-                    WeakReference(tabs[nextIdx])
+                    WeakReference(sessions[nextIdx])
             } else {
                 updateFocusOnClosing(tab)
             }
         }
 
         for (l in tabsChromeListeners) {
-            l.onTabCountChanged(tabs.size)
+            l.onTabCountChanged(sessions.size)
         }
     }
 
-    private fun updateFocusOnClosing(removedTab: Tab) {
-        if (TextUtils.isEmpty(removedTab.parentId)) {
+    private fun updateFocusOnClosing(removedSession: Session) {
+        if (TextUtils.isEmpty(removedSession.parentId)) {
             focusRef.clear()
             notifier.notifyTabFocused(null, TabsChromeListener.FACTOR_NO_FOCUS)
-        } else if (TextUtils.equals(removedTab.parentId, Tab.ID_EXTERNAL)) {
+        } else if (TextUtils.equals(removedSession.parentId, Session.ID_EXTERNAL)) {
             focusRef.clear()
             notifier.notifyTabFocused(null, TabsChromeListener.FACTOR_BACK_EXTERNAL)
         } else {
-            focusRef = WeakReference<Tab>(getTab(removedTab.parentId!!))
+            focusRef = WeakReference<Session>(getTab(removedSession.parentId!!))
             notifier.notifyTabFocused(focusRef.get(), TabsChromeListener.FACTOR_TAB_REMOVED)
         }
     }
@@ -218,12 +218,12 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
     }
 
     /**
-     * To check whether this session has any tabs
+     * To check whether this session has any sessions
      *
      * @return true if this session has at least one tab
      */
     fun hasTabs(): Boolean {
-        return tabs.size > 0
+        return sessions.size > 0
     }
 
     /**
@@ -268,14 +268,14 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
 
     /**
      * To specify @see{DownloadCallback} to this session, this method will replace existing one. It
-     * also replace DownloadCallback from any existing Tab.
+     * also replace DownloadCallback from any existing Session.
      *
      * @param downloadCallback
      */
     fun setDownloadCallback(downloadCallback: DownloadCallback?) {
         this.downloadCallback = downloadCallback
         if (hasTabs()) {
-            for (tab in tabs) {
+            for (tab in sessions) {
                 tab.setDownloadCallback(downloadCallback)
             }
         }
@@ -291,21 +291,21 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
     }
 
     /**
-     * To destroy this session, and it also destroy any tabs in this session.
+     * To destroy this session, and it also destroy any sessions in this session.
      * This method should be called after any View has been removed from view system.
      * No other methods may be called on this session after destroy.
      */
     fun destroy() {
-        for (tab in tabs) {
+        for (tab in sessions) {
             tab.destroy()
         }
     }
 
     /**
-     * To pause this session, and it also pause any tabs in this session.
+     * To pause this session, and it also pause any sessions in this session.
      */
     fun pause() {
-        for (tab in tabs) {
+        for (tab in sessions) {
             tab.pause()
         }
     }
@@ -314,16 +314,16 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
      * To resume this session after a previous call to @see{#pause}
      */
     fun resume() {
-        for (tab in tabs) {
+        for (tab in sessions) {
             tab.resume()
         }
     }
 
-    private fun bindCallback(tab: Tab) {
-        tab.setTabViewClient(TabViewClientImpl(tab))
-        tab.setTabChromeClient(TabChromeClientImpl(tab))
-        tab.setDownloadCallback(downloadCallback)
-        tab.setFindListener(findListener)
+    private fun bindCallback(session: Session) {
+        session.setTabViewClient(TabViewClientImpl(session))
+        session.setTabChromeClient(TabChromeClientImpl(session))
+        session.setDownloadCallback(downloadCallback)
+        session.setDownloadCallback(downloadCallback)
     }
 
     private fun addTabInternal(url: String?,
@@ -332,15 +332,15 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
                                toFocus: Boolean,
                                arguments: Bundle?): String {
 
-        val tab = Tab()
+        val tab = Session()
         tab.url = url!!
 
         bindCallback(tab)
 
         val parentIndex = if (TextUtils.isEmpty(parentId)) -1 else getTabIndex(parentId!!)
         if (fromExternal) {
-            tab.parentId = Tab.ID_EXTERNAL
-            tabs.add(tab)
+            tab.parentId = Session.ID_EXTERNAL
+            sessions.add(tab)
         } else {
             insertTab(parentIndex, tab)
         }
@@ -356,14 +356,14 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
         }
 
         for (l in tabsChromeListeners) {
-            l.onTabCountChanged(tabs.size)
+            l.onTabCountChanged(sessions.size)
         }
         return tab.id
     }
 
-    private fun getTab(id: String?): Tab? {
+    private fun getTab(id: String?): Session? {
         val index = getTabIndex(id)
-        return if (index == -1) null else tabs[index]
+        return if (index == -1) null else sessions[index]
     }
 
     private fun getTabIndex(id: String?): Int {
@@ -371,8 +371,8 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
             return -1
         }
 
-        for (i in tabs.indices) {
-            val tab = tabs[i]
+        for (i in sessions.indices) {
+            val tab = sessions[i]
             if (tab.id == id) {
                 return i
             }
@@ -380,32 +380,32 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
         return -1
     }
 
-    private fun insertTab(parentIdx: Int, tab: Tab) {
-        val parentTab = if (parentIdx >= 0 && parentIdx < tabs.size)
-            tabs[parentIdx]
+    private fun insertTab(parentIdx: Int, session: Session) {
+        val parentTab = if (parentIdx >= 0 && parentIdx < sessions.size)
+            sessions[parentIdx]
         else
             null
         if (parentTab == null) {
-            tabs.add(tab)
+            sessions.add(session)
             return
         } else {
-            tabs.add(parentIdx + 1, tab)
+            sessions.add(parentIdx + 1, session)
         }
 
-        // TODO: in our current design, the parent of a tab are always locate at left(index -1).
+        // TODO: in our current design, the parent of a session are always locate at left(index -1).
         //       hence no need to loop whole list.
-        // if the parent-tab has a child, give it a new parent
-        for (t in tabs) {
+        // if the parent-session has a child, give it a new parent
+        for (t in sessions) {
             if (parentTab.id == t.parentId) {
-                t.parentId = tab.id
+                t.parentId = session.id
             }
         }
 
         // update family relationship
-        tab.parentId = parentTab.id
+        session.parentId = parentTab.id
     }
 
-    internal inner class TabViewClientImpl(var source: Tab) : TabViewClient() {
+    internal inner class TabViewClientImpl(var source: Session) : TabViewClient() {
 
         private fun setTitle() {
             if (source.tabView == null) {
@@ -462,7 +462,7 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
 
 
     private inner class TabChromeClientImpl internal constructor(
-            internal var source: Tab
+            internal var source: Session
     ) : TabChromeClient() {
 
         override fun onCreateWindow(isDialog: Boolean, isUserGesture: Boolean, msg: Message?): Boolean {
@@ -487,8 +487,8 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
 
         override fun onCloseWindow(tabView: TabView) {
             if (source.tabView === tabView) {
-                for (i in tabs.indices) {
-                    val tab = tabs[i]
+                for (i in sessions.indices) {
+                    val tab = sessions[i]
                     if (tab.tabView === tabView) {
                         closeTab(tab.id)
                     }
@@ -559,17 +559,17 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
 
         override fun handleMessage(msg: Message) {
             when (msg.what) {
-                MSG_FOCUS_TAB -> focusTab(msg.obj as Tab?, msg.arg1)
+                MSG_FOCUS_TAB -> focusTab(msg.obj as Session?, msg.arg1)
                 MSG_ADDED_TAB -> addedTab(msg)
                 else -> {
                 }
             }
         }
 
-        fun notifyTabAdded(tab: Tab, arguments: Bundle?) {
+        fun notifyTabAdded(session: Session, arguments: Bundle?) {
             val msg = this.obtainMessage(MSG_ADDED_TAB)
             val pojo = NotifierPojo()
-            pojo.tab = tab
+            pojo.session = session
             pojo.arguements = arguments
             msg.obj = pojo
             this.sendMessage(msg)
@@ -579,30 +579,30 @@ class TabsSession(private val tabViewProvider: TabViewProvider) {
             val pojo = msg.obj as NotifierPojo
 
             for (l in this.chromeListeners!!) {
-                l.onTabAdded(pojo.tab!!, pojo.arguements)
+                l.onTabAdded(pojo.session!!, pojo.arguements)
             }
         }
 
-        fun notifyTabFocused(tab: Tab?, @TabsChromeListener.Factor factor: Int) {
+        fun notifyTabFocused(session: Session?, @TabsChromeListener.Factor factor: Int) {
             val msg = this.obtainMessage(MSG_FOCUS_TAB)
-            msg.obj = tab
+            msg.obj = session
             msg.arg1 = factor
             this.sendMessage(msg)
         }
 
-        private fun focusTab(tab: Tab?, @TabsChromeListener.Factor factor: Int) {
+        private fun focusTab(session: Session?, @TabsChromeListener.Factor factor: Int) {
 
-            if (tab != null && tab.tabView == null) {
-                tab.initializeView(this.tabViewProvider)
+            if (session != null && session.tabView == null) {
+                session.initializeView(this.tabViewProvider)
             }
 
             for (l in this.chromeListeners!!) {
-                l.onFocusChanged(tab, factor)
+                l.onFocusChanged(session, factor)
             }
         }
 
         private class NotifierPojo {
-            var tab: Tab? = null
+            var session: Session? = null
             var arguements: Bundle? = null
         }
     }
