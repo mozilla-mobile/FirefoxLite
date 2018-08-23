@@ -10,21 +10,21 @@ import android.support.annotation.Nullable;
 
 public final class TabsSessionProvider {
     public interface SessionHost {
-        TabsSession getTabsSession();
+        SessionManager getSessionManager();
     }
 
     private TabsSessionProvider() {
     }
 
-    public static TabsSession getOrThrow(Activity activity) throws IllegalArgumentException {
+    public static SessionManager getOrThrow(Activity activity) throws IllegalArgumentException {
         if (activity instanceof SessionHost) {
-            return ((SessionHost) activity).getTabsSession();
+            return ((SessionHost) activity).getSessionManager();
         }
         throw new IllegalArgumentException("activity must implement TabsSessionProvider.SessionHost");
     }
 
     @Nullable
-    public static TabsSession getOrNull(Activity activity) {
+    public static SessionManager getOrNull(Activity activity) {
         try {
             return getOrThrow(activity);
         } catch (Exception e) {

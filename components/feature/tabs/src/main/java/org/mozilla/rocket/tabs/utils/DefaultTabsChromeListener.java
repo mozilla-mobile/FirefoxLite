@@ -15,7 +15,7 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsChromeListener;
 
@@ -24,23 +24,23 @@ import org.mozilla.rocket.tabs.TabsChromeListener;
  */
 public class DefaultTabsChromeListener implements TabsChromeListener {
     @Override
-    public void onProgressChanged(@NonNull Tab tab, int progress) {
+    public void onProgressChanged(@NonNull Session tab, int progress) {
     }
 
     @Override
-    public void onReceivedTitle(@NonNull Tab tab, String title) {
+    public void onReceivedTitle(@NonNull Session tab, String title) {
     }
 
     @Override
-    public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
+    public void onReceivedIcon(@NonNull Session tab, Bitmap icon) {
     }
 
     @Override
-    public void onFocusChanged(@Nullable Tab tab, int factor) {
+    public void onFocusChanged(@Nullable Session tab, int factor) {
     }
 
     @Override
-    public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
+    public void onTabAdded(@NonNull Session tab, @Nullable Bundle arguments) {
     }
 
     @Override
@@ -48,23 +48,23 @@ public class DefaultTabsChromeListener implements TabsChromeListener {
     }
 
     @Override
-    public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
+    public void onLongPress(@NonNull Session tab, TabView.HitTarget hitTarget) {
     }
 
     @Override
-    public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
+    public void onEnterFullScreen(@NonNull Session tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
     }
 
     @Override
-    public void onExitFullScreen(@NonNull Tab tab) {
+    public void onExitFullScreen(@NonNull Session tab) {
     }
 
     @Override
-    public boolean onShowFileChooser(@NonNull Tab tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+    public boolean onShowFileChooser(@NonNull Session tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
         return false;
     }
 
     @Override
-    public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
+    public void onGeolocationPermissionsShowPrompt(@NonNull Session tab, String origin, GeolocationPermissions.Callback callback) {
     }
 }

@@ -51,8 +51,8 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
-import org.mozilla.rocket.tabs.Tab;
-import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 
 import java.util.List;
@@ -107,8 +107,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         adapter = new TabTrayAdapter(Glide.with(this));
 
-        TabsSession tabsSession = TabsSessionProvider.getOrThrow(getActivity());
-        presenter = new TabTrayPresenter(this, new TabsSessionModel(tabsSession));
+        SessionManager sessionManager = TabsSessionProvider.getOrThrow(getActivity());
+        presenter = new TabTrayPresenter(this, new TabsSessionModel(sessionManager));
     }
 
     @Override
@@ -223,14 +223,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void initData(List<Tab> newTabs, Tab newFocusedTab) {
+    public void initData(List<Session> newTabs, Session newFocusedTab) {
         adapter.setData(newTabs);
         adapter.setFocusedTab(newFocusedTab);
     }
 
     @Override
-    public void refreshData(final List<Tab> newTabs, final Tab newFocusedTab) {
-        final List<Tab> oldTabs = adapter.getData();
+    public void refreshData(final List<Session> newTabs, final Session newFocusedTab) {
+        final List<Session> oldTabs = adapter.getData();
         DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
@@ -255,8 +255,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         adapter.setData(newTabs);
 
         waitItemAnimation(() -> {
-            Tab oldFocused = adapter.getFocusedTab();
-            List<Tab> oldTabs1 = adapter.getData();
+            Session oldFocused = adapter.getFocusedTab();
+            List<Session> oldTabs1 = adapter.getData();
             int oldFocusedPosition = oldTabs1.indexOf(oldFocused);
             adapter.notifyItemChanged(oldFocusedPosition);
 
@@ -267,8 +267,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     @Override
-    public void refreshTabData(Tab tab) {
-        List<Tab> tabs = adapter.getData();
+    public void refreshTabData(Session tab) {
+        List<Session> tabs = adapter.getData();
         int position = tabs.indexOf(tab);
         if (position >= 0 && position < tabs.size()) {
             adapter.notifyItemChanged(position);
@@ -373,7 +373,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void startExpandAnimation() {
-        List<Tab> tabs = adapter.getData();
+        List<Session> tabs = adapter.getData();
         int focusedPosition = tabs.indexOf(adapter.getFocusedTab());
         final boolean shouldExpand = isPositionVisibleWhenCollapse(focusedPosition);
         uiHandler.postDelayed(() -> {

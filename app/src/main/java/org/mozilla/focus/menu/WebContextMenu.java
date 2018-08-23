@@ -29,14 +29,14 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.download.GetImgHeaderTask;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.urlutils.UrlUtils;
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.tabs.TabsSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
 import org.mozilla.rocket.tabs.web.DownloadCallback;
+import org.mozilla.urlutils.UrlUtils;
 
 import java.util.List;
 
@@ -203,13 +203,13 @@ public class WebContextMenu {
     }
 
     private static void openInNewTab(final TabView source, final Dialog dialog, final String url) {
-        final TabsSession session = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
-        final List<Tab> tabs = session.getTabs();
+        final SessionManager session = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
+        final List<Session> tabs = session.getTabs();
 
         String parentId = null;
 
         // Try to find parent tab for new tab
-        for (final Tab tab : tabs) {
+        for (final Session tab : tabs) {
             if (tab.getTabView() == source) {
                 parentId = tab.getId();
                 break;

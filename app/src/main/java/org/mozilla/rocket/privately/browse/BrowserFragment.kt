@@ -28,10 +28,10 @@ import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
-import org.mozilla.rocket.tabs.Tab
+import org.mozilla.rocket.tabs.Session
+import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
-import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.DefaultTabsChromeListener
 import org.mozilla.rocket.tabs.utils.DefaultTabsViewListener
@@ -47,7 +47,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private var listener: FragmentListener? = null
 
-    private lateinit var tabsSession: TabsSession
+    private lateinit var sessionManager: SessionManager
     private lateinit var chromeListener: BrowserTabsChromeListener
     private lateinit var viewListener: BrowserTabsViewListener
 
@@ -80,7 +80,7 @@ class BrowserFragment : LocaleAwareFragment(),
             BuildConfig.DEBUG.let { throw RuntimeException("No activity to use") }
         } else {
             if (fragmentActivity is TabsSessionProvider.SessionHost) {
-                tabsSession = fragmentActivity.tabsSession
+                sessionManager = fragmentActivity.sessionManager
                 chromeListener = BrowserTabsChromeListener(this)
                 viewListener = BrowserTabsViewListener(this)
             }
@@ -118,16 +118,16 @@ class BrowserFragment : LocaleAwareFragment(),
 
     override fun onResume() {
         super.onResume()
-        tabsSession.resume()
-        tabsSession.addTabsChromeListener(chromeListener)
-        tabsSession.addTabsViewListener(viewListener)
+        sessionManager.resume()
+        sessionManager.addTabsChromeListener(chromeListener)
+        sessionManager.addTabsViewListener(viewListener)
     }
 
     override fun onPause() {
         super.onPause()
-        tabsSession.removeTabsViewListener(viewListener)
-        tabsSession.removeTabsChromeListener(chromeListener)
-        tabsSession.pause()
+        sessionManager.removeTabsViewListener(viewListener)
+        sessionManager.removeTabsChromeListener(chromeListener)
+        sessionManager.pause()
     }
 
     override fun onAttach(context: Context) {
@@ -152,7 +152,7 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     override fun onBackPressed(): Boolean {
-        val focus = tabsSession.focusTab ?: return false
+        val focus = sessionManager.focusSession ?: return false
         val tabView = focus.tabView ?: return false
 
         if (tabView.canGoBack()) {
@@ -160,7 +160,7 @@ class BrowserFragment : LocaleAwareFragment(),
             return true
         }
 
-        tabsSession.dropTab(focus.id)
+        sessionManager.dropTab(focus.id)
         return false
     }
 
@@ -168,35 +168,35 @@ class BrowserFragment : LocaleAwareFragment(),
         url?.let {
             if (it.isNotBlank()) {
                 displayUrlView.text = url
-                if (tabsSession.tabsCount == 0) {
-                    tabsSession.addTab(url, TabUtil.argument(null, false, true))
+                if (sessionManager.tabsCount == 0) {
+                    sessionManager.addTab(url, TabUtil.argument(null, false, true))
                 } else {
-                    tabsSession.focusTab!!.tabView!!.loadUrl(url)
+                    sessionManager.focusSession!!.tabView!!.loadUrl(url)
                 }
             }
         }
     }
 
     private fun goBack() {
-        val focus = tabsSession.focusTab ?: return
+        val focus = sessionManager.focusSession ?: return
         val tabView = focus.tabView ?: return
         tabView.goBack()
     }
 
     private fun goForward() {
-        val focus = tabsSession.focusTab ?: return
+        val focus = sessionManager.focusSession ?: return
         val tabView = focus.tabView ?: return
         tabView.goForward()
     }
 
     private fun stop() {
-        val focus = tabsSession.focusTab ?: return
+        val focus = sessionManager.focusSession ?: return
         val tabView = focus.tabView ?: return
         tabView.stopLoading()
     }
 
     private fun reload() {
-        val focus = tabsSession.focusTab ?: return
+        val focus = sessionManager.focusSession ?: return
         val tabView = focus.tabView ?: return
         tabView.reload()
     }
@@ -231,8 +231,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun onDeleteClicked() {
         val listener = activity as FragmentListener
-        for (tab in tabsSession.getTabs()) {
-            tabsSession.dropTab(tab.id)
+        for (tab in sessionManager.getTabs()) {
+            sessionManager.dropTab(tab.id)
         }
         listener.onNotified(BrowserFragment@ this, TYPE.DROP_BROWSING_PAGES, null)
     }
@@ -241,33 +241,33 @@ class BrowserFragment : LocaleAwareFragment(),
 
         var callback: FullscreenCallback? = null
 
-        override fun onTabAdded(tab: Tab, arguments: Bundle?) {
-            super.onTabAdded(tab, arguments)
-            fragment.tabViewSlot.addView(tab.tabView!!.view)
+        override fun onTabAdded(session: Session, arguments: Bundle?) {
+            super.onTabAdded(session, arguments)
+            fragment.tabViewSlot.addView(session.tabView!!.view)
         }
 
-        override fun onProgressChanged(tab: Tab, progress: Int) {
-            super.onProgressChanged(tab, progress)
+        override fun onProgressChanged(session: Session, progress: Int) {
+            super.onProgressChanged(session, progress)
             fragment.progressView.progress = progress
         }
 
-        override fun onReceivedTitle(tab: Tab, title: String?) {
-            if (!fragment.displayUrlView.text.toString().equals(tab.url)) {
-                fragment.displayUrlView.text = tab.url
+        override fun onReceivedTitle(session: Session, title: String?) {
+            if (!fragment.displayUrlView.text.toString().equals(session.url)) {
+                fragment.displayUrlView.text = session.url
             }
         }
 
-        override fun onLongPress(tab: Tab, hitTarget: HitTarget?) {
+        override fun onLongPress(session: Session, hitTarget: HitTarget?) {
             val activity = fragment.activity
             if (activity != null && hitTarget != null) {
                 WebContextMenu.show(true,
                         activity,
-                        PrivateDownloadCallback(activity, tab.url),
+                        PrivateDownloadCallback(activity, session.url),
                         hitTarget)
             }
         }
 
-        override fun onEnterFullScreen(tab: Tab, callback: FullscreenCallback, fullscreenContent: View?) {
+        override fun onEnterFullScreen(session: Session, callback: FullscreenCallback, fullscreenContent: View?) {
             with(fragment) {
                 browserContainer.visibility = View.INVISIBLE
                 videoContainer.visibility = View.VISIBLE
@@ -278,7 +278,7 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         }
 
-        override fun onExitFullScreen(tab: Tab) {
+        override fun onExitFullScreen(session: Session) {
             with(fragment) {
                 browserContainer.visibility = View.VISIBLE
                 videoContainer.visibility = View.INVISIBLE
@@ -299,27 +299,27 @@ class BrowserFragment : LocaleAwareFragment(),
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            tab.tabView?.let { if (it is WebView) it.clearFocus() }
+            session.tabView?.let { if (it is WebView) it.clearFocus() }
         }
     }
 
     class BrowserTabsViewListener(val fragment: BrowserFragment) : DefaultTabsViewListener() {
-        override fun onURLChanged(tab: Tab, url: String?) {
+        override fun onURLChanged(session: Session, url: String?) {
             if (!UrlUtils.isInternalErrorURL(url)) {
                 fragment.displayUrlView.text = url
             }
         }
 
-        override fun onTabStarted(tab: Tab) {
-            super.onTabStarted(tab)
+        override fun onTabStarted(session: Session) {
+            super.onTabStarted(session)
             fragment.siteIdentity.setImageLevel(SITE_GLOBE)
             fragment.isLoading = true
             fragment.btnLoad.setImageResource(R.drawable.ic_close)
         }
 
-        override fun onTabFinished(tab: Tab, isSecure: Boolean) {
-            super.onTabFinished(tab, isSecure)
-            val focus = fragment.tabsSession.focusTab ?: return
+        override fun onTabFinished(session: Session, isSecure: Boolean) {
+            super.onTabFinished(session, isSecure)
+            val focus = fragment.sessionManager.focusSession ?: return
             val tabView = focus.tabView ?: return
             fragment.btnNext.isEnabled = tabView.canGoForward()
 

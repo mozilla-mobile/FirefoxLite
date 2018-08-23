@@ -43,17 +43,17 @@ public interface TabsChromeListener {
     /**
      * @see android.webkit.WebChromeClient#onProgressChanged(android.webkit.WebView, int)
      */
-    void onProgressChanged(@NonNull Tab tab, int progress);
+    void onProgressChanged(@NonNull Session tab, int progress);
 
     /**
      * @see android.webkit.WebChromeClient#onReceivedTitle(android.webkit.WebView, String)
      */
-    void onReceivedTitle(@NonNull Tab tab, String title);
+    void onReceivedTitle(@NonNull Session tab, String title);
 
     /**
      * @see android.webkit.WebChromeClient#onReceivedIcon(android.webkit.WebView, Bitmap)
      */
-    void onReceivedIcon(@NonNull Tab tab, Bitmap icon);
+    void onReceivedIcon(@NonNull Session tab, Bitmap icon);
 
     /**
      * Notify the host application a tab becomes 'focused tab'. It usually happens when adding,
@@ -62,16 +62,16 @@ public interface TabsChromeListener {
      * @param tab    The tab becomes focused, null means there is no focused tab
      * @param factor the potential factor which cause this focus-change-event
      */
-    void onFocusChanged(@Nullable Tab tab, @Factor int factor);
+    void onFocusChanged(@Nullable Session tab, @Factor int factor);
 
     /**
      * Notify the host application there is a tab be added.
      *
      * @param tab       the tab be added
-     * @param arguments the same arguments when invoke @see{org.mozilla.focus.tabs.TabsSession#addTab}.
+     * @param arguments the same arguments when invoke @see{org.mozilla.focus.tabs.SessionManager#addTab}.
      *                  It might be null if this tab is not created from the method.
      */
-    void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments);
+    void onTabAdded(@NonNull Session tab, @Nullable Bundle arguments);
 
     /**
      * Notify the host application the total tab counts changed.
@@ -86,7 +86,7 @@ public interface TabsChromeListener {
      * @param tab       The tab received long press event
      * @param hitTarget
      */
-    void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget);
+    void onLongPress(@NonNull Session tab, TabView.HitTarget hitTarget);
 
     /**
      * Notify the host application that a tab has entered full screen mode.
@@ -98,7 +98,7 @@ public interface TabsChromeListener {
      * @param callback          The callback needs to be invoked to request the page to exit full screen mode.
      * @param fullscreenContent The contentView requested to be displayed in fullscreen
      */
-    void onEnterFullScreen(@NonNull Tab tab,
+    void onEnterFullScreen(@NonNull Session tab,
                            @NonNull TabView.FullscreenCallback callback,
                            @Nullable View fullscreenContent);
 
@@ -110,7 +110,7 @@ public interface TabsChromeListener {
      *
      * @param tab The tab which which existed fullscreen.
      */
-    void onExitFullScreen(@NonNull Tab tab);
+    void onExitFullScreen(@NonNull Session tab);
 
     /**
      * Notify the host application to show a file chooser. Usually for file uploading.
@@ -121,7 +121,7 @@ public interface TabsChromeListener {
      * @param fileChooserParams
      * @see android.webkit.WebChromeClient#onShowFileChooser(android.webkit.WebView, ValueCallback, WebChromeClient.FileChooserParams)
      */
-    boolean onShowFileChooser(@NonNull Tab tab,
+    boolean onShowFileChooser(@NonNull Session tab,
                               TabView tabView,
                               ValueCallback<Uri[]> filePathCallback,
                               WebChromeClient.FileChooserParams fileChooserParams);
@@ -129,7 +129,7 @@ public interface TabsChromeListener {
     /**
      * @see android.webkit.WebChromeClient#onGeolocationPermissionsShowPrompt(String, GeolocationPermissions.Callback)
      */
-    void onGeolocationPermissionsShowPrompt(@NonNull Tab tab,
+    void onGeolocationPermissionsShowPrompt(@NonNull Session tab,
                                             String origin,
                                             GeolocationPermissions.Callback callback);
 

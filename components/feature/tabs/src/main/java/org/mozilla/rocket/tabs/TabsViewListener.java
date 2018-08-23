@@ -15,11 +15,11 @@ import android.support.annotation.NonNull;
  */
 public interface TabsViewListener {
 
-    void onTabStarted(@NonNull Tab tab);
+    void onTabStarted(@NonNull Session tab);
 
-    void onTabFinished(@NonNull Tab tab, boolean isSecure);
+    void onTabFinished(@NonNull Session tab, boolean isSecure);
 
-    void onURLChanged(@NonNull Tab tab, String url);
+    void onURLChanged(@NonNull Session tab, String url);
 
     /**
      * Subsequent process after WebViewClient.shouldOverrideUrlLoading. TabView implementation will
@@ -37,5 +37,5 @@ public interface TabsViewListener {
      * @param updateFromError To indicate whether this callback is invoked under error. If page started loading, this value would be true.
      * @return true Return true if the URL was handled, false if we should continue loading the current URL.
      */
-    void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError);
+    void updateFailingUrl(@NonNull Session tab, String url, boolean updateFromError);
 }

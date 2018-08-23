@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -114,8 +114,8 @@ public class BrowsingIntentTest {
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
                 .check(matches(withText(TARGET_URL_SITE_2)));
 
-        TabsSession tabsSession = TabsSessionProvider.getOrThrow(activityTestRule.getActivity());
-        final int tabCount = tabsSession.getTabsCount();
+        SessionManager sessionManager = TabsSessionProvider.getOrThrow(activityTestRule.getActivity());
+        final int tabCount = sessionManager.getTabsCount();
 
 
         // Receive browsing intent
@@ -130,8 +130,8 @@ public class BrowsingIntentTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Check if tab count is increased
-        tabsSession = TabsSessionProvider.getOrThrow(activityTestRule.getActivity());
-        Assert.assertTrue( tabsSession.getTabsCount() == tabCount + 1);
+        sessionManager = TabsSessionProvider.getOrThrow(activityTestRule.getActivity());
+        Assert.assertTrue(sessionManager.getTabsCount() == tabCount + 1);
 
     }
 

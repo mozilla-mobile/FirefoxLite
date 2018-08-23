@@ -5,7 +5,7 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
 
 import java.util.List;
 
@@ -23,11 +23,11 @@ class TabTrayContract {
     }
 
     interface View {
-        void initData(List<Tab> newTabs, Tab newFocusedTab);
+        void initData(List<Session> newTabs, Session newFocusedTab);
 
-        void refreshData(List<Tab> newTabs, Tab newFocusedTab);
+        void refreshData(List<Session> newTabs, Session newFocusedTab);
 
-        void refreshTabData(Tab tab);
+        void refreshTabData(Session tab);
 
         void showFocusedTab(int tabPosition);
 
@@ -41,9 +41,9 @@ class TabTrayContract {
     interface Model {
         void loadTabs(OnLoadCompleteListener listener);
 
-        List<Tab> getTabs();
+        List<Session> getTabs();
 
-        Tab getFocusedTab();
+        Session getFocusedTab();
 
         void switchTab(int tabPosition);
 
@@ -60,9 +60,9 @@ class TabTrayContract {
         }
 
         interface Observer {
-            void onUpdate(List<Tab> newTabs);
+            void onUpdate(List<Session> newTabs);
 
-            void onTabUpdate(Tab tab);
+            void onTabUpdate(Session tab);
         }
     }
 }

@@ -5,7 +5,7 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +28,19 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void viewReady() {
-        final List<Tab> tabs = model.getTabs();
+        final List<Session> tabs = model.getTabs();
         if (tabs.isEmpty()) {
             view.closeTabTray();
         } else {
             model.subscribe(new TabTrayContract.Model.Observer() {
                 @Override
-                public void onUpdate(List<Tab> newTabs) {
+                public void onUpdate(List<Session> newTabs) {
                     view.refreshData(newTabs, model.getFocusedTab());
                     model.loadTabs(null);
                 }
 
                 @Override
-                public void onTabUpdate(Tab tab) {
+                public void onTabUpdate(Session tab) {
                     view.refreshTabData(tab);
                 }
             });
@@ -58,7 +58,7 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
     public void tabCloseClicked(int tabPosition) {
         model.removeTab(tabPosition);
 
-        List<Tab> newTabs = model.getTabs();
+        List<Session> newTabs = model.getTabs();
         int newFocusTab = newTabs.indexOf(model.getFocusedTab());
 
         if (newTabs.isEmpty()) {
@@ -76,7 +76,7 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
 
     @Override
     public void closeAllTabs() {
-        view.refreshData(new ArrayList<Tab>(), null);
+        view.refreshData(new ArrayList<Session>(), null);
         view.closeTabTray();
         view.navigateToHome();
 
