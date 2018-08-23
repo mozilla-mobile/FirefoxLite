@@ -27,7 +27,7 @@
         android:layout_below="@id/animation_view"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        android:textAlignment="center"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
