@@ -39,9 +39,9 @@ import static org.mockito.Mockito.verify;
 
 @Config(manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
-public class TabsSessionTest {
+public class SessionManagerTest {
 
-    TabsSession session;
+    SessionManager session;
     final List<TabModel> models = new ArrayList<>();
 
     final String[] urls = new String[]{
@@ -53,7 +53,7 @@ public class TabsSessionTest {
 
     @Before
     public void setUp() {
-        session = new TabsSession(new DefaultTabViewProvider());
+        session = new SessionManager(new DefaultTabViewProvider());
 
         for (int i = 0; i < urls.length; i++) {
             // use url as id for convenience
@@ -89,7 +89,7 @@ public class TabsSessionTest {
 
     @Test
     public void testAddTab2() {
-        /* Tab 2 use Tab0 as parent */
+        /* Session 2 use Tab0 as parent */
 
         String tabId0 = session.addTab("url0", TabUtil.argument(null, false, false));
         Assert.assertEquals(1, session.getTabs().size());
@@ -150,8 +150,8 @@ public class TabsSessionTest {
         final String tabId9 = session.addTab("url", TabUtil.argument(tabId8, false, true));
 
         // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
-        final List<Tab> tabs = session.getTabs();
-        Assert.assertEquals(session.getFocusTab().getId(), tabId9);
+        final List<Session> tabs = session.getTabs();
+        Assert.assertEquals(session.getFocusSession().getId(), tabId9);
         Assert.assertEquals(tabs.get(0).getId(), tabId0);
         Assert.assertEquals(tabs.get(1).getId(), tabId1);
         Assert.assertEquals(tabs.get(2).getId(), tabId2);
@@ -167,10 +167,10 @@ public class TabsSessionTest {
         Assert.assertTrue(TextUtils.isEmpty(tabs.get(1).getParentId()));
         Assert.assertEquals(tabs.get(2).getParentId(), tabId1);
         Assert.assertEquals(tabs.get(3).getParentId(), tabId2);
-        Assert.assertEquals(tabs.get(4).getParentId(), Tab.ID_EXTERNAL);
+        Assert.assertEquals(tabs.get(4).getParentId(), Session.ID_EXTERNAL);
         Assert.assertEquals(tabs.get(5).getParentId(), tabId4);
         Assert.assertEquals(tabs.get(6).getParentId(), tabId5);
-        Assert.assertEquals(tabs.get(7).getParentId(), Tab.ID_EXTERNAL);
+        Assert.assertEquals(tabs.get(7).getParentId(), Session.ID_EXTERNAL);
         Assert.assertEquals(tabs.get(8).getParentId(), tabId7);
         Assert.assertEquals(tabs.get(9).getParentId(), tabId8);
     }
@@ -178,16 +178,16 @@ public class TabsSessionTest {
     @Test
     public void testAddTab4() {
         session.restoreTabs(models, urls[0]);
-        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
+        Assert.assertEquals(session.getFocusSession().getId(), urls[0]);
 
         final String tabId0 = session.addTab("url0", TabUtil.argument(null, true, false));
-        Assert.assertEquals(session.getFocusTab().getId(), tabId0);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId0);
 
         final String tabId1 = session.addTab("url1", TabUtil.argument(null, false, true));
-        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId1);
 
         final String tabId2 = session.addTab("url2", TabUtil.argument(null, false, false));
-        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId1);
     }
 
     // Ignore this test case, I have no idea why it does not work for now, it was working before
@@ -195,28 +195,28 @@ public class TabsSessionTest {
     public void testAddTab5() {
         // Add a tab from internal and focus it. onFocusChanged should be invoked once
         final TabsChromeListener spy0 = spy(new DefaultTabsChromeListener() {
-            public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
+            public void onFocusChanged(@Nullable Session tab, @Factor int factor) {
                 Assert.assertEquals(tab.getUrl(), "url0");
             }
         });
         session.addTabsChromeListener(spy0);
         final String tabId0 = session.addTab("url0", TabUtil.argument(null, false, true));
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        verify(spy0, times(1)).onFocusChanged(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
-        Assert.assertEquals(session.getFocusTab().getId(), tabId0);
+        verify(spy0, times(1)).onFocusChanged(any(Session.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
+        Assert.assertEquals(session.getFocusSession().getId(), tabId0);
         session.removeTabsChromeListener(spy0);
 
         // Add a tab from external. onFocusChanged should be invoked
         final TabsChromeListener spy1 = spy(new DefaultTabsChromeListener() {
-            public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
+            public void onFocusChanged(@Nullable Session tab, @Factor int factor) {
                 Assert.assertEquals(tab.getUrl(), "url1");
             }
         });
         session.addTabsChromeListener(spy1);
         final String tabId1 = session.addTab("url1", TabUtil.argument(null, true, false));
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        verify(spy1, times(1)).onFocusChanged(any(Tab.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
-        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+        verify(spy1, times(1)).onFocusChanged(any(Session.class), eq(TabsChromeListener.FACTOR_TAB_ADDED));
+        Assert.assertEquals(session.getFocusSession().getId(), tabId1);
         session.removeTabsChromeListener(spy1);
 
         // Add a tab from internal, but don't focus it.
@@ -225,8 +225,8 @@ public class TabsSessionTest {
         session.addTabsChromeListener(spy2);
         session.addTab("url2", TabUtil.argument(null, false, false));
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        verify(spy2, times(0)).onFocusChanged(any(Tab.class), anyInt());
-        Assert.assertEquals(session.getFocusTab().getId(), tabId1); // focus should not be changed
+        verify(spy2, times(0)).onFocusChanged(any(Session.class), anyInt());
+        Assert.assertEquals(session.getFocusSession().getId(), tabId1); // focus should not be changed
         session.removeTabsChromeListener(spy2);
     }
 
@@ -234,22 +234,22 @@ public class TabsSessionTest {
     public void testRestore() {
         session.restoreTabs(models, urls[0]);
         Assert.assertEquals(session.getTabs().size(), urls.length);
-        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
+        Assert.assertEquals(session.getFocusSession().getId(), urls[0]);
     }
 
     @Test
     public void testSwitch() {
         session.restoreTabs(models, urls[0]);
         session.switchToTab("not-exist");
-        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
+        Assert.assertEquals(session.getFocusSession().getId(), urls[0]);
 
         session.switchToTab(urls[0]);
-        Assert.assertEquals(session.getFocusTab().getId(), urls[0]);
+        Assert.assertEquals(session.getFocusSession().getId(), urls[0]);
         session.switchToTab(urls[3]);
-        Assert.assertEquals(session.getFocusTab().getId(), urls[3]);
+        Assert.assertEquals(session.getFocusSession().getId(), urls[3]);
 
         session.switchToTab(urls[2]);
-        Assert.assertEquals(session.getFocusTab().getId(), urls[2]);
+        Assert.assertEquals(session.getFocusSession().getId(), urls[2]);
     }
 
     /**
@@ -258,11 +258,11 @@ public class TabsSessionTest {
     @Test
     public void testCloseTab1() {
         session.restoreTabs(models, null);
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
         session.closeTab(models.get(2).getId());
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
         session.closeTab(models.get(0).getId());
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
     }
 
     /**
@@ -285,27 +285,27 @@ public class TabsSessionTest {
         // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
         session.switchToTab(tabId6);
         session.closeTab(tabId5);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId6);
         session.closeTab(tabId6);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId4);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId4);
         session.closeTab(tabId4);
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
 
         session.switchToTab(tabId3);
         session.closeTab(tabId3);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId2);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId2);
         session.closeTab(tabId2);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId1);
 
         session.switchToTab(tabId7);
         session.closeTab(tabId7);
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
         session.switchToTab(tabId8);
         session.closeTab(tabId8);
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
         session.switchToTab(tabId9);
         session.closeTab(tabId9);
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
     }
 
     /**
@@ -314,11 +314,11 @@ public class TabsSessionTest {
     @Test
     public void testDropTab1() {
         session.restoreTabs(models, null);
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
         session.dropTab(models.get(2).getId());
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
         session.dropTab(models.get(0).getId());
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
     }
 
     @Test
@@ -336,29 +336,29 @@ public class TabsSessionTest {
         final String tabId9 = session.addTab("url", TabUtil.argument(tabId8, false, true));
 
         // tabId0, tabId1 -> tabId2 -> tabId3, tabId4 -> tabId5 -> tabId6, tabId7 -> tabId8 -> tabId9
-        Assert.assertEquals(session.getFocusTab().getId(), tabId9);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId9);
 
         session.switchToTab(tabId6);
         session.dropTab(tabId8);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId6);
         session.dropTab(tabId9);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId6);
         session.dropTab(tabId7);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId6);
         session.dropTab(tabId3);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId6);
         session.dropTab(tabId0);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId6);
         session.dropTab(tabId5);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId6);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId6);
         session.dropTab(tabId6);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId4);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId4);
         session.dropTab(tabId4);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId2);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId2);
         session.dropTab(tabId2);
-        Assert.assertEquals(session.getFocusTab().getId(), tabId1);
+        Assert.assertEquals(session.getFocusSession().getId(), tabId1);
         session.dropTab(tabId1);
-        Assert.assertNull(session.getFocusTab());
+        Assert.assertNull(session.getFocusSession());
     }
 
     private static class DefaultTabViewProvider extends TabViewProvider {
