@@ -1,600 +1,575 @@
-package org.mozilla.focus.telemetry;
+package org.mozilla.focus.telemetry
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-import android.text.TextUtils;
+import android.preference.PreferenceManager
+import android.text.TextUtils
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mozilla.focus.R;
-import org.mozilla.focus.generated.LocaleList;
-import org.mozilla.focus.locale.LocaleManager;
-import org.mozilla.focus.locale.Locales;
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mozilla.focus.R
+import org.mozilla.focus.generated.LocaleList
+import org.mozilla.focus.locale.LocaleManager
+import org.mozilla.focus.locale.Locales
+import org.mozilla.focus.screenshot.ScreenshotManager
 
-import java.util.Locale;
+import java.util.Locale
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static org.mozilla.focus.telemetry.TelemetryWrapper.Object.SETTING;
-import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.AUDIO;
-import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.EME;
-import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.MIDI;
-import static org.mozilla.focus.telemetry.TelemetryWrapper.Value.VIDEO;
+import org.mozilla.focus.telemetry.TelemetryWrapper.Object.SETTING
+import org.mozilla.focus.telemetry.TelemetryWrapper.Value.AUDIO
+import org.mozilla.focus.telemetry.TelemetryWrapper.Value.EME
+import org.mozilla.focus.telemetry.TelemetryWrapper.Value.MIDI
+import org.mozilla.focus.telemetry.TelemetryWrapper.Value.VIDEO
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
-@RunWith(AndroidJUnit4.class)
-public class TelemetryWrapperTest {
+@RunWith(RobolectricTestRunner::class)
+class TelemetryWrapperTest {
 
-    @Before
-    public void setUp() {
-        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        final String prefName = context.getString(R.string.pref_key_telemetry);
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean(prefName, false).apply();
-
-    }
-
-    private void assertFirebaseEvent(@NonNull String category, @NonNull String method, @Nullable String object, String value) {
-        FirebaseEvent eventFromBuilder = new TelemetryWrapper.EventBuilder(category, method, object, value).firebaseEvent;
-        FirebaseEvent event = new FirebaseEvent(category, method, object, value);
-        assertEquals(event, eventFromBuilder);
-    }
-
-    private void assertFirebaseEvent(@NonNull String category, @NonNull String method, @Nullable String object, String value, String extraKey, String extraValue) {
-        FirebaseEvent eventFromBuilder = new TelemetryWrapper.EventBuilder(category, method, object, value).extra(extraKey, extraValue).firebaseEvent;
-        FirebaseEvent event = new FirebaseEvent(category, method, object, value).param(extraKey, extraValue);
-        assertEquals(event, eventFromBuilder);
+    private fun assertFirebaseEvent(category: String, method: String, `object`: String?, value: String) {
+        val eventFromBuilder = TelemetryWrapper.EventBuilder(category, method, `object`, value).firebaseEvent
+        val event = FirebaseEvent(category, method, `object`, value)
+        assert(event == eventFromBuilder)
     }
 
     @Test
-    public void toggleFirstRunPageEvent() {
+    fun toggleFirstRunPageEvent() {
 
         // TelemetryWrapper.toggleFirstRunPageEvent(false);
-        assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, TelemetryWrapper.Object.FIRSTRUN, TelemetryWrapper.Value.TURBO);
+        assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, TelemetryWrapper.Object.FIRSTRUN, TelemetryWrapper.Value.TURBO)
 
     }
 
     @Test
-    public void finishFirstRunEvent() {
-        TelemetryWrapper.finishFirstRunEvent(3000000);
+    fun finishFirstRunEvent() {
+        TelemetryWrapper.finishFirstRunEvent(3000000)
     }
 
     @Test
-    public void browseIntentEvent() {
-        TelemetryWrapper.browseIntentEvent();
+    fun browseIntentEvent() {
+        TelemetryWrapper.browseIntentEvent()
     }
 
     @Test
-    public void textSelectionIntentEvent() {
-        TelemetryWrapper.textSelectionIntentEvent();
+    fun textSelectionIntentEvent() {
+        TelemetryWrapper.textSelectionIntentEvent()
     }
 
     @Test
-    public void launchByAppLauncherEvent() {
-        TelemetryWrapper.launchByAppLauncherEvent();
+    fun launchByAppLauncherEvent() {
+        TelemetryWrapper.launchByAppLauncherEvent()
     }
 
     @Test
-    public void launchByHomeScreenShortcutEvent() {
-        TelemetryWrapper.launchByHomeScreenShortcutEvent();
+    fun launchByHomeScreenShortcutEvent() {
+        TelemetryWrapper.launchByHomeScreenShortcutEvent()
     }
 
     @Test
-    public void launchByTextSelectionSearchEvent() {
-        TelemetryWrapper.launchByTextSelectionSearchEvent();
+    fun launchByTextSelectionSearchEvent() {
+        TelemetryWrapper.launchByTextSelectionSearchEvent()
     }
 
     @Test
-    public void launchByExternalAppEvent() {
-        TelemetryWrapper.launchByExternalAppEvent();
+    fun launchByExternalAppEvent() {
+        TelemetryWrapper.launchByExternalAppEvent()
     }
 
     @Test
-    public void settingsEvent() {
-        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
-        for (String key : pm.getAll().keySet()) {
+    fun settingsEvent() {
+        val pm = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+        for (key in pm.all.keys) {
 
-            TelemetryWrapper.settingsEvent(key, Boolean.FALSE.toString());
+            TelemetryWrapper.settingsEvent(key, java.lang.Boolean.FALSE.toString())
         }
     }
 
     @Test
-    public void settingsClickEvent() {
-        SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
-        for (String key : pm.getAll().keySet()) {
+    fun settingsClickEvent() {
+        val pm = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+        for (key in pm.all.keys) {
             // invalid events should be by pass
-            TelemetryWrapper.settingsClickEvent(key);
+            TelemetryWrapper.settingsClickEvent(key)
         }
     }
 
     @Test
-    public void settingsLearnMoreClickEvent() {
+    fun settingsLearnMoreClickEvent() {
 
-        final Context context = InstrumentationRegistry.getTargetContext();
-        TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_turbo_mode));
-        TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_telemetry));
+        val context = RuntimeEnvironment.application
+        TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_turbo_mode))
+        TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_telemetry))
 
     }
 
     @Test
-    public void settingsLocaleChangeEvent() {
-        final LocaleManager localeManager = LocaleManager.getInstance();
-        final Context context = InstrumentationRegistry.getTargetContext();
-        for (String value : LocaleList.BUNDLED_LOCALES) {
-            final Locale locale;
+    fun settingsLocaleChangeEvent() {
+        val localeManager = LocaleManager.getInstance()
+        val context = RuntimeEnvironment.application
+        for (value in LocaleList.BUNDLED_LOCALES) {
+            val locale: Locale?
             if (TextUtils.isEmpty(value)) {
-                localeManager.resetToSystemLocale(context);
-                locale = localeManager.getCurrentLocale(context);
+                localeManager.resetToSystemLocale(context)
+                locale = localeManager.getCurrentLocale(context)
             } else {
-                locale = Locales.parseLocaleCode(value);
-                localeManager.setSelectedLocale(context, value);
+                locale = Locales.parseLocaleCode(value)
+                localeManager.setSelectedLocale(context, value)
             }
-            TelemetryWrapper.settingsLocaleChangeEvent(context.getString(R.string.pref_key_locale), String.valueOf(locale), false);
+            TelemetryWrapper.settingsLocaleChangeEvent(context.getString(R.string.pref_key_locale), locale.toString(), false)
         }
     }
 
     @Test
-    public void startSession() {
-        TelemetryWrapper.startSession();
+    fun startSession() {
+        TelemetryWrapper.startSession()
     }
 
 
     @Test
-    public void stopMainActivity() {
-        TelemetryWrapper.stopMainActivity();
+    fun stopMainActivity() {
+        TelemetryWrapper.stopMainActivity()
     }
 
     @Test
-    public void openWebContextMenuEvent() {
-        TelemetryWrapper.openWebContextMenuEvent();
+    fun openWebContextMenuEvent() {
+        TelemetryWrapper.openWebContextMenuEvent()
     }
 
     @Test
-    public void cancelWebContextMenuEvent() {
-        TelemetryWrapper.cancelWebContextMenuEvent();
+    fun cancelWebContextMenuEvent() {
+        TelemetryWrapper.cancelWebContextMenuEvent()
     }
 
     @Test
-    public void shareLinkEvent() {
-        TelemetryWrapper.shareLinkEvent();
+    fun shareLinkEvent() {
+        TelemetryWrapper.shareLinkEvent()
     }
 
     @Test
-    public void shareImageEvent() {
-        TelemetryWrapper.shareImageEvent();
+    fun shareImageEvent() {
+        TelemetryWrapper.shareImageEvent()
     }
 
     @Test
-    public void saveImageEvent() {
-        TelemetryWrapper.saveImageEvent();
+    fun saveImageEvent() {
+        TelemetryWrapper.saveImageEvent()
     }
 
     @Test
-    public void copyLinkEvent() {
-        TelemetryWrapper.copyLinkEvent();
+    fun copyLinkEvent() {
+        TelemetryWrapper.copyLinkEvent()
     }
 
     @Test
-    public void copyImageEvent() {
-        TelemetryWrapper.copyImageEvent();
+    fun copyImageEvent() {
+        TelemetryWrapper.copyImageEvent()
     }
 
     @Test
-    public void addNewTabFromContextMenu() {
-        TelemetryWrapper.addNewTabFromContextMenu();
+    fun addNewTabFromContextMenu() {
+        TelemetryWrapper.addNewTabFromContextMenu()
     }
 
     @Test
-    public void browseGeoLocationPermissionEvent() {
-        TelemetryWrapper.browseGeoLocationPermissionEvent();
+    fun browseGeoLocationPermissionEvent() {
+        TelemetryWrapper.browseGeoLocationPermissionEvent()
     }
 
     @Test
-    public void browseFilePermissionEvent() {
-        TelemetryWrapper.browseFilePermissionEvent();
+    fun browseFilePermissionEvent() {
+        TelemetryWrapper.browseFilePermissionEvent()
     }
 
     @Test
-    public void browsePermissionEvent() {
-        TelemetryWrapper.browsePermissionEvent(new String[]{AUDIO, VIDEO, EME, MIDI});
+    fun browsePermissionEvent() {
+        TelemetryWrapper.browsePermissionEvent(arrayOf(AUDIO, VIDEO, EME, MIDI))
     }
 
     @Test
-    public void browseEnterFullScreenEvent() {
-        TelemetryWrapper.browseEnterFullScreenEvent();
+    fun browseEnterFullScreenEvent() {
+        TelemetryWrapper.browseEnterFullScreenEvent()
     }
 
     @Test
-    public void browseExitFullScreenEvent() {
-        TelemetryWrapper.browseExitFullScreenEvent();
+    fun browseExitFullScreenEvent() {
+        TelemetryWrapper.browseExitFullScreenEvent()
     }
 
     @Test
-    public void showMenuHome() {
-        TelemetryWrapper.showMenuHome();
+    fun showMenuHome() {
+        TelemetryWrapper.showMenuHome()
     }
 
     @Test
-    public void showTabTrayHome() {
-        TelemetryWrapper.showTabTrayHome();
+    fun showTabTrayHome() {
+        TelemetryWrapper.showTabTrayHome()
     }
 
     @Test
-    public void showTabTrayToolbar() {
-        TelemetryWrapper.showTabTrayToolbar();
+    fun showTabTrayToolbar() {
+        TelemetryWrapper.showTabTrayToolbar()
     }
 
     @Test
-    public void showMenuToolbar() {
-        TelemetryWrapper.showMenuToolbar();
+    fun showMenuToolbar() {
+        TelemetryWrapper.showMenuToolbar()
     }
 
     @Test
-    public void clickMenuDownload() {
-        TelemetryWrapper.clickMenuDownload();
+    fun clickMenuDownload() {
+        TelemetryWrapper.clickMenuDownload()
     }
 
     @Test
-    public void clickMenuHistory() {
-        TelemetryWrapper.clickMenuHistory();
+    fun clickMenuHistory() {
+        TelemetryWrapper.clickMenuHistory()
 
     }
 
     @Test
-    public void clickMenuCapture() {
-        TelemetryWrapper.clickMenuCapture();
+    fun clickMenuCapture() {
+        TelemetryWrapper.clickMenuCapture()
 
     }
 
     @Test
-    public void showPanelDownload() {
-        TelemetryWrapper.showPanelDownload();
+    fun showPanelDownload() {
+        TelemetryWrapper.showPanelDownload()
 
     }
 
     @Test
-    public void showPanelHistory() {
-        TelemetryWrapper.showPanelHistory();
+    fun showPanelHistory() {
+        TelemetryWrapper.showPanelHistory()
 
     }
 
     @Test
-    public void showPanelCapture() {
-        TelemetryWrapper.showPanelCapture();
+    fun showPanelCapture() {
+        TelemetryWrapper.showPanelCapture()
 
     }
 
     @Test
-    public void menuTurboChangeToTrue() {
-        TelemetryWrapper.menuTurboChangeTo(true);
+    fun menuTurboChangeToTrue() {
+        TelemetryWrapper.menuTurboChangeTo(true)
     }
 
     @Test
-    public void menuTurboChangeToFalse() {
-        TelemetryWrapper.menuTurboChangeTo(false);
+    fun menuTurboChangeToFalse() {
+        TelemetryWrapper.menuTurboChangeTo(false)
     }
 
     @Test
-    public void menuBlockImageChangeToTrue() {
-        TelemetryWrapper.menuBlockImageChangeTo(true);
+    fun menuBlockImageChangeToTrue() {
+        TelemetryWrapper.menuBlockImageChangeTo(true)
     }
 
     @Test
-    public void menuBlockImageChangeToFalse() {
-        TelemetryWrapper.menuBlockImageChangeTo(false);
+    fun menuBlockImageChangeToFalse() {
+        TelemetryWrapper.menuBlockImageChangeTo(false)
     }
 
 
     @Test
-    public void clickMenuClearCache() {
-        TelemetryWrapper.clickMenuClearCache();
+    fun clickMenuClearCache() {
+        TelemetryWrapper.clickMenuClearCache()
 
     }
 
     @Test
-    public void clickMenuSettings() {
-        TelemetryWrapper.clickMenuSettings();
+    fun clickMenuSettings() {
+        TelemetryWrapper.clickMenuSettings()
     }
 
     @Test
-    public void clickMenuExit() {
-        TelemetryWrapper.clickMenuExit();
+    fun clickMenuExit() {
+        TelemetryWrapper.clickMenuExit()
     }
 
     @Test
-    public void clickToolbarForward() {
-        TelemetryWrapper.clickToolbarForward();
+    fun clickToolbarForward() {
+        TelemetryWrapper.clickToolbarForward()
 
     }
 
     @Test
-    public void clickToolbarReload() {
-        TelemetryWrapper.clickToolbarReload();
+    fun clickToolbarReload() {
+        TelemetryWrapper.clickToolbarReload()
 
     }
 
     @Test
-    public void clickToolbarShare() {
-        TelemetryWrapper.clickToolbarShare();
+    fun clickToolbarShare() {
+        TelemetryWrapper.clickToolbarShare()
 
     }
 
     @Test
-    public void clickAddToHome() {
-        TelemetryWrapper.clickAddToHome();
+    fun clickAddToHome() {
+        TelemetryWrapper.clickAddToHome()
 
     }
 
     @Test
-    public void clickToolbarCapture() {
-        TelemetryWrapper.clickToolbarCapture();
-
+    fun clickToolbarCapture() {
+        TelemetryWrapper.clickToolbarCapture()
     }
 
     @Test
-    public void clickTopSiteOn() {
-        TelemetryWrapper.clickTopSiteOn(0);
+    fun clickTopSiteOn() {
+        TelemetryWrapper.clickTopSiteOn(0)
 
     }
 
     @Test
-    public void removeTopSite() {
-        TelemetryWrapper.removeTopSite(true);
-        TelemetryWrapper.removeTopSite(false);
+    fun removeTopSite() {
+        TelemetryWrapper.removeTopSite(true)
+        TelemetryWrapper.removeTopSite(false)
     }
 
     @Test
-    public void addNewTabFromHome() {
-        TelemetryWrapper.addNewTabFromHome();
+    fun addNewTabFromHome() {
+        TelemetryWrapper.addNewTabFromHome()
 
     }
 
     @Test
-    public void urlBarEvent() {
-        TelemetryWrapper.urlBarEvent(true, true);
-        TelemetryWrapper.urlBarEvent(true, false);
-        TelemetryWrapper.urlBarEvent(false, true);
-        TelemetryWrapper.urlBarEvent(false, false);
+    fun urlBarEvent() {
+        TelemetryWrapper.urlBarEvent(true, true)
+        TelemetryWrapper.urlBarEvent(true, false)
+        TelemetryWrapper.urlBarEvent(false, true)
+        TelemetryWrapper.urlBarEvent(false, false)
     }
 
     @Test
-    public void searchSelectEvent() {
-        TelemetryWrapper.searchSelectEvent();
+    fun searchSelectEvent() {
+        TelemetryWrapper.searchSelectEvent()
     }
 
     @Test
-    public void searchSuggestionLongClick() {
-        TelemetryWrapper.searchSuggestionLongClick();
+    fun searchSuggestionLongClick() {
+        TelemetryWrapper.searchSuggestionLongClick()
     }
 
     @Test
-    public void searchClear() {
-        TelemetryWrapper.searchClear();
+    fun searchClear() {
+        TelemetryWrapper.searchClear()
 
     }
 
     @Test
-    public void searchDismiss() {
-        TelemetryWrapper.searchDismiss();
+    fun searchDismiss() {
+        TelemetryWrapper.searchDismiss()
 
     }
 
     @Test
-    public void showSearchBarHome() {
-        TelemetryWrapper.showSearchBarHome();
+    fun showSearchBarHome() {
+        TelemetryWrapper.showSearchBarHome()
 
     }
 
     @Test
-    public void clickUrlbar() {
-        TelemetryWrapper.clickUrlbar();
+    fun clickUrlbar() {
+        TelemetryWrapper.clickUrlbar()
     }
 
     @Test
-    public void clickToolbarSearch() {
-        TelemetryWrapper.clickToolbarSearch();
+    fun clickToolbarSearch() {
+        TelemetryWrapper.clickToolbarSearch()
 
     }
 
     @Test
-    public void clickAddTabToolbar() {
-        TelemetryWrapper.clickAddTabToolbar();
+    fun clickAddTabToolbar() {
+        TelemetryWrapper.clickAddTabToolbar()
 
     }
 
     @Test
-    public void clickAddTabTray() {
-        TelemetryWrapper.clickAddTabTray();
+    fun clickAddTabTray() {
+        TelemetryWrapper.clickAddTabTray()
 
     }
 
     @Test
-    public void clickTabFromTabTray() {
-        TelemetryWrapper.clickTabFromTabTray();
+    fun clickTabFromTabTray() {
+        TelemetryWrapper.clickTabFromTabTray()
 
     }
 
     @Test
-    public void closeTabFromTabTray() {
-        TelemetryWrapper.closeTabFromTabTray();
+    fun closeTabFromTabTray() {
+        TelemetryWrapper.closeTabFromTabTray()
 
     }
 
     @Test
-    public void downloadRemoveFile() {
-        TelemetryWrapper.downloadRemoveFile();
+    fun downloadRemoveFile() {
+        TelemetryWrapper.downloadRemoveFile()
 
     }
 
     @Test
-    public void downloadDeleteFile() {
-        TelemetryWrapper.downloadDeleteFile();
+    fun downloadDeleteFile() {
+        TelemetryWrapper.downloadDeleteFile()
 
     }
 
     @Test
-    public void downloadOpenFile() {
-        TelemetryWrapper.downloadOpenFile(true);
-        TelemetryWrapper.downloadOpenFile(false);
+    fun downloadOpenFile() {
+        TelemetryWrapper.downloadOpenFile(true)
+        TelemetryWrapper.downloadOpenFile(false)
 
     }
 
     @Test
-    public void showFileContextMenu() {
-        TelemetryWrapper.showFileContextMenu();
+    fun showFileContextMenu() {
+        TelemetryWrapper.showFileContextMenu()
 
     }
 
     @Test
-    public void historyOpenLink() {
-        TelemetryWrapper.historyOpenLink();
+    fun historyOpenLink() {
+        TelemetryWrapper.historyOpenLink()
 
     }
 
     @Test
-    public void historyRemoveLink() {
-        TelemetryWrapper.historyRemoveLink();
+    fun historyRemoveLink() {
+        TelemetryWrapper.historyRemoveLink()
 
     }
 
     @Test
-    public void showHistoryContextMenu() {
-        TelemetryWrapper.showHistoryContextMenu();
+    fun showHistoryContextMenu() {
+        TelemetryWrapper.showHistoryContextMenu()
 
     }
 
     @Test
-    public void clearHistory() {
-        TelemetryWrapper.clearHistory();
+    fun clearHistory() {
+        TelemetryWrapper.clearHistory()
 
     }
 
     @Test
-    public void openCapture() {
-        TelemetryWrapper.openCapture();
+    fun openCapture() {
+        TelemetryWrapper.openCapture()
 
     }
 
     @Test
-    public void openCaptureLink() {
-        TelemetryWrapper.openCaptureLink();
+    fun openCaptureLink() {
+        TelemetryWrapper.openCaptureLink()
     }
 
     @Test
-    public void editCaptureImage() {
-        TelemetryWrapper.editCaptureImage(true);
-        TelemetryWrapper.editCaptureImage(false);
+    fun editCaptureImage() {
+        TelemetryWrapper.editCaptureImage(true)
+        TelemetryWrapper.editCaptureImage(false)
     }
 
     @Test
-    public void shareCaptureImage() {
-        TelemetryWrapper.shareCaptureImage(true);
-        TelemetryWrapper.shareCaptureImage(false);
+    fun shareCaptureImage() {
+        TelemetryWrapper.shareCaptureImage(true)
+        TelemetryWrapper.shareCaptureImage(false)
     }
 
     @Test
-    public void showCaptureInfo() {
-        TelemetryWrapper.showCaptureInfo();
+    fun showCaptureInfo() {
+        TelemetryWrapper.showCaptureInfo()
     }
 
     @Test
-    public void deleteCaptureImage() {
-        TelemetryWrapper.deleteCaptureImage();
+    fun deleteCaptureImage() {
+        TelemetryWrapper.deleteCaptureImage()
     }
 
     @Test
-    public void feedbackClickEventContextualHint() {
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
-
+    fun feedbackClickEventContextualHint() {
+        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
     }
 
     @Test
-    public void feedbackClickEventSetting() {
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING);
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.SETTING);
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.SETTING);
+    fun feedbackClickEventSetting() {
+        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING)
+        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.SETTING)
+        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.SETTING)
     }
 
     @Test
-    public void showFeedbackDialog() {
-        TelemetryWrapper.showFeedbackDialog();
+    fun showFeedbackDialog() {
+        TelemetryWrapper.showFeedbackDialog()
     }
 
     @Test
-    public void showRateAppNotification() {
-        TelemetryWrapper.showRateAppNotification();
+    fun showRateAppNotification() {
+        TelemetryWrapper.showRateAppNotification()
     }
 
     @Test
-    public void clickRateAppNotification() {
-        TelemetryWrapper.clickRateAppNotification();
+    fun clickRateAppNotification() {
+        TelemetryWrapper.clickRateAppNotification()
     }
 
     @Test
-    public void clickRateAppNotificationPOSITIVE() {
-        TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.POSITIVE);
+    fun clickRateAppNotificationPOSITIVE() {
+        TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.POSITIVE)
     }
 
     @Test
-    public void clickRateAppNotificationNEGATIVE() {
-        TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.NEGATIVE);
+    fun clickRateAppNotificationNEGATIVE() {
+        TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.NEGATIVE)
     }
 
     @Test
-    public void showDefaultSettingNotification() {
-        TelemetryWrapper.showDefaultSettingNotification();
+    fun showDefaultSettingNotification() {
+        TelemetryWrapper.showDefaultSettingNotification()
     }
 
     @Test
-    public void clickDefaultSettingNotification() {
-        TelemetryWrapper.clickDefaultSettingNotification();
+    fun clickDefaultSettingNotification() {
+        TelemetryWrapper.clickDefaultSettingNotification()
     }
 
     @Test
-    public void onDefaultBrowserServiceFailed() {
-        TelemetryWrapper.onDefaultBrowserServiceFailed();
+    fun onDefaultBrowserServiceFailed() {
+        TelemetryWrapper.onDefaultBrowserServiceFailed()
     }
 
     @Test
-    public void promoteShareClickEventSetting() {
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING);
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.SETTING);
+    fun promoteShareClickEventSetting() {
+        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING)
+        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.SETTING)
     }
 
     @Test
-    public void promoteShareClickEventSettingContextualHints() {
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
+    fun promoteShareClickEventSettingContextualHints() {
+        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
     }
 
     @Test
-    public void showPromoteShareDialog() {
-        TelemetryWrapper.showPromoteShareDialog();
+    fun showPromoteShareDialog() {
+        TelemetryWrapper.showPromoteShareDialog()
     }
 
     @Test
-    public void validPrefKeyFromWhitelistShouldPass() {
+    fun validPrefKeyFromWhitelistShouldPass() {
 
         // call lazyInit() to fill the whitelist
-        TelemetryWrapper.EventBuilder.lazyInit();
+        TelemetryWrapper.EventBuilder.lazyInit()
 
         // make sure layInit() inits the whitelist successfully.
-        assertTrue(FirebaseEvent.getPrefKeyWhitelist().size() > 0);
+        assert(FirebaseEvent.getPrefKeyWhitelist().size > 0)
 
         // whitelist-ed pref key should worked with firebaseEvent and telemetryEvent
-        for (String validKey : FirebaseEvent.getPrefKeyWhitelist().values()) {
-            final TelemetryWrapper.EventBuilder builder = new TelemetryWrapper.EventBuilder(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, SETTING, validKey);
-            assertNotNull(builder.firebaseEvent);
-            assertNotNull(builder.telemetryEvent);
+        for (validKey in FirebaseEvent.getPrefKeyWhitelist().values) {
+            val builder = TelemetryWrapper.EventBuilder(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, SETTING, validKey)
+            assert(builder.firebaseEvent != null)
+            assert(builder.telemetryEvent != null)
         }
     }
 
