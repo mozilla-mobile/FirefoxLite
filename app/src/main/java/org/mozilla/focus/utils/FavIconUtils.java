@@ -5,18 +5,15 @@
 
 package org.mozilla.focus.utils;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import org.mozilla.focus.R;
 import org.mozilla.urlutils.UrlUtils;
 
 /**
@@ -25,64 +22,25 @@ import org.mozilla.urlutils.UrlUtils;
 
 public class FavIconUtils {
 
-    public static final int TYPE_ORIGINAL = 0;
-    public static final int TYPE_SCALED_DOWN = 1;
-    public static final int TYPE_GENERATED = 2;
-
-    @IntDef({TYPE_ORIGINAL, TYPE_SCALED_DOWN, TYPE_GENERATED})
-    public @interface FavIconType {
+    public static Bitmap getInitialBitmap(Bitmap source, char initial, float textSize, int bitmapSize) {
+        return getInitialBitmap(initial, getDominantColor(source), textSize, bitmapSize);
     }
 
-    @FavIconType
-    public static int getFavIconType(Resources res, Bitmap source) {
-        if (source == null || source.getWidth() < res.getDimensionPixelSize(R.dimen.favicon_initial_threshold_size)) {
-            return TYPE_GENERATED;
-        }
-
-        if (source.getWidth() > res.getDimensionPixelSize(R.dimen.favicon_downscale_threshold_size)) {
-            return TYPE_SCALED_DOWN;
-        }
-
-        return TYPE_ORIGINAL;
-    }
-
-    public static Bitmap getRefinedBitmap(Resources res, Bitmap source, char initial) {
-        switch (getFavIconType(res, source)) {
-            case TYPE_ORIGINAL:
-                return source;
-
-            case TYPE_SCALED_DOWN:
-                int targetSize = res.getDimensionPixelSize(R.dimen.favicon_target_size);
-                return Bitmap.createScaledBitmap(source, targetSize, targetSize, false);
-
-            case TYPE_GENERATED:
-                return getInitialBitmap(res, source, initial);
-
-            default:
-                return getInitialBitmap(res, source, initial);
-        }
-    }
-
-    public static Bitmap getInitialBitmap(Resources res, Bitmap source, char initial) {
-        return getInitialBitmap(res, initial, getDominantColor(source));
-    }
-
-    public static Bitmap getInitialBitmap(Resources res, char initial, int backgroundColor) {
+    public static Bitmap getInitialBitmap(char initial, int backgroundColor, float textSize, int bitmapSize) {
         char[] firstChar = {initial};
         int textColor = getContractColor(backgroundColor);
         Paint paint = new Paint();
-        paint.setTextSize(res.getDimension(R.dimen.favicon_initial_text_size));
+        paint.setTextSize(textSize);
         paint.setColor(textColor);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setAntiAlias(true);
         Rect bounds = new Rect();
         paint.getTextBounds(firstChar, 0, 1, bounds);
 
-        final int size = res.getDimensionPixelSize(R.dimen.favicon_target_size);
-        Bitmap image = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Bitmap image = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(image);
         canvas.drawColor(backgroundColor);
-        canvas.drawText(firstChar, 0, 1, 0 + size / 2, 0 + size / 2 + bounds.height() / 2, paint);
+        canvas.drawText(firstChar, 0, 1, (float) (bitmapSize) / 2, (float) (bitmapSize + bounds.height()) / 2, paint);
         return image;
     }
 
@@ -211,19 +169,6 @@ public class FavIconUtils {
         snippet = UrlUtils.stripCommonSubdomains(snippet);
 
         return snippet;
-    }
-
-    static Bitmap getRefinedShortcutIcon(Resources res, Bitmap source, char initial) {
-        final int sizeThreshold = res.getDimensionPixelSize(R.dimen.shortcut_icon_size);
-
-        if (source == null || source.getWidth() < sizeThreshold) {
-            return getInitialBitmap(res, source, initial);
-        }
-        if (source.getWidth() > sizeThreshold) {
-            return Bitmap.createScaledBitmap(source, sizeThreshold, sizeThreshold, false);
-        } else {
-            return source;
-        }
     }
 
 }

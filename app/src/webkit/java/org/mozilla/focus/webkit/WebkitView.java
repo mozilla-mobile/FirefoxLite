@@ -27,6 +27,7 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.SupportUtils;
@@ -357,8 +358,8 @@ public class WebkitView extends NestedWebView implements TabView {
                         Site site = new Site();
                         site.setUrl(url);
                         site.setTitle(getTitle());
+                        site.setFavIcon(DimenUtils.getInitialBitmap(getResources(), null, FavIconUtils.getRepresentativeCharacter(url)));
                         site.setLastViewTimestamp(System.currentTimeMillis());
-                        site.setFavIcon(FavIconUtils.getInitialBitmap(getResources(), null, FavIconUtils.getRepresentativeCharacter(url)));
                         BrowsingHistoryManager.getInstance().insert(site, null);
                     }
                 });
