@@ -81,11 +81,11 @@ import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabModel;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
-import org.mozilla.rocket.tabs.TabsSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 
@@ -121,7 +121,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     private BroadcastReceiver uiMessageReceiver;
 
-    private TabsSession tabsSession;
+    private SessionManager sessionManager;
     private boolean isTabRestoredComplete = false;
     public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     private static final String LOG_TAG = "MainActivity";
@@ -413,7 +413,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         setEnable(bookmarkIcon, browserFragment != null);
         setEnable(shareButton, browserFragment != null);
         setEnable(pinShortcut, browserFragment != null);
-        Tab current = getTabsSession().getFocusTab();
+        Session current = getSessionManager().getFocusSession();
         if (current == null) {
             return;
         }
@@ -611,7 +611,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     @Override
     public void onDestroy() {
-        tabsSession.destroy();
+        sessionManager.destroy();
         super.onDestroy();
     }
 
@@ -663,7 +663,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onBookMarkClicked() {
-        Tab currentTab = getTabsSession().getFocusTab();
+        Session currentTab = getSessionManager().getFocusSession();
         if (currentTab == null) {
             return;
         }
@@ -755,7 +755,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onAddToHomeClicked() {
-        final Tab focusTab = getTabsSession().getFocusTab();
+        final Session focusTab = getSessionManager().getFocusSession();
         if (focusTab == null) {
             return;
         }
@@ -941,13 +941,13 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    public TabsSession getTabsSession() {
-        // TODO: Find a proper place to allocate and init TabsSession
-        if (tabsSession == null) {
+    public SessionManager getSessionManager() {
+        // TODO: Find a proper place to allocate and init SessionManager
+        if (sessionManager == null) {
             final TabViewProvider provider = new MainTabViewProvider(this);
-            tabsSession = new TabsSession(provider);
+            sessionManager = new SessionManager(provider);
         }
-        return tabsSession;
+        return sessionManager;
     }
 
     @Override
@@ -958,8 +958,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     public void onQueryComplete(List<TabModel> tabModelList, String currentTabId) {
         isTabRestoredComplete = true;
-        getTabsSession().restoreTabs(tabModelList, currentTabId);
-        Tab currentTab = getTabsSession().getFocusTab();
+        getSessionManager().restoreTabs(tabModelList, currentTabId);
+        Session currentTab = getSessionManager().getFocusSession();
         if (currentTab != null && !getSupportFragmentManager().isStateSaved()) {
             screenNavigator.restoreBrowserScreen(currentTab.getId());
         }
@@ -975,9 +975,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
-        List<TabModel> tabModelListForPersistence = getTabsSession().getTabModelListForPersistence();
-        final String currentTabId = (getTabsSession().getFocusTab() != null)
-                ? getTabsSession().getFocusTab().getId()
+        List<TabModel> tabModelListForPersistence = getSessionManager().getTabModelListForPersistence();
+        final String currentTabId = (getSessionManager().getFocusSession() != null)
+                ? getSessionManager().getFocusSession().getId()
                 : null;
 
         if (tabModelListForPersistence != null) {

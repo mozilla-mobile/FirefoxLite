@@ -22,13 +22,13 @@ import org.mockito.Mockito
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import org.mozilla.rocket.tabs.Session
+import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.SiteIdentity
-import org.mozilla.rocket.tabs.Tab
 import org.mozilla.rocket.tabs.TabChromeClient
 import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabViewClient
 import org.mozilla.rocket.tabs.TabViewProvider
-import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.robolectric.RobolectricTestRunner
@@ -45,7 +45,7 @@ class TabTrayPresenterTest {
     private lateinit var tabsSessionModel: TabsSessionModel
 
     @Captor
-    private lateinit var tabListCaptor: ArgumentCaptor<List<Tab>>
+    private lateinit var tabListCaptor: ArgumentCaptor<List<Session>>
 
     @Before
     fun setUp() {
@@ -60,20 +60,20 @@ class TabTrayPresenterTest {
         this.tabTrayPresenter.viewReady()
         verify<TabTrayContract.View>(this.tabTrayContractView).closeTabTray()
 
-        Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf(Tab(), Tab(), Tab()))
+        Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf(Session(), Session(), Session()))
         this.tabTrayPresenter.viewReady()
         verify<TabTrayContract.View>(this.tabTrayContractView).showFocusedTab(anyInt())
     }
 
     @Test
     fun viewReady_tabCountChanged_viewRefreshDataCalled() {
-        val session = TabsSession(DefaultTabViewProvider())
+        val session = SessionManager(DefaultTabViewProvider())
 
         // Prepare some tabs
         session.addTab("url", TabUtil.argument(null, false, true))
         session.addTab("url", TabUtil.argument(null, false, true))
         session.addTab("url", TabUtil.argument(null, false, true))
-        Assert.assertEquals(3, session.tabs.size)
+        Assert.assertEquals(3, session.getTabs().size)
 
         val presenter = TabTrayPresenter(tabTrayContractView, TabsSessionModel(session))
 
@@ -83,9 +83,9 @@ class TabTrayPresenterTest {
         // OK we are ready
         presenter.viewReady()
 
-        // Tab count changed
+        // Session count changed
         session.addTab("url", TabUtil.argument(null, false, true))
-        Assert.assertEquals(4, session.tabs.size)
+        Assert.assertEquals(4, session.getTabs().size)
 
         // Assert refresh data is called, with new tab list of size=4
         verify<TabTrayContract.View>(this.tabTrayContractView).refreshData(tabListCaptor.capture(), any())

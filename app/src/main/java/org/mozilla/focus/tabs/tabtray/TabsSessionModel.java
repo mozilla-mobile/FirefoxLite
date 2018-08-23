@@ -16,10 +16,10 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsChromeListener;
-import org.mozilla.rocket.tabs.TabsSession;
 import org.mozilla.rocket.tabs.TabsViewListener;
 
 import java.util.ArrayList;
@@ -27,19 +27,19 @@ import java.util.List;
 
 class TabsSessionModel implements TabTrayContract.Model {
     @NonNull
-    private TabsSession tabsSession;
+    private SessionManager sessionManager;
     private OnTabModelChangedListener onTabModelChangedListener;
 
-    private List<Tab> tabs = new ArrayList<>();
+    private List<Session> tabs = new ArrayList<>();
 
-    TabsSessionModel(@NonNull TabsSession tabsSession) {
-        this.tabsSession = tabsSession;
+    TabsSessionModel(@NonNull SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 
     @Override
     public void loadTabs(OnLoadCompleteListener listener) {
         tabs.clear();
-        tabs.addAll(tabsSession.getTabs());
+        tabs.addAll(sessionManager.getTabs());
 
         if (listener != null) {
             listener.onLoadComplete();
@@ -47,23 +47,23 @@ class TabsSessionModel implements TabTrayContract.Model {
     }
 
     @Override
-    public List<Tab> getTabs() {
+    public List<Session> getTabs() {
         return tabs;
     }
 
     @Override
-    public Tab getFocusedTab() {
-        return tabsSession.getFocusTab();
+    public Session getFocusedTab() {
+        return sessionManager.getFocusSession();
     }
 
     @Override
     public void switchTab(int tabPosition) {
         if (tabPosition >= 0 && tabPosition < tabs.size()) {
-            Tab target = tabs.get(tabPosition);
-            List<Tab> latestTabs = tabsSession.getTabs();
+            Session target = tabs.get(tabPosition);
+            List<Session> latestTabs = sessionManager.getTabs();
             boolean exist = latestTabs.indexOf(target) != -1;
             if (exist) {
-                tabsSession.switchToTab(target.getId());
+                sessionManager.switchToTab(target.getId());
             }
         } else {
             if (BuildConfig.DEBUG) {
@@ -75,7 +75,7 @@ class TabsSessionModel implements TabTrayContract.Model {
     @Override
     public void removeTab(int tabPosition) {
         if (tabPosition >= 0 && tabPosition < tabs.size()) {
-            tabsSession.dropTab(tabs.get(tabPosition).getId());
+            sessionManager.dropTab(tabs.get(tabPosition).getId());
         } else {
             if (BuildConfig.DEBUG) {
                 throw new ArrayIndexOutOfBoundsException("index: " + tabPosition + ", size: " + tabs.size());
@@ -85,9 +85,9 @@ class TabsSessionModel implements TabTrayContract.Model {
 
     @Override
     public void clearTabs() {
-        List<Tab> tabs = tabsSession.getTabs();
-        for (Tab tab : tabs) {
-            tabsSession.dropTab(tab.getId());
+        List<Session> tabs = sessionManager.getTabs();
+        for (Session tab : tabs) {
+            sessionManager.dropTab(tab.getId());
         }
     }
 
@@ -96,25 +96,25 @@ class TabsSessionModel implements TabTrayContract.Model {
         if (onTabModelChangedListener == null) {
             onTabModelChangedListener = new OnTabModelChangedListener() {
                 @Override
-                void onTabModelChanged(Tab tab) {
+                void onTabModelChanged(Session tab) {
                     observer.onTabUpdate(tab);
                 }
 
                 @Override
                 public void onTabCountChanged(int count) {
-                    observer.onUpdate(tabsSession.getTabs());
+                    observer.onUpdate(sessionManager.getTabs());
                 }
             };
         }
-        tabsSession.addTabsViewListener(onTabModelChangedListener);
-        tabsSession.addTabsChromeListener(onTabModelChangedListener);
+        sessionManager.addTabsViewListener(onTabModelChangedListener);
+        sessionManager.addTabsChromeListener(onTabModelChangedListener);
     }
 
     @Override
     public void unsubscribe() {
         if (onTabModelChangedListener != null) {
-            tabsSession.removeTabsViewListener(onTabModelChangedListener);
-            tabsSession.removeTabsChromeListener(onTabModelChangedListener);
+            sessionManager.removeTabsViewListener(onTabModelChangedListener);
+            sessionManager.removeTabsChromeListener(onTabModelChangedListener);
             onTabModelChangedListener = null;
         }
     }
@@ -122,15 +122,15 @@ class TabsSessionModel implements TabTrayContract.Model {
     private static abstract class OnTabModelChangedListener implements TabsViewListener,
             TabsChromeListener {
         @Override
-        public void onTabStarted(@NonNull Tab tab) {
+        public void onTabStarted(@NonNull Session tab) {
         }
 
         @Override
-        public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
+        public void onTabFinished(@NonNull Session tab, boolean isSecure) {
         }
 
         @Override
-        public void onURLChanged(@NonNull Tab tab, String url) {
+        public void onURLChanged(@NonNull Session tab, String url) {
             onTabModelChanged(tab);
         }
 
@@ -140,31 +140,31 @@ class TabsSessionModel implements TabTrayContract.Model {
         }
 
         @Override
-        public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
+        public void updateFailingUrl(@NonNull Session tab, String url, boolean updateFromError) {
             onTabModelChanged(tab);
         }
 
         @Override
-        public void onProgressChanged(@NonNull Tab tab, int progress) {
+        public void onProgressChanged(@NonNull Session tab, int progress) {
         }
 
         @Override
-        public void onReceivedTitle(@NonNull Tab tab, String title) {
+        public void onReceivedTitle(@NonNull Session tab, String title) {
             onTabModelChanged(tab);
         }
 
         @Override
-        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
+        public void onReceivedIcon(@NonNull Session tab, Bitmap icon) {
             onTabModelChanged(tab);
         }
 
         @Override
-        public void onFocusChanged(@Nullable Tab tab, @Factor int factor) {
+        public void onFocusChanged(@Nullable Session tab, @Factor int factor) {
 
         }
 
         @Override
-        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
+        public void onTabAdded(@NonNull Session tab, @Nullable Bundle arguments) {
         }
 
         @Override
@@ -172,27 +172,27 @@ class TabsSessionModel implements TabTrayContract.Model {
         }
 
         @Override
-        public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
+        public void onLongPress(@NonNull Session tab, TabView.HitTarget hitTarget) {
         }
 
         @Override
-        public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
+        public void onEnterFullScreen(@NonNull Session tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
         }
 
         @Override
-        public void onExitFullScreen(@NonNull Tab tab) {
+        public void onExitFullScreen(@NonNull Session tab) {
         }
 
         @Override
-        public boolean onShowFileChooser(@NonNull Tab tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(@NonNull Session tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             return false;
         }
 
         @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
+        public void onGeolocationPermissionsShowPrompt(@NonNull Session tab, String origin, GeolocationPermissions.Callback callback) {
 
         }
 
-        abstract void onTabModelChanged(Tab tab);
+        abstract void onTabModelChanged(Session tab);
     }
 }

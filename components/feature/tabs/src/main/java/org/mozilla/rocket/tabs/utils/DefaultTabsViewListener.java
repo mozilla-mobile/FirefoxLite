@@ -7,7 +7,7 @@ package org.mozilla.rocket.tabs.utils;
 
 import android.support.annotation.NonNull;
 
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.TabsViewListener;
 
 /**
@@ -15,15 +15,15 @@ import org.mozilla.rocket.tabs.TabsViewListener;
  */
 public class DefaultTabsViewListener implements TabsViewListener {
     @Override
-    public void onTabStarted(@NonNull Tab tab) {
+    public void onTabStarted(@NonNull Session tab) {
     }
 
     @Override
-    public void onTabFinished(@NonNull Tab tab, boolean isSecure) {
+    public void onTabFinished(@NonNull Session tab, boolean isSecure) {
     }
 
     @Override
-    public void onURLChanged(@NonNull Tab tab, String url) {
+    public void onURLChanged(@NonNull Session tab, String url) {
     }
 
     @Override
@@ -32,6 +32,6 @@ public class DefaultTabsViewListener implements TabsViewListener {
     }
 
     @Override
-    public void updateFailingUrl(@NonNull Tab tab, String url, boolean updateFromError) {
+    public void updateFailingUrl(@NonNull Session tab, String url, boolean updateFromError) {
     }
 }

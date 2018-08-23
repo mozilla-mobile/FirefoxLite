@@ -284,7 +284,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
     fun setFindListener(findListener: FindListener?) {
         this.findListener = findListener
         if (hasTabs()) {
-            for (tab in tabs) {
+            for (tab in sessions) {
                 tab.setFindListener(findListener)
             }
         }

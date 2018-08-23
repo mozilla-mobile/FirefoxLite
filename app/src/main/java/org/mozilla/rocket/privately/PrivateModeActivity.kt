@@ -23,15 +23,15 @@ import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
-import org.mozilla.rocket.tabs.TabsSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
 class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         FragmentListener,
         TabsSessionProvider.SessionHost {
 
-    private var session: TabsSession? = null
+    private var sessionManager: SessionManager? = null
     private lateinit var tabViewProvider: PrivateTabViewProvider
     private lateinit var sharedViewModel: SharedViewModel
 
@@ -62,7 +62,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
         stopPrivateMode()
-        session?.destroy()
+        sessionManager?.destroy()
     }
 
     @Override
@@ -109,13 +109,13 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         }
     }
 
-    override fun getTabsSession(): TabsSession {
-        if (session == null) {
-            session = TabsSession(tabViewProvider)
+    override fun getSessionManager(): SessionManager {
+        if (sessionManager == null) {
+            sessionManager = SessionManager(tabViewProvider)
         }
 
         // we just created it, it definitely not null
-        return session!!
+        return sessionManager!!
     }
 
     override fun onNewIntent(intent: Intent?) {

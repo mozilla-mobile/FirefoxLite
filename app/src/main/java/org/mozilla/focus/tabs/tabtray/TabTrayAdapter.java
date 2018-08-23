@@ -33,7 +33,7 @@ import com.bumptech.glide.request.transition.Transition;
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +41,8 @@ import java.util.List;
 
 public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHolder> {
 
-    private List<Tab> tabs = new ArrayList<>();
-    private Tab focusedTab;
+    private List<Session> tabs = new ArrayList<>();
+    private Session focusedTab;
 
     private TabClickListener tabClickListener;
 
@@ -72,7 +72,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
         Resources resources = holder.itemView.getResources();
 
-        Tab tab = tabs.get(position);
+        Session tab = tabs.get(position);
 
         String title = getTitle(tab, holder);
         holder.websiteTitle.setText(TextUtils.isEmpty(title) ?
@@ -102,24 +102,24 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         this.tabClickListener = tabClickListener;
     }
 
-    void setData(List<Tab> tabs) {
+    void setData(List<Session> tabs) {
         this.tabs.clear();
         this.tabs.addAll(tabs);
     }
 
-    List<Tab> getData() {
+    List<Session> getData() {
         return this.tabs;
     }
 
-    void setFocusedTab(Tab tab) {
+    void setFocusedTab(Session tab) {
         focusedTab = tab;
     }
 
-    Tab getFocusedTab() {
+    Session getFocusedTab() {
         return focusedTab;
     }
 
-    private String getTitle(Tab tab, ViewHolder holder) {
+    private String getTitle(Session tab, ViewHolder holder) {
         String newTitle = tab.getTitle();
         String currentTitle = String.valueOf(holder.websiteTitle.getText());
 
@@ -130,7 +130,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         return newTitle;
     }
 
-    private void setFavicon(Tab tab, final ViewHolder holder) {
+    private void setFavicon(Session tab, final ViewHolder holder) {
         String uri = tab.getUrl();
         if (TextUtils.isEmpty(uri)) {
             return;
@@ -139,7 +139,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         loadCachedFavicon(tab, holder);
     }
 
-    private void loadCachedFavicon(final Tab tab, final ViewHolder holder) {
+    private void loadCachedFavicon(final Session tab, final ViewHolder holder) {
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
@@ -178,7 +178,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 });
     }
 
-    private void loadGeneratedFavicon(Tab tab, final ViewHolder holder) {
+    private void loadGeneratedFavicon(Session tab, final ViewHolder holder) {
         Character symbol = FavIconUtils.getRepresentativeCharacter(tab.getUrl());
         Bitmap favicon = tab.getFavicon();
         int backgroundColor = (favicon == null) ? Color.WHITE : FavIconUtils.getDominantColor(favicon);

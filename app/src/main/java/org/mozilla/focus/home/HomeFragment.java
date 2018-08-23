@@ -77,9 +77,9 @@ import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
-import org.mozilla.rocket.tabs.Tab;
+import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.tabs.TabsSession;
+import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.Logger;
@@ -118,7 +118,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
-    private TabsSession tabsSession;
+    private SessionManager sessionManager;
     private final TabsChromeListener tabsChromeListener = new TabsChromeListener();
     private RecyclerView banner;
     private LinearLayoutManager bannerLayoutManager;
@@ -317,8 +317,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.btnMenu = view.findViewById(R.id.btn_menu);
         this.btnMenu.setOnClickListener(menuItemClickListener);
 
-        tabsSession = TabsSessionProvider.getOrThrow(getActivity());
-        tabsSession.addTabsChromeListener(this.tabsChromeListener);
+        sessionManager = TabsSessionProvider.getOrThrow(getActivity());
+        sessionManager.addTabsChromeListener(this.tabsChromeListener);
         this.tabCounter = view.findViewById(R.id.btn_tab_tray);
         this.tabCounter.setOnClickListener(menuItemClickListener);
         updateTabCounter();
@@ -433,7 +433,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void onDestroyView() {
-        tabsSession.removeTabsChromeListener(this.tabsChromeListener);
+        sessionManager.removeTabsChromeListener(this.tabsChromeListener);
         doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
         bannerConfigViewModel.getConfig().removeObserver(bannerObserver);
         super.onDestroyView();
@@ -481,7 +481,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void updateTabCounter() {
-        int tabCount = tabsSession != null ? tabsSession.getTabsCount() : 0;
+        int tabCount = sessionManager != null ? sessionManager.getTabsCount() : 0;
         if (isTabRestoredComplete()) {
             tabCounter.setCount(tabCount);
         }
@@ -749,27 +749,27 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private class TabsChromeListener implements org.mozilla.rocket.tabs.TabsChromeListener {
 
         @Override
-        public void onProgressChanged(@NonNull Tab tab, int progress) {
+        public void onProgressChanged(@NonNull Session tab, int progress) {
             // do nothing
         }
 
         @Override
-        public void onReceivedTitle(@NonNull Tab tab, String title) {
+        public void onReceivedTitle(@NonNull Session tab, String title) {
             // do nothing
         }
 
         @Override
-        public void onReceivedIcon(@NonNull Tab tab, Bitmap icon) {
+        public void onReceivedIcon(@NonNull Session tab, Bitmap icon) {
             // do nothing
         }
 
         @Override
-        public void onFocusChanged(@Nullable Tab tab, int factor) {
+        public void onFocusChanged(@Nullable Session tab, int factor) {
             // do nothing
         }
 
         @Override
-        public void onTabAdded(@NonNull Tab tab, @Nullable Bundle arguments) {
+        public void onTabAdded(@NonNull Session tab, @Nullable Bundle arguments) {
             // do nothing
         }
 
@@ -779,28 +779,28 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         @Override
-        public void onLongPress(@NonNull Tab tab, TabView.HitTarget hitTarget) {
+        public void onLongPress(@NonNull Session tab, TabView.HitTarget hitTarget) {
             // do nothing
         }
 
         @Override
-        public void onEnterFullScreen(@NonNull Tab tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
+        public void onEnterFullScreen(@NonNull Session tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
             // do nothing
         }
 
         @Override
-        public void onExitFullScreen(@NonNull Tab tab) {
+        public void onExitFullScreen(@NonNull Session tab) {
             // do nothing
         }
 
         @Override
-        public boolean onShowFileChooser(@NonNull Tab tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(@NonNull Session tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             // do nothing
             return false;
         }
 
         @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Tab tab, String origin, GeolocationPermissions.Callback callback) {
+        public void onGeolocationPermissionsShowPrompt(@NonNull Session tab, String origin, GeolocationPermissions.Callback callback) {
             // do nothing
         }
     }

@@ -92,7 +92,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     /**
      * Simply clear every thing above browser fragment. This can be used when:
      * 1. you just want to move the old existing browser fragment to the foreground
-     * 2. you've called Tab#loadUrl() by yourself, and want to move that tab to the foreground.
+     * 2. you've called Session#loadUrl() by yourself, and want to move that tab to the foreground.
      */
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
