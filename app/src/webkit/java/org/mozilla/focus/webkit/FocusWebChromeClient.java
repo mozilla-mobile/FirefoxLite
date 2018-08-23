@@ -16,7 +16,7 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FavIconUtils;
+import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
 import org.mozilla.rocket.tabs.TabView;
 

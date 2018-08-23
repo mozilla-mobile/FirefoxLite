@@ -16,7 +16,7 @@ import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 
 import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FavIconUtils;
+import org.mozilla.icon.FavIconUtils;
 
 public class FaviconDecoder implements ResourceDecoder<FaviconModel, Bitmap> {
     private Context context;
