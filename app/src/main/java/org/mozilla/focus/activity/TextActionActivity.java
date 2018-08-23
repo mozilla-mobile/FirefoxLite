@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 
 import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.utils.SafeIntent;
+import org.mozilla.focus.utils.SearchUtils;
 import org.mozilla.focus.utils.UrlUtils;
 
 /**
@@ -35,7 +36,7 @@ public class TextActionActivity extends Activity {
         } else {
             searchText = "";
         }
-        final String searchUrl = UrlUtils.createSearchUrl(this, searchText);
+        final String searchUrl = SearchUtils.createSearchUrl(this, searchText);
 
         final Intent searchIntent = new Intent(this, MainActivity.class);
         searchIntent.setAction(Intent.ACTION_VIEW);

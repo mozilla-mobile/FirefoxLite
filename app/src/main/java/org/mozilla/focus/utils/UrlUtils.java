@@ -105,13 +105,6 @@ public class UrlUtils {
         return text.contains(" ");
     }
 
-    public static String createSearchUrl(Context context, String searchTerm) {
-        final SearchEngine searchEngine = SearchEngineManager.getInstance()
-                .getDefaultSearchEngine(context);
-
-        return searchEngine.buildSearchUrl(searchTerm);
-    }
-
     public static String stripUserInfo(@Nullable String url) {
         if (TextUtils.isEmpty(url)) {
             return "";
