@@ -14,7 +14,10 @@ import org.mozilla.rocket.tabs.TabView.FindListener
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import java.util.UUID
 
-class Tab @JvmOverloads constructor(private val tabModel: TabModel? = TabModel(UUID.randomUUID().toString(), "", "", "")) {
+const val TAG = "Session"
+class Session @JvmOverloads constructor(
+        private val tabModel: TabModel? = TabModel(UUID.randomUUID().toString(), "", "", "")
+) {
     var tabView: TabView? = null
         private set
     private var tabViewClient = sDefViewClient
@@ -201,10 +204,7 @@ class Tab @JvmOverloads constructor(private val tabModel: TabModel? = TabModel(U
 
     companion object {
 
-        @JvmField
-        val ID_EXTERNAL = "_open_from_external_"
-
-        private val TAG = "Tab"
+        const val ID_EXTERNAL = "_open_from_external_"
 
         /**
          * A placeholder in case of there is no callback to use.
