@@ -17,6 +17,12 @@ public class DimenUtils {
     public @interface FavIconType {
     }
 
+    /**
+     * @deprecated We're giving up this methodology. The only left use case is Tab Tray which should
+     * be migrated in the future too. Please consider {@link #iconTooBlurry(Resources, int)}
+     * as a replacement.
+     */
+    @Deprecated
     @FavIconType
     public static int getFavIconType(Resources res, Bitmap source) {
         if (source == null || source.getWidth() < res.getDimensionPixelSize(R.dimen.favicon_initial_threshold_size)) {
@@ -30,6 +36,12 @@ public class DimenUtils {
         return TYPE_ORIGINAL;
     }
 
+    /**
+     * @deprecated We're giving up this methodology. The only left use case is Tab Tray which should
+     * be migrated in the future too. Please consider {@link #iconTooBlurry(Resources, int)}
+     * as a replacement.
+     */
+    @Deprecated
     public static Bitmap getRefinedBitmap(Resources res, Bitmap source, char initial) {
         switch (getFavIconType(res, source)) {
             case TYPE_ORIGINAL:
@@ -45,6 +57,10 @@ public class DimenUtils {
             default:
                 return DimenUtils.getInitialBitmap(res, source, initial);
         }
+    }
+
+    public static boolean iconTooBlurry(Resources resources, int bitmapWidth) {
+        return bitmapWidth < resources.getDimensionPixelSize(R.dimen.favicon_initial_threshold_size);
     }
 
     private static float getDefaultFaviconTextSize(Resources resources) {
