@@ -22,6 +22,7 @@ import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.SearchUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
@@ -205,7 +206,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
             final String url = isUrl
                     ? UrlUtils.normalize(input)
-                    : UrlUtils.createSearchUrl(getContext(), input);
+                    : SearchUtils.createSearchUrl(getContext(), input);
 
             boolean isOpenInNewTab = openUrl(url);
 
