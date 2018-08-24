@@ -115,12 +115,14 @@ public class ScreenshotManager {
             if (categories.size() == 0) {
                 return CATEGORY_NOT_READY;
             }
-            final String category = categories.get(UrlUtils.stripCommonSubdomains(new URL(url).getAuthority()));
-            // if the url is not in our list, return default value
-            if (category == null) {
-                return CATEGORY_DEFAULT;
+            final String authority = UrlUtils.stripCommonSubdomains(new URL(url).getAuthority());
+            for (String target : categories.values()) {
+                if (authority.endsWith(target)) {
+                    return categories.get(target);
+                }
             }
-            return category;
+            return CATEGORY_DEFAULT;
+
         } catch (MalformedURLException e) {
             // if there's an exception, return error code
             return CATEGORY_ERROR;
