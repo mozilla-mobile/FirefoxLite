@@ -1,7 +1,10 @@
 package org.mozilla.focus.telemetry
 
 import android.preference.PreferenceManager
+import android.support.test.InstrumentationRegistry
+import android.support.test.runner.AndroidJUnit4
 import android.text.TextUtils
+import org.junit.Before
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,11 +21,18 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.Value.AUDIO
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.EME
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.MIDI
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.VIDEO
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class TelemetryWrapperTest {
+
+    @Before
+    fun setUp() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val prefName = context.getString(R.string.pref_key_telemetry)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        preferences.edit().putBoolean(prefName, false).apply()
+
+    }
 
     private fun assertFirebaseEvent(category: String, method: String, `object`: String?, value: String) {
         val eventFromBuilder = TelemetryWrapper.EventBuilder(category, method, `object`, value).firebaseEvent
@@ -75,7 +85,7 @@ class TelemetryWrapperTest {
 
     @Test
     fun settingsEvent() {
-        val pm = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+        val pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().targetContext)
         for (key in pm.all.keys) {
 
             TelemetryWrapper.settingsEvent(key, java.lang.Boolean.FALSE.toString())
@@ -84,7 +94,7 @@ class TelemetryWrapperTest {
 
     @Test
     fun settingsClickEvent() {
-        val pm = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+        val pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().targetContext)
         for (key in pm.all.keys) {
             // invalid events should be by pass
             TelemetryWrapper.settingsClickEvent(key)
@@ -94,7 +104,7 @@ class TelemetryWrapperTest {
     @Test
     fun settingsLearnMoreClickEvent() {
 
-        val context = RuntimeEnvironment.application
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_turbo_mode))
         TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_telemetry))
 
@@ -103,7 +113,7 @@ class TelemetryWrapperTest {
     @Test
     fun settingsLocaleChangeEvent() {
         val localeManager = LocaleManager.getInstance()
-        val context = RuntimeEnvironment.application
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         for (value in LocaleList.BUNDLED_LOCALES) {
             val locale: Locale?
             if (TextUtils.isEmpty(value)) {
@@ -312,7 +322,7 @@ class TelemetryWrapperTest {
     @Test
     fun clickToolbarCapture() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.clickToolbarCapture(it)
         }
@@ -465,7 +475,7 @@ class TelemetryWrapperTest {
     @Test
     fun openCaptureLink() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.openCaptureLink(it)
         }
@@ -474,7 +484,7 @@ class TelemetryWrapperTest {
     @Test
     fun editCaptureImage() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.editCaptureImage(true, it)
             TelemetryWrapper.editCaptureImage(false, it)
@@ -484,7 +494,7 @@ class TelemetryWrapperTest {
     @Test
     fun shareCaptureImage() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.shareCaptureImage(true, it)
             TelemetryWrapper.shareCaptureImage(false, it)
@@ -494,7 +504,7 @@ class TelemetryWrapperTest {
     @Test
     fun showCaptureInfo() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.showCaptureInfo(it)
         }
@@ -503,7 +513,7 @@ class TelemetryWrapperTest {
     @Test
     fun deleteCaptureImage() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.deleteCaptureImage(it)
         }
