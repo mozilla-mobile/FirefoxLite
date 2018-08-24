@@ -15,14 +15,4 @@ class ScreenshotManagerTest {
         sm.initScreenShotCateogry(RuntimeEnvironment.application)
         assert(sm.categories.size > 0)
     }
-
-    @Test
-    fun `Telemetry with category should work`(){
-        val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
-        // expect no exception
-        sm.categories.values.forEach {
-            TelemetryWrapper.openCaptureLink(it)
-        }
-    }
 }
