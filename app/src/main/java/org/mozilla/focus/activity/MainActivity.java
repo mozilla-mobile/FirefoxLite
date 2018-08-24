@@ -85,7 +85,6 @@ import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
-import org.mozilla.rocket.tabs.TabModel;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
@@ -983,9 +982,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    public void onQueryComplete(List<TabModel> tabModelList, String currentTabId) {
+    public void onQueryComplete(List<Session> session, String currentTabId) {
         isTabRestoredComplete = true;
-        getSessionManager().restoreTabs(tabModelList, currentTabId);
+        getSessionManager().restoreTabs(session, currentTabId);
         Session currentTab = getSessionManager().getFocusSession();
         if (currentTab != null && !getSupportFragmentManager().isStateSaved()) {
             screenNavigator.restoreBrowserScreen(currentTab.getId());
@@ -1002,14 +1001,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             return;
         }
 
-        List<TabModel> tabModelListForPersistence = getSessionManager().getTabModelListForPersistence();
+        List<Session> sessions = getSessionManager().getTabs();
+        for (Session s : sessions) {
+            s.syncFromView();
+        }
+
         final String currentTabId = (getSessionManager().getFocusSession() != null)
                 ? getSessionManager().getFocusSession().getId()
                 : null;
 
-        if (tabModelListForPersistence != null) {
-            TabModelStore.getInstance(this).saveTabs(this, tabModelListForPersistence, currentTabId, null);
-        }
+        TabModelStore.getInstance(this).saveTabs(this, sessions, currentTabId, null);
     }
 
     @Override

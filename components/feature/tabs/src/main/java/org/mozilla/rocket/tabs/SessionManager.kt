@@ -51,20 +51,6 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
         get() = sessions.size
 
     /**
-     * To get data of sessions to store in persistent storage.
-     *
-     * @return created TabModel of sessions in this session.
-     */
-    val tabModelListForPersistence: List<TabModel>
-        get() {
-            val models = ArrayList<TabModel>()
-            for (tab in sessions) {
-                models.add(tab.saveModel)
-            }
-            return models
-        }
-
-    /**
      * To get current focused tab.
      *
      * @return current focused tab. Return null if there is not any tab.
@@ -94,26 +80,25 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
      * This is asynchronous call.
      * TODO: make it asynchronous
      *
-     * @param models
+     * @param sessionList
      */
-    fun restoreTabs(models: List<TabModel>, focusTabId: String?) {
+    fun restoreTabs(sessionList: List<Session>, focusTabId: String?) {
         var insertPos = 0
-        for (model in models) {
-            if (!model.isValid()) {
+        for (session in sessionList) {
+            if (!session.isValid()) {
                 continue
             }
 
-            val tab = Session(model)
-            bindCallback(tab)
-            sessions.add(insertPos++, tab)
+            bindCallback(session)
+            this.sessions.add(insertPos++, session)
         }
 
-        if (sessions.size > 0 && sessions.size == models.size) {
+        if (this.sessions.size > 0 && this.sessions.size == sessionList.size) {
             focusRef = WeakReference<Session>(getTab(focusTabId))
         }
 
         for (l in tabsChromeListeners) {
-            l.onTabCountChanged(sessions.size)
+            l.onTabCountChanged(this.sessions.size)
         }
     }
 

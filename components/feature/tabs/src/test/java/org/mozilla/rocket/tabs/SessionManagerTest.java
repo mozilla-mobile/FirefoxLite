@@ -42,7 +42,7 @@ import static org.mockito.Mockito.verify;
 public class SessionManagerTest {
 
     SessionManager session;
-    final List<TabModel> models = new ArrayList<>();
+    final List<Session> sessions = new ArrayList<>();
 
     final String[] urls = new String[]{
             "https://mozilla.org",
@@ -57,8 +57,8 @@ public class SessionManagerTest {
 
         for (int i = 0; i < urls.length; i++) {
             // use url as id for convenience
-            final TabModel model = new TabModel(urls[i], "", urls[i], urls[i]);
-            models.add(model);
+            final Session session = new Session(urls[i], "", urls[i], urls[i]);
+            sessions.add(session);
         }
     }
 
@@ -177,7 +177,7 @@ public class SessionManagerTest {
 
     @Test
     public void testAddTab4() {
-        session.restoreTabs(models, urls[0]);
+        session.restoreTabs(sessions, urls[0]);
         Assert.assertEquals(session.getFocusSession().getId(), urls[0]);
 
         final String tabId0 = session.addTab("url0", TabUtil.argument(null, true, false));
@@ -232,14 +232,14 @@ public class SessionManagerTest {
 
     @Test
     public void testRestore() {
-        session.restoreTabs(models, urls[0]);
+        session.restoreTabs(sessions, urls[0]);
         Assert.assertEquals(session.getTabs().size(), urls.length);
         Assert.assertEquals(session.getFocusSession().getId(), urls[0]);
     }
 
     @Test
     public void testSwitch() {
-        session.restoreTabs(models, urls[0]);
+        session.restoreTabs(sessions, urls[0]);
         session.switchToTab("not-exist");
         Assert.assertEquals(session.getFocusSession().getId(), urls[0]);
 
@@ -257,11 +257,11 @@ public class SessionManagerTest {
      */
     @Test
     public void testCloseTab1() {
-        session.restoreTabs(models, null);
+        session.restoreTabs(sessions, null);
         Assert.assertNull(session.getFocusSession());
-        session.closeTab(models.get(2).getId());
+        session.closeTab(sessions.get(2).getId());
         Assert.assertNull(session.getFocusSession());
-        session.closeTab(models.get(0).getId());
+        session.closeTab(sessions.get(0).getId());
         Assert.assertNull(session.getFocusSession());
     }
 
@@ -313,11 +313,11 @@ public class SessionManagerTest {
      */
     @Test
     public void testDropTab1() {
-        session.restoreTabs(models, null);
+        session.restoreTabs(sessions, null);
         Assert.assertNull(session.getFocusSession());
-        session.dropTab(models.get(2).getId());
+        session.dropTab(sessions.get(2).getId());
         Assert.assertNull(session.getFocusSession());
-        session.dropTab(models.get(0).getId());
+        session.dropTab(sessions.get(0).getId());
         Assert.assertNull(session.getFocusSession());
     }
 
