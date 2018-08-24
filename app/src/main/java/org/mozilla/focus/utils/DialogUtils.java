@@ -11,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
@@ -174,9 +175,16 @@ public class DialogUtils {
     public static void showDefaultSettingNotification(Context context) {
 
         // Let NotificationActionBroadcastReceiver handle what to do
-        final Intent openDefaultBrowserSetting = IntentUtils.genDefaultBrowserSettingIntentForBroadcastReceiver(context);
-        final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, openDefaultBrowserSetting,
-                PendingIntent.FLAG_ONE_SHOT);
+        final Intent openDefaultBrowserSetting;
+        final PendingIntent openRocketPending;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            openDefaultBrowserSetting = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
+            openRocketPending = PendingIntent.getActivity(context, REQUEST_DEFAULT_CLICK, openDefaultBrowserSetting, PendingIntent.FLAG_ONE_SHOT);
+        } else {
+            openDefaultBrowserSetting = IntentUtils.genDefaultBrowserSettingIntentForBroadcastReceiver(context);
+            openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, openDefaultBrowserSetting,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }
 
         final String title = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A";
         NotificationCompat.Builder builder = NotificationUtil.importantBuilder(context)
