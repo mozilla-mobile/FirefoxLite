@@ -8,73 +8,30 @@ package org.mozilla.rocket.tabs
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.ViewGroup
 import org.mozilla.rocket.tabs.TabView.FindListener
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import java.util.UUID
 
 const val TAG = "Session"
+
 class Session @JvmOverloads constructor(
-        private val tabModel: TabModel? = TabModel(UUID.randomUUID().toString(), "", "", "")
+        val id: String = UUID.randomUUID().toString(),
+        var parentId: String? = "",
+        var title: String? = "",
+        var url: String = ""
 ) {
     var tabView: TabView? = null
         private set
+
     private var tabViewClient = sDefViewClient
     private var tabChromeClient = sDefChromeClient
     private var downloadCallback: DownloadCallback? = null
     private var findListener: TabView.FindListener? = null
 
-    val saveModel: TabModel
-        get() {
-            if (tabModel!!.webViewState == null) {
-                tabModel.webViewState = Bundle()
-            }
+    var webViewState: Bundle? = null
 
-            if (tabView != null) {
-                tabModel.title = tabView!!.title
-                tabModel.url = tabView!!.url
-                tabView!!.saveViewState(tabModel.webViewState)
-            }
-
-            return tabModel
-        }
-
-    val id: String
-        get() = this.tabModel!!.id
-
-    /* package */  var title: String?
-        get() = if (tabView == null) {
-            tabModel!!.title
-        } else {
-            tabView!!.title
-        }
-        internal set(title) {
-            tabModel!!.title = title
-        }
-
-    /* package */  var url: String?
-        get() {
-            if (tabView == null) {
-                if (tabModel == null) {
-                    Log.d(TAG, "trying to get url from a tab which has no view nor model")
-                    return null
-                } else {
-                    return tabModel.url
-                }
-            } else {
-                return tabView!!.url
-            }
-        }
-        internal set(url) {
-            tabModel!!.url = url
-        }
-
-    /* package */  var favicon: Bitmap?
-        get() = tabModel?.favicon
-        internal set(icon) {
-            tabModel!!.favicon = icon
-        }
+    var favicon: Bitmap? = null
 
     val securityState: Int
         @SiteIdentity.SecurityState
@@ -85,15 +42,27 @@ class Session @JvmOverloads constructor(
     val isFromExternal: Boolean
         get() = ID_EXTERNAL == parentId
 
-    var parentId: String?
-        get() = this.tabModel!!.parentId
-        set(id) {
-            this.tabModel!!.parentId = id
-        }
-
     // TODO: not implement completely
-    private val thumbnail: Bitmap?
-        get() = tabModel!!.thumbnail
+    private var thumbnail: Bitmap? = null
+
+    /**
+     * To sync session's properties to view, before saving. This method would be retired once we
+     * involve Observable class for those properties.
+     */
+    fun syncFromView() {
+        if (webViewState == null) {
+            webViewState = Bundle()
+        }
+        if (tabView != null) {
+            this.title = tabView!!.title
+            this.url = tabView!!.url
+            tabView!!.saveViewState(this.webViewState)
+        }
+    }
+
+    fun isValid(): Boolean {
+        return id.isNotBlank() && (url?.isNotBlank() ?: false)
+    }
 
     internal fun setTabViewClient(client: TabViewClient?) {
         tabViewClient = client ?: sDefViewClient
@@ -178,8 +147,8 @@ class Session @JvmOverloads constructor(
             tabView!!.setDownloadCallback(downloadCallback)
             tabView!!.setFindListener(findListener)
 
-            if (tabModel!!.webViewState != null) {
-                tabView!!.restoreViewState(tabModel.webViewState)
+            if (webViewState != null) {
+                tabView!!.restoreViewState(webViewState)
             } else if (!TextUtils.isEmpty(url)) {
                 tabView!!.loadUrl(url)
             }
@@ -193,11 +162,11 @@ class Session @JvmOverloads constructor(
         if (tabView != null) {
             val view = tabView!!.view
             view.isDrawingCacheEnabled = true
-            val bitmap = tabView!!.getDrawingCache(true)
-            if (bitmap != null) {
-                tabModel!!.thumbnail = Bitmap.createBitmap(bitmap)
+            tabView!!.getDrawingCache(true)?.let { bitmap ->
+                this.thumbnail = Bitmap.createBitmap(bitmap)
                 bitmap.recycle()
             }
+
             view.isDrawingCacheEnabled = false
         }
     }
