@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by hart on 16/08/2017.
@@ -116,9 +117,9 @@ public class ScreenshotManager {
                 return CATEGORY_NOT_READY;
             }
             final String authority = UrlUtils.stripCommonSubdomains(new URL(url).getAuthority());
-            for (String target : categories.values()) {
-                if (authority.endsWith(target)) {
-                    return categories.get(target);
+            for (Map.Entry<String, String> entry : categories.entrySet()) {
+                if (authority.endsWith(entry.getKey())) {
+                    return entry.getValue();
                 }
             }
             return CATEGORY_DEFAULT;
