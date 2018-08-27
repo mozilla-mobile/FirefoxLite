@@ -6,6 +6,8 @@
 package org.mozilla.focus.home;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -57,6 +59,7 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.rocket.banner.BannerAdapter;
+import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.tabs.Tab;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsSession;
@@ -73,6 +76,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
@@ -105,6 +109,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private LoadRootConfigTask.OnRootConfigLoadedListener onRootConfigLoadedListener;
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
+    private BannerConfigViewModel bannerConfigViewModel;
+    final Observer<String[]> bannerObserver = this::setUpBannerFromConfig;
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -203,13 +209,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private void setUpBanner(Context context) {
-        // 1. Read from cache first
-        String[] fromCache = readFromCache(context);
-        if (fromCache.length != 0) {
-            setUpBannerFromConfig(fromCache);
+    private void initBanner(Context context) {
+        // Setup from Cache
+        try {
+            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG, bannerConfigViewModel.getConfig(), HomeFragment::stringToStringArray).execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            Logger.throwOrWarn(TAG, "Failed to open Cache directory when reading cached banner config");
         }
-        // 2. Load item for next initialization
+        // Setup from Network
         String manifest = AppConfigWrapper.getBannerRootConfig(context);
         if (TextUtils.isEmpty(manifest)) {
             deleteCache(context);
@@ -218,11 +226,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         } else {
             // Not using a local variable to prevent reference to be cleared before returning.
             onRootConfigLoadedListener = configArray -> {
-                if (Arrays.equals(fromCache, configArray)) {
-                    return;
-                }
                 writeToCache(context, configArray);
-                setUpBannerFromConfig(configArray);
+                bannerConfigViewModel.getConfig().setValue(configArray);
                 onRootConfigLoadedListener = null;
             };
             new LoadRootConfigTask(new WeakReference<>(onRootConfigLoadedListener)).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
@@ -230,6 +235,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setUpBannerFromConfig(String[] configArray) {
+        if (configArray == null || configArray.length == 0) {
+            showBanner(false);
+            return;
+        }
         try {
             BannerAdapter bannerAdapter = new BannerAdapter(configArray, arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg));
             banner.setAdapter(bannerAdapter);
@@ -240,16 +249,20 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void writeToCache(Context context, String[] configArray) {
-        FileUtils.writeStringToFile(context.getCacheDir(), CURRENT_BANNER_CONFIG, stringArrayToString(configArray));
-    }
-
-    private String[] readFromCache(Context context) {
-        return stringToStringArray(FileUtils.readStringFromFile(context.getCacheDir(), CURRENT_BANNER_CONFIG));
+        try {
+            new FileUtils.WriteStringToFileThread(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG), stringArrayToString(configArray)).start();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            Logger.throwOrWarn(TAG, "Failed to open cache directory when writing banner config to cache");
+        }
     }
 
     private void deleteCache(Context context) {
-        if (new File(context.getCacheDir(), CURRENT_BANNER_CONFIG).delete()) {
-            Logger.throwOrWarn(TAG, "Failed to delete file");
+        try {
+            new FileUtils.DeleteFileThread(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG));
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            Logger.throwOrWarn(TAG, "Failed to open cache directory when deleting banner cache");
         }
     }
 
@@ -260,7 +273,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         return TextUtils.join(UNIT_SEPARATOR, stringArray);
     }
 
-    private String[] stringToStringArray(String string) {
+    private static String[] stringToStringArray(String string) {
         if (TextUtils.isEmpty(string)) {
             return new String[]{};
         }
@@ -343,7 +356,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                setUpBanner(context);
+                initBanner(context);
             }
         };
         Context context = getContext();
@@ -386,13 +399,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         doWithActivity(getActivity(), themeManager -> themeManager.subscribeThemeChange(homeScreenBackground));
-        setUpBanner(getContext());
+
+        bannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
+        bannerConfigViewModel.getConfig().observe(this, bannerObserver);
+        initBanner(getContext());
     }
 
     @Override
     public void onDestroyView() {
         tabsSession.removeTabsChromeListener(this.tabsChromeListener);
         doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
+        bannerConfigViewModel.getConfig().removeObserver(bannerObserver);
         super.onDestroyView();
     }
 
