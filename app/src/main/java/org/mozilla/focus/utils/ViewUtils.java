@@ -7,6 +7,7 @@ package org.mozilla.focus.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -18,12 +19,16 @@ import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
 
 public class ViewUtils {
+
+    public final static int SYSTEM_UI_VISIBILITY_NONE = -1;
+
     public static void showKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -85,5 +90,42 @@ public class ViewUtils {
         final Window window = activity.getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
         return rectangle.top;
+    }
+
+    /**
+     * Hide system bars. They can be revealed temporarily with system gestures, such as swiping from
+     * the top of the screen. These transient system bars will overlay app’s content, may have some
+     * degree of transparency, and will automatically hide after a short timeout.
+     */
+    public static int switchToImmersiveMode(final Activity activity) {
+        if (activity == null) {
+            return SYSTEM_UI_VISIBILITY_NONE;
+        }
+        Window window = activity.getWindow();
+        final int original = window.getDecorView().getSystemUiVisibility();
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+
+        return original;
+    }
+
+    /**
+     * Show the system bars again.
+     */
+    public static void exitImmersiveMode(int visibility, final Activity activity) {
+        if (activity == null) {
+            return;
+        }
+        Window window = activity.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.getDecorView().setSystemUiVisibility(visibility);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }

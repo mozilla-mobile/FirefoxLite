@@ -15,7 +15,6 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -37,8 +36,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
@@ -70,6 +67,7 @@ import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FragmentListener;
@@ -108,8 +106,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
-    private final static int NONE = -1;
-    private int systemVisibility = NONE;
+    private int systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE;
 
     private DownloadCallback downloadCallback = new DownloadCallback();
 
@@ -498,7 +495,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onStop() {
-        if (systemVisibility != NONE) {
+        if (systemVisibility != ViewUtils.SYSTEM_UI_VISIBILITY_NONE) {
             final Tab tab = tabsSession.getFocusTab();
             if (tab != null) {
                 final TabView tabView = tab.getTabView();
@@ -581,42 +578,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (currentListener != null) {
             currentListener.isLoadingChanged(isLoading);
         }
-    }
-
-    /**
-     * Hide system bars. They can be revealed temporarily with system gestures, such as swiping from
-     * the top of the screen. These transient system bars will overlay app’s content, may have some
-     * degree of transparency, and will automatically hide after a short timeout.
-     */
-    private int switchToImmersiveMode() {
-        final Activity activity = getActivity();
-        Window window = activity.getWindow();
-        final int original = window.getDecorView().getSystemUiVisibility();
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-
-        return original;
-    }
-
-    /**
-     * Show the system bars again.
-     */
-    private void exitImmersiveMode(int visibility) {
-        final Activity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-        Window window = activity.getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        window.getDecorView().setSystemUiVisibility(visibility);
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
@@ -1128,7 +1089,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 videoContainer.setVisibility(View.VISIBLE);
 
                 // Switch to immersive mode: Hide system bars other UI controls
-                systemVisibility = switchToImmersiveMode();
+                systemVisibility = ViewUtils.switchToImmersiveMode(getActivity());
             }
         }
 
@@ -1141,8 +1102,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // Show browser UI and web content again
             browserContainer.setVisibility(View.VISIBLE);
 
-            if (systemVisibility != NONE) {
-                exitImmersiveMode(systemVisibility);
+            if (systemVisibility != ViewUtils.SYSTEM_UI_VISIBILITY_NONE) {
+                ViewUtils.exitImmersiveMode(systemVisibility, getActivity());
             }
 
             // Notify renderer that we left fullscreen mode.

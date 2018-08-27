@@ -22,6 +22,7 @@ import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.urlutils.UrlUtils
+import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
@@ -61,6 +62,8 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var btnNext: ImageButton
 
     private var isLoading: Boolean = false
+
+    private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -269,6 +272,9 @@ class BrowserFragment : LocaleAwareFragment(),
                 browserContainer.visibility = View.INVISIBLE
                 videoContainer.visibility = View.VISIBLE
                 videoContainer.addView(fullscreenContent)
+
+                // Switch to immersive mode: Hide system bars other UI controls
+                systemVisibility = ViewUtils.switchToImmersiveMode(activity)
             }
         }
 
@@ -277,6 +283,10 @@ class BrowserFragment : LocaleAwareFragment(),
                 browserContainer.visibility = View.VISIBLE
                 videoContainer.visibility = View.INVISIBLE
                 videoContainer.removeAllViews()
+
+                if (systemVisibility != ViewUtils.SYSTEM_UI_VISIBILITY_NONE) {
+                    ViewUtils.exitImmersiveMode(systemVisibility, activity)
+                }
             }
 
             callback?.let { it.fullScreenExited() }
