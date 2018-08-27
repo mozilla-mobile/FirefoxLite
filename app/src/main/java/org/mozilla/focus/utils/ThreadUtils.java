@@ -8,8 +8,10 @@ package org.mozilla.focus.utils;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,6 +25,10 @@ public class ThreadUtils {
     @SuppressFBWarnings(value = "RV_RETURN_VALUE_IGNORED_BAD_PRACTICE", justification = "We don't care about the results here")
     public static void postToBackgroundThread(final Runnable runnable) {
         backgroundExecutorService.submit(runnable);
+    }
+
+    public static <V> Future<V> postToBackgroundThread(final Callable<V> callable) {
+        return backgroundExecutorService.submit(callable);
     }
 
     public static void postToMainThread(final Runnable runnable) {

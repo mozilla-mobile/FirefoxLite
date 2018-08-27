@@ -6,9 +6,11 @@
 package org.mozilla.focus.utils;
 
 import android.Manifest;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.webkit.WebStorage;
 
 import org.json.JSONObject;
+import org.mozilla.rocket.util.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,9 +33,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class FileUtils {
     public static final String WEBVIEW_DIRECTORY = "app_webview";
@@ -333,6 +339,128 @@ public class FileUtils {
             return result == PackageManager.PERMISSION_GRANTED;
         }
         return true;
+    }
+
+    public static class ReadStringFromFileTask<T> extends LiveDataTask<T, String> {
+        private File dir;
+        private String fileName;
+
+        public ReadStringFromFileTask(File dir, String fileName, MutableLiveData<T> liveData, Function<T, String> function) {
+            super(liveData, function);
+            this.dir = dir;
+            this.fileName = fileName;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return readStringFromFile(dir, fileName);
+        }
+    }
+
+    // An AsyncTask that do something in the background, and applies
+    // a function before setting the Livedata.
+    private static class LiveDataTask<T, S> extends AsyncTask<Void, Void, S> {
+
+        public interface Function<T, S> {
+            T apply(S source);
+        }
+
+        private MutableLiveData<T> liveData;
+        private Function<T, S> function;
+
+        protected LiveDataTask(MutableLiveData<T> liveData, Function<T, S> function) {
+            this.liveData = liveData;
+            this.function = function;
+        }
+
+        @Override
+        protected void onPostExecute(S result) {
+            liveData.setValue(function.apply(result));
+        }
+
+        @Override
+        protected S doInBackground(Void... voids) {
+            throw new IllegalStateException("LiveDataTask should not be instantiated");
+        }
+    }
+
+    public static class WriteStringToFileThread extends FileIOThread {
+
+        private String string;
+
+        public WriteStringToFileThread(File file, String string) {
+            super(file);
+            this.string = string;
+        }
+
+        @Override
+        protected void doIO(File file) {
+            writeStringToFile(file.getParentFile(), file.getName(), string);
+        }
+    }
+
+    public static class DeleteFileThread extends FileIOThread {
+
+        public DeleteFileThread(File file) {
+            super(file);
+        }
+
+        @Override
+        protected void doIO(File file) {
+            if (file.delete()) {
+                Logger.throwOrWarn("DeleteFileThread", "Failed to delete file");
+            }
+        }
+    }
+
+    private abstract static class FileIOThread<T> extends Thread {
+        private File file;
+
+        private FileIOThread(File file) {
+            this.file = file;
+        }
+
+        @Override
+        public void run() {
+            doIO(file);
+        }
+
+        protected abstract void doIO(File file);
+    }
+
+    // context.getCacheDir() triggers strictMode, this is a workaround
+    // function which, although, still blocks main thread, but can avoid
+    // strictMode violation.
+    public static class GetCache extends GetFile {
+
+        public GetCache(WeakReference<Context> contextWeakReference) {
+            super(contextWeakReference);
+        }
+
+        @Override
+        protected File getFile(Context context) {
+            return context.getCacheDir();
+        }
+    }
+
+    private abstract static class GetFile {
+        private Future<File> getFileFuture;
+
+        private GetFile(WeakReference<Context> contextWeakReference) {
+            getFileFuture = ThreadUtils.postToBackgroundThread(() -> {
+                Context context = contextWeakReference.get();
+                if (context == null) {
+                    return null;
+                }
+                return getFile(context);
+            });
+        }
+
+        protected abstract File getFile(Context context);
+
+        public File get() throws ExecutionException, InterruptedException {
+            return getFileFuture.get();
+        }
     }
 
 }
