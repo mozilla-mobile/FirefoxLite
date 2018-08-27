@@ -15,4 +15,16 @@ class ScreenshotManagerTest {
         sm.initScreenShotCateogry(RuntimeEnvironment.application)
         assert(sm.categories.size > 0)
     }
+
+    @Test
+    fun testCategories() {
+        val sm = ScreenshotManager()
+        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        assert(sm.getCategory("https://alipay.com/").equals("Banking"))
+        assert(sm.getCategory("https://m.alipay.com/").equals("Banking"))
+
+        assert(sm.getCategory("https://blogspot.com/").equals("Weblogs"))
+        assert(sm.getCategory("https://m.blogspot.com/").equals("Weblogs"))
+
+    }
 }
