@@ -5,7 +5,7 @@
 
 package org.mozilla.focus.screenshot.model;
 
-import org.mozilla.focus.screenshot.ScreenshotManager;
+import android.support.annotation.WorkerThread;
 
 import java.io.Serializable;
 
@@ -19,6 +19,7 @@ public class Screenshot implements Serializable {
     private String url;
     private long timestamp;
     private String imageUri;
+    private String category = "";
 
     public Screenshot() {
     }
@@ -70,8 +71,14 @@ public class Screenshot implements Serializable {
         this.imageUri = imageUri;
     }
 
+    // category is only set in a background thread since it's loading should be async.
+    @WorkerThread
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getCategory() {
-        return ScreenshotManager.getInstance().getCategory(this.url);
+        return category;
     }
 
     @Override

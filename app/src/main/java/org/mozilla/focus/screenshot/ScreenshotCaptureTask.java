@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.StorageUtils;
 
@@ -44,8 +45,12 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
             if (!TextUtils.isEmpty(path)) {
                 FileUtils.notifyMediaScanner(context, path);
 
+                ScreenshotManager.getInstance().lazyInitCategories(context);
                 Screenshot screenshot = new Screenshot(title, url, timestamp, path);
                 ScreenshotManager.getInstance().insert(screenshot, null);
+
+                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(url));
+
             }
 
             return path;

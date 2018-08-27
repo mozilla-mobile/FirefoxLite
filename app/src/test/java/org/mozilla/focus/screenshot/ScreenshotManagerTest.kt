@@ -2,7 +2,6 @@ package org.mozilla.focus.screenshot
 
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
@@ -12,7 +11,7 @@ class ScreenshotManagerTest {
     @Test
     fun testInit() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
+        sm.lazyInitCategories(RuntimeEnvironment.application)
         assert(sm.categories.size > 0)
     }
 

@@ -809,7 +809,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 break;
             case R.id.btn_capture:
                 onCaptureClicked();
-                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(getUrl()));
+                // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
