@@ -8,6 +8,7 @@ package org.mozilla.focus.screenshot;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -21,7 +22,6 @@ import org.mozilla.focus.provider.QueryHandler.AsyncQueryListener;
 import org.mozilla.focus.provider.QueryHandler.AsyncUpdateListener;
 import org.mozilla.focus.provider.ScreenshotContract.Screenshot;
 import org.mozilla.focus.utils.IOUtils;
-import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.IOException;
@@ -41,7 +41,6 @@ public class ScreenshotManager {
 
     private static final String CATEGORY_DEFAULT = "Others";
     private static final String CATEGORY_ERROR = "Error";
-    private static final String CATEGORY_NOT_READY = "";
 
     private static ScreenshotManager sInstance;
 
@@ -58,14 +57,6 @@ public class ScreenshotManager {
 
     public void init(Context context) {
         mQueryHandler = new QueryHandler(context.getContentResolver());
-
-        ThreadUtils.postToBackgroundThread(() -> {
-            try {
-                initScreenShotCateogry(context);
-            } catch (IOException | JSONException e) {
-                Log.e(TAG, "ScreenshotManager init error: ", e);
-            }
-        });
     }
 
     public void insert(org.mozilla.focus.screenshot.model.Screenshot screenshot, AsyncInsertListener listener) {
@@ -85,36 +76,40 @@ public class ScreenshotManager {
     }
 
     @VisibleForTesting
-    public void initScreenShotCateogry(Context context) throws IOException, JSONException {
-        if (categories.size() != 0) {
-            return;
-        }
-        final JSONObject json;
+    @WorkerThread
+    public void lazyInitCategories(Context context) {
+        try {
+            if (categories.size() != 0) {
+                return;
+            }
+            final JSONObject json;
 
-        json = IOUtils.readAsset(context, "screenshots-mapping.json");
+            json = IOUtils.readAsset(context, "screenshots-mapping.json");
 
-        final Iterator<String> iterator = json.keys();
-        while (iterator.hasNext()) {
-            final String category = iterator.next();
-            final Object o = json.get(category);
-            if (o instanceof JSONArray) {
-                JSONArray array = ((JSONArray) o);
-                for (int i = 0; i < array.length(); i++) {
-                    final Object domain = array.get(i);
-                    if (domain instanceof String) {
-                        categories.put((String) domain, category);
+            final Iterator<String> iterator = json.keys();
+            while (iterator.hasNext()) {
+                final String category = iterator.next();
+                final Object o = json.get(category);
+                if (o instanceof JSONArray) {
+                    JSONArray array = ((JSONArray) o);
+                    for (int i = 0; i < array.length(); i++) {
+                        final Object domain = array.get(i);
+                        if (domain instanceof String) {
+                            categories.put((String) domain, category);
+                        }
                     }
                 }
             }
+        } catch (IOException | JSONException e) {
+            Log.e(TAG, "ScreenshotManager init error: ", e);
         }
-
     }
 
     public String getCategory(String url) {
         try {
             // if category is not ready, return empty string
             if (categories.size() == 0) {
-                return CATEGORY_NOT_READY;
+                throw new IllegalStateException("Screenshot category is not ready!");
             }
             final String authority = UrlUtils.stripCommonSubdomains(new URL(url).getAuthority());
             for (Map.Entry<String, String> entry : categories.entrySet()) {

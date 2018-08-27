@@ -489,6 +489,15 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
 
         @Override
         protected Void doInBackground(Void... voids) {
+            final ScreenshotViewerActivity activity = activityRef.get();
+            if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+                return null;
+            }
+            // initialize screenshot only when we need it.
+            ScreenshotManager.getInstance().lazyInitCategories(activity);
+            // set the category for later use
+            screenshot.setCategory(ScreenshotManager.getInstance().getCategory(screenshot.getUrl()));
+
             final File imgFile = new File(screenshot.getImageUri());
             if (imgFile.exists()) {
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -519,7 +528,8 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             infoItems.get(1).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format(Locale.getDefault(), "%dx%d", width, height));
             infoItems.get(2).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_size1, fileSizeText);
             infoItems.get(3).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_title1, screenshot.getTitle());
-            infoItems.get(4).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_category, ScreenshotManager.getInstance().getCategory(screenshot.getUrl()));
+            // UX allow empty string if screenshot is not ready. But this shouldn't happen here.
+            infoItems.get(4).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_category, screenshot.getCategory());
             infoItems.get(5).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_url1, screenshot.getUrl());
 
             if (imageSource != null) {

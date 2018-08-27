@@ -322,7 +322,7 @@ class TelemetryWrapperTest {
     @Test
     fun clickToolbarCapture() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
+        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.clickToolbarCapture(it)
         }
@@ -475,7 +475,7 @@ class TelemetryWrapperTest {
     @Test
     fun openCaptureLink() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
+        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.openCaptureLink(it)
         }
@@ -484,7 +484,7 @@ class TelemetryWrapperTest {
     @Test
     fun editCaptureImage() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
+        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.editCaptureImage(true, it)
             TelemetryWrapper.editCaptureImage(false, it)
@@ -494,7 +494,7 @@ class TelemetryWrapperTest {
     @Test
     fun shareCaptureImage() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
+        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.shareCaptureImage(true, it)
             TelemetryWrapper.shareCaptureImage(false, it)
@@ -504,7 +504,7 @@ class TelemetryWrapperTest {
     @Test
     fun showCaptureInfo() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
+        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.showCaptureInfo(it)
         }
@@ -513,7 +513,7 @@ class TelemetryWrapperTest {
     @Test
     fun deleteCaptureImage() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(InstrumentationRegistry.getInstrumentation().targetContext)
+        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
         sm.categories.values.forEach {
             TelemetryWrapper.deleteCaptureImage(it)
         }
