@@ -32,6 +32,7 @@ public class HistoryDatabaseHelper {
 
     public interface Tables {
         String BROWSING_HISTORY = "browsing_history";
+        String BROWSING_HISTORY_LEGACY = "browsing_history_legacy";
     }
 
     private static final class OpenHelper extends SQLiteOpenHelper {

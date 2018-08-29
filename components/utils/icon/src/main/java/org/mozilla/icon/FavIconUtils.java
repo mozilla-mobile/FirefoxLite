@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -27,6 +28,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hart on 31/08/2017.
@@ -183,37 +186,64 @@ public class FavIconUtils {
         return snippet;
     }
 
-    public static class SaveBitmapRunnable implements Runnable {
+    public interface Consumer<T> {
+        void accept(T arg);
+    }
 
-        public interface OnBitmapSavedCallback {
-            void onBitmapSaved(String s);
-        }
+    public static class SaveBitmapTask extends AsyncTask<Void, Void, String> {
 
-        private WeakReference<Context> context;
+        private File directory;
         private String url;
         private Bitmap bitmap;
-        private WeakReference<OnBitmapSavedCallback> onBitmapSavedCallback;
+        private Consumer<String> callback;
 
 
-        public SaveBitmapRunnable(Context context, String url, Bitmap bitmap, OnBitmapSavedCallback onBitmapSavedCallback) {
-            this.context = new WeakReference<>(context);
+        public SaveBitmapTask(File directory, String url, Bitmap bitmap, Consumer<String> callback) {
+            this.directory = directory;
             this.url = url;
             this.bitmap = bitmap;
-            this.onBitmapSavedCallback = new WeakReference<>(onBitmapSavedCallback);
+            this.callback = callback;
         }
 
         @Override
-        public void run() {
-            Context context = this.context.get();
-            if (context == null) {
-                return;
+        protected void onPostExecute(String result) {
+            callback.accept(result);
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return saveBitmapToDirectory(directory, url, bitmap);
+        }
+    }
+
+    public static class SaveBitmapsTask extends AsyncTask<Void, Void, List<String>> {
+
+        private File directory;
+        private List<String> urls;
+        private List<byte[]> bytesList;
+        private FavIconUtils.Consumer<List<String>> callback;
+
+        public SaveBitmapsTask(File directory, List<String> urls, List<byte[]> bytesList, FavIconUtils.Consumer<List<String>> callback) {
+            this.directory = directory;
+            this.urls = urls;
+            this.bytesList = bytesList;
+            this.callback = callback;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> result) {
+            callback.accept(result);
+        }
+
+        @Override
+        protected List<String> doInBackground(Void... voids) {
+            List<String> ret = new ArrayList<>();
+            for (int i = 0 ; i < urls.size() ; i++) {
+                byte[] bytes = bytesList.get(i);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                ret.add(FavIconUtils.saveBitmapToDirectory(directory, urls.get(i), bitmap));
             }
-            String uri = saveBitmapToDirectory(context.getCacheDir(), url, bitmap);
-            OnBitmapSavedCallback bitmapSavedCallback = onBitmapSavedCallback.get();
-            if (bitmapSavedCallback == null) {
-                return;
-            }
-            bitmapSavedCallback.onBitmapSaved(uri);
+            return ret;
         }
     }
 

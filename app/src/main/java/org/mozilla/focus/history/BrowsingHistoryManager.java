@@ -21,6 +21,7 @@ import org.mozilla.focus.provider.QueryHandler.AsyncDeleteWrapper;
 import org.mozilla.focus.provider.QueryHandler.AsyncInsertListener;
 import org.mozilla.focus.provider.QueryHandler.AsyncQueryListener;
 import org.mozilla.focus.provider.QueryHandler.AsyncUpdateListener;
+import org.mozilla.icon.FavIconUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -133,5 +134,29 @@ public class BrowsingHistoryManager {
 
     public void queryTopSites(int limit, int minViewCount, AsyncQueryListener listener) {
         mQueryHandler.startQuery(QueryHandler.SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?limit=" + limit), null, BrowsingHistory.VIEW_COUNT + " >= ?", new String[]{Integer.toString(minViewCount)}, BrowsingHistory.VIEW_COUNT + " DESC");
+    }
+
+    public static void updateHistory(String title, String url, String fileUri) {
+        final Site site = new Site();
+        site.setTitle(title);
+        site.setUrl(url);
+        site.setFavIconUri(fileUri);
+        BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
+    }
+
+    public static class UpdateHistoryWrapper implements FavIconUtils.Consumer<String> {
+
+        private String title;
+        private String url;
+
+        public UpdateHistoryWrapper(String title, String url) {
+            this.title = title;
+            this.url = url;
+        }
+
+        @Override
+        public void accept(String fileUri) {
+            BrowsingHistoryManager.updateHistory(title, url, fileUri);
+        }
     }
 }
