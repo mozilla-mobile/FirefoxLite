@@ -8,28 +8,27 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.PermissionRequest;
-import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import org.mozilla.focus.history.BrowsingHistoryManager;
-import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.rocket.util.Logger;
 
-import java.io.File;
-import java.security.NoSuchAlgorithmException;
+import java.lang.ref.WeakReference;
+import java.util.concurrent.ExecutionException;
 
 /**
  * An @see{android.webkit.WebChromeClient} implementation to hand over any callback to TabChromeClient, if any.
  */
 class FocusWebChromeClient extends WebChromeClient {
+
+    private static final String LOGGER_TAG = "FocusWebChromeClient";
 
     /**
      * The TabView be attached by this client. No matter which WebView notify this client, this client
@@ -73,21 +72,18 @@ class FocusWebChromeClient extends WebChromeClient {
         if (TextUtils.isEmpty(url)) {
             return;
         }
+        // We're desperate in finding the correct callback for updating title, so also updating here.
         final String title = view.getTitle();
 
-        new Thread(new FavIconUtils.SaveBitmapRunnable(view.getContext(), url, icon, fileUri -> updateHistory(title, url, fileUri))).start();
+        try {
+            new FavIconUtils.SaveBitmapTask(new FileUtils.GetCache(new WeakReference<>(view.getContext())).get(), url, icon, new BrowsingHistoryManager.UpdateHistoryWrapper(title, url)).execute();
+        } catch (ExecutionException | InterruptedException e) {
+            Logger.throwOrWarn(LOGGER_TAG, "Failed to get cache folder in onReceivedIcon.");
+        }
 
         if (this.tabChromeClient != null) {
             this.tabChromeClient.onReceivedIcon(this.host, icon);
         }
-    }
-
-    private static void updateHistory(String title, String url, String fileUri) {
-        final Site site = new Site();
-        site.setTitle(title);
-        site.setUrl(url);
-        site.setFavIconUri(fileUri);
-        BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
     }
 
     @Override
