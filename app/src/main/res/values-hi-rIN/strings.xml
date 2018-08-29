@@ -11,7 +11,7 @@
   <string name="menu_share_with_friends">दोस्तों के साथ साझा करें</string>
   <string name="share_dialog_title">इससे साझा करें</string>
   <string name="text_selection_search_action">Firefox Rocket में खोजें</string>
-  <string name="about_content_body">%1$s %2$s द्वारा निर्मित तीव्र तथा हल्का ब्राउज़र हैं। हमारा लक्ष्य एक स्वस्थ, मुक्त इंटरनेट को बढ़ावा देना हैं।</string>
+  <string name="about_content_body">%1$s %2$s द्वारा निर्मित तीव्र एवं हल्का ब्राउज़र हैं। हमारा लक्ष्य एक स्वस्थ, मुक्त इंटरनेट को बढ़ावा देना हैं।</string>
   <string name="about_link_learn_more">अधिक जानें</string>
   <string name="about_link_support">सहारा</string>
   <string name="about_link_your_rights">आपका अधिकार / लाइसेंस</string>
@@ -172,7 +172,7 @@
   <string name="share_app_dialog_text_title">दोस्तों के साथ %1$s साझा करें!</string>
   <string name="share_app_dialog_text_content">- तीव्र एवं हल्का\n- डेटा बचानेवाला\n- शक्तिशाली स्क्रीनशॉट</string>
   <string name="share_app_dialog_btn_share">साझा करें</string>
-  <string name="share_app_promotion_text">सुनो, %3$s द्वारा निर्मित तीव्र तथा हलके ब्राउज़र का जायजा लें। %1$s %2$s</string>
+  <string name="share_app_promotion_text">सुनो, %3$s द्वारा निर्मित तीव्र तथा एवं हलके ब्राउज़र का जायजा लें। %1$s %2$s</string>
   <string name="your_rights_content1">%1$s %2$s तथा अन्य योगदानकर्ताओं द्वारा निर्मित मुफ्त एवं ओपन सोर्स सॉफ्टवेयर है।</string>
   <string name="your_rights_content2"><![CDATA["%1$s "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" तथा अन्य ओपन सोर्स लाइसेंस की शर्तों के तहत आपके लिए उपलब्ध कराया जाता है।"]]></string>
   <string name="your_rights_content3"><![CDATA["Mozilla फ़ाउंडेशन या किसी भी पार्टी के ट्रेडमार्क साथ ही %3$s, %4$s या %1$s के नाम अथवा लोगो, के लिए कोई अधिकार या लाइसेंस आपको नहीं दिया जाता है। अधिक जानकारी "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2351;&#2361;&#2366;&#2305;</a>से पा सकते हैं।]]></string>
