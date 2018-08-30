@@ -18,18 +18,18 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
 
     //
     @Override
-    public void onRemoteMessage(String url, String title, String body) {
+    public void onRemoteMessage(Intent intent, String title, String body) {
         if (!TelemetryWrapper.isTelemetryEnabled(this)) {
             return;
         }
+        /**
+         * Target RocketLauncherActivity with ACTION_VIEW and CATEGORY_BROWSABLE
+         * This is because we want to handle App link in {@link  org.mozilla.rocket.component.LaunchIntentDispatcher}
+         */
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setClass(getApplicationContext(), RocketLauncherActivity.class);
 
-        final Intent intent = new Intent(getApplicationContext(), RocketLauncherActivity.class);
-
-        // check if message needs to open url
-        if (url != null) {
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-        }
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

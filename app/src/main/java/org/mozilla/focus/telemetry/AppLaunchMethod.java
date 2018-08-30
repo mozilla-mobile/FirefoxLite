@@ -77,6 +77,7 @@ public enum AppLaunchMethod {
 
     public abstract void sendLaunchTelemetry();
 
+    // if push, app in foreground, this will be unknow
     public static AppLaunchMethod parse(SafeIntent intent) {
         if (intent != null) {
             for (AppLaunchMethod method : AppLaunchMethod.values()) {
