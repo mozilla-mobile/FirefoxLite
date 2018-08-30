@@ -1,5 +1,6 @@
 package com.bumptech.glide.manager;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -54,6 +55,7 @@ class DefaultConnectivityMonitor implements ConnectivityMonitor {
     isRegistered = false;
   }
 
+  @SuppressLint("MissingPermission")
   @Synthetic
   boolean isConnected(Context context) {
     ConnectivityManager connectivityManager =
