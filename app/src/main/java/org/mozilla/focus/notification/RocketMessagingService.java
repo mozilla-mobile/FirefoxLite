@@ -7,7 +7,6 @@ package org.mozilla.focus.notification;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -18,18 +17,13 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
 
     //
     @Override
-    public void onRemoteMessage(String url, String title, String body) {
+    public void onRemoteMessage(Intent intent, String title, String body) {
         if (!TelemetryWrapper.isTelemetryEnabled(this)) {
             return;
         }
+        // RocketLauncherActivity will handle this intent
+        intent.setClass(getApplicationContext(), RocketLauncherActivity.class);
 
-        final Intent intent = new Intent(getApplicationContext(), RocketLauncherActivity.class);
-
-        // check if message needs to open url
-        if (url != null) {
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-        }
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

@@ -12,15 +12,16 @@ import android.os.IBinder;
 /**
  * Provide the actual impl (FirebaseMessagingService) or the dummy one (Service) so we can use the module
  * accordingly with our build types (currently only debug and beta will provide actual impl)
- *
+ * <p>
  * If actual impl is provided, it'll handle the push and call onRemoteMessage().
  */
 abstract public class FirebaseMessagingServiceWrapper extends Service {
 
     public static final String PUSH_OPEN_URL = "push_open_url";
+    public static final String PUSH_COMMAND = "push_command";
 
     // This is never called in this flavor since it's dummy.
-    abstract public void onRemoteMessage(String url, String title, String body);
+    abstract public void onRemoteMessage(Intent intent, String title, String body);
 
     @Override
     public IBinder onBind(Intent intent) {
