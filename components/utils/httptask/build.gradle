@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply from: '../../../buildSrc/pmd.gradle'
+apply from: '../../../buildSrc/checkstyle.gradle'
+apply from: '../../../buildSrc/findbugs.gradle'
 
 android {
     compileSdkVersion Versions.compile_sdk
@@ -25,4 +28,8 @@ dependencies {
 
     implementation "com.android.support:appcompat-v7:${Versions.support}"
     implementation project(path: ':HttpRequest')
+}
+
+afterEvaluate {
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
