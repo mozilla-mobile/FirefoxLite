@@ -82,14 +82,13 @@ public class TopSitesUtils {
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json_site = (JSONObject) jsonArray.get(i);
-                    final Site site = new Site();
-                    site.setId(json_site.getLong("id"));
-                    site.setUrl(json_site.getString("url"));
-                    site.setTitle(json_site.getString("title"));
-                    site.setViewCount(json_site.getLong("viewCount"));
-                    site.setLastViewTimestamp(json_site.getLong("lastViewTimestamp"));
-                    String icon_name = json_site.getString("favicon");
-                    site.setFavIconUri("file:///android_asset/topsites/icon/" + icon_name);
+                    final long id = json_site.getLong("id");
+                    final String title = json_site.getString("title");
+                    final String url = json_site.getString("url");
+                    final long viewCount = json_site.getLong("viewCount");
+                    final long lastViewed = json_site.getLong("lastViewTimestamp");
+                    final String faviconUri = "file:///android_asset/topsites/icon/" + json_site.getString("favicon");
+                    Site site = new Site(id, title, url, viewCount, lastViewed, faviconUri);
                     defaultSites.add(site);
                 }
             }

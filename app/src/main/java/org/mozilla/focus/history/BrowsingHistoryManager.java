@@ -100,6 +100,10 @@ public class BrowsingHistoryManager {
         }
     }
 
+    public static Site prepareSiteForFirstInsert(String url, String title, long timeStamp) {
+        return new Site(QueryHandler.LONG_NO_VALUE, title, url, QueryHandler.LONG_NO_VALUE, timeStamp, (String) QueryHandler.OBJECT_NO_VALUE);
+    }
+
     public void insert(final Site site, final AsyncInsertListener listener) {
         mQueryHandler.postWorker(new Runnable() {
             @Override
@@ -136,12 +140,12 @@ public class BrowsingHistoryManager {
         mQueryHandler.startQuery(QueryHandler.SITE_TOKEN, listener, Uri.parse(BrowsingHistory.CONTENT_URI.toString() + "?limit=" + limit), null, BrowsingHistory.VIEW_COUNT + " >= ?", new String[]{Integer.toString(minViewCount)}, BrowsingHistory.VIEW_COUNT + " DESC");
     }
 
+    private static Site prepareSiteForUpdate(String title, String url, String fileUri) {
+        return new Site(QueryHandler.LONG_NO_VALUE, title, url, QueryHandler.LONG_NO_VALUE, QueryHandler.LONG_NO_VALUE, fileUri);
+    }
+
     public static void updateHistory(String title, String url, String fileUri) {
-        final Site site = new Site();
-        site.setTitle(title);
-        site.setUrl(url);
-        site.setFavIconUri(fileUri);
-        BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
+        BrowsingHistoryManager.getInstance().updateLastEntry(prepareSiteForUpdate(title, url, fileUri), null);
     }
 
     public static class UpdateHistoryWrapper implements FavIconUtils.Consumer<String> {

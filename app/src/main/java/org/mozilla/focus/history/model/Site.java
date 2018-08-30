@@ -15,13 +15,7 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "browsing_history")
 public class Site {
 
-    // TODO: 8/21/18 For compatibility to old SQLiteOpenHelper implementation only, should be removed.
-    @Ignore
-    public Site() {
-
-    }
-
-    public Site(long id, String title, @NonNull String url, int viewCount, int lastViewTimestamp, String favIconUri) {
+    public Site(long id, String title, @NonNull String url, long viewCount, long lastViewTimestamp, String favIconUri) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -47,10 +41,6 @@ public class Site {
 
     @ColumnInfo(name = "fav_icon_uri")
     private String favIconUri;
-
-    // TODO: 8/21/18 Deprecate and remove this
-    @Ignore
-    private Bitmap favIcon;
 
     public long getId() {
         return this.id;
