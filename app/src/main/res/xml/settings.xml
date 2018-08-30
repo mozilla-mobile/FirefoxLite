@@ -66,10 +66,14 @@
         android:title="@string/menu_about"
         android:key="@string/pref_key_about" />
 
-    <CheckBoxPreference
-        android:contentDescription="You should only see this under Debug and Firebase build type"
-        android:defaultValue="true"
-        android:key="pref_key_private_mode_enabled"
-        android:title="Enable Private Mode" />
+    <!-- Preferences for development purpose, only visible in dev-build -->
+    <PreferenceCategory
+        android:key="@string/pref_key_category_development"
+        android:title="For Development">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_key_private_mode_enabled"
+            android:title="Private Mode" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
