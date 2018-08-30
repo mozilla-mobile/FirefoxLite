@@ -6,6 +6,7 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import org.json.JSONArray;
@@ -86,7 +87,13 @@ public class TopSitesUtils {
                     final String url = json_site.getString("url");
                     final long viewCount = json_site.getLong("viewCount");
                     final long lastViewed = json_site.getLong("lastViewTimestamp");
-                    final String faviconUri = TOP_SITE_ASSET_PREFIX + json_site.getString("favicon");
+                    final String faviconUriOrName = json_site.getString("favicon");
+                    final String faviconUri;
+                    if (Uri.parse(faviconUriOrName).getScheme() == null) {
+                        faviconUri = TOP_SITE_ASSET_PREFIX + faviconUriOrName;
+                    } else {
+                        faviconUri = faviconUriOrName;
+                    }
                     Site site = new Site(id, title, url, viewCount, lastViewed, faviconUri);
                     defaultSites.add(site);
                 }
