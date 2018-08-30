@@ -118,7 +118,7 @@ class LaunchIntentDispatcher {
 }
 
 private fun Intent.tryOpen(context: Context, fallback: () -> Unit): LaunchIntentDispatcher.Action {
-    if (this.resolveActivity(context.packageManager).className != AppConstants.LAUNCHER_ACTIVITY_ALIAS) {
+    if (this.resolveActivity(context.packageManager)?.className != AppConstants.LAUNCHER_ACTIVITY_ALIAS) {
         context.startActivity(this)
         return LaunchIntentDispatcher.Action.HANDLED
     }
