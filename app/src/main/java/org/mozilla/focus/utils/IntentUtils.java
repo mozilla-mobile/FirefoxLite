@@ -6,12 +6,14 @@ package org.mozilla.focus.utils;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.VisibleForTesting;
@@ -268,5 +270,17 @@ public class IntentUtils {
         privacyPolicyUpdate.setAction(IntentUtils.ACTION_NOTIFICATION);
         privacyPolicyUpdate.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_PRIVACY_POLICY_UPDATE, true);
         return privacyPolicyUpdate;
+    }
+
+    @CheckResult
+    public static boolean openDefaultAppsSettings(Context context) {
+        try {
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
+            context.startActivity(intent);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            // In some cases, a matching Activity may not exist (according to the Android docs).
+            return false;
+        }
     }
 }
