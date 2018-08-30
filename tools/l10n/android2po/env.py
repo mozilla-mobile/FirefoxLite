@@ -175,6 +175,18 @@ MISSING_LOCALES = {
         'local_name': 'Sundanese',
         'plural_rule': 'id',
         'team': 'su <LL@li.org>\n'
+    },
+    'ace': {
+        'name': 'Basa Acèh',
+        'local_name': 'Acehnese',
+        'plural_rule': 'id',
+        'team': 'ace <LL@li.org>\n'
+    },
+    'gor': {
+        'name': 'Bahasa Hulontalo',
+        'local_name': 'Gorontalo',
+        'plural_rule': 'id',
+        'team': 'gor <LL@li.org>\n'
     }
 }
 
