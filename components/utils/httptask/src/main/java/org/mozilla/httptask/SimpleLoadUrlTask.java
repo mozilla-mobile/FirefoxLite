@@ -8,7 +8,7 @@ import org.mozilla.httprequest.HttpRequest;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class SimpleLoadUrlTask extends AsyncTask<String, Void, String>{
+public class SimpleLoadUrlTask extends AsyncTask<String, Void, String> {
 
     /**
      *
