@@ -1,7 +1,15 @@
 apply plugin: 'java-library'
+apply from: '../../../buildSrc/pmd.gradle'
+apply from: '../../../buildSrc/checkstyle.gradle'
+// No file to analyze?
+// apply from: '../../../buildSrc/findbugs.gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+afterEvaluate {
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }
 
 sourceCompatibility = "1.8"

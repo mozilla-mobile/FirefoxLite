@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply from: '../buildSrc/pmd.gradle'
+apply from: '../buildSrc/checkstyle.gradle'
+apply from: '../buildSrc/findbugs.gradle'
 
 android {
 
@@ -46,4 +49,8 @@ android.variantFilter { variant ->
     if (variant.buildType.name.endsWith('release') || variant.buildType.name.endsWith('debug')) {
         variant.setIgnore(true);
     }
+}
+
+afterEvaluate {
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle'
 }

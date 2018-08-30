@@ -5,9 +5,9 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
 apply plugin: 'jacoco-android'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
-apply from: 'buildscripts/pmd.gradle'
-apply from: 'buildscripts/checkstyle.gradle'
-apply from: 'buildscripts/findbugs.gradle'
+apply from: '../buildSrc/pmd.gradle'
+apply from: '../buildSrc/checkstyle.gradle'
+apply from: '../buildSrc/findbugs.gradle'
 apply from: 'buildscripts/l10n.gradle'
 
 
