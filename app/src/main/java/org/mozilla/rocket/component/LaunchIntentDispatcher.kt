@@ -7,7 +7,6 @@ import android.support.annotation.CheckResult
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.notification.RocketMessagingService
-import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.AppConstants
@@ -38,11 +37,10 @@ class LaunchIntentDispatcher {
             }
             /**
              * This extra is passed by the Notification (either [RocketMessagingService.onRemoteMessage] or System tray
-             * if we have this extra, we want to show this url in a new tab
+             * if we have this extra, we want to show this url either
+             * 1. If there are other apps can handle it, use that app or
+             * 2. Open the url in a new tab in Rocket
              */
-
-
-            /** This extra is passed by the Notification (either [RocketMessagingService.onRemoteMessage] or System tray*/
             intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL)?.run {
 
                 intent.data = Uri.parse(this)
