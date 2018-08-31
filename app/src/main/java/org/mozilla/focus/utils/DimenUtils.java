@@ -12,6 +12,7 @@ public class DimenUtils {
     public static final int TYPE_ORIGINAL = 0;
     public static final int TYPE_SCALED_DOWN = 1;
     public static final int TYPE_GENERATED = 2;
+    public static final int JPEG_QUALITY = 80;
 
     @IntDef({TYPE_ORIGINAL, TYPE_SCALED_DOWN, TYPE_GENERATED})
     public @interface FavIconType {
