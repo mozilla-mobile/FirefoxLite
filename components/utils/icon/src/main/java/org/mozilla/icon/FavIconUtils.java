@@ -196,13 +196,18 @@ public class FavIconUtils {
         private String url;
         private Bitmap bitmap;
         private Consumer<String> callback;
+        private final Bitmap.CompressFormat compressFormat;
+        private final int quality;
 
 
-        public SaveBitmapTask(File directory, String url, Bitmap bitmap, Consumer<String> callback) {
+        public SaveBitmapTask(File directory, String url, Bitmap bitmap, Consumer<String> callback,
+                              Bitmap.CompressFormat compressFormat, int quality) {
             this.directory = directory;
             this.url = url;
             this.bitmap = bitmap;
             this.callback = callback;
+            this.compressFormat = compressFormat;
+            this.quality = quality;
         }
 
         @Override
@@ -212,7 +217,7 @@ public class FavIconUtils {
 
         @Override
         protected String doInBackground(Void... voids) {
-            return saveBitmapToDirectory(directory, url, bitmap);
+            return saveBitmapToDirectory(directory, url, bitmap, compressFormat, quality);
         }
     }
 
@@ -222,12 +227,18 @@ public class FavIconUtils {
         private List<String> urls;
         private List<byte[]> bytesList;
         private FavIconUtils.Consumer<List<String>> callback;
+        private final Bitmap.CompressFormat compressFormat;
+        private final int quality;
 
-        public SaveBitmapsTask(File directory, List<String> urls, List<byte[]> bytesList, FavIconUtils.Consumer<List<String>> callback) {
+        public SaveBitmapsTask(File directory, List<String> urls, List<byte[]> bytesList,
+                               FavIconUtils.Consumer<List<String>> callback,
+                               Bitmap.CompressFormat compressFormat, int quality) {
             this.directory = directory;
             this.urls = urls;
             this.bytesList = bytesList;
             this.callback = callback;
+            this.compressFormat = compressFormat;
+            this.quality = quality;
         }
 
         @Override
@@ -241,7 +252,8 @@ public class FavIconUtils {
             for (int i = 0 ; i < urls.size() ; i++) {
                 byte[] bytes = bytesList.get(i);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                ret.add(FavIconUtils.saveBitmapToDirectory(directory, urls.get(i), bitmap));
+                ret.add(FavIconUtils.saveBitmapToDirectory(directory, urls.get(i), bitmap,
+                        compressFormat, quality));
             }
             return ret;
         }
@@ -249,7 +261,9 @@ public class FavIconUtils {
 
     public static String saveBitmapToDirectory(@NonNull final File dir,
                                                @NonNull final String url,
-                                               @NonNull final Bitmap bitmap) {
+                                               @NonNull final Bitmap bitmap,
+                                               @NonNull final Bitmap.CompressFormat compressFormat,
+                                               final int quality) {
         // Use encoded url as default if No MD5 algorithm
         String fileName = Uri.encode(url);
         try {
@@ -258,12 +272,14 @@ public class FavIconUtils {
             e.printStackTrace();
         }
 
-        return FavIconUtils.saveBitmapToFile(dir, fileName, bitmap);
+        return FavIconUtils.saveBitmapToFile(dir, fileName, bitmap, compressFormat, quality);
     }
 
     private static String saveBitmapToFile(@NonNull final File dir,
                                            @NonNull final String fileName,
-                                           @NonNull final Bitmap bitmap) {
+                                           @NonNull final Bitmap bitmap,
+                                           @NonNull final Bitmap.CompressFormat compressFormat,
+                                           final int quality) {
         ensureDir(dir);
 
         try {
@@ -281,7 +297,7 @@ public class FavIconUtils {
             }
             //Convert bitmap to byte array
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+            bitmap.compress(compressFormat, quality, bos);
             byte[] bitmapData = bos.toByteArray();
 
             //write the bytes in file

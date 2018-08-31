@@ -14,6 +14,7 @@ import android.webkit.WebView;
 
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
@@ -76,7 +77,10 @@ class FocusWebChromeClient extends WebChromeClient {
         final String title = view.getTitle();
 
         try {
-            new FavIconUtils.SaveBitmapTask(new FileUtils.GetCache(new WeakReference<>(view.getContext())).get(), url, icon, new BrowsingHistoryManager.UpdateHistoryWrapper(title, url)).execute();
+            new FavIconUtils.SaveBitmapTask(new FileUtils.GetCache(
+                    new WeakReference<>(view.getContext())).get(), url, icon,
+                    new BrowsingHistoryManager.UpdateHistoryWrapper(title, url),
+                    Bitmap.CompressFormat.JPEG, DimenUtils.JPEG_QUALITY).execute();
         } catch (ExecutionException | InterruptedException e) {
             Logger.throwOrWarn(LOGGER_TAG, "Failed to get cache folder in onReceivedIcon.");
         }

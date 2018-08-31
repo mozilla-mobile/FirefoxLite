@@ -63,6 +63,7 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
@@ -708,7 +709,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             if (handlerWeakReference.get() == null) {
                 return;
             }
-            new FavIconUtils.SaveBitmapsTask(cacheDir, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference)).execute();
+            new FavIconUtils.SaveBitmapsTask(cacheDir, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference),
+                    Bitmap.CompressFormat.JPEG, DimenUtils.JPEG_QUALITY).execute();
             db.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
             PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(TOP_SITES_V2_PREF, true).apply();
         }

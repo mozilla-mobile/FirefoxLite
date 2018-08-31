@@ -103,7 +103,6 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 siteVH.textSecondary.setText(item.getUrl());
                 String favIconUri = item.getFavIconUri();
                 if (favIconUri != null) {
-                    Glide.with(siteVH.imgFav).load(favIconUri).into(siteVH.imgFav);
                     Glide.with(siteVH.imgFav.getContext())
                             .asBitmap()
                             .load(favIconUri)

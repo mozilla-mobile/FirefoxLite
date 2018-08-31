@@ -4,13 +4,11 @@ apply from: '../../../buildSrc/checkstyle.gradle'
 apply from: '../../../buildSrc/findbugs.gradle'
 
 android {
-    compileSdkVersion 27
-
-
+    compileSdkVersion Versions.compile_sdk
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 27
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
         versionCode 1
         versionName "1.0"
 
