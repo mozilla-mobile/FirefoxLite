@@ -55,7 +55,6 @@ import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.tabtray.TabTray;
-import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -78,6 +77,7 @@ import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
+import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
@@ -760,7 +760,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         // Besides, RocketLauncherActivity not exported so using the alias-name is required.
         shortcut.setClassName(this, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
         shortcut.setData(Uri.parse(url));
-        shortcut.putExtra(AppLaunchMethod.EXTRA_HOME_SCREEN_SHORTCUT, true);
+        shortcut.putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.getValue(), true);
 
         ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
     }
@@ -860,7 +860,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public void sendBrowsingTelemetry() {
         final SafeIntent intent = new SafeIntent(getIntent());
-        if (intent.getBooleanExtra(AppLaunchMethod.EXTRA_TEXT_SELECTION, false)) {
+        if (intent.getBooleanExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.getValue(), false)) {
             TelemetryWrapper.textSelectionIntentEvent();
         } else {
             TelemetryWrapper.browseIntentEvent();

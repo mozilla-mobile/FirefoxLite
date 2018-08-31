@@ -13,9 +13,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
-import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.SearchUtils;
+import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.RocketLauncherActivity;
 
 /**
@@ -40,7 +40,7 @@ public class TextActionActivity extends Activity {
 
         final Intent searchIntent = new Intent(this, RocketLauncherActivity.class);
         searchIntent.setAction(Intent.ACTION_VIEW);
-        searchIntent.putExtra(AppLaunchMethod.EXTRA_TEXT_SELECTION, true);
+        searchIntent.putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.getValue(), true);
         searchIntent.setData(Uri.parse(searchUrl));
 
         startActivity(searchIntent);
