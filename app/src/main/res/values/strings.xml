@@ -219,7 +219,11 @@
     <!-- When the webpage request access to geolocation a dialog will popup.
         This is the title of the permission request dialog. Argument 1 is the url of the website. -->
     <string name="geolocation_dialog_message">%1$s \nwants to access your location.</string>
-    <string name="geolocation_dialog_message_cache_it">Don\'t ask again for this site until exit</string>
+    <!-- A checkbox option in the dialog which ask users to give geolocation permission to the site.
+        Users' decision will be remembered and future display of the dialog will be skipped if this
+        option is checked. These memorized decisions will be wiped out if the App is restarted.
+        %1$s is the App name (Firefox Rocket). -->
+    <string name="geolocation_dialog_message_cache_it">Don\'t ask again for this site until %1$s restarts</string>
     <string name="geolocation_dialog_allow">ALLOW</string>
     <string name="geolocation_dialog_block">BLOCK</string>
 
