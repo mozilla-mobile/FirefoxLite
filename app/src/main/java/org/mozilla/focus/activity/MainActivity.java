@@ -165,8 +165,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         screenNavigator = new ScreenNavigator(this);
 
         SafeIntent intent = new SafeIntent(getIntent());
-        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
-
 
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -281,8 +279,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onNewIntent(Intent unsafeIntent) {
         final SafeIntent intent = new SafeIntent(unsafeIntent);
-        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
-
         if (promotionModel != null) {
             promotionModel.parseIntent(intent);
             if (PromotionPresenter.runPromotionFromIntent(this, promotionModel)) {
@@ -760,7 +756,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         final Bitmap bitmap = focusTab.getFavicon();
         final Intent shortcut = new Intent(Intent.ACTION_VIEW);
-        shortcut.setClass(this, MainActivity.class);
+        // Use activity-alias name here so we can start whoever want to control launching behavior
+        // Besides, RocketLauncherActivity not exported so using the alias-name is required.
+        shortcut.setClassName(this, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
         shortcut.setData(Uri.parse(url));
         shortcut.putExtra(AppLaunchMethod.EXTRA_HOME_SCREEN_SHORTCUT, true);
 

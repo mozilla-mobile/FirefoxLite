@@ -7,9 +7,11 @@ import android.support.annotation.CheckResult
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.notification.RocketMessagingService
+import org.mozilla.focus.telemetry.AppLaunchMethod
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.widget.DefaultBrowserPreference
 import org.mozilla.rocket.component.LaunchIntentDispatcher.Command.SET_DEFAULT
 
@@ -28,6 +30,12 @@ class LaunchIntentDispatcher {
         @JvmStatic
         @CheckResult
         fun dispatch(context: Context, intent: Intent): Action? {
+
+            /**
+             * Now [LaunchIntentDispatcher.dispatch] is the universal entry to our app. All starting method should be analyzed here.
+             * */
+            AppLaunchMethod.parse(SafeIntent(intent)).sendLaunchTelemetry()
+
             /**
              *  This intent is used when we want to set default browser on Android L, see [DefaultBrowserPreference]
              * */
