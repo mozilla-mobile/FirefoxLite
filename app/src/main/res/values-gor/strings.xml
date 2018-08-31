@@ -24,4 +24,19 @@
   <string name="content_description_back">Mohuwalingo</string>
   <string name="content_description_customtab_exit">Mohuwalingo ode aplikasi yilamuma\'o</string>
   <string name="content_description_blocking_switch">Bubuli pelacak</string>
+  <string name="external_app_prompt_no_app_title">Lolohe aplikasi u mowali momu\'o wūmbuta</string>
+  <string name="external_app_prompt_no_app">Diya\'a aplikasi to perangaktimu u mowali momu\'o wūmbuta botiya. Yi\'o mowali molola %1$s mololohu %2$s aplikasi u mowali momu\'o.</string>
+  <string name="contextmenu_link_copy">Wamiya alamat wūmbuta</string>
+  <string name="contextmenu_image_copy">Wamiya alamat logāmbari</string>
+  <string name="firstrun_close_button">OKE, mā otāwa!</string>
+  <string name="geolocation_dialog_allow">POLULIYA</string>
+  <string name="cannot_find_the_file">Beras ja yilotapu</string>
+  <string name="cannot_delete_the_file">Berkas ja mowali lulutolo.</string>
+  <string name="setting_dialog_sd_card">Kartu SD</string>
+  <string name="message_enable_turbo_mode">Turbo mode pasi-pasi</string>
+  <string name="message_disable_turbo_mode">Turbo mode ja pasi-pasi</string>
+  <string name="message_enable_block_image">Sa\'ati boyiya bubuli gāmbari</string>
+  <string name="message_disable_block_image">Sa\'ati botiya popobilohe gāmbari</string>
+  <string name="message_clear_cache_fail">Ja mowali moluluta pilohepita</string>
+  <string name="message_cleared_cached">%1$s pilohepita yiluluto</string>
 </resources>
