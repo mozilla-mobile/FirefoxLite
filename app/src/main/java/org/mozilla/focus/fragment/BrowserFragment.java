@@ -669,6 +669,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private AlertDialog buildGeoPromptDialog() {
         View customContent = LayoutInflater.from(getContext()).inflate(R.layout.dialog_permission_request, null);
         CheckedTextView checkBox = customContent.findViewById(R.id.cache_my_decision);
+        checkBox.setText(getString(R.string.geolocation_dialog_message_cache_it, getString(R.string.app_name)));
         checkBox.setOnClickListener(v -> {
             checkBox.toggle();
         });
