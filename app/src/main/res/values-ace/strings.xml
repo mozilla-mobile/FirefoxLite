@@ -143,22 +143,52 @@
   <string name="screenshot_grid_empty_text_msg_postfix">bak menu keu cok bandum asoë bak saboh laman web.</string>
   <string name="screenshot_image_viewer_dialog_title">Infô</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Tanggai: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">Kawan: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Rèsolusi: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">Ukôran: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_title1">Nan: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Sampôh gamba nyoë?</string>
+  <string name="file_picker_title">Piléh beureukaih keu neupasoe</string>
+  <string name="message_enable_turbo_mode">Mode turbo geupeuudép</string>
+  <string name="message_disable_turbo_mode">Mode turbo geupumaté</string>
+  <string name="message_enable_block_image">Jinoe teumeuheun gamba</string>
+  <string name="message_disable_block_image">Jinoe pumeudeuih gamba</string>
+  <string name="message_clear_cache_fail">Han jeuet sampôh cache</string>
+  <string name="message_storage_unavailable_cancel_download">Bak keubah han jeuet jiteumèe. Ceuneucok geupubateue.</string>
   <string name="message_cleared_cached">%1$s cache ka teusampôh</string>
+  <string name="message_cleared_browsing_data">Data seumeulop geusampôh</string>
   <string name="message_deleted_screenshot">Drop layeuë ka teusampôh</string>
   <string name="message_cannot_find_screenshot">Han jeuët peuleumah drop layeuë</string>
   <string name="remove">Sampôh</string>
+  <string name="privacy_policy_update_notification_title">Bri Thèe Pubarô Produk</string>
+  <string name="privacy_policy_update_notification_action">Mangat Firefox Rocket leubèh göt keu Droeneuh ngön ban dum ureueng, kamoe meupeugöt padum-padum boh hai barô lam keubijakan privasi kamoe. Neuteugön keu neumeurunoe leubèh lanjut.</string>
   <string name="rate_app_dialog_text_title">Galak keu %1$s?</string>
+  <string name="rate_app_dialog_text_content">Sabah ka neupiléh produk kamoe. Saran Droeneuh peunténg keu kamoe.</string>
+  <string name="rate_app_dialog_btn_go_rate">Nyo, bri 5 bintang!</string>
+  <string name="rate_app_notification_action_rate">BÔH 5 BINTANG</string>
+  <string name="rate_app_dialog_btn_feedback">H\'an, peuét saran.</string>
+  <string name="rate_app_notification_action_feedback">SARAN</string>
   <string name="share_app_dialog_text_title">Bulueng %1$s ngön rakan!</string>
+  <string name="share_app_dialog_text_content">- Bagah ngön phui\n- Himat data\n- Drop layeue hayeue</string>
   <string name="share_app_dialog_btn_share">Bulueng</string>
+  <string name="share_app_promotion_text">Hai, neuci browser atra %3$s nyoe. Bagah ngön phui. %1$s%2$s</string>
+  <string name="your_rights_content1">%1$s nakeuh saboh software bibeueh ngön open source nyang geupeugöt lé %2$s ngön ureueng laén.</string>
+  <string name="your_rights_content2"><![CDATA["%1$s geuseudia keu Droeneuh ngön syarat "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" dan lisènsi nè teuhah nyang laén."]]></string>
+  <string name="your_rights_content3"><![CDATA["Droeneuh hana geubri hak atawa lisènsi keu mèrèk meukat Mozilla Foundation atawa pihak laén, rôh lam nyan nan atawa lambang %3$s, %4$s, atawa %1$s. Haba leubèh lanjut jeuet neukalon "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">sinoe</a>.]]></string>
+  <string name="your_rights_content4"><![CDATA["Kode asai tambahan keu %1$s ka na lam padub boh "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">" lisensi "</a>" laén nyang pré ngön kodé teuhah."]]></string>
+  <string name="your_rights_content5"><![CDATA["%1$s na cit geungui dapeuta blokir nyang jiseudia lé Disconnect, Inc. seubagoe buet teupisah ngön teudöng keudroe di yup "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">" GNU General Public License v3 "</a>", dan teuseudia "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">sinoe</a>.]]></string>
   <string name="survey_notification_title">Kamoë peureulèë droëneuh! %1$s</string>
+  <string name="survey_notification_description">Tapeugöt produk nyang leubèh jroh keu Indônèsia</string>
   <string name="new_background_tab_hint">Tab barô ka teuhah</string>
   <string name="new_background_tab_switch">GANTOË</string>
+  <string name="setting_default_browser_notification_title">Gantoe peuatô...</string>
+  <string name="setting_default_browser_notification_text">Peureulèe watèe siat</string>
+  <string name="setting_default_browser_notification_clickable_text">Teugön keu neuatô browser teutap</string>
   <string name="tab_tray_close_tabs_btn_text">Tôp bandum</string>
   <string name="tab_tray_close_tabs_dialog_msg">Tôp bandum tab?</string>
+  <string name="themetoy_onboarding_title">Puwareuna udépneuh!</string>
+  <string name="themetoy_onboarding_description">Teugön dua go bak layeue keue keu neugantoe tèma.</string>
   <string name="bookmark_saved">Peutanda meukeubah</string>
   <string name="bookmark_removed">Peutanda meusampôh</string>
   <string name="bookmark_saved_edit">ANDAM</string>
@@ -169,6 +199,10 @@
   <string name="bookmark_edit_success">Peutanda meuseubarô</string>
   <string name="bookmarks_empty_view_msg">Hana peutanda</string>
   <string name="edit_bookmark">Andam</string>
+  <string name="private_browsing_title">Seumeulop Rahsia</string>
+  <string name="private_browsing_erase_message">Sampôh riwayat seumeulop droe</string>
   <string name="private_browsing_open_action">PEUHAH</string>
+  <string name="private_browsing_erase_done">Riwayat seumeulop rahsia Droeneuh\nka geusampôh.</string>
   <string name="my_shot_on_boarding_message">Kalön deuneurop layeuë droëneuh di sinoë!</string>
+  <string name="my_shot_on_boarding_category_message">Keu tapeujroh peungalaman produk Droeneuh, kamoe meupeusapat informasi bhaih kawan deuneurop layeue Droeneuh.</string>
 </resources>
