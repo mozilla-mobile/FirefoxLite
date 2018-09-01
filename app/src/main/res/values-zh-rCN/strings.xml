@@ -92,6 +92,7 @@
   <string name="permission_dialog_msg_storage">缺少权限。请允许 Firefox Rocket 获知您的位置。</string>
   <string name="permission_toast_storage">无法使用存储。请授予在您的设备上存储照片和文件的权限。</string>
   <string name="geolocation_dialog_message">%1$s \n想要获知您的位置。</string>
+  <string name="geolocation_dialog_message_cache_it">本次 %1$s 会话中不再为此网站询问</string>
   <string name="geolocation_dialog_allow">允许</string>
   <string name="geolocation_dialog_block">阻止</string>
   <string name="setting_dialog_clear_data">清除数据</string>

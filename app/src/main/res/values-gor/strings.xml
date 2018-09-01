@@ -26,6 +26,7 @@
   <string name="content_description_blocking_switch">Bubuli pelacak</string>
   <string name="external_app_prompt_no_app_title">Lolohe aplikasi u mowali momu\'o wūmbuta</string>
   <string name="external_app_prompt_no_app">Diya\'a aplikasi to perangaktimu u mowali momu\'o wūmbuta botiya. Yi\'o mowali molola %1$s mololohu %2$s aplikasi u mowali momu\'o.</string>
+  <string name="error_page_button">YIMONTALI PE\'ĒNTAPO</string>
   <string name="contextmenu_link_copy">Wamiya alamat wūmbuta</string>
   <string name="contextmenu_image_copy">Wamiya alamat logāmbari</string>
   <string name="firstrun_close_button">OKE, mā otāwa!</string>

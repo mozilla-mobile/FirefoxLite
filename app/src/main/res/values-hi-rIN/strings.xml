@@ -11,7 +11,7 @@
   <string name="menu_share_with_friends">दोस्तों के साथ साझा करें</string>
   <string name="share_dialog_title">इससे साझा करें</string>
   <string name="text_selection_search_action">Firefox Rocket में खोजें</string>
-  <string name="about_content_body">%1$s %2$s द्वारा निर्मित तीव्र एवं हल्का ब्राउज़र हैं। हमारा लक्ष्य एक स्वस्थ, मुक्त इंटरनेट को बढ़ावा देना हैं।</string>
+  <string name="about_content_body">%1$s %2$s द्वारा निर्मित तीव्र एवं हल्का ब्राउज़र है। हमारा लक्ष्य एक स्वस्थ, मुक्त इंटरनेट को बढ़ावा देना है।</string>
   <string name="about_link_learn_more">अधिक जानें</string>
   <string name="about_link_support">सहारा</string>
   <string name="about_link_your_rights">आपका अधिकार / लाइसेंस</string>
@@ -73,7 +73,7 @@
   <string name="firstrun_close_button">अच्छा, समझ गया!</string>
   <string name="firstrun_skip_button">छोड़ें</string>
   <string name="firstrun_next_button">अगला</string>
-  <string name="label_menu_bookmark">बुकमार्क्स</string>
+  <string name="label_menu_bookmark">बुक्मार्क</string>
   <string name="label_menu_download">डाउनलोड</string>
   <string name="label_menu_clear_cache">कैशे मिटायें</string>
   <string name="label_menu_history">इतिहास</string>
@@ -92,6 +92,7 @@
   <string name="permission_dialog_msg_storage">अनुपलब्ध अनुमतियाँ। Firefox Rocket को आपके स्थान तक पहुँचने की अनुमति दें।</string>
   <string name="permission_toast_storage">संग्रहण उपलब्ध नहीं है। अपने डिवाइस पर फ़ोटो और फ़ाइलें संग्रहीत करने की अनुमति दें।</string>
   <string name="geolocation_dialog_message">%1$s\nआपके स्थान की जानकारी प्राप्त करना चाहता है।</string>
+  <string name="geolocation_dialog_message_cache_it">%1$s के अगले शुरुआत तक इस साइट के लिए ना पूछें</string>
   <string name="geolocation_dialog_allow">अनुमति दें</string>
   <string name="geolocation_dialog_block">ब्लॉक करें</string>
   <string name="setting_dialog_clear_data">डेटा मिटायें</string>
@@ -204,5 +205,5 @@
   <string name="private_browsing_open_action">खोलें</string>
   <string name="private_browsing_erase_done">आपका निजी ब्राउज़िंग \nइतिहास मिटा दिया गया है।</string>
   <string name="my_shot_on_boarding_message">अपने स्क्रीनशॉटों को यहाँ देखें!</string>
-  <string name="my_shot_on_boarding_category_message">आपके प्रोडक्ट अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट\' श्रेणियों के बारे में जानकारियाँ जमा करते हैंl</string>
+  <string name="my_shot_on_boarding_category_message">आपके उत्पाद अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट श्रेणियों के बारे में जानकारियाँ जमा करते हैं।</string>
 </resources>

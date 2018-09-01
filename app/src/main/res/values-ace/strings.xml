@@ -70,7 +70,7 @@
   <string name="first_run_upgrade_page_text1_highlight">Multitab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs nyang droen galak beubagah ngön %s</string>
   <string name="first_run_upgrade_page_text2_highlight">tamah atanyan lam layeu phôn!</string>
-  <string name="firstrun_close_button">Oké, lôn meuphôm!</string>
+  <string name="firstrun_close_button">Göt, lôn muphôm!</string>
   <string name="firstrun_skip_button">Liwat</string>
   <string name="firstrun_next_button">Lanjut</string>
   <string name="label_menu_bookmark">Peutanda</string>
@@ -92,6 +92,7 @@
   <string name="permission_dialog_msg_storage">Hana idin. Neubri idin keu Firefox Rocket keu jitupeue neuduekneuh.</string>
   <string name="permission_toast_storage">Hana bak keubah. Neupeuidin keu keubah fôtô ngön beureukaih lam peukakaih Droeneuh.</string>
   <string name="geolocation_dialog_message">%1$s \nkeumeung jitupeue neuduekneuh.</string>
+  <string name="geolocation_dialog_message_cache_it">Bèk tanyöng lé keu situs nyoe sampoe %1$s teuhah lom</string>
   <string name="geolocation_dialog_allow">PEUIDIN</string>
   <string name="geolocation_dialog_block">THAM</string>
   <string name="setting_dialog_clear_data">Peugléh Data</string>
@@ -109,7 +110,7 @@
   <string name="download_completed">%1$s ka teucok</string>
   <string name="download_deleted">%1$s ka teusampôh</string>
   <string name="download_cancel">Ceuneucok geupubateuë</string>
-  <string name="undo">Peubateuë</string>
+  <string name="undo">Pubateuë</string>
   <string name="open">Peuhah</string>
   <string name="pause">geupupiyôh</string>
   <string name="pending">Geutanggôh</string>
@@ -131,7 +132,7 @@
   <string name="screenshot_saved">Deuneurop layeue teukeubah</string>
   <string name="screenshot_failed">Hana meuhasé drop layeue</string>
   <string name="screenshot_illustration">Cok drop layeuë dum meusaboh laman…</string>
-  <string name="screenshot_view">KALON</string>
+  <string name="screenshot_view">KALÖN</string>
   <string name="screenshot_edit">ANDAM</string>
   <string name="screenshot_delete">SAMPÔH</string>
   <string name="screenshot_share">BULUENG</string>
@@ -145,7 +146,7 @@
   <string name="screenshot_image_viewer_dialog_info_time1">Tanggai: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">Kawan: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Rèsolusi: %1$s</string>
-  <string name="screenshot_image_viewer_dialog_info_size1">Ukôran: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_size1">Seunipat: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">Nan: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Sampôh gamba nyoë?</string>
