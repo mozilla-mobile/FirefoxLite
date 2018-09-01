@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<org.mozilla.focus.widget.EqualDistributeGrid xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MenuSheetRow"
+    android:layout_marginTop="3dp"
+    app:horizontalCapacity="4"
+    tools:background="#3300FF00">
+
+    <FrameLayout
+        android:id="@+id/menu_bookmark"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/ic_bookmarks" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_bookmark" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_download"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_download" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_download" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_history"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_history" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_history" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_screenshots"
+        style="@style/MenuButtonContainer">
+
+        <ImageView
+            android:id="@+id/menu_my_shot_unread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="48dp"
+            android:paddingTop="7dp"
+            android:src="@drawable/ic_menu_screenshots_new" />
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_my_shots" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_my_shots" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/menu_turbomode"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuToggleIcon"
+                android:background="@drawable/menu_speedmode" />
+
+            <TextView
+                style="@style/MenuToggleText"
+                android:text="@string/label_menu_turbo_mode" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_blockimg"
+        style="@style/MenuButtonContainer">
+        <!--todo: the FrameLayout and LinearLayout can actually be merged now, but we' re
+        going to do this later since this is an uplift commit.-->
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuToggleIcon"
+                android:background="@drawable/menu_blockimg" />
+
+            <TextView
+                style="@style/MenuToggleText"
+                android:text="@string/label_menu_block_image" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_delete"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_delete" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_clear_cache" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_preferences"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_settings" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_settings" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_exit"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/menu_exit" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_exit" />
+        </LinearLayout>
+    </FrameLayout>
+
+</org.mozilla.focus.widget.EqualDistributeGrid>
