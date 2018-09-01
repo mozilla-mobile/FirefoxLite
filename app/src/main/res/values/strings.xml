@@ -223,7 +223,7 @@
         Users' decision will be remembered and future display of the dialog will be skipped if this
         option is checked. These memorized decisions will be wiped out if the App is restarted.
         %1$s is the App name (Firefox Rocket). -->
-    <string name="geolocation_dialog_message_cache_it">Don\'t ask again for this site until %1$s restarts</string>
+    <string name="geolocation_dialog_message_cache_it">Don’t ask again for this site until %1$s restarts</string>
     <string name="geolocation_dialog_allow">ALLOW</string>
     <string name="geolocation_dialog_block">BLOCK</string>
 
@@ -469,6 +469,6 @@
     <!-- Message shown when the user is using screenshot for the first time. Guide them how to go to "My shots". -->
     <string name="my_shot_on_boarding_message">View your screenshots here!</string>
     <!-- The notice shown along with the message when the user captures screenshot for the first time -->
-    <string name="my_shot_on_boarding_category_message">To improve your product experience, we collect information about your screenshots\' categories.</string>
+    <string name="my_shot_on_boarding_category_message">To improve your product experience, we collect information about your screenshots’ categories.</string>
 
 </resources>
