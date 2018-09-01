@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.EqualDistributeGrid xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MenuSheetRow"
     android:layout_marginTop="1dp"
@@ -70,4 +70,4 @@
         </LinearLayout>
     </FrameLayout>
 
-</org.mozilla.focus.widget.EqualDistributeRow>
+</org.mozilla.focus.widget.EqualDistributeGrid>

@@ -4,7 +4,7 @@
     android:layout_height="@dimen/fixed_menu_height"
     android:layout_gravity="center_horizontal|bottom">
 
-    <org.mozilla.focus.widget.EqualDistributeRow xmlns:android="http://schemas.android.com/apk/res/android"
+    <org.mozilla.focus.widget.EqualDistributeGrid xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -20,5 +20,5 @@
         <include layout="@layout/button_pin_shortcut" />
 
         <include layout="@layout/button_share" />
-    </org.mozilla.focus.widget.EqualDistributeRow>
+    </org.mozilla.focus.widget.EqualDistributeGrid>
 </FrameLayout>

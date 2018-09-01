@@ -17,6 +17,11 @@
         <attr name="spacing" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="EqualDistributeGrid">
+        <attr name="horizontalCapacity" format="integer" />
+        <attr name="verticalGutter" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="TabCounter">
         <attr name="drawableColor" format="color" />
     </declare-styleable>
