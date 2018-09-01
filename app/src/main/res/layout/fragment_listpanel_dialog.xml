@@ -39,7 +39,7 @@
             android:layout_marginBottom="48dp"
             android:layout_gravity="bottom"
             android:background="@color/colorListPanelBottomDivider"/>
-        <org.mozilla.focus.widget.EqualDistributeRow
+        <org.mozilla.focus.widget.EqualDistributeGrid
             android:id="@+id/panel_bottom"
             android:background="@color/colorMenuBackground"
             android:layout_gravity="bottom"
@@ -63,5 +63,5 @@
                 android:id="@+id/screenshots"
                 style="@style/ListPanelDrawable"
                 app:srcCompat="@drawable/menu_my_shots" />
-        </org.mozilla.focus.widget.EqualDistributeRow>
+        </org.mozilla.focus.widget.EqualDistributeGrid>
 </android.support.design.widget.CoordinatorLayout>

@@ -6,7 +6,7 @@
     android:layout_height="@dimen/fixed_menu_height"
     android:layout_gravity="center_horizontal|bottom">
 
-    <org.mozilla.focus.widget.EqualDistributeRow
+    <org.mozilla.focus.widget.EqualDistributeGrid
         android:id="@+id/browser_screen_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,5 +25,5 @@
         <include layout="@layout/button_capture" />
 
         <include layout="@layout/button_more" />
-    </org.mozilla.focus.widget.EqualDistributeRow>
+    </org.mozilla.focus.widget.EqualDistributeGrid>
 </FrameLayout>

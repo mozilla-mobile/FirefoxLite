@@ -12,7 +12,7 @@
     tools:background="#0000FF"
     android:background="@color/privateBackground">
 
-    <org.mozilla.focus.widget.EqualDistributeRow
+    <org.mozilla.focus.widget.EqualDistributeGrid
         android:id="@+id/browser_screen_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +50,6 @@
             android:tint="@color/private_menu_button"
             app:srcCompat="@drawable/ic_delete" />
 
-    </org.mozilla.focus.widget.EqualDistributeRow>
+    </org.mozilla.focus.widget.EqualDistributeGrid>
 </FrameLayout>
 

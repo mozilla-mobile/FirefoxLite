@@ -7,7 +7,7 @@
     android:layout_alignParentBottom="true"
     android:layout_gravity="center_horizontal|bottom">
 
-    <org.mozilla.focus.widget.EqualDistributeRow
+    <org.mozilla.focus.widget.EqualDistributeGrid
         android:id="@+id/home_screen_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,5 +38,5 @@
             style="@style/HomeMenuButton"
             layout="@layout/button_more_white"
             android:visibility="invisible"/>
-    </org.mozilla.focus.widget.EqualDistributeRow>
+    </org.mozilla.focus.widget.EqualDistributeGrid>
 </FrameLayout>
