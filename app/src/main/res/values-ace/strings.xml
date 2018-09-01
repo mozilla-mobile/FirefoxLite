@@ -13,7 +13,7 @@
   <string name="text_selection_search_action">Mita lam Firefox Rocket</string>
   <string name="about_content_body">%1$s nakeuh saboh browser nyang bagah ngön phui atra jipeugöt lé %2$s. Meukeusud kamoe nakeuh keu meuplara internet nyang sihat ngön teuhah.</string>
   <string name="about_link_learn_more">Meurunoe lom</string>
-  <string name="about_link_support">Dhueng</string>
+  <string name="about_link_support">Dukông</string>
   <string name="about_link_your_rights">Hak / Idin Droeneuh</string>
   <string name="about_link_privacy">Jaga Rahsia</string>
   <string name="preference_search_engine_default">Meusén mita teutap</string>
@@ -74,7 +74,7 @@
   <string name="firstrun_skip_button">Liwat</string>
   <string name="firstrun_next_button">Lanjut</string>
   <string name="label_menu_bookmark">Peutanda</string>
-  <string name="label_menu_download">Cok beureukaih</string>
+  <string name="label_menu_download">Beureukaih teukeubah</string>
   <string name="label_menu_clear_cache">Peugléh cache</string>
   <string name="label_menu_history">Riwayat</string>
   <string name="label_menu_share">Bulueng</string>
@@ -102,8 +102,8 @@
   <string name="setting_dialog_cookies">Kukis</string>
   <string name="setting_dialog_cache">Cache</string>
   <string name="no_downloads">Hana beureukaih nyang teukeubah</string>
-  <string name="download_started">Teungöh ceumeucok...</string>
-  <string name="download_file_not_supported">Protokol ceumeucok hana geudhueng</string>
+  <string name="download_started">Teungöh ceumeucok beureukaih...</string>
+  <string name="download_file_not_supported">Protokol ceumeucok beureukaih hana geudukông</string>
   <string name="cannot_find_the_file">Han jiteumèe beureukaih</string>
   <string name="cannot_delete_the_file">Han jeuet jisampôh beureukaih.</string>
   <string name="download_completed">%1$s ka teucok</string>
@@ -113,7 +113,7 @@
   <string name="open">Peuhah</string>
   <string name="pause">geupupiyôh</string>
   <string name="pending">Geutanggôh</string>
-  <string name="running">ceumeucok</string>
+  <string name="running">teungöh ceumeucok beureukaih</string>
   <string name="successful">Meuhasé</string>
   <string name="failed">hana meuhasé</string>
   <string name="unknown">Hana Jituri</string>
@@ -155,7 +155,7 @@
   <string name="message_enable_block_image">Jinoe teumeuheun gamba</string>
   <string name="message_disable_block_image">Jinoe pumeudeuih gamba</string>
   <string name="message_clear_cache_fail">Han jeuet sampôh cache</string>
-  <string name="message_storage_unavailable_cancel_download">Bak keubah han jeuet jiteumèe. Ceuneucok geupubateue.</string>
+  <string name="message_storage_unavailable_cancel_download">Bak keubah han jeuet jiteumèe. Beureukaih ceuneucok geupubateue.</string>
   <string name="message_cleared_cached">%1$s cache ka teusampôh</string>
   <string name="message_cleared_browsing_data">Data seumeulop geusampôh</string>
   <string name="message_deleted_screenshot">Drop layeuë ka teusampôh</string>

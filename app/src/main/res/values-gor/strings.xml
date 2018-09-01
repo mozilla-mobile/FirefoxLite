@@ -35,7 +35,7 @@
   <string name="setting_dialog_sd_card">Kartu SD</string>
   <string name="message_enable_turbo_mode">Turbo mode pasi-pasi</string>
   <string name="message_disable_turbo_mode">Turbo mode ja pasi-pasi</string>
-  <string name="message_enable_block_image">Sa\'ati boyiya bubuli gāmbari</string>
+  <string name="message_enable_block_image">Sa\'ati botiya bubuli gāmbari</string>
   <string name="message_disable_block_image">Sa\'ati botiya popobilohe gāmbari</string>
   <string name="message_clear_cache_fail">Ja mowali moluluta pilohepita</string>
   <string name="message_cleared_cached">%1$s pilohepita yiluluto</string>
