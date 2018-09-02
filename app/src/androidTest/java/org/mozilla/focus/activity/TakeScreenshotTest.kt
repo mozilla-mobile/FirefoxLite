@@ -18,6 +18,7 @@ import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
 
 @Keep
+@Ignore
 @RunWith(AndroidJUnit4::class)
 class TakeScreenshotTest {
 
