@@ -92,6 +92,7 @@
   <string name="permission_dialog_msg_storage">પરવાનગી મળી રહેલ નથી. Firefox Rocket ને તમારા સ્થાનને અૅક્સેસ કરવાની પરવાનગી આપો.</string>
   <string name="permission_toast_storage">સંગ્રહ ઉપલબ્ધ નથી. તમારા ઉપકરણ પર ફોટા અને ફાઇલોને સંગ્રહિત કરવાની પરવાનગી આપો.</string>
   <string name="geolocation_dialog_message">%1$s તમારા સ્થાનને મેળવવા માગે છે.</string>
+  <string name="geolocation_dialog_message_cache_it">આ સાઇટ વિશે જયાં સુધી %1$s ફરીથી શરુ ના થાય ત્યાં સુધી પૂછતાં નહીં</string>
   <string name="geolocation_dialog_allow">પરવાનગી આપો</string>
   <string name="geolocation_dialog_block">અવરોધિત કરો</string>
   <string name="setting_dialog_clear_data">માહિતી સાફ કરો</string>
@@ -143,6 +144,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">" સમગ્ર પાનાંને આવરી લેવાં માટે મેનું પર જાઓ."</string>
   <string name="screenshot_image_viewer_dialog_title">માહિતી</string>
   <string name="screenshot_image_viewer_dialog_info_time1">તારીખ: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">વર્ગ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">માપ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">માપ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">શીર્ષક: %1$s</string>
@@ -202,4 +204,6 @@
   <string name="private_browsing_erase_message">ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખો</string>
   <string name="private_browsing_open_action">ખોલો</string>
   <string name="private_browsing_erase_done">તમારા ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખવામાં આવ્યું છે.</string>
+  <string name="my_shot_on_boarding_message">તમારા સ્ક્રીનશોટ અહીં જુઓ!</string>
+  <string name="my_shot_on_boarding_category_message">તમારાં ઉત્પાદનનો અનુભવ સુધારવાં માટે, અમે તમારાં સ્ક્રીનશોટનાં વર્ગો વિશે માહિતી ભેગી કરીએ છીએ.</string>
 </resources>
