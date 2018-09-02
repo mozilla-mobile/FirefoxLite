@@ -136,6 +136,7 @@ class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
         // Confirm delete
         onView(allOf(withText(R.string.browsing_history_menu_delete), isDisplayed())).perform(click())
 
+        // FIXME: Add an idling resource here between delete and isDisplayed check
         // Check if come back to my shots panel
         onView(withId(R.id.screenshots)).check(matches(isDisplayed()))
     }
