@@ -49,7 +49,6 @@ import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
-import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabModelStore;
 import org.mozilla.focus.repository.BookmarkRepository;
@@ -77,7 +76,6 @@ import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.widget.DefaultBrowserPreference;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.promotion.PromotionModel;
@@ -169,12 +167,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         SafeIntent intent = new SafeIntent(getIntent());
         AppLaunchMethod.parse(intent).sendLaunchTelemetry();
 
-        // TODO: It would be better if we can move this to LauncherActivity somewhere.
-        if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            finish();
-            return;
-        }
 
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -188,10 +180,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                             false);
                     this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
                 }
-            } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
-                // This happens when the app is not running, and the user clicks on the push
-                // notification with payload "PUSH_OPEN_URL"
-                pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     this.screenNavigator.addFirstRunScreen();
@@ -304,23 +292,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            // TODO: It would be better if we can move this to LauncherActivity somewhere.
-            if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
-                startActivity(new Intent(this, SettingsActivity.class));
-                finish();
-                return;
-            }
-
             // We can't update our fragment right now because we need to wait until the activity is
             // resumed. So just remember this URL and load it in onResumeFragments().
             pendingUrl = intent.getDataString();
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
-            dismissAllMenus();
-            TabTray.dismiss(getSupportFragmentManager());
-        } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
-            // This happens when the app is running in background, and the user clicks on the push
-            // notification with payload "PUSH_OPEN_URL"
-            pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
         }
