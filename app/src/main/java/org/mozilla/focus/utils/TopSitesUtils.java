@@ -6,9 +6,6 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 
 import org.json.JSONArray;
@@ -28,6 +25,8 @@ import java.util.List;
  */
 
 public class TopSitesUtils {
+
+    private static final String TOP_SITE_ASSET_PREFIX = "file:///android_asset/topsites/icon/";
 
     /**
      * get default topsites data from assets and restore it to SharedPreferences
@@ -87,7 +86,7 @@ public class TopSitesUtils {
                     final String url = json_site.getString("url");
                     final long viewCount = json_site.getLong("viewCount");
                     final long lastViewed = json_site.getLong("lastViewTimestamp");
-                    final String faviconUri = "file:///android_asset/topsites/icon/" + json_site.getString("favicon");
+                    final String faviconUri = TOP_SITE_ASSET_PREFIX + json_site.getString("favicon");
                     Site site = new Site(id, title, url, viewCount, lastViewed, faviconUri);
                     defaultSites.add(site);
                 }

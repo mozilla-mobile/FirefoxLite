@@ -12,6 +12,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import org.mozilla.focus.utils.AppConstants;
+
 @Entity(tableName = "browsing_history")
 public class Site {
 
@@ -103,7 +105,19 @@ public class Site {
 
     @Override
     public String toString() {
-        return "HistoryModel{" +
+        return AppConstants.isReleaseBuild() ? toStringRelease() : toStringNormal();
+    }
+
+    private String toStringRelease() {
+        return "Site{" +
+                "id='" + id + '\'' +
+                ", viewCount='" + viewCount + '\'' +
+                ", lastViewTimestamp='" + lastViewTimestamp + '\'' +
+                '}';
+    }
+
+    private String toStringNormal() {
+        return "Site{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +

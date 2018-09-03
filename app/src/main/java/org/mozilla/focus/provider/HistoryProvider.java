@@ -100,8 +100,6 @@ public class HistoryProvider extends ContentProvider {
         SupportSQLiteQuery query = SupportSQLiteQueryBuilder.builder(Tables.BROWSING_HISTORY)
                 .columns(projection)
                 .selection(selection, selectionArgs)
-                .groupBy(null)
-                .having(null)
                 .orderBy(sortOrder)
                 .limit(ProviderUtils.getLimitParam(uri.getQueryParameter("offset"), uri.getQueryParameter("limit")))
                 .create();
@@ -116,8 +114,7 @@ public class HistoryProvider extends ContentProvider {
             throw new UnsupportedOperationException("URI: " + uri);
         }
         final SupportSQLiteDatabase db = mDbHelper.getWritableDatabase();
-        int count;
-        count = db.update(Tables.BROWSING_HISTORY, OnConflictStrategy.ROLLBACK, values, selection, selectionArgs);
+        final int count = db.update(Tables.BROWSING_HISTORY, OnConflictStrategy.ROLLBACK, values, selection, selectionArgs);
 
         if (count > 0) {
             notifyBrowsingHistoryChange();
