@@ -399,6 +399,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
+
+        if (!Settings.getInstance(this).isFindInPageEnabled()) {
+            menu.findViewById(R.id.menu_find_in_page).setVisibility(View.GONE);
+        }
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
@@ -510,6 +514,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
 
                 TelemetryWrapper.menuTurboChangeTo(turboEnabled);
+                break;
+            case R.id.menu_find_in_page:
+                onFindInPageClicked();
                 break;
             case R.id.menu_delete:
                 onDeleteClicked();
@@ -662,6 +669,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private void onScreenshotsClicked() {
         Settings.getInstance(this).setHasUnreadMyShot(false);
         showListPanel(ListPanelDialog.TYPE_SCREENSHOTS);
+    }
+
+    private void onFindInPageClicked() {
+        // do nothing for now
     }
 
     private void onDeleteClicked() {
