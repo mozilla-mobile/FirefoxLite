@@ -198,6 +198,7 @@
     <!-- Menu text for bookmark -->
     <string name="label_menu_bookmark">Bookmarks</string>
     <string name="label_menu_download">Downloads</string>
+    <string name="label_menu_find_in_page">Find in page</string>
     <string name="label_menu_clear_cache">Clear cache</string>
     <string name="label_menu_history">History</string>
     <string name="label_menu_share">Share</string>

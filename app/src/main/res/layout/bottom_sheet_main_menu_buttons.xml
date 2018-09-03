@@ -119,6 +119,22 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/menu_find_in_page"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/ic_menu_find_in_page" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/label_menu_find_in_page" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/menu_delete"
         style="@style/MenuButtonContainer">
 
