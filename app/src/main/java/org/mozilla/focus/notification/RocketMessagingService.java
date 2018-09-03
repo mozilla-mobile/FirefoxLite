@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.component.RocketLauncherActivity;
 
 // Prov
 public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
@@ -23,7 +23,7 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
             return;
         }
 
-        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        final Intent intent = new Intent(getApplicationContext(), RocketLauncherActivity.class);
 
         // check if message needs to open url
         if (url != null) {
