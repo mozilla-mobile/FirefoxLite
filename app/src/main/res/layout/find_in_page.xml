@@ -18,7 +18,7 @@
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/queryText"
+        android:id="@+id/find_in_page_query_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
@@ -32,12 +32,12 @@
         android:textColor="?colorFindInPageTextColor"
         android:textCursorDrawable="@drawable/cursor"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/resultText"
+        app:layout_constraintEnd_toStartOf="@id/find_in_page_result_text"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/find_in_page_input" />
 
     <TextView
-        android:id="@+id/resultText"
+        android:id="@+id/find_in_page_result_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -45,42 +45,42 @@
         android:textColor="?colorFindInPageTextColor"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/previousResult"
-        app:layout_constraintStart_toEndOf="@+id/queryText"
+        app:layout_constraintEnd_toStartOf="@id/find_in_page_prev_btn"
+        app:layout_constraintStart_toEndOf="@+id/find_in_page_query_text"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="10/20" />
 
     <ImageButton
-        android:id="@+id/previousResult"
+        android:id="@+id/find_in_page_prev_btn"
         style="@style/FindInPageButton"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/accessibility_find_previous_result"
         android:src="@drawable/ic_arrowhead_up"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/nextResult"
-        app:layout_constraintStart_toEndOf="@+id/resultText"
+        app:layout_constraintEnd_toStartOf="@id/find_in_page_next_btn"
+        app:layout_constraintStart_toEndOf="@+id/find_in_page_result_text"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/nextResult"
+        android:id="@+id/find_in_page_next_btn"
         style="@style/FindInPageButton"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/accessibility_find_next_result"
         android:src="@drawable/ic_arrowhead_down"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/close_find_in_page"
-        app:layout_constraintStart_toEndOf="@+id/previousResult"
+        app:layout_constraintEnd_toStartOf="@id/find_in_page_close_btn"
+        app:layout_constraintStart_toEndOf="@+id/find_in_page_prev_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/close_find_in_page"
+        android:id="@+id/find_in_page_close_btn"
         style="@style/FindInPageButton"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/accessibility_dismiss_find_in_page"
         android:src="@drawable/ic_close"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/nextResult"
+        app:layout_constraintStart_toEndOf="@+id/find_in_page_next_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -642,7 +642,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onFindInPageClicked() {
-        // do nothing for now
+        final BrowserFragment frg = getVisibleBrowserFragment();
+        if (frg != null) {
+            frg.showFindInPage();
+        }
     }
 
     private void onDeleteClicked() {

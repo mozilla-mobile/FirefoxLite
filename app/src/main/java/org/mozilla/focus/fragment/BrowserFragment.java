@@ -30,15 +30,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
@@ -47,7 +44,6 @@ import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,6 +69,7 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
+import org.mozilla.focus.widget.FindInPage;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.tabs.Session;
@@ -115,53 +112,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private DownloadCallback downloadCallback = new DownloadCallback();
 
-    private ThemeManager.Themeable themeable = new ThemeManager.Themeable() {
-        @Override
-        public void onThemeChanged() {
-            if (findInPageView != null) {
-                findInPageView.setBackground(findInPageView.getContext().getDrawable(R.drawable.bg_homescreen_color));
-            }
-        }
-    };
-
-    private TabView.FindListener findListener = new TabView.FindListener() {
-        @Override
-        public void onFindResultReceived(int activeMatchOrdinal, int numberOfMatches, boolean isDoneCounting) {
-            if (sessionManager == null) {
-                return;
-            }
-            updateFindInPageResult(activeMatchOrdinal, numberOfMatches);
-        }
-
-        private void updateFindInPageResult(Integer activeMatchOrdinal, Integer numberOfMatches) {
-            final Context context = getContext();
-            if (context == null) {
-                return;
-            }
-
-            if (numberOfMatches > 0) {
-                // We don't want the presentation of the activeMatchOrdinal to be zero indexed. So let's
-                // increment it by one.
-                findInPageNext.setColorFilter(getResources().getColor(R.color.sharedColorAppPaletteWhite));
-                findInPageNext.setAlpha(1.0F);
-                findInPagePrevious.setColorFilter(getResources().getColor(R.color.sharedColorAppPaletteWhite));
-                findInPagePrevious.setAlpha(1.0F);
-                activeMatchOrdinal++;
-                final String visibleString = String.format(context.getString(R.string.find_in_page_result), activeMatchOrdinal, numberOfMatches);
-                final String accessibleString = String.format(context.getString(R.string.accessibility_find_in_page_result), activeMatchOrdinal, numberOfMatches);
-
-                findInPageResultTextView.setText(visibleString);
-                findInPageResultTextView.setContentDescription(accessibleString);
-            } else {
-                findInPageNext.setColorFilter(getResources().getColor(R.color.sharedColorAppPaletteGray));
-                findInPageNext.setAlpha(0.4F);
-                findInPagePrevious.setColorFilter(getResources().getColor(R.color.sharedColorAppPaletteWhite));
-                findInPagePrevious.setAlpha(0.4F);
-                findInPageResultTextView.setText("");
-                findInPageResultTextView.setContentDescription("");
-            }
-        }
-    };
+    private FindInPage findInPage;
 
     private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
 
@@ -175,13 +126,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private AnimatedProgressBar progressView;
     private ImageView siteIdentity;
     private Dialog webContextMenu;
-
-    private View findInPageView;
-    private TextView findInPageQuery;
-    private TextView findInPageResultTextView;
-    private ImageButton findInPageNext;
-    private ImageButton findInPagePrevious;
-    private ImageButton closeFindInPage;
 
     //GeoLocationPermission
     private String geolocationOrigin;
@@ -449,6 +393,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         siteIdentity = (ImageView) view.findViewById(R.id.site_identity);
+        findInPage = new FindInPage(view);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
         initialiseNormalBrowserUi();
@@ -460,55 +405,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         sessionManager.addTabsViewListener(this.tabsContentListener);
         sessionManager.addTabsChromeListener(this.tabsContentListener);
         sessionManager.setDownloadCallback(downloadCallback);
-        sessionManager.setFindListener(findListener);
+        sessionManager.setFindListener(findInPage);
 
         if (tabCounter != null && isTabRestoredComplete()) {
             tabCounter.setCount(sessionManager.getTabsCount());
         }
-
-        findInPageView = view.findViewById(R.id.find_in_page);
-        closeFindInPage = findInPageView.findViewById(R.id.close_find_in_page);
-        closeFindInPage.setOnClickListener(this);
-        findInPageQuery = findInPageView.findViewById(R.id.queryText);
-        findInPageResultTextView = findInPageView.findViewById(R.id.resultText);
-
-        findInPageQuery.addTextChangedListener(
-                new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        final Session session = sessionManager.getFocusSession();
-                        if (session != null) {
-                            TabView tabView = session.getTabView();
-                            if (tabView != null) {
-                                WebView webView = (WebView) tabView;
-                                webView.findAllAsync(s.toString());
-                            }
-                        }
-                    }
-                }
-        );
-        findInPageQuery.setOnClickListener(this);
-        findInPageQuery.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                ViewUtils.hideKeyboard(findInPageQuery);
-                findInPageQuery.setCursorVisible(false);
-            }
-            return false;
-        });
-
-        findInPagePrevious = findInPageView.findViewById(R.id.previousResult);
-        findInPagePrevious.setOnClickListener(this);
-
-        findInPageNext = findInPageView.findViewById(R.id.nextResult);
-        findInPageNext.setOnClickListener(this);
 
         return view;
     }
@@ -632,16 +533,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        doWithActivity(getActivity(), themeManager -> themeManager.subscribeThemeChange(themeable));
-    }
-
-    @Override
     public void onDestroyView() {
         sessionManager.removeTabsViewListener(this.tabsContentListener);
         sessionManager.removeTabsChromeListener(this.tabsContentListener);
-        doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(themeable));
         super.onDestroyView();
     }
 
@@ -826,8 +720,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public boolean onBackPressed() {
-        if (findInPageView.getVisibility() == View.VISIBLE) {
-            hideFindInPage();
+        if (findInPage.onBackPressed()) {
             return true;
         }
 
@@ -902,43 +795,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                 TelemetryWrapper.clickToolbarSearch();
                 break;
-
-            case R.id.close_find_in_page: {
-                hideFindInPage();
-                break;
-            }
-            case R.id.queryText: {
-                findInPageQuery.setCursorVisible(true);
-                break;
-            }
-            case R.id.nextResult: {
-                ViewUtils.hideKeyboard(findInPageQuery);
-                findInPageQuery.setCursorVisible(false);
-
-                final Session focusTab = sessionManager.getFocusSession();
-                if (focusTab != null) {
-                    TabView tabView = focusTab.getTabView();
-                    if (tabView != null) {
-                        WebView webView = (WebView) tabView;
-                        webView.findNext(true);
-                    }
-                }
-                break;
-            }
-            case R.id.previousResult: {
-                ViewUtils.hideKeyboard(findInPageQuery);
-                findInPageQuery.setCursorVisible(false);
-
-                final Session session = sessionManager.getFocusSession();
-                if (session != null) {
-                    TabView tabView = session.getTabView();
-                    if (tabView != null) {
-                        WebView webView = (WebView) tabView;
-                        webView.findNext(false);
-                    }
-                }
-                break;
-            }
             case R.id.btn_open_new_tab:
                 ScreenNavigator.get(getContext()).addHomeScreen(true);
                 TelemetryWrapper.clickAddTabToolbar();
@@ -1091,6 +947,17 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
         }
         return ((TabRestoreMonitor) getActivity()).isTabRestoredComplete();
+    }
+
+    public void showFindInPage() {
+        final Session focusTab = sessionManager.getFocusSession();
+        if (focusTab != null) {
+            findInPage.show(focusTab);
+        }
+    }
+
+    private void hideFindInPage() {
+        findInPage.hide();
     }
 
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
@@ -1374,10 +1241,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             int identity = (tab.getSecurityState() == SiteIdentity.SECURE) ? SITE_LOCK : SITE_GLOBE;
             siteIdentity.setImageLevel(identity);
 
-            if (findInPageView != null && findInPageView.getVisibility() == View.VISIBLE) {
-                hideFindInPage();
-            }
-
+            hideFindInPage();
         }
 
         @SuppressWarnings("SameParameterValue")
@@ -1464,19 +1328,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download);
         }
-    }
-
-    private void showFindInPage() {
-        findInPageView.setVisibility(View.VISIBLE);
-        findInPageQuery.requestFocus();
-        ViewUtils.showKeyboard(findInPageQuery);
-    }
-
-    private void hideFindInPage() {
-        ViewUtils.hideKeyboard(findInPageQuery);
-        findInPageQuery.setText(null);
-        findInPageQuery.clearFocus();
-        findInPageView.setVisibility(View.GONE);
     }
 
     /**
