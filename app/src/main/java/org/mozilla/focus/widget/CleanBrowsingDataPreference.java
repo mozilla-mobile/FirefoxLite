@@ -56,7 +56,7 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
             for (String value : getValues()) {
                 if (resources.getString(R.string.pref_value_clear_browsing_history).equals(value)) {
                     BrowsingHistoryManager.getInstance().deleteAll(null);
-                    TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
+                    TopSitesUtils.initDefaultTopSites(getContext());
                 } else if (resources.getString(R.string.pref_value_clear_cookies).equals(value)) {
                     CookieManager.getInstance().removeAllCookies(null);
                     // Also clear cookies in private mode process if the process exist

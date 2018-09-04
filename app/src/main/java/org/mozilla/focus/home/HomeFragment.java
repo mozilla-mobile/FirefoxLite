@@ -57,7 +57,6 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.network.SocketTags;
 import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryDatabaseHelper;
-import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -102,6 +101,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public static final int TOP_SITES_QUERY_LIMIT = 8;
     public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 6;
     private static final int MSG_ID_REFRESH = 8269;
+    private static final int MSG_ID_INIT = 9487;
 
     private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
     public static final String BANNER_MANIFEST_DEFAULT = "";
@@ -130,8 +130,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
 
         public void handleMessage(Message msg) {
-            if (msg.what == MSG_ID_REFRESH) {
-                queryTopSite();
+            switch (msg.what) {
+                case MSG_ID_REFRESH:
+                    queryTopSite();
+                    break;
+                case MSG_ID_INIT:
+                    onDefaultTopSitesLoaded();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown message id in HomeFragment.uiHandler");
             }
         }
     };
@@ -146,6 +153,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         super.onCreate(bundle);
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
+        loadDefaultTopSites();
     }
 
     private void showBanner(boolean enabled) {
@@ -563,8 +571,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void mergeQueryAndDefaultSites(List<Site> querySites) {
-        //if query data are equal to the default data, merge them
-        initDefaultSitesFromJSONArray(this.originalDefaultSites);
+        // if query data are equal to the default data, merge them
         List<Site> topSites = new ArrayList<>(this.presenter.getSites());
         for (Site topSite : topSites) {
             Iterator<Site> querySitesIterator = querySites.iterator();
@@ -592,30 +599,36 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter.populateSites();
     }
 
-    private void initDefaultSites() {
+    private void loadDefaultTopSites() {
         // We use different implementations to provide default top sites.
         // plain text is used as a mock in androidTest while
         // in main it's loading from the cached SharedPreference
         String obj_sites = Inject.getDefaultTopSites(getContext());
 
-        // If not cached, init data from assets.
+        // If not cached, init data from either assets or network.
         if (obj_sites == null) {
-            this.originalDefaultSites = TopSitesUtils.getDefaultSitesJsonArrayFromAssets(getContext());
+            TopSitesUtils.initDefaultTopSites(getContext(), uiHandler, MSG_ID_INIT);
         } else {
-            try {
-                this.originalDefaultSites = new JSONArray(obj_sites);
-            } catch (JSONException e) {
-                // We can't recover from illegal top sites.
-                throw new IllegalArgumentException(e.getMessage());
-            }
+            onDefaultTopSitesLoaded();
         }
-
-        initDefaultSitesFromJSONArray(this.originalDefaultSites);
     }
 
-    private void initDefaultSitesFromJSONArray(JSONArray jsonDefault) {
-        List<Site> defaultSites = TopSitesUtils.paresJsonToList(jsonDefault);
+    public void onDefaultTopSitesLoaded() {
+        String obj_sites = Inject.getDefaultTopSites(getContext());
+        try {
+            this.originalDefaultSites = new JSONArray(obj_sites);
+        } catch (JSONException e) {
+            // We can't recover from illegal top sites.
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        final List<Site> defaultSites;
+        if (obj_sites == null) {
+            defaultSites = new ArrayList<>();
+        } else {
+            defaultSites = TopSitesUtils.paresJsonToList(this.originalDefaultSites);
+        }
         this.presenter.setSites(defaultSites);
+        queryTopSite();
     }
 
     private void removeDefaultSites(List<Site> removeSites) {
@@ -651,7 +664,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     public void updateTopSitesData() {
-        initDefaultSites();
+        // Default Top Sites not initialized, wait for it to be initialized.
+        if (this.originalDefaultSites == null) {
+            return;
+        }
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sharedPreferences.contains(TOP_SITES_V2_PREF)) {
             queryTopSite();

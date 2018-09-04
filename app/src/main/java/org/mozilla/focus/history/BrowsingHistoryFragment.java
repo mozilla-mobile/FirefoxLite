@@ -69,7 +69,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                             return;
                         }
                         mAdapter.clear();
-                        TopSitesUtils.getDefaultSitesJsonArrayFromAssets(ctx);
+                        TopSitesUtils.initDefaultTopSites(ctx);
                         FragmentListener.notifyParent(BrowsingHistoryFragment.this, FragmentListener.TYPE.REFRESH_TOP_SITE, null);
                         TelemetryWrapper.clearHistory();
                     }

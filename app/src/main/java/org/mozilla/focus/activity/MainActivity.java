@@ -838,7 +838,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             case REFRESH_TOP_SITE:
                 Fragment fragment = this.screenNavigator.getTopFragment();
                 if (fragment instanceof HomeFragment) {
-                    ((HomeFragment) fragment).updateTopSitesData();
+                    ((HomeFragment) fragment).onDefaultTopSitesLoaded();
                 }
                 break;
             case SHOW_MY_SHOT_ON_BOARDING:

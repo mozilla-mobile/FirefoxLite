@@ -5,7 +5,9 @@
 
 package org.mozilla.focus.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.preference.PreferenceManager;
 
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
@@ -14,6 +16,8 @@ public class AppConfigWrapper {
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
     static final int DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD = 2;
+
+    private static final String CUSTOM_TOP_SITES_URL_KEY = "CUSTOM_TOP_SITES_URL_KEY";
 
     public static long getRateAppNotificationLaunchTimeThreshold(Context context) {
         return FirebaseHelper.getRcLong(context, FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD);
@@ -62,5 +66,13 @@ public class AppConfigWrapper {
 
     public static String getBannerRootConfig(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.BANNER_MANIFEST);
+    }
+
+    public static String getCustomTopSitesUri(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(CUSTOM_TOP_SITES_URL_KEY, null);
+    }
+
+    public static void setCustomTopSitesUri(Context context, String value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(CUSTOM_TOP_SITES_URL_KEY, value).apply();
     }
 }

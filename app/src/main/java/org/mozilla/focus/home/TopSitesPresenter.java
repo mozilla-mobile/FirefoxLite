@@ -51,12 +51,8 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
     }
 
     @Override
-    public void setSites(List<Site> sites) {
-        if (sites != null) {
-            this.sites = sites;
-        } else {
-            this.sites = new ArrayList<>();
-        }
+    public void setSites(@NonNull List<Site> sites) {
+        this.sites = sites;
     }
 
     @Override

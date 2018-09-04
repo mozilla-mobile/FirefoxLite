@@ -219,6 +219,10 @@
             android:name="org.mozilla.rocket.component.PrivateSessionNotificationService"
             android:process=":private_mode" />
 
+        <service
+            android:name="org.mozilla.rocket.distribution.LoadDistributionConfigService"
+            android:exported="false" />
+
         <activity
             android:enabled="false"
             android:exported="true"

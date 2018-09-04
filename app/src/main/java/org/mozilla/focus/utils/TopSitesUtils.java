@@ -6,8 +6,13 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +20,7 @@ import org.json.JSONObject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.rocket.distribution.LoadDistributionConfigService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,21 +39,59 @@ public class TopSitesUtils {
      * get default topsites data from assets and restore it to SharedPreferences
      *
      * @param context
-     * @return default TopSites Json Array
      */
-    public static JSONArray getDefaultSitesJsonArrayFromAssets(Context context) {
-        JSONArray obj = null;
+    private static void getDefaultSitesJsonArrayFromAssets(Context context, Handler handler, int messageId) {
         try {
-            obj = new JSONArray(loadDefaultSitesFromAssets(context));
-            long lastViewTimestampSystem = System.currentTimeMillis();
-            for (int i = 0; i < obj.length(); i++) {
-                ((JSONObject) obj.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
-            }
+            JSONArray obj = new JSONArray(loadDefaultSitesFromAssets(context));
+            addLastViewTimeStamp(obj);
             saveDefaultSites(context, obj);
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if (handler != null) {
+                notifyHomeFragment(handler, messageId);
+            }
         }
-        return obj;
+    }
+
+    public static void addLastViewTimeStamp(JSONArray jsonArray) {
+        try {
+            long lastViewTimestampSystem = System.currentTimeMillis();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                ((JSONObject) jsonArray.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
+            }
+        } catch (JSONException ignored) {
+            // Never happens
+            ignored.printStackTrace();
+        }
+    }
+
+    private static void getDefaultSitesJsonArrayFromUri(Context context, Handler handler, int messageId) {
+        Intent startServiceIntent = new Intent(context, LoadDistributionConfigService.class);
+        if (handler != null) {
+            Messenger messengerIncoming = new Messenger(handler);
+            startServiceIntent.putExtra(LoadDistributionConfigService.MESSENGER_INTENT_KEY, messengerIncoming);
+            startServiceIntent.putExtra(LoadDistributionConfigService.MESSAGE_ID_INTENT_KEY, messageId);
+        }
+        context.startService(startServiceIntent);
+    }
+
+    // Called if we don't have the messenger and will be notified in another way.
+    public static void initDefaultTopSites(Context context) {
+        initDefaultTopSites(context, null, -1);
+    }
+
+    public static void initDefaultTopSites(Context context, Handler handler, int messageId) {
+        if (AppConfigWrapper.getCustomTopSitesUri(context) == null) {
+            getDefaultSitesJsonArrayFromAssets(context, handler, messageId);
+        } else {
+            getDefaultSitesJsonArrayFromUri(context, handler, messageId);
+        }
+    }
+
+    private static void notifyHomeFragment(Handler handler, int messageId) {
+        Message message = handler.obtainMessage(messageId);
+        handler.dispatchMessage(message);
     }
 
     private static String loadDefaultSitesFromAssets(Context context) {
@@ -103,5 +147,17 @@ public class TopSitesUtils {
             e.printStackTrace();
             return defaultSites;
         }
+    }
+
+    // For future use
+    public static void onDistributionLoaded(Context context, String url) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+        if (url.equals(AppConfigWrapper.getCustomTopSitesUri(context))) {
+            return;
+        }
+        AppConfigWrapper.setCustomTopSitesUri(context, url);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().remove(HomeFragment.TOPSITES_PREF).apply();
     }
 }

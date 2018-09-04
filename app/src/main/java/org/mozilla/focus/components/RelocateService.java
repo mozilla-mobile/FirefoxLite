@@ -6,37 +6,30 @@
 package org.mozilla.focus.components;
 
 import android.Manifest;
-import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.ServiceCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfoManager;
-import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.StorageUtils;
+import org.mozilla.rocket.util.ForeGroundIntentService;
 
 import java.io.File;
 
 /**
  * A service to help on moving downloaded file to another storage directory
  */
-public class RelocateService extends IntentService {
+public class RelocateService extends ForeGroundIntentService {
 
     private static final String TAG = "RelocateService";
     private static final String ACTION_MOVE = "org.mozilla.focus.components.action.MOVE";
@@ -50,7 +43,7 @@ public class RelocateService extends IntentService {
      * Starts this service to perform action Move with the given parameters. If
      * the service is already performing a task this action will be queued.
      *
-     * @see IntentService
+     * @see android.app.IntentService
      */
     public static void startActionMove(@NonNull Context context,
                                        long rowId,
@@ -65,37 +58,6 @@ public class RelocateService extends IntentService {
         intent.putExtra(Constants.EXTRA_FILE_PATH, srcFile.getAbsolutePath());
         intent.setType(mediaType);
         ContextCompat.startForegroundService(context, intent);
-    }
-
-    private void startForeground() {
-        final String notificationChannelId;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            configForegroundChannel(this);
-            notificationChannelId = CHANNEL_ID;
-        } else {
-            notificationChannelId = "not_used_notification_id";
-        }
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), notificationChannelId);
-
-        Notification notification = builder
-                .build();
-        startForeground(NotificationId.RELOCATE_SERVICE, notification);
-    }
-
-    // Configure the notification channel if needed
-    private static void configForegroundChannel(Context context) {
-        final NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // NotificationChannel API is only available for Android O and above, so we need to add the check here so IDE won't complain
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final String channelName = context.getString(R.string.app_name);
-            final NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-    }
-
-    private void stopForeground() {
-        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
     }
 
     @Override
@@ -285,5 +247,10 @@ public class RelocateService extends IntentService {
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
 
+    }
+
+    @Override
+    protected String getNotificationId() {
+        return CHANNEL_ID;
     }
 }
