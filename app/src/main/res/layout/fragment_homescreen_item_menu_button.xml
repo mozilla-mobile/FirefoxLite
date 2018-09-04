@@ -16,7 +16,7 @@
         android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin"
         android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin">
 
-        <org.mozilla.focus.tabs.TabCounter
+        <mozilla.components.ui.tabcounter.TabCounter
             android:id="@+id/btn_tab_tray"
             style="@style/HomeMenuButton"
             app:drawableColor="@color/colorMenuIconDarkForeground" />
