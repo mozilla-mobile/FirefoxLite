@@ -25,6 +25,11 @@
         <item name="toolBarAppearance">@style/ToolBarStyle</item>
         <item name="siteIdentityAppearance">@style/SiteIdentityStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlStyle</item>
+
+        <item name="colorFindInPageTint">@color/clickable_tint_normal_mode</item>
+        <item name="colorFindInPageTextColor">@color/sharedColorAppPaletteBlack</item>
+        <item name="colorFindInPageBackground">@color/sharedColorAppPaletteWhite</item>
+
     </style>
     <style name="NormalModeTheme" parent="NormalModeTheme.Base"/>
 
@@ -37,6 +42,11 @@
         <item name="toolBarAppearance">@style/ToolBarPrivateStyle</item>
         <item name="siteIdentityAppearance">@style/SiteIdentityPrivateStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlPrivateStyle</item>
+
+        <item name="colorFindInPageTint">@color/clickable_tint_private_mode</item>
+        <item name="colorFindInPageTextColor">@color/sharedColorAppPaletteWhite</item>
+        <item name="colorFindInPageBackground">@color/privateBackground</item>
+
     </style>
     <style name="PrivateModeTheme" parent="PrivateModeTheme.Base"/>
 
@@ -284,6 +294,4 @@
         <item name="android:layout_marginEnd">27dp</item>
 
     </style>
-
-
 </resources>
