@@ -131,7 +131,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         public void handleMessage(Message msg) {
             if (msg.what == MSG_ID_REFRESH) {
-                BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                queryTopSite();
             }
         }
     };
@@ -531,11 +531,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                             presenter.removeSite(site);
                             removeDefaultSites(site);
                             TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.originalDefaultSites);
-                            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                            queryTopSite();
                             TelemetryWrapper.removeTopSite(true);
                         } else {
                             site.setViewCount(1);
-                            BrowsingHistoryManager.getInstance().updateLastEntry(site, mTopSiteUpdateListener);
+                            BrowsingHistoryManager.getInstance().updateLastEntry(site, result -> queryTopSite());
                             TelemetryWrapper.removeTopSite(false);
                         }
                         break;
@@ -551,7 +551,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private QueryHandler.AsyncQueryListener mTopSitesQueryListener = sites -> {
+    private void invalidateTopSites(List<Site> sites) {
         List<Site> querySites = new ArrayList<>();
         for (Object site : sites) {
             if (site instanceof Site) {
@@ -560,11 +560,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         mergeQueryAndDefaultSites(querySites);
-    };
-
-    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = result -> {
-        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
-    };
+    }
 
     private void mergeQueryAndDefaultSites(List<Site> querySites) {
         //if query data are equal to the default data, merge them
@@ -656,7 +652,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         initDefaultSites();
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sharedPreferences.contains(TOP_SITES_V2_PREF)) {
-            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+            queryTopSite();
         } else {
             new Thread(new MigrateHistoryRunnable(uiHandler, getContext())).start();
         }
@@ -815,6 +811,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             ThemeManager.ThemeHost themeHost = (ThemeManager.ThemeHost) activity;
             doWithThemeManager.doIt(themeHost.getThemeManager());
         }
+    }
+
+    private void queryTopSite() {
+        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, this::invalidateTopSites);
     }
 
     private class GestureListenerAdapter implements OnSwipeListener {
