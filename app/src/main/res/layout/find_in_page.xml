@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/find_in_page"
+    android:elevation="10dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:layout_gravity="bottom"
-    android:background="@drawable/bg_homescreen_color"
+    android:background="?colorFindInPageBackground"
     android:clickable="true"
     android:focusable="true"
     android:orientation="horizontal">
@@ -17,7 +20,8 @@
     <EditText
         android:id="@+id/queryText"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
         android:ems="10"
         android:gravity="center_vertical"
@@ -25,35 +29,33 @@
         android:inputType="textNoSuggestions"
         android:lines="1"
         android:maxLines="1"
+        android:textColor="?colorFindInPageTextColor"
         android:textCursorDrawable="@drawable/cursor"
-        android:textSize="14sp"
-        android:layout_marginStart="12dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/resultText"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/find_in_page_input" />
 
     <TextView
         android:id="@+id/resultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:alpha="0.6"
-        android:textColor="@color/sharedColorAppPaletteGray"
+        android:layout_marginStart="16dp"
+        android:textColor="?colorFindInPageTextColor"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/previousResult"
         app:layout_constraintStart_toEndOf="@+id/queryText"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10/20" />
 
     <ImageButton
         android:id="@+id/previousResult"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="8dp"
-        android:alpha=".6"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
+        style="@style/FindInPageButton"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@string/accessibility_previous_result"
         android:src="@drawable/ic_arrowhead_up"
-        android:tint="@color/sharedColorAppPaletteGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nextResult"
         app:layout_constraintStart_toEndOf="@+id/resultText"
@@ -61,14 +63,10 @@
 
     <ImageButton
         android:id="@+id/nextResult"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="8dp"
-        android:alpha=".6"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
+        style="@style/FindInPageButton"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@string/accessibility_next_result"
         android:src="@drawable/ic_arrowhead_down"
-        android:tint="@color/sharedColorAppPaletteGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/close_find_in_page"
         app:layout_constraintStart_toEndOf="@+id/previousResult"
@@ -76,13 +74,10 @@
 
     <ImageButton
         android:id="@+id/close_find_in_page"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="1dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
+        style="@style/FindInPageButton"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@string/accessibility_dismiss_find_in_page"
         android:src="@drawable/ic_close"
-        android:tint="@color/sharedColorAppPaletteWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nextResult"
