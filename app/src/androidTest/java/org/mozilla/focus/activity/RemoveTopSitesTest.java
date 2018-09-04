@@ -18,7 +18,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -82,9 +81,6 @@ public class RemoveTopSitesTest {
         onView(ViewMatchers.withId(R.id.main_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(siteIndex, longClick()));
 
-        // Check the remove button is displayed
-        onView(withText(removeLabel)).check(matches(isDisplayed()));
-
         // Click the remove button
         onView(withText(removeLabel))
                 .inRoot(RootMatchers.isPlatformPopup())
@@ -114,6 +110,7 @@ public class RemoveTopSitesTest {
 
         // Check the remove button is displayed
         onView(withText(removeLabel))
+                .inRoot(RootMatchers.isPlatformPopup())
                 .check(matches(isDisplayed()));
 
         // Press the back key
@@ -135,9 +132,6 @@ public class RemoveTopSitesTest {
             // Long click the first top site
             onView(withId(R.id.main_list))
                     .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
-
-            // Check the remove button is displayed
-            onView(withText(removeLabel)).check(matches(isDisplayed()));
 
             // Click the remove button
             onView(withText(removeLabel))
