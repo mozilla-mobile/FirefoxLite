@@ -94,7 +94,6 @@ import java.util.WeakHashMap;
  * Fragment for displaying the browser UI.
  */
 public class BrowserFragment extends LocaleAwareFragment implements View.OnClickListener,
-        View.OnLongClickListener,
         BackKeyHandleable {
 
     public static final String FRAGMENT_TAG = "browser";
@@ -437,7 +436,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
         if (searchBtn != null) {
             searchBtn.setOnClickListener(this);
-            searchBtn.setOnLongClickListener(this);
         }
         if (captureBtn != null) {
             captureBtn.setOnClickListener(this);
@@ -887,17 +885,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     public void openPreference() {
         FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_search:
-                showFindInPage();
-                return true;
-            default:
-                return false;
-        }
     }
 
     @Override
