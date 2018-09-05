@@ -18,15 +18,14 @@ import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
+
+import org.mozilla.rocket.tabs.utils.TabUtil;
+import org.mozilla.rocket.tabs.web.DownloadCallback;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.mozilla.rocket.tabs.utils.TabUtil;
-import org.mozilla.rocket.tabs.web.DownloadCallback;
 
 /**
  * Class to help on tabs management, such as adding or removing tabs.
@@ -293,9 +292,9 @@ public class TabsSession {
         }
     }
 
-    public void setFindListener(@Nullable TabView.FindListener findListener){
+    public void setFindListener(@Nullable TabView.FindListener findListener) {
         this.findListener = findListener;
-        if(hasTabs()){
+        if (hasTabs()) {
             for (final Tab tab : tabs) {
                 tab.setFindListener(this.findListener);
             }
