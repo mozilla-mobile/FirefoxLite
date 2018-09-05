@@ -36,7 +36,8 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        // we don't keep any state if user leave Private-mode
+        super.onCreate(null)
 
         tabViewProvider = PrivateTabViewProvider(this)
 
