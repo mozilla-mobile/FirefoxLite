@@ -8,6 +8,7 @@ package org.mozilla.focus.utils;
 import org.mozilla.focus.BuildConfig;
 
 public final class AppConstants {
+    public static final String LAUNCHER_ACTIVITY = "org.mozilla.rocket.activity.MainActivity";
     private static final String BUILD_TYPE_DEBUG = "debug";
     private static final String BUILD_TYPE_FIREBASE = "firebase";
     private static final String BUILD_TYPE_BETA = "beta";

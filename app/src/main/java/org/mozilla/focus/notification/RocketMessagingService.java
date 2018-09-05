@@ -12,6 +12,10 @@ import android.support.v4.app.NotificationCompat;
 
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.rocket.deeplink.IntentScheme;
+
+import static org.mozilla.rocket.deeplink.IntentScheme.SCHEME;
 
 // Prov
 public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
@@ -23,12 +27,27 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
             return;
         }
 
-        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-        // check if message needs to open url
+        // check if message needs to open url or it's a serialized intent
         if (url != null) {
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
+            final Uri uri = Uri.parse(url);
+            if (SCHEME.equals(uri.getScheme())) {
+                final Intent intentScheme = IntentScheme.parse(getBaseContext(), uri);
+                if (intentScheme == null) {
+                    // intent scheme but can't be resolved nor a has a fallback page. We'll
+                    // exit early and not even display the notification
+                    return;
+                } else {
+                    intent = intentScheme;
+                }
+            } else {
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                intent.putExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
+            }
+
+
         }
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
