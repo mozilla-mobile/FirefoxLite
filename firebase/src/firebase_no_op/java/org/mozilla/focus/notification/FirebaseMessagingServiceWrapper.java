@@ -18,9 +18,10 @@ import android.os.IBinder;
 abstract public class FirebaseMessagingServiceWrapper extends Service {
 
     public static final String PUSH_OPEN_URL = "push_open_url";
+    public static final String PUSH_COMMAND = "push_command";
 
     // This is never called in this flavor since it's dummy.
-    abstract public void onRemoteMessage(String url, String title, String body);
+    abstract public void onRemoteMessage(Intent intent, String title, String body);
 
     @Override
     public IBinder onBind(Intent intent) {

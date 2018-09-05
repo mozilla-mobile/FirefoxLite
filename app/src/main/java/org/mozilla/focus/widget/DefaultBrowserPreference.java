@@ -26,6 +26,7 @@ import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.components.ComponentToggleService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Browsers;
+import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 
@@ -109,17 +110,6 @@ public class DefaultBrowserPreference extends Preference {
         context.startActivity(intent);
     }
 
-    private void openDefaultAppsSettings(Context context) {
-        //  TODO: extract this to util module, return false to allow caller to handle
-        try {
-            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            // In some cases, a matching Activity may not exist (according to the Android docs).
-            openSumoPage(context);
-        }
-    }
-
     private void clearDefaultBrowser(Context context) {
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(context, ComponentToggleService.class));
@@ -160,7 +150,9 @@ public class DefaultBrowserPreference extends Preference {
 
         public void onPrefClicked() {
             // fire an intent and start related activity immediately
-            pref.openDefaultAppsSettings(pref.getContext());
+            if (!IntentUtils.openDefaultAppsSettings(pref.getContext())) {
+                pref.openSumoPage(pref.getContext());
+            }
         }
 
         public void onFragmentResume() {

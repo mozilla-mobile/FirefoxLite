@@ -49,14 +49,12 @@ import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
-import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabModelStore;
 import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.tabtray.TabTray;
-import org.mozilla.focus.telemetry.AppLaunchMethod;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -77,9 +75,9 @@ import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.widget.DefaultBrowserPreference;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
+import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
@@ -167,14 +165,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         screenNavigator = new ScreenNavigator(this);
 
         SafeIntent intent = new SafeIntent(getIntent());
-        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
-
-        // TODO: It would be better if we can move this to LauncherActivity somewhere.
-        if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            finish();
-            return;
-        }
 
         if (savedInstanceState == null) {
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -188,10 +178,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                             false);
                     this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
                 }
-            } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
-                // This happens when the app is not running, and the user clicks on the push
-                // notification with payload "PUSH_OPEN_URL"
-                pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     this.screenNavigator.addFirstRunScreen();
@@ -293,8 +279,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     @Override
     protected void onNewIntent(Intent unsafeIntent) {
         final SafeIntent intent = new SafeIntent(unsafeIntent);
-        AppLaunchMethod.parse(intent).sendLaunchTelemetry();
-
         if (promotionModel != null) {
             promotionModel.parseIntent(intent);
             if (PromotionPresenter.runPromotionFromIntent(this, promotionModel)) {
@@ -304,23 +288,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            // TODO: It would be better if we can move this to LauncherActivity somewhere.
-            if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
-                startActivity(new Intent(this, SettingsActivity.class));
-                finish();
-                return;
-            }
-
             // We can't update our fragment right now because we need to wait until the activity is
             // resumed. So just remember this URL and load it in onResumeFragments().
             pendingUrl = intent.getDataString();
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
-            dismissAllMenus();
-            TabTray.dismiss(getSupportFragmentManager());
-        } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
-            // This happens when the app is running in background, and the user clicks on the push
-            // notification with payload "PUSH_OPEN_URL"
-            pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
         }
@@ -796,9 +767,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         final Bitmap bitmap = focusTab.getFavicon();
         final Intent shortcut = new Intent(Intent.ACTION_VIEW);
-        shortcut.setClass(this, MainActivity.class);
+        // Use activity-alias name here so we can start whoever want to control launching behavior
+        // Besides, RocketLauncherActivity not exported so using the alias-name is required.
+        shortcut.setClassName(this, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
         shortcut.setData(Uri.parse(url));
-        shortcut.putExtra(AppLaunchMethod.EXTRA_HOME_SCREEN_SHORTCUT, true);
+        shortcut.putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.getValue(), true);
 
         ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
     }
@@ -898,7 +871,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public void sendBrowsingTelemetry() {
         final SafeIntent intent = new SafeIntent(getIntent());
-        if (intent.getBooleanExtra(AppLaunchMethod.EXTRA_TEXT_SELECTION, false)) {
+        if (intent.getBooleanExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.getValue(), false)) {
             TelemetryWrapper.textSelectionIntentEvent();
         } else {
             TelemetryWrapper.browseIntentEvent();
