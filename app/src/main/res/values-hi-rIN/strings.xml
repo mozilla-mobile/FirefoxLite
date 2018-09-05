@@ -165,7 +165,7 @@
   <string name="privacy_policy_update_notification_title">प्रोडक्ट अद्यतन सूचना</string>
   <string name="privacy_policy_update_notification_action">Firefox Rocket आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएँ।</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद आया?</string>
-  <string name="rate_app_dialog_text_content">हमारे प्रोडक्ट को चुनने के लिए धन्यवाद। आपका प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
+  <string name="rate_app_dialog_text_content">हमारे प्रोडक्ट को चुनने के लिए धन्यवाद। आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
   <string name="rate_app_dialog_btn_go_rate">हाँ，5 स्टार रेट करें!</string>
   <string name="rate_app_notification_action_rate">5 स्टार रेट करें</string>
   <string name="rate_app_dialog_btn_feedback">नहीं, प्रतिक्रिया भेजें।</string>
@@ -203,7 +203,7 @@
   <string name="private_browsing_title">निजी ब्राउज़िंग</string>
   <string name="private_browsing_erase_message">निजी ब्राउज़िंग इतिहास मिटाएं</string>
   <string name="private_browsing_open_action">खोलें</string>
-  <string name="private_browsing_erase_done">आपका निजी ब्राउज़िंग \nइतिहास मिटा दिया गया है।</string>
+  <string name="private_browsing_erase_done">आपका निजी ब्राउज़िंग\nइतिहास मिटा दिया गया है।</string>
   <string name="my_shot_on_boarding_message">अपने स्क्रीनशॉटों को यहाँ देखें!</string>
   <string name="my_shot_on_boarding_category_message">आपके उत्पाद अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट श्रेणियों के बारे में जानकारियाँ जमा करते हैं।</string>
 </resources>

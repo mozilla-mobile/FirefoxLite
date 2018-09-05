@@ -92,6 +92,7 @@
   <string name="permission_dialog_msg_storage">Can aya idin. Idinan Firefox Rocket pikeun ngaksés perenah anjeun.</string>
   <string name="permission_toast_storage">Paneundeunan teu sayaga. Idinan pikeun nyimpen sarupaning foto jeung koropak na parangkat anjeun.</string>
   <string name="geolocation_dialog_message">%1$s\nhayang nénjo perenah anjeun.</string>
+  <string name="geolocation_dialog_message_cache_it">Ulah ménta deui pikeun ieu loka nepi ka %1$s dimuat ulang</string>
   <string name="geolocation_dialog_allow">HEUGBAÉ</string>
   <string name="geolocation_dialog_block">PEUNGPEUK</string>
   <string name="setting_dialog_clear_data">Beresihan Data</string>
@@ -204,5 +205,5 @@
   <string name="private_browsing_open_action">BUKA</string>
   <string name="private_browsing_erase_done">Jujutan langlangan nyalindung\nanjeun geus dihapus.</string>
   <string name="my_shot_on_boarding_message">Ilikan téwakan layar anjeun di dieu!</string>
-  <string name="my_shot_on_boarding_category_message">Pikeun ngaropéa pangalaman prodak anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
+  <string name="my_shot_on_boarding_category_message">Pikeun ngaronjatkeun pangalaman produk anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
 </resources>
