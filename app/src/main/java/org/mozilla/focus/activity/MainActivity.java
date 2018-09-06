@@ -73,6 +73,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
+import org.mozilla.rocket.deeplink.IntentScheme;
 import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
@@ -191,7 +192,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
             } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
                 // This happens when the app is not running, and the user clicks on the push
                 // notification with payload "PUSH_OPEN_URL"
-                pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
+                final String url = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
+
+                // If this intent can be handle by other app, let them handle it.
+                if (IntentScheme.isIntent(this, url)) {
+                    return;
+                } else {
+                    pendingUrl = url;
+                }
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     this.screenNavigator.addFirstRunScreen();
@@ -320,9 +328,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         } else if (intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL) != null) {
             // This happens when the app is running in background, and the user clicks on the push
             // notification with payload "PUSH_OPEN_URL"
-            pendingUrl = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
-            dismissAllMenus();
-            TabTray.dismiss(getSupportFragmentManager());
+            final String url = intent.getStringExtra(RocketMessagingService.PUSH_OPEN_URL);
+            // If this intent can be handle by other app, let them handle it.
+            if (IntentScheme.isIntent(this, url)) {
+                return;
+            } else {
+                pendingUrl = url;
+                dismissAllMenus();
+                TabTray.dismiss(getSupportFragmentManager());
+            }
         }
 
         // We do not care about the previous intent anymore. But let's remember this one.
