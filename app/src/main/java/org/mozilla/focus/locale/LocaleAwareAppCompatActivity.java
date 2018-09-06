@@ -50,6 +50,7 @@ public abstract class LocaleAwareAppCompatActivity
         final Locale changed = localeManager.onSystemConfigurationChanged(this, getResources(), newConfig, mLastLocale);
 
         if (changed != null) {
+            mLastLocale = changed;
             LocaleManager.getInstance().updateConfiguration(this, changed);
             applyLocale();
             setLayoutDirection(getWindow().getDecorView(), changed);
