@@ -16,10 +16,10 @@ import android.util.Log;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.rocket.component.RocketLauncherActivity;
 
 // This class handles all click/actions users performed on a notification.
 // This ensures that all telemetry works for action/click are in one place.
@@ -75,7 +75,8 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             NotificationManagerCompat.from(context).cancel(NotificationId.DEFAULT_BROWSER);
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX)) {
-            nexStep = new Intent(context, RocketLauncherActivity.class);
+            nexStep = new Intent();
+            nexStep.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
             nexStep.putExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, true);
 
             TelemetryWrapper.clickRateAppNotification();

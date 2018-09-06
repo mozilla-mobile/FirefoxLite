@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.rocket.component.RocketLauncherActivity;
+import org.mozilla.focus.utils.AppConstants;
 
 // Prov
 public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
@@ -22,7 +22,7 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
             return;
         }
         // RocketLauncherActivity will handle this intent
-        intent.setClass(getApplicationContext(), RocketLauncherActivity.class);
+        intent.setClassName(getApplicationContext(), AppConstants.LAUNCHER_ACTIVITY_ALIAS);
 
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
