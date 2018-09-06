@@ -31,6 +31,7 @@ import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -74,8 +75,10 @@ public class HomeTest {
                     .check(matches(atPosition(0, hasDescendant(withText(defaultSites.get(0).getTitle())))));
 
             // Click and load the sample top site
+            // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
+            // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
             onView(ViewMatchers.withId(R.id.main_list))
-                    .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+                    .perform(RecyclerViewActions.actionOnItemAtPosition(0, click(pressBack())));
 
             // After page loading completes
             IdlingRegistry.getInstance().register(loadingIdlingResource);
