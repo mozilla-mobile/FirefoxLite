@@ -18,6 +18,7 @@ import org.mozilla.focus.utils.AndroidTestUtils;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -54,8 +55,10 @@ public class SaveRestoreTabsTest {
         activityRule.launchActivity(new Intent());
         onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.home_screen_menu)))).check(matches(withText("0")));
 
+        // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
+        // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
         onView(ViewMatchers.withId(R.id.main_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click(pressBack())));
         relaunchActivity();
 
         onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("1")));
