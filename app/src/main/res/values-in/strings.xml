@@ -92,6 +92,7 @@
   <string name="permission_dialog_msg_storage">Tidak ada izin. Izinkan Firefox Rocket mengakses lokasi Anda.</string>
   <string name="permission_toast_storage">Penyimpanan tidak tersedia. Izinkan Firefox Rocket menyimpan foto dan berkas pada peranti Anda.</string>
   <string name="geolocation_dialog_message">%1$s \ningin mengakses lokasi Anda.</string>
+  <string name="geolocation_dialog_message_cache_it">Jangan tanya lagi untuk situs ini sampai %1$s dimulai ulang</string>
   <string name="geolocation_dialog_allow">IZINKAN</string>
   <string name="geolocation_dialog_block">TOLAK</string>
   <string name="setting_dialog_clear_data">Hapus Data</string>
