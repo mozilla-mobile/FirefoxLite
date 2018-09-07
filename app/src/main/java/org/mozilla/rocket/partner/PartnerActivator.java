@@ -15,6 +15,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class PartnerActivator {
 
@@ -29,6 +33,8 @@ public class PartnerActivator {
 
     private static final int SOCKET_TAG_PARTNER = 1000;
     private static final String PARTNER_ACTIVATION_SOURCE = "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/rocket-prefs/records";
+
+    private static Executor executor = Executors.newCachedThreadPool();
 
     public enum Status {
         Disabled,
@@ -47,8 +53,12 @@ public class PartnerActivator {
 
     public void launch() {
 
-        ThreadUtils.postToBackgroundThread(new QueryActivationStatus(this));
+        postWorker(new QueryActivationStatus(this));
 
+    }
+
+    private void postWorker(Runnable runnable) {
+        executor.execute(runnable);
     }
 
     private boolean statusInvalidate(Status currentStatus) {
@@ -161,7 +171,7 @@ public class PartnerActivator {
                 return;
             }
 
-            ThreadUtils.postToBackgroundThread(new FetchActivation(partnerActivator, PARTNER_ACTIVATION_SOURCE));
+            partnerActivator.postWorker(new FetchActivation(partnerActivator, PARTNER_ACTIVATION_SOURCE));
         }
     }
 
@@ -169,6 +179,7 @@ public class PartnerActivator {
 
         //  TODO: update useragent string
         private static final String UserAgentString = "";
+        private static final int HTTP_REQUEST_TIMEOUT = 30000;
 
         private final String sourceUrl;
         private final String[] activationKeys;
@@ -185,7 +196,7 @@ public class PartnerActivator {
                 TrafficStats.setThreadStatsTag(SOCKET_TAG_PARTNER);
 
                 URL request = new URL(sourceUrl);
-                String json = HttpRequest.get(request, UserAgentString);
+                String json = HttpRequest.get(request, HTTP_REQUEST_TIMEOUT, UserAgentString);
 
                 JSONArray activationJsonArray = null;
                 JSONArray jsonArray = new JSONObject(json).getJSONArray("data");
@@ -232,7 +243,7 @@ public class PartnerActivator {
                     partnerActivator.setLastCheckedTimestamp(System.currentTimeMillis());
                 }
 
-                ThreadUtils.postToBackgroundThread(new PingActivation(partnerActivator));
+                partnerActivator.postWorker(new PingActivation(partnerActivator));
 
             } catch (Exception e) {
                 PartnerUtil.log(e, "FetchActivation Exception");
@@ -271,6 +282,7 @@ public class PartnerActivator {
                 TrafficStats.setThreadStatsTag(SOCKET_TAG_PARTNER);
 
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(60000);
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
@@ -293,7 +305,7 @@ public class PartnerActivator {
 
 
                 String str = root.toString();
-                byte[] outputBytes = str.getBytes("UTF-8");
+                byte[] outputBytes = str.getBytes(StandardCharsets.UTF_8);
                 try (OutputStream os = urlConnection.getOutputStream()) {
                     os.write(outputBytes);
                     os.flush();

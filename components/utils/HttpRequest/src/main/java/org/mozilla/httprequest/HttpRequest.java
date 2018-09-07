@@ -12,6 +12,11 @@ import java.net.URLConnection;
 public class HttpRequest {
 
     public static String get(URL url, final String userAgent) {
+        return get(url, -1, userAgent);
+    }
+
+
+    public static String get(URL url, int timeout, final String userAgent) {
 
         String line = "";
         HttpURLConnection urlConnection = null;
@@ -19,6 +24,9 @@ public class HttpRequest {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("User-Agent", userAgent);
+            if (timeout > 0) {
+                urlConnection.setConnectTimeout(timeout);
+            }
 
             line = readLines(urlConnection);
         } catch (IOException ignored) {
