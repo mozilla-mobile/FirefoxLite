@@ -92,6 +92,7 @@
   <string name="permission_dialog_msg_storage">ಅನುಮತಿಗಳು ಕಾಣೆಯಾಗಿವೆ. ಫೈರ್‍ಫಾಕ್ಸ್ ರಾಕೆಟ್‍ಗೆ ನಿಮ್ಮ ಸ್ಥಳ ಮಾಹಿತಿ ತಿಳಿಯಲು ಅನುಮತಿಸಿ.</string>
   <string name="permission_toast_storage">ಶೇಖರಣೆ ಲಭ್ಯವಿಲ್ಲ. ಚಿತ್ರಗಳನ್ನು ಮತ್ತು ಕಡತಗಳನ್ನು ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಶೇಖರಿಸಲು ಅನುಮತಿಸಿ.</string>
   <string name="geolocation_dialog_message">%1$s\nನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಪ್ರವೇಶಿಸಬಯಸುತ್ತಿದೆ.</string>
+  <string name="geolocation_dialog_message_cache_it">‍ಮತ್ತೆ %1$s ಪುನ: ಪ್ರಾರಂಭವಾಗುವವರೆಗೆ ಈ ತಾಣವನ್ನು ಕೇಳಬೇಡಿ</string>
   <string name="geolocation_dialog_allow">ಅನುಮತಿಸು</string>
   <string name="geolocation_dialog_block">ನಿರ್ಬಂಧಿಸು</string>
   <string name="setting_dialog_clear_data">ದತ್ತಾಂಶ ಬರಿದುಮಾಡು</string>
@@ -143,6 +144,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">" ಇಡೀ ಜಾಲ ಪುಟವನ್ನು ಸೆರೆಹಿಡಿಯುವ \nಮೆನುವಿನ ಮೇಲೆ.\n"</string>
   <string name="screenshot_image_viewer_dialog_title">ಮಾಹಿತಿ</string>
   <string name="screenshot_image_viewer_dialog_info_time1">ದಿನಾಂಕ: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">‍ವರ್ಗ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">ರೆಸಲ್ಯೂಶನ್: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">ಗಾತ್ರ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">ಶೀರ್ಷಿಕೆ: %1$s</string>
@@ -202,4 +204,6 @@
   <string name="private_browsing_erase_message">ಖಾಸಗಿ ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸವನ್ನು ಅಳಿಸಿ</string>
   <string name="private_browsing_open_action">ತೆರೆ</string>
   <string name="private_browsing_erase_done">ನಿಮ್ಮ ಖಾಸಗಿ ಜಾಲಾಟದ\nಇತಿಹಾಸವನ್ನು ಅಳಿಸಲಾಗಿದೆ.</string>
+  <string name="my_shot_on_boarding_message">‍ನಿಮ್ಮ ತೆರೆಚಿತ್ರಗಳನ್ನು ಇಲ್ಲಿ ನೋಡಿ!</string>
+  <string name="my_shot_on_boarding_category_message">‍ನಿಮ್ಮ ಉತ್ಪಾದನೆಯ ಅನುಭವವನ್ನು ಉತ್ತಮಗೊಳಿಸಲು, ನಾವು ನಿಮ್ಮ ತೆರೆಚಿತ್ರಗಳ ವರ್ಗಗಳ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ.</string>
 </resources>
