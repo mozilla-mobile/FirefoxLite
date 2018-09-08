@@ -7,11 +7,12 @@
         android:id="@+id/cache_my_decision"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:checked="true"
-        android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
+        android:drawableStart="?android:attr/listChoiceIndicatorMultiple"
         android:gravity="center_vertical"
         android:text="@string/geolocation_dialog_message_cache_it" />
 
