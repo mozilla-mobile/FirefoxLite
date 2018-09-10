@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.httprequest.HttpRequest;
 
 import java.io.OutputStream;
@@ -18,7 +19,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class PartnerActivator {
 
@@ -231,6 +231,10 @@ public class PartnerActivator {
                 }
 
                 partnerActivator.activation = found;
+                // Set customization
+                ThreadUtils.postToMainThread(() -> {
+                    TopSitesUtils.onDistributionLoaded(partnerActivator.context, partnerActivator.activation.customizationUrl, partnerActivator.activation.version);
+                });
 
                 if (found.duration != 0) {
                     partnerActivator.setSnoozeDuration(found.duration);
@@ -268,7 +272,7 @@ public class PartnerActivator {
 
             URL url = null;
             try {
-                url = new URL(activation.url);
+                url = new URL(activation.activationUrl);
             } catch (MalformedURLException e) {
                 PartnerUtil.log(e, "PingActivation URL malformed");
             }

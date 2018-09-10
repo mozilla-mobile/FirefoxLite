@@ -11,7 +11,8 @@ class Activation {
     final long version;
     final String id;
     final long duration;
-    final String url;
+    final String activationUrl;
+    final String customizationUrl;
 
 
     private Activation(JSONObject object) throws JSONException {
@@ -19,7 +20,8 @@ class Activation {
         version = object.getInt("version");
         id = object.getString("id");
         duration = object.getLong("duration");
-        url = object.getString("url");
+        activationUrl = object.getString("activationUrl");
+        customizationUrl = object.getString("customizationUrl");
     }
 
     boolean matchKeys(String[] keys) {

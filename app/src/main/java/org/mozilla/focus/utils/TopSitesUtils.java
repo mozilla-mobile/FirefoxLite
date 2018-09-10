@@ -150,7 +150,7 @@ public class TopSitesUtils {
     }
 
     // For future use
-    public static void onDistributionLoaded(Context context, String url) {
+    public static void onDistributionLoaded(Context context, String url, long version) {
         if (TextUtils.isEmpty(url)) {
             return;
         }
@@ -158,6 +158,7 @@ public class TopSitesUtils {
             return;
         }
         AppConfigWrapper.setCustomTopSitesUri(context, url);
+        AppConfigWrapper.setCustomTopSitesVersion(context, version);
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove(HomeFragment.TOPSITES_PREF).apply();
     }
 }

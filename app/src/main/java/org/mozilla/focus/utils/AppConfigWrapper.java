@@ -18,6 +18,7 @@ public class AppConfigWrapper {
     static final int DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD = 2;
 
     private static final String CUSTOM_TOP_SITES_URL_KEY = "CUSTOM_TOP_SITES_URL_KEY";
+    private static final String CUSTOM_TOP_SITES_VERSION_KEY = "CUSTOM_TOP_SITES_VERSION_KEY";
 
     public static long getRateAppNotificationLaunchTimeThreshold(Context context) {
         return FirebaseHelper.getRcLong(context, FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD);
@@ -74,5 +75,13 @@ public class AppConfigWrapper {
 
     public static void setCustomTopSitesUri(Context context, String value) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(CUSTOM_TOP_SITES_URL_KEY, value).apply();
+    }
+
+    public static long getCustomTopSitesVersion(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(CUSTOM_TOP_SITES_VERSION_KEY, 0);
+    }
+
+    public static void setCustomTopSitesVersion(Context context, long value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(CUSTOM_TOP_SITES_VERSION_KEY, value).apply();
     }
 }

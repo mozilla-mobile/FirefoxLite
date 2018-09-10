@@ -58,49 +58,54 @@ public class LoadDistributionConfigService extends ForeGroundIntentService {
         final Context applicationContext = getApplicationContext();
         TrafficStats.setThreadStatsTag(SocketTags.DISTRIBUTION);
         final String uri = AppConfigWrapper.getCustomTopSitesUri(applicationContext);
-        final JSONArray configJson;
-        if (uri == null) {
-            return;
-        }
-        final String config;
-        // Invalid http url
-        try {
-            config = HttpRequest.get(new URL(uri), WebViewProvider.getUserAgentString(applicationContext));
-        } catch (MalformedURLException ignored) {
-            ignored.printStackTrace();
-            Logger.throwOrWarn(TAG, "Invalid url");
-            return;
-        }
-        // Http failure
-        if (TextUtils.isEmpty(config)) {
-            if (failureCount < 3) {
-                failureCount++;
-                queryDistributionUri(canNotify);
+        final long version = AppConfigWrapper.getCustomTopSitesVersion(applicationContext);
+        if (version == 1) {
+            final JSONArray configJson;
+            if (uri == null) {
+                return;
             }
-            return;
-        }
-        // Invalid json response
-        try {
-            configJson = new JSONArray(config);
-        } catch (JSONException ignored) {
-            ignored.printStackTrace();
-            Logger.throwOrWarn(TAG, "Invalid distribution bootstrap file");
-            return;
-        }
-        new Handler().post(() -> {
-            // Done on main thread so shared preference is synced.
-            TopSitesUtils.addLastViewTimeStamp(configJson);
-            TopSitesUtils.saveDefaultSites(applicationContext, configJson);
-            if (canNotify) {
-                Message m = Message.obtain();
-                m.what = onCompleteMessageId;
-                try {
-                    activityMessenger.send(m);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+            final String config;
+            // Invalid http url
+            try {
+                config = HttpRequest.get(new URL(uri), WebViewProvider.getUserAgentString(applicationContext));
+            } catch (MalformedURLException ignored) {
+                ignored.printStackTrace();
+                Logger.throwOrWarn(TAG, "Invalid url");
+                return;
+            }
+            // Http failure
+            if (TextUtils.isEmpty(config)) {
+                if (failureCount < 3) {
+                    failureCount++;
+                    queryDistributionUri(canNotify);
                 }
+                return;
             }
-        });
+            // Invalid json response
+            try {
+                configJson = new JSONArray(config);
+            } catch (JSONException ignored) {
+                ignored.printStackTrace();
+                Logger.throwOrWarn(TAG, "Invalid distribution bootstrap file");
+                return;
+            }
+            new Handler().post(() -> {
+                // Done on main thread so shared preference is synced.
+                TopSitesUtils.addLastViewTimeStamp(configJson);
+                TopSitesUtils.saveDefaultSites(applicationContext, configJson);
+                if (canNotify) {
+                    Message m = Message.obtain();
+                    m.what = onCompleteMessageId;
+                    try {
+                        activityMessenger.send(m);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else {
+            throw new IllegalArgumentException("Unknown Activation version when parsing customization.");
+        }
     }
 
     @Override
