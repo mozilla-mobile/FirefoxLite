@@ -3,6 +3,7 @@ package org.mozilla.focus.download;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -24,6 +25,8 @@ import java.util.List;
  */
 public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTask.ErrorCode> {
 
+    private static final String DOWNLOAD_MANAGER_PACKAGE_NAME = "com.android.providers.downloads";
+
     private WeakReference<Activity> activityRef;
     private Download download;
     private String refererUrl;
@@ -35,7 +38,7 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
     }
 
     enum ErrorCode {
-        SUCCESS, GENERAL_ERROR, STORAGE_UNAVAILABLE, FILE_NOT_SUPPORTED
+        SUCCESS, GENERAL_ERROR, STORAGE_UNAVAILABLE, FILE_NOT_SUPPORTED, DOWNLOAD_MANAGER_DISABLED
     }
 
     @Override
@@ -61,6 +64,10 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
         // block non-http/https download links
         if (!URLUtil.isNetworkUrl(download.getUrl())) {
             return ErrorCode.FILE_NOT_SUPPORTED;
+        }
+
+        if (!isDownloadManagerEnabled(context)) {
+            return ErrorCode.DOWNLOAD_MANAGER_DISABLED;
         }
 
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(download.getUrl()))
@@ -139,5 +146,10 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
             default:
                 break;
         }
+    }
+
+    private boolean isDownloadManagerEnabled(final Context context) {
+        final int state = context.getPackageManager().getApplicationEnabledSetting(DOWNLOAD_MANAGER_PACKAGE_NAME);
+        return !(state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER);
     }
 }
