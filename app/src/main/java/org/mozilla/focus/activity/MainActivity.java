@@ -71,7 +71,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
@@ -761,7 +761,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final String url = focusTab.getUrl();
         // If we pin an invalid url as shortcut, the app will not function properly.
         // TODO: only enable the bottom menu item if the page is valid and loaded.
-        if (!SupportUtils.isUrl(url)) {
+        if (!UrlUtils.isUrl(url)) {
             return;
         }
         final Bitmap bitmap = focusTab.getFavicon();

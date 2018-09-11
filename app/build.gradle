@@ -196,8 +196,6 @@ dependencies {
     implementation project(':feature-tabs')
     implementation project(':HttpRequest')
     implementation project(':httptask')
-    implementation project(':urlutils')
-    implementation project(':icon')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 

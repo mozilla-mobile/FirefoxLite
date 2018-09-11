@@ -30,8 +30,6 @@ public class QueryHandler extends AsyncQueryHandler {
 
     public static final int SITE_TOKEN = 1;
     public static final int SCREENSHOT_TOKEN = 2;
-    public static final long LONG_NO_VALUE = 0;
-    public static final Object OBJECT_NO_VALUE = null;
     private Handler mWorkerHandler;
 
     public static final class AsyncDeleteWrapper {
@@ -155,47 +153,50 @@ public class QueryHandler extends AsyncQueryHandler {
 
     public static ContentValues getContentValuesFromSite(Site site) {
         ContentValues values = new ContentValues();
-        if (site.getTitle() != OBJECT_NO_VALUE) {
+        if (site.getTitle() != null) {
             values.put(HistoryContract.BrowsingHistory.TITLE, site.getTitle());
         }
-        values.put(HistoryContract.BrowsingHistory.URL, site.getUrl());
-        if (site.getViewCount() != LONG_NO_VALUE) {
+        if (site.getUrl() != null) {
+            values.put(HistoryContract.BrowsingHistory.URL, site.getUrl());
+        }
+        if (site.getViewCount() != 0) {
             values.put(HistoryContract.BrowsingHistory.VIEW_COUNT, site.getViewCount());
         }
-        if (site.getLastViewTimestamp() != LONG_NO_VALUE) {
+        if (site.getLastViewTimestamp() != 0) {
             values.put(HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP, site.getLastViewTimestamp());
         }
-        if (site.getFavIconUri() != OBJECT_NO_VALUE) {
-            values.put(HistoryContract.BrowsingHistory.FAV_ICON_URI, site.getFavIconUri());
+        if (site.getFavIcon() != null) {
+            values.put(HistoryContract.BrowsingHistory.FAV_ICON, bitmapToBytes(site.getFavIcon()));
         }
         return values;
     }
 
     public static ContentValues getContentValuesFromScreenshot(Screenshot screenshot) {
         ContentValues values = new ContentValues();
-        if (screenshot.getTitle() != OBJECT_NO_VALUE) {
+        if (screenshot.getTitle() != null) {
             values.put(ScreenshotContract.Screenshot.TITLE, screenshot.getTitle());
         }
-        if (screenshot.getUrl() != OBJECT_NO_VALUE) {
+        if (screenshot.getUrl() != null) {
             values.put(ScreenshotContract.Screenshot.URL, screenshot.getUrl());
         }
-        if (screenshot.getTimestamp() != LONG_NO_VALUE) {
+        if (screenshot.getTimestamp() != 0) {
             values.put(ScreenshotContract.Screenshot.TIMESTAMP, screenshot.getTimestamp());
         }
-        if (screenshot.getImageUri() != OBJECT_NO_VALUE) {
+        if (screenshot.getImageUri() != null) {
             values.put(ScreenshotContract.Screenshot.IMAGE_URI, screenshot.getImageUri());
         }
         return values;
     }
 
     private static Site cursorToSite(Cursor cursor) {
-        final long id = cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory._ID));
-        final String title = cursor.getString(cursor.getColumnIndex(HistoryContract.BrowsingHistory.TITLE));
-        final String url = cursor.getString(cursor.getColumnIndex(HistoryContract.BrowsingHistory.URL));
-        final long viewCount = cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory.VIEW_COUNT));
-        final long lastViewTimsTamp = cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP));
-        final String faviconUri = cursor.getString(cursor.getColumnIndex(HistoryContract.BrowsingHistory.FAV_ICON_URI));
-        return new Site(id, title, url, viewCount, lastViewTimsTamp, faviconUri);
+        Site site = new Site();
+        site.setId(cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory._ID)));
+        site.setTitle(cursor.getString(cursor.getColumnIndex(HistoryContract.BrowsingHistory.TITLE)));
+        site.setUrl(cursor.getString(cursor.getColumnIndex(HistoryContract.BrowsingHistory.URL)));
+        site.setViewCount(cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory.VIEW_COUNT)));
+        site.setLastViewTimestamp(cursor.getLong(cursor.getColumnIndex(HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP)));
+        site.setFavIcon(bytesToBitmap(cursor.getBlob(cursor.getColumnIndex(HistoryContract.BrowsingHistory.FAV_ICON))));
+        return site;
     }
 
     private static Screenshot cursorToScreenshot(Cursor cursor) {

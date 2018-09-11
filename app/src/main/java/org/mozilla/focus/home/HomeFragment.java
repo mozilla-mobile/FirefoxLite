@@ -8,25 +8,13 @@ package org.mozilla.focus.home;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.db.SupportSQLiteOpenHelper;
-import android.arch.persistence.db.SupportSQLiteQuery;
-import android.arch.persistence.db.SupportSQLiteQueryBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -57,20 +45,15 @@ import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.network.SocketTags;
-import org.mozilla.focus.provider.HistoryContract;
-import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.TopSitesUtils;
-import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.persistance.History.HistoryDatabase;
-import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
@@ -87,6 +70,7 @@ import org.mozilla.rocket.util.Logger;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -100,10 +84,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     public static final String FRAGMENT_TAG = "homescreen";
     public static final String TOPSITES_PREF = "topsites_pref";
-    public static final String TOP_SITES_V2_PREF = "top_sites_v2_complete";
+    public static final int REFRESH_REQUEST_CODE = 911;
     public static final int TOP_SITES_QUERY_LIMIT = 8;
     public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 6;
-    private static final int MSG_ID_REFRESH = 8269;
 
     private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
     public static final String BANNER_MANIFEST_DEFAULT = "";
@@ -128,15 +111,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final int SCROLL_PERIOD = 10000;
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> bannerObserver = this::setUpBannerFromConfig;
-
-    private Handler uiHandler = new Handler(Looper.getMainLooper()) {
-
-        public void handleMessage(Message msg) {
-            if (msg.what == MSG_ID_REFRESH) {
-                BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
-            }
-        }
-    };
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -656,63 +630,14 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     public void updateTopSitesData() {
         initDefaultSites();
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        if (sharedPreferences.contains(TOP_SITES_V2_PREF)) {
-            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
-        } else {
-            new Thread(new MigrateHistoryRunnable(uiHandler, getContext())).start();
-        }
+        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
     }
 
-    private static void parseCursorToSite(Cursor cursor, List<String> urls, List<byte[]> icons) {
-        String url = cursor.getString(cursor.getColumnIndex(HistoryContract.BrowsingHistory.URL));
-        byte[] icon = cursor.getBlob(cursor.getColumnIndex(HistoryContract.BrowsingHistory.FAV_ICON));
-        urls.add(url);
-        icons.add(icon);
-    }
-
-    private static class MigrateHistoryRunnable implements Runnable {
-
-        private WeakReference<Handler> handlerWeakReference;
-        private WeakReference<Context> contextWeakReference;
-
-        public MigrateHistoryRunnable(Handler handler, Context context) {
-            handlerWeakReference = new WeakReference<>(handler);
-            contextWeakReference = new WeakReference<>(context);
-        }
-
-        @Override
-        public void run() {
-            Context context = contextWeakReference.get();
-            if (context == null) {
-                return;
-            }
-
-            final SupportSQLiteOpenHelper helper = HistoryDatabase.getInstance(context).getOpenHelper();
-            final SupportSQLiteDatabase db = helper.getWritableDatabase();
-            db.execSQL(HistoryDatabase.CREATE_LEGACY_IF_NOT_EXIST);
-            final SupportSQLiteQueryBuilder builder = SupportSQLiteQueryBuilder.builder(HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
-            final String[] columns = {HistoryContract.BrowsingHistory._ID, HistoryContract.BrowsingHistory.URL, HistoryContract.BrowsingHistory.FAV_ICON};
-            builder.columns(columns);
-            final SupportSQLiteQuery query = builder.create();
-            final File cacheDir = context.getCacheDir();
-            final List<String> urls = new ArrayList<>();
-            final List<byte[]> icons = new ArrayList<>();
-            try (Cursor cursor = db.query(query)) {
-                if (cursor.moveToFirst()) {
-                    parseCursorToSite(cursor, urls, icons);
-                }
-                while (cursor.moveToNext()) {
-                    parseCursorToSite(cursor, urls, icons);
-                }
-            }
-            if (handlerWeakReference.get() == null) {
-                return;
-            }
-            new FavIconUtils.SaveBitmapsTask(cacheDir, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference),
-                    Bitmap.CompressFormat.JPEG, DimenUtils.JPEG_QUALITY).execute();
-            db.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(TOP_SITES_V2_PREF, true).apply();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REFRESH_REQUEST_CODE) {
+            updateTopSitesData();
         }
     }
 
@@ -848,29 +773,5 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             return true;
         }
 
-    }
-
-    private static class UpdateHistoryWrapper implements FavIconUtils.Consumer<List<String>> {
-
-        private List<String> urls;
-        private WeakReference<Handler> handlerWeakReference;
-
-        private UpdateHistoryWrapper(List<String> urls, WeakReference<Handler> handlerWeakReference) {
-            this.urls = urls;
-            this.handlerWeakReference = handlerWeakReference;
-        }
-
-        @Override
-        public void accept(List<String> fileUris) {
-            for (int i = 0 ; i < fileUris.size() ; i++) {
-                BrowsingHistoryManager.updateHistory(null, urls.get(i), fileUris.get(i));
-            }
-            Handler handler = handlerWeakReference.get();
-            if (handler == null) {
-                return;
-            }
-            Message message = handler.obtainMessage(MSG_ID_REFRESH);
-            handler.dispatchMessage(message);
-        }
     }
 }

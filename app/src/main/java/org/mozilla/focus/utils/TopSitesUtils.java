@@ -6,6 +6,9 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 
 import org.json.JSONArray;
@@ -25,8 +28,6 @@ import java.util.List;
  */
 
 public class TopSitesUtils {
-
-    private static final String TOP_SITE_ASSET_PREFIX = "file:///android_asset/topsites/icon/";
 
     /**
      * get default topsites data from assets and restore it to SharedPreferences
@@ -75,19 +76,35 @@ public class TopSitesUtils {
                 .apply();
     }
 
+    public static Bitmap getIconFromAssets(Context context, String fileName) {
+        AssetManager assetManager = context.getAssets();
+
+        InputStream istream;
+        Bitmap bitmap = null;
+        try {
+            istream = assetManager.open("topsites/icon/" + fileName);
+            bitmap = BitmapFactory.decodeStream(istream);
+        } catch (IOException e) {
+            // handle exception
+        }
+
+        return bitmap;
+    }
+
     public static List<Site> paresJsonToList(Context context, JSONArray jsonArray) {
         List<Site> defaultSites = new ArrayList<>();
         try {
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json_site = (JSONObject) jsonArray.get(i);
-                    final long id = json_site.getLong("id");
-                    final String title = json_site.getString("title");
-                    final String url = json_site.getString("url");
-                    final long viewCount = json_site.getLong("viewCount");
-                    final long lastViewed = json_site.getLong("lastViewTimestamp");
-                    final String faviconUri = TOP_SITE_ASSET_PREFIX + json_site.getString("favicon");
-                    Site site = new Site(id, title, url, viewCount, lastViewed, faviconUri);
+                    final Site site = new Site();
+                    site.setId(json_site.getLong("id"));
+                    site.setUrl(json_site.getString("url"));
+                    site.setTitle(json_site.getString("title"));
+                    site.setViewCount(json_site.getLong("viewCount"));
+                    site.setLastViewTimestamp(json_site.getLong("lastViewTimestamp"));
+                    String icon_name = json_site.getString("favicon");
+                    site.setFavIcon(TopSitesUtils.getIconFromAssets(context, icon_name));
                     defaultSites.add(site);
                 }
             }

@@ -19,7 +19,7 @@ import android.webkit.WebViewClient;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.rocket.tabs.TabViewClient;
 
 /**

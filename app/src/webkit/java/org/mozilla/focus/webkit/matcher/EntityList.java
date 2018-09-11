@@ -8,7 +8,7 @@ package org.mozilla.focus.webkit.matcher;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.webkit.matcher.Trie.WhiteListTrie;
 import org.mozilla.focus.webkit.matcher.util.FocusString;
 

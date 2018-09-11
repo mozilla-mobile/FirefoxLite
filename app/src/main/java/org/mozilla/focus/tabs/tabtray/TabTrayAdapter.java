@@ -31,8 +31,7 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.icon.FavIconUtils;
+import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.rocket.tabs.Session;
 
 import java.util.ArrayList;
@@ -146,7 +145,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
         Bitmap favicon = tab.getFavicon();
         FaviconModel model = new FaviconModel(tab.getUrl(),
-                DimenUtils.getFavIconType(holder.itemView.getResources(), favicon),
+                FavIconUtils.getFavIconType(holder.itemView.getResources(), favicon),
                 favicon);
 
         requestManager
@@ -188,7 +187,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
             updateFavicon(holder, localIconCache.get(key));
         } else {
             BitmapDrawable drawable = new BitmapDrawable(holder.itemView.getResources(),
-                    DimenUtils.getInitialBitmap(holder.itemView.getResources(), symbol, backgroundColor));
+                    FavIconUtils.getInitialBitmap(holder.itemView.getResources(), symbol, backgroundColor));
             localIconCache.put(key, drawable);
             updateFavicon(holder, drawable);
         }

@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.focus.utils.UrlUtils;
 
 public class WebViewDebugOverlay {
     private WebView webView;
