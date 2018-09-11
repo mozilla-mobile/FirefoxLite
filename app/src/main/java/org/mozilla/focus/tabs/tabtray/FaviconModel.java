@@ -7,16 +7,15 @@ package org.mozilla.focus.tabs.tabtray;
 
 import android.graphics.Bitmap;
 
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.icon.FavIconUtils;
+import org.mozilla.focus.utils.FavIconUtils;
 
 public class FaviconModel {
     String url;
-    @DimenUtils.FavIconType
+    @FavIconUtils.FavIconType
     int type;
     Bitmap originalIcon;
 
-    FaviconModel(String url, @DimenUtils.FavIconType int type, Bitmap favicon) {
+    FaviconModel(String url, @FavIconUtils.FavIconType int type, Bitmap favicon) {
         this.url = url;
         this.type = type;
         this.originalIcon = favicon;

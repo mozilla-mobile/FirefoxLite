@@ -20,8 +20,6 @@ import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.support.v4.graphics.drawable.IconCompat;
 import android.text.TextUtils;
 
-import org.mozilla.icon.FavIconUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +38,10 @@ public class ShortcutUtils {
 
         if (bitmap == null) {
             // if favicon is not ready, we use the default initial icon with white color
-            icon = DimenUtils.getInitialBitmap(resources, null, representativeCharacter);
+            icon = FavIconUtils.getInitialBitmap(resources, null, representativeCharacter);
         } else {
             // if favicon is ready, resize it using size that fits shortcut better
-            icon = DimenUtils.getRefinedShortcutIcon(resources, bitmap, representativeCharacter);
+            icon = FavIconUtils.getRefinedShortcutIcon(resources, bitmap, representativeCharacter);
         }
         // label must not be empty
         String label = title;

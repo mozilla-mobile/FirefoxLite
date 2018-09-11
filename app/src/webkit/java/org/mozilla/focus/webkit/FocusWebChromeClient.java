@@ -13,23 +13,16 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import org.mozilla.focus.history.BrowsingHistoryManager;
+import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FileUtils;
-import org.mozilla.icon.FavIconUtils;
+import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.util.Logger;
-
-import java.lang.ref.WeakReference;
-import java.util.concurrent.ExecutionException;
 
 /**
  * An @see{android.webkit.WebChromeClient} implementation to hand over any callback to TabChromeClient, if any.
  */
 class FocusWebChromeClient extends WebChromeClient {
-
-    private static final String LOGGER_TAG = "FocusWebChromeClient";
 
     /**
      * The TabView be attached by this client. No matter which WebView notify this client, this client
@@ -73,17 +66,16 @@ class FocusWebChromeClient extends WebChromeClient {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        // We're desperate in finding the correct callback for updating title, so also updating here.
-        final String title = view.getTitle();
 
-        try {
-            new FavIconUtils.SaveBitmapTask(new FileUtils.GetCache(
-                    new WeakReference<>(view.getContext())).get(), url, icon,
-                    new BrowsingHistoryManager.UpdateHistoryWrapper(title, url),
-                    Bitmap.CompressFormat.JPEG, DimenUtils.JPEG_QUALITY).execute();
-        } catch (ExecutionException | InterruptedException e) {
-            Logger.throwOrWarn(LOGGER_TAG, "Failed to get cache folder in onReceivedIcon.");
-        }
+        final Bitmap refinedBitmap = FavIconUtils.getRefinedBitmap(view.getResources(),
+                icon,
+                FavIconUtils.getRepresentativeCharacter(url));
+
+        final Site site = new Site();
+        site.setTitle(view.getTitle());
+        site.setUrl(url);
+        site.setFavIcon(refinedBitmap);
+        BrowsingHistoryManager.getInstance().updateLastEntry(site, null);
 
         if (this.tabChromeClient != null) {
             this.tabChromeClient.onReceivedIcon(this.host, icon);

@@ -7,7 +7,6 @@ package org.mozilla.focus.history;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -15,12 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
@@ -31,9 +25,7 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.icon.FavIconUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,10 +79,6 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return null;
     }
 
-    private void setImageViewWithDefaultBitmap(ImageView imageView, String url) {
-        imageView.setImageBitmap(DimenUtils.getInitialBitmap(imageView.getResources(), FavIconUtils.getRepresentativeCharacter(url), Color.WHITE));
-    }
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof SiteItemViewHolder) {
@@ -101,23 +89,11 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 siteVH.rootView.setOnClickListener(this);
                 siteVH.textMain.setText(item.getTitle());
                 siteVH.textSecondary.setText(item.getUrl());
-                String favIconUri = item.getFavIconUri();
-                if (favIconUri != null) {
-                    Glide.with(siteVH.imgFav.getContext())
-                            .asBitmap()
-                            .load(favIconUri)
-                            .into(new SimpleTarget<Bitmap>() {
-                                @Override
-                                public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                    if (DimenUtils.iconTooBlurry(siteVH.imgFav.getResources(), resource.getWidth())) {
-                                        setImageViewWithDefaultBitmap(siteVH.imgFav, item.getUrl());
-                                    } else {
-                                        siteVH.imgFav.setImageBitmap(resource);
-                                    }
-                                }
-                            });
+                Bitmap bmpFav = item.getFavIcon();
+                if (bmpFav != null) {
+                    siteVH.imgFav.setImageBitmap(bmpFav);
                 } else {
-                    setImageViewWithDefaultBitmap(siteVH.imgFav, item.getUrl());
+                    siteVH.imgFav.setImageResource(R.drawable.ic_globe);
                 }
 
                 final PopupMenu popupMenu = new PopupMenu(mContext, siteVH.btnMore);

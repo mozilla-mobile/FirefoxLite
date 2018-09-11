@@ -67,9 +67,9 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
@@ -85,7 +85,6 @@ import org.mozilla.rocket.tabs.TabsViewListener;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
 import org.mozilla.rocket.theme.ThemeManager;
-import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
@@ -853,7 +852,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void loadUrl(@NonNull final String url, boolean openNewTab,
                         boolean isFromExternal, final Runnable onViewReadyCallback) {
         updateURL(url);
-        if (SupportUtils.isUrl(url)) {
+        if (UrlUtils.isUrl(url)) {
             if (openNewTab) {
                 sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true));
 

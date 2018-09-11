@@ -27,12 +27,11 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.icon.FavIconUtils;
+import org.mozilla.focus.utils.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ThreadUtils;
-import org.mozilla.urlutils.UrlUtils;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.rocket.tabs.SiteIdentity;
 import org.mozilla.rocket.tabs.TabChromeClient;
@@ -359,13 +358,20 @@ public class WebkitView extends NestedWebView implements TabView {
         }
 
         evaluateJavascript("(function() { return document.getElementById('mozillaErrorPage'); })();",
-                errorPage -> {
-                    if (!"null".equals(errorPage)) {
-                        return;
-                    }
+                new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String errorPage) {
+                        if (!"null".equals(errorPage)) {
+                            return;
+                        }
 
-                    Site site = BrowsingHistoryManager.prepareSiteForFirstInsert(url, getTitle(), System.currentTimeMillis());
-                    BrowsingHistoryManager.getInstance().insert(site, null);
+                        Site site = new Site();
+                        site.setUrl(url);
+                        site.setTitle(getTitle());
+                        site.setLastViewTimestamp(System.currentTimeMillis());
+                        site.setFavIcon(FavIconUtils.getInitialBitmap(getResources(), null, FavIconUtils.getRepresentativeCharacter(url)));
+                        BrowsingHistoryManager.getInstance().insert(site, null);
+                    }
                 });
     }
 

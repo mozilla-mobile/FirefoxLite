@@ -15,8 +15,8 @@ import android.support.annotation.RequiresApi;
 
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.SafeIntent;
-import org.mozilla.focus.utils.SearchUtils;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.focus.utils.UrlUtils;
 
 /**
  * Activity for receiving and processing an ACTION_PROCESS_TEXT intent.
@@ -36,7 +36,7 @@ public class TextActionActivity extends Activity {
         } else {
             searchText = "";
         }
-        final String searchUrl = SearchUtils.createSearchUrl(this, searchText);
+        final String searchUrl = UrlUtils.createSearchUrl(this, searchText);
 
         final Intent searchIntent = new Intent();
         searchIntent.setClassName(this, AppConstants.LAUNCHER_ACTIVITY_ALIAS);

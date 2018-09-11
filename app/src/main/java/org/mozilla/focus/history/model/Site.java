@@ -5,44 +5,19 @@
 
 package org.mozilla.focus.history.model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 
-import org.mozilla.focus.utils.AppConstants;
+/**
+ * Created by hart on 03/08/2017.
+ */
 
-@Entity(tableName = "browsing_history")
 public class Site {
-
-    public Site(long id, String title, @NonNull String url, long viewCount, long lastViewTimestamp, String favIconUri) {
-        this.id = id;
-        this.title = title;
-        this.url = url;
-        this.viewCount = viewCount;
-        this.lastViewTimestamp = lastViewTimestamp;
-        this.favIconUri = favIconUri;
-    }
-
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "_id")
     private long id;
-
     private String title;
-
-    @NonNull
     private String url;
-
-    @ColumnInfo(name = "view_count")
     private long viewCount;
-
-    @ColumnInfo(name = "last_view_timestamp")
     private long lastViewTimestamp;
-
-    @ColumnInfo(name = "fav_icon_uri")
-    private String favIconUri;
+    private Bitmap favIcon;
 
     public long getId() {
         return this.id;
@@ -60,12 +35,11 @@ public class Site {
         this.title = title;
     }
 
-    @NonNull
     public String getUrl() {
         return this.url;
     }
 
-    public void setUrl(@NonNull String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
@@ -85,45 +59,26 @@ public class Site {
         this.lastViewTimestamp = timestamp;
     }
 
-    public String getFavIconUri() {
-        return favIconUri;
+    public Bitmap getFavIcon() {
+        return this.favIcon;
     }
 
-    public void setFavIconUri(String favIconUri) {
-        this.favIconUri = favIconUri;
+    public void setFavIcon(Bitmap favIcon) {
+        this.favIcon = favIcon;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Site && ((Site) obj).getId() == this.getId();
+        if (obj instanceof Site) {
+            if (((Site) obj).getId() == this.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
         return super.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return AppConstants.isReleaseBuild() ? toStringRelease() : toStringNormal();
-    }
-
-    private String toStringRelease() {
-        return "Site{" +
-                "id='" + id + '\'' +
-                ", viewCount='" + viewCount + '\'' +
-                ", lastViewTimestamp='" + lastViewTimestamp + '\'' +
-                '}';
-    }
-
-    private String toStringNormal() {
-        return "Site{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", viewCount='" + viewCount + '\'' +
-                ", lastViewTimestamp='" + lastViewTimestamp + '\'' +
-                ", favIconUri='" + favIconUri + '\'' +
-                '}';
     }
 }

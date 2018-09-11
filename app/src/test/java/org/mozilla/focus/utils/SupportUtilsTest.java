@@ -25,60 +25,6 @@ public class SupportUtilsTest {
         Locale.setDefault(Locale.ENGLISH);
     }
 
-
-    @Test
-    public void testNormalize() {
-        assertEquals("http://www.mozilla.org", SupportUtils.normalize("http://www.mozilla.org"));
-        assertEquals("https://www.mozilla.org", SupportUtils.normalize("https://www.mozilla.org"));
-        assertEquals("https://www.mozilla.org/en-US/internet-health/", SupportUtils.normalize("https://www.mozilla.org/en-US/internet-health/"));
-        assertEquals("file:///mnt/sdcard/", SupportUtils.normalize("file:///mnt/sdcard/"));
-
-        assertEquals("http://mozilla.org", SupportUtils.normalize("mozilla.org"));
-        assertEquals("http://mozilla.org", SupportUtils.normalize("http://mozilla.org "));
-        assertEquals("http://mozilla.org", SupportUtils.normalize(" http://mozilla.org "));
-        assertEquals("http://mozilla.org", SupportUtils.normalize(" http://mozilla.org"));
-        assertEquals("http://localhost", SupportUtils.normalize("localhost"));
-
-        // for supported/predefined url, we should not change them at all.
-        for (final String supported : SupportUtils.SUPPORTED_URLS) {
-            assertEquals(supported, SupportUtils.normalize(supported));
-        }
-    }
-
-    @Test
-    public void testIsUrl() {
-        assertTrue(SupportUtils.isUrl("http://www.mozilla.org"));
-        assertTrue(SupportUtils.isUrl("https://www.mozilla.org"));
-        assertTrue(SupportUtils.isUrl("https://www.mozilla.org "));
-        assertTrue(SupportUtils.isUrl(" https://www.mozilla.org"));
-        assertTrue(SupportUtils.isUrl(" https://www.mozilla.org "));
-        assertTrue(SupportUtils.isUrl("https://www.mozilla.org/en-US/internet-health/"));
-        assertTrue(SupportUtils.isUrl("file:///mnt/sdcard/"));
-        assertTrue(SupportUtils.isUrl("file:///"));
-        assertTrue(SupportUtils.isUrl("file:///mnt"));
-        assertTrue(SupportUtils.isUrl("mozilla.org"));
-        assertTrue(SupportUtils.isUrl("192.168.1.1"));
-        assertTrue(SupportUtils.isUrl("192.168.1.1:4000"));
-        assertTrue(SupportUtils.isUrl("192.168.1.1/a/../b"));
-        assertTrue(SupportUtils.isUrl("http://192.168.1.1"));
-        assertTrue(SupportUtils.isUrl("http://192.168.1.1:4000"));
-        assertTrue(SupportUtils.isUrl("http://192.168.1.1/a/../b"));
-        assertTrue(SupportUtils.isUrl("localhost"));
-        assertTrue(SupportUtils.isUrl("http://localhost"));
-        assertTrue(SupportUtils.isUrl("about:blank"));
-        assertTrue(SupportUtils.isUrl("focusabout:"));
-
-        assertFalse(SupportUtils.isUrl("Hello World"));
-        assertFalse(SupportUtils.isUrl("Mozilla"));
-        assertFalse(SupportUtils.isUrl(""));
-        assertFalse(SupportUtils.isUrl(" "));
-        assertFalse(SupportUtils.isUrl(":"));
-        assertFalse(SupportUtils.isUrl("."));
-        assertFalse(SupportUtils.isUrl("::"));
-        assertFalse(SupportUtils.isUrl("..."));
-        assertFalse(SupportUtils.isUrl("file://:"));
-    }
-
     /*
      * Super simple sumo URL test - it exists primarily to verify that we're setting the language
      * and page tags correctly. appVersion is null in tests, so we just test that there's a null there,

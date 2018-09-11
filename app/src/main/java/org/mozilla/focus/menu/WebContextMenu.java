@@ -31,12 +31,12 @@ import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
+import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
 import org.mozilla.rocket.tabs.web.DownloadCallback;
-import org.mozilla.urlutils.UrlUtils;
 
 import java.util.List;
 
