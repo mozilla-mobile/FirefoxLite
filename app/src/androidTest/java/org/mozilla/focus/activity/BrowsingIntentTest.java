@@ -140,6 +140,7 @@ public class BrowsingIntentTest {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(TARGET_URL_SITE_1));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         final Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         intent.setPackage(targetContext.getPackageName());
         targetContext.startActivity(intent);
