@@ -7,13 +7,11 @@ package org.mozilla.focus.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import org.mozilla.focus.R;
 
@@ -28,13 +26,11 @@ import org.mozilla.focus.R;
  * is showing. That can be useful for things like FABs that you don't need when someone is typing.
  */
 public class ResizableKeyboardLayout extends CoordinatorLayout {
-    private final Rect rect;
-    private View decorView;
 
     private final int idOfViewToHide;
-    private
+
     @Nullable
-    View viewToHide;
+    private View viewToHide;
     private int marginBottom;
 
     public ResizableKeyboardLayout(Context context) {
@@ -48,8 +44,6 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
     public ResizableKeyboardLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        rect = new Rect();
-
         final TypedArray styleAttributeArray = getContext().getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.ResizableKeyboardLayout,
@@ -60,21 +54,8 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
         } finally {
             styleAttributeArray.recycle();
         }
-    }
-
-    // Zerda modification: Intercept bottomMargin
-    @Override
-    public void setLayoutParams(ViewGroup.LayoutParams params) {
-        super.setLayoutParams(params);
-        if (params instanceof MarginLayoutParams) {
-            marginBottom = (((MarginLayoutParams) params).bottomMargin);
-        }
-    }
-
-    private ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-            int difference = calculateDifferenceBetweenHeightAndUsableArea();
+        this.setOnApplyWindowInsetsListener((v, insets) -> {
+            int difference = insets.getSystemWindowInsetBottom();
 
             if (difference != 0) {
                 // Keyboard showing -> Set difference has bottom padding.
@@ -102,24 +83,22 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
                     }
                 }
             }
+            return insets;
+        });
+    }
+
+    // Zerda modification: Intercept bottomMargin
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        super.setLayoutParams(params);
+        if (params instanceof MarginLayoutParams) {
+            marginBottom = (((MarginLayoutParams) params).bottomMargin);
         }
-    };
-
-    private int calculateDifferenceBetweenHeightAndUsableArea() {
-        if (decorView == null) {
-            decorView = getRootView();
-        }
-
-        decorView.getWindowVisibleDisplayFrame(rect);
-
-        return getResources().getDisplayMetrics().heightPixels - rect.bottom;
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-
-        getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
 
         if (idOfViewToHide != -1) {
             viewToHide = findViewById(idOfViewToHide);
@@ -129,8 +108,6 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
-        getViewTreeObserver().removeOnGlobalLayoutListener(layoutListener);
 
         viewToHide = null;
     }
