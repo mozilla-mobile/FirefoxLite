@@ -17,6 +17,7 @@ import android.os.Looper;
 
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.screenshot.model.Screenshot;
+import org.mozilla.focus.utils.DimenUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -210,7 +211,7 @@ public class QueryHandler extends AsyncQueryHandler {
 
     private static byte[] bitmapToBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE, stream);
         return stream.toByteArray();
     }
 

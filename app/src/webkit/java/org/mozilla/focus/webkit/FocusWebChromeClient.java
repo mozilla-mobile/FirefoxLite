@@ -80,7 +80,7 @@ class FocusWebChromeClient extends WebChromeClient {
             new FavIconUtils.SaveBitmapTask(new FileUtils.GetCache(
                     new WeakReference<>(view.getContext())).get(), url, icon,
                     new BrowsingHistoryManager.UpdateHistoryWrapper(title, url),
-                    Bitmap.CompressFormat.JPEG, DimenUtils.JPEG_QUALITY).execute();
+                    Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute();
         } catch (ExecutionException | InterruptedException e) {
             Logger.throwOrWarn(LOGGER_TAG, "Failed to get cache folder in onReceivedIcon.");
         }

@@ -19,9 +19,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -710,7 +708,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 return;
             }
             new FavIconUtils.SaveBitmapsTask(cacheDir, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference),
-                    Bitmap.CompressFormat.JPEG, DimenUtils.JPEG_QUALITY).execute();
+                    Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute();
             db.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
             PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(TOP_SITES_V2_PREF, true).apply();
         }

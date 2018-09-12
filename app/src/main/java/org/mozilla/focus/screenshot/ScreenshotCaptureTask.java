@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import org.mozilla.focus.screenshot.model.Screenshot;
+import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.StorageUtils;
 
@@ -68,7 +69,7 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
-            if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)) {
+            if (bitmap.compress(Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE, fos)) {
                 fos.flush();
                 path = file.getPath();
             } else {
