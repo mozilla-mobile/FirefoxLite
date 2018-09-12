@@ -145,7 +145,11 @@ public class BrowsingHistoryManager {
     }
 
     public static void updateHistory(String title, String url, String fileUri) {
-        BrowsingHistoryManager.getInstance().updateLastEntry(prepareSiteForUpdate(title, url, fileUri), null);
+        updateHistory(title, url, fileUri, null);
+    }
+
+    public static void updateHistory(String title, String url, String fileUri, AsyncUpdateListener callback) {
+        BrowsingHistoryManager.getInstance().updateLastEntry(prepareSiteForUpdate(title, url, fileUri), callback);
     }
 
     public static class UpdateHistoryWrapper implements FavIconUtils.Consumer<String> {

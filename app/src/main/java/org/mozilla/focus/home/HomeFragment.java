@@ -862,15 +862,21 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public void accept(List<String> fileUris) {
+            QueryHandler.AsyncUpdateListener listener = result -> {
+                Handler handler = handlerWeakReference.get();
+                if (handler == null) {
+                    return;
+                }
+                Message message = handler.obtainMessage(MSG_ID_REFRESH);
+                handler.dispatchMessage(message);
+            };
             for (int i = 0 ; i < fileUris.size() ; i++) {
-                BrowsingHistoryManager.updateHistory(null, urls.get(i), fileUris.get(i));
+                if (i == fileUris.size() - 1) {
+                    BrowsingHistoryManager.updateHistory(null, urls.get(i), fileUris.get(i), listener);
+                } else {
+                    BrowsingHistoryManager.updateHistory(null, urls.get(i), fileUris.get(i));
+                }
             }
-            Handler handler = handlerWeakReference.get();
-            if (handler == null) {
-                return;
-            }
-            Message message = handler.obtainMessage(MSG_ID_REFRESH);
-            handler.dispatchMessage(message);
         }
     }
 }
