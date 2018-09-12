@@ -32,9 +32,13 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.icon.FavIconUtils;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -121,15 +125,25 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
                 final PopupMenu popupMenu = new PopupMenu(mContext, siteVH.btnMore);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        if (menuItem.getItemId() == R.id.browsing_history_menu_delete) {
-                            BrowsingHistoryManager.getInstance().delete(item.getId(), HistoryItemAdapter.this);
-                            TelemetryWrapper.historyRemoveLink();
+                popupMenu.setOnMenuItemClickListener(menuItem -> {
+                    if (menuItem.getItemId() == R.id.browsing_history_menu_delete) {
+                        BrowsingHistoryManager.getInstance().delete(item.getId(), HistoryItemAdapter.this);
+                        TelemetryWrapper.historyRemoveLink();
+                        // Delete favicon
+                        String uriString = item.getFavIconUri();
+                        if (uriString == null) {
+                            return false;
                         }
-                        return false;
+                        final URI fileUri;
+                        try {
+                            fileUri = new URI(uriString);
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                        new FileUtils.DeleteFileThread(new File(fileUri)).start();
                     }
+                    return false;
                 });
                 popupMenu.inflate(R.menu.menu_browsing_history_option);
 
@@ -215,6 +229,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void clear() {
+        new FileUtils.DeleteFolderThread(FileUtils.getFaviconFolder(mContext)).start();
         BrowsingHistoryManager.getInstance().deleteAll(this);
     }
 
