@@ -60,6 +60,31 @@ public abstract class HistoryDatabase extends RoomDatabase {
 
             database.beginTransaction();
             try {
+                // Create a legacy table for future migration that cannot be done here since we
+                // don't have context. This table will be cleared once user have launched
+                // HomeFragment. See org.mozilla.focus.home.HomeFragment.MigrateHistoryRunnable
+                database.execSQL(CREATE_LEGACY_IF_NOT_EXIST);
+                // Migrate history.
+                final int PAGE_SIZE_AT_MIGRATION_VERSION = 50;
+                database.execSQL(
+                        "INSERT INTO " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY + " (" + HistoryContract.BrowsingHistory._ID +
+                                ", " + HistoryContract.BrowsingHistory.FAV_ICON + ", " + HistoryContract.BrowsingHistory.URL +
+                                ") SELECT " + HistoryContract.BrowsingHistory._ID +
+                                ", " + HistoryContract.BrowsingHistory.FAV_ICON + ", " + HistoryContract.BrowsingHistory.URL +
+                                " FROM " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY +
+                                " ORDER BY " + HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP + " DESC" +
+                                " LIMIT " + PAGE_SIZE_AT_MIGRATION_VERSION);
+                // Migrate Top sites.
+                database.execSQL(
+                        "INSERT OR REPLACE INTO " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY + " (" + HistoryContract.BrowsingHistory._ID +
+                                ", " + HistoryContract.BrowsingHistory.FAV_ICON + ", " + HistoryContract.BrowsingHistory.URL +
+                                ") SELECT " + HistoryContract.BrowsingHistory._ID +
+                                ", " + HistoryContract.BrowsingHistory.FAV_ICON + ", " + HistoryContract.BrowsingHistory.URL +
+                                " FROM " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY +
+                                " WHERE " + HistoryContract.BrowsingHistory.VIEW_COUNT + " > " + HomeFragment.TOP_SITES_QUERY_MIN_VIEW_COUNT +
+                                " ORDER BY " + HistoryContract.BrowsingHistory.VIEW_COUNT +
+                                // We migrate twice the amount in case user removes top site.
+                                " LIMIT " + HomeFragment.TOP_SITES_QUERY_LIMIT * 2);
                 database.execSQL(CREATE_TABLE_IF_NOT_EXISTS + BROWSING_HISTORY_NEW + " (" +
                         HistoryContract.BrowsingHistory._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                         HistoryContract.BrowsingHistory.TITLE + " TEXT," +
@@ -68,7 +93,6 @@ public abstract class HistoryDatabase extends RoomDatabase {
                         HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP + " INTEGER NOT NULL," +
                         HistoryContract.BrowsingHistory.FAV_ICON_URI + " TEXT" +
                         ");");
-                database.execSQL(CREATE_LEGACY_IF_NOT_EXIST);
                 database.execSQL(
                         "INSERT INTO " + BROWSING_HISTORY_NEW + " (" + HistoryContract.BrowsingHistory._ID +
                                 ", " + HistoryContract.BrowsingHistory.TITLE + ", " + HistoryContract.BrowsingHistory.URL +
@@ -77,15 +101,6 @@ public abstract class HistoryDatabase extends RoomDatabase {
                                 ", " + HistoryContract.BrowsingHistory.TITLE + ", " + HistoryContract.BrowsingHistory.URL +
                                 ", " + HistoryContract.BrowsingHistory.VIEW_COUNT + ", " + HistoryContract.BrowsingHistory.LAST_VIEW_TIMESTAMP +
                                 " FROM " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY);
-                database.execSQL(
-                        "INSERT INTO " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY + " (" + HistoryContract.BrowsingHistory._ID +
-                                ", " + HistoryContract.BrowsingHistory.FAV_ICON + ", " + HistoryContract.BrowsingHistory.URL +
-                                ") SELECT " + HistoryContract.BrowsingHistory._ID +
-                                ", " + HistoryContract.BrowsingHistory.FAV_ICON + ", " + HistoryContract.BrowsingHistory.URL +
-                                " FROM " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY +
-                                " WHERE " + HistoryContract.BrowsingHistory.VIEW_COUNT + " > " + HomeFragment.TOP_SITES_QUERY_MIN_VIEW_COUNT +
-                                " ORDER BY " + HistoryContract.BrowsingHistory.VIEW_COUNT +
-                                " LIMIT " + HomeFragment.TOP_SITES_QUERY_LIMIT);
                 database.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY);
                 database.execSQL("ALTER TABLE " + BROWSING_HISTORY_NEW + " RENAME TO " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY);
                 database.setTransactionSuccessful();

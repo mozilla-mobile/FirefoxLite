@@ -690,6 +690,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
             final SupportSQLiteOpenHelper helper = HistoryDatabase.getInstance(context).getOpenHelper();
             final SupportSQLiteDatabase db = helper.getWritableDatabase();
+            // We can't differentiate if this is a new install or upgrade given the db version will
+            // already become the latest version here. We create a temp table if no migration is
+            // needed and later delete it to prevent crashing.
             db.execSQL(HistoryDatabase.CREATE_LEGACY_IF_NOT_EXIST);
             final SupportSQLiteQueryBuilder builder = SupportSQLiteQueryBuilder.builder(HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
             final String[] columns = {HistoryContract.BrowsingHistory._ID, HistoryContract.BrowsingHistory.URL, HistoryContract.BrowsingHistory.FAV_ICON};
