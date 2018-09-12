@@ -77,7 +77,7 @@ class FocusWebChromeClient extends WebChromeClient {
         final String title = view.getTitle();
 
         try {
-            new FavIconUtils.SaveBitmapTask(new FileUtils.GetCache(
+            new FavIconUtils.SaveBitmapTask(new FileUtils.GetFaviconFolder(
                     new WeakReference<>(view.getContext())).get(), url, icon,
                     new BrowsingHistoryManager.UpdateHistoryWrapper(title, url),
                     Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute();

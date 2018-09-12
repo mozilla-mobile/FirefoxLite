@@ -43,6 +43,7 @@ import java.util.concurrent.Future;
 public class FileUtils {
     public static final String WEBVIEW_DIRECTORY = "app_webview";
     private static final String WEBVIEW_CACHE_DIRECTORY = "cache";
+    private static final String FAVICON_FOLDER_NAME = "favicons";
 
 
     public static boolean truncateCacheDirectory(final Context context) {
@@ -416,6 +417,18 @@ public class FileUtils {
         }
     }
 
+    public static class DeleteFolderThread extends FileIOThread {
+
+        public DeleteFolderThread(File directory) {
+            super(directory);
+        }
+
+        @Override
+        protected void doIO(File directory) {
+            FileUtils.deleteContent(directory);
+        }
+    }
+
     private abstract static class FileIOThread<T> extends Thread {
         private File file;
 
@@ -464,6 +477,30 @@ public class FileUtils {
         public File get() throws ExecutionException, InterruptedException {
             return getFileFuture.get();
         }
+    }
+
+    // context.getFaviconFolder() triggers strictMode, this is a workaround
+    // function which, although, still blocks main thread, but can avoid
+    // strictMode violation.
+    public static class GetFaviconFolder extends GetFile {
+
+        public GetFaviconFolder(WeakReference<Context> contextWeakReference) {
+            super(contextWeakReference);
+        }
+
+        @Override
+        protected File getFile(Context context) {
+            return getFaviconFolder(context);
+        }
+    }
+
+    public static File getFaviconFolder(Context context) {
+        File fileDir = context.getFilesDir();
+        File faviconDir = new File(fileDir, FAVICON_FOLDER_NAME);
+        if (!ensureDir(faviconDir)) {
+            return context.getCacheDir();
+        }
+        return faviconDir;
     }
 
 }
