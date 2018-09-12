@@ -696,7 +696,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             final String[] columns = {HistoryContract.BrowsingHistory._ID, HistoryContract.BrowsingHistory.URL, HistoryContract.BrowsingHistory.FAV_ICON};
             builder.columns(columns);
             final SupportSQLiteQuery query = builder.create();
-            final File cacheDir = context.getCacheDir();
+            final File faviconFolder = FileUtils.getFaviconFolder(context);
             final List<String> urls = new ArrayList<>();
             final List<byte[]> icons = new ArrayList<>();
             try (Cursor cursor = db.query(query)) {
@@ -715,7 +715,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 scheduleRefresh(handler);
             } else {
                 // Refresh is still scheduled implicitly in SaveBitmapsTask
-                new FavIconUtils.SaveBitmapsTask(cacheDir, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference),
+                new FavIconUtils.SaveBitmapsTask(faviconFolder, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference),
                         Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute();
             }
             db.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
