@@ -318,7 +318,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
                                arguments: Bundle?): String {
 
         val tab = Session()
-        tab.url = url!!
+        tab.url = url
 
         bindCallback(tab)
 

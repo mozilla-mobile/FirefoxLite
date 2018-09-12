@@ -19,7 +19,7 @@ class Session @JvmOverloads constructor(
         val id: String = UUID.randomUUID().toString(),
         var parentId: String? = "",
         var title: String? = "",
-        var url: String = ""
+        var url: String? = ""
 ) {
     var tabView: TabView? = null
         private set
