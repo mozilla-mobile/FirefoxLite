@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
@@ -491,5 +490,19 @@
     <string name="my_shot_on_boarding_message">View your screenshots here!</string>
     <!-- The notice shown along with the message when the user captures screenshot for the first time -->
     <string name="my_shot_on_boarding_category_message">To improve your product experience, we collect information about your screenshots’ categories.</string>
+
+    <!-- Message shown in Home Screen with an icon. Users can click on the icon and click either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback.-->
+    <string name="exp_survey_wifi">We plan to integrate “Free Wifi-Finder” to help you find quality free internet connection nearby.\n\n Interested?</string>
+    <!-- Message shown in Home Screen with an icon. Users can click on the icon and click either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback. -->
+    <string name="exp_survey_vpn">We plan to integrate “VPN service” to get you more freedom and more privacy when browsing.\n\n Interested?</string>
+    <!-- Message shown after the user clicks "YES, PLEASE" or "NOPE" on the survey.
+    %1$s will be replaced with an smiling face with smiling eyes Emoji (U+1F60A)
+    -->
+    <string name="exp_survey_thanks">Thank you for giving us feedback %1$s</string>
+    <!-- Text on survey feedback button. This means the user want to have this feature. -->
+    <string name="exp_survey_yes">YES, PLEASE</string>
+    <!-- Text on survey feedback button. This means the user don't want this feature. -->
+    <string name="exp_survey_no">NOPE</string>
+
 
 </resources>
