@@ -63,12 +63,16 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
     private void setImageViewWithBackground(ImageView imageView, Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
         setBackgroundColor(imageView, bitmap);
+        // To avoid flashing, the view is invisible until loaded.
+        imageView.setVisibility(View.VISIBLE);
     }
 
     private void defaultSetImageViewWithBackground(ImageView imageView, String url, int backgroundColor) {
         final Resources resources = imageView.getResources();
         final Bitmap bitmap = DimenUtils.getInitialBitmap(resources, FavIconUtils.getRepresentativeCharacter(url), backgroundColor);
         setImageViewWithBackground(imageView, bitmap);
+        // To avoid flashing, the view is invisible until loaded.
+        imageView.setVisibility(View.VISIBLE);
     }
 
     @Override
