@@ -15,13 +15,13 @@ import android.webkit.CookieManager
 import android.webkit.WebView
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.urlutils.UrlUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -38,6 +38,7 @@ import org.mozilla.rocket.tabs.utils.DefaultTabsViewListener
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
+import org.mozilla.urlutils.UrlUtils
 
 private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
@@ -114,6 +115,11 @@ class BrowserFragment : LocaleAwareFragment(),
                     it.isEnabled = false
                     it.setOnClickListener { onNextClicked() }
                 }
+
+        view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
+            (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
+            insets
+        }
     }
 
     override fun onResume() {
