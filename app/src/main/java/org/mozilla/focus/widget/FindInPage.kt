@@ -5,6 +5,8 @@
 
 package org.mozilla.focus.widget
 
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -35,7 +37,7 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
         resultText = container.findViewById(R.id.find_in_page_result_text)
         nextBtn = container.findViewById(R.id.find_in_page_next_btn)
         prevBtn = container.findViewById(R.id.find_in_page_prev_btn)
-        closeBtn = container.findViewById<View>(R.id.find_in_page_close_btn)
+        closeBtn = container.findViewById(R.id.find_in_page_close_btn)
 
         resultFormat = container.context.getString(R.string.find_in_page_result)
         accessibilityFormat = container.context.getString(R.string.accessibility_find_in_page_result)
@@ -68,15 +70,28 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
     }
 
     fun show(current: Session?) {
+        if (container.visibility == View.VISIBLE) {
+            return
+        }
+
         if (current != null) {
             session = current
             container.visibility = View.VISIBLE
-            queryText.requestFocus()
-            ViewUtils.showKeyboard(queryText)
+            // FIXME: post to another round to increase possibility of showing keyboard
+            // Find-in-page button of menu is in another window, meanwhile the find-in-page view
+            // is in another window. Showing-keyboard might fail if the focused view is invisible.
+            Handler(Looper.getMainLooper()).post {
+                queryText.requestFocus()
+                ViewUtils.showKeyboard(queryText)
+            }
         }
     }
 
     fun hide() {
+        if (container.visibility != View.VISIBLE) {
+            return
+        }
+
         ViewUtils.hideKeyboard(queryText)
         queryText.text = null
         queryText.clearFocus()
@@ -95,8 +110,8 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
         }
         closeBtn.setOnClickListener { hide() }
         queryText.setOnClickListener { queryText.isCursorVisible = true }
-        prevBtn.setOnClickListener { obtainWebView()?.let { it.findNext(false) } }
-        nextBtn.setOnClickListener { obtainWebView()?.let { it.findNext(true) } }
+        prevBtn.setOnClickListener { obtainWebView()?.findNext(false) }
+        nextBtn.setOnClickListener { obtainWebView()?.findNext(true) }
 
         queryText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -106,7 +121,7 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                obtainWebView()?.let { it.findAllAsync(s.toString()) }
+                obtainWebView()?.findAllAsync(s.toString())
             }
         })
 
