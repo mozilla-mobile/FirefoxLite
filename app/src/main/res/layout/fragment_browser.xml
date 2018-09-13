@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,37 +7,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-        <View
+        <FrameLayout
             android:id="@+id/background"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/animated_background" />
-
-        <org.mozilla.focus.widget.ResizableKeyboardLayout
-            android:id="@+id/main_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="49dp"
-            android:layout_marginTop="25dp"
-            android:clipChildren="false"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/webview_slot"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="26dp" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/animated_background">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
+                android:layout_gravity="bottom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="26dp"
                 android:background="@android:color/transparent"
                 android:clipChildren="false"
                 app:elevation="0dp">
@@ -46,7 +32,7 @@
                 <FrameLayout
                     android:id="@+id/urlbar"
                     android:layout_width="match_parent"
-                    android:layout_height="26dp"
+                    android:layout_height="match_parent"
                     android:clipChildren="false"
                     app:layout_scrollFlags="">
 
@@ -76,12 +62,28 @@
 
             </android.support.design.widget.AppBarLayout>
 
+        </FrameLayout>
+
+        <org.mozilla.focus.widget.ResizableKeyboardLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="49dp"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/webview_slot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
             <include
                 layout="@layout/find_in_page"
                 android:visibility="gone" />
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
-    </FrameLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
