@@ -707,11 +707,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     parseCursorToSite(cursor, urls, icons);
                 }
             }
-            if (handlerWeakReference.get() == null) {
+            Handler handler = handlerWeakReference.get();
+            if (handler == null) {
                 return;
             }
-            new FavIconUtils.SaveBitmapsTask(cacheDir, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference),
-                    Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute();
+            if (icons.size() == 0) {
+                scheduleRefresh(handler);
+            } else {
+                // Refresh is still scheduled implicitly in SaveBitmapsTask
+                new FavIconUtils.SaveBitmapsTask(cacheDir, urls, icons, new UpdateHistoryWrapper(urls, handlerWeakReference),
+                        Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute();
+            }
             db.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
             PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(TOP_SITES_V2_PREF, true).apply();
         }
@@ -868,8 +874,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 if (handler == null) {
                     return;
                 }
-                Message message = handler.obtainMessage(MSG_ID_REFRESH);
-                handler.dispatchMessage(message);
+                scheduleRefresh(handler);
             };
             for (int i = 0 ; i < fileUris.size() ; i++) {
                 if (i == fileUris.size() - 1) {
@@ -879,5 +884,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 }
             }
         }
+    }
+
+    private static void scheduleRefresh(Handler handler) {
+        Message message = handler.obtainMessage(MSG_ID_REFRESH);
+        handler.dispatchMessage(message);
     }
 }
