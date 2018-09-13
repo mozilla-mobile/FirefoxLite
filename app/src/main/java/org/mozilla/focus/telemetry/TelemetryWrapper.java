@@ -45,7 +45,6 @@ import org.mozilla.telemetry.storage.FileTelemetryStorage;
 import org.mozilla.telemetry.storage.TelemetryStorage;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -237,6 +236,7 @@ public final class TelemetryWrapper {
                             resources.getString(R.string.pref_key_webview_version),
                             resources.getString(R.string.pref_key_locale))
                     .setSettingsProvider(new CustomSettingsProvider())
+                    .setMinimumEventsForUpload(1)   // if the user open MainActivity and goes to Setting Fragment and disable "Send Usage Data", we still want to send that event.
                     .setCollectionEnabled(telemetryEnabled)
                     .setUploadEnabled(telemetryEnabled);
 

@@ -26,7 +26,6 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
-import org.mozilla.rocket.privately.PrivateMode;
 
 import java.util.Locale;
 
@@ -146,7 +145,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     .replace(R.id.container, new SettingsFragment())
                     .commit();
             return;
-        } else {
+            // TelemetrySwitchPreference will handle this
+        } else  if (!key.equals(getString(R.string.pref_key_telemetry))) {
             // For other events, we handle them here.
             TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
         }
