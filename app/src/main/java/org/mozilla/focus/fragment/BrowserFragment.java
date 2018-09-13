@@ -421,6 +421,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         urlView = (TextView) view.findViewById(R.id.display_url);
 
         backgroundView = view.findViewById(R.id.background);
+        view.findViewById(R.id.appbar).setOnApplyWindowInsetsListener((v, insets) -> {
+            ((FrameLayout.LayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+            return insets;
+        });
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
         tabCounter = view.findViewById(R.id.btn_tab_tray);
