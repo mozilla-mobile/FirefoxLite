@@ -294,4 +294,11 @@
         <item name="android:layout_marginEnd">27dp</item>
 
     </style>
+    
+    <style name="ButtonText2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/common_font_size_btn_text2</item>
+        <item name="android:background">@drawable/round_rectangle_ripple</item>
+    </style>
 </resources>

@@ -42,6 +42,7 @@ import android.view.ViewParent;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -65,23 +66,25 @@ import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
+import org.mozilla.focus.utils.RemoteConfigConstants;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
-import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.persistance.History.HistoryDatabase;
-import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.httptask.SimpleLoadUrlTask;
+import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
+import org.mozilla.rocket.persistance.History.HistoryDatabase;
 import org.mozilla.rocket.tabs.Session;
-import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.SessionManager;
+import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.Logger;
+import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -372,6 +375,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         homeScreenBackground = view.findViewById(R.id.home_background);
 
+        initFeatureSurveyViewIfNecessary(view);
+
         return view;
     }
 
@@ -652,6 +657,27 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void initFeatureSurveyViewIfNecessary(final View view) {
+        final RemoteConfigConstants.SURVEY featureSurvey = RemoteConfigConstants.SURVEY.Companion.parseLong(AppConfigWrapper.getFeatureSurvey(getContext()));
+        final ImageView imgSurvey = view.findViewById(R.id.home_wifi_vpn_survey);
+        final Settings.EventHistory eventHistory = Settings.getInstance(getContext()).getEventHistory();
+        if (featureSurvey == RemoteConfigConstants.SURVEY.WIFI_FINDING && !eventHistory.contains(Settings.Event.FeatureSurveyWifiFinding)) {
+            imgSurvey.setImageResource(R.drawable.find_wifi);
+            imgSurvey.setVisibility(View.VISIBLE);
+            if (getContext() != null) {
+                imgSurvey.setOnClickListener(new FeatureSurveyViewHelper(getContext(), featureSurvey));
+            }
+        } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN && !eventHistory.contains(Settings.Event.FeatureSurveyVpn)) {
+            imgSurvey.setImageResource(R.drawable.vpn);
+            imgSurvey.setVisibility(View.VISIBLE);
+            if (getContext() != null) {
+                imgSurvey.setOnClickListener(new FeatureSurveyViewHelper(getContext(), featureSurvey));
+            }
+        } else {
+            imgSurvey.setVisibility(View.GONE);
         }
     }
 

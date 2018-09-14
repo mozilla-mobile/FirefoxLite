@@ -3,6 +3,19 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
+    <color name="commonLightBlack">#272727</color>
+    <color name="commonDarkGrey1">#323232</color>
+    <color name="commonDarkGrey2">#2A2A2E</color>
+    <color name="commonDarkGrey3">#38383D</color>
+    <color name="commonDarkGrey4">#737373</color>
+    <color name="commonLightGrey1">#E4E4E4</color>
+    <color name="commonLightGrey2">#F9F9FA</color>
+    <color name="commonDarkBlue1">#253058</color>
+    <color name="commonDarkBlue2">#1E2950</color>
+    <color name="commonDarkBlue3">#0A84FF</color>
+    <color name="commonLightBlue">#41B7E6</color>
+    <color name="commonPurple">#C85DEF</color>
+
     <color name="sharedColorAppPaletteWhite">#FFFFFFFF</color>
     <color name="sharedColorAppPaletteWhite2">#7FFFFFFF</color>
     <color name="sharedColorAppPaletteWhite3">#33FFFFFF</color>
