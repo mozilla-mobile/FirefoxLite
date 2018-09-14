@@ -285,7 +285,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void deleteCache(Context context) {
         try {
-            new FileUtils.DeleteFileThread(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG));
+            new FileUtils.DeleteFileThread(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG)).start();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Logger.throwOrWarn(TAG, "Failed to open cache directory when deleting banner cache");

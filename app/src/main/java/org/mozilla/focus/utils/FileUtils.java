@@ -407,7 +407,10 @@ public class FileUtils {
 
         @Override
         protected void doIO(File file) {
-            if (file.delete()) {
+            if (!file.exists()) {
+                return;
+            }
+            if (!file.delete()) {
                 Logger.throwOrWarn("DeleteFileThread", "Failed to delete file");
             }
         }
