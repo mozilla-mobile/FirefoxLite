@@ -6,9 +6,15 @@
 package org.mozilla.rocket.tabs
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Message
 import android.text.TextUtils
+import android.view.View
 import android.view.ViewGroup
+import android.webkit.GeolocationPermissions
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import org.mozilla.rocket.tabs.TabView.FindListener
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import java.util.UUID
@@ -169,6 +175,62 @@ class Session @JvmOverloads constructor(
 
             view.isDrawingCacheEnabled = false
         }
+    }
+
+    interface Observer {
+        fun onSessionStarted(url: String?) = Unit
+
+        fun onSessionFinished(isSecure: Boolean) = Unit
+
+        fun onURLChanged(url: String?) = Unit
+
+        /**
+         * Return true if the URL was handled, false if we should continue loading the current URL.
+         */
+        fun handleExternalUrl(url: String?): Boolean = false
+
+        fun updateFailingUrl(url: String?, updateFromError: Boolean) = Unit
+
+        fun onCreateWindow(isDialog: Boolean, isUserGesture: Boolean, msg: Message?) = false
+
+        fun onCloseWindow(tabView: TabView?) = Unit
+
+        fun onProgressChanged(progress: Int) = Unit
+
+
+        /**
+         * @see android.webkit.WebChromeClient
+         */
+        fun onShowFileChooser(tabView: TabView,
+                              filePathCallback: ValueCallback<Array<Uri>>,
+                              fileChooserParams: WebChromeClient.FileChooserParams) = false
+
+        fun onReceivedTitle(view: TabView, title: String?) = Unit
+
+        fun onReceivedIcon(view: TabView, icon: Bitmap?) = Unit
+
+        fun onLongPress(hitTarget: TabView.HitTarget) = Unit
+
+        /**
+         * Notify the host application that the current page has entered full screen mode.
+         * <p>
+         * The callback needs to be invoked to request the page to exit full screen mode.
+         * <p>
+         * Some TabView implementations may pass a custom View which contains the web contents in
+         * full screen mode.
+         */
+        fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) = Unit
+
+        /**
+         * Notify the host application that the current page has exited full screen mode.
+         * <p>
+         * If a View was passed when the application entered full screen mode then this view must
+         * be hidden now.
+         */
+        fun onExitFullScreen() = Unit
+
+        fun onGeolocationPermissionsShowPrompt(origin: String,
+                                               callback: GeolocationPermissions.Callback?) = Unit
     }
 
     companion object {
