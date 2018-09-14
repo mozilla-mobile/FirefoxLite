@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">提供反馈</string>
   <string name="menu_share_with_friends">与朋友分享</string>
   <string name="share_dialog_title">分享</string>
+  <string name="find_in_page_input">页内查找</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%2$d 条中的第 %1$d 条</string>
+  <string name="accessibility_find_next_result">查找下一个结果</string>
+  <string name="accessibility_find_previous_result">查找上一个结果</string>
+  <string name="accessibility_dismiss_find_in_page">关闭页内查找</string>
   <string name="text_selection_search_action">在 Firefox Rocket 中搜索</string>
   <string name="about_content_body">%1$s 是由 %2$s 出品的快速而轻量的浏览器。我们以营造健康、开放的互联网为己任。</string>
   <string name="about_link_learn_more">详细了解</string>
@@ -75,6 +81,7 @@
   <string name="firstrun_next_button">下一步</string>
   <string name="label_menu_bookmark">书签</string>
   <string name="label_menu_download">下载项</string>
+  <string name="label_menu_find_in_page">页内查找</string>
   <string name="label_menu_clear_cache">清除缓存</string>
   <string name="label_menu_history">历史记录</string>
   <string name="label_menu_share">分享</string>
@@ -206,4 +213,9 @@
   <string name="private_browsing_erase_done">您的隐私浏览\n历史已被清除。</string>
   <string name="my_shot_on_boarding_message">在这里查看您的截图！</string>
   <string name="my_shot_on_boarding_category_message">为了改善您的产品体验，我们会收集有关您的屏幕截图类别的信息。</string>
+  <string name="exp_survey_wifi">我们计划整合“Free Wifi-Finder”来帮助您找到附近的高质量免费互联网接入节点。\n\n您感兴趣吗？</string>
+  <string name="exp_survey_vpn">我们计划整合“VPN 服务”来为您提供更多的隐私和自由。\n\n您感兴趣吗？</string>
+  <string name="exp_survey_thanks">感谢您提供反馈 %1$s</string>
+  <string name="exp_survey_yes">是的，我想要</string>
+  <string name="exp_survey_no">不需要</string>
 </resources>

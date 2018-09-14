@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">અભીપ્રાય આપો</string>
   <string name="menu_share_with_friends">મિત્રો સાથે વહેંચો</string>
   <string name="share_dialog_title">આની મારફતે વહેંચો</string>
+  <string name="find_in_page_input">પૃષ્ઠમાં શોધો</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%1$d થી %2$d માંથી બહાર</string>
+  <string name="accessibility_find_next_result">આગામી પરિણામ શોધો</string>
+  <string name="accessibility_find_previous_result">અગાઉના પરિણામ શોધો</string>
+  <string name="accessibility_dismiss_find_in_page">પૃષ્ઠમાં શોધો કાઢી નાખો</string>
   <string name="text_selection_search_action">Firefox Rocket માં શોધો</string>
   <string name="about_content_body">%1$s એ %2$s દ્વારા ઉત્પાદિત કરવામાં આવેલું ઝડપી અને ઓછી જગ્યા રોકે તેવું છે. અમારું લક્ષ્ય એક યોગ્ય , બધાં વાપરી શકે તેવું ઇન્ટરનેટ પ્રસ્થાપિત કરવાનું છે.</string>
   <string name="about_link_learn_more">વધુ શીખો</string>
@@ -75,6 +81,7 @@
   <string name="firstrun_next_button">આગળ</string>
   <string name="label_menu_bookmark">બુકમાર્ક</string>
   <string name="label_menu_download">ડાઉનલોડ</string>
+  <string name="label_menu_find_in_page">પૃષ્ઠમાં શોધો</string>
   <string name="label_menu_clear_cache">કૅશ સાફ કરો</string>
   <string name="label_menu_history">ઇતિહાસ</string>
   <string name="label_menu_share">વહેંચો</string>
@@ -182,7 +189,6 @@
   <string name="survey_notification_title">અમને તમારી જરુર છે! %1$s</string>
   <string name="survey_notification_description">ઈન્ડોનેશિયા માટે એક વધું સારાં ઉત્પાદનને આકાર આપો</string>
   <string name="new_background_tab_hint">નવી ટૅબ ખૂલી ગઇ છે</string>
-  <string name="new_background_tab_switch">SWITCH</string>
   <string name="setting_default_browser_notification_title">સેટીંગ્સ બદલી રહ્યા છીએ…</string>
   <string name="setting_default_browser_notification_text">આ થોડો સમય લઈ શકે છે</string>
   <string name="setting_default_browser_notification_clickable_text">મૂળભૂત બ્રાઉઝર રાખવા માટે આ દબાવો</string>
@@ -206,4 +212,7 @@
   <string name="private_browsing_erase_done">તમારા ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખવામાં આવ્યું છે.</string>
   <string name="my_shot_on_boarding_message">તમારા સ્ક્રીનશોટ અહીં જુઓ!</string>
   <string name="my_shot_on_boarding_category_message">તમારાં ઉત્પાદનનો અનુભવ સુધારવાં માટે, અમે તમારાં સ્ક્રીનશોટનાં વર્ગો વિશે માહિતી ભેગી કરીએ છીએ.</string>
+  <string name="exp_survey_thanks">અમને પ્રતિસાદ આપવા બદલ આપનો આભાર %1$s</string>
+  <string name="exp_survey_yes">હા, કૃપા કરીને</string>
+  <string name="exp_survey_no">ના</string>
 </resources>

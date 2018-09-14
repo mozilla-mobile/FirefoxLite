@@ -91,7 +91,7 @@
   <string name="permission_toast_location">स्थान उपलब्ध नाही. आपले स्थान माहिती करण्याची परवानगी द्या.</string>
   <string name="permission_dialog_msg_storage">परवानगी उपलब्ध नाही. Firefox Rocket ला आपल्या स्थानावर प्रवेश करण्यासाठी परवानगी द्या.</string>
   <string name="permission_toast_storage">संचयन उपलब्ध नाही. आपल्या डिव्हाइसवर फोटो आणि फाईल साठवण्या करिता परवानगी द्या.</string>
-  <string name="geolocation_dialog_message">"%1$s                                                                                                                                                                                                                                     आपल्या स्थानाबद्दल माहिती प्राप्त करू इच्छित आहे!                                                                                                                                                                                                                               \n"</string>
+  <string name="geolocation_dialog_message">"%1$s                                                                                                                                                                                                                                     आपल्या स्थानाबद्दल माहिती प्राप्त करू इच्छित आहे!                                                                                                                                                                                                                               \n\n"</string>
   <string name="geolocation_dialog_message_cache_it">%1$s पुन्हा सुरु होईपर्यंत ह्या साईट साठी विचारू नका</string>
   <string name="geolocation_dialog_allow">ALLOW</string>
   <string name="geolocation_dialog_block">BLOCK</string>
