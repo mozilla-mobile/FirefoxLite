@@ -591,4 +591,128 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             var arguements: Bundle? = null
         }
     }
+
+    enum class Factor(val value: Int) {
+        FACTOR_UNKNOWN(1),
+        FACTOR_TAB_ADDED(2),
+        FACTOR_TAB_REMOVED(3),
+        FACTOR_TAB_SWITCHED(4),
+        FACTOR_NO_FOCUS(5),
+        FACTOR_BACK_EXTERNAL(6)
+    }
+
+    interface Observer {
+        fun onSessionStarted(session: Session) = Unit
+        fun onSessionFinished(session: Session, isSecure: Boolean) = Unit
+        fun onURLChanged(session: Session, url: String?) = Unit
+
+        /**
+         * Subsequent process after WebViewClient.shouldOverrideUrlLoading. TabView implementation will
+         * decide whether this function be invoke or not.
+         *
+         * @param url External url to handle
+         * @return true if this Listener already handled the external url
+         */
+        fun handleExternalUrl(url: String?): Boolean = false
+
+        /**
+         * Subsequent process after WebViewClient.onReceivedError.
+         *
+         * @param url The url that failed to load.
+         * @param updateFromError To indicate whether this callback is invoked under error. If page started loading, this value would be true.
+         * @return true Return true if the URL was handled, false if we should continue loading the current URL.
+         */
+        fun updateFailingUrl(session: Session, url: String?, updateFromError: Boolean) = Unit
+
+        /**
+         * @see android.webkit.WebChromeClient#onProgressChanged(android.webkit.WebView, int)
+         */
+        fun onProgressChanged(session: Session, progress: Int) = Unit
+
+        /**
+         * @see android.webkit.WebChromeClient#onReceivedTitle(android.webkit.WebView, String)
+         */
+        fun onReceivedTitle(session: Session, title: String?) = Unit
+
+        /**
+         * @see android.webkit.WebChromeClient#onReceivedIcon(android.webkit.WebView, Bitmap)
+         */
+        fun onReceivedIcon(session: Session, icon: Bitmap?) = Unit
+
+        /**
+         * Notify the host application a tab becomes 'focused tab'. It usually happens when adding,
+         * removing or switching tabs.
+         *
+         * @param session The session becomes focused, null means there is no focused tab
+         * @param factor the potential factor which cause this focus-change-event
+         */
+        fun onFocusChanged(session: Session?, factor: Factor) = Unit
+
+        /**
+         * Notify the host application there is a tab be added.
+         *
+         * @param session the session be added
+         * @param arguments the same arguments when invoke @see{org.mozilla.focus.tabs.SessionManager#addTab}.
+         *                  It might be null if this tab is not created from the method.
+         */
+        fun onSessionAdded(session: Session, arguments: Bundle?) = Unit
+
+        /**
+         * Notify the host application the total tab counts changed.
+         *
+         * @param count total tabs count
+         */
+        fun onSessionCountChanged(count: Int) = Unit
+
+        /**
+         * Notify the host application that long-press happened on a tab
+         *
+         * @param session The tab received long press event
+         * @param hitTarget
+         */
+        fun onLongPress(session: Session, hitTarget: TabView.HitTarget?) = Unit
+
+        /**
+         * Notify the host application that a tab has entered full screen mode.
+         * <p>
+         * Some TabView implementations may pass a custom View which contains the web contents in
+         * full screen mode.
+         *
+         * @param session The tab which entered fullscreen.
+         * @param callback The callback needs to be invoked to request the page to exit full screen mode.
+         * @param fullscreenContent The contentView requested to be displayed in fullscreen
+         */
+        fun onEnterFullScreen(session: Session,
+                              callback: TabView.FullscreenCallback,
+                              fullscreenContent: View?) = Unit
+
+        /**
+         * Notify the host application that the a tab has exited full screen mode.
+         * <p>
+         * If a View was passed when the application entered full screen mode then this view must
+         * be hidden now.
+         *
+         * @param session the tab which which existed fullscreen.
+         */
+        fun onExitFullScreen(session: Session) = Unit
+
+        /**
+         * Notify the host application to show a file chooser. Usually for file uploading.
+         *
+         * @param session The tab which is asking file chooser.
+         * @param filePathCallback
+         * @param fileChooserParams
+         * @see android.webkit.WebChromeClient#onShowFileChooser(android.webkit.WebView, ValueCallback, WebChromeClient.FileChooserParams)
+         */
+        fun onShowFileChooser(session: Session,
+                              filePathCallback: ValueCallback<Array<Uri>>,
+                              fileChooserParams: WebChromeClient.FileChooserParams): Boolean = false
+
+        /**
+         * @see android.webkit.WebChromeClient#onGeolocationPermissionsShowPrompt(String, GeolocationPermissions.Callback)
+         */
+        fun onGeolocationPermissionsShowPrompt(session: Session,
+                                               origin: String?,
+                                               callback: GeolocationPermissions.Callback?) = Unit
+    }
 }
