@@ -230,6 +230,8 @@ public class Settings {
 
         public static final String PostSurveyNotification = "post_survey_notification";
         public static final String ShowMyShotOnBoardingDialog = "show_my_shot_on_boarding_dialog";
+        public static final String FeatureSurveyWifiFinding = "feature_survey_wifi_finding";
+        public static final String FeatureSurveyVpn = "feature_survey_vpn";
     }
 
     public static class EventHistory {

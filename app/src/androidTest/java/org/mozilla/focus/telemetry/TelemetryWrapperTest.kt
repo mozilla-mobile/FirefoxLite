@@ -605,4 +605,43 @@ class TelemetryWrapperTest {
         }
     }
 
+    @Test
+    fun clickWifiFinderSurvey() {
+        TelemetryWrapper.clickWifiFinderSurvey()
+    }
+
+    @Test
+    fun clickWifiFinderSurveyFeedbackPositive() {
+        TelemetryWrapper.clickWifiFinderSurveyFeedback(true)
+    }
+
+    @Test
+    fun clickWifiFinderSurveyFeedbackNegative() {
+        TelemetryWrapper.clickWifiFinderSurveyFeedback(false)
+    }
+
+    @Test
+    fun dismissWifiFinderSurvey() {
+        TelemetryWrapper.dismissWifiFinderSurvey()
+    }
+
+    @Test
+    fun clickVpnSurvey() {
+        TelemetryWrapper.clickVpnSurvey()
+    }
+
+    @Test
+    fun clickVpnSurveyFeedbackPositive() {
+        TelemetryWrapper.clickVpnSurveyFeedback(true)
+    }
+
+    @Test
+    fun clickVpnSurveyFeedbackNegative() {
+        TelemetryWrapper.clickVpnSurveyFeedback(false)
+    }
+
+    @Test
+    fun dismissVpnFinderSurvey() {
+        TelemetryWrapper.dismissVpnSurvey()
+    }
 }

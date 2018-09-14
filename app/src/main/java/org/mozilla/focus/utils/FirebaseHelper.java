@@ -46,6 +46,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread";
     static final String ENABLE_PRIVATE_MODE = "enable_private_mode";
     static final String BANNER_MANIFEST = "banner_manifest";
+    static final String FEATURE_SURVEY = "feature_survey";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
     private static final String FIREBASE_DB_URL = "firebase_database_url";
@@ -256,6 +257,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.ENABLE_MY_SHOT_UNREAD, MainActivity.ENABLE_MY_SHOT_UNREAD_DEFAULT);
         map.put(FirebaseHelper.BANNER_MANIFEST, HomeFragment.BANNER_MANIFEST_DEFAULT);
         map.put(FirebaseHelper.ENABLE_PRIVATE_MODE, AppConfigWrapper.PRIVATE_MODE_ENABLED_DEFAULT);
+        map.put(FirebaseHelper.FEATURE_SURVEY, RemoteConfigConstants.INSTANCE.getFEATURE_SURVEY_DEFAULT());
 
         return map;
     }

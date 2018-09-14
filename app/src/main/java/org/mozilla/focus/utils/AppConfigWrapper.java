@@ -63,4 +63,8 @@ public class AppConfigWrapper {
     public static String getBannerRootConfig(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.BANNER_MANIFEST);
     }
+
+    public static long getFeatureSurvey(Context context) {
+        return FirebaseHelper.getRcLong(context, FirebaseHelper.FEATURE_SURVEY);
+    }
 }

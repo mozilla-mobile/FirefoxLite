@@ -107,6 +107,7 @@ object TelemetryWrapper {
         val PROMOTE_SHARE = "promote_share"
         val THEMETOY = "themetoy"
         val BANNER = "banner"
+        val DOORHANGER = "doorhanger"
     }
 
     object Value {
@@ -158,6 +159,8 @@ object TelemetryWrapper {
         internal val BACKGROUND = "background"
         internal val ITEM = "item"
         internal val PAGE = "page"
+        internal val WIFI_FINDER = "wifi_finder"
+        internal val VPN = "vpn"
     }
 
     internal object Extra {
@@ -900,6 +903,46 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.SWIPE, Object.BANNER, Value.PAGE)
                 .extra(Extra.DIRECTION, Integer.toString(directionX))
                 .extra(Extra.TO, Integer.toString(toItemPosition))
+                .queue()
+    }
+
+    @JvmStatic
+    fun clickWifiFinderSurvey() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.HOME, Value.WIFI_FINDER)
+                .queue()
+    }
+
+    @JvmStatic
+    fun clickWifiFinderSurveyFeedback(positive: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, if (positive) Value.POSITIVE else Value.NEGATIVE)
+                .extra(Extra.SOURCE, Value.WIFI_FINDER)
+                .queue()
+    }
+
+    @JvmStatic
+    fun dismissWifiFinderSurvey() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, Value.DISMISS)
+                .extra(Extra.SOURCE, Value.WIFI_FINDER)
+                .queue()
+    }
+
+    @JvmStatic
+    fun clickVpnSurvey() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.HOME, Value.VPN)
+                .queue()
+    }
+
+    @JvmStatic
+    fun clickVpnSurveyFeedback(positive: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, if (positive) Value.POSITIVE else Value.NEGATIVE)
+                .extra(Extra.SOURCE, Value.VPN)
+                .queue()
+    }
+
+    @JvmStatic
+    fun dismissVpnSurvey() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, Value.DISMISS)
+                .extra(Extra.SOURCE, Value.VPN)
                 .queue()
     }
 
