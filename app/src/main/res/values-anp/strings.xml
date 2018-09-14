@@ -179,7 +179,7 @@
   <string name="your_rights_content4"><![CDATA["%1$s लेली अतिरिक्त स्रोत कोड अनेक दोसरो निशुल्क आरू मुक्त स्रोत "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2354;&#2366;&#2311;&#2360;&#2375;&#2344;&#2381;&#2360;</a>केरो अंतर्गत उपलब्ध छै.]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s भी डिस्कनेक्ट, इंक द्वारा देल गेल ब्लॉकलिस्ट के उपयोग "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU &#2332;&#2344;&#2352;&#2354; &#2346;&#2348;&#2381;&#2354;&#2367;&#2325; &#2354;&#2366;&#2311;&#2360;&#2375;&#2306;&#2360; v3</a>" के तहत अलग आरु स्वतंत्र कार्यों के रूप में करै छै, आरु उपलब्ध छै "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">" &#2351;&#2361;&#2366;&#2306; "</a>.]]></string>
   <string name="survey_notification_title">हमरो तोहर जरुरत छै! %1$s</string>
-  <string name="survey_notification_description">"इंडोनेशिया खातिर एगो बेहतर आकार के उत्पाद छेकै "</string>
+  <string name="survey_notification_description">इंडोनेशिया खातिर एगो बेहतर आकार के उत्पाद छेकै</string>
   <string name="new_background_tab_hint">नया टेब खुलल</string>
   <string name="new_background_tab_switch">स्विच</string>
   <string name="setting_default_browser_notification_title">सेटिंग्स बदलि रहलो छै...</string>
