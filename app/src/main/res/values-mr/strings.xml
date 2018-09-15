@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">प्रतिक्रिया द्या</string>
   <string name="menu_share_with_friends">मित्रांसह सामायिक करा</string>
   <string name="share_dialog_title">मार्गे सामायिक करा</string>
+  <string name="find_in_page_input">पृष्ठात शोधा</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%2$d पैकी %1$d</string>
+  <string name="accessibility_find_next_result">पुढील परिणाम शोधा</string>
+  <string name="accessibility_find_previous_result">मागील परिणाम शोधा</string>
+  <string name="accessibility_dismiss_find_in_page">पृष्ठावर शोधणे रद्द करा</string>
   <string name="text_selection_search_action">Firefox Rocket मध्ये शोधा</string>
   <string name="about_content_body">%2$s द्वारे तयार केलेला %1$s हा एक जलद आणि उज्वल ब्राउझर आहे. आमचे ध्येय निरोगी , सर्व-वापरण्यायोग्य इंटरनेट स्थापित करणे आहे.</string>
   <string name="about_link_learn_more">अधिक जाणा</string>
@@ -75,6 +81,7 @@
   <string name="firstrun_next_button">पुढचे</string>
   <string name="label_menu_bookmark">वाचनखूणा</string>
   <string name="label_menu_download">डाउनलोड</string>
+  <string name="label_menu_find_in_page">पृष्ठात शोधा</string>
   <string name="label_menu_clear_cache">कॅशे साफ करा</string>
   <string name="label_menu_history">इतिहास</string>
   <string name="label_menu_share">सामयिक करा</string>
@@ -206,4 +213,9 @@
   <string name="private_browsing_erase_done">आपला ब्राउझिंग इतिहास\nमिटवला गेला आहे.</string>
   <string name="my_shot_on_boarding_message">येथे आपले स्क्रीनशॉट्स पहा!</string>
   <string name="my_shot_on_boarding_category_message">आपला अनुभव सुधारण्यासाठी, आम्ही आपल्या स्क्रीनशॉटच्या श्रेणीची माहिती गोळा करतो.</string>
+  <string name="exp_survey_wifi">आपल्याला जवळचे मोफत इंटरनेट शोधून देण्यासाठी आम्ही “मोफत वायफाय-शोधक” सामावण्याच्या विचारात आहे.\nइच्छुक आहात?</string>
+  <string name="exp_survey_vpn">आपल्याला ब्राऊझिंग करताना अधिक स्वातंत्र्य व गोपनीयता देण्यासाठी “VPN सेवा” समाविष्ट करण्याच्या विचारात आहे.\n\nइच्छुक आहात?</string>
+  <string name="exp_survey_thanks">अभिप्राय दिल्याबद्दल धन्यवाद %1$s</string>
+  <string name="exp_survey_yes">YES, PLEASE</string>
+  <string name="exp_survey_no">NOPE</string>
 </resources>

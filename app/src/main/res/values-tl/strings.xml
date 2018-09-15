@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">Magbigay ng feedback</string>
   <string name="menu_share_with_friends">Ibahagi sa mga kaibigan</string>
   <string name="share_dialog_title">Ibahagi sa pamamagitan ng</string>
+  <string name="find_in_page_input">Hanapin sa pahina</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%1$d ng %2$d</string>
+  <string name="accessibility_find_next_result">Susunod na resulta</string>
+  <string name="accessibility_find_previous_result">Nakaraang resulta</string>
+  <string name="accessibility_dismiss_find_in_page">Tapos na ang paghahanap sa pahina</string>
   <string name="text_selection_search_action">Hanapin sa Firefox Rocket</string>
   <string name="about_content_body">%1$s ay isang mabilis at magaan na browser na gawa ng %2$s. Ang aming misyon ay mapanatiling malusog at bukas para sa lahat ang internet.</string>
   <string name="about_link_learn_more">Detalye</string>
@@ -75,6 +81,7 @@
   <string name="firstrun_next_button">Susunod</string>
   <string name="label_menu_bookmark">Mga Bookmark</string>
   <string name="label_menu_download">Mga Download</string>
+  <string name="label_menu_find_in_page">Hanapin sa pahina</string>
   <string name="label_menu_clear_cache">Burahin ang cache</string>
   <string name="label_menu_history">Kasaysayan</string>
   <string name="label_menu_share">Ibahagi</string>
@@ -206,4 +213,9 @@
   <string name="private_browsing_erase_done">Ang kasaysayan ng iyong private browsing\nay nabura na.</string>
   <string name="my_shot_on_boarding_message">Tingnan ang mga screenshot dito!</string>
   <string name="my_shot_on_boarding_category_message">Para mapabuti ang produktong ito, kami ay maaaring mangolekta ng impormasyon tungkol sa iyong screen.</string>
+  <string name="exp_survey_wifi">Balak naming magsama ng “Free Wifi-Finder” para makatulong sa paghahanap ng libreng internet connection na malapit sa iyo.\n\n Interessado?</string>
+  <string name="exp_survey_vpn">Balak naming magsama ng “VPN service” para sa mas mainam ng pribasiya habang ikaw ay nagba-browse.\n\n Interesado?</string>
+  <string name="exp_survey_thanks">Maraming salamat sa pagbibigay ng feedback %1$s</string>
+  <string name="exp_survey_yes">OO</string>
+  <string name="exp_survey_no">HINDI</string>
 </resources>
