@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">เสนอข้อคิดเห็น</string>
   <string name="menu_share_with_friends">แบ่งปันกับเพื่อน ๆ</string>
   <string name="share_dialog_title">แบ่งปันผ่าน</string>
+  <string name="find_in_page_input">ค้นหาในหน้า</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%1$d จาก %2$d</string>
+  <string name="accessibility_find_next_result">ค้นหาผลลัพธ์ถัดไป</string>
+  <string name="accessibility_find_previous_result">ค้นหาผลลัพธ์ก่อนหน้า</string>
+  <string name="accessibility_dismiss_find_in_page">ยกเลิกการค้นหาในหน้า</string>
   <string name="text_selection_search_action">ค้นหาใน Firefox Rocket</string>
   <string name="about_content_body">%1$s เป็นเบราว์เซอร์ที่เร็วและเบาที่สร้างขึ้นโดย %2$s ภารกิจของเราคือส่งเสริมอินเทอร์เน็ตที่สมบูรณ์และเปิดกว้าง</string>
   <string name="about_link_learn_more">เรียนรู้เพิ่มเติม</string>
@@ -75,6 +81,7 @@
   <string name="firstrun_next_button">ถัดไป</string>
   <string name="label_menu_bookmark">ที่คั่นหน้า</string>
   <string name="label_menu_download">การดาวน์โหลด</string>
+  <string name="label_menu_find_in_page">ค้นหาในหน้า</string>
   <string name="label_menu_clear_cache">ล้างแคช</string>
   <string name="label_menu_history">ประวัติ</string>
   <string name="label_menu_share">แบ่งปัน</string>
@@ -165,7 +172,7 @@
   <string name="privacy_policy_update_notification_title">การแจ้งอัปเดตผลิตภัณฑ์</string>
   <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Rocket ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="rate_app_dialog_text_title">รัก %1$s?</string>
-  <string name="rate_app_dialog_text_content">ขอขอบคุณที่เลือกผลิตภัณฑ์ของเรา คำติชมของคุณเป็นสิ่งสำคัญสำหรับเรา</string>
+  <string name="rate_app_dialog_text_content">ขอบคุณที่เลือกผลิตภัณฑ์ของเรา ข้อคิดเห็นของคุณเป็นสิ่งสำคัญสำหรับเรา</string>
   <string name="rate_app_dialog_btn_go_rate">ใช่ ให้คะแนน 5 ดาว!</string>
   <string name="rate_app_notification_action_rate">ให้คะแนน 5 ดาว</string>
   <string name="rate_app_dialog_btn_feedback">ไม่ ส่งข้อคิดเห็น</string>
@@ -206,4 +213,7 @@
   <string name="private_browsing_erase_done">ล้างประวัติการท่องเว็บแบบส่วนตัวของคุณแล้ว</string>
   <string name="my_shot_on_boarding_message">ดูภาพหน้าจอของคุณที่นี่!</string>
   <string name="my_shot_on_boarding_category_message">เพื่อปรับปรุงประสบการณ์ผลิตภัณฑ์ของคุณ เราเก็บรวบรวมข้อมูลเกี่ยวกับหมวดหมู่ของภาพหน้าจอของคุณ</string>
+  <string name="exp_survey_thanks">ขอบคุณที่ให้ข้อคิดเห็นกับเรา %1$s</string>
+  <string name="exp_survey_yes">ใช่ ได้โปรด</string>
+  <string name="exp_survey_no">ไม่</string>
 </resources>
