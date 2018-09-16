@@ -411,6 +411,11 @@ public class SessionManagerTest {
         }
 
         @Override
+        public void setFindListener(FindListener callback) {
+
+        }
+
+        @Override
         public void onPause() {
 
         }
