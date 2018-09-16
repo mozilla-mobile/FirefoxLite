@@ -10,6 +10,8 @@
   <string name="menu_give_feedback">Jôk saran</string>
   <string name="menu_share_with_friends">Bulueng ngön rakan</string>
   <string name="share_dialog_title">Bulueng röt</string>
+  <string name="find_in_page_input">Teumè lam laman</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
   <string name="text_selection_search_action">Mita lam Firefox Rocket</string>
   <string name="about_content_body">%1$s nakeuh saboh browser nyang bagah ngön phui atra jipeugöt lé %2$s. Meukeusud kamoe nakeuh keu meuplara internet nyang sihat ngön teuhah.</string>
   <string name="about_link_learn_more">Meurunoe lom</string>

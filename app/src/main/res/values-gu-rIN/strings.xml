@@ -189,6 +189,7 @@
   <string name="survey_notification_title">અમને તમારી જરુર છે! %1$s</string>
   <string name="survey_notification_description">ઈન્ડોનેશિયા માટે એક વધું સારાં ઉત્પાદનને આકાર આપો</string>
   <string name="new_background_tab_hint">નવી ટૅબ ખૂલી ગઇ છે</string>
+  <string name="new_background_tab_switch">સ્વિચ</string>
   <string name="setting_default_browser_notification_title">સેટીંગ્સ બદલી રહ્યા છીએ…</string>
   <string name="setting_default_browser_notification_text">આ થોડો સમય લઈ શકે છે</string>
   <string name="setting_default_browser_notification_clickable_text">મૂળભૂત બ્રાઉઝર રાખવા માટે આ દબાવો</string>
@@ -212,6 +213,8 @@
   <string name="private_browsing_erase_done">તમારા ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખવામાં આવ્યું છે.</string>
   <string name="my_shot_on_boarding_message">તમારા સ્ક્રીનશોટ અહીં જુઓ!</string>
   <string name="my_shot_on_boarding_category_message">તમારાં ઉત્પાદનનો અનુભવ સુધારવાં માટે, અમે તમારાં સ્ક્રીનશોટનાં વર્ગો વિશે માહિતી ભેગી કરીએ છીએ.</string>
+  <string name="exp_survey_wifi">અમે નજીકમાં ગુણવત્તાયુક્ત મફત ઇન્ટરનેટ કનેક્શન શોધવામાં તમારી સહાય માટે “મફત Wifi-Finder” ની સંકલન કરવાની યોજના બનાવી છે.\n\n શું તમે રસ ધરાવો છો?</string>
+  <string name="exp_survey_vpn">બ્રાઉઝ કરતી વખતે તમને વધુ સ્વતંત્રતા અને વધુ ગોપનીયતા મેળવવા માટે અમે “VPN સેવા” ને એકીકૃત કરવા માંગીએ છીએ.\n\nશું તમે રસ ધરાવો છો?</string>
   <string name="exp_survey_thanks">અમને પ્રતિસાદ આપવા બદલ આપનો આભાર %1$s</string>
   <string name="exp_survey_yes">હા, કૃપા કરીને</string>
   <string name="exp_survey_no">ના</string>

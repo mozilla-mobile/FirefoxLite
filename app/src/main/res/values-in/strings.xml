@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">Kirimkan masukan</string>
   <string name="menu_share_with_friends">Bagikan dengan teman</string>
   <string name="share_dialog_title">Bagikan via</string>
+  <string name="find_in_page_input">Temukan di laman</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%1$d dari %2$d</string>
+  <string name="accessibility_find_next_result">Temukan hasil selanjutnya</string>
+  <string name="accessibility_find_previous_result">Temukan hasil sebelumnya</string>
+  <string name="accessibility_dismiss_find_in_page">Tutup pencarian di laman</string>
   <string name="text_selection_search_action">Cari di Firefox Rocket</string>
   <string name="about_content_body">%1$s adalah sebuah peramban cepat dan ringan buatan %2$s. Misi kami adalah untuk mendorong internet yang sehat dan terbuka.</string>
   <string name="about_link_learn_more">Pelajari lebih lanjut</string>
@@ -75,6 +81,7 @@
   <string name="firstrun_next_button">Lanjut</string>
   <string name="label_menu_bookmark">Markah</string>
   <string name="label_menu_download">Unduhan</string>
+  <string name="label_menu_find_in_page">Temukan di laman</string>
   <string name="label_menu_clear_cache">Bersihkan tembolok</string>
   <string name="label_menu_history">Riwayat</string>
   <string name="label_menu_share">Bagikan</string>
@@ -206,4 +213,9 @@
   <string name="private_browsing_erase_done">Riwayat penjelajahan pribadi Anda\ntelah dihapus.</string>
   <string name="my_shot_on_boarding_message">Lihat tangkapan layar Anda di sini!</string>
   <string name="my_shot_on_boarding_category_message">Untuk meningkatkan pengalaman produk, kami mengumpulkan informasi tentang kategori tangkapan layar Anda.</string>
+  <string name="exp_survey_wifi">Rencana kami adalah untuk mengintegrasikan “Pencarian Wifi Gratis” untuk membantu Anda temukan koneksi Internet berkualitas gratis terdekat.\n\n Tertarik?</string>
+  <string name="exp_survey_vpn">Rencana kami adalah mengintegrasikan \"Layanan VPN\" supaya Anda dapat kebebasan dan privasi lebih banyak saat menjelajah.\n\n Tertarik?</string>
+  <string name="exp_survey_thanks">Terima kasih untuk memberikan umpan balik kepada kami %1$s</string>
+  <string name="exp_survey_yes">YA</string>
+  <string name="exp_survey_no">TIDAK</string>
 </resources>
