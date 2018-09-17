@@ -1,5 +1,6 @@
 package org.mozilla.focus.telemetry
 
+import android.content.Context
 import android.preference.PreferenceManager
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -25,9 +26,10 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.Value.VIDEO
 @RunWith(AndroidJUnit4::class)
 class TelemetryWrapperTest {
 
+    lateinit var context: Context
     @Before
     fun setUp() {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        context = InstrumentationRegistry.getInstrumentation().targetContext
         val prefName = context.getString(R.string.pref_key_telemetry)
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferences.edit().putBoolean(prefName, false).apply()
@@ -322,8 +324,7 @@ class TelemetryWrapperTest {
     @Test
     fun clickToolbarCapture() {
         val sm = ScreenshotManager()
-        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
-        sm.categories.values.forEach {
+        sm.getCategories(context).values.forEach {
             TelemetryWrapper.clickToolbarCapture(it)
         }
     }
@@ -475,8 +476,7 @@ class TelemetryWrapperTest {
     @Test
     fun openCaptureLink() {
         val sm = ScreenshotManager()
-        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
-        sm.categories.values.forEach {
+        sm.getCategories(context).values.forEach {
             TelemetryWrapper.openCaptureLink(it)
         }
     }
@@ -484,8 +484,7 @@ class TelemetryWrapperTest {
     @Test
     fun editCaptureImage() {
         val sm = ScreenshotManager()
-        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
-        sm.categories.values.forEach {
+        sm.getCategories(context).values.forEach {
             TelemetryWrapper.editCaptureImage(true, it)
             TelemetryWrapper.editCaptureImage(false, it)
         }
@@ -494,8 +493,7 @@ class TelemetryWrapperTest {
     @Test
     fun shareCaptureImage() {
         val sm = ScreenshotManager()
-        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
-        sm.categories.values.forEach {
+        sm.getCategories(context).values.forEach {
             TelemetryWrapper.shareCaptureImage(true, it)
             TelemetryWrapper.shareCaptureImage(false, it)
         }
@@ -504,8 +502,7 @@ class TelemetryWrapperTest {
     @Test
     fun showCaptureInfo() {
         val sm = ScreenshotManager()
-        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
-        sm.categories.values.forEach {
+        sm.getCategories(context).values.forEach {
             TelemetryWrapper.showCaptureInfo(it)
         }
     }
@@ -513,8 +510,7 @@ class TelemetryWrapperTest {
     @Test
     fun deleteCaptureImage() {
         val sm = ScreenshotManager()
-        sm.lazyInitCategories(InstrumentationRegistry.getInstrumentation().targetContext)
-        sm.categories.values.forEach {
+        sm.getCategories(context).values.forEach {
             TelemetryWrapper.deleteCaptureImage(it)
         }
     }

@@ -493,10 +493,8 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
                 return null;
             }
-            // initialize screenshot only when we need it.
-            ScreenshotManager.getInstance().lazyInitCategories(activity);
             // set the category for later use
-            screenshot.setCategory(ScreenshotManager.getInstance().getCategory(screenshot.getUrl()));
+            screenshot.setCategory(ScreenshotManager.getInstance().getCategory(activity, screenshot.getUrl()));
 
             final File imgFile = new File(screenshot.getImageUri());
             if (imgFile.exists()) {

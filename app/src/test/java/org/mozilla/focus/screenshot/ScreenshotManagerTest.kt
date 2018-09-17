@@ -9,21 +9,14 @@ import org.robolectric.RuntimeEnvironment
 class ScreenshotManagerTest {
 
     @Test
-    fun testInit() {
-        val sm = ScreenshotManager()
-        sm.lazyInitCategories(RuntimeEnvironment.application)
-        assert(sm.categories.size > 0)
-    }
-
-    @Test
     fun testCategories() {
         val sm = ScreenshotManager()
-        sm.initScreenShotCateogry(RuntimeEnvironment.application)
-        assert(sm.getCategory("https://alipay.com/").equals("Banking"))
-        assert(sm.getCategory("https://m.alipay.com/").equals("Banking"))
+        val context = RuntimeEnvironment.application
+        assert(sm.getCategory(context, "https://alipay.com/").equals("Banking"))
+        assert(sm.getCategory(context, "https://m.alipay.com/").equals("Banking"))
 
-        assert(sm.getCategory("https://blogspot.com/").equals("Weblogs"))
-        assert(sm.getCategory("https://m.blogspot.com/").equals("Weblogs"))
+        assert(sm.getCategory(context, "https://blogspot.com/").equals("Weblogs"))
+        assert(sm.getCategory(context, "https://m.blogspot.com/").equals("Weblogs"))
 
     }
 }
