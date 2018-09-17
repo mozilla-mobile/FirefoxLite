@@ -26,7 +26,7 @@ object Versions {
     const val mockito = "2.12.0"
     const val robolectric = "3.8"
     const val espresso = "3.0.1"
-    const val test_runner = "1.0.1"
+    const val test_runner = "1.0.2"
     const val uiautomator = "2.1.3"
     const val mockwebserver = "3.7.0"
     const val firebase = "16.0.0"
