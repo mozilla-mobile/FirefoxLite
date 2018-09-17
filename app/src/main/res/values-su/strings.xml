@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">Béré pangdeudeul</string>
   <string name="menu_share_with_friends">Bagikeun ka babaturan</string>
   <string name="share_dialog_title">Bagikeun kana</string>
+  <string name="find_in_page_input">Téangan dina kaca</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%1$d ti %2$d</string>
+  <string name="accessibility_find_next_result">Téang hasil séjén</string>
+  <string name="accessibility_find_previous_result">Téang hasil saméméhna</string>
+  <string name="accessibility_dismiss_find_in_page">Tutup téangan dina kaca</string>
   <string name="text_selection_search_action">Paluruh di Firefox Rocket</string>
   <string name="about_content_body">%1$s téh panyungsi anu gancang tur hampang karya %2$s. Ari udaganana nya éta pikeun ngarojong internét nembrak anu séhat.</string>
   <string name="about_link_learn_more">Lenyepan</string>
@@ -75,6 +81,7 @@
   <string name="firstrun_next_button">Tuluy</string>
   <string name="label_menu_bookmark">Markah</string>
   <string name="label_menu_download">Undeuran</string>
+  <string name="label_menu_find_in_page">Téangan dina kaca</string>
   <string name="label_menu_clear_cache">Beresihan telih</string>
   <string name="label_menu_history">Jujutan</string>
   <string name="label_menu_share">Bagikeun</string>
@@ -206,4 +213,9 @@
   <string name="private_browsing_erase_done">Jujutan langlangan nyalindung\nanjeun geus dihapus.</string>
   <string name="my_shot_on_boarding_message">Ilikan téwakan layar anjeun di dieu!</string>
   <string name="my_shot_on_boarding_category_message">Pikeun ngaronjatkeun pangalaman produk anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
+  <string name="exp_survey_wifi">Aya rencana ngahijikeun “Free Wifi-Finder” pikeun mantuan manggihan sambungan internét gratis anu deukeut.\n\n Kabita?</string>
+  <string name="exp_survey_vpn">Aya rencana ngahijikeun “layanan VPN” ngarah kabébasan jeung privasi anjeun nalika nyungsi internét leuwih kajaga.\n\nKabita?</string>
+  <string name="exp_survey_thanks">Nuhun kamandangna %1$s</string>
+  <string name="exp_survey_yes">MANGGA</string>
+  <string name="exp_survey_no">MOAL</string>
 </resources>
