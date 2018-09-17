@@ -65,6 +65,7 @@ import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
+import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
@@ -274,7 +275,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void writeToCache(Context context, String[] configArray) {
         try {
-            new FileUtils.WriteStringToFileThread(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG), stringArrayToString(configArray)).start();
+            final Runnable runnable = new FileUtils.WriteStringToFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG), stringArrayToString(configArray));
+            ThreadUtils.postToBackgroundThread(runnable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Logger.throwOrWarn(TAG, "Failed to open cache directory when writing banner config to cache");
@@ -283,7 +285,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void deleteCache(Context context) {
         try {
-            new FileUtils.DeleteFileThread(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG)).start();
+            final Runnable runnable = new FileUtils.DeleteFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG));
+            ThreadUtils.postToBackgroundThread(runnable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Logger.throwOrWarn(TAG, "Failed to open cache directory when deleting banner cache");

@@ -385,11 +385,11 @@ public class FileUtils {
         }
     }
 
-    public static class WriteStringToFileThread extends FileIOThread {
+    public static class WriteStringToFileRunnable extends FileIORunnable {
 
         private String string;
 
-        public WriteStringToFileThread(File file, String string) {
+        public WriteStringToFileRunnable(File file, String string) {
             super(file);
             this.string = string;
         }
@@ -400,9 +400,9 @@ public class FileUtils {
         }
     }
 
-    public static class DeleteFileThread extends FileIOThread {
+    public static class DeleteFileRunnable extends FileIORunnable {
 
-        public DeleteFileThread(File file) {
+        public DeleteFileRunnable(File file) {
             super(file);
         }
 
@@ -412,14 +412,14 @@ public class FileUtils {
                 return;
             }
             if (!file.delete()) {
-                Logger.throwOrWarn("DeleteFileThread", "Failed to delete file");
+                Logger.throwOrWarn("DeleteFileRunnable", "Failed to delete file");
             }
         }
     }
 
-    public static class DeleteFolderThread extends FileIOThread {
+    public static class DeleteFolderRunnable extends FileIORunnable {
 
-        public DeleteFolderThread(File directory) {
+        public DeleteFolderRunnable(File directory) {
             super(directory);
         }
 
@@ -429,10 +429,10 @@ public class FileUtils {
         }
     }
 
-    private abstract static class FileIOThread<T> extends Thread {
+    private abstract static class FileIORunnable implements Runnable {
         private File file;
 
-        private FileIOThread(File file) {
+        private FileIORunnable(File file) {
             this.file = file;
         }
 
