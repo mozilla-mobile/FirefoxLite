@@ -45,11 +45,10 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
             if (!TextUtils.isEmpty(path)) {
                 FileUtils.notifyMediaScanner(context, path);
 
-                ScreenshotManager.getInstance().lazyInitCategories(context);
                 Screenshot screenshot = new Screenshot(title, url, timestamp, path);
                 ScreenshotManager.getInstance().insert(screenshot, null);
 
-                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(url));
+                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(context, url));
 
             }
 

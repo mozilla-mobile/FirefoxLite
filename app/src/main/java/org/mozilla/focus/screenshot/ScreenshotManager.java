@@ -75,9 +75,8 @@ public class ScreenshotManager {
         mQueryHandler.startQuery(QueryHandler.SCREENSHOT_TOKEN, listener, Uri.parse(Screenshot.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit), null, null, null, Screenshot.TIMESTAMP + " DESC");
     }
 
-    @VisibleForTesting
     @WorkerThread
-    public void lazyInitCategories(Context context) {
+    private void lazyInitCategories(Context context) {
         try {
             if (categories.size() != 0) {
                 return;
@@ -105,7 +104,10 @@ public class ScreenshotManager {
         }
     }
 
-    public String getCategory(String url) {
+    public String getCategory(Context context, String url) {
+
+        lazyInitCategories(context);
+
         try {
             // if category is not ready, return empty string
             if (categories.size() == 0) {
@@ -126,7 +128,10 @@ public class ScreenshotManager {
     }
 
     @VisibleForTesting
-    public HashMap<String, String> getCategories() {
+    public HashMap<String, String> getCategories(Context context) {
+
+        lazyInitCategories(context);
+
         return categories;
     }
 }
