@@ -305,8 +305,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
     }
 
     private fun bindCallback(session: Session) {
-        session.setTabViewClient(TabViewClientImpl(session))
-        session.setTabChromeClient(TabChromeClientImpl(session))
+        session.register(SessionObserver(session))
         session.setDownloadCallback(downloadCallback)
         session.setFindListener(findListener)
     }
@@ -390,8 +389,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
         session.parentId = parentTab.id
     }
 
-    internal inner class TabViewClientImpl(var source: Session) : TabViewClient() {
-
+    internal inner class SessionObserver(var source: Session) : Session.Observer {
         private fun setTitle() {
             if (source.tabView == null) {
                 return
@@ -399,7 +397,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             source.title = source.tabView!!.title
         }
 
-        override fun onPageStarted(url: String) {
+        override fun onSessionStarted(url: String?) {
             source.url = url
             setTitle()
 
@@ -411,7 +409,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             }
         }
 
-        override fun onPageFinished(isSecure: Boolean) {
+        override fun onSessionFinished(isSecure: Boolean) {
             setTitle()
 
             for (l in tabsViewListeners) {
@@ -419,7 +417,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             }
         }
 
-        override fun onURLChanged(url: String) {
+        override fun onURLChanged(url: String?) {
             source.url = url
             setTitle()
 
@@ -428,7 +426,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             }
         }
 
-        override fun handleExternalUrl(url: String): Boolean {
+        override fun handleExternalUrl(url: String?): Boolean {
             // only return false if none of listeners handled external url.
             for (l in tabsViewListeners) {
                 if (l.handleExternalUrl(url)) {
@@ -438,19 +436,17 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             return false
         }
 
-        override fun updateFailingUrl(url: String, updateFromError: Boolean) {
+        override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
             for (l in tabsViewListeners) {
                 l.updateFailingUrl(source, url, updateFromError)
             }
         }
-    }
 
+        override fun onCreateWindow(
+                isDialog: Boolean,
+                isUserGesture: Boolean,
+                msg: Message?): Boolean {
 
-    private inner class TabChromeClientImpl internal constructor(
-            internal var source: Session
-    ) : TabChromeClient() {
-
-        override fun onCreateWindow(isDialog: Boolean, isUserGesture: Boolean, msg: Message?): Boolean {
             if (msg == null) {
                 return false
             }
@@ -470,7 +466,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             return true
         }
 
-        override fun onCloseWindow(tabView: TabView) {
+        override fun onCloseWindow(tabView: TabView?) {
             if (source.tabView === tabView) {
                 for (i in sessions.indices) {
                     val tab = sessions[i]
@@ -487,7 +483,9 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             }
         }
 
-        override fun onShowFileChooser(tabView: TabView, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+        override fun onShowFileChooser(tabView: TabView,
+                                       filePathCallback: ValueCallback<Array<Uri>>,
+                                       fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
             for (l in tabsChromeListeners) {
                 if (l.onShowFileChooser(source, tabView, filePathCallback, fileChooserParams)) {
                     return true
@@ -496,13 +494,13 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             return false
         }
 
-        override fun onReceivedTitle(view: TabView, title: String) {
+        override fun onReceivedTitle(view: TabView, title: String?) {
             for (l in tabsChromeListeners) {
                 l.onReceivedTitle(source, title)
             }
         }
 
-        override fun onReceivedIcon(view: TabView, icon: Bitmap) {
+        override fun onReceivedIcon(view: TabView, icon: Bitmap?) {
             source.favicon = icon
             for (l in tabsChromeListeners) {
                 l.onReceivedIcon(source, icon)
@@ -527,7 +525,9 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             }
         }
 
-        override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
+        override fun onGeolocationPermissionsShowPrompt(
+                origin: String,
+                callback: GeolocationPermissions.Callback?) {
             for (l in tabsChromeListeners) {
                 l.onGeolocationPermissionsShowPrompt(source, origin, callback)
             }
