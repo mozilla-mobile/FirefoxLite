@@ -12,7 +12,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,6 +32,7 @@ import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
+import org.mozilla.focus.utils.ThreadUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.icon.FavIconUtils;
 
@@ -141,7 +141,8 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             e.printStackTrace();
                             return false;
                         }
-                        new FileUtils.DeleteFileThread(new File(fileUri)).start();
+                        final Runnable runnable = new FileUtils.DeleteFileRunnable(new File(fileUri));
+                        ThreadUtils.postToBackgroundThread(runnable);
                     }
                     return false;
                 });
@@ -229,7 +230,8 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void clear() {
-        new FileUtils.DeleteFolderThread(FileUtils.getFaviconFolder(mContext)).start();
+        final Runnable runnable = new FileUtils.DeleteFolderRunnable(FileUtils.getFaviconFolder(mContext));
+        ThreadUtils.postToBackgroundThread(runnable);
         BrowsingHistoryManager.getInstance().deleteAll(this);
     }
 
