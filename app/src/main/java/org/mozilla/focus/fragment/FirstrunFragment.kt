@@ -6,6 +6,7 @@
 package org.mozilla.focus.fragment
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.TransitionDrawable
@@ -23,6 +24,8 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.firstrun.FirstrunPagerAdapter
 import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.NewFeatureNotice
 
 class FirstrunFragment : Fragment(), View.OnClickListener {
@@ -116,6 +119,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener {
             R.id.skip -> finishFirstrun()
 
             R.id.finish -> {
+                promoteSetDefaultBrowserIfPreload()
                 finishFirstrun()
                 if (isTelemetryValid) {
                     TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp)
@@ -124,6 +128,16 @@ class FirstrunFragment : Fragment(), View.OnClickListener {
 
             else -> throw IllegalArgumentException("Unknown view")
         }
+    }
+
+    private fun isSystemApp() = context?.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) != 0
+
+    private fun promoteSetDefaultBrowserIfPreload(): FirstrunFragment {
+        // if it's a system app(preload), we'll like to promote set default browser when the user finish first run
+        if (isSystemApp() && !AppConstants.isReleaseBuild()) {
+            DialogUtils.showDefaultSettingNotification(context)
+        }
+        return this
     }
 
     private fun findPagerAdapter(context: Context, onClickListener: View.OnClickListener): PagerAdapter? {
