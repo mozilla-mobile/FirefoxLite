@@ -12,6 +12,10 @@
   <string name="share_dialog_title">Bulueng röt</string>
   <string name="find_in_page_input">Teumè lam laman</string>
   <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%1$d nibak %2$d</string>
+  <string name="accessibility_find_next_result">Kalön hasé u keue</string>
+  <string name="accessibility_find_previous_result">Kalön hasé u likôt</string>
+  <string name="accessibility_dismiss_find_in_page">Tôp mita lam laman</string>
   <string name="text_selection_search_action">Mita lam Firefox Rocket</string>
   <string name="about_content_body">%1$s nakeuh saboh browser nyang bagah ngön phui atra jipeugöt lé %2$s. Meukeusud kamoe nakeuh keu meuplara internet nyang sihat ngön teuhah.</string>
   <string name="about_link_learn_more">Meurunoe lom</string>
@@ -77,6 +81,7 @@
   <string name="firstrun_next_button">Lanjut</string>
   <string name="label_menu_bookmark">Peutanda</string>
   <string name="label_menu_download">Beureukaih teukeubah</string>
+  <string name="label_menu_find_in_page">Mita lam laman</string>
   <string name="label_menu_clear_cache">Peugléh cache</string>
   <string name="label_menu_history">Riwayat</string>
   <string name="label_menu_share">Bulueng</string>
@@ -208,4 +213,5 @@
   <string name="private_browsing_erase_done">Riwayat seumeulop rahsia Droeneuh\nka geusampôh.</string>
   <string name="my_shot_on_boarding_message">Kalön deuneurop layeuë droëneuh di sinoë!</string>
   <string name="my_shot_on_boarding_category_message">Keu tapeujroh peungalaman produk Droeneuh, kamoe meupeusapat informasi bhaih kawan deuneurop layeue Droeneuh.</string>
+  <string name="exp_survey_wifi">Kamoe meureuncana keumeung peugabông “Mita Wifi Pré” keu meubantu Droeneuh keu neumita seunambat internèt pré nyang göt di silingka.\n \n Na meuheutneuh?</string>
 </resources>
