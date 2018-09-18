@@ -19,6 +19,8 @@ import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.SupportUtils;
+import org.mozilla.telemetry.TelemetryHolder;
+import org.mozilla.telemetry.ping.TelemetryEventPingBuilder;
 
 /**
  * Ideally we'd extend SwitchPreference, and only do the summary modification. Unfortunately
@@ -51,7 +53,11 @@ public class TelemetrySwitchPreference extends Preference {
         switchWidget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                sendEventNow(isChecked);
+
                 TelemetryWrapper.setTelemetryEnabled(getContext(), isChecked);
+
                 // we should use the value from UI (isChecked) instead of relying on SharePreference.
                 FirebaseHelper.bind(getContext(), isChecked);
             }
@@ -88,5 +94,11 @@ public class TelemetrySwitchPreference extends Preference {
         setSummary(getContext().getResources().getString(R.string.preference_mozilla_telemetry_summary, appName, mozilla));
 
         super.onBindView(view);
+    }
+
+    // If the user disable Telemetry, we want to send the last ping ASAP
+    private void sendEventNow(boolean isChecked) {
+        TelemetryWrapper.settingsEvent(getKey(), Boolean.toString(isChecked));
+        TelemetryHolder.get().queuePing(TelemetryEventPingBuilder.TYPE).scheduleUpload();
     }
 }
