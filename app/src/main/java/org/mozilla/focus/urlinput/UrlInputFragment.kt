@@ -262,8 +262,6 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private fun onTextChange(originalText: String, autocompleteText: String) {
         if (autoCompleteInProgress) {
-            // remove this before merge
-            Toast.makeText(context, autocompleteText, Toast.LENGTH_LONG).show()
             return
         }
         if (allowSuggestion) {
