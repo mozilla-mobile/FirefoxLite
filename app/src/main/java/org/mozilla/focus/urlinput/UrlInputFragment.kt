@@ -3,216 +3,178 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.urlinput;
+package org.mozilla.focus.urlinput
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import org.mozilla.focus.R;
-import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
-import org.mozilla.focus.navigation.ScreenNavigator;
-import org.mozilla.focus.search.SearchEngineManager;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.SearchUtils;
-import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.widget.FlowLayout;
-import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.focus.widget.InlineAutocompleteEditText;
-
-import java.util.List;
-import java.util.Locale;
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import org.mozilla.focus.R
+import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter
+import org.mozilla.focus.home.HomeFragment
+import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.search.SearchEngineManager
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.SearchUtils
+import org.mozilla.focus.utils.SupportUtils
+import org.mozilla.focus.utils.ViewUtils
+import org.mozilla.focus.web.WebViewProvider
+import org.mozilla.focus.widget.FlowLayout
+import org.mozilla.focus.widget.FragmentListener
+import org.mozilla.focus.widget.InlineAutocompleteEditText
+import java.util.Locale
 
 /**
  * Fragment for displaying he URL input controls.
  */
-public class UrlInputFragment extends Fragment implements UrlInputContract.View,
-        ScreenNavigator.UrlInputScreen,
-        View.OnClickListener, View.OnLongClickListener,
-        InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener,
-        InlineAutocompleteEditText.OnTextChangeListener {
+class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener,
+        View.OnLongClickListener, InlineAutocompleteEditText.OnCommitListener,
+        InlineAutocompleteEditText.OnFilterListener, InlineAutocompleteEditText.OnTextChangeListener,
+        ScreenNavigator.UrlInputScreen {
 
-    private static final String ARGUMENT_URL = "url";
-    private static final String ARGUMENT_PARENT_FRAGMENT = "parent_frag_tag";
-    private static final String ARGUMENT_ALLOW_SUGGESTION = "allow_suggestion";
+    private lateinit var presenter: UrlInputContract.Presenter
 
-    private static final int REQUEST_THROTTLE_THRESHOLD = 300;
+    private lateinit var urlView: InlineAutocompleteEditText
+    private lateinit var suggestionView: FlowLayout
+    private lateinit var clearView: View
 
-    private UrlInputContract.Presenter presenter;
+    private lateinit var urlAutoCompleteFilter: UrlAutoCompleteFilter
+    private var autoCompleteInProgress: Boolean = false
+    private lateinit var dismissView: View
+    private var lastRequestTime: Long = 0
+    private var allowSuggestion: Boolean = false
 
-    /**
-     * Create a new UrlInputFragment and animate the url input view from the position/size of the
-     * fake url bar view.
-     */
-    public static UrlInputFragment create(@Nullable String url, String parentFragmentTag, final boolean allowSuggestion) {
-        Bundle arguments = new Bundle();
-        arguments.putString(ARGUMENT_URL, url);
-        arguments.putString(ARGUMENT_PARENT_FRAGMENT, parentFragmentTag);
-        arguments.putBoolean(ARGUMENT_ALLOW_SUGGESTION, allowSuggestion);
-
-        UrlInputFragment fragment = new UrlInputFragment();
-        fragment.setArguments(arguments);
-
-        return fragment;
+    override fun onCreate(bundle: Bundle?) {
+        super.onCreate(bundle)
+        val userAgent = WebViewProvider.getUserAgentString(activity)
+        this.presenter = UrlInputPresenter(SearchEngineManager.getInstance()
+                .getDefaultSearchEngine(activity), userAgent)
     }
 
-    private InlineAutocompleteEditText urlView;
-    private FlowLayout suggestionView;
-    private View clearView;
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_urlinput, container, false)
 
-    private UrlAutoCompleteFilter urlAutoCompleteFilter;
-    private boolean autoCompleteInProgress;
-    private View dismissView;
-    private long lastRequestTime;
-    private boolean allowSuggestion;
+        dismissView = view.findViewById(R.id.dismiss)
+        dismissView.setOnClickListener(this)
 
-    @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        final String userAgent = WebViewProvider.getUserAgentString(getActivity());
-        this.presenter = new UrlInputPresenter(SearchEngineManager.getInstance()
-                .getDefaultSearchEngine(getActivity()), userAgent);
-    }
+        clearView = view.findViewById(R.id.clear)
+        clearView.setOnClickListener(this)
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_urlinput, container, false);
+        urlAutoCompleteFilter = UrlAutoCompleteFilter(context?.applicationContext)
 
-        dismissView = view.findViewById(R.id.dismiss);
-        dismissView.setOnClickListener(this);
+        suggestionView = view.findViewById<View>(R.id.search_suggestion) as FlowLayout
 
-        clearView = view.findViewById(R.id.clear);
-        clearView.setOnClickListener(this);
-
-        urlAutoCompleteFilter = new UrlAutoCompleteFilter(getContext().getApplicationContext());
-
-        suggestionView = (FlowLayout) view.findViewById(R.id.search_suggestion);
-
-        urlView = (InlineAutocompleteEditText) view.findViewById(R.id.url_edit);
-        urlView.setOnTextChangeListener(this);
-        urlView.setOnFilterListener(this);
-        urlView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // Avoid showing keyboard again when returning to the previous page by back key.
-                if (hasFocus) {
-                    ViewUtils.showKeyboard(urlView);
-                } else {
-                    ViewUtils.hideKeyboard(urlView);
-                }
+        urlView = view.findViewById<View>(R.id.url_edit) as InlineAutocompleteEditText
+        urlView.setOnTextChangeListener(this)
+        urlView.setOnFilterListener(this)
+        urlView.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            // Avoid showing keyboard again when returning to the previous page by back key.
+            if (hasFocus) {
+                ViewUtils.showKeyboard(urlView)
+            } else {
+                ViewUtils.hideKeyboard(urlView)
             }
-        });
+        }
 
-        urlView.setOnCommitListener(this);
+        urlView.setOnCommitListener(this)
 
-        initByArguments();
+        initByArguments()
 
-        return view;
+        return view
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.setView(this);
-        urlView.requestFocus();
+    override fun onStart() {
+        super.onStart()
+        presenter.setView(this)
+        urlView.requestFocus()
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.setView(null);
+    override fun onStop() {
+        super.onStop()
+        presenter.setView(null)
     }
 
-    @Override
-    public boolean onLongClick(View view) {
-        switch (view.getId()) {
-            case R.id.suggestion_item:
-                setUrlText(((TextView) view).getText());
-                TelemetryWrapper.searchSuggestionLongClick();
-                return true;
-            case R.id.clear:
-                TelemetryWrapper.searchClear();
-                return false;
-            case R.id.dismiss:
-                TelemetryWrapper.searchDismiss();
-                return false;
-            default:
-                return false;
+    override fun onLongClick(view: View): Boolean {
+        when (view.id) {
+            R.id.suggestion_item -> {
+                setUrlText((view as TextView).text)
+                TelemetryWrapper.searchSuggestionLongClick()
+                return true
+            }
+            R.id.clear -> {
+                TelemetryWrapper.searchClear()
+                return false
+            }
+            R.id.dismiss -> {
+                TelemetryWrapper.searchDismiss()
+                return false
+            }
+            else -> return false
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.clear:
-                urlView.setText("");
-                urlView.requestFocus();
-                break;
-            case R.id.dismiss:
-                dismiss();
-                break;
-            case R.id.suggestion_item:
-                onSuggestionClicked(((TextView) view).getText());
-                break;
-            default:
-                throw new IllegalStateException("Unhandled view in onClick()");
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.clear -> {
+                urlView.setText("")
+                urlView.requestFocus()
+            }
+            R.id.dismiss -> dismiss()
+            R.id.suggestion_item -> onSuggestionClicked((view as TextView).text)
+            else -> throw IllegalStateException("Unhandled view in onClick()")
         }
     }
 
-    private void initByArguments() {
-        final Bundle args = getArguments();
-        if (args.containsKey(ARGUMENT_URL)) {
-            final String url = args.getString(ARGUMENT_URL);
-            urlView.setText(url);
-            clearView.setVisibility(TextUtils.isEmpty(url) ? View.GONE : View.VISIBLE);
+    private fun initByArguments() {
+        val args = arguments
+        if (args?.containsKey(ARGUMENT_URL) == true) {
+            val url = args.getString(ARGUMENT_URL)
+            urlView.setText(url)
+            clearView.visibility = if (TextUtils.isEmpty(url)) View.GONE else View.VISIBLE
         }
-        allowSuggestion = args.getBoolean(ARGUMENT_ALLOW_SUGGESTION, true);
+        allowSuggestion = args?.getBoolean(ARGUMENT_ALLOW_SUGGESTION, true) ?: false
     }
 
-    private void onSuggestionClicked(CharSequence tag) {
-        setUrlText(tag);
-        onCommit(true);
+    private fun onSuggestionClicked(tag: CharSequence) {
+        setUrlText(tag)
+        onCommit(true)
     }
 
-    private void dismiss() {
+    private fun dismiss() {
         // This method is called from animation callbacks. In the short time frame between the animation
         // starting and ending the activity can be paused. In this case this code can throw an
         // IllegalStateException because we already saved the state (of the activity / fragment) before
         // this transaction is committed. To avoid this we commit while allowing a state loss here.
         // We do not save any state in this fragment (It's getting destroyed) so this should not be a problem.
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            ((FragmentListener) activity).onNotified(this, FragmentListener.TYPE.DISMISS_URL_INPUT, true);
+        val activity = activity
+        if (activity is FragmentListener) {
+            (activity as FragmentListener).onNotified(this, FragmentListener.TYPE.DISMISS_URL_INPUT, true)
         }
     }
 
-    public void onCommit(boolean isSuggestion) {
-        final String input = isSuggestion ? urlView.getOriginalText() : urlView.getText().toString();
-        if (!input.trim().isEmpty()) {
-            ViewUtils.hideKeyboard(urlView);
+    override fun onCommit(isSuggestion: Boolean) {
+        val input = if (isSuggestion) urlView.originalText else urlView.text.toString()
+        if (!input.trim { it <= ' ' }.isEmpty()) {
+            ViewUtils.hideKeyboard(urlView)
 
-            final boolean isUrl = SupportUtils.isUrl(input);
+            val isUrl = SupportUtils.isUrl(input)
 
-            final String url = isUrl
-                    ? SupportUtils.normalize(input)
-                    : SearchUtils.createSearchUrl(getContext(), input);
+            val url = if (isUrl)
+                SupportUtils.normalize(input)
+            else
+                SearchUtils.createSearchUrl(context, input)
 
-            boolean isOpenInNewTab = openUrl(url);
+            val isOpenInNewTab = openUrl(url)
 
             if (isOpenInNewTab) {
-                TelemetryWrapper.addNewTabFromHome();
+                TelemetryWrapper.addNewTabFromHome()
             }
-            TelemetryWrapper.urlBarEvent(isUrl, isSuggestion);
+            TelemetryWrapper.urlBarEvent(isUrl, isSuggestion)
         }
     }
 
@@ -220,100 +182,123 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
      * @param url the URL to open
      * @return true if open URL in new tab.
      */
-    private boolean openUrl(String url) {
-        boolean openNewTab = false;
+    private fun openUrl(url: String): Boolean {
+        var openNewTab = false
 
-        Bundle args = getArguments();
+        val args = arguments
         if (args != null && args.containsKey(ARGUMENT_PARENT_FRAGMENT)) {
-            openNewTab = ScreenNavigator.HOME_FRAGMENT_TAG.equals(args.getString(ARGUMENT_PARENT_FRAGMENT));
+            openNewTab = ScreenNavigator.HOME_FRAGMENT_TAG == args.getString(ARGUMENT_PARENT_FRAGMENT);
         }
 
-        final Activity activity = getActivity();
-        if (activity instanceof FragmentListener) {
-            final FragmentListener listener = (FragmentListener) activity;
-            FragmentListener.TYPE msgType = openNewTab
-                    ? FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB
-                    : FragmentListener.TYPE.OPEN_URL_IN_CURRENT_TAB;
+        val activity = activity
+        if (activity is FragmentListener) {
+            val listener = activity as? FragmentListener
+            val msgType = if (openNewTab)
+                FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB
+            else
+                FragmentListener.TYPE.OPEN_URL_IN_CURRENT_TAB
 
-            listener.onNotified(this, msgType, url);
+            listener?.onNotified(this, msgType, url)
         }
 
-        return openNewTab;
+        return openNewTab
     }
 
-    @Override
-    public void setUrlText(CharSequence text) {
-        this.urlView.setOnTextChangeListener(null);
-        this.urlView.setText(text);
-        this.urlView.setSelection(text.length());
-        this.urlView.setOnTextChangeListener(this);
+    override fun setUrlText(text: CharSequence?) {
+        text?.let {
+            this.urlView.setOnTextChangeListener(null)
+            this.urlView.setText(text)
+            this.urlView.setSelection(text.length)
+            this.urlView.setOnTextChangeListener(this)
+        }
     }
 
-    @Override
-    public void setSuggestions(@Nullable List<CharSequence> texts) {
-        this.suggestionView.removeAllViews();
+    override fun setSuggestions(texts: List<CharSequence>?) {
+        this.suggestionView.removeAllViews()
         if (texts == null) {
-            return;
+            return
         }
 
-        final String searchKey = urlView.getOriginalText().trim().toLowerCase(Locale.getDefault());
-        for (int i = 0; i < texts.size(); i++) {
-            final TextView item = (TextView) View.inflate(getContext(), R.layout.tag_text, null);
-            final String str = texts.get(i).toString();
-            final int idx = str.toLowerCase(Locale.getDefault()).indexOf(searchKey);
+        val searchKey = urlView.originalText.trim { it <= ' ' }.toLowerCase(Locale.getDefault())
+        for (i in texts.indices) {
+            val item = View.inflate(context, R.layout.tag_text, null) as TextView
+            val str = texts[i].toString()
+            val idx = str.toLowerCase(Locale.getDefault()).indexOf(searchKey)
             if (idx != -1) {
-                SpannableStringBuilder builder = new SpannableStringBuilder(texts.get(i));
-                builder.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                val builder = SpannableStringBuilder(texts[i])
+                builder.setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
                         idx,
-                        idx + searchKey.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                item.setText(builder);
+                        idx + searchKey.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                item.text = builder
             } else {
-                item.setText(texts.get(i));
+                item.text = texts[i]
             }
 
-            item.setOnClickListener(this);
-            item.setOnLongClickListener(this);
-            this.suggestionView.addView(item);
+            item.setOnClickListener(this)
+            item.setOnLongClickListener(this)
+            this.suggestionView.addView(item)
         }
     }
 
-    @Override
-    public void onFilter(String searchText, InlineAutocompleteEditText view) {
+    override fun onFilter(searchText: String, view: InlineAutocompleteEditText?) {
         // If the UrlInputFragment has already been hidden, don't bother with filtering. Because of the text
         // input architecture on Android it's possible for onFilter() to be called after we've already
         // hidden the Fragment, see the relevant bug for more background:
         // https://github.com/mozilla-mobile/focus-android/issues/441#issuecomment-293691141
-        if (!isVisible()) {
-            return;
+        if (!isVisible) {
+            return
         }
-        autoCompleteInProgress = true;
-        urlAutoCompleteFilter.onFilter(searchText, view);
-        autoCompleteInProgress = false;
+        autoCompleteInProgress = true
+        urlAutoCompleteFilter.onFilter(searchText, view)
+        autoCompleteInProgress = false
     }
 
-    @Override
-    public void onTextChange(String originalText, String autocompleteText) {
+    override fun onTextChange(originalText: String, autocompleteText: String) {
         if (autoCompleteInProgress) {
-            return;
+            return
         }
         if (allowSuggestion) {
-            UrlInputFragment.this.presenter.onInput(originalText, detectThrottle());
+            this@UrlInputFragment.presenter.onInput(originalText, detectThrottle())
         }
-        final int visibility = TextUtils.isEmpty(originalText) ? View.GONE : View.VISIBLE;
-        UrlInputFragment.this.clearView.setVisibility(visibility);
+        val visibility = if (TextUtils.isEmpty(originalText)) View.GONE else View.VISIBLE
+        this@UrlInputFragment.clearView.visibility = visibility
     }
 
-    private boolean detectThrottle() {
-        long now = System.currentTimeMillis();
-        boolean throttled = now - lastRequestTime < REQUEST_THROTTLE_THRESHOLD;
-        lastRequestTime = now;
-        return throttled;
+    private fun detectThrottle(): Boolean {
+        val now = System.currentTimeMillis()
+        val throttled = now - lastRequestTime < REQUEST_THROTTLE_THRESHOLD
+        lastRequestTime = now
+        return throttled
     }
 
-    @Override
-    public Fragment getFragment() {
-        return this;
+    companion object {
+
+        const val FRAGMENT_TAG = "url_input"
+
+        private const val ARGUMENT_URL = "url"
+        private const val ARGUMENT_PARENT_FRAGMENT = "parent_frag_tag"
+        private const val ARGUMENT_ALLOW_SUGGESTION = "allow_suggestion"
+
+        private const val REQUEST_THROTTLE_THRESHOLD = 300
+
+        /**
+         * Create a new UrlInputFragment and animate the url input view from the position/size of the
+         * fake url bar view.
+         */
+        @JvmStatic
+        fun create(url: String?, parentFragmentTag: String?, allowSuggestion: Boolean): UrlInputFragment {
+            val arguments = Bundle()
+            arguments.putString(ARGUMENT_URL, url)
+            arguments.putString(ARGUMENT_PARENT_FRAGMENT, parentFragmentTag)
+            arguments.putBoolean(ARGUMENT_ALLOW_SUGGESTION, allowSuggestion)
+
+            val fragment = UrlInputFragment()
+            fragment.arguments = arguments
+
+            return fragment
+        }
     }
 
+    override fun getFragment() = this
 }
