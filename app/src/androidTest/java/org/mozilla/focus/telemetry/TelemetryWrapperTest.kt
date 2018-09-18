@@ -81,6 +81,11 @@ class TelemetryWrapperTest {
     }
 
     @Test
+    fun launchByWebSearchEvent() {
+        TelemetryWrapper.launchByWebSearchEvent()
+    }
+
+    @Test
     fun launchByExternalAppEvent() {
         TelemetryWrapper.launchByExternalAppEvent()
     }

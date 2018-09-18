@@ -191,6 +191,7 @@ object TelemetryWrapper {
         const val SETTING = "settings"
         const val CONTEXTUAL_HINTS = "contextual_hints"
         const val NOTIFICATION = "notification"
+        internal val WEB_SEARCH = "web_search"
         internal val TEXT_SELECTION = "text_selection"
         internal val DEFAULT = "default"
     }
@@ -319,6 +320,13 @@ object TelemetryWrapper {
     fun launchByTextSelectionSearchEvent() {
         EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
                 .extra(Extra.TYPE, Extra_Value.TEXT_SELECTION)
+                .queue()
+    }
+
+    @JvmStatic
+    fun launchByWebSearchEvent() {
+        EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
+                .extra(Extra.TYPE, Extra_Value.WEB_SEARCH)
                 .queue()
     }
 
