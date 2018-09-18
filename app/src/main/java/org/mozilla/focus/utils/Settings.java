@@ -153,14 +153,6 @@ public class Settings {
         return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_default_browser_setting), false);
     }
 
-    public boolean isFindInPageEnabled() {
-        if (AppConstants.isReleaseBuild() || AppConstants.isBetaBuild()) {
-            return false;
-        }
-
-        return preferences.getBoolean(getPreferenceKey(R.string.pref_key_enable_find_in_page), false);
-    }
-
     public void setDefaultBrowserSettingDidShow() {
         preferences.edit()
                 .putBoolean(getPreferenceKey(R.string.pref_key_did_show_default_browser_setting), true)
