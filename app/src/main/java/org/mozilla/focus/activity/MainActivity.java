@@ -369,10 +369,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
-
-        if (!Settings.getInstance(this).isFindInPageEnabled()) {
-            menu.findViewById(R.id.menu_find_in_page).setVisibility(View.GONE);
-        }
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
