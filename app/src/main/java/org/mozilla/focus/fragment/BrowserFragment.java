@@ -673,6 +673,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                         rejectGeoRequest(checkBox.isChecked());
                     }
                 })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        rejectGeoRequest(false);
+                    }
+                })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
