@@ -3,192 +3,167 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.fragment;
+package org.mozilla.focus.fragment
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.TransitionDrawable
+import android.os.Bundle
+import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
+import android.transition.TransitionInflater
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import org.mozilla.focus.R
+import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.firstrun.FirstrunPagerAdapter
+import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.NewFeatureNotice
 
-import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.firstrun.FirstrunPagerAdapter;
-import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.NewFeatureNotice;
+class FirstrunFragment : Fragment(), View.OnClickListener {
 
-public class FirstrunFragment extends Fragment implements View.OnClickListener {
-    public static final String FRAGMENT_TAG = "firstrun";
+    private lateinit var viewPager: ViewPager
 
-    public static FirstrunFragment create() {
-        return new FirstrunFragment();
+    private lateinit var bgTransitionDrawable: TransitionDrawable
+    private lateinit var bgDrawables: Array<Drawable>
+
+    private var isTelemetryValid = true
+    private var telemetryStartTimestamp: Long = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initDrawables()
     }
 
-    private ViewPager viewPager;
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
 
-    private TransitionDrawable bgTransitionDrawable;
-    private Drawable[] bgDrawables;
+        val transition = TransitionInflater.from(context).inflateTransition(R.transition.firstrun_exit)
 
-    private boolean isTelemetryValid = true;
-    private long telemetryStartTimestamp = 0;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initDrawables();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        final Transition transition = TransitionInflater.from(context).
-                inflateTransition(R.transition.firstrun_exit);
-
-        setExitTransition(transition);
+        exitTransition = transition
 
         // We will send a telemetry event whenever a new firstrun page is shown. However this page
         // listener won't fire for the initial page we are showing. So we are going to firing here.
-        isTelemetryValid = true;
-        telemetryStartTimestamp = System.currentTimeMillis();
+        isTelemetryValid = true
+        telemetryStartTimestamp = System.currentTimeMillis()
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_firstrun, container, false);
-        view.setClickable(true);
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_firstrun, container, false)
+        view.isClickable = true
 
-        view.findViewById(R.id.skip).setOnClickListener(this);
+        view.findViewById<View>(R.id.skip).setOnClickListener(this)
 
-        final View background = view.findViewById(R.id.background);
-        background.setBackground(bgTransitionDrawable);
+        val background = view.findViewById<View>(R.id.background)
+        background.background = bgTransitionDrawable
 
-        PagerAdapter adapter = findPagerAdapter(container.getContext(), this);
+        val adapter = findPagerAdapter(container!!.context, this)
         if (adapter == null) {
-            finishFirstrun();
-            return view;
+            finishFirstrun()
+            return view
         }
 
-        viewPager = (ViewPager) view.findViewById(R.id.pager);
+        viewPager = view.findViewById<View>(R.id.pager) as ViewPager
 
-        viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
-            @Override
-            public void transformPage(View page, float position) {
-                page.setAlpha(1 - (0.5f * Math.abs(position)));
-            }
-        });
+        viewPager.setPageTransformer(true) { page, position -> page.alpha = 1 - 0.5f * Math.abs(position) }
 
-        viewPager.setClipToPadding(false);
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.clipToPadding = false
+        viewPager.adapter = adapter
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
-            @Override
-            public void onPageSelected(int newIdx) {
-                final int duration = 400;
-                final Drawable nextDrawable = bgDrawables[newIdx % bgDrawables.length];
+            override fun onPageSelected(newIdx: Int) {
+                val duration = 400
+                val nextDrawable = bgDrawables[newIdx % bgDrawables.size]
 
-                if ((newIdx % 2) == 0) {
+                if (newIdx % 2 == 0) {
                     // next page is even number
-                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_even, nextDrawable);
-                    bgTransitionDrawable.reverseTransition(duration); // odd -> even
+                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_even, nextDrawable)
+                    bgTransitionDrawable.reverseTransition(duration) // odd -> even
                 } else {
                     // next page is odd number
-                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_odd, nextDrawable);
-                    bgTransitionDrawable.startTransition(duration); // even -> odd
+                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_odd, nextDrawable)
+                    bgTransitionDrawable.startTransition(duration) // even -> odd
                 }
             }
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
 
-        if (adapter.getCount() > 1) {
-            final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-            tabLayout.setupWithViewPager(viewPager, true);
+        if (adapter.count > 1) {
+            val tabLayout = view.findViewById<View>(R.id.tabs) as TabLayout
+            tabLayout.setupWithViewPager(viewPager, true)
         }
 
-        return view;
+        return view
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        isTelemetryValid = false;
+    override fun onPause() {
+        super.onPause()
+        isTelemetryValid = false
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.next:
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                break;
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.next -> viewPager.currentItem = viewPager.currentItem + 1
 
-            case R.id.skip:
-                finishFirstrun();
-                break;
+            R.id.skip -> finishFirstrun()
 
-            case R.id.finish:
-                finishFirstrun();
+            R.id.finish -> {
+                finishFirstrun()
                 if (isTelemetryValid) {
-                    TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp);
+                    TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp)
                 }
-                break;
+            }
 
-            default:
-                throw new IllegalArgumentException("Unknown view");
+            else -> throw IllegalArgumentException("Unknown view")
         }
     }
 
-    private PagerAdapter findPagerAdapter(Context context, View.OnClickListener onClickListener) {
-        final PagerAdapter pagerAdapter;
-        boolean shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun();
-        if (!shown) {
-            pagerAdapter = new FirstrunPagerAdapter(context, onClickListener);
+    private fun findPagerAdapter(context: Context, onClickListener: View.OnClickListener): PagerAdapter? {
+        val pagerAdapter: PagerAdapter?
+        val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
+        pagerAdapter = if (!shown) {
+            FirstrunPagerAdapter(context, onClickListener)
         } else if (NewFeatureNotice.getInstance(getContext()).shouldShowMultiTabUpdate()) {
-            pagerAdapter = new FirstrunUpgradePagerAdapter(context, onClickListener);
+            FirstrunUpgradePagerAdapter(context, onClickListener)
         } else {
-            pagerAdapter = null;
+            null
         }
-        return pagerAdapter;
+        return pagerAdapter
     }
 
-    private void finishFirstrun() {
-        NewFeatureNotice.getInstance(getContext()).setFirstRunDidShow();
-        NewFeatureNotice.getInstance(getContext()).setMultiTabUpdateNoticeDidShow();
+    private fun finishFirstrun() {
+        NewFeatureNotice.getInstance(context).setFirstRunDidShow()
+        NewFeatureNotice.getInstance(context).setMultiTabUpdateNoticeDidShow()
 
-        ((MainActivity) getActivity()).firstrunFinished();
+        (activity as MainActivity).firstrunFinished()
     }
 
     // FirstRun fragment is not used often, so we create drawables programmatically, instead of add
     // lots of drawable resources
-    private void initDrawables() {
-        final GradientDrawable.Orientation orientation = GradientDrawable.Orientation.TR_BL;
-        bgDrawables = new Drawable[]{
-                new GradientDrawable(orientation, new int[]{0xFF75ADB3, 0xFF328BD1}),
-                new GradientDrawable(orientation, new int[]{0xFF7EBCB5, 0xFF328BD1}),
-                new GradientDrawable(orientation, new int[]{0xFF83C8B3, 0xFF328BD1}),
-                new GradientDrawable(orientation, new int[]{0xFF8ED8B3, 0xFF328BD1}),
-        };
+    private fun initDrawables() {
+        val orientation = GradientDrawable.Orientation.TR_BL
+        bgDrawables = arrayOf(GradientDrawable(orientation, intArrayOf(-0x8a524d, -0xcd742f)), GradientDrawable(orientation, intArrayOf(-0x81434b, -0xcd742f)), GradientDrawable(orientation, intArrayOf(-0x7c374d, -0xcd742f)), GradientDrawable(orientation, intArrayOf(-0x71274d, -0xcd742f)))
 
-        bgTransitionDrawable = new TransitionDrawable(bgDrawables);
-        bgTransitionDrawable.setId(0, R.id.first_run_bg_even);
-        bgTransitionDrawable.setId(1, R.id.first_run_bg_odd);
+        bgTransitionDrawable = TransitionDrawable(bgDrawables)
+        bgTransitionDrawable.setId(0, R.id.first_run_bg_even)
+        bgTransitionDrawable.setId(1, R.id.first_run_bg_odd)
+    }
+
+    companion object {
+        const val FRAGMENT_TAG = "firstrun"
+
+        @JvmStatic
+        fun create(): FirstrunFragment {
+            return FirstrunFragment()
+        }
     }
 
 }
