@@ -37,7 +37,11 @@ We're leveraging Firebase to offer some extra functionalities. However, Firebase
 
 Here are some Firebase build workarounds that you may need during normal development:
 
-1. If you want to run UI test, remove `testBuildType "firebase"` from [build.gradle](https://github.com/mozilla-tw/Rocket/blob/4fedf245c4382122283ca8ec701a5ff18c9bf779/app/build.gradle#L122)
+1. If you want to run UI test without setting up firebase tokens, remove `testBuildType "firebase"` from [build.gradle](https://github.com/mozilla-tw/Rocket/blob/4fedf245c4382122283ca8ec701a5ff18c9bf779/app/build.gradle#L122) or you will most likely see error message like this when you run connectedAndroidTest directly:
+
+```
+No tests found. This usually means that your test classes are not in the form that your test runner expects (e.g. don't inherit from TestCase or lack @Test annotations).
+```
 
 If you'd like to test the fully functional Firebase build, you should first setup the environment variables following these [instructions](https://github.com/mozilla-tw/Rocket/blob/4fedf245c4382122283ca8ec701a5ff18c9bf779/app/build.gradle#L346) and select **focusWebkitFirebase**
 
