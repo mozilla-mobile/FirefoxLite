@@ -15,6 +15,7 @@ import org.mozilla.focus.widget.DefaultBrowserPreference
 class LaunchIntentDispatcher {
 
     enum class LaunchMethod(val value: String) {
+        EXTRA_BOOL_WEB_SEARCH("web_search"),
         EXTRA_BOOL_TEXT_SELECTION("text_selection"),
         EXTRA_BOOL_HOME_SCREEN_SHORTCUT("shortcut")
     }
@@ -49,6 +50,14 @@ class LaunchIntentDispatcher {
              * */
             if (intent.getBooleanExtra(LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.value, false)) {
                 TelemetryWrapper.launchByTextSelectionSearchEvent()
+                return Action.NORMAL
+            }
+
+            /**
+             * This extra is passed when we long click on some text and click "Web Search"
+             * */
+            if (intent.getBooleanExtra(LaunchMethod.EXTRA_BOOL_WEB_SEARCH.value, false)) {
+                TelemetryWrapper.launchByWebSearchEvent()
                 return Action.NORMAL
             }
 
