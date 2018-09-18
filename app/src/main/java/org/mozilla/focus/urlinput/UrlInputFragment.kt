@@ -143,8 +143,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     private fun onSuggestionClicked(tag: CharSequence) {
-        setUrlText(tag)
-        onCommit()
+        search(tag.toString())
     }
 
     private fun dismiss() {
@@ -163,6 +162,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         val input = urlView.autocompleteResult.formattedText.let {
             if (it.isEmpty()) urlView.text.toString() else it
         }
+        search(input)
+    }
+
+    private fun search(input: String){
         if (!input.trim { it <= ' ' }.isEmpty()) {
             ViewUtils.hideKeyboard(urlView)
 
