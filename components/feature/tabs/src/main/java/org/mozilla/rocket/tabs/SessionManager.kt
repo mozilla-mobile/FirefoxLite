@@ -308,7 +308,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
         session.setTabViewClient(TabViewClientImpl(session))
         session.setTabChromeClient(TabChromeClientImpl(session))
         session.setDownloadCallback(downloadCallback)
-        session.setDownloadCallback(downloadCallback)
+        session.setFindListener(findListener)
     }
 
     private fun addTabInternal(url: String?,
