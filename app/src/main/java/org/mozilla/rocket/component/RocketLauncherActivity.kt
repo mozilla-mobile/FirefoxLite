@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
 
 
 class RocketLauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        TelemetryWrapper.init(this)
+
         val action = LaunchIntentDispatcher.dispatch(this, intent)
         when (action) {
             LaunchIntentDispatcher.Action.HANDLED -> finish()

@@ -27,8 +27,6 @@
 
     <string name="pref_key_locale" translatable="false"><xliff:g id="preference_key">pref_locale</xliff:g></string>
 
-    <string name="pref_key_webview_version" translatable="false"><xliff:g id="preference_key">pref_webview_version</xliff:g></string>
-
     <string name="pref_key_focus_tab_id" translatable="false"><xliff:g id="preference_key">pref_key_focus_tab_id</xliff:g></string>
 
     <string name="pref_key_category_development" translatable="false"><xliff:g id="preference_key">pref_key_category_development</xliff:g></string>

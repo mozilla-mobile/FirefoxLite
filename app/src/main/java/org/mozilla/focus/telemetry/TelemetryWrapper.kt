@@ -233,7 +233,6 @@ object TelemetryWrapper {
             val telemetryEnabled = isTelemetryEnabled(context)
 
             updateDefaultBrowserStatus(context)
-            updatePrefValue(context, resources.getString(R.string.pref_key_webview_version), DebugUtils.loadWebViewVersion(context))
 
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
@@ -245,7 +244,6 @@ object TelemetryWrapper {
                             resources.getString(R.string.pref_key_performance_block_images),
                             resources.getString(R.string.pref_key_default_browser),
                             resources.getString(R.string.pref_key_storage_save_downloads_to),
-                            resources.getString(R.string.pref_key_webview_version),
                             resources.getString(R.string.pref_key_locale))
                     .setSettingsProvider(CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
@@ -1038,7 +1036,6 @@ object TelemetryWrapper {
                 prefKeyWhitelist[context.getString(R.string.pref_key_help)] = "help"
                 prefKeyWhitelist[context.getString(R.string.pref_key_rights)] = "rights"
 
-                prefKeyWhitelist[context.getString(R.string.pref_key_webview_version)] = "webview_version"
                 // data saving
                 prefKeyWhitelist[context.getString(R.string.pref_key_data_saving_block_ads)] = "saving_block_ads"
                 prefKeyWhitelist[context.getString(R.string.pref_key_data_saving_block_webfonts)] = "data_webfont"

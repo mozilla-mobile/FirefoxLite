@@ -5,8 +5,8 @@
 
 package org.mozilla.focus
 
-import android.app.ActivityManager
-import android.content.Context
+import android.app.Activity
+import android.os.Bundle
 import android.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
 import org.mozilla.focus.download.DownloadInfoManager
@@ -15,27 +15,28 @@ import org.mozilla.focus.locale.LocaleAwareApplication
 import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.focus.search.SearchEngineManager
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.rocket.partner.PartnerActivator
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
+import org.mozilla.rocket.privately.PrivateModeActivity
 import java.io.File
 
 
 class FocusApplication : LocaleAwareApplication() {
 
-    lateinit var partnerActivator : PartnerActivator
+    lateinit var partnerActivator: PartnerActivator
+    var isPrivateApplication = false
 
     override fun getCacheDir(): File {
-        if (isInPrivateProcess()) {
+        if (isPrivateApplication) {
             return File(super.getCacheDir().absolutePath + "-" + PRIVATE_PROCESS_NAME)
         }
         return super.getCacheDir()
     }
 
     override fun getDir(name: String?, mode: Int): File {
-        if (name == WEBVIEW_FOLDER_NAME && isInPrivateProcess()) {
+        if (name == WEBVIEW_FOLDER_NAME && isPrivateApplication) {
             return super.getDir("$name-$PRIVATE_PROCESS_NAME", mode)
         }
         return super.getDir(name, mode)
@@ -57,7 +58,6 @@ class FocusApplication : LocaleAwareApplication() {
 
         SearchEngineManager.getInstance().init(this)
 
-        TelemetryWrapper.init(this)
         AdjustHelper.setupAdjustIfNeeded(this)
 
         BrowsingHistoryManager.getInstance().init(this)
@@ -69,17 +69,34 @@ class FocusApplication : LocaleAwareApplication() {
 
         partnerActivator = PartnerActivator(this)
         partnerActivator.launch()
-    }
 
-    private fun isInPrivateProcess(): Boolean {
-
-        val pid = android.os.Process.myPid()
-        val manager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        for (processInfo in manager.runningAppProcesses) {
-            if (processInfo.pid == pid) {
-                return processInfo.processName.contains(PRIVATE_PROCESS_NAME)
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityPaused(activity: Activity?) {
             }
-        }
-        return false
+
+            override fun onActivityResumed(activity: Activity?) {
+            }
+
+            override fun onActivityStarted(activity: Activity?) {
+            }
+
+            override fun onActivityDestroyed(activity: Activity?) {
+                if (activity is PrivateModeActivity) {
+                    isPrivateApplication = false
+                }
+            }
+
+            override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
+            }
+
+            override fun onActivityStopped(activity: Activity?) {
+            }
+
+            override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
+                if (activity is PrivateModeActivity) {
+                    isPrivateApplication = true
+                }
+            }
+        })
     }
 }
