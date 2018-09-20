@@ -181,10 +181,12 @@ object TelemetryWrapper {
         internal val DEFAULT = "default"
     }
 
+    @JvmStatic
     fun isTelemetryEnabled(context: Context): Boolean {
         return Inject.isTelemetryEnabled(context)
     }
 
+    @JvmStatic
     fun setTelemetryEnabled(context: Context, enabled: Boolean) {
         val resources = context.resources
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -256,44 +258,53 @@ object TelemetryWrapper {
         }
     }
 
+    @JvmStatic
     fun toggleFirstRunPageEvent(enableTurboMode: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.FIRSTRUN, Value.TURBO)
                 .extra(Extra.TO, java.lang.Boolean.toString(enableTurboMode))
                 .queue()
     }
 
+    @JvmStatic
     fun finishFirstRunEvent(duration: Long) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
                 .extra(Extra.ON, java.lang.Long.toString(duration))
                 .queue()
     }
 
+    @JvmStatic
     fun browseIntentEvent() {
         EventBuilder(Category.ACTION, Method.INTENT_URL, Object.APP).queue()
     }
 
+    @JvmStatic
     fun textSelectionIntentEvent() {
         EventBuilder(Category.ACTION, Method.TEXT_SELECTION_INTENT, Object.APP).queue()
     }
 
+    @JvmStatic
     fun launchByAppLauncherEvent() {
         EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.LAUNCHER).queue()
     }
 
+    @JvmStatic
     fun launchByHomeScreenShortcutEvent() {
         EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.SHORTCUT).queue()
     }
 
+    @JvmStatic
     fun launchByTextSelectionSearchEvent() {
         EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
                 .extra(Extra.TYPE, Extra_Value.TEXT_SELECTION)
                 .queue()
     }
 
+    @JvmStatic
     fun launchByExternalAppEvent() {
         EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP).queue()
     }
 
+    @JvmStatic
     fun settingsEvent(key: String, value: String) {
         // We only log whitelist-ed setting
         val validPrefKey = FirebaseEvent.getValidPrefKey(key)
@@ -305,6 +316,7 @@ object TelemetryWrapper {
 
     }
 
+    @JvmStatic
     fun settingsClickEvent(key: String) {
         val validPrefKey = FirebaseEvent.getValidPrefKey(key)
         if (validPrefKey != null) {
@@ -312,12 +324,14 @@ object TelemetryWrapper {
         }
     }
 
+    @JvmStatic
     fun settingsLearnMoreClickEvent(source: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, Value.LEARN_MORE)
                 .extra(Extra.SOURCE, source)
                 .queue()
     }
 
+    @JvmStatic
     fun settingsLocaleChangeEvent(key: String, value: String, isDefault: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, key)
                 .extra(Extra.TO, value)
@@ -325,18 +339,21 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun startSession() {
         TelemetryHolder.get().recordSessionStart()
 
         EventBuilder(Category.ACTION, Method.FOREGROUND, Object.APP).queue()
     }
 
+    @JvmStatic
     fun stopSession() {
         TelemetryHolder.get().recordSessionEnd()
 
         EventBuilder(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
     }
 
+    @JvmStatic
     fun stopMainActivity() {
         TelemetryHolder.get()
                 .queuePing(TelemetryCorePingBuilder.TYPE)
@@ -344,42 +361,52 @@ object TelemetryWrapper {
                 .scheduleUpload()
     }
 
+    @JvmStatic
     fun openWebContextMenuEvent() {
         EventBuilder(Category.ACTION, Method.LONG_PRESS, Object.BROWSER).queue()
     }
 
+    @JvmStatic
     fun cancelWebContextMenuEvent() {
         EventBuilder(Category.ACTION, Method.CANCEL, Object.BROWSER_CONTEXTMENU).queue()
     }
 
+    @JvmStatic
     fun shareLinkEvent() {
         EventBuilder(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun shareImageEvent() {
         EventBuilder(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue()
     }
 
+    @JvmStatic
     fun saveImageEvent() {
         EventBuilder(Category.ACTION, Method.SAVE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue()
     }
 
+    @JvmStatic
     fun copyLinkEvent() {
         EventBuilder(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun copyImageEvent() {
         EventBuilder(Category.ACTION, Method.COPY, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue()
     }
 
+    @JvmStatic
     fun addNewTabFromContextMenu() {
         EventBuilder(Category.ACTION, Method.ADD, Object.BROWSER_CONTEXTMENU, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun browseGeoLocationPermissionEvent() {
         EventBuilder(Category.ACTION, Method.PERMISSION, Object.BROWSER, Value.GEOLOCATION).queue()
     }
 
+    @JvmStatic
     fun browseFilePermissionEvent() {
         EventBuilder(Category.ACTION, Method.PERMISSION, Object.BROWSER, Value.FILE).queue()
     }
@@ -399,108 +426,133 @@ object TelemetryWrapper {
         }
     }
 
+    @JvmStatic
     fun browseEnterFullScreenEvent() {
         EventBuilder(Category.ACTION, Method.FULLSCREEN, Object.BROWSER, Value.ENTER).queue()
     }
 
+    @JvmStatic
     fun browseExitFullScreenEvent() {
         EventBuilder(Category.ACTION, Method.FULLSCREEN, Object.BROWSER, Value.EXIT).queue()
     }
 
+    @JvmStatic
     fun showMenuHome() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.HOME).queue()
     }
 
+    @JvmStatic
     fun showTabTrayHome() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.HOME).queue()
     }
 
+    @JvmStatic
     fun showTabTrayToolbar() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.TOOLBAR).queue()
     }
 
+    @JvmStatic
     fun showMenuToolbar() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.TOOLBAR).queue()
     }
 
+    @JvmStatic
     fun clickMenuDownload() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.DOWNLOAD).queue()
     }
 
+    @JvmStatic
     fun clickMenuHistory() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.HISTORY).queue()
     }
 
+    @JvmStatic
     fun clickMenuCapture() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.CAPTURE).queue()
     }
 
+    @JvmStatic
     fun showPanelBookmark() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.BOOKMARK).queue()
     }
 
+    @JvmStatic
     fun showPanelDownload() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.DOWNLOAD).queue()
     }
 
+    @JvmStatic
     fun showPanelHistory() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.HISTORY).queue()
     }
 
+    @JvmStatic
     fun showPanelCapture() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.CAPTURE).queue()
     }
 
+    @JvmStatic
     fun menuTurboChangeTo(enable: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.MENU, Value.TURBO)
                 .extra(Extra.TO, java.lang.Boolean.toString(enable))
                 .queue()
     }
 
+    @JvmStatic
     fun menuBlockImageChangeTo(enable: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.MENU, Value.BLOCK_IMAGE)
                 .extra(Extra.TO, java.lang.Boolean.toString(enable))
                 .queue()
     }
 
+    @JvmStatic
     fun clickMenuClearCache() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.CLEAR_CACHE).queue()
     }
 
+    @JvmStatic
     fun clickMenuSettings() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, SETTINGS).queue()
     }
 
+    @JvmStatic
     fun clickMenuExit() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.EXIT).queue()
     }
 
+    @JvmStatic
     fun clickMenuBookmark() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.BOOKMARK).queue()
     }
 
+    @JvmStatic
     fun clickToolbarForward() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.FORWARD).queue()
     }
 
+    @JvmStatic
     fun clickToolbarReload() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD).queue()
     }
 
+    @JvmStatic
     fun clickToolbarShare() {
         EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun clickToolbarBookmark(isAdd: Boolean) {
         EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.BOOKMARK)
                 .extra(Extra.TO, java.lang.Boolean.toString(isAdd))
                 .queue()
     }
 
+    @JvmStatic
     fun clickAddToHome() {
         EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun clickToolbarCapture(category: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE)
                 .extra(Extra.VERSION, Integer.toString(TOOL_BAR_CAPTURE_TELEMETRY_VERSION))
@@ -508,6 +560,7 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun clickTopSiteOn(index: Int) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
                 .extra(Extra.ON, Integer.toString(index))
@@ -517,6 +570,7 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun removeTopSite(isDefault: Boolean) {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.HOME, Value.LINK)
                 .extra(Extra.DEFAULT, java.lang.Boolean.toString(isDefault))
@@ -524,10 +578,12 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun addNewTabFromHome() {
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.HOME).queue()
     }
 
+    @JvmStatic
     fun urlBarEvent(isUrl: Boolean, isSuggestion: Boolean) {
         if (isUrl) {
             TelemetryWrapper.browseEvent()
@@ -542,6 +598,7 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.OPEN, Object.SEARCH_BAR, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun searchSelectEvent() {
         val telemetry = TelemetryHolder.get()
 
@@ -564,118 +621,146 @@ object TelemetryWrapper {
         telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.identifier)
     }
 
+    @JvmStatic
     fun togglePrivateMode(enter: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.PRIVATE_MODE, if (enter) Value.ENTER else Value.EXIT).queue()
     }
 
+    @JvmStatic
     fun searchSuggestionLongClick() {
         EventBuilder(Category.ACTION, Method.LONG_PRESS, Object.SEARCH_SUGGESTION).queue()
     }
 
+    @JvmStatic
     fun searchClear() {
         EventBuilder(Category.ACTION, Method.CLEAR, Object.SEARCH_BAR).queue()
     }
 
+    @JvmStatic
     fun searchDismiss() {
         EventBuilder(Category.ACTION, Method.CANCEL, Object.SEARCH_BAR).queue()
     }
 
+    @JvmStatic
     fun showSearchBarHome() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BOX).queue()
     }
 
+    @JvmStatic
     fun clickUrlbar() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.MINI_URLBAR).queue()
     }
 
+    @JvmStatic
     fun clickToolbarSearch() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON).queue()
     }
 
+    @JvmStatic
     fun clickAddTabToolbar() {
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOOLBAR).queue()
     }
 
+    @JvmStatic
     fun clickAddTabTray() {
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TABTRAY).queue()
     }
 
+    @JvmStatic
     fun clickTabFromTabTray() {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.TAB, Value.TABTRAY).queue()
     }
 
+    @JvmStatic
     fun closeTabFromTabTray() {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.TAB, Value.TABTRAY).queue()
     }
 
+    @JvmStatic
     fun swipeTabFromTabTray() {
         EventBuilder(Category.ACTION, Method.SWIPE, Object.TAB, Value.TABTRAY).queue()
     }
 
+    @JvmStatic
     fun closeAllTabFromTabTray() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.CLOSE_ALL, Value.TABTRAY).queue()
     }
 
+    @JvmStatic
     fun downloadRemoveFile() {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.PANEL, Value.FILE).queue()
     }
 
+    @JvmStatic
     fun downloadDeleteFile() {
         EventBuilder(Category.ACTION, Method.DELETE, Object.PANEL, Value.FILE).queue()
     }
 
+    @JvmStatic
     fun downloadOpenFile(fromSnackBar: Boolean) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.FILE)
                 .extra(Extra.SNACKBAR, java.lang.Boolean.toString(fromSnackBar))
                 .queue()
     }
 
+    @JvmStatic
     fun showFileContextMenu() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.DOWNLOAD).queue()
     }
 
+    @JvmStatic
     fun historyOpenLink() {
         EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun historyRemoveLink() {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.PANEL, Value.LINK).queue()
     }
 
+    @JvmStatic
     fun bookmarkRemoveItem() {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.PANEL, Value.BOOKMARK).queue()
     }
 
+    @JvmStatic
     fun bookmarkEditItem() {
         EventBuilder(Category.ACTION, Method.EDIT, Object.PANEL, Value.BOOKMARK).queue()
     }
 
+    @JvmStatic
     fun bookmarkOpenItem() {
         EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.BOOKMARK).queue()
     }
 
+    @JvmStatic
     fun showHistoryContextMenu() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.HISTORY).queue()
     }
 
+    @JvmStatic
     fun showBookmarkContextMenu() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.BOOKMARK).queue()
     }
 
+    @JvmStatic
     fun clearHistory() {
         EventBuilder(Category.ACTION, Method.CLEAR, Object.PANEL, Value.HISTORY).queue()
     }
 
+    @JvmStatic
     fun openCapture() {
         EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.CAPTURE).queue()
     }
 
+    @JvmStatic
     fun openCaptureLink(category: String) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.CAPTURE, Value.LINK)
                 .extra(Extra.CATEGORY, category)
                 .queue()
     }
 
+    @JvmStatic
     fun editCaptureImage(editAppResolved: Boolean, category: String) {
         EventBuilder(Category.ACTION, Method.EDIT, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SUCCESS, java.lang.Boolean.toString(editAppResolved))
@@ -683,6 +768,7 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun shareCaptureImage(fromSnackBar: Boolean, category: String) {
         EventBuilder(Category.ACTION, Method.SHARE, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SNACKBAR, java.lang.Boolean.toString(fromSnackBar))
@@ -690,28 +776,33 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun showCaptureInfo(category: String) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.CAPTURE, Value.INFO)
                 .extra(Extra.CATEGORY, category)
                 .queue()
     }
 
+    @JvmStatic
     fun deleteCaptureImage(category: String) {
         EventBuilder(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.CATEGORY, category)
                 .queue()
     }
 
+    @JvmStatic
     fun feedbackClickEvent(value: String, source: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
                 .extra(Extra.SOURCE, source)
                 .queue()
     }
 
+    @JvmStatic
     fun showFeedbackDialog() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.FEEDBACK).queue()
     }
 
+    @JvmStatic
     fun showRateAppNotification() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.FEEDBACK)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
@@ -719,12 +810,14 @@ object TelemetryWrapper {
     }
 
     // TODO: test Context from contetReceiver
+    @JvmStatic
     fun clickRateAppNotification(value: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue()
     }
 
+    @JvmStatic
     fun clickRateAppNotification() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
@@ -732,12 +825,14 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun showDefaultSettingNotification() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.DEFAULT_BROWSER)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue()
     }
 
+    @JvmStatic
     fun clickDefaultSettingNotification() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.DEFAULT_BROWSER)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
@@ -745,46 +840,54 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun onDefaultBrowserServiceFailed() {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.DEFAULT_BROWSER)
                 .extra(Extra.SUCCESS, java.lang.Boolean.toString(false))
                 .queue()
     }
 
+    @JvmStatic
     fun promoteShareClickEvent(value: String, source: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PROMOTE_SHARE, value)
                 .extra(Extra.SOURCE, source)
                 .queue()
     }
 
+    @JvmStatic
     fun showPromoteShareDialog() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.PROMOTE_SHARE).queue()
     }
 
+    @JvmStatic
     fun changeThemeTo(themeName: String) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.THEMETOY)
                 .extra(Extra.TO, themeName)
                 .queue()
     }
 
+    @JvmStatic
     fun resetThemeToDefault() {
         EventBuilder(Category.ACTION, Method.RESET, Object.THEMETOY)
                 .extra(Extra.TO, Extra_Value.DEFAULT)
                 .queue()
     }
 
+    @JvmStatic
     fun erasePrivateModeNotification() {
         EventBuilder(Category.ACTION, Method.CLEAR, Object.PRIVATE_MODE)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue()
     }
 
+    @JvmStatic
     fun clickBannerBackground(pageId: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.BANNER, Value.BACKGROUND)
                 .extra(Extra.SOURCE, pageId)
                 .queue()
     }
 
+    @JvmStatic
     fun clickBannerItem(pageId: String, itemPosition: Int) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.BANNER, Value.ITEM)
                 .extra(Extra.SOURCE, pageId)
@@ -792,6 +895,7 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @JvmStatic
     fun swipeBannerItem(directionX: Int, toItemPosition: Int) {
         EventBuilder(Category.ACTION, Method.SWIPE, Object.BANNER, Value.PAGE)
                 .extra(Extra.DIRECTION, Integer.toString(directionX))
