@@ -601,9 +601,7 @@ class TelemetryWrapperTest {
 
         // whitelist-ed pref key should worked with firebaseEvent and telemetryEvent
         for (validKey in FirebaseEvent.getPrefKeyWhitelist().values) {
-            val builder = TelemetryWrapper.EventBuilder(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, SETTING, validKey)
-            assert(builder.firebaseEvent != null)
-            assert(builder.telemetryEvent != null)
+            TelemetryWrapper.EventBuilder(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, SETTING, validKey)
         }
     }
 
