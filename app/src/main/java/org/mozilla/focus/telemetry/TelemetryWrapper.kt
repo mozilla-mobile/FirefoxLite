@@ -146,10 +146,10 @@ object TelemetryWrapper {
 
         internal val LEARN_MORE = "learn_more"
 
-        val DISMISS = "dismiss"
-        val POSITIVE = "positive"
-        val NEGATIVE = "negative"
-        val SHARE = "share"
+        const val DISMISS = "dismiss"
+        const val POSITIVE = "positive"
+        const val NEGATIVE = "negative"
+        const val SHARE = "share"
 
         internal val LAUNCHER = "launcher"
         internal val EXTERNAL_APP = "external_app"
@@ -174,9 +174,9 @@ object TelemetryWrapper {
     }
 
     object Extra_Value {
-        val SETTING = "settings"
-        val CONTEXTUAL_HINTS = "contextual_hints"
-        val NOTIFICATION = "notification"
+        const val SETTING = "settings"
+        const val CONTEXTUAL_HINTS = "contextual_hints"
+        const val NOTIFICATION = "notification"
         internal val TEXT_SELECTION = "text_selection"
         internal val DEFAULT = "default"
     }
