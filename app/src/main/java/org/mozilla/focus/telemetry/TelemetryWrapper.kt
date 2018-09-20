@@ -11,19 +11,15 @@
 package org.mozilla.focus.telemetry
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.content.res.Resources
-import android.database.Cursor
 import android.os.StrictMode
 import android.preference.PreferenceManager
 import android.webkit.PermissionRequest
-
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.provider.ScreenshotContract
-import org.mozilla.focus.search.SearchEngine
 import org.mozilla.focus.search.SearchEngineManager
+import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.DebugUtils
 import org.mozilla.focus.utils.Settings
@@ -37,20 +33,13 @@ import org.mozilla.telemetry.measurement.SearchesMeasurement
 import org.mozilla.telemetry.measurement.SettingsMeasurement
 import org.mozilla.telemetry.measurement.TelemetryMeasurement
 import org.mozilla.telemetry.net.HttpURLConnectionTelemetryClient
-import org.mozilla.telemetry.net.TelemetryClient
 import org.mozilla.telemetry.ping.TelemetryCorePingBuilder
 import org.mozilla.telemetry.ping.TelemetryEventPingBuilder
-import org.mozilla.telemetry.schedule.TelemetryScheduler
 import org.mozilla.telemetry.schedule.jobscheduler.JobSchedulerTelemetryScheduler
 import org.mozilla.telemetry.serialize.JSONPingSerializer
-import org.mozilla.telemetry.serialize.TelemetryPingSerializer
 import org.mozilla.telemetry.storage.FileTelemetryStorage
-import org.mozilla.telemetry.storage.TelemetryStorage
 
 import java.util.HashMap
-import java.util.HashSet
-
-import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 
 object TelemetryWrapper {
     internal val TELEMETRY_APP_NAME_ZERDA = "Zerda"
