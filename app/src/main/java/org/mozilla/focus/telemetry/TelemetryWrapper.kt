@@ -944,11 +944,7 @@ object TelemetryWrapper {
             }
             try {
                 context.contentResolver.query(ScreenshotContract.Screenshot.CONTENT_URI, null, null, null, null)!!.use { cursor ->
-                    if (cursor != null) {
-                        captureCount = cursor.count
-                    } else {
-                        captureCount = 0
-                    }
+                    captureCount = cursor.count
                 }
             } catch (e: Exception) {
                 captureCount = -1
