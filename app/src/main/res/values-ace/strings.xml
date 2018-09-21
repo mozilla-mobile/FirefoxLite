@@ -8,7 +8,7 @@
   <string name="menu_help">Beunantu</string>
   <string name="menu_rights">Hak Droeneuh</string>
   <string name="menu_give_feedback">Jôk saran</string>
-  <string name="menu_share_with_friends">Bulueng ngön rakan</string>
+  <string name="menu_share_with_friends">Bulueng keu rakan - rakan</string>
   <string name="share_dialog_title">Bulueng röt</string>
   <string name="find_in_page_input">Teumè lam laman</string>
   <string name="find_in_page_result">%1$d/%2$d</string>
@@ -17,7 +17,7 @@
   <string name="accessibility_find_previous_result">Kalön hasé u likôt</string>
   <string name="accessibility_dismiss_find_in_page">Tôp mita lam laman</string>
   <string name="text_selection_search_action">Mita lam Firefox Rocket</string>
-  <string name="about_content_body">%1$s nakeuh saboh browser nyang bagah ngön phui atra jipeugöt lé %2$s. Meukeusud kamoe nakeuh keu meuplara internet nyang sihat ngön teuhah.</string>
+  <string name="about_content_body">%1$s nakeuh saboh browser nyang bagah ngön phui atra jipeugöt lé %2$s. Meukeusud kamoe nakeuh keu meupeularha internet nyang jroh ngön teupeuhah.</string>
   <string name="about_link_learn_more">Meurunoe lom</string>
   <string name="about_link_support">Dukông</string>
   <string name="about_link_your_rights">Hak / Idin Droeneuh</string>
@@ -26,10 +26,10 @@
   <string name="preference_language">Basa</string>
   <string name="preference_language_systemdefault">Sistem teutap</string>
   <string name="preference_dialog_title_search_engine">Meusén mita teutap</string>
-  <string name="preference_data_saving_block_images">Theun gamba</string>
+  <string name="preference_data_saving_block_images">Bék deuh gamba - gamba</string>
   <string name="preference_privacy_storage_clear_browsing_data">Peugléh data seumeulop</string>
-  <string name="preference_privacy_storage_save_downloads_to">Keubah beureukaih ceuneucok u</string>
-  <string name="preference_default_browser">Peugöt browser teutap</string>
+  <string name="preference_privacy_storage_save_downloads_to">Keubah keuneubah u</string>
+  <string name="preference_default_browser">Peuteutap ngön browser nyoe</string>
   <string name="preference_default_browser_is_setting">Gantoe peuatô…</string>
   <string name="preference_turbo_mode">Mode turbo</string>
   <string name="preference_mozilla_telemetry">Kirém data teungui</string>
@@ -64,7 +64,7 @@
   <string name="contextmenu_open_in_new_tab">Peuhah peunawôt bak tab barô</string>
   <string name="contextmenu_open_image_in_new_tab">Peuhah gamba bak tab barô</string>
   <string name="first_run_page1_title">Sabah ka neupiléh %1$s</string>
-  <string name="first_run_page1_text">Saboh browser nyang geupeugöt lé %1$s, saboh teunubôh hana mita laba nyang na meukeusud keu web nyang bibeueh ngön teuhah.</string>
+  <string name="first_run_page1_text">Browser nyang geupeugöt lé %1$s, saboh teunubôh hana mita laba nyang na meukeusud keu web nyang bibeueh ngön teuhah web jih.</string>
   <string name="first_run_page2_title">Seumeulop leubèh bagah nibak nyang ka-ka</string>
   <string name="first_run_page2_text">Ngui mode turbo keu neublokir iklan peulacak mangat droeneuh jeuet neuseumeulop ngon bagah. Meunyo situs na meuri reuloh, jeuet neupumaté tombol mode turbo bak bagian menu.</string>
   <string name="first_run_page3_title">Himat data = Himat pèng</string>
@@ -80,7 +80,7 @@
   <string name="firstrun_skip_button">Liwat</string>
   <string name="firstrun_next_button">Lanjut</string>
   <string name="label_menu_bookmark">Peutanda</string>
-  <string name="label_menu_download">Beureukaih teukeubah</string>
+  <string name="label_menu_download">Keuneubah</string>
   <string name="label_menu_find_in_page">Mita lam laman</string>
   <string name="label_menu_clear_cache">Peugléh cache</string>
   <string name="label_menu_history">Riwayat</string>
@@ -89,7 +89,7 @@
   <string name="label_menu_capture_page">Drop laman</string>
   <string name="label_menu_turbo_mode">Mode turbo</string>
   <string name="label_menu_block_ads">Theun Iklan</string>
-  <string name="label_menu_block_image">Theun gamba</string>
+  <string name="label_menu_block_image">Som gamba</string>
   <string name="label_menu_settings">Peuatô</string>
   <string name="label_menu_exit">Teubiët</string>
   <string name="permission_dialog_setting">peuatô</string>
@@ -109,19 +109,19 @@
   <string name="setting_dialog_form_history">Riwayat formulir</string>
   <string name="setting_dialog_cookies">Kukis</string>
   <string name="setting_dialog_cache">Cache</string>
-  <string name="no_downloads">Hana beureukaih nyang teukeubah</string>
-  <string name="download_started">Teungöh ceumeucok beureukaih...</string>
-  <string name="download_file_not_supported">Protokol ceumeucok beureukaih hana geudukông</string>
+  <string name="no_downloads">Hana keuneubah</string>
+  <string name="download_started">Teungöh cok keubah beureukaih…</string>
+  <string name="download_file_not_supported">Protokol cok keubah beureukaih hana jidukông</string>
   <string name="cannot_find_the_file">Han jiteumèe beureukaih</string>
   <string name="cannot_delete_the_file">Han jeuet jisampôh beureukaih.</string>
-  <string name="download_completed">%1$s ka teucok</string>
-  <string name="download_deleted">%1$s ka teusampôh</string>
-  <string name="download_cancel">Ceuneucok geupubateuë</string>
+  <string name="download_completed">%1$s ka jicok keubah</string>
+  <string name="download_deleted">%1$s ka jisampôh</string>
+  <string name="download_cancel">Cok keubah hana jadéh</string>
   <string name="undo">Pubateuë</string>
   <string name="open">Peuhah</string>
   <string name="pause">geupupiyôh</string>
-  <string name="pending">Geutanggôh</string>
-  <string name="running">teungöh ceumeucok beureukaih</string>
+  <string name="pending">Meutanggôh</string>
+  <string name="running">teungöh cok keubah beureukaih</string>
   <string name="successful">Meuhasé</string>
   <string name="failed">hana meuhasé</string>
   <string name="unknown">Hana Jituri</string>
@@ -148,7 +148,7 @@
   <string name="message_removable_storage_space_not_enough">SD card ka rap punoh. Beureukaih meukeubah bak internal storage.</string>
   <string name="screenshot_grid_empty_text_title">Hana drop layeuë</string>
   <string name="screenshot_grid_empty_text_msg_prefix">Cukèh</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">bak menu keu cok bandum asoë bak saboh laman web.</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">"  bak menu beujeuet ta capture\nmandum asoë bak saboh laman web."</string>
   <string name="screenshot_image_viewer_dialog_title">Infô</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Tanggai: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">Kawan: %1$s</string>
@@ -177,7 +177,7 @@
   <string name="rate_app_notification_action_rate">BÔH 5 BINTANG</string>
   <string name="rate_app_dialog_btn_feedback">H\'an, peuét saran.</string>
   <string name="rate_app_notification_action_feedback">SARAN</string>
-  <string name="share_app_dialog_text_title">Bulueng %1$s ngön rakan!</string>
+  <string name="share_app_dialog_text_title">Bulueng %1$s keu rakan!</string>
   <string name="share_app_dialog_text_content">- Bagah ngön phui\n- Himat data\n- Drop layeue hayeue</string>
   <string name="share_app_dialog_btn_share">Bulueng</string>
   <string name="share_app_promotion_text">Hai, neuci browser atra %3$s nyoe. Bagah ngön phui. %1$s%2$s</string>
@@ -212,6 +212,10 @@
   <string name="private_browsing_open_action">PEUHAH</string>
   <string name="private_browsing_erase_done">Riwayat seumeulop rahsia Droeneuh\nka geusampôh.</string>
   <string name="my_shot_on_boarding_message">Kalön deuneurop layeuë droëneuh di sinoë!</string>
-  <string name="my_shot_on_boarding_category_message">Keu tapeujroh peungalaman produk Droeneuh, kamoe meupeusapat informasi bhaih kawan deuneurop layeue Droeneuh.</string>
+  <string name="my_shot_on_boarding_category_message">Keu tapeujroh peungalaman produk droen, kamoe meupeusapat maklumat bhaih katagori deuneurop layeue droeneuh.</string>
   <string name="exp_survey_wifi">Kamoe meureuncana keumeung peugabông “Mita Wifi Pré” keu meubantu Droeneuh keu neumita seunambat internèt pré nyang göt di silingka.\n \n Na meuheutneuh?</string>
+  <string name="exp_survey_vpn">Kamoe keuneuk peusahô “layanan VPN\" beu leubeh bibeueh ngön na privasi lom watèe neubrowsing.\n \n Kiban?</string>
+  <string name="exp_survey_thanks">Teurimöng gaséh ka neubrithèe bak kamoe %1$s</string>
+  <string name="exp_survey_yes">JEUT</string>
+  <string name="exp_survey_no">H\'AN</string>
 </resources>
