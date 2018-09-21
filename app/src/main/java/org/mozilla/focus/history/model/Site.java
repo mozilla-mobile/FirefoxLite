@@ -8,13 +8,14 @@ package org.mozilla.focus.history.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import org.mozilla.focus.utils.AppConstants;
 
-@Entity(tableName = "browsing_history")
+@Entity(tableName = "browsing_history", indices = {@Index("view_count")})
 public class Site {
 
     public Site(long id, String title, @NonNull String url, long viewCount, long lastViewTimestamp, String favIconUri) {

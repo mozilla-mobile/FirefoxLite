@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "d0568d3406d0ca1efa0e5ef6d0a45ed7",
+    "identityHash": "ed1350002e11ab61b6b9f2aab52e8ce4",
     "entities": [
       {
         "tableName": "browsing_history",
@@ -51,13 +51,22 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_browsing_history_view_count",
+            "unique": false,
+            "columnNames": [
+              "view_count"
+            ],
+            "createSql": "CREATE  INDEX `index_browsing_history_view_count` ON `${TABLE_NAME}` (`view_count`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d0568d3406d0ca1efa0e5ef6d0a45ed7\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ed1350002e11ab61b6b9f2aab52e8ce4\")"
     ]
   }
 }
