@@ -50,7 +50,7 @@
   <string name="content_description_blocking_switch">Tham seuneutöt</string>
   <string name="external_app_prompt_no_app_title">Mita saboh app nyang jeuet peuhah link</string>
   <string name="external_app_prompt_no_app">Hana meusabôh app pih lam peukakah droen nyang jeut peuhah link nyoe. Droen jeut neu peutinggai %1$s keu app %2$s nyang jeut.</string>
-  <string name="error_page_title">Laman web hana hinan</string>
+  <string name="error_page_title">Laman web hana</string>
   <string name="error_page_recover_a">Droeneuh beu yakin ka meuhubông ngön internet</string>
   <string name="error_page_recover_b">Paréksa alamat</string>
   <string name="error_page_button">CI LOM</string>
