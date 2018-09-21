@@ -19,6 +19,12 @@ import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.provider.ScreenshotContract
 import org.mozilla.focus.search.SearchEngineManager
+import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT
+import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS
+import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS
+import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_BACK
+import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE
+import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.DebugUtils
@@ -38,7 +44,6 @@ import org.mozilla.telemetry.ping.TelemetryEventPingBuilder
 import org.mozilla.telemetry.schedule.jobscheduler.JobSchedulerTelemetryScheduler
 import org.mozilla.telemetry.serialize.JSONPingSerializer
 import org.mozilla.telemetry.storage.FileTelemetryStorage
-
 import java.util.HashMap
 
 object TelemetryWrapper {
@@ -97,6 +102,7 @@ object TelemetryWrapper {
         val SETTING = "setting"
         val APP = "app"
         val MENU = "menu"
+        val FIND_IN_PAGE = "find_in_page"
 
         val BROWSER = "browser"
         val BROWSER_CONTEXTMENU = "browser_contextmenu"
@@ -126,6 +132,7 @@ object TelemetryWrapper {
         internal val RELOAD = "reload"
         internal val CAPTURE = "capture"
         internal val BOOKMARK = "bookmark"
+        internal val FIND_IN_PAGE = "find_in_page"
 
         internal val SEARCH_BUTTON = "search_btn"
         internal val SEARCH_BOX = "search_box"
@@ -151,6 +158,7 @@ object TelemetryWrapper {
         const val POSITIVE = "positive"
         const val NEGATIVE = "negative"
         const val SHARE = "share"
+        const val SUGGESTION = "sugestion"
 
         internal val LAUNCHER = "launcher"
         internal val EXTERNAL_APP = "external_app"
@@ -161,6 +169,9 @@ object TelemetryWrapper {
         internal val PAGE = "page"
         internal val WIFI_FINDER = "wifi_finder"
         internal val VPN = "vpn"
+
+        internal val PREVIOUS = "previous"
+        internal val NEXT = "next"
     }
 
     internal object Extra {
@@ -182,6 +193,15 @@ object TelemetryWrapper {
         const val NOTIFICATION = "notification"
         internal val TEXT_SELECTION = "text_selection"
         internal val DEFAULT = "default"
+    }
+
+    enum class FIND_IN_PAGE {
+        OPEN_BY_MENU,
+        CLICK_PREVIOUS,
+        CLICK_NEXT,
+        DISMISS_BY_CLOSE,
+        DISMISS_BY_BACK,
+        DISMISS
     }
 
     @JvmStatic
@@ -944,6 +964,23 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, Value.DISMISS)
                 .extra(Extra.SOURCE, Value.VPN)
                 .queue()
+    }
+
+    @JvmStatic
+    fun findInPage(type: FIND_IN_PAGE) {
+        val builder = when (type) {
+            OPEN_BY_MENU -> EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.FIND_IN_PAGE)
+            CLICK_PREVIOUS -> EventBuilder(Category.ACTION, Method.CLICK, Object.FIND_IN_PAGE, Value.PREVIOUS)
+            CLICK_NEXT -> EventBuilder(Category.ACTION, Method.CLICK, Object.FIND_IN_PAGE, Value.NEXT)
+            DISMISS_BY_BACK -> EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
+                    .extra(Extra.SOURCE, "back_button")
+            DISMISS_BY_CLOSE -> EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
+                    .extra(Extra.SOURCE, "close_button")
+            DISMISS -> EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
+                    .extra(Extra.SOURCE, "other")
+        }
+
+        builder.queue()
     }
 
     internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {
