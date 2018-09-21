@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.webkit.WebView
 import android.widget.TextView
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.TabView
@@ -48,6 +49,7 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
     override fun onBackPressed(): Boolean {
         return if (container.visibility == View.VISIBLE) {
             hide()
+            TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_BACK)
             true
         } else {
             false
@@ -108,10 +110,19 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
             }
             return null
         }
-        closeBtn.setOnClickListener { hide() }
+        closeBtn.setOnClickListener {
+            hide()
+            TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE)
+        }
         queryText.setOnClickListener { queryText.isCursorVisible = true }
-        prevBtn.setOnClickListener { obtainWebView()?.findNext(false) }
-        nextBtn.setOnClickListener { obtainWebView()?.findNext(true) }
+        prevBtn.setOnClickListener {
+            obtainWebView()?.findNext(false)
+            TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS)
+        }
+        nextBtn.setOnClickListener {
+            obtainWebView()?.findNext(true)
+            TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT)
+        }
 
         queryText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

@@ -953,11 +953,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         final Session focusTab = sessionManager.getFocusSession();
         if (focusTab != null) {
             findInPage.show(focusTab);
+            TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU);
         }
     }
 
     private void hideFindInPage() {
         findInPage.hide();
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS);
     }
 
     class TabsContentListener implements TabsViewListener, TabsChromeListener {
