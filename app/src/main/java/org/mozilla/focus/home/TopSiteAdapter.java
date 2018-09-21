@@ -9,6 +9,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
@@ -17,10 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
@@ -81,19 +78,16 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         holder.text.setText(site.getTitle());
         String favIconUri = site.getFavIconUri();
         if (favIconUri != null) {
-            Glide.with(holder.img.getContext())
-                    .asBitmap()
-                    .load(favIconUri)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                            if (DimenUtils.iconTooBlurry(holder.img.getResources(), resource.getWidth())) {
-                                defaultSetImageViewWithBackground(holder.img, site.getUrl(), FavIconUtils.getDominantColor(resource));
-                            } else {
-                                setImageViewWithBackground(holder.img, resource);
-                            }
-                        }
-                    });
+            // Tried AsyncTask and other simple offloading, the performance drops significantly.
+            // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
+            final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskWrites();
+            Bitmap resource = FavIconUtils.getBitmapFromUri(holder.itemView.getContext(), favIconUri);
+            if (DimenUtils.iconTooBlurry(holder.img.getResources(), resource.getWidth())) {
+                defaultSetImageViewWithBackground(holder.img, site.getUrl(), FavIconUtils.getDominantColor(resource));
+            } else {
+                setImageViewWithBackground(holder.img, resource);
+            }
+            StrictMode.setThreadPolicy(threadPolicy);
         } else {
             defaultSetImageViewWithBackground(holder.img, site.getUrl(), Color.WHITE);
         }
