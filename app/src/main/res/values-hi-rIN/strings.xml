@@ -64,13 +64,13 @@
   <string name="contextmenu_open_in_new_tab">नये टैब में लिंक खोलें</string>
   <string name="contextmenu_open_image_in_new_tab">नये टैब में चित्र खोलें</string>
   <string name="first_run_page1_title">%1$s चुनने के लिए धन्यवाद</string>
-  <string name="first_run_page1_text">गैर-लाभकारी %1$s द्वारा निर्मित एक ब्राउज़र, एक मुफ्त तथा खुले वेब के लिए समर्पित ।</string>
+  <string name="first_run_page1_text">गैर-लाभकारी %1$s द्वारा निर्मित एक ब्राउज़र, एक मुफ्त तथा खुले वेब के लिए समर्पित।</string>
   <string name="first_run_page2_title">पहले से तेज ब्राउज़ करें</string>
   <string name="first_run_page2_text">ट्रैकिंग विज्ञापनों को ब्लॉक करने के लिए टर्बो प्रणाली का उपयोग करें ताकि आप तेज गति से ब्राउज़ कर सकें। यदि साइटें टूटी लगती हैं, तो विकल्प सूची में टर्बो मोड बटन को दबाएँ।</string>
-  <string name="first_run_page3_title">डेटा बचाएँ = पैसा बचाएँ</string>
-  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों को ब्लॉक करना न केवल ब्राउज़िंग को गति देता है, यह डेटा बचाता है। जब आप चित्र को ब्लॉक करते हैं तो और भी सहेजें।</string>
-  <string name="first_run_page4_title">सबकुछ स्क्रीनशॉट लें</string>
-  <string name="first_run_page4_text">पूरे वेब पृष्ठों का स्क्रीनशॉट लें। एक स्क्रीनशॉट को ऑफ़लाइन देखें (बिना डेटा का उपयोग किए) या वेब पृष्ठ पर फिर से जाने के लिए इसे टैप करें।</string>
+  <string name="first_run_page3_title">डेटा बचाएँ = पैसे बचाएँ</string>
+  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों को ब्लॉक करना न केवल ब्राउज़िंग गति को बढ़ाता है, यह डेटा भी बचाता है। चित्रों को ब्लॉक कर और भी डेटा बचाएँ।</string>
+  <string name="first_run_page4_title">सभी चीजों के स्क्रीनशॉट लें</string>
+  <string name="first_run_page4_text">पूर्ण वेब पृष्ठों का स्क्रीनशॉट लें। किसी स्क्रीनशॉट को ऑफ़लाइन देखें (बिना डेटा इस्तेमाल किये) या वेब पृष्ठ पर पुनः जाने के लिए इसे टैप करें।</string>
   <string name="first_run_upgrade_page_title">हमने आपकी राय सुनी!</string>
   <string name="first_run_upgrade_page_text1">1. एक ही समय में %s खोलकर बहु कार्यण!</string>
   <string name="first_run_upgrade_page_text1_highlight">विभिन्न टैब</string>
@@ -163,7 +163,7 @@
   <string name="message_enable_block_image">अब चित्र ब्लॉक हो रहे हैं</string>
   <string name="message_disable_block_image">अब चित्र दिख रहे हैं</string>
   <string name="message_clear_cache_fail">कैशे मिटाने में अक्षम</string>
-  <string name="message_storage_unavailable_cancel_download">संग्रहण पहुंच से बाहर। डाउनलोड रद्द किया गया।</string>
+  <string name="message_storage_unavailable_cancel_download">संग्रहण पहुँच से बाहर। डाउनलोड रद्द किया गया।</string>
   <string name="message_cleared_cached">%1$s कैशे मिटा दिया गया</string>
   <string name="message_cleared_browsing_data">ब्राउज़िंग डेटा मिटा दिया गया</string>
   <string name="message_deleted_screenshot">स्क्रीनशॉट मिटा दिया गया</string>
@@ -183,7 +183,7 @@
   <string name="share_app_promotion_text">सुनो, %3$s द्वारा निर्मित तीव्र तथा एवं हलके ब्राउज़र का जायजा लें। %1$s %2$s</string>
   <string name="your_rights_content1">%1$s %2$s तथा अन्य योगदानकर्ताओं द्वारा निर्मित मुफ्त एवं ओपन सोर्स सॉफ्टवेयर है।</string>
   <string name="your_rights_content2"><![CDATA["%1$s "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" तथा अन्य ओपन सोर्स लाइसेंस की शर्तों के तहत आपके लिए उपलब्ध कराया जाता है।"]]></string>
-  <string name="your_rights_content3"><![CDATA["Mozilla फ़ाउंडेशन या किसी भी पार्टी के ट्रेडमार्क साथ ही %3$s, %4$s या %1$s के नाम अथवा लोगो, के लिए कोई अधिकार या लाइसेंस आपको नहीं दिया जाता है। अधिक जानकारी "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2351;&#2361;&#2366;&#2305;</a>से पा सकते हैं।]]></string>
+  <string name="your_rights_content3"><![CDATA["Mozilla फ़ाउंडेशन या किसी भी पार्टी के ट्रेडमार्क साथ ही %3$s, %4$s या %1$s के नाम अथवा लोगो, के लिए कोई अधिकार या लाइसेंस आपको नहीं दिया जाता है। अधिक जानकारी "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2351;&#2361;&#2366;&#2305;</a>" से पा सकते हैं।"]]></string>
   <string name="your_rights_content4"><![CDATA["%1$s के लिए अतिरिक्त स्रोत कोड विभिन्न अन्य मुफ़्त और ओपन सोर्स "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2354;&#2366;&#2351;&#2360;&#2375;&#2306;&#2360;</a>" के तहत उपलब्ध है। "]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s Disconnect, Inc. द्वारा प्रदान की गई ब्लॉकलिस्ट का भी उपयोग करता है जो "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2332;&#2368;&#2319;&#2344;&#2351;&#2370; &#2360;&#2366;&#2350;&#2366;&#2344;&#2381;&#2351; &#2354;&#2379;&#2325; &#2354;&#2366;&#2351;&#2360;&#2375;&#2306;&#2360; v3</a>" के तहत अलग और स्वतंत्र काम करता है, और "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#2351;&#2361;&#2366;&#2305;</a>" उपलब्ध है।"]]></string>
   <string name="survey_notification_title">%1$s हमे आपकी जरुरत है!</string>
@@ -195,7 +195,7 @@
   <string name="setting_default_browser_notification_clickable_text">तयशुदा ब्राउज़र सेट करने के लिए दबाएँ</string>
   <string name="tab_tray_close_tabs_btn_text">सभी बंद करें</string>
   <string name="tab_tray_close_tabs_dialog_msg">सभी टैब बंद करें?</string>
-  <string name="themetoy_onboarding_title">अपने जीवन रंगें!</string>
+  <string name="themetoy_onboarding_title">अपने जीवन में रंग भरें!</string>
   <string name="themetoy_onboarding_description">थीम बदलने के लिए होम बैकग्राउंड पर डबल क्लिक करें।</string>
   <string name="bookmark_saved">बुकमार्क सहेजा गया</string>
   <string name="bookmark_removed">बुकमार्क हटाया गया</string>
@@ -212,7 +212,7 @@
   <string name="private_browsing_open_action">खोलें</string>
   <string name="private_browsing_erase_done">आपका निजी ब्राउज़िंग\nइतिहास मिटा दिया गया है।</string>
   <string name="my_shot_on_boarding_message">अपने स्क्रीनशॉटों को यहाँ देखें!</string>
-  <string name="my_shot_on_boarding_category_message">आपके उत्पाद अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट श्रेणियों के बारे में जानकारियाँ जमा करते हैं।</string>
+  <string name="my_shot_on_boarding_category_message">आपके प्रोडक्ट अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट श्रेणियों के बारे में जानकारियाँ जमा करते हैं।</string>
   <string name="exp_survey_wifi">हम “मुफ्त वाईफाई-खोजक” जोड़ने पर विचार कर रहे हैं ताकि आपको आसपास अच्छी मुफ्त इंटरनेट कनेक्शन खोजने में मदद कर सकें।\n \n इच्छुक हैं?</string>
   <string name="exp_survey_vpn">हम “VPN सेवा” जोड़ने पर विचार कर रहे हैं ताकि आपको ब्राउज़िंग करते समय अधिक आजादी एवं अधिक गोपनीयता मिल सके।\n \n इच्छुक हैं?</string>
   <string name="exp_survey_thanks">हमें प्रतिक्रिया भेजने के लिए धन्यवाद %1$s</string>
