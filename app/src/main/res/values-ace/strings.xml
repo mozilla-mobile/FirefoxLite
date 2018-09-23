@@ -175,7 +175,7 @@
   <string name="rate_app_dialog_text_content">Sabah ka neupiléh produk kamoe. Saran Droeneuh peunténg keu kamoe.</string>
   <string name="rate_app_dialog_btn_go_rate">Nyo, bri 5 bintang!</string>
   <string name="rate_app_notification_action_rate">BÔH 5 BINTANG</string>
-  <string name="rate_app_dialog_btn_feedback">H\'an, peuét saran.</string>
+  <string name="rate_app_dialog_btn_feedback">H\'an, jôk saran.</string>
   <string name="rate_app_notification_action_feedback">SARAN</string>
   <string name="share_app_dialog_text_title">Bulueng %1$s keu rakan!</string>
   <string name="share_app_dialog_text_content">- Bagah ngön phui\n- Himat data\n- Drop layeue hayeue</string>
