@@ -10,7 +10,7 @@
   <string name="menu_give_feedback">Jôk saran</string>
   <string name="menu_share_with_friends">Bulueng keu rakan - rakan</string>
   <string name="share_dialog_title">Bulueng röt</string>
-  <string name="find_in_page_input">Teumè lam laman</string>
+  <string name="find_in_page_input">Mita lam laman</string>
   <string name="find_in_page_result">%1$d/%2$d</string>
   <string name="accessibility_find_in_page_result">%1$d nibak %2$d</string>
   <string name="accessibility_find_next_result">Kalön hasé u keue</string>
@@ -51,7 +51,7 @@
   <string name="external_app_prompt_no_app_title">Mita saboh app nyang jeuet peuhah link</string>
   <string name="external_app_prompt_no_app">Hana meusabôh app pih lam peukakah droen nyang jeut peuhah link nyoe. Droen jeut neu peutinggai %1$s keu app %2$s nyang jeut.</string>
   <string name="error_page_title">Laman web hana</string>
-  <string name="error_page_recover_a">Droeneuh beu yakin ka meuhubông ngön internet</string>
+  <string name="error_page_recover_a">Droeneuh beu yakin ka teusambat ngön internet</string>
   <string name="error_page_recover_b">Paréksa alamat</string>
   <string name="error_page_button">CI LOM</string>
   <string name="error_page_title_unsupported_scheme">Alamat hana paih lom</string>
@@ -70,8 +70,8 @@
   <string name="first_run_page3_title">Himat data = Himat pèng</string>
   <string name="first_run_page3_text">Teumeutheun iklan peulacak kön jipubagah seumeulop mantöng, meutapi jipeuhimat data cit. Neuhimat leubèh le lom meunyo neutheun gamba.</string>
   <string name="first_run_page4_title">Drop barangkapeuë bak layeuë</string>
-  <string name="first_run_page4_text">Côk skrinsyut nibak mandum laman web. Kalen skrinsyut oflén (hana meungui paket data) atawa neu thép lom bah jeut tagisa keulayi bak laman web nyan.</string>
-  <string name="first_run_upgrade_page_title">Kamoe deungö masukan droen!</string>
+  <string name="first_run_page4_text">Cök skrinsyut nibak mandum laman wèb. Kalön skrinsyut oflèn (hana meungui paket data) atawa neuthèp lom bah jeuet tagisa keulayi bak laman web nyan.</string>
+  <string name="first_run_upgrade_page_title">Kamoe meudeungö saran droeneuh!</string>
   <string name="first_run_upgrade_page_text1">1. Multibuet waté ipeuhah %s meusigö!</string>
   <string name="first_run_upgrade_page_text1_highlight">Multitab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs nyang droen galak beubagah ngön %s</string>
@@ -85,7 +85,7 @@
   <string name="label_menu_clear_cache">Peugléh cache</string>
   <string name="label_menu_history">Riwayat</string>
   <string name="label_menu_share">Bulueng</string>
-  <string name="label_menu_my_shots">Deuneurop lôn</string>
+  <string name="label_menu_my_shots">Hasé drop layeue</string>
   <string name="label_menu_capture_page">Drop laman</string>
   <string name="label_menu_turbo_mode">Mode turbo</string>
   <string name="label_menu_block_ads">Theun Iklan</string>
@@ -126,7 +126,7 @@
   <string name="failed">hana meuhasé</string>
   <string name="unknown">Hana Jituri</string>
   <string name="setting_dialog_sd_card">Keureutu SD</string>
-  <string name="setting_dialog_internal_storage">Bak keubah dalam</string>
+  <string name="setting_dialog_internal_storage">Teumpat keubah internal</string>
   <string name="browsing_history_clear_btn">PEUGLÉH RIWAYAT PEUHAH WÈB</string>
   <string name="browsing_history_empty_view_msg">Hana riwayat seumeulop</string>
   <string name="browsing_history_date_today">Uroë Nyoë</string>
@@ -146,11 +146,11 @@
   <string name="message_fallback_save_to_primary_external">Hana SD card meuteumeuëng. Beureukaih meukeubah bak internal storage.</string>
   <string name="message_start_to_save_to_removable_storage">Beureukaih meukeubah bak SD card</string>
   <string name="message_removable_storage_space_not_enough">SD card ka rap punoh. Beureukaih meukeubah bak internal storage.</string>
-  <string name="screenshot_grid_empty_text_title">Hana drop layeuë</string>
+  <string name="screenshot_grid_empty_text_title">Hana deuneurop layeue</string>
   <string name="screenshot_grid_empty_text_msg_prefix">Cukèh</string>
   <string name="screenshot_grid_empty_text_msg_postfix">"  bak menu beujeuet ta capture\nmandum asoë bak saboh laman web."</string>
   <string name="screenshot_image_viewer_dialog_title">Infô</string>
-  <string name="screenshot_image_viewer_dialog_info_time1">Tanggai: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_time1">Uroe buleuen: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">Kawan: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">Rèsolusi: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">Seunipat: %1$s</string>
@@ -163,7 +163,7 @@
   <string name="message_enable_block_image">Jinoe teumeuheun gamba</string>
   <string name="message_disable_block_image">Jinoe pumeudeuih gamba</string>
   <string name="message_clear_cache_fail">Han jeuet sampôh cache</string>
-  <string name="message_storage_unavailable_cancel_download">Bak keubah han jeuet jiteumèe. Beureukaih ceuneucok geupubateue.</string>
+  <string name="message_storage_unavailable_cancel_download">Teumpat keubah hana jiteumèe. Beureukaih ceuneucok geupubateue.</string>
   <string name="message_cleared_cached">%1$s cache ka teusampôh</string>
   <string name="message_cleared_browsing_data">Data seumeulop geusampôh</string>
   <string name="message_deleted_screenshot">Drop layeuë ka teusampôh</string>
