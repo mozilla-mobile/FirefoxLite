@@ -96,7 +96,6 @@
             android:enabled="true"
             android:exported="false"
             android:launchMode="singleTask"
-            android:excludeFromRecents="true"
             android:process=":private_mode"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize"
