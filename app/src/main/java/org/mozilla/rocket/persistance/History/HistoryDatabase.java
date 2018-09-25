@@ -25,7 +25,7 @@ import java.util.Map;
 // Current plan is to build something like the Place system in Firefox 3
 // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/Places/Database
 
-@Database(entities = {Site.class}, version = 2)
+@Database(entities = {Site.class}, version = 3)
 public abstract class HistoryDatabase extends RoomDatabase {
 
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS ";
@@ -44,7 +44,7 @@ public abstract class HistoryDatabase extends RoomDatabase {
                 if (instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
                             HistoryDatabase.class, "history.db")
-                            .addMigrations(MIGRATION_1_2)
+                            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                             .build();
                 }
             }
@@ -107,6 +107,17 @@ public abstract class HistoryDatabase extends RoomDatabase {
             } finally {
                 database.endTransaction();
             }
+        }
+    };
+
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+
+        private static final String CREATE_INDEX = "CREATE INDEX IF NOT EXISTS index_browsing_history_view_count ON " +
+                HistoryContract.TABLE_NAME + "(" + HistoryContract.BrowsingHistory.VIEW_COUNT + ")";
+
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL(CREATE_INDEX);
         }
     };
 }
