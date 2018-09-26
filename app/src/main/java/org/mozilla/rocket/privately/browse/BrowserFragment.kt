@@ -33,8 +33,6 @@ import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabsSessionProvider
-import org.mozilla.rocket.tabs.utils.DefaultTabsChromeListener
-import org.mozilla.rocket.tabs.utils.DefaultTabsViewListener
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
@@ -49,8 +47,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private var listener: FragmentListener? = null
 
     private lateinit var sessionManager: SessionManager
-    private lateinit var chromeListener: BrowserTabsChromeListener
-    private lateinit var viewListener: BrowserTabsViewListener
+    private lateinit var observer: SessionManagerObserver
 
     private lateinit var browserContainer: ViewGroup
     private lateinit var videoContainer: ViewGroup
@@ -84,8 +81,7 @@ class BrowserFragment : LocaleAwareFragment(),
         } else {
             if (fragmentActivity is TabsSessionProvider.SessionHost) {
                 sessionManager = fragmentActivity.sessionManager
-                chromeListener = BrowserTabsChromeListener(this)
-                viewListener = BrowserTabsViewListener(this)
+                observer = SessionManagerObserver(this)
             }
 
             registerData(fragmentActivity)
@@ -127,14 +123,12 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun onResume() {
         super.onResume()
         sessionManager.resume()
-        sessionManager.addTabsChromeListener(chromeListener)
-        sessionManager.addTabsViewListener(viewListener)
+        sessionManager.register(observer)
     }
 
     override fun onPause() {
         super.onPause()
-        sessionManager.removeTabsViewListener(viewListener)
-        sessionManager.removeTabsChromeListener(chromeListener)
+        sessionManager.unregister(observer)
         sessionManager.pause()
     }
 
@@ -245,12 +239,12 @@ class BrowserFragment : LocaleAwareFragment(),
         listener.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
     }
 
-    class BrowserTabsChromeListener(val fragment: BrowserFragment) : DefaultTabsChromeListener() {
+    class SessionManagerObserver(val fragment: BrowserFragment) : SessionManager.Observer {
 
         var callback: FullscreenCallback? = null
 
-        override fun onTabAdded(session: Session, arguments: Bundle?) {
-            super.onTabAdded(session, arguments)
+        override fun onSessionAdded(session: Session, arguments: Bundle?) {
+            super.onSessionAdded(session, arguments)
             fragment.tabViewSlot.addView(session.tabView!!.view)
         }
 
@@ -309,24 +303,22 @@ class BrowserFragment : LocaleAwareFragment(),
             // If android change behavior after, can remove this.
             session.tabView?.let { if (it is WebView) it.clearFocus() }
         }
-    }
 
-    class BrowserTabsViewListener(val fragment: BrowserFragment) : DefaultTabsViewListener() {
         override fun onURLChanged(session: Session, url: String?) {
             if (!UrlUtils.isInternalErrorURL(url)) {
                 fragment.displayUrlView.text = url
             }
         }
 
-        override fun onTabStarted(session: Session) {
-            super.onTabStarted(session)
+        override fun onSessionStarted(session: Session) {
+            super.onSessionStarted(session)
             fragment.siteIdentity.setImageLevel(SITE_GLOBE)
             fragment.isLoading = true
             fragment.btnLoad.setImageResource(R.drawable.ic_close)
         }
 
-        override fun onTabFinished(session: Session, isSecure: Boolean) {
-            super.onTabFinished(session, isSecure)
+        override fun onSessionFinished(session: Session, isSecure: Boolean) {
+            super.onSessionFinished(session, isSecure)
             val focus = fragment.sessionManager.focusSession ?: return
             val tabView = focus.tabView ?: return
             fragment.btnNext.isEnabled = tabView.canGoForward()

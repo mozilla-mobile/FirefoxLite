@@ -88,6 +88,7 @@ import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
+import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.util.List;

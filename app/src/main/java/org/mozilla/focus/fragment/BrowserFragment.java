@@ -12,6 +12,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -76,9 +77,7 @@ import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.SiteIdentity;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.tabs.TabsChromeListener;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
-import org.mozilla.rocket.tabs.TabsViewListener;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
 import org.mozilla.rocket.theme.ThemeManager;
@@ -94,6 +93,7 @@ import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
  */
 public class BrowserFragment extends LocaleAwareFragment implements View.OnClickListener,
         ScreenNavigator.BrowserScreen,
+        LifecycleOwner,
         BackKeyHandleable {
 
     /**
@@ -164,7 +164,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private boolean hasPendingScreenCaptureTask = false;
 
-    final TabsContentListener tabsContentListener = new TabsContentListener();
+    final SessionManager.Observer managerObserver = new SessionManagerObserver();
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -403,8 +403,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
 
-        sessionManager.addTabsViewListener(this.tabsContentListener);
-        sessionManager.addTabsChromeListener(this.tabsContentListener);
+        sessionManager.register(this.managerObserver, this);
         sessionManager.setDownloadCallback(downloadCallback);
         sessionManager.setFindListener(findInPage);
 
@@ -535,8 +534,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     @Override
     public void onDestroyView() {
-        sessionManager.removeTabsViewListener(this.tabsContentListener);
-        sessionManager.removeTabsChromeListener(this.tabsContentListener);
+        sessionManager.unregister(this.managerObserver);
         super.onDestroyView();
     }
 
@@ -969,7 +967,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS);
     }
 
-    class TabsContentListener implements TabsViewListener, TabsChromeListener {
+    class SessionManagerObserver implements SessionManager.Observer {
         private HistoryInserter historyInserter = new HistoryInserter();
 
         // Some url may report progress from 0 again for the same url. filter them out to avoid
@@ -979,9 +977,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private ValueAnimator tabTransitionAnimator;
 
         @Override
-        public void onFocusChanged(@Nullable final Session tab, @Factor int factor) {
+        public void onFocusChanged(@Nullable final Session tab, SessionManager.Factor factor) {
             if (tab == null) {
-                if (factor == FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
+                if (factor == SessionManager.Factor.FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
                     ScreenNavigator.get(getContext()).popToHomeScreen(true);
                 } else {
                     getActivity().finish();
@@ -994,7 +992,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onTabAdded(@NonNull final Session tab, @Nullable final Bundle arguments) {
+        public void onSessionAdded(@NonNull final Session tab, @Nullable final Bundle arguments) {
             if (arguments == null) {
                 return;
             }
@@ -1011,7 +1009,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onTabStarted(@NonNull Session tab) {
+        public void onSessionStarted(@NonNull Session tab) {
             historyInserter.onTabStarted(tab);
 
             if (!isForegroundTab(tab)) {
@@ -1036,7 +1034,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onTabFinished(@NonNull Session tab, boolean isSecure) {
+        public void onSessionFinished(@NonNull Session tab, boolean isSecure) {
             if (isForegroundTab(tab)) {
                 // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
                 // URL is always correct _except_ for error pages
@@ -1054,7 +1052,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onTabCountChanged(int count) {
+        public void onSessionCountChanged(int count) {
             if (isTabRestoredComplete()) {
                 tabCounter.setCountWithAnimation(count);
             }
@@ -1189,7 +1187,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public boolean onShowFileChooser(@NonNull Session tab,
-                                         TabView tabView,
                                          ValueCallback<Uri[]> filePathCallback,
                                          WebChromeClient.FileChooserParams fileChooserParams) {
             if (!isForegroundTab(tab)) {

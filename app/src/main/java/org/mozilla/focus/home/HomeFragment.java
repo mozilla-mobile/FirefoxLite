@@ -124,7 +124,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
     private SessionManager sessionManager;
-    private final TabsChromeListener tabsChromeListener = new TabsChromeListener();
+    private final SessionManagerObserver observer = new SessionManagerObserver();
     private RecyclerView banner;
     private LinearLayoutManager bannerLayoutManager;
     private BroadcastReceiver receiver;
@@ -330,7 +330,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.btnMenu.setOnClickListener(menuItemClickListener);
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
-        sessionManager.addTabsChromeListener(this.tabsChromeListener);
+        sessionManager.register(this.observer);
         this.tabCounter = view.findViewById(R.id.btn_tab_tray);
         this.tabCounter.setOnClickListener(menuItemClickListener);
         updateTabCounter();
@@ -447,7 +447,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void onDestroyView() {
-        sessionManager.removeTabsChromeListener(this.tabsChromeListener);
+        sessionManager.unregister(this.observer);
         doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
         bannerConfigViewModel.getConfig().removeObserver(bannerObserver);
         super.onDestroyView();
@@ -790,7 +790,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     };
 
-    private class TabsChromeListener implements org.mozilla.rocket.tabs.TabsChromeListener {
+    private class SessionManagerObserver implements SessionManager.Observer {
 
         @Override
         public void onProgressChanged(@NonNull Session tab, int progress) {
@@ -808,17 +808,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         @Override
-        public void onFocusChanged(@Nullable Session tab, int factor) {
+        public void onFocusChanged(@Nullable Session tab, SessionManager.Factor factor) {
             // do nothing
         }
 
         @Override
-        public void onTabAdded(@NonNull Session tab, @Nullable Bundle arguments) {
+        public void onSessionAdded(@NonNull Session tab, @Nullable Bundle arguments) {
             // do nothing
         }
 
         @Override
-        public void onTabCountChanged(int count) {
+        public void onSessionCountChanged(int count) {
             updateTabCounter();
         }
 
@@ -838,13 +838,41 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         @Override
-        public boolean onShowFileChooser(@NonNull Session tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(@NonNull Session tab,
+                                         ValueCallback<Uri[]> filePathCallback,
+                                         WebChromeClient.FileChooserParams fileChooserParams) {
             // do nothing
             return false;
         }
 
         @Override
         public void onGeolocationPermissionsShowPrompt(@NonNull Session tab, String origin, GeolocationPermissions.Callback callback) {
+            // do nothing
+        }
+
+        @Override
+        public void onSessionStarted(@NonNull Session session) {
+            // do nothing
+
+        }
+
+        @Override
+        public void onSessionFinished(@NonNull Session session, boolean isSecure) {
+            // do nothing
+        }
+
+        @Override
+        public void onURLChanged(@NonNull Session session, @org.jetbrains.annotations.Nullable String url) {
+            // do nothing
+        }
+
+        @Override
+        public boolean handleExternalUrl(@org.jetbrains.annotations.Nullable String url) {
+            return false;
+        }
+
+        @Override
+        public void updateFailingUrl(@NonNull Session session, @org.jetbrains.annotations.Nullable String url, boolean updateFromError) {
             // do nothing
         }
     }
