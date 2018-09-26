@@ -16,6 +16,15 @@ import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
+import mozilla.components.support.base.observer.Consumable
+import mozilla.components.support.base.observer.Observable
+import mozilla.components.support.base.observer.ObserverRegistry
+import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_BACK_EXTERNAL
+import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_NO_FOCUS
+import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_ADDED
+import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_REMOVED
+import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_SWITCHED
+import org.mozilla.rocket.tabs.SessionManager.Observer
 import org.mozilla.rocket.tabs.TabView.FindListener
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.DownloadCallback
@@ -26,10 +35,16 @@ import java.util.LinkedList
 internal val MSG_FOCUS_TAB = 0x1001
 internal val MSG_ADDED_TAB = 0x1002
 
+typealias FileChooserArgs = Triple<Session, ValueCallback<Array<Uri>>, WebChromeClient.FileChooserParams>
+
 /**
  * Class to help on sessions management, such as adding or removing sessions.
  */
-class SessionManager(private val tabViewProvider: TabViewProvider) {
+class SessionManager @JvmOverloads constructor(
+        private val tabViewProvider: TabViewProvider,
+        delegate: Observable<Observer> = ObserverRegistry()
+) : Observable<Observer> by delegate {
+
 
     private val sessions = LinkedList<Session>()
 
@@ -37,8 +52,6 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
 
     private var focusRef = WeakReference<Session>(null)
 
-    private val tabsViewListeners = ArrayList<TabsViewListener>()
-    private val tabsChromeListeners = ArrayList<TabsChromeListener>()
     private var downloadCallback: DownloadCallback? = null
     private var findListener: FindListener? = null
 
@@ -59,7 +72,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
         get() = focusRef.get()
 
     init {
-        this.notifier = Notifier(tabViewProvider, this.tabsChromeListeners)
+        this.notifier = Notifier(tabViewProvider, this)
     }
 
     /**
@@ -97,9 +110,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             focusRef = WeakReference<Session>(getTab(focusTabId))
         }
 
-        for (l in tabsChromeListeners) {
-            l.onTabCountChanged(this.sessions.size)
-        }
+        notifyObservers { onSessionCountChanged(sessions.size) }
     }
 
     /**
@@ -170,21 +181,19 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             }
         }
 
-        for (l in tabsChromeListeners) {
-            l.onTabCountChanged(sessions.size)
-        }
+        notifyObservers { onSessionCountChanged(sessions.size) }
     }
 
     private fun updateFocusOnClosing(removedSession: Session) {
         if (TextUtils.isEmpty(removedSession.parentId)) {
             focusRef.clear()
-            notifier.notifyTabFocused(null, TabsChromeListener.FACTOR_NO_FOCUS)
+            notifier.notifyTabFocused(null, FACTOR_NO_FOCUS)
         } else if (TextUtils.equals(removedSession.parentId, Session.ID_EXTERNAL)) {
             focusRef.clear()
-            notifier.notifyTabFocused(null, TabsChromeListener.FACTOR_BACK_EXTERNAL)
+            notifier.notifyTabFocused(null, FACTOR_BACK_EXTERNAL)
         } else {
             focusRef = WeakReference<Session>(getTab(removedSession.parentId!!))
-            notifier.notifyTabFocused(focusRef.get(), TabsChromeListener.FACTOR_TAB_REMOVED)
+            notifier.notifyTabFocused(focusRef.get(), FACTOR_TAB_REMOVED)
         }
     }
 
@@ -199,7 +208,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
             focusRef = WeakReference(nextTab)
         }
 
-        notifier.notifyTabFocused(nextTab, TabsChromeListener.FACTOR_TAB_SWITCHED)
+        notifier.notifyTabFocused(nextTab, FACTOR_TAB_SWITCHED)
     }
 
     /**
@@ -209,46 +218,6 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
      */
     fun hasTabs(): Boolean {
         return sessions.size > 0
-    }
-
-    /**
-     * To add @see{TabsViewListener} to this session.
-     *
-     * @param listener
-     */
-    fun addTabsViewListener(listener: TabsViewListener) {
-        if (!this.tabsViewListeners.contains(listener)) {
-            this.tabsViewListeners.add(listener)
-        }
-    }
-
-    /**
-     * To add @see{TabsChromeListener} to this session.
-     *
-     * @param listener
-     */
-    fun addTabsChromeListener(listener: TabsChromeListener) {
-        if (!this.tabsChromeListeners.contains(listener)) {
-            this.tabsChromeListeners.add(listener)
-        }
-    }
-
-    /**
-     * To remove @see{TabsViewListener} from this session.
-     *
-     * @param listener
-     */
-    fun removeTabsViewListener(listener: TabsViewListener) {
-        this.tabsViewListeners.remove(listener)
-    }
-
-    /**
-     * To remove @see{TabsChromeListener} from this session.
-     *
-     * @param listener
-     */
-    fun removeTabsChromeListener(listener: TabsChromeListener) {
-        this.tabsChromeListeners.remove(listener)
     }
 
     /**
@@ -336,12 +305,10 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
         tab.initializeView(this.tabViewProvider)
 
         if (toFocus || fromExternal) {
-            notifier.notifyTabFocused(tab, TabsChromeListener.FACTOR_TAB_ADDED)
+            notifier.notifyTabFocused(tab, FACTOR_TAB_ADDED)
         }
 
-        for (l in tabsChromeListeners) {
-            l.onTabCountChanged(sessions.size)
-        }
+        notifyObservers { onSessionCountChanged(sessions.size) }
         return tab.id
     }
 
@@ -403,43 +370,29 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
 
             // FIXME: workaround for 'dialog new window'
             if (source.url != null) {
-                for (l in tabsViewListeners) {
-                    l.onTabStarted(source)
-                }
+                notifyObservers { onSessionStarted(source) }
             }
         }
 
         override fun onSessionFinished(isSecure: Boolean) {
             setTitle()
-
-            for (l in tabsViewListeners) {
-                l.onTabFinished(source, isSecure)
-            }
+            notifyObservers { onSessionFinished(source, isSecure) }
         }
 
         override fun onURLChanged(url: String?) {
             source.url = url
             setTitle()
-
-            for (l in tabsViewListeners) {
-                l.onURLChanged(source, url)
-            }
+            notifyObservers { onURLChanged(source, url) }
         }
 
         override fun handleExternalUrl(url: String?): Boolean {
             // only return false if none of listeners handled external url.
-            for (l in tabsViewListeners) {
-                if (l.handleExternalUrl(url)) {
-                    return true
-                }
-            }
-            return false
+            val consumers = wrapConsumers<String?> { handleExternalUrl(it) }
+            return Consumable.from(url).consumeBy(consumers)
         }
 
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
-            for (l in tabsViewListeners) {
-                l.updateFailingUrl(source, url, updateFromError)
-            }
+            notifyObservers { updateFailingUrl(source, url, updateFromError) }
         }
 
         override fun onCreateWindow(
@@ -478,59 +431,44 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
         }
 
         override fun onProgressChanged(progress: Int) {
-            for (l in tabsChromeListeners) {
-                l.onProgressChanged(source, progress)
-            }
+            notifyObservers { onProgressChanged(source, progress) }
         }
 
         override fun onShowFileChooser(tabView: TabView,
                                        filePathCallback: ValueCallback<Array<Uri>>,
                                        fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
-            for (l in tabsChromeListeners) {
-                if (l.onShowFileChooser(source, tabView, filePathCallback, fileChooserParams)) {
-                    return true
-                }
+            val consumers = wrapConsumers<FileChooserArgs> {
+                onShowFileChooser(it.first, it.second, it.third)
             }
-            return false
+            val arg = Triple(source, filePathCallback, fileChooserParams)
+            return Consumable.from(arg).consumeBy(consumers)
         }
 
         override fun onReceivedTitle(view: TabView, title: String?) {
-            for (l in tabsChromeListeners) {
-                l.onReceivedTitle(source, title)
-            }
+            notifyObservers { onReceivedTitle(source, title) }
         }
 
         override fun onReceivedIcon(view: TabView, icon: Bitmap?) {
             source.favicon = icon
-            for (l in tabsChromeListeners) {
-                l.onReceivedIcon(source, icon)
-            }
+            notifyObservers { onReceivedIcon(source, icon) }
         }
 
         override fun onLongPress(hitTarget: TabView.HitTarget) {
-            for (l in tabsChromeListeners) {
-                l.onLongPress(source, hitTarget)
-            }
+            notifyObservers { onLongPress(source, hitTarget) }
         }
 
         override fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) {
-            for (l in tabsChromeListeners) {
-                l.onEnterFullScreen(source, callback, view)
-            }
+            notifyObservers { onEnterFullScreen(source, callback, view) }
         }
 
         override fun onExitFullScreen() {
-            for (l in tabsChromeListeners) {
-                l.onExitFullScreen(source)
-            }
+            notifyObservers { onExitFullScreen(source) }
         }
 
         override fun onGeolocationPermissionsShowPrompt(
                 origin: String,
                 callback: GeolocationPermissions.Callback?) {
-            for (l in tabsChromeListeners) {
-                l.onGeolocationPermissionsShowPrompt(source, origin, callback)
-            }
+            notifyObservers { onGeolocationPermissionsShowPrompt(source, origin, callback) }
         }
     }
 
@@ -539,12 +477,14 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
      */
     private class Notifier internal constructor(
             private val tabViewProvider: TabViewProvider,
-            private val chromeListeners: List<TabsChromeListener>
+            private val observable: Observable<Observer>
     ) : Handler(Looper.getMainLooper()) {
+
+        val ENUM_KEY = "_key_enum"
 
         override fun handleMessage(msg: Message) {
             when (msg.what) {
-                MSG_FOCUS_TAB -> focusTab(msg.obj as Session?, msg.arg1)
+                MSG_FOCUS_TAB -> focusTab(msg.obj as Session?, msg.data.getSerializable(ENUM_KEY) as Factor)
                 MSG_ADDED_TAB -> addedTab(msg)
                 else -> {
                 }
@@ -562,28 +502,23 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
 
         fun addedTab(msg: Message) {
             val pojo = msg.obj as NotifierPojo
-
-            for (l in this.chromeListeners!!) {
-                l.onTabAdded(pojo.session!!, pojo.arguements)
-            }
+            observable.notifyObservers { onSessionAdded(pojo.session!!, pojo.arguements!!) }
         }
 
-        fun notifyTabFocused(session: Session?, @TabsChromeListener.Factor factor: Int) {
+        fun notifyTabFocused(session: Session?, factor: Factor) {
             val msg = this.obtainMessage(MSG_FOCUS_TAB)
             msg.obj = session
-            msg.arg1 = factor
+            msg.data.putSerializable(ENUM_KEY, factor)
             this.sendMessage(msg)
         }
 
-        private fun focusTab(session: Session?, @TabsChromeListener.Factor factor: Int) {
+        private fun focusTab(session: Session?, factor: Factor) {
 
             if (session != null && session.tabView == null) {
                 session.initializeView(this.tabViewProvider)
             }
 
-            for (l in this.chromeListeners!!) {
-                l.onFocusChanged(session, factor)
-            }
+            observable.notifyObservers { onFocusChanged(session, factor) }
         }
 
         private class NotifierPojo {
