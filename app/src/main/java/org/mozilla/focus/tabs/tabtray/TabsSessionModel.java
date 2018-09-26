@@ -19,8 +19,6 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.tabs.TabsChromeListener;
-import org.mozilla.rocket.tabs.TabsViewListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ import java.util.List;
 class TabsSessionModel implements TabTrayContract.Model {
     @NonNull
     private SessionManager sessionManager;
-    private OnTabModelChangedListener onTabModelChangedListener;
+    private SessionModelObserver modelObserver;
 
     private List<Session> tabs = new ArrayList<>();
 
@@ -93,40 +91,37 @@ class TabsSessionModel implements TabTrayContract.Model {
 
     @Override
     public void subscribe(final Observer observer) {
-        if (onTabModelChangedListener == null) {
-            onTabModelChangedListener = new OnTabModelChangedListener() {
+        if (this.modelObserver == null) {
+            this.modelObserver = new SessionModelObserver() {
                 @Override
                 void onTabModelChanged(Session tab) {
                     observer.onTabUpdate(tab);
                 }
 
                 @Override
-                public void onTabCountChanged(int count) {
+                public void onSessionCountChanged(int count) {
                     observer.onUpdate(sessionManager.getTabs());
                 }
             };
         }
-        sessionManager.addTabsViewListener(onTabModelChangedListener);
-        sessionManager.addTabsChromeListener(onTabModelChangedListener);
+        sessionManager.register(this.modelObserver);
     }
 
     @Override
     public void unsubscribe() {
-        if (onTabModelChangedListener != null) {
-            sessionManager.removeTabsViewListener(onTabModelChangedListener);
-            sessionManager.removeTabsChromeListener(onTabModelChangedListener);
-            onTabModelChangedListener = null;
+        if (modelObserver != null) {
+            sessionManager.unregister(modelObserver);
+            modelObserver = null;
         }
     }
 
-    private static abstract class OnTabModelChangedListener implements TabsViewListener,
-            TabsChromeListener {
+    private static abstract class SessionModelObserver implements SessionManager.Observer {
         @Override
-        public void onTabStarted(@NonNull Session tab) {
+        public void onSessionStarted(@NonNull Session tab) {
         }
 
         @Override
-        public void onTabFinished(@NonNull Session tab, boolean isSecure) {
+        public void onSessionFinished(@NonNull Session tab, boolean isSecure) {
         }
 
         @Override
@@ -159,16 +154,15 @@ class TabsSessionModel implements TabTrayContract.Model {
         }
 
         @Override
-        public void onFocusChanged(@Nullable Session tab, @Factor int factor) {
-
+        public void onFocusChanged(@Nullable Session tab, SessionManager.Factor factor) {
         }
 
         @Override
-        public void onTabAdded(@NonNull Session tab, @Nullable Bundle arguments) {
+        public void onSessionAdded(@NonNull Session tab, @Nullable Bundle arguments) {
         }
 
         @Override
-        public void onTabCountChanged(int count) {
+        public void onSessionCountChanged(int count) {
         }
 
         @Override
@@ -184,7 +178,7 @@ class TabsSessionModel implements TabTrayContract.Model {
         }
 
         @Override
-        public boolean onShowFileChooser(@NonNull Session tab, TabView tabView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(@NonNull Session tab, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             return false;
         }
 
