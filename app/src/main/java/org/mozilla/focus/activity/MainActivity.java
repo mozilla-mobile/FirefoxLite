@@ -71,6 +71,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
+import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
@@ -116,6 +117,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private View stopIcon;
     private View pinShortcut;
     private View snackBarContainer;
+    private View privateModeButton;
 
     private ScreenNavigator screenNavigator;
 
@@ -360,6 +362,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
+        privateModeButton = menu.findViewById(R.id.btn_private_browsing);
         shareButton = menu.findViewById(R.id.action_share);
         bookmarkIcon = menu.findViewById(R.id.action_bookmark);
         refreshIcon = menu.findViewById(R.id.action_refresh);
@@ -483,6 +486,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
 
                 TelemetryWrapper.menuTurboChangeTo(turboEnabled);
+                break;
+            case R.id.btn_private_browsing:
+                Intent intent = new Intent(this, PrivateModeActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
                 break;
             case R.id.menu_find_in_page:
                 onFindInPageClicked();

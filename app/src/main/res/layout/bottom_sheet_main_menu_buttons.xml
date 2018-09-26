@@ -102,6 +102,22 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/btn_private_browsing"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuButtonIcon"
+                android:background="@drawable/private_browsing_mask" />
+
+            <TextView
+                style="@style/MenuButtonText"
+                android:text="@string/private_tab" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/menu_blockimg"
         style="@style/MenuButtonContainer">
         <!--todo: the FrameLayout and LinearLayout can actually be merged now, but we' re
