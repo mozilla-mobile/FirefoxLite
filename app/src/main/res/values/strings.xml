@@ -106,6 +106,9 @@
     <!-- Item in Preferences that shows the about page. -->
     <string name="preference_about">About</string>
 
+    <!-- Item in Preferences that shows the night mode adjust brightness widget. -->
+    <string name="preference_night_mode_brightness">Night mode brightness</string>
+
     <!-- Content description (not visible, for screen readers etc.): Clear text in URL bar -->
     <string name="content_description_clear_input">Clear input</string>
 
@@ -224,6 +227,8 @@
     <string name="label_menu_my_shots">My shots</string>
     <string name="label_menu_capture_page">Capture page</string>
     <string name="label_menu_turbo_mode">Turbo mode</string>
+    <!-- Menu text for night mode -->
+    <string name="label_menu_night_mode">Night mode</string>
     <string name="label_menu_block_ads">Block Ads</string>
     <string name="label_menu_block_image">Block images</string>
     <string name="label_menu_settings">Settings</string>
@@ -503,6 +508,4 @@
     <string name="exp_survey_yes">YES, PLEASE</string>
     <!-- Text on survey feedback button. This means the user don't want this feature. "Nope" is an informal way to express "No". -->
     <string name="exp_survey_no">NOPE</string>
-
-
 </resources>
