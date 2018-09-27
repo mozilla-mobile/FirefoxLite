@@ -4,12 +4,10 @@
 
 package org.mozilla.focus.helper;
 
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.fragment.BrowserFragment;
-
-import java.lang.ref.WeakReference;
 
 /**
  * An IdlingResource implementation that waits until the BrowserFragment is not loading anymore.

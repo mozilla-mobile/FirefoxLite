@@ -1,6 +1,6 @@
 package org.mozilla.focus.helper;
 
-import android.support.test.espresso.matcher.BoundedMatcher;
+import androidx.test.espresso.matcher.BoundedMatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -11,7 +11,7 @@ import org.hamcrest.Matcher;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import static android.support.test.internal.util.Checks.checkNotNull;
+import static androidx.test.internal.util.Checks.checkNotNull;
 
 public class DecodedTextMatcher {
     private static final String TAG = "DecodedTextMatcher";

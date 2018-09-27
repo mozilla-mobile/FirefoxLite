@@ -1,6 +1,6 @@
 package com.bumptech.glide;
 
-import android.support.v4.util.Pools.Pool;
+import androidx.core.util.Pools.Pool;
 import com.bumptech.glide.load.Encoder;
 import com.bumptech.glide.load.ImageHeaderParser;
 import com.bumptech.glide.load.Options;

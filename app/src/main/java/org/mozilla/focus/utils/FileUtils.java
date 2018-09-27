@@ -6,7 +6,7 @@
 package org.mozilla.focus.utils;
 
 import android.Manifest;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
@@ -14,7 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.webkit.WebStorage;
 
 import org.json.JSONObject;

@@ -1,6 +1,5 @@
 package org.mozilla.focus.autobot
 
-import android.Manifest
 import android.content.Intent
 import android.preference.PreferenceManager
 import android.support.test.InstrumentationRegistry
@@ -18,7 +17,7 @@ import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.Switch
 import org.junit.Assert

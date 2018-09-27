@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"
+        classpath "com.android.tools.build:gradle:3.2.0"
         classpath "com.dicedmelon.gradle:jacoco-android:${Versions.dicedmelon_jacoco_plugin}"
         classpath "com.google.gms:oss-licenses:${Versions.gms_oss_licenses_plugin}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"

@@ -109,7 +109,7 @@ android {
                 includeNoLocationClasses = true
             }
         }
-        execution 'ANDROID_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
     // used by Room, to test migrations
@@ -201,19 +201,19 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
-    implementation "com.android.support:support-v4:${Versions.support}"
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
-    implementation "com.android.support:design:${Versions.support}"
-    implementation "com.android.support:cardview-v7:${Versions.support}"
-    implementation "com.android.support:recyclerview-v7:${Versions.support}"
-    implementation "com.android.support.constraint:constraint-layout:${Versions.constraint}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
 
     // Architecture components
-    implementation "android.arch.lifecycle:extensions:${Versions.lifecycle}"
-    implementation "android.arch.lifecycle:common-java8:${Versions.lifecycle}"
-    implementation "android.arch.persistence.room:runtime:${Versions.room}"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
+    implementation 'androidx.room:room-runtime:2.0.0-rc01'
     implementation "android.arch.navigation:navigation-fragment:${Versions.navigation}"
-    kapt "android.arch.persistence.room:compiler:${Versions.room}"
+    kapt 'androidx.room:room-compiler:2.0.0-rc01'
 
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
@@ -233,24 +233,24 @@ dependencies {
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
 
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:${Versions.espresso}", {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:${Versions.espresso}"
-    androidTestImplementation "com.android.support:support-annotations:${Versions.support}"
-    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:${Versions.uiautomator}"
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.1.0-alpha4'
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0-alpha4'
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
-    androidTestImplementation "android.arch.persistence.room:testing:${Versions.room}"
-    androidTestImplementation "android.arch.core:core-testing:${Versions.arch_core}"
-    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:${Versions.espresso}", {
+    androidTestImplementation 'androidx.room:room-testing:2.0.0-rc01'
+    androidTestImplementation 'androidx.arch.core:core-testing:2.0.0'
+    androidTestImplementation('androidx.test.espresso:espresso-contrib:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     })
-    androidTestImplementation "com.android.support.test.espresso:espresso-web:${Versions.espresso}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${Versions.espresso}"
-    androidTestUtil "com.android.support.test:orchestrator:${Versions.test_runner}"
+    androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0-alpha4'
+    androidTestUtil 'androidx.test:orchestrator:1.1.0-alpha4'
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"

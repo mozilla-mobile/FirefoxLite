@@ -19,12 +19,12 @@
         android:layout_marginBottom="@dimen/tab_tray_peekHeight"
         app:srcCompat="@drawable/logo_man" />
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tab_tray"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -118,5 +118,5 @@
                     tools:ignore="RtlSymmetry" />
             </FrameLayout>
         </RelativeLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

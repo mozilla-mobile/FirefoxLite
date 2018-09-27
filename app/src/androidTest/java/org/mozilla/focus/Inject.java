@@ -5,13 +5,13 @@
 
 package org.mozilla.focus;
 
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;

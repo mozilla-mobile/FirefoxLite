@@ -5,7 +5,7 @@
 
 package org.mozilla.rocket.tabs;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 @SuppressWarnings("WeakerAccess")
 public class SiteIdentity {

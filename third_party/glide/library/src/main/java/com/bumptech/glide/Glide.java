@@ -11,10 +11,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import com.bumptech.glide.load.DecodeFormat;
@@ -539,8 +539,8 @@ public class Glide implements ComponentCallbacks2 {
    * @return A RequestManager for the top level application that can be used to start a load.
    * @see #with(android.app.Activity)
    * @see #with(android.app.Fragment)
-   * @see #with(android.support.v4.app.Fragment)
-   * @see #with(android.support.v4.app.FragmentActivity)
+   * @see #with(Fragment)
+   * @see #with(FragmentActivity)
    */
   public static RequestManager with(Context context) {
     return getRetriever(context).get(context);
@@ -559,8 +559,8 @@ public class Glide implements ComponentCallbacks2 {
 
   /**
    * Begin a load with Glide that will tied to the give
-   * {@link android.support.v4.app.FragmentActivity}'s lifecycle and that uses the given
-   * {@link android.support.v4.app.FragmentActivity}'s default options.
+   * {@link FragmentActivity}'s lifecycle and that uses the given
+   * {@link FragmentActivity}'s default options.
    *
    * @param activity The activity to use.
    * @return A RequestManager for the given FragmentActivity that can be used to start a load.
@@ -582,8 +582,8 @@ public class Glide implements ComponentCallbacks2 {
 
   /**
    * Begin a load with Glide that will be tied to the given
-   * {@link android.support.v4.app.Fragment}'s lifecycle and that uses the given
-   * {@link android.support.v4.app.Fragment}'s default options.
+   * {@link Fragment}'s lifecycle and that uses the given
+   * {@link Fragment}'s default options.
    *
    * @param fragment The fragment to use.
    * @return A RequestManager for the given Fragment that can be used to start a load.

@@ -13,7 +13,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.mozilla.focus.R;
@@ -26,7 +26,6 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
-import org.mozilla.rocket.privately.PrivateMode;
 
 import java.util.Locale;
 

@@ -6,8 +6,8 @@
 package org.mozilla.focus.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.urlutils.UrlUtils;
 
 /**
  * Base implementation for fragments that use a WebView instance. Based on Android's WebViewFragment.

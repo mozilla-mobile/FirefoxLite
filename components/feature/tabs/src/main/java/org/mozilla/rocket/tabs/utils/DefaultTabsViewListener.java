@@ -5,7 +5,7 @@
 
 package org.mozilla.rocket.tabs.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.TabsViewListener;

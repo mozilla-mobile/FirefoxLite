@@ -563,7 +563,7 @@ class SessionManager(private val tabViewProvider: TabViewProvider) {
         fun addedTab(msg: Message) {
             val pojo = msg.obj as NotifierPojo
 
-            for (l in this.chromeListeners!!) {
+            for (l in this.chromeListeners) {
                 l.onTabAdded(pojo.session!!, pojo.arguements)
             }
         }

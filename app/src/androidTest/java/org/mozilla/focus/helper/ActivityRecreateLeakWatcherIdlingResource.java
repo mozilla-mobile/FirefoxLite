@@ -7,7 +7,7 @@ package org.mozilla.focus.helper;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 import org.mozilla.focus.utils.LeakWatcher;
 

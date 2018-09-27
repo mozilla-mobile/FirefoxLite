@@ -16,7 +16,7 @@
         android:layout_weight="@integer/themetoy_onboarding_weight_numerators"
         android:gravity="top">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="277dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -54,7 +54,7 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:layout_width="62dp"

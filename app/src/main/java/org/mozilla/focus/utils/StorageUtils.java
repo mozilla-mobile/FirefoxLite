@@ -7,8 +7,8 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import org.mozilla.focus.R;
 

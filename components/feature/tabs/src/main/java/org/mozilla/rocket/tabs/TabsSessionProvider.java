@@ -6,7 +6,7 @@
 package org.mozilla.rocket.tabs;
 
 import android.app.Activity;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public final class TabsSessionProvider {
     public interface SessionHost {

@@ -2,7 +2,7 @@ package org.mozilla.rocket.promotion
 
 
 import android.content.Context
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import org.mozilla.focus.utils.*
 import kotlin.properties.Delegates
 

@@ -6,7 +6,6 @@
 package org.mozilla.focus.widget;
 
 import android.annotation.TargetApi;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,9 +13,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.Preference;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Switch;

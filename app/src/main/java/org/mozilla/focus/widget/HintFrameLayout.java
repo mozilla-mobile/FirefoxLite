@@ -9,7 +9,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;

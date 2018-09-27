@@ -3,7 +3,7 @@ package com.bumptech.glide.load.engine.bitmap_recycle;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.bumptech.glide.util.Synthetic;
 import com.bumptech.glide.util.Util;
 import java.util.TreeMap;

@@ -6,7 +6,7 @@ package org.mozilla.focus.firstrun;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.util.AttributeSet;
 
 import org.mozilla.focus.R;

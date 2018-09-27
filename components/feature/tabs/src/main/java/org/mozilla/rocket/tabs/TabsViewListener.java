@@ -5,7 +5,7 @@
 
 package org.mozilla.rocket.tabs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * An interface for listener to receive notifications and requests from Tabs.

@@ -1,6 +1,6 @@
 package com.bumptech.glide.load.model.stream;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.Options;

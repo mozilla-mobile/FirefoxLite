@@ -8,7 +8,7 @@ package org.mozilla.focus.widget;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.NoCopySpan;
 import android.text.Selection;
@@ -32,7 +32,7 @@ import android.widget.TextView;
 import org.mozilla.focus.R;
 import org.mozilla.urlutils.UrlUtils;
 
-public class InlineAutocompleteEditText extends android.support.v7.widget.AppCompatEditText {
+public class InlineAutocompleteEditText extends androidx.appcompat.widget.AppCompatEditText {
     public interface OnCommitListener {
         void onCommit(boolean isSuggestion);
     }

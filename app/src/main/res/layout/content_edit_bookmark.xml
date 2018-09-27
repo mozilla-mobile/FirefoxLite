@@ -10,7 +10,7 @@
     tools:context="org.mozilla.focus.activity.EditBookmarkActivity"
     tools:showIn="@layout/activity_edit_bookmark">
 
-    <android.support.constraint.ConstraintLayout style="@style/NewEditTextBackgroundStyle">
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/NewEditTextBackgroundStyle">
 
         <EditText
             android:id="@+id/bookmark_name"
@@ -31,9 +31,9 @@
             app:layout_constraintEnd_toEndOf="@+id/bookmark_name"
             app:layout_constraintTop_toTopOf="@+id/bookmark_name"
             tools:ignore="ContentDescription" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout style="@style/NewEditTextBackgroundStyle">
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/NewEditTextBackgroundStyle">
 
         <EditText
             android:id="@+id/bookmark_location"
@@ -55,5 +55,5 @@
             app:layout_constraintEnd_toEndOf="@+id/bookmark_location"
             app:layout_constraintTop_toTopOf="@+id/bookmark_location"
             tools:ignore="ContentDescription" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

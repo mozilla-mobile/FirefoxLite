@@ -9,8 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.manager.ConnectivityMonitor;
@@ -29,6 +29,9 @@ import com.bumptech.glide.util.Synthetic;
 import com.bumptech.glide.util.Util;
 import java.io.File;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 /**
  * A class for managing and starting requests for Glide. Can use activity, fragment and connectivity
  * lifecycle events to intelligently stop, start, and restart requests. Retrieve either by
@@ -36,9 +39,9 @@ import java.io.File;
  * handling, use the static Glide.load methods with your Fragment or Activity.
  *
  * @see Glide#with(android.app.Activity)
- * @see Glide#with(android.support.v4.app.FragmentActivity)
+ * @see Glide#with(FragmentActivity)
  * @see Glide#with(android.app.Fragment)
- * @see Glide#with(android.support.v4.app.Fragment)
+ * @see Glide#with(Fragment)
  * @see Glide#with(Context)
  */
 public class RequestManager implements LifecycleListener {

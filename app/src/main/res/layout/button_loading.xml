@@ -4,7 +4,7 @@
     android:id="@+id/action_loading"
     style="@style/MainMenuBrowsingButton">
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/action_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:src="@drawable/action_refresh"
         app:tint="@color/sheet_menu_button" />
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/action_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

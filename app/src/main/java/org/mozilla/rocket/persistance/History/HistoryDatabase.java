@@ -1,23 +1,18 @@
 package org.mozilla.rocket.persistance.History;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteQueryBuilder;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.persistence.BookmarkDao;
 import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryDatabaseHelper;
-
-import java.util.HashMap;
-import java.util.Map;
 
 // TODO: 8/23/18
 // We're only utilizing Room to migrate, but we have not yet remove the classic / old school

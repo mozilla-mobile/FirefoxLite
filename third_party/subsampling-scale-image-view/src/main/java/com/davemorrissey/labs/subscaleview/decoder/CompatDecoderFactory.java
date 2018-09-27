@@ -16,7 +16,7 @@ limitations under the License.
 
 package com.davemorrissey.labs.subscaleview.decoder;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Compatibility factory to instantiate decoders with empty public constructors.

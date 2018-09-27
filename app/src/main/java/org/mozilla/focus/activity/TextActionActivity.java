@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.SafeIntent;

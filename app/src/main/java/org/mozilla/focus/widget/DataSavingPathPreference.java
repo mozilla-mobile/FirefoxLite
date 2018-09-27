@@ -6,7 +6,7 @@ package org.mozilla.focus.widget;
 
 import android.content.Context;
 import android.preference.ListPreference;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 

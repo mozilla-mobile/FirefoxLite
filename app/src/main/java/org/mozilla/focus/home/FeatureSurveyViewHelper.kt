@@ -2,7 +2,7 @@ package org.mozilla.focus.home
 
 import android.content.Context
 import android.os.Handler
-import android.support.v7.widget.CardView
+import androidx.cardview.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

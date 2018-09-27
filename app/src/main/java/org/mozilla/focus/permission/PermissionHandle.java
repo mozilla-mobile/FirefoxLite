@@ -1,7 +1,7 @@
 package org.mozilla.focus.permission;
 
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 
 public interface PermissionHandle {
 

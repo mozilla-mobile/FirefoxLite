@@ -1,11 +1,11 @@
 package org.mozilla.focus.activity;
 
 import android.content.Intent;
-import android.support.test.espresso.IdlingRegistry;
-import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.RootMatchers;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.RootMatchers;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,16 +23,16 @@ import java.io.IOException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNot.not;
@@ -141,9 +141,9 @@ public class BookmarksTest {
         final String targetUrl = browsingPageAndBookmarkPage();
 
         // Show bookmark saved snackbar
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.bookmark_saved)))
+        onView(allOf(withId(com.google.android.material.R.id.snackbar_text), withText(R.string.bookmark_saved)))
                 .check(matches(isDisplayed()));
-        onView(allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
+        onView(allOf(withId(com.google.android.material.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
                 .check(matches(isDisplayed()));
 
         // Tap browser menu button
@@ -297,7 +297,7 @@ public class BookmarksTest {
         browsingPageAndBookmarkPage();
 
         // Click the edit button on snackbar
-        onView(allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
+        onView(allOf(withId(com.google.android.material.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
                 .perform(click());
 
         // Type some text in name field

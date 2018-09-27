@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import com.bumptech.glide.load.Options;
 import java.io.InputStream;

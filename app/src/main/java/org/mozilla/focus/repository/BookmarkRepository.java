@@ -1,6 +1,6 @@
 package org.mozilla.focus.repository;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 
 import org.mozilla.focus.persistence.BookmarkModel;
 import org.mozilla.focus.persistence.BookmarksDatabase;

@@ -7,7 +7,7 @@ package org.mozilla.rocket.tabs.web;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class Download implements Parcelable {
 

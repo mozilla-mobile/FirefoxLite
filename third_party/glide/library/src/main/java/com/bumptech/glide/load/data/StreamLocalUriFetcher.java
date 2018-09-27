@@ -6,7 +6,7 @@ import android.content.UriMatcher;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;

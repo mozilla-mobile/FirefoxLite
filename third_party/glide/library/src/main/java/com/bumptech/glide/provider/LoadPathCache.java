@@ -1,7 +1,7 @@
 package com.bumptech.glide.provider;
 
-import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
+import androidx.annotation.Nullable;
+import androidx.collection.ArrayMap;
 import com.bumptech.glide.load.engine.LoadPath;
 import com.bumptech.glide.util.MultiClassKey;
 import java.util.concurrent.atomic.AtomicReference;

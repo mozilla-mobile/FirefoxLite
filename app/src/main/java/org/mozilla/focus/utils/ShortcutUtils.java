@@ -14,10 +14,10 @@ import android.content.pm.ShortcutManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.content.pm.ShortcutInfoCompat;
-import android.support.v4.content.pm.ShortcutManagerCompat;
-import android.support.v4.graphics.drawable.IconCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import android.text.TextUtils;
 
 import org.mozilla.icon.FavIconUtils;

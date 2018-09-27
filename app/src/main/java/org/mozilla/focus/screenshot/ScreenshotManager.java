@@ -7,8 +7,8 @@ package org.mozilla.focus.screenshot;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.VisibleForTesting;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.VisibleForTesting;
+import androidx.annotation.WorkerThread;
 import android.util.Log;
 
 import org.json.JSONArray;

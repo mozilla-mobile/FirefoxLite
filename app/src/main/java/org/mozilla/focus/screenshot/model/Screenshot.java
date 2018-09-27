@@ -5,7 +5,7 @@
 
 package org.mozilla.focus.screenshot.model;
 
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 
 import java.io.Serializable;
 

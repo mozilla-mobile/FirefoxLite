@@ -1,7 +1,7 @@
 package org.mozilla.focus.test.runner;
 
 import android.os.Bundle;
-import android.support.test.runner.AndroidJUnitRunner;
+import androidx.test.runner.AndroidJUnitRunner;
 
 public class CustomTestRunner extends AndroidJUnitRunner {
 

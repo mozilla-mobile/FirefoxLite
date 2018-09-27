@@ -12,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -28,10 +28,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    implementation 'androidx.appcompat:appcompat:1.0.0'
     testImplementation "junit:junit:${Versions.junit}"
-    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
 }
 

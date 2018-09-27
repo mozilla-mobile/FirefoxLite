@@ -1,6 +1,6 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.v4.util.Pools.Pool;
+import androidx.core.util.Pools.Pool;
 import android.util.Log;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.ResourceDecoder;

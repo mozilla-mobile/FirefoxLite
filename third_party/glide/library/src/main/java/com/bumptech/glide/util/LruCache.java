@@ -1,6 +1,6 @@
 package com.bumptech.glide.util;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

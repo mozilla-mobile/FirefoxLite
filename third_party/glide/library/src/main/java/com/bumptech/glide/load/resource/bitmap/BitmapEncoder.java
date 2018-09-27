@@ -1,7 +1,7 @@
 package com.bumptech.glide.load.resource.bitmap;
 
 import android.graphics.Bitmap;
-import android.support.v4.os.TraceCompat;
+import androidx.core.os.TraceCompat;
 import android.util.Log;
 import com.bumptech.glide.load.EncodeStrategy;
 import com.bumptech.glide.load.Option;
