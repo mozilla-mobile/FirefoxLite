@@ -203,9 +203,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
         bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
 
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
-        layoutParams.screenBrightness = 0.1f;
-        getWindow().setAttributes(layoutParams); // Set params
+//        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
+//        layoutParams.screenBrightness = 0.1f;
+//        getWindow().setAttributes(layoutParams); // Set params
     }
 
     private void initBroadcastReceivers() {
@@ -665,7 +665,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     private void onNightModeClicked() {
-        startActivity(new Intent(this, BrightnessDialog.class));
+        //startActivity(new Intent(this, BrightnessDialog.class));
+        BrightnessDialog dialogFragment = BrightnessDialog.newInstance();
+        dialogFragment.setCancelable(true);
+        dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TransparentTheme);
+        dialogFragment.show(getSupportFragmentManager(), "");
+
     }
 
     private boolean isNightModeEnabled() {

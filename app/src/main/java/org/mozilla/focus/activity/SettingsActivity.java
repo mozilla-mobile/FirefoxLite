@@ -47,9 +47,9 @@ public class SettingsActivity extends LocaleAwareAppCompatActivity {
         // anywhere before now (the title can only be set via AndroidManifest, and ensuring
         // that that loads the correct locale string is tricky).
         applyLocale();
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
-        layoutParams.screenBrightness = 0.1f;
-        getWindow().setAttributes(layoutParams); // Set params
+//        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
+//        layoutParams.screenBrightness = 0.1f;
+//        getWindow().setAttributes(layoutParams); // Set params
     }
 
     @Override

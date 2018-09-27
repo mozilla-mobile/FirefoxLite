@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/brightness_root"
+    android:id="@+id/brightness_dialog_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="60dp"
@@ -36,7 +36,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/auto_brightness"
+                    android:text="temp"
                     android:textColor="#c2c2c4"
                     android:textSize="@dimen/common_font_size_body1"
                     app:layout_constraintStart_toStartOf="parent"
