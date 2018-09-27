@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -984,6 +985,75 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private void hideFindInPage() {
         findInPage.hide();
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS);
+    }
+
+    class SessionObserver implements Session.Observer {
+        @Override
+        public void onSessionStarted(@Nullable String url) {
+        }
+
+        @Override
+        public void onSessionFinished(boolean isSecure) {
+        }
+
+        @Override
+        public void onURLChanged(@Nullable String url) {
+        }
+
+        @Override
+        public boolean handleExternalUrl(@Nullable String url) {
+            return false;
+        }
+
+        @Override
+        public void updateFailingUrl(@Nullable String url, boolean updateFromError) {
+        }
+
+        @Override
+        public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, @Nullable Message msg) {
+            return false;
+        }
+
+        @Override
+        public void onCloseWindow(@Nullable TabView tabView) {
+        }
+
+        @Override
+        public void onProgressChanged(int progress) {
+        }
+
+        @Override
+        public boolean onShowFileChooser(@NonNull TabView tabView,
+                                         @NonNull ValueCallback<Uri[]> filePathCallback,
+                                         @NonNull WebChromeClient.FileChooserParams fileChooserParams) {
+            return false;
+        }
+
+        @Override
+        public void onReceivedTitle(@NonNull TabView view, @Nullable String title) {
+        }
+
+        @Override
+        public void onReceivedIcon(@NonNull TabView view, @Nullable Bitmap icon) {
+        }
+
+        @Override
+        public void onLongPress(@NonNull TabView.HitTarget hitTarget) {
+        }
+
+        @Override
+        public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback,
+                                      @Nullable View view) {
+        }
+
+        @Override
+        public void onExitFullScreen() {
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(@NonNull String origin,
+                                                       @Nullable GeolocationPermissions.Callback callback) {
+        }
     }
 
     class SessionManagerObserver implements SessionManager.Observer {
