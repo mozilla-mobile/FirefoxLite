@@ -482,6 +482,10 @@
     <string name="edit_bookmark">Edit</string>
 
     <!-- Private Browsing-->
+
+    <!-- This is used in menu. User can click the menu item and open a private tab -->
+    <string name="private_tab">Private tab</string>
+
     <!-- This is the title that, when in private browsing mode, will be shown in the Home page (The page with search box). -->
     <string name="private_browsing_title">Private Browsing</string>
     <!-- A notification will be shown when entering private browsing mode, this is the message of the notification notifying the user that tapping the notification will erase the private browsing history. -->
