@@ -357,33 +357,12 @@ class SessionManager @JvmOverloads constructor(
     }
 
     internal inner class SessionObserver(var source: Session) : Session.Observer {
-        private fun setTitle() {
-            if (source.tabView == null) {
-                return
-            }
-            source.title = source.tabView!!.title
-        }
 
-        override fun onSessionStarted(url: String?) {
-            source.url = url
-            setTitle()
+        override fun onSessionStarted(url: String?) = notifyObservers { onSessionStarted(source) }
 
-            // FIXME: workaround for 'dialog new window'
-            if (source.url != null) {
-                notifyObservers { onSessionStarted(source) }
-            }
-        }
+        override fun onSessionFinished(isSecure: Boolean) = notifyObservers { onSessionFinished(source, isSecure) }
 
-        override fun onSessionFinished(isSecure: Boolean) {
-            setTitle()
-            notifyObservers { onSessionFinished(source, isSecure) }
-        }
-
-        override fun onURLChanged(url: String?) {
-            source.url = url
-            setTitle()
-            notifyObservers { onURLChanged(source, url) }
-        }
+        override fun onURLChanged(url: String?) = notifyObservers { onURLChanged(source, url) }
 
         override fun handleExternalUrl(url: String?): Boolean {
             // only return false if none of listeners handled external url.
@@ -448,10 +427,7 @@ class SessionManager @JvmOverloads constructor(
             notifyObservers { onReceivedTitle(source, title) }
         }
 
-        override fun onReceivedIcon(view: TabView, icon: Bitmap?) {
-            source.favicon = icon
-            notifyObservers { onReceivedIcon(source, icon) }
-        }
+        override fun onReceivedIcon(view: TabView, icon: Bitmap?) = notifyObservers { onReceivedIcon(source, icon) }
 
         override fun onLongPress(hitTarget: TabView.HitTarget) {
             notifyObservers { onLongPress(source, hitTarget) }
