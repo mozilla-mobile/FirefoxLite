@@ -1,14 +1,14 @@
 object Versions {
     const val min_sdk = 21
-    const val target_sdk = 27
-    const val compile_sdk = 27
+    const val target_sdk = 28
+    const val compile_sdk = 28
     const val build_tools = "27.0.3"
     const val version_code = 1
     const val version_name = "3.3.0"
     const val android_gradle_plugin = "3.1.3"
     const val dicedmelon_jacoco_plugin = "0.1.3"
     const val gms_oss_licenses_plugin = "0.9.1"
-    const val support = "27.1.1"
+    const val support = "28.0.0"
     const val constraint = "1.1.2"
     const val arch_core = "1.1.1"
     const val lifecycle = "1.1.1"
@@ -25,7 +25,7 @@ object Versions {
     const val junit = "4.12"
     const val mockito = "2.12.0"
     const val robolectric = "4.0-alpha-3"
-    const val espresso = "3.0.1"
+    const val espresso = "3.0.2"
     const val test_runner = "1.0.2"
     const val uiautomator = "2.1.3"
     const val mockwebserver = "3.7.0"
