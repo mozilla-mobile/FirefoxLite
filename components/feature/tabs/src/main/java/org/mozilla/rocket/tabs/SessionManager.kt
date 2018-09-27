@@ -493,16 +493,13 @@ class SessionManager @JvmOverloads constructor(
 
         fun notifyTabAdded(session: Session, arguments: Bundle?) {
             val msg = this.obtainMessage(MSG_ADDED_TAB)
-            val pojo = NotifierPojo()
-            pojo.session = session
-            pojo.arguements = arguments
-            msg.obj = pojo
+            msg.obj = Pair(session, arguments)
             this.sendMessage(msg)
         }
 
         fun addedTab(msg: Message) {
-            val pojo = msg.obj as NotifierPojo
-            observable.notifyObservers { onSessionAdded(pojo.session!!, pojo.arguements!!) }
+            val pair = msg.obj as Pair<Session, Bundle?>
+            observable.notifyObservers { onSessionAdded(pair.first, pair.second) }
         }
 
         fun notifyTabFocused(session: Session?, factor: Factor) {
@@ -519,11 +516,6 @@ class SessionManager @JvmOverloads constructor(
             }
 
             observable.notifyObservers { onFocusChanged(session, factor) }
-        }
-
-        private class NotifierPojo {
-            var session: Session? = null
-            var arguements: Bundle? = null
         }
     }
 
