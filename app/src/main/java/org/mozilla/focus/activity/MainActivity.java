@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.mozilla.focus.Inject;
@@ -71,6 +72,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
+import org.mozilla.focus.widget.BrightnessDialog;
 import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
@@ -200,6 +202,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)));
 
         bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
+
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
+        layoutParams.screenBrightness = 0.1f;
+        getWindow().setAttributes(layoutParams); // Set params
     }
 
     private void initBroadcastReceivers() {
@@ -369,6 +375,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
+        menu.findViewById(R.id.menu_night_mode).setSelected(isNightModeEnabled());
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
@@ -480,6 +487,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
 
                 TelemetryWrapper.menuTurboChangeTo(turboEnabled);
+                break;
+            case R.id.menu_night_mode:
+                final boolean nightModeEnabled = !isNightModeEnabled();
+                v.setSelected(nightModeEnabled);
+                Settings.getInstance(this).setNightMode(nightModeEnabled);
+                onNightModeClicked();
                 break;
             case R.id.menu_find_in_page:
                 onFindInPageClicked();
@@ -649,6 +662,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
         final String msg = getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void onNightModeClicked() {
+        startActivity(new Intent(this, BrightnessDialog.class));
+    }
+
+    private boolean isNightModeEnabled() {
+        return Settings.getInstance(this).isNightModeEnable();
     }
 
     @VisibleForTesting

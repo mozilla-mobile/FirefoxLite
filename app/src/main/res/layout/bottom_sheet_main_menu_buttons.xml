@@ -102,6 +102,22 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/menu_night_mode"
+        style="@style/MenuButtonContainer">
+
+        <LinearLayout style="@style/MenuButtonGroup">
+
+            <View
+                style="@style/MenuToggleIcon"
+                android:background="@drawable/icon_night_mode" />
+
+            <TextView
+                style="@style/MenuToggleText"
+                android:text="@string/label_menu_night_mode" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/menu_blockimg"
         style="@style/MenuButtonContainer">
         <!--todo: the FrameLayout and LinearLayout can actually be merged now, but we' re

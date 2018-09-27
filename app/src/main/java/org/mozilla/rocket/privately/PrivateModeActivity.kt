@@ -52,6 +52,9 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         makeStatusBarTransparent()
 
         initViewModel()
+        val layoutParams = window.attributes // Get Params
+        layoutParams.screenBrightness = 0.1f
+        window.attributes = layoutParams // Set params
     }
 
     private fun initViewModel() {

@@ -25,6 +25,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.widget.BrightnessDialog;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 import org.mozilla.rocket.privately.PrivateMode;
 
@@ -65,6 +66,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_night_mode_brightness))) {
+            startActivity(new Intent(getActivity(), BrightnessDialog.class));
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);

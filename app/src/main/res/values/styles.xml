@@ -301,4 +301,12 @@
         <item name="android:textSize">@dimen/common_font_size_btn_text2</item>
         <item name="android:background">@drawable/round_rectangle_ripple</item>
     </style>
+    <style name="TransparentTheme" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
@@ -46,6 +47,9 @@ public class SettingsActivity extends LocaleAwareAppCompatActivity {
         // anywhere before now (the title can only be set via AndroidManifest, and ensuring
         // that that loads the correct locale string is tricky).
         applyLocale();
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
+        layoutParams.screenBrightness = 0.1f;
+        getWindow().setAttributes(layoutParams); // Set params
     }
 
     @Override

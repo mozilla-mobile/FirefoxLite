@@ -246,7 +246,7 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_edit_bookmark" />
-
+        <activity android:name=".widget.BrightnessDialog" android:theme="@style/TransparentTheme"/>
     </application>
 
 </manifest>
