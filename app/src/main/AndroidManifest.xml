@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+    <!-- Since targeting version 28: Need this permission to run foreground services. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- Needed to prompt the user to give permission to install a downloaded apk -->
     <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -25,6 +27,7 @@
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:name="org.mozilla.focus.FocusApplication">
 
         <activity
