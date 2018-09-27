@@ -233,12 +233,30 @@ class Session @JvmOverloads constructor(
 
     class ViewClient(val session: Session) : TabViewClient() {
 
-        override fun onPageStarted(url: String?) = session.notifyObservers { onSessionStarted(url) }
+        private fun setSessionTitle() {
+            session.tabView?.let { tabView -> session.title = tabView.title }
+        }
 
-        override fun onPageFinished(isSecure: Boolean) =
-                session.notifyObservers { onSessionFinished(isSecure) }
+        override fun onPageStarted(url: String?) {
+            session.url = url
+            setSessionTitle()
 
-        override fun onURLChanged(url: String?) = session.notifyObservers { onURLChanged(url) }
+            // FIXME: workaround for 'dialog new window'
+            if (session.url != null) {
+                session.notifyObservers { onSessionStarted(url) }
+            }
+        }
+
+        override fun onPageFinished(isSecure: Boolean) {
+            setSessionTitle()
+            session.notifyObservers { onSessionFinished(isSecure) }
+        }
+
+        override fun onURLChanged(url: String?) {
+            session.url = url
+            setSessionTitle()
+            session.notifyObservers { onURLChanged(url) }
+        }
 
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) =
                 session.notifyObservers { updateFailingUrl(url, updateFromError) }
@@ -282,8 +300,10 @@ class Session @JvmOverloads constructor(
         override fun onReceivedTitle(view: TabView, title: String?) =
                 session.notifyObservers { onReceivedTitle(view, title) }
 
-        override fun onReceivedIcon(view: TabView, icon: Bitmap?) =
-                session.notifyObservers { onReceivedIcon(view, icon) }
+        override fun onReceivedIcon(view: TabView, icon: Bitmap?){
+            session.favicon = icon
+            session.notifyObservers { onReceivedIcon(view, icon) }
+        }
 
         override fun onLongPress(hitTarget: TabView.HitTarget) =
                 session.notifyObservers { onLongPress(hitTarget) }
