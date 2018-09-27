@@ -227,7 +227,7 @@
     <string name="label_menu_my_shots">My shots</string>
     <string name="label_menu_capture_page">Capture page</string>
     <string name="label_menu_turbo_mode">Turbo mode</string>
-    <!-- Menu text for night mode -->
+    <!-- Menu text for night mode. -->
     <string name="label_menu_night_mode">Night mode</string>
     <string name="label_menu_block_ads">Block Ads</string>
     <string name="label_menu_block_image">Block images</string>
@@ -483,7 +483,7 @@
 
     <!-- Private Browsing-->
 
-    <!-- This is used in menu. User can click the menu item and open a private tab -->
+    <!-- This is used in the menu. User can click the menu item and open a private tab. -->
     <string name="private_tab">Private tab</string>
 
     <!-- This is the title that, when in private browsing mode, will be shown in the Home page (The page with search box). -->
