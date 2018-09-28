@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s मात्र वही जानकारी एकत्र करने का प्रयास करता है जिससे हम %1$s को सभी के लिए उपलब्ध तथा बेहतर बना सकें।</string>
   <string name="preference_learn_more">अधिक जानें</string>
   <string name="preference_about">परिचय</string>
+  <string name="preference_night_mode_brightness">नाईट मोड ब्राइटनेस</string>
   <string name="content_description_clear_input">इनपुट मिटाएँ</string>
   <string name="content_description_dismiss_input">ख़ारिज करें</string>
   <string name="content_description_lock">सुरक्षित संपर्क</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">स्क्रीनशॉट</string>
   <string name="label_menu_capture_page">पृष्ठ कैद करें</string>
   <string name="label_menu_turbo_mode">टर्बो मोड</string>
+  <string name="label_menu_night_mode">नाईट मोड</string>
   <string name="label_menu_block_ads">विज्ञापन ब्लॉक करें</string>
   <string name="label_menu_block_image">चित्र ब्लॉक करें</string>
   <string name="label_menu_settings">सेटिंग</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">बुकमार्क अद्यतित</string>
   <string name="bookmarks_empty_view_msg">"कोई बुकमार्क नहीं "</string>
   <string name="edit_bookmark">संपादन</string>
+  <string name="private_tab">निजी टैब</string>
   <string name="private_browsing_title">निजी ब्राउज़िंग</string>
   <string name="private_browsing_erase_message">निजी ब्राउज़िंग इतिहास मिटाएं</string>
   <string name="private_browsing_open_action">खोलें</string>

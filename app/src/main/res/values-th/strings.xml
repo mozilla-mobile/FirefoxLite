@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s มุ่งมั่นที่จะเก็บรวบรวมเฉพาะสิ่งที่เราจำเป็นต้องให้บริการและปรับปรุง %1$s สำหรับทุกคน</string>
   <string name="preference_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="preference_about">เกี่ยวกับ</string>
+  <string name="preference_night_mode_brightness">ความสว่างโหมดกลางคืน</string>
   <string name="content_description_clear_input">ล้างข้อมูลที่ป้อน</string>
   <string name="content_description_dismiss_input">ยกเลิก</string>
   <string name="content_description_lock">การเชื่อมต่อปลอดภัย</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">ภาพหน้าจอของฉัน</string>
   <string name="label_menu_capture_page">จับภาพหน้า</string>
   <string name="label_menu_turbo_mode">โหมดเทอร์โบ</string>
+  <string name="label_menu_night_mode">โหมดกลางคืน</string>
   <string name="label_menu_block_ads">ปิดกั้นโฆษณา</string>
   <string name="label_menu_block_image">ปิดกั้นภาพ</string>
   <string name="label_menu_settings">การตั้งค่า</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">อัปเดตที่คั่นหน้าแล้ว</string>
   <string name="bookmarks_empty_view_msg">ไม่มีที่คั่นหน้า</string>
   <string name="edit_bookmark">แก้ไข</string>
+  <string name="private_tab">แท็บส่วนตัว</string>
   <string name="private_browsing_title">การท่องเว็บแบบส่วนตัว</string>
   <string name="private_browsing_erase_message">ล้างประวัติการท่องเว็บแบบส่วนตัว</string>
   <string name="private_browsing_open_action">เปิด</string>
