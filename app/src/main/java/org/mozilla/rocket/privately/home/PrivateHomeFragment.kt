@@ -48,14 +48,14 @@ class PrivateHomeFragment : LocaleAwareFragment() {
         btnBack.setOnClickListener {
             var parent = activity
             if (parent is FragmentListener) {
-                parent.onNotified(PrivateHomeFragment@ this, TOGGLE_PRIVATE_MODE, null)
+                parent.onNotified(this, TOGGLE_PRIVATE_MODE, null)
             }
         }
 
         fakeInput.setOnClickListener {
             var parent = activity
             if (parent is FragmentListener) {
-                parent.onNotified(PrivateHomeFragment@ this, SHOW_URL_INPUT, null)
+                parent.onNotified(this, SHOW_URL_INPUT, null)
             }
         }
 

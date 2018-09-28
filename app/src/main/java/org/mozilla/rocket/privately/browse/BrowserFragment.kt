@@ -215,7 +215,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun onModeClicked() {
         val listener = activity as FragmentListener
-        listener.onNotified(BrowserFragment@ this, TYPE.TOGGLE_PRIVATE_MODE, null)
+        listener.onNotified(this, TYPE.TOGGLE_PRIVATE_MODE, null)
         TelemetryWrapper.togglePrivateMode(false)
     }
 
@@ -225,7 +225,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun onSearchClicked() {
         val listener = activity as FragmentListener
-        listener.onNotified(BrowserFragment@ this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
+        listener.onNotified(this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
     }
 
     private fun onLoadClicked() {
@@ -240,7 +240,7 @@ class BrowserFragment : LocaleAwareFragment(),
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
         }
-        listener.onNotified(BrowserFragment@ this, TYPE.DROP_BROWSING_PAGES, null)
+        listener.onNotified( this, TYPE.DROP_BROWSING_PAGES, null)
     }
 
     class BrowserTabsChromeListener(val fragment: BrowserFragment) : DefaultTabsChromeListener() {
