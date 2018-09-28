@@ -98,23 +98,13 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
     private abstract class SessionModelObserver : SessionManager.Observer, Session.Observer {
         var session: Session? = null
 
-        override fun onSessionStarted(session: Session) {}
-
-        override fun onSessionFinished(session: Session, isSecure: Boolean) {}
-
         override fun onURLChanged(url: String?) {
             session?.let { onTabModelChanged(it) }
-        }
-
-        override fun handleExternalUrl(url: String?): Boolean {
-            return false
         }
 
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
             session?.let { onTabModelChanged(it) }
         }
-
-        override fun onProgressChanged(session: Session, progress: Int) {}
 
         override fun onReceivedTitle(view:TabView, title: String?) {
             session?.let { onTabModelChanged(it) }
@@ -128,24 +118,6 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
             this.session?.let { it.unregister(this) }
             this.session = session
             this.session?.let { it.register(this) }
-        }
-
-        override fun onSessionAdded(session: Session, arguments: Bundle?) {}
-
-        override fun onSessionCountChanged(count: Int) {}
-
-        override fun onLongPress(session: Session, hitTarget: TabView.HitTarget?) {}
-
-        override fun onEnterFullScreen(session: Session, callback: TabView.FullscreenCallback, fullscreenContent: View?) {}
-
-        override fun onExitFullScreen(session: Session) {}
-
-        override fun onShowFileChooser(session: Session, filePathCallback: ValueCallback<Array<Uri>>, fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
-            return false
-        }
-
-        override fun onGeolocationPermissionsShowPrompt(session: Session, origin: String?, callback: GeolocationPermissions.Callback?) {
-
         }
 
         internal abstract fun onTabModelChanged(session: Session)

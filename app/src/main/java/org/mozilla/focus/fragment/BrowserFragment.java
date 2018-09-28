@@ -1296,70 +1296,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onSessionStarted(@NonNull Session tab) {
-        }
-
-        @Override
-        public void onSessionFinished(@NonNull Session tab, boolean isSecure) {
-        }
-
-        @Override
         public void onSessionCountChanged(int count) {
             if (isTabRestoredComplete()) {
                 tabCounter.setCountWithAnimation(count);
             }
-        }
-
-        @Override
-        public void onURLChanged(@NonNull Session tab, final String url) {
-        }
-
-        @Override
-        public void onProgressChanged(@NonNull Session tab, int progress) {
-        }
-
-        @Override
-        public boolean handleExternalUrl(final String url) {
-            return false;
-        }
-
-        @Override
-        public void updateFailingUrl(@NonNull Session tab, String url, boolean updateFromError) {
-        }
-
-        @Override
-        public void onLongPress(@NonNull Session tab, final TabView.HitTarget hitTarget) {
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull Session tab,
-                                      @NonNull final TabView.FullscreenCallback callback,
-                                      @Nullable View fullscreenContentView) {
-        }
-
-        @Override
-        public void onExitFullScreen(@NonNull Session tab) {
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Session tab,
-                                                       final String origin,
-                                                       final GeolocationPermissions.Callback callback) {
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NonNull Session tab,
-                                         ValueCallback<Uri[]> filePathCallback,
-                                         WebChromeClient.FileChooserParams fileChooserParams) {
-            return false;
-        }
-
-        @Override
-        public void onReceivedTitle(@NonNull Session tab, String title) {
-        }
-
-        @Override
-        public void onReceivedIcon(@NonNull Session tab, Bitmap icon) {
         }
 
         private void transitToTab(@NonNull Session targetTab) {
