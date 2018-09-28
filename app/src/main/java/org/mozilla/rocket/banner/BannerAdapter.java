@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mozilla.rocket.util.Logger;
+import org.mozilla.rocket.util.LoggerWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
             // We still inflate an item with SingleButtonViewHolder if it for unknown reason managed
             // to pass this check. (See: onCreateViewHolder)
             if (getItemViewType(thisDAO.type) == UNKNOWN_VIEW_TYPE) {
-                Logger.throwOrWarn(LOG_TAG, String.format(Locale.US, "Unknown view type: %s in page %d", thisDAO.type, i));
+                LoggerWrapper.throwOrWarn(LOG_TAG, String.format(Locale.US, "Unknown view type: %s in page %d", thisDAO.type, i));
                 continue;
             }
             this.DAOs.add(thisDAO);

@@ -19,7 +19,7 @@ import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.util.Logger;
+import org.mozilla.rocket.util.LoggerWrapper;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutionException;
@@ -82,7 +82,7 @@ class FocusWebChromeClient extends WebChromeClient {
                     new BrowsingHistoryManager.UpdateHistoryWrapper(title, url),
                     Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute();
         } catch (ExecutionException | InterruptedException e) {
-            Logger.throwOrWarn(LOGGER_TAG, "Failed to get cache folder in onReceivedIcon.");
+            LoggerWrapper.throwOrWarn(LOGGER_TAG, "Failed to get cache folder in onReceivedIcon.");
         }
 
         if (this.tabChromeClient != null) {

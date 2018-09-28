@@ -1,9 +1,10 @@
-include ':feature-tabs', ':HttpRequest', ':httptask', 'urlutils', ':icon'
+include ':feature-tabs', ':HttpRequest', ':httptask', ':logger', 'urlutils', ':icon'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
 project(':urlutils').projectDir = new File(rootDir, 'components/utils/urlutils')
 project(':icon').projectDir = new File(rootDir, 'components/utils/icon')
+project(':logger').projectDir = new File(rootDir, 'components/utils/logger')
 
 include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'
