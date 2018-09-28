@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 
 import org.mozilla.focus.persistence.BookmarkModel;
 import org.mozilla.focus.persistence.BookmarksDatabase;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 
 import java.util.List;
 import java.util.UUID;

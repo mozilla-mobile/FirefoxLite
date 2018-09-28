@@ -64,7 +64,7 @@ import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.widget.AnimatedProgressBar;

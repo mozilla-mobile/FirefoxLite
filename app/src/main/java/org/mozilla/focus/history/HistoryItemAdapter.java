@@ -32,7 +32,7 @@ import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FileUtils;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.icon.FavIconUtils;
 

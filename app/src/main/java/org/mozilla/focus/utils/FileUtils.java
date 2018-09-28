@@ -19,6 +19,7 @@ import android.webkit.WebStorage;
 
 import org.json.JSONObject;
 import org.mozilla.rocket.util.LoggerWrapper;
+import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
