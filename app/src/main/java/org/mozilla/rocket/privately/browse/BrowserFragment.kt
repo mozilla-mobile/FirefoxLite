@@ -30,6 +30,7 @@ import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabsSessionProvider
@@ -47,7 +48,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private var listener: FragmentListener? = null
 
     private lateinit var sessionManager: SessionManager
-    private lateinit var observer: SessionManagerObserver
+    private lateinit var observer: Observer
 
     private lateinit var browserContainer: ViewGroup
     private lateinit var videoContainer: ViewGroup
@@ -81,7 +82,7 @@ class BrowserFragment : LocaleAwareFragment(),
         } else {
             if (fragmentActivity is TabsSessionProvider.SessionHost) {
                 sessionManager = fragmentActivity.sessionManager
-                observer = SessionManagerObserver(this)
+                observer = Observer(this)
             }
 
             registerData(fragmentActivity)
@@ -124,6 +125,7 @@ class BrowserFragment : LocaleAwareFragment(),
         super.onResume()
         sessionManager.resume()
         sessionManager.register(observer)
+        sessionManager.focusSession?.register(observer)
     }
 
     override fun onPause() {
@@ -239,48 +241,56 @@ class BrowserFragment : LocaleAwareFragment(),
         listener.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
     }
 
-    class SessionManagerObserver(val fragment: BrowserFragment) : SessionManager.Observer {
+    class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
 
         var callback: FullscreenCallback? = null
+        var session: Session? = null
+
+        override fun handleExternalUrl(url: String?): Boolean {
+            return false
+        }
 
         override fun onSessionAdded(session: Session, arguments: Bundle?) {
             super.onSessionAdded(session, arguments)
             fragment.tabViewSlot.addView(session.tabView!!.view)
         }
 
-        override fun onProgressChanged(session: Session, progress: Int) {
-            super.onProgressChanged(session, progress)
+        override fun onProgressChanged(progress: Int) {
             fragment.progressView.progress = progress
         }
 
-        override fun onReceivedTitle(session: Session, title: String?) {
-            if (!fragment.displayUrlView.text.toString().equals(session.url)) {
-                fragment.displayUrlView.text = session.url
+        override fun onReceivedTitle(view: TabView, title: String?) {
+            session?.let {
+                if (!fragment.displayUrlView.text.toString().equals(it.url)) {
+                    fragment.displayUrlView.text = it.url
+                }
             }
         }
 
-        override fun onLongPress(session: Session, hitTarget: HitTarget?) {
-            val activity = fragment.activity
-            if (activity != null && hitTarget != null) {
-                WebContextMenu.show(true,
-                        activity,
-                        PrivateDownloadCallback(activity, session.url),
-                        hitTarget)
+        override fun onLongPress(hitTarget: HitTarget) {
+            session?.let {
+                val activity = fragment.activity
+                if (activity != null) {
+                    WebContextMenu.show(true,
+                            activity,
+                            PrivateDownloadCallback(activity, it.url),
+                            hitTarget)
+                }
             }
         }
 
-        override fun onEnterFullScreen(session: Session, callback: FullscreenCallback, fullscreenContent: View?) {
+        override fun onEnterFullScreen(callback: FullscreenCallback, view: View?) {
             with(fragment) {
                 browserContainer.visibility = View.INVISIBLE
                 videoContainer.visibility = View.VISIBLE
-                videoContainer.addView(fullscreenContent)
+                videoContainer.addView(view)
 
                 // Switch to immersive mode: Hide system bars other UI controls
                 systemVisibility = ViewUtils.switchToImmersiveMode(activity)
             }
         }
 
-        override fun onExitFullScreen(session: Session) {
+        override fun onExitFullScreen() {
             with(fragment) {
                 browserContainer.visibility = View.VISIBLE
                 videoContainer.visibility = View.INVISIBLE
@@ -301,24 +311,22 @@ class BrowserFragment : LocaleAwareFragment(),
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            session.tabView?.let { if (it is WebView) it.clearFocus() }
+            session?.tabView?.let { if (it is WebView) it.clearFocus() }
         }
 
-        override fun onURLChanged(session: Session, url: String?) {
+        override fun onURLChanged(url: String?) {
             if (!UrlUtils.isInternalErrorURL(url)) {
                 fragment.displayUrlView.text = url
             }
         }
 
-        override fun onSessionStarted(session: Session) {
-            super.onSessionStarted(session)
+        override fun onSessionStarted(url: String?) {
             fragment.siteIdentity.setImageLevel(SITE_GLOBE)
             fragment.isLoading = true
             fragment.btnLoad.setImageResource(R.drawable.ic_close)
         }
 
-        override fun onSessionFinished(session: Session, isSecure: Boolean) {
-            super.onSessionFinished(session, isSecure)
+        override fun onSessionFinished(isSecure: Boolean) {
             val focus = fragment.sessionManager.focusSession ?: return
             val tabView = focus.tabView ?: return
             fragment.btnNext.isEnabled = tabView.canGoForward()
@@ -327,6 +335,15 @@ class BrowserFragment : LocaleAwareFragment(),
             fragment.siteIdentity.setImageLevel(level)
             fragment.isLoading = false
             fragment.btnLoad.setImageResource(R.drawable.ic_refresh)
+        }
+
+        override fun onSessionCountChanged(count: Int) {
+            if (count == 0) {
+                session?.unregister(this)
+            } else {
+                session = fragment.sessionManager.focusSession
+                session?.register(this)
+            }
         }
     }
 
