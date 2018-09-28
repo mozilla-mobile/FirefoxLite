@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s hanya akan mengumpulkan data yang diperlukan saja untuk memperbaiki %1$s bagi Anda.</string>
   <string name="preference_learn_more">Pelajari lebih lanjut</string>
   <string name="preference_about">Tentang</string>
+  <string name="preference_night_mode_brightness">Kecerahan di mode malam</string>
   <string name="content_description_clear_input">Bersihkan masukan</string>
   <string name="content_description_dismiss_input">Abaikan</string>
   <string name="content_description_lock">Sambungan aman</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">Tangkapan saya</string>
   <string name="label_menu_capture_page">Tangkap laman</string>
   <string name="label_menu_turbo_mode">Mode turbo</string>
+  <string name="label_menu_night_mode">Mode malam</string>
   <string name="label_menu_block_ads">Blokir Iklan</string>
   <string name="label_menu_block_image">Blokir gambar</string>
   <string name="label_menu_settings">Setelan</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">Markah diperbarui</string>
   <string name="bookmarks_empty_view_msg">Tidak ada markah</string>
   <string name="edit_bookmark">Ubah</string>
+  <string name="private_tab">Tab privat</string>
   <string name="private_browsing_title">Penjelajahan Pribadi</string>
   <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
   <string name="private_browsing_open_action">BUKA</string>

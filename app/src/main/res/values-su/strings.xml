@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s bakal kukumpul data nu diperlukeun hungkul jang nyadiakeun jeung ngoméan %1$s pikeun anjeun.</string>
   <string name="preference_learn_more">Lenyepan</string>
   <string name="preference_about">Ngeunaan</string>
+  <string name="preference_night_mode_brightness">Kacaangan modeu peuting</string>
   <string name="content_description_clear_input">Beresihan asupan</string>
   <string name="content_description_dismiss_input">Tutup</string>
   <string name="content_description_lock">Sambungan aman</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">Téwakan kuring</string>
   <string name="label_menu_capture_page">Téwak kaca</string>
   <string name="label_menu_turbo_mode">Modeu turbo</string>
+  <string name="label_menu_night_mode">Modeu peuting</string>
   <string name="label_menu_block_ads">Peungpeuk iklan</string>
   <string name="label_menu_block_image">Peungpeuk gambar</string>
   <string name="label_menu_settings">Setélan</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">Markah diapdét</string>
   <string name="bookmarks_empty_view_msg">Euweuh markah</string>
   <string name="edit_bookmark">Édit</string>
+  <string name="private_tab">Tab privat</string>
   <string name="private_browsing_title">Langlangan Nyalindung</string>
   <string name="private_browsing_erase_message">Pupus jujutan langlangan nyalindung</string>
   <string name="private_browsing_open_action">BUKA</string>

@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang %2$s na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
   <string name="preference_learn_more">Detalye</string>
   <string name="preference_about">Tungkol sa</string>
+  <string name="preference_night_mode_brightness">Liwanag ng Night Mode</string>
   <string name="content_description_clear_input">Burahin ang input</string>
   <string name="content_description_dismiss_input">Alisin</string>
   <string name="content_description_lock">Secure na koneksyon</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">Mga kuha ko</string>
   <string name="label_menu_capture_page">Kunan ang page</string>
   <string name="label_menu_turbo_mode">Turbo mode</string>
+  <string name="label_menu_night_mode">Night mode</string>
   <string name="label_menu_block_ads">Hadlangan ang mga Ads</string>
   <string name="label_menu_block_image">Walang imahe</string>
   <string name="label_menu_settings">Mga Setting</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">Na-update na ang bookmark</string>
   <string name="bookmarks_empty_view_msg">Walang mga bookmark</string>
   <string name="edit_bookmark">I-Edit</string>
+  <string name="private_tab">Private tab</string>
   <string name="private_browsing_title">Magbrowse ng Pribado</string>
   <string name="private_browsing_erase_message">Burahin ang kasaysayan ng private browsing</string>
   <string name="private_browsing_open_action">BUKSAN</string>
