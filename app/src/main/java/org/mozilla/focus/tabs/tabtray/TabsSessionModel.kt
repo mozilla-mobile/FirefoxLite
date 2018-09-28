@@ -95,34 +95,40 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
         }
     }
 
-    private abstract class SessionModelObserver : SessionManager.Observer {
+    private abstract class SessionModelObserver : SessionManager.Observer, Session.Observer {
+        var session: Session? = null
+
         override fun onSessionStarted(session: Session) {}
 
         override fun onSessionFinished(session: Session, isSecure: Boolean) {}
 
-        override fun onURLChanged(session: Session, url: String?) {
-            onTabModelChanged(session)
+        override fun onURLChanged(url: String?) {
+            session?.let { onTabModelChanged(it) }
         }
 
         override fun handleExternalUrl(url: String?): Boolean {
             return false
         }
 
-        override fun updateFailingUrl(session: Session, url: String?, updateFromError: Boolean) {
-            onTabModelChanged(session)
+        override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
+            session?.let { onTabModelChanged(it) }
         }
 
         override fun onProgressChanged(session: Session, progress: Int) {}
 
-        override fun onReceivedTitle(session: Session, title: String?) {
-            onTabModelChanged(session)
+        override fun onReceivedTitle(view:TabView, title: String?) {
+            session?.let { onTabModelChanged(it) }
         }
 
-        override fun onReceivedIcon(session: Session, icon: Bitmap?) {
-            onTabModelChanged(session)
+        override fun onReceivedIcon(view: TabView, icon: Bitmap?) {
+            session?.let { onTabModelChanged(it) }
         }
 
-        override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {}
+        override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {
+            this.session?.let { it.unregister(this) }
+            this.session = session
+            this.session?.let { it.register(this) }
+        }
 
         override fun onSessionAdded(session: Session, arguments: Bundle?) {}
 
