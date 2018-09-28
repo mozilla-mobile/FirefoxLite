@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.httprequest.HttpRequest;
 
 import java.io.OutputStream;

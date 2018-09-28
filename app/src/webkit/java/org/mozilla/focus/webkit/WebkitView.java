@@ -31,7 +31,7 @@ import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.rocket.tabs.SiteIdentity;

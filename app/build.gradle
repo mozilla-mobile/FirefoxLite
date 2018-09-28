@@ -199,6 +199,7 @@ dependencies {
     implementation project(':urlutils')
     implementation project(':icon')
     implementation project(':logger')
+    implementation project(':threadutils')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 

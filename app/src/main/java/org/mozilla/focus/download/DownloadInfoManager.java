@@ -21,7 +21,7 @@ import android.webkit.MimeTypeMap;
 
 import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.utils.CursorUtils;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
 import java.net.URLEncoder;
