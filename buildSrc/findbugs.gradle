@@ -13,7 +13,7 @@ findbugs {
 }
 
 tasks.create([ "type" : FindBugs, "dependsOn" : "assemble", "group": "verification", "name": "findbugs"]) {
-    classes = files("$projectDir.absolutePath/build/intermediates/classes")
+    classes = files("$projectDir.absolutePath/build/intermediates/javac")
 
     source = fileTree('src/main/java')
     classpath = files()
