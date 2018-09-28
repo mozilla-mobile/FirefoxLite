@@ -9,7 +9,7 @@ dependencies {
 }
 
 afterEvaluate {
-    check.dependsOn 'findbugs', 'pmd', 'checkstyle'
+    check.dependsOn 'pmd', 'checkstyle'
 }
 
 sourceCompatibility = "1.8"
