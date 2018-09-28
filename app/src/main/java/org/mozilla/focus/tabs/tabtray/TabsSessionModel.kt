@@ -3,190 +3,145 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.tabs.tabtray;
+package org.mozilla.focus.tabs.tabtray
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.View;
-import android.webkit.GeolocationPermissions;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Bundle
+import android.view.View
+import android.webkit.GeolocationPermissions
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 
-import org.mozilla.focus.BuildConfig;
-import org.mozilla.rocket.tabs.Session;
-import org.mozilla.rocket.tabs.SessionManager;
-import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.focus.BuildConfig
+import org.mozilla.rocket.tabs.Session
+import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.SessionManager.Observer
+import org.mozilla.rocket.tabs.TabView
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList
 
-class TabsSessionModel implements TabTrayContract.Model {
-    @NonNull
-    private SessionManager sessionManager;
-    private SessionModelObserver modelObserver;
+internal class TabsSessionModel(private val sessionManager: SessionManager) : TabTrayContract.Model {
+    private var modelObserver: SessionModelObserver? = null
 
-    private List<Session> tabs = new ArrayList<>();
+    private val tabs = ArrayList<Session>()
 
-    TabsSessionModel(@NonNull SessionManager sessionManager) {
-        this.sessionManager = sessionManager;
+    override fun loadTabs(listener: TabTrayContract.Model.OnLoadCompleteListener?) {
+        tabs.clear()
+        tabs.addAll(sessionManager.getTabs())
+
+        listener?.onLoadComplete()
     }
 
-    @Override
-    public void loadTabs(OnLoadCompleteListener listener) {
-        tabs.clear();
-        tabs.addAll(sessionManager.getTabs());
-
-        if (listener != null) {
-            listener.onLoadComplete();
-        }
+    override fun getTabs(): List<Session> {
+        return tabs
     }
 
-    @Override
-    public List<Session> getTabs() {
-        return tabs;
+    override fun getFocusedTab(): Session? {
+        return sessionManager.focusSession
     }
 
-    @Override
-    public Session getFocusedTab() {
-        return sessionManager.getFocusSession();
-    }
-
-    @Override
-    public void switchTab(int tabPosition) {
-        if (tabPosition >= 0 && tabPosition < tabs.size()) {
-            Session target = tabs.get(tabPosition);
-            List<Session> latestTabs = sessionManager.getTabs();
-            boolean exist = latestTabs.indexOf(target) != -1;
+    override fun switchTab(tabPosition: Int) {
+        if (tabPosition >= 0 && tabPosition < tabs.size) {
+            val target = tabs[tabPosition]
+            val latestTabs = sessionManager.getTabs()
+            val exist = latestTabs.indexOf(target) != -1
             if (exist) {
-                sessionManager.switchToTab(target.getId());
+                sessionManager.switchToTab(target.id)
             }
         } else {
             if (BuildConfig.DEBUG) {
-                throw new ArrayIndexOutOfBoundsException("index: " + tabPosition + ", size: " + tabs.size());
+                throw ArrayIndexOutOfBoundsException("index: " + tabPosition + ", size: " + tabs.size)
             }
         }
     }
 
-    @Override
-    public void removeTab(int tabPosition) {
-        if (tabPosition >= 0 && tabPosition < tabs.size()) {
-            sessionManager.dropTab(tabs.get(tabPosition).getId());
+    override fun removeTab(tabPosition: Int) {
+        if (tabPosition >= 0 && tabPosition < tabs.size) {
+            sessionManager.dropTab(tabs[tabPosition].id)
         } else {
             if (BuildConfig.DEBUG) {
-                throw new ArrayIndexOutOfBoundsException("index: " + tabPosition + ", size: " + tabs.size());
+                throw ArrayIndexOutOfBoundsException("index: " + tabPosition + ", size: " + tabs.size)
             }
         }
     }
 
-    @Override
-    public void clearTabs() {
-        List<Session> tabs = sessionManager.getTabs();
-        for (Session tab : tabs) {
-            sessionManager.dropTab(tab.getId());
+    override fun clearTabs() {
+        val tabs = sessionManager.getTabs()
+        for (tab in tabs) {
+            sessionManager.dropTab(tab.id)
         }
     }
 
-    @Override
-    public void subscribe(final Observer observer) {
+    override fun subscribe(observer: TabTrayContract.Model.Observer) {
         if (this.modelObserver == null) {
-            this.modelObserver = new SessionModelObserver() {
-                @Override
-                void onTabModelChanged(Session tab) {
-                    observer.onTabUpdate(tab);
+            this.modelObserver = object : SessionModelObserver() {
+                override fun onTabModelChanged(session: Session) {
+                    observer.onTabUpdate(session)
                 }
 
-                @Override
-                public void onSessionCountChanged(int count) {
-                    observer.onUpdate(sessionManager.getTabs());
+                override fun onSessionCountChanged(count: Int) {
+                    observer.onUpdate(sessionManager.getTabs())
                 }
-            };
+            }
         }
-        sessionManager.register(this.modelObserver);
+        sessionManager.register(this.modelObserver as Observer)
     }
 
-    @Override
-    public void unsubscribe() {
+    override fun unsubscribe() {
         if (modelObserver != null) {
-            sessionManager.unregister(modelObserver);
-            modelObserver = null;
+            sessionManager.unregister(modelObserver as Observer)
+            modelObserver = null
         }
     }
 
-    private static abstract class SessionModelObserver implements SessionManager.Observer {
-        @Override
-        public void onSessionStarted(@NonNull Session tab) {
+    private abstract class SessionModelObserver : SessionManager.Observer {
+        override fun onSessionStarted(session: Session) {}
+
+        override fun onSessionFinished(session: Session, isSecure: Boolean) {}
+
+        override fun onURLChanged(session: Session, url: String?) {
+            onTabModelChanged(session)
         }
 
-        @Override
-        public void onSessionFinished(@NonNull Session tab, boolean isSecure) {
+        override fun handleExternalUrl(url: String?): Boolean {
+            return false
         }
 
-        @Override
-        public void onURLChanged(@NonNull Session tab, String url) {
-            onTabModelChanged(tab);
+        override fun updateFailingUrl(session: Session, url: String?, updateFromError: Boolean) {
+            onTabModelChanged(session)
         }
 
-        @Override
-        public boolean handleExternalUrl(String url) {
-            return false;
+        override fun onProgressChanged(session: Session, progress: Int) {}
+
+        override fun onReceivedTitle(session: Session, title: String?) {
+            onTabModelChanged(session)
         }
 
-        @Override
-        public void updateFailingUrl(@NonNull Session tab, String url, boolean updateFromError) {
-            onTabModelChanged(tab);
+        override fun onReceivedIcon(session: Session, icon: Bitmap?) {
+            onTabModelChanged(session)
         }
 
-        @Override
-        public void onProgressChanged(@NonNull Session tab, int progress) {
+        override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {}
+
+        override fun onSessionAdded(session: Session, arguments: Bundle?) {}
+
+        override fun onSessionCountChanged(count: Int) {}
+
+        override fun onLongPress(session: Session, hitTarget: TabView.HitTarget?) {}
+
+        override fun onEnterFullScreen(session: Session, callback: TabView.FullscreenCallback, fullscreenContent: View?) {}
+
+        override fun onExitFullScreen(session: Session) {}
+
+        override fun onShowFileChooser(session: Session, filePathCallback: ValueCallback<Array<Uri>>, fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
+            return false
         }
 
-        @Override
-        public void onReceivedTitle(@NonNull Session tab, String title) {
-            onTabModelChanged(tab);
-        }
-
-        @Override
-        public void onReceivedIcon(@NonNull Session tab, Bitmap icon) {
-            onTabModelChanged(tab);
-        }
-
-        @Override
-        public void onFocusChanged(@Nullable Session tab, SessionManager.Factor factor) {
-        }
-
-        @Override
-        public void onSessionAdded(@NonNull Session tab, @Nullable Bundle arguments) {
-        }
-
-        @Override
-        public void onSessionCountChanged(int count) {
-        }
-
-        @Override
-        public void onLongPress(@NonNull Session tab, TabView.HitTarget hitTarget) {
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull Session tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
-        }
-
-        @Override
-        public void onExitFullScreen(@NonNull Session tab) {
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NonNull Session tab, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-            return false;
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Session tab, String origin, GeolocationPermissions.Callback callback) {
+        override fun onGeolocationPermissionsShowPrompt(session: Session, origin: String?, callback: GeolocationPermissions.Callback?) {
 
         }
 
-        abstract void onTabModelChanged(Session tab);
+        internal abstract fun onTabModelChanged(session: Session)
     }
 }
