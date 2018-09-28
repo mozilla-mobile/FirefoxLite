@@ -988,120 +988,23 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     class SessionObserver implements Session.Observer {
-        @Override
-        public void onSessionStarted(@Nullable String url) {
-        }
-
-        @Override
-        public void onSessionFinished(boolean isSecure) {
-        }
-
-        @Override
-        public void onURLChanged(@Nullable String url) {
-        }
-
-        @Override
-        public boolean handleExternalUrl(@Nullable String url) {
-            return false;
-        }
-
-        @Override
-        public void updateFailingUrl(@Nullable String url, boolean updateFromError) {
-        }
-
-        @Override
-        public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, @Nullable Message msg) {
-            return false;
-        }
-
-        @Override
-        public void onCloseWindow(@Nullable TabView tabView) {
-        }
-
-        @Override
-        public void onProgressChanged(int progress) {
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NonNull TabView tabView,
-                                         @NonNull ValueCallback<Uri[]> filePathCallback,
-                                         @NonNull WebChromeClient.FileChooserParams fileChooserParams) {
-            return false;
-        }
-
-        @Override
-        public void onReceivedTitle(@NonNull TabView view, @Nullable String title) {
-        }
-
-        @Override
-        public void onReceivedIcon(@NonNull TabView view, @Nullable Bitmap icon) {
-        }
-
-        @Override
-        public void onLongPress(@NonNull TabView.HitTarget hitTarget) {
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback,
-                                      @Nullable View view) {
-        }
-
-        @Override
-        public void onExitFullScreen() {
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull String origin,
-                                                       @Nullable GeolocationPermissions.Callback callback) {
-        }
-    }
-
-    class SessionManagerObserver implements SessionManager.Observer {
+        @Nullable
+        private Session session;
         private HistoryInserter historyInserter = new HistoryInserter();
 
         // Some url may report progress from 0 again for the same url. filter them out to avoid
         // progress bar regression when scrolling.
         private String loadedUrl = null;
 
-        private ValueAnimator tabTransitionAnimator;
-
         @Override
-        public void onFocusChanged(@Nullable final Session tab, SessionManager.Factor factor) {
-            if (tab == null) {
-                if (factor == SessionManager.Factor.FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
-                    ScreenNavigator.get(getContext()).popToHomeScreen(true);
-                } else {
-                    getActivity().finish();
-                }
-            } else {
-
-                transitToTab(tab);
-                refreshChrome(tab);
-            }
-        }
-
-        @Override
-        public void onSessionAdded(@NonNull final Session tab, @Nullable final Bundle arguments) {
-            if (arguments == null) {
+        public void onSessionStarted(@Nullable String url) {
+            if (session == null) {
                 return;
             }
 
-            int src = arguments.getInt(EXTRA_NEW_TAB_SRC, -1);
-            switch (src) {
-                case SRC_CONTEXT_MENU:
-                    onTabAddedByContextMenu(tab, arguments);
-                    break;
+            historyInserter.onTabStarted(session);
 
-                default:
-                    break;
-            }
-        }
-
-        @Override
-        public void onSessionStarted(@NonNull Session tab) {
-            historyInserter.onTabStarted(tab);
-
-            if (!isForegroundTab(tab)) {
+            if (!isForegroundSession(session)) {
                 return;
             }
 
@@ -1109,25 +1012,22 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             updateIsLoading(true);
 
-            updateURL(tab.getUrl());
+            updateURL(session.getUrl());
             siteIdentity.setImageLevel(SITE_GLOBE);
 
             backgroundTransition.resetTransition();
         }
 
-        private void updateUrlFromWebView(@NonNull Session source) {
-            if (sessionManager.getFocusSession() != null) {
-                final String viewURL = sessionManager.getFocusSession().getUrl();
-                onURLChanged(source, viewURL);
-            }
-        }
-
         @Override
-        public void onSessionFinished(@NonNull Session tab, boolean isSecure) {
-            if (isForegroundTab(tab)) {
+        public void onSessionFinished(boolean isSecure) {
+            if (session == null) {
+                return;
+            }
+
+            if (isForegroundSession(session)) {
                 // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
                 // URL is always correct _except_ for error pages
-                updateUrlFromWebView(tab);
+                updateUrlFromWebView(session);
 
                 updateIsLoading(false);
 
@@ -1137,27 +1037,54 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
                 siteIdentity.setImageLevel(isSecure ? SITE_LOCK : SITE_GLOBE);
             }
-            historyInserter.onTabFinished(tab);
+            historyInserter.onTabFinished(session);
         }
 
         @Override
-        public void onSessionCountChanged(int count) {
-            if (isTabRestoredComplete()) {
-                tabCounter.setCountWithAnimation(count);
+        public void onURLChanged(@Nullable String url) {
+            if (session == null) {
+                return;
             }
-        }
-
-        @Override
-        public void onURLChanged(@NonNull Session tab, final String url) {
-            if (!isForegroundTab(tab)) {
+            if (!isForegroundSession(session)) {
                 return;
             }
             updateURL(url);
         }
 
         @Override
-        public void onProgressChanged(@NonNull Session tab, int progress) {
-            if (!isForegroundTab(tab)) {
+        public boolean handleExternalUrl(@Nullable String url) {
+            if (getContext() == null) {
+                Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
+                return false;
+            }
+
+            return IntentUtils.handleExternalUri(getContext(), url);
+        }
+
+        @Override
+        public void updateFailingUrl(@Nullable String url, boolean updateFromError) {
+            if (session == null) {
+                return;
+            }
+            historyInserter.updateFailingUrl(session, url, updateFromError);
+        }
+
+        @Override
+        public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, @Nullable Message msg) {
+            // session manager handled this
+            return false;
+        }
+
+        @Override
+        public void onCloseWindow(@Nullable TabView tabView) {
+        }
+
+        @Override
+        public void onProgressChanged(int progress) {
+            if (session == null) {
+                return;
+            }
+            if (!isForegroundSession(session)) {
                 return;
             }
 
@@ -1180,22 +1107,43 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public boolean handleExternalUrl(final String url) {
-            if (getContext() == null) {
-                Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
+        public boolean onShowFileChooser(@NonNull TabView tabView,
+                                         @NonNull ValueCallback<Uri[]> filePathCallback,
+                                         @NonNull WebChromeClient.FileChooserParams fileChooserParams) {
+            if (!isForegroundSession(session)) {
                 return false;
             }
 
-            return IntentUtils.handleExternalUri(getContext(), url);
+            TelemetryWrapper.browseFilePermissionEvent();
+            try {
+                BrowserFragment.this.fileChooseAction = new FileChooseAction(BrowserFragment.this, filePathCallback, fileChooserParams);
+                permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.READ_EXTERNAL_STORAGE, BrowserFragment.ACTION_PICK_FILE, null);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         }
 
         @Override
-        public void updateFailingUrl(@NonNull Session tab, String url, boolean updateFromError) {
-            historyInserter.updateFailingUrl(tab, url, updateFromError);
+        public void onReceivedTitle(@NonNull TabView view, @Nullable String title) {
+            if (session == null) {
+                return;
+            }
+            if (!isForegroundSession(session)) {
+                return;
+            }
+            if (!BrowserFragment.this.getUrl().equals(session.getUrl())) {
+                updateURL(session.getUrl());
+            }
         }
 
         @Override
-        public void onLongPress(@NonNull Session tab, final TabView.HitTarget hitTarget) {
+        public void onReceivedIcon(@NonNull TabView view, @Nullable Bitmap icon) {
+        }
+
+        @Override
+        public void onLongPress(@NonNull TabView.HitTarget hitTarget) {
             if (getActivity() == null) {
                 Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback onLongPress");
                 return;
@@ -1205,17 +1153,19 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onEnterFullScreen(@NonNull Session tab,
-                                      @NonNull final TabView.FullscreenCallback callback,
+        public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback,
                                       @Nullable View fullscreenContentView) {
-            if (!isForegroundTab(tab)) {
+            if (session == null) {
+                return;
+            }
+            if (!isForegroundSession(session)) {
                 callback.fullScreenExited();
                 return;
             }
 
             fullscreenCallback = callback;
 
-            if (tab.getTabView() != null && fullscreenContentView != null) {
+            if (session.getTabView() != null && fullscreenContentView != null) {
                 // Hide browser UI and web content
                 browserContainer.setVisibility(View.INVISIBLE);
 
@@ -1231,7 +1181,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onExitFullScreen(@NonNull Session tab) {
+        public void onExitFullScreen() {
+            if (session == null) {
+                return;
+            }
             // Remove custom video views and hide container
             videoContainer.removeAllViews();
             videoContainer.setVisibility(View.GONE);
@@ -1256,51 +1209,136 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            if (tab.getTabView() instanceof WebView) {
-                ((WebView) tab.getTabView()).clearFocus();
+            if (session.getTabView() instanceof WebView) {
+                ((WebView) session.getTabView()).clearFocus();
             }
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(@NonNull String origin,
+                                                       @Nullable GeolocationPermissions.Callback callback) {
+            if (session == null) {
+                return;
+            }
+            if (!isForegroundSession(session) || !isPopupWindowAllowed()) {
+                return;
+            }
+
+            geolocationOrigin = origin;
+            geolocationCallback = callback;
+            permissionHandler.tryAction(BrowserFragment.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    ACTION_GEO_LOCATION,
+                    null);
+        }
+
+        private void updateUrlFromWebView(@NonNull Session source) {
+            if (sessionManager.getFocusSession() != null) {
+                final String viewURL = sessionManager.getFocusSession().getUrl();
+                onURLChanged(viewURL);
+            }
+        }
+
+        private boolean isForegroundSession(Session tab) {
+            return sessionManager.getFocusSession() == tab;
+        }
+    }
+
+    class SessionManagerObserver implements SessionManager.Observer {
+        private ValueAnimator tabTransitionAnimator;
+
+        @Override
+        public void onFocusChanged(@Nullable final Session tab, SessionManager.Factor factor) {
+            if (tab == null) {
+                if (factor == SessionManager.Factor.FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
+                    ScreenNavigator.get(getContext()).popToHomeScreen(true);
+                } else {
+                    getActivity().finish();
+                }
+            } else {
+                transitToTab(tab);
+                refreshChrome(tab);
+            }
+        }
+
+        @Override
+        public void onSessionAdded(@NonNull final Session tab, @Nullable final Bundle arguments) {
+            if (arguments == null) {
+                return;
+            }
+
+            int src = arguments.getInt(EXTRA_NEW_TAB_SRC, -1);
+            switch (src) {
+                case SRC_CONTEXT_MENU:
+                    onTabAddedByContextMenu(tab, arguments);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public void onSessionStarted(@NonNull Session tab) {
+        }
+
+        @Override
+        public void onSessionFinished(@NonNull Session tab, boolean isSecure) {
+        }
+
+        @Override
+        public void onSessionCountChanged(int count) {
+            if (isTabRestoredComplete()) {
+                tabCounter.setCountWithAnimation(count);
+            }
+        }
+
+        @Override
+        public void onURLChanged(@NonNull Session tab, final String url) {
+        }
+
+        @Override
+        public void onProgressChanged(@NonNull Session tab, int progress) {
+        }
+
+        @Override
+        public boolean handleExternalUrl(final String url) {
+            return false;
+        }
+
+        @Override
+        public void updateFailingUrl(@NonNull Session tab, String url, boolean updateFromError) {
+        }
+
+        @Override
+        public void onLongPress(@NonNull Session tab, final TabView.HitTarget hitTarget) {
+        }
+
+        @Override
+        public void onEnterFullScreen(@NonNull Session tab,
+                                      @NonNull final TabView.FullscreenCallback callback,
+                                      @Nullable View fullscreenContentView) {
+        }
+
+        @Override
+        public void onExitFullScreen(@NonNull Session tab) {
         }
 
         @Override
         public void onGeolocationPermissionsShowPrompt(@NonNull Session tab,
                                                        final String origin,
                                                        final GeolocationPermissions.Callback callback) {
-            if (!isForegroundTab(tab) || !isPopupWindowAllowed()) {
-                return;
-            }
-
-            geolocationOrigin = origin;
-            geolocationCallback = callback;
-            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.ACCESS_FINE_LOCATION, ACTION_GEO_LOCATION, null);
         }
 
         @Override
         public boolean onShowFileChooser(@NonNull Session tab,
                                          ValueCallback<Uri[]> filePathCallback,
                                          WebChromeClient.FileChooserParams fileChooserParams) {
-            if (!isForegroundTab(tab)) {
-                return false;
-            }
-
-            TelemetryWrapper.browseFilePermissionEvent();
-            try {
-                BrowserFragment.this.fileChooseAction = new FileChooseAction(BrowserFragment.this, filePathCallback, fileChooserParams);
-                permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.READ_EXTERNAL_STORAGE, BrowserFragment.ACTION_PICK_FILE, null);
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
+            return false;
         }
 
         @Override
         public void onReceivedTitle(@NonNull Session tab, String title) {
-            if (!isForegroundTab(tab)) {
-                return;
-            }
-            if (!BrowserFragment.this.getUrl().equals(tab.getUrl())) {
-                updateURL(tab.getUrl());
-            }
         }
 
         @Override
@@ -1392,10 +1430,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (tabTransitionAnimator != null && tabTransitionAnimator.isRunning()) {
                 tabTransitionAnimator.end();
             }
-        }
-
-        private boolean isForegroundTab(Session tab) {
-            return sessionManager.getFocusSession() == tab;
         }
 
         private void onTabAddedByContextMenu(@NonNull final Session tab, @NonNull Bundle arguments) {
