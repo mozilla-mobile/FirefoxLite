@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
@@ -31,7 +32,6 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.icon.FavIconUtils;

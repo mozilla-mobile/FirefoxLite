@@ -16,6 +16,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.HomeFragment;

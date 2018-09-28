@@ -8,9 +8,9 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.preference.PreferenceManager
+import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.AppConstants
-import org.mozilla.focus.utils.FileUtils
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
