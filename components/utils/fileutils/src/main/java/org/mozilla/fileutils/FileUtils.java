@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.utils;
+package org.mozilla.fileutils;
 
 import android.Manifest;
 import android.arch.lifecycle.MutableLiveData;
@@ -15,10 +15,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.webkit.WebStorage;
 
 import org.json.JSONObject;
-import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.BufferedReader;
@@ -413,7 +413,7 @@ public class FileUtils {
                 return;
             }
             if (!file.delete()) {
-                LoggerWrapper.throwOrWarn("DeleteFileRunnable", "Failed to delete file");
+                Log.e("DeleteFileRunnable", "Failed to delete file");
             }
         }
     }

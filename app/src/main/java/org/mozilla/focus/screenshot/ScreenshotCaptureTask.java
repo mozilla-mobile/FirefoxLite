@@ -10,10 +10,10 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.StorageUtils;
 
 import java.io.File;

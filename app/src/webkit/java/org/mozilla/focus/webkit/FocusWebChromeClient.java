@@ -12,10 +12,10 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.TabChromeClient;
 import org.mozilla.rocket.tabs.TabView;
