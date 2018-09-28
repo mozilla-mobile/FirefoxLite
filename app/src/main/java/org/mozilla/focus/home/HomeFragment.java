@@ -84,7 +84,7 @@ import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
-import org.mozilla.rocket.util.Logger;
+import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
@@ -251,7 +251,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG, bannerConfigViewModel.getConfig(), HomeFragment::stringToStringArray).execute();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-            Logger.throwOrWarn(TAG, "Failed to open Cache directory when reading cached banner config");
+            LoggerWrapper.throwOrWarn(TAG, "Failed to open Cache directory when reading cached banner config");
         }
         // Setup from Network
         String manifest = AppConfigWrapper.getBannerRootConfig(context);
@@ -280,7 +280,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             banner.setAdapter(bannerAdapter);
             showBanner(true);
         } catch (JSONException e) {
-            Logger.throwOrWarn(TAG, "Invalid Config: " + e.getMessage());
+            LoggerWrapper.throwOrWarn(TAG, "Invalid Config: " + e.getMessage());
         }
     }
 
@@ -290,7 +290,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             ThreadUtils.postToBackgroundThread(runnable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-            Logger.throwOrWarn(TAG, "Failed to open cache directory when writing banner config to cache");
+            LoggerWrapper.throwOrWarn(TAG, "Failed to open cache directory when writing banner config to cache");
         }
     }
 
@@ -300,7 +300,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             ThreadUtils.postToBackgroundThread(runnable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-            Logger.throwOrWarn(TAG, "Failed to open cache directory when deleting banner cache");
+            LoggerWrapper.throwOrWarn(TAG, "Failed to open cache directory when deleting banner cache");
         }
     }
 

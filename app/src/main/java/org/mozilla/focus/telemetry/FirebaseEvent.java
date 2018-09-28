@@ -11,11 +11,9 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
-import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FirebaseHelper;
-import org.mozilla.rocket.util.Logger;
+import org.mozilla.rocket.util.LoggerWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,10 +65,10 @@ class FirebaseEvent {
 
             // we only care about prefixLength if the total length is too long
             if (prefixLength > MAX_LENGTH_EVENT_NAME_PREFIX) {
-                Logger.throwOrWarn(TAG, "Event[" + this.eventName + "]'s prefixLength too long  " + prefixLength + " of " + MAX_LENGTH_EVENT_NAME_PREFIX);
+                LoggerWrapper.throwOrWarn(TAG, "Event[" + this.eventName + "]'s prefixLength too long  " + prefixLength + " of " + MAX_LENGTH_EVENT_NAME_PREFIX);
             }
 
-            Logger.throwOrWarn(TAG, "Event[" + this.eventName + "] exceeds Firebase event name limit " + this.eventName.length() + " of " + MAX_LENGTH_EVENT_NAME);
+            LoggerWrapper.throwOrWarn(TAG, "Event[" + this.eventName + "] exceeds Firebase event name limit " + this.eventName.length() + " of " + MAX_LENGTH_EVENT_NAME);
 
             // fix the value if we just want to warn
             if (value != null) {
@@ -93,7 +91,7 @@ class FirebaseEvent {
         }
         // validate the size
         if (this.eventParam.size() >= MAX_PARAM_SIZE) {
-            Logger.throwOrWarn(TAG, "Firebase event[" + eventName + "] has too many parameters");
+            LoggerWrapper.throwOrWarn(TAG, "Firebase event[" + eventName + "] has too many parameters");
         }
 
         this.eventParam.putString(safeParamLength(name, MAX_LENGTH_PARAM_NAME),
@@ -107,7 +105,7 @@ class FirebaseEvent {
     private static String safeParamLength(@NonNull final String str, final int end) {
         // validate the length
         if (str.length() > end) {
-            Logger.throwOrWarn(TAG, "Exceeding limit of param content length:" + str.length() + " of " + end);
+            LoggerWrapper.throwOrWarn(TAG, "Exceeding limit of param content length:" + str.length() + " of " + end);
         }
         // fix the value if we just want to warn
         return str.substring(0,

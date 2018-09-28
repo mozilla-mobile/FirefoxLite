@@ -18,7 +18,7 @@ import android.support.annotation.NonNull;
 import android.webkit.WebStorage;
 
 import org.json.JSONObject;
-import org.mozilla.rocket.util.Logger;
+import org.mozilla.rocket.util.LoggerWrapper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -412,7 +412,7 @@ public class FileUtils {
                 return;
             }
             if (!file.delete()) {
-                Logger.throwOrWarn("DeleteFileRunnable", "Failed to delete file");
+                LoggerWrapper.throwOrWarn("DeleteFileRunnable", "Failed to delete file");
             }
         }
     }
