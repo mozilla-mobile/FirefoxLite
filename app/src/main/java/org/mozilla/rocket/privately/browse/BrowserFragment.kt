@@ -246,10 +246,6 @@ class BrowserFragment : LocaleAwareFragment(),
         var callback: FullscreenCallback? = null
         var session: Session? = null
 
-        override fun handleExternalUrl(url: String?): Boolean {
-            return false
-        }
-
         override fun onSessionAdded(session: Session, arguments: Bundle?) {
             super.onSessionAdded(session, arguments)
             fragment.tabViewSlot.addView(session.tabView!!.view)

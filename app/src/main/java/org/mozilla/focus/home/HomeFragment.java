@@ -19,7 +19,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -81,7 +80,6 @@ import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
-import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.LoggerWrapper;
@@ -794,21 +792,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private class SessionManagerObserver implements SessionManager.Observer {
 
         @Override
-        public void onProgressChanged(@NonNull Session tab, int progress) {
-            // do nothing
-        }
-
-        @Override
-        public void onReceivedTitle(@NonNull Session tab, String title) {
-            // do nothing
-        }
-
-        @Override
-        public void onReceivedIcon(@NonNull Session tab, Bitmap icon) {
-            // do nothing
-        }
-
-        @Override
         public void onFocusChanged(@Nullable Session tab, SessionManager.Factor factor) {
             // do nothing
         }
@@ -823,59 +806,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             updateTabCounter();
         }
 
-        @Override
-        public void onLongPress(@NonNull Session tab, TabView.HitTarget hitTarget) {
-            // do nothing
-        }
-
-        @Override
-        public void onEnterFullScreen(@NonNull Session tab, @NonNull TabView.FullscreenCallback callback, @Nullable View fullscreenContent) {
-            // do nothing
-        }
-
-        @Override
-        public void onExitFullScreen(@NonNull Session tab) {
-            // do nothing
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NonNull Session tab,
-                                         ValueCallback<Uri[]> filePathCallback,
-                                         WebChromeClient.FileChooserParams fileChooserParams) {
-            // do nothing
-            return false;
-        }
-
-        @Override
-        public void onGeolocationPermissionsShowPrompt(@NonNull Session tab, String origin, GeolocationPermissions.Callback callback) {
-            // do nothing
-        }
-
-        @Override
-        public void onSessionStarted(@NonNull Session session) {
-            // do nothing
-
-        }
-
-        @Override
-        public void onSessionFinished(@NonNull Session session, boolean isSecure) {
-            // do nothing
-        }
-
-        @Override
-        public void onURLChanged(@NonNull Session session, @org.jetbrains.annotations.Nullable String url) {
-            // do nothing
-        }
-
-        @Override
-        public boolean handleExternalUrl(@org.jetbrains.annotations.Nullable String url) {
-            return false;
-        }
-
-        @Override
-        public void updateFailingUrl(@NonNull Session session, @org.jetbrains.annotations.Nullable String url, boolean updateFromError) {
-            // do nothing
-        }
     }
 
     private interface DoWithThemeManager {

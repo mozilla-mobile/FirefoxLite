@@ -5,17 +5,11 @@
 
 package org.mozilla.rocket.tabs
 
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
-import android.view.View
-import android.webkit.GeolocationPermissions
-import android.webkit.ValueCallback
-import android.webkit.WebChromeClient
 import mozilla.components.support.base.observer.Consumable
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
@@ -34,8 +28,6 @@ import java.util.LinkedList
 
 internal val MSG_FOCUS_TAB = 0x1001
 internal val MSG_ADDED_TAB = 0x1002
-
-typealias FileChooserArgs = Triple<Session, ValueCallback<Array<Uri>>, WebChromeClient.FileChooserParams>
 
 /**
  * Class to help on sessions management, such as adding or removing sessions.
@@ -358,20 +350,10 @@ class SessionManager @JvmOverloads constructor(
 
     internal inner class SessionObserver(var source: Session) : Session.Observer {
 
-        override fun onSessionStarted(url: String?) = notifyObservers { onSessionStarted(source) }
-
-        override fun onSessionFinished(isSecure: Boolean) = notifyObservers { onSessionFinished(source, isSecure) }
-
-        override fun onURLChanged(url: String?) = notifyObservers { onURLChanged(source, url) }
-
         override fun handleExternalUrl(url: String?): Boolean {
             // only return false if none of listeners handled external url.
             val consumers = wrapConsumers<String?> { handleExternalUrl(it) }
             return Consumable.from(url).consumeBy(consumers)
-        }
-
-        override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
-            notifyObservers { updateFailingUrl(source, url, updateFromError) }
         }
 
         override fun onCreateWindow(
@@ -407,44 +389,6 @@ class SessionManager @JvmOverloads constructor(
                     }
                 }
             }
-        }
-
-        override fun onProgressChanged(progress: Int) {
-            notifyObservers { onProgressChanged(source, progress) }
-        }
-
-        override fun onShowFileChooser(tabView: TabView,
-                                       filePathCallback: ValueCallback<Array<Uri>>,
-                                       fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
-            val consumers = wrapConsumers<FileChooserArgs> {
-                onShowFileChooser(it.first, it.second, it.third)
-            }
-            val arg = Triple(source, filePathCallback, fileChooserParams)
-            return Consumable.from(arg).consumeBy(consumers)
-        }
-
-        override fun onReceivedTitle(view: TabView, title: String?) {
-            notifyObservers { onReceivedTitle(source, title) }
-        }
-
-        override fun onReceivedIcon(view: TabView, icon: Bitmap?) = notifyObservers { onReceivedIcon(source, icon) }
-
-        override fun onLongPress(hitTarget: TabView.HitTarget) {
-            notifyObservers { onLongPress(source, hitTarget) }
-        }
-
-        override fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) {
-            notifyObservers { onEnterFullScreen(source, callback, view) }
-        }
-
-        override fun onExitFullScreen() {
-            notifyObservers { onExitFullScreen(source) }
-        }
-
-        override fun onGeolocationPermissionsShowPrompt(
-                origin: String,
-                callback: GeolocationPermissions.Callback?) {
-            notifyObservers { onGeolocationPermissionsShowPrompt(source, origin, callback) }
         }
     }
 
@@ -505,43 +449,6 @@ class SessionManager @JvmOverloads constructor(
     }
 
     interface Observer {
-        fun onSessionStarted(session: Session) = Unit
-        fun onSessionFinished(session: Session, isSecure: Boolean) = Unit
-        fun onURLChanged(session: Session, url: String?) = Unit
-
-        /**
-         * Subsequent process after WebViewClient.shouldOverrideUrlLoading. TabView implementation will
-         * decide whether this function be invoke or not.
-         *
-         * @param url External url to handle
-         * @return true if this Listener already handled the external url
-         */
-        fun handleExternalUrl(url: String?): Boolean = false
-
-        /**
-         * Subsequent process after WebViewClient.onReceivedError.
-         *
-         * @param url The url that failed to load.
-         * @param updateFromError To indicate whether this callback is invoked under error. If page started loading, this value would be true.
-         * @return true Return true if the URL was handled, false if we should continue loading the current URL.
-         */
-        fun updateFailingUrl(session: Session, url: String?, updateFromError: Boolean) = Unit
-
-        /**
-         * @see android.webkit.WebChromeClient#onProgressChanged(android.webkit.WebView, int)
-         */
-        fun onProgressChanged(session: Session, progress: Int) = Unit
-
-        /**
-         * @see android.webkit.WebChromeClient#onReceivedTitle(android.webkit.WebView, String)
-         */
-        fun onReceivedTitle(session: Session, title: String?) = Unit
-
-        /**
-         * @see android.webkit.WebChromeClient#onReceivedIcon(android.webkit.WebView, Bitmap)
-         */
-        fun onReceivedIcon(session: Session, icon: Bitmap?) = Unit
-
         /**
          * Notify the host application a tab becomes 'focused tab'. It usually happens when adding,
          * removing or switching tabs.
@@ -566,56 +473,5 @@ class SessionManager @JvmOverloads constructor(
          * @param count total tabs count
          */
         fun onSessionCountChanged(count: Int) = Unit
-
-        /**
-         * Notify the host application that long-press happened on a tab
-         *
-         * @param session The tab received long press event
-         * @param hitTarget
-         */
-        fun onLongPress(session: Session, hitTarget: TabView.HitTarget?) = Unit
-
-        /**
-         * Notify the host application that a tab has entered full screen mode.
-         * <p>
-         * Some TabView implementations may pass a custom View which contains the web contents in
-         * full screen mode.
-         *
-         * @param session The tab which entered fullscreen.
-         * @param callback The callback needs to be invoked to request the page to exit full screen mode.
-         * @param fullscreenContent The contentView requested to be displayed in fullscreen
-         */
-        fun onEnterFullScreen(session: Session,
-                              callback: TabView.FullscreenCallback,
-                              fullscreenContent: View?) = Unit
-
-        /**
-         * Notify the host application that the a tab has exited full screen mode.
-         * <p>
-         * If a View was passed when the application entered full screen mode then this view must
-         * be hidden now.
-         *
-         * @param session the tab which which existed fullscreen.
-         */
-        fun onExitFullScreen(session: Session) = Unit
-
-        /**
-         * Notify the host application to show a file chooser. Usually for file uploading.
-         *
-         * @param session The tab which is asking file chooser.
-         * @param filePathCallback
-         * @param fileChooserParams
-         * @see android.webkit.WebChromeClient#onShowFileChooser(android.webkit.WebView, ValueCallback, WebChromeClient.FileChooserParams)
-         */
-        fun onShowFileChooser(session: Session,
-                              filePathCallback: ValueCallback<Array<Uri>>,
-                              fileChooserParams: WebChromeClient.FileChooserParams): Boolean = false
-
-        /**
-         * @see android.webkit.WebChromeClient#onGeolocationPermissionsShowPrompt(String, GeolocationPermissions.Callback)
-         */
-        fun onGeolocationPermissionsShowPrompt(session: Session,
-                                               origin: String?,
-                                               callback: GeolocationPermissions.Callback?) = Unit
     }
 }
