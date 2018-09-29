@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s 力争仅收集用来为大众改进 %1$s 所必需的数据。</string>
   <string name="preference_learn_more">详细了解</string>
   <string name="preference_about">关于</string>
+  <string name="preference_night_mode_brightness">夜间模式亮度</string>
   <string name="content_description_clear_input">清除输入内容</string>
   <string name="content_description_dismiss_input">取消输入</string>
   <string name="content_description_lock">安全连接</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">我的截图</string>
   <string name="label_menu_capture_page">截取网页</string>
   <string name="label_menu_turbo_mode">加速模式</string>
+  <string name="label_menu_night_mode">夜间模式</string>
   <string name="label_menu_block_ads">过滤广告</string>
   <string name="label_menu_block_image">无图模式</string>
   <string name="label_menu_settings">设置</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">书签已更新</string>
   <string name="bookmarks_empty_view_msg">无书签</string>
   <string name="edit_bookmark">编辑</string>
+  <string name="private_tab">隐私标签页</string>
   <string name="private_browsing_title">隐私浏览</string>
   <string name="private_browsing_erase_message">清除隐私浏览历史</string>
   <string name="private_browsing_open_action">打开</string>
