@@ -17,19 +17,20 @@ import android.text.TextUtils;
 import android.view.animation.Animation;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.fragment.BrowserFragment;
-import org.mozilla.focus.fragment.FirstrunFragment;
-import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.urlinput.UrlInputFragment;
+
+import static org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen;
+import static org.mozilla.focus.navigation.ScreenNavigator.FIRST_RUN_FRAGMENT_TAG;
+import static org.mozilla.focus.navigation.ScreenNavigator.HOME_FRAGMENT_TAG;
+import static org.mozilla.focus.navigation.ScreenNavigator.HomeScreen;
+import static org.mozilla.focus.navigation.ScreenNavigator.URL_INPUT_FRAGMENT_TAG;
 
 class TransactionHelper implements DefaultLifecycleObserver {
-    private final MainActivity activity;
+    private final ScreenNavigator.HostActivity activity;
     private BackStackListener backStackListener;
 
     private static final String ENTRY_TAG_SEPARATOR = "#";
 
-    TransactionHelper(@NonNull MainActivity activity) {
+    TransactionHelper(@NonNull ScreenNavigator.HostActivity activity) {
         this.activity = activity;
         this.backStackListener = new BackStackListener(this);
     }
@@ -67,7 +68,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
             return;
         }
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final Fragment existingFragment = fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        final Fragment existingFragment = fragmentManager.findFragmentByTag(URL_INPUT_FRAGMENT_TAG);
         if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
             // We are already showing an URL input fragment. This might have been a double click on the
             // fake URL bar. Just ignore it.
@@ -75,7 +76,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         }
 
         this.prepareUrlInput(url, sourceFragment)
-                .addToBackStack(makeEntryTag(UrlInputFragment.FRAGMENT_TAG, EntryData.TYPE_FLOATING))
+                .addToBackStack(makeEntryTag(URL_INPUT_FRAGMENT_TAG, EntryData.TYPE_FLOATING))
                 .commit();
     }
 
@@ -138,11 +139,11 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     private FragmentTransaction prepareFirstRun() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final FirstrunFragment fragment = this.activity.createFirstRunFragment();
+        final ScreenNavigator.Screen screen = this.activity.createFirstRunScreen();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (fragmentManager.findFragmentByTag(FirstrunFragment.FRAGMENT_TAG) == null) {
-            transaction.replace(R.id.container, fragment, FirstrunFragment.FRAGMENT_TAG)
-                    .addToBackStack(makeEntryTag(FirstrunFragment.FRAGMENT_TAG, EntryData.TYPE_ROOT));
+        if (fragmentManager.findFragmentByTag(FIRST_RUN_FRAGMENT_TAG) == null) {
+            transaction.replace(R.id.container, screen.getFragment(), FIRST_RUN_FRAGMENT_TAG)
+                    .addToBackStack(makeEntryTag(FIRST_RUN_FRAGMENT_TAG, EntryData.TYPE_ROOT));
         }
 
         return transaction;
@@ -150,33 +151,35 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     private FragmentTransaction prepareHomeScreen(boolean animated, @EntryData.EntryType int type) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final HomeFragment fragment = this.activity.createHomeFragment();
+        final HomeScreen homeScreen = this.activity.createHomeScreen();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         int enterAnim = animated ? R.anim.tab_transition_fade_in : 0;
         int exitAnim = (type == EntryData.TYPE_ROOT) ? 0 : R.anim.tab_transition_fade_out;
         transaction.setCustomAnimations(enterAnim, 0, 0, exitAnim);
 
-        transaction.add(R.id.container, fragment, HomeFragment.FRAGMENT_TAG);
-        transaction.addToBackStack(makeEntryTag(HomeFragment.FRAGMENT_TAG, type));
+        transaction.add(R.id.container, homeScreen.getFragment(), HOME_FRAGMENT_TAG);
+        transaction.addToBackStack(makeEntryTag(HOME_FRAGMENT_TAG, type));
 
         return transaction;
     }
 
     private FragmentTransaction prepareUrlInput(@Nullable String url, String parentFragmentTag) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final UrlInputFragment urlFragment = this.activity.createUrlInputFragment(url, parentFragmentTag);
+        final ScreenNavigator.Screen urlScreen = this.activity.createUrlInputScreen(url, parentFragmentTag);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG);
+        transaction.add(R.id.container, urlScreen.getFragment(), URL_INPUT_FRAGMENT_TAG);
         return transaction;
     }
 
     void toggleFakeUrlInput(boolean visible) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final HomeFragment homeFragment =
-                (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.FRAGMENT_TAG);
-        if (homeFragment != null && homeFragment.isVisible()) {
-            homeFragment.toggleFakeUrlInput(visible);
+        final ScreenNavigator.Screen homeFragment =
+                (ScreenNavigator.Screen) fragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG);
+        if (homeFragment != null && homeFragment.getFragment().isVisible()) {
+            if (homeFragment instanceof HomeScreen) {
+                ((HomeScreen) homeFragment).toggleFakeUrlInput(visible);
+            }
         }
     }
 
@@ -221,7 +224,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
             FragmentManager manager = this.helper.activity.getSupportFragmentManager();
             Fragment fragment = manager.findFragmentById(R.id.browser);
-            if (fragment instanceof BrowserFragment) {
+            if (fragment instanceof BrowserScreen) {
                 setBrowserState(shouldKeepBrowserRunning(this.helper), this.helper);
             }
         }
@@ -276,7 +279,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
             }
 
             FragmentManager manager = this.helper.activity.getSupportFragmentManager();
-            BrowserFragment browserFragment = (BrowserFragment) manager.findFragmentById(R.id.browser);
+            BrowserScreen browserFragment = (BrowserScreen) manager.findFragmentById(R.id.browser);
             if (isForeground) {
                 browserFragment.goForeground();
             } else {

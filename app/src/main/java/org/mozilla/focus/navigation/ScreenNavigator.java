@@ -15,11 +15,6 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.fragment.BrowserFragment;
-import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.urlinput.UrlInputFragment;
 
 import java.util.Arrays;
 
@@ -29,18 +24,23 @@ import java.util.Arrays;
  * handled by TransactionHelper
  */
 public class ScreenNavigator implements DefaultLifecycleObserver {
+    public static final String FIRST_RUN_FRAGMENT_TAG = "first_run";
+    public static final String HOME_FRAGMENT_TAG = "home_screen";
+    public static final String BROWSER_FRAGMENT_TAG = "browser_screen";
+    public static final String URL_INPUT_FRAGMENT_TAG = "url_input_sceen";
+
     private static final String LOG_TAG = "ScreenNavigator";
     private static final boolean LOG_NAVIGATION = false;
 
     private TransactionHelper transactionHelper;
 
-    private MainActivity activity;
+    private HostActivity activity;
 
     private FragmentManager.FragmentLifecycleCallbacks lifecycleCallbacks = new FragmentManager.FragmentLifecycleCallbacks() {
         @Override
         public void onFragmentStarted(FragmentManager fm, Fragment f) {
             super.onFragmentStarted(fm, f);
-            if (f instanceof UrlInputFragment) {
+            if (f instanceof UrlInputScreen) {
                 ScreenNavigator.this.transactionHelper.toggleFakeUrlInput(false);
             }
         }
@@ -48,7 +48,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         @Override
         public void onFragmentStopped(FragmentManager fm, Fragment f) {
             super.onFragmentStopped(fm, f);
-            if (f instanceof UrlInputFragment) {
+            if (f instanceof UrlInputScreen) {
                 ScreenNavigator.this.transactionHelper.toggleFakeUrlInput(true);
             }
         }
@@ -66,7 +66,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         }
     }
 
-    public ScreenNavigator(@Nullable MainActivity activity) {
+    public ScreenNavigator(@Nullable HostActivity activity) {
         if (activity == null) {
             return;
         }
@@ -111,12 +111,12 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public void showBrowserScreen(String url, boolean withNewTab, boolean isFromExternal) {
         logMethod(url, withNewTab);
 
-        getBrowserFragment().loadUrl(url, withNewTab, isFromExternal, () -> raiseBrowserScreen(true));
+        getBrowserScreen().loadUrl(url, withNewTab, isFromExternal, () -> raiseBrowserScreen(true));
     }
 
     public void restoreBrowserScreen(@NonNull String tabId) {
         logMethod();
-        getBrowserFragment().loadTab(tabId);
+        getBrowserScreen().loadTab(tabId);
         raiseBrowserScreen(false);
     }
 
@@ -137,7 +137,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public void addHomeScreen(boolean animate) {
         logMethod();
 
-        boolean found = this.transactionHelper.popScreensUntil(HomeFragment.FRAGMENT_TAG, TransactionHelper.EntryData.TYPE_ATTACHED);
+        boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG, TransactionHelper.EntryData.TYPE_ATTACHED);
         log("found exist home: " + found);
         if (!found) {
             this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ATTACHED);
@@ -150,7 +150,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public void popToHomeScreen(boolean animate) {
         logMethod();
 
-        boolean found = this.transactionHelper.popScreensUntil(HomeFragment.FRAGMENT_TAG,
+        boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG,
                 TransactionHelper.EntryData.TYPE_ROOT);
         log("found exist home: " + found);
         if (!found) {
@@ -167,13 +167,13 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         logMethod();
         Fragment top = getTopFragment();
 
-        String tag = BrowserFragment.FRAGMENT_TAG;
-        if (top instanceof HomeFragment) {
-            tag = HomeFragment.FRAGMENT_TAG;
-        } else if (top instanceof BrowserFragment) {
-            tag = BrowserFragment.FRAGMENT_TAG;
+        String tag = BROWSER_FRAGMENT_TAG;
+        if (top instanceof HomeScreen) {
+            tag = HOME_FRAGMENT_TAG;
+        } else if (top instanceof BrowserScreen) {
+            tag = BROWSER_FRAGMENT_TAG;
         } else if (BuildConfig.DEBUG) {
-            throw new RuntimeException("unexpected caller of UrlInputFragment");
+            throw new RuntimeException("unexpected caller of UrlInputScreen");
         }
 
         this.transactionHelper.showUrlInput(url, tag);
@@ -182,7 +182,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public void popUrlScreen() {
         logMethod();
         Fragment top = getTopFragment();
-        if (top instanceof UrlInputFragment) {
+        if (top instanceof UrlInputScreen) {
             this.transactionHelper.dismissUrlInput();
         }
     }
@@ -190,12 +190,12 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     @Nullable
     public Fragment getTopFragment() {
         Fragment latest = this.transactionHelper.getLatestCommitFragment();
-        return (latest == null) ? getBrowserFragment() : latest;
+        return (latest == null) ? getBrowserScreen().getFragment() : latest;
     }
 
 
-    private BrowserFragment getBrowserFragment() {
-        return (BrowserFragment) activity.getSupportFragmentManager().findFragmentById(R.id.browser);
+    private BrowserScreen getBrowserScreen() {
+        return activity.getBrowserScreen();
     }
 
     public boolean canGoBack() {
@@ -243,5 +243,60 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
     public interface Provider {
         ScreenNavigator getScreenNavigator();
+    }
+
+    /**
+     * Contract class for ScreenNavigator
+     */
+    public interface HostActivity extends LifecycleOwner {
+        FragmentManager getSupportFragmentManager();
+
+        Screen createFirstRunScreen();
+
+        BrowserScreen getBrowserScreen();
+
+        HomeScreen createHomeScreen();
+
+        UrlInputScreen createUrlInputScreen(@Nullable String url, String parentFragmentTag);
+
+        void sendBrowsingTelemetry();
+
+        void onBackPressed();
+    }
+
+    /**
+     * Contract class for ScreenNavigator
+     */
+    public interface Screen {
+        Fragment getFragment();
+    }
+
+    /**
+     * Contract class for ScreenNavigator, to present a BrowserFragment
+     */
+    public interface BrowserScreen extends Screen {
+        void loadUrl(@NonNull final String url,
+                     boolean openNewTab,
+                     boolean isFromExternal,
+                     final Runnable onViewReadyCallback);
+
+        void loadTab(final String tabId);
+
+        void goForeground();
+
+        void goBackground();
+    }
+
+    /**
+     * Contract class for ScreenNavigator, to present a HomeFragment
+     */
+    public interface HomeScreen extends Screen {
+        void toggleFakeUrlInput(boolean visible);
+    }
+
+    /**
+     * Contract class for ScreenNavigator, to present an UrlInputFragment
+     */
+    public interface UrlInputScreen extends Screen {
     }
 }
