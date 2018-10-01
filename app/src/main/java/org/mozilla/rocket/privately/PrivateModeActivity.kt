@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
+import org.mozilla.focus.navigation.ScreenNavigator.URL_INPUT_FRAGMENT_TAG
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -152,8 +153,8 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
         }
         val urlFragment: UrlInputFragment = UrlInputFragment.create(url, null, false)
         val transaction = frgMgr.beginTransaction()
-        transaction.add(R.id.container, urlFragment, UrlInputFragment.FRAGMENT_TAG)
-                .addToBackStack(UrlInputFragment.FRAGMENT_TAG)
+        transaction.add(R.id.container, urlFragment, URL_INPUT_FRAGMENT_TAG)
+                .addToBackStack(URL_INPUT_FRAGMENT_TAG)
                 .commit()
 
         sharedViewModel.urlInputState().value = true
@@ -182,7 +183,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
     }
 
     private fun isUrlInputDisplaying(): Boolean {
-        val frg = supportFragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG)
+        val frg = supportFragmentManager.findFragmentByTag(URL_INPUT_FRAGMENT_TAG)
         return ((frg != null) && frg.isAdded && !frg.isRemoving)
     }
 

@@ -27,6 +27,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -97,10 +98,12 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View {
+import static org.mozilla.focus.navigation.ScreenNavigator.HOME_FRAGMENT_TAG;
+
+public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
+        ScreenNavigator.HomeScreen {
     private static final String TAG = "HomeFragment";
 
-    public static final String FRAGMENT_TAG = "homescreen";
     public static final String TOPSITES_PREF = "topsites_pref";
     public static final String TOP_SITES_V2_PREF = "top_sites_v2_complete";
     public static final int TOP_SITES_QUERY_LIMIT = 8;
@@ -158,6 +161,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         } else {
             banner.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return this;
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -772,7 +780,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 case R.id.btn_tab_tray:
                     listener.onNotified(HomeFragment.this,
                             FragmentListener.TYPE.SHOW_TAB_TRAY,
-                            FRAGMENT_TAG);
+                            null);
                     TelemetryWrapper.showTabTrayHome();
                     break;
 

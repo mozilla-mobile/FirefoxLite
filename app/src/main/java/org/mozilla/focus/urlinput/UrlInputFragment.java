@@ -19,12 +19,11 @@ import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter;
-import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.SearchUtils;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FlowLayout;
@@ -38,11 +37,10 @@ import java.util.Locale;
  * Fragment for displaying he URL input controls.
  */
 public class UrlInputFragment extends Fragment implements UrlInputContract.View,
+        ScreenNavigator.UrlInputScreen,
         View.OnClickListener, View.OnLongClickListener,
         InlineAutocompleteEditText.OnCommitListener, InlineAutocompleteEditText.OnFilterListener,
         InlineAutocompleteEditText.OnTextChangeListener {
-
-    public static final String FRAGMENT_TAG = "url_input";
 
     private static final String ARGUMENT_URL = "url";
     private static final String ARGUMENT_PARENT_FRAGMENT = "parent_frag_tag";
@@ -227,7 +225,7 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
 
         Bundle args = getArguments();
         if (args != null && args.containsKey(ARGUMENT_PARENT_FRAGMENT)) {
-            openNewTab = HomeFragment.FRAGMENT_TAG.equals(args.getString(ARGUMENT_PARENT_FRAGMENT));
+            openNewTab = ScreenNavigator.HOME_FRAGMENT_TAG.equals(args.getString(ARGUMENT_PARENT_FRAGMENT));
         }
 
         final Activity activity = getActivity();
@@ -312,4 +310,10 @@ public class UrlInputFragment extends Fragment implements UrlInputContract.View,
         lastRequestTime = now;
         return throttled;
     }
+
+    @Override
+    public Fragment getFragment() {
+        return this;
+    }
+
 }

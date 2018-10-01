@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -55,7 +56,6 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.screenshot.CaptureRunnable;
-import org.mozilla.focus.screenshot.ScreenshotManager;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -87,13 +87,14 @@ import org.mozilla.urlutils.UrlUtils;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
+import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
+
 /**
  * Fragment for displaying the browser UI.
  */
 public class BrowserFragment extends LocaleAwareFragment implements View.OnClickListener,
+        ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
-
-    public static final String FRAGMENT_TAG = "browser";
 
     /**
      * Custom data that is passed when calling {@link SessionManager#addTab(String, Bundle)}
@@ -182,7 +183,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 switch (actionId) {
                     case ACTION_DOWNLOAD:
                         if (getContext() == null) {
-                            Log.w(FRAGMENT_TAG, "No context to use, abort callback onDownloadStart");
+                            Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback onDownloadStart");
                             return;
                         }
 
@@ -806,7 +807,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 TelemetryWrapper.clickAddTabToolbar();
                 break;
             case R.id.btn_tab_tray:
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, FRAGMENT_TAG);
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
                 TelemetryWrapper.showTabTrayToolbar();
                 break;
             case R.id.btn_menu:
@@ -1094,7 +1095,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public boolean handleExternalUrl(final String url) {
             if (getContext() == null) {
-                Log.w(FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
+                Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
                 return false;
             }
 
@@ -1109,7 +1110,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onLongPress(@NonNull Session tab, final TabView.HitTarget hitTarget) {
             if (getActivity() == null) {
-                Log.w(FRAGMENT_TAG, "No context to use, abort callback onLongPress");
+                Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback onLongPress");
                 return;
             }
 
@@ -1410,5 +1411,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             eventHistory.add(Settings.Event.ShowMyShotOnBoardingDialog);
             FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MY_SHOT_ON_BOARDING, null);
         }
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return this;
     }
 }
