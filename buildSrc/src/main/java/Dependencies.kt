@@ -24,7 +24,7 @@ object Versions {
     const val adjust = "4.11.4"
     const val junit = "4.12"
     const val mockito = "2.12.0"
-    const val robolectric = "3.8"
+    const val robolectric = "4.0-alpha-3"
     const val espresso = "3.0.1"
     const val test_runner = "1.0.2"
     const val uiautomator = "2.1.3"
