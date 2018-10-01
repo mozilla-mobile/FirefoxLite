@@ -96,7 +96,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         ThemeManager.ThemeHost,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
-        TabRestoreMonitor, ScreenNavigator.Provider, PromotionViewContract {
+        TabRestoreMonitor,
+        ScreenNavigator.Provider,
+        ScreenNavigator.HostActivity,
+        PromotionViewContract {
 
     private PromotionModel promotionModel;
 
@@ -853,20 +856,29 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         return screenNavigator;
     }
 
-    public FirstrunFragment createFirstRunFragment() {
+    @Override
+    public FirstrunFragment createFirstRunScreen() {
         return FirstrunFragment.create();
     }
 
-    public UrlInputFragment createUrlInputFragment(@Nullable String url, String parentFragmentTag) {
+    @Override
+    public BrowserFragment getBrowserScreen() {
+        return (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
+    }
+
+    @Override
+    public UrlInputFragment createUrlInputScreen(@Nullable String url, String parentFragmentTag) {
         final UrlInputFragment fragment = UrlInputFragment.create(url, parentFragmentTag, true);
         return fragment;
     }
 
-    public HomeFragment createHomeFragment() {
+    @Override
+    public HomeFragment createHomeScreen() {
         final HomeFragment fragment = HomeFragment.create();
         return fragment;
     }
 
+    @Override
     public void sendBrowsingTelemetry() {
         final SafeIntent intent = new SafeIntent(getIntent());
         if (intent.getBooleanExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.getValue(), false)) {

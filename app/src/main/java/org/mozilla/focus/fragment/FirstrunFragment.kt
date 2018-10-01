@@ -23,13 +23,13 @@ import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.firstrun.FirstrunPagerAdapter
 import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter
+import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.NewFeatureNotice
 
-class FirstrunFragment : Fragment(), View.OnClickListener {
-
+class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     private lateinit var viewPager: ViewPager
 
     private lateinit var bgTransitionDrawable: TransitionDrawable
@@ -130,6 +130,10 @@ class FirstrunFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    override fun getFragment(): Fragment {
+        return this
+    }
+
     private fun isSystemApp() = context?.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) != 0
 
     private fun promoteSetDefaultBrowserIfPreload(): FirstrunFragment {
@@ -172,8 +176,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        const val FRAGMENT_TAG = "firstrun"
-
         @JvmStatic
         fun create(): FirstrunFragment {
             return FirstrunFragment()
