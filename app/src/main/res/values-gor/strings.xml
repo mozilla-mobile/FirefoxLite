@@ -29,9 +29,11 @@
   <string name="preference_mozilla_telemetry_summary">%2$s mopoyimo\'o wolo u paralu po\'opiyohulo %1$s ode nga\'amila</string>
   <string name="preference_learn_more">Pobalājariyapo</string>
   <string name="preference_about">Tomimbihu</string>
+  <string name="preference_night_mode_brightness">Tilango mode huyi</string>
   <string name="content_description_clear_input">Luluta tiluwoto</string>
   <string name="content_description_dismiss_input">Hulīma\'o</string>
   <string name="content_description_lock">Sambungan āmani</string>
+  <string name="accessibility_announcement_loading">Modetohu</string>
   <string name="accessibility_announcement_loading_finished">Situs web diletohu</string>
   <string name="content_description_menu">Tulawota uwēwo</string>
   <string name="content_description_forward">Maju</string>
@@ -98,6 +100,7 @@
   <string name="pending">Mohuheli</string>
   <string name="running">hemopohuli</string>
   <string name="successful">Sukses</string>
+  <string name="failed">lolohubu</string>
   <string name="unknown">Ja otāwa</string>
   <string name="setting_dialog_sd_card">Kartu SD</string>
   <string name="setting_dialog_internal_storage">Tāhuwa internal</string>
@@ -117,6 +120,7 @@
   <string name="message_fallback_save_to_primary_external">Kartu SD ja yilotapu. Berkas mā tilahu to internal.</string>
   <string name="message_start_to_save_to_removable_storage">Berkas mā tilahu to kartu SD</string>
   <string name="message_removable_storage_space_not_enough">Kartu SD mā yimbidu mopolu. Berkas mā tilahu to internal.</string>
+  <string name="screenshot_grid_empty_text_msg_prefix">Tepuwa</string>
   <string name="screenshot_image_viewer_dialog_title">Habari</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Tanggal: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">Dalala: %1$s</string>
