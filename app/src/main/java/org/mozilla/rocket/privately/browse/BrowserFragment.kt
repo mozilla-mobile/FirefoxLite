@@ -41,6 +41,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
+import org.mozilla.threadutils.ThreadUtils
 import org.mozilla.urlutils.UrlUtils
 
 private const val SITE_GLOBE = 0
@@ -176,7 +177,8 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         sessionManager.dropTab(focus.id)
-        return false
+        ScreenNavigator.get(activity).popToHomeScreen(true)
+        return true
     }
 
     override fun getFragment(): Fragment {
@@ -191,7 +193,9 @@ class BrowserFragment : LocaleAwareFragment(),
 
     override fun goForeground() {
         val tabView = sessionManager.focusSession?.engineSession?.tabView ?: return
-        tabViewSlot.addView(tabView.view)
+        if (tabViewSlot.childCount == 0) {
+            tabViewSlot.addView(tabView.view)
+        }
     }
 
     override fun goBackground() {
@@ -209,6 +213,8 @@ class BrowserFragment : LocaleAwareFragment(),
             } else {
                 sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
             }
+
+            ThreadUtils.postToMainThread(onViewReadyCallback)
         }
     }
 
@@ -252,11 +258,10 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     private fun onDeleteClicked() {
-        val listener = activity as FragmentListener
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
         }
-        listener.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        ScreenNavigator.get(activity).popToHomeScreen(true)
     }
 
     class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
@@ -278,9 +283,6 @@ class BrowserFragment : LocaleAwareFragment(),
         var session: Session? = null
 
         override fun onSessionAdded(session: Session, arguments: Bundle?) {
-            session.engineSession?.tabView?.let {
-                fragment.tabViewSlot.addView(it.view)
-            }
         }
 
         override fun onProgress(session: Session, progress: Int) {
