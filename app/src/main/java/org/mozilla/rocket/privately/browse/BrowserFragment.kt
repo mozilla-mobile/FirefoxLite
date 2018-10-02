@@ -240,7 +240,7 @@ class BrowserFragment : LocaleAwareFragment(),
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
         }
-        listener.onNotified( this, TYPE.DROP_BROWSING_PAGES, null)
+        listener.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
     }
 
     class BrowserTabsChromeListener(val fragment: BrowserFragment) : DefaultTabsChromeListener() {
