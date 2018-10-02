@@ -7,6 +7,7 @@ package org.mozilla.rocket.privately.home
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +17,14 @@ import android.widget.RelativeLayout
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
 
-class PrivateHomeFragment : LocaleAwareFragment() {
+class PrivateHomeFragment : LocaleAwareFragment(),
+        ScreenNavigator.HomeScreen {
 
     private lateinit var btnBack: RelativeLayout
     private lateinit var lottieMask: LottieAnimationView
@@ -60,6 +63,10 @@ class PrivateHomeFragment : LocaleAwareFragment() {
         return view
     }
 
+    override fun getFragment(): Fragment {
+        return this
+    }
+
     private fun observeViewModel() {
         activity?.apply {
             // since the view model is of the activity, use the fragment's activity instead of the fragment itself
@@ -67,7 +74,7 @@ class PrivateHomeFragment : LocaleAwareFragment() {
                     .urlInputState()
                     .observe(this, Observer<Boolean> {
                         it?.apply {
-                            toggleFakeUrlInput(it)
+                            onUrlInputScreenVisible(it)
                         }
                     })
         }
@@ -78,8 +85,6 @@ class PrivateHomeFragment : LocaleAwareFragment() {
     }
 
     companion object {
-        const val FRAGMENT_TAG = "private_home_screen"
-
         fun create(): PrivateHomeFragment {
             return PrivateHomeFragment()
         }
@@ -90,8 +95,8 @@ class PrivateHomeFragment : LocaleAwareFragment() {
         logoMan.playAnimation()
     }
 
-    private fun toggleFakeUrlInput(inEditMode: Boolean) {
-        if (inEditMode) {
+    override fun onUrlInputScreenVisible(visible: Boolean) {
+        if (visible) {
             logoMan.visibility = View.INVISIBLE
             fakeInput.visibility = View.INVISIBLE
         } else {

@@ -15,10 +15,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
-import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.BaseActivity
+import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen
+import org.mozilla.focus.navigation.ScreenNavigator.HomeScreen
+import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.navigation.ScreenNavigator.URL_INPUT_FRAGMENT_TAG
+import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -26,12 +32,14 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.privately.browse.BrowserFragment
+import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
 class PrivateModeActivity : BaseActivity(),
         FragmentListener,
+        ScreenNavigator.HostActivity,
         TabsSessionProvider.SessionHost {
 
     private var sessionManager: SessionManager? = null
@@ -127,6 +135,25 @@ class PrivateModeActivity : BaseActivity(),
         if (exitEarly) {
             return
         }
+    }
+
+    override fun getBrowserScreen(): BrowserScreen {
+        TODO("not implemented")
+    }
+
+    override fun createFirstRunScreen(): Screen {
+        if (BuildConfig.DEBUG) {
+            throw RuntimeException("PrivateModeActivity should never show first-run")
+        }
+        TODO("PrivateModeActivity should never show first-run")
+    }
+
+    override fun createHomeScreen(): HomeScreen {
+        return PrivateHomeFragment.create()
+    }
+
+    override fun createUrlInputScreen(url: String?, parentFragmentTag: String?): UrlInputScreen {
+        return UrlInputFragment.create(url, null, false)
     }
 
     private fun dropBrowserFragment() {

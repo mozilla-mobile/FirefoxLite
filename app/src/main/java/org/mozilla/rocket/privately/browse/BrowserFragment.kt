@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
@@ -45,6 +47,7 @@ private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
 
 class BrowserFragment : LocaleAwareFragment(),
+        ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
 
     private var listener: FragmentListener? = null
@@ -176,15 +179,35 @@ class BrowserFragment : LocaleAwareFragment(),
         return false
     }
 
-    fun loadUrl(url: String?) {
-        url?.let {
-            if (it.isNotBlank()) {
-                displayUrlView.text = url
-                if (sessionManager.tabsCount == 0) {
-                    sessionManager.addTab(url, TabUtil.argument(null, false, true))
-                } else {
-                    sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
-                }
+    override fun getFragment(): Fragment {
+        return this
+    }
+
+    override fun switchToTab(tabId: String?) {
+        if (!TextUtils.isEmpty(tabId)) {
+            sessionManager.switchToTab(tabId!!)
+        }
+    }
+
+    override fun goForeground() {
+        val tabView = sessionManager.focusSession?.engineSession?.tabView ?: return
+        tabViewSlot.addView(tabView.view)
+    }
+
+    override fun goBackground() {
+        val focus = sessionManager.focusSession ?: return
+        val tabView = focus.engineSession?.tabView ?: return
+        focus.engineSession?.detach()
+        tabViewSlot.removeView(tabView.view)
+    }
+
+    override fun loadUrl(url: String, openNewTab: Boolean, isFromExternal: Boolean, onViewReadyCallback: Runnable?) {
+        if (url.isNotBlank()) {
+            displayUrlView.text = url
+            if (sessionManager.tabsCount == 0) {
+                sessionManager.addTab(url, TabUtil.argument(null, false, true))
+            } else {
+                sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
             }
         }
     }
@@ -196,7 +219,9 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun registerData(activity: FragmentActivity) {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
-        shared.getUrl().observe(this, Observer<String> { url -> loadUrl(url) })
+        shared.getUrl().observe(this, Observer<String> { url ->
+            url?.let { loadUrl(it, false, false, null) }
+        })
     }
 
     private fun unregisterData(activity: FragmentActivity) {
