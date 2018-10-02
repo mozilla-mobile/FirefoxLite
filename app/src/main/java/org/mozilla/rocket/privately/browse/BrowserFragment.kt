@@ -78,7 +78,9 @@ class BrowserFragment : LocaleAwareFragment(),
         super.onActivityCreated(savedInstanceState)
         val fragmentActivity = activity
         if (fragmentActivity == null) {
-            BuildConfig.DEBUG.let { throw RuntimeException("No activity to use") }
+            if (BuildConfig.DEBUG) {
+                throw RuntimeException("No activity to use")
+            }
         } else {
             if (fragmentActivity is TabsSessionProvider.SessionHost) {
                 sessionManager = fragmentActivity.sessionManager
