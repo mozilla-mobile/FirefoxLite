@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s bit-bit meupeusapat data nyang peureulé sagai beu meutamah get %1$s keu mandum.</string>
   <string name="preference_learn_more">Meurunoe lom</string>
   <string name="preference_about">Bhaih</string>
+  <string name="preference_night_mode_brightness">Peungeuih mode malam</string>
   <string name="content_description_clear_input">Peugléh input</string>
   <string name="content_description_dismiss_input">Peubiyeue</string>
   <string name="content_description_lock">Koneksi aman</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">Hasé drop layeue</string>
   <string name="label_menu_capture_page">Drop laman</string>
   <string name="label_menu_turbo_mode">Mode turbo</string>
+  <string name="label_menu_night_mode">Mode malam</string>
   <string name="label_menu_block_ads">Theun Iklan</string>
   <string name="label_menu_block_image">Som gamba</string>
   <string name="label_menu_settings">Peuatô</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">Peutanda meuseubarô</string>
   <string name="bookmarks_empty_view_msg">Hana peutanda</string>
   <string name="edit_bookmark">Andam</string>
+  <string name="private_tab">Tab rahsia</string>
   <string name="private_browsing_title">Seumeulop Rahsia</string>
   <string name="private_browsing_erase_message">Sampôh riwayat seumeulop droe</string>
   <string name="private_browsing_open_action">PEUHAH</string>

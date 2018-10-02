@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s માત્ર દરેકને માટે %1$s પ્રદાન અને સુધારવાની જરૂર છે તે એકત્રિત કરવાનો પ્રયત્ન કરે છે.</string>
   <string name="preference_learn_more">વધુ શીખો</string>
   <string name="preference_about">વિશે</string>
+  <string name="preference_night_mode_brightness">નાઇટ મોડ તેજસ્વિતા</string>
   <string name="content_description_clear_input">ઇનપુટ સાફ કરો</string>
   <string name="content_description_dismiss_input">રદ કરો</string>
   <string name="content_description_lock">સુરક્ષિત જોડાણ</string>
@@ -88,6 +89,7 @@
   <string name="label_menu_my_shots">મારા શોટ્સ</string>
   <string name="label_menu_capture_page">પૃષ્ઠને કેપ્ચર કરો</string>
   <string name="label_menu_turbo_mode">ટર્બો મોડ</string>
+  <string name="label_menu_night_mode">નાઇટ મોડ</string>
   <string name="label_menu_block_ads">બ્લોક અવરોધિત</string>
   <string name="label_menu_block_image">છબીઓ અવરોધિત કરો</string>
   <string name="label_menu_settings">સેટિંગ્સ</string>
@@ -207,6 +209,7 @@
   <string name="bookmark_edit_success">બુકમાર્ક સુધારાઇ</string>
   <string name="bookmarks_empty_view_msg">બુકમાર્ક નથી</string>
   <string name="edit_bookmark">ફેરફાર</string>
+  <string name="private_tab">ખાનગી ટૅબ</string>
   <string name="private_browsing_title">ખાનગી બ્રાઉઝિંગ</string>
   <string name="private_browsing_erase_message">ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખો</string>
   <string name="private_browsing_open_action">ખોલો</string>
