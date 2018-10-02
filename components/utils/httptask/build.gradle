@@ -12,6 +12,9 @@ android {
         targetSdkVersion Versions.target_sdk
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -28,6 +31,9 @@ dependencies {
 
     implementation "com.android.support:appcompat-v7:${Versions.support}"
     implementation project(path: ':HttpRequest')
+    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
 }
 
 afterEvaluate {
