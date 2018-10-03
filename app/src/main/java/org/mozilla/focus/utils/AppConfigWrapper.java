@@ -67,4 +67,8 @@ public class AppConfigWrapper {
     public static long getFeatureSurvey(Context context) {
         return FirebaseHelper.getRcLong(context, FirebaseHelper.FEATURE_SURVEY);
     }
+
+    public static String getScreenshotCategoryUrl(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST);
+    }
 }
