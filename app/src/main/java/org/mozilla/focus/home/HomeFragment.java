@@ -237,6 +237,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+    // TODO: 10/3/18 Now we have cachedrequestloader, should consider migrate to use it.
     private void initBanner(Context context) {
         // Setup from Cache
         try {

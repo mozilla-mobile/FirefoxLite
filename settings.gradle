@@ -1,4 +1,4 @@
-include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon'
+include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon', ':cachedrequestloader'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
@@ -7,6 +7,7 @@ project(':fileutils').projectDir = new File(rootDir, 'components/utils/fileutils
 project(':icon').projectDir = new File(rootDir, 'components/utils/icon')
 project(':logger').projectDir = new File(rootDir, 'components/utils/logger')
 project(':threadutils').projectDir = new File(rootDir, 'components/utils/threadutils')
+project(':cachedrequestloader').projectDir = new File(rootDir, 'components/utils/cachedrequestloader')
 
 include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'
