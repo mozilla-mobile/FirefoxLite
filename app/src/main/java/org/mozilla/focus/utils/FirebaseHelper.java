@@ -21,6 +21,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.notification.RocketMessagingService;
+import org.mozilla.focus.screenshot.ScreenshotManager;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -47,6 +48,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread";
     static final String ENABLE_PRIVATE_MODE = "enable_private_mode";
     static final String BANNER_MANIFEST = "banner_manifest";
+    static final String SCREENSHOT_CATEGORY_MANIFEST = "screenshot_category_manifest";
     static final String FEATURE_SURVEY = "feature_survey";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
@@ -259,6 +261,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.BANNER_MANIFEST, HomeFragment.BANNER_MANIFEST_DEFAULT);
         map.put(FirebaseHelper.ENABLE_PRIVATE_MODE, AppConfigWrapper.PRIVATE_MODE_ENABLED_DEFAULT);
         map.put(FirebaseHelper.FEATURE_SURVEY, RemoteConfigConstants.INSTANCE.getFEATURE_SURVEY_DEFAULT());
+        map.put(FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST, ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT);
 
         return map;
     }
