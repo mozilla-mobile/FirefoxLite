@@ -27,7 +27,7 @@
   <string name="preference_language_systemdefault">Sistem teutap</string>
   <string name="preference_dialog_title_search_engine">Meusén mita teutap</string>
   <string name="preference_data_saving_block_images">Bék deuh gamba - gamba</string>
-  <string name="preference_privacy_storage_clear_browsing_data">Peugléh data seumeulop</string>
+  <string name="preference_privacy_storage_clear_browsing_data">Peugléh data peuhah wèb</string>
   <string name="preference_privacy_storage_save_downloads_to">Keubah keuneubah u</string>
   <string name="preference_default_browser">Peuteutap ngön browser nyoe</string>
   <string name="preference_default_browser_is_setting">Gantoe peuatô…</string>
@@ -66,10 +66,10 @@
   <string name="contextmenu_open_image_in_new_tab">Peuhah gamba bak tab barô</string>
   <string name="first_run_page1_title">Sabah ka neupiléh %1$s</string>
   <string name="first_run_page1_text">Browser nyang geupeugöt lé %1$s, saboh teunubôh hana mita laba nyang na meukeusud keu web nyang bibeueh ngön teuhah web jih.</string>
-  <string name="first_run_page2_title">Seumeulop leubèh bagah nibak nyang ka-ka</string>
+  <string name="first_run_page2_title">Peuhah wèb leubèh bagah nibak nyang ka-ka</string>
   <string name="first_run_page2_text">Ngui mode turbo keu neublokir iklan peulacak mangat droeneuh jeuet neuseumeulop ngon bagah. Meunyo situs na meuri reuloh, jeuet neupumaté tombol mode turbo bak bagian menu.</string>
   <string name="first_run_page3_title">Himat data = Himat pèng</string>
-  <string name="first_run_page3_text">Teumeutheun iklan peulacak kön jipubagah seumeulop mantöng, meutapi jipeuhimat data cit. Neuhimat leubèh le lom meunyo neutheun gamba.</string>
+  <string name="first_run_page3_text">Teumeutheun iklan peulacak kön jipubagah peuhah wèb mantöng, meutapi jipeuhimat data cit. Neuhimat leubèh le lom meunyo neutheun gamba.</string>
   <string name="first_run_page4_title">Drop barangkapeuë bak layeuë</string>
   <string name="first_run_page4_text">Cök skrinsyut nibak mandum laman wèb. Kalön skrinsyut oflèn (hana meungui paket data) atawa neuthèp lom bah jeuet tagisa keulayi bak laman web nyan.</string>
   <string name="first_run_upgrade_page_title">Kamoe meudeungö saran droeneuh!</string>
@@ -130,11 +130,11 @@
   <string name="setting_dialog_sd_card">Keureutu SD</string>
   <string name="setting_dialog_internal_storage">Teumpat keubah internal</string>
   <string name="browsing_history_clear_btn">PEUGLÉH RIWAYAT PEUHAH WÈB</string>
-  <string name="browsing_history_empty_view_msg">Hana riwayat seumeulop</string>
+  <string name="browsing_history_empty_view_msg">Hana riwayat peuhah wèb</string>
   <string name="browsing_history_date_today">Uroë Nyoë</string>
   <string name="browsing_history_date_yesterday">Baroë</string>
   <string name="browsing_history_menu_delete">Sampôh</string>
-  <string name="browsing_history_dialog_confirm_clear_message">Sampôh ban dum riwayat seumeulop?</string>
+  <string name="browsing_history_dialog_confirm_clear_message">Sampôh ban dum riwayat peuhah wèb?</string>
   <string name="browsing_history_dialog_btn_clear">Peugléh</string>
   <string name="remove_from_list">Sampôh nibak dapeuta</string>
   <string name="delete_file">Sampôh beureukaih</string>
@@ -167,7 +167,7 @@
   <string name="message_clear_cache_fail">Han jeuet sampôh cache</string>
   <string name="message_storage_unavailable_cancel_download">Teumpat keubah hana jiteumèe. Beureukaih ceuneucok geupubateue.</string>
   <string name="message_cleared_cached">%1$s cache ka teusampôh</string>
-  <string name="message_cleared_browsing_data">Data seumeulop geusampôh</string>
+  <string name="message_cleared_browsing_data">Data peuhah wèb geusampôh</string>
   <string name="message_deleted_screenshot">Drop layeuë ka teusampôh</string>
   <string name="message_cannot_find_screenshot">Han jeuët peuleumah drop layeuë</string>
   <string name="remove">Sampôh</string>
@@ -210,10 +210,10 @@
   <string name="bookmarks_empty_view_msg">Hana peutanda</string>
   <string name="edit_bookmark">Andam</string>
   <string name="private_tab">Tab rahsia</string>
-  <string name="private_browsing_title">Seumeulop Rahsia</string>
-  <string name="private_browsing_erase_message">Sampôh riwayat seumeulop droe</string>
+  <string name="private_browsing_title">Peuhah Wèb Rahsia</string>
+  <string name="private_browsing_erase_message">Sampôh riwayat peuhah wèb privat</string>
   <string name="private_browsing_open_action">PEUHAH</string>
-  <string name="private_browsing_erase_done">Riwayat seumeulop rahsia Droeneuh\nka geusampôh.</string>
+  <string name="private_browsing_erase_done">Riwayat peuhah wèb ngön rahsia \nDroeneuh ka geusampôh.</string>
   <string name="my_shot_on_boarding_message">Kalön deuneurop layeuë droëneuh di sinoë!</string>
   <string name="my_shot_on_boarding_category_message">Keu tapeujroh peungalaman produk droen, kamoe meupeusapat maklumat bhaih katagori deuneurop layeue droeneuh.</string>
   <string name="exp_survey_wifi">Kamoe meureuncana keumeung peugabông “Mita Wifi Pré” keu meubantu Droeneuh keu neumita seunambat internèt pré nyang göt di silingka.\n \n Na meuheutneuh?</string>
