@@ -165,7 +165,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         search(input)
     }
 
-    private fun search(input: String){
+    private fun search(input: String) {
         if (!input.trim { it <= ' ' }.isEmpty()) {
             ViewUtils.hideKeyboard(urlView)
 
@@ -260,7 +260,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         autoCompleteInProgress = false
     }
 
-    private fun onTextChange(originalText: String, autocompleteText: String) {
+    private fun onTextChange(originalText: String, @Suppress("UNUSED_PARAMETER") autocompleteText: String) {
         if (autoCompleteInProgress) {
             return
         }
