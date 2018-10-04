@@ -5,12 +5,12 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center_horizontal|bottom"
-    tools:background="#0000FF"
-    android:background="@color/privateBackground">
+    android:background="@color/privateBackground"
+    tools:background="#0000FF">
 
     <org.mozilla.focus.widget.EqualDistributeGrid
         android:id="@+id/browser_screen_menu"
@@ -20,17 +20,16 @@
         android:layout_marginEnd="@dimen/browser_fixed_menu_horizontal_margin"
         android:layout_marginStart="@dimen/browser_fixed_menu_horizontal_margin">
 
-        <ImageButton
-            android:id="@+id/btn_mode"
+        <org.mozilla.focus.tabs.TabCounter
+            android:id="@+id/btn_tab_tray"
             style="@style/MainMenuButton"
-            android:tint="@color/colorPrimaryDark"
-            app:srcCompat="@drawable/private_browsing_mask" />
+            app:drawableColor="@color/colorMenuIconDarkForeground" />
 
         <ImageButton
-            android:id="@+id/btn_next"
+            android:id="@+id/btn_open_new_tab"
             style="@style/MainMenuButton"
             android:tint="@color/private_menu_button"
-            app:srcCompat="@drawable/action_next" />
+            app:srcCompat="@drawable/action_add" />
 
         <ImageButton
             android:id="@+id/btn_search"
@@ -45,10 +44,10 @@
             app:srcCompat="@drawable/ic_refresh" />
 
         <ImageButton
-            android:id="@+id/btn_delete"
+            android:id="@+id/btn_next"
             style="@style/MainMenuButton"
             android:tint="@color/private_menu_button"
-            app:srcCompat="@drawable/ic_delete" />
+            app:srcCompat="@drawable/action_next" />
 
     </org.mozilla.focus.widget.EqualDistributeGrid>
 </FrameLayout>

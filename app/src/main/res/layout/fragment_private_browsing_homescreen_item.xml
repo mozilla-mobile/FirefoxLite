@@ -2,6 +2,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
     android:layout_alignParentBottom="true"
@@ -15,14 +16,10 @@
         android:layout_marginEnd="@dimen/tab_tray_bottom_sheet_start_margin"
         android:layout_marginStart="@dimen/tab_tray_bottom_sheet_start_margin">
 
-        <include
+        <org.mozilla.focus.tabs.TabCounter
+            android:id="@+id/btn_tab_tray"
             style="@style/HomeMenuButton"
-            layout="@layout/button_private_to_normal" />
-
-        <include
-            style="@style/HomeMenuButton"
-            layout="@layout/button_open_new_tab"
-            android:visibility="invisible" />
+            app:drawableColor="@color/colorMenuIconDarkForeground" />
 
         <include
             style="@style/HomeMenuButton"
@@ -37,6 +34,12 @@
         <include
             style="@style/HomeMenuButton"
             layout="@layout/button_more_white"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
+
+        <include
+            style="@style/HomeMenuButton"
+            layout="@layout/button_more_white"
+            android:visibility="invisible" />
+
     </org.mozilla.focus.widget.EqualDistributeGrid>
 </FrameLayout>

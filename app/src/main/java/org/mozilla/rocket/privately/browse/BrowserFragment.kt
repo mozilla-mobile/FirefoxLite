@@ -32,6 +32,7 @@ import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.tabs.TabCounter
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
@@ -64,6 +65,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private var listener: FragmentListener? = null
 
     private lateinit var permissionHandler: PermissionHandler
+    private lateinit var clickListener: ClickListener
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
 
@@ -76,17 +78,22 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private lateinit var btnLoad: ImageButton
     private lateinit var btnNext: ImageButton
+    private lateinit var tabCounter: TabCounter
 
     private var isLoading: Boolean = false
 
     private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        clickListener = ClickListener(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_private_browser, container, false)
     }
@@ -114,18 +121,17 @@ class BrowserFragment : LocaleAwareFragment(),
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
 
-        view.findViewById<View>(R.id.btn_mode).setOnClickListener { onModeClicked() }
-        view.findViewById<View>(R.id.btn_search).setOnClickListener { onSearchClicked() }
-        view.findViewById<View>(R.id.btn_delete).setOnClickListener { onDeleteClicked() }
+        btnNext = (view.findViewById(R.id.btn_next))
+        btnLoad = (view.findViewById(R.id.btn_load))
+        tabCounter = view.findViewById(R.id.btn_tab_tray)
 
-        btnLoad = (view.findViewById<ImageButton>(R.id.btn_load))
-                .also { it.setOnClickListener { onLoadClicked() } }
-
-        btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton)
-                .also {
-                    it.isEnabled = false
-                    it.setOnClickListener { onNextClicked() }
-                }
+        with(clickListener) {
+            view.findViewById<View>(R.id.btn_search).setOnClickListener(this)
+            view.findViewById<View>(R.id.btn_open_new_tab).setOnClickListener(this)
+            btnNext.setOnClickListener(this)
+            btnLoad.setOnClickListener(this)
+            tabCounter.setOnClickListener(this)
+        }
 
         view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
             (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
@@ -329,12 +335,20 @@ class BrowserFragment : LocaleAwareFragment(),
         }
     }
 
-    private fun onDeleteClicked() {
-        for (tab in sessionManager.getTabs()) {
-            sessionManager.dropTab(tab.id)
+    class ClickListener(val fragment: BrowserFragment) : View.OnClickListener {
+        val parent: FragmentListener = if (fragment.activity is FragmentListener)
+            fragment.activity as FragmentListener
+        else throw RuntimeException("")
+
+        override fun onClick(v: View?) {
+            when (v?.id) {
+                R.id.btn_search -> parent.onNotified(fragment, TYPE.SHOW_URL_INPUT, fragment.displayUrlView.text)
+                R.id.btn_open_new_tab -> ScreenNavigator.get(fragment.activity).popToHomeScreen(true)
+                R.id.btn_next -> fragment.onNextClicked()
+                R.id.btn_tab_tray -> parent.onNotified(fragment, TYPE.SHOW_TAB_TRAY, null)
+                R.id.btn_load -> fragment.onLoadClicked()
+            }
         }
-        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
-        ScreenNavigator.get(activity).popToHomeScreen(true)
     }
 
     class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {

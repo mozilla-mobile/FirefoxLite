@@ -21,6 +21,7 @@ import org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen
 import org.mozilla.focus.navigation.ScreenNavigator.HomeScreen
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
+import org.mozilla.focus.tabs.tabtray.TabTray
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.FragmentListener
@@ -86,6 +87,7 @@ class PrivateModeActivity : BaseActivity(),
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
             TYPE.DROP_BROWSING_PAGES -> dropBrowserFragment()
+            TYPE.SHOW_TAB_TRAY -> TabTray.show(supportFragmentManager)
             else -> {
             }
         }
