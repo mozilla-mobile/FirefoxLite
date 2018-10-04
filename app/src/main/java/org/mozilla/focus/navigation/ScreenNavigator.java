@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
+import org.mozilla.focus.widget.BackKeyHandleable;
 
 import java.util.Arrays;
 
@@ -193,6 +194,9 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         return (latest == null) ? getBrowserScreen().getFragment() : latest;
     }
 
+    public BrowserScreen getVisibleBrowserScreen() {
+        return isBrowserInForeground() ? getBrowserScreen() : null;
+    }
 
     private BrowserScreen getBrowserScreen() {
         return activity.getBrowserScreen();
@@ -274,7 +278,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     /**
      * Contract class for ScreenNavigator, to present a BrowserFragment
      */
-    public interface BrowserScreen extends Screen {
+    public interface BrowserScreen extends Screen, BackKeyHandleable {
         void loadUrl(@NonNull final String url,
                      boolean openNewTab,
                      boolean isFromExternal,

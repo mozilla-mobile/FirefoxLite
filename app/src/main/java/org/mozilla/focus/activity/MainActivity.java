@@ -709,10 +709,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         return (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
     }
 
-    private void onBackClicked(final BrowserFragment browserFragment) {
-        browserFragment.goBack();
-    }
-
     private void onBookMarkClicked() {
         Session currentTab = getSessionManager().getFocusSession();
         if (currentTab == null) {
@@ -833,8 +829,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             return;
         }
 
-        BrowserFragment browserFragment = getVisibleBrowserFragment();
-        if (browserFragment != null && browserFragment.onBackPressed()) {
+        ScreenNavigator.BrowserScreen browserScreen = screenNavigator.getVisibleBrowserScreen();
+        if (browserScreen != null && browserScreen.onBackPressed()) {
             return;
         }
 
