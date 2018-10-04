@@ -185,6 +185,7 @@ object TelemetryWrapper {
         val TYPE = "type"
         val DIRECTION = "direction"
         val CATEGORY = "category"
+        val CATEGORY_VERSION = "category_version"
     }
 
     object Extra_Value {
@@ -576,10 +577,11 @@ object TelemetryWrapper {
     }
 
     @JvmStatic
-    fun clickToolbarCapture(category: String) {
+    fun clickToolbarCapture(category: String, categoryVersion: Int) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE)
                 .extra(Extra.VERSION, Integer.toString(TOOL_BAR_CAPTURE_TELEMETRY_VERSION))
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
                 .queue()
     }
 
@@ -777,39 +779,44 @@ object TelemetryWrapper {
     }
 
     @JvmStatic
-    fun openCaptureLink(category: String) {
+    fun openCaptureLink(category: String, categoryVersion: Int) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.CAPTURE, Value.LINK)
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
                 .queue()
     }
 
     @JvmStatic
-    fun editCaptureImage(editAppResolved: Boolean, category: String) {
+    fun editCaptureImage(editAppResolved: Boolean, category: String, categoryVersion: Int) {
         EventBuilder(Category.ACTION, Method.EDIT, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SUCCESS, java.lang.Boolean.toString(editAppResolved))
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
                 .queue()
     }
 
     @JvmStatic
-    fun shareCaptureImage(fromSnackBar: Boolean, category: String) {
+    fun shareCaptureImage(fromSnackBar: Boolean, category: String, categoryVersion: Int) {
         EventBuilder(Category.ACTION, Method.SHARE, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.SNACKBAR, java.lang.Boolean.toString(fromSnackBar))
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
                 .queue()
     }
 
     @JvmStatic
-    fun showCaptureInfo(category: String) {
+    fun showCaptureInfo(category: String, categoryVersion: Int) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.CAPTURE, Value.INFO)
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
                 .queue()
     }
 
     @JvmStatic
-    fun deleteCaptureImage(category: String) {
+    fun deleteCaptureImage(category: String, categoryVersion: Int) {
         EventBuilder(Category.ACTION, Method.DELETE, Object.CAPTURE, Value.IMAGE)
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
                 .queue()
     }
 

@@ -221,7 +221,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 mBottomToolBar.setVisibility((mBottomToolBar.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
                 break;
             case R.id.screenshot_viewer_btn_open_url:
-                TelemetryWrapper.openCaptureLink(mScreenshot.getCategory());
+                TelemetryWrapper.openCaptureLink(mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
                 Intent urlIntent = new Intent();
                 urlIntent.putExtra(EXTRA_URL, mScreenshot.getUrl());
                 setResult(RESULT_OPEN_URL, urlIntent);
@@ -234,7 +234,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                 permissionHandler.tryAction(this, Manifest.permission.READ_EXTERNAL_STORAGE, ACTION_SHARE, null);
                 break;
             case R.id.screenshot_viewer_btn_info:
-                TelemetryWrapper.showCaptureInfo(mScreenshot.getCategory());
+                TelemetryWrapper.showCaptureInfo(mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
                 onInfoClick();
                 break;
             case R.id.screenshot_viewer_btn_delete:
@@ -309,9 +309,9 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                     editIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     try {
                         startActivity(Intent.createChooser(editIntent, null));
-                        TelemetryWrapper.editCaptureImage(true, mScreenshot.getCategory());
+                        TelemetryWrapper.editCaptureImage(true, mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
                     } catch (ActivityNotFoundException e) {
-                        TelemetryWrapper.editCaptureImage(false, mScreenshot.getCategory());
+                        TelemetryWrapper.editCaptureImage(false, mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
                     }
                 }
             }
@@ -335,7 +335,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         try {
                             startActivity(Intent.createChooser(share, null));
-                            TelemetryWrapper.shareCaptureImage(false, mScreenshot.getCategory());
+                            TelemetryWrapper.shareCaptureImage(false, mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
                         } catch (ActivityNotFoundException e) {
                         }
                     }
@@ -365,7 +365,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
         builder.setPositiveButton(R.string.browsing_history_menu_delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                TelemetryWrapper.deleteCaptureImage(mScreenshot.getCategory());
+                TelemetryWrapper.deleteCaptureImage(mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
                 proceedDelete();
             }
         });
@@ -495,6 +495,7 @@ public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity imple
             }
             // set the category for later use
             screenshot.setCategory(ScreenshotManager.getInstance().getCategory(activity, screenshot.getUrl()));
+            screenshot.setCategoryVersion(ScreenshotManager.getInstance().getCategoryVersion());
 
             final File imgFile = new File(screenshot.getImageUri());
             if (imgFile.exists()) {

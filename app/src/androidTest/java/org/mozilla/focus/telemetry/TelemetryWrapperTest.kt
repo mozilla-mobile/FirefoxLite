@@ -324,8 +324,10 @@ class TelemetryWrapperTest {
     @Test
     fun clickToolbarCapture() {
         val sm = ScreenshotManager()
-        sm.getCategories(context).values.forEach {
-            TelemetryWrapper.clickToolbarCapture(it)
+        val categories = sm.getCategories(context).values
+        val version = sm.categoryVersion
+        categories.forEach {
+            TelemetryWrapper.clickToolbarCapture(it, version)
         }
     }
 
@@ -476,42 +478,52 @@ class TelemetryWrapperTest {
     @Test
     fun openCaptureLink() {
         val sm = ScreenshotManager()
-        sm.getCategories(context).values.forEach {
-            TelemetryWrapper.openCaptureLink(it)
+        val categories = sm.getCategories(context).values
+        val version = sm.categoryVersion
+        categories.forEach {
+            TelemetryWrapper.openCaptureLink(it, version)
         }
     }
 
     @Test
     fun editCaptureImage() {
         val sm = ScreenshotManager()
-        sm.getCategories(context).values.forEach {
-            TelemetryWrapper.editCaptureImage(true, it)
-            TelemetryWrapper.editCaptureImage(false, it)
+        val categories = sm.getCategories(context).values
+        val version = sm.categoryVersion
+        categories.forEach {
+            TelemetryWrapper.editCaptureImage(true, it, version)
+            TelemetryWrapper.editCaptureImage(false, it, version)
         }
     }
 
     @Test
     fun shareCaptureImage() {
         val sm = ScreenshotManager()
-        sm.getCategories(context).values.forEach {
-            TelemetryWrapper.shareCaptureImage(true, it)
-            TelemetryWrapper.shareCaptureImage(false, it)
+        val categories = sm.getCategories(context).values
+        val version = sm.categoryVersion
+        categories.forEach {
+            TelemetryWrapper.shareCaptureImage(true, it, version)
+            TelemetryWrapper.shareCaptureImage(false, it, version)
         }
     }
 
     @Test
     fun showCaptureInfo() {
         val sm = ScreenshotManager()
-        sm.getCategories(context).values.forEach {
-            TelemetryWrapper.showCaptureInfo(it)
+        val categories = sm.getCategories(context).values
+        val version = sm.categoryVersion
+        categories.forEach {
+            TelemetryWrapper.showCaptureInfo(it, version)
         }
     }
 
     @Test
     fun deleteCaptureImage() {
         val sm = ScreenshotManager()
-        sm.getCategories(context).values.forEach {
-            TelemetryWrapper.deleteCaptureImage(it)
+        val categories = sm.getCategories(context).values
+        val version = sm.categoryVersion
+        categories.forEach {
+            TelemetryWrapper.deleteCaptureImage(it, version)
         }
     }
 

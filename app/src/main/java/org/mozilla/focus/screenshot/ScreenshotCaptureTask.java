@@ -48,7 +48,7 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
                 Screenshot screenshot = new Screenshot(title, url, timestamp, path);
                 ScreenshotManager.getInstance().insert(screenshot, null);
 
-                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(context, url));
+                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(context, url), ScreenshotManager.getInstance().getCategoryVersion());
 
             }
 
