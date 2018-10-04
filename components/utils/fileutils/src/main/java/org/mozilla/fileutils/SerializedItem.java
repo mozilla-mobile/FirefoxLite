@@ -1,4 +1,4 @@
-package org.mozilla.focus.utils;
+package org.mozilla.fileutils;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;

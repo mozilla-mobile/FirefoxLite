@@ -17,10 +17,10 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.privately.PrivateMode;

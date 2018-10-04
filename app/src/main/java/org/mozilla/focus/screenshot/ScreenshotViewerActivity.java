@@ -47,7 +47,7 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
 import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

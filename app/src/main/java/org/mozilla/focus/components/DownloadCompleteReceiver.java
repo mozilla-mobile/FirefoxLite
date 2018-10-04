@@ -15,7 +15,7 @@ import android.text.TextUtils;
 
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
 import java.util.List;

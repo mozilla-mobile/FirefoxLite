@@ -28,7 +28,7 @@ import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
 import java.net.URI;

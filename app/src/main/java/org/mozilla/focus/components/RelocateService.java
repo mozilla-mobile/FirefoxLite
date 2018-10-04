@@ -22,11 +22,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.utils.Constants;
-import org.mozilla.focus.utils.FileUtils;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.StorageUtils;

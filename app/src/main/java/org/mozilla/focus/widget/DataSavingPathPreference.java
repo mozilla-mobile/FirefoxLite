@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.StorageUtils;
-import org.mozilla.focus.utils.ThreadUtils;
+import org.mozilla.threadutils.ThreadUtils;
 
 public class DataSavingPathPreference extends ListPreference {
     private static final String LOG_TAG = "DataSavingPathPreference";
