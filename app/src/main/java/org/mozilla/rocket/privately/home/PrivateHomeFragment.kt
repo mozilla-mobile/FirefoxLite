@@ -6,6 +6,7 @@ package org.mozilla.rocket.privately.home
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,29 +14,42 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient.FileChooserParams
+import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
+import kotlinx.android.synthetic.main.firstrun_page.view.text
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.tabs.TabCounter
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_TAB_TRAY
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.rocket.privately.SharedViewModel
+import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.TabViewEngineSession
+import org.mozilla.rocket.tabs.TabsSessionProvider
 
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
 
-    private lateinit var logoMan: LottieAnimationView
-    private lateinit var fakeInput: View
-    private lateinit var tabCounter: View
 
-    @Override
+    private lateinit var sessionManager: SessionManager
+    private lateinit var managerObserver: SessionManagerObserver
+    private lateinit var logoMan: LottieAnimationView
+    private lateinit var fakeInput: TextView
+    private lateinit var tabCounter: TabCounter
+
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
+        managerObserver = SessionManagerObserver(this)
     }
 
-    @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
+        sessionManager = TabsSessionProvider.getOrThrow(activity)
+        sessionManager.register(managerObserver)
+
         val view = inflater.inflate(R.layout.fragment_private_homescreen, container, false)
         logoMan = view.findViewById(R.id.pm_home_logo)
         fakeInput = view.findViewById(R.id.pm_home_fake_input)
@@ -47,8 +61,14 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         }
 
         observeViewModel()
+        updateTabCounter(sessionManager.tabsCount)
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sessionManager.unregister(managerObserver)
     }
 
     override fun getFragment(): Fragment {
@@ -69,7 +89,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     override fun applyLocale() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        fakeInput.text = getString(R.string.urlbar_hint)
     }
 
     companion object {
@@ -114,6 +134,10 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         }
     }
 
+    fun updateTabCounter(count: Int) {
+        tabCounter.setCount(count)
+    }
+
     class ClickListener(val fragment: Fragment) : View.OnClickListener {
         val parent: FragmentListener = if (fragment.activity is FragmentListener)
             fragment.activity as FragmentListener
@@ -124,6 +148,27 @@ class PrivateHomeFragment : LocaleAwareFragment(),
                 R.id.pm_home_fake_input -> parent.onNotified(fragment, SHOW_URL_INPUT, null)
                 R.id.btn_tab_tray -> parent.onNotified(fragment, SHOW_TAB_TRAY, null)
             }
+        }
+    }
+
+    class SessionManagerObserver(private val hostFragment: PrivateHomeFragment) : SessionManager.Observer {
+        override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
+            // do nothing
+        }
+
+        override fun handleExternalUrl(url: String?): Boolean {
+            // do nothing            return false
+            return false
+        }
+
+        override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?): Boolean {
+            // do nothing
+            return false
+        }
+
+        override fun onSessionCountChanged(count: Int) {
+            super.onSessionCountChanged(count)
+            hostFragment.updateTabCounter(count)
         }
     }
 }

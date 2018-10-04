@@ -35,6 +35,9 @@ import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.SessionManager.Factor
+import org.mozilla.rocket.tabs.SiteIdentity
+import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabViewEngineSession
@@ -218,7 +221,11 @@ class BrowserFragment : LocaleAwareFragment(),
             if (sessionManager.tabsCount == 0) {
                 sessionManager.addTab(url, TabUtil.argument(null, false, true))
             } else {
-                sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
+                if (openNewTab) {
+                    sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true))
+                } else {
+                    sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
+                }
             }
 
             ThreadUtils.postToMainThread(onViewReadyCallback)
@@ -233,7 +240,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private fun registerData(activity: FragmentActivity) {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
         shared.getUrl().observe(this, Observer<String> { url ->
-            url?.let { loadUrl(it, false, false, null) }
+            url?.let { loadUrl(it, true, false, null) }
         })
     }
 
@@ -386,7 +393,68 @@ class BrowserFragment : LocaleAwareFragment(),
                 session = fragment.sessionManager.focusSession
                 session?.register(this)
             }
+            fragment.tabCounter.setCount(count)
         }
+
+        override fun onFocusChanged(session: Session?, factor: Factor) {
+            if (session == null) {
+                // FIXME:
+                // if (factor == SessionManager.Factor.FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
+                if (factor == SessionManager.Factor.FACTOR_NO_FOCUS) {
+                    ScreenNavigator.get(fragment.activity).popToHomeScreen(true);
+                } else {
+                    fragment.activity?.finish()
+                }
+            } else {
+                transitToTab(session)
+                refreshChrome(session)
+            }
+        }
+
+        private fun transitToTab(target: Session) {
+            val tabView = target.engineSession?.tabView
+                    ?: throw RuntimeException("Tabview should be created at this moment and never be null")
+
+            // ensure it does not have attach to parent earlier.
+            target.engineSession?.detach()
+
+            val outView = findExistingTabView(fragment.tabViewSlot)
+            fragment.tabViewSlot.removeView(outView);
+
+            tabView.view?.let { fragment.tabViewSlot.addView(it) }
+
+            changeSession(target);
+            // startTransitionAnimation(null, inView, null)
+        }
+
+        private fun refreshChrome(session: Session) {
+            onUrlChanged(session, session.url)
+            fragment.progressView.progress = 0
+            val identity = if (session.securityInfo.secure) SITE_LOCK else SITE_GLOBE
+            fragment.siteIdentity.setImageLevel(identity)
+        }
+
+        private fun findExistingTabView(parent: ViewGroup): View? {
+            val viewCount = parent.childCount
+            for (childIdx in 0..viewCount) {
+                val childView = parent.getChildAt(childIdx)
+                if (childView is TabView) {
+                    return childView
+                }
+            }
+            return null
+        }
+
+        private fun changeSession(nextSession: Session?) {
+            if (this.session != null) {
+                this.session!!.unregister(this);
+            }
+            this.session = nextSession;
+            if (this.session != null) {
+                this.session!!.register(this);
+            }
+        }
+
     }
 
     class PrivateDownloadCallback(val context: Context, val refererUrl: String?) : DownloadCallback {
