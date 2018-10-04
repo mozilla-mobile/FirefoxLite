@@ -18,7 +18,7 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
 @RunWith(AndroidJUnit4.class)
-public class CachedRequestLoaderTest {
+public class BackgroundCachedRequestLoaderTest {
 
     private static final String PATH = "/path";
     private static final String RESPONSE_BODY = "body";
@@ -64,13 +64,13 @@ public class CachedRequestLoaderTest {
                 Assert.assertEquals(RESPONSE_BODY2, s.second);
             }
         };
-        CachedRequestLoader cachedRequestLoader = new CachedRequestLoader(InstrumentationRegistry.getContext(), KEY, targetUrl, null, SOCKET_TAG);
+        BackgroundCachedRequestLoader cachedRequestLoader = new BackgroundCachedRequestLoader(InstrumentationRegistry.getContext(), KEY, targetUrl, null, SOCKET_TAG);
         LiveData<Pair<Integer, String>> liveData = cachedRequestLoader.getStringLiveData();
         liveData.observeForever(observer);
         countDownLatch.await();
         // Wait one second so the write to cache finishes.
         Thread.sleep(1000);
-        CachedRequestLoader urlSubscription2 = new CachedRequestLoader(InstrumentationRegistry.getContext(), KEY, targetUrl, null, SOCKET_TAG);
+        BackgroundCachedRequestLoader urlSubscription2 = new BackgroundCachedRequestLoader(InstrumentationRegistry.getContext(), KEY, targetUrl, null, SOCKET_TAG);
         LiveData<Pair<Integer, String>> liveData2 = urlSubscription2.getStringLiveData();
         liveData2.observeForever(observer);
     }

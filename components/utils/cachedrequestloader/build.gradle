@@ -35,6 +35,7 @@ dependencies {
     implementation project(':fileutils')
     implementation project(':threadutils')
     implementation project(':httptask')
+    implementation project(':HttpRequest')
 
     implementation "com.android.support:appcompat-v7:${Versions.support}"
     testImplementation "junit:junit:${Versions.junit}"

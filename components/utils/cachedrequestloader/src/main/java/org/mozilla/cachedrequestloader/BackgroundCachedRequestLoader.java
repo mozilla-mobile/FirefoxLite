@@ -1,19 +1,26 @@
 package org.mozilla.cachedrequestloader;
 
 import android.content.Context;
+import android.net.TrafficStats;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
 
 import org.mozilla.fileutils.FileUtils;
-import org.mozilla.httptask.SimpleLoadUrlTask;
+import org.mozilla.httprequest.HttpRequest;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class CachedRequestLoader {
+public class BackgroundCachedRequestLoader {
+
+    private static final ExecutorService backgroundExecutorService = Executors.newFixedThreadPool(2);
 
     private Context context;
     private String subscriptionKey;
@@ -23,7 +30,7 @@ public class CachedRequestLoader {
     private ResponseData stringLiveData;
     private static final String TAG = "CachedRequestLoader";
 
-    public CachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag) {
+    public BackgroundCachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag) {
         this.context = context;
         this.subscriptionKey = subscriptionKey;
         this.subscriptionUrl = subscriptionUrl;
@@ -41,20 +48,33 @@ public class CachedRequestLoader {
     }
 
     private void loadFromCache() {
-        try {
-            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey, stringLiveData, CachedRequestLoader::convertToPair).execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            Log.e(TAG, "Failed to open Cache directory when reading cached banner config");
-        }
+        backgroundExecutorService.submit(() -> {
+            try {
+                String string = FileUtils.readStringFromFile(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey);
+                stringLiveData.postValue(new Pair<>(ResponseData.SOURCE_CACHE, string));
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Failed to open Cache directory when reading cached banner config");
+            }
+        });
     }
 
     private void loadFromRemote() {
-        new RemoteLoadUrlTask(stringLiveData, this).execute(subscriptionUrl, userAgent, Integer.toString(socketTag));
-    }
-
-    private static Pair<Integer, String> convertToPair(String input) {
-        return new Pair<>(ResponseData.SOURCE_CACHE, input);
+        backgroundExecutorService.submit(() -> {
+            TrafficStats.setThreadStatsTag(socketTag);
+            try {
+                String string = HttpRequest.get(new URL(subscriptionUrl), userAgent);
+                string = string.replace("\n", "");
+                stringLiveData.postValue(new Pair<>(ResponseData.SOURCE_NETWORK, string));
+                if (TextUtils.isEmpty(string)) {
+                    deleteCache();
+                } else {
+                    writeToCache(string);
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void writeToCache(String string) {
@@ -74,33 +94,6 @@ public class CachedRequestLoader {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Log.e(TAG, "Failed to open cache directory when deleting cache.");
-        }
-    }
-
-    private static class RemoteLoadUrlTask extends SimpleLoadUrlTask {
-
-        private ResponseData liveData;
-        private WeakReference<CachedRequestLoader> urlSubscriptionWeakReference;
-
-        private RemoteLoadUrlTask(ResponseData liveData, CachedRequestLoader cachedRequestLoader) {
-            this.liveData = liveData;
-            urlSubscriptionWeakReference = new WeakReference<>(cachedRequestLoader);
-        }
-
-
-        @Override
-        protected void onPostExecute(String line) {
-            line = line.replaceAll("\n", "");
-            this.liveData.setValue(new Pair<>(ResponseData.SOURCE_NETWORK, line) );
-            CachedRequestLoader cachedRequestLoader = urlSubscriptionWeakReference.get();
-            if (cachedRequestLoader == null) {
-                return;
-            }
-            if (TextUtils.isEmpty(line)) {
-                cachedRequestLoader.deleteCache();
-            } else {
-                cachedRequestLoader.writeToCache(line);
-            }
         }
     }
 }
