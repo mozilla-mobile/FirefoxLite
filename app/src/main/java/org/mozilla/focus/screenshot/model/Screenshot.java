@@ -20,6 +20,7 @@ public class Screenshot implements Serializable {
     private long timestamp;
     private String imageUri;
     private String category = "";
+    private int categoryVersion = 0;
 
     public Screenshot() {
     }
@@ -79,6 +80,14 @@ public class Screenshot implements Serializable {
 
     public String getCategory() {
         return category;
+    }
+
+    public int getCategoryVersion() {
+        return categoryVersion;
+    }
+
+    public void setCategoryVersion(int categoryVersion) {
+        this.categoryVersion = categoryVersion;
     }
 
     @Override

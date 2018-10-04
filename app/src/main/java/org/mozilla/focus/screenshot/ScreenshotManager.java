@@ -59,6 +59,7 @@ public class ScreenshotManager {
     private static volatile ScreenshotManager sInstance;
 
     HashMap<String, String> categories = new HashMap<>();
+    private int categoryVersion = 1;
 
     private QueryHandler mQueryHandler;
 
@@ -145,10 +146,11 @@ public class ScreenshotManager {
     private void initWithJson(JSONObject json) {
         try {
             categories.clear();
-            final Iterator<String> iterator = json.keys();
+            final JSONObject mapping = json.getJSONObject("mapping");
+            final Iterator<String> iterator = mapping.keys();
             while (iterator.hasNext()) {
                 final String category = iterator.next();
-                final Object o = json.get(category);
+                final Object o = mapping.get(category);
                 if (o instanceof JSONArray) {
                     JSONArray array = ((JSONArray) o);
                     for (int i = 0; i < array.length(); i++) {
@@ -159,9 +161,18 @@ public class ScreenshotManager {
                     }
                 }
             }
+            // Set version when all done.
+            categoryVersion = json.getInt("version");
         } catch (JSONException e) {
             Log.e(TAG, "ScreenshotManager init error with incorrect format: ", e);
         }
+    }
+
+    public int getCategoryVersion() {
+        if (categories.size() == 0) {
+            throw new IllegalStateException("Screenshot category is not ready! Call init before get Version.");
+        }
+        return categoryVersion;
     }
 
     public String getCategory(Context context, String url) {
