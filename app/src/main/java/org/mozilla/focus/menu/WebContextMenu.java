@@ -110,9 +110,6 @@ public class WebContextMenu {
         final String targetUrl = hitTarget.isLink ? hitTarget.linkURL : hitTarget.imageURL;
         boolean canOpenInNewTab = canOpenInNewTab(dialog.getOwnerActivity(), targetUrl);
 
-        // so far, Private Mode does not support multiple tabs
-        canOpenInNewTab = canOpenInNewTab && !inPrivate;
-
         navigationView.getMenu().findItem(R.id.menu_new_tab).setVisible(canOpenInNewTab && hitTarget.isLink);
         navigationView.getMenu().findItem(R.id.menu_new_tab_image).setVisible(canOpenInNewTab && !hitTarget.isLink && hitTarget.isImage);
 
