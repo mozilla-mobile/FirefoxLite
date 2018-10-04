@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "mapping": {
     "Search Engine": [
       "google.com",
@@ -14,7 +14,11 @@
       "google.fr",
       "google.de",
       "bing.com",
-      "google.co.id"
+      "google.co.id",
+      "google.com.ph",
+      "ask.com",
+      "brainly.ph",
+      "google.co.th"
     ],
     "Video": [
       "youtube.com",
@@ -24,7 +28,20 @@
       "vimeo.com",
       "vidmax.com",
       "viddler.com",
-      "video.google.com"
+      "video.google.com",
+      "hotstar.com",
+      "primevideo.com",
+      "sonyliv.com",
+      "yts.am",
+      "kissasian.sh",
+      "kissanime.ru",
+      "onlinevideoconverter.com",
+      "anime-sugoi.com",
+      "037hd.com",
+      "kseries.co",
+      "dailymotion.com",
+      "viu.com",
+      "siambit.me"
     ],
     "Social Network": [
       "facebook.com",
@@ -34,7 +51,8 @@
       "linkedin.com",
       "t.co",
       "pinterest.com",
-      "plus.google.com"
+      "plus.google.com",
+      "fbcdn.net"
     ],
     "Web Portal": [
       "yahoo.com",
@@ -52,7 +70,18 @@
       "tempo.co",
       "viva.co.id",
       "suara.com",
-      "dream.co.id"
+      "dream.co.id",
+      "sifyitest.com",
+      "gmanetwork.com",
+      "rappler.com",
+      "mb.com.ph",
+      "line.me",
+      "sanook.com",
+      "thairath.co.th",
+      "mthai.com",
+      "trueid.net",
+      "mgronline.com",
+      "hao123.com"
     ],
     "Web Portal (Articles)": [
       "tribunnews.com",
@@ -63,12 +92,26 @@
       "idntimes.com",
       "cnnindonesia.com",
       "tirto.id",
+      "indiatimes.com",
+      "ndtv.com",
+      "rediff.com",
+      "inquirer.net",
+      "ntd.tv",
+      "theepochtimes.com",
+      "khaosod.co.th",
       "bola.com",
       "bolasport.com",
       "bola.net",
+      "cricbuzz.com",
+      "siamsport.co.th",
+      "goal.in.th",
       "grid.id",
       "bintang.com",
-      "alodokter.com"
+      "alodokter.com",
+      "imdb.com",
+      "abs-cbn.com",
+      "scribd.com",
+      "kapook.com"
     ],
     "Shopping": [
       "taobao.com",
@@ -84,7 +127,18 @@
       "blibli.com",
       "shopee.co.id",
       "olx.co.id",
-      "lazada.co.id"
+      "lazada.co.id",
+      "amazon.in",
+      "flipkart.com",
+      "mydala.com",
+      "justdial.com",
+      "lazada.com.ph",
+      "shopee.ph",
+      "metrodeal.com",
+      "olx.ph",
+      "lazada.co.th",
+      "shopee.co.th",
+      "kaidee.com"
     ],
     "Collaborative": [
       "wikipedia.org",
@@ -92,7 +146,14 @@
       "csdn.net",
       "kaskus.co.id",
       "kumparan.com",
-      "kompasiana.com"
+      "kompasiana.com",
+      "stackoverflow.com",
+      "quora.com",
+      "slideshare.net",
+      "wikia.com",
+      "pantip.com",
+      "dek-d.com",
+      "soccersuck.com"
     ],
     "Email": [
       "live.com",
@@ -117,7 +178,12 @@
       "bni.co.id",
       "bri.co.id",
       "bi.go.id",
-      "syariahmandiri.co.id"
+      "syariahmandiri.co.id",
+      "onlinesbi.com",
+      "billdesk.com",
+      "hdfcbank.com",
+      "icicibank.com",
+      "paytm.com"
     ]
   }
 }
