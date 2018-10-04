@@ -13,23 +13,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.RelativeLayout
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.widget.FragmentListener
+import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_TAB_TRAY
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
-import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
 
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
 
-    private lateinit var btnBack: RelativeLayout
-    private lateinit var lottieMask: LottieAnimationView
     private lateinit var logoMan: LottieAnimationView
     private lateinit var fakeInput: View
+    private lateinit var tabCounter: View
 
     @Override
     override fun onCreate(bundle: Bundle?) {
@@ -39,23 +37,13 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_private_homescreen, container, false)
-        btnBack = view.findViewById(R.id.pm_home_back)
-        lottieMask = view.findViewById(R.id.pm_home_mask)
         logoMan = view.findViewById(R.id.pm_home_logo)
         fakeInput = view.findViewById(R.id.pm_home_fake_input)
+        tabCounter = view.findViewById(R.id.btn_tab_tray)
 
-        btnBack.setOnClickListener {
-            var parent = activity
-            if (parent is FragmentListener) {
-                parent.onNotified(this, TOGGLE_PRIVATE_MODE, null)
-            }
-        }
-
-        fakeInput.setOnClickListener {
-            var parent = activity
-            if (parent is FragmentListener) {
-                parent.onNotified(this, SHOW_URL_INPUT, null)
-            }
+        ClickListener(this).let {
+            fakeInput.setOnClickListener(it)
+            tabCounter.setOnClickListener(it)
         }
 
         observeViewModel()
@@ -91,7 +79,6 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     private fun animatePrivateHome() {
-        lottieMask.playAnimation()
         logoMan.playAnimation()
     }
 
@@ -124,6 +111,19 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             return anim
         } else {
             return super.onCreateAnimation(transit, enter, nextAnim)
+        }
+    }
+
+    class ClickListener(val fragment: Fragment) : View.OnClickListener {
+        val parent: FragmentListener = if (fragment.activity is FragmentListener)
+            fragment.activity as FragmentListener
+        else throw RuntimeException("")
+
+        override fun onClick(v: View?) {
+            when (v?.id) {
+                R.id.pm_home_fake_input -> parent.onNotified(fragment, SHOW_URL_INPUT, null)
+                R.id.btn_tab_tray -> parent.onNotified(fragment, SHOW_TAB_TRAY, null)
+            }
         }
     }
 }
