@@ -144,6 +144,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private fun onSuggestionClicked(tag: CharSequence) {
         search(tag.toString())
+        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(tag.toString()), true)
     }
 
     private fun dismiss() {
@@ -163,6 +164,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             if (it.isEmpty()) urlView.text.toString() else it
         }
         search(input)
+        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false)
     }
 
     private fun search(input: String) {
@@ -181,7 +183,6 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             if (isOpenInNewTab) {
                 TelemetryWrapper.addNewTabFromHome()
             }
-            TelemetryWrapper.urlBarEvent(isUrl, !urlView.autocompleteResult.isEmpty)
         }
     }
 
