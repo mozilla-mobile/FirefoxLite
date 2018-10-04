@@ -42,7 +42,7 @@ public class ScreenshotManager {
     private static final String CATEGORY_DEFAULT = "Others";
     private static final String CATEGORY_ERROR = "Error";
 
-    private static ScreenshotManager sInstance;
+    private static volatile ScreenshotManager sInstance;
 
     HashMap<String, String> categories = new HashMap<>();
 
@@ -50,7 +50,11 @@ public class ScreenshotManager {
 
     public static ScreenshotManager getInstance() {
         if (sInstance == null) {
-            sInstance = new ScreenshotManager();
+            synchronized (ScreenshotManager.class) {
+                if (sInstance == null) {
+                    sInstance = new ScreenshotManager();
+                }
+            }
         }
         return sInstance;
     }
