@@ -99,7 +99,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         logMethod();
 
         this.transactionHelper.popAllScreens();
-        this.activity.onBrowserScreenRaised();
     }
 
     /**
@@ -263,7 +262,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
         UrlInputScreen createUrlInputScreen(@Nullable String url, String parentFragmentTag);
 
-        void onBrowserScreenRaised();
     }
 
     /**
