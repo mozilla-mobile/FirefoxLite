@@ -799,7 +799,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
     }
 
-    public void loadTab(final String tabId) {
+    public void switchToTab(final String tabId) {
         if (!TextUtils.isEmpty(tabId)) {
             sessionManager.switchToTab(tabId);
         }
