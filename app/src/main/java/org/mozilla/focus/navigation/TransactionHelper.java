@@ -176,13 +176,13 @@ class TransactionHelper implements DefaultLifecycleObserver {
         return transaction;
     }
 
-    void toggleFakeUrlInput(boolean visible) {
+    void onUrlInputScreenVisible(boolean visible) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final ScreenNavigator.Screen homeFragment =
                 (ScreenNavigator.Screen) fragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG);
         if (homeFragment != null && homeFragment.getFragment().isVisible()) {
             if (homeFragment instanceof HomeScreen) {
-                ((HomeScreen) homeFragment).toggleFakeUrlInput(visible);
+                ((HomeScreen) homeFragment).onUrlInputScreenVisible(visible);
             }
         }
     }
