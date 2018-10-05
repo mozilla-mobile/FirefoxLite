@@ -264,8 +264,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         UrlInputScreen createUrlInputScreen(@Nullable String url, String parentFragmentTag);
 
         void onBrowserScreenRaised();
-
-        void onBackPressed();
     }
 
     /**

@@ -81,7 +81,11 @@ class TransactionHelper implements DefaultLifecycleObserver {
     }
 
     void dismissUrlInput() {
-        this.activity.onBackPressed();
+        final FragmentManager mgr = this.activity.getSupportFragmentManager();
+        if (mgr.isStateSaved()) {
+            return;
+        }
+        mgr.popBackStack();
     }
 
     boolean shouldFinish() {
