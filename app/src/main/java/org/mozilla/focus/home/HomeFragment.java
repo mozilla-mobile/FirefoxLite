@@ -489,8 +489,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter = presenter;
     }
 
-    public void toggleFakeUrlInput(boolean visible) {
-        final int visibility = visible ? View.VISIBLE : View.INVISIBLE;
+    public void onUrlInputScreenVisible(boolean urlInputScreenVisible) {
+        final int visibility = urlInputScreenVisible ? View.INVISIBLE : View.VISIBLE;
         this.fakeInput.setVisibility(visibility);
     }
 

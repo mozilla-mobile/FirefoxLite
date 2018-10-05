@@ -42,7 +42,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         public void onFragmentStarted(FragmentManager fm, Fragment f) {
             super.onFragmentStarted(fm, f);
             if (f instanceof UrlInputScreen) {
-                ScreenNavigator.this.transactionHelper.toggleFakeUrlInput(false);
+                ScreenNavigator.this.transactionHelper.onUrlInputScreenVisible(true);
             }
         }
 
@@ -50,7 +50,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         public void onFragmentStopped(FragmentManager fm, Fragment f) {
             super.onFragmentStopped(fm, f);
             if (f instanceof UrlInputScreen) {
-                ScreenNavigator.this.transactionHelper.toggleFakeUrlInput(true);
+                ScreenNavigator.this.transactionHelper.onUrlInputScreenVisible(false);
             }
         }
     };
@@ -293,7 +293,8 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * Contract class for ScreenNavigator, to present a HomeFragment
      */
     public interface HomeScreen extends Screen {
-        void toggleFakeUrlInput(boolean visible);
+        /* callback if the coverage by UrlInputScreen became visible */
+        void onUrlInputScreenVisible(boolean visible);
     }
 
     /**
