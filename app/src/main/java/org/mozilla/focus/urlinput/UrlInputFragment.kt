@@ -108,14 +108,6 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
                 TelemetryWrapper.searchSuggestionLongClick()
                 return true
             }
-            R.id.clear -> {
-                TelemetryWrapper.searchClear()
-                return false
-            }
-            R.id.dismiss -> {
-                TelemetryWrapper.searchDismiss()
-                return false
-            }
             else -> return false
         }
     }
@@ -125,8 +117,12 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             R.id.clear -> {
                 urlView.setText("")
                 urlView.requestFocus()
+                TelemetryWrapper.searchClear()
             }
-            R.id.dismiss -> dismiss()
+            R.id.dismiss -> {
+                dismiss()
+                TelemetryWrapper.searchDismiss()
+            }
             R.id.suggestion_item -> onSuggestionClicked((view as TextView).text)
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }

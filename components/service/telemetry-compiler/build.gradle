@@ -1,0 +1,14 @@
+apply plugin: 'java-library'
+
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
+
+
+dependencies {
+    implementation project(path: ':telemetry-annotation')
+
+    testImplementation "junit:junit:${Versions.junit}"
+    testImplementation 'com.google.testing.compile:compile-testing:0.15'
+
+}
