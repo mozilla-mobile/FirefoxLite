@@ -925,7 +925,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     @Override
-    public void sendBrowsingTelemetry() {
+    public void onBrowserScreenRaised() {
         final SafeIntent intent = new SafeIntent(getIntent());
         if (intent.getBooleanExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.getValue(), false)) {
             TelemetryWrapper.textSelectionIntentEvent();
