@@ -117,7 +117,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
     public void restoreBrowserScreen(@NonNull String tabId) {
         logMethod();
-        getBrowserScreen().loadTab(tabId);
+        getBrowserScreen().switchToTab(tabId);
         raiseBrowserScreen(false);
     }
 
@@ -282,7 +282,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
                      boolean isFromExternal,
                      final Runnable onViewReadyCallback);
 
-        void loadTab(final String tabId);
+        void switchToTab(final String tabId);
 
         void goForeground();
 
