@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.themed.ThemedImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MainMenuButton"
     android:id="@+id/btn_capture"
-    android:src="@drawable/action_capture"/>
+    android:src="@drawable/action_capture"
+    android:tint="@color/browser_menu_button"/>

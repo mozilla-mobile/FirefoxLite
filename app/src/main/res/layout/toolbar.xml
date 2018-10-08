@@ -2,9 +2,11 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.themed.ThemedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="?toolBarAppearance"
+    android:id="@+id/toolbar_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -22,7 +24,7 @@
         android:contentDescription="@string/content_description_customtab_exit"
         android:visibility="gone" />
 
-    <ImageView
+    <org.mozilla.focus.widget.themed.ThemedImageView
         style="?siteIdentityAppearance"
         android:id="@+id/site_identity"
         android:layout_width="14dp"
@@ -34,7 +36,7 @@
 
     <!-- lint: We need to use singleLine=true for the fading edge to work (which is officially deprecated,
          but still needed), hence we ignore deprecated warnings here.. -->
-    <TextView
+    <org.mozilla.focus.widget.themed.ThemedTextView
         style="?displayUrlAppearance"
         android:id="@+id/display_url"
         android:layout_width="0dp"
@@ -65,4 +67,4 @@
         android:visibility="gone"
         tools:ignore="contentDescription" />
 
-</LinearLayout>
+</org.mozilla.focus.widget.themed.ThemedLinearLayout>

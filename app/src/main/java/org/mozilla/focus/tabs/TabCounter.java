@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
@@ -12,24 +13,25 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.DrawableUtils;
+import org.mozilla.focus.widget.themed.ThemedImageView;
+import org.mozilla.focus.widget.themed.ThemedRelativeLayout;
+import org.mozilla.focus.widget.themed.ThemedTextView;
 
 import java.text.NumberFormat;
 
-public class TabCounter extends RelativeLayout {
+public class TabCounter extends ThemedRelativeLayout {
 
-    private final ImageView box;
-    private final ImageView bar;
-    private final TextView text;
+    private final ThemedImageView box;
+    private final ThemedImageView bar;
+    private final ThemedTextView text;
 
     private final AnimatorSet animationSet;
     private int count;
     private float currentTextRatio;
+    private ColorStateList menuIconColor;
 
     private static final int MAX_VISIBLE_TABS = 99;
     private static final String SO_MANY_TABS_OPEN = "∞";
@@ -51,7 +53,7 @@ public class TabCounter extends RelativeLayout {
 
         @ColorInt int defaultMenuIconColor = context.getResources().getColor(R.color.colorMenuIconForeground);
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabCounter, defStyle, 0);
-        @ColorInt int menuIconColor = typedArray.getColor(R.styleable.TabCounter_drawableColor, defaultMenuIconColor);
+        menuIconColor = typedArray.getColorStateList(R.styleable.TabCounter_drawableColor);
         typedArray.recycle();
 
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -65,7 +67,7 @@ public class TabCounter extends RelativeLayout {
                 TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
         text.setPadding(0, 0, 0, shiftOneDpForDefaultText);
 
-        if (menuIconColor != defaultMenuIconColor) {
+        if (menuIconColor.getDefaultColor() != defaultMenuIconColor) {
             tintDrawables(menuIconColor);
         }
 
@@ -115,12 +117,14 @@ public class TabCounter extends RelativeLayout {
         this.count = count;
     }
 
-    private void tintDrawables(int menuIconColor) {
-        final Drawable tabCounterBox = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_box, menuIconColor);
+    private void tintDrawables(ColorStateList menuIconColor) {
+        final Drawable tabCounterBox = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_box, menuIconColor.getDefaultColor());
         box.setImageDrawable(tabCounterBox);
+        box.setImageTintList(menuIconColor);
 
-        final Drawable tabCounterBar = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_bar, menuIconColor);
+        final Drawable tabCounterBar = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_bar, menuIconColor.getDefaultColor());
         bar.setImageDrawable(tabCounterBar);
+        bar.setImageTintList(menuIconColor);
 
         text.setTextColor(menuIconColor);
     }
@@ -249,5 +253,14 @@ public class TabCounter extends RelativeLayout {
                 }
             });
         }
+    }
+
+    @Override
+    public void setNightMode(boolean isNight) {
+        super.setNightMode(isNight);
+        tintDrawables(menuIconColor);
+        bar.setNightMode(isNight);
+        box.setNightMode(isNight);
+        text.setNightMode(isNight);
     }
 }

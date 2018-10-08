@@ -19,8 +19,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -38,6 +40,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
@@ -46,8 +49,6 @@ import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.EnqueueDownloadTask;
@@ -73,6 +74,11 @@ import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FindInPage;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
+import org.mozilla.focus.widget.themed.ThemedImageButton;
+import org.mozilla.focus.widget.themed.ThemedImageView;
+import org.mozilla.focus.widget.themed.ThemedLinearLayout;
+import org.mozilla.focus.widget.themed.ThemedTextView;
+import org.mozilla.focus.widget.themed.ThemedView;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.SiteIdentity;
@@ -123,9 +129,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private View backgroundView;
     private TransitionDrawable backgroundTransition;
     private TabCounter tabCounter;
-    private TextView urlView;
+    private ThemedTextView urlView;
     private AnimatedProgressBar progressView;
-    private ImageView siteIdentity;
+    private ThemedImageView siteIdentity;
     private Dialog webContextMenu;
 
     //GeoLocationPermission
@@ -141,7 +147,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     /**
      * Container containing the browser chrome and web content.
      */
-    private View browserContainer;
+    private ThemedLinearLayout browserContainer;
 
     private TabView.FullscreenCallback fullscreenCallback;
 
@@ -165,6 +171,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private boolean hasPendingScreenCaptureTask = false;
 
     final SessionManager.Observer managerObserver = new SessionManagerObserver();
+
+    private ThemedImageButton newTabBtn;
+    private ThemedImageButton searchBtn;
+    private ThemedImageButton captureBtn;
+    private ThemedImageButton menuBtn;
+    private ThemedLinearLayout toolbarRoot;
+    private ThemedView bottomMenuDivider;
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -363,7 +376,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         videoContainer = (ViewGroup) view.findViewById(R.id.video_container);
         browserContainer = view.findViewById(R.id.browser_container);
 
-        urlView = (TextView) view.findViewById(R.id.display_url);
+        urlView = view.findViewById(R.id.display_url);
 
         backgroundView = view.findViewById(R.id.background);
         view.findViewById(R.id.appbar).setOnApplyWindowInsetsListener((v, insets) -> {
@@ -373,10 +386,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
         tabCounter = view.findViewById(R.id.btn_tab_tray);
-        final View newTabBtn = view.findViewById(R.id.btn_open_new_tab);
-        final View searchBtn = view.findViewById(R.id.btn_search);
-        final View captureBtn = view.findViewById(R.id.btn_capture);
-        final View menuBtn = view.findViewById(R.id.btn_menu);
+        newTabBtn = view.findViewById(R.id.btn_open_new_tab);
+        searchBtn = view.findViewById(R.id.btn_search);
+        captureBtn = view.findViewById(R.id.btn_capture);
+        menuBtn = view.findViewById(R.id.btn_menu);
+        toolbarRoot = view.findViewById(R.id.toolbar_root);
+        bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
         if (tabCounter != null) {
             tabCounter.setOnClickListener(this);
         }
@@ -393,7 +408,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             menuBtn.setOnClickListener(this);
         }
 
-        siteIdentity = (ImageView) view.findViewById(R.id.site_identity);
+        siteIdentity = view.findViewById(R.id.site_identity);
         findInPage = new FindInPage(view);
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
@@ -411,6 +426,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             tabCounter.setCount(sessionManager.getTabsCount());
         }
 
+        setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
         return view;
     }
 
@@ -474,6 +490,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             current.detach();
             webViewSlot.removeView(tabView.getView());
         }
+        restoreStatusBar();
     }
 
     public void goForeground() {
@@ -486,6 +503,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             final View inView = tabView.getView();
             webViewSlot.addView(inView);
         }
+        setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
     }
 
     private void initialiseNormalBrowserUi() {
@@ -535,6 +553,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     @Override
     public void onDestroyView() {
         sessionManager.unregister(this.managerObserver);
+        restoreStatusBar();
         super.onDestroyView();
     }
 
@@ -1414,4 +1433,47 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public Fragment getFragment() {
         return this;
     }
+
+    public void setNightModeEnabled(boolean enable) {
+        browserContainer.setNightMode(enable);
+
+        toolbarRoot.setNightMode(enable);
+        urlView.setNightMode(enable);
+        siteIdentity.setNightMode(enable);
+
+        newTabBtn.setNightMode(enable);
+        searchBtn.setNightMode(enable);
+        captureBtn.setNightMode(enable);
+        menuBtn.setNightMode(enable);
+        tabCounter.setNightMode(enable);
+
+        bottomMenuDivider.setNightMode(enable);
+
+        // Set status bar color and change to dark theme
+        if  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int color;
+            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+            final Window window = getActivity().getWindow();
+            if (enable) {
+                color = ContextCompat.getColor(getActivity(), R.color.commonDarkGrey3);
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                color = Color.TRANSPARENT;
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            window.setStatusBarColor(color);
+            window.getDecorView().setSystemUiVisibility(flags);
+        }
+    }
+
+    private void restoreStatusBar() {
+        if  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.getInstance(getActivity()).isNightModeEnable()) {
+            final Window window = getActivity().getWindow();
+            window.setStatusBarColor(Color.TRANSPARENT);
+            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            window.getDecorView().setSystemUiVisibility(flags);
+        }
+    }
 }
+
