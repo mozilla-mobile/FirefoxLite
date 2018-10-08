@@ -25,8 +25,9 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.widget.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
-import org.mozilla.rocket.privately.PrivateMode;
 
 import java.util.Locale;
 
@@ -42,10 +43,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.settings);
+        final PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
         if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild()) {
-            PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
             Preference category = findPreference(getString(R.string.pref_key_category_development));
             rootPreferences.removePreference(category);
+        }
+
+        final Preference preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness));
+        preferenceNightMode.setEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
+        // TODO: night mode is only for non-release build temporarily, remove later
+        if (AppConstants.isReleaseBuild()) {
+            rootPreferences.removePreference(preferenceNightMode);
         }
     }
 
@@ -65,6 +73,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_night_mode_brightness))) {
+            startActivity(new Intent(getActivity(), AdjustBrightnessDialog.class));
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
