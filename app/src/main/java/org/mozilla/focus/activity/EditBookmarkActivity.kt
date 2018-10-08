@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -19,7 +18,6 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_edit_bookmark.*
 import org.mozilla.focus.R
-import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.persistence.BookmarksDatabase
 import org.mozilla.focus.repository.BookmarkRepository
@@ -28,7 +26,7 @@ import org.mozilla.focus.viewmodel.BookmarkViewModel
 private const val SAVE_ACTION_ID = 1
 const val ITEM_UUID_KEY = "ITEM_UUID_KEY"
 
-class EditBookmarkActivity : LocaleAwareAppCompatActivity() {
+class EditBookmarkActivity : BaseActivity() {
 
     private val itemId: String by lazy { intent.getStringExtra(ITEM_UUID_KEY) }
     private val viewModelFactory: BookmarkViewModel.Factory by lazy {

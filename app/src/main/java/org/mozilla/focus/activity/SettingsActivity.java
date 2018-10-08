@@ -11,10 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.settings.SettingsFragment;
 
-public class SettingsActivity extends LocaleAwareAppCompatActivity {
+public class SettingsActivity extends BaseActivity {
     public static final int ACTIVITY_RESULT_LOCALE_CHANGED = 1;
 
     @Override

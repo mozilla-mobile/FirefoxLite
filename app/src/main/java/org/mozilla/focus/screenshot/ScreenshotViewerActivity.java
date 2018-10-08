@@ -40,7 +40,7 @@ import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
+import org.mozilla.focus.activity.BaseActivity;
 import org.mozilla.focus.permission.PermissionHandle;
 import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.provider.QueryHandler;
@@ -59,7 +59,7 @@ import java.util.Locale;
 
 import static com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.PAN_LIMIT_INSIDE;
 
-public class ScreenshotViewerActivity extends LocaleAwareAppCompatActivity implements View.OnClickListener, QueryHandler.AsyncDeleteListener {
+public class ScreenshotViewerActivity extends BaseActivity implements View.OnClickListener, QueryHandler.AsyncDeleteListener {
 
     public static final String EXTRA_SCREENSHOT_ITEM_ID = "extra_screenshot_item_id";
     public static final String EXTRA_URL = "extra_url";
