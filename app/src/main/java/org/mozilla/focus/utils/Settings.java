@@ -11,8 +11,10 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.view.WindowManager;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.provider.SettingPreferenceWrapper;
 import org.mozilla.focus.search.SearchEngine;
 
 import java.util.Set;
@@ -28,6 +30,7 @@ public class Settings {
     private static Settings instance;
     private static final boolean BLOCK_IMAGE_DEFAULT = false;
     private static final boolean TURBO_MODE_DEFAULT = true;
+    private static final boolean NIGHT_MODE_DEFAULT = false;
     private static final boolean DID_SHOW_RATE_APP_DEFAULT = false;
     private static final boolean DID_SHOW_SHARE_APP_DEFAULT = false;
 
@@ -42,12 +45,14 @@ public class Settings {
     private final Resources resources;
     private final EventHistory eventHistory;
     private final NewFeatureNotice newFeatureNotice;
+    private final SettingPreferenceWrapper settingPreferenceWrapper;
 
     private Settings(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         resources = context.getResources();
         eventHistory = new EventHistory(preferences);
         newFeatureNotice = NewFeatureNotice.getInstance(context);
+        settingPreferenceWrapper = new SettingPreferenceWrapper(context.getContentResolver());
     }
 
     public boolean shouldBlockImages() {
@@ -59,6 +64,16 @@ public class Settings {
     public void setBlockImages(boolean blockImages) {
         final String key = getPreferenceKey(R.string.pref_key_performance_block_images);
         preferences.edit().putBoolean(key, blockImages).apply();
+    }
+
+    public boolean isNightModeEnable() {
+        return settingPreferenceWrapper.getBoolean(resources.getString(R.string.pref_key_night_mode_enable),
+                NIGHT_MODE_DEFAULT);
+    }
+
+    public void setNightMode(boolean enable) {
+        final String key = getPreferenceKey(R.string.pref_key_night_mode_enable);
+        preferences.edit().putBoolean(key, enable).apply();
     }
 
     public boolean shouldShowFirstrun() {
@@ -195,6 +210,14 @@ public class Settings {
         preferences.edit()
                 .putString(getPreferenceKey(R.string.pref_key_search_engine), searchEngine.getName())
                 .apply();
+    }
+
+    public float getNightModeBrightnessValue() {
+        return settingPreferenceWrapper.getFloat(getPreferenceKey(R.string.pref_key_night_mode_brightness_value), WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE);
+    }
+
+    public void setNightModeBrightnessValue(float value) {
+        preferences.edit().putFloat(getPreferenceKey(R.string.pref_key_night_mode_brightness_value), value).apply();
     }
 
     public static void updatePrefDefaultBrowserIfNeeded(Context context, boolean isDefaultBrowser) {
