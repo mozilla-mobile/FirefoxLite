@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.locale;
+package org.mozilla.focus.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,12 +12,17 @@ import android.support.v4.text.TextUtilsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
-import org.mozilla.focus.activity.SettingsActivity;
+import org.mozilla.focus.locale.LocaleAwareApplication;
+import org.mozilla.focus.locale.LocaleManager;
+import org.mozilla.focus.locale.Locales;
+import org.mozilla.focus.utils.Settings;
 
 import java.util.Locale;
 
-public abstract class LocaleAwareAppCompatActivity
+public abstract class BaseActivity
         extends AppCompatActivity {
 
     private volatile Locale mLastLocale;
@@ -100,6 +105,7 @@ public abstract class LocaleAwareAppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        updateScreenBrightness();
         ((LocaleAwareApplication) getApplicationContext()).onActivityResume();
     }
 
@@ -107,5 +113,17 @@ public abstract class LocaleAwareAppCompatActivity
     protected void onPause() {
         super.onPause();
         ((LocaleAwareApplication) getApplicationContext()).onActivityPause();
+    }
+
+    /** Update current screen bright value per user setting */
+    private void updateScreenBrightness() {
+        final Settings settings = Settings.getInstance(this);
+        final float currentBrightness = settings.getNightModeBrightnessValue();
+        final Window window = getWindow();
+        if (window != null) {
+            final WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.screenBrightness = settings.isNightModeEnable() ? currentBrightness : WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+            window.setAttributes(layoutParams);
+        }
     }
 }

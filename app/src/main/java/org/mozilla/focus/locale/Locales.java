@@ -30,7 +30,7 @@ public class Locales {
 
     /**
      * Is only required by locale aware activities, AND  Application. In most cases you should be
-     * using LocaleAwareAppCompatActivity or friends.
+     * using BaseActivity or friends.
      *
      * @param context
      */

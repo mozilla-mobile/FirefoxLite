@@ -46,7 +46,6 @@ import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.fragment.ListPanelDialog;
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
@@ -88,13 +87,14 @@ import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
-import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends LocaleAwareAppCompatActivity implements FragmentListener,
+import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+
+public class MainActivity extends BaseActivity implements FragmentListener,
         ThemeManager.ThemeHost,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
