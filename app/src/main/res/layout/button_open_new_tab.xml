@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.themed.ThemedImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/btn_open_new_tab"
     style="@style/MainMenuButton"
-    android:src="@drawable/action_add" />
+    android:src="@drawable/action_add"
+    android:tint="@color/browser_menu_button"/>

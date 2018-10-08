@@ -4,6 +4,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_horizontal|bottom">
 
     <org.mozilla.focus.widget.EqualDistributeGrid
@@ -16,7 +17,8 @@
 
         <org.mozilla.focus.tabs.TabCounter
             android:id="@+id/btn_tab_tray"
-            style="@style/MainMenuButton" />
+            style="@style/MainMenuButton"
+            app:drawableColor="@color/browser_menu_button"/>
 
         <include layout="@layout/button_open_new_tab" />
 

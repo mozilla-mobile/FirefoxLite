@@ -16,6 +16,11 @@
     <color name="commonLightBlue">#41B7E6</color>
     <color name="commonPurple">#C85DEF</color>
 
+    <color name="colorWhiteOpacity5">#0DFFFFFF</color>
+    <color name="colorWhiteOpacity60">#99FFFFFF</color>
+    <color name="colorWhiteOpacity70">#B3FFFFFF</color>
+    <color name="colorWhiteOpacity80">#CCFFFFFF</color>
+
     <color name="sharedColorAppPaletteWhite">#FFFFFFFF</color>
     <color name="sharedColorAppPaletteWhite2">#7FFFFFFF</color>
     <color name="sharedColorAppPaletteWhite3">#33FFFFFF</color>

@@ -7,11 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <org.mozilla.focus.widget.themed.ThemedLinearLayout
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@drawable/browser_background"
         android:orientation="vertical">
 
         <FrameLayout
@@ -89,14 +89,14 @@
             </LinearLayout>
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
-    </LinearLayout>
+    </org.mozilla.focus.widget.themed.ThemedLinearLayout>
 
-    <View
+    <org.mozilla.focus.widget.themed.ThemedView android:id="@+id/bottom_menu_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="@dimen/fixed_menu_height"
-        android:background="@color/colorDivider"
+        android:background="@drawable/browser_menu_divider"
         tools:background="#FF0000" />
 
     <include layout="@layout/fragment_browser_item_menu_button" />
