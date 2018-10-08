@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.mozilla.fileutils.FileUtils;
@@ -71,6 +72,7 @@ import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.rocket.privately.PrivateModeActivity;
+import org.mozilla.focus.widget.AdjustBrightnessDialog;
 import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
@@ -376,6 +378,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
+        // TODO: night mode is only for non-release build temporarily, remove later
+        if (AppConstants.isReleaseBuild()) {
+            menu.findViewById(R.id.menu_night_mode).setVisibility(View.GONE);
+        }
+        menu.findViewById(R.id.menu_night_mode).setSelected(isNightModeEnabled());
+
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
@@ -492,6 +500,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 Intent intent = new Intent(this, PrivateModeActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
+                break;
+            case R.id.menu_night_mode:
+                final boolean nightModeEnabled = !isNightModeEnabled();
+                v.setSelected(nightModeEnabled);
+                onNightModeClicked(nightModeEnabled);
                 break;
             case R.id.menu_find_in_page:
                 onFindInPageClicked();
@@ -661,6 +674,36 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
         final String msg = getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void onNightModeClicked(final boolean enable) {
+        final Settings settings = Settings.getInstance(this);
+        settings.setNightMode(enable);
+        final float currentBrightness = settings.getNightModeBrightnessValue();
+        final WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        if (enable) {
+            if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
+                // First time turn on
+                settings.setNightModeBrightnessValue(AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS);
+                startActivity(new Intent(this, AdjustBrightnessDialog.class));
+            } else {
+                layoutParams.screenBrightness = currentBrightness;
+                getWindow().setAttributes(layoutParams);
+            }
+        } else {
+            // Disable night mode, restore the screen brightness
+            layoutParams.screenBrightness = BRIGHTNESS_OVERRIDE_NONE;
+            getWindow().setAttributes(layoutParams);
+        }
+
+        Fragment fragment = this.screenNavigator.getTopFragment();
+        if (fragment instanceof BrowserFragment) { // null fragment will not make instanceof to be true
+            ((BrowserFragment) fragment).setNightModeEnabled(enable);
+        }
+    }
+
+    private boolean isNightModeEnabled() {
+        return Settings.getInstance(this).isNightModeEnable();
     }
 
     @VisibleForTesting
