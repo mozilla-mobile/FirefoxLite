@@ -8,9 +8,9 @@
         <shape>
             <gradient
                 android:angle="270"
-                android:startColor="?themeGradientStart"
-                android:centerColor="?themeGradientEnd"
-                android:endColor="?themeGradientEnd" />
+                android:startColor="?colorTabTrayBackgroundStart"
+                android:centerColor="?colorTabTrayBackgroundEnd"
+                android:endColor="?colorTabTrayBackgroundEnd" />
         </shape>
     </item>
     <item android:id="@+id/gradient_background_night">
