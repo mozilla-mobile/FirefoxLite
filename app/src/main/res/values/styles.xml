@@ -25,6 +25,7 @@
         <item name="toolBarAppearance">@style/ToolBarStyle</item>
         <item name="siteIdentityAppearance">@style/SiteIdentityStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlStyle</item>
+        <item name="tabTrayAppearance">@style/TabTrayNormalStyle</item>
 
         <item name="colorFindInPageTint">@color/clickable_tint_normal_mode</item>
         <item name="colorFindInPageTextColor">@color/paletteLightBlack100</item>
@@ -42,6 +43,7 @@
         <item name="toolBarAppearance">@style/ToolBarPrivateStyle</item>
         <item name="siteIdentityAppearance">@style/SiteIdentityPrivateStyle</item>
         <item name="displayUrlAppearance">@style/DisplayUrlPrivateStyle</item>
+        <item name="tabTrayAppearance">@style/TabTrayPrivateStyle</item>
 
         <item name="colorFindInPageTint">@color/clickable_tint_private_mode</item>
         <item name="colorFindInPageTextColor">@color/paletteWhite100</item>
