@@ -996,7 +996,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 onModeClicked();
                 break;
             case SHOW_TAB_TRAY:
-                TabTray.show(getSupportFragmentManager());
+                TabTray.show(getSupportFragmentManager(), false);
                 break;
             case REFRESH_TOP_SITE:
                 Fragment fragment = this.screenNavigator.getTopFragment();
