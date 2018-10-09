@@ -276,7 +276,7 @@ class Session @JvmOverloads constructor(
                 this.onShowFileChooser(it.first, it.second, it.third)
             }
             val args = Triple(tabView, filePathCallback!!, fileChooserParams!!)
-            return !Consumable.from(args).consumeBy(consumers)
+            return Consumable.from(args).consumeBy(consumers)
         }
 
         override fun onReceivedTitle(view: TabView, title: String?) =
