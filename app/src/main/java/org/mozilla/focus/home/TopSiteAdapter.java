@@ -82,7 +82,9 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
             // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
             final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskWrites();
             Bitmap resource = FavIconUtils.getBitmapFromUri(holder.itemView.getContext(), favIconUri);
-            if (DimenUtils.iconTooBlurry(holder.img.getResources(), resource.getWidth())) {
+            if (resource == null) {
+                defaultSetImageViewWithBackground(holder.img, site.getUrl(), Color.WHITE);
+            } else if (DimenUtils.iconTooBlurry(holder.img.getResources(), resource.getWidth())) {
                 defaultSetImageViewWithBackground(holder.img, site.getUrl(), FavIconUtils.getDominantColor(resource));
             } else {
                 setImageViewWithBackground(holder.img, resource);
