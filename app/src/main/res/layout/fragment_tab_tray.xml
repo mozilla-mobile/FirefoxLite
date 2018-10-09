@@ -55,7 +55,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/btn_private_browsing"
+                android:id="@+id/btn_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/tab_tray_bottom_sheet_start_margin"
