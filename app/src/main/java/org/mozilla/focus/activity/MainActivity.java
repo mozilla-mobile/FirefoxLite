@@ -556,10 +556,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 TelemetryWrapper.menuTurboChangeTo(turboEnabled);
                 break;
             case R.id.btn_private_browsing:
-                Intent intent = new Intent(this, PrivateModeActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
-                TelemetryWrapper.togglePrivateMode(true);
+                onModeClicked();
                 break;
             case R.id.menu_night_mode:
                 final Settings settings = Settings.getInstance(this);
@@ -719,6 +716,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     private void onBookmarksClicked() {
         showListPanel(ListPanelDialog.TYPE_BOOKMARKS);
+    }
+
+    private void onModeClicked() {
+        TelemetryWrapper.togglePrivateMode(true);
+        startActivity(new Intent(this, PrivateModeActivity.class));
+        overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
     }
 
     private void onDownloadClicked() {
@@ -986,6 +989,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 break;
             case DISMISS_URL_INPUT:
                 this.screenNavigator.popUrlScreen();
+                break;
+            case TOGGLE_PRIVATE_MODE:
+                onModeClicked();
                 break;
             case SHOW_TAB_TRAY:
                 TabTray.show(getSupportFragmentManager());
