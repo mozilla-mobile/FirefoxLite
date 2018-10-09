@@ -11,9 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 public class TabTray {
-    public static void show(FragmentManager manager) {
+    public static void show(FragmentManager manager, boolean isPrivate) {
         if (!manager.isStateSaved()) {
-            TabTrayFragment.newInstance().show(manager, TabTrayFragment.FRAGMENT_TAG);
+            TabTrayFragment.newInstance(isPrivate).show(manager, TabTrayFragment.FRAGMENT_TAG);
         }
     }
 

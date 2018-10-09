@@ -10,7 +10,6 @@ import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -58,7 +57,6 @@ import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.rocket.privately.PrivateMode;
-import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
@@ -72,6 +70,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private static final boolean ENABLE_BACKGROUND_ALPHA_TRANSITION = true;
     private static final boolean ENABLE_SWIPE_TO_DISMISS = true;
+
+    private static final String ARGS_IS_PRIVATE_MODE = "_fragment_is_in_private_mode_";
 
     private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
 
@@ -107,14 +107,21 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private ThemedImageView imgPrivateBrowsing, imgNewTab;
     private ThemedView bottomDivider;
 
-    public static TabTrayFragment newInstance() {
-        return new TabTrayFragment();
+    public static TabTrayFragment newInstance(boolean isPrivateMode) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ARGS_IS_PRIVATE_MODE, isPrivateMode);
+        TabTrayFragment frg = new TabTrayFragment();
+        frg.setArguments(bundle);
+        return frg;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
+        final boolean isPrivateMode = (getArguments() != null)
+                && getArguments().getBoolean(ARGS_IS_PRIVATE_MODE, false);
+        final int theme = isPrivateMode ? R.style.PrivateModeTheme : R.style.NormalModeTheme;
+        setStyle(DialogFragment.STYLE_NO_TITLE, theme);
 
         adapter = new TabTrayAdapter(Glide.with(this));
 
