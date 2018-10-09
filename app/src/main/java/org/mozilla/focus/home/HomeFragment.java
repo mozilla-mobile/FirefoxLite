@@ -581,14 +581,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             tabCounter.setCount(tabCount);
         }
 
-        if (tabCount == 0) {
-            tabCounter.setEnabled(false);
-            tabCounter.setAlpha(ALPHA_TAB_COUNTER_DISABLED);
-
-        } else {
-            tabCounter.setEnabled(true);
-            tabCounter.setAlpha(1f);
-        }
+        tabCounter.setEnabled(true);
     }
 
     private boolean isTabRestoredComplete() {
