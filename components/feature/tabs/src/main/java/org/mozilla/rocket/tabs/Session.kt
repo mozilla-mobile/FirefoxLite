@@ -272,10 +272,11 @@ class Session @JvmOverloads constructor(
                 filePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
 
-            var consumers = session.wrapConsumers<Observer?> {
-                onShowFileChooser(tabView, filePathCallback, fileChooserParams)
+            val consumers = session.wrapConsumers<Triple<TabView, ValueCallback<Array<Uri>>, WebChromeClient.FileChooserParams>> {
+                this.onShowFileChooser(it.first, it.second, it.third)
             }
-            return !Consumable.empty<Observer>().consumeBy(consumers)
+            val args = Triple(tabView, filePathCallback!!, fileChooserParams!!)
+            return !Consumable.from(args).consumeBy(consumers)
         }
 
         override fun onReceivedTitle(view: TabView, title: String?) =
