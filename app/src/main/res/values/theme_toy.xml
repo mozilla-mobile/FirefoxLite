@@ -54,4 +54,6 @@
     <color name="themeGradientStart04">#6893E3</color>
     <color name="themeGradientEnd04">#BD95E2</color>
 
+    <color name="themeGradientStartNight">#103266</color>
+    <color name="themeGradientEndNight">#140623</color>
 </resources>

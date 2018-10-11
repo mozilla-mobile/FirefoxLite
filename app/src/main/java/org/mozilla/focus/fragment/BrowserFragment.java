@@ -19,10 +19,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,7 +39,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
@@ -50,6 +47,7 @@ import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.EnqueueDownloadTask;
@@ -67,7 +65,6 @@ import org.mozilla.focus.utils.FileChooseAction;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.widget.AnimatedProgressBar;
@@ -78,6 +75,7 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.focus.widget.themed.ThemedImageButton;
 import org.mozilla.focus.widget.themed.ThemedImageView;
 import org.mozilla.focus.widget.themed.ThemedLinearLayout;
+import org.mozilla.focus.widget.themed.ThemedRelativeLayout;
 import org.mozilla.focus.widget.themed.ThemedTextView;
 import org.mozilla.focus.widget.themed.ThemedView;
 import org.mozilla.rocket.tabs.Session;
@@ -88,6 +86,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
 import org.mozilla.rocket.theme.ThemeManager;
+import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
@@ -127,7 +126,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ViewGroup webViewSlot;
     private SessionManager sessionManager;
 
-    private View backgroundView;
+    private ThemedRelativeLayout backgroundView;
     private TransitionDrawable backgroundTransition;
     private TabCounter tabCounter;
     private ThemedTextView urlView;
@@ -180,6 +179,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ThemedImageButton menuBtn;
     private ThemedLinearLayout toolbarRoot;
     private ThemedView bottomMenuDivider;
+    private ThemedView urlBarDivider;
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -382,7 +382,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         backgroundView = view.findViewById(R.id.background);
         view.findViewById(R.id.appbar).setOnApplyWindowInsetsListener((v, insets) -> {
-            ((FrameLayout.LayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+            ((RelativeLayout.LayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
             return insets;
         });
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
@@ -394,6 +394,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         menuBtn = view.findViewById(R.id.btn_menu);
         toolbarRoot = view.findViewById(R.id.toolbar_root);
         bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
+        urlBarDivider = view.findViewById(R.id.url_bar_divider);
         if (tabCounter != null) {
             tabCounter.setOnClickListener(this);
         }
@@ -492,7 +493,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             current.detach();
             webViewSlot.removeView(tabView.getView());
         }
-        restoreStatusBar();
     }
 
     public void goForeground() {
@@ -555,7 +555,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     @Override
     public void onDestroyView() {
         sessionManager.unregister(this.managerObserver);
-        restoreStatusBar();
         super.onDestroyView();
     }
 
@@ -1511,32 +1510,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         tabCounter.setNightMode(enable);
 
         bottomMenuDivider.setNightMode(enable);
+        backgroundView.setNightMode(enable);
+        urlBarDivider.setNightMode(enable);
 
-        // Set status bar color and change to dark theme
-        if  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int color;
-            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-            final Window window = getActivity().getWindow();
-            if (enable) {
-                color = ContextCompat.getColor(getActivity(), R.color.commonDarkGrey3);
-                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            } else {
-                color = Color.TRANSPARENT;
-                flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            }
-            window.setStatusBarColor(color);
-            window.getDecorView().setSystemUiVisibility(flags);
-        }
+        ViewUtils.updateStatusBarStyle(!enable, getActivity().getWindow());
     }
 
-    private void restoreStatusBar() {
-        if  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.getInstance(getActivity()).isNightModeEnable()) {
-            final Window window = getActivity().getWindow();
-            window.setStatusBarColor(Color.TRANSPARENT);
-            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            window.getDecorView().setSystemUiVisibility(flags);
-        }
-    }
 }
 

@@ -7,6 +7,7 @@ import android.widget.SeekBar
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.utils.Settings
+import org.mozilla.focus.utils.ViewUtils
 
 class AdjustBrightnessDialog : BaseActivity() {
 
@@ -43,6 +44,7 @@ class AdjustBrightnessDialog : BaseActivity() {
         seekBar = findViewById(R.id.brightness_slider)
         seekBar.setOnSeekBarChangeListener(mSeekListener)
         findViewById<View>(R.id.brightness_root).setOnClickListener { finish() }
+        ViewUtils.updateStatusBarStyle(false, window)
     }
 
     override fun onResume() {

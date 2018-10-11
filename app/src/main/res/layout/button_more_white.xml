@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.themed.ThemedImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/btn_menu"
     style="@style/MainMenuButton"
-    android:tint="@android:color/white"
+    android:tint="@color/home_bottom_button"
     android:src="@drawable/action_menu" />

@@ -49,6 +49,12 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.widget.themed.ThemedImageView;
+import org.mozilla.focus.widget.themed.ThemedRecyclerView;
+import org.mozilla.focus.widget.themed.ThemedRelativeLayout;
+import org.mozilla.focus.widget.themed.ThemedView;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.tabs.Session;
@@ -69,7 +75,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private TabTrayContract.Presenter presenter;
 
-    private View newTabBtn;
+    private ThemedRelativeLayout newTabBtn;
     private View logoMan;
     private View closeTabsBtn;
     private View privateModeBtn;
@@ -81,7 +87,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private Drawable backgroundDrawable;
     private Drawable backgroundOverlay;
 
-    private RecyclerView recyclerView;
+    private ThemedRecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
 
     private boolean playEnterAnimation = true;
@@ -95,6 +101,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private Runnable dismissRunnable = this::dismissAllowingStateLoss;
 
     private TabTrayViewModel tabTrayViewModel = null;
+
+    private ThemedImageView imgPrivateBrowsing, imgNewTab;
+    private ThemedView bottomDivider;
 
     public static TabTrayFragment newInstance() {
         return new TabTrayFragment();
@@ -151,12 +160,18 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         privateModeBtn.setVisibility(PrivateMode.isEnable(getContext()) ? View.VISIBLE : View.INVISIBLE);
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
+        imgPrivateBrowsing = view.findViewById(R.id.img_private_browsing);
+        imgNewTab = view.findViewById(R.id.plus_sign);
+        bottomDivider = view.findViewById(R.id.bottom_divider);
+        view.findViewById(R.id.star_background).setVisibility(Settings.getInstance(getContext()).isNightModeEnable() ? View.VISIBLE : View.GONE);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setNightModeEnabled(Settings.getInstance(view.getContext()).isNightModeEnable());
 
         initWindowBackground(view.getContext());
 
@@ -525,7 +540,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         if (drawable instanceof LayerDrawable) {
             LayerDrawable layerDrawable = (LayerDrawable) drawable;
-            backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background);
+            if (Settings.getInstance(getContext()).isNightModeEnable()) {
+                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background_night);
+                // set alpha = 0 to let this layer invisible
+                layerDrawable.findDrawableByLayerId(R.id.gradient_background).setAlpha(0);
+            } else {
+                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background);
+                layerDrawable.findDrawableByLayerId(R.id.gradient_background_night).setAlpha(0);
+            }
             backgroundOverlay = layerDrawable.findDrawableByLayerId(R.id.background_overlay);
             int alpha = validateBackgroundAlpha(0xff);
             backgroundDrawable.setAlpha(alpha);
@@ -664,5 +686,15 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 fragment.updateWindowOverlay(overlayAlpha);
             }
         }
+    }
+
+    private void setNightModeEnabled(boolean enable) {
+        newTabBtn.setNightMode(enable);
+        imgPrivateBrowsing.setNightMode(enable);
+        imgNewTab.setNightMode(enable);
+        bottomDivider.setNightMode(enable);
+        recyclerView.setNightMode(enable);
+
+        ViewUtils.updateStatusBarStyle(!enable, getDialog().getWindow());
     }
 }

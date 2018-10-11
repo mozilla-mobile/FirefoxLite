@@ -2,9 +2,22 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:angle="45"
-        android:endColor="?themeGradientEnd"
-        android:startColor="?themeGradientStart" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item app:state_night="true" >
+        <shape >
+            <gradient
+                android:angle="45"
+                android:endColor="@color/themeGradientEndNight"
+                android:startColor="@color/themeGradientStartNight" />
+        </shape>
+    </item>
+    <item>
+        <shape >
+            <gradient
+                android:angle="45"
+                android:endColor="?themeGradientEnd"
+                android:startColor="?themeGradientStart" />
+        </shape>
+    </item>
+</selector>
