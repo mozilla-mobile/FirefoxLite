@@ -196,12 +196,18 @@
     <string name="first_run_page2_title">Browse faster than ever</string>
     <string name="first_run_page2_text">Use turbo mode to block tracking ads so you can browse at blazing speeds. If sites seem broken, just tap off the turbo mode switch in the menu.</string>
     <string name="first_run_page3_title">Save data = Save money</string>
-    <string name="first_run_page3_text">Blocking tracking ads not only speeds up browsing, it saves data. Save even more when you block images.</string>
-    <string name="first_run_page4_title">Screenshot everything</string>
-    <string name="first_run_page4_text">Take screenshots of entire web pages. View a screenshot offline (without using data) or tap it to revisit the web page.</string>
-
+    <string name="first_run_page3_text">Save on data costs by blocking tracking ads. Save even more when you enable image blocking.</string>
+    <string name="first_run_page4_title">Screenshot the whole page</string>
+    <string name="first_run_page4_text">Take screenshot of an entire page scroll. Read it offline without using data or tap it to revisit the web page.</string>
+    <string name="first_run_page5_title">Next-level privacy</string>
+    <string name="first_run_page5_text">Browse without a trace, and block a wide range of common web trackers by default. Ensure the security of your confidential data.</string>
+   
     <string name="first_run_upgrade_page_title">We heard your feedback!</string>
 
+    <string name="new_name_upgrade_page_title">We have a new look!</string>
+    <!-- The %1$s here is a placeholder for "Firefox Lite"-->
+    <string name="new_name_upgrade_page_text">With the evolved product, we bring you a newly refreshed %1$s, with new name and new logo.</string>
+   
     <!-- The %s here is a placeholder for "multiple tabs" (paired with first_run_upgrade_page_text1_highlight) -->
     <string name="first_run_upgrade_page_text1">1. Multitask by opening %s at the same time!</string>
     <string name="first_run_upgrade_page_text1_highlight">multiple tabs</string>
