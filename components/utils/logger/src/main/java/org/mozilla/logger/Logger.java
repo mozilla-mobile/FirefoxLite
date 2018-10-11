@@ -4,8 +4,8 @@ import android.util.Log;
 
 public class Logger {
 
-    public static void throwOrWarn(boolean shouldCrash, String tag, String msg, RuntimeException exception) {
-        if (shouldCrash) {
+    public static void throwOrWarn(boolean logOnly, String tag, String msg, RuntimeException exception) {
+        if (logOnly) {
             Log.e(tag, msg);
         } else {
             if (exception == null) {
