@@ -2,12 +2,12 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.focus.widget.themed.ThemedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_fragment_fake_input"
     android:layout_width="306dp"
     android:layout_height="48dp"
     android:gravity="center"
     android:background="@drawable/urlbar_background"
     android:text="@string/urlbar_hint"
-    android:textColor="#B2B2B2"
+    android:textColor="@color/fake_input_text"
     android:textSize="14sp" />

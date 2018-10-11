@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
@@ -32,6 +32,9 @@ import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.widget.themed.ThemedRecyclerView;
+import org.mozilla.focus.widget.themed.ThemedRelativeLayout;
+import org.mozilla.focus.widget.themed.ThemedTextView;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.Session;
 
@@ -49,6 +52,8 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     private RequestManager requestManager;
 
     private HashMap<String, Drawable> localIconCache = new HashMap<>();
+
+    private boolean isNight;
 
     TabTrayAdapter(RequestManager requestManager) {
         this.requestManager = requestManager;
@@ -84,6 +89,9 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         }
 
         setFavicon(tab, holder);
+        holder.rootView.setNightMode(isNight);
+        holder.websiteTitle.setNightMode(isNight);
+        holder.websiteSubtitle.setNightMode(isNight);
     }
 
     @Override
@@ -96,6 +104,15 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     @Override
     public int getItemCount() {
         return tabs.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        if (recyclerView instanceof ThemedRecyclerView) {
+            ThemedRecyclerView themedRecyclerView = (ThemedRecyclerView) recyclerView;
+            this.isNight = themedRecyclerView.isNightMode();
+        }
     }
 
     void setTabClickListener(TabClickListener tabClickListener) {
@@ -207,13 +224,15 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView websiteTitle;
-        TextView websiteSubtitle;
+        ThemedRelativeLayout rootView;
+        ThemedTextView websiteTitle;
+        ThemedTextView websiteSubtitle;
         View closeButton;
         ImageView websiteIcon;
 
         ViewHolder(View itemView) {
             super(itemView);
+            rootView = itemView.findViewById(R.id.root_view);
             websiteTitle = itemView.findViewById(R.id.website_title);
             websiteSubtitle = itemView.findViewById(R.id.website_subtitle);
             closeButton = itemView.findViewById(R.id.close_button);

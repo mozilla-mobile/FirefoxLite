@@ -14,7 +14,7 @@
         android:background="@drawable/browser_background"
         android:orientation="vertical">
 
-        <FrameLayout
+        <org.mozilla.focus.widget.themed.ThemedRelativeLayout
             android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,11 +39,12 @@
                     <include layout="@layout/toolbar" />
 
                     <!-- divider between appbar and web-vew, will be covered by progress bar -->
-                    <View
+                    <org.mozilla.focus.widget.themed.ThemedView
+                        android:id="@+id/url_bar_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="bottom"
-                        android:background="@color/colorDivider"
+                        android:background="@drawable/url_bar_divider"
                         tools:background="#FF0000" />
 
                     <org.mozilla.focus.widget.AnimatedProgressBar
@@ -62,7 +63,7 @@
 
             </android.support.design.widget.AppBarLayout>
 
-        </FrameLayout>
+        </org.mozilla.focus.widget.themed.ThemedRelativeLayout>
 
         <org.mozilla.focus.widget.ResizableKeyboardLayout
             android:id="@+id/main_content"

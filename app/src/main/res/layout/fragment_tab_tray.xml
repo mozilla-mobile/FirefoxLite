@@ -10,6 +10,13 @@
     android:layout_height="match_parent"
     tools:ignore="contentDescription,spUsage">
 
+    <ImageView android:id="@+id/star_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitStart"
+        app:srcCompat="@drawable/star_bg"
+        android:visibility="gone"/>
+
     <ImageView
         android:id="@+id/logo_man"
         android:layout_width="wrap_content"
@@ -24,11 +31,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <org.mozilla.focus.widget.themed.ThemedRecyclerView
             android:id="@+id/tab_tray"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/tabTrayForeground"
+            android:background="@drawable/tab_tray_foreground"
             android:clipToPadding="false"
             android:paddingStart="@dimen/tab_tray_padding"
             android:paddingTop="@dimen/tab_tray_padding"
@@ -39,12 +46,12 @@
             app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
             tools:listitem="@layout/item_tab_tray" />
 
-        <RelativeLayout
+        <org.mozilla.focus.widget.themed.ThemedRelativeLayout
             android:id="@+id/new_tab_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_tray_new_tab_btn_height"
             android:layout_gravity="bottom"
-            android:background="@color/tabTrayForeground"
+            android:background="@drawable/tab_tray_bottom_bar_bg"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -66,31 +73,33 @@
                     android:visibility="invisible"
                     android:src="@drawable/ic_menu_private_mode" />
 
-                <ImageView
+                <org.mozilla.focus.widget.themed.ThemedImageView
                     android:id="@+id/img_private_browsing"
                     style="@style/MainMenuButton"
                     android:layout_centerInParent="true"
                     android:padding="8dp"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/tab_tray_private_btn"
                     app:srcCompat="@drawable/ic_menu_mask"
                     tools:ignore="contentDescription" />
             </RelativeLayout>
 
-            <View
+            <org.mozilla.focus.widget.themed.ThemedView
+                android:id="@+id/bottom_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/tabTrayItemOutlineNormal" />
+                android:background="@drawable/tab_tray_bottom_divider_bg" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground" />
-            <ImageView
+            <org.mozilla.focus.widget.themed.ThemedImageView
                 android:id="@+id/plus_sign"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:scaleType="center"
                 app:srcCompat="@drawable/action_add"
+                android:tint="@color/tab_tray_private_btn"
                 tools:ignore="contentDescription" />
 
             <FrameLayout
@@ -117,6 +126,6 @@
                     android:fontFamily="sans-serif-medium"
                     tools:ignore="RtlSymmetry" />
             </FrameLayout>
-        </RelativeLayout>
+        </org.mozilla.focus.widget.themed.ThemedRelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

@@ -95,9 +95,8 @@
     <color name="colorMenuLabelDefault">@color/sharedColorAppPaletteGray</color>
     <color name="colorMenuLabelActive">@color/sharedColorAppPaletteMain3</color>
 
-    <color name="url_bg_active">@color/sharedColorAppPaletteWhite</color>
-    <color name="url_bg_inactive">#EEEEEE</color>
-    <color name="url_bg_disabled">#555555</color>
+    <color name="url_bg_inactive_default">#EEEEEE</color>
+    <color name="url_bar_divider_default">#EEEEEE</color>
 
     <color name="colorDownloadText">@color/sharedColorAppPaletteBlack</color>
     <color name="colorDownloadSubText">@color/sharedColorAppPaletteGray</color>
@@ -125,13 +124,8 @@
     <!-- Tab Tray -->
     <color name="tabTrayBackgroundTop">#2493DB</color>
     <color name="tabTrayBackgroundBottom">#63EAE8</color>
-    <color name="tabTrayForeground">@color/sharedColorAppPaletteWhite4</color>
-    <color name="tabTrayItemBackground">@color/sharedColorAppPaletteWhite</color>
     <color name="tabTrayItemIconBackground">@color/sharedColorAppPaletteGray3</color>
-    <color name="tabTrayItemOutlineNormal">@color/sharedColorAppPaletteWhite5</color>
     <color name="tabTrayItemOutlineSelected">@color/sharedColorAppPaletteMain</color>
-    <color name="tabTrayItemTitle">@color/sharedColorAppPaletteBlack</color>
-    <color name="tabTrayItemSubTitle">@color/sharedColorAppPaletteGray</color>
     <color name="tabTrayCloseAll">@color/sharedColorAppPaletteMain</color>
 
     <color name="bookmarkEditToolbarBackground">@color/sharedColorAppPaletteMain4</color>

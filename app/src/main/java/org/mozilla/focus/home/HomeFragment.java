@@ -43,7 +43,6 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,11 +67,13 @@ import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.focus.widget.themed.ThemedImageButton;
+import org.mozilla.focus.widget.themed.ThemedTextView;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
@@ -83,6 +84,7 @@ import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.LoggerWrapper;
+import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
@@ -95,8 +97,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.mozilla.focus.navigation.ScreenNavigator.HOME_FRAGMENT_TAG;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
         ScreenNavigator.HomeScreen {
@@ -113,10 +113,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
-    private View btnMenu;
+    private ThemedImageButton btnMenu;
     private View themeOnboardingLayer;
     private TabCounter tabCounter;
-    private TextView fakeInput;
+    private ThemedTextView fakeInput;
     private HomeScreenBackground homeScreenBackground;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
@@ -334,7 +334,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.tabCounter.setOnClickListener(menuItemClickListener);
         updateTabCounter();
 
-        this.fakeInput = (TextView) view.findViewById(R.id.home_fragment_fake_input);
+        this.fakeInput = view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(v -> {
             final Activity parent = getActivity();
             if (parent instanceof FragmentListener) {
@@ -404,6 +404,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
         updateTopSitesData();
         setupBannerTimer();
+        setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
     }
 
     private void setupBannerTimer() {
@@ -836,6 +837,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public void onLongPress() {
+            if (Settings.getInstance(getActivity()).isNightModeEnable()) {
+                // Not allowed long press to reset theme when night mode is on
+                return;
+            }
             doWithActivity(getActivity(), (themeManager) -> {
                 themeManager.resetDefaultTheme();
                 TelemetryWrapper.resetThemeToDefault();
@@ -844,6 +849,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public boolean onDoubleTap() {
+            if (Settings.getInstance(getActivity()).isNightModeEnable()) {
+                // Not allowed double tap to switch theme when night mode is on
+                return true;
+            }
             doWithActivity(getActivity(), (themeManager) -> {
                 ThemeManager.ThemeSet themeSet = themeManager.toggleNextTheme();
                 TelemetryWrapper.changeThemeTo(themeSet.name());
@@ -885,5 +894,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static void scheduleRefresh(Handler handler) {
         Message message = handler.obtainMessage(MSG_ID_REFRESH);
         handler.dispatchMessage(message);
+    }
+
+    public void setNightModeEnabled(boolean enable) {
+        fakeInput.setNightMode(enable);
+        btnMenu.setNightMode(enable);
+        tabCounter.setNightMode(enable);
+        homeScreenBackground.setNightMode(enable);
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            final ThemedTextView item = recyclerView.getChildAt(i).findViewById(R.id.text);
+            item.setNightMode(enable);
+        }
+        ViewUtils.updateStatusBarStyle(!enable, getActivity().getWindow());
     }
 }

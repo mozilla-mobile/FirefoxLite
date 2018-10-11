@@ -696,6 +696,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         Fragment fragment = this.screenNavigator.getTopFragment();
         if (fragment instanceof BrowserFragment) { // null fragment will not make instanceof to be true
             ((BrowserFragment) fragment).setNightModeEnabled(enable);
+        } else if (fragment instanceof HomeFragment) {
+            ((HomeFragment) fragment).setNightModeEnabled(enable);
         }
     }
 
