@@ -10,6 +10,6 @@ public class LoggerWrapper {
     }
 
     public static void throwOrWarn(String tag, String msg, RuntimeException exception) {
-        Logger.throwOrWarn(AppConstants.isBetaBuild(), tag, msg, exception);
+        Logger.throwOrWarn(AppConstants.isReleaseBuild(), tag, msg, exception);
     }
 }
