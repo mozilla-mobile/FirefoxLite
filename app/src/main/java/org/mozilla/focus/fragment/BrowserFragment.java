@@ -48,6 +48,8 @@ import android.webkit.WebView;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.EnqueueDownloadTask;
@@ -335,6 +337,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                     default:
                         throw new IllegalArgumentException("Unknown Action");
                 }
+            }
+
+            @Override
+            public void permissionDeniedToast() {
+                Toast.makeText(getContext(), R.string.permission_toast_location_deny, Toast.LENGTH_LONG).show();
             }
         });
     }

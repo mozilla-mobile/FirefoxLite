@@ -159,6 +159,11 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
             public void requestPermissions(int actionId) {
                 ActivityCompat.requestPermissions(ScreenshotViewerActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, actionId);
             }
+
+            @Override
+            public void permissionDeniedToast() {
+                Toast.makeText(ScreenshotViewerActivity.this, R.string.permission_toast_location_deny, Toast.LENGTH_LONG).show();
+            }
         });
 
         setContentView(R.layout.activity_screenshot_viewer);

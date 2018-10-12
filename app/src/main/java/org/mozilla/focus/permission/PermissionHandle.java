@@ -74,4 +74,6 @@ public interface PermissionHandle {
      * @param actionId the designated action
      */
     void requestPermissions(int actionId);
+
+    void permissionDeniedToast();
 }
