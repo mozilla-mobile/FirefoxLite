@@ -19,6 +19,7 @@ import android.view.View;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.threadutils.ThreadUtils;
 
 public class PermissionHandler {
 
@@ -81,6 +82,10 @@ public class PermissionHandler {
                 permissionHandle.requestPermissions(actionId);
             }
         }
+    }
+
+    private void showToast() {
+        permissionHandle.permissionDeniedToast();
     }
 
     private void showSnackBar() {
@@ -146,7 +151,11 @@ public class PermissionHandler {
                 permissionHandle.doActionGranted(permission, actionId, params);
                 clearAction();
             } else {
-                showSnackBar();
+                showToast();
+                // I'm not sure why it's so. This method already on Main thread.
+                // But if I don't do this, webview will keeps requesting for permission.
+                // See https://github.com/mozilla-tw/Rocket/blob/765f6a1ddbc2b9058813e930f63c62a9797c5fa0/app/src/webkit/java/org/mozilla/focus/webkit/FocusWebChromeClient.java#L126
+                ThreadUtils.postToMainThread(this::permissionNotGranted);
             }
         }
     }
