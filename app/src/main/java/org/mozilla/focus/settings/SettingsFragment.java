@@ -51,7 +51,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         final Preference preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness));
         preferenceNightMode.setEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
-        rootPreferences.removePreference(preferenceNightMode);
+
     }
 
     @Override
