@@ -378,10 +378,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
         menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
         menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
-        // TODO: night mode is only for non-release build temporarily, remove later
-        if (AppConstants.isReleaseBuild()) {
-            menu.findViewById(R.id.menu_night_mode).setVisibility(View.GONE);
-        }
+        menu.findViewById(R.id.menu_night_mode).setVisibility(View.GONE);
         menu.findViewById(R.id.menu_night_mode).setSelected(isNightModeEnabled());
 
     }
