@@ -69,9 +69,9 @@
   <string name="first_run_page2_title">Menjelajah secepat kilat</string>
   <string name="first_run_page2_text">Gunakan mode turbo untuk memblokir iklan pelacak sehingga Anda dapat menjelajah dengan super cepat. Jika situs terasa bermasalah, cukup nonaktifkan lewat menu.</string>
   <string name="first_run_page3_title">Hemat data = Hemat uang</string>
-  <string name="first_run_page3_text">Memblokir iklan pelacak tidak hanya mempercepat penjelajahan, tapi juga menghemat data. Anda bisa berhemat lebih banyak jika memblokir gambar.</string>
-  <string name="first_run_page4_title">Tangkap layar apa saja</string>
-  <string name="first_run_page4_text">Tangkap layar dari keseluruhan laman. Lihat tanpa menggunakan kuota data, atau ketuk untuk mengunjungi laman sumbernya.</string>
+  <string name="first_run_page3_text">Hemat kuota data dengan memblokir iklan berpelacak. Lebih hemat lagi saat Anda aktifkan pemblokir gambar.</string>
+  <string name="first_run_page4_title">Cuplik keseluruhan layar</string>
+  <string name="first_run_page4_text">Cuplik layar keseluruhan penggeseran layar. Baca secara luring tanpa kuota data atau ketuk untuk mengunjungi laman Web tersebut.</string>
   <string name="first_run_upgrade_page_title">Kami mendengar masukan Anda!</string>
   <string name="first_run_upgrade_page_text1">1. Mengerjakan sekaligus dengan membuka %s secara bersamaan!</string>
   <string name="first_run_upgrade_page_text1_highlight">multi-tab</string>
@@ -86,8 +86,8 @@
   <string name="label_menu_clear_cache">Bersihkan tembolok</string>
   <string name="label_menu_history">Riwayat</string>
   <string name="label_menu_share">Bagikan</string>
-  <string name="label_menu_my_shots">Tangkapan saya</string>
-  <string name="label_menu_capture_page">Tangkap laman</string>
+  <string name="label_menu_my_shots">Cuplikan saya</string>
+  <string name="label_menu_capture_page">Cuplik laman</string>
   <string name="label_menu_turbo_mode">Mode turbo</string>
   <string name="label_menu_night_mode">Mode malam</string>
   <string name="label_menu_block_ads">Blokir Iklan</string>
@@ -138,9 +138,9 @@
   <string name="browsing_history_dialog_btn_clear">Hapus</string>
   <string name="remove_from_list">Hapus dari daftar</string>
   <string name="delete_file">Hapus berkas</string>
-  <string name="screenshot_saved">Tangkapan layar disimpan</string>
-  <string name="screenshot_failed">Gagal membuat tangkapan layar</string>
-  <string name="screenshot_illustration">Membuat tangkapan layar seluruh laman…</string>
+  <string name="screenshot_saved">Cuplikan layar disimpan</string>
+  <string name="screenshot_failed">Gagal membuat cuplikan layar</string>
+  <string name="screenshot_illustration">Membuat cuplikan layar seluruh laman…</string>
   <string name="screenshot_view">LIHAT</string>
   <string name="screenshot_edit">EDIT</string>
   <string name="screenshot_delete">HAPUS</string>
@@ -148,9 +148,9 @@
   <string name="message_fallback_save_to_primary_external">Kartu SD tidak terdeteksi. Berkas telah disimpan di internal.</string>
   <string name="message_start_to_save_to_removable_storage">Berkas telah disimpan di kartu SD</string>
   <string name="message_removable_storage_space_not_enough">Kartu SD hampir penuh. Berkas disimpan di internal.</string>
-  <string name="screenshot_grid_empty_text_title">Tidak ada tangkapan</string>
+  <string name="screenshot_grid_empty_text_title">Tidak ada cuplikan</string>
   <string name="screenshot_grid_empty_text_msg_prefix">Ketuk </string>
-  <string name="screenshot_grid_empty_text_msg_postfix">  pada menu untuk menangkap\nkeseluruhan laman.</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">  pada menu untuk mencuplik\nkeseluruhan laman.</string>
   <string name="screenshot_image_viewer_dialog_title">Info</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Tanggal: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">Kategori: %1$s</string>

@@ -70,8 +70,9 @@
   <string name="first_run_page2_text">ใช้โหมดเทอร์โบเพื่อปิดกั้นโฆษณาที่ติดตามข้อมูลของคุณ ทำให้เปิดเว็บได้อย่างรวดเร็ว; ถ้าเว็บไซต์ทำงานผิดปกติ ก็สามารถแตะปิดโหมดเทอร์โบในเมนูได้</string>
   <string name="first_run_page3_title">ประหยัดข้อมูล = ประหยัดเงิน</string>
   <string name="first_run_page3_text">การปิดกั้นโฆษณาที่ตามรอยคุณไม่เพียงแต่ทำให้เปิดเว็บเร็ว แต่ยังช่วยประหยัดการรับส่งข้อมูล และยังประหยัดได้มากกว่านั้นอีกด้วยการปิดกั้นรูปภาพ</string>
-  <string name="first_run_page4_title">จับภาพหน้าจอทุกอย่าง</string>
+  <string name="first_run_page4_title">จับภาพหน้าจอทั้งหน้า</string>
   <string name="first_run_page4_text">จับภาพของทั้งหน้าเว็บ ดูภาพหน้าจอโดยไม่ต้องต่อเน็ตหรือแตะเพื่อเปิดหน้าเว็บอีกครั้ง</string>
+  <string name="first_run_page5_title">ความเป็นส่วนตัวระดับถัดไป</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
   <string name="first_run_upgrade_page_text1">1. ทำงานหลายอย่างโดยเปิด %s ในเวลาเดียวกัน!</string>
   <string name="first_run_upgrade_page_text1_highlight">หลายแท็บ</string>

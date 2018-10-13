@@ -69,10 +69,14 @@
   <string name="first_run_page2_title">पहले से तेज ब्राउज़ करें</string>
   <string name="first_run_page2_text">ट्रैकिंग विज्ञापनों को ब्लॉक करने के लिए टर्बो प्रणाली का उपयोग करें ताकि आप तेज गति से ब्राउज़ कर सकें। यदि साइटें टूटी लगती हैं, तो विकल्प सूची में टर्बो मोड बटन को दबाएँ।</string>
   <string name="first_run_page3_title">डेटा बचाएँ = पैसे बचाएँ</string>
-  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों को ब्लॉक करना न केवल ब्राउज़िंग गति को बढ़ाता है, यह डेटा भी बचाता है। चित्रों को ब्लॉक कर और भी डेटा बचाएँ।</string>
-  <string name="first_run_page4_title">सभी चीजों के स्क्रीनशॉट लें</string>
-  <string name="first_run_page4_text">पूर्ण वेब पृष्ठों का स्क्रीनशॉट लें। किसी स्क्रीनशॉट को ऑफ़लाइन देखें (बिना डेटा इस्तेमाल किये) या वेब पृष्ठ पर पुनः जाने के लिए इसे टैप करें।</string>
+  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों को ब्लॉक कर डेटा लागत बचाएँ। चित्र ब्लॉकिंग सक्षम कर और भी अधिक डेटा बचाएँ।</string>
+  <string name="first_run_page4_title">पूर्ण पृष्ठ का स्क्रीनशॉट लें</string>
+  <string name="first_run_page4_text">पूर्ण पृष्ठ का स्क्रीनशॉट लें। डेटा इस्तेमाल किये बिना इसे ऑफलाइन पढ़ें या वेब पृष्ठ पर दुबारा जाने के लिए इसे टैप करें।</string>
+  <string name="first_run_page5_title">अगले-दर्जे की गोपनीयता</string>
+  <string name="first_run_page5_text">बिना ट्रेस हुए ब्राउज़ करें, और डिफ़ॉल्ट रूप से आम वेब ट्रैकर्स की एक विस्तृत श्रृंखला को ब्लॉक करें। अपने गोपनीय डेटा की सुरक्षा सुनिश्चित करें।</string>
   <string name="first_run_upgrade_page_title">हमने आपकी राय सुनी!</string>
+  <string name="new_name_upgrade_page_title">हमारे पास एक नया लुक है!</string>
+  <string name="new_name_upgrade_page_text">विकसित प्रोडक्ट के साथ, एक नए नाम और नए लोगो के साथ, हम आपके लिए बिलकुल नया %1$s लाये हैं।</string>
   <string name="first_run_upgrade_page_text1">1. एक ही समय में %s खोलकर बहु कार्यण!</string>
   <string name="first_run_upgrade_page_text1_highlight">विभिन्न टैब</string>
   <string name="first_run_upgrade_page_text2">2. %s द्वारा जल्दी से अपने पसंदीदा साइटों का चलायें</string>
@@ -94,6 +98,8 @@
   <string name="label_menu_block_image">चित्र ब्लॉक करें</string>
   <string name="label_menu_settings">सेटिंग</string>
   <string name="label_menu_exit">निकास</string>
+  <string name="permission_toast_location_deny">स्थान की अनुमति ख़ारिज कर दी गयी।</string>
+  <string name="permission_toast_storage_deny">स्टोरेज की अनुमति ख़ारिज कर दी गयी।</string>
   <string name="permission_dialog_setting">सेटिंग्स</string>
   <string name="permission_dialog_not_now">अभी नहीं</string>
   <string name="permission_dialog_msg_location">अनुपलब्ध अनुमतियाँ। Firefox Rocket को आपके स्थान तक पहुँचने की अनुमति दें।</string>

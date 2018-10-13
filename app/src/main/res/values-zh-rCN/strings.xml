@@ -70,9 +70,13 @@
   <string name="first_run_page2_text">加速模式将过滤广告跟踪，上网更轻快。如果网页有问题，只需在菜单中的关掉加速模式。</string>
   <string name="first_run_page3_title">节省流量 = 节省金钱</string>
   <string name="first_run_page3_text">过滤广告跟踪既可加快上网速度，又可节约流量。不载入图像还能再省更多。</string>
-  <string name="first_run_page4_title">无比强大的截图功能</string>
+  <string name="first_run_page4_title">截取整个页面</string>
   <string name="first_run_page4_text">不但能截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
+  <string name="first_run_page5_title">新一代隐私权保护</string>
+  <string name="first_run_page5_text">无痕浏览。默认阻止各种常见的网络跟踪器。确保私密数据的安全性。</string>
   <string name="first_run_upgrade_page_title">我们收到了您的反馈！</string>
+  <string name="new_name_upgrade_page_title">我们焕然一新！</string>
+  <string name="new_name_upgrade_page_text">随着产品的演化，我们为您带来了焕然一新的 %1$s，新名称、新标志。</string>
   <string name="first_run_upgrade_page_text1">1. 打开 %s ，同时处理多个任务！</string>
   <string name="first_run_upgrade_page_text1_highlight">多个标签页</string>
   <string name="first_run_upgrade_page_text2">2. 把喜爱的网站 %s ，下次访问更快捷！</string>
@@ -94,6 +98,8 @@
   <string name="label_menu_block_image">无图模式</string>
   <string name="label_menu_settings">设置</string>
   <string name="label_menu_exit">退出</string>
+  <string name="permission_toast_location_deny">已拒绝位置权限。</string>
+  <string name="permission_toast_storage_deny">已拒绝存储权限。</string>
   <string name="permission_dialog_setting">设置</string>
   <string name="permission_dialog_not_now">暂不</string>
   <string name="permission_dialog_msg_location">缺少权限。请允许 Firefox Rocket 获知您的位置。</string>

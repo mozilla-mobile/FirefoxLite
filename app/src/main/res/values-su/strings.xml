@@ -69,10 +69,14 @@
   <string name="first_run_page2_title">Ngalanglang sakedét nétra</string>
   <string name="first_run_page2_text">Paké modeu turbo pikeun meungpeuk iklan palacak sangkan anjeun bisa ngalanglang kalawan gancang pisan. Mun situs aya masalah, pareuman baé modeu turbona liwat menu.</string>
   <string name="first_run_page3_title">Rikrik data = Rikrik duit</string>
-  <string name="first_run_page3_text">Meungpeuk iklan palacak teu ngan saukur ngagancangkeun langlangan hungkul, tapi ogé ngarikrik data. Anjeun bisa leuwih rikrik pisan mun bari meungpeuk gambar mah.</string>
+  <string name="first_run_page3_text">Rikrik ongkos data ku cara meungpeuk iklan palacak. Leuwih irit deui lamun ngahirupkeun peungpeuk gambar.</string>
   <string name="first_run_page4_title">Téwak layar sakabéhna</string>
-  <string name="first_run_page4_text">Téwak layar ti saeusi kaca. Tempo téwakan layar sacara oflén (tanpa data) atawa toél pikeun nyorang deui ka kaca wébna.</string>
+  <string name="first_run_page4_text">Téwak layar saeusi kaca. Baca eusina sacara oflén tanpa maké data atawa toél pikeun nyorang deui kaca raramatna.</string>
+  <string name="first_run_page5_title">Privasi tingkat lanjut</string>
+  <string name="first_run_page5_text">Nyungsi tanpa tapak, sarta meungpeuk sarupaning palacak raramat sacara baku. Ngajamin amanna data penting anjeun.</string>
   <string name="first_run_upgrade_page_title">Pangdeudeul anjeun geus katampa!</string>
+  <string name="new_name_upgrade_page_title">Midang dina wanda anyar!</string>
+  <string name="new_name_upgrade_page_text">Luyu jeung kamekaran produkna, kasanggakeun pidangan %1$s anu anyar, kalawan ngaran jeung logo anyar.</string>
   <string name="first_run_upgrade_page_text1">1. Ngagawéan sakaligus kalawan muka %s babarengan!</string>
   <string name="first_run_upgrade_page_text1_highlight">bebedan tab</string>
   <string name="first_run_upgrade_page_text2">2. Sorang loka karesep anjeun kalayan gancang ku %s</string>
@@ -94,6 +98,8 @@
   <string name="label_menu_block_image">Peungpeuk gambar</string>
   <string name="label_menu_settings">Setélan</string>
   <string name="label_menu_exit">Kaluar</string>
+  <string name="permission_toast_location_deny">Idin perenah ditolak.</string>
+  <string name="permission_toast_storage_deny">Idin teundeunan ditolak.</string>
   <string name="permission_dialog_setting">setélan</string>
   <string name="permission_dialog_not_now">Moal waka</string>
   <string name="permission_dialog_msg_location">Can aya idin. Idinan Firefox Rocket ngaksés perenah anjeun.</string>
