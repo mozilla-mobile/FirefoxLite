@@ -69,9 +69,9 @@
   <string name="first_run_page2_title">上网快上加快</string>
   <string name="first_run_page2_text">加速模式将过滤广告跟踪，上网更轻快。如果网页有问题，只需在菜单中的关掉加速模式。</string>
   <string name="first_run_page3_title">节省流量 = 节省金钱</string>
-  <string name="first_run_page3_text">过滤广告跟踪既可加快上网速度，又可节约流量。不载入图像还能再省更多。</string>
+  <string name="first_run_page3_text">拦截广告跟踪可节省流量，不载入图像还能再省更多。</string>
   <string name="first_run_page4_title">截取整个页面</string>
-  <string name="first_run_page4_text">不但能截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
+  <string name="first_run_page4_text">不但能滚动截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
   <string name="first_run_page5_title">新一代隐私权保护</string>
   <string name="first_run_page5_text">无痕浏览。默认阻止各种常见的网络跟踪器。确保私密数据的安全性。</string>
   <string name="first_run_upgrade_page_title">我们收到了您的反馈！</string>
