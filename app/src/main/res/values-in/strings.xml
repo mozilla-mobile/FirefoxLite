@@ -168,8 +168,8 @@
   <string name="message_storage_unavailable_cancel_download">Penyimpanan tidak dapat diakses. Unduhan dibatalkan.</string>
   <string name="message_cleared_cached">Tembolok %1$s dihapus</string>
   <string name="message_cleared_browsing_data">Data penjelajahan dihapus</string>
-  <string name="message_deleted_screenshot">Tangkapan layar dihapus</string>
-  <string name="message_cannot_find_screenshot">Tidak bisa menampilkan tangkapan layar</string>
+  <string name="message_deleted_screenshot">Cuplikan layar dihapus</string>
+  <string name="message_cannot_find_screenshot">Tidak bisa menampilkan cuplikan layar</string>
   <string name="remove">Hapus</string>
   <string name="privacy_policy_update_notification_title">Pemberitahuan Pembaruan Produk</string>
   <string name="privacy_policy_update_notification_action">Untuk membuat Firefox Rocket lebih baik untuk Anda dan setiap orang, kami membuat beberapa perubahan pada kebijakan privasi kami. Ketuk untuk mempelajari lebih lanjut.</string>
@@ -180,7 +180,7 @@
   <string name="rate_app_dialog_btn_feedback">Tidak, kirimkan masukan.</string>
   <string name="rate_app_notification_action_feedback">MASUKAN</string>
   <string name="share_app_dialog_text_title">Bagikan %1$s dengan teman!</string>
-  <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Tangkapan layar yang canggih</string>
+  <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Hemat data\n- Pencuplik layar yang canggih</string>
   <string name="share_app_dialog_btn_share">Bagikan</string>
   <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari %3$s. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s adalah perangkat lunak bebas dan sumber terbuka yang dibuat oleh %2$s dan kontributor lainnya.</string>
@@ -214,8 +214,8 @@
   <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
   <string name="private_browsing_open_action">BUKA</string>
   <string name="private_browsing_erase_done">Riwayat penjelajahan pribadi Anda\ntelah dihapus.</string>
-  <string name="my_shot_on_boarding_message">Lihat tangkapan layar Anda di sini!</string>
-  <string name="my_shot_on_boarding_category_message">Untuk meningkatkan pengalaman produk, kami mengumpulkan informasi tentang kategori tangkapan layar Anda.</string>
+  <string name="my_shot_on_boarding_message">Lihat cuplikan layar Anda di sini!</string>
+  <string name="my_shot_on_boarding_category_message">Untuk meningkatkan pengalaman produk, kami mengumpulkan informasi tentang kategori cuplikan layar Anda.</string>
   <string name="exp_survey_wifi">Rencana kami adalah untuk mengintegrasikan “Pencarian Wifi Gratis” untuk membantu Anda temukan koneksi Internet berkualitas gratis terdekat.\n\n Tertarik?</string>
   <string name="exp_survey_vpn">Rencana kami adalah mengintegrasikan \"Layanan VPN\" supaya Anda dapat kebebasan dan privasi lebih banyak saat menjelajah.\n\n Tertarik?</string>
   <string name="exp_survey_thanks">Terima kasih untuk memberikan umpan balik kepada kami %1$s</string>
