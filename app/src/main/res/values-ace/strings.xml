@@ -73,8 +73,10 @@
   <string name="first_run_page4_title">Keubah ban dum neuleumah layeue</string>
   <string name="first_run_page4_text">Cök neuleumah layeue nibak mandum laman wèb. Kalön \'oh watèe hana jaringan ngön hana ngui data atawa neuthèp keu neugisa keulayi bak laman web nyan.</string>
   <string name="first_run_page5_title">Privasi tingkat lanjut</string>
+  <string name="first_run_page5_text">Seumeulop hana euncit, tham alat seumeutöt wèb nyang biasa. Peuaman data peunténg droeneuh.</string>
   <string name="first_run_upgrade_page_title">Kamoe meudeungö saran droeneuh!</string>
   <string name="new_name_upgrade_page_title">Kamoe na neuleumah barô!</string>
+  <string name="new_name_upgrade_page_text">Ngön produk nyang sabé meuubah, kamoe mumè keu Droeneuh %1$s nyang barô, ngön nan barô dan logo barô.</string>
   <string name="first_run_upgrade_page_text1">1. Multibuet waté ipeuhah %s meusigö!</string>
   <string name="first_run_upgrade_page_text1_highlight">Multitab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs nyang droen galak beubagah ngön %s</string>
