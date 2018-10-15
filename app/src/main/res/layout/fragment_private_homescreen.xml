@@ -52,7 +52,6 @@
 
     <include
         android:id="@+id/pm_home_fake_input"
-        style="@style/FakeInput"
         layout="@layout/fragment_homescreen_item_fake_input"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fake_input_height"

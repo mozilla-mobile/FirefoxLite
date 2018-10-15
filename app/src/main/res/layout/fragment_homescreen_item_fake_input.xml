@@ -6,8 +6,8 @@
     android:id="@+id/home_fragment_fake_input"
     android:layout_width="306dp"
     android:layout_height="48dp"
+    style="@style/Body1"
     android:gravity="center"
     android:background="@drawable/urlbar_background"
     android:text="@string/urlbar_hint"
-    android:textColor="@color/fake_input_text"
-    android:textSize="14sp" />
+    android:textColor="@color/fake_input_text"/>
