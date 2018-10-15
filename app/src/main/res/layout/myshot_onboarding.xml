@@ -29,7 +29,7 @@
         android:layout_marginBottom="14dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/my_shot_on_boarding_message"
-        android:textColor="@color/sharedColorAppPaletteWhite"
+        android:textColor="@color/paletteWhite100"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -51,7 +51,7 @@
             android:gravity="center"
             android:text="@string/my_shot_on_boarding_category_message"
             android:textAlignment="center"
-            android:textColor="@color/sharedColorAppPaletteWhite"
+            android:textColor="@color/paletteWhite100"
             android:textSize="12sp" />
 
         <TextView

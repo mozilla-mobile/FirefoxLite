@@ -47,7 +47,7 @@
         android:layout_marginBottom="@dimen/pm_home_title_margin"
         android:fontFamily="sans-serif-light"
         android:text="@string/private_browsing_title"
-        android:textColor="@color/sharedColorAppPaletteWhite"
+        android:textColor="@color/paletteWhite100"
         android:textSize="20sp" />
 
     <include

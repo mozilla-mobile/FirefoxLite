@@ -5,5 +5,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
     <item android:color="#3A3A3D" app:state_night="true" />
-    <item android:color="@color/sharedColorAppPaletteWhite5" />
+    <item android:color="@color/paletteLightGreyA100" />
 </selector>

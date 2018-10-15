@@ -23,7 +23,7 @@
                 android:layout_height="match_parent"/>
             <TextView
                 android:id="@+id/title"
-                android:textColor="@color/sharedColorAppPaletteBlack"
+                android:textColor="@color/paletteLightBlack100"
                 android:textSize="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:layout_marginStart="20dp"
