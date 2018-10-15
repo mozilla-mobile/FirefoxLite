@@ -5,7 +5,7 @@
     android:layout_width="@dimen/four_site_item_width_with_margin"
     android:layout_height="wrap_content"
     android:textSize="12dp"
-    android:textColor="@color/sharedColorAppPaletteWhite"
+    android:textColor="@color/paletteWhite100"
     android:maxLines="2"
     android:fontFamily="sans-serif-medium"
     android:gravity="center_horizontal"

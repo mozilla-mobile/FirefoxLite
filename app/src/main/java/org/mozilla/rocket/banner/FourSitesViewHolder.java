@@ -54,7 +54,7 @@ class FourSitesViewHolder extends BannerViewHolder {
             });
             for (int i = 0; i < icons.length; i++) {
                 final int itemIndex = i;
-                PorterDuffColorFilter alphaToWhitePorterDuff = new PorterDuffColorFilter(context.getResources().getColor(R.color.sharedColorAppPaletteWhite), PorterDuff.Mode.DST_OVER);
+                PorterDuffColorFilter alphaToWhitePorterDuff = new PorterDuffColorFilter(context.getResources().getColor(R.color.paletteWhite100), PorterDuff.Mode.DST_OVER);
                 Glide.with(context)
                         .load(bannerDAO.values.getString(1 + i))
                         .apply(new RequestOptions().transforms(new ShrinkSizeTransformation(0.62f), new PorterDuffTransformation(alphaToWhitePorterDuff), new CircleCrop()))

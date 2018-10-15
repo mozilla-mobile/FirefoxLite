@@ -27,8 +27,8 @@
         <item name="displayUrlAppearance">@style/DisplayUrlStyle</item>
 
         <item name="colorFindInPageTint">@color/clickable_tint_normal_mode</item>
-        <item name="colorFindInPageTextColor">@color/sharedColorAppPaletteBlack</item>
-        <item name="colorFindInPageBackground">@color/sharedColorAppPaletteWhite</item>
+        <item name="colorFindInPageTextColor">@color/paletteLightBlack100</item>
+        <item name="colorFindInPageBackground">@color/paletteWhite100</item>
 
     </style>
     <style name="NormalModeTheme" parent="NormalModeTheme.Base"/>
@@ -44,7 +44,7 @@
         <item name="displayUrlAppearance">@style/DisplayUrlPrivateStyle</item>
 
         <item name="colorFindInPageTint">@color/clickable_tint_private_mode</item>
-        <item name="colorFindInPageTextColor">@color/sharedColorAppPaletteWhite</item>
+        <item name="colorFindInPageTextColor">@color/paletteWhite100</item>
         <item name="colorFindInPageBackground">@color/privateBackground</item>
 
     </style>
@@ -247,7 +247,7 @@
     <style name="NewEditTextBackgroundStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/sharedColorAppPaletteWhite</item>
+        <item name="android:background">@color/paletteWhite100</item>
         <item name="android:orientation">vertical</item>
     </style>
 
@@ -256,7 +256,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:padding">4dp</item>
-        <item name="android:background">@color/sharedColorAppPaletteWhite</item>
+        <item name="android:background">@color/paletteWhite100</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_marginTop">15dp</item>
         <item name="android:textColor">@color/edit_bookmark_color_label</item>
@@ -285,7 +285,7 @@
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginEnd">12dp</item>
-        <item name="android:background">@color/sharedColorAppPaletteWhite</item>
+        <item name="android:background">@color/paletteWhite100</item>
         <item name="android:src">@drawable/action_close_tab</item>
     </style>
 

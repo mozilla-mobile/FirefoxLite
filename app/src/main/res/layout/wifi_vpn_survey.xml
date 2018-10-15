@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.3"
-                android:textColor="@color/commonDarkGrey4"
+                android:textColor="@color/paletteDarkGreyD100"
                 android:textSize="@dimen/common_font_size_body1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/exp_survey_yes"
-                android:textColor="@color/commonDarkBlue3"
+                android:textColor="@color/paletteDarkBlueC100"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/space" />
 
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/common_margin_m2"
                 android:text="@string/exp_survey_no"
-                android:textColor="@color/commonDarkBlue3"
+                android:textColor="@color/paletteDarkBlueC100"
                 app:layout_constraintEnd_toStartOf="@id/wifi_vpn_btn_yes"
                 app:layout_constraintTop_toBottomOf="@id/space" />
 

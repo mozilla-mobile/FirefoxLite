@@ -97,7 +97,7 @@ class EditBookmarkActivity : BaseActivity() {
         setContentView(R.layout.activity_edit_bookmark)
         setSupportActionBar(toolbar)
         val drawable: Drawable = DrawableCompat.wrap(resources.getDrawable(R.drawable.edit_close, theme))
-        DrawableCompat.setTint(drawable, ContextCompat.getColor(this, R.color.sharedColorAppPaletteWhite))
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(this, R.color.paletteWhite100))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(drawable)
         editTextName.addTextChangedListener(nameWatcher)
