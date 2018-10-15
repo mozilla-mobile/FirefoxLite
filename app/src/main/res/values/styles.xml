@@ -289,12 +289,26 @@
         <item name="android:src">@drawable/action_close_tab</item>
     </style>
 
-    <style name="FakeInput">
-        <item name="android:layout_marginStart">27dp</item>
-        <item name="android:layout_marginEnd">27dp</item>
-
+    <style name="Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
     </style>
-    
+
+    <style name="Body2">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Body4">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Body5">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="ButtonText2">
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">true</item>

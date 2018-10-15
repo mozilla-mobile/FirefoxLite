@@ -31,22 +31,22 @@
         android:orientation="vertical"
         android:layout_centerVertical="true">
         <org.mozilla.focus.widget.themed.ThemedTextView
+            style="@style/Body2"
             android:id="@+id/website_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             android:textColor="@color/tab_tray_item_title"
-            android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
             tools:text="website_title" />
         <org.mozilla.focus.widget.themed.ThemedTextView
+            style="@style/Body5"
             android:id="@+id/website_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/tab_tray_item_subtitle"
-            android:textSize="12sp"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
