@@ -36,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s सर्वांसाठी फक्त %1$s उपलब्ध करून सुधारण्यासाठी जी माहिती लागते ती जमवते.</string>
   <string name="preference_learn_more">आणखी जाणा</string>
   <string name="preference_about">याबद्दल</string>
+  <string name="preference_night_mode_brightness">नाईट मोड प्रखरता</string>
   <string name="content_description_clear_input">इनपुट साफ करा</string>
   <string name="content_description_dismiss_input">बरखास्त</string>
   <string name="content_description_lock">सुरक्षित जोडणी</string>
@@ -71,7 +72,11 @@
   <string name="first_run_page3_text">मागोवा अडवून आपण फक्त ब्राऊझिंग जलद करत नाही तर डेटा पण वाचवता. प्रतिमा अडवून अजून डेटा वाचवा.</string>
   <string name="first_run_page4_title">सर्वकाही स्क्रीनशॉट घ्या</string>
   <string name="first_run_page4_text">संपूर्ण पृष्ठाचे स्क्रीनशॉट घ्या. स्क्रीनशॉट ऑफलाईन (डेटा न वापरता) पहा किंवा पुन्हा भेट देण्यासाठी टॅप करा.</string>
+  <string name="first_run_page5_title">पुढील स्तरीय गोपनीयता</string>
+  <string name="first_run_page5_text">मागमूसावीन ब्राउझ करा, आणि असंख्य साधारण वेब ट्रॅकर पूर्वनिर्धारीतरित्या आडवा. आपल्या गुप्त माहितीची सुरक्षा निश्चित करा.</string>
   <string name="first_run_upgrade_page_title">आम्ही आपला अभिप्राय ऐकला!</string>
+  <string name="new_name_upgrade_page_title">आम्ही नवीन रूप धारण केलंय!</string>
+  <string name="new_name_upgrade_page_text">विकसित उत्पादनासह, आम्ही नवीन आणि ताजे %1$s सादर करत आहे, नवीन नाव व चिन्हासह.</string>
   <string name="first_run_upgrade_page_text1">1. एकाच वेळी %s उघडून अनेक कामे करा!</string>
   <string name="first_run_upgrade_page_text1_highlight">एकाधिक टॅब</string>
   <string name="first_run_upgrade_page_text2">2. %s द्वारे आपल्या आवडीच्या साइट मध्ये लवकर प्रवेश करा</string>
@@ -88,10 +93,13 @@
   <string name="label_menu_my_shots">माझे शॉट</string>
   <string name="label_menu_capture_page">पृष्ठ कॅप्चर करा</string>
   <string name="label_menu_turbo_mode">टर्बो मोड</string>
+  <string name="label_menu_night_mode">नाईट मोड</string>
   <string name="label_menu_block_ads">जाहिराती अवरोधित करा</string>
   <string name="label_menu_block_image">प्रतिमा अवरोधित करा</string>
   <string name="label_menu_settings">सेटिंग</string>
   <string name="label_menu_exit">बाहेर पडा</string>
+  <string name="permission_toast_location_deny">स्थान परवानगी नाकारली आहे.</string>
+  <string name="permission_toast_storage_deny">साठवणूक परवानगी नाकारली आहे.</string>
   <string name="permission_dialog_setting">सेटिंग</string>
   <string name="permission_dialog_not_now">आता नाही</string>
   <string name="permission_dialog_msg_location">परवानगी उपलब्ध नाही. Firefox Rocket ला आपल्या स्थानावर प्रवेश करण्यासाठी परवानगी द्या.</string>
@@ -207,6 +215,7 @@
   <string name="bookmark_edit_success">वाचनखूण अद्ययावत केले</string>
   <string name="bookmarks_empty_view_msg">कोणतेही वाचनखुणा नाहीत</string>
   <string name="edit_bookmark">संपादित करा</string>
+  <string name="private_tab">खाजगी टॅब</string>
   <string name="private_browsing_title">खाजगी ब्राउझिंग</string>
   <string name="private_browsing_erase_message">खाजगी ब्राऊजिंग इतिहास पुसा</string>
   <string name="private_browsing_open_action">उघडा</string>

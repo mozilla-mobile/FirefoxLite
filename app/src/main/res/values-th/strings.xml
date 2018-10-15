@@ -74,6 +74,7 @@
   <string name="first_run_page4_text">จับภาพของทั้งหน้าเว็บ ดูภาพหน้าจอโดยไม่ต้องต่อเน็ตหรือแตะเพื่อเปิดหน้าเว็บอีกครั้ง</string>
   <string name="first_run_page5_title">ความเป็นส่วนตัวระดับถัดไป</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
+  <string name="new_name_upgrade_page_title">เรามีหน้าตาใหม่!</string>
   <string name="first_run_upgrade_page_text1">1. ทำงานหลายอย่างโดยเปิด %s ในเวลาเดียวกัน!</string>
   <string name="first_run_upgrade_page_text1_highlight">หลายแท็บ</string>
   <string name="first_run_upgrade_page_text2">2. เข้าถึงเว็บไซต์โปรดของคุณอย่างรวดเร็วโดย %s</string>
@@ -95,6 +96,8 @@
   <string name="label_menu_block_image">ปิดกั้นภาพ</string>
   <string name="label_menu_settings">การตั้งค่า</string>
   <string name="label_menu_exit">ออก</string>
+  <string name="permission_toast_location_deny">การอนุญาตตำแหน่งที่ตั้งถูกปฏิเสธ</string>
+  <string name="permission_toast_storage_deny">การอนุญาตที่เก็บข้อมูลถูกปฏิเสธ</string>
   <string name="permission_dialog_setting">การตั้งค่า</string>
   <string name="permission_dialog_not_now">ไม่ใช่ตอนนี้</string>
   <string name="permission_dialog_msg_location">ยังไม่ได้รับอนุญาต อนุญาตให้ Firefox Rocket เข้าถึงตำแหน่งที่ตั้งของคุณ</string>
