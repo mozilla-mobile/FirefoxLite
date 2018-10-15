@@ -75,5 +75,5 @@ public interface PermissionHandle {
      */
     void requestPermissions(int actionId);
 
-    void permissionDeniedToast();
+    void permissionDeniedToast(int actionId);
 }
