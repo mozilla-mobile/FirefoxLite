@@ -85,7 +85,7 @@ public class PermissionHandler {
     }
 
     private void showToast() {
-        permissionHandle.permissionDeniedToast();
+        permissionHandle.permissionDeniedToast(actionId);
     }
 
     private void showSnackBar() {

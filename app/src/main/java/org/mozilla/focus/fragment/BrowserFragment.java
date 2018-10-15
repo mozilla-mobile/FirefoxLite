@@ -340,8 +340,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
 
             @Override
-            public void permissionDeniedToast() {
-                Toast.makeText(getContext(), R.string.permission_toast_location_deny, Toast.LENGTH_LONG).show();
+            public void permissionDeniedToast(int actionId) {
+                Toast.makeText(getContext(), getAskAgainSnackBarString(actionId ), Toast.LENGTH_LONG).show();
             }
         });
     }
