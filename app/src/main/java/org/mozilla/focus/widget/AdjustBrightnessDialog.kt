@@ -3,7 +3,6 @@ package org.mozilla.focus.widget
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
-
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.utils.Settings
@@ -12,9 +11,20 @@ import org.mozilla.focus.utils.ViewUtils
 class AdjustBrightnessDialog : BaseActivity() {
 
     object Constants {
-        // Only allow user to adjust brightness from 0.0f to 0.5f of system brightness, default is 0.25f
-        const val DEFAULT_BRIGHTNESS = 0.25f
-        const val MULTIPLIER = 2 * 100
+        // Only allow user to adjust brightness from 0.0f to 0.5f of system brightness
+        private const val SCALE = 0.5
+        //  Value to Progress multiplier
+        private const val MULTIPLIER = 100.0f
+        // Value default is a quarter of SCALE
+        const val DEFAULT_BRIGHTNESS = (0.25 * SCALE).toFloat()
+
+        fun progressToValue(progress: Int) :Float {
+            return (progress * SCALE / MULTIPLIER).toFloat()
+        }
+
+        fun valueToProgress(value: Float) :Int {
+            return (value * MULTIPLIER / SCALE).toInt()
+        }
     }
 
     private lateinit var seekBar: SeekBar
@@ -23,7 +33,10 @@ class AdjustBrightnessDialog : BaseActivity() {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             if (fromUser) {
                 val layoutParams = window.attributes
-                val value = progress.toFloat() / Constants.MULTIPLIER
+                var value = Constants.progressToValue(progress)
+                if (value < 0.01) {
+                    value = 0.01f
+                }
                 layoutParams.screenBrightness = value
                 window.attributes = layoutParams
             }
@@ -50,7 +63,7 @@ class AdjustBrightnessDialog : BaseActivity() {
     override fun onResume() {
         super.onResume()
         val currentBrightness = Settings.getInstance(this).nightModeBrightnessValue
-        val progress = (currentBrightness * Constants.MULTIPLIER).toInt()
+        val progress = Constants.valueToProgress(currentBrightness)
         seekBar.progress = progress
     }
 
