@@ -17,9 +17,9 @@
         <shape>
             <gradient
                 android:angle="270"
-                android:startColor="@color/themeGradientStartNight"
-                android:centerColor="@color/themeGradientEndNight"
-                android:endColor="@color/themeGradientEndNight" />
+                android:startColor="@color/themeGradientEndNight"
+                android:centerColor="@color/themeGradientStartNight"
+                android:endColor="@color/themeGradientStartNight" />
         </shape>
     </item>
     <item android:id="@+id/background_overlay">
