@@ -26,7 +26,7 @@
     <string name="pref_key_rights" translatable="false"><xliff:g id="preference_key">pref_rights</xliff:g></string>
     <string name="pref_key_night_mode_brightness" translatable="false"><xliff:g id="preference_key">pref_night_mode_brightness</xliff:g></string>
     <string name="pref_key_night_mode_enable" translatable="false"><xliff:g id="preference_key">pref_night_mode_enable</xliff:g></string>
-    <string name="pref_key_night_mode_brightness_value" translatable="false"><xliff:g id="preference_key">pref_night_mode_brightness_value</xliff:g></string>
+    <string name="pref_key_brightness" translatable="false"><xliff:g id="preference_key">pref_night_mode_brightness_value</xliff:g></string>
     <string name="pref_key_locale" translatable="false"><xliff:g id="preference_key">pref_locale</xliff:g></string>
 
     <string name="pref_key_webview_version" translatable="false"><xliff:g id="preference_key">pref_webview_version</xliff:g></string>

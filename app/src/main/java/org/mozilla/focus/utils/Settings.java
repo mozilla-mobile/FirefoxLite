@@ -213,11 +213,11 @@ public class Settings {
     }
 
     public float getNightModeBrightnessValue() {
-        return settingPreferenceWrapper.getFloat(getPreferenceKey(R.string.pref_key_night_mode_brightness_value), WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE);
+        return settingPreferenceWrapper.getFloat(getPreferenceKey(R.string.pref_key_brightness), WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE);
     }
 
     public void setNightModeBrightnessValue(float value) {
-        preferences.edit().putFloat(getPreferenceKey(R.string.pref_key_night_mode_brightness_value), value).apply();
+        preferences.edit().putFloat(getPreferenceKey(R.string.pref_key_brightness), value).apply();
     }
 
     public static void updatePrefDefaultBrowserIfNeeded(Context context, boolean isDefaultBrowser) {

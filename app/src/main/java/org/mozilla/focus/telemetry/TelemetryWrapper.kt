@@ -172,6 +172,9 @@ object TelemetryWrapper {
 
         internal val PREVIOUS = "previous"
         internal val NEXT = "next"
+
+        internal val NIGHT_MODE = "night_mode"
+        internal val NIGHT_MODE_BRIGHTNESS = "night_mode_brightness"
     }
 
     internal object Extra {
@@ -526,6 +529,13 @@ object TelemetryWrapper {
     @JvmStatic
     fun menuTurboChangeTo(enable: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.MENU, Value.TURBO)
+                .extra(Extra.TO, java.lang.Boolean.toString(enable))
+                .queue()
+    }
+
+    @JvmStatic
+    fun menuNightModeChangeTo(enable: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.MENU, Value.NIGHT_MODE)
                 .extra(Extra.TO, java.lang.Boolean.toString(enable))
                 .queue()
     }
@@ -996,6 +1006,14 @@ object TelemetryWrapper {
         }
 
         builder.queue()
+    }
+
+    @JvmStatic
+    fun nightModeBrightnessChangeTo(value: Int, fromSetting: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.NIGHT_MODE_BRIGHTNESS)
+                .extra(Extra.SOURCE, if (fromSetting) Object.SETTING else Object.MENU)
+                .extra(Extra.TO, value.toString())
+                .queue()
     }
 
     internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {
