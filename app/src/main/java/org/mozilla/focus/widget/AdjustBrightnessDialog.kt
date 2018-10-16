@@ -1,10 +1,13 @@
 package org.mozilla.focus.widget
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ViewUtils
 
@@ -24,6 +27,29 @@ class AdjustBrightnessDialog : BaseActivity() {
 
         fun valueToProgress(value: Float) :Int {
             return (value * MULTIPLIER / SCALE).toInt()
+        }
+    }
+
+    object Intents {
+        const val EXTRA_SOURCE = "extra_source"
+        const val SOURCE_SETTING = "setting"
+        private const val SOURCE_MENU = "menu"
+
+        fun getStartIntentFromMenu(context: Context) :Intent {
+            return getStartIntent(context, SOURCE_MENU)
+        }
+
+        fun getStartIntentFromSetting(context: Context) :Intent {
+            return getStartIntent(context, SOURCE_SETTING)
+        }
+
+        private fun getStartIntent(context: Context, source: String) :Intent {
+            val intent = Intent(context, AdjustBrightnessDialog::class.java)
+            when(source) {
+                SOURCE_MENU-> intent.putExtra(EXTRA_SOURCE, SOURCE_MENU)
+                SOURCE_SETTING-> intent.putExtra(EXTRA_SOURCE, SOURCE_SETTING)
+            }
+            return intent
         }
     }
 
@@ -69,8 +95,10 @@ class AdjustBrightnessDialog : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
+        val fromSetting = intent.getStringExtra(Intents.EXTRA_SOURCE) == Intents.SOURCE_SETTING
         val layoutParams = window.attributes
         Settings.getInstance(this).nightModeBrightnessValue = layoutParams.screenBrightness
+        TelemetryWrapper.nightModeBrightnessChangeTo(Constants.valueToProgress(layoutParams.screenBrightness), fromSetting)
     }
 
     override fun applyLocale() {

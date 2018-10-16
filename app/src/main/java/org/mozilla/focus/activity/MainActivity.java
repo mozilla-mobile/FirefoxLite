@@ -501,6 +501,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 final boolean nightModeEnabled = !isNightModeEnabled();
                 v.setSelected(nightModeEnabled);
                 onNightModeClicked(nightModeEnabled);
+                TelemetryWrapper.menuNightModeChangeTo(nightModeEnabled);
                 break;
             case R.id.menu_find_in_page:
                 onFindInPageClicked();
@@ -681,7 +682,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
                 // First time turn on
                 settings.setNightModeBrightnessValue(AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS);
-                startActivity(new Intent(this, AdjustBrightnessDialog.class));
+                startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromMenu(this));
             } else {
                 layoutParams.screenBrightness = currentBrightness;
                 getWindow().setAttributes(layoutParams);
