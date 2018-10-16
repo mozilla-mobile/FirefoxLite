@@ -107,6 +107,7 @@ public class ScreenshotManager {
             } catch (InterruptedException e) {
                 initFromLocal(context);
             }
+        // initFromLocal fails
         } catch (IOException e) {
             Log.e(TAG, "ScreenshotManager init error: ", e);
         }
@@ -129,10 +130,13 @@ public class ScreenshotManager {
         responseData = cachedRequestLoader.getStringLiveData();
         responseData.observeForever(integerStringPair -> {
             try {
-                if (integerStringPair == null || integerStringPair.second == null) {
+                if (integerStringPair == null) {
                     return;
                 }
                 final String response = integerStringPair.second;
+                if (TextUtils.isEmpty(response)) {
+                    return;
+                }
                 initWithJson(new JSONObject(response));
                 countDownLatch.countDown();
             } catch (JSONException e) {
@@ -140,7 +144,7 @@ public class ScreenshotManager {
             }
         });
         countDownLatch.await(5, TimeUnit.SECONDS);
-        return true;
+        return countDownLatch.getCount() == 0;
     }
 
     private void initWithJson(JSONObject json) {
