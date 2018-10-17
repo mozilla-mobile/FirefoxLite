@@ -2,15 +2,8 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-
-<!-- level value is matter. It should match BrowserFragment -->
-<level-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:drawable="@drawable/ic_globe"
-        android:maxLevel="0" />
-    <item
-        android:drawable="@drawable/ic_lock"
-        android:maxLevel="1" />
-
-</level-list>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item android:drawable="@drawable/site_identity_night" app:state_night="true" />
+    <item android:drawable="@drawable/site_identity_default" />
+</selector>
