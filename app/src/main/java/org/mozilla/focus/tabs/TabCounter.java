@@ -16,9 +16,9 @@ import android.view.ViewTreeObserver;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.DrawableUtils;
-import org.mozilla.focus.widget.themed.ThemedImageView;
-import org.mozilla.focus.widget.themed.ThemedRelativeLayout;
-import org.mozilla.focus.widget.themed.ThemedTextView;
+import org.mozilla.rocket.nightmode.themed.ThemedImageView;
+import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
+import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 
 import java.text.NumberFormat;
 

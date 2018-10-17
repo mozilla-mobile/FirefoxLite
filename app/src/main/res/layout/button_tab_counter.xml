@@ -15,13 +15,13 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="0.5dp">
 
-        <org.mozilla.focus.widget.themed.ThemedImageView
+        <org.mozilla.rocket.nightmode.themed.ThemedImageView
             android:id="@+id/counter_box"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/tab_counter_box" />
 
-        <org.mozilla.focus.widget.themed.ThemedTextView
+        <org.mozilla.rocket.nightmode.themed.ThemedTextView
             android:id="@+id/counter_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             tools:text="18" />
     </FrameLayout>
 
-    <org.mozilla.focus.widget.themed.ThemedImageView
+    <org.mozilla.rocket.nightmode.themed.ThemedImageView
         android:id="@+id/counter_bar"
         android:layout_width="20dp"
         android:layout_height="2dp"

@@ -1,19 +1,13 @@
-package org.mozilla.focus.widget.themed
+package org.mozilla.rocket.nightmode.themed
 
 import android.content.Context
-import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.View
 
-open class ThemedImageView: AppCompatImageView {
-
+class ThemedTextView(context: Context, attrs: AttributeSet) : android.support.v7.widget.AppCompatTextView(context, attrs) {
     private var isNight: Boolean = false
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
-    override fun onCreateDrawableState(extraSpace: Int): IntArray {
+    public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
             val drawableState = super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
             View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
@@ -23,7 +17,7 @@ open class ThemedImageView: AppCompatImageView {
         }
     }
 
-    open fun setNightMode(isNight: Boolean) {
+    fun setNightMode(isNight: Boolean) {
         if (this.isNight != isNight) {
             this.isNight = isNight
             refreshDrawableState()

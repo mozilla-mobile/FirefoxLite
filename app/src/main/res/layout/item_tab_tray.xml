@@ -3,7 +3,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<org.mozilla.focus.widget.themed.ThemedRelativeLayout
+<org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
@@ -30,7 +30,7 @@
         android:layout_toStartOf="@+id/close_button"
         android:orientation="vertical"
         android:layout_centerVertical="true">
-        <org.mozilla.focus.widget.themed.ThemedTextView
+        <org.mozilla.rocket.nightmode.themed.ThemedTextView
             style="@style/Body2"
             android:id="@+id/website_title"
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:maxLines="1"
             android:singleLine="true"
             tools:text="website_title" />
-        <org.mozilla.focus.widget.themed.ThemedTextView
+        <org.mozilla.rocket.nightmode.themed.ThemedTextView
             style="@style/Body5"
             android:id="@+id/website_subtitle"
             android:layout_width="match_parent"
@@ -64,4 +64,4 @@
             android:layout_gravity="center"
             android:background="@drawable/action_close_tab" />
     </FrameLayout>
-</org.mozilla.focus.widget.themed.ThemedRelativeLayout>
+</org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>

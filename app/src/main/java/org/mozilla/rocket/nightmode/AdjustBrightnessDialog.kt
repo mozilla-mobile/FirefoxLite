@@ -1,4 +1,4 @@
-package org.mozilla.focus.widget
+package org.mozilla.rocket.nightmode
 
 import android.content.Context
 import android.content.Intent
@@ -21,11 +21,11 @@ class AdjustBrightnessDialog : BaseActivity() {
         // Value default is a quarter of SCALE
         const val DEFAULT_BRIGHTNESS = (0.25 * SCALE).toFloat()
 
-        fun progressToValue(progress: Int) :Float {
+        fun progressToValue(progress: Int): Float {
             return (progress * SCALE / MULTIPLIER).toFloat()
         }
 
-        fun valueToProgress(value: Float) :Int {
+        fun valueToProgress(value: Float): Int {
             return (value * MULTIPLIER / SCALE).toInt()
         }
     }
@@ -35,19 +35,19 @@ class AdjustBrightnessDialog : BaseActivity() {
         const val SOURCE_SETTING = "setting"
         private const val SOURCE_MENU = "menu"
 
-        fun getStartIntentFromMenu(context: Context) :Intent {
+        fun getStartIntentFromMenu(context: Context): Intent {
             return getStartIntent(context, SOURCE_MENU)
         }
 
-        fun getStartIntentFromSetting(context: Context) :Intent {
+        fun getStartIntentFromSetting(context: Context): Intent {
             return getStartIntent(context, SOURCE_SETTING)
         }
 
-        private fun getStartIntent(context: Context, source: String) :Intent {
+        private fun getStartIntent(context: Context, source: String): Intent {
             val intent = Intent(context, AdjustBrightnessDialog::class.java)
-            when(source) {
-                SOURCE_MENU-> intent.putExtra(EXTRA_SOURCE, SOURCE_MENU)
-                SOURCE_SETTING-> intent.putExtra(EXTRA_SOURCE, SOURCE_SETTING)
+            when (source) {
+                SOURCE_MENU -> intent.putExtra(EXTRA_SOURCE, SOURCE_MENU)
+                SOURCE_SETTING -> intent.putExtra(EXTRA_SOURCE, SOURCE_SETTING)
             }
             return intent
         }

@@ -1,31 +1,33 @@
-package org.mozilla.focus.widget.themed
+package org.mozilla.rocket.nightmode.themed
 
 import android.content.Context
+import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
 
-import org.mozilla.focus.R
+open class ThemedImageView: AppCompatImageView {
 
-class ThemedLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private var isNight: Boolean = false
 
-    public override fun onCreateDrawableState(extraSpace: Int): IntArray {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+    override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
             val drawableState = super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
             View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
             drawableState
         } else {
-             super.onCreateDrawableState(extraSpace)
+            super.onCreateDrawableState(extraSpace)
         }
     }
 
-    fun setNightMode(isNight: Boolean) {
+    open fun setNightMode(isNight: Boolean) {
         if (this.isNight != isNight) {
             this.isNight = isNight
             refreshDrawableState()
             invalidate()
         }
     }
-
 }

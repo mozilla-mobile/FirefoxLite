@@ -1,10 +1,10 @@
-package org.mozilla.focus.widget.themed
+package org.mozilla.rocket.nightmode.themed
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 
-class ThemedTextView(context: Context, attrs: AttributeSet) : android.support.v7.widget.AppCompatTextView(context, attrs) {
+class ThemedView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var isNight: Boolean = false
 
     public override fun onCreateDrawableState(extraSpace: Int): IntArray {

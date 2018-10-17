@@ -1,19 +1,20 @@
-package org.mozilla.focus.widget.themed
+package org.mozilla.rocket.nightmode.themed
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.LinearLayout
 
-class ThemedImageButton(context: Context, attrs: AttributeSet) : android.support.v7.widget.AppCompatImageButton(context, attrs) {
+class ThemedLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private var isNight: Boolean = false
 
-    override fun onCreateDrawableState(extraSpace: Int): IntArray {
+    public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
             val drawableState = super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
             View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
             drawableState
         } else {
-            super.onCreateDrawableState(extraSpace)
+             super.onCreateDrawableState(extraSpace)
         }
     }
 
@@ -24,4 +25,5 @@ class ThemedImageButton(context: Context, attrs: AttributeSet) : android.support
             invalidate()
         }
     }
+
 }

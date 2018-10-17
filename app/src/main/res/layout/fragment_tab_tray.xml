@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <org.mozilla.focus.widget.themed.ThemedRecyclerView
+        <org.mozilla.rocket.nightmode.themed.ThemedRecyclerView
             android:id="@+id/tab_tray"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -46,7 +46,7 @@
             app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
             tools:listitem="@layout/item_tab_tray" />
 
-        <org.mozilla.focus.widget.themed.ThemedRelativeLayout
+        <org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
             android:id="@+id/new_tab_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_tray_new_tab_btn_height"
@@ -73,7 +73,7 @@
                     android:visibility="invisible"
                     android:src="@drawable/ic_menu_private_mode" />
 
-                <org.mozilla.focus.widget.themed.ThemedImageView
+                <org.mozilla.rocket.nightmode.themed.ThemedImageView
                     android:id="@+id/img_private_browsing"
                     style="@style/MainMenuButton"
                     android:layout_centerInParent="true"
@@ -83,7 +83,7 @@
                     tools:ignore="contentDescription" />
             </RelativeLayout>
 
-            <org.mozilla.focus.widget.themed.ThemedView
+            <org.mozilla.rocket.nightmode.themed.ThemedView
                 android:id="@+id/bottom_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground" />
-            <org.mozilla.focus.widget.themed.ThemedImageView
+            <org.mozilla.rocket.nightmode.themed.ThemedImageView
                 android:id="@+id/plus_sign"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -126,6 +126,6 @@
                     android:fontFamily="sans-serif-medium"
                     tools:ignore="RtlSymmetry" />
             </FrameLayout>
-        </org.mozilla.focus.widget.themed.ThemedRelativeLayout>
+        </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

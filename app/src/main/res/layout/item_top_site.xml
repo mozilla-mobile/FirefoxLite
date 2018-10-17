@@ -24,7 +24,7 @@
         android:padding="11.5dp"
         tools:src="@mipmap/ic_launcher" />
 
-    <org.mozilla.focus.widget.themed.ThemedTextView
+    <org.mozilla.rocket.nightmode.themed.ThemedTextView
         android:id="@+id/text"
         style="@style/Body4"
         android:layout_width="@dimen/top_site_textview_width"
