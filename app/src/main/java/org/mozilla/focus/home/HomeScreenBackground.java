@@ -61,11 +61,11 @@ public class HomeScreenBackground extends ThemedImageView implements ThemeManage
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (!isNight) {
-            canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
-        } else {
+        if (this.isNight) {
             // Add status bar's height as a padding on top to let HomeFragment star background align with TabTrayFragment
             setPadding(0, ViewUtils.getStatusBarHeight(((Activity) getContext())), 0, 0);
+        } else {
+            setPadding(0, 0, 0, 0);
         }
     }
 
@@ -82,7 +82,7 @@ public class HomeScreenBackground extends ThemedImageView implements ThemeManage
         if (this.isNight) {
             setImageResource(R.drawable.star_bg);
         } else {
-            setImageDrawable(null);
+            setImageResource(R.drawable.firefox_lite_bg);
         }
     }
 }
