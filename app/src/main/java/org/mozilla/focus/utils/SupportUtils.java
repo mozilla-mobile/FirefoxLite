@@ -248,7 +248,7 @@ public class SupportUtils {
         );
         substitutionMap.put("%about-content%", aboutContent);
 
-        final String wordmark = HtmlLoader.loadPngAsDataURI(webView.getContext(), R.drawable.logotype);
+        final String wordmark = HtmlLoader.loadDrawableAsDataURI(webView.getContext(), R.drawable.ic_firefox_lite_logo, R.color.about_logo_color);
         substitutionMap.put("%wordmark%", wordmark);
 
         substitutionMap.put("%webview-version%", webviewVersion);

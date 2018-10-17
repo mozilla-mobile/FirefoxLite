@@ -27,6 +27,8 @@
     <color name="paletteLightBlue100">#FF41B7E6</color>
     <color name="palettePurple100">#FFC85DEF</color>
 
+    <color name="about_logo_color">#FF353857</color>
+
     <color name="sharedColorAppPaletteMain3">#FF0E86FF</color>
 
     <color name="sharedColorAppPaletteGray2">#FF757575</color>

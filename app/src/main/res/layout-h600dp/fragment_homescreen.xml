@@ -30,10 +30,10 @@
     <include layout="@layout/fragment_homescreen_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"
-        android:layout_marginBottom="@dimen/home_padding_url_bar_to_title"/>
+        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/banner"
