@@ -69,12 +69,14 @@
   <string name="first_run_page2_title">ท่องเว็บได้เร็วขึ้นกว่าที่เคย</string>
   <string name="first_run_page2_text">ใช้โหมดเทอร์โบเพื่อปิดกั้นโฆษณาที่ติดตามข้อมูลของคุณ ทำให้เปิดเว็บได้อย่างรวดเร็ว; ถ้าเว็บไซต์ทำงานผิดปกติ ก็สามารถแตะปิดโหมดเทอร์โบในเมนูได้</string>
   <string name="first_run_page3_title">ประหยัดข้อมูล = ประหยัดเงิน</string>
-  <string name="first_run_page3_text">การปิดกั้นโฆษณาที่ตามรอยคุณไม่เพียงแต่ทำให้เปิดเว็บเร็ว แต่ยังช่วยประหยัดการรับส่งข้อมูล และยังประหยัดได้มากกว่านั้นอีกด้วยการปิดกั้นรูปภาพ</string>
+  <string name="first_run_page3_text">ประหยัดค่าใช้จ่ายข้อมูลโดยปิดกั้นโฆษณาที่ติดตาม ประหยัดมากยิ่งขึ้นเมื่อคุณเปิดใช้งานการปิดกั้นภาพ</string>
   <string name="first_run_page4_title">จับภาพหน้าจอทั้งหน้า</string>
-  <string name="first_run_page4_text">จับภาพของทั้งหน้าเว็บ ดูภาพหน้าจอโดยไม่ต้องต่อเน็ตหรือแตะเพื่อเปิดหน้าเว็บอีกครั้ง</string>
+  <string name="first_run_page4_text">จับภาพหน้าจอของส่วนที่เลื่อนทั้งหน้า อ่านภาพหน้าจอออฟไลน์โดยไม่ต้องใช้ข้อมูลหรือแตะภาพหน้าจอเพื่อเยี่ยมชมหน้าเว็บใหม่</string>
   <string name="first_run_page5_title">ความเป็นส่วนตัวระดับถัดไป</string>
+  <string name="first_run_page5_text">ท่องเว็บโดยไม่มีร่องรอย และปิดกั้นตัวติดตามเว็บทั่วไปจำนวนมากโดยค่าเริ่มต้น ทำให้มั่นใจในความปลอดภัยของข้อมูลที่เป็นความลับของคุณ</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
   <string name="new_name_upgrade_page_title">เรามีหน้าตาใหม่!</string>
+  <string name="new_name_upgrade_page_text">ด้วยผลิตภัณฑ์ที่ได้รับการพัฒนา เรานำ %1$s แบบใหม่พร้อมชื่อใหม่และโลโก้ใหม่มาให้คุณ</string>
   <string name="first_run_upgrade_page_text1">1. ทำงานหลายอย่างโดยเปิด %s ในเวลาเดียวกัน!</string>
   <string name="first_run_upgrade_page_text1_highlight">หลายแท็บ</string>
   <string name="first_run_upgrade_page_text2">2. เข้าถึงเว็บไซต์โปรดของคุณอย่างรวดเร็วโดย %s</string>
@@ -96,8 +98,8 @@
   <string name="label_menu_block_image">ปิดกั้นภาพ</string>
   <string name="label_menu_settings">การตั้งค่า</string>
   <string name="label_menu_exit">ออก</string>
-  <string name="permission_toast_location_deny">การอนุญาตตำแหน่งที่ตั้งถูกปฏิเสธ</string>
-  <string name="permission_toast_storage_deny">การอนุญาตที่เก็บข้อมูลถูกปฏิเสธ</string>
+  <string name="permission_toast_location_deny">ปฏิเสธการอนุญาตตำแหน่งที่ตั้งแล้ว</string>
+  <string name="permission_toast_storage_deny">ปฏิเสธการอนุญาตที่เก็บข้อมูลแล้ว</string>
   <string name="permission_dialog_setting">การตั้งค่า</string>
   <string name="permission_dialog_not_now">ไม่ใช่ตอนนี้</string>
   <string name="permission_dialog_msg_location">ยังไม่ได้รับอนุญาต อนุญาตให้ Firefox Rocket เข้าถึงตำแหน่งที่ตั้งของคุณ</string>

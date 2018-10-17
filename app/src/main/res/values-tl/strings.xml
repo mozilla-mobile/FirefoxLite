@@ -69,9 +69,9 @@
   <string name="first_run_page2_title">Mag-browse nang mas matulin</string>
   <string name="first_run_page2_text">Gamitin ang turbo mode para harangin ang mga tracking ads at para makapag-browse nang mas matulin. Kung hindi lalabas ng tama ang mga website, i-tap lang ang turbo mode mula sa menu para ito ay mag-off.</string>
   <string name="first_run_page3_title">Naipong data = Naipong pera</string>
-  <string name="first_run_page3_text">Ang pagharang sa mga tracking ads ay hindi lang pinabilis kung hindi nakakatulong makatipid sa konsumo ng data. Makatitipid ka sa data kung hindi ipakikita ang mga imahe.</string>
-  <string name="first_run_page4_title">I-screenshot ang lahat</string>
-  <string name="first_run_page4_text">Kunin ang screenshot ng buong web page. Tingnan ang screenshot offline (hindi gagamit ng data) o kaya ay i-tap ito para puntahan ang web page.</string>
+  <string name="first_run_page3_text">Makakatipid ka ng data sa pagharang sa tracking ads. May Karagdagang katipiran kung gagamit din ng image blocking.</string>
+  <string name="first_run_page4_title">I-screenshot ang buong pahina</string>
+  <string name="first_run_page4_text">Kunin ang screenshot ng buong pahina. Tingnan ang screenshot offline ng hindi gagamit ng data o kaya ay i-tap ito para puntahan ang web page.</string>
   <string name="first_run_upgrade_page_title">Narinig namin ang inyong feedback!</string>
   <string name="first_run_upgrade_page_text1">1. Mag-multitask sa pamamagitan ng pagbubukas ng %s sabay-sabay!</string>
   <string name="first_run_upgrade_page_text1_highlight">maraming mga tab</string>
