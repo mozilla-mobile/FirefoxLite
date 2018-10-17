@@ -16,10 +16,11 @@
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/content_image"
+        android:elevation="4dp"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:background="@drawable/cornered_2dp"
+        android:background="@drawable/background_top_site"
         android:visibility="invisible"
         android:padding="11.5dp"
         tools:src="@mipmap/ic_launcher" />

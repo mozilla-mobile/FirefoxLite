@@ -4,6 +4,6 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
-    <item android:drawable="@color/paletteLightBlack100" app:state_night="true" />
-    <item android:drawable="@color/paletteLightGreyB100" />
+    <item android:color="@color/paletteLightBlack100" app:state_night="true" />
+    <item android:color="@color/paletteLightGreyB100" />
 </selector>

@@ -35,7 +35,7 @@
             android:id="@+id/tab_tray"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/tab_tray_foreground"
+            android:background="@drawable/background_tab_tray"
             android:clipToPadding="false"
             android:paddingStart="@dimen/tab_tray_padding"
             android:paddingTop="@dimen/tab_tray_padding"
