@@ -1001,55 +1001,43 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         // progress bar regression when scrolling.
         private String loadedUrl = null;
 
-        @Override
-        public void onSessionStarted(@Nullable String url) {
-            if (session == null) {
-                return;
-            }
 
-            historyInserter.onTabStarted(session);
+        @Override
+        public void onLoadingStateChanged(@NonNull Session session, boolean loading) {
+            BrowserFragment.this.isLoading = loading;
+            if (loading) {
+                historyInserter.onTabStarted(session);
+            } else {
+                historyInserter.onTabFinished(session);
+            }
 
             if (!isForegroundSession(session)) {
                 return;
             }
 
-            loadedUrl = null;
-
-            updateIsLoading(true);
-
-            updateURL(session.getUrl());
-            siteIdentity.setImageLevel(SITE_GLOBE);
-
-            backgroundTransition.resetTransition();
-        }
-
-        @Override
-        public void onSessionFinished(boolean isSecure) {
-            if (session == null) {
-                return;
-            }
-
-            if (isForegroundSession(session)) {
+            if (loading) {
+                loadedUrl = null;
+                updateIsLoading(true);
+                updateURL(session.getUrl());
+                backgroundTransition.resetTransition();
+            } else {
                 // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
                 // URL is always correct _except_ for error pages
                 updateUrlFromWebView(session);
-
                 updateIsLoading(false);
-
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.UPDATE_MENU, null);
-
                 backgroundTransition.startTransition(ANIMATION_DURATION);
 
-                siteIdentity.setImageLevel(isSecure ? SITE_LOCK : SITE_GLOBE);
             }
-            historyInserter.onTabFinished(session);
         }
 
         @Override
-        public void onURLChanged(@Nullable String url) {
-            if (session == null) {
-                return;
-            }
+        public void onSecurityChanged(@NonNull Session session, boolean isSecure) {
+            siteIdentity.setImageLevel(isSecure ? SITE_LOCK : SITE_GLOBE);
+        }
+
+        @Override
+        public void onUrlChanged(@NonNull Session session, @Nullable String url) {
             if (!isForegroundSession(session)) {
                 return;
             }
@@ -1085,10 +1073,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onProgressChanged(int progress) {
-            if (session == null) {
-                return;
-            }
+        public void onProgress(@NonNull Session session, int progress) {
             if (!isForegroundSession(session)) {
                 return;
             }
@@ -1131,7 +1116,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onReceivedTitle(@NonNull TabView view, @Nullable String title) {
+        public void onTitleChanged(@NonNull Session session, @Nullable String title) {
             if (session == null) {
                 return;
             }
@@ -1144,11 +1129,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onReceivedIcon(@NonNull TabView view, @Nullable Bitmap icon) {
+        public void onReceivedIcon(@Nullable Bitmap icon) {
         }
 
         @Override
-        public void onLongPress(@NonNull TabView.HitTarget hitTarget) {
+        public void onLongPress(@NonNull Session session, @NonNull TabView.HitTarget hitTarget) {
             if (getActivity() == null) {
                 Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback onLongPress");
                 return;
@@ -1251,7 +1236,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         private void updateUrlFromWebView(@NonNull Session source) {
             if (sessionManager.getFocusSession() != null) {
                 final String viewURL = sessionManager.getFocusSession().getUrl();
-                onURLChanged(viewURL);
+                onUrlChanged(source, viewURL);
             }
         }
 

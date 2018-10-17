@@ -176,11 +176,12 @@ class Session @JvmOverloads constructor(
     }
 
     interface Observer {
-        fun onSessionStarted(url: String?) = Unit
 
-        fun onSessionFinished(isSecure: Boolean) = Unit
+        fun onLoadingStateChanged(session: Session, loading: Boolean) = Unit
 
-        fun onURLChanged(url: String?) = Unit
+        fun onSecurityChanged(session: Session, isSecure: Boolean) = Unit
+
+        fun onUrlChanged(session:Session, url: String?) = Unit
 
         /**
          * Return true if the URL was handled, false if we should continue loading the current URL.
@@ -193,7 +194,7 @@ class Session @JvmOverloads constructor(
 
         fun onCloseWindow(tabView: TabView?) = Unit
 
-        fun onProgressChanged(progress: Int) = Unit
+        fun onProgress(session: Session, progress: Int) = Unit
 
 
         /**
@@ -203,11 +204,11 @@ class Session @JvmOverloads constructor(
                               filePathCallback: ValueCallback<Array<Uri>>,
                               fileChooserParams: WebChromeClient.FileChooserParams) = false
 
-        fun onReceivedTitle(view: TabView, title: String?) = Unit
+        fun onTitleChanged(session: Session, title: String?) = Unit
 
-        fun onReceivedIcon(view: TabView, icon: Bitmap?) = Unit
+        fun onReceivedIcon(icon: Bitmap?) = Unit
 
-        fun onLongPress(hitTarget: TabView.HitTarget) = Unit
+        fun onLongPress(session: Session, hitTarget: TabView.HitTarget) = Unit
 
         /**
          * Notify the host application that the current page has entered full screen mode.
@@ -241,21 +242,24 @@ class Session @JvmOverloads constructor(
             session.url = url
             setSessionTitle()
 
+            session.notifyObservers { onLoadingStateChanged(session, true) }
+            session.notifyObservers { onSecurityChanged(session, false) }
             // FIXME: workaround for 'dialog new window'
             if (session.url != null) {
-                session.notifyObservers { onSessionStarted(url) }
+                session.notifyObservers { onUrlChanged(session, url) }
             }
         }
 
         override fun onPageFinished(isSecure: Boolean) {
             setSessionTitle()
-            session.notifyObservers { onSessionFinished(isSecure) }
+            session.notifyObservers { onLoadingStateChanged(session, false) }
+            session.notifyObservers { onSecurityChanged(session, isSecure) }
         }
 
         override fun onURLChanged(url: String?) {
             session.url = url
             setSessionTitle()
-            session.notifyObservers { onURLChanged(url) }
+            session.notifyObservers { onUrlChanged(session, url) }
         }
 
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) =
@@ -283,7 +287,7 @@ class Session @JvmOverloads constructor(
                 session.notifyObservers { onCloseWindow(tabView) }
 
         override fun onProgressChanged(progress: Int) =
-                session.notifyObservers { onProgressChanged(progress) }
+                session.notifyObservers { onProgress(session, progress) }
 
         override fun onShowFileChooser(
                 tabView: TabView,
@@ -298,15 +302,15 @@ class Session @JvmOverloads constructor(
         }
 
         override fun onReceivedTitle(view: TabView, title: String?) =
-                session.notifyObservers { onReceivedTitle(view, title) }
+                session.notifyObservers { onTitleChanged(session, title) }
 
         override fun onReceivedIcon(view: TabView, icon: Bitmap?){
             session.favicon = icon
-            session.notifyObservers { onReceivedIcon(view, icon) }
+            session.notifyObservers { onReceivedIcon(icon) }
         }
 
         override fun onLongPress(hitTarget: TabView.HitTarget) =
-                session.notifyObservers { onLongPress(hitTarget) }
+                session.notifyObservers { onLongPress(session, hitTarget) }
 
         override fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) =
                 session.notifyObservers { onEnterFullScreen(callback, view) }
