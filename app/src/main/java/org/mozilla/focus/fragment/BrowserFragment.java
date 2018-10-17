@@ -321,6 +321,16 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 }
             }
 
+            private int getPermissionDeniedToastString(int actionId) {
+                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE || actionId == ACTION_CAPTURE) {
+                    return R.string.permission_toast_storage_deny;
+                } else if (actionId == ACTION_GEO_LOCATION) {
+                    return R.string.permission_toast_location_deny;
+                } else {
+                    throw new IllegalArgumentException("Unknown Action");
+                }
+            }
+
             @Override
             public void requestPermissions(int actionId) {
                 switch (actionId) {
@@ -341,7 +351,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             @Override
             public void permissionDeniedToast(int actionId) {
-                Toast.makeText(getContext(), getAskAgainSnackBarString(actionId ), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getPermissionDeniedToastString(actionId), Toast.LENGTH_LONG).show();
             }
         });
     }
