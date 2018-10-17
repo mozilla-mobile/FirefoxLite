@@ -6,16 +6,26 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.Base64;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -56,6 +66,47 @@ public class HtmlLoader {
     }
 
     private final static byte[] pngHeader = new byte[]{-119, 80, 78, 71, 13, 10, 26, 10};
+
+    public static String loadDrawableAsDataURI(@NonNull final Context context,
+                                               @NonNull final @DrawableRes int resourceID,
+                                               int color) {
+
+        final StringBuilder builder = new StringBuilder();
+        builder.append("data:image/png;base64,");
+        Bitmap bitmap = DrawableUtils.getBitmap(DrawableUtils.loadAndTintDrawable(context, resourceID, color));
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+        ByteArrayInputStream bs = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        try {
+            // Base64 encodes 3 bytes at a time, make sure we have a multiple of 3 here
+            // I don't know what a sensible chunk size is, let's just go with 300b.
+            final byte[] data = new byte[3 * 100];
+            int bytesRead;
+            boolean headerVerified = false;
+
+            while ((bytesRead = bs.read(data)) > 0) {
+                // Sanity check: lets make sure this is still a png (i.e. make sure the build system
+                // or Android haven't broken / change the image format).
+                if (!headerVerified) {
+                    if (bytesRead < 8) {
+                        throw new IllegalStateException("Loaded drawable is improbably small");
+                    }
+
+                    for (int i = 0; i < pngHeader.length; i++) {
+                        if (data[i] != pngHeader[i]) {
+                            throw new IllegalStateException("Invalid png detected");
+                        }
+                    }
+                    headerVerified = true;
+                }
+
+                builder.append(Base64.encodeToString(data, 0, bytesRead, 0));
+            }
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to load drawable data");
+        }
+        return builder.toString();
+    }
 
     public static String loadPngAsDataURI(@NonNull final Context context,
                                           @NonNull final @DrawableRes int resourceID) {
