@@ -30,7 +30,6 @@ import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
-import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabsSessionProvider
@@ -251,27 +250,24 @@ class BrowserFragment : LocaleAwareFragment(),
             fragment.tabViewSlot.addView(session.tabView!!.view)
         }
 
-        override fun onProgressChanged(progress: Int) {
+        override fun onProgress(session: Session, progress: Int) {
             fragment.progressView.progress = progress
         }
 
-        override fun onReceivedTitle(view: TabView, title: String?) {
-            session?.let {
+        override fun onTitleChanged(session: Session, title: String?) {
+            session.let {
                 if (!fragment.displayUrlView.text.toString().equals(it.url)) {
                     fragment.displayUrlView.text = it.url
                 }
             }
         }
 
-        override fun onLongPress(hitTarget: HitTarget) {
-            session?.let {
-                val activity = fragment.activity
-                if (activity != null) {
-                    WebContextMenu.show(true,
-                            activity,
-                            PrivateDownloadCallback(activity, it.url),
-                            hitTarget)
-                }
+        override fun onLongPress(session: Session, hitTarget: HitTarget) {
+            fragment.activity?.let {
+                WebContextMenu.show(true,
+                        it,
+                        PrivateDownloadCallback(it, session.url),
+                        hitTarget)
             }
         }
 
@@ -310,27 +306,28 @@ class BrowserFragment : LocaleAwareFragment(),
             session?.tabView?.let { if (it is WebView) it.clearFocus() }
         }
 
-        override fun onURLChanged(url: String?) {
+        override fun onUrlChanged(session: Session, url: String?) {
             if (!UrlUtils.isInternalErrorURL(url)) {
                 fragment.displayUrlView.text = url
             }
         }
 
-        override fun onSessionStarted(url: String?) {
-            fragment.siteIdentity.setImageLevel(SITE_GLOBE)
-            fragment.isLoading = true
-            fragment.btnLoad.setImageResource(R.drawable.ic_close)
+        override fun onLoadingStateChanged(session: Session, loading: Boolean) {
+            fragment.isLoading = loading
+            if (loading) {
+                fragment.btnLoad.setImageResource(R.drawable.ic_close)
+            } else {
+                val focus = fragment.sessionManager.focusSession ?: return
+                val tabView = focus.tabView ?: return
+                fragment.btnNext.isEnabled = tabView.canGoForward()
+
+                fragment.btnLoad.setImageResource(R.drawable.ic_refresh)
+            }
         }
 
-        override fun onSessionFinished(isSecure: Boolean) {
-            val focus = fragment.sessionManager.focusSession ?: return
-            val tabView = focus.tabView ?: return
-            fragment.btnNext.isEnabled = tabView.canGoForward()
-
+        override fun onSecurityChanged(session: Session, isSecure: Boolean) {
             val level = if (isSecure) SITE_LOCK else SITE_GLOBE
             fragment.siteIdentity.setImageLevel(level)
-            fragment.isLoading = false
-            fragment.btnLoad.setImageResource(R.drawable.ic_refresh)
         }
 
         override fun onSessionCountChanged(count: Int) {
