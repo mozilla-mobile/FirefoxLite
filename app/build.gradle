@@ -225,9 +225,9 @@ dependencies {
         transitive = false
     })
 
-    implementation "org.mozilla.components:telemetry:${Versions.android_components}"
-    implementation "org.mozilla.components:domains:${Versions.android_components}"
-    implementation "org.mozilla.components:autocomplete:${Versions.android_components}"
+    implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
+    implementation "org.mozilla.components:browser-domains:${Versions.android_components}"
+    implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust

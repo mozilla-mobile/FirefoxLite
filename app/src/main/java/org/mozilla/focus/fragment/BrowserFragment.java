@@ -421,7 +421,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
 
-        sessionManager.register(this.managerObserver, this);
+        sessionManager.register(this.managerObserver, this, false);
         sessionManager.setDownloadCallback(downloadCallback);
         sessionManager.setFindListener(findInPage);
 
