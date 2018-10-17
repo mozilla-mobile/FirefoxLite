@@ -162,7 +162,7 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
 
             @Override
             public void permissionDeniedToast(int actionId) {
-                Toast.makeText(ScreenshotViewerActivity.this, R.string.permission_toast_storage, Toast.LENGTH_LONG).show();
+                Toast.makeText(ScreenshotViewerActivity.this, R.string.permission_toast_storage_deny, Toast.LENGTH_LONG).show();
             }
         });
 
