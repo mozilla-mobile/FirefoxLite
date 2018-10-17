@@ -26,7 +26,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.widget.AdjustBrightnessDialog;
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 
 import java.util.Locale;

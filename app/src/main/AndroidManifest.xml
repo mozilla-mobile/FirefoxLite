@@ -259,7 +259,7 @@
             android:screenOrientation="portrait"
             android:label="@string/title_activity_edit_bookmark" />
         <activity
-            android:name=".widget.AdjustBrightnessDialog"
+            android:name="org.mozilla.rocket.nightmode.AdjustBrightnessDialog"
             android:theme="@style/TransparentTheme"
             android:exported="false" />
     </application>

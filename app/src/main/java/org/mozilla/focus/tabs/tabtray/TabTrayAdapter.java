@@ -32,9 +32,9 @@ import com.bumptech.glide.request.transition.Transition;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.widget.themed.ThemedRecyclerView;
-import org.mozilla.focus.widget.themed.ThemedRelativeLayout;
-import org.mozilla.focus.widget.themed.ThemedTextView;
+import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
+import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
+import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.Session;
 

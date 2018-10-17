@@ -7,14 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.mozilla.focus.widget.themed.ThemedLinearLayout
+    <org.mozilla.rocket.nightmode.themed.ThemedLinearLayout
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/browser_background"
         android:orientation="vertical">
 
-        <org.mozilla.focus.widget.themed.ThemedRelativeLayout
+        <org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
             android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     <include layout="@layout/toolbar" />
 
                     <!-- divider between appbar and web-vew, will be covered by progress bar -->
-                    <org.mozilla.focus.widget.themed.ThemedView
+                    <org.mozilla.rocket.nightmode.themed.ThemedView
                         android:id="@+id/url_bar_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -63,7 +63,7 @@
 
             </android.support.design.widget.AppBarLayout>
 
-        </org.mozilla.focus.widget.themed.ThemedRelativeLayout>
+        </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
 
         <org.mozilla.focus.widget.ResizableKeyboardLayout
             android:id="@+id/main_content"
@@ -90,9 +90,10 @@
             </LinearLayout>
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
-    </org.mozilla.focus.widget.themed.ThemedLinearLayout>
+    </org.mozilla.rocket.nightmode.themed.ThemedLinearLayout>
 
-    <org.mozilla.focus.widget.themed.ThemedView android:id="@+id/bottom_menu_divider"
+    <org.mozilla.rocket.nightmode.themed.ThemedView
+        android:id="@+id/bottom_menu_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="bottom"

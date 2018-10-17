@@ -1,4 +1,4 @@
-package org.mozilla.focus.widget.themed
+package org.mozilla.rocket.nightmode.themed
 
 import org.mozilla.focus.R
 

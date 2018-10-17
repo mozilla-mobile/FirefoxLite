@@ -24,7 +24,7 @@ import android.util.AttributeSet;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.focus.widget.themed.ThemedImageView;
+import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.theme.ThemeManager;
 
 public class HomeScreenBackground extends ThemedImageView implements ThemeManager.Themeable {

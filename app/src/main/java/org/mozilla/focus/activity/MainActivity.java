@@ -74,7 +74,7 @@ import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.widget.AdjustBrightnessDialog;
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
