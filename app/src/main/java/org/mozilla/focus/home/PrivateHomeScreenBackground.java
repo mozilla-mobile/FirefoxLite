@@ -18,18 +18,14 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Shader;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.focus.widget.themed.ThemedImageView;
-import org.mozilla.rocket.theme.ThemeManager;
 
-public class PrivateHomeScreenBackground extends ThemedImageView implements ThemeManager.Themeable {
+public class PrivateHomeScreenBackground extends AppCompatImageView {
     private Paint paint;
-    private boolean isNight;
 
     public PrivateHomeScreenBackground(Context context) {
         super(context, null);
@@ -61,28 +57,6 @@ public class PrivateHomeScreenBackground extends ThemedImageView implements Them
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (!isNight) {
-            canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
-        } else {
-            // Add status bar's height as a padding on top to let HomeFragment star background align with TabTrayFragment
-            setPadding(0, ViewUtils.getStatusBarHeight(((Activity) getContext())), 0, 0);
-        }
-    }
-
-    @Override
-    public void onThemeChanged() {
-        Drawable drawable = getContext().getTheme().getDrawable(R.drawable.bg_homescreen_color);
-        setBackground(drawable);
-    }
-
-    @Override
-    public void setNightMode(boolean isNight) {
-        super.setNightMode(isNight);
-        this.isNight = isNight;
-        if (this.isNight) {
-            setImageResource(R.drawable.star_bg);
-        } else {
-            setImageDrawable(null);
-        }
+        canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
     }
 }
