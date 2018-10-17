@@ -13,7 +13,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="org.mozilla.rocket.privately.PrivateModeActivity">
 
-    <org.mozilla.focus.home.HomeScreenBackground
+    <org.mozilla.focus.home.PrivateHomeScreenBackground
         android:id="@+id/pm_home_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
