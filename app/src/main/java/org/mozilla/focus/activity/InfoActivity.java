@@ -23,7 +23,7 @@ import org.mozilla.focus.utils.SupportUtils;
  * A generic activity that supports showing additional information in a WebView. This is useful
  * for showing any web based content, including About/Help/Rights, and also SUMO pages.
  */
-public class InfoActivity extends AppCompatActivity {
+public class InfoActivity extends BaseActivity {
     private static final String EXTRA_URL = "extra_url";
     private static final String EXTRA_TITLE = "extra_title";
     private InfoFragment infoFragment;
@@ -82,5 +82,10 @@ public class InfoActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void applyLocale() {
+
     }
 }
