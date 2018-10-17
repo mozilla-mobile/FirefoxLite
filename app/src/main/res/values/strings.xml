@@ -109,7 +109,7 @@
     <!-- Item in Preferences that shows the night mode adjust brightness widget. -->
     <string name="preference_night_mode_brightness">Night mode brightness</string>
    
-    <!-- Message shown when the user is night mode for the first time or adjusting its bar in settings. Guide them use long press Night mode icon. -->
+    <!-- After users have tried night mode once, the next time the user opens menu we would like to show them how they can long press the Night Mode icon to show a widget for brightness adjustments. -->
     <string name="night_mode_on_boarding_message">Long press to adjust brightness</string>
    
     <!-- Content description (not visible, for screen readers etc.): Clear text in URL bar -->
