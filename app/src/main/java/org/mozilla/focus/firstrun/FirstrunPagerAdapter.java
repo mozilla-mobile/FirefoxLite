@@ -46,7 +46,7 @@ public class FirstrunPagerAdapter extends PagerAdapter {
         textView.setText(page.text);
 
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        if (page.lottieString == null) {
+        if (page.lottieString != null) {
             final LottieDrawable drawable = new LottieDrawable();
             LottieComposition.Factory.fromAssetFileName(context,
                     page.lottieString,
