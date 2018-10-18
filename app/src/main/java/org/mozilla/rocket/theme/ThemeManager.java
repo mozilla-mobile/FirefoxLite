@@ -33,7 +33,8 @@ public class ThemeManager {
         CatalinaBlue(R.style.ThemeToy01),
         Gossamer(R.style.ThemeToy02),
         BlueViolet(R.style.ThemeToy03),
-        CornflowerBlue(R.style.ThemeToy04);
+        CornflowerBlue(R.style.ThemeToy04),
+        Rocket(R.style.ThemeToy05);
 
         final int style;
 
