@@ -38,9 +38,14 @@
         <item name="themeGradientEnd">@color/themeGradientEnd04</item>
     </style>
 
+    <style name="ThemeToy05" parent="ThemeToy.Light">
+        <item name="themeGradientStart">@color/themeGradientStart05</item>
+        <item name="themeGradientEnd">@color/themeGradientEnd05</item>
+    </style>
+
     <!-- Default theme color -->
-    <color name="themeGradientStart">#41B7E6</color>
-    <color name="themeGradientEnd">#95E2BD</color>
+    <color name="themeGradientStart">#4847F7</color>
+    <color name="themeGradientEnd">#A6FFCB</color>
 
     <color name="themeGradientStart01">#2C3A5F</color>
     <color name="themeGradientEnd01">#536D86</color>
@@ -53,6 +58,9 @@
 
     <color name="themeGradientStart04">#6893E3</color>
     <color name="themeGradientEnd04">#BD95E2</color>
+
+    <color name="themeGradientStart05">#41B7E6</color>
+    <color name="themeGradientEnd05">#95E2BD</color>
 
     <color name="themeGradientStartNight">#103266</color>
     <color name="themeGradientEndNight">#140623</color>

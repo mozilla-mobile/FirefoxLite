@@ -167,8 +167,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     // FirstRun fragment is not used often, so we create drawables programmatically, instead of add
     // lots of drawable resources
     private fun initDrawables() {
-        val orientation = GradientDrawable.Orientation.TR_BL
-        bgDrawables = arrayOf(GradientDrawable(orientation, intArrayOf(-0x8a524d, -0xcd742f)), GradientDrawable(orientation, intArrayOf(-0x81434b, -0xcd742f)), GradientDrawable(orientation, intArrayOf(-0x7c374d, -0xcd742f)), GradientDrawable(orientation, intArrayOf(-0x71274d, -0xcd742f)))
+        bgDrawables = arrayOf(resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme),resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme),resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme))
 
         bgTransitionDrawable = TransitionDrawable(bgDrawables)
         bgTransitionDrawable.setId(0, R.id.first_run_bg_even)
