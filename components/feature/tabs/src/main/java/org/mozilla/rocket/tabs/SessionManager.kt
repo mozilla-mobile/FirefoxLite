@@ -350,12 +350,6 @@ class SessionManager @JvmOverloads constructor(
 
     internal inner class SessionObserver(var source: Session) : Session.Observer {
 
-        override fun handleExternalUrl(url: String?): Boolean {
-            // only return false if none of listeners handled external url.
-            val consumers = wrapConsumers<String?> { handleExternalUrl(it) }
-            return Consumable.from(url).consumeBy(consumers)
-        }
-
         override fun onCreateWindow(
                 isDialog: Boolean,
                 isUserGesture: Boolean,
