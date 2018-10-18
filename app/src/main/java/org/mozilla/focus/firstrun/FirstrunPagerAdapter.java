@@ -6,7 +6,6 @@
 package org.mozilla.focus.firstrun;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,9 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieComposition;
@@ -24,54 +21,19 @@ import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.OnCompositionLoadedListener;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.Settings;
 
 public class FirstrunPagerAdapter extends PagerAdapter {
 
-    private final static int TURBO_MODE_PAGE_INDEX = 0;
-
-    private static class FirstrunPage {
-        public final String title;
-        public final String text;
-        public final String imageResource;
-
-        private FirstrunPage(String title, String text, String json) {
-            this.title = title;
-            this.text = text;
-            this.imageResource = json;
-        }
-    }
-
-    private final FirstrunPage[] pages;
-
-    private Context context;
+    protected FirstrunPage[] pages;
+    protected Context context;
     private View.OnClickListener listener;
 
     public FirstrunPagerAdapter(Context context, View.OnClickListener listener) {
         this.context = context;
         this.listener = listener;
-        this.pages = new FirstrunPage[]{
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page2_title),
-                        context.getString(R.string.first_run_page2_text),
-                        "first_run_img_2.json"),
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page3_title),
-                        context.getString(R.string.first_run_page3_text),
-                        "first_run_img_3.json"),
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page4_title),
-                        context.getString(R.string.first_run_page4_text),
-                        "first_run_img_4.json"),
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page1_title, context.getString(R.string.app_name)),
-                        context.getString(R.string.first_run_page1_text, context.getString(R.string.mozilla)),
-                        "first_run_img_1.json")
-        };
     }
 
-    private View getView(int position, ViewPager pager) {
+    protected View getView(int position, ViewPager pager) {
         final View view = LayoutInflater.from(context).inflate(
                 R.layout.firstrun_page, pager, false);
 
@@ -84,16 +46,20 @@ public class FirstrunPagerAdapter extends PagerAdapter {
         textView.setText(page.text);
 
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        final LottieDrawable drawable = new LottieDrawable();
-        LottieComposition.Factory.fromAssetFileName(context,
-                page.imageResource,
-                new OnCompositionLoadedListener() {
-                    @Override
-                    public void onCompositionLoaded(@Nullable LottieComposition composition) {
-                        drawable.setComposition(composition);
-                    }
-                });
-        imageView.setImageDrawable(drawable);
+        if (page.lottieString == null) {
+            final LottieDrawable drawable = new LottieDrawable();
+            LottieComposition.Factory.fromAssetFileName(context,
+                    page.lottieString,
+                    new OnCompositionLoadedListener() {
+                        @Override
+                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
+                            drawable.setComposition(composition);
+                        }
+                    });
+            imageView.setImageDrawable(drawable);
+        } else {
+            imageView.setImageResource(page.imageResource);
+        }
 
         final Button buttonView = (Button) view.findViewById(R.id.button);
         buttonView.setOnClickListener(listener);
@@ -105,9 +71,6 @@ public class FirstrunPagerAdapter extends PagerAdapter {
             buttonView.setId(R.id.next);
         }
 
-        if (position == TURBO_MODE_PAGE_INDEX) {
-            initForTurboModePage(context, view);
-        }
 
         return view;
     }
@@ -137,18 +100,4 @@ public class FirstrunPagerAdapter extends PagerAdapter {
         container.removeView((View) view);
     }
 
-    private void initForTurboModePage(@NonNull Context context, @NonNull final View group) {
-        final Switch widget = (Switch) group.findViewById(R.id.switch_widget);
-        final Settings settings = Settings.getInstance(context);
-        widget.setVisibility(View.VISIBLE);
-        widget.setText(R.string.label_menu_turbo_mode);
-        widget.setChecked(settings.shouldUseTurboMode());
-        widget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setTurboMode(isChecked);
-                TelemetryWrapper.toggleFirstRunPageEvent(isChecked);
-            }
-        });
-    }
 }
