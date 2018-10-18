@@ -181,9 +181,6 @@
   <string name="privacy_policy_update_notification_action">为了让 Firefox Rocket 更适合您和每个人，我们对隐私政策进行了一些修改。点击以了解更多信息。</string>
   <string name="rate_app_dialog_text_title">喜欢 %1$s 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
-  <string name="rate_app_dialog_btn_go_rate">是的，5 星好评！</string>
-  <string name="rate_app_notification_action_rate">5 星好评</string>
-  <string name="rate_app_dialog_btn_feedback">不，发送反馈。</string>
   <string name="rate_app_notification_action_feedback">反馈</string>
   <string name="share_app_dialog_text_title">与朋友分享 %1$s！</string>
   <string name="share_app_dialog_text_content">- 快速且轻量级\n- 节约流量\n- 强大的截图功能</string>

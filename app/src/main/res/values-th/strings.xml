@@ -37,6 +37,7 @@
   <string name="preference_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="preference_about">เกี่ยวกับ</string>
   <string name="preference_night_mode_brightness">ความสว่างโหมดกลางคืน</string>
+  <string name="night_mode_on_boarding_message">กดค้างเพื่อปรับความสว่าง</string>
   <string name="content_description_clear_input">ล้างข้อมูลที่ป้อน</string>
   <string name="content_description_dismiss_input">ยกเลิก</string>
   <string name="content_description_lock">การเชื่อมต่อปลอดภัย</string>
@@ -181,9 +182,9 @@
   <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Rocket ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="rate_app_dialog_text_title">รัก %1$s?</string>
   <string name="rate_app_dialog_text_content">ขอบคุณที่เลือกผลิตภัณฑ์ของเรา ข้อคิดเห็นของคุณเป็นสิ่งสำคัญสำหรับเรา</string>
-  <string name="rate_app_dialog_btn_go_rate">ใช่ ให้คะแนน 5 ดาว!</string>
-  <string name="rate_app_notification_action_rate">ให้คะแนน 5 ดาว</string>
-  <string name="rate_app_dialog_btn_feedback">ไม่ ส่งข้อคิดเห็น</string>
+  <string name="rate_app_dialog_btn_go_rate">ให้คะแนนเรา</string>
+  <string name="rate_app_notification_action_rate">ให้คะแนนเรา</string>
+  <string name="rate_app_dialog_btn_feedback">เสนอข้อคิดเห็น</string>
   <string name="rate_app_notification_action_feedback">ข้อคิดเห็น</string>
   <string name="share_app_dialog_text_title">แบ่งปัน %1$s กับเพื่อน ๆ!</string>
   <string name="share_app_dialog_text_content">- เร็วและเบา\n- ประหยัดการรับส่งข้อมูล\n- ตัวจับภาพหน้าจอที่ทรงพลัง</string>
@@ -223,7 +224,7 @@
   <string name="my_shot_on_boarding_message">ดูภาพหน้าจอของคุณที่นี่!</string>
   <string name="my_shot_on_boarding_category_message">เพื่อปรับปรุงประสบการณ์ผลิตภัณฑ์ของคุณ เราเก็บรวบรวมข้อมูลเกี่ยวกับหมวดหมู่ของภาพหน้าจอของคุณ</string>
   <string name="exp_survey_wifi">เราวางแผนที่จะผนวกรวม “ตัวค้นหา Wifi ฟรี” เพื่อช่วยคุณค้นหาการเชื่อมต่ออินเทอร์เน็ตฟรีที่มีคุณภาพที่อยู่ใกล้เคียง\n\n สนใจไหม?</string>
-  <string name="exp_survey_vpn">เราวางแผนที่จะผนวกรวม “บริการ VPN” เพื่อให้คุณมีอิสรภาพมากขึ้นและความเป็นส่วนตัวมากขึ้นเมื่อท่องเว็บ\n\n สนใจไหม?</string>
+  <string name="exp_survey_vpn">เราวางแผนที่จะผนวกรวม “บริการ VPN” เพื่อให้คุณมีอิสรภาพมากขึ้นและความเป็นส่วนตัวที่เพิ่มขึ้นเมื่อท่องเว็บ\n\n สนใจไหม?</string>
   <string name="exp_survey_thanks">ขอบคุณที่ให้ข้อคิดเห็นกับเรา %1$s</string>
   <string name="exp_survey_yes">ใช่ ได้โปรด</string>
   <string name="exp_survey_no">ไม่</string>

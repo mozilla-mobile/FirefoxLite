@@ -37,6 +37,7 @@
   <string name="preference_learn_more">अधिक जानें</string>
   <string name="preference_about">परिचय</string>
   <string name="preference_night_mode_brightness">नाईट मोड ब्राइटनेस</string>
+  <string name="night_mode_on_boarding_message">ब्राइटनेस अनुकूल करने के लिए लम्बे समय तक दबा कर रखें</string>
   <string name="content_description_clear_input">इनपुट मिटाएँ</string>
   <string name="content_description_dismiss_input">ख़ारिज करें</string>
   <string name="content_description_lock">सुरक्षित संपर्क</string>
@@ -181,9 +182,9 @@
   <string name="privacy_policy_update_notification_action">Firefox Rocket आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएँ।</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद आया?</string>
   <string name="rate_app_dialog_text_content">हमारे प्रोडक्ट को चुनने के लिए धन्यवाद। आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
-  <string name="rate_app_dialog_btn_go_rate">हाँ，5 स्टार रेट करें!</string>
-  <string name="rate_app_notification_action_rate">5 स्टार रेट करें</string>
-  <string name="rate_app_dialog_btn_feedback">नहीं, प्रतिक्रिया भेजें।</string>
+  <string name="rate_app_dialog_btn_go_rate">हमें रेट करें</string>
+  <string name="rate_app_notification_action_rate">हमें RATE करें</string>
+  <string name="rate_app_dialog_btn_feedback">प्रतिक्रिया दें।</string>
   <string name="rate_app_notification_action_feedback">प्रतिक्रिया दें</string>
   <string name="share_app_dialog_text_title">दोस्तों के साथ %1$s साझा करें!</string>
   <string name="share_app_dialog_text_content">- तीव्र एवं हल्का\n- डेटा बचानेवाला\n- शक्तिशाली स्क्रीनशॉट</string>
