@@ -22,17 +22,17 @@ public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
                         context.getString(R.string.first_run_page2_text),
                         "first_run_img_2.json"),
                 new FirstrunPage(
-                        context.getString(R.string.first_run_page3_title),
-                        context.getString(R.string.first_run_page3_text),
-                        "first_run_img_3.json"),
-                new FirstrunPage(
                         context.getString(R.string.first_run_page4_title),
                         context.getString(R.string.first_run_page4_text),
                         "first_run_img_4.json"),
                 new FirstrunPage(
-                        context.getString(R.string.first_run_page1_title, context.getString(R.string.app_name)),
-                        context.getString(R.string.first_run_page1_text, context.getString(R.string.mozilla)),
-                        "first_run_img_1.json")
+                        context.getString(R.string.first_run_page5_title),
+                        context.getString(R.string.first_run_page5_text),
+                        R.drawable.ic_onboarding_privacy),
+                new FirstrunPage(
+                        context.getString(R.string.first_run_page3_title),
+                        context.getString(R.string.first_run_page3_text),
+                        "first_run_img_3.json")
         };
     }
 
