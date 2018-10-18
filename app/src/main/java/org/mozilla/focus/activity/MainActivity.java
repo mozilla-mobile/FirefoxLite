@@ -78,6 +78,7 @@ import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
@@ -121,6 +122,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private View pinShortcut;
     private View snackBarContainer;
     private View privateModeButton;
+    private View privateModeIndicator;
 
     private ScreenNavigator screenNavigator;
 
@@ -366,6 +368,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
         privateModeButton = menu.findViewById(R.id.btn_private_browsing);
+        privateModeIndicator = menu.findViewById(R.id.menu_private_mode_indicator);
         shareButton = menu.findViewById(R.id.action_share);
         bookmarkIcon = menu.findViewById(R.id.action_bookmark);
         refreshIcon = menu.findViewById(R.id.action_refresh);
@@ -399,7 +402,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private void updateMenu() {
         final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled(this);
         final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
+        final boolean privateModeActivate = PrivateMode.isPrivateModeProcessRunning(this);
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
+        privateModeIndicator.setVisibility(privateModeActivate ? View.VISIBLE : View.GONE);
         if (pendingMyShotOnBoarding) {
             myshotButton.post(() -> myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
                     MainActivity.this,

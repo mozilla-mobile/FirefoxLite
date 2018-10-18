@@ -105,6 +105,15 @@
         android:id="@+id/btn_private_browsing"
         style="@style/MenuButtonContainer">
 
+        <ImageView
+            android:id="@+id/menu_private_mode_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="48dp"
+            android:paddingTop="7dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_menu_private_mode" />
+
         <LinearLayout style="@style/MenuButtonGroup">
 
             <View
