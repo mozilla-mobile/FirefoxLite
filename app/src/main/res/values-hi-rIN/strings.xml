@@ -103,10 +103,8 @@
   <string name="permission_toast_storage_deny">स्टोरेज की अनुमति ख़ारिज कर दी गयी।</string>
   <string name="permission_dialog_setting">सेटिंग्स</string>
   <string name="permission_dialog_not_now">अभी नहीं</string>
-  <string name="permission_dialog_msg_location">अनुपलब्ध अनुमतियाँ। Firefox Rocket को आपके स्थान तक पहुँचने की अनुमति दें।</string>
-  <string name="permission_toast_location">स्थान उपलब्ध नहीं है। अपने स्थान तक पहुँचने के लिए अनुमति दें।</string>
-  <string name="permission_dialog_msg_storage">अनुपलब्ध अनुमतियाँ। Firefox Rocket को आपके स्थान तक पहुँचने की अनुमति दें।</string>
-  <string name="permission_toast_storage">संग्रहण उपलब्ध नहीं है। अपने डिवाइस पर फ़ोटो और फ़ाइलें संग्रहीत करने की अनुमति दें।</string>
+    <string name="permission_toast_location">स्थान उपलब्ध नहीं है। अपने स्थान तक पहुँचने के लिए अनुमति दें।</string>
+    <string name="permission_toast_storage">संग्रहण उपलब्ध नहीं है। अपने डिवाइस पर फ़ोटो और फ़ाइलें संग्रहीत करने की अनुमति दें।</string>
   <string name="geolocation_dialog_message">%1$s\nआपके स्थान की जानकारी प्राप्त करना चाहता है।</string>
   <string name="geolocation_dialog_message_cache_it">%1$s के अगले शुरुआत तक इस साइट के लिए ना पूछें</string>
   <string name="geolocation_dialog_allow">अनुमति दें</string>

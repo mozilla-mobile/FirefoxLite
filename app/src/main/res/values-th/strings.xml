@@ -103,10 +103,8 @@
   <string name="permission_toast_storage_deny">ปฏิเสธการอนุญาตที่เก็บข้อมูลแล้ว</string>
   <string name="permission_dialog_setting">การตั้งค่า</string>
   <string name="permission_dialog_not_now">ไม่ใช่ตอนนี้</string>
-  <string name="permission_dialog_msg_location">ยังไม่ได้รับอนุญาต อนุญาตให้ Firefox Rocket เข้าถึงตำแหน่งที่ตั้งของคุณ</string>
-  <string name="permission_toast_location">ตำแหน่งที่ตั้งไม่พร้อมใช้ อนุญาตให้เข้าถึงตำแหน่งที่ตั้งของคุณ</string>
-  <string name="permission_dialog_msg_storage">ยังไม่ได้รับอนุญาต อนุญาตให้ Firefox Rocket เข้าถึงตำแหน่งที่ตั้งของคุณ</string>
-  <string name="permission_toast_storage">ที่เก็บข้อมูลไม่พร้อมใช้งาน อนุญาตให้เก็บภาพและไฟล์ในอุปกรณ์ของคุณ</string>
+    <string name="permission_toast_location">ตำแหน่งที่ตั้งไม่พร้อมใช้ อนุญาตให้เข้าถึงตำแหน่งที่ตั้งของคุณ</string>
+    <string name="permission_toast_storage">ที่เก็บข้อมูลไม่พร้อมใช้งาน อนุญาตให้เก็บภาพและไฟล์ในอุปกรณ์ของคุณ</string>
   <string name="geolocation_dialog_message">%1$s ต้องการเข้าถึงตำแหน่งที่ตั้งของคุณ</string>
   <string name="geolocation_dialog_message_cache_it">ไม่ต้องถามอีกสำหรับไซต์นี้จนกระทั่ง %1$s เริ่มการทำงานใหม่</string>
   <string name="geolocation_dialog_allow">อนุญาต</string>

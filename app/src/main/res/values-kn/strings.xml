@@ -87,10 +87,8 @@
   <string name="label_menu_exit">ಹೊರನಡೆ</string>
   <string name="permission_dialog_setting">ಸಿದ್ಧತೆಗಳು</string>
   <string name="permission_dialog_not_now">ಈಗ ಬೇಡ</string>
-  <string name="permission_dialog_msg_location">ಅನುಮತಿಗಳು ಕಾಣೆಯಾಗಿವೆ. ಫೈರ್‍ಫಾಕ್ಸ್ ರಾಕೆಟ್‍ಗೆ ನಿಮ್ಮ ಸ್ಥಳ ಮಾಹಿತಿ ತಿಳಿಯಲು ಅನುಮತಿಸಿ.</string>
-  <string name="permission_toast_location">ಸ್ಥಳ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ. ನಿಮ್ಮ ಸ್ಥಳ ಮಾಹಿತಿ ತಿಳಿಯಲು ಅನುಮತಿಸಿ.</string>
-  <string name="permission_dialog_msg_storage">ಅನುಮತಿಗಳು ಕಾಣೆಯಾಗಿವೆ. ಫೈರ್‍ಫಾಕ್ಸ್ ರಾಕೆಟ್‍ಗೆ ನಿಮ್ಮ ಸ್ಥಳ ಮಾಹಿತಿ ತಿಳಿಯಲು ಅನುಮತಿಸಿ.</string>
-  <string name="permission_toast_storage">ಶೇಖರಣೆ ಲಭ್ಯವಿಲ್ಲ. ಚಿತ್ರಗಳನ್ನು ಮತ್ತು ಕಡತಗಳನ್ನು ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಶೇಖರಿಸಲು ಅನುಮತಿಸಿ.</string>
+    <string name="permission_toast_location">ಸ್ಥಳ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ. ನಿಮ್ಮ ಸ್ಥಳ ಮಾಹಿತಿ ತಿಳಿಯಲು ಅನುಮತಿಸಿ.</string>
+    <string name="permission_toast_storage">ಶೇಖರಣೆ ಲಭ್ಯವಿಲ್ಲ. ಚಿತ್ರಗಳನ್ನು ಮತ್ತು ಕಡತಗಳನ್ನು ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಶೇಖರಿಸಲು ಅನುಮತಿಸಿ.</string>
   <string name="geolocation_dialog_message">%1$s\nನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಪ್ರವೇಶಿಸಬಯಸುತ್ತಿದೆ.</string>
   <string name="geolocation_dialog_message_cache_it">‍ಮತ್ತೆ %1$s ಪುನ: ಪ್ರಾರಂಭವಾಗುವವರೆಗೆ ಈ ತಾಣವನ್ನು ಕೇಳಬೇಡಿ</string>
   <string name="geolocation_dialog_allow">ಅನುಮತಿಸು</string>

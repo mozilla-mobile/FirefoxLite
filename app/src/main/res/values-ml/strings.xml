@@ -87,10 +87,8 @@
   <string name="label_menu_exit">പുറത്തു കടക്കുക</string>
   <string name="permission_dialog_setting">സജ്ജീകരണം‍</string>
   <string name="permission_dialog_not_now">ഇപ്പോള്‍ വേണ്ട</string>
-  <string name="permission_dialog_msg_location">അനുമതികള്‍ ലഭ്യമല്ല. ഫയര്‍ഫോക്സ് റോക്കറ്റിന് നിങ്ങളുടെ സ്ഥാനം ലഭിക്കാനുള്ള അനുമതി നല്‍കുക.</string>
-  <string name="permission_toast_location">സ്ഥാനം ലഭ്യമല്ല. താങ്കളുടെ സ്ഥാനം ലഭിക്കാനുള്ള അനുമതി നൽകൂ.</string>
-  <string name="permission_dialog_msg_storage">അനുമതികൾ ലഭ്യമല്ല. ഫയർഫോക്സ് റോക്കറ്റിന് താങ്കളുടെ സ്ഥാനം ലഭിക്കാനുള്ള അനുമതി നൽകൂ.</string>
-  <string name="permission_toast_storage">സംഭരണി ലഭ്യമല്ല. താങ്കളുടെ ഉപകരണത്തിൽ ചിത്രങ്ങളും ഫയലുകളും സംരക്ഷിക്കാനുള്ള അനുമതി നൽകൂ.</string>
+    <string name="permission_toast_location">സ്ഥാനം ലഭ്യമല്ല. താങ്കളുടെ സ്ഥാനം ലഭിക്കാനുള്ള അനുമതി നൽകൂ.</string>
+    <string name="permission_toast_storage">സംഭരണി ലഭ്യമല്ല. താങ്കളുടെ ഉപകരണത്തിൽ ചിത്രങ്ങളും ഫയലുകളും സംരക്ഷിക്കാനുള്ള അനുമതി നൽകൂ.</string>
   <string name="geolocation_dialog_message">%1$s\nതാങ്കളുടെ സ്ഥാനം മനസ്സിലാക്കാൻ ആഗ്രഹിക്കുന്നു.</string>
   <string name="geolocation_dialog_allow">അനുവദിക്കൂ</string>
   <string name="geolocation_dialog_block">തടയൂ</string>

@@ -102,10 +102,8 @@
   <string name="permission_toast_storage_deny">Idin keuneubah geutulak.</string>
   <string name="permission_dialog_setting">peuatô</string>
   <string name="permission_dialog_not_now">bèk jinoë</string>
-  <string name="permission_dialog_msg_location">Hana idin. Neupeuidin Firefox Rocket keu jitupeue neuduekneuh.</string>
-  <string name="permission_toast_location">Neuduek hana jitupeue. Neubri idin keu jitupeue neuduekneuh.</string>
-  <string name="permission_dialog_msg_storage">Hana idin. Neubri idin keu Firefox Rocket keu jitupeue neuduekneuh.</string>
-  <string name="permission_toast_storage">Hana bak keubah. Neupeuidin keu keubah fôtô ngön beureukaih lam peukakaih Droeneuh.</string>
+    <string name="permission_toast_location">Neuduek hana jitupeue. Neubri idin keu jitupeue neuduekneuh.</string>
+    <string name="permission_toast_storage">Hana bak keubah. Neupeuidin keu keubah fôtô ngön beureukaih lam peukakaih Droeneuh.</string>
   <string name="geolocation_dialog_message">%1$s \nkeumeung jitupeue neuduekneuh.</string>
   <string name="geolocation_dialog_message_cache_it">Bèk tanyöng lé keu situs nyoe sampoe %1$s teuhah lom</string>
   <string name="geolocation_dialog_allow">PEUIDIN</string>

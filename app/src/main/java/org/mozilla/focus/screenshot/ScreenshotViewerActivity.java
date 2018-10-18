@@ -146,11 +146,6 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
             }
 
             @Override
-            public int getDoNotAskAgainDialogString(int actionId) {
-                return R.string.permission_dialog_msg_storage;
-            }
-
-            @Override
             public Snackbar makeAskAgainSnackBar(int actionId) {
                 return PermissionHandler.makeAskAgainSnackBar(ScreenshotViewerActivity.this, findViewById(R.id.root), R.string.permission_toast_storage);
             }

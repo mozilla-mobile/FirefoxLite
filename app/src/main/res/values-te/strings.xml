@@ -89,10 +89,8 @@
   <string name="label_menu_exit">నిష్క్రమించు</string>
   <string name="permission_dialog_setting">అమరికలు</string>
   <string name="permission_dialog_not_now">ఇప్పుడు కాదు</string>
-  <string name="permission_dialog_msg_location">అనుమతులు లేవు. మీ స్థానాన్ని చూడడానికి Firefox Rocketకి అనుమతి ఇవ్వండి.</string>
-  <string name="permission_toast_location">స్థానం అందుబాటులో లేదు. మీ స్థానాన్ని చూడడానికి అనుమతి ఇవ్వండి.</string>
-  <string name="permission_dialog_msg_storage">అనుమతులు లేవు. మీ స్థానాన్ని చూడడానికి Firefox Rocketకి అనుమతి ఇవ్వండి.</string>
-  <string name="permission_toast_storage">నిల్వ అందుబాటులో లేదు. మీ పరికరంలో ఫొటోలను ఫైళ్ళను నిల్వవుంచడానికి అనుమతి ఇవ్వండి.</string>
+    <string name="permission_toast_location">స్థానం అందుబాటులో లేదు. మీ స్థానాన్ని చూడడానికి అనుమతి ఇవ్వండి.</string>
+    <string name="permission_toast_storage">నిల్వ అందుబాటులో లేదు. మీ పరికరంలో ఫొటోలను ఫైళ్ళను నిల్వవుంచడానికి అనుమతి ఇవ్వండి.</string>
   <string name="geolocation_dialog_message">%1$s\nమీ స్థానాన్ని తెలుసుకోవాలనుకుంటుంది.</string>
   <string name="geolocation_dialog_message_cache_it">%1$s పునఃప్రారంభమయ్యేవరకూ ఈ సైటుకి మళ్ళీ అడగకు</string>
   <string name="geolocation_dialog_allow">అనుమతించు</string>

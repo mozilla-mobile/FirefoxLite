@@ -87,10 +87,8 @@
   <string name="label_menu_exit">প্রস্থান</string>
   <string name="permission_dialog_setting">সেটিংস</string>
   <string name="permission_dialog_not_now">এখন নয়</string>
-  <string name="permission_dialog_msg_location">অনুমতি নেই। আপনার অবস্থান অ্যাক্সেস করতে Firefox Rocket কে অনুমতি দিন।</string>
-  <string name="permission_toast_location">অবস্থান উপলব্ধ নেই। আপনার অবস্থান অ্যাক্সেস করার অনুমতি দিন।</string>
-  <string name="permission_dialog_msg_storage">অনুমতি নেই। আপনার অবস্থান অ্যাক্সেস করতে Firefox Rocket কে অনুমতি দিন।</string>
-  <string name="permission_toast_storage">স্টোরেজ উপলব্ধ নেই। আপনার ডিভাইসে ফটো এবং ফাইলগুলি সঞ্চয় করার অনুমতি দিন।</string>
+    <string name="permission_toast_location">অবস্থান উপলব্ধ নেই। আপনার অবস্থান অ্যাক্সেস করার অনুমতি দিন।</string>
+    <string name="permission_toast_storage">স্টোরেজ উপলব্ধ নেই। আপনার ডিভাইসে ফটো এবং ফাইলগুলি সঞ্চয় করার অনুমতি দিন।</string>
   <string name="geolocation_dialog_message">%1$s \nআপনার অবস্থান অ্যাক্সেস করতে চায়।</string>
   <string name="geolocation_dialog_allow">মঞ্জুর</string>
   <string name="geolocation_dialog_block">ব্লক</string>

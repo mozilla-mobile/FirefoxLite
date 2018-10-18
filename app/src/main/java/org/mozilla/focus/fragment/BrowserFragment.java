@@ -296,17 +296,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             }
 
             @Override
-            public int getDoNotAskAgainDialogString(int actionId) {
-                if (actionId == ACTION_DOWNLOAD || actionId == ACTION_PICK_FILE || actionId == ACTION_CAPTURE) {
-                    return R.string.permission_dialog_msg_storage;
-                } else if (actionId == ACTION_GEO_LOCATION) {
-                    return R.string.permission_dialog_msg_location;
-                } else {
-                    throw new IllegalArgumentException("Unknown Action");
-                }
-            }
-
-            @Override
             public Snackbar makeAskAgainSnackBar(int actionId) {
                 return PermissionHandler.makeAskAgainSnackBar(BrowserFragment.this, getActivity().findViewById(R.id.container), getAskAgainSnackBarString(actionId));
             }
