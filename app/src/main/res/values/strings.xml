@@ -46,7 +46,7 @@
     <!-- This is the label of an action we offer when the user selects text in other third-party apps.
          Clicking this action will launch Rocket and perform a search in the default search engine.
          Please keep the "Firefox Rocket" part and don't localize the product name. -->
-    <string name="text_selection_search_action">Search in Firefox Rocket</string>
+    <string name="text_selection_search_actiontext_selection_search_action">Search in Firefox Rocket</string>
 
     <!-- Content of "about Rocket". Argument 1 is the major body of the content #about_content_body.
          Argument 2,4,6,8 is the urls.
@@ -249,9 +249,7 @@
     <string name="permission_toast_storage_deny">Storage permission is denied.</string>
     <string name="permission_dialog_setting">settings</string>
     <string name="permission_dialog_not_now">not now</string>
-    <string name="permission_dialog_msg_location">Missing permissions. Give Firefox Rocket permission to access your location.</string>
     <string name="permission_toast_location">Location not available. Give permission to access your location.</string>
-    <string name="permission_dialog_msg_storage">Missing permissions. Give Firefox Rocket permission to access your location.</string>
     <string name="permission_toast_storage">Storage not available. Give permission to store photos and files on your device.</string>
 
     <!-- When the webpage request access to geolocation a dialog will popup.

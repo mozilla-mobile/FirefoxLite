@@ -96,10 +96,8 @@
   <string name="label_menu_exit">Lumabas</string>
   <string name="permission_dialog_setting">mga setting</string>
   <string name="permission_dialog_not_now">huwag ngayon</string>
-  <string name="permission_dialog_msg_location">Hindi mahanap na permiso. Bigyan ng permiso ang Firefox Rocket para malaman ang iyong lokasyon.</string>
-  <string name="permission_toast_location">Hindi makita ang iyong lokasyon. Pakibigyan ng pahintulot ang app na malaman ang iyong lokasyon.</string>
-  <string name="permission_dialog_msg_storage">Kulang ang mga permission. Bigyang pahintulot ang Firefox Rocket upang malaman ang iyong lokasyon.</string>
-  <string name="permission_toast_storage">Hindi magamit ang sisidlan. Pakibigyan ng pahintulot ang app na magamit ang sisidlan para makapagtago ng mga larawan at files sa iyong device.</string>
+    <string name="permission_toast_location">Hindi makita ang iyong lokasyon. Pakibigyan ng pahintulot ang app na malaman ang iyong lokasyon.</string>
+    <string name="permission_toast_storage">Hindi magamit ang sisidlan. Pakibigyan ng pahintulot ang app na magamit ang sisidlan para makapagtago ng mga larawan at files sa iyong device.</string>
   <string name="geolocation_dialog_message">%1$s \nay gustong alamin ang iyong lokasyon.</string>
   <string name="geolocation_dialog_message_cache_it">Huwag nang tanungin muli sa site na ito hanggang %1$s restarts</string>
   <string name="geolocation_dialog_allow">PAYAGAN</string>

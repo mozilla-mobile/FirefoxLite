@@ -96,10 +96,8 @@
   <string name="label_menu_exit">બહાર નીકળો</string>
   <string name="permission_dialog_setting">સેટિંગ્સ</string>
   <string name="permission_dialog_not_now">હમણાં નહિ</string>
-  <string name="permission_dialog_msg_location">પરવાનગી મળી રહેલ નથી. Firefox Rocket ને તમારા સ્થાનને અૅક્સેસ કરવાની પરવાનગી આપો.</string>
-  <string name="permission_toast_location">સ્થાન ઉપલબ્ધ નથી. તમારા સ્થાનને ઍક્સેસ કરવાની પરવાનગી આપો.</string>
-  <string name="permission_dialog_msg_storage">પરવાનગી મળી રહેલ નથી. Firefox Rocket ને તમારા સ્થાનને અૅક્સેસ કરવાની પરવાનગી આપો.</string>
-  <string name="permission_toast_storage">સંગ્રહ ઉપલબ્ધ નથી. તમારા ઉપકરણ પર ફોટા અને ફાઇલોને સંગ્રહિત કરવાની પરવાનગી આપો.</string>
+    <string name="permission_toast_location">સ્થાન ઉપલબ્ધ નથી. તમારા સ્થાનને ઍક્સેસ કરવાની પરવાનગી આપો.</string>
+    <string name="permission_toast_storage">સંગ્રહ ઉપલબ્ધ નથી. તમારા ઉપકરણ પર ફોટા અને ફાઇલોને સંગ્રહિત કરવાની પરવાનગી આપો.</string>
   <string name="geolocation_dialog_message">%1$s તમારા સ્થાનને મેળવવા માગે છે.</string>
   <string name="geolocation_dialog_message_cache_it">આ સાઇટ વિશે જયાં સુધી %1$s ફરીથી શરુ ના થાય ત્યાં સુધી પૂછતાં નહીં</string>
   <string name="geolocation_dialog_allow">પરવાનગી આપો</string>

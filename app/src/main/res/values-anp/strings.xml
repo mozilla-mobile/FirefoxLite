@@ -87,10 +87,8 @@
   <string name="label_menu_exit">बाहर जाइयै</string>
   <string name="permission_dialog_setting">सेटिंग्स</string>
   <string name="permission_dialog_not_now">अभि नै</string>
-  <string name="permission_dialog_msg_location">प्रमिशन गुम भे गेलै. Firefox Rocket क अपनो पता तक पहुंचने लअ अनुमति दियै.</string>
-  <string name="permission_toast_location">स्थान उपलब्ध नै छै. अपनो स्थान तक पहुंचै ल अनुमति दियै.</string>
-  <string name="permission_dialog_msg_storage">प्रमिशन गुम भे गेलै. Firefox Rocket क अपनो पता तक पहुंचने लअ अनुमति दियै.</string>
-  <string name="permission_toast_storage">स्ट्रोरेज उपलब्ध नै छै. अपनो डिवाइस पर फोटोस आरु फाइल्स कअ स्टोर करे ल अनुमति दियै.</string>
+    <string name="permission_toast_location">स्थान उपलब्ध नै छै. अपनो स्थान तक पहुंचै ल अनुमति दियै.</string>
+    <string name="permission_toast_storage">स्ट्रोरेज उपलब्ध नै छै. अपनो डिवाइस पर फोटोस आरु फाइल्स कअ स्टोर करे ल अनुमति दियै.</string>
   <string name="geolocation_dialog_message">%1$s तोहरो पता तक पहुंचे लअ चाहे छै.</string>
   <string name="geolocation_dialog_allow">अनुमति दियै</string>
   <string name="geolocation_dialog_block">ब्लोक</string>

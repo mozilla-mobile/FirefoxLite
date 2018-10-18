@@ -87,9 +87,7 @@
   <string name="label_menu_exit">बाहर</string>
   <string name="permission_dialog_setting">सेटिंग्स</string>
   <string name="permission_dialog_not_now">अखन नहि</string>
-  <string name="permission_dialog_msg_location">अनुमति नहि अछि. फ़ायरफ़ॉक्स रॉकेट केँ अपन स्थान धरि पहुँचब कलेल अनुमति दिअ.</string>
-  <string name="permission_toast_location">स्थान मोजुद नहि अछि. अपन स्थान धरि पहुँचब कलेल अनुमति दिअ.</string>
-  <string name="permission_dialog_msg_storage">अनुमति नहि अछि. फ़ायरफ़ॉक्स रॉकेट केँ अपन स्थान धरि पहुँचब कलेल अनुमति दिअ.</string>
+    <string name="permission_toast_location">स्थान मोजुद नहि अछि. अपन स्थान धरि पहुँचब कलेल अनुमति दिअ.</string>
   <string name="permission_toast_storage">संग्रहण मोजुद नहि अछि. फोटो आओर फाइल केँ अपन डिवाइस मे संग्रहीत करए कलेल अनुमति दिअ.</string>
   <string name="geolocation_dialog_message">%1$s अहाँक स्थान धरि पहुँचब चाहैत अछि.</string>
   <string name="geolocation_dialog_allow">अनुमति दिअ</string>
