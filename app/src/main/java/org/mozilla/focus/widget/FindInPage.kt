@@ -98,6 +98,8 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
         queryText.text = null
         queryText.clearFocus()
         container.visibility = View.GONE
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS)
+
     }
 
     private fun initViews() {

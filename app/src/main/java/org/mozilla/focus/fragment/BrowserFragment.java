@@ -1001,7 +1001,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private void hideFindInPage() {
         findInPage.hide();
-        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS);
     }
 
     class SessionObserver implements Session.Observer {
