@@ -46,7 +46,7 @@
     <!-- This is the label of an action we offer when the user selects text in other third-party apps.
          Clicking this action will launch Rocket and perform a search in the default search engine.
          Please keep the "Firefox Rocket" part and don't localize the product name. -->
-    <string name="text_selection_search_actiontext_selection_search_action">Search in Firefox Rocket</string>
+    <string name="text_selection_search_action">Search in Firefox Lite</string>
 
     <!-- Content of "about Rocket". Argument 1 is the major body of the content #about_content_body.
          Argument 2,4,6,8 is the urls.
@@ -388,7 +388,7 @@
 
     <!-- In-app notification, Privacy policy update -->
     <string name="privacy_policy_update_notification_title">Product Update Notice</string>
-    <string name="privacy_policy_update_notification_action">To make Firefox Rocket better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
+    <string name="privacy_policy_update_notification_action">To make Firefox Lite better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
 
     <!--In-app Promotion, Rate the App-->
     <!-- The title of the Message to prompt users to rate Rocket on Play Store, %1$s is the App name i.e. Rocket. -->
