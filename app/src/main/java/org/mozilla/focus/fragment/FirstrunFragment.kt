@@ -21,7 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
-import org.mozilla.focus.firstrun.FirstrunPagerAdapter
+import org.mozilla.focus.firstrun.DefaultFirstrunPagerAdapter
 import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -148,7 +148,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         val pagerAdapter: PagerAdapter?
         val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
         pagerAdapter = if (!shown) {
-            FirstrunPagerAdapter(context, onClickListener)
+            DefaultFirstrunPagerAdapter(context, onClickListener)
         } else if (NewFeatureNotice.getInstance(getContext()).shouldShowMultiTabUpdate()) {
             FirstrunUpgradePagerAdapter(context, onClickListener)
         } else {
