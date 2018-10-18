@@ -149,7 +149,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
         pagerAdapter = if (!shown) {
             DefaultFirstrunPagerAdapter(context, onClickListener)
-        } else if (NewFeatureNotice.getInstance(getContext()).shouldShowMultiTabUpdate()) {
+        } else if (NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
             FirstrunUpgradePagerAdapter(context, onClickListener)
         } else {
             null
@@ -159,7 +159,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
     private fun finishFirstrun() {
         NewFeatureNotice.getInstance(context).setFirstRunDidShow()
-        NewFeatureNotice.getInstance(context).setMultiTabUpdateNoticeDidShow()
+        NewFeatureNotice.getInstance(context).setLiteUpdateDidShow()
 
         (activity as MainActivity).firstrunFinished()
     }

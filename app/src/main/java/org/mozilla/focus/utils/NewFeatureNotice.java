@@ -8,10 +8,10 @@ import android.support.annotation.VisibleForTesting;
 public class NewFeatureNotice {
 
     private static final String PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN = "firstrun_shown";
-    @VisibleForTesting
-    public static final String PREF_KEY_INT_FEATURE_UPGRADE_VERSION = "firstrun_upgrade_version";
+    private static final String PREF_KEY_INT_FEATURE_UPGRADE_VERSION = "firstrun_upgrade_version";
     private static final int MULTI_TAB_FROM_VERSION_1_0_TO_2_0 = 1;
     private static final int FIREBASE_FROM_VERSION_2_0_TO_2_1 = 2;
+    private static final int LITE_FROM_VERSION_2_1_TO_4_0 = 3;
 
     private static NewFeatureNotice instance;
 
@@ -28,13 +28,13 @@ public class NewFeatureNotice {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public boolean shouldShowMultiTabUpdate() {
-        return MULTI_TAB_FROM_VERSION_1_0_TO_2_0 == getLastShownFeatureVersion() + 1;
+    public boolean shouldShowLiteUpdate() {
+        return LITE_FROM_VERSION_2_1_TO_4_0 == getLastShownFeatureVersion() + 1;
     }
 
-    public void setMultiTabUpdateNoticeDidShow() {
+    public void setLiteUpdateDidShow() {
         setFirstRunDidShow();
-        setLastShownFeatureVersion(MULTI_TAB_FROM_VERSION_1_0_TO_2_0);
+        setLastShownFeatureVersion(LITE_FROM_VERSION_2_1_TO_4_0);
     }
 
     public boolean shouldShowPrivacyPolicyUpdate() {

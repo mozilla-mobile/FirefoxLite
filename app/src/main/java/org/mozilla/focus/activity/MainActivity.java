@@ -65,6 +65,7 @@ import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.SafeIntent;
 import org.mozilla.focus.utils.Settings;
@@ -194,6 +195,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                     this.screenNavigator.popToHomeScreen(false);
                 }
             }
+        }
+        if (NewFeatureNotice.getInstance(this).shouldShowLiteUpdate()) {
+            themeManager.resetDefaultTheme();
         }
         restoreTabsFromPersistence();
         WebViewProvider.preload(this);
@@ -1022,7 +1026,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         isTabRestoredComplete = true;
         getSessionManager().restoreTabs(session, currentTabId);
         Session currentTab = getSessionManager().getFocusSession();
-        if (currentTab != null && !getSupportFragmentManager().isStateSaved()) {
+        if (!Settings.getInstance(this).shouldShowFirstrun() && currentTab != null && !getSupportFragmentManager().isStateSaved()) {
             screenNavigator.restoreBrowserScreen(currentTab.getId());
         }
     }

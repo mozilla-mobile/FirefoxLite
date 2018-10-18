@@ -77,7 +77,7 @@ public class Settings {
     }
 
     public boolean shouldShowFirstrun() {
-        return newFeatureNotice.shouldShowMultiTabUpdate() || !newFeatureNotice.hasShownFirstRun();
+        return newFeatureNotice.shouldShowLiteUpdate() || !newFeatureNotice.hasShownFirstRun();
     }
 
     public boolean shouldSaveToRemovableStorage() {
