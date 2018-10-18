@@ -34,7 +34,7 @@ public class BeforeTestTask {
         }
 
         if (this.skipFirstRun) {
-            NewFeatureNotice.getInstance(context).setMultiTabUpdateNoticeDidShow();
+            NewFeatureNotice.getInstance(context).setLiteUpdateDidShow();
             ThemeManager.dismissOnboarding(context);
         } else {
             NewFeatureNotice.getInstance(context).resetFirstRunDidShow();
