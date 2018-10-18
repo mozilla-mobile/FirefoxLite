@@ -22,7 +22,7 @@ import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.firstrun.DefaultFirstrunPagerAdapter
-import org.mozilla.focus.firstrun.FirstrunUpgradePagerAdapter
+import org.mozilla.focus.firstrun.UpgradeFirstrunPagerAdapter
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
@@ -150,7 +150,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         pagerAdapter = if (!shown) {
             DefaultFirstrunPagerAdapter(context, onClickListener)
         } else if (NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
-            FirstrunUpgradePagerAdapter(context, onClickListener)
+            UpgradeFirstrunPagerAdapter(context, onClickListener)
         } else {
             null
         }
