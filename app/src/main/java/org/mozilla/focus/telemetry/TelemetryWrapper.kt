@@ -34,16 +34,16 @@ import org.mozilla.telemetry.Telemetry
 import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.telemetry.config.TelemetryConfiguration
 import org.mozilla.telemetry.event.TelemetryEvent
-import org.mozilla.telemetry.measurement.DefaultSearchMeasurement
-import org.mozilla.telemetry.measurement.SearchesMeasurement
-import org.mozilla.telemetry.measurement.SettingsMeasurement
-import org.mozilla.telemetry.measurement.TelemetryMeasurement
+import org.mozilla.telemetry.measurement.*
+import org.mozilla.telemetry.net.DebugLogClient
 import org.mozilla.telemetry.net.HttpURLConnectionTelemetryClient
 import org.mozilla.telemetry.ping.TelemetryCorePingBuilder
 import org.mozilla.telemetry.ping.TelemetryEventPingBuilder
+import org.mozilla.telemetry.ping.TelemetryPingBuilder
 import org.mozilla.telemetry.schedule.jobscheduler.JobSchedulerTelemetryScheduler
 import org.mozilla.telemetry.serialize.JSONPingSerializer
 import org.mozilla.telemetry.storage.FileTelemetryStorage
+import org.mozilla.threadutils.ThreadUtils
 import java.util.HashMap
 
 object TelemetryWrapper {
@@ -219,13 +219,21 @@ object TelemetryWrapper {
         val resources = context.resources
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
+        val key = resources.getString(R.string.pref_key_telemetry)
         preferences.edit()
-                .putBoolean(resources.getString(R.string.pref_key_telemetry), enabled)
+                .putBoolean(key, enabled)
                 .apply()
 
-        TelemetryHolder.get()
-                .configuration
-                .setUploadEnabled(enabled).isCollectionEnabled = enabled
+        ThreadUtils.postToBackgroundThread {
+            // We want to queue this ping and send asap.
+            TelemetryWrapper.settingsEvent(key, enabled.toString(), true)
+
+            // If there are things already collected, we'll still upload them.
+            TelemetryHolder.get()
+                    .configuration
+                    .isCollectionEnabled = enabled
+        }
+
     }
 
     fun init(context: Context) {
@@ -242,6 +250,7 @@ object TelemetryWrapper {
 
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
+                    .setMinimumEventsForUpload(1)   // if the user open MainActivity and goes to Setting Fragment and disable "Send Usage Data", we still want to send that event.
                     .setAppName(TELEMETRY_APP_NAME_ZERDA)
                     .setUpdateChannel(BuildConfig.BUILD_TYPE)
                     .setPreferencesImportantForTelemetry(
@@ -254,7 +263,7 @@ object TelemetryWrapper {
                             resources.getString(R.string.pref_key_locale))
                     .setSettingsProvider(CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
-                    .setUploadEnabled(telemetryEnabled)
+
 
             val serializer = JSONPingSerializer()
             val storage = FileTelemetryStorage(configuration, serializer)
@@ -340,13 +349,13 @@ object TelemetryWrapper {
     }
 
     @JvmStatic
-    fun settingsEvent(key: String, value: String) {
+    fun settingsEvent(key: String, value: String, sendNow: Boolean = false) {
         // We only log whitelist-ed setting
         val validPrefKey = FirebaseEvent.getValidPrefKey(key)
         if (validPrefKey != null) {
             EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, validPrefKey)
                     .extra(Extra.TO, value)
-                    .queue()
+                    .queue(sendNow)
         }
 
     }
@@ -1032,13 +1041,41 @@ object TelemetryWrapper {
             return this
         }
 
-        fun queue() {
+        fun queue(sendNow: Boolean = false) {
 
             val context = TelemetryHolder.get().configuration.context
             if (context != null) {
-                telemetryEvent.queue()
+                if (sendNow) {
+                    sendEventNow(telemetryEvent)
+                } else {
+                    telemetryEvent.queue()
+                }
+
                 firebaseEvent.event(context)
             }
+        }
+
+        private fun sendEventNow(event: TelemetryEvent) {
+            val telemetry = TelemetryHolder.get()
+            var focusEventBuilder: TelemetryPingBuilder? = null
+            // we only have FocusEventPing now
+            for (telemetryPingBuilder in telemetry.builders) {
+                if (telemetryPingBuilder is TelemetryEventPingBuilder) {
+                    focusEventBuilder = telemetryPingBuilder
+                }
+            }
+            val measurement: EventsMeasurement
+            val addedPingType: String
+
+            if (focusEventBuilder == null) {
+                throw IllegalStateException("Expect either TelemetryEventPingBuilder or TelemetryMobileEventPingBuilder to be added to queue events")
+            }
+
+            measurement = (focusEventBuilder as TelemetryEventPingBuilder).eventsMeasurement
+            addedPingType = focusEventBuilder.type
+
+            measurement.add(event)
+            telemetry.queuePing(addedPingType).scheduleUpload()
         }
 
         companion object {

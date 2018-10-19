@@ -153,9 +153,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     .replace(R.id.container, new SettingsFragment())
                     .commit();
             return;
-        } else {
+            // we'll handle the pref_key_telemetry by TelemetrySwitchPreference
+        } else if (!key.equals(getString(R.string.pref_key_telemetry))) {
             // For other events, we handle them here.
-            TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)));
+            TelemetryWrapper.settingsEvent(key, String.valueOf(sharedPreferences.getAll().get(key)), false);
         }
 
 
