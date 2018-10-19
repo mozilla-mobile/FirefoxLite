@@ -103,8 +103,8 @@
   <string name="permission_toast_storage_deny">Izin penyimpanan ditolak.</string>
   <string name="permission_dialog_setting">setelan</string>
   <string name="permission_dialog_not_now">tidak sekarang</string>
-  <string name="permission_toast_location">Lokasi tidak tersedia. Izinkan Firefox Rocket mengakses lokasi Anda.</string>
-  <string name="permission_toast_storage">Penyimpanan tidak tersedia. Izinkan Firefox Rocket menyimpan foto dan berkas pada peranti Anda.</string>
+  <string name="permission_toast_location">Lokasi tidak tersedia. Izinkan agar aplikasi bisa mengakses lokasi Anda.</string>
+  <string name="permission_toast_storage">Penyimpanan tidak tersedia. Izinkan agar aplikasi bisa menyimpan foto dan berkas pada peranti Anda.</string>
   <string name="geolocation_dialog_message">%1$s \ningin mengakses lokasi Anda.</string>
   <string name="geolocation_dialog_message_cache_it">Jangan tanya lagi untuk situs ini sampai %1$s dimulai ulang</string>
   <string name="geolocation_dialog_allow">IZINKAN</string>

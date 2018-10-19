@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">Téang hasil séjén</string>
   <string name="accessibility_find_previous_result">Téang hasil saméméhna</string>
   <string name="accessibility_dismiss_find_in_page">Tutup téangan dina kaca</string>
-  <string name="text_selection_search_action">Paluruh di Firefox Rocket</string>
+  <string name="text_selection_search_action">Paluruh di Firefox Lite</string>
   <string name="about_content_body">%1$s téh panyungsi anu gancang tur hampang karya %2$s. Ari udaganana nya éta pikeun ngarojong internét nembrak anu séhat.</string>
   <string name="about_link_learn_more">Lenyepan</string>
   <string name="about_link_support">Pangrojong</string>
@@ -37,6 +37,7 @@
   <string name="preference_learn_more">Lenyepan</string>
   <string name="preference_about">Ngeunaan</string>
   <string name="preference_night_mode_brightness">Kacaangan modeu peuting</string>
+  <string name="night_mode_on_boarding_message">Pencét lila pikeun ngatur kacaanganana</string>
   <string name="content_description_clear_input">Beresihan asupan</string>
   <string name="content_description_dismiss_input">Tutup</string>
   <string name="content_description_lock">Sambungan aman</string>
@@ -176,12 +177,12 @@
   <string name="message_cannot_find_screenshot">Teu bisa midangkeun téwakan layar</string>
   <string name="remove">Piceun</string>
   <string name="privacy_policy_update_notification_title">Iber Apdétan Prodak</string>
-  <string name="privacy_policy_update_notification_action">Ajang ngajadikeun Firefox Rocket leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun ngaleunyeupanana.</string>
+  <string name="privacy_policy_update_notification_action">Ngarah Firefox Lite leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
   <string name="rate_app_dialog_text_title">Bogoh %1$s?</string>
   <string name="rate_app_dialog_text_content">Hatur nuhun geus milih prodak kami. Pangdeudeul anjeun kacida utama pikeun kami.</string>
-  <string name="rate_app_dialog_btn_go_rate">Nya, peunteun 5 béntang!</string>
-  <string name="rate_app_notification_action_rate">PEUNTEUN 5 BÉNTANG</string>
-  <string name="rate_app_dialog_btn_feedback">Teu, kirim pangdeudeul.</string>
+  <string name="rate_app_dialog_btn_go_rate">Peunteun Kami</string>
+  <string name="rate_app_notification_action_rate">PEUNTEUN KAMI</string>
+  <string name="rate_app_dialog_btn_feedback">Tinggalkeun Pangdeudeul</string>
   <string name="rate_app_notification_action_feedback">PANGDEUDEUL</string>
   <string name="share_app_dialog_text_title">Bagikeun %1$s ka babaturan!</string>
   <string name="share_app_dialog_text_content">- Gancang tur hampang\n- Rikrik data\n- Téwakan layar bedas</string>

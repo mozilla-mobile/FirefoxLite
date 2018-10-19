@@ -16,7 +16,6 @@
   <string name="accessibility_find_next_result">查找下一个结果</string>
   <string name="accessibility_find_previous_result">查找上一个结果</string>
   <string name="accessibility_dismiss_find_in_page">关闭页内查找</string>
-  <string name="text_selection_search_action">在 Firefox Rocket 中搜索</string>
   <string name="about_content_body">%1$s 是由 %2$s 出品的快速而轻量的浏览器。我们以营造健康、开放的互联网为己任。</string>
   <string name="about_link_learn_more">详细了解</string>
   <string name="about_link_support">技术支持</string>
@@ -176,7 +175,6 @@
   <string name="message_cannot_find_screenshot">无法显示此截图</string>
   <string name="remove">移除</string>
   <string name="privacy_policy_update_notification_title">产品更新通知</string>
-  <string name="privacy_policy_update_notification_action">为了让 Firefox Rocket 更适合您和每个人，我们对隐私政策进行了一些修改。点击以了解更多信息。</string>
   <string name="rate_app_dialog_text_title">喜欢 %1$s 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
   <string name="rate_app_notification_action_feedback">反馈</string>
