@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">अगला परिणाम खोजें</string>
   <string name="accessibility_find_previous_result">पिछला परिणाम खोजें</string>
   <string name="accessibility_dismiss_find_in_page">पृष्ठ में खोजें हटायें</string>
-  <string name="text_selection_search_action">Firefox Rocket में खोजें</string>
+  <string name="text_selection_search_action">Firefox Lite में खोजें</string>
   <string name="about_content_body">%1$s %2$s द्वारा निर्मित तीव्र एवं हल्का ब्राउज़र है। हमारा लक्ष्य एक स्वस्थ, मुक्त इंटरनेट को बढ़ावा देना है।</string>
   <string name="about_link_learn_more">अधिक जानें</string>
   <string name="about_link_support">सहारा</string>
@@ -103,8 +103,8 @@
   <string name="permission_toast_storage_deny">स्टोरेज की अनुमति ख़ारिज कर दी गयी।</string>
   <string name="permission_dialog_setting">सेटिंग्स</string>
   <string name="permission_dialog_not_now">अभी नहीं</string>
-    <string name="permission_toast_location">स्थान उपलब्ध नहीं है। अपने स्थान तक पहुँचने के लिए अनुमति दें।</string>
-    <string name="permission_toast_storage">संग्रहण उपलब्ध नहीं है। अपने डिवाइस पर फ़ोटो और फ़ाइलें संग्रहीत करने की अनुमति दें।</string>
+  <string name="permission_toast_location">स्थान उपलब्ध नहीं है। अपने स्थान तक पहुँचने के लिए अनुमति दें।</string>
+  <string name="permission_toast_storage">संग्रहण उपलब्ध नहीं है। अपने डिवाइस पर फ़ोटो और फ़ाइलें संग्रहीत करने की अनुमति दें।</string>
   <string name="geolocation_dialog_message">%1$s\nआपके स्थान की जानकारी प्राप्त करना चाहता है।</string>
   <string name="geolocation_dialog_message_cache_it">%1$s के अगले शुरुआत तक इस साइट के लिए ना पूछें</string>
   <string name="geolocation_dialog_allow">अनुमति दें</string>
@@ -177,7 +177,7 @@
   <string name="message_cannot_find_screenshot">स्क्रीनशॉट प्रदर्शित नहीं किया जा सकता</string>
   <string name="remove">हटाएँ</string>
   <string name="privacy_policy_update_notification_title">प्रोडक्ट अद्यतन सूचना</string>
-  <string name="privacy_policy_update_notification_action">Firefox Rocket आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएँ।</string>
+  <string name="privacy_policy_update_notification_action">Firefox Lite को आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएँ।</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद आया?</string>
   <string name="rate_app_dialog_text_content">हमारे प्रोडक्ट को चुनने के लिए धन्यवाद। आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
   <string name="rate_app_dialog_btn_go_rate">हमें रेट करें</string>

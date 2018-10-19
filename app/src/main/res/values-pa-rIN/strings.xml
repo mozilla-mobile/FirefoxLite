@@ -87,8 +87,8 @@
   <string name="label_menu_exit">ਬਾਹਰ</string>
   <string name="permission_dialog_setting">ਸੈਟਿੰਗਾਂ</string>
   <string name="permission_dialog_not_now">ਹੁਣੇ ਨਹੀਂ</string>
-    <string name="permission_toast_location">ਸਥਾਨ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। ਤੁਹਾਡੇ ਸਥਾਨ ਤੱਕ ਪਹੁੰਚਣ ਦੀ ਅਾਗਿਆ ਦਿਓ।</string>
-    <string name="permission_toast_storage">ਸਟੋਰੇਜ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਆਪਣੀ ਡਿਵਾਈਸ ਤੇ ਫੋਟੋਆਂ ਅਤੇ ਫਾਈਲਾਂ ਨੂੰ ਸਟੋਰ ਕਰਨ ਦੀ ਅਾਗਿਆ ਦਿਓ।</string>
+  <string name="permission_toast_location">ਸਥਾਨ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। ਤੁਹਾਡੇ ਸਥਾਨ ਤੱਕ ਪਹੁੰਚਣ ਦੀ ਅਾਗਿਆ ਦਿਓ।</string>
+  <string name="permission_toast_storage">ਸਟੋਰੇਜ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਆਪਣੀ ਡਿਵਾਈਸ ਤੇ ਫੋਟੋਆਂ ਅਤੇ ਫਾਈਲਾਂ ਨੂੰ ਸਟੋਰ ਕਰਨ ਦੀ ਅਾਗਿਆ ਦਿਓ।</string>
   <string name="geolocation_dialog_message">%1$s ਤੁਹਾਡੇ ਸਥਾਨ ਤੱਕ ਪਹੁੰਚਣਾ ਚਾਹੁੰਦਾ ਹੈ।</string>
   <string name="geolocation_dialog_allow">ਮਨਜ਼ੂਰ</string>
   <string name="geolocation_dialog_block">ਪਾਬੰਦੀ</string>

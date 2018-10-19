@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">Kalön hasé u keue</string>
   <string name="accessibility_find_previous_result">Kalön hasé u likôt</string>
   <string name="accessibility_dismiss_find_in_page">Tôp mita lam laman</string>
-  <string name="text_selection_search_action">Mita lam Firefox Rocket</string>
+  <string name="text_selection_search_action">Mita lam Firefox Lite</string>
   <string name="about_content_body">%1$s nakeuh saboh browser nyang bagah ngön phui atra jipeugöt lé %2$s. Meukeusud kamoe nakeuh keu meupeularha internet nyang jroh ngön teupeuhah.</string>
   <string name="about_link_learn_more">Meurunoe lom</string>
   <string name="about_link_support">Dukông</string>
@@ -37,6 +37,7 @@
   <string name="preference_learn_more">Meurunoe lom</string>
   <string name="preference_about">Bhaih</string>
   <string name="preference_night_mode_brightness">Peungeuih mode malam</string>
+  <string name="night_mode_on_boarding_message">Teugön beu tréb keu peuatô trang layeue</string>
   <string name="content_description_clear_input">Peugléh input</string>
   <string name="content_description_dismiss_input">Peubiyeue</string>
   <string name="content_description_lock">Koneksi aman</string>
@@ -102,8 +103,8 @@
   <string name="permission_toast_storage_deny">Idin keuneubah geutulak.</string>
   <string name="permission_dialog_setting">peuatô</string>
   <string name="permission_dialog_not_now">bèk jinoë</string>
-    <string name="permission_toast_location">Neuduek hana jitupeue. Neubri idin keu jitupeue neuduekneuh.</string>
-    <string name="permission_toast_storage">Hana bak keubah. Neupeuidin keu keubah fôtô ngön beureukaih lam peukakaih Droeneuh.</string>
+  <string name="permission_toast_location">Neuduek hana jitupeue. Neubri idin keu jitupeue neuduekneuh.</string>
+  <string name="permission_toast_storage">Hana bak keubah. Neupeuidin keu keubah fôtô ngön beureukaih lam peukakaih Droeneuh.</string>
   <string name="geolocation_dialog_message">%1$s \nkeumeung jitupeue neuduekneuh.</string>
   <string name="geolocation_dialog_message_cache_it">Bèk tanyöng lé keu situs nyoe sampoe %1$s teuhah lom</string>
   <string name="geolocation_dialog_allow">PEUIDIN</string>
@@ -176,12 +177,12 @@
   <string name="message_cannot_find_screenshot">Han jeuët peuleumah drop layeuë</string>
   <string name="remove">Sampôh</string>
   <string name="privacy_policy_update_notification_title">Bri Thèe Pubarô Produk</string>
-  <string name="privacy_policy_update_notification_action">Mangat Firefox Rocket leubèh göt keu Droeneuh ngön ban dum ureueng, kamoe meupeugöt padum-padum boh hai barô lam keubijakan privasi kamoe. Neuteugön keu neumeurunoe leubèh lanjut.</string>
+  <string name="privacy_policy_update_notification_action">Mangat jeuet Firefox Lite leubèh göt keu Droeneuh ngön ban mandum ureueng, kamoe meupeugöt padum-padum boh hai barô lam keubijakan privasi kamoe. Neuteugön keu neumeurunoe leubèh lanjut lom.</string>
   <string name="rate_app_dialog_text_title">Galak keu %1$s?</string>
   <string name="rate_app_dialog_text_content">Sabah ka neupiléh produk kamoe. Saran Droeneuh peunténg keu kamoe.</string>
   <string name="rate_app_dialog_btn_go_rate">Nyo, bri 5 bintang!</string>
   <string name="rate_app_notification_action_rate">BÔH 5 BINTANG</string>
-  <string name="rate_app_dialog_btn_feedback">H\'an, jôk saran.</string>
+  <string name="rate_app_dialog_btn_feedback">Neubri saran.</string>
   <string name="rate_app_notification_action_feedback">SARAN</string>
   <string name="share_app_dialog_text_title">Bulueng %1$s keu rakan!</string>
   <string name="share_app_dialog_text_content">- Bagah ngön phui\n- Himat data\n- Drop layeue hayeue</string>

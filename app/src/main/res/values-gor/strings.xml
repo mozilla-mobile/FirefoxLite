@@ -73,8 +73,8 @@
   <string name="label_menu_exit">Lumuwalo</string>
   <string name="permission_dialog_setting">setelan</string>
   <string name="permission_dialog_not_now">dīpo utiye</string>
-    <string name="permission_toast_location">Bilulo\'a ja otāwa. Wohiye ījini mongotota bilulo\'amu.</string>
-    <string name="permission_toast_storage">Tāhuwa ja sadi-sadiya. Wohiye ījini Firefox Rocket molahu gāmbari wawu berkas to pilākasimu.</string>
+  <string name="permission_toast_location">Bilulo\'a ja otāwa. Wohiye ījini mongotota bilulo\'amu.</string>
+  <string name="permission_toast_storage">Tāhuwa ja sadi-sadiya. Wohiye ījini Firefox Rocket molahu gāmbari wawu berkas to pilākasimu.</string>
   <string name="geolocation_dialog_message">%1$s ohila mongotota bilulo\'amu.</string>
   <string name="geolocation_dialog_message_cache_it">Didu pohintu situs web botiya tunggulo %1$s mopotumulayi</string>
   <string name="geolocation_dialog_allow">POLULIYA</string>

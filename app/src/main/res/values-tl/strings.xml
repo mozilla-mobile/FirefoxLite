@@ -35,8 +35,9 @@
   <string name="preference_mozilla_telemetry">Ipadala ang mga datos ng paggamit</string>
   <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang %2$s na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
   <string name="preference_learn_more">Detalye</string>
-  <string name="preference_about">Tungkol sa</string>
+  <string name="preference_about">Patungkol</string>
   <string name="preference_night_mode_brightness">Liwanag ng Night Mode</string>
+  <string name="night_mode_on_boarding_message">Pindutin ng matagal para i-adjust ang brightness</string>
   <string name="content_description_clear_input">Burahin ang input</string>
   <string name="content_description_dismiss_input">Alisin</string>
   <string name="content_description_lock">Secure na koneksyon</string>
@@ -96,8 +97,8 @@
   <string name="label_menu_exit">Lumabas</string>
   <string name="permission_dialog_setting">mga setting</string>
   <string name="permission_dialog_not_now">huwag ngayon</string>
-    <string name="permission_toast_location">Hindi makita ang iyong lokasyon. Pakibigyan ng pahintulot ang app na malaman ang iyong lokasyon.</string>
-    <string name="permission_toast_storage">Hindi magamit ang sisidlan. Pakibigyan ng pahintulot ang app na magamit ang sisidlan para makapagtago ng mga larawan at files sa iyong device.</string>
+  <string name="permission_toast_location">Hindi makita ang iyong lokasyon. Pakibigyan ng pahintulot ang app na malaman ang iyong lokasyon.</string>
+  <string name="permission_toast_storage">Hindi magamit ang sisidlan. Pakibigyan ng pahintulot ang app na magamit ang sisidlan para makapagtago ng mga larawan at files sa iyong device.</string>
   <string name="geolocation_dialog_message">%1$s \nay gustong alamin ang iyong lokasyon.</string>
   <string name="geolocation_dialog_message_cache_it">Huwag nang tanungin muli sa site na ito hanggang %1$s restarts</string>
   <string name="geolocation_dialog_allow">PAYAGAN</string>
@@ -173,9 +174,9 @@
   <string name="privacy_policy_update_notification_action">Upang mapaigi ng lubusan ang Firefox Rocket, may mga pagbabagong ginawa sa abisong pang-privacy. Mag-tap dito para malaman kung anu-anong pagbabago ang mga ito.</string>
   <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
   <string name="rate_app_dialog_text_content">Maraming salamat sa iyong pagtangkilik sa aming produkto. Ang iyong feedback ay napakahalaga sa amin.</string>
-  <string name="rate_app_dialog_btn_go_rate">Oo, bigyan ng 5 stars!</string>
-  <string name="rate_app_notification_action_rate">BIGYAN NG 5 STARS</string>
-  <string name="rate_app_dialog_btn_feedback">Hindi, magpadala ng feedback.</string>
+  <string name="rate_app_dialog_btn_go_rate">Rate Us</string>
+  <string name="rate_app_notification_action_rate">RATE US</string>
+  <string name="rate_app_dialog_btn_feedback">Magiwan ng Feedback</string>
   <string name="rate_app_notification_action_feedback">FEEDBACK</string>
   <string name="share_app_dialog_text_title">Ibalita ang %1$s sa iyong mga kaibigan!</string>
   <string name="share_app_dialog_text_content">- Mabilis at magaan\n- Matipid sa data\n- Makapangyarihang screenshots</string>
