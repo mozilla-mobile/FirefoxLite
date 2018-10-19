@@ -75,7 +75,7 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
                 } else if (resources.getString(R.string.pref_value_clear_form_history).equals(value)) {
                     WebViewDatabase.getInstance(getContext()).clearFormData();
                 }
-                TelemetryWrapper.settingsEvent(getKey(), value);
+                TelemetryWrapper.settingsEvent(getKey(), value, false);
             }
 
             if (getValues().size() > 0) {
