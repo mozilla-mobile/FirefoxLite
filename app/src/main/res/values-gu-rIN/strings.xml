@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">આગામી પરિણામ શોધો</string>
   <string name="accessibility_find_previous_result">અગાઉના પરિણામ શોધો</string>
   <string name="accessibility_dismiss_find_in_page">પૃષ્ઠમાં શોધો કાઢી નાખો</string>
-  <string name="text_selection_search_action">Firefox Rocket માં શોધો</string>
+  <string name="text_selection_search_action">Firefox Lite માં શોધો</string>
   <string name="about_content_body">%1$s એ %2$s દ્વારા ઉત્પાદિત કરવામાં આવેલું ઝડપી અને ઓછી જગ્યા રોકે તેવું છે. અમારું લક્ષ્ય એક યોગ્ય , બધાં વાપરી શકે તેવું ઇન્ટરનેટ પ્રસ્થાપિત કરવાનું છે.</string>
   <string name="about_link_learn_more">વધુ શીખો</string>
   <string name="about_link_support">સહાય</string>
@@ -37,6 +37,7 @@
   <string name="preference_learn_more">વધુ શીખો</string>
   <string name="preference_about">વિશે</string>
   <string name="preference_night_mode_brightness">નાઇટ મોડ તેજસ્વિતા</string>
+  <string name="night_mode_on_boarding_message">તેજસ્વિતા સંતુલિત કરવા માટે લાંબા સમય સુધી દબાવો</string>
   <string name="content_description_clear_input">ઇનપુટ સાફ કરો</string>
   <string name="content_description_dismiss_input">રદ કરો</string>
   <string name="content_description_lock">સુરક્ષિત જોડાણ</string>
@@ -69,10 +70,14 @@
   <string name="first_run_page2_title">ક્યારેય કરતાં વધુ ઝડપી બ્રાઉઝ કરો</string>
   <string name="first_run_page2_text">ટ્રેકિંગ જાહેરાતોને અવરોધિત કરવા ટર્બો મોડનો ઉપયોગ કરો કે જેનાથી તમે ખૂબ ઝડપથી બ્રાઉઝ કરી શકશો. જો વેબસાઉટમાં ભંગાણ દેખાય તો મેનુમાં જઇને ટર્બો મોડ બંધ કરો.</string>
   <string name="first_run_page3_title">ડેટા બચાવો = પૈસા બચાવો</string>
-  <string name="first_run_page3_text">જાહેરાતને અવરોધિત કરવાથી માત્ર બ્રાઉઝીંગની ઝડપ નહી વધે , તેનાથી ડૅટા પણ બચશે. છબીઓને અવરોધિત કરીને એનાથી પણ વધુ બચાવો.</string>
+  <string name="first_run_page3_text">ટ્રેકિંગ જાહેરાતને અવરોધિત કરીને ડૅટા ખર્ચ બચાવો. છબીઓને અવરોધિત કરીને એનાથી પણ વધુ બચાવો.</string>
   <string name="first_run_page4_title">સમગ્ર પાનાંનો સ્ક્રીનશોટ લો</string>
-  <string name="first_run_page4_text">સમગ્ર વેબપૃષ્ઠોના સ્ક્રીનશૉટ્સ લો. સ્ક્રિનશોટ ઑફલાઇન જુઓ (માહિતી વગર) અથવા વેબ પૃષ્ઠની ફરી મુલાકાત લેવા માટે તેને ટેપ કરો.</string>
+  <string name="first_run_page4_text">સમગ્ર પૃષ્ઠ સ્ક્રોલનું સ્ક્રીનશોટ લો. ડેટાનો ઉપયોગ કર્યા વિના તેને ઑફલાઇન વાંચો અથવા વેબ પૃષ્ઠ પર ફરીથી મુલાકાત લેવા તે દબાવો.</string>
+  <string name="first_run_page5_title">આગળની કક્ષાની ગોપનીયતા</string>
+  <string name="first_run_page5_text">ટ્રેસ વિના બ્રાઉઝ કરો અને ડિફૉલ્ટ રૂપે સામાન્ય વેબ ટ્રેકર્સની વિશાળ શ્રેણીને અવરોધિત કરો. તમારા ગોપનીય ડેટાની સુરક્ષાની ખાતરી કરો.</string>
   <string name="first_run_upgrade_page_title">અમે તમારી પ્રતિક્રિયા સાંભળી!</string>
+  <string name="new_name_upgrade_page_title">અમારી પાસે એક નવો દેખાવ છે!</string>
+  <string name="new_name_upgrade_page_text">વિકસિત ઉત્પાદન સાથે, અમે તમારી માટે નવાં નામ અને નવાં લોગો સાથે નવું તાજું %1$s લાવીએ છીએ.</string>
   <string name="first_run_upgrade_page_text1">1. %s એ જ સમયે ખોલીને બહુવિધ કામ એક સાથે કરો!</string>
   <string name="first_run_upgrade_page_text1_highlight">બહુવિધ ટૅબ્સ</string>
   <string name="first_run_upgrade_page_text2">2. તમારા મનપસંદ સાઇટ્સને ઝડપથી %s દ્વારા ઍક્સેસ કરો</string>
@@ -94,6 +99,8 @@
   <string name="label_menu_block_image">છબીઓ અવરોધિત કરો</string>
   <string name="label_menu_settings">સેટિંગ્સ</string>
   <string name="label_menu_exit">બહાર નીકળો</string>
+  <string name="permission_toast_location_deny">સ્થાનની પરવાનગી નામંજૂર કરવામાં આવી છે.</string>
+  <string name="permission_toast_storage_deny">સંગ્રહ પરવાનગી નામંજૂર કરવામાં આવી છે.</string>
   <string name="permission_dialog_setting">સેટિંગ્સ</string>
   <string name="permission_dialog_not_now">હમણાં નહિ</string>
   <string name="permission_toast_location">સ્થાન ઉપલબ્ધ નથી. તમારા સ્થાનને ઍક્સેસ કરવાની પરવાનગી આપો.</string>
@@ -170,12 +177,12 @@
   <string name="message_cannot_find_screenshot">સ્ક્રીનશોટ બતાવી શકતાં નથી</string>
   <string name="remove">દૂર કરો</string>
   <string name="privacy_policy_update_notification_title">ઉત્પાદન અધ્યતન બનાવવાની સૂચના</string>
-  <string name="privacy_policy_update_notification_action">Firefox Rocket ને તમારાં માટે અને બીજા બધાં માટે વધુ સારુ બનાવવા, અમે ખાનગી પાૅલીસિમાં અમુક સુધારા કરેલ છે. વધું જાણવાં માટે આ દબાવો.</string>
+  <string name="privacy_policy_update_notification_action">Firefox Lite ને તમારાં માટે અને બીજા બધાં માટે વધુ સારુ બનાવવા, અમે ખાનગી પાૅલીસિમાં અમુક સુધારા કરેલ છે. વધું જાણવાં માટે આ દબાવો.</string>
   <string name="rate_app_dialog_text_title">%1$s ગમ્યું?</string>
   <string name="rate_app_dialog_text_content">અમારું ઉત્પાદન પસંદ કરવા બદલ આપનો આભાર. તમારો અભિપ્રાય અમારી માટે મહત્વનો છે.</string>
-  <string name="rate_app_dialog_btn_go_rate">હા, 5 સ્ટાર્સ આપો!</string>
-  <string name="rate_app_notification_action_rate">5 સ્ટાર્સ આપો</string>
-  <string name="rate_app_dialog_btn_feedback">ના, અભિપ્રાય મોકલો.</string>
+  <string name="rate_app_dialog_btn_go_rate">અમને રેટ કરો</string>
+  <string name="rate_app_notification_action_rate">અમને RATE કરો</string>
+  <string name="rate_app_dialog_btn_feedback">અભિપ્રાય આપો</string>
   <string name="rate_app_notification_action_feedback">પ્રતિભાવ</string>
   <string name="share_app_dialog_text_title">%1$s મિત્રો સાથે વહેંચો!</string>
   <string name="share_app_dialog_text_content">- ઝડપી અને ઓછી જગ્યા રોકે તેવું\n- ડેટાની બચત થાય તેવું\n- પ્રભાવશળી સ્ક્રીનશોટ્સ</string>
