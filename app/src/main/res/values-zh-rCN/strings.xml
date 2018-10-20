@@ -16,6 +16,7 @@
   <string name="accessibility_find_next_result">查找下一个结果</string>
   <string name="accessibility_find_previous_result">查找上一个结果</string>
   <string name="accessibility_dismiss_find_in_page">关闭页内查找</string>
+  <string name="text_selection_search_action">在 Firefox Lite 中搜索</string>
   <string name="about_content_body">%1$s 是由 %2$s 出品的快速而轻量的浏览器。我们以营造健康、开放的互联网为己任。</string>
   <string name="about_link_learn_more">详细了解</string>
   <string name="about_link_support">技术支持</string>
@@ -36,6 +37,7 @@
   <string name="preference_learn_more">详细了解</string>
   <string name="preference_about">关于</string>
   <string name="preference_night_mode_brightness">夜间模式亮度</string>
+  <string name="night_mode_on_boarding_message">长按可调节亮度</string>
   <string name="content_description_clear_input">清除输入内容</string>
   <string name="content_description_dismiss_input">取消输入</string>
   <string name="content_description_lock">安全连接</string>
@@ -175,8 +177,12 @@
   <string name="message_cannot_find_screenshot">无法显示此截图</string>
   <string name="remove">移除</string>
   <string name="privacy_policy_update_notification_title">产品更新通知</string>
+  <string name="privacy_policy_update_notification_action">为了让 Firefox Lite 更适合您和每个人，我们对隐私政策进行了一些修改。点击以了解更多信息。</string>
   <string name="rate_app_dialog_text_title">喜欢 %1$s 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
+  <string name="rate_app_dialog_btn_go_rate">为我们打分</string>
+  <string name="rate_app_notification_action_rate">为我们打分</string>
+  <string name="rate_app_dialog_btn_feedback">留下反馈</string>
   <string name="rate_app_notification_action_feedback">反馈</string>
   <string name="share_app_dialog_text_title">与朋友分享 %1$s！</string>
   <string name="share_app_dialog_text_content">- 快速且轻量级\n- 节约流量\n- 强大的截图功能</string>

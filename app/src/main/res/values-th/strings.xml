@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">ค้นหาผลลัพธ์ถัดไป</string>
   <string name="accessibility_find_previous_result">ค้นหาผลลัพธ์ก่อนหน้า</string>
   <string name="accessibility_dismiss_find_in_page">ยกเลิกการค้นหาในหน้า</string>
-  <string name="text_selection_search_action">ค้นหาใน Firefox Rocket</string>
+  <string name="text_selection_search_action">ค้นหาใน Firefox Lite</string>
   <string name="about_content_body">%1$s เป็นเบราว์เซอร์ที่เร็วและเบาที่สร้างขึ้นโดย %2$s ภารกิจของเราคือส่งเสริมอินเทอร์เน็ตที่สมบูรณ์และเปิดกว้าง</string>
   <string name="about_link_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="about_link_support">การสนับสนุน</string>
@@ -72,7 +72,7 @@
   <string name="first_run_page3_title">ประหยัดข้อมูล = ประหยัดเงิน</string>
   <string name="first_run_page3_text">ประหยัดค่าใช้จ่ายข้อมูลโดยปิดกั้นโฆษณาที่ติดตาม ประหยัดมากยิ่งขึ้นเมื่อคุณเปิดใช้งานการปิดกั้นภาพ</string>
   <string name="first_run_page4_title">จับภาพหน้าจอทั้งหน้า</string>
-  <string name="first_run_page4_text">จับภาพหน้าจอของส่วนที่เลื่อนทั้งหน้า อ่านภาพหน้าจอออฟไลน์โดยไม่ต้องใช้ข้อมูลหรือแตะภาพหน้าจอเพื่อเยี่ยมชมหน้าเว็บใหม่</string>
+  <string name="first_run_page4_text">จับภาพหน้าจอส่วนที่เลื่อนทั้งหน้า อ่านภาพหน้าจอออฟไลน์โดยไม่ต้องใช้ข้อมูลหรือแตะภาพหน้าจอเพื่อเยี่ยมชมหน้าเว็บใหม่</string>
   <string name="first_run_page5_title">ความเป็นส่วนตัวระดับถัดไป</string>
   <string name="first_run_page5_text">ท่องเว็บโดยไม่มีร่องรอย และปิดกั้นตัวติดตามเว็บทั่วไปจำนวนมากโดยค่าเริ่มต้น ทำให้มั่นใจในความปลอดภัยของข้อมูลที่เป็นความลับของคุณ</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
@@ -81,7 +81,7 @@
   <string name="first_run_upgrade_page_text1">1. ทำงานหลายอย่างโดยเปิด %s ในเวลาเดียวกัน!</string>
   <string name="first_run_upgrade_page_text1_highlight">หลายแท็บ</string>
   <string name="first_run_upgrade_page_text2">2. เข้าถึงเว็บไซต์โปรดของคุณอย่างรวดเร็วโดย %s</string>
-  <string name="first_run_upgrade_page_text2_highlight">เพิ่มไปยังหน้าจอหลัก!</string>
+  <string name="first_run_upgrade_page_text2_highlight">เพิ่มเว็บไซต์ไปยังหน้าจอหลัก!</string>
   <string name="firstrun_close_button">ตกลง เข้าใจแล้ว!</string>
   <string name="firstrun_skip_button">ข้าม</string>
   <string name="firstrun_next_button">ถัดไป</string>
@@ -150,12 +150,12 @@
   <string name="screenshot_edit">แก้ไข</string>
   <string name="screenshot_delete">ลบ</string>
   <string name="screenshot_share">แบ่งปัน</string>
-  <string name="message_fallback_save_to_primary_external">ไม่พบการ์ด SD ไฟล์ถูกบันทึกไปยังที่เก็บข้อมูลภายใน</string>
+  <string name="message_fallback_save_to_primary_external">ไม่พบการ์ด SD บันทึกไฟล์ไปยังที่เก็บข้อมูลภายในแล้ว</string>
   <string name="message_start_to_save_to_removable_storage">บันทึกไฟล์ไปยังการ์ด SD แล้ว</string>
-  <string name="message_removable_storage_space_not_enough">การ์ด SD ใกล้เต็ม ไฟล์ถูกบันทึกไปยังที่เก็บข้อมูลภายใน</string>
+  <string name="message_removable_storage_space_not_enough">การ์ด SD ใกล้เต็ม บันทึกไฟล์ไปยังที่เก็บข้อมูลภายในแล้ว</string>
   <string name="screenshot_grid_empty_text_title">ไม่มีภาพหน้าจอ</string>
   <string name="screenshot_grid_empty_text_msg_prefix">แตะ</string>
-  <string name="screenshot_grid_empty_text_msg_postfix">" ในเมนูเพื่อจับภาพหน้าเว็บทั้งหน้า"</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">" ในเมนูเพื่อจับภาพทั้งหน้าเว็บ"</string>
   <string name="screenshot_image_viewer_dialog_title">ข้อมูล</string>
   <string name="screenshot_image_viewer_dialog_info_time1">วันที่: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">หมวดหมู่: %1$s</string>
@@ -170,14 +170,14 @@
   <string name="message_enable_block_image">ขณะนี้กำลังปิดกั้นภาพ</string>
   <string name="message_disable_block_image">ขณะนี้กำลังแสดงภาพ</string>
   <string name="message_clear_cache_fail">ไม่สามารถล้างแคช</string>
-  <string name="message_storage_unavailable_cancel_download">ไม่สามารถเข้าถึงที่เก็บข้อมูล การดาวน์โหลดถูกยกเลิก</string>
+  <string name="message_storage_unavailable_cancel_download">ไม่สามารถเข้าถึงที่เก็บข้อมูล ยกเลิกการดาวน์โหลดแล้ว</string>
   <string name="message_cleared_cached">ล้างแคชแล้ว %1$s</string>
   <string name="message_cleared_browsing_data">ล้างข้อมูลการท่องเว็บแล้ว</string>
   <string name="message_deleted_screenshot">ลบภาพหน้าจอแล้ว</string>
   <string name="message_cannot_find_screenshot">ไม่สามารถแสดงผลภาพหน้าจอ</string>
   <string name="remove">เอาออก</string>
-  <string name="privacy_policy_update_notification_title">การแจ้งอัปเดตผลิตภัณฑ์</string>
-  <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Rocket ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
+  <string name="privacy_policy_update_notification_title">ประกาศการอัปเดตผลิตภัณฑ์</string>
+  <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Lite ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="rate_app_dialog_text_title">รัก %1$s?</string>
   <string name="rate_app_dialog_text_content">ขอบคุณที่เลือกผลิตภัณฑ์ของเรา ข้อคิดเห็นของคุณเป็นสิ่งสำคัญสำหรับเรา</string>
   <string name="rate_app_dialog_btn_go_rate">ให้คะแนนเรา</string>
@@ -185,7 +185,7 @@
   <string name="rate_app_dialog_btn_feedback">เสนอข้อคิดเห็น</string>
   <string name="rate_app_notification_action_feedback">ข้อคิดเห็น</string>
   <string name="share_app_dialog_text_title">แบ่งปัน %1$s กับเพื่อน ๆ!</string>
-  <string name="share_app_dialog_text_content">- เร็วและเบา\n- ประหยัดการรับส่งข้อมูล\n- ตัวจับภาพหน้าจอที่ทรงพลัง</string>
+  <string name="share_app_dialog_text_content">- เร็วและเบา\n- ประหยัดข้อมูล\n- ตัวจับภาพหน้าจอที่ทรงพลัง</string>
   <string name="share_app_dialog_btn_share">แบ่งปัน</string>
   <string name="share_app_promotion_text">เฮ้ ลองดูเบราว์เซอร์ที่เร็วและเบานี้จาก %3$s %1$s %2$s</string>
   <string name="your_rights_content1">%1$s เป็นซอฟต์แวร์เสรีและเปิดต้นฉบับที่สร้างขึ้นโดย %2$s และผู้มีส่วนร่วมอื่น ๆ</string>
