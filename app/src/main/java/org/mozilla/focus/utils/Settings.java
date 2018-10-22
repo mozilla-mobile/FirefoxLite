@@ -76,6 +76,16 @@ public class Settings {
         preferences.edit().putBoolean(key, enable).apply();
     }
 
+    public void setNightModeSpotlight(boolean enabled) {
+        final String key = getPreferenceKey(R.string.pref_key_night_mode_brightness_dirty);
+        preferences.edit().putBoolean(key, enabled).apply();
+    }
+
+    public boolean showNightModeSpotlight() {
+        return settingPreferenceWrapper.getBoolean(resources.getString(R.string.pref_key_night_mode_brightness_dirty),
+                false);
+    }
+
     public boolean shouldShowFirstrun() {
         return newFeatureNotice.shouldShowLiteUpdate() || !newFeatureNotice.hasShownFirstRun();
     }

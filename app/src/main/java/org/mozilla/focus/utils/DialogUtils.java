@@ -206,6 +206,59 @@ public class DialogUtils {
         NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow();
     }
 
+    public static Dialog showSpotlight(@NonNull final Activity activity, @NonNull final View targetView, @NonNull DialogInterface.OnCancelListener onCancelListener, int messageId) {
+        int[] location = new int[2];
+        int centerX, centerY;
+        // Get target view's position
+        targetView.getLocationInWindow(location);
+
+        // Get spotlight circle's center
+        centerX = location[0] + targetView.getMeasuredWidth() / 2;
+        centerY = location[1] + targetView.getMeasuredHeight() / 2;
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.TabTrayTheme);
+
+        // Inflate my shot on boarding view
+        final ViewGroup root = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.spotlight, null);
+
+        // Initialize FocusView and add it to my shot on boarding view's index 0(the bottom of Z-order)
+        final FocusView focusView = new FocusView(activity, centerX, centerY, activity.getResources().getDimensionPixelSize(R.dimen.myshot_focus_view_radius));
+        root.addView(focusView, 0);
+
+        // Add a mock my shot menu view to determine the position of hint image and text. Also consuming the click event.
+        final View myShotMockView = root.findViewById(R.id.spotlight_mock_menu);
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myShotMockView.getLayoutParams();
+        params.width = targetView.getMeasuredWidth();
+        params.height = targetView.getMeasuredHeight();
+        params.setMargins(location[0], location[1] - ViewUtils.getStatusBarHeight(activity), 0, 0);
+
+        TextView messageTextView = root.findViewById(R.id.spotlight_message);
+        messageTextView.setText(messageId);
+
+        builder.setView(root);
+
+        final Dialog dialog = builder.create();
+        dialog.show();
+
+        // Press back key will dismiss on boarding view and menu view
+        dialog.setOnCancelListener(onCancelListener);
+
+        // Click my shot mock view will dismiss on boarding view and open my shot panel
+        myShotMockView.setOnClickListener(v -> {
+            dialog.dismiss();
+            targetView.performClick();
+        });
+        myShotMockView.setOnLongClickListener(v -> {
+            dialog.dismiss();
+            return targetView.performLongClick();
+        });
+        // Click outside of the my shot mock view will dismiss on boarding view
+        root.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        return dialog;
+    }
+
     public static Dialog showMyShotOnBoarding(@NonNull final Activity activity, @NonNull final View targetView, @NonNull final DialogInterface.OnCancelListener cancelListener, View.OnClickListener learnMore) {
         int[] location = new int[2];
         int centerX, centerY;

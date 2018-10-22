@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/spotlight_mock_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/spotlight_hand_pointer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/spotlight_mock_menu"
+        android:layout_alignBottom="@id/spotlight_mock_menu"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="45dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/pointing" />
+
+    <TextView
+        android:id="@+id/spotlight_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/spotlight_hand_pointer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="14dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/night_mode_on_boarding_message"
+        android:textColor="@color/paletteWhite100"
+        android:textSize="18sp" />
+
+</RelativeLayout>
