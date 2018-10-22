@@ -71,6 +71,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             final Intent intent = InfoActivity.getAboutIntent(getActivity());
             startActivity(intent);
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_night_mode_brightness))) {
+            Settings.getInstance(getActivity()).setNightModeSpotlight(true);
             startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromSetting(getActivity()));
         }
 

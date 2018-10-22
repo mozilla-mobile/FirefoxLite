@@ -34,7 +34,9 @@ import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -124,6 +126,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private View pinShortcut;
     private View snackBarContainer;
     private View privateModeButton;
+    private View nightModeButton;
     private View turboModeButton;
     private View blockImageButton;
     private View privateModeIndicator;
@@ -393,7 +396,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         blockImageButton = menu.findViewById(R.id.menu_blockimg);
         blockImageButton.setSelected(isBlockingImages());
 
-        menu.findViewById(R.id.menu_night_mode).setSelected(isNightModeEnabled());
+        nightModeButton = menu.findViewById(R.id.menu_night_mode);
+        nightModeButton.setOnLongClickListener(onLongClickListener);
+        nightModeButton.setSelected(isNightModeEnabled(Settings.getInstance(getApplicationContext())));
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
@@ -418,9 +423,13 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled(this);
         final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
         final boolean privateModeActivate = PrivateMode.isPrivateModeProcessRunning(this);
+        final Settings settings = Settings.getInstance(getApplicationContext());
+
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
         privateModeIndicator.setVisibility(privateModeActivate ? View.VISIBLE : View.GONE);
         if (pendingMyShotOnBoarding) {
+            pendingMyShotOnBoarding = false;
+            setShowNightModeSpotlight(settings, false);
             myshotButton.post(() -> myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
                     MainActivity.this,
                     myshotButton,
@@ -430,8 +439,19 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                         this.screenNavigator.showBrowserScreen(url, true, false);
                         dismissAllMenus();
                     }));
-            pendingMyShotOnBoarding = false;
         }
+
+        nightModeButton.setSelected(isNightModeEnabled(settings));
+        if (shouldShowNightModeSpotlight(settings)) {
+            setShowNightModeSpotlight(settings, false);
+            nightModeButton.post(() -> DialogUtils.showSpotlight(
+                    MainActivity.this,
+                    nightModeButton,
+                    dialog -> {
+
+                    }, R.string.night_mode_on_boarding_message));
+        }
+
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
         final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
         setEnable(nextButton, canGoForward);
@@ -483,6 +503,24 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
     }
 
+    OnLongClickListener onLongClickListener = new OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            menu.cancel();
+            switch (v.getId()) {
+                case R.id.menu_night_mode:
+                    final Settings settings = Settings.getInstance(getApplicationContext());
+
+                    setNightModeEnabled(settings, true);
+                    showAdjustBrightness();
+
+                    return true;
+                default:
+                    throw new RuntimeException("Unknown id in menu, OnLongClickListener() is only for known ids");
+            }
+        }
+    };
+
     public void onMenuItemClicked(View v) {
         final int stringResource;
         if (!v.isEnabled()) {
@@ -518,9 +556,13 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
                 break;
             case R.id.menu_night_mode:
-                final boolean nightModeEnabled = !isNightModeEnabled();
+                final Settings settings = Settings.getInstance(this);
+                final boolean nightModeEnabled = !isNightModeEnabled(settings);
                 v.setSelected(nightModeEnabled);
-                onNightModeClicked(nightModeEnabled);
+
+                setNightModeEnabled(settings, nightModeEnabled);
+                showAdjustBrightnessIfNeeded(settings);
+
                 TelemetryWrapper.menuNightModeChangeTo(nightModeEnabled);
                 break;
             case R.id.menu_find_in_page:
@@ -693,36 +735,56 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    private void onNightModeClicked(final boolean enable) {
-        final Settings settings = Settings.getInstance(this);
-        settings.setNightMode(enable);
-        final float currentBrightness = settings.getNightModeBrightnessValue();
-        final WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        if (enable) {
-            if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
-                // First time turn on
-                settings.setNightModeBrightnessValue(AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS);
-                startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromMenu(this));
-            } else {
-                layoutParams.screenBrightness = currentBrightness;
-                getWindow().setAttributes(layoutParams);
-            }
-        } else {
-            // Disable night mode, restore the screen brightness
-            layoutParams.screenBrightness = BRIGHTNESS_OVERRIDE_NONE;
-            getWindow().setAttributes(layoutParams);
-        }
+    private boolean shouldShowNightModeSpotlight(Settings settings) {
+        return settings.showNightModeSpotlight();
+    }
 
-        Fragment fragment = this.screenNavigator.getTopFragment();
-        if (fragment instanceof BrowserFragment) { // null fragment will not make instanceof to be true
-            ((BrowserFragment) fragment).setNightModeEnabled(enable);
-        } else if (fragment instanceof HomeFragment) {
-            ((HomeFragment) fragment).setNightModeEnabled(enable);
+    private void setShowNightModeSpotlight(Settings settings, boolean enabled) {
+        settings.setNightModeSpotlight(enabled);
+    }
+
+    private void showAdjustBrightness() {
+        startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromMenu(this));
+    }
+
+    private void showAdjustBrightnessIfNeeded(Settings settings) {
+        final float currentBrightness = settings.getNightModeBrightnessValue();
+        if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
+            // First time turn on
+            settings.setNightModeBrightnessValue(AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS);
+            showAdjustBrightness();
+
+            setShowNightModeSpotlight(settings, true);
         }
     }
 
-    private boolean isNightModeEnabled() {
-        return Settings.getInstance(this).isNightModeEnable();
+    private void applyNightModeBrightness(boolean enable, Settings settings, Window window) {
+        final WindowManager.LayoutParams layoutParams = window.getAttributes();
+        final float screenBrightness;
+        if (enable) {
+            screenBrightness = settings.getNightModeBrightnessValue();
+        } else {
+            // Disable night mode, restore the screen brightness
+            screenBrightness = BRIGHTNESS_OVERRIDE_NONE;
+        }
+        layoutParams.screenBrightness = screenBrightness;
+        window.setAttributes(layoutParams);
+    }
+
+    private void setNightModeEnabled(Settings settings, boolean enabled) {
+        settings.setNightMode(enabled);
+        applyNightModeBrightness(enabled, settings, getWindow());
+
+        Fragment fragment = this.screenNavigator.getTopFragment();
+        if (fragment instanceof BrowserFragment) { // null fragment will not make instanceof to be true
+            ((BrowserFragment) fragment).setNightModeEnabled(enabled);
+        } else if (fragment instanceof HomeFragment) {
+            ((HomeFragment) fragment).setNightModeEnabled(enabled);
+        }
+    }
+
+    private boolean isNightModeEnabled(Settings settings) {
+        return settings.isNightModeEnable();
     }
 
     @VisibleForTesting
