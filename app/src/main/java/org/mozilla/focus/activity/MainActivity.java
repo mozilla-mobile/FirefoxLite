@@ -123,6 +123,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private View pinShortcut;
     private View snackBarContainer;
     private View privateModeButton;
+    private View turboModeButton;
+    private View blockImageButton;
     private View privateModeIndicator;
 
     private ScreenNavigator screenNavigator;
@@ -383,10 +385,14 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (!requestPinShortcutSupported) {
             pinShortcut.setVisibility(View.GONE);
         }
-        menu.findViewById(R.id.menu_turbomode).setSelected(isTurboEnabled());
-        menu.findViewById(R.id.menu_blockimg).setSelected(isBlockingImages());
-        menu.findViewById(R.id.menu_night_mode).setSelected(isNightModeEnabled());
 
+        turboModeButton = menu.findViewById(R.id.menu_turbomode);
+        turboModeButton.setSelected(isTurboEnabled());
+
+        blockImageButton = menu.findViewById(R.id.menu_blockimg);
+        blockImageButton.setSelected(isBlockingImages());
+
+        menu.findViewById(R.id.menu_night_mode).setSelected(isNightModeEnabled());
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
@@ -404,6 +410,10 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void updateMenu() {
+
+        turboModeButton.setSelected(isTurboEnabled());
+        blockImageButton.setSelected(isBlockingImages());
+
         final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled(this);
         final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
         final boolean privateModeActivate = PrivateMode.isPrivateModeProcessRunning(this);
