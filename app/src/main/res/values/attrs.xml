@@ -26,7 +26,4 @@
         <attr name="drawableColor" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="NightMode">
-        <attr name="state_night" format="boolean"/>
-    </declare-styleable>
 </resources>
