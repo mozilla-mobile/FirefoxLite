@@ -48,8 +48,8 @@
     <include
         android:id="@+id/home_fragment_fake_input"
         layout="@layout/fragment_homescreen_item_fake_input"
-        android:layout_width="306dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/fake_input_width"
+        android:layout_height="@dimen/fake_input_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

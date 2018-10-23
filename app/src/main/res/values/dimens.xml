@@ -83,6 +83,7 @@
     <dimen name="pm_home_title_margin">116dp</dimen>
 
     <dimen name="fake_input_height">48dp</dimen>
+    <dimen name="fake_input_width">306dp</dimen>
 
     <dimen name="banner_icon_to_text">4dp</dimen>
     <dimen name="banner_text_to_bottom">8dp</dimen>
