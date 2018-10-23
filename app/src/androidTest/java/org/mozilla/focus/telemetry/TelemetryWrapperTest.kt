@@ -56,16 +56,6 @@ class TelemetryWrapperTest {
     }
 
     @Test
-    fun browseIntentEvent() {
-        TelemetryWrapper.browseIntentEvent()
-    }
-
-    @Test
-    fun textSelectionIntentEvent() {
-        TelemetryWrapper.textSelectionIntentEvent()
-    }
-
-    @Test
     fun launchByAppLauncherEvent() {
         TelemetryWrapper.launchByAppLauncherEvent()
     }

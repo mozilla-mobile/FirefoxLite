@@ -930,16 +930,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         return fragment;
     }
 
-    @Override
-    public void onBrowserScreenRaised() {
-        final SafeIntent intent = new SafeIntent(getIntent());
-        if (intent.getBooleanExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.getValue(), false)) {
-            TelemetryWrapper.textSelectionIntentEvent();
-        } else {
-            TelemetryWrapper.browseIntentEvent();
-        }
-    }
-
     private void showMessage(@NonNull CharSequence msg) {
         if (TextUtils.isEmpty(msg)) {
             return;

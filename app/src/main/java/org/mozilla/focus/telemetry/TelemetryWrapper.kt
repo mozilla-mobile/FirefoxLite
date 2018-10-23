@@ -191,7 +191,8 @@ object TelemetryWrapper {
         const val TYPE = "type"
         const val DIRECTION = "direction"
         const val CATEGORY = "category"
-        const val CATEGORY_VERSION = "category_version"
+        // Remove the last character cause Telemetry library will do that for you.( > 15chars)
+        const val CATEGORY_VERSION = "category_versio"
     }
 
     object Extra_Value {
@@ -316,30 +317,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
                 .extra(Extra.ON, java.lang.Long.toString(duration))
                 .queue()
-    }
-
-    @TelemetryDoc(
-            name = "App is started by intent",
-            action = Category.ACTION,
-            method = Method.INTENT_URL,
-            `object` = Object.APP,
-            value = "",
-            extras = [])
-    @JvmStatic
-    fun browseIntentEvent() {
-        EventBuilder(Category.ACTION, Method.INTENT_URL, Object.APP).queue()
-    }
-
-    @TelemetryDoc(
-            name = "Text Selection",
-            action = Category.ACTION,
-            method = Method.TEXT_SELECTION_INTENT,
-            `object` = Object.APP,
-            value = "",
-            extras = [])
-    @JvmStatic
-    fun textSelectionIntentEvent() {
-        EventBuilder(Category.ACTION, Method.TEXT_SELECTION_INTENT, Object.APP).queue()
     }
 
     @TelemetryDoc(
@@ -553,7 +530,6 @@ object TelemetryWrapper {
     fun shareImageEvent() {
         EventBuilder(Category.ACTION, Method.SHARE, Object.BROWSER_CONTEXTMENU, Value.IMAGE).queue()
     }
-
 
     @TelemetryDoc(
             name = "Save image via ContextMenu",
@@ -1767,6 +1743,7 @@ object TelemetryWrapper {
                 .extra(Extra.SOURCE, Value.VPN)
                 .queue()
     }
+
     @TelemetryDoc(
             name = "Dismiss VPN Survey",
             action = Category.ACTION,
