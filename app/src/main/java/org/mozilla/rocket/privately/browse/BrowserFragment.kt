@@ -84,8 +84,6 @@ class BrowserFragment : LocaleAwareFragment(),
                 sessionManager = fragmentActivity.sessionManager
                 observer = Observer(this)
             }
-
-            registerData(fragmentActivity)
         }
     }
 
@@ -126,10 +124,14 @@ class BrowserFragment : LocaleAwareFragment(),
         sessionManager.resume()
         sessionManager.register(observer)
         sessionManager.focusSession?.register(observer)
+
+        activity?.let { registerData(it) }
     }
 
     override fun onPause() {
         super.onPause()
+        activity?.let { unregisterData(it) }
+
         sessionManager.unregister(observer)
         sessionManager.pause()
     }
@@ -207,8 +209,12 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun registerData(activity: FragmentActivity) {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
-
         shared.getUrl().observe(this, Observer<String> { url -> loadUrl(url) })
+    }
+
+    private fun unregisterData(activity: FragmentActivity) {
+        val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
+        shared.getUrl().removeObservers(this)
     }
 
     private fun onModeClicked() {
