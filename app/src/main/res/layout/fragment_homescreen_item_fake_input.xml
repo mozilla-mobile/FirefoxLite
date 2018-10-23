@@ -4,8 +4,8 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <org.mozilla.rocket.nightmode.themed.ThemedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_fragment_fake_input"
-    android:layout_width="306dp"
-    android:layout_height="48dp"
+    android:layout_width="@dimen/fake_input_width"
+    android:layout_height="@dimen/fake_input_height"
     style="@style/Body1"
     android:gravity="center"
     android:background="@drawable/urlbar_background"
