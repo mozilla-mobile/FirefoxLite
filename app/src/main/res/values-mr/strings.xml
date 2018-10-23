@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">पुढील परिणाम शोधा</string>
   <string name="accessibility_find_previous_result">मागील परिणाम शोधा</string>
   <string name="accessibility_dismiss_find_in_page">पृष्ठावर शोधणे रद्द करा</string>
-  <string name="text_selection_search_action">Firefox Rocket मध्ये शोधा</string>
+  <string name="text_selection_search_action">Firefox Lite मध्ये शोधा</string>
   <string name="about_content_body">%2$s द्वारे तयार केलेला %1$s हा एक जलद आणि उज्वल ब्राउझर आहे. आमचे ध्येय निरोगी , सर्व-वापरण्यायोग्य इंटरनेट स्थापित करणे आहे.</string>
   <string name="about_link_learn_more">अधिक जाणा</string>
   <string name="about_link_support">आधार</string>
@@ -37,6 +37,7 @@
   <string name="preference_learn_more">आणखी जाणा</string>
   <string name="preference_about">याबद्दल</string>
   <string name="preference_night_mode_brightness">नाईट मोड प्रखरता</string>
+  <string name="night_mode_on_boarding_message">प्रखरता अनुकूल करण्यासाठी दीर्घकाळ दाबून धरा</string>
   <string name="content_description_clear_input">इनपुट साफ करा</string>
   <string name="content_description_dismiss_input">बरखास्त</string>
   <string name="content_description_lock">सुरक्षित जोडणी</string>
@@ -70,8 +71,8 @@
   <string name="first_run_page2_text">आपले ब्राऊझिंग अतिजलद बनवण्यासाठी टर्बो मोड वापरून मागोवा घेणाऱ्या जाहिराती आडवा. जर एखादे संकेतस्थळ मोडकळलेले दिसले तर फक्त मेनू मधून टर्बो मोड बंद करा.</string>
   <string name="first_run_page3_title">डेटा वाचवा = पैसे वाचवा</string>
   <string name="first_run_page3_text">मागोवा अडवून आपण फक्त ब्राऊझिंग जलद करत नाही तर डेटा पण वाचवता. प्रतिमा अडवून अजून डेटा वाचवा.</string>
-  <string name="first_run_page4_title">सर्वकाही स्क्रीनशॉट घ्या</string>
-  <string name="first_run_page4_text">संपूर्ण पृष्ठाचे स्क्रीनशॉट घ्या. स्क्रीनशॉट ऑफलाईन (डेटा न वापरता) पहा किंवा पुन्हा भेट देण्यासाठी टॅप करा.</string>
+  <string name="first_run_page4_title">पूर्ण पृष्ठाचा स्क्रीनशॉट घ्या</string>
+  <string name="first_run_page4_text">पूर्ण पृष्ठाचा स्क्रीनशॉट घ्या. डेटा न वापरता ऑफलाईन पहा किंवा पुन्हा भेट देण्यासाठी टॅप करा.</string>
   <string name="first_run_page5_title">पुढील स्तरीय गोपनीयता</string>
   <string name="first_run_page5_text">मागमूसावीन ब्राउझ करा, आणि असंख्य साधारण वेब ट्रॅकर पूर्वनिर्धारीतरित्या आडवा. आपल्या गुप्त माहितीची सुरक्षा निश्चित करा.</string>
   <string name="first_run_upgrade_page_title">आम्ही आपला अभिप्राय ऐकला!</string>
@@ -176,12 +177,12 @@
   <string name="message_cannot_find_screenshot">स्क्रीनशॉट प्रदर्शित करू शकत नाही</string>
   <string name="remove">काढून टाका</string>
   <string name="privacy_policy_update_notification_title">उत्पादन अद्यतन सूचना</string>
-  <string name="privacy_policy_update_notification_action">FIrefox Rocket सर्वांसाठी सुधारण्यासाठी आम्ही आमच्या गोपनीयता धोरणात बदल केले आहेत. अधिक जाणून घेण्यासाठी टॅप करा.</string>
+  <string name="privacy_policy_update_notification_action">FIrefox Lite सर्वांसाठी सुधारण्यासाठी, आम्ही गोपनीयता धोरणात बदल केले आहेत. अधिक जाणून घेण्यासाठी टॅप करा.</string>
   <string name="rate_app_dialog_text_title">%1$s आवडलं का?</string>
   <string name="rate_app_dialog_text_content">आमचे उत्पादन निवडल्याबद्दल धन्यवाद. आपला अभिप्राय आमच्यासाठी महत्त्वाचा आहे.</string>
-  <string name="rate_app_dialog_btn_go_rate">हो, 5 स्टार रेट करा!</string>
-  <string name="rate_app_notification_action_rate">5 तारांकित करा</string>
-  <string name="rate_app_dialog_btn_feedback">नाही, प्रतिक्रिया पाठवा.</string>
+  <string name="rate_app_dialog_btn_go_rate">गुणांकन द्या</string>
+  <string name="rate_app_notification_action_rate">गुणांकन द्या</string>
+  <string name="rate_app_dialog_btn_feedback">प्रतिक्रिया द्या</string>
   <string name="rate_app_notification_action_feedback">अभिप्राय</string>
   <string name="share_app_dialog_text_title">मित्रांसह %1$s शेअर करा!</string>
   <string name="share_app_dialog_text_content">- जलद आणि हलके\n- डेटा बचत \n- प्रभावी स्क्रीनशॉट</string>
