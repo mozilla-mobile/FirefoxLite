@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
-import mozilla.components.support.base.observer.Consumable
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
 import org.mozilla.rocket.tabs.Session.Observer
@@ -36,10 +35,11 @@ class Session @JvmOverloads constructor(
     var tabView: TabView? = null
         private set
 
-    private var tabViewClient = ViewClient(this)
-    private var tabChromeClient = ChromeClient(this)
     private var downloadCallback: DownloadCallback? = null
     private var findListener: TabView.FindListener? = null
+
+    var engineSession: TabViewEngineSession? = null
+    var engineObserver: TabViewEngineSession.Observer? = null
 
     var webViewState: Bundle? = null
 
@@ -119,6 +119,7 @@ class Session @JvmOverloads constructor(
     /* package */ internal fun destroy() {
         setDownloadCallback(null)
         setFindListener(null)
+        engineSession?.unregisterObservers()
         unregisterObservers()
 
         if (tabView != null) {
@@ -146,8 +147,11 @@ class Session @JvmOverloads constructor(
         if (tabView == null) {
             tabView = provider.create()
 
-            tabView!!.setViewClient(tabViewClient)
-            tabView!!.setChromeClient(tabChromeClient)
+            engineSession = TabViewEngineSession()
+            engineSession?.tabView = tabView
+            engineObserver = TabViewEngineObserver(this, tabView!!)
+            engineSession?.register(engineObserver!!)
+
             tabView!!.setDownloadCallback(downloadCallback)
             tabView!!.setFindListener(findListener)
 
@@ -230,97 +234,6 @@ class Session @JvmOverloads constructor(
 
         fun onGeolocationPermissionsShowPrompt(origin: String,
                                                callback: GeolocationPermissions.Callback?) = Unit
-    }
-
-    class ViewClient(val session: Session) : TabViewClient() {
-
-        private fun setSessionTitle() {
-            session.tabView?.let { tabView -> session.title = tabView.title }
-        }
-
-        override fun onPageStarted(url: String?) {
-            session.url = url
-            setSessionTitle()
-
-            session.notifyObservers { onLoadingStateChanged(session, true) }
-            session.notifyObservers { onSecurityChanged(session, false) }
-            // FIXME: workaround for 'dialog new window'
-            if (session.url != null) {
-                session.notifyObservers { onUrlChanged(session, url) }
-            }
-        }
-
-        override fun onPageFinished(isSecure: Boolean) {
-            setSessionTitle()
-            session.notifyObservers { onLoadingStateChanged(session, false) }
-            session.notifyObservers { onSecurityChanged(session, isSecure) }
-        }
-
-        override fun onURLChanged(url: String?) {
-            session.url = url
-            setSessionTitle()
-            session.notifyObservers { onUrlChanged(session, url) }
-        }
-
-        override fun updateFailingUrl(url: String?, updateFromError: Boolean) =
-                session.notifyObservers { updateFailingUrl(url, updateFromError) }
-
-        override fun handleExternalUrl(url: String?): Boolean {
-            var consumers = session.wrapConsumers<String?> { url -> handleExternalUrl(url) }
-            return Consumable.from(url).consumeBy(consumers)
-        }
-    }
-
-    class ChromeClient(val session: Session) : TabChromeClient() {
-        override fun onCreateWindow(
-                isDialog: Boolean,
-                isUserGesture: Boolean,
-                msg: Message?): Boolean {
-            val consumers = session.wrapConsumers<Triple<Boolean, Boolean, Message?>> {
-                onCreateWindow(it.first, it.second, it.third)
-            }
-            val args = Triple(isDialog, isUserGesture, msg)
-            return Consumable.from(args).consumeBy(consumers)
-        }
-
-        override fun onCloseWindow(tabView: TabView?) =
-                session.notifyObservers { onCloseWindow(tabView) }
-
-        override fun onProgressChanged(progress: Int) =
-                session.notifyObservers { onProgress(session, progress) }
-
-        override fun onShowFileChooser(
-                tabView: TabView,
-                filePathCallback: ValueCallback<Array<Uri>>?,
-                fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
-
-            val consumers = session.wrapConsumers<Triple<TabView, ValueCallback<Array<Uri>>, WebChromeClient.FileChooserParams>> {
-                this.onShowFileChooser(it.first, it.second, it.third)
-            }
-            val args = Triple(tabView, filePathCallback!!, fileChooserParams!!)
-            return Consumable.from(args).consumeBy(consumers)
-        }
-
-        override fun onReceivedTitle(view: TabView, title: String?) =
-                session.notifyObservers { onTitleChanged(session, title) }
-
-        override fun onReceivedIcon(view: TabView, icon: Bitmap?){
-            session.favicon = icon
-            session.notifyObservers { onReceivedIcon(icon) }
-        }
-
-        override fun onLongPress(hitTarget: TabView.HitTarget) =
-                session.notifyObservers { onLongPress(session, hitTarget) }
-
-        override fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) =
-                session.notifyObservers { onEnterFullScreen(callback, view) }
-
-        override fun onExitFullScreen() = session.notifyObservers { onExitFullScreen() }
-
-        override fun onGeolocationPermissionsShowPrompt(
-                origin: String,
-                callback: GeolocationPermissions.Callback?) =
-                session.notifyObservers { onGeolocationPermissionsShowPrompt(origin, callback) }
     }
 
     companion object {
