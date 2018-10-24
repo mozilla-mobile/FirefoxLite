@@ -88,8 +88,8 @@ public class TabModelStore {
                 for (final TabEntity entity : tabEntityList) {
                     Session session = new Session(entity.getId(),
                             entity.getParentId(),
-                            entity.getTitle());
-                    session.setUrl(entity.getUrl());
+                            entity.getUrl());
+                    session.setTitle(entity.getTitle());
 
                     sessions.add(session);
                 }

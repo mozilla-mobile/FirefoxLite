@@ -15,20 +15,21 @@ import android.view.ViewGroup
 import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
+import mozilla.components.browser.session.Session.SecurityInfo
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
 import org.mozilla.rocket.tabs.Session.Observer
 import org.mozilla.rocket.tabs.TabView.FindListener
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import java.util.UUID
+import kotlin.properties.Delegates
 
 const val TAG = "Session"
 
 class Session @JvmOverloads constructor(
         val id: String = UUID.randomUUID().toString(),
         var parentId: String? = "",
-        var title: String? = "",
-        var url: String? = "",
+        var initialUrl: String? = "",
         private val delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Observer> by delegate {
 
@@ -54,8 +55,43 @@ class Session @JvmOverloads constructor(
     val isFromExternal: Boolean
         get() = ID_EXTERNAL == parentId
 
-    // TODO: not implement completely
-    private var thumbnail: Bitmap? = null
+    /**
+     * The currently loading or loaded URL.
+     */
+    var url: String? by Delegates.observable(initialUrl) { _, old, new ->
+        if (old != null && new != null) {
+            notifyObservers(old, new) { onUrlChanged(this@Session, new) }
+        }
+    }
+
+    /**
+     * The title of the currently displayed website changed.
+     */
+    var title: String by Delegates.observable("") { _, old, new ->
+        notifyObservers(old, new) { onTitleChanged(this@Session, new) }
+    }
+
+    /**
+     * The progress loading the current URL.
+     */
+    var progress: Int by Delegates.observable(0) { _, old, new ->
+        notifyObservers(old, new) { onProgress(this@Session, new) }
+    }
+
+    /**
+     * Loading state, true if this session's url is currently loading, otherwise false.
+     */
+    var loading: Boolean by Delegates.observable(false) { _, old, new ->
+        notifyObservers(old, new) { onLoadingStateChanged(this@Session, new) }
+    }
+
+    /**
+     * Security information indicating whether or not the current session is
+     * for a secure URL, as well as the host and SSL certificate authority, if applicable.
+     */
+    var securityInfo: SecurityInfo by Delegates.observable(SecurityInfo()) { _, old, new ->
+        notifyObservers(old, new) { onSecurityChanged(this@Session, new.secure) }
+    }
 
     /**
      * To sync session's properties to view, before saving. This method would be retired once we
@@ -67,7 +103,9 @@ class Session @JvmOverloads constructor(
         }
         if (tabView != null) {
             this.title = tabView!!.title
-            this.url = tabView!!.url
+            if (TextUtils.equals(tabView!!.url, this.url)) {
+                this.url = tabView!!.url
+            }
             tabView!!.saveViewState(this.webViewState)
         }
     }
@@ -143,7 +181,7 @@ class Session @JvmOverloads constructor(
     }
 
     /* package */ internal fun initializeView(provider: TabViewProvider): TabView? {
-        val url = this.url // fallback for restoring tab
+        val url = if (TextUtils.isEmpty(this.url)) this.initialUrl else this.url
         if (tabView == null) {
             tabView = provider.create()
 
@@ -165,17 +203,12 @@ class Session @JvmOverloads constructor(
         return tabView
     }
 
-    // TODO: not implement completely
-    private fun updateThumbnail() {
-        if (tabView != null) {
-            val view = tabView!!.view
-            view.isDrawingCacheEnabled = true
-            tabView!!.getDrawingCache(true)?.let { bitmap ->
-                this.thumbnail = Bitmap.createBitmap(bitmap)
-                bitmap.recycle()
-            }
-
-            view.isDrawingCacheEnabled = false
+    /**
+     * Helper method to notify observers.
+     */
+    private fun notifyObservers(old: Any, new: Any, block: Observer.() -> Unit) {
+        if (old != new) {
+            notifyObservers(block)
         }
     }
 
@@ -185,7 +218,7 @@ class Session @JvmOverloads constructor(
 
         fun onSecurityChanged(session: Session, isSecure: Boolean) = Unit
 
-        fun onUrlChanged(session:Session, url: String?) = Unit
+        fun onUrlChanged(session: Session, url: String?) = Unit
 
         /**
          * Return true if the URL was handled, false if we should continue loading the current URL.
