@@ -64,7 +64,7 @@ class SessionManager @JvmOverloads constructor(
         get() = focusRef.get()
 
     init {
-        this.notifier = Notifier(tabViewProvider, this)
+        this.notifier = Notifier(this)
     }
 
     /**
@@ -94,7 +94,7 @@ class SessionManager @JvmOverloads constructor(
                 continue
             }
 
-            bindCallback(session)
+            session.register(SessionObserver(session))
             this.sessions.add(insertPos++, session)
         }
 
@@ -224,8 +224,8 @@ class SessionManager @JvmOverloads constructor(
     fun setDownloadCallback(downloadCallback: DownloadCallback?) {
         this.downloadCallback = downloadCallback
         if (hasTabs()) {
-            for (tab in sessions) {
-                tab.setDownloadCallback(downloadCallback)
+            for (session in sessions) {
+                session.engineSession?.tabView?.setDownloadCallback(downloadCallback)
             }
         }
     }
@@ -233,8 +233,8 @@ class SessionManager @JvmOverloads constructor(
     fun setFindListener(findListener: FindListener?) {
         this.findListener = findListener
         if (hasTabs()) {
-            for (tab in sessions) {
-                tab.setFindListener(findListener)
+            for (session in sessions) {
+                session.engineSession?.tabView?.setFindListener(findListener)
             }
         }
     }
@@ -246,7 +246,7 @@ class SessionManager @JvmOverloads constructor(
      */
     fun destroy() {
         for (tab in sessions) {
-            tab.destroy()
+            destroySession(tab)
         }
     }
 
@@ -254,8 +254,8 @@ class SessionManager @JvmOverloads constructor(
      * To pause this session, and it also pause any sessions in this session.
      */
     fun pause() {
-        for (tab in sessions) {
-            tab.pause()
+        for (session in sessions) {
+            session.engineSession?.tabView?.onPause()
         }
     }
 
@@ -263,15 +263,61 @@ class SessionManager @JvmOverloads constructor(
      * To resume this session after a previous call to @see{#pause}
      */
     fun resume() {
-        for (tab in sessions) {
-            tab.resume()
+        for (session in sessions) {
+            session.engineSession?.tabView?.onResume()
         }
     }
 
-    private fun bindCallback(session: Session) {
-        session.register(SessionObserver(session))
-        session.setDownloadCallback(downloadCallback)
-        session.setFindListener(findListener)
+    fun getEngineSession(session: Session) = session.engineSession
+
+    fun getOrCreateEngineSession(session: Session): TabViewEngineSession {
+        getEngineSession(session)?.let { return it }
+
+        return TabViewEngineSession().apply {
+            link(session, this)
+        }
+    }
+
+    private fun initializeEngineView(session: Session) {
+        if (session.engineSession == null) {
+            getOrCreateEngineSession(session)
+        }
+
+        val url = if (TextUtils.isEmpty(session.url)) session.initialUrl else session.url
+        val tabView = tabViewProvider.create()
+        session.engineSession?.tabView = tabView
+        session.engineSession?.tabView?.setDownloadCallback(downloadCallback)
+        session.engineSession?.tabView?.setFindListener(findListener)
+        if (session.engineSession?.webViewState != null) {
+            tabView.restoreViewState(session.engineSession?.webViewState)
+        } else if (!TextUtils.isEmpty(url)) {
+            tabView.loadUrl(url)
+        }
+    }
+
+    private fun link(session: Session, engineSession: TabViewEngineSession) {
+        unlink(session)
+
+        session.engineObserver = TabViewEngineObserver(session).also { observer ->
+            engineSession.register(observer)
+        }
+        session.engineSession = engineSession
+    }
+
+    private fun unlink(session: Session) {
+        session.engineObserver?.let { observer ->
+            session.engineSession?.unregister(observer)
+        }
+        session.engineSession?.destroy()
+        session.engineSession = null
+        session.engineObserver = null
+    }
+
+    private fun destroySession(session: Session) {
+        session.engineSession?.tabView?.setDownloadCallback(null)
+        session.engineSession?.tabView?.setFindListener(null)
+        unlink(session)
+        session.unregisterObservers()
     }
 
     private fun addTabInternal(url: String?,
@@ -282,8 +328,7 @@ class SessionManager @JvmOverloads constructor(
 
         val tab = Session()
         tab.url = url
-
-        bindCallback(tab)
+        tab.register(SessionObserver(tab))
 
         val parentIndex = if (TextUtils.isEmpty(parentId)) -1 else getTabIndex(parentId!!)
         if (fromExternal) {
@@ -297,7 +342,8 @@ class SessionManager @JvmOverloads constructor(
 
         focusRef = if (toFocus || fromExternal) WeakReference(tab) else focusRef
 
-        tab.initializeView(this.tabViewProvider)
+        getOrCreateEngineSession(tab)
+        initializeEngineView(tab)
 
         if (toFocus || fromExternal) {
             notifier.notifyTabFocused(tab, FACTOR_TAB_ADDED)
@@ -370,18 +416,18 @@ class SessionManager @JvmOverloads constructor(
             val tab = getTab(id)
                     ?: // FIXME: why null?
                     return false
-            if (tab.tabView == null) {
+            if (tab.engineSession == null || tab.engineSession!!.tabView == null) {
                 throw RuntimeException("webview is null, previous creation failed")
             }
-            tab.tabView!!.bindOnNewWindowCreation(msg)
+            tab.engineSession!!.tabView!!.bindOnNewWindowCreation(msg)
             return true
         }
 
         override fun onCloseWindow(tabView: TabView?) {
-            if (source.tabView === tabView) {
+            if (source.engineSession?.tabView === tabView) {
                 for (i in sessions.indices) {
                     val tab = sessions[i]
-                    if (tab.tabView === tabView) {
+                    if (tab.engineSession?.tabView === tabView) {
                         closeTab(tab.id)
                     }
                 }
@@ -393,8 +439,7 @@ class SessionManager @JvmOverloads constructor(
      * A class to attach to UI thread for sending message.
      */
     private class Notifier internal constructor(
-            private val tabViewProvider: TabViewProvider,
-            private val observable: Observable<Observer>
+            private val observable: SessionManager
     ) : Handler(Looper.getMainLooper()) {
 
         val ENUM_KEY = "_key_enum"
@@ -428,7 +473,7 @@ class SessionManager @JvmOverloads constructor(
 
         fun removedTab(msg: Message) {
             val session = msg.obj as Session
-            session.destroy()
+            observable.destroySession(session)
         }
 
         fun notifyTabFocused(session: Session?, factor: Factor) {
@@ -439,9 +484,10 @@ class SessionManager @JvmOverloads constructor(
         }
 
         private fun focusTab(session: Session?, factor: Factor) {
-
-            if (session != null && session.tabView == null) {
-                session.initializeView(this.tabViewProvider)
+            session?.let {
+                if (observable.getOrCreateEngineSession(session).tabView == null) {
+                    observable.initializeEngineView(session)
+                }
             }
 
             observable.notifyObservers { onFocusChanged(session, factor) }

@@ -84,6 +84,7 @@ import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.SiteIdentity;
 import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
@@ -496,7 +497,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (tabView == null) {
                 return;
             }
-            current.detach();
+            if (current.getEngineSession() != null) {
+                current.getEngineSession().detach();
+            }
             webViewSlot.removeView(tabView.getView());
         }
     }
@@ -567,16 +570,22 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void setContentBlockingEnabled(boolean enabled) {
         // TODO: Better if we can move this logic to some setting-like classes, and provider interface
         // for configuring blocking function of each tab.
-        for (final Session tab : sessionManager.getTabs()) {
-            tab.setContentBlockingEnabled(enabled);
+        for (final Session session: sessionManager.getTabs()) {
+            final TabViewEngineSession es = session.getEngineSession();
+            if (es != null && es.getTabView() != null) {
+                es.getTabView().setContentBlockingEnabled(enabled);
+            }
         }
     }
 
     public void setImageBlockingEnabled(boolean enabled) {
         // TODO: Better if we can move this logic to some setting-like classes, and provider interface
         // for configuring blocking function of each tab.
-        for (Session tab : sessionManager.getTabs()) {
-            tab.setImageBlockingEnabled(enabled);
+        for (final Session session: sessionManager.getTabs()) {
+            final TabViewEngineSession es = session.getEngineSession();
+            if (es != null && es.getTabView() != null) {
+                es.getTabView().setImageBlockingEnabled(enabled);
+            }
         }
     }
 
@@ -1292,12 +1301,14 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         private void transitToTab(@NonNull Session targetTab) {
-            final TabView tabView = targetTab.getTabView();
+            final TabView tabView = targetTab.getEngineSession().getTabView();
             if (tabView == null) {
                 throw new RuntimeException("Tabview should be created at this moment and never be null");
             }
             // ensure it does not have attach to parent earlier.
-            targetTab.detach();
+            if (targetTab.getEngineSession() != null) {
+                targetTab.getEngineSession().detach();
+            }
 
             @Nullable final View outView = findExistingTabView(webViewSlot);
             webViewSlot.removeView(outView);
@@ -1319,7 +1330,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             updateURL(tab.getUrl());
             progressView.setProgress(0);
 
-            int identity = (tab.getSecurityState() == SiteIdentity.SECURE) ? SITE_LOCK : SITE_GLOBE;
+            int identity = (tab.getSecurityInfo().getSecure()) ? SITE_LOCK : SITE_GLOBE;
             siteIdentity.setImageLevel(identity);
 
             hideFindInPage();
