@@ -10,7 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
-import mozilla.components.support.base.observer.Consumable
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
 import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_BACK_EXTERNAL
@@ -28,6 +27,7 @@ import java.util.LinkedList
 
 internal val MSG_FOCUS_TAB = 0x1001
 internal val MSG_ADDED_TAB = 0x1002
+internal val MSG_REMOVEDED_TAB = 0x1003
 
 /**
  * Class to help on sessions management, such as adding or removing sessions.
@@ -149,7 +149,10 @@ class SessionManager @JvmOverloads constructor(
 
         val oldIndex = getTabIndex(id)
         sessions.remove(tab)
-        tab.destroy()
+
+        // schedule tab.destroy() later, to avoid concurrent-modification of session, which is
+        // complained by Observable.notifyObservers
+        notifier.notifyTabRemoved(tab)
 
         // Update child's parent id to its ancestor
         // TODO: in our current design, the parent of a tab are always locate at left(index -1).
@@ -400,6 +403,7 @@ class SessionManager @JvmOverloads constructor(
             when (msg.what) {
                 MSG_FOCUS_TAB -> focusTab(msg.obj as Session?, msg.data.getSerializable(ENUM_KEY) as Factor)
                 MSG_ADDED_TAB -> addedTab(msg)
+                MSG_REMOVEDED_TAB -> removedTab(msg)
                 else -> {
                 }
             }
@@ -411,9 +415,20 @@ class SessionManager @JvmOverloads constructor(
             this.sendMessage(msg)
         }
 
+        fun notifyTabRemoved(session: Session) {
+            val msg = this.obtainMessage(MSG_REMOVEDED_TAB)
+            msg.obj = session
+            this.sendMessage(msg)
+        }
+
         fun addedTab(msg: Message) {
             val pair = msg.obj as Pair<Session, Bundle?>
             observable.notifyObservers { onSessionAdded(pair.first, pair.second) }
+        }
+
+        fun removedTab(msg: Message) {
+            val session = msg.obj as Session
+            session.destroy()
         }
 
         fun notifyTabFocused(session: Session?, factor: Factor) {
