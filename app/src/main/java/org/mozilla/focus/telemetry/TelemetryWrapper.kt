@@ -52,6 +52,7 @@ object TelemetryWrapper {
     private val TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 3
     private val RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 2
     private val DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION = 2
+    private val FIND_IN_PAGE_VERSION = 2
 
     internal object Category {
         val ACTION = "action"
@@ -994,15 +995,15 @@ object TelemetryWrapper {
     @JvmStatic
     fun findInPage(type: FIND_IN_PAGE) {
         val builder = when (type) {
-            OPEN_BY_MENU -> EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.FIND_IN_PAGE)
-            CLICK_PREVIOUS -> EventBuilder(Category.ACTION, Method.CLICK, Object.FIND_IN_PAGE, Value.PREVIOUS)
-            CLICK_NEXT -> EventBuilder(Category.ACTION, Method.CLICK, Object.FIND_IN_PAGE, Value.NEXT)
+            OPEN_BY_MENU -> EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.FIND_IN_PAGE).extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
+            CLICK_PREVIOUS -> EventBuilder(Category.ACTION, Method.CLICK, Object.FIND_IN_PAGE, Value.PREVIOUS).extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
+            CLICK_NEXT -> EventBuilder(Category.ACTION, Method.CLICK, Object.FIND_IN_PAGE, Value.NEXT).extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
             DISMISS_BY_BACK -> EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
-                    .extra(Extra.SOURCE, "back_button")
+                    .extra(Extra.SOURCE, "back_button").extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
             DISMISS_BY_CLOSE -> EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
-                    .extra(Extra.SOURCE, "close_button")
+                    .extra(Extra.SOURCE, "close_button").extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
             DISMISS -> EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
-                    .extra(Extra.SOURCE, "other")
+                    .extra(Extra.SOURCE, "other").extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
         }
 
         builder.queue()
