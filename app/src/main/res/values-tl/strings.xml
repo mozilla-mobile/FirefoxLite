@@ -73,7 +73,11 @@
   <string name="first_run_page3_text">Makakatipid ka ng data sa pagharang sa tracking ads. May Karagdagang katipiran kung gagamit din ng image blocking.</string>
   <string name="first_run_page4_title">I-screenshot ang buong pahina</string>
   <string name="first_run_page4_text">Kunin ang screenshot ng buong pahina. Tingnan ang screenshot offline ng hindi gagamit ng data o kaya ay i-tap ito para puntahan ang web page.</string>
+  <string name="first_run_page5_title">Susunod na antas ng privacy</string>
+  <string name="first_run_page5_text">Mag-browse nang walang bakas, at i-block ang isang malawak na hanay ng mga karaniwang trackers sa web bilang default. Tiyakin ang seguridad ng iyong kumpidensyal na data.</string>
   <string name="first_run_upgrade_page_title">Narinig namin ang inyong feedback!</string>
+  <string name="new_name_upgrade_page_title">Mayroon kaming bagong hitsura!</string>
+  <string name="new_name_upgrade_page_text">Sa paglaki ng produkto, dalhin namin sa iyo ang isang bagong na-refresh na %1$s, na may bagong pangalan at bagong logo.</string>
   <string name="first_run_upgrade_page_text1">1. Mag-multitask sa pamamagitan ng pagbubukas ng %s sabay-sabay!</string>
   <string name="first_run_upgrade_page_text1_highlight">maraming mga tab</string>
   <string name="first_run_upgrade_page_text2">2. Puntahan ang iyong mga paboritong website nang mas mabilis sa pamamagitan ng %s</string>
@@ -95,6 +99,8 @@
   <string name="label_menu_block_image">Walang imahe</string>
   <string name="label_menu_settings">Mga Setting</string>
   <string name="label_menu_exit">Lumabas</string>
+  <string name="permission_toast_location_deny">Tinanggihan ang pahintulot ng lokasyon.</string>
+  <string name="permission_toast_storage_deny">Ang pahintulot sa imbakan ay tinanggihan.</string>
   <string name="permission_dialog_setting">mga setting</string>
   <string name="permission_dialog_not_now">huwag ngayon</string>
   <string name="permission_toast_location">Hindi makita ang iyong lokasyon. Pakibigyan ng pahintulot ang app na malaman ang iyong lokasyon.</string>
@@ -171,12 +177,12 @@
   <string name="message_cannot_find_screenshot">Hindi maipakita ang screenshot</string>
   <string name="remove">Alisin</string>
   <string name="privacy_policy_update_notification_title">Abiso sa Update ng Produkto</string>
-  <string name="privacy_policy_update_notification_action">Upang mapaigi ng lubusan ang Firefox Rocket, may mga pagbabagong ginawa sa abisong pang-privacy. Mag-tap dito para malaman kung anu-anong pagbabago ang mga ito.</string>
+  <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Firefox Lite para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
   <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
   <string name="rate_app_dialog_text_content">Maraming salamat sa iyong pagtangkilik sa aming produkto. Ang iyong feedback ay napakahalaga sa amin.</string>
-  <string name="rate_app_dialog_btn_go_rate">Rate Us</string>
-  <string name="rate_app_notification_action_rate">RATE US</string>
-  <string name="rate_app_dialog_btn_feedback">Magiwan ng Feedback</string>
+  <string name="rate_app_dialog_btn_go_rate">Rate sa Amin</string>
+  <string name="rate_app_notification_action_rate">RATE SA AMIN</string>
+  <string name="rate_app_dialog_btn_feedback">Mag-iwan ng opinyon</string>
   <string name="rate_app_notification_action_feedback">FEEDBACK</string>
   <string name="share_app_dialog_text_title">Ibalita ang %1$s sa iyong mga kaibigan!</string>
   <string name="share_app_dialog_text_content">- Mabilis at magaan\n- Matipid sa data\n- Makapangyarihang screenshots</string>
