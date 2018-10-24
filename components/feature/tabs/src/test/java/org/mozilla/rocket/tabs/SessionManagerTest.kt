@@ -45,7 +45,7 @@ class SessionManagerTest {
 
         for (i in urls.indices) {
             // use url as id for convenience
-            val session = Session(urls[i], "", urls[i], urls[i])
+            val session = Session(urls[i], "", urls[i])
             sessions.add(session)
         }
     }

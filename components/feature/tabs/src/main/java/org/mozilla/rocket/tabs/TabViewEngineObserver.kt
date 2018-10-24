@@ -13,6 +13,7 @@ import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebChromeClient.FileChooserParams
+import mozilla.components.browser.session.Session.SecurityInfo
 import mozilla.components.support.base.observer.Consumable
 import org.mozilla.rocket.tabs.TabView.HitTarget
 
@@ -32,19 +33,19 @@ class TabViewEngineObserver(
 
     override fun onTitleChange(title: String) {
         session.title = title
-        session.notifyObservers { onTitleChanged(session, title) }
     }
 
     override fun onLoadingStateChange(loading: Boolean) {
-        session.notifyObservers { onLoadingStateChanged(session, loading) }
+        session.loading = loading
+        // TODO: clear find result, just like AC EngineObserver did.
     }
 
-    override fun onSecurityChange(secure: Boolean, host: String?, issuer: String?) =
-            session.notifyObservers { onSecurityChanged(session, secure) }
+    override fun onSecurityChange(secure: Boolean, host: String?, issuer: String?) {
+        session.securityInfo = SecurityInfo(secure, host ?: "", issuer ?: "")
+    }
 
     override fun onLocationChange(url: String) {
         session.url = url
-        session.notifyObservers { onUrlChanged(session, url) }
     }
 
     override fun updateFailingUrl(url: String?, updateFromError: Boolean) =
@@ -71,7 +72,7 @@ class TabViewEngineObserver(
     }
 
     override fun onProgress(progress: Int) {
-        session.notifyObservers { onProgress(session, progress) }
+        session.progress = progress
     }
 
     override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?): Boolean {

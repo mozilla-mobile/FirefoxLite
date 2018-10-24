@@ -12,36 +12,33 @@ class SessionTest {
     fun testIsValid() {
         Session(UUID.randomUUID().toString(),
                 "parent_id",
-                "title",
                 "https://mozilla.org").let { model ->
             assertEquals(true, model.isValid())
         }
 
         Session(UUID.randomUUID().toString(),
                 "",
-                "",
                 "https://mozilla.org").let { model ->
             assertEquals(true, model.isValid())
         }
 
         Session(UUID.randomUUID().toString(),
-                null,
                 null,
                 "https://mozilla.org").let { model ->
             assertEquals(true, model.isValid())
         }
 
         // no id, invalid
-        Session("", "", "", "https://mozilla.org").let { model ->
+        Session("", "", "https://mozilla.org").let { model ->
             assertEquals(false, model.isValid())
         }
 
-        Session("", "", "", "").let { model ->
+        Session("", "", "").let { model ->
             assertEquals(false, model.isValid())
         }
 
         // no url, invalid
-        Session(UUID.randomUUID().toString(), "", "", "").let { model ->
+        Session(UUID.randomUUID().toString(), "", "").let { model ->
             assertEquals(false, model.isValid())
         }
 
