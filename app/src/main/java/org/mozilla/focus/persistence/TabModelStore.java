@@ -10,6 +10,8 @@ import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.TabViewEngineObserver;
+import org.mozilla.rocket.tabs.TabViewEngineSession;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -91,6 +93,9 @@ public class TabModelStore {
                             entity.getUrl());
                     session.setTitle(entity.getTitle());
 
+                    session.setEngineSession(new TabViewEngineSession());
+                    session.setEngineObserver(new TabViewEngineObserver(session));
+                    session.getEngineSession().register(session.getEngineObserver());
                     sessions.add(session);
                 }
 
@@ -107,8 +112,8 @@ public class TabModelStore {
         private void restoreWebViewState(@NonNull Context context, @NonNull List<Session> sessionList) {
             File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
             for (Session session : sessionList) {
-                if (session != null) {
-                    session.setWebViewState(FileUtils.readBundleFromStorage(cacheDir, session.getId()));
+                if (session != null && session.getEngineSession() != null) {
+                    session.getEngineSession().setWebViewState(FileUtils.readBundleFromStorage(cacheDir, session.getId()));
                 }
             }
         }
@@ -166,8 +171,12 @@ public class TabModelStore {
             final List<File> updateFileList = new ArrayList<>();
 
             for (Session session : sessionList) {
-                if (session != null && session.getWebViewState() != null) {
-                    FileUtils.writeBundleToStorage(cacheDir, session.getId(), session.getWebViewState());
+                if (session != null
+                        && session.getEngineSession() != null
+                        && session.getEngineSession().getWebViewState() != null) {
+                    FileUtils.writeBundleToStorage(cacheDir,
+                            session.getId(),
+                            session.getEngineSession().getWebViewState());
                     updateFileList.add(new File(cacheDir, session.getId()));
                 }
             }

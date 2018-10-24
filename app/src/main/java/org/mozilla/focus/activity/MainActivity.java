@@ -1053,7 +1053,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
         List<Session> sessions = getSessionManager().getTabs();
         for (Session s : sessions) {
-            s.syncFromView();
+            if (s.getEngineSession() != null) {
+                s.getEngineSession().saveState();
+            }
         }
 
         final String currentTabId = (getSessionManager().getFocusSession() != null)
