@@ -210,7 +210,7 @@ public class WebContextMenu {
 
         // Try to find parent tab for new tab
         for (final Session tab : tabs) {
-            if (tab.getTabView() == source) {
+            if (tab.getEngineSession().getTabView() == source) {
                 parentId = tab.getId();
                 break;
             }

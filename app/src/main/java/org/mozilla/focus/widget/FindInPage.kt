@@ -104,14 +104,9 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
 
     private fun initViews() {
         fun obtainWebView(): WebView? {
-            if (session != null && session is Session) {
-                val tabView = (session as Session).tabView
-                if (tabView != null && tabView is WebView) {
-                    return tabView
-                }
-            }
-            return null
+            return (session?.engineSession?.tabView as WebView)
         }
+
         closeBtn.setOnClickListener {
             hide()
             TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE)
