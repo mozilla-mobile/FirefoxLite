@@ -20,6 +20,7 @@ public class DownloadTest {
     public void testGetters() {
         final Download download = new Download(
                 "https://www.mozilla.org/image.png",
+                null,
                 "Focus/1.0",
                 "Content-Disposition: attachment; filename=\"filename.png\"",
                 "image/png",
@@ -40,6 +41,7 @@ public class DownloadTest {
         {
             final Download download = new Download(
                     "https://www.mozilla.org/image.png",
+                    null,
                     "Focus/1.0",
                     "Content-Disposition: attachment; filename=\"filename.png\"",
                     "image/png",

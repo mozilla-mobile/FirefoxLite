@@ -49,8 +49,9 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
         }
 
         final String cookie = CookieManager.getInstance().getCookie(download.getUrl());
-        final String fileName = URLUtil.guessFileName(
-                download.getUrl(), download.getContentDisposition(), download.getMimeType());
+        final String fileName = (download.getName() != null)
+                ? download.getName()
+                : URLUtil.guessFileName(download.getUrl(), download.getContentDisposition(), download.getMimeType());
 
         // so far each download always return null even for an image.
         // But we might move downloaded file to another directory.

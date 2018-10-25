@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebHistoryItem;
 import android.webkit.WebSettings;
@@ -28,8 +29,6 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.threadutils.ThreadUtils;
-import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.rocket.tabs.SiteIdentity;
 import org.mozilla.rocket.tabs.TabChromeClient;
@@ -37,6 +36,8 @@ import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewClient;
 import org.mozilla.rocket.tabs.web.Download;
 import org.mozilla.rocket.tabs.web.DownloadCallback;
+import org.mozilla.threadutils.ThreadUtils;
+import org.mozilla.urlutils.UrlUtils;
 
 public class WebkitView extends NestedWebView implements TabView {
     private static final String KEY_CURRENTURL = "currenturl";
@@ -380,7 +381,8 @@ public class WebkitView extends NestedWebView implements TabView {
                 }
 
                 if (downloadCallback != null) {
-                    final Download download = new Download(url, userAgent, contentDisposition, mimetype, contentLength, false);
+                    final String name = URLUtil.guessFileName(url, contentDisposition, mimetype);
+                    final Download download = new Download(url, name, userAgent, contentDisposition, mimetype, contentLength, false);
                     downloadCallback.onDownloadStart(download);
                 }
             }

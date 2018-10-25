@@ -8,6 +8,7 @@ package org.mozilla.rocket.tabs.web;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class Download implements Parcelable {
 
@@ -16,6 +17,7 @@ public class Download implements Parcelable {
         @Override
         public Download createFromParcel(Parcel source) {
             return new Download(
+                    source.readString(),
                     source.readString(),
                     source.readString(),
                     source.readString(),
@@ -31,6 +33,7 @@ public class Download implements Parcelable {
     };
 
     private final String url;
+    private final String name;
     private final String contentDisposition;
     private final String mimeType;
     private final long contentLength;
@@ -38,12 +41,14 @@ public class Download implements Parcelable {
     private final boolean startFromContextMenu;
 
     public Download(@NonNull String url,
+                    @Nullable String name,
                     @NonNull String userAgent,
                     @NonNull String contentDisposition,
                     @NonNull String mimeType,
                     long contentLength,
                     boolean startFromContextMenu) {
         this.url = url;
+        this.name = name;
         this.userAgent = userAgent;
         this.contentDisposition = contentDisposition;
         this.mimeType = mimeType;
@@ -53,6 +58,10 @@ public class Download implements Parcelable {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getContentDisposition() {
@@ -83,6 +92,7 @@ public class Download implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(url);
+        dest.writeString(name);
         dest.writeString(userAgent);
         dest.writeString(contentDisposition);
         dest.writeString(mimeType);
