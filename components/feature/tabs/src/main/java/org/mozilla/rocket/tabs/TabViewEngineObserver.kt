@@ -8,6 +8,7 @@ package org.mozilla.rocket.tabs
 import android.graphics.Bitmap
 import android.view.View
 import android.webkit.GeolocationPermissions
+import mozilla.components.browser.session.Session.FindResult
 import mozilla.components.browser.session.Session.SecurityInfo
 import org.mozilla.rocket.tabs.TabView.HitTarget
 
@@ -63,4 +64,7 @@ class TabViewEngineObserver(
             callback: GeolocationPermissions.Callback?) =
             session.notifyObservers { onGeolocationPermissionsShowPrompt(origin, callback) }
 
+    override fun onFindResult(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
+        session.findResults += FindResult(activeMatchOrdinal, numberOfMatches, isDoneCounting)
+    }
 }

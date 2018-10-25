@@ -18,7 +18,6 @@ import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_ADDED
 import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_REMOVED
 import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_SWITCHED
 import org.mozilla.rocket.tabs.SessionManager.Observer
-import org.mozilla.rocket.tabs.TabView.FindListener
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import java.lang.ref.WeakReference
@@ -45,7 +44,6 @@ class SessionManager @JvmOverloads constructor(
     private var focusRef = WeakReference<Session>(null)
 
     private var downloadCallback: DownloadCallback? = null
-    private var findListener: FindListener? = null
 
     /**
      * To get count of sessions in this session.
@@ -255,15 +253,6 @@ class SessionManager @JvmOverloads constructor(
         }
     }
 
-    fun setFindListener(findListener: FindListener?) {
-        this.findListener = findListener
-        if (hasTabs()) {
-            for (session in sessions) {
-                session.engineSession?.tabView?.setFindListener(findListener)
-            }
-        }
-    }
-
     /**
      * To destroy this session, and it also destroy any sessions in this session.
      * This method should be called after any View has been removed from view system.
@@ -312,7 +301,6 @@ class SessionManager @JvmOverloads constructor(
         val tabView = tabViewProvider.create()
         session.engineSession?.tabView = tabView
         session.engineSession?.tabView?.setDownloadCallback(downloadCallback)
-        session.engineSession?.tabView?.setFindListener(findListener)
         if (session.engineSession?.webViewState != null) {
             tabView.restoreViewState(session.engineSession?.webViewState)
         } else if (!TextUtils.isEmpty(url)) {
@@ -340,7 +328,6 @@ class SessionManager @JvmOverloads constructor(
 
     private fun destroySession(session: Session) {
         session.engineSession?.tabView?.setDownloadCallback(null)
-        session.engineSession?.tabView?.setFindListener(null)
         unlink(session)
         session.unregisterObservers()
     }

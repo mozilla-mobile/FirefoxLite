@@ -39,8 +39,10 @@ class TabViewEngineSession constructor(
         set(value) {
             value?.setViewClient(ViewClient(this))
             value?.setChromeClient(ChromeClient(this))
+            value?.setFindListener(FindListener(this))
             engineView?.setViewClient(null)
             engineView?.setChromeClient(null)
+            engineView?.setFindListener(null)
             engineView = value
         }
         get() = engineView
@@ -181,5 +183,11 @@ class TabViewEngineSession constructor(
                 origin: String,
                 callback: GeolocationPermissions.Callback?) =
                 es.notifyObservers { onGeolocationPermissionsShowPrompt(origin, callback) }
+    }
+
+    class FindListener(private val es: TabViewEngineSession) : TabView.FindListener {
+        override fun onFindResultReceived(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
+            es.notifyObservers { onFindResult(activeMatchOrdinal, numberOfMatches, isDoneCounting) }
+        }
     }
 }

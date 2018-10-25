@@ -13,13 +13,13 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.webkit.WebView
 import android.widget.TextView
+import mozilla.components.browser.session.Session.FindResult
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.tabs.Session
-import org.mozilla.rocket.tabs.TabView
 
-class FindInPage : TabView.FindListener, BackKeyHandleable {
+class FindInPage : BackKeyHandleable {
     private val container: View
     private val queryText: TextView
     private val resultText: TextView
@@ -56,9 +56,9 @@ class FindInPage : TabView.FindListener, BackKeyHandleable {
         }
     }
 
-    override fun onFindResultReceived(activeMatchOrdinal: Int,
-                                      numOfMatches: Int,
-                                      isDoneCounting: Boolean) {
+    fun onFindResultReceived(result: FindResult) {
+        val activeMatchOrdinal = result.activeMatchOrdinal
+        val numOfMatches = result.numberOfMatches
         if (numOfMatches > 0) {
             // We don't want the presentation of the activeMatchOrdinal to be zero indexed. So let's
             // increment it by one.
