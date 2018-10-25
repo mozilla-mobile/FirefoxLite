@@ -159,7 +159,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
     override fun onBackPressed(): Boolean {
         val focus = sessionManager.focusSession ?: return false
-        val tabView = focus.tabView ?: return false
+        val tabView = focus.engineSession?.tabView ?: return false
 
         if (tabView.canGoBack()) {
             goBack()
@@ -177,35 +177,16 @@ class BrowserFragment : LocaleAwareFragment(),
                 if (sessionManager.tabsCount == 0) {
                     sessionManager.addTab(url, TabUtil.argument(null, false, true))
                 } else {
-                    sessionManager.focusSession!!.tabView!!.loadUrl(url)
+                    sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
                 }
             }
         }
     }
 
-    private fun goBack() {
-        val focus = sessionManager.focusSession ?: return
-        val tabView = focus.tabView ?: return
-        tabView.goBack()
-    }
-
-    private fun goForward() {
-        val focus = sessionManager.focusSession ?: return
-        val tabView = focus.tabView ?: return
-        tabView.goForward()
-    }
-
-    private fun stop() {
-        val focus = sessionManager.focusSession ?: return
-        val tabView = focus.tabView ?: return
-        tabView.stopLoading()
-    }
-
-    private fun reload() {
-        val focus = sessionManager.focusSession ?: return
-        val tabView = focus.tabView ?: return
-        tabView.reload()
-    }
+    private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
+    private fun goForward() = sessionManager.focusSession?.engineSession?.goForward()
+    private fun stop() = sessionManager.focusSession?.engineSession?.stopLoading()
+    private fun reload() = sessionManager.focusSession?.engineSession?.reload()
 
     private fun registerData(activity: FragmentActivity) {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
@@ -253,8 +234,9 @@ class BrowserFragment : LocaleAwareFragment(),
         var session: Session? = null
 
         override fun onSessionAdded(session: Session, arguments: Bundle?) {
-            super.onSessionAdded(session, arguments)
-            fragment.tabViewSlot.addView(session.tabView!!.view)
+            session.engineSession?.tabView?.let {
+                fragment.tabViewSlot.addView(it.view)
+            }
         }
 
         override fun onProgress(session: Session, progress: Int) {
@@ -310,7 +292,7 @@ class BrowserFragment : LocaleAwareFragment(),
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            session?.tabView?.let { if (it is WebView) it.clearFocus() }
+            session?.engineSession?.tabView?.let { if (it is WebView) it.clearFocus() }
         }
 
         override fun onUrlChanged(session: Session, url: String?) {
@@ -324,10 +306,8 @@ class BrowserFragment : LocaleAwareFragment(),
             if (loading) {
                 fragment.btnLoad.setImageResource(R.drawable.ic_close)
             } else {
-                val focus = fragment.sessionManager.focusSession ?: return
-                val tabView = focus.tabView ?: return
-                fragment.btnNext.isEnabled = tabView.canGoForward()
-
+                val es = fragment.sessionManager.focusSession?.engineSession ?: return
+                fragment.btnNext.isEnabled = es.tabView?.canGoForward() ?: false
                 fragment.btnLoad.setImageResource(R.drawable.ic_refresh)
             }
         }
