@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.text.TextUtils
 import android.view.View
 import android.webkit.GeolocationPermissions
+import mozilla.components.browser.session.Session.FindResult
 import mozilla.components.browser.session.Session.SecurityInfo
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
@@ -71,6 +72,16 @@ class Session @JvmOverloads constructor(
         notifyObservers(old, new) { onSecurityChanged(this@Session, new.secure) }
     }
 
+    /**
+     * List of results of that latest "find in page" operation.
+     */
+    var findResults: List<FindResult> by Delegates.observable(emptyList()) { _, old, new ->
+        notifyObservers(old, new) {
+            if (new.isNotEmpty()) {
+                onFindResult(this@Session, findResults.last())
+            }
+        }
+    }
 
     fun isValid(): Boolean {
         return id.isNotBlank() && (url?.isNotBlank() ?: false)
@@ -90,21 +101,14 @@ class Session @JvmOverloads constructor(
     }
 
     interface Observer {
-
         fun onLoadingStateChanged(session: Session, loading: Boolean) = Unit
-
         fun onSecurityChanged(session: Session, isSecure: Boolean) = Unit
-
         fun onUrlChanged(session: Session, url: String?) = Unit
-
         fun onProgress(session: Session, progress: Int) = Unit
-
-
         fun onTitleChanged(session: Session, title: String?) = Unit
-
         fun onReceivedIcon(icon: Bitmap?) = Unit
-
         fun onLongPress(session: Session, hitTarget: TabView.HitTarget) = Unit
+        fun onFindResult(session: Session, result: FindResult) = Unit
 
         /**
          * Notify the host application that the current page has entered full screen mode.

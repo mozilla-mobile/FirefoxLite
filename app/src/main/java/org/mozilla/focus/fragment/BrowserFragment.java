@@ -50,6 +50,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.EnqueueDownloadTask;
 import org.mozilla.focus.locale.LocaleAwareFragment;
@@ -428,7 +429,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         sessionManager.register(this.managerObserver, this, false);
         sessionManager.setDownloadCallback(downloadCallback);
-        sessionManager.setFindListener(findInPage);
 
         if (tabCounter != null && isTabRestoredComplete()) {
             tabCounter.setCount(sessionManager.getTabsCount());
@@ -1246,6 +1246,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         private boolean isForegroundSession(Session tab) {
             return sessionManager.getFocusSession() == tab;
+        }
+
+        @Override
+        public void onFindResult(@NotNull Session session, @NotNull mozilla.components.browser.session.Session.FindResult result) {
+            findInPage.onFindResultReceived(result);
         }
     }
 
