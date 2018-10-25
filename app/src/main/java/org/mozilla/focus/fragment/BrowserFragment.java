@@ -1006,7 +1006,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         findInPage.hide();
     }
 
-    class SessionObserver implements Session.Observer {
+    class SessionObserver implements Session.Observer, TabViewEngineSession.Client {
         @Nullable
         private Session session;
         private HistoryInserter historyInserter = new HistoryInserter();
@@ -1077,16 +1077,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, @Nullable Message msg) {
-            // session manager handled this
-            return false;
-        }
-
-        @Override
-        public void onCloseWindow(@Nullable TabView tabView) {
-        }
-
-        @Override
         public void onProgress(@NonNull Session session, int progress) {
             if (!isForegroundSession(session)) {
                 return;
@@ -1111,7 +1101,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public boolean onShowFileChooser(@NonNull TabView tabView,
+        public boolean onShowFileChooser(@NonNull TabViewEngineSession es,
                                          @NonNull ValueCallback<Uri[]> filePathCallback,
                                          @NonNull WebChromeClient.FileChooserParams fileChooserParams) {
             if (!isForegroundSession(session)) {

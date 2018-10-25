@@ -15,7 +15,6 @@ import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import mozilla.components.concept.engine.EngineSession
-import mozilla.components.support.base.observer.Consumable
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
 
@@ -33,6 +32,8 @@ class TabViewEngineSession constructor(
 ) : Observable<TabViewEngineSession.Observer> by delegate {
 
     var webViewState: Bundle? = null
+    var engineSessionClient: Client? = null
+    var windowClient: WindowClient? = null
 
     var tabView: TabView?
         set(value) {
@@ -87,19 +88,6 @@ class TabViewEngineSession constructor(
 
 
     interface Observer : EngineSession.Observer {
-        fun updateFailingUrl(url: String?, updateFromError: Boolean)
-        fun handleExternalUrl(url: String?): Boolean
-        fun onCreateWindow(isDialog: Boolean,
-                           isUserGesture: Boolean,
-                           msg: Message?): Boolean
-
-        fun onCloseWindow(es: TabViewEngineSession)
-
-        fun onShowFileChooser(
-                es: TabViewEngineSession,
-                filePathCallback: ValueCallback<Array<Uri>>?,
-                fileChooserParams: WebChromeClient.FileChooserParams?): Boolean
-
         fun onReceivedIcon(icon: Bitmap?)
         fun onLongPress(hitTarget: TabView.HitTarget)
         fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?)
@@ -107,6 +95,20 @@ class TabViewEngineSession constructor(
         fun onGeolocationPermissionsShowPrompt(
                 origin: String,
                 callback: GeolocationPermissions.Callback?)
+    }
+
+    interface WindowClient {
+        fun onCreateWindow(isDialog: Boolean, isUserGesture: Boolean, msg: Message?): Boolean
+        fun onCloseWindow(es: TabViewEngineSession)
+    }
+
+    interface Client {
+        fun updateFailingUrl(url: String?, updateFromError: Boolean)
+        fun handleExternalUrl(url: String?): Boolean
+        fun onShowFileChooser(
+                es: TabViewEngineSession,
+                filePathCallback: ValueCallback<Array<Uri>>?,
+                fileChooserParams: WebChromeClient.FileChooserParams?): Boolean
     }
 
     class ViewClient(private val es: TabViewEngineSession) : TabViewClient() {
@@ -125,12 +127,11 @@ class TabViewEngineSession constructor(
         }
 
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
-            es.notifyObservers { updateFailingUrl(url, updateFromError) }
+            es.engineSessionClient?.updateFailingUrl(url, updateFromError)
         }
 
         override fun handleExternalUrl(url: String?): Boolean {
-            var consumers = es.wrapConsumers<String?> { url -> handleExternalUrl(url) }
-            return Consumable.from(url).consumeBy(consumers)
+            return es.engineSessionClient?.handleExternalUrl(url) ?: false
         }
     }
 
@@ -139,15 +140,13 @@ class TabViewEngineSession constructor(
                 isDialog: Boolean,
                 isUserGesture: Boolean,
                 msg: Message?): Boolean {
-            val consumers = es.wrapConsumers<Triple<Boolean, Boolean, Message?>> {
-                onCreateWindow(it.first, it.second, it.third)
-            }
-            val args = Triple(isDialog, isUserGesture, msg)
-            return Consumable.from(args).consumeBy(consumers)
+
+            return es.windowClient?.onCreateWindow(isDialog, isUserGesture, msg) ?: false
         }
 
-        override fun onCloseWindow(tabView: TabView?) =
-                es.notifyObservers { onCloseWindow(es) }
+        override fun onCloseWindow(tabView: TabView?) {
+            es.windowClient?.onCloseWindow(es)
+        }
 
         override fun onProgressChanged(progress: Int) =
                 es.notifyObservers { onProgress(progress) }
@@ -157,11 +156,8 @@ class TabViewEngineSession constructor(
                 filePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
 
-            val consumers = es.wrapConsumers<Triple<TabViewEngineSession, ValueCallback<Array<Uri>>, WebChromeClient.FileChooserParams>> {
-                this.onShowFileChooser(it.first, it.second, it.third)
-            }
-            val args = Triple(es, filePathCallback!!, fileChooserParams!!)
-            return Consumable.from(args).consumeBy(consumers)
+            return es.engineSessionClient?.onShowFileChooser(es, filePathCallback, fileChooserParams)
+                    ?: false
         }
 
         override fun onReceivedTitle(view: TabView, title: String?) {
