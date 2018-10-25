@@ -6,13 +6,9 @@
 package org.mozilla.rocket.tabs
 
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.webkit.GeolocationPermissions
-import android.webkit.ValueCallback
-import android.webkit.WebChromeClient
 import mozilla.components.browser.session.Session.SecurityInfo
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
@@ -101,26 +97,8 @@ class Session @JvmOverloads constructor(
 
         fun onUrlChanged(session: Session, url: String?) = Unit
 
-        /**
-         * Return true if the URL was handled, false if we should continue loading the current URL.
-         */
-        fun handleExternalUrl(url: String?): Boolean = false
-
-        fun updateFailingUrl(url: String?, updateFromError: Boolean) = Unit
-
-        fun onCreateWindow(isDialog: Boolean, isUserGesture: Boolean, msg: Message?) = false
-
-        fun onCloseWindow(tabView: TabView?) = Unit
-
         fun onProgress(session: Session, progress: Int) = Unit
 
-
-        /**
-         * @see android.webkit.WebChromeClient
-         */
-        fun onShowFileChooser(tabView: TabView,
-                              filePathCallback: ValueCallback<Array<Uri>>,
-                              fileChooserParams: WebChromeClient.FileChooserParams) = false
 
         fun onTitleChanged(session: Session, title: String?) = Unit
 

@@ -94,7 +94,6 @@ class SessionManager @JvmOverloads constructor(
                 continue
             }
 
-            session.register(SessionObserver(session))
             this.sessions.add(insertPos++, session)
         }
 
@@ -301,7 +300,7 @@ class SessionManager @JvmOverloads constructor(
         session.engineObserver = TabViewEngineObserver(session).also { observer ->
             engineSession.register(observer)
         }
-        session.engineSession = engineSession
+        session.engineSession = engineSession.also { it.windowClient = WindowClient(session) }
     }
 
     private fun unlink(session: Session) {
@@ -328,7 +327,6 @@ class SessionManager @JvmOverloads constructor(
 
         val tab = Session()
         tab.url = url
-        tab.register(SessionObserver(tab))
 
         val parentIndex = if (TextUtils.isEmpty(parentId)) -1 else getTabIndex(parentId!!)
         if (fromExternal) {
@@ -397,7 +395,7 @@ class SessionManager @JvmOverloads constructor(
         session.parentId = parentTab.id
     }
 
-    internal inner class SessionObserver(var source: Session) : Session.Observer {
+    internal inner class WindowClient(var source: Session) : TabViewEngineSession.WindowClient {
 
         override fun onCreateWindow(
                 isDialog: Boolean,
@@ -423,12 +421,11 @@ class SessionManager @JvmOverloads constructor(
             return true
         }
 
-        override fun onCloseWindow(tabView: TabView?) {
-            if (source.engineSession?.tabView === tabView) {
-                for (i in sessions.indices) {
-                    val tab = sessions[i]
-                    if (tab.engineSession?.tabView === tabView) {
-                        closeTab(tab.id)
+        override fun onCloseWindow(es: TabViewEngineSession) {
+            if (source.engineSession === es) {
+                for (s in sessions) {
+                    if (s.engineSession === es) {
+                        closeTab(s.id)
                     }
                 }
             }

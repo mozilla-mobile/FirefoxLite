@@ -102,10 +102,6 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
             session.let { onTabModelChanged(it) }
         }
 
-        override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
-            session?.let { onTabModelChanged(it) }
-        }
-
         override fun onTitleChanged(session: Session, title: String?) {
             session.let { onTabModelChanged(it) }
         }
