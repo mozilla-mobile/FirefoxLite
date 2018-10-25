@@ -111,7 +111,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         super.onAttachedToRecyclerView(recyclerView);
         if (recyclerView instanceof ThemedRecyclerView) {
             ThemedRecyclerView themedRecyclerView = (ThemedRecyclerView) recyclerView;
-            this.isNight = themedRecyclerView.isNightMode();
+            this.isNight = themedRecyclerView.isNightTheme();
         }
     }
 

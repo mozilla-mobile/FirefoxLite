@@ -5,28 +5,25 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
 
-open class ThemedRelativeLayout : RelativeLayout {
-    private var isNight: Boolean = false
+open class ThemedRelativeLayout : RelativeLayout, NightTheme {
+
+    override var themeState = ThemedWidgetUtils.ThemeState.DEFAULT.value
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    public override fun onCreateDrawableState(extraSpace: Int): IntArray {
-        return if (isNight) {
-            val drawableState = super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
-            View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
+    override fun onCreateDrawableState(extraSpace: Int): IntArray {
+        return if (isNightTheme()) {
+            val drawableState = super.onCreateDrawableState(extraSpace + getThemeDrawableState().size)
+            View.mergeDrawableStates(drawableState, getThemeDrawableState())
             drawableState
         } else {
             super.onCreateDrawableState(extraSpace)
         }
     }
 
-    open fun setNightMode(isNight: Boolean) {
-        if (this.isNight != isNight) {
-            this.isNight = isNight
-            refreshDrawableState()
-            invalidate()
-        }
+    override fun notifyRefreshDrawableState() {
+        refreshDrawableState()
     }
 }
