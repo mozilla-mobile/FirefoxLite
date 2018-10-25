@@ -19,7 +19,6 @@ import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_REMOVED
 import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_SWITCHED
 import org.mozilla.rocket.tabs.SessionManager.Observer
 import org.mozilla.rocket.tabs.utils.TabUtil
-import org.mozilla.rocket.tabs.web.DownloadCallback
 import java.lang.ref.WeakReference
 import java.util.ArrayList
 import java.util.LinkedList
@@ -42,8 +41,6 @@ class SessionManager @JvmOverloads constructor(
     private val notifier: Notifier
 
     private var focusRef = WeakReference<Session>(null)
-
-    private var downloadCallback: DownloadCallback? = null
 
     /**
      * To get count of sessions in this session.
@@ -239,21 +236,6 @@ class SessionManager @JvmOverloads constructor(
     }
 
     /**
-     * To specify @see{DownloadCallback} to this session, this method will replace existing one. It
-     * also replace DownloadCallback from any existing Session.
-     *
-     * @param downloadCallback
-     */
-    fun setDownloadCallback(downloadCallback: DownloadCallback?) {
-        this.downloadCallback = downloadCallback
-        if (hasTabs()) {
-            for (session in sessions) {
-                session.engineSession?.tabView?.setDownloadCallback(downloadCallback)
-            }
-        }
-    }
-
-    /**
      * To destroy this session, and it also destroy any sessions in this session.
      * This method should be called after any View has been removed from view system.
      * No other methods may be called on this session after destroy.
@@ -300,7 +282,6 @@ class SessionManager @JvmOverloads constructor(
         val url = if (TextUtils.isEmpty(session.url)) session.initialUrl else session.url
         val tabView = tabViewProvider.create()
         session.engineSession?.tabView = tabView
-        session.engineSession?.tabView?.setDownloadCallback(downloadCallback)
         if (session.engineSession?.webViewState != null) {
             tabView.restoreViewState(session.engineSession?.webViewState)
         } else if (!TextUtils.isEmpty(url)) {
@@ -327,7 +308,6 @@ class SessionManager @JvmOverloads constructor(
     }
 
     private fun destroySession(session: Session) {
-        session.engineSession?.tabView?.setDownloadCallback(null)
         unlink(session)
         session.unregisterObservers()
     }

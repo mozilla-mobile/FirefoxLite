@@ -11,12 +11,14 @@ import android.os.Bundle
 import android.os.Message
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import mozilla.components.concept.engine.EngineSession
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
+import org.mozilla.rocket.tabs.web.Download
 
 /**
  * This class is a simulation of EngineSession of Mozilla Android-Components. To be an abstraction
@@ -40,9 +42,11 @@ class TabViewEngineSession constructor(
             value?.setViewClient(ViewClient(this))
             value?.setChromeClient(ChromeClient(this))
             value?.setFindListener(FindListener(this))
+            value?.setDownloadCallback(DownloadCallback(this))
             engineView?.setViewClient(null)
             engineView?.setChromeClient(null)
             engineView?.setFindListener(null)
+            engineView?.setDownloadCallback(null)
             engineView = value
         }
         get() = engineView
@@ -188,6 +192,20 @@ class TabViewEngineSession constructor(
     class FindListener(private val es: TabViewEngineSession) : TabView.FindListener {
         override fun onFindResultReceived(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
             es.notifyObservers { onFindResult(activeMatchOrdinal, numberOfMatches, isDoneCounting) }
+        }
+    }
+
+    class DownloadCallback(private val es: TabViewEngineSession) : org.mozilla.rocket.tabs.web.DownloadCallback {
+        override fun onDownloadStart(download: Download) {
+            val cookie = CookieManager.getInstance().getCookie(download.url)
+            es.notifyObservers {
+                onExternalResource(download.url,
+                        download.name,
+                        download.contentLength,
+                        download.mimeType,
+                        cookie,
+                        download.userAgent)
+            }
         }
     }
 }

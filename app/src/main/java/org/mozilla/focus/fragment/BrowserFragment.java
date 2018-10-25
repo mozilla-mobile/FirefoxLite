@@ -23,7 +23,6 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -428,7 +427,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
 
         sessionManager.register(this.managerObserver, this, false);
-        sessionManager.setDownloadCallback(downloadCallback);
 
         if (tabCounter != null && isTabRestoredComplete()) {
             tabCounter.setCount(sessionManager.getTabsCount());
@@ -1251,6 +1249,25 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onFindResult(@NotNull Session session, @NotNull mozilla.components.browser.session.Session.FindResult result) {
             findInPage.onFindResultReceived(result);
+        }
+
+        @Override
+        public boolean onDownload(@NotNull Session session, @NotNull mozilla.components.browser.session.Download download) {
+            FragmentActivity activity = getActivity();
+            if (activity == null
+                    || !activity.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                return false;
+            }
+
+            Download d = new Download(download.getUrl(),
+                    download.getFileName(),
+                    download.getUserAgent(),
+                    "",
+                    download.getContentType(),
+                    download.getContentLength(),
+                    false);
+            permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, d);
+            return true;
         }
     }
 

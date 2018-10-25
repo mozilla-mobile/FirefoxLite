@@ -6,10 +6,13 @@
 package org.mozilla.rocket.tabs
 
 import android.graphics.Bitmap
+import android.os.Environment
 import android.view.View
 import android.webkit.GeolocationPermissions
+import mozilla.components.browser.session.Download
 import mozilla.components.browser.session.Session.FindResult
 import mozilla.components.browser.session.Session.SecurityInfo
+import mozilla.components.support.base.observer.Consumable
 import org.mozilla.rocket.tabs.TabView.HitTarget
 
 /**
@@ -66,5 +69,17 @@ class TabViewEngineObserver(
 
     override fun onFindResult(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
         session.findResults += FindResult(activeMatchOrdinal, numberOfMatches, isDoneCounting)
+    }
+
+    override fun onExternalResource(
+            url: String,
+            fileName: String?,
+            contentLength: Long?,
+            contentType: String?,
+            cookie: String?,
+            userAgent: String?) {
+
+        val download = Download(url, fileName, contentType, contentLength, userAgent, Environment.DIRECTORY_DOWNLOADS)
+        session.download = Consumable.from(download)
     }
 }

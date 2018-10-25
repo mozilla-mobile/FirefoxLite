@@ -156,14 +156,14 @@ public class WebContextMenu {
                             getImgHeaderTask.setCallback(new GetImgHeaderTask.Callback() {
                                 @Override
                                 public void setMIMEType(String mimeType) {
-                                    final Download download = new Download(hitTarget.imageURL, null, null, mimeType, -1, true);
+                                    final Download download = new Download(hitTarget.imageURL, null, null, null, mimeType, -1, true);
                                     callback.onDownloadStart(download);
                                 }
                             });
 
                             getImgHeaderTask.execute(hitTarget.imageURL);
                         } else {
-                            final Download download = new Download(hitTarget.imageURL, null, null, null, -1, true);
+                            final Download download = new Download(hitTarget.imageURL, null, null, null, null, -1, true);
                             callback.onDownloadStart(download);
                         }
 
