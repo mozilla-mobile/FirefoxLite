@@ -25,6 +25,11 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true
 
+        vectorDrawables {
+            useSupportLibrary false
+            generatedDensities = []
+        }
+
         def buddy_build_number = System.getenv("BUDDYBUILD_BUILD_NUMBER")
         if (buddy_build_number?.trim()) {
             versionCode buddy_build_number.toInteger()
