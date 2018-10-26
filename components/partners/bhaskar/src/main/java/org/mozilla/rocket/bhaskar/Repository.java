@@ -35,7 +35,7 @@ public class Repository {
     private List<ItemPojo> itemPojoList;
     private boolean cacheIsDirty = false;
 
-    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionUrl) {
+    public Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionUrl) {
         this.context = context;
         this.channel = channel;
         this.pageSize = pageSize;
@@ -48,7 +48,7 @@ public class Repository {
         nextSubscription();
     }
 
-    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener) {
+    public Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener) {
         this(context, channel, pageSize, userAgent, socketTag, onDataChangedListener, onCacheInvalidateListener, DEFAULT_SUBSCRIPTION_URL);
     }
 
@@ -61,6 +61,10 @@ public class Repository {
         itemPojoList = new ArrayList<>();
         cacheIsDirty = true;
         nextSubscription();
+    }
+
+    public void setOnDataChangedListener(OnDataChangedListener listener){
+        this.onDataChangedListener = listener;
     }
 
     private void nextSubscription() {
@@ -141,7 +145,7 @@ public class Repository {
             itemPojo.articleFrom = row.getString("articleFrom");
             itemPojo.category = row.getString("category");
             itemPojo.city = row.getString("city");
-            itemPojo.coverPic = row.getString("coverPic");
+            itemPojo.coverPic = new JSONArray(row.getString("coverPic")).getString(0);
             itemPojo.description = row.getString("description");
             itemPojo.detailUrl = row.getString("detailUrl");
             itemPojo.keywords = row.getString("keywords");

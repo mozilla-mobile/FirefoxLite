@@ -79,6 +79,10 @@
             android:defaultValue="true"
             android:key="pref_key_private_mode_enabled"
             android:title="Private Mode" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_key_bool_news"
+            android:title="News" />
     </PreferenceCategory>
 
 </PreferenceScreen>

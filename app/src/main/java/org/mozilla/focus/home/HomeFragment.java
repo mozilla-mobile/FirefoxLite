@@ -12,11 +12,7 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.db.SupportSQLiteOpenHelper;
 import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.db.SupportSQLiteQueryBuilder;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -31,23 +27,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
+import android.support.v7.widget.*;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import com.airbnb.lottie.LottieAnimationView;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +45,8 @@ import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
+import org.mozilla.focus.fragment.ListPanelDialog;
+import org.mozilla.focus.fragment.NewsFragment;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
@@ -66,13 +57,7 @@ import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FirebaseHelper;
-import org.mozilla.focus.utils.OnSwipeListener;
-import org.mozilla.focus.utils.RemoteConfigConstants;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.focus.utils.*;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
@@ -82,6 +67,9 @@ import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.banner.BannerViewHolder;
+import org.mozilla.rocket.content.ContentAdapter;
+import org.mozilla.rocket.content.ContentPortalView;
+import org.mozilla.rocket.content.ContentViewModel;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
@@ -97,13 +85,7 @@ import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -123,6 +105,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private ThemedImageButton btnMenu;
+    @Nullable private ImageButton arrow1;
+    @Nullable private ImageButton arrow2;
+    @Nullable private ContentPortalView contentPanel;
     private View themeOnboardingLayer;
     private TabCounter tabCounter;
     private ThemedTextView fakeInput;
@@ -193,13 +178,19 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (enabled) {
             banner.setVisibility(View.VISIBLE);
         } else {
-            banner.setVisibility(View.INVISIBLE);
+            banner.setVisibility(View.GONE);
         }
     }
 
     @Override
     public Fragment getFragment() {
         return this;
+    }
+
+
+    // return true if there's a content portal to hide
+    public boolean hideContentPortal() {
+             return false;
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -245,7 +236,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                         onRootConfigLoadedListener.onRootConfigLoaded(configArray);
                     }
                 };
-                for (int i = 0 ; i < length ; i++) {
+                for (int i = 0; i < length; i++) {
                     new LoadConfigTask(new WeakReference<>(onConfigLoadedListener), i).execute(jsonArray.getString(i), userAgent, Integer.toString(SocketTags.BANNER));
                 }
             } catch (JSONException e) {
@@ -369,17 +360,28 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
+        final View view;
+        if (NewsFragment.isEnable(getContext())) {
+            view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
+        } else {
+            view = inflater.inflate(R.layout.fragment_homescreen, container, false);
+        }
+
         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
 
         this.btnMenu = view.findViewById(R.id.btn_menu_home);
         this.btnMenu.setOnClickListener(menuItemClickListener);
+
         this.btnMenu.setOnLongClickListener(v -> {
             // Long press menu always show download panel
             FragmentListener.notifyParent(HomeFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
             TelemetryWrapper.longPressDownloadIndicator();
             return false;
         });
+        this.arrow1 = view.findViewById(R.id.arrow1);
+        this.arrow2 = view.findViewById(R.id.arrow2);
+
+        this.contentPanel = view.findViewById(R.id.content_panel);
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
@@ -499,6 +501,14 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         setupBannerTimer();
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
         initFeatureSurveyViewIfNecessary(getView());
+        playContentPortalAnimation();
+    }
+
+    private void playContentPortalAnimation() {
+        final Animation fadeout = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_out);
+        final Animation fadein = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_in);
+        Inject.startAnimation(arrow1, fadeout);
+        Inject.startAnimation(arrow2, fadein);
     }
 
     private void setupBannerTimer() {
@@ -527,6 +537,16 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
         timer.cancel();
         timer = null;
+        stopAnimation();
+    }
+
+    private void stopAnimation() {
+        if (arrow1 != null && arrow1.getAnimation() != null) {
+            arrow1.getAnimation().cancel();
+        }
+        if (arrow2 != null && arrow2.getAnimation() != null) {
+            arrow2.getAnimation().cancel();
+        }
     }
 
     @Override
@@ -966,16 +986,27 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+
     private class GestureListenerAdapter implements OnSwipeListener {
 
         @Override
         public void onSwipeUp() {
-            btnMenu.performClick();
+            if (arrow1 != null) {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).showListPanel(ListPanelDialog.TYPE_NEWS);
+                }
+            } else {
+                btnMenu.performClick();
+            }
         }
 
         @Override
         public void onSwipeDown() {
-            fakeInput.performClick();
+            if (arrow1 != null) {
+                // do nothing
+            } else {
+                fakeInput.performClick();
+            }
         }
 
         @Override
@@ -1024,7 +1055,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 }
                 scheduleRefresh(handler);
             };
-            for (int i = 0 ; i < fileUris.size() ; i++) {
+            for (int i = 0; i < fileUris.size(); i++) {
                 if (i == fileUris.size() - 1) {
                     BrowsingHistoryManager.updateHistory(null, urls.get(i), fileUris.get(i), listener);
                 } else {

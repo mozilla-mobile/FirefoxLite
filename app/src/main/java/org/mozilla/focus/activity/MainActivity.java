@@ -485,7 +485,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         return Settings.getInstance(this).shouldBlockImages();
     }
 
-    private void showListPanel(int type) {
+    public void showListPanel(int type) {
         DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
         dialogFragment.show(getSupportFragmentManager(), "");
@@ -720,7 +720,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
 
     private void onBookmarksClicked() {
-        showListPanel(ListPanelDialog.TYPE_BOOKMARKS);
+//        showListPanel(ListPanelDialog.TYPE_BOOKMARKS);
+        showListPanel(ListPanelDialog.TYPE_NEWS);
     }
 
     private void onDownloadClicked() {
@@ -943,12 +944,25 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             return;
         }
 
+        // if home panel has content portal displayed, hide that first.
+        if (dismissContentPortal()) {
+            return;
+        }
+
         if (!this.screenNavigator.canGoBack()) {
             finish();
             return;
         }
 
         super.onBackPressed();
+    }
+
+    private boolean dismissContentPortal() {
+        Fragment fragment = this.screenNavigator.getTopFragment();
+        if (fragment instanceof HomeFragment) {
+            return ((HomeFragment) fragment).hideContentPortal();
+        }
+        return false;
     }
 
     public void firstrunFinished() {
