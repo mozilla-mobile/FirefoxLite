@@ -35,7 +35,7 @@ public class Repository {
     private List<ItemPojo> itemPojoList;
     private boolean cacheIsDirty = false;
 
-    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionUrl) {
+    public Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionUrl) {
         this.context = context;
         this.channel = channel;
         this.pageSize = pageSize;
@@ -48,7 +48,7 @@ public class Repository {
         nextSubscription();
     }
 
-    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener) {
+    public Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener) {
         this(context, channel, pageSize, userAgent, socketTag, onDataChangedListener, onCacheInvalidateListener, DEFAULT_SUBSCRIPTION_URL);
     }
 
