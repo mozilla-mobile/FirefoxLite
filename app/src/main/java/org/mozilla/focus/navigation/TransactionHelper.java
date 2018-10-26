@@ -103,8 +103,11 @@ class TransactionHelper implements DefaultLifecycleObserver {
         FragmentManager manager = this.activity.getSupportFragmentManager();
         int entryCount = manager.getBackStackEntryCount();
         while (entryCount > 0) {
-            manager.popBackStack();
-            entryCount--;
+            if (!manager.isStateSaved()) {
+                // Can not perform this action after onSaveInstanceState
+                manager.popBackStack();
+                entryCount--;
+            }
         }
         manager.executePendingTransactions();
     }

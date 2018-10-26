@@ -13,6 +13,8 @@ import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.animation.Animation;
 
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.TabsDatabase;
@@ -27,6 +29,8 @@ import org.mozilla.rocket.urlinput.LocaleDataSource;
 import org.mozilla.rocket.urlinput.QuickSearchRepository;
 import org.mozilla.rocket.urlinput.QuickSearchViewModel;
 import org.mozilla.rocket.urlinput.QuickSearchViewModelFactory;
+
+import javax.annotation.Nullable;
 
 public class Inject {
 
@@ -115,5 +119,12 @@ public class Inject {
     public static QuickSearchViewModel obtainQuickSearchViewModel(FragmentActivity activity) {
         QuickSearchViewModelFactory factory = new QuickSearchViewModelFactory(provideQuickSearchRepository(activity.getApplication()));
         return ViewModelProviders.of(activity, factory).get(QuickSearchViewModel.class);
+    }
+
+    public static void startAnimation(@Nullable View view, Animation animation) {
+        if (view == null) {
+            return;
+        }
+        view.startAnimation(animation);
     }
 }

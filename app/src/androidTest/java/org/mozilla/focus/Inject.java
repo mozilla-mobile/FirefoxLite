@@ -14,6 +14,8 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.animation.Animation;
 
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
@@ -68,6 +70,7 @@ public class Inject {
         }
 
     }
+
     public static void enableStrictMode() {
         if (AppConstants.isReleaseBuild()) {
             return;
@@ -98,6 +101,7 @@ public class Inject {
         return true;
     }
 
+
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.VPN_RECOMMENDER;
     }
@@ -125,5 +129,8 @@ public class Inject {
     public static QuickSearchViewModel obtainQuickSearchViewModel(FragmentActivity activity) {
         QuickSearchViewModelFactory factory = new QuickSearchViewModelFactory(provideQuickSearchRepository(activity.getApplicationContext()));
         return ViewModelProviders.of(activity, factory).get(QuickSearchViewModel.class);
+    }
+
+    public static void startAnimation(View view, Animation animation) {
     }
 }

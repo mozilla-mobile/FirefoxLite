@@ -37,4 +37,14 @@ public class ItemPojo {
     public String toString() {
         return id;
     }
+
+    @Override
+    public boolean equals( Object pojo) {
+        if (pojo == null) {
+            return false;
+        } else {
+            return this.id.equals(((ItemPojo) pojo).id);
+        }
+
+    }
 }

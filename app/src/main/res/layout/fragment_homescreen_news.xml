@@ -41,6 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="24dp"
+        android:visibility="gone"
         app:layout_constraintDimensionRatio="H,2:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +56,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <include
+        android:id="@+id/arrow1"
+        layout="@layout/button_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/arrow2"
+        app:layout_constraintEnd_toEndOf="@+id/arrow2"
+        app:layout_constraintStart_toStartOf="@+id/arrow2" />
+
+    <include
+        android:id="@+id/arrow2"
+        layout="@layout/button_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <include layout="@layout/fragment_homescreen_item_menu_button"
         android:id="@+id/btn_menu_container"/>
 
@@ -66,7 +87,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_menu_container"/>
 
-    <include layout="@layout/fragment_homescreen_item_menu_button"/>
 
 
 </org.mozilla.focus.widget.SwipeMotionLayout>
