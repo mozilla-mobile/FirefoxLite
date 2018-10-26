@@ -6,6 +6,7 @@
     <org.mozilla.rocket.nightmode.themed.ThemedImageButton
         android:id="@+id/btn_menu_home"
         style="@style/MainMenuButton"
+        android:layout_centerInParent="true"
         android:src="@drawable/action_menu"
         android:tint="@color/home_bottom_button" />
 

@@ -123,6 +123,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
             R.id.finish -> {
                 promoteSetDefaultBrowserIfPreload()
                 finishFirstrun()
+
                 if (isTelemetryValid) {
                     TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp)
                 }
