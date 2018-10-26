@@ -26,6 +26,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,11 +35,13 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
+import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import org.json.JSONArray;
@@ -69,6 +72,7 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.rocket.content.ContentPortalView;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.httptask.SimpleLoadUrlTask;
@@ -108,9 +112,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
     public static final String BANNER_MANIFEST_DEFAULT = "";
 
+    private SwipeMotionLayout home_container;
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private ThemedImageButton btnMenu;
+    private ImageButton btnPortalUp;
+    private ContentPortalView contentPanel;
     private View themeOnboardingLayer;
     private TabCounter tabCounter;
     private ThemedTextView fakeInput;
@@ -154,13 +161,37 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (enabled) {
             banner.setVisibility(View.VISIBLE);
         } else {
-            banner.setVisibility(View.INVISIBLE);
+            banner.setVisibility(View.GONE);
         }
     }
 
     @Override
     public Fragment getFragment() {
         return this;
+    }
+
+    // todo: remove the view state here and replace with
+    // a. properties on contentportal or
+    // b. liveModel
+    // c. some other way to store view state
+    private boolean contentVisible = false;
+
+    private void showContentPortal() {
+        if (contentVisible) {
+            return;
+        }
+        contentVisible = true;
+        contentPanel.moveUp();
+    }
+
+    // return true if there's a content portal to hide
+    public boolean hideContentPortal() {
+        if (!contentVisible) {
+            return false;
+        }
+        contentVisible = false;
+        contentPanel.moveDown();
+        return true;
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -206,7 +237,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                         onRootConfigLoadedListener.onRootConfigLoaded(configArray);
                     }
                 };
-                for (int i = 0 ; i < length ; i++) {
+                for (int i = 0; i < length; i++) {
                     new LoadConfigTask(new WeakReference<>(onConfigLoadedListener), i).execute(jsonArray.getString(i), userAgent, Integer.toString(SocketTags.BANNER));
                 }
             } catch (JSONException e) {
@@ -324,6 +355,20 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.btnMenu = view.findViewById(R.id.btn_menu);
         this.btnMenu.setOnClickListener(menuItemClickListener);
+        this.btnPortalUp = view.findViewById(R.id.btn_portal_up);
+        this.btnPortalUp.setVisibility(View.VISIBLE);
+        this.contentPanel = view.findViewById(R.id.content_panel);
+        this.contentPanel.setListener(new ContentPortalView.PortalListener() {
+            @Override
+            public void onHidden() {
+                hideContentPortal();
+            }
+
+            @Override
+            public void onShown() {
+
+            }
+        });
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
@@ -362,7 +407,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         };
         snapHelper.attachToRecyclerView(banner);
 
-        SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
+        home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());
 
         if (ThemeManager.shouldShowOnboarding(view.getContext())) {
@@ -820,16 +865,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+
     private class GestureListenerAdapter implements OnSwipeListener {
 
         @Override
         public void onSwipeUp() {
-            btnMenu.performClick();
+            showContentPortal();
         }
 
         @Override
         public void onSwipeDown() {
-            fakeInput.performClick();
+            // do nothing
         }
 
         @Override
@@ -878,7 +924,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 }
                 scheduleRefresh(handler);
             };
-            for (int i = 0 ; i < fileUris.size() ; i++) {
+            for (int i = 0; i < fileUris.size(); i++) {
                 if (i == fileUris.size() - 1) {
                     BrowsingHistoryManager.updateHistory(null, urls.get(i), fileUris.get(i), listener);
                 } else {

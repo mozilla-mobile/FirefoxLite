@@ -53,7 +53,7 @@ class FocusApplication : LocaleAwareApplication() {
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
         // Provide different strict mode penalty for ui testing and production code
-        Inject.enableStrictMode()
+//        Inject.enableStrictMode()
 
         SearchEngineManager.getInstance().init(this)
 
