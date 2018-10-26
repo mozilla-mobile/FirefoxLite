@@ -23,6 +23,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mozilla.rocket.tabs.SessionManager.Factor
 import org.mozilla.rocket.tabs.SessionManager.Observer
+import org.mozilla.rocket.tabs.SessionManager.SessionWithState
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.robolectric.RobolectricTestRunner
@@ -35,6 +36,7 @@ import java.util.ArrayList
 class SessionManagerTest {
 
     internal lateinit var mgr: SessionManager
+    internal val states: MutableList<SessionWithState> = ArrayList()
     internal val sessions: MutableList<Session> = ArrayList()
 
     internal val urls = arrayOf("https://mozilla.org", "https://mozilla.com", "https://wikipedia.org", "https://en.wikipedia.org/wiki/Taiwan")
@@ -43,10 +45,12 @@ class SessionManagerTest {
     fun setUp() {
         mgr = SessionManager(DefaultTabViewProvider())
 
-        for (i in urls.indices) {
+        for (url in urls) {
             // use url as id for convenience
-            val session = Session(urls[i], "", urls[i])
-            sessions.add(session)
+            Session(url, "", url)
+                    .also { sessions.add(it) }
+                    .let { SessionWithState(it, null) }
+                    .also { states.add(it) }
         }
     }
 
@@ -165,7 +169,7 @@ class SessionManagerTest {
 
     @Test
     fun testAddTab4() {
-        mgr.restoreTabs(sessions, urls[0])
+        mgr.restore(states, urls[0])
         Assert.assertEquals(mgr.focusSession!!.id, urls[0])
 
         val tabId0 = mgr.addTab("url0", TabUtil.argument(null, true, false))
@@ -221,14 +225,14 @@ class SessionManagerTest {
 
     @Test
     fun testRestore() {
-        mgr.restoreTabs(sessions, urls[0])
+        mgr.restore(states, urls[0])
         Assert.assertEquals(mgr.getTabs().size, urls.size)
         Assert.assertEquals(mgr.focusSession!!.id, urls[0])
     }
 
     @Test
     fun testSwitch() {
-        mgr.restoreTabs(sessions, urls[0])
+        mgr.restore(states, urls[0])
         mgr.switchToTab("not-exist")
         Assert.assertEquals(mgr.focusSession!!.id, urls[0])
 
@@ -246,7 +250,7 @@ class SessionManagerTest {
      */
     @Test
     fun testCloseTab1() {
-        mgr.restoreTabs(sessions, null)
+        mgr.restore(states, null)
         Assert.assertNull(mgr.focusSession)
         mgr.closeTab(sessions[2].id)
         Assert.assertNull(mgr.focusSession)
@@ -302,7 +306,7 @@ class SessionManagerTest {
      */
     @Test
     fun testDropTab1() {
-        mgr.restoreTabs(sessions, null)
+        mgr.restore(states, null)
         Assert.assertNull(mgr.focusSession)
         mgr.dropTab(sessions[2].id)
         Assert.assertNull(mgr.focusSession)

@@ -10,7 +10,7 @@ import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.rocket.tabs.Session;
-import org.mozilla.rocket.tabs.TabViewEngineObserver;
+import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public class TabModelStore {
     private TabsDatabase tabsDatabase;
 
     public interface AsyncQueryListener {
-        void onQueryComplete(List<Session> sessionList, String focusTabId);
+        void onQueryComplete(List<SessionManager.SessionWithState> states, String focusTabId);
     }
 
     public interface AsyncSaveListener {
@@ -68,7 +68,7 @@ public class TabModelStore {
         new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, sessionList.toArray(new Session[0]));
     }
 
-    private static class QueryTabsTask extends AsyncTask<Void, Void, List<Session>> {
+    private static class QueryTabsTask extends AsyncTask<Void, Void, List<SessionManager.SessionWithState>> {
 
         private WeakReference<Context> contextRef;
         private TabsDatabase tabsDatabase;
@@ -81,7 +81,7 @@ public class TabModelStore {
         }
 
         @Override
-        protected List<Session> doInBackground(Void... voids) {
+        protected List<SessionManager.SessionWithState> doInBackground(Void... voids) {
             if (tabsDatabase != null) {
                 List<TabEntity> tabEntityList = tabsDatabase.tabDao().getTabs();
                 Context context = contextRef.get();
@@ -92,40 +92,34 @@ public class TabModelStore {
                             entity.getParentId(),
                             entity.getUrl());
                     session.setTitle(entity.getTitle());
-
-                    session.setEngineSession(new TabViewEngineSession());
-                    session.setEngineObserver(new TabViewEngineObserver(session));
-                    session.getEngineSession().register(session.getEngineObserver());
                     sessions.add(session);
                 }
 
-                if (context != null && sessions.size() > 0) {
-                    restoreWebViewState(context, sessions);
-                }
-
-                return sessions;
+                return restoreWebViewState(context, sessions);
             }
 
             return null;
         }
 
-        private void restoreWebViewState(@NonNull Context context, @NonNull List<Session> sessionList) {
+        private List<SessionManager.SessionWithState> restoreWebViewState(@NonNull Context context, @NonNull List<Session> sessionList) {
+            final List<SessionManager.SessionWithState> states = new ArrayList<>();
             File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
             for (Session session : sessionList) {
-                if (session != null && session.getEngineSession() != null) {
-                    session.getEngineSession().setWebViewState(FileUtils.readBundleFromStorage(cacheDir, session.getId()));
-                }
+                TabViewEngineSession es = new TabViewEngineSession();
+                es.setWebViewState(FileUtils.readBundleFromStorage(cacheDir, session.getId()));
+                states.add(new SessionManager.SessionWithState(session, es));
             }
+            return states;
         }
 
         @Override
-        protected void onPostExecute(List<Session> sessionList) {
+        protected void onPostExecute(List<SessionManager.SessionWithState> list) {
             Context context = contextRef.get();
             AsyncQueryListener listener = listenerRef.get();
             if (listener != null && context != null) {
                 String focusTabId = PreferenceManager.getDefaultSharedPreferences(context)
                         .getString(context.getResources().getString(R.string.pref_key_focus_tab_id), "");
-                listener.onQueryComplete(sessionList, focusTabId);
+                listener.onQueryComplete(list, focusTabId);
             }
         }
     }

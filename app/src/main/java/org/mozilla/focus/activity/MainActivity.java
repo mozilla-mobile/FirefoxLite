@@ -75,10 +75,10 @@ import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.promotion.PromotionModel;
@@ -87,6 +87,7 @@ import org.mozilla.rocket.promotion.PromotionViewContract;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
@@ -1032,9 +1033,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     @Override
-    public void onQueryComplete(List<Session> session, String currentTabId) {
+    public void onQueryComplete(List<SessionManager.SessionWithState> states, String currentTabId) {
         isTabRestoredComplete = true;
-        getSessionManager().restoreTabs(session, currentTabId);
+        getSessionManager().restore(states, currentTabId);
         Session currentTab = getSessionManager().getFocusSession();
         if (!Settings.getInstance(this).shouldShowFirstrun() && currentTab != null && !getSupportFragmentManager().isStateSaved()) {
             screenNavigator.restoreBrowserScreen(currentTab.getId());

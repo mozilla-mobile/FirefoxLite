@@ -104,6 +104,32 @@ class SessionManager @JvmOverloads constructor(
         notifyObservers { onSessionCountChanged(sessions.size) }
     }
 
+    fun restore(states: List<SessionWithState>, focusTabId: String?) {
+
+        for (state in states) {
+            if (state.session.isValid()) {
+                getOrCreateEngineSession(state.session).let { link(state.session, it) }
+                this.sessions.add(state.session)
+            }
+        }
+
+        if (this.sessions.size > 0 && this.sessions.size == states.size) {
+            focusRef = WeakReference<Session>(getTab(focusTabId))
+        }
+
+        notifyObservers { onSessionCountChanged(sessions.size) }
+    }
+
+    fun add(session: Session,
+            selected: Boolean = false,
+            engineSession: TabViewEngineSession? = null,
+            parent: Session? = null
+    ) {
+        engineSession?.let { link(session, it) }
+        val parentId = parent?.id ?: null
+        session.url?.let { addTabInternal(it, parentId, session.isFromExternal, selected, null) }
+    }
+
     /**
      * Add a tab, its attributes are controlled by arguments. The default attributes of a new tab
      * is defined by @see{org.mozilla.focus.sessions.utils.TabUtil}. Usually it 1) has no parent
@@ -394,6 +420,11 @@ class SessionManager @JvmOverloads constructor(
         // update family relationship
         session.parentId = parentTab.id
     }
+
+    data class SessionWithState(
+            val session: Session,
+            val engineSession: TabViewEngineSession? = null
+    )
 
     internal inner class WindowClient(var source: Session) : TabViewEngineSession.WindowClient {
 
