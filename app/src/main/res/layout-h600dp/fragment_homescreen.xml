@@ -27,23 +27,26 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/vpn" />
 
-    <include layout="@layout/fragment_homescreen_item_title"
+    <include
+        android:id="@+id/include"
+        layout="@layout/fragment_homescreen_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/banner"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="36dp"
-        app:layout_constraintDimensionRatio="H,2:1"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintDimensionRatio="H,2:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         android:id="@+id/home_fragment_fake_input"
@@ -55,6 +58,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/arrow1"
+        layout="@layout/button_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/arrow2"
+        app:layout_constraintEnd_toEndOf="@+id/arrow2"
+        app:layout_constraintStart_toStartOf="@+id/arrow2" />
+
+    <include
+        android:id="@+id/arrow2"
+        layout="@layout/button_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <include layout="@layout/fragment_homescreen_item_recyclerview"
         android:id="@+id/main_list"
         android:layout_width="296dp"
@@ -64,6 +87,11 @@
         app:layout_constraintTop_toBottomOf="@id/home_fragment_fake_input"
         android:layout_marginTop="@dimen/home_padding_url_bar_to_top_sites"/>
 
-    <include layout="@layout/fragment_homescreen_item_menu_button"/>
+    <include layout="@layout/fragment_homescreen_item_menu_button"
+        android:id="@+id/btn_menu_container"/>
+
+    <include layout="@layout/content_portal"/>
+
+
 
 </org.mozilla.focus.widget.SwipeMotionLayout>

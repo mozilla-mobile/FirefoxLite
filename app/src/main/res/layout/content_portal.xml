@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<org.mozilla.rocket.content.ContentPortalView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:fitsSystemWindows="true"
+    android:background="@color/colorUrlInputBackground">
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_menu"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        tools:ignore="MissingPrefix">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="48dp"
+            android:paddingBottom="49dp">
+
+            <RelativeLayout
+                android:id="@+id/browsing_history_btm_sheet_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout style="@style/PanelEmptyHolderContainer">
+
+                    <ImageView
+                        style="@style/PanelEmptyHolderImage"
+                        android:src="@drawable/ic_illustration_no_bookmarks"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/PanelEmptyHolderText"
+                        android:text="No News is Good News!" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false" />
+            </RelativeLayout>
+
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="News"
+            android:textColor="@color/paletteLightBlack100"
+            android:textSize="16dp" />
+    </FrameLayout>
+
+</org.mozilla.rocket.content.ContentPortalView>

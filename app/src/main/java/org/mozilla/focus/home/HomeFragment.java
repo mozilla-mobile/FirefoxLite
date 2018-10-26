@@ -44,6 +44,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -77,6 +80,9 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.rocket.content.ContentPortalView;
+import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
+import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
@@ -120,9 +126,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
     public static final String BANNER_MANIFEST_DEFAULT = "";
 
+    private SwipeMotionLayout home_container;
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private ThemedImageButton btnMenu;
+    private ImageButton arrow1;
+    private ImageButton arrow2;
+    private ContentPortalView contentPanel;
     private View themeOnboardingLayer;
     private TabCounter tabCounter;
     private ThemedTextView fakeInput;
@@ -193,13 +203,19 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (enabled) {
             banner.setVisibility(View.VISIBLE);
         } else {
-            banner.setVisibility(View.INVISIBLE);
+            banner.setVisibility(View.GONE);
         }
     }
 
     @Override
     public Fragment getFragment() {
         return this;
+    }
+
+
+    // return true if there's a content portal to hide
+    public boolean hideContentPortal() {
+        return contentPanel.hide();
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -245,7 +261,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                         onRootConfigLoadedListener.onRootConfigLoaded(configArray);
                     }
                 };
-                for (int i = 0 ; i < length ; i++) {
+                for (int i = 0; i < length; i++) {
                     new LoadConfigTask(new WeakReference<>(onConfigLoadedListener), i).execute(jsonArray.getString(i), userAgent, Integer.toString(SocketTags.BANNER));
                 }
             } catch (JSONException e) {
@@ -374,12 +390,20 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.btnMenu = view.findViewById(R.id.btn_menu_home);
         this.btnMenu.setOnClickListener(menuItemClickListener);
+
         this.btnMenu.setOnLongClickListener(v -> {
             // Long press menu always show download panel
             FragmentListener.notifyParent(HomeFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
             TelemetryWrapper.longPressDownloadIndicator();
             return false;
         });
+        this.arrow1 = view.findViewById(R.id.arrow1);
+        this.arrow2 = view.findViewById(R.id.arrow2);
+        final Animation fadeout = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_out);
+        final Animation fadein = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_in);
+        Inject.startAnimation(arrow1, fadeout);
+        Inject.startAnimation(arrow2, fadein);
+        this.contentPanel = view.findViewById(R.id.content_panel);
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
@@ -436,7 +460,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         };
         snapHelper.attachToRecyclerView(banner);
 
-        SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
+        home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());
 
         if (ThemeManager.shouldShowOnboarding(view.getContext())) {
@@ -953,16 +977,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+
     private class GestureListenerAdapter implements OnSwipeListener {
 
         @Override
         public void onSwipeUp() {
-            btnMenu.performClick();
+            contentPanel.show();
         }
 
         @Override
         public void onSwipeDown() {
-            fakeInput.performClick();
+            // do nothing
         }
 
         @Override
@@ -1011,7 +1036,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 }
                 scheduleRefresh(handler);
             };
-            for (int i = 0 ; i < fileUris.size() ; i++) {
+            for (int i = 0; i < fileUris.size(); i++) {
                 if (i == fileUris.size() - 1) {
                     BrowsingHistoryManager.updateHistory(null, urls.get(i), fileUris.get(i), listener);
                 } else {

@@ -12,6 +12,8 @@ import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.animation.Animation;
 
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.TabsDatabase;
@@ -100,5 +102,9 @@ public class Inject {
     public static DownloadInfoViewModel obtainDownloadInfoViewModel(FragmentActivity activity) {
         DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(DownloadInfoViewModel.class);
+    }
+
+    public static void startAnimation(View view, Animation animation) {
+        view.startAnimation(animation);
     }
 }
