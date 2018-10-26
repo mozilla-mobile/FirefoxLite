@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.rocket.content.HomeFragmentViewState
 
 class RocketLauncherActivity : AppCompatActivity() {
 
@@ -11,6 +12,7 @@ class RocketLauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val action = LaunchIntentDispatcher.dispatch(this, intent)
+        HomeFragmentViewState.reset()
         when (action) {
             LaunchIntentDispatcher.Action.HANDLED -> finish()
             LaunchIntentDispatcher.Action.NORMAL -> dispatchNormalIntent()

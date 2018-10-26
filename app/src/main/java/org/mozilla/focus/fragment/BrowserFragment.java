@@ -77,6 +77,7 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
+import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
@@ -880,6 +881,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 TelemetryWrapper.clickToolbarSearch();
                 break;
             case R.id.btn_open_new_tab:
+                HomeFragmentViewState.reset();
                 ScreenNavigator.get(getContext()).addHomeScreen(true);
                 TelemetryWrapper.clickAddTabToolbar();
                 break;

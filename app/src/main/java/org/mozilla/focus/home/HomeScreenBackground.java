@@ -47,7 +47,7 @@ public class HomeScreenBackground extends ThemedImageView implements ThemeManage
     }
 
     void init() {
-        Rect rect = new Rect();
+        final Rect rect = new Rect();
         ((Activity) getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.home_pattern);
         paint = new Paint();
