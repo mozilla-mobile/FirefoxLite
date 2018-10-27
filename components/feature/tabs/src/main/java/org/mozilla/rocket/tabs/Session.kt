@@ -67,6 +67,21 @@ class Session @JvmOverloads constructor(
     }
 
     /**
+     * Navigation state, true if there's an history item to go back to, otherwise false.
+     */
+    var canGoBack: Boolean by Delegates.observable(false) { _, old, new ->
+        notifyObservers(old, new) { onNavigationStateChanged(this@Session, new, canGoForward) }
+    }
+
+    /**
+     * Navigation state, true if there's an history item to go forward to, otherwise false.
+     */
+    var canGoForward: Boolean by Delegates.observable(false) { _, old, new ->
+        notifyObservers(old, new) { onNavigationStateChanged(this@Session, canGoBack, new) }
+    }
+
+
+    /**
      * Security information indicating whether or not the current session is
      * for a secure URL, as well as the host and SSL certificate authority, if applicable.
      */
@@ -112,6 +127,7 @@ class Session @JvmOverloads constructor(
 
     interface Observer {
         fun onLoadingStateChanged(session: Session, loading: Boolean) = Unit
+        fun onNavigationStateChanged(session: Session, canGoBack: Boolean, canGoForward: Boolean) = Unit
         fun onSecurityChanged(session: Session, isSecure: Boolean) = Unit
         fun onUrlChanged(session: Session, url: String?) = Unit
         fun onProgress(session: Session, progress: Int) = Unit

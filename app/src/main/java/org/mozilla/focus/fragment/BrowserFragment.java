@@ -864,9 +864,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     public boolean canGoForward() {
         return sessionManager.getFocusSession() != null
-                && sessionManager.getFocusSession().getEngineSession() != null
-                && sessionManager.getFocusSession().getEngineSession().getTabView() != null
-                && sessionManager.getFocusSession().getEngineSession().getTabView().canGoForward();
+                && sessionManager.getFocusSession().getCanGoForward();
     }
 
     public boolean isLoading() {
@@ -875,9 +873,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     public boolean canGoBack() {
         return sessionManager.getFocusSession() != null
-                && sessionManager.getFocusSession().getEngineSession() != null
-                && sessionManager.getFocusSession().getEngineSession().getTabView() != null
-                && sessionManager.getFocusSession().getEngineSession().getTabView().canGoBack();
+                && sessionManager.getFocusSession().getCanGoBack();
     }
 
     public void goBack() {
@@ -1268,6 +1264,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                     false);
             permissionHandler.tryAction(BrowserFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, d);
             return true;
+        }
+
+        @Override
+        public void onNavigationStateChanged(@NotNull Session session, boolean canGoBack, boolean canGoForward) {
         }
     }
 
