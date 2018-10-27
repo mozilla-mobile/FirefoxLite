@@ -121,11 +121,23 @@ class TabViewEngineSession constructor(
         override fun onPageStarted(url: String?) {
             es.notifyObservers { onLoadingStateChange(true) }
             url?.let { es.notifyObservers { onLocationChange(it) } }
+
+            es.tabView?.let {
+                es.notifyObservers {
+                    onNavigationStateChange(it.canGoBack(), it.canGoForward())
+                }
+            }
         }
 
         override fun onPageFinished(isSecure: Boolean) {
             es.notifyObservers { onLoadingStateChange(false) }
             es.notifyObservers { onSecurityChange(isSecure) }
+
+            es.tabView?.let {
+                es.notifyObservers {
+                    onNavigationStateChange(it.canGoBack(), it.canGoForward())
+                }
+            }
         }
 
         override fun onURLChanged(url: String?) {
@@ -169,6 +181,9 @@ class TabViewEngineSession constructor(
         override fun onReceivedTitle(view: TabView, title: String?) {
             if (title != null) {
                 es.notifyObservers { onTitleChange(title) }
+            }
+            es.notifyObservers {
+                onNavigationStateChange(view.canGoBack(), view.canGoForward())
             }
         }
 
