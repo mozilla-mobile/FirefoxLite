@@ -7,11 +7,16 @@
   <string name="menu_about">Tomimbihu</string>
   <string name="menu_help">Wubodu</string>
   <string name="menu_rights">Hakūmu</string>
+  <string name="menu_give_feedback">Wohiye potuhata</string>
   <string name="menu_share_with_friends">Tayade ode tamani</string>
   <string name="share_dialog_title">Tayade ode</string>
   <string name="find_in_page_input">Lolohe to halaman</string>
   <string name="find_in_page_result">%1$d/%2$d</string>
-  <string name="text_selection_search_action">Lolohe to Firefox Rocket</string>
+  <string name="accessibility_find_in_page_result">%1$d lonto %2$d</string>
+  <string name="accessibility_find_next_result">Lolohe hasili lapatiyo</string>
+  <string name="accessibility_find_previous_result">Lolohe hasili yilalu</string>
+  <string name="accessibility_dismiss_find_in_page">He\'uti mololohu to halaman</string>
+  <string name="text_selection_search_action">Lolohe to Firefox Lite</string>
   <string name="about_content_body">%1$s utiye peramban molinggahu wawu mohēlo pilohutu lo %2$s. Patuju lami mopolayi\'a internet sēhati wawu bu\'a-bu\'adu.</string>
   <string name="about_link_learn_more">Pobalājariyapo</string>
   <string name="about_link_support">Modūkungi</string>
@@ -32,6 +37,7 @@
   <string name="preference_learn_more">Pobalājariyapo</string>
   <string name="preference_about">Tomimbihu</string>
   <string name="preference_night_mode_brightness">Tilango mode huyi</string>
+  <string name="night_mode_on_boarding_message">Woduta mohihewo mopo\'otilango</string>
   <string name="content_description_clear_input">Luluta tiluwoto</string>
   <string name="content_description_dismiss_input">Hulīma\'o</string>
   <string name="content_description_lock">Sambungan āmani</string>
@@ -60,19 +66,32 @@
   <string name="contextmenu_open_in_new_tab">Hu\'owa wūmbuta to tab bohu</string>
   <string name="contextmenu_open_image_in_new_tab">Hu\'owa gāmbari to tab bohu</string>
   <string name="first_run_page1_title">Odu\'olo mā lolulawoto %1$s</string>
+  <string name="first_run_page1_text">Peramban pilohutu lo %1$s, organisasi nirlaba yang berkomitmen to situs pereyi wawu bu\'a-bu\'adu.</string>
+  <string name="first_run_page2_title">Monguli\'ato ngo\'ita lomato</string>
+  <string name="first_run_page3_title">Hemat data = hemat doyi</string>
+  <string name="first_run_page3_text">Hemat kuota data wolo momubulo iklan u\'alupo. Lebe hemat da\'a wonu Yi\'o mopo\'aktif bubulo gambari.</string>
+  <string name="first_run_page5_title">Privasi lenggota de yitato</string>
+  <string name="new_name_upgrade_page_title">Bibilohu bohu!</string>
   <string name="first_run_upgrade_page_text1_highlight">multi tab</string>
+  <string name="first_run_upgrade_page_text2">2. Akses situs favorit Ulemu wolo u molinggahu %s</string>
+  <string name="first_run_upgrade_page_text2_highlight">Duhengi ode duledehu!</string>
   <string name="firstrun_close_button">OKE, mā otāwa!</string>
   <string name="firstrun_skip_button">Lawodi</string>
   <string name="label_menu_bookmark">Tuwoto buku</string>
   <string name="label_menu_download">Pilopohuli</string>
+  <string name="label_menu_find_in_page">Lolohe to halaman</string>
   <string name="label_menu_clear_cache">Luluta pilohepita</string>
   <string name="label_menu_history">Riwāyati</string>
   <string name="label_menu_share">Tayade</string>
+  <string name="label_menu_capture_page">Tahuwa layar</string>
   <string name="label_menu_turbo_mode">Mode susupo</string>
+  <string name="label_menu_night_mode">Bibilohu huyi</string>
   <string name="label_menu_block_ads">Bubuli Ads</string>
   <string name="label_menu_block_image">Bubuli gāmbari</string>
   <string name="label_menu_settings">Setelan</string>
   <string name="label_menu_exit">Lumuwalo</string>
+  <string name="permission_toast_location_deny">Momilohu bilulo\'a diliniliyo.</string>
+  <string name="permission_toast_storage_deny">Ijin molahu diliniliyo.</string>
   <string name="permission_dialog_setting">setelan</string>
   <string name="permission_dialog_not_now">dīpo utiye</string>
   <string name="permission_toast_location">Bilulo\'a ja otāwa. Wohiye ījini mongotota bilulo\'amu.</string>
@@ -129,6 +148,7 @@
   <string name="screenshot_image_viewer_dialog_info_title1">Judul: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Luluta gāmbari botiya?</string>
+  <string name="file_picker_title">Tulawota berkas detohulo</string>
   <string name="message_enable_turbo_mode">Turbo mode pasi-pasi</string>
   <string name="message_disable_turbo_mode">Turbo mode ja pasi-pasi</string>
   <string name="message_enable_block_image">Sa\'ati botiya bubuli gāmbari</string>
@@ -139,10 +159,10 @@
   <string name="message_cleared_browsing_data">Data monguli\'ato yiluluto</string>
   <string name="remove">Yinggila</string>
   <string name="privacy_policy_update_notification_title">Mopo\'ota mopobohu produk</string>
-  <string name="privacy_policy_update_notification_action">Alihu Firefox Rocket lebe mopiyohu ode olemu wawu nga\'amila tawu, ami lomoli\'a ngolobotu tinepo privasi lami. Tepuwa u mobalājari.</string>
+  <string name="privacy_policy_update_notification_action">Alihu Firefox Lite lebe mopiyohu ode olemu wawu nga\'amila tawu, ami lomoli\'a ngolobotu tinepo privasi lami. Tepuwa u mobalājari.</string>
   <string name="rate_app_dialog_text_title">Motohilawo %1$s?</string>
-  <string name="rate_app_dialog_btn_go_rate">Jō, wohī 5 poliyama!</string>
-  <string name="rate_app_notification_action_rate">WOHĪ 5 POLIYAMA</string>
+  <string name="rate_app_dialog_btn_go_rate">Wohiye Lenggota</string>
+  <string name="rate_app_notification_action_rate">WOHIYE LENGGOTA</string>
   <string name="share_app_dialog_text_title">Tayade %1$s ode tamani!</string>
   <string name="share_app_dialog_btn_share">Tayade</string>
   <string name="new_background_tab_hint">Tab bohu hilu\'o</string>
@@ -162,4 +182,5 @@
   <string name="bookmarks_empty_view_msg">Diya\'a tuwoto buku</string>
   <string name="edit_bookmark">Boli\'a</string>
   <string name="private_browsing_open_action">HU\'OWA</string>
+  <string name="exp_survey_no">DE\'E</string>
 </resources>
