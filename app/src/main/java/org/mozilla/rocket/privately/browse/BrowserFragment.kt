@@ -19,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
+import org.mozilla.focus.feature.session.SessionFeature
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -47,6 +48,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private var listener: FragmentListener? = null
 
     private lateinit var sessionManager: SessionManager
+    private lateinit var feature: SessionFeature
     private lateinit var observer: Observer
 
     private lateinit var browserContainer: ViewGroup
@@ -82,6 +84,7 @@ class BrowserFragment : LocaleAwareFragment(),
             if (fragmentActivity is TabsSessionProvider.SessionHost) {
                 sessionManager = fragmentActivity.sessionManager
                 observer = Observer(this)
+                feature = SessionFeature(sessionManager, tabViewSlot)
             }
         }
     }
@@ -175,18 +178,18 @@ class BrowserFragment : LocaleAwareFragment(),
             if (it.isNotBlank()) {
                 displayUrlView.text = url
                 if (sessionManager.tabsCount == 0) {
-                    sessionManager.addTab(url, TabUtil.argument(null, false, true))
+                    feature.add(url, null, false, true)
                 } else {
-                    sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
+                    feature.loadUrl(url)
                 }
             }
         }
     }
 
-    private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
-    private fun goForward() = sessionManager.focusSession?.engineSession?.goForward()
-    private fun stop() = sessionManager.focusSession?.engineSession?.stopLoading()
-    private fun reload() = sessionManager.focusSession?.engineSession?.reload()
+    private fun goBack() = feature.goBack()
+    private fun goForward() = feature.goForward()
+    private fun stop() = feature.stop()
+    private fun reload() = feature.reload()
 
     private fun registerData(activity: FragmentActivity) {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
@@ -306,8 +309,7 @@ class BrowserFragment : LocaleAwareFragment(),
             if (loading) {
                 fragment.btnLoad.setImageResource(R.drawable.ic_close)
             } else {
-                val es = fragment.sessionManager.focusSession?.engineSession ?: return
-                fragment.btnNext.isEnabled = es.tabView?.canGoForward() ?: false
+                fragment.btnNext.isEnabled = session.canGoForward
                 fragment.btnLoad.setImageResource(R.drawable.ic_refresh)
             }
         }
