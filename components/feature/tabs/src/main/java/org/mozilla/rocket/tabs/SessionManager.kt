@@ -82,7 +82,7 @@ class SessionManager @JvmOverloads constructor(
         for (state in states) {
             if (state.session.isValid()) {
                 getOrCreateEngineSession(state.session).let { link(state.session, it) }
-                state.session.engineSession?.webViewState = state.engineSession?.webViewState
+                state.session.engineSessionHolder.engineSession?.webViewState = state.engineSession?.webViewState
                 this.sessions.add(insertPos++, state.session)
             }
         }
@@ -101,7 +101,7 @@ class SessionManager @JvmOverloads constructor(
         parent: Session? = null
     ) {
         engineSession?.let { link(session, it) }
-        val parentId = parent?.id ?: null
+        val parentId = parent?.id
         session.url?.let { addTabInternal(it, parentId, session.isFromExternal, selected, null) }
     }
 
@@ -230,7 +230,7 @@ class SessionManager @JvmOverloads constructor(
      */
     fun pause() {
         for (session in sessions) {
-            session.engineSession?.tabView?.onPause()
+            session.engineSessionHolder.engineSession?.tabView?.onPause()
         }
     }
 
@@ -239,11 +239,11 @@ class SessionManager @JvmOverloads constructor(
      */
     fun resume() {
         for (session in sessions) {
-            session.engineSession?.tabView?.onResume()
+            session.engineSessionHolder.engineSession?.tabView?.onResume()
         }
     }
 
-    fun getEngineSession(session: Session) = session.engineSession
+    fun getEngineSession(session: Session) = session.engineSessionHolder.engineSession
 
     fun getOrCreateEngineSession(session: Session): TabViewEngineSession {
         getEngineSession(session)?.let { return it }
@@ -254,15 +254,15 @@ class SessionManager @JvmOverloads constructor(
     }
 
     private fun initializeEngineView(session: Session) {
-        if (session.engineSession == null) {
+        if (session.engineSessionHolder.engineSession == null) {
             getOrCreateEngineSession(session)
         }
 
         val url = if (TextUtils.isEmpty(session.url)) session.initialUrl else session.url
         val tabView = tabViewProvider.create()
-        session.engineSession?.tabView = tabView
-        if (session.engineSession?.webViewState != null) {
-            tabView.restoreViewState(session.engineSession?.webViewState)
+        session.engineSessionHolder.engineSession?.tabView = tabView
+        if (session.engineSessionHolder.engineSession?.webViewState != null) {
+            tabView.restoreViewState(session.engineSessionHolder.engineSession?.webViewState)
         } else if (!TextUtils.isEmpty(url)) {
             tabView.loadUrl(url)
         }
@@ -271,21 +271,23 @@ class SessionManager @JvmOverloads constructor(
     private fun link(session: Session, engineSession: TabViewEngineSession) {
         unlink(session)
 
-        session.engineObserver = TabViewEngineObserver(session).also { observer ->
+        session.engineSessionHolder.engineObserver = TabViewEngineObserver(session).also { observer ->
             engineSession.register(observer)
         }
-        engineSession.windowClient = WindowClient(session)
-        engineSession.engineSessionClient = Client()
-        session.engineSession = engineSession
+        session.engineSessionHolder.engineSession = engineSession.also {
+            it.windowClient = WindowClient(session)
+            it.engineSessionClient = Client()
+
+        }
     }
 
     private fun unlink(session: Session) {
-        session.engineObserver?.let { observer ->
-            session.engineSession?.unregister(observer)
+        session.engineSessionHolder.engineObserver?.let { observer ->
+            session.engineSessionHolder.engineSession?.unregister(observer)
         }
-        session.engineSession?.destroy()
-        session.engineSession = null
-        session.engineObserver = null
+        session.engineSessionHolder.engineSession?.destroy()
+        session.engineSessionHolder.engineSession = null
+        session.engineSessionHolder.engineObserver = null
     }
 
     private fun destroySession(session: Session) {
@@ -396,16 +398,15 @@ class SessionManager @JvmOverloads constructor(
             val tab = getTab(id)
                     ?: // FIXME: why null?
                     return false
-            if (tab.engineSession == null || tab.engineSession!!.tabView == null) {
-                throw RuntimeException("webview is null, previous creation failed")
-            }
-            tab.engineSession!!.tabView!!.bindOnNewWindowCreation(msg)
+            tab.engineSessionHolder.engineSession?.tabView
+                    ?: throw RuntimeException("webview is null, previous creation failed")
+            tab.engineSessionHolder.engineSession!!.tabView!!.bindOnNewWindowCreation(msg)
             return true
         }
 
         override fun onCloseWindow(es: TabViewEngineSession) {
-            if (source.engineSession === es) {
-                sessions.firstOrNull { it.engineSession == es }
+            if (source.engineSessionHolder.engineSession === es) {
+                sessions.firstOrNull{ it.engineSessionHolder.engineSession == es}
                         ?.let { session -> closeTab(session.id) }
             }
         }

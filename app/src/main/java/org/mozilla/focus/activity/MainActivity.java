@@ -95,6 +95,7 @@ import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -1116,10 +1117,13 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             return;
         }
 
-        List<Session> sessions = getSessionManager().getTabs();
+        final SessionManager mgr = getSessionManager();
+        final List<Session> sessions = mgr.getTabs();
+        final List<SessionManager.SessionWithState> states = new ArrayList<>();
         for (Session s : sessions) {
-            if (s.getEngineSession() != null) {
-                s.getEngineSession().saveState();
+            if (mgr.getEngineSession(s) != null) {
+                mgr.getEngineSession(s).saveState();
+                states.add(new SessionManager.SessionWithState(s, mgr.getEngineSession(s)));
             }
         }
 
@@ -1127,7 +1131,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 ? getSessionManager().getFocusSession().getId()
                 : null;
 
-        TabModelStore.getInstance(this).saveTabs(this, sessions, currentTabId, null);
+        TabModelStore.getInstance(this).saveTabs(this, states, currentTabId, null);
     }
 
     @Override

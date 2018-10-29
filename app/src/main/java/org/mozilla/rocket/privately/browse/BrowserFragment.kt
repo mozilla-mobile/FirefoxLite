@@ -37,7 +37,6 @@ import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabViewEngineSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
-import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.mozilla.urlutils.UrlUtils
@@ -88,7 +87,7 @@ class BrowserFragment : LocaleAwareFragment(),
         } else {
             if (fragmentActivity is TabsSessionProvider.SessionHost) {
                 sessionManager = fragmentActivity.sessionManager
-                observer = Observer(this)
+                observer = Observer(this, sessionManager)
                 feature = SessionFeature(sessionManager, tabViewSlot)
             }
         }
@@ -167,9 +166,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
     override fun onBackPressed(): Boolean {
         val focus = sessionManager.focusSession ?: return false
-        val tabView = focus.engineSession?.tabView ?: return false
 
-        if (tabView.canGoBack()) {
+        if (focus.canGoBack) {
             goBack()
             return true
         }
@@ -236,7 +234,11 @@ class BrowserFragment : LocaleAwareFragment(),
         listener.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
     }
 
-    class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
+    class Observer(
+            val fragment: BrowserFragment,
+            val sessionManager: SessionManager
+    ) : SessionManager.Observer, Session.Observer {
+
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
             // do nothing, exist for interface compatibility only.
         }
@@ -255,7 +257,7 @@ class BrowserFragment : LocaleAwareFragment(),
         var session: Session? = null
 
         override fun onSessionAdded(session: Session, arguments: Bundle?) {
-            session.engineSession?.tabView?.let {
+            sessionManager.getOrCreateEngineSession(session).tabView?.let {
                 fragment.tabViewSlot.addView(it.view)
             }
         }
@@ -313,7 +315,11 @@ class BrowserFragment : LocaleAwareFragment(),
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            session?.engineSession?.tabView?.let { if (it is WebView) it.clearFocus() }
+            if (session != null) {
+                sessionManager.getOrCreateEngineSession(session!!).tabView?.let {
+                    if (it is WebView) it.clearFocus()
+                }
+            }
         }
 
         override fun onUrlChanged(session: Session, url: String?) {
