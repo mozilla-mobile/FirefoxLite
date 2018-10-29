@@ -132,6 +132,7 @@ class BrowserFragment : LocaleAwareFragment(),
         super.onPause()
         activity?.let { unregisterData(it) }
 
+        sessionManager.focusSession?.unregister(observer)
         sessionManager.unregister(observer)
         sessionManager.pause()
     }
