@@ -1065,7 +1065,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             fullscreenCallback = callback;
 
-            if (session.getEngineSession().getTabView() != null && fullscreenContentView != null) {
+
+            if (sessionManager.getOrCreateEngineSession(session).getTabView() != null
+                    && fullscreenContentView != null) {
                 // Hide browser UI and web content
                 browserContainer.setVisibility(View.INVISIBLE);
 
@@ -1109,8 +1111,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             // The workaround is clearing WebView focus
             // The WebView will be normal when it gets focus again.
             // If android change behavior after, can remove this.
-            if (session.getEngineSession().getTabView() instanceof WebView) {
-                ((WebView) session.getEngineSession().getTabView()).clearFocus();
+            TabView tabView = sessionManager.getOrCreateEngineSession(session).getTabView();
+            if (tabView instanceof WebView) {
+                ((WebView) tabView).clearFocus();
             }
         }
 
@@ -1366,7 +1369,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 return;
             }
 
-            TabView tabView = tab.getEngineSession().getTabView();
+            TabView tabView = sessionManager.getOrCreateEngineSession(tab).getTabView();
             if (tabView != null) {
                 tabView.insertBrowsingHistory();
             }

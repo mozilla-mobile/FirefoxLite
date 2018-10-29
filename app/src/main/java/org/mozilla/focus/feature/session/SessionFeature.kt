@@ -99,7 +99,7 @@ class SessionFeature(
     fun restoreSession(savedState: Bundle) {
         // FIXME: Obviously, only restore current tab is not enough
         val focusSession = sessionManager.focusSession ?: return
-        val tabView = focusSession.engineSession?.tabView
+        val tabView = sessionManager.getOrCreateEngineSession(focusSession).tabView
         if (tabView != null) {
             tabView.restoreViewState(savedState)
         } else {
@@ -119,7 +119,8 @@ class SessionFeature(
         // TODO: Better if we can move this logic to some setting-like classes, and provider interface
         // for configuring blocking function of each tab.
         for (session in sessionManager.getTabs()) {
-            session.engineSession?.tabView?.setContentBlockingEnabled(enabled)
+            val es = sessionManager.getEngineSession(session)
+            es?.tabView?.setContentBlockingEnabled(enabled)
         }
     }
 
@@ -127,15 +128,17 @@ class SessionFeature(
         // TODO: Better if we can move this logic to some setting-like classes, and provider interface
         // for configuring blocking function of each tab.
         for (session in sessionManager.getTabs()) {
-            session.engineSession?.tabView?.setImageBlockingEnabled(enabled)
+            val es = sessionManager.getEngineSession(session)
+            es?.tabView?.setImageBlockingEnabled(enabled)
         }
     }
 
     fun prepareViewsOnTransition(target: Session): Pair<View?, View> {
-        val inView = target.engineSession?.tabView?.view
+        val es = sessionManager.getEngineSession(target)
+        val inView = es?.tabView?.view
                 ?: throw java.lang.RuntimeException("Tabview should be created at this moment and never be null")
         // ensure it does not have attach to parent earlier.
-        target.engineSession?.detach()
+        es.detach()
 
         val outView = findExistingTabView(webViewSlot)
         return Pair(outView, inView)

@@ -203,22 +203,22 @@ public class WebContextMenu {
     }
 
     private static void openInNewTab(final TabView source, final Dialog dialog, final String url) {
-        final SessionManager session = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
-        final List<Session> tabs = session.getTabs();
+        final SessionManager manager = TabsSessionProvider.getOrThrow(dialog.getOwnerActivity());
+        final List<Session> sessions = manager.getTabs();
 
         String parentId = null;
 
         // Try to find parent tab for new tab
-        for (final Session tab : tabs) {
-            if (tab.getEngineSession().getTabView() == source) {
-                parentId = tab.getId();
+        for (final Session s : sessions) {
+            if (manager.getEngineSession(s).getTabView() == source) {
+                parentId = s.getId();
                 break;
             }
         }
 
         Bundle args = TabUtil.argument(parentId, false, false);
         args.putInt(BrowserFragment.EXTRA_NEW_TAB_SRC, BrowserFragment.SRC_CONTEXT_MENU);
-        session.addTab(url, args);
+        manager.addTab(url, args);
         TelemetryWrapper.addNewTabFromContextMenu();
     }
 }

@@ -56,7 +56,7 @@ public class TabModelStore {
     }
 
     public void saveTabs(@NonNull final Context context,
-                         @NonNull final List<Session> sessionList,
+                         @NonNull final List<SessionManager.SessionWithState> states,
                          @Nullable final String focusTabId,
                          @Nullable final AsyncSaveListener listener) {
 
@@ -65,7 +65,7 @@ public class TabModelStore {
                 .putString(context.getResources().getString(R.string.pref_key_focus_tab_id), focusTabId)
                 .apply();
 
-        new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, sessionList.toArray(new Session[0]));
+        new SaveTabsTask(context, tabsDatabase, listener).executeOnExecutor(SERIAL_EXECUTOR, states.toArray(new SessionManager.SessionWithState[0]));
     }
 
     private static class QueryTabsTask extends AsyncTask<Void, Void, List<SessionManager.SessionWithState>> {
@@ -124,7 +124,7 @@ public class TabModelStore {
         }
     }
 
-    private static class SaveTabsTask extends AsyncTask<Session, Void, Void> {
+    private static class SaveTabsTask extends AsyncTask<SessionManager.SessionWithState, Void, Void> {
 
         private WeakReference<Context> contextRef;
         private TabsDatabase tabsDatabase;
@@ -137,21 +137,21 @@ public class TabModelStore {
         }
 
         @Override
-        protected Void doInBackground(Session... sessionList) {
-            if (sessionList != null) {
+        protected Void doInBackground(SessionManager.SessionWithState... states) {
+            if (states != null) {
                 Context context = contextRef.get();
                 if (context != null) {
-                    saveWebViewState(context, sessionList);
+                    saveWebViewState(context, states);
                 }
 
                 if (tabsDatabase != null) {
-                    TabEntity[] entities = new TabEntity[sessionList.length];
+                    TabEntity[] entities = new TabEntity[states.length];
                     for (int i = 0; i < entities.length; i++) {
-                        entities[i] = new TabEntity(sessionList[i].getId(),
-                                sessionList[i].getParentId());
+                        entities[i] = new TabEntity(states[i].getSession().getId(),
+                                states[i].getSession().getParentId());
 
-                        entities[i].setTitle(sessionList[i].getTitle());
-                        entities[i].setUrl(sessionList[i].getUrl());
+                        entities[i].setTitle(states[i].getSession().getTitle());
+                        entities[i].setUrl(states[i].getSession().getUrl());
                     }
                     tabsDatabase.tabDao().deleteAllTabsAndInsertTabsInTransaction(entities);
                 }
@@ -160,18 +160,18 @@ public class TabModelStore {
             return null;
         }
 
-        private void saveWebViewState(@NonNull Context context, @NonNull Session[] sessionList) {
+        private void saveWebViewState(@NonNull Context context, @NonNull SessionManager.SessionWithState[] states) {
             final File cacheDir = new File(context.getCacheDir(), TAB_WEB_VIEW_STATE_FOLDER_NAME);
             final List<File> updateFileList = new ArrayList<>();
 
-            for (Session session : sessionList) {
-                if (session != null
-                        && session.getEngineSession() != null
-                        && session.getEngineSession().getWebViewState() != null) {
+            for (SessionManager.SessionWithState state : states) {
+                if (state != null
+                        && state.getEngineSession() != null
+                        && state.getEngineSession().getWebViewState() != null) {
                     FileUtils.writeBundleToStorage(cacheDir,
-                            session.getId(),
-                            session.getEngineSession().getWebViewState());
-                    updateFileList.add(new File(cacheDir, session.getId()));
+                            state.getSession().getId(),
+                            state.getEngineSession().getWebViewState());
+                    updateFileList.add(new File(cacheDir, state.getSession().getId()));
                 }
             }
 

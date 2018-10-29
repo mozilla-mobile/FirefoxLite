@@ -28,8 +28,11 @@ class Session @JvmOverloads constructor(
         private val delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Observer> by delegate {
 
-    var engineSession: TabViewEngineSession? = null
-    var engineObserver: TabViewEngineSession.Observer? = null
+    /**
+     * Holder for keeping a reference to an engine session and its observer to update this session
+     * object.
+     */
+    internal val engineSessionHolder = EngineSessionHolder()
 
     var favicon: Bitmap? = null
 
