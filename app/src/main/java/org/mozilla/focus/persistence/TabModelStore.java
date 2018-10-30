@@ -12,6 +12,7 @@ import org.mozilla.focus.R;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
+import org.mozilla.rocket.tabs.ext.SessionKt;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -92,12 +93,11 @@ public class TabModelStore {
                             false,
                             mozilla.components.browser.session.Session.Source.NONE,
                             entity.getId());
+                    SessionKt.setParentId(session, entity.getParentId());
                     // We seemed to have historically stored null into the DB. This patch help guarantee Session.title
                     // will be non-null.
                     final String title = entity.getTitle() == null ? "" : entity.getTitle();
                     session.setTitle(title);
-                    session.setParentId(entity.getParentId());
-
                     sessions.add(session);
                 }
 
@@ -154,7 +154,7 @@ public class TabModelStore {
                     TabEntity[] entities = new TabEntity[states.length];
                     for (int i = 0; i < entities.length; i++) {
                         entities[i] = new TabEntity(states[i].getSession().getId(),
-                                states[i].getSession().getParentId());
+                                SessionKt.getParentId(states[i].getSession()));
 
                         entities[i].setTitle(states[i].getSession().getTitle());
                         entities[i].setUrl(states[i].getSession().getUrl());

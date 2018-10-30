@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
+
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import mozilla.components.support.base.observer.Consumable
@@ -22,6 +23,10 @@ import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_ADDED
 import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_REMOVED
 import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_TAB_SWITCHED
 import org.mozilla.rocket.tabs.SessionManager.Observer
+import org.mozilla.rocket.tabs.ext.BLANK_URL
+import org.mozilla.rocket.tabs.ext.ID_EXTERNAL
+import org.mozilla.rocket.tabs.ext.isFromExternal
+import org.mozilla.rocket.tabs.ext.isValid
 import org.mozilla.rocket.tabs.utils.TabUtil
 import java.lang.ref.WeakReference
 import java.util.ArrayList
@@ -102,7 +107,7 @@ class SessionManager @JvmOverloads constructor(
     ) {
         engineSession?.let { link(session, it) }
         val parentId = parent?.id
-        session.url?.let { addTabInternal(it, parentId, session.isFromExternal, selected, null) }
+        session.url?.let { addTabInternal(it, parentId, session.isFromExternal(), selected, null) }
     }
 
     /**
@@ -182,7 +187,7 @@ class SessionManager @JvmOverloads constructor(
         if (TextUtils.isEmpty(removedSession.parentId)) {
             focusRef.clear()
             notifier.notifyTabFocused(null, FACTOR_NO_FOCUS)
-        } else if (TextUtils.equals(removedSession.parentId, Session.ID_EXTERNAL)) {
+        } else if (TextUtils.equals(removedSession.parentId, ID_EXTERNAL)) {
             focusRef.clear()
             notifier.notifyTabFocused(null, FACTOR_BACK_EXTERNAL)
         } else {
@@ -262,7 +267,7 @@ class SessionManager @JvmOverloads constructor(
         session.engineSessionHolder.engineSession?.tabView = tabView
         if (session.engineSessionHolder.engineSession?.webViewState != null) {
             tabView.restoreViewState(session.engineSessionHolder.engineSession?.webViewState)
-        } else if (!TextUtils.equals(session.url, Session.BLANK_URL)) {
+        } else if (!TextUtils.equals(session.url, BLANK_URL)) {
             tabView.loadUrl(session.url)
         }
     }
@@ -302,14 +307,14 @@ class SessionManager @JvmOverloads constructor(
         arguments: Bundle?
     ): String {
 
-        val initUrl = url ?: Session.BLANK_URL
+        val initUrl = url ?: BLANK_URL
         val tab = Session(initialUrl = initUrl)
 
         tab.parentId = parentId
 
         val parentIndex = if (TextUtils.isEmpty(parentId)) -1 else getTabIndex(parentId!!)
         if (fromExternal) {
-            tab.parentId = Session.ID_EXTERNAL
+            tab.parentId = ID_EXTERNAL
             sessions.add(tab)
         } else {
             insertTab(parentIndex, tab)
@@ -407,7 +412,7 @@ class SessionManager @JvmOverloads constructor(
 
         override fun onCloseWindow(es: TabViewEngineSession) {
             if (source.engineSessionHolder.engineSession === es) {
-                sessions.firstOrNull{ it.engineSessionHolder.engineSession == es}
+                sessions.firstOrNull { it.engineSessionHolder.engineSession == es }
                         ?.let { session -> closeTab(session.id) }
             }
         }

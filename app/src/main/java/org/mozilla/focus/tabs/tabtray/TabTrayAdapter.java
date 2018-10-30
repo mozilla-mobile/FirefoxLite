@@ -37,6 +37,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.ext.SessionKt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -161,7 +162,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
 
-        Bitmap favicon = tab.getFavicon();
+        Bitmap favicon = SessionKt.getFavicon(tab);
         FaviconModel model = new FaviconModel(tab.getUrl(),
                 DimenUtils.getFavIconType(holder.itemView.getResources(), favicon),
                 favicon);
@@ -197,7 +198,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     private void loadGeneratedFavicon(Session tab, final ViewHolder holder) {
         Character symbol = FavIconUtils.getRepresentativeCharacter(tab.getUrl());
-        Bitmap favicon = tab.getFavicon();
+        Bitmap favicon = SessionKt.getFavicon(tab);
         int backgroundColor = (favicon == null) ? Color.WHITE : FavIconUtils.getDominantColor(favicon);
         String key = symbol.toString() + "_" + Integer.toHexString(backgroundColor);
 
