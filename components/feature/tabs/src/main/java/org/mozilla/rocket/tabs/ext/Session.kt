@@ -6,6 +6,7 @@ import android.view.View
 import android.webkit.GeolocationPermissions
 import mozilla.components.browser.session.Session.Source
 import mozilla.components.support.base.observer.ObserverRegistry
+import org.mozilla.rocket.tabs.EngineSessionHolder
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.TabView
 import java.util.WeakHashMap
@@ -29,6 +30,10 @@ var Session.favicon: Bitmap?
     set(value) {
         getOrPutExtension(this).favicon = value
     }
+
+val Session.engineSessionHolder: EngineSessionHolder
+    get() = getOrPutExtension(this).engineSessionHolder
+
 
 fun Session.isFromExternal(): Boolean {
     return this.parentId == ID_EXTERNAL
@@ -76,6 +81,12 @@ class SessionExtension {
     var extParentId: String? = null
     var favicon: Bitmap? = null
     val extObservers: ObserverRegistry<Observer> = ObserverRegistry()
+
+    /**
+     * Holder for keeping a reference to an engine session and its observer to update this session
+     * object.
+     */
+    val engineSessionHolder = EngineSessionHolder()
 
     interface Observer : Session.Observer {
         fun onGeolocationPermissionsShowPrompt(
