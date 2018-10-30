@@ -82,9 +82,9 @@ public class TabModelStore {
 
         @Override
         protected List<SessionManager.SessionWithState> doInBackground(Void... voids) {
-            if (tabsDatabase != null) {
+            final Context context = contextRef.get();
+            if (context != null && tabsDatabase != null) {
                 List<TabEntity> tabEntityList = tabsDatabase.tabDao().getTabs();
-                Context context = contextRef.get();
 
                 List<Session> sessions = new ArrayList<>();
                 for (final TabEntity entity : tabEntityList) {
