@@ -4,7 +4,7 @@
 
 package org.mozilla.rocket.tabs
 
-internal class EngineSessionHolder {
+class EngineSessionHolder {
     @Volatile
     var engineSession: TabViewEngineSession? = null
     @Volatile

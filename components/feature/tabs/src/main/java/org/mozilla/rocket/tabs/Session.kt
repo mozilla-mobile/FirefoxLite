@@ -28,12 +28,6 @@ class Session @JvmOverloads constructor(
 ) : Observable<Observer> by delegate {
 
     /**
-     * Holder for keeping a reference to an engine session and its observer to update this session
-     * object.
-     */
-    internal val engineSessionHolder = EngineSessionHolder()
-
-    /**
      * Id of parent session, usually refer to the session which created this one. The clue to indicate if this session
      * is terminated, which target we should go back.
      */

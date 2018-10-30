@@ -21,6 +21,7 @@ import org.mozilla.rocket.tabs.SessionManager.Observer
 import org.mozilla.rocket.tabs.ext.BLANK_URL
 import org.mozilla.rocket.tabs.ext.ID_EXTERNAL
 import org.mozilla.rocket.tabs.ext.isFromExternal
+import org.mozilla.rocket.tabs.ext.engineSessionHolder
 import org.mozilla.rocket.tabs.ext.isValid
 import org.mozilla.rocket.tabs.utils.TabUtil
 import java.lang.ref.WeakReference
