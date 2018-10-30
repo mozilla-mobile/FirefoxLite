@@ -104,7 +104,8 @@ class FindInPage : BackKeyHandleable {
 
     private fun initViews() {
         fun obtainWebView(): WebView? {
-            return (session?.engineSession?.tabView as WebView)
+            val tabView = session?.engineSession?.tabView ?: return null
+            return tabView as WebView
         }
 
         closeBtn.setOnClickListener {
@@ -129,7 +130,7 @@ class FindInPage : BackKeyHandleable {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                obtainWebView()?.findAllAsync(s.toString())
+                s?.let { obtainWebView()?.findAllAsync(s.toString()) }
             }
         })
 
