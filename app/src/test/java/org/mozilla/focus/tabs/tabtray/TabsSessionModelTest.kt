@@ -11,6 +11,7 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.ext.BLANK_URL
 
 class TabsSessionModelTest {
 
@@ -28,7 +29,7 @@ class TabsSessionModelTest {
     @Test
     fun loadTabs_getTabs() {
         // Prepare
-        assumeTabs(listOf(Session(), Session(), Session()))
+        assumeTabs(listOf(Session(BLANK_URL), Session(BLANK_URL), Session(BLANK_URL)))
 
         // First load
         tabsSessionModel.loadTabs {
@@ -36,7 +37,7 @@ class TabsSessionModelTest {
         }
 
         // Prepare
-        assumeTabs(listOf(Session(), Session()))
+        assumeTabs(listOf(Session(BLANK_URL), Session(BLANK_URL)))
 
         // Second load
         tabsSessionModel.loadTabs {
@@ -47,7 +48,7 @@ class TabsSessionModelTest {
     @Test
     fun targetExist_switchTab_tabsSessionSwitchToTab() {
         // Prepare
-        assumeTabs(listOf(Session(), Session(), Session()))
+        assumeTabs(listOf(Session(BLANK_URL), Session(BLANK_URL), Session(BLANK_URL)))
         tabsSessionModel.loadTabs(null)
 
         // Test
@@ -58,9 +59,9 @@ class TabsSessionModelTest {
     @Test
     fun targetRemoved_switchTab_doNothing() {
         // Prepare
-        val tab0 = Session()
-        val tab1 = Session()
-        val tab2 = Session()
+        val tab0 = Session(BLANK_URL)
+        val tab1 = Session(BLANK_URL)
+        val tab2 = Session(BLANK_URL)
 
         // Load 3 tabs into cache
         assumeTabs(listOf(tab0, tab1, tab2))
@@ -76,8 +77,8 @@ class TabsSessionModelTest {
 
     @Test
     fun targetExist_removeTab_tabsSessionDropTab() {
-        val target = Session()
-        assumeTabs(listOf(Session(), target, Session()))
+        val target = Session(BLANK_URL)
+        assumeTabs(listOf(Session(BLANK_URL), target, Session(BLANK_URL)))
         tabsSessionModel.loadTabs(null)
 
         tabsSessionModel.removeTab(1)

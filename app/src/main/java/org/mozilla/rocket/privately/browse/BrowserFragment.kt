@@ -17,6 +17,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import mozilla.components.browser.session.Session.SecurityInfo
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.feature.session.SessionFeature
@@ -248,7 +249,7 @@ class BrowserFragment : LocaleAwareFragment(),
             fragment.progressView.progress = progress
         }
 
-        override fun onTitleChanged(session: Session, title: String?) {
+        override fun onTitleChanged(session: Session, title: String) {
             session.let {
                 if (!fragment.displayUrlView.text.toString().equals(it.url)) {
                     fragment.displayUrlView.text = it.url
@@ -304,7 +305,7 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         }
 
-        override fun onUrlChanged(session: Session, url: String?) {
+        override fun onUrlChanged(session: Session, url: String) {
             if (!UrlUtils.isInternalErrorURL(url)) {
                 fragment.displayUrlView.text = url
             }
@@ -320,8 +321,8 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         }
 
-        override fun onSecurityChanged(session: Session, isSecure: Boolean) {
-            val level = if (isSecure) SITE_LOCK else SITE_GLOBE
+        override fun onSecurityChanged(session: Session, securityInfo: SecurityInfo) {
+            val level = if (securityInfo.secure) SITE_LOCK else SITE_GLOBE
             fragment.siteIdentity.setImageLevel(level)
         }
 

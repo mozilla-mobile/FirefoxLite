@@ -12,6 +12,7 @@ import android.webkit.GeolocationPermissions
 import mozilla.components.browser.session.Download
 import mozilla.components.browser.session.Session.FindResult
 import mozilla.components.browser.session.Session.SecurityInfo
+import mozilla.components.browser.session.Session.Source
 import mozilla.components.support.base.observer.Consumable
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
@@ -22,9 +23,10 @@ import kotlin.properties.Delegates
 const val TAG = "Session"
 
 class Session @JvmOverloads constructor(
+        initialUrl: String,
+        val private: Boolean = false,
+        val source: Source = Source.NONE,
         val id: String = UUID.randomUUID().toString(),
-        var parentId: String? = "",
-        var initialUrl: String? = "",
         private val delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Observer> by delegate {
 
@@ -34,6 +36,12 @@ class Session @JvmOverloads constructor(
      */
     internal val engineSessionHolder = EngineSessionHolder()
 
+    /**
+     * Id of parent session, usually refer to the session which created this one. The clue to indicate if this session
+     * is terminated, which target we should go back.
+     */
+    internal var parentId: String? = null
+
     var favicon: Bitmap? = null
 
     val isFromExternal: Boolean
@@ -42,10 +50,8 @@ class Session @JvmOverloads constructor(
     /**
      * The currently loading or loaded URL.
      */
-    var url: String? by Delegates.observable(initialUrl) { _, old, new ->
-        if (old != null && new != null) {
-            notifyObservers(old, new) { onUrlChanged(this@Session, new) }
-        }
+    var url: String by Delegates.observable(initialUrl) { _, old, new ->
+        notifyObservers(old, new) { onUrlChanged(this@Session, new) }
     }
 
     /**
@@ -89,7 +95,7 @@ class Session @JvmOverloads constructor(
      * for a secure URL, as well as the host and SSL certificate authority, if applicable.
      */
     var securityInfo: SecurityInfo by Delegates.observable(SecurityInfo()) { _, old, new ->
-        notifyObservers(old, new) { onSecurityChanged(this@Session, new.secure) }
+        notifyObservers(old, new) { onSecurityChanged(this@Session, new) }
     }
 
     /**
@@ -109,6 +115,14 @@ class Session @JvmOverloads constructor(
                 onFindResult(this@Session, findResults.last())
             }
         }
+    }
+
+    fun setParentId(id: String?) {
+        parentId = id
+    }
+
+    fun getParentId(): String? {
+        return parentId
     }
 
     fun isValid(): Boolean {
@@ -131,10 +145,10 @@ class Session @JvmOverloads constructor(
     interface Observer {
         fun onLoadingStateChanged(session: Session, loading: Boolean) = Unit
         fun onNavigationStateChanged(session: Session, canGoBack: Boolean, canGoForward: Boolean) = Unit
-        fun onSecurityChanged(session: Session, isSecure: Boolean) = Unit
-        fun onUrlChanged(session: Session, url: String?) = Unit
+        fun onSecurityChanged(session: Session, securityInfo: SecurityInfo) = Unit
+        fun onUrlChanged(session: Session, url: String) = Unit
         fun onProgress(session: Session, progress: Int) = Unit
-        fun onTitleChanged(session: Session, title: String?) = Unit
+        fun onTitleChanged(session: Session, title: String) = Unit
         fun onReceivedIcon(icon: Bitmap?) = Unit
         fun onLongPress(session: Session, hitTarget: TabView.HitTarget) = Unit
         fun onDownload(session: Session, download: Download): Boolean = false
@@ -164,5 +178,6 @@ class Session @JvmOverloads constructor(
 
     companion object {
         const val ID_EXTERNAL = "_open_from_external_"
+        const val BLANK_URL = "about:blank"
     }
 }

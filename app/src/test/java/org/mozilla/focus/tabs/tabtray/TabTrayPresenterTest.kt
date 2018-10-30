@@ -29,6 +29,7 @@ import org.mozilla.rocket.tabs.TabChromeClient
 import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabViewClient
 import org.mozilla.rocket.tabs.TabViewProvider
+import org.mozilla.rocket.tabs.ext.BLANK_URL
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.robolectric.RobolectricTestRunner
@@ -60,7 +61,7 @@ class TabTrayPresenterTest {
         this.tabTrayPresenter.viewReady()
         verify<TabTrayContract.View>(this.tabTrayContractView).closeTabTray()
 
-        Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf(Session(), Session(), Session()))
+        Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf(Session(BLANK_URL), Session(BLANK_URL), Session(BLANK_URL)))
         this.tabTrayPresenter.viewReady()
         verify<TabTrayContract.View>(this.tabTrayContractView).showFocusedTab(anyInt())
     }

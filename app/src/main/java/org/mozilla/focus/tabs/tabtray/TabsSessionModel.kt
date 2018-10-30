@@ -98,11 +98,11 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
     private abstract class SessionModelObserver : SessionManager.Observer, Session.Observer {
         var session: Session? = null
 
-        override fun onUrlChanged(session: Session, url: String?) {
+        override fun onUrlChanged(session: Session, url: String) {
             session.let { onTabModelChanged(it) }
         }
 
-        override fun onTitleChanged(session: Session, title: String?) {
+        override fun onTitleChanged(session: Session, title: String) {
             session.let { onTabModelChanged(it) }
         }
 

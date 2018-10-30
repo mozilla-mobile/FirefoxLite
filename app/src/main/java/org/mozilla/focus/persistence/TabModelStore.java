@@ -88,9 +88,11 @@ public class TabModelStore {
 
                 List<Session> sessions = new ArrayList<>();
                 for (final TabEntity entity : tabEntityList) {
-                    Session session = new Session(entity.getId(),
-                            entity.getParentId(),
-                            entity.getUrl());
+                    Session session = new Session(entity.getUrl(),
+                            false,
+                            mozilla.components.browser.session.Session.Source.NONE,
+                            entity.getId());
+                    session.setParentId(entity.getParentId());
                     session.setTitle(entity.getTitle());
                     sessions.add(session);
                 }
