@@ -258,13 +258,12 @@ class SessionManager @JvmOverloads constructor(
             getOrCreateEngineSession(session)
         }
 
-        val url = if (TextUtils.isEmpty(session.url)) session.initialUrl else session.url
         val tabView = tabViewProvider.create()
         session.engineSessionHolder.engineSession?.tabView = tabView
         if (session.engineSessionHolder.engineSession?.webViewState != null) {
             tabView.restoreViewState(session.engineSessionHolder.engineSession?.webViewState)
-        } else if (!TextUtils.isEmpty(url)) {
-            tabView.loadUrl(url)
+        } else if (!TextUtils.equals(session.url, Session.BLANK_URL)) {
+            tabView.loadUrl(session.url)
         }
     }
 
@@ -303,8 +302,10 @@ class SessionManager @JvmOverloads constructor(
         arguments: Bundle?
     ): String {
 
-        val tab = Session()
-        tab.url = url
+        val initUrl = url ?: Session.BLANK_URL
+        val tab = Session(initialUrl = initUrl)
+
+        tab.parentId = parentId
 
         val parentIndex = if (TextUtils.isEmpty(parentId)) -1 else getTabIndex(parentId!!)
         if (fromExternal) {

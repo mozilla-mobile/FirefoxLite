@@ -88,13 +88,16 @@ public class TabModelStore {
 
                 List<Session> sessions = new ArrayList<>();
                 for (final TabEntity entity : tabEntityList) {
-                    Session session = new Session(entity.getId(),
-                            entity.getParentId(),
-                            entity.getUrl());
+                    Session session = new Session(entity.getUrl(),
+                            false,
+                            mozilla.components.browser.session.Session.Source.NONE,
+                            entity.getId());
                     // We seemed to have historically stored null into the DB. This patch help guarantee Session.title
                     // will be non-null.
                     final String title = entity.getTitle() == null ? "" : entity.getTitle();
                     session.setTitle(title);
+                    session.setParentId(entity.getParentId());
+
                     sessions.add(session);
                 }
 

@@ -952,8 +952,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         @Override
-        public void onSecurityChanged(@NonNull Session session, boolean isSecure) {
-            siteIdentity.setImageLevel(isSecure ? SITE_LOCK : SITE_GLOBE);
+        public void onSecurityChanged(@NonNull Session session,
+                                      @NonNull mozilla.components.browser.session.Session.SecurityInfo info) {
+            siteIdentity.setImageLevel(info.getSecure() ? SITE_LOCK : SITE_GLOBE);
         }
 
         @Override
