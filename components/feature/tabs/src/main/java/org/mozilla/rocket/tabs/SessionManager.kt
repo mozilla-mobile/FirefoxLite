@@ -421,11 +421,8 @@ class SessionManager @JvmOverloads constructor(
 
         override fun onCloseWindow(es: TabViewEngineSession) {
             if (source.engineSession === es) {
-                for (s in sessions) {
-                    if (s.engineSession === es) {
-                        closeTab(s.id)
-                    }
-                }
+                sessions.firstOrNull{ it.engineSession == es}
+                        ?.let { session -> closeTab(session.id) }
             }
         }
     }
