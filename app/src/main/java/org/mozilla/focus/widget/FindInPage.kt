@@ -11,13 +11,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.webkit.WebView
 import android.widget.TextView
 import mozilla.components.browser.session.Session.FindResult
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
-import org.mozilla.rocket.tabs.Session
+import org.mozilla.rocket.tabs.TabViewEngineSession
 
 class FindInPage : BackKeyHandleable {
     private val container: View
@@ -30,7 +29,7 @@ class FindInPage : BackKeyHandleable {
     private val resultFormat: String
     private val accessibilityFormat: String
 
-    private var session: Session? = null
+    private var engineSession: TabViewEngineSession? = null
 
     constructor(rootView: View) {
         container = rootView.findViewById(R.id.find_in_page)
@@ -71,13 +70,13 @@ class FindInPage : BackKeyHandleable {
         }
     }
 
-    fun show(current: Session?) {
+    fun show(current: TabViewEngineSession?) {
         if (container.visibility == View.VISIBLE) {
             return
         }
 
         if (current != null) {
-            session = current
+            engineSession = current
             container.visibility = View.VISIBLE
             // FIXME: post to another round to increase possibility of showing keyboard
             // Find-in-page button of menu is in another window, meanwhile the find-in-page view
@@ -99,26 +98,20 @@ class FindInPage : BackKeyHandleable {
         queryText.clearFocus()
         container.visibility = View.GONE
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS)
-
     }
 
     private fun initViews() {
-        fun obtainWebView(): WebView? {
-            val tabView = session?.engineSession?.tabView ?: return null
-            return tabView as WebView
-        }
-
         closeBtn.setOnClickListener {
             hide()
             TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE)
         }
         queryText.setOnClickListener { queryText.isCursorVisible = true }
         prevBtn.setOnClickListener {
-            obtainWebView()?.findNext(false)
+            engineSession?.findNext(false)
             TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS)
         }
         nextBtn.setOnClickListener {
-            obtainWebView()?.findNext(true)
+            engineSession?.findNext(true)
             TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT)
         }
 
@@ -130,7 +123,7 @@ class FindInPage : BackKeyHandleable {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                s?.let { obtainWebView()?.findAllAsync(s.toString()) }
+                s?.let { engineSession?.findAll(it.toString()) }
             }
         })
 

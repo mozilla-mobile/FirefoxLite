@@ -15,6 +15,7 @@ import android.webkit.CookieManager
 import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
+import android.webkit.WebView
 import mozilla.components.concept.engine.EngineSession
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
@@ -71,6 +72,21 @@ class TabViewEngineSession constructor(
             //TODO: should we update latest url, title of TabView to Session?
             it.saveViewState(webViewState)
         }
+    }
+
+    /**
+     * See [EngineSession.findAll]
+     */
+    fun findAll(text: String) {
+        notifyObservers { onFind(text) }
+        (tabView?.view as WebView).findAllAsync(text)
+    }
+
+    /**
+     * See [EngineSession.findNext]
+     */
+    fun findNext(forward: Boolean) {
+        (tabView?.view as WebView).findNext(forward)
     }
 
     /**

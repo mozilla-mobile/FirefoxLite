@@ -901,9 +901,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     public void showFindInPage() {
-        final Session focusTab = sessionManager.getFocusSession();
-        if (focusTab != null) {
-            findInPage.show(focusTab);
+        final Session focus = sessionManager.getFocusSession();
+        if (focus != null) {
+            findInPage.show(sessionManager.getOrCreateEngineSession(focus));
             TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU);
         }
     }
