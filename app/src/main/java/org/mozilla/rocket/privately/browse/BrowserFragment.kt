@@ -35,7 +35,9 @@ import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabsSessionProvider
-import org.mozilla.rocket.tabs.utils.TabUtil
+import org.mozilla.rocket.tabs.ext.SessionExtension
+import org.mozilla.rocket.tabs.ext.registerExt
+import org.mozilla.rocket.tabs.ext.unregisterExt
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.mozilla.urlutils.UrlUtils
@@ -234,7 +236,7 @@ class BrowserFragment : LocaleAwareFragment(),
     class Observer(
             val fragment: BrowserFragment,
             val sessionManager: SessionManager
-    ) : SessionManager.Observer, Session.Observer {
+    ) : SessionManager.Observer, SessionExtension.Observer {
 
         var callback: FullscreenCallback? = null
         var session: Session? = null
@@ -329,8 +331,10 @@ class BrowserFragment : LocaleAwareFragment(),
         override fun onSessionCountChanged(count: Int) {
             if (count == 0) {
                 session?.unregister(this)
+                session?.unregisterExt(this)
             } else {
                 session = fragment.sessionManager.focusSession
+                session?.registerExt(this)
                 session?.register(this)
             }
         }

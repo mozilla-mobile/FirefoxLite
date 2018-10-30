@@ -6,8 +6,6 @@
 package org.mozilla.rocket.tabs
 
 import android.graphics.Bitmap
-import android.view.View
-import android.webkit.GeolocationPermissions
 import mozilla.components.browser.session.Download
 import mozilla.components.browser.session.Session.FindResult
 import mozilla.components.browser.session.Session.SecurityInfo
@@ -127,30 +125,7 @@ class Session @JvmOverloads constructor(
         fun onUrlChanged(session: Session, url: String) = Unit
         fun onProgress(session: Session, progress: Int) = Unit
         fun onTitleChanged(session: Session, title: String) = Unit
-        fun onReceivedIcon(icon: Bitmap?) = Unit
-        fun onLongPress(session: Session, hitTarget: TabView.HitTarget) = Unit
         fun onDownload(session: Session, download: Download): Boolean = false
         fun onFindResult(session: Session, result: FindResult) = Unit
-
-        /**
-         * Notify the host application that the current page has entered full screen mode.
-         * <p>
-         * The callback needs to be invoked to request the page to exit full screen mode.
-         * <p>
-         * Some TabView implementations may pass a custom View which contains the web contents in
-         * full screen mode.
-         */
-        fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) = Unit
-
-        /**
-         * Notify the host application that the current page has exited full screen mode.
-         * <p>
-         * If a View was passed when the application entered full screen mode then this view must
-         * be hidden now.
-         */
-        fun onExitFullScreen() = Unit
-
-        fun onGeolocationPermissionsShowPrompt(origin: String,
-                                               callback: GeolocationPermissions.Callback?) = Unit
     }
 }

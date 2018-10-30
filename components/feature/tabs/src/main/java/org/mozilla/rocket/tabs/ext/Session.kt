@@ -2,7 +2,11 @@ package org.mozilla.rocket.tabs.ext
 
 import android.graphics.Bitmap
 import android.text.TextUtils
+import android.view.View
+import android.webkit.GeolocationPermissions
+import mozilla.components.support.base.observer.ObserverRegistry
 import org.mozilla.rocket.tabs.Session
+import org.mozilla.rocket.tabs.TabView
 import java.util.WeakHashMap
 
 // Extension methods on the Session class. This is used for additional session data that is not part
@@ -45,6 +49,18 @@ fun Session.isValid(): Boolean {
     return this.id.isNotBlank() && (url?.isNotBlank() ?: false)
 }
 
+fun Session.registerExt(ext: SessionExtension.Observer) {
+    getOrPutExtension(this).extObservers.register(ext)
+}
+
+fun Session.unregisterExt(ext: SessionExtension.Observer) {
+    getOrPutExtension(this).extObservers.unregister(ext)
+}
+
+fun Session.notifyObserversExt(block: SessionExtension.Observer.() -> Unit) {
+    getOrPutExtension(this).extObservers.notifyObservers(block)
+}
+
 private val extensions = WeakHashMap<Session, SessionExtension>()
 
 private fun getOrPutExtension(session: Session): SessionExtension {
@@ -55,7 +71,37 @@ private fun getOrPutExtension(session: Session): SessionExtension {
     }
 }
 
-private class SessionExtension {
+class SessionExtension {
     var extParentId: String? = null
     var favicon: Bitmap? = null
+    val extObservers: ObserverRegistry<Observer> = ObserverRegistry()
+
+    interface Observer : Session.Observer {
+        fun onGeolocationPermissionsShowPrompt(
+                origin: String,
+                callback: GeolocationPermissions.Callback?
+        ) = Unit
+
+        /**
+         * Notify the host application that the current page has entered full screen mode.
+         * <p>
+         * The callback needs to be invoked to request the page to exit full screen mode.
+         * <p>
+         * Some TabView implementations may pass a custom View which contains the web contents in
+         * full screen mode.
+         */
+        fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) = Unit
+
+        /**
+         * Notify the host application that the current page has exited full screen mode.
+         * <p>
+         * If a View was passed when the application entered full screen mode then this view must
+         * be hidden now.
+         */
+        fun onExitFullScreen() = Unit
+
+        fun onReceivedIcon(icon: Bitmap?) = Unit
+        fun onLongPress(session: Session, hitTarget: TabView.HitTarget) = Unit
+    }
 }
+

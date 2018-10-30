@@ -83,6 +83,7 @@ import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
+import org.mozilla.rocket.tabs.ext.SessionExtension;
 import org.mozilla.rocket.tabs.ext.SessionKt;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
@@ -913,7 +914,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         findInPage.hide();
     }
 
-    class SessionObserver implements Session.Observer, TabViewEngineSession.Client {
+    class SessionObserver implements SessionExtension.Observer, TabViewEngineSession.Client {
         @Nullable
         private Session session;
         private HistoryInserter historyInserter = new HistoryInserter();
@@ -1140,9 +1141,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         void changeSession(@Nullable Session nextSession) {
             if (this.session != null) {
                 this.session.unregister(this);
+                SessionKt.unregisterExt(this.session, this);
             }
             this.session = nextSession;
             if (this.session != null) {
+                SessionKt.registerExt(this.session, this);
                 this.session.register(this);
             }
         }

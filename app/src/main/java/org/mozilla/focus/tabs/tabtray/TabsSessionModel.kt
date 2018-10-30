@@ -106,10 +106,6 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
             session.let { onTabModelChanged(it) }
         }
 
-        override fun onReceivedIcon(icon: Bitmap?) {
-            session?.let { onTabModelChanged(it) }
-        }
-
         override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {
             this.session?.let { it.unregister(this) }
             this.session = session

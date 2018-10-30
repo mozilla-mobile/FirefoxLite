@@ -15,6 +15,7 @@ import mozilla.components.browser.session.Session.SecurityInfo
 import mozilla.components.support.base.observer.Consumable
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.ext.favicon
+import org.mozilla.rocket.tabs.ext.notifyObserversExt
 
 /**
  * This class is a simulation of EngineSession of Mozilla Android-Components. To be an abstraction
@@ -56,22 +57,24 @@ class TabViewEngineObserver(
 
     override fun onReceivedIcon(icon: Bitmap?) {
         session.favicon = icon
-        session.notifyObservers { onReceivedIcon(icon) }
+        session.notifyObserversExt { onReceivedIcon(icon) }
     }
 
     override fun onLongPress(hitTarget: HitTarget) {
-        session.notifyObservers { onLongPress(session, hitTarget) }
+        session.notifyObserversExt { onLongPress(session, hitTarget) }
     }
 
     override fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?) =
-            session.notifyObservers { onEnterFullScreen(callback, view) }
+            session.notifyObserversExt { onEnterFullScreen(callback, view) }
 
-    override fun onExitFullScreen() = session.notifyObservers { onExitFullScreen() }
+    override fun onExitFullScreen() = session.notifyObserversExt { onExitFullScreen() }
 
     override fun onGeolocationPermissionsShowPrompt(
             origin: String,
-            callback: GeolocationPermissions.Callback?) =
-            session.notifyObservers { onGeolocationPermissionsShowPrompt(origin, callback) }
+            callback: GeolocationPermissions.Callback?) {
+
+        session.notifyObserversExt { onGeolocationPermissionsShowPrompt(origin, callback) }
+    }
 
     override fun onFindResult(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
         session.findResults += FindResult(activeMatchOrdinal, numberOfMatches, isDoneCounting)
