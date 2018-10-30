@@ -492,6 +492,13 @@
     <!-- Label for editing a bookmark which is available next to the bookmark item. -->
     <string name="edit_bookmark">Edit</string>
 
+    <!-- Content portal -->
+    <!-- Title of news portal page -->
+    <string name="label_menu_news">News</string>
+    <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
+    <string name="news_update_btn">New update</string>
+   
+   
     <!-- Private Browsing-->
 
     <!-- This is used in the menu. User can click the menu item and open a private tab. -->
