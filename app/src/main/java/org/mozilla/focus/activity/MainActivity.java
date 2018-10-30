@@ -89,6 +89,7 @@ import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
+import org.mozilla.rocket.tabs.ext.SessionKt;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.urlutils.UrlUtils;
 
@@ -833,7 +834,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (!SupportUtils.isUrl(url)) {
             return;
         }
-        final Bitmap bitmap = focusTab.getFavicon();
+        final Bitmap bitmap = SessionKt.getFavicon(focusTab);
         final Intent shortcut = new Intent(Intent.ACTION_VIEW);
         // Use activity-alias name here so we can start whoever want to control launching behavior
         // Besides, RocketLauncherActivity not exported so using the alias-name is required.

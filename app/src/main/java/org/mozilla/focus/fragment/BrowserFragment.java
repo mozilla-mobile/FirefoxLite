@@ -83,6 +83,7 @@ import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
+import org.mozilla.rocket.tabs.ext.SessionKt;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
 import org.mozilla.rocket.theme.ThemeManager;
@@ -718,7 +719,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             final Session focus = sessionManager.getFocusSession();
             if (focus == null) {
                 return false;
-            } else if (focus.isFromExternal() || focus.hasParentTab()) {
+            } else if (SessionKt.isFromExternal(focus) || SessionKt.hasParentTab(focus)) {
                 sessionManager.closeTab(focus.getId());
             } else {
                 ScreenNavigator.get(getContext()).popToHomeScreen(true);

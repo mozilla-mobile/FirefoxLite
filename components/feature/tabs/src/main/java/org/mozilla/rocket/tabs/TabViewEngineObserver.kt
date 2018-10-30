@@ -14,6 +14,7 @@ import mozilla.components.browser.session.Session.FindResult
 import mozilla.components.browser.session.Session.SecurityInfo
 import mozilla.components.support.base.observer.Consumable
 import org.mozilla.rocket.tabs.TabView.HitTarget
+import org.mozilla.rocket.tabs.ext.favicon
 
 /**
  * This class is a simulation of EngineSession of Mozilla Android-Components. To be an abstraction

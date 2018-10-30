@@ -6,7 +6,6 @@
 package org.mozilla.rocket.tabs
 
 import android.graphics.Bitmap
-import android.text.TextUtils
 import android.view.View
 import android.webkit.GeolocationPermissions
 import mozilla.components.browser.session.Download
@@ -41,11 +40,6 @@ class Session @JvmOverloads constructor(
      * is terminated, which target we should go back.
      */
     internal var parentId: String? = null
-
-    var favicon: Bitmap? = null
-
-    val isFromExternal: Boolean
-        get() = ID_EXTERNAL == parentId
 
     /**
      * The currently loading or loaded URL.
@@ -117,22 +111,6 @@ class Session @JvmOverloads constructor(
         }
     }
 
-    fun setParentId(id: String?) {
-        parentId = id
-    }
-
-    fun getParentId(): String? {
-        return parentId
-    }
-
-    fun isValid(): Boolean {
-        return id.isNotBlank() && (url?.isNotBlank() ?: false)
-    }
-
-    fun hasParentTab(): Boolean {
-        return !isFromExternal && !TextUtils.isEmpty(parentId)
-    }
-
     /**
      * Helper method to notify observers.
      */
@@ -174,10 +152,5 @@ class Session @JvmOverloads constructor(
 
         fun onGeolocationPermissionsShowPrompt(origin: String,
                                                callback: GeolocationPermissions.Callback?) = Unit
-    }
-
-    companion object {
-        const val ID_EXTERNAL = "_open_from_external_"
-        const val BLANK_URL = "about:blank"
     }
 }
