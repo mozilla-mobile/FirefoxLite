@@ -744,7 +744,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void showAdjustBrightness() {
-        startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromMenu(this));
+        startActivity(org.mozilla.rocket.nightmode.Intent.Companion.getNightModeBrightnessIntent(false));
     }
 
     private void showAdjustBrightnessIfNeeded(Settings settings) {
