@@ -1,6 +1,8 @@
 package org.mozilla.cachedrequestloader;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,6 +24,11 @@ public class CachedRequestLoader {
     private int socketTag;
     private ResponseData stringLiveData;
     private static final String TAG = "CachedRequestLoader";
+    // Mainly for testing purposes.
+    @VisibleForTesting
+    private boolean delayCacheLoad = false;
+    @VisibleForTesting
+    private boolean delayNetworkLoad = false;
 
     public CachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag) {
         this.context = context;
@@ -31,11 +38,18 @@ public class CachedRequestLoader {
         this.socketTag = socketTag;
     }
 
+    @VisibleForTesting
+    public CachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag, boolean delayCacheLoad, boolean delayNetworkLoad) {
+        this(context, subscriptionKey, subscriptionUrl, userAgent, socketTag);
+        this.delayCacheLoad = delayCacheLoad;
+        this.delayNetworkLoad = delayNetworkLoad;
+    }
+
     public ResponseData getStringLiveData() {
         if (stringLiveData == null) {
             stringLiveData = new ResponseData();
-            loadFromCache();
-            loadFromRemote();
+            loadFromCacheWrapped();
+            loadFromRemoteWrapped();
         }
         return stringLiveData;
     }
@@ -49,8 +63,16 @@ public class CachedRequestLoader {
         }
     }
 
+    private void loadFromCacheWrapped() {
+        Inject.postDelayIfTesting(this::loadFromCache, delayCacheLoad);
+    }
+
     private void loadFromRemote() {
         new RemoteLoadUrlTask(stringLiveData, this).execute(subscriptionUrl, userAgent, Integer.toString(socketTag));
+    }
+
+    private void loadFromRemoteWrapped() {
+        Inject.postDelayIfTesting(this::loadFromRemote, delayNetworkLoad);
     }
 
     private static Pair<Integer, String> convertToPair(String input) {
