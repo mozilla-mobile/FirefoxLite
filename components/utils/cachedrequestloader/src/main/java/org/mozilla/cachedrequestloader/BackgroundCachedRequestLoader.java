@@ -2,6 +2,7 @@ package org.mozilla.cachedrequestloader;
 
 import android.content.Context;
 import android.net.TrafficStats;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +30,9 @@ public class BackgroundCachedRequestLoader {
     private int socketTag;
     private ResponseData stringLiveData;
     private static final String TAG = "CachedRequestLoader";
+    // Mainly for testing purposes.
+    private boolean delayCacheLoad = false;
+    private boolean delayNetworkLoad = false;
 
     public BackgroundCachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag) {
         this.context = context;
@@ -36,6 +40,13 @@ public class BackgroundCachedRequestLoader {
         this.subscriptionUrl = subscriptionUrl;
         this.userAgent = userAgent;
         this.socketTag = socketTag;
+    }
+
+    @VisibleForTesting
+    public BackgroundCachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag, boolean delayCacheLoad, boolean delayNetworkLoad) {
+        this(context, subscriptionKey, subscriptionUrl, userAgent, socketTag);
+        this.delayCacheLoad = delayCacheLoad;
+        this.delayNetworkLoad = delayNetworkLoad;
     }
 
     public ResponseData getStringLiveData() {
@@ -50,6 +61,7 @@ public class BackgroundCachedRequestLoader {
     private void loadFromCache() {
         backgroundExecutorService.submit(() -> {
             try {
+                Inject.sleepIfTesting(delayCacheLoad);
                 String string = FileUtils.readStringFromFile(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey);
                 stringLiveData.postValue(new Pair<>(ResponseData.SOURCE_CACHE, string));
             } catch (ExecutionException | InterruptedException e) {
@@ -63,6 +75,7 @@ public class BackgroundCachedRequestLoader {
         backgroundExecutorService.submit(() -> {
             TrafficStats.setThreadStatsTag(socketTag);
             try {
+                Inject.sleepIfTesting(delayNetworkLoad);
                 String string = HttpRequest.get(new URL(subscriptionUrl), userAgent);
                 string = string.replace("\n", "");
                 stringLiveData.postValue(new Pair<>(ResponseData.SOURCE_NETWORK, string));
