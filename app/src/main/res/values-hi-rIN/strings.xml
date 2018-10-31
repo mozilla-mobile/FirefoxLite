@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">बुकमार्क अद्यतित</string>
   <string name="bookmarks_empty_view_msg">"कोई बुकमार्क नहीं "</string>
   <string name="edit_bookmark">संपादन</string>
+  <string name="label_menu_news">न्यूज़</string>
+  <string name="news_update_btn">नई अपडेट</string>
   <string name="private_tab">निजी टैब</string>
   <string name="private_browsing_title">निजी ब्राउज़िंग</string>
   <string name="private_browsing_erase_message">निजी ब्राउज़िंग इतिहास मिटाएं</string>
