@@ -15,6 +15,7 @@ import android.text.TextUtils
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import mozilla.components.support.base.observer.Consumable
+import mozilla.components.browser.session.Session
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
 import org.mozilla.rocket.tabs.SessionManager.Factor.FACTOR_BACK_EXTERNAL
@@ -27,7 +28,9 @@ import org.mozilla.rocket.tabs.ext.BLANK_URL
 import org.mozilla.rocket.tabs.ext.ID_EXTERNAL
 import org.mozilla.rocket.tabs.ext.isFromExternal
 import org.mozilla.rocket.tabs.ext.engineSessionHolder
+import org.mozilla.rocket.tabs.ext.getParentId
 import org.mozilla.rocket.tabs.ext.isValid
+import org.mozilla.rocket.tabs.ext.setParentId
 import org.mozilla.rocket.tabs.utils.TabUtil
 import java.lang.ref.WeakReference
 import java.util.ArrayList
@@ -163,8 +166,8 @@ class SessionManager @JvmOverloads constructor(
         // TODO: in our current design, the parent of a tab are always locate at left(index -1).
         // hence no need to loop whole list.
         for (t in sessions) {
-            if (TextUtils.equals(t.parentId, tab.id)) {
-                t.parentId = tab.parentId
+            if (TextUtils.equals(t.getParentId(), tab.id)) {
+                t.setParentId(tab.getParentId())
             }
         }
 
@@ -185,14 +188,14 @@ class SessionManager @JvmOverloads constructor(
     }
 
     private fun updateFocusOnClosing(removedSession: Session) {
-        if (TextUtils.isEmpty(removedSession.parentId)) {
+        if (TextUtils.isEmpty(removedSession.getParentId())) {
             focusRef.clear()
             notifier.notifyTabFocused(null, FACTOR_NO_FOCUS)
-        } else if (TextUtils.equals(removedSession.parentId, ID_EXTERNAL)) {
+        } else if (TextUtils.equals(removedSession.getParentId(), ID_EXTERNAL)) {
             focusRef.clear()
             notifier.notifyTabFocused(null, FACTOR_BACK_EXTERNAL)
         } else {
-            focusRef = WeakReference<Session>(getTab(removedSession.parentId!!))
+            focusRef = WeakReference<Session>(getTab(removedSession.getParentId()!!))
             notifier.notifyTabFocused(focusRef.get(), FACTOR_TAB_REMOVED)
         }
     }
@@ -311,11 +314,11 @@ class SessionManager @JvmOverloads constructor(
         val initUrl = url ?: BLANK_URL
         val tab = Session(initialUrl = initUrl)
 
-        tab.parentId = parentId
+        tab.setParentId(parentId)
 
         val parentIndex = if (TextUtils.isEmpty(parentId)) -1 else getTabIndex(parentId!!)
         if (fromExternal) {
-            tab.parentId = ID_EXTERNAL
+            tab.setParentId(ID_EXTERNAL)
             sessions.add(tab)
         } else {
             insertTab(parentIndex, tab)
@@ -371,13 +374,13 @@ class SessionManager @JvmOverloads constructor(
         //       hence no need to loop whole list.
         // if the parent-session has a child, give it a new parent
         for (t in sessions) {
-            if (parentTab.id == t.parentId) {
-                t.parentId = session.id
+            if (parentTab.id == t.getParentId()) {
+                t.setParentId(session.id)
             }
         }
 
         // update family relationship
-        session.parentId = parentTab.id
+        session.setParentId(parentTab.id)
     }
 
     data class SessionWithState(

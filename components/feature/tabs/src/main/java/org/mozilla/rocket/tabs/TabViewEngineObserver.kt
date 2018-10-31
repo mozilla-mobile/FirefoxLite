@@ -10,6 +10,7 @@ import android.os.Environment
 import android.view.View
 import android.webkit.GeolocationPermissions
 import mozilla.components.browser.session.Download
+import mozilla.components.browser.session.Session
 import mozilla.components.browser.session.Session.FindResult
 import mozilla.components.browser.session.Session.SecurityInfo
 import mozilla.components.support.base.observer.Consumable

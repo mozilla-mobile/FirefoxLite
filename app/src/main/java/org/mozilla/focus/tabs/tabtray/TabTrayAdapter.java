@@ -36,12 +36,13 @@ import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.ext.SessionKt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import mozilla.components.browser.session.Session;
 
 public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHolder> {
 

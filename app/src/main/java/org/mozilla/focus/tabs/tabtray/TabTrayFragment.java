@@ -57,11 +57,12 @@ import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
-import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 
 import java.util.List;
+
+import mozilla.components.browser.session.Session;
 
 public class TabTrayFragment extends DialogFragment implements TabTrayContract.View,
         View.OnClickListener, TabTrayAdapter.TabClickListener {

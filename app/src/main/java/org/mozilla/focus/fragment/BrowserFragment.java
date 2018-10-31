@@ -78,7 +78,6 @@ import org.mozilla.rocket.nightmode.themed.ThemedLinearLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
-import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
@@ -92,9 +91,13 @@ import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.WeakHashMap;
 
 import kotlin.Pair;
+import mozilla.components.browser.session.Session;
+import mozilla.components.browser.session.tab.CustomTabConfig;
+import mozilla.components.concept.engine.HitResult;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
 
@@ -1188,6 +1191,46 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         @Override
         public void onNavigationStateChanged(@NotNull Session session, boolean canGoBack, boolean canGoForward) {
+        }
+
+        @Override
+        public void onCustomTabConfigChanged(@NotNull Session session, @org.jetbrains.annotations.Nullable CustomTabConfig customTabConfig) {
+
+        }
+
+        @Override
+        public void onDesktopModeChanged(@NotNull Session session, boolean b) {
+
+        }
+
+        @Override
+        public void onFullScreenChanged(@NotNull Session session, boolean b) {
+
+        }
+
+        @Override
+        public boolean onLongPress(@NotNull Session session, @NotNull HitResult hitResult) {
+            return false;
+        }
+
+        @Override
+        public void onSearch(@NotNull Session session, @NotNull String s) {
+
+        }
+
+        @Override
+        public void onThumbnailChanged(@NotNull Session session, @org.jetbrains.annotations.Nullable Bitmap bitmap) {
+
+        }
+
+        @Override
+        public void onTrackerBlocked(@NotNull Session session, @NotNull String s, @NotNull List<String> list) {
+
+        }
+
+        @Override
+        public void onTrackerBlockingEnabledChanged(@NotNull Session session, boolean b) {
+
         }
     }
 

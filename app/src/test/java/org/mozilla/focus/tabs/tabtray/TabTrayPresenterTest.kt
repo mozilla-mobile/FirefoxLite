@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Message
 import android.view.View
+import mozilla.components.browser.session.Session
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +23,6 @@ import org.mockito.Mockito
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.SiteIdentity
 import org.mozilla.rocket.tabs.TabChromeClient

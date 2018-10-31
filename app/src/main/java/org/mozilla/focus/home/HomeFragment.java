@@ -83,7 +83,6 @@ import org.mozilla.rocket.banner.BannerViewHolder;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
-import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
@@ -103,6 +102,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import mozilla.components.browser.session.Session;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
         ScreenNavigator.HomeScreen {
