@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">ಪುಟಗುರುತು ಪರಿಷ್ಕರಿಸಲಾಗಿದೆ</string>
   <string name="bookmarks_empty_view_msg">ಪುಟಗುರುತುಗಳಿಲ್ಲ</string>
   <string name="edit_bookmark">ಸಂಪಾದನೆ</string>
+  <string name="label_menu_news">ಸುದ್ದಿ</string>
+  <string name="news_update_btn">ಹೊಸ ಪರಿಷ್ಕರಣೆ</string>
   <string name="private_tab">ಖಾಸಗಿ ಟ್ಯಾಬ್‌</string>
   <string name="private_browsing_title">ಖಾಸಗಿ ವೀಕ್ಷಣೆ</string>
   <string name="private_browsing_erase_message">ಖಾಸಗಿ ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸವನ್ನು ಅಳಿಸಿ</string>
