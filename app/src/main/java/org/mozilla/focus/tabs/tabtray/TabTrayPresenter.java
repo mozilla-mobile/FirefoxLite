@@ -5,10 +5,11 @@
 
 package org.mozilla.focus.tabs.tabtray;
 
-import org.mozilla.rocket.tabs.Session;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import mozilla.components.browser.session.Session;
 
 public class TabTrayPresenter implements TabTrayContract.Presenter {
 

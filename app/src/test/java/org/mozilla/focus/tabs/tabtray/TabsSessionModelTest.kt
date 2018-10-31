@@ -1,5 +1,6 @@
 package org.mozilla.focus.tabs.tabtray
 
+import mozilla.components.browser.session.Session
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -9,7 +10,6 @@ import org.mockito.Mockito.anyString
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.ext.BLANK_URL
 

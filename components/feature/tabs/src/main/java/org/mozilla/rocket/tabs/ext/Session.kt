@@ -4,9 +4,10 @@ import android.graphics.Bitmap
 import android.text.TextUtils
 import android.view.View
 import android.webkit.GeolocationPermissions
+import mozilla.components.browser.session.Session
+import mozilla.components.browser.session.Session.Source
 import mozilla.components.support.base.observer.ObserverRegistry
 import org.mozilla.rocket.tabs.EngineSessionHolder
-import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.TabView
 import java.util.WeakHashMap
 
@@ -35,7 +36,7 @@ val Session.engineSessionHolder: EngineSessionHolder
 
 
 fun Session.isFromExternal(): Boolean {
-    return this.parentId == ID_EXTERNAL
+    return this.getParentId() == ID_EXTERNAL
 }
 
 fun Session.setParentId(id: String?) {
@@ -47,7 +48,7 @@ fun Session.getParentId(): String? {
 }
 
 fun Session.hasParentTab(): Boolean {
-    return !isFromExternal() && !TextUtils.isEmpty(parentId)
+    return !isFromExternal() && !TextUtils.isEmpty(this.getParentId())
 }
 
 fun Session.isValid(): Boolean {

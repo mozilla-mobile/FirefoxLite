@@ -76,7 +76,6 @@ import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
-import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
@@ -94,6 +93,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import mozilla.components.browser.session.Session;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
         ScreenNavigator.HomeScreen {

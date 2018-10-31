@@ -84,7 +84,6 @@ import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
-import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
@@ -97,6 +96,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import mozilla.components.browser.session.Session;
 
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 

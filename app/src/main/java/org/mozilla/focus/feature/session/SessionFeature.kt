@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
-import org.mozilla.rocket.tabs.Session
+import mozilla.components.browser.session.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabViewEngineSession
