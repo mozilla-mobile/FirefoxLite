@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">Markah diperbarui</string>
   <string name="bookmarks_empty_view_msg">Tidak ada markah</string>
   <string name="edit_bookmark">Ubah</string>
+  <string name="label_menu_news">Berita</string>
+  <string name="news_update_btn">Ada kabar terbaru</string>
   <string name="private_tab">Tab privat</string>
   <string name="private_browsing_title">Penjelajahan Pribadi</string>
   <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
