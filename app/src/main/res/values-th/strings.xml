@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">อัปเดตที่คั่นหน้าแล้ว</string>
   <string name="bookmarks_empty_view_msg">ไม่มีที่คั่นหน้า</string>
   <string name="edit_bookmark">แก้ไข</string>
+  <string name="label_menu_news">ข่าว</string>
+  <string name="news_update_btn">การอัปเดตใหม่</string>
   <string name="private_tab">แท็บส่วนตัว</string>
   <string name="private_browsing_title">การท่องเว็บแบบส่วนตัว</string>
   <string name="private_browsing_erase_message">ล้างประวัติการท่องเว็บแบบส่วนตัว</string>
