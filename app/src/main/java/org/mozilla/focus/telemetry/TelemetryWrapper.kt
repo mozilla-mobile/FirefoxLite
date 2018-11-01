@@ -257,7 +257,6 @@ object TelemetryWrapper {
 
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
-                    .setMinimumEventsForUpload(1)   // if the user open MainActivity and goes to Setting Fragment and disable "Send Usage Data", we still want to send that event.
                     .setAppName(TELEMETRY_APP_NAME_ZERDA)
                     .setUpdateChannel(BuildConfig.BUILD_TYPE)
                     .setPreferencesImportantForTelemetry(
@@ -270,6 +269,7 @@ object TelemetryWrapper {
                             resources.getString(R.string.pref_key_locale))
                     .setSettingsProvider(CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
+                    .setUploadEnabled(true) // the default value for UploadEnabled is true, but we want to make it clear.
 
 
             val serializer = JSONPingSerializer()
@@ -1829,6 +1829,10 @@ object TelemetryWrapper {
             val context = TelemetryHolder.get().configuration.context
             if (context != null) {
                 if (sendNow) {
+                    // if the user open MainActivity and goes to Setting Fragment and disable "Send Usage Data", we still want to send that event asap
+                    // This pref is wrapped in async call so we don't know when to set it back.
+                    // It'll resume to it's default value when the user start the app next time.
+                    TelemetryHolder.get().configuration.minimumEventsForUpload = 1
                     sendEventNow(telemetryEvent)
                 } else {
                     telemetryEvent.queue()
