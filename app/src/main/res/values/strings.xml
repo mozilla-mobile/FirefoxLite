@@ -518,6 +518,9 @@
     <!-- The notice shown along with the message when the user captures screenshot for the first time -->
     <string name="my_shot_on_boarding_category_message">To improve your product experience, we collect information about your screenshots’ categories.</string>
 
+    <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. Press "Yes, please" then direct users to download vpn app; Press "Nope" then hide the icon in home screen. -->
+    <string name="btn_vpn">The 7-day free VPN service is ready for you. Install now to browse more privately and securely.</string>
+   
     <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback.-->
     <string name="exp_survey_wifi">We plan to integrate “Free Wifi-Finder” to help you find quality free internet connection nearby.\n\n Interested?</string>
     <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback. -->
