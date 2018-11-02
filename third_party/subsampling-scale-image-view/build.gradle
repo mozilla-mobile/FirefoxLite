@@ -4,7 +4,8 @@ android {
     compileSdkVersion Versions.compile_sdk
     buildToolsVersion Versions.build_tools
     defaultConfig {
-        minSdkVersion = 10
+        targetSdkVersion Versions.target_sdk
+        minSdkVersion Versions.min_sdk
     }
 }
 
