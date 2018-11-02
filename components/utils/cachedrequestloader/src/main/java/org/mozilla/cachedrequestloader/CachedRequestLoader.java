@@ -56,7 +56,7 @@ public class CachedRequestLoader {
 
     private void loadFromCache() {
         try {
-            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey, stringLiveData, CachedRequestLoader::convertToPair).execute();
+            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey, stringLiveData, CachedRequestLoader::convertToPair).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Log.e(TAG, "Failed to open Cache directory when reading cached banner config");
@@ -68,7 +68,7 @@ public class CachedRequestLoader {
     }
 
     private void loadFromRemote() {
-        new RemoteLoadUrlTask(stringLiveData, this).execute(subscriptionUrl, userAgent, Integer.toString(socketTag));
+        new RemoteLoadUrlTask(stringLiveData, this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, subscriptionUrl, userAgent, Integer.toString(socketTag));
     }
 
     private void loadFromRemoteWrapped() {
