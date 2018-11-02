@@ -1,4 +1,4 @@
-include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler'
+include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':bhaskar'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
@@ -10,6 +10,7 @@ project(':threadutils').projectDir = new File(rootDir, 'components/utils/threadu
 project(':cachedrequestloader').projectDir = new File(rootDir, 'components/utils/cachedrequestloader')
 project(':telemetry-annotation').projectDir = new File(rootDir, 'components/service/telemetry-annotation')
 project(':telemetry-compiler').projectDir = new File(rootDir, 'components/service/telemetry-compiler')
+project(':bhaskar').projectDir = new File(rootDir, 'components/partners/bhaskar')
 
 include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'
