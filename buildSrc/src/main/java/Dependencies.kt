@@ -7,7 +7,7 @@ object Versions {
     const val version_name = "1.0.1"
     const val android_gradle_plugin = "3.2.0"
     const val dicedmelon_jacoco_plugin = "0.1.3"
-    const val gms_oss_licenses_plugin = "0.9.1"
+    const val gms_oss_licenses_plugin = "0.9.3"
     const val support = "28.0.0"
     const val constraint = "1.1.2"
     const val arch_core = "1.1.1"
