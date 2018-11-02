@@ -1,4 +1,4 @@
-include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler'
+include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler', ':bhaskar'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
@@ -11,6 +11,7 @@ project(':cachedrequestloader').projectDir = new File(rootDir, 'components/utils
 project(':telemetry-annotation').projectDir = new File(rootDir, 'components/service/telemetry-annotation')
 project(':telemetry-compiler').projectDir = new File(rootDir, 'components/service/telemetry-compiler')
 project(':permissionhandler').projectDir = new File('components/utils/android-permission-handler/permissionhandler')
+project(':bhaskar').projectDir = new File(rootDir, 'components/partners/bhaskar')
 
 include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'
