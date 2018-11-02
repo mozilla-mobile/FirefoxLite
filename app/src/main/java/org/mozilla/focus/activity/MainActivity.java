@@ -778,26 +778,27 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             if (browserFragment != null) {
                 browserFragment.setContentBlockingEnabled(turboEnabled);
             }
-            if (menu != null) {
-                View button = menu.findViewById(R.id.menu_turbomode);
-                if (button != null) {
-                    button.setSelected(turboEnabled);
-                }
-            }
+            setMenuButtonSelected(R.id.menu_turbomode, turboEnabled);
         } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
             final boolean blockingImages = isBlockingImages();
             BrowserFragment browserFragment = getBrowserFragment();
             if (browserFragment != null) {
                 browserFragment.setImageBlockingEnabled(blockingImages);
             }
-            if (menu != null) {
-                View button = menu.findViewById(R.id.menu_blockimg);
-                if (button != null) {
-                    button.setSelected(blockingImages);
-                }
-            }
+            setMenuButtonSelected(R.id.menu_blockimg, blockingImages);
         }
         // For turbo mode, a automatic refresh is done when we disable block image.
+    }
+
+    void setMenuButtonSelected(int buttonId, boolean selected) {
+        if (menu == null) {
+            return;
+        }
+        View button = menu.findViewById(buttonId);
+        if (button == null) {
+            return;
+        }
+        button.setSelected(selected);
     }
 
     @Override
