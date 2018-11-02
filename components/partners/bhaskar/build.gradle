@@ -12,6 +12,8 @@ dependencies {
     testImplementation "junit:junit:$Versions.junit"
     androidTestImplementation "com.android.support.test:runner:$Versions.test_runner"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+    compileOnly "com.google.code.findbugs:annotations:${Versions.findbugs}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
 }
 
 afterEvaluate {
