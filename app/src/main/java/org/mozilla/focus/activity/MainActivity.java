@@ -217,6 +217,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)));
 
         bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     private void initBroadcastReceivers() {
@@ -263,8 +266,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         super.onResume();
 
         TelemetryWrapper.startSession();
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this);
 
         final IntentFilter uiActionFilter = new IntentFilter(Constants.ACTION_NOTIFY_UI);
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
@@ -278,9 +279,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
 
         TelemetryWrapper.stopSession();
-
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(this);
 
         saveTabsToPersistence();
     }
@@ -648,6 +646,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     @Override
     public void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
+
         sessionManager.destroy();
         super.onDestroy();
     }
@@ -777,16 +778,27 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             if (browserFragment != null) {
                 browserFragment.setContentBlockingEnabled(turboEnabled);
             }
-            menu.findViewById(R.id.menu_turbomode).setSelected(turboEnabled);
+            setMenuButtonSelected(R.id.menu_turbomode, turboEnabled);
         } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
             final boolean blockingImages = isBlockingImages();
             BrowserFragment browserFragment = getBrowserFragment();
             if (browserFragment != null) {
                 browserFragment.setImageBlockingEnabled(blockingImages);
             }
-            menu.findViewById(R.id.menu_blockimg).setSelected(blockingImages);
+            setMenuButtonSelected(R.id.menu_blockimg, blockingImages);
         }
         // For turbo mode, a automatic refresh is done when we disable block image.
+    }
+
+    void setMenuButtonSelected(int buttonId, boolean selected) {
+        if (menu == null) {
+            return;
+        }
+        View button = menu.findViewById(buttonId);
+        if (button == null) {
+            return;
+        }
+        button.setSelected(selected);
     }
 
     @Override
