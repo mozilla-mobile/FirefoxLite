@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">Peutanda meuseubarô</string>
   <string name="bookmarks_empty_view_msg">Hana peutanda</string>
   <string name="edit_bookmark">Andam</string>
+  <string name="label_menu_news">Haba</string>
+  <string name="news_update_btn">Haba barô</string>
   <string name="private_tab">Tab rahsia</string>
   <string name="private_browsing_title">Peuhah Wèb Rahsia</string>
   <string name="private_browsing_erase_message">Sampôh riwayat peuhah wèb privat</string>
