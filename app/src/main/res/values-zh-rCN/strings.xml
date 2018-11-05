@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">书签已更新</string>
   <string name="bookmarks_empty_view_msg">无书签</string>
   <string name="edit_bookmark">编辑</string>
+  <string name="label_menu_news">新闻</string>
+  <string name="news_update_btn">点按更新</string>
   <string name="private_tab">隐私标签页</string>
   <string name="private_browsing_title">隐私浏览</string>
   <string name="private_browsing_erase_message">清除隐私浏览历史</string>
@@ -221,6 +223,7 @@
   <string name="private_browsing_erase_done">您的隐私浏览\n历史已被清除。</string>
   <string name="my_shot_on_boarding_message">在这里查看您的截图！</string>
   <string name="my_shot_on_boarding_category_message">为了改善您的产品体验，我们会收集有关您的屏幕截图类别的信息。</string>
+  <string name="btn_vpn">VPN 服务 7 天免费使用。立即安装，上网可以更私密、更安全。</string>
   <string name="exp_survey_wifi">我们计划整合“Free Wifi-Finder”来帮助您找到附近的高质量免费互联网接入节点。\n\n您感兴趣吗？</string>
   <string name="exp_survey_vpn">我们计划整合“VPN 服务”来为您提供更多的隐私和自由。\n\n您感兴趣吗？</string>
   <string name="exp_survey_thanks">感谢您提供反馈 %1$s</string>
