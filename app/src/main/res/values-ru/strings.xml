@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-<string name="abc_action_bar_home_description">Перемещение на домашнюю страницу</string>
-<string name="abc_action_bar_up_description">Перемещение вверх</string>
-<string name="abc_action_menu_overflow_description">Больше вариантов</string>
 <string name="abc_action_mode_done">Готово</string>
 <string name="abc_activity_chooser_view_see_all">Посмотреть все</string>
 <string name="abc_activitychooserview_choose_application">Выберите приложение</string>
