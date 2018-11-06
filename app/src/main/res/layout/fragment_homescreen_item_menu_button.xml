@@ -21,13 +21,6 @@
             style="@style/HomeMenuButton"
             app:drawableColor="@color/home_bottom_button" />
 
-        <ImageButton
-            android:id="@+id/btn_portal_up"
-            style="@style/MainMenuButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/action_swipe_up"
-            android:visibility="invisible" />
 
         <include
             style="@style/HomeMenuButton"

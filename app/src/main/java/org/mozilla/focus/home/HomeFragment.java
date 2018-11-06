@@ -39,6 +39,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -114,7 +116,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
     private ThemedImageButton btnMenu;
-    private ImageButton btnPortalUp;
+    private ImageButton arrow1;
+    private ImageButton arrow2;
     private ContentPortalView contentPanel;
     private View themeOnboardingLayer;
     private TabCounter tabCounter;
@@ -335,11 +338,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.btnMenu = view.findViewById(R.id.btn_menu);
         this.btnMenu.setOnClickListener(menuItemClickListener);
-        this.btnPortalUp = view.findViewById(R.id.btn_portal_up);
-        this.btnPortalUp.setVisibility(View.VISIBLE);
-        this.btnPortalUp.setOnClickListener(v -> {
-            contentPanel.show();
-        });
+        this.arrow1 = view.findViewById(R.id.arrow1);
+        this.arrow2 = view.findViewById(R.id.arrow2);
+        final Animation fadeout = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_out);
+        final Animation fadein = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_in);
+        arrow1.startAnimation(fadeout);
+        arrow2.startAnimation(fadein);
+        this.arrow1.setOnClickListener(v -> contentPanel.show());
+        this.arrow2.setOnClickListener(v -> contentPanel.show());
+
         this.contentPanel = view.findViewById(R.id.content_panel);
 
 
