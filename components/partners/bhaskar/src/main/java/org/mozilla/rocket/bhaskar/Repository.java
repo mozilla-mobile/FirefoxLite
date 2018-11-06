@@ -31,14 +31,16 @@ public class Repository {
     private String userAgent;
     private int socketTag;
     private OnDataChangedListener onDataChangedListener;
+    private OnCacheInvalidateListener onCacheInvalidateListener;
     private List<ItemPojo> itemPojoList;
     private boolean cacheIsDirty = false;
 
-    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, String subscriptionUrl) {
+    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionUrl) {
         this.context = context;
         this.channel = channel;
         this.pageSize = pageSize;
         this.onDataChangedListener = onDataChangedListener;
+        this.onCacheInvalidateListener = onCacheInvalidateListener;
         this.subscriptionUrl = subscriptionUrl;
         this.userAgent = userAgent;
         this.socketTag = socketTag;
@@ -46,8 +48,8 @@ public class Repository {
         nextSubscription();
     }
 
-    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener) {
-        this(context, channel, pageSize, userAgent, socketTag, onDataChangedListener, DEFAULT_SUBSCRIPTION_URL);
+    Repository(Context context, int channel, int pageSize, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener) {
+        this(context, channel, pageSize, userAgent, socketTag, onDataChangedListener, onCacheInvalidateListener, DEFAULT_SUBSCRIPTION_URL);
     }
 
     public void loadMore() {
@@ -97,8 +99,13 @@ public class Repository {
                         List<ItemPojo> itemPojoList = Repository.this.parseData(integerStringPair.second);
                         // Removes the subscription and mark as done once network returns.
                         if (integerStringPair.first == ResponseData.SOURCE_NETWORK) {
-                            if (lastValue != null && lastValue.equals(itemPojoList)) {
-                                cacheIsDirty = true;
+                            if (lastValue != null) {
+                                List<ItemPojo> diff = new ArrayList<>(lastValue);
+                                diff.removeAll(itemPojoList);
+                                cacheIsDirty = diff.size() == 0;
+                                if (cacheIsDirty && onCacheInvalidateListener != null) {
+                                    onCacheInvalidateListener.onCacheInvalidate();
+                                }
                             }
                             liveData.removeObserver(this);
                             currentPageSubscription = null;
@@ -161,6 +168,10 @@ public class Repository {
 
     public interface OnDataChangedListener {
         void onDataChanged(List<ItemPojo> itemPojoList);
+    }
+
+    public interface OnCacheInvalidateListener {
+        void onCacheInvalidate();
     }
 
     private static class PageSubscription {
