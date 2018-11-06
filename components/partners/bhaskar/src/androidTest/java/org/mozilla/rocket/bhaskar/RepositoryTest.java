@@ -39,7 +39,7 @@ public class RepositoryTest {
             Repository repository = new Repository(InstrumentationRegistry.getContext(), 521, LOAD_SIZE, null, SOCKET_TAG, itemPojoList -> {
                 Assert.assertEquals(LOAD_SIZE, itemPojoList.size());
                 countDownLatch.countDown();
-            }, webServer.url(FAKE_PATH).toString());
+            }, null, webServer.url(FAKE_PATH).toString());
             countDownLatch.await();
 
         } catch (IOException e) {
@@ -63,7 +63,7 @@ public class RepositoryTest {
                 countDownLatch2.countDown();
             }
             atomicInteger.incrementAndGet();
-        });
+        }, null);
         countDownLatch1.await();
         repository.loadMore();
         countDownLatch2.await();
