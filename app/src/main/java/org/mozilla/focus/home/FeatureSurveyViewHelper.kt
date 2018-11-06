@@ -53,7 +53,7 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
             } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER) {
                 textContent.setText(R.string.btn_vpn)
                 imgLogo.visibility = View.VISIBLE
-                // TODO telemetry
+                TelemetryWrapper.clickVpnRecommender(false)
             }
 
             val eventHistory = Settings.getInstance(context).eventHistory
@@ -74,7 +74,7 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                         TelemetryWrapper.dismissVpnSurvey()
                     }
                 } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER) {
-                    // TODO telemetry
+                    TelemetryWrapper.dismissVpnRecommender()
                 }
             }
             btnYes.setOnClickListener { _ ->
@@ -84,6 +84,7 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     isViewInit = false
                     // VPN app is installed, go to google play store
                     IntentUtils.goToPlayStore(context, Constants.PACKAGE_EXPRESS_VPN)
+                    TelemetryWrapper.clickVpnRecommenderFeedback(true)
                 } else {
                     textContent.text = context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
                     btnYes.visibility = View.GONE
@@ -105,6 +106,7 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     parentView.removeView(rootView)
                     isViewInit = false
                     v.visibility = View.GONE
+                    TelemetryWrapper.clickVpnRecommenderFeedback(false)
                 } else {
                     textContent.text = context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
                     btnYes.visibility = View.GONE
