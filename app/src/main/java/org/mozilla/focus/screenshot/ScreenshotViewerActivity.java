@@ -47,6 +47,7 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
 import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -222,6 +223,7 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.screenshot_viewer_btn_open_url:
                 TelemetryWrapper.openCaptureLink(mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
+                ContentPortalViewState.setLastSessionContent(false);
                 Intent urlIntent = new Intent();
                 urlIntent.putExtra(EXTRA_URL, mScreenshot.getUrl());
                 setResult(RESULT_OPEN_URL, urlIntent);

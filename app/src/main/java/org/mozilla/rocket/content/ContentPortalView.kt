@@ -29,6 +29,13 @@ import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.persistence.BookmarksDatabase
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.viewmodel.BookmarkViewModel
+import org.mozilla.rocket.content.ContentPortalViewState.isLastSessionContent
+
+object ContentPortalViewState {
+    @JvmStatic
+    var isLastSessionContent = false
+
+}
 
 class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListener {
 
@@ -48,6 +55,11 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         init()
+        if (isLastSessionContent) {
+            show()
+        }
+        // reset default value
+        isLastSessionContent = false
     }
 
     private fun init() {
@@ -176,6 +188,7 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
 
     override fun onItemClicked(url: String?) {
         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+        ContentPortalViewState.isLastSessionContent = true
     }
 
     override fun onItemDeleted(bookmark: BookmarkModel?) {
