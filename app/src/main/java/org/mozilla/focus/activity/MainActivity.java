@@ -855,7 +855,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
 
         // if home panel has content portal displayed, hide that first.
-        if (dismissContentPortal()){
+        if (dismissContentPortal()) {
             return;
         }
 
