@@ -117,6 +117,7 @@ object TelemetryWrapper {
         const val THEMETOY = "themetoy"
         const val BANNER = "banner"
         const val DOORHANGER = "doorhanger"
+        const val VPN_DOORHANGER = "vpn_doorhanger"
     }
 
     object Value {
@@ -194,6 +195,7 @@ object TelemetryWrapper {
         const val CATEGORY = "category"
         // Remove the last character cause Telemetry library will do that for you.( > 15chars)
         const val CATEGORY_VERSION = "category_versio"
+        const val VPN_INSTALLED = "vpn_installed"
     }
 
     object Extra_Value {
@@ -1763,6 +1765,59 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @TelemetryDoc(
+            name = "Show VPN Recommender",
+            action = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.HOME,
+            value = Value.VPN,
+            extras = [])
+    @JvmStatic
+    fun showVpnRecommender(installed: Boolean) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.HOME, Value.VPN)
+                .extra(Extra.VPN_INSTALLED, java.lang.Boolean.toString(installed))
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click VPN Recommender",
+            action = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.HOME,
+            value = Value.VPN,
+            extras = [])
+    @JvmStatic
+    fun clickVpnRecommender(installed: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.HOME, Value.VPN)
+                .extra(Extra.VPN_INSTALLED, java.lang.Boolean.toString(installed))
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click VPN Recommender Feedback",
+            action = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.VPN_DOORHANGER,
+            value = "negative,positive",
+            extras = [])
+    @JvmStatic
+    fun clickVpnRecommenderFeedback(positive: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.VPN_DOORHANGER, if (positive) Value.POSITIVE else Value.NEGATIVE)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Dismiss VPN Recommender",
+            action = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.VPN_DOORHANGER,
+            value = Value.DISMISS,
+            extras = [])
+    @JvmStatic
+    fun dismissVpnRecommender() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.VPN_DOORHANGER, Value.DISMISS)
+                .queue()
+    }
 
     @JvmStatic
     fun findInPage(type: FIND_IN_PAGE) {

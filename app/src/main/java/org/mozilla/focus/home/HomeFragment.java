@@ -698,7 +698,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 imgSurvey.setOnClickListener(v -> {
                     Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(FeatureSurveyViewHelper.Constants.PACKAGE_EXPRESS_VPN);
                     startActivity(intent);
+                    TelemetryWrapper.clickVpnRecommender(true);
                 });
+                TelemetryWrapper.showVpnRecommender(true);
             } else {
                 // No vpn app is installed
                 if (eventHistory.contains(Settings.Event.VpnAppWasDownloaded)) {
@@ -709,6 +711,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     if (getContext() != null) {
                         imgSurvey.setOnClickListener(new FeatureSurveyViewHelper(getContext(), featureSurvey));
                     }
+                    TelemetryWrapper.showVpnRecommender(false);
                 }
             }
         } else {
