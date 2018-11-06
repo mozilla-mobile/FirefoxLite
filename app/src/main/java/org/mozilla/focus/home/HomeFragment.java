@@ -26,7 +26,6 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +34,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
-import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -170,28 +168,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         return this;
     }
 
-    // todo: remove the view state here and replace with
-    // a. properties on contentportal or
-    // b. liveModel
-    // c. some other way to store view state
-    private boolean contentVisible = false;
-
-    private void showContentPortal() {
-        if (contentVisible) {
-            return;
-        }
-        contentVisible = true;
-        contentPanel.moveUp();
-    }
 
     // return true if there's a content portal to hide
     public boolean hideContentPortal() {
-        if (!contentVisible) {
-            return false;
-        }
-        contentVisible = false;
-        contentPanel.moveDown();
-        return true;
+        return contentPanel.hide();
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -357,18 +337,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.btnMenu.setOnClickListener(menuItemClickListener);
         this.btnPortalUp = view.findViewById(R.id.btn_portal_up);
         this.btnPortalUp.setVisibility(View.VISIBLE);
-        this.contentPanel = view.findViewById(R.id.content_panel);
-        this.contentPanel.setListener(new ContentPortalView.PortalListener() {
-            @Override
-            public void onHidden() {
-                hideContentPortal();
-            }
-
-            @Override
-            public void onShown() {
-
-            }
+        this.btnPortalUp.setOnClickListener(v -> {
+            contentPanel.show();
         });
+        this.contentPanel = view.findViewById(R.id.content_panel);
+
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
@@ -870,7 +843,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public void onSwipeUp() {
-            showContentPortal();
+            contentPanel.show();
         }
 
         @Override

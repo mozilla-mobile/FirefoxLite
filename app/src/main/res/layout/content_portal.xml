@@ -5,12 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_panel"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:background="#55ff00ff"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:fitsSystemWindows="true"
+    android:background="@color/colorUrlInputBackground">
 
     <FrameLayout
         android:id="@+id/bottom_sheet"
@@ -64,7 +63,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-medium"
-            android:text="好看的新聞唷"
+            android:text="News"
             android:textColor="@color/paletteLightBlack100"
             android:textSize="16dp" />
     </FrameLayout>
