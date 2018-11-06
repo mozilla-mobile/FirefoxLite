@@ -46,6 +46,17 @@
             android:paddingStart="@dimen/common_margin_m4"
             android:paddingTop="@dimen/common_margin_m4">
 
+            <ImageView
+                android:id="@+id/wifi_vpn_img_logo"
+                android:layout_width="100dp"
+                android:layout_height="29dp"
+                android:layout_marginBottom="@dimen/common_margin_m3"
+                android:scaleType="fitXY"
+                android:src="@drawable/expressvpn"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/wifi_vpn_text_content"
                 android:layout_width="match_parent"
@@ -55,7 +66,7 @@
                 android:textSize="@dimen/common_font_size_body1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/wifi_vpn_img_logo" />
 
             <Space
                 android:id="@+id/space"
