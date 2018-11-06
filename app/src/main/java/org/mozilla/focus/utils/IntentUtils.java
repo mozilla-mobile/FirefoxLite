@@ -222,7 +222,10 @@ public class IntentUtils {
 
     // FLAG_ACTIVITY_NEW_TASK is needed if the context is not an activity
     public static void goToPlayStore(Context context) {
-        final String appPackageName = context.getPackageName();
+        goToPlayStore(context, context.getPackageName());
+    }
+
+    public static void goToPlayStore(Context context, String appPackageName) {
         try {
             final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_INTENT_URI_PACKAGE_PREFIX + appPackageName));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

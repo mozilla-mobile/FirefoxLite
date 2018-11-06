@@ -17,6 +17,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -61,6 +63,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.focus.utils.Settings;
@@ -379,8 +382,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         homeScreenBackground = view.findViewById(R.id.home_background);
 
-        initFeatureSurveyViewIfNecessary(view);
-
         return view;
     }
 
@@ -402,6 +403,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         updateTopSitesData();
         setupBannerTimer();
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
+        initFeatureSurveyViewIfNecessary(getView());
     }
 
     private void setupBannerTimer() {
@@ -680,6 +682,34 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             imgSurvey.setVisibility(View.VISIBLE);
             if (getContext() != null) {
                 imgSurvey.setOnClickListener(new FeatureSurveyViewHelper(getContext(), featureSurvey));
+            }
+        } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER && !eventHistory.contains(Settings.Event.VpnRecommenderIgnore)) {
+            PackageInfo packageInfo = null;
+            try {
+                packageInfo = getActivity().getPackageManager().getPackageInfo(FeatureSurveyViewHelper.Constants.PACKAGE_EXPRESS_VPN, 0);
+            } catch (PackageManager.NameNotFoundException ex) {
+
+            }
+            if (packageInfo != null) {
+                eventHistory.add(Settings.Event.VpnAppWasDownloaded);
+                // Show vpn recommender, click vpn will launch vpn app
+                imgSurvey.setImageResource(R.drawable.vpn);
+                imgSurvey.setVisibility(View.VISIBLE);
+                imgSurvey.setOnClickListener(v -> {
+                    Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(FeatureSurveyViewHelper.Constants.PACKAGE_EXPRESS_VPN);
+                    startActivity(intent);
+                });
+            } else {
+                // No vpn app is installed
+                if (eventHistory.contains(Settings.Event.VpnAppWasDownloaded)) {
+                    // Vpn app was downloaded before, hide vpn recommender
+                    imgSurvey.setVisibility(View.GONE);
+                } else {
+                    // Vpn app wasn't downloaded before, show vpn recommender hint
+                    if (getContext() != null) {
+                        imgSurvey.setOnClickListener(new FeatureSurveyViewHelper(getContext(), featureSurvey));
+                    }
+                }
             }
         } else {
             imgSurvey.setVisibility(View.GONE);
