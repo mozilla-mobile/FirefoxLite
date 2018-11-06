@@ -17,3 +17,5 @@ include ':third_party:subsampling-scale-image-view'
 include ':third_party:glide:library'
 include ':third_party:glide:annotation'
 include ':third_party:glide:disklrucache'
+include ':bhaskar'
+project(':bhaskar').projectDir = new File(rootDir, 'components/partners/bhaskar')

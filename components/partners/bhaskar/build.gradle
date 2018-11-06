@@ -1,0 +1,21 @@
+apply from: '../../../buildSrc/android-library-base.gradle'
+apply plugin: 'com.android.library'
+apply from: "$rootProject.projectDir/buildSrc/pmd.gradle"
+apply from: "$rootProject.projectDir/buildSrc/checkstyle.gradle"
+apply from: "$rootProject.projectDir/buildSrc/findbugs.gradle"
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':cachedrequestloader')
+
+    implementation "com.android.support:appcompat-v7:$Versions.support"
+    testImplementation "junit:junit:$Versions.junit"
+    androidTestImplementation "com.android.support.test:runner:$Versions.test_runner"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+    compileOnly "com.google.code.findbugs:annotations:${Versions.findbugs}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
+}
+
+afterEvaluate {
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle'
+}

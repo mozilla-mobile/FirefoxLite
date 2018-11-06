@@ -15,14 +15,9 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutionException;
 
-public class CachedRequestLoader {
+public class CachedRequestLoader implements RequestLoaderDelegation.RequestLoader {
 
-    private Context context;
-    private String subscriptionKey;
-    private String subscriptionUrl;
-    private String userAgent;
-    private int socketTag;
-    private ResponseData stringLiveData;
+    private RequestLoaderDelegation requestLoaderDelegation;
     private static final String TAG = "CachedRequestLoader";
     // Mainly for testing purposes.
     @VisibleForTesting
@@ -30,12 +25,12 @@ public class CachedRequestLoader {
     @VisibleForTesting
     private boolean delayNetworkLoad = false;
 
+    public CachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag, boolean forceNetwork) {
+        requestLoaderDelegation = new RequestLoaderDelegation(context, subscriptionKey, subscriptionUrl, userAgent, socketTag, forceNetwork, this);
+    }
+
     public CachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag) {
-        this.context = context;
-        this.subscriptionKey = subscriptionKey;
-        this.subscriptionUrl = subscriptionUrl;
-        this.userAgent = userAgent;
-        this.socketTag = socketTag;
+        this(context, subscriptionKey, subscriptionUrl, userAgent, socketTag, false);
     }
 
     @VisibleForTesting
@@ -46,15 +41,14 @@ public class CachedRequestLoader {
     }
 
     public ResponseData getStringLiveData() {
-        if (stringLiveData == null) {
-            stringLiveData = new ResponseData();
-            loadFromCacheWrapped();
-            loadFromRemoteWrapped();
-        }
-        return stringLiveData;
+        return requestLoaderDelegation.getStringLiveData();
     }
 
-    private void loadFromCache() {
+    public void loadFromCache(Context context, String subscriptionKey, ResponseData stringLiveData) {
+        Inject.postDelayIfTesting(() -> loadFromCacheInternal(context, subscriptionKey, stringLiveData), delayCacheLoad);
+    }
+
+    private void loadFromCacheInternal(Context context, String subscriptionKey, ResponseData stringLiveData) {
         try {
             new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey, stringLiveData, CachedRequestLoader::convertToPair).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         } catch (ExecutionException | InterruptedException e) {
@@ -63,23 +57,19 @@ public class CachedRequestLoader {
         }
     }
 
-    private void loadFromCacheWrapped() {
-        Inject.postDelayIfTesting(this::loadFromCache, delayCacheLoad);
+    public void loadFromRemote(ResponseData stringLiveData, String subscriptionUrl, String userAgent, int socketTag) {
+        Inject.postDelayIfTesting(() -> loadFromRemoteInternal(stringLiveData, subscriptionUrl, userAgent, socketTag), delayNetworkLoad);
     }
 
-    private void loadFromRemote() {
+    private void loadFromRemoteInternal(ResponseData stringLiveData, String subscriptionUrl, String userAgent, int socketTag) {
         new RemoteLoadUrlTask(stringLiveData, this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, subscriptionUrl, userAgent, Integer.toString(socketTag));
-    }
-
-    private void loadFromRemoteWrapped() {
-        Inject.postDelayIfTesting(this::loadFromRemote, delayNetworkLoad);
     }
 
     private static Pair<Integer, String> convertToPair(String input) {
         return new Pair<>(ResponseData.SOURCE_CACHE, input);
     }
 
-    private void writeToCache(String string) {
+    public void writeToCache(String string, Context context, String subscriptionKey) {
         try {
             final Runnable runnable = new FileUtils.WriteStringToFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey), string);
             ThreadUtils.postToBackgroundThread(runnable);
@@ -89,7 +79,7 @@ public class CachedRequestLoader {
         }
     }
 
-    private void deleteCache() {
+    public void deleteCache(Context context, String subscriptionKey) {
         try {
             final Runnable runnable = new FileUtils.DeleteFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey));
             ThreadUtils.postToBackgroundThread(runnable);
@@ -119,9 +109,9 @@ public class CachedRequestLoader {
                 return;
             }
             if (TextUtils.isEmpty(line)) {
-                cachedRequestLoader.deleteCache();
+                cachedRequestLoader.requestLoaderDelegation.deleteCache();
             } else {
-                cachedRequestLoader.writeToCache(line);
+                cachedRequestLoader.requestLoaderDelegation.writeToCache(line);
             }
         }
     }
