@@ -2,6 +2,7 @@ package org.mozilla.cachedrequestloader;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.util.Pair;
@@ -64,7 +65,9 @@ public class BackgroundCachedRequestLoaderTest {
                 latch2.countDown();
             }
         };
-        BackgroundCachedRequestLoader cachedRequestLoader = new BackgroundCachedRequestLoader(InstrumentationRegistry.getContext(), KEY, targetUrl, null, SOCKET_TAG, false, true);
+        Context context = InstrumentationRegistry.getContext();
+        BackgroundCachedRequestLoader cachedRequestLoader = new BackgroundCachedRequestLoader(context, KEY, targetUrl, null, SOCKET_TAG, false, true);
+        cachedRequestLoader.deleteCache(context, KEY);
         LiveData<Pair<Integer, String>> liveData = cachedRequestLoader.getStringLiveData();
         liveData.observeForever(observer);
         latch1.await();

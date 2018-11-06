@@ -19,49 +19,39 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BackgroundCachedRequestLoader {
+public class BackgroundCachedRequestLoader implements RequestLoaderDelegation.RequestLoader {
 
     private static final ExecutorService backgroundExecutorService = Executors.newFixedThreadPool(2);
 
-    private Context context;
-    private String subscriptionKey;
-    private String subscriptionUrl;
-    private String userAgent;
-    private int socketTag;
-    private ResponseData stringLiveData;
+    private RequestLoaderDelegation requestLoaderDelegation;
     private static final String TAG = "CachedRequestLoader";
     // Mainly for testing purposes.
     private boolean delayCacheLoad = false;
     private boolean delayNetworkLoad = false;
 
+    public BackgroundCachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag, boolean forceNetwork) {
+        requestLoaderDelegation = new RequestLoaderDelegation(context, subscriptionKey, subscriptionUrl, userAgent, socketTag, forceNetwork, this);
+    }
+
     public BackgroundCachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag) {
-        this.context = context;
-        this.subscriptionKey = subscriptionKey;
-        this.subscriptionUrl = subscriptionUrl;
-        this.userAgent = userAgent;
-        this.socketTag = socketTag;
+        this(context, subscriptionKey, subscriptionUrl, userAgent, socketTag, false);
     }
 
     @VisibleForTesting
-    public BackgroundCachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag, boolean delayCacheLoad, boolean delayNetworkLoad) {
+    BackgroundCachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag, boolean delayCacheLoad, boolean delayNetworkLoad) {
         this(context, subscriptionKey, subscriptionUrl, userAgent, socketTag);
         this.delayCacheLoad = delayCacheLoad;
         this.delayNetworkLoad = delayNetworkLoad;
     }
 
     public ResponseData getStringLiveData() {
-        if (stringLiveData == null) {
-            stringLiveData = new ResponseData();
-            loadFromCache();
-            loadFromRemote();
-        }
-        return stringLiveData;
+        return requestLoaderDelegation.getStringLiveData();
     }
 
-    private void loadFromCache() {
+    public void loadFromCache(Context context, String subscriptionKey, ResponseData stringLiveData) {
         backgroundExecutorService.submit(() -> {
             try {
-                Inject.sleepIfTesting(delayCacheLoad);
+                sleepIfTesting(context, delayCacheLoad);
                 String string = FileUtils.readStringFromFile(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey);
                 stringLiveData.postValue(new Pair<>(ResponseData.SOURCE_CACHE, string));
             } catch (ExecutionException | InterruptedException e) {
@@ -71,18 +61,18 @@ public class BackgroundCachedRequestLoader {
         });
     }
 
-    private void loadFromRemote() {
+    public void loadFromRemote(Context context, ResponseData stringLiveData, String subscriptionUrl, String userAgent, int socketTag) {
         backgroundExecutorService.submit(() -> {
             TrafficStats.setThreadStatsTag(socketTag);
             try {
-                Inject.sleepIfTesting(delayNetworkLoad);
+                sleepIfTesting(context, delayNetworkLoad);
                 String string = HttpRequest.get(new URL(subscriptionUrl), userAgent);
                 string = string.replace("\n", "");
                 stringLiveData.postValue(new Pair<>(ResponseData.SOURCE_NETWORK, string));
                 if (TextUtils.isEmpty(string)) {
-                    deleteCache();
+                    requestLoaderDelegation.deleteCache();
                 } else {
-                    writeToCache(string);
+                    requestLoaderDelegation.writeToCache(string);
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -90,7 +80,7 @@ public class BackgroundCachedRequestLoader {
         });
     }
 
-    private void writeToCache(String string) {
+    public void writeToCache(String string, Context context, String subscriptionKey) {
         try {
             final Runnable runnable = new FileUtils.WriteStringToFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey), string);
             ThreadUtils.postToBackgroundThread(runnable);
@@ -100,13 +90,27 @@ public class BackgroundCachedRequestLoader {
         }
     }
 
-    private void deleteCache() {
+    public void deleteCache(Context context, String subscriptionKey) {
         try {
             final Runnable runnable = new FileUtils.DeleteFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), subscriptionKey));
             ThreadUtils.postToBackgroundThread(runnable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Log.e(TAG, "Failed to open cache directory when deleting cache.");
+        }
+    }
+
+    private void sleepIfTesting(Context context, boolean shouldSleep) {
+        if (!context.getResources().getBoolean(R.bool.isAndroidTest) && shouldSleep) {
+            throw new IllegalStateException("Delays are only available in testing.");
+        }
+        if (!shouldSleep) {
+            return;
+        }
+        try {
+            Thread.sleep(RequestLoaderDelegation.TEST_DELAY);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
