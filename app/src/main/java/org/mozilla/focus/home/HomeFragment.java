@@ -710,6 +710,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     // Vpn app wasn't downloaded before, show vpn recommender hint
                     if (getContext() != null) {
                         imgSurvey.setOnClickListener(new FeatureSurveyViewHelper(getContext(), featureSurvey));
+                        imgSurvey.setVisibility(View.VISIBLE);
                     }
                     TelemetryWrapper.showVpnRecommender(false);
                 }
