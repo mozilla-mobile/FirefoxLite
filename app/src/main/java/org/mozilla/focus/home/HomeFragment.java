@@ -63,7 +63,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
-import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.OnSwipeListener;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.focus.utils.Settings;
@@ -72,12 +71,12 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
-import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
-import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
+import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
+import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
@@ -685,10 +684,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER && !eventHistory.contains(Settings.Event.VpnRecommenderIgnore)) {
             PackageInfo packageInfo = null;
+            final String packageName = AppConfigWrapper.getVpnRecommenderPackage(getActivity());
             try {
-                packageInfo = getActivity().getPackageManager().getPackageInfo(FeatureSurveyViewHelper.Constants.PACKAGE_EXPRESS_VPN, 0);
+                packageInfo = getActivity().getPackageManager().getPackageInfo(packageName, 0);
             } catch (PackageManager.NameNotFoundException ex) {
-
+                ex.printStackTrace();
             }
             if (packageInfo != null) {
                 eventHistory.add(Settings.Event.VpnAppWasDownloaded);
@@ -696,7 +696,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 imgSurvey.setImageResource(R.drawable.vpn);
                 imgSurvey.setVisibility(View.VISIBLE);
                 imgSurvey.setOnClickListener(v -> {
-                    Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(FeatureSurveyViewHelper.Constants.PACKAGE_EXPRESS_VPN);
+                    Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(packageName);
                     startActivity(intent);
                     TelemetryWrapper.clickVpnRecommender(true);
                 });

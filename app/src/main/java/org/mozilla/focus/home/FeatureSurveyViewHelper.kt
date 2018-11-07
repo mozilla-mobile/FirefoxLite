@@ -3,6 +3,7 @@ package org.mozilla.focus.home
 import android.content.Context
 import android.os.Handler
 import android.support.v7.widget.CardView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import org.mozilla.focus.R
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.IntentUtils
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.RemoteConfigConstants
 import org.mozilla.focus.utils.Settings
 
@@ -19,7 +21,8 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
 
     object Constants {
         const val DISMISS_DELAY: Long = 5000
-        const val PACKAGE_EXPRESS_VPN: String = "com.expressvpn.vpn"
+        const val LINK_RECOMMEND_VPN: String = "https://www.expressvpn.com/download-app?a_fid=MozillaFirefoxLite"
+        const val PACKAGE_RECOMMEND_VPN: String = "com.expressvpn.vpn"
     }
 
     private var isViewInit = false
@@ -82,8 +85,11 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     // Dismiss view immediately
                     parentView.removeView(rootView)
                     isViewInit = false
-                    // VPN app is installed, go to google play store
-                    IntentUtils.goToPlayStore(context, Constants.PACKAGE_EXPRESS_VPN)
+                    // Open Play Store in a new tab
+                    val url = AppConfigWrapper.getVpnRecommenderUrl(context)
+                    if (!TextUtils.isEmpty(url)) {
+                        ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+                    }
                     TelemetryWrapper.clickVpnRecommenderFeedback(true)
                 } else {
                     textContent.text = context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
@@ -124,7 +130,7 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
         }
     }
 
-    private fun dismissSurveyView(btn : View) {
+    private fun dismissSurveyView(btn: View) {
         Handler().postDelayed({
             parentView.removeView(rootView)
             isViewInit = false
