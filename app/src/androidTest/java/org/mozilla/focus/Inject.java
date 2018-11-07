@@ -12,6 +12,8 @@ import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
+import android.view.View;
+import android.view.animation.Animation;
 
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
@@ -56,6 +58,7 @@ public class Inject {
         }
 
     }
+
     public static void enableStrictMode() {
         if (AppConstants.isReleaseBuild()) {
             return;
@@ -84,5 +87,8 @@ public class Inject {
 
     public static boolean isUnderEspressoTest() {
         return true;
+    }
+
+    public static void startAnimation(View view, Animation animation) {
     }
 }

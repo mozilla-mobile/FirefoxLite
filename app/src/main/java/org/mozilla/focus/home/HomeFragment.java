@@ -342,11 +342,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.arrow2 = view.findViewById(R.id.arrow2);
         final Animation fadeout = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_out);
         final Animation fadein = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_in);
-        arrow1.startAnimation(fadeout);
-        arrow2.startAnimation(fadein);
-        this.arrow1.setOnClickListener(v -> contentPanel.show());
-        this.arrow2.setOnClickListener(v -> contentPanel.show());
-
+        Inject.startAnimation(arrow1,fadeout);
+        Inject.startAnimation(arrow2,fadein);
         this.contentPanel = view.findViewById(R.id.content_panel);
 
 

@@ -10,6 +10,9 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.ImageButton;
 
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.TabsDatabase;
@@ -74,5 +77,9 @@ public class Inject {
 
     public static boolean isUnderEspressoTest() {
         return false;
+    }
+
+    public static void startAnimation(View view, Animation animation) {
+        view.startAnimation(animation);
     }
 }
