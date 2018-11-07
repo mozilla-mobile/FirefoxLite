@@ -7,6 +7,8 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 
+import org.mozilla.focus.home.FeatureSurveyViewHelper;
+
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
     static final boolean PRIVATE_MODE_ENABLED_DEFAULT = true;
@@ -70,5 +72,13 @@ public class AppConfigWrapper {
 
     public static String getScreenshotCategoryUrl(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST);
+    }
+
+    public static String getVpnRecommenderUrl(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.VPN_RECOMMENDER_URL, FeatureSurveyViewHelper.Constants.LINK_RECOMMEND_VPN);
+    }
+
+    public static String getVpnRecommenderPackage(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.VPN_RECOMMENDER_PACKAGE, FeatureSurveyViewHelper.Constants.PACKAGE_RECOMMEND_VPN);
     }
 }

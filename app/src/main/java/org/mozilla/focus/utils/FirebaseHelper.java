@@ -50,6 +50,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String BANNER_MANIFEST = "banner_manifest";
     static final String SCREENSHOT_CATEGORY_MANIFEST = "screenshot_category_manifest";
     static final String FEATURE_SURVEY = "feature_survey";
+    static final String VPN_RECOMMENDER_URL = "vpn_recommender_url";
+    static final String VPN_RECOMMENDER_PACKAGE = "vpn_recommender_package";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
     private static final String FIREBASE_DB_URL = "firebase_database_url";
