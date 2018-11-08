@@ -74,12 +74,12 @@ abstract class FirebaseWrapper {
 
 
     // get Remote Config string
-    static String getRcString(@NonNull Context context, @NonNull String key, @NonNull final String defaultValue) {
+    static String getRcString(@NonNull Context context, @NonNull String key) {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
             throwRcNotInitException();
 
-            return defaultValue;
+            return FIREBASE_STRING_DEFAULT;
         }
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
@@ -96,11 +96,7 @@ abstract class FirebaseWrapper {
             return config.getString(key);
         }
         throwGetValueException("getRcString");
-        return defaultValue;
-    }
-
-    static String getRcString(@NonNull Context context, @NonNull String key) {
-        return getRcString(context, key, FIREBASE_STRING_DEFAULT);
+        return FIREBASE_STRING_DEFAULT;
     }
 
     static long getRcLong(Context context, String key) {

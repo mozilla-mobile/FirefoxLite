@@ -19,6 +19,7 @@ import android.util.Log;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
+import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
@@ -264,6 +265,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.ENABLE_PRIVATE_MODE, AppConfigWrapper.PRIVATE_MODE_ENABLED_DEFAULT);
         map.put(FirebaseHelper.FEATURE_SURVEY, RemoteConfigConstants.INSTANCE.getFEATURE_SURVEY_DEFAULT());
         map.put(FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST, ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT);
+        map.put(FirebaseHelper.VPN_RECOMMENDER_PACKAGE, FeatureSurveyViewHelper.Constants.PACKAGE_RECOMMEND_VPN);
+        map.put(FirebaseHelper.VPN_RECOMMENDER_URL, FeatureSurveyViewHelper.Constants.LINK_RECOMMEND_VPN);
 
         return map;
     }
