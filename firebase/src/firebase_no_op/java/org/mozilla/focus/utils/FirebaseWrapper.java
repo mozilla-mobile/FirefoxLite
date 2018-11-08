@@ -41,20 +41,17 @@ abstract class FirebaseWrapper {
     }
 
     // get Remote Config string
-    static String getRcString(Context context, String key, String defaultValue) {
+    static String getRcString(Context context, String key) {
         if (instance == null) {
-            return defaultValue;
+            return FIREBASE_STRING_DEFAULT;
         }
         final Object value = instance.getRemoteConfigDefault(context).get(key);
         if (value instanceof String) {
             return (String) value;
         }
-        return defaultValue;
+        return FIREBASE_STRING_DEFAULT;
     }
 
-    static String getRcString(Context context, String key) {
-        return getRcString(context, key, FIREBASE_STRING_DEFAULT);
-    }
 
     // get Remote Config boolean
     static boolean getRcBoolean(Context context, String key) {
