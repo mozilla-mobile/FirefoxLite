@@ -223,6 +223,7 @@
   <string name="private_browsing_erase_done">Riwayat peuhah wèb ngön rahsia \nDroeneuh ka geusampôh.</string>
   <string name="my_shot_on_boarding_message">Kalön deuneurop layeuë droëneuh di sinoë!</string>
   <string name="my_shot_on_boarding_category_message">Keu tapeujroh peungalaman produk droen, kamoe meupeusapat maklumat bhaih katagori deuneurop layeue droeneuh.</string>
+  <string name="btn_vpn">Layanan VPN pré keu 7 uroe ka na keu droeneuh. Neupasang jinoe keu neupeuhah wèb leubèh privat ngön aman.</string>
   <string name="exp_survey_wifi">Kamoe meureuncana keumeung peugabông “Mita Wifi Pré” keu meubantu Droeneuh keu neumita seunambat internèt pré nyang göt di silingka.\n \n Na meuheutneuh?</string>
   <string name="exp_survey_vpn">Kamoe keuneuk peusahô “layanan VPN\" beu leubeh bibeueh ngön na privasi lom watèe neubrowsing.\n \n Kiban?</string>
   <string name="exp_survey_thanks">Teurimöng gaséh ka neubrithèe bak kamoe %1$s</string>
