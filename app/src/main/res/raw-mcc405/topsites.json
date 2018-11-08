@@ -15,44 +15,44 @@
   },
   {
     "id": -3,
-    "url": "https://www.amazon.in/",
-    "title": "Amazon",
-    "favicon": "ic_amazon_in.png",
+    "url": "https://www.wikipedia.org/",
+    "title": "Wikipedia",
+    "favicon": "ic_wikipedia.png",
     "viewCount": 16
   },
   {
     "id": -4,
-    "url": "https://www.wikipedia.org/",
-    "title": "Wikipedia",
-    "favicon": "ic_wikipedia.png",
+    "url": "https://www.flipkart.com",
+    "title": "Flipkart",
+    "favicon": "ic_flipkart.png",
     "viewCount": 14
   },
   {
     "id": -5,
-    "url": "https://www.flipkart.com",
-    "title": "Flipkart",
-    "favicon": "ic_flipkart.png",
+    "url": "https://m.indiatimes.com/",
+    "title": "Indiatimes",
+    "favicon": "ic_indiatimes.png",
     "viewCount": 12
   },
   {
     "id": -6,
-    "url": "https://m.indiatimes.com/",
-    "title": "Indiatimes",
-    "favicon": "ic_indiatimes.png",
+    "url": "https://www.instagram.com/",
+    "title": "Instagram",
+    "favicon": "ic_instagram.png",
     "viewCount": 10
   },
   {
     "id": -7,
-    "url": "https://www.instagram.com/",
-    "title": "Instagram",
-    "favicon": "ic_instagram.png",
+    "url": "https://www.hotstar.com/",
+    "title": "Hotstar",
+    "favicon": "ic_hotstar.png",
     "viewCount": 8
   },
   {
     "id": -8,
-    "url": "https://www.hotstar.com/",
-    "title": "Hotstar",
-    "favicon": "ic_hotstar.png",
+    "url": "https://www.linkedin.com/",
+    "title": "Linkedin",
+    "favicon": "ic_linkedin.png",
     "viewCount": 6
   }
 

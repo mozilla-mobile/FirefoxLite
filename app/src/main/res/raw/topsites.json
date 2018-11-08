@@ -22,37 +22,37 @@
   },
   {
     "id": -4,
-    "url": "https://www.amazon.com/",
-    "title": "Amazon",
-    "favicon": "ic_amazon.png",
+    "url": "https://mobile.twitter.com",
+    "title": "Twitter",
+    "favicon": "ic_twitter.png",
     "viewCount": 14
   },
   {
     "id": -5,
-    "url": "https://mobile.twitter.com",
-    "title": "Twitter",
-    "favicon": "ic_twitter.png",
+    "url": "https://www.instagram.com/",
+    "title": "Instagram",
+    "favicon": "ic_instagram.png",
     "viewCount": 12
   },
   {
     "id": -6,
-    "url": "https://www.instagram.com/",
-    "title": "Instagram",
-    "favicon": "ic_instagram.png",
+    "url": "https://www.reddit.com/",
+    "title": "Reddit",
+    "favicon": "ic_reddit.png",
     "viewCount": 10
   },
   {
     "id": -7,
-    "url": "https://www.reddit.com/",
-    "title": "Reddit",
-    "favicon": "ic_reddit.png",
+    "url": "https://www.linkedin.com/",
+    "title": "Linkedin",
+    "favicon": "ic_linkedin.png",
     "viewCount": 8
   },
   {
     "id": -8,
-    "url": "https://www.linkedin.com/",
-    "title": "Linkedin",
-    "favicon": "ic_linkedin.png",
+    "url": "https://www.ebay.com",
+    "title": "Ebay",
+    "favicon": "ic_ebay.png",
     "viewCount": 6
   }
 
