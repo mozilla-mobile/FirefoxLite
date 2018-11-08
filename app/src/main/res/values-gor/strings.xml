@@ -24,7 +24,7 @@
   <string name="about_link_privacy">Tinepo Privasi</string>
   <string name="preference_search_engine_default">Masina dudelo pololohu</string>
   <string name="preference_language">Bahasa</string>
-  <string name="preference_language_systemdefault">Dudelo losistem</string>
+  <string name="preference_language_systemdefault">Dudelo lo sistem</string>
   <string name="preference_dialog_title_search_engine">Masina dudelo pololohu</string>
   <string name="preference_data_saving_block_images">Bubuli gāmbari</string>
   <string name="preference_privacy_storage_clear_browsing_data">Beresiya data peramban</string>
@@ -51,7 +51,7 @@
   <string name="content_description_customtab_exit">Mohuwalingo ode aplikasi yilamuma\'o</string>
   <string name="content_description_blocking_switch">Bubuli alupo</string>
   <string name="external_app_prompt_no_app_title">Lolohe aplikasi u mowali momu\'o wūmbuta</string>
-  <string name="external_app_prompt_no_app">Diya\'a aplikasi to perangaktimu u mowali momu\'o wūmbuta botiya. Yi\'o mowali molola %1$s mololohu %2$s aplikasi u mowali momu\'o.</string>
+  <string name="external_app_prompt_no_app">Diya\'a aplikasi to perangkatimu u mowali momu\'o wūmbuta botiya. Yi\'o mowali molola %1$s mololohu %2$s aplikasi u mowali momu\'o.</string>
   <string name="error_page_title">Situs web ja sadi-sadiya</string>
   <string name="error_page_recover_a">Popoyakiniya yi\'o wuwūmbuta ode internet</string>
   <string name="error_page_recover_b">Parakisayi alamat</string>
@@ -68,21 +68,30 @@
   <string name="first_run_page1_title">Odu\'olo mā lolulawoto %1$s</string>
   <string name="first_run_page1_text">Peramban pilohutu lo %1$s, organisasi nirlaba yang berkomitmen to situs pereyi wawu bu\'a-bu\'adu.</string>
   <string name="first_run_page2_title">Monguli\'ato ngo\'ita lomato</string>
+  <string name="first_run_page2_text">Pomakeya mode turbo momubulo iklan alupo alihu Yi\'o molinggahu monguli\'ato. Wonu situs orasawa o masa\'ala, mowali nonaktif moli menu.</string>
   <string name="first_run_page3_title">Hemat data = hemat doyi</string>
   <string name="first_run_page3_text">Hemat kuota data wolo momubulo iklan u\'alupo. Lebe hemat da\'a wonu Yi\'o mopo\'aktif bubulo gambari.</string>
+  <string name="first_run_page4_title">Cuplik nga\'amila layar</string>
+  <string name="first_run_page4_text">Cuplik layar nga\'amila mopoheyi lo layar. Pobacawa secara luring ja momake kuota data meyambo woduta u mona\'o ode laman Web boyito.</string>
   <string name="first_run_page5_title">Privasi lenggota de yitato</string>
+  <string name="first_run_page5_text">"Monguli\'ato ja\'o alupo wawu bubuli ngotayade damango alupo web lo\'u layito. Pastiya amani lo data rahasia olemu. "</string>
+  <string name="first_run_upgrade_page_title">Ami modungohu potuhatamu!</string>
   <string name="new_name_upgrade_page_title">Bibilohu bohu!</string>
+  <string name="new_name_upgrade_page_text">"Melalui evolusi produk, popowuluwo mayi lami %1$s u molamahu, wolo tanggulo wawu logo bohu. "</string>
+  <string name="first_run_upgrade_page_text1">1. Mowali momu\'o wawu mokalaja pe\'enta %s nga\'amila!</string>
   <string name="first_run_upgrade_page_text1_highlight">multi tab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs favorit Ulemu wolo u molinggahu %s</string>
   <string name="first_run_upgrade_page_text2_highlight">Duhengi ode duledehu!</string>
   <string name="firstrun_close_button">OKE, mā otāwa!</string>
   <string name="firstrun_skip_button">Lawodi</string>
+  <string name="firstrun_next_button">Tunuhiyo</string>
   <string name="label_menu_bookmark">Tuwoto buku</string>
   <string name="label_menu_download">Pilopohuli</string>
   <string name="label_menu_find_in_page">Lolohe to halaman</string>
   <string name="label_menu_clear_cache">Luluta pilohepita</string>
   <string name="label_menu_history">Riwāyati</string>
   <string name="label_menu_share">Tayade</string>
+  <string name="label_menu_my_shots">Cuplikan ula\'u</string>
   <string name="label_menu_capture_page">Tahuwa layar</string>
   <string name="label_menu_turbo_mode">Mode susupo</string>
   <string name="label_menu_night_mode">Bibilohu huyi</string>
@@ -93,7 +102,7 @@
   <string name="permission_toast_location_deny">Momilohu bilulo\'a diliniliyo.</string>
   <string name="permission_toast_storage_deny">Ijin molahu diliniliyo.</string>
   <string name="permission_dialog_setting">setelan</string>
-  <string name="permission_dialog_not_now">dīpo utiye</string>
+  <string name="permission_dialog_not_now">dīpo yintiye</string>
   <string name="permission_toast_location">Bilulo\'a ja otāwa. Wohiye ījini mongotota bilulo\'amu.</string>
   <string name="permission_toast_storage">Tāhuwa ja sadi-sadiya. Wohiye ījini Firefox Rocket molahu gāmbari wawu berkas to pilākasimu.</string>
   <string name="geolocation_dialog_message">%1$s ohila mongotota bilulo\'amu.</string>
@@ -105,6 +114,7 @@
   <string name="setting_dialog_browsing_history">Riwāyati menjelajah</string>
   <string name="setting_dialog_search_history">Lolohe riwāyati</string>
   <string name="setting_dialog_form_history">Lonto riwāyati</string>
+  <string name="setting_dialog_cookies">Kuki</string>
   <string name="setting_dialog_cache">Pilohepita</string>
   <string name="no_downloads">Diya\'a u pilopohuli</string>
   <string name="download_started">Mopohuli...</string>
@@ -114,6 +124,7 @@
   <string name="download_completed">%1$s mā pilopohuli</string>
   <string name="download_deleted">%1$s mā yiluluto</string>
   <string name="download_cancel">Batali mopohuli</string>
+  <string name="undo">Kekeya</string>
   <string name="open">Hu\'owa</string>
   <string name="pause">mohuheli</string>
   <string name="pending">Mohuheli</string>
@@ -132,6 +143,9 @@
   <string name="browsing_history_dialog_btn_clear">Luluta</string>
   <string name="remove_from_list">Yinggila monto daputari</string>
   <string name="delete_file">Luluta berkas</string>
+  <string name="screenshot_saved">Cuplikan layar tilahu</string>
+  <string name="screenshot_failed">Ja lowali lolahu cuplikan layar</string>
+  <string name="screenshot_illustration">Mohutu cuplikan layar nga\'amila laman…</string>
   <string name="screenshot_view">BILOHI</string>
   <string name="screenshot_edit">BOLI\'A</string>
   <string name="screenshot_delete">LULUTA</string>
@@ -139,7 +153,9 @@
   <string name="message_fallback_save_to_primary_external">Kartu SD ja yilotapu. Berkas mā tilahu to internal.</string>
   <string name="message_start_to_save_to_removable_storage">Berkas mā tilahu to kartu SD</string>
   <string name="message_removable_storage_space_not_enough">Kartu SD mā yimbidu mopolu. Berkas mā tilahu to internal.</string>
+  <string name="screenshot_grid_empty_text_title">Diya\'a cuplikan layar</string>
   <string name="screenshot_grid_empty_text_msg_prefix">Tepuwa</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">  to menu untuk mencuplik\nmo\'a\'amila laman.</string>
   <string name="screenshot_image_viewer_dialog_title">Habari</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Tanggal: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">Dalala: %1$s</string>
@@ -157,20 +173,37 @@
   <string name="message_storage_unavailable_cancel_download">Tāhuwa ja yilotapu. Mopohuli bilatali.</string>
   <string name="message_cleared_cached">%1$s pilohepita yiluluto</string>
   <string name="message_cleared_browsing_data">Data monguli\'ato yiluluto</string>
+  <string name="message_deleted_screenshot">Cuplikan layar yiluluto</string>
+  <string name="message_cannot_find_screenshot">Ja mowali mopobilohu cuplikan layar</string>
   <string name="remove">Yinggila</string>
   <string name="privacy_policy_update_notification_title">Mopo\'ota mopobohu produk</string>
   <string name="privacy_policy_update_notification_action">Alihu Firefox Lite lebe mopiyohu ode olemu wawu nga\'amila tawu, ami lomoli\'a ngolobotu tinepo privasi lami. Tepuwa u mobalājari.</string>
   <string name="rate_app_dialog_text_title">Motohilawo %1$s?</string>
+  <string name="rate_app_dialog_text_content">Odu\'olo ma lolulawoto produk lami. Potunu wawu potuhatamu paralu ode olami.</string>
   <string name="rate_app_dialog_btn_go_rate">Wohiye Lenggota</string>
   <string name="rate_app_notification_action_rate">WOHIYE LENGGOTA</string>
+  <string name="rate_app_dialog_btn_feedback">Lawoli potunu</string>
+  <string name="rate_app_notification_action_feedback">POTUNU</string>
   <string name="share_app_dialog_text_title">Tayade %1$s ode tamani!</string>
+  <string name="share_app_dialog_text_content">- Molinggahu wawu mohelo\n- Hemat data\n- Pencuplik layar yang canggih</string>
   <string name="share_app_dialog_btn_share">Tayade</string>
+  <string name="share_app_promotion_text">"Wey, yimontali peramban molinggahu wawu mohelo lonto  %3$s. %1$s %2$s"</string>
+  <string name="your_rights_content1">"%1$s yito perangkat moluluhu\'o pereyi wawu bungoliyo bu\'a-bu\'adu u pilohutu lo  %2$s wawu kontributor wuwewo."</string>
+  <string name="your_rights_content2"><![CDATA["%1$s piloposadiya ode Olemu wolo persyaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" wawu lisensi bungoliyo u bu\'a-bu\'adu uwewoliyo."]]></string>
+  <string name="your_rights_content3"><![CDATA["Yi\'o ja o\'ijini meyalo lisensi apa pun tomimbihu merek dagang Mozilla Foundation meyalo pihak mana pun, wayitiyo tanggulo meyalo logo %3$s, %4$s, meyalo %1$s. Informasi u lebe motombango mowali bilohelo "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">teye</a>.]]></string>
+  <string name="your_rights_content4"><![CDATA["Kode bungo duhengiyo ode %1$s sadi-sadiya to tililahepo "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">lisensi</a>" pereyi wawu bungoliyo u bu\'a-bu\'adu uwewoliyo."]]></string>
+  <string name="your_rights_content5"><![CDATA["%1$s olo hemopohuna daputari bubulo u siladiya mayi lo Disconnect, Inc. sebagai hasil ilomata terpisah wawu independen to tibawa "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>", wawu sadi-sadiya "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">teya</a>.]]></string>
+  <string name="survey_notification_title">Ami paralu olemu! %1$s</string>
+  <string name="survey_notification_description">Mopowali produk lebe molamahu ode Indonesia</string>
   <string name="new_background_tab_hint">Tab bohu hilu\'o</string>
   <string name="new_background_tab_switch">MOHEYI</string>
   <string name="setting_default_browser_notification_title">Boli\'a setelan...</string>
   <string name="setting_default_browser_notification_text">Wulatipo ngope\'e aba</string>
+  <string name="setting_default_browser_notification_clickable_text">Aturuwa mowali peramban kakali</string>
   <string name="tab_tray_close_tabs_btn_text">He\'uti nga\'amila</string>
   <string name="tab_tray_close_tabs_dialog_msg">He\'uti nga\'amila tab?</string>
+  <string name="themetoy_onboarding_title">Padeti tutumulumu!</string>
+  <string name="themetoy_onboarding_description">Tepuwa po\'oluwo to latar duledehu u momoli\'a tema.</string>
   <string name="bookmark_saved">Tuwoto buku mā tilahu</string>
   <string name="bookmark_removed">Tuwoto buku mā yilinggi</string>
   <string name="bookmark_saved_edit">BOLI\'A</string>
@@ -181,6 +214,19 @@
   <string name="bookmark_edit_success">Tuwoto buku pilopobohu</string>
   <string name="bookmarks_empty_view_msg">Diya\'a tuwoto buku</string>
   <string name="edit_bookmark">Boli\'a</string>
+  <string name="label_menu_news">Habari</string>
+  <string name="news_update_btn">Mopobohu poli</string>
+  <string name="private_tab">Tab privat</string>
+  <string name="private_browsing_title">Monguli\'ato Pribadi</string>
+  <string name="private_browsing_erase_message">Luluta riwayati monguli\'ato pribadi</string>
   <string name="private_browsing_open_action">HU\'OWA</string>
+  <string name="private_browsing_erase_done">Riwayat menguli\'ato pribadi Olemu\nma yiluluto.</string>
+  <string name="my_shot_on_boarding_message">Bilohi cuplikan layar Ulemu teye!</string>
+  <string name="my_shot_on_boarding_category_message">U mopolayi\'o pengalaman produk, ami mohimo\'o informasi tomimbihu kategori cuplikan layar Anda.</string>
+  <string name="btn_vpn">Layanan VPN pereyi 7 hari ma sadi-sadiya ode Olanto. Lato tahu\'a pasiya alihu monguli\'ato lebe pribadi wawu amani.</string>
+  <string name="exp_survey_wifi">Rencana lami yito mopotuwawu “Pololohu Wifi Pereyi” alihu mo\'owubodu oli mongoli mo\'otapu wumbuta internet pereyi membidu.\n\n Mohuto?</string>
+  <string name="exp_survey_vpn">Rencana lami yito mopotuwawu \"Layanan VPN\" alihu Yi\'o mo\'otapu pereyi wawu privasi lebe ngohuntuwa to sa\'ati monguli\'ato.\n\n Mohuto?</string>
+  <string name="exp_survey_thanks">Odu\'olo Yi\'o ma longohi mayi potunu ode olami %1$s</string>
+  <string name="exp_survey_yes">JOO, TODUWOLO</string>
   <string name="exp_survey_no">DE\'E</string>
 </resources>

@@ -12,6 +12,7 @@
   <string name="share_dialog_title">దీనిద్వారా పంచుకోండి</string>
   <string name="find_in_page_input">పేజీలో వెతుకు</string>
   <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%2$d లో %1$d</string>
   <string name="text_selection_search_action">Firefox Liteతో వెతుకు</string>
   <string name="about_content_body">%1$s అనేది %2$s వారు తయారుచేసిన వేగవంతమైన, తేలికైన విహారిణి. ఆరోగ్యకరమైన, స్వేచ్ఛాయుతమైన అంతర్జాలాన్ని వృద్ధిచేయడం మా ఆశయం.</string>
   <string name="about_link_learn_more">ఇంకా తెలుసుకోండి</string>
@@ -67,7 +68,7 @@
   <string name="first_run_page3_text">మీ జాడతెలుసుకునే ప్రకటనలను నిరోధించడం వల్ల కేవలం మీ విహరణ వేగం కావడమే కాదు, డేటా కూడా ఆదా అవుతుంది. బొమ్మలను నిరోధిస్తే మరికొంత ఆదా అవుతుంది.</string>
   <string name="first_run_page4_title">మెత్తం పేజీనంతా తెరపట్టు తీయి</string>
   <string name="first_run_page4_text">పూర్తి వెబ్ పేజీల తెరపట్లు తీసుకోండి. తెరపట్టును ఆఫ్‌లైనులో (డేటా వాడుకోకుండా) చూడండి లేదా వెబ్ పేజీను మళ్ళీ చూడడానికి దానిపై తాకండి.</string>
-  <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందనను విన్నాము!</string>
+  <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందన విన్నాము!</string>
   <string name="first_run_upgrade_page_text1">1. ఒకేసారి %s తెరవడం ద్వారా మల్టీటాస్కింగు చెయ్యండి!</string>
   <string name="first_run_upgrade_page_text1_highlight">పలు ట్యాబులు</string>
   <string name="first_run_upgrade_page_text2">2. మీ అభిమాన సైట్లను %s త్వరగా చేరుకోండి!</string>
@@ -198,6 +199,8 @@
   <string name="bookmark_edit_success">ఇష్టాంశం తాజాకరించబడింది</string>
   <string name="bookmarks_empty_view_msg">ఇష్టాంశాలేమీ లేవు</string>
   <string name="edit_bookmark">మార్చు</string>
+  <string name="label_menu_news">వార్తలు</string>
+  <string name="news_update_btn">కొత్త నవీకరణ</string>
   <string name="private_browsing_title">అంతరంగిక విహరణ</string>
   <string name="private_browsing_erase_message">అంతరంగిక విహరణ చరిత్రను తుడిచివేయి</string>
   <string name="private_browsing_open_action">తెరువు</string>

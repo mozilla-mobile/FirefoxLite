@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">Na-update na ang bookmark</string>
   <string name="bookmarks_empty_view_msg">Walang mga bookmark</string>
   <string name="edit_bookmark">I-Edit</string>
+  <string name="label_menu_news">Balita</string>
+  <string name="news_update_btn">Bagong pag-update</string>
   <string name="private_tab">Private tab</string>
   <string name="private_browsing_title">Magbrowse ng Pribado</string>
   <string name="private_browsing_erase_message">Burahin ang kasaysayan ng private browsing</string>
@@ -221,6 +223,7 @@
   <string name="private_browsing_erase_done">Ang kasaysayan ng iyong private browsing\nay nabura na.</string>
   <string name="my_shot_on_boarding_message">Tingnan ang mga screenshot dito!</string>
   <string name="my_shot_on_boarding_category_message">Para mapabuti ang produktong ito, kami ay maaaring mangolekta ng impormasyon tungkol sa iyong screen.</string>
+  <string name="btn_vpn">Ang 7-araw na libreng serbisyo ng VPN ay handa na para sa iyo. I-install ngayon upang mag-browse nang mas pribado at ligtas.</string>
   <string name="exp_survey_wifi">Balak naming magsama ng “Free Wifi-Finder” para makatulong sa paghahanap ng libreng internet connection na malapit sa iyo.\n\n Interessado?</string>
   <string name="exp_survey_vpn">Balak naming magsama ng “VPN service” para sa mas mainam ng pribasiya habang ikaw ay nagba-browse.\n\n Interesado?</string>
   <string name="exp_survey_thanks">Maraming salamat sa pagbibigay ng feedback %1$s</string>
