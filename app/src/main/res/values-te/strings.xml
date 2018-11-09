@@ -13,6 +13,8 @@
   <string name="find_in_page_input">పేజీలో వెతుకు</string>
   <string name="find_in_page_result">%1$d/%2$d</string>
   <string name="accessibility_find_in_page_result">%2$d లో %1$d</string>
+  <string name="accessibility_find_next_result">తదుపరి ఫలితాన్ని కనుగొనండి</string>
+  <string name="accessibility_find_previous_result">మునుపటి ఫలితాన్ని కనుగొనండి</string>
   <string name="text_selection_search_action">Firefox Liteతో వెతుకు</string>
   <string name="about_content_body">%1$s అనేది %2$s వారు తయారుచేసిన వేగవంతమైన, తేలికైన విహారిణి. ఆరోగ్యకరమైన, స్వేచ్ఛాయుతమైన అంతర్జాలాన్ని వృద్ధిచేయడం మా ఆశయం.</string>
   <string name="about_link_learn_more">ఇంకా తెలుసుకోండి</string>
@@ -33,6 +35,7 @@
   <string name="preference_mozilla_telemetry_summary">అందరికీ %1$s‌ని మెరుగ్గా అందించడానికి కావలసినంత తక్కువ సమాచారాన్ని మాత్రమే సేకరించడానికి %2$s ప్రయత్నిస్తుంది.</string>
   <string name="preference_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="preference_about">గురించి</string>
+  <string name="preference_night_mode_brightness">రాత్రి రీతి ప్రకాశస్థాయి</string>
   <string name="content_description_clear_input">ఇన్‌పుట్ తుడిచివేయి</string>
   <string name="content_description_dismiss_input">విస్మరించు</string>
   <string name="content_description_lock">సురక్షిత అనుసంధానం</string>
@@ -68,7 +71,9 @@
   <string name="first_run_page3_text">మీ జాడతెలుసుకునే ప్రకటనలను నిరోధించడం వల్ల కేవలం మీ విహరణ వేగం కావడమే కాదు, డేటా కూడా ఆదా అవుతుంది. బొమ్మలను నిరోధిస్తే మరికొంత ఆదా అవుతుంది.</string>
   <string name="first_run_page4_title">మెత్తం పేజీనంతా తెరపట్టు తీయి</string>
   <string name="first_run_page4_text">పూర్తి వెబ్ పేజీల తెరపట్లు తీసుకోండి. తెరపట్టును ఆఫ్‌లైనులో (డేటా వాడుకోకుండా) చూడండి లేదా వెబ్ పేజీను మళ్ళీ చూడడానికి దానిపై తాకండి.</string>
+  <string name="first_run_page5_title">తరువాత స్థాయి అంతరంగికత</string>
   <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందన విన్నాము!</string>
+  <string name="new_name_upgrade_page_title">మాకు కొత్త రూపం వచ్చింది!</string>
   <string name="first_run_upgrade_page_text1">1. ఒకేసారి %s తెరవడం ద్వారా మల్టీటాస్కింగు చెయ్యండి!</string>
   <string name="first_run_upgrade_page_text1_highlight">పలు ట్యాబులు</string>
   <string name="first_run_upgrade_page_text2">2. మీ అభిమాన సైట్లను %s త్వరగా చేరుకోండి!</string>
@@ -78,16 +83,20 @@
   <string name="firstrun_next_button">తదుపరి</string>
   <string name="label_menu_bookmark">ఇష్టాంశాలు</string>
   <string name="label_menu_download">దింపుకోళ్ళు</string>
+  <string name="label_menu_find_in_page">పేజీలో కనుక్కొండి</string>
   <string name="label_menu_clear_cache">క్యాషేను తుడిచివేయి</string>
   <string name="label_menu_history">చరిత్ర</string>
   <string name="label_menu_share">పంచుకో</string>
   <string name="label_menu_my_shots">నా షాట్లు</string>
   <string name="label_menu_capture_page">పేజీ తెరపట్టు తీయి</string>
   <string name="label_menu_turbo_mode">టర్బో రీతి</string>
+  <string name="label_menu_night_mode">రాత్రి రీతి</string>
   <string name="label_menu_block_ads">ప్రకటనలను నిరోధించు</string>
   <string name="label_menu_block_image">బొమ్మలను నిరోధించు</string>
   <string name="label_menu_settings">అమరికలు</string>
   <string name="label_menu_exit">నిష్క్రమించు</string>
+  <string name="permission_toast_location_deny">స్థాన అనుమతి నిరాకరించబడింది.</string>
+  <string name="permission_toast_storage_deny">నిల్వ అనుమతి నిరాకరించబడింది.</string>
   <string name="permission_dialog_setting">అమరికలు</string>
   <string name="permission_dialog_not_now">ఇప్పుడు కాదు</string>
   <string name="permission_toast_location">స్థానం అందుబాటులో లేదు. మీ స్థానాన్ని చూడడానికి అనుమతి ఇవ్వండి.</string>
@@ -201,10 +210,13 @@
   <string name="edit_bookmark">మార్చు</string>
   <string name="label_menu_news">వార్తలు</string>
   <string name="news_update_btn">కొత్త నవీకరణ</string>
+  <string name="private_tab">అంతరంగిక ట్యాబు</string>
   <string name="private_browsing_title">అంతరంగిక విహరణ</string>
   <string name="private_browsing_erase_message">అంతరంగిక విహరణ చరిత్రను తుడిచివేయి</string>
   <string name="private_browsing_open_action">తెరువు</string>
   <string name="private_browsing_erase_done">మీ అంతరంగిక విహరణ\nచరిత్ర తొలగించబడింది.</string>
   <string name="my_shot_on_boarding_message">మీ తెరపట్లను ఇక్కడ చూడండి!</string>
   <string name="my_shot_on_boarding_category_message">మీ అనుభవాన్ని మెరుగుపరచడానికి, మేము మీ తెరపట్ల వర్గాల సమాచారాన్ని సేకరిస్తాము.</string>
+  <string name="exp_survey_yes">సరే, కానివ్వు</string>
+  <string name="exp_survey_no">వద్దు</string>
 </resources>
