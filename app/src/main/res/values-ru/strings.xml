@@ -124,10 +124,61 @@
   <string name="delete_file">Удалить файл</string>
   <string name="screenshot_saved">Скриншот сохранён</string>
   <string name="screenshot_view">ПРОСМОТРЕТЬ</string>
+  <string name="screenshot_edit">ОТРЕДАКТИРОВАТЬ</string>
+  <string name="screenshot_delete">УДАЛИТЬ</string>
+  <string name="screenshot_share">ПОДЕЛИТЬСЯ</string>
+  <string name="screenshot_grid_empty_text_msg_prefix">Нажмите </string>
+  <string name="screenshot_image_viewer_dialog_title">Информация</string>
+  <string name="screenshot_image_viewer_dialog_info_time1">Дата: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">Категория: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_resolution1">Разрешение: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_size1">Размер: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_title1">Заголовок: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_delete_msg">Удалить это изображение?</string>
+  <string name="file_picker_title">Выберите файл для выгрузки</string>
+  <string name="message_enable_turbo_mode">Режим Турбо включён</string>
+  <string name="message_disable_turbo_mode">Режим Турбо отключён</string>
+  <string name="message_clear_cache_fail">Не удалось очистить кеш</string>
+  <string name="message_cleared_cached">Удалено %1$s кэша</string>
+  <string name="message_deleted_screenshot">Скриншот удалён</string>
+  <string name="message_cannot_find_screenshot">Не удалось отобразить скриншот</string>
+  <string name="remove">Удалить</string>
+  <string name="privacy_policy_update_notification_title">Уведомление об обновлении продукта</string>
   <string name="privacy_policy_update_notification_action">Чтобы сделать Firefox Lite лучше для вас и для всех, мы внесли некоторые изменения в нашу политику конфиденциальности. Нажмите, чтобы узнать больше.</string>
+  <string name="rate_app_dialog_text_title">Нравится %1$s?</string>
+  <string name="rate_app_dialog_btn_go_rate">Оцените нас</string>
+  <string name="rate_app_notification_action_rate">ОЦЕНИТЕ НАС</string>
+  <string name="rate_app_dialog_btn_feedback">Оставьте отзыв</string>
+  <string name="rate_app_notification_action_feedback">ОТЗЫВ</string>
+  <string name="share_app_dialog_btn_share">Поделиться</string>
   <string name="your_rights_content1">%1$s является бесплатной программой с открытым исходным кодом, созданной %2$s и другими участниками.</string>
   <string name="your_rights_content2"><![CDATA["%1$s предоставляется вам на условиях "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" и других лицензий для открытого исходного кода."]]></string>
   <string name="your_rights_content3"><![CDATA["Вы не получаете никаких прав или лицензий на товарные знаки Mozilla Foundation или любой другой стороны, включая имена или логотипы %3$s, %4$s или %1$s. Дополнительную информацию можно найти "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#1079;&#1076;&#1077;&#1089;&#1100;</a>.]]></string>
   <string name="your_rights_content4"><![CDATA["Дополнительный исходный код для %1$s доступен под различными другими свободными и открытыми "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#1083;&#1080;&#1094;&#1077;&#1085;&#1079;&#1080;&#1103;&#1084;&#1080;</a>.]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s также использует списки блокировки от Disconnect, Inc. как отдельные и независимые работы на условиях "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1083;&#1100;&#1085;&#1086;&#1081; &#1087;&#1091;&#1073;&#1083;&#1080;&#1095;&#1085;&#1086;&#1081; &#1083;&#1080;&#1094;&#1077;&#1085;&#1079;&#1080;&#1080; GNU &#1074;&#1077;&#1088;&#1089;&#1080;&#1080; 3</a>", доступные "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#1079;&#1076;&#1077;&#1089;&#1100;</a>.]]></string>
+  <string name="new_background_tab_switch">ПЕРЕЙТИ</string>
+  <string name="setting_default_browser_notification_title">Изменение параметров…</string>
+  <string name="setting_default_browser_notification_text">Это может занять некоторое время</string>
+  <string name="setting_default_browser_notification_clickable_text">Нажмите для установки браузера по умолчанию</string>
+  <string name="tab_tray_close_tabs_btn_text">Закрыть все</string>
+  <string name="tab_tray_close_tabs_dialog_msg">Закрыть все вкладки?</string>
+  <string name="bookmark_saved">Закладка сохранена</string>
+  <string name="bookmark_removed">Закладка удалена</string>
+  <string name="bookmark_saved_edit">ИЗМЕНИТЬ</string>
+  <string name="title_activity_edit_bookmark">Изменить закладку</string>
+  <string name="bookmark_edit_save">СОХРАНИТЬ</string>
+  <string name="bookmark_edit_name">Имя</string>
+  <string name="bookmark_edit_location">Расположение</string>
+  <string name="bookmark_edit_success">Закладка обновлена</string>
+  <string name="bookmarks_empty_view_msg">Без закладок</string>
+  <string name="edit_bookmark">Изменить</string>
+  <string name="label_menu_news">Новости</string>
+  <string name="news_update_btn">Новое обновление</string>
+  <string name="private_tab">Приватная вкладка</string>
+  <string name="private_browsing_title">Приватный просмотр</string>
+  <string name="private_browsing_erase_message">Удалить историю приватного просмотра</string>
+  <string name="private_browsing_open_action">ОТКРЫТЬ</string>
+  <string name="exp_survey_yes">ДА, ПОЖАЛУЙСТА</string>
+  <string name="exp_survey_no">НЕТ</string>
 </resources>
