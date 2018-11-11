@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">બુકમાર્ક સુધારાઇ</string>
   <string name="bookmarks_empty_view_msg">બુકમાર્ક નથી</string>
   <string name="edit_bookmark">ફેરફાર</string>
+  <string name="label_menu_news">સમાચાર</string>
+  <string name="news_update_btn">નવું અપડેટ</string>
   <string name="private_tab">ખાનગી ટૅબ</string>
   <string name="private_browsing_title">ખાનગી બ્રાઉઝિંગ</string>
   <string name="private_browsing_erase_message">ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખો</string>
@@ -221,6 +223,7 @@
   <string name="private_browsing_erase_done">તમારા ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખવામાં આવ્યું છે.</string>
   <string name="my_shot_on_boarding_message">તમારા સ્ક્રીનશોટ અહીં જુઓ!</string>
   <string name="my_shot_on_boarding_category_message">તમારાં ઉત્પાદનનો અનુભવ સુધારવાં માટે, અમે તમારાં સ્ક્રીનશોટનાં વર્ગો વિશે માહિતી ભેગી કરીએ છીએ.</string>
+  <string name="btn_vpn">7-દિવસની મફત VPN સેવા તમારા માટે તૈયાર છે. વધુ ખાનગી અને સુરક્ષિત રીતે બ્રાઉઝ કરવા માટે હમણાં ઇન્સ્ટોલ કરો.</string>
   <string name="exp_survey_wifi">અમે નજીકમાં ગુણવત્તાયુક્ત મફત ઇન્ટરનેટ કનેક્શન શોધવામાં તમારી સહાય માટે “મફત Wifi-Finder” ની સંકલન કરવાની યોજના બનાવી છે.\n\n શું તમે રસ ધરાવો છો?</string>
   <string name="exp_survey_vpn">બ્રાઉઝ કરતી વખતે તમને વધુ સ્વતંત્રતા અને વધુ ગોપનીયતા મેળવવા માટે અમે “VPN સેવા” ને એકીકૃત કરવા માંગીએ છીએ.\n\nશું તમે રસ ધરાવો છો?</string>
   <string name="exp_survey_thanks">અમને પ્રતિસાદ આપવા બદલ આપનો આભાર %1$s</string>
