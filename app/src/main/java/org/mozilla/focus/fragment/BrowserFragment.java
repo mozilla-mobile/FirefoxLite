@@ -1419,6 +1419,21 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                         }).show();
             }
         }
+
+        @Override
+        public void updateFailingUrl(@org.jetbrains.annotations.Nullable String url, boolean updateFromError) {
+            sessionObserver.updateFailingUrl(url, updateFromError);
+        }
+
+        @Override
+        public boolean handleExternalUrl(@org.jetbrains.annotations.Nullable String url) {
+            return sessionObserver.handleExternalUrl(url);
+        }
+
+        @Override
+        public boolean onShowFileChooser(@NotNull TabViewEngineSession es, @org.jetbrains.annotations.Nullable ValueCallback<Uri[]> filePathCallback, @org.jetbrains.annotations.Nullable WebChromeClient.FileChooserParams fileChooserParams) {
+            return sessionObserver.onShowFileChooser(es, filePathCallback, fileChooserParams);
+        }
     }
 
     class DownloadCallback implements org.mozilla.rocket.tabs.web.DownloadCallback {

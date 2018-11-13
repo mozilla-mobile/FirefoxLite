@@ -6,10 +6,13 @@
 package org.mozilla.rocket.tabs
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Message
 import android.text.TextUtils
 import android.view.View
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import junit.framework.Assert
 import org.junit.After
 import org.junit.Before
@@ -187,6 +190,18 @@ class SessionManagerTest {
     fun testAddTab5() {
         // Add a tab from internal and focus it. onFocusChanged should be invoked once
         val spy0 = spy(object : Observer {
+            override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun handleExternalUrl(url: String?): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
             override fun onFocusChanged(tab: Session?, factor: Factor) {
                 Assert.assertEquals(tab!!.url, "url0")
             }
@@ -200,6 +215,18 @@ class SessionManagerTest {
 
         // Add a tab from external. onFocusChanged should be invoked
         val spy1 = spy(object : Observer {
+            override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun handleExternalUrl(url: String?): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
             override fun onFocusChanged(tab: Session?, factor: Factor) {
                 Assert.assertEquals(tab!!.url, "url1")
             }

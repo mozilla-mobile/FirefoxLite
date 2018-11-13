@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -32,6 +34,7 @@ import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
+import org.mozilla.rocket.tabs.TabViewEngineSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
@@ -229,6 +232,19 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
+        override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
+            // do nothing, exist for interface compatibility only.
+        }
+
+        override fun handleExternalUrl(url: String?): Boolean {
+            // do nothing, exist for interface compatibility only.
+            return false
+        }
+
+        override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+            // do nothing, exist for interface compatibility only.
+            return false
+        }
 
         var callback: FullscreenCallback? = null
         var session: Session? = null

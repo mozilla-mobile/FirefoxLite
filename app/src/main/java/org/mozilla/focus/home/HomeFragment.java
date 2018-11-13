@@ -21,6 +21,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,8 +42,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.widget.ImageView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,6 +84,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
+import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.LoggerWrapper;
@@ -838,6 +843,22 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             updateTabCounter();
         }
 
+        @Override
+        public void updateFailingUrl(@org.jetbrains.annotations.Nullable String url, boolean updateFromError) {
+            // do nothing
+        }
+
+        @Override
+        public boolean handleExternalUrl(@org.jetbrains.annotations.Nullable String url) {
+            // do nothing
+            return false;
+        }
+
+        @Override
+        public boolean onShowFileChooser(@NotNull TabViewEngineSession es, @org.jetbrains.annotations.Nullable ValueCallback<Uri[]> filePathCallback, @org.jetbrains.annotations.Nullable WebChromeClient.FileChooserParams fileChooserParams) {
+            // do nothing
+            return false;
+        }
     }
 
     private interface DoWithThemeManager {
