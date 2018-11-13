@@ -18,6 +18,7 @@ import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.SessionManager.Observer
 import org.mozilla.rocket.tabs.TabView
+import org.mozilla.rocket.tabs.TabViewEngineSession
 
 import java.util.ArrayList
 
@@ -76,6 +77,20 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
     override fun subscribe(observer: TabTrayContract.Model.Observer) {
         if (this.modelObserver == null) {
             this.modelObserver = object : SessionModelObserver() {
+                override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
+                    // do nothing
+                }
+
+                override fun handleExternalUrl(url: String?): Boolean {
+                    // do nothing
+                    return false
+                }
+
+                override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+                    // do nothing
+                    return false
+                }
+
                 override fun onTabModelChanged(session: Session) {
                     observer.onTabUpdate(session)
                 }
