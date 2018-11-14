@@ -45,7 +45,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
             IntentUtils.goToPlayStore(context);
 
-            TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.POSITIVE);
+            TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.NOTIFICATION);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
@@ -54,10 +54,10 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             nexStep = IntentUtils.createInternalOpenUrlIntent(context,
                     context.getString(R.string.rate_app_feedback_url), true);
 
-            // Users set negative feedback, don't ask them to share in the future
+            // Users set negative feedback, don't ask them to rate/feedback again.
             Settings.getInstance(context).setShareAppDialogDidShow();
 
-            TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.NEGATIVE);
+            TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.NOTIFICATION);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
@@ -79,7 +79,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             nexStep.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
             nexStep.putExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, true);
 
-            TelemetryWrapper.clickRateAppNotification();
+            TelemetryWrapper.clickRateApp(null, TelemetryWrapper.Extra_Value.NOTIFICATION);
 
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 

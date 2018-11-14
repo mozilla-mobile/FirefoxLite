@@ -49,12 +49,12 @@ import org.mozilla.telemetry.storage.FileTelemetryStorage
 import java.util.HashMap
 
 object TelemetryWrapper {
-    internal val TELEMETRY_APP_NAME_ZERDA = "Zerda"
+    private const val TELEMETRY_APP_NAME_ZERDA = "Zerda"
 
-    private val TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 3
-    private val RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 2
-    private val DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION = 2
-    private val FIND_IN_PAGE_VERSION = 2
+    private const val TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 3
+    private const val RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 3
+    private const val DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION = 2
+    private const val FIND_IN_PAGE_VERSION = 2
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
 
@@ -173,6 +173,7 @@ object TelemetryWrapper {
         internal const val PAGE = "page"
         internal const val WIFI_FINDER = "wifi_finder"
         internal const val VPN = "vpn"
+        internal const val VPN_RECOMMEND = "vpn_recommend"
 
 
         internal const val PREVIOUS = "previous"
@@ -347,43 +348,22 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "App is launched by text_selection",
+            name = "App is launched by external app",
             action = Category.ACTION,
             method = Method.LAUNCH,
             `object` = Object.APP,
             value = Value.EXTERNAL_APP,
-            extras = [TelemetryExtra(name = Extra.TYPE, value = Extra_Value.TEXT_SELECTION)])
+            extras = [TelemetryExtra(name = Extra.TYPE, value = Extra_Value.TEXT_SELECTION + "," + Extra_Value.WEB_SEARCH)])
     @JvmStatic
-    fun launchByTextSelectionSearchEvent() {
-        EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
-                .extra(Extra.TYPE, Extra_Value.TEXT_SELECTION)
-                .queue()
-    }
+    fun launchByExternalAppEvent(value: String?) {
+        if (value == null) {
+            EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP).queue()
+        } else {
+            EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
+                    .extra(Extra.TYPE, value)
+                    .queue()
+        }
 
-    @TelemetryDoc(
-            name = "App is launched by Web Search",
-            action = Category.ACTION,
-            method = Method.LAUNCH,
-            `object` = Object.APP,
-            value = Value.EXTERNAL_APP,
-            extras = [TelemetryExtra(name = Extra.TYPE, value = Extra_Value.WEB_SEARCH)])
-    @JvmStatic
-    fun launchByWebSearchEvent() {
-        EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP)
-                .extra(Extra.TYPE, Extra_Value.WEB_SEARCH)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "App is Launched by other Apps",
-            action = Category.ACTION,
-            method = Method.LAUNCH,
-            `object` = Object.APP,
-            value = Value.EXTERNAL_APP,
-            extras = [])
-    @JvmStatic
-    fun launchByExternalAppEvent() {
-        EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.EXTERNAL_APP).queue()
     }
 
     @TelemetryDoc(
@@ -435,7 +415,7 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Users clicked on the Learn More link in Settings",
+            name = "Users change Locale in Settings",
             action = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.SETTING,
@@ -799,11 +779,11 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Menu - Block Images",
+            name = "Click Menu - Night Mode",
             action = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.MENU,
-            value = Value.BLOCK_IMAGE,
+            value = Value.NIGHT_MODE,
             extras = [TelemetryExtra(name = Extra.TO, value = "true,false")])
     @JvmStatic
     fun menuNightModeChangeTo(enable: Boolean) {
@@ -812,6 +792,13 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @TelemetryDoc(
+            name = "Click Menu - Block Images",
+            action = Category.ACTION,
+            method = Method.CHANGE,
+            `object` = Object.MENU,
+            value = Value.BLOCK_IMAGE,
+            extras = [TelemetryExtra(name = Extra.TO, value = "true,false")])
     @JvmStatic
     fun menuBlockImageChangeTo(enable: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.MENU, Value.BLOCK_IMAGE)
@@ -1460,69 +1447,38 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Delete Capture Image",
+            name = "click Rate App",
             action = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.FEEDBACK,
-            value = "dismiss,positive,negative",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = "contextual_hints,settings")
+            value = "null,dismiss,positive,negative",
+            extras = [TelemetryExtra(name = Extra.SOURCE, value = "contextual_hints,settings,notification")
             ])
     @JvmStatic
-    fun feedbackClickEvent(value: String, source: String) {
+    fun clickRateApp(value: String?, source: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
-                .extra(Extra.SOURCE, source)
+                .extra(Extra.SOURCE, source).extra(Extra.VERSION, RATE_APP_NOTIFICATION_TELEMETRY_VERSION.toString())
                 .queue()
     }
 
-    @TelemetryDoc(
-            name = "Show Feedback Dialog",
-            action = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.FEEDBACK,
-            value = "",
-            extras = [])
-    @JvmStatic
-    fun showFeedbackDialog() {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.FEEDBACK).queue()
-    }
 
     @TelemetryDoc(
-            name = "Show Rate AppNotification",
+            name = "Show Rate App",
             action = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.FEEDBACK,
             value = "",
             extras = [TelemetryExtra(name = Extra.SOURCE, value = "notification")])
     @JvmStatic
-    fun showRateAppNotification() {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.FEEDBACK)
-                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
-                .queue()
+    fun showRateApp(isNotification: Boolean) {
+        val builder = EventBuilder(Category.ACTION, Method.SHOW, Object.FEEDBACK)
+        if (isNotification) {
+            builder.extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+        }
+        builder.queue()
+
     }
 
-    @TelemetryDoc(
-            name = "Click Rate AppNotification",
-            action = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.FEEDBACK,
-            value = "null,positive,negative",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = "notification")])
-    // TODO: test Context from contetReceiver
-    @JvmStatic
-    fun clickRateAppNotification(value: String) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
-                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
-                .queue()
-    }
-
-    // document is the same as above
-    @JvmStatic
-    fun clickRateAppNotification() {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK)
-                .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
-                .extra(Extra.VERSION, RATE_APP_NOTIFICATION_TELEMETRY_VERSION.toString())
-                .queue()
-    }
 
     @TelemetryDoc(
             name = "Default Browser Notification shown",
@@ -1697,34 +1653,6 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Wifi Finder Survey Feedback",
-            action = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.DOORHANGER,
-            value = "negative,positive",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = Value.WIFI_FINDER)])
-    @JvmStatic
-    fun clickWifiFinderSurveyFeedback(positive: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, if (positive) Value.POSITIVE else Value.NEGATIVE)
-                .extra(Extra.SOURCE, Value.WIFI_FINDER)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Dismiss Wifi Finder Survey Feedback",
-            action = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.DOORHANGER,
-            value = Value.DISMISS,
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = Value.WIFI_FINDER)])
-    @JvmStatic
-    fun dismissWifiFinderSurvey() {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, Value.DISMISS)
-                .extra(Extra.SOURCE, Value.WIFI_FINDER)
-                .queue()
-    }
-
-    @TelemetryDoc(
             name = "Click VPN Survey",
             action = Category.ACTION,
             method = Method.CLICK,
@@ -1738,83 +1666,69 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click VPN Survey Feedback",
+            name = "Survey Result",
             action = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.DOORHANGER,
-            value = "negative,positive",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = Value.VPN)])
+            value = "negative,positive,dismiss",
+            extras = [TelemetryExtra(name = Extra.SOURCE, value = "vpn,wifi_finder")])
     @JvmStatic
-    fun clickVpnSurveyFeedback(positive: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, if (positive) Value.POSITIVE else Value.NEGATIVE)
-                .extra(Extra.SOURCE, Value.VPN)
+    fun surveyResult(result: String, source: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, result)
+                .extra(Extra.SOURCE, source)
                 .queue()
     }
 
     @TelemetryDoc(
-            name = "Dismiss VPN Survey",
+            name = "Show VPN Recommend",
             action = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.DOORHANGER,
-            value = Value.DISMISS,
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = Value.VPN)])
-    @JvmStatic
-    fun dismissVpnSurvey() {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.DOORHANGER, Value.DISMISS)
-                .extra(Extra.SOURCE, Value.VPN)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show VPN Recommender",
-            action = Category.ACTION,
-            method = Method.CLICK,
+            method = Method.SHOW,
             `object` = Object.HOME,
-            value = Value.VPN,
+            value = Value.VPN_RECOMMEND,
             extras = [])
     @JvmStatic
     fun showVpnRecommender(installed: Boolean) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.HOME, Value.VPN)
+        EventBuilder(Category.ACTION, Method.SHOW, Object.HOME, Value.VPN_RECOMMEND)
                 .extra(Extra.VPN_INSTALLED, java.lang.Boolean.toString(installed))
                 .queue()
     }
 
     @TelemetryDoc(
-            name = "Click VPN Recommender",
+            name = "Click VPN Recommend",
             action = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.HOME,
-            value = Value.VPN,
+            value = Value.VPN_RECOMMEND,
             extras = [])
     @JvmStatic
     fun clickVpnRecommender(installed: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.HOME, Value.VPN)
+        EventBuilder(Category.ACTION, Method.CLICK, Object.HOME, Value.VPN_RECOMMEND)
                 .extra(Extra.VPN_INSTALLED, java.lang.Boolean.toString(installed))
                 .queue()
     }
 
     @TelemetryDoc(
-            name = "Click VPN Recommender Feedback",
+            name = "Click VPN Recommend",
             action = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.VPN_DOORHANGER,
             value = "negative,positive",
             extras = [])
     @JvmStatic
-    fun clickVpnRecommenderFeedback(positive: Boolean) {
+    fun clickVpnRecommend(positive: Boolean) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.VPN_DOORHANGER, if (positive) Value.POSITIVE else Value.NEGATIVE)
                 .queue()
     }
 
     @TelemetryDoc(
-            name = "Dismiss VPN Recommender",
+            name = "Dismiss VPN Recommend",
             action = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.VPN_DOORHANGER,
             value = Value.DISMISS,
             extras = [])
     @JvmStatic
-    fun dismissVpnRecommender() {
+    fun dismissVpnRecommend() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.VPN_DOORHANGER, Value.DISMISS)
                 .queue()
     }
@@ -1826,9 +1740,9 @@ object TelemetryWrapper {
             OPEN_BY_MENU -> clickMenuFindInPage()
             CLICK_PREVIOUS -> clickFindInPagePrevious()
             CLICK_NEXT -> clickFindInPageNext()
-            DISMISS_BY_BACK -> cancelFindInPageBack()
-            DISMISS_BY_CLOSE -> cancelFindInPageClose()
-            DISMISS -> cancelFindInPageOther()
+            DISMISS_BY_BACK -> cancelFindInPage("back_button")
+            DISMISS_BY_CLOSE -> cancelFindInPage("close_button")
+            DISMISS -> cancelFindInPage("other")
         }
 
         builder.queue()
@@ -1844,42 +1758,20 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Cancel FindInPage - others",
+            name = "Cancel FindInPage",
             action = Category.ACTION,
             method = Method.CANCEL,
             `object` = Object.FIND_IN_PAGE,
             value = "",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = "other"), TelemetryExtra(name = Extra.VERSION, value = "2")])
-    internal fun cancelFindInPageOther() =
+            extras = [TelemetryExtra(name = Extra.SOURCE, value = "other,close_button,back_button"), TelemetryExtra(name = Extra.VERSION, value = "2")])
+    private fun cancelFindInPage(reason: String) =
             EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
-                    .extra(Extra.SOURCE, "other")
+                    .extra(Extra.SOURCE, reason)
                     .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
 
-    @TelemetryDoc(
-            name = "Cancel FindInPage using close button",
-            action = Category.ACTION,
-            method = Method.CANCEL,
-            `object` = Object.FIND_IN_PAGE,
-            value = "",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = "close_button"), TelemetryExtra(name = Extra.VERSION, value = "2")])
-    internal fun cancelFindInPageClose() =
-            EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
-                    .extra(Extra.SOURCE, "close_button")
-                    .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
 
     @TelemetryDoc(
-            name = "Cancel FindInPage using back button",
-            action = Category.ACTION,
-            method = Method.CANCEL,
-            `object` = Object.FIND_IN_PAGE,
-            value = "",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = "back_button"), TelemetryExtra(name = Extra.VERSION, value = "2")])
-    internal fun cancelFindInPageBack() = EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
-            .extra(Extra.SOURCE, "back_button")
-            .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
-
-    @TelemetryDoc(
-            name = "Click FindInPage Previous",
+            name = "Click FindInPage Next",
             action = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.FIND_IN_PAGE,
@@ -2067,7 +1959,7 @@ object TelemetryWrapper {
         }
 
         companion object {
-            private val MEASUREMENT_CAPTURE_COUNT = "capture_count"
+            private const val MEASUREMENT_CAPTURE_COUNT = "capture_count"
         }
     }
 }

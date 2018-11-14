@@ -63,9 +63,14 @@ def get_event(name, categories, methods, objects, values, amplitude_props, descr
         "required": list(props.keys())
       }
     },
+def refactorNull(a):
+  for i, s in enumerate(a):
+    if s == "null":
+      a[i] = None
+  return a
 
 def sep(val):
-    return [e.strip() for e in val.split(",") if e.strip()]
+    return [e.strip() for e in val.split(",") if e.strip() if e.replace('"',"")]
 
 def convert(filename):
     default = BASE_SCHEMA
@@ -83,10 +88,10 @@ def convert(filename):
                 if '=' in e:
                     k, v = e.split("=")
                     amplitude_props[k] = "extra."+k
-        if "," in vs: 
-            amplitude_props["value"] = "value"
+  
 
-        default["eventGroups"][0]["events"]+=get_event(name,sep(cs),sep(ms),sep(os),sep(vs),amplitude_props)
+        default["eventGroups"][0]["events"]+=get_event(name,sep(cs),sep(ms),sep(os),refactorNull(sep(vs)),amplitude_props)
+        #default["eventGroups"][0]["events"]+=get_event(name,sep(cs),sep(ms),sep(os),sep(vs),amplitude_props)
 
     return default
 

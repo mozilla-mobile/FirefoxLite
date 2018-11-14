@@ -7,9 +7,9 @@ import android.support.annotation.CheckResult
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.notification.RocketMessagingService
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SupportUtils
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.widget.DefaultBrowserPreference
 
 class LaunchIntentDispatcher {
@@ -49,7 +49,7 @@ class LaunchIntentDispatcher {
              * This extra is passed when we long click on some text and click "Search in Firefox Rocket"
              * */
             if (intent.getBooleanExtra(LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.value, false)) {
-                TelemetryWrapper.launchByTextSelectionSearchEvent()
+                TelemetryWrapper.launchByExternalAppEvent(TelemetryWrapper.Extra_Value.TEXT_SELECTION)
                 return Action.NORMAL
             }
 
@@ -57,7 +57,7 @@ class LaunchIntentDispatcher {
              * This extra is passed when we long click on some text and click "Web Search"
              * */
             if (intent.getBooleanExtra(LaunchMethod.EXTRA_BOOL_WEB_SEARCH.value, false)) {
-                TelemetryWrapper.launchByWebSearchEvent()
+                TelemetryWrapper.launchByExternalAppEvent(TelemetryWrapper.Extra_Value.WEB_SEARCH)
                 return Action.NORMAL
             }
 
@@ -111,7 +111,7 @@ class LaunchIntentDispatcher {
             }
 
             if (Intent.ACTION_VIEW == intent.action) {
-                TelemetryWrapper.launchByExternalAppEvent()
+                TelemetryWrapper.launchByExternalAppEvent(null)
                 return Action.NORMAL
             }
 

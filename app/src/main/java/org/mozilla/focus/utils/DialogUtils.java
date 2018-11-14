@@ -94,9 +94,9 @@ public class DialogUtils {
 
     private static void telemetryFeedback(final Context context, String value) {
         if (context instanceof MainActivity) {
-            TelemetryWrapper.feedbackClickEvent(value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
+            TelemetryWrapper.clickRateApp(value, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS);
         } else if (context instanceof SettingsActivity) {
-            TelemetryWrapper.feedbackClickEvent(value, TelemetryWrapper.Extra_Value.SETTING);
+            TelemetryWrapper.clickRateApp(value, TelemetryWrapper.Extra_Value.SETTING);
         }
     }
 

@@ -13,11 +13,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -101,17 +101,27 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
             start = ' ';
             end = ',';                      // csv needs an extra column: amplitude_property
         }
+
+        // check duplication
+        final HashMap<String, Boolean> lookup = new HashMap<>();
+
         for (Element type : annotatedElements) {
             if (type.getKind() == ElementKind.METHOD) {
                 final TelemetryDoc annotation = type.getAnnotation(TelemetryDoc.class);
                 verifyEventFormat(annotation);
+                final String result = verifyEventDuplication(annotation, lookup);
+                if (result != null) {
+                    throw new IllegalArgumentException("Duplicate event combination:" + annotation + "\n" + result);
+                }
 
+                // value may have ',' so we add a placeholder '"' for csv files
                 sb.append(start).append(annotation.name()).append(separator)
                         .append(annotation.action()).append(separator)
                         .append(annotation.method()).append(separator)
                         .append(annotation.object()).append(separator)
                         .append('"').append(annotation.value()).append('"').append(separator);
 
+                // extras may have ',' so we add a placeholder '"' for csv files
                 sb.append('"');
                 for (TelemetryExtra extra : annotation.extras()) {
                     sb.append(extra.name()).append("=").append(extra.value() + ',');
@@ -127,6 +137,16 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
 
         printWriter.close();
+    }
+
+    String verifyEventDuplication(TelemetryDoc annotation, HashMap<String, Boolean> lookup) {
+        String key = annotation.action() + annotation.method() + annotation.object() + annotation.value();
+        if (lookup.containsKey(key)) {
+            return key;
+        }
+        lookup.put(key, true);
+        return null;
+
     }
 
     private void verifyEventFormat(TelemetryDoc annotation) {

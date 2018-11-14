@@ -68,16 +68,16 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     if (eventHistory.contains(Settings.Event.FeatureSurveyWifiFinding)) {
                         v.visibility = View.GONE
                     } else {
-                        TelemetryWrapper.dismissWifiFinderSurvey()
+                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.WIFI_FINDER)
                     }
                 } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN) {
                     if (eventHistory.contains(Settings.Event.FeatureSurveyVpn)) {
                         v.visibility = View.GONE
                     } else {
-                        TelemetryWrapper.dismissVpnSurvey()
+                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.VPN)
                     }
                 } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER) {
-                    TelemetryWrapper.dismissVpnRecommender()
+                    TelemetryWrapper.dismissVpnRecommend()
                 }
             }
             btnYes.setOnClickListener { _ ->
@@ -90,17 +90,17 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     if (!TextUtils.isEmpty(url)) {
                         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
                     }
-                    TelemetryWrapper.clickVpnRecommenderFeedback(true)
+                    TelemetryWrapper.clickVpnRecommend(true)
                 } else {
                     textContent.text = context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
                     btnYes.visibility = View.GONE
                     btnNo.visibility = View.GONE
                     if (featureSurvey == RemoteConfigConstants.SURVEY.WIFI_FINDING) {
                         eventHistory.add(Settings.Event.FeatureSurveyWifiFinding)
-                        TelemetryWrapper.clickWifiFinderSurveyFeedback(true)
+                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.WIFI_FINDER)
                     } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN) {
                         eventHistory.add(Settings.Event.FeatureSurveyVpn)
-                        TelemetryWrapper.clickVpnSurveyFeedback(true)
+                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.VPN)
                     }
                     dismissSurveyView(v)
                 }
@@ -112,17 +112,17 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     parentView.removeView(rootView)
                     isViewInit = false
                     v.visibility = View.GONE
-                    TelemetryWrapper.clickVpnRecommenderFeedback(false)
+                    TelemetryWrapper.clickVpnRecommend(false)
                 } else {
                     textContent.text = context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
                     btnYes.visibility = View.GONE
                     btnNo.visibility = View.GONE
                     if (featureSurvey == RemoteConfigConstants.SURVEY.WIFI_FINDING) {
                         eventHistory.add(Settings.Event.FeatureSurveyWifiFinding)
-                        TelemetryWrapper.clickWifiFinderSurveyFeedback(false)
+                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.WIFI_FINDER)
                     } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN) {
                         eventHistory.add(Settings.Event.FeatureSurveyVpn)
-                        TelemetryWrapper.clickVpnSurveyFeedback(false)
+                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.VPN)
                     } else
                         dismissSurveyView(v)
                 }

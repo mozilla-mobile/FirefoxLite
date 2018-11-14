@@ -89,7 +89,6 @@ import org.mozilla.rocket.promotion.PromotionViewContract;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
@@ -1140,13 +1139,13 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     @Override
     public void showRateAppDialog() {
         DialogUtils.showRateAppDialog(this);
-        TelemetryWrapper.showFeedbackDialog();
+        TelemetryWrapper.showRateApp(false);
     }
 
     @Override
     public void showRateAppNotification() {
         DialogUtils.showRateAppNotification(this);
-        TelemetryWrapper.showRateAppNotification();
+        TelemetryWrapper.showRateApp(true);
     }
 
     @Override
@@ -1165,7 +1164,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     public void showRateAppDialogFromIntent() {
 
         DialogUtils.showRateAppDialog(this);
-        TelemetryWrapper.showFeedbackDialog();
+        TelemetryWrapper.showRateApp(false);
 
         NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_FIREFOX);
 
