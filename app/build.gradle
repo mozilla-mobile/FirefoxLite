@@ -328,18 +328,29 @@ android.applicationVariants.all { variant ->
 
     print(variantName + ": ")
 
-    if (variantName.contains("Release") && variantName.contains("focus")) {
+    // release and nightly will have Adjust. just nightly will use sandbox environment.
+    if (variantName.contains("Release")) {
         def token = System.getenv("ADJUST_TOKEN_FOCUS") ?: null
 
         if (token != null) {
             buildConfigField 'String', 'ADJUST_TOKEN', '"' + token + '"'
+            if (variantName.contains("preview")) {
+                buildConfigField 'String', 'ADJUST_ENVIRONMENT', '"com.adjust.sdk.AdjustConfig.ENVIRONMENT_SANDBOX"'
+            } else if (variantName.contains("focus")) {
+                buildConfigField 'String', 'ADJUST_ENVIRONMENT', '"com.adjust.sdk.AdjustConfig.ENVIRONMENT_PRODUCTION"'
+            } else {
+                buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'null'
+            }
             println "Added adjust token set from environment variable"
         } else {
             buildConfigField 'String', 'ADJUST_TOKEN', 'null'
+            buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'null'
             println("Not setting adjust token (environment variable not set)")
         }
     } else {
         buildConfigField 'String', 'ADJUST_TOKEN', 'null'
+        buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'null'
+
         println("Not setting adjust token (Not a focus release build)")
     }
     if (variant.buildType.name == "release" || variant.buildType.name == "firebase") {
