@@ -6,7 +6,6 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import android.text.TextUtils
 import org.junit.Before
-
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
@@ -14,14 +13,12 @@ import org.mozilla.focus.generated.LocaleList
 import org.mozilla.focus.locale.LocaleManager
 import org.mozilla.focus.locale.Locales
 import org.mozilla.focus.screenshot.ScreenshotManager
-
-import java.util.Locale
-
 import org.mozilla.focus.telemetry.TelemetryWrapper.Object.SETTING
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.AUDIO
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.EME
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.MIDI
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.VIDEO
+import java.util.Locale
 
 @RunWith(AndroidJUnit4::class)
 class TelemetryWrapperTest {
@@ -65,20 +62,6 @@ class TelemetryWrapperTest {
         TelemetryWrapper.launchByHomeScreenShortcutEvent()
     }
 
-    @Test
-    fun launchByTextSelectionSearchEvent() {
-        TelemetryWrapper.launchByTextSelectionSearchEvent()
-    }
-
-    @Test
-    fun launchByWebSearchEvent() {
-        TelemetryWrapper.launchByWebSearchEvent()
-    }
-
-    @Test
-    fun launchByExternalAppEvent() {
-        TelemetryWrapper.launchByExternalAppEvent()
-    }
 
     @Test
     fun settingsEvent() {
@@ -524,41 +507,24 @@ class TelemetryWrapperTest {
 
     @Test
     fun feedbackClickEventContextualHint() {
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
     }
 
     @Test
     fun feedbackClickEventSetting() {
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING)
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.SETTING)
-        TelemetryWrapper.feedbackClickEvent(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.SETTING)
-    }
-
-    @Test
-    fun showFeedbackDialog() {
-        TelemetryWrapper.showFeedbackDialog()
-    }
-
-    @Test
-    fun showRateAppNotification() {
-        TelemetryWrapper.showRateAppNotification()
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.SETTING)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.SETTING)
     }
 
     @Test
     fun clickRateAppNotification() {
-        TelemetryWrapper.clickRateAppNotification()
-    }
-
-    @Test
-    fun clickRateAppNotificationPOSITIVE() {
-        TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.POSITIVE)
-    }
-
-    @Test
-    fun clickRateAppNotificationNEGATIVE() {
-        TelemetryWrapper.clickRateAppNotification(TelemetryWrapper.Value.NEGATIVE)
+        TelemetryWrapper.clickRateApp(null, TelemetryWrapper.Extra_Value.NOTIFICATION)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.NOTIFICATION)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.NOTIFICATION)
     }
 
     @Test
@@ -614,37 +580,28 @@ class TelemetryWrapperTest {
     }
 
     @Test
-    fun clickWifiFinderSurveyFeedbackPositive() {
-        TelemetryWrapper.clickWifiFinderSurveyFeedback(true)
-    }
-
-    @Test
-    fun clickWifiFinderSurveyFeedbackNegative() {
-        TelemetryWrapper.clickWifiFinderSurveyFeedback(false)
-    }
-
-    @Test
-    fun dismissWifiFinderSurvey() {
-        TelemetryWrapper.dismissWifiFinderSurvey()
-    }
-
-    @Test
     fun clickVpnSurvey() {
         TelemetryWrapper.clickVpnSurvey()
     }
 
     @Test
-    fun clickVpnSurveyFeedbackPositive() {
-        TelemetryWrapper.clickVpnSurveyFeedback(true)
+    fun surveyFeedback() {
+        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.VPN)
+        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.VPN)
+        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.WIFI_FINDER)
+        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.WIFI_FINDER)
+        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.WIFI_FINDER)
     }
 
     @Test
-    fun clickVpnSurveyFeedbackNegative() {
-        TelemetryWrapper.clickVpnSurveyFeedback(false)
+    fun testFindInPage() {
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT)
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS)
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS)
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_BACK)
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE)
+        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU)
     }
 
-    @Test
-    fun dismissVpnFinderSurvey() {
-        TelemetryWrapper.dismissVpnSurvey()
-    }
+
 }
