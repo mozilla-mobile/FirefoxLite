@@ -11,4 +11,7 @@ public class AdjustHelper {
     public static void setupAdjustIfNeeded(Context context) {
         // BETA: No Adjust - This class has different implementations for all build types.
     }
+
+    public static void trackEvent(String eventToken) {
+    }
 }

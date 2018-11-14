@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustConfig;
+import com.adjust.sdk.AdjustEvent;
 import com.adjust.sdk.LogLevel;
 
 import org.mozilla.focus.BuildConfig;
@@ -33,7 +34,7 @@ public class AdjustHelper {
 
         final AdjustConfig config = new AdjustConfig(application,
                 BuildConfig.ADJUST_TOKEN,
-                AdjustConfig.ENVIRONMENT_PRODUCTION,
+                BuildConfig.ADJUST_ENVIRONMENT,
                 true);
 
         config.setLogLevel(LogLevel.SUPRESS);
@@ -41,6 +42,10 @@ public class AdjustHelper {
         Adjust.onCreate(config);
 
         application.registerActivityLifecycleCallbacks(new AdjustLifecycleCallbacks());
+    }
+
+    public static void trackEvent(String eventToken) {
+        Adjust.trackEvent(new AdjustEvent(eventToken));
     }
 
     private static final class AdjustLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
@@ -55,18 +60,23 @@ public class AdjustHelper {
         }
 
         @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        }
 
         @Override
-        public void onActivityStarted(Activity activity) {}
+        public void onActivityStarted(Activity activity) {
+        }
 
         @Override
-        public void onActivityStopped(Activity activity) {}
+        public void onActivityStopped(Activity activity) {
+        }
 
         @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        }
 
         @Override
-        public void onActivityDestroyed(Activity activity) {}
+        public void onActivityDestroyed(Activity activity) {
+        }
     }
 }

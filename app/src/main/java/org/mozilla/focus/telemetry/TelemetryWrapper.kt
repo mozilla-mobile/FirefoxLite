@@ -14,6 +14,7 @@ import android.content.Context
 import android.os.StrictMode
 import android.preference.PreferenceManager
 import android.webkit.PermissionRequest
+import com.adjust.sdk.AdjustConfig
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.Inject
 import org.mozilla.focus.R
@@ -26,6 +27,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_BACK
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
+import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.theme.ThemeManager
@@ -933,6 +935,7 @@ object TelemetryWrapper {
                 .extra(Extra.CATEGORY, category)
                 .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
                 .queue()
+        AdjustHelper.trackEvent(EVENT_TAKE_SCREENSHOT)
     }
 
     @TelemetryDoc(
