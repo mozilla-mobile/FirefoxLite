@@ -1,6 +1,5 @@
 package org.mozilla.focus.autobot
 
-import android.Manifest
 import android.content.Intent
 import android.preference.PreferenceManager
 import android.support.test.InstrumentationRegistry
@@ -10,104 +9,39 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.IdlingResource
 import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.action.ViewActions.*
+import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
-import android.support.test.rule.GrantPermissionRule
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.widget.Switch
-import org.junit.Assert
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.core.Is
+import org.junit.Assert
 import org.junit.Rule
 import org.mozilla.focus.R
-import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.helper.ActivityRecreateLeakWatcherIdlingResource
-import org.mozilla.focus.helper.ScreenshotIdlingResource
-import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.widget.TelemetrySwitchPreference
 
 inline fun setting(func: SettingRobot.() -> Unit) = SettingRobot().apply(func)
-inline fun session(func: SessionRobot.() -> Unit) = SessionRobot().apply(func)
-
+inline fun screenshot(func: ScreenshotRobot.() -> Unit) = ScreenshotRobot().apply(func)
 
 inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
-
-    IdlingRegistry.getInstance().register(ir)
-    pendingCheck()
-    IdlingRegistry.getInstance().unregister(ir)
-
-}
-
-
-class SessionRobot {
-
-    @Rule
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
-
-    private var sessionLoadedIdlingResource: SessionLoadedIdlingResource? = null
-
-    // Load and check if the test site is loaded
-    fun loadPage(url: String) {
-        activityTestRule.launchActivity(Intent())
-
-        sessionLoadedIdlingResource = SessionLoadedIdlingResource(activityTestRule.getActivity())
-
-        // Click search field
-        onView(allOf<View>(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click())
-
-        // Enter test site url
-        onView(allOf<View>(withId(R.id.url_edit), isDisplayed())).perform(replaceText(url), pressImeActionButton())
-
-        IdlingRegistry.getInstance().register(sessionLoadedIdlingResource)
-
-        onView(allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(url)))
-
-        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource)
-
-
-    }
-
-    infix fun takeScreenshot(func: ScreenshotRobot.() -> Unit) {
-
-        ScreenshotRobot(activityTestRule).takeScreenshot().apply { func() }
+    try {
+        IdlingRegistry.getInstance().register(ir)
+        pendingCheck()
+    } finally {
+        IdlingRegistry.getInstance().unregister(ir)
     }
 }
 
-class ScreenshotRobot(val activityTestRule: ActivityTestRule<MainActivity>) {
-
-    private var screenshotIdlingResource: ScreenshotIdlingResource? = null
-
-    fun takeScreenshot(): ScreenshotRobot {
-        screenshotIdlingResource = ScreenshotIdlingResource(activityTestRule.getActivity())
-
-        // Click screen capture button
-        onView(allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
-
-        // Register screenshot taken idling resource and wait capture complete
-        IdlingRegistry.getInstance().register(screenshotIdlingResource)
-
-        // wait for the screen shot to complete
-        // Open menu
-        onView(allOf(withId(R.id.btn_menu), isDisplayed())).perform(click())
-
-        IdlingRegistry.getInstance().unregister(screenshotIdlingResource)
-        return this
-    }
-
-
-    fun clickMenuMyShots() {
-        // Click my shot
-        onView(allOf(withId(R.id.menu_screenshots), isDisplayed())).perform(click())
-    }
+class ScreenshotRobot : MenuRobot() {
 
     fun clickFirstItemInMyShotsAndOpen() {
         // Click the first item in my shots panel

@@ -6,7 +6,9 @@
 package org.mozilla.focus.activity
 
 import android.Manifest
+import android.content.Intent
 import android.support.annotation.Keep
+import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import org.junit.Before
@@ -14,6 +16,7 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mozilla.focus.autobot.screenshot
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
 
@@ -24,15 +27,16 @@ class TakeScreenshotTest {
 
     @JvmField
     @Rule
-    val writePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val filePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
 
     @JvmField
     @Rule
-    val readPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE)
+    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
 
     @Before
     fun setUp() {
         AndroidTestUtils.beforeTest()
+        activityTestRule.launchActivity(Intent())
     }
 
     companion object {
@@ -44,15 +48,14 @@ class TakeScreenshotTest {
     fun takeScreenshot_screenshotIsCaptured() {
 
         session {
-
-            loadPage(TARGET_URL_SITE)
-
-        } takeScreenshot {
-
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            clickCaptureScreen(activityTestRule.activity)
+            clickBrowserMenu()
             clickMenuMyShots()
+        }
 
+        screenshot {
             clickFirstItemInMyShotsAndOpen()
-
             longClickAndDeleteTheFirstItemInMyShots()
         }
 
