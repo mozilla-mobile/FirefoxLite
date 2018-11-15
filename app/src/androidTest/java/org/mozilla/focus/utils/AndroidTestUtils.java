@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -18,6 +19,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
+import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -35,11 +37,13 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
@@ -150,4 +154,11 @@ public final class AndroidTestUtils {
         final Settings.EventHistory history = Settings.getInstance(context).getEventHistory();
         history.setCount(Settings.Event.AppCreate, (int) AppConfigWrapper.getRateDialogLaunchTimeThreshold(context));
     }
+
+    public static void toastContainsText(@NotNull final Activity activity, final int strId) {
+        onView(withText(strId))
+                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
+    }
+
 }
