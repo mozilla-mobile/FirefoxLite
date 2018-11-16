@@ -1,13 +1,4 @@
-apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion Versions.compile_sdk
-    buildToolsVersion Versions.build_tools
-    defaultConfig {
-        targetSdkVersion Versions.target_sdk
-        minSdkVersion Versions.min_sdk
-    }
-}
+apply from: '../../buildSrc/android-library-base.gradle'
 
 dependencies {
     implementation "com.android.support:support-annotations:${Versions.support}"
