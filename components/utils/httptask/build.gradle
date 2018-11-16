@@ -1,30 +1,8 @@
-apply plugin: 'com.android.library'
+apply from: '../../../buildSrc/android-library-base.gradle'
 apply from: '../../../buildSrc/pmd.gradle'
 apply from: '../../../buildSrc/checkstyle.gradle'
 apply from: '../../../buildSrc/findbugs.gradle'
 
-android {
-    compileSdkVersion Versions.compile_sdk
-    buildToolsVersion Versions.build_tools
-
-    defaultConfig {
-        minSdkVersion Versions.min_sdk
-        targetSdkVersion Versions.target_sdk
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
