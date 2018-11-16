@@ -214,6 +214,8 @@
   <string name="bookmark_edit_success">वाचनखूण अद्ययावत केले</string>
   <string name="bookmarks_empty_view_msg">कोणतेही वाचनखुणा नाहीत</string>
   <string name="edit_bookmark">संपादित करा</string>
+  <string name="label_menu_news">बातम्या</string>
+  <string name="news_update_btn">नवीन अद्यतन</string>
   <string name="private_tab">खाजगी टॅब</string>
   <string name="private_browsing_title">खाजगी ब्राउझिंग</string>
   <string name="private_browsing_erase_message">खाजगी ब्राऊजिंग इतिहास पुसा</string>
@@ -221,6 +223,7 @@
   <string name="private_browsing_erase_done">आपला ब्राउझिंग इतिहास\nमिटवला गेला आहे.</string>
   <string name="my_shot_on_boarding_message">येथे आपले स्क्रीनशॉट्स पहा!</string>
   <string name="my_shot_on_boarding_category_message">आपला अनुभव सुधारण्यासाठी, आम्ही आपल्या स्क्रीनशॉटच्या श्रेणीची माहिती गोळा करतो.</string>
+  <string name="btn_vpn">7-दिवस विनामुल्य VPN सेवा आपल्यासाठी तयार आहे. अधिक खाजगीरीत्या आणि सुरक्षिततेने ब्राउझ करण्यासाठी आता स्थापित करा.</string>
   <string name="exp_survey_wifi">आपल्याला जवळचे मोफत इंटरनेट शोधून देण्यासाठी आम्ही “मोफत वायफाय-शोधक” सामावण्याच्या विचारात आहे.\nइच्छुक आहात?</string>
   <string name="exp_survey_vpn">आपल्याला ब्राऊझिंग करताना अधिक स्वातंत्र्य व गोपनीयता देण्यासाठी “VPN सेवा” समाविष्ट करण्याच्या विचारात आहे.\n\nइच्छुक आहात?</string>
   <string name="exp_survey_thanks">अभिप्राय दिल्याबद्दल धन्यवाद %1$s</string>
