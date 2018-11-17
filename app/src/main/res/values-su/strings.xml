@@ -187,7 +187,7 @@
   <string name="share_app_dialog_text_title">Bagikeun %1$s ka babaturan!</string>
   <string name="share_app_dialog_text_content">- Gancang tur hampang\n- Rikrik data\n- Téwakan layar bedas</string>
   <string name="share_app_dialog_btn_share">Bagikeun</string>
-  <string name="share_app_promotion_text">Hayu urang cobaan panyungsi gancang tur hampang ti %3$s. %1$s %2$s</string>
+  <string name="share_app_promotion_text">Euy, cobaan panyungsi gancang tur hampang ti %3$s. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s téh aplikasi bébas sarta sumber nembrak nu dijieun ku %2$s jeung kontributor séjénna.</string>
   <string name="your_rights_content2"><![CDATA["%1$s dijieunna pikeun anjeun kalayan dina pasaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" jeung lisénsi sumber nembrak nu séjén."]]></string>
   <string name="your_rights_content3"><![CDATA["Anjeun teu dibéré idin atawa lisénsi nanaon kana mérek dagang Mozilla Foundation atawa pihak mana ogé, kaasup ngaran atawa logo %3$s, %4$s, atawa %1$s. Émbaran leuwih jero bisa dipanggihan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di dieu</a>.]]></string>
@@ -198,7 +198,7 @@
   <string name="new_background_tab_hint">Tab anyar dibuka</string>
   <string name="new_background_tab_switch">GILIR</string>
   <string name="setting_default_browser_notification_title">Ngarobah setélan…</string>
-  <string name="setting_default_browser_notification_text">Meureun merlukeun sawatara waktu</string>
+  <string name="setting_default_browser_notification_text">Sigana bakal rada lila</string>
   <string name="setting_default_browser_notification_clickable_text">Toél pikeun ngatur panyungsi baku</string>
   <string name="tab_tray_close_tabs_btn_text">Tutup kabéh</string>
   <string name="tab_tray_close_tabs_dialog_msg">Tutup kabéh tab?</string>
