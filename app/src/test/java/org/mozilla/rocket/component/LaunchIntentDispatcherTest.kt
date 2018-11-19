@@ -2,11 +2,8 @@ package org.mozilla.rocket.component
 
 import android.content.Intent
 import android.content.Intent.ACTION_MAIN
-import org.junit.Test
-import org.junit.runner.RunWith
 import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_COMMAND
 import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_OPEN_URL
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 //@RunWith(RobolectricTestRunner::class)
@@ -21,7 +18,6 @@ class LaunchIntentDispatcherTest {
         val view = Intent()
         view.putExtra(PUSH_OPEN_URL, "https://mozilla.com")
         test(view, LaunchIntentDispatcher.Action.NORMAL)
-
 
         val launch = Intent()
         launch.action = ACTION_MAIN

@@ -17,6 +17,5 @@ class ScreenshotManagerTest {
 
         assert(sm.getCategory(context, "https://blogspot.com/").equals("Weblogs"))
         assert(sm.getCategory(context, "https://m.blogspot.com/").equals("Weblogs"))
-
     }
 }

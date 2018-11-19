@@ -18,7 +18,7 @@ class PrivateTabViewProvider(private val host: Activity) : TabViewProvider() {
                 return
             }
 
-            settings.setSupportMultipleWindows(false);
+            settings.setSupportMultipleWindows(false)
         }
     }
 }

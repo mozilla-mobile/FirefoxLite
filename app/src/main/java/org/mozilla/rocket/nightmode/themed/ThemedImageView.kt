@@ -5,7 +5,7 @@ import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.View
 
-open class ThemedImageView: AppCompatImageView {
+open class ThemedImageView : AppCompatImageView {
 
     private var isNight: Boolean = false
 

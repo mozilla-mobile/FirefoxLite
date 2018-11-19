@@ -22,10 +22,9 @@ import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import java.io.File
 
-
 class FocusApplication : LocaleAwareApplication() {
 
-    lateinit var partnerActivator : PartnerActivator
+    lateinit var partnerActivator: PartnerActivator
 
     override fun getCacheDir(): File {
         if (isInPrivateProcess()) {

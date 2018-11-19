@@ -30,7 +30,7 @@ import org.mozilla.rocket.tabs.web.Download
  */
 
 class TabViewEngineSession constructor(
-        private val delegate: Observable<TabViewEngineSession.Observer> = ObserverRegistry()
+    private val delegate: Observable<TabViewEngineSession.Observer> = ObserverRegistry()
 ) : Observable<TabViewEngineSession.Observer> by delegate {
 
     var webViewState: Bundle? = null
@@ -92,15 +92,15 @@ class TabViewEngineSession constructor(
         tabView?.destroy()
     }
 
-
     interface Observer : EngineSession.Observer {
         fun onReceivedIcon(icon: Bitmap?)
         fun onLongPress(hitTarget: TabView.HitTarget)
         fun onEnterFullScreen(callback: TabView.FullscreenCallback, view: View?)
         fun onExitFullScreen()
         fun onGeolocationPermissionsShowPrompt(
-                origin: String,
-                callback: GeolocationPermissions.Callback?)
+            origin: String,
+            callback: GeolocationPermissions.Callback?
+        )
     }
 
     interface WindowClient {
@@ -112,9 +112,10 @@ class TabViewEngineSession constructor(
         fun updateFailingUrl(url: String?, updateFromError: Boolean)
         fun handleExternalUrl(url: String?): Boolean
         fun onShowFileChooser(
-                es: TabViewEngineSession,
-                filePathCallback: ValueCallback<Array<Uri>>?,
-                fileChooserParams: WebChromeClient.FileChooserParams?): Boolean
+            es: TabViewEngineSession,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: WebChromeClient.FileChooserParams?
+        ): Boolean
     }
 
     class ViewClient(private val es: TabViewEngineSession) : TabViewClient() {
@@ -155,9 +156,10 @@ class TabViewEngineSession constructor(
 
     class ChromeClient(private val es: TabViewEngineSession) : TabChromeClient() {
         override fun onCreateWindow(
-                isDialog: Boolean,
-                isUserGesture: Boolean,
-                msg: Message?): Boolean {
+            isDialog: Boolean,
+            isUserGesture: Boolean,
+            msg: Message?
+        ): Boolean {
 
             return es.windowClient?.onCreateWindow(isDialog, isUserGesture, msg) ?: false
         }
@@ -170,9 +172,10 @@ class TabViewEngineSession constructor(
                 es.notifyObservers { onProgress(progress) }
 
         override fun onShowFileChooser(
-                tabView: TabView,
-                filePathCallback: ValueCallback<Array<Uri>>?,
-                fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+            tabView: TabView,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: WebChromeClient.FileChooserParams?
+        ): Boolean {
 
             return es.engineSessionClient?.onShowFileChooser(es, filePathCallback, fileChooserParams)
                     ?: false
@@ -199,8 +202,9 @@ class TabViewEngineSession constructor(
         override fun onExitFullScreen() = es.notifyObservers { onExitFullScreen() }
 
         override fun onGeolocationPermissionsShowPrompt(
-                origin: String,
-                callback: GeolocationPermissions.Callback?) =
+            origin: String,
+            callback: GeolocationPermissions.Callback?
+        ) =
                 es.notifyObservers { onGeolocationPermissionsShowPrompt(origin, callback) }
     }
 

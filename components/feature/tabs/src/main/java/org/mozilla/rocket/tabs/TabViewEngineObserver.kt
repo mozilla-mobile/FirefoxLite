@@ -24,7 +24,7 @@ import org.mozilla.rocket.tabs.TabView.HitTarget
  * This abstraction layer will be removed once we complete migration from TabView to EngineView.
  */
 class TabViewEngineObserver(
-        val session: Session
+    val session: Session
 ) : TabViewEngineSession.Observer {
 
     override fun onTitleChange(title: String) {
@@ -68,8 +68,9 @@ class TabViewEngineObserver(
     override fun onExitFullScreen() = session.notifyObservers { onExitFullScreen() }
 
     override fun onGeolocationPermissionsShowPrompt(
-            origin: String,
-            callback: GeolocationPermissions.Callback?) =
+        origin: String,
+        callback: GeolocationPermissions.Callback?
+    ) =
             session.notifyObservers { onGeolocationPermissionsShowPrompt(origin, callback) }
 
     override fun onFindResult(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
@@ -77,12 +78,13 @@ class TabViewEngineObserver(
     }
 
     override fun onExternalResource(
-            url: String,
-            fileName: String?,
-            contentLength: Long?,
-            contentType: String?,
-            cookie: String?,
-            userAgent: String?) {
+        url: String,
+        fileName: String?,
+        contentLength: Long?,
+        contentType: String?,
+        cookie: String?,
+        userAgent: String?
+    ) {
 
         val download = Download(url, fileName, contentType, contentLength, userAgent, Environment.DIRECTORY_DOWNLOADS)
         session.download = Consumable.from(download)

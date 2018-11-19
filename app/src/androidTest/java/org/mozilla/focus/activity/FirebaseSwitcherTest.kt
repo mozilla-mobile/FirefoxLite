@@ -1,6 +1,5 @@
 package org.mozilla.focus.activity
 
-
 import android.support.test.filters.SdkSuppress
 import android.support.test.runner.AndroidJUnit4
 import org.junit.Before
@@ -8,7 +7,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.autobot.setting
 import org.mozilla.focus.utils.AndroidTestUtils
-
 
 // Only device with API>=24 can set default browser via system settings
 @RunWith(AndroidJUnit4::class)
@@ -19,7 +17,6 @@ class FirebaseSwitcherTest {
     fun setup() {
         AndroidTestUtils.beforeTest()
     }
-
 
     @Test
     fun disableFirebase_makeSureSwitchIsOffAfterClick() {
@@ -34,7 +31,6 @@ class FirebaseSwitcherTest {
             isNotChecked()
         }
     }
-
 
     @Test
     fun flipPrefCrazily_TheStateIsSynced() {
@@ -53,6 +49,4 @@ class FirebaseSwitcherTest {
             isChecked()
         }
     }
-
-
 }

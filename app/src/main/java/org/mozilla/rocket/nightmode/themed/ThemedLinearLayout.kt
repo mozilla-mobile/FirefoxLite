@@ -14,7 +14,7 @@ class ThemedLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(c
             View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
             drawableState
         } else {
-             super.onCreateDrawableState(extraSpace)
+            super.onCreateDrawableState(extraSpace)
         }
     }
 
@@ -25,5 +25,4 @@ class ThemedLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(c
             invalidate()
         }
     }
-
 }

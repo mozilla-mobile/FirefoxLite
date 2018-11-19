@@ -36,7 +36,6 @@ class LaunchIntentDispatcher {
         @CheckResult
         fun dispatch(context: Context, intent: Intent): Action? {
 
-
             /**
              * This extra is passed when we click our icon in mobile launcher
              * */

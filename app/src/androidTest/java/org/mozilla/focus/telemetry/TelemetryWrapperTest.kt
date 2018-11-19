@@ -30,7 +30,6 @@ class TelemetryWrapperTest {
         val prefName = context.getString(R.string.pref_key_telemetry)
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferences.edit().putBoolean(prefName, false).apply()
-
     }
 
     private fun assertFirebaseEvent(category: String, method: String, `object`: String?, value: String) {
@@ -44,7 +43,6 @@ class TelemetryWrapperTest {
 
         // TelemetryWrapper.toggleFirstRunPageEvent(false);
         assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, TelemetryWrapper.Object.FIRSTRUN, TelemetryWrapper.Value.TURBO)
-
     }
 
     @Test
@@ -61,7 +59,6 @@ class TelemetryWrapperTest {
     fun launchByHomeScreenShortcutEvent() {
         TelemetryWrapper.launchByHomeScreenShortcutEvent()
     }
-
 
     @Test
     fun settingsEvent() {
@@ -87,7 +84,6 @@ class TelemetryWrapperTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_turbo_mode))
         TelemetryWrapper.settingsLearnMoreClickEvent(context.getString(R.string.pref_key_telemetry))
-
     }
 
     @Test
@@ -111,7 +107,6 @@ class TelemetryWrapperTest {
     fun startSession() {
         TelemetryWrapper.startSession()
     }
-
 
     @Test
     fun stopMainActivity() {
@@ -211,31 +206,26 @@ class TelemetryWrapperTest {
     @Test
     fun clickMenuHistory() {
         TelemetryWrapper.clickMenuHistory()
-
     }
 
     @Test
     fun clickMenuCapture() {
         TelemetryWrapper.clickMenuCapture()
-
     }
 
     @Test
     fun showPanelDownload() {
         TelemetryWrapper.showPanelDownload()
-
     }
 
     @Test
     fun showPanelHistory() {
         TelemetryWrapper.showPanelHistory()
-
     }
 
     @Test
     fun showPanelCapture() {
         TelemetryWrapper.showPanelCapture()
-
     }
 
     @Test
@@ -258,11 +248,9 @@ class TelemetryWrapperTest {
         TelemetryWrapper.menuBlockImageChangeTo(false)
     }
 
-
     @Test
     fun clickMenuClearCache() {
         TelemetryWrapper.clickMenuClearCache()
-
     }
 
     @Test
@@ -278,25 +266,21 @@ class TelemetryWrapperTest {
     @Test
     fun clickToolbarForward() {
         TelemetryWrapper.clickToolbarForward()
-
     }
 
     @Test
     fun clickToolbarReload() {
         TelemetryWrapper.clickToolbarReload()
-
     }
 
     @Test
     fun clickToolbarShare() {
         TelemetryWrapper.clickToolbarShare()
-
     }
 
     @Test
     fun clickAddToHome() {
         TelemetryWrapper.clickAddToHome()
-
     }
 
     @Test
@@ -312,7 +296,6 @@ class TelemetryWrapperTest {
     @Test
     fun clickTopSiteOn() {
         TelemetryWrapper.clickTopSiteOn(0)
-
     }
 
     @Test
@@ -324,7 +307,6 @@ class TelemetryWrapperTest {
     @Test
     fun addNewTabFromHome() {
         TelemetryWrapper.addNewTabFromHome()
-
     }
 
     @Test
@@ -348,19 +330,16 @@ class TelemetryWrapperTest {
     @Test
     fun searchClear() {
         TelemetryWrapper.searchClear()
-
     }
 
     @Test
     fun searchDismiss() {
         TelemetryWrapper.searchDismiss()
-
     }
 
     @Test
     fun showSearchBarHome() {
         TelemetryWrapper.showSearchBarHome()
-
     }
 
     @Test
@@ -371,86 +350,72 @@ class TelemetryWrapperTest {
     @Test
     fun clickToolbarSearch() {
         TelemetryWrapper.clickToolbarSearch()
-
     }
 
     @Test
     fun clickAddTabToolbar() {
         TelemetryWrapper.clickAddTabToolbar()
-
     }
 
     @Test
     fun clickAddTabTray() {
         TelemetryWrapper.clickAddTabTray()
-
     }
 
     @Test
     fun clickTabFromTabTray() {
         TelemetryWrapper.clickTabFromTabTray()
-
     }
 
     @Test
     fun closeTabFromTabTray() {
         TelemetryWrapper.closeTabFromTabTray()
-
     }
 
     @Test
     fun downloadRemoveFile() {
         TelemetryWrapper.downloadRemoveFile()
-
     }
 
     @Test
     fun downloadDeleteFile() {
         TelemetryWrapper.downloadDeleteFile()
-
     }
 
     @Test
     fun downloadOpenFile() {
         TelemetryWrapper.downloadOpenFile(true)
         TelemetryWrapper.downloadOpenFile(false)
-
     }
 
     @Test
     fun showFileContextMenu() {
         TelemetryWrapper.showFileContextMenu()
-
     }
 
     @Test
     fun historyOpenLink() {
         TelemetryWrapper.historyOpenLink()
-
     }
 
     @Test
     fun historyRemoveLink() {
         TelemetryWrapper.historyRemoveLink()
-
     }
 
     @Test
     fun showHistoryContextMenu() {
         TelemetryWrapper.showHistoryContextMenu()
-
     }
 
     @Test
     fun clearHistory() {
         TelemetryWrapper.clearHistory()
-
     }
 
     @Test
     fun openCapture() {
         TelemetryWrapper.openCapture()
-
     }
 
     @Test
@@ -602,6 +567,4 @@ class TelemetryWrapperTest {
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE)
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU)
     }
-
-
 }
