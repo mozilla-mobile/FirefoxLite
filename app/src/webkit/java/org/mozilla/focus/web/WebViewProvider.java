@@ -18,10 +18,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.utils.DebugUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.webkit.DefaultWebView;
 import org.mozilla.focus.webkit.TrackingProtectionWebViewClient;
 import org.mozilla.focus.webkit.WebkitView;
+import org.mozilla.threadutils.ThreadUtils;
 
 /**
  * WebViewProvider for creating a WebKit based IWebVIew implementation.
@@ -205,6 +207,8 @@ public class WebViewProvider {
     public static String getUserAgentString(Context context) {
         if (userAgentString == null) {
             userAgentString = buildUserAgentString(context, context.getResources().getString(R.string.useragent_appname));
+            // we only update the webview version when we first request for user agent string
+            ThreadUtils.postToBackgroundThread(() -> Settings.updatePrefString(context, context.getString(R.string.pref_key_webview_version), DebugUtils.parseWebViewVersion(userAgentString)));
         }
         return userAgentString;
     }
