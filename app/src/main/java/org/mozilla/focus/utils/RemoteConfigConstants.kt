@@ -1,6 +1,5 @@
 package org.mozilla.focus.utils
 
-
 object RemoteConfigConstants {
     val FEATURE_SURVEY_DEFAULT = SURVEY.NONE.value
 

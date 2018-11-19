@@ -8,7 +8,6 @@ package org.mozilla.focus.fragment
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -167,7 +166,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     // FirstRun fragment is not used often, so we create drawables programmatically, instead of add
     // lots of drawable resources
     private fun initDrawables() {
-        bgDrawables = arrayOf(resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme),resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme),resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme))
+        bgDrawables = arrayOf(resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme))
 
         bgTransitionDrawable = TransitionDrawable(bgDrawables)
         bgTransitionDrawable.setId(0, R.id.first_run_bg_even)
@@ -180,5 +179,4 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
             return FirstrunFragment()
         }
     }
-
 }

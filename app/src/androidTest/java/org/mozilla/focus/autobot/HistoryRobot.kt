@@ -5,7 +5,9 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.RootMatchers
-import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId
@@ -38,5 +40,4 @@ class HistoryRobot : MenuRobot() {
     fun checkConfirmClearDialogIsDisplayed() {
         onView(withText(R.string.browsing_history_dialog_confirm_clear_message)).check(matches(isDisplayed()))
     }
-
 }

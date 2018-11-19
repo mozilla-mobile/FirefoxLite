@@ -175,7 +175,6 @@ object TelemetryWrapper {
         internal const val VPN = "vpn"
         internal const val VPN_RECOMMEND = "vpn_recommend"
 
-
         internal const val PREVIOUS = "previous"
         internal const val NEXT = "next"
 
@@ -298,7 +297,6 @@ object TelemetryWrapper {
         }
     }
 
-
     @TelemetryDoc(
             name = "Turn on Turbo Mode in First Run",
             category = Category.ACTION,
@@ -367,7 +365,6 @@ object TelemetryWrapper {
                     .extra(Extra.TYPE, value)
                     .queue()
         }
-
     }
 
     @TelemetryDoc(
@@ -386,7 +383,6 @@ object TelemetryWrapper {
                     .extra(Extra.TO, value)
                     .queue(sendNow)
         }
-
     }
 
     @TelemetryDoc(
@@ -1214,7 +1210,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.PANEL, Value.FILE).queue()
     }
 
-
     @TelemetryDoc(
             name = "Delete Download File",
             category = Category.ACTION,
@@ -1465,7 +1460,6 @@ object TelemetryWrapper {
                 .queue()
     }
 
-
     @TelemetryDoc(
             name = "Show Rate App",
             category = Category.ACTION,
@@ -1480,9 +1474,7 @@ object TelemetryWrapper {
             builder.extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
         }
         builder.queue()
-
     }
-
 
     @TelemetryDoc(
             name = "Default Browser Notification shown",
@@ -1527,7 +1519,6 @@ object TelemetryWrapper {
                 .extra(Extra.SUCCESS, java.lang.Boolean.toString(false))
                 .queue()
     }
-
 
     @TelemetryDoc(
             name = "Promote Share Dialog Clicked",
@@ -1752,7 +1743,6 @@ object TelemetryWrapper {
         builder.queue()
     }
 
-
     @JvmStatic
     fun nightModeBrightnessChangeTo(value: Int, fromSetting: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.NIGHT_MODE_BRIGHTNESS)
@@ -1772,7 +1762,6 @@ object TelemetryWrapper {
             EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
                     .extra(Extra.SOURCE, reason)
                     .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
-
 
     @TelemetryDoc(
             name = "Click FindInPage Next",
@@ -1806,7 +1795,6 @@ object TelemetryWrapper {
     internal fun clickMenuFindInPage() =
             EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.FIND_IN_PAGE)
                     .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
-
 
     internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {
         var telemetryEvent: TelemetryEvent
@@ -1925,7 +1913,6 @@ object TelemetryWrapper {
                 // NewFeatureNotice already have telemetry
 
                 FirebaseEvent.setPrefKeyWhitelist(prefKeyWhitelist)
-
             }
         }
     }
@@ -1941,7 +1928,6 @@ object TelemetryWrapper {
             addCustomPing(configuration, ThemeToyMeasurement(context))
             addCustomPing(configuration, CaptureCountMeasurement(context))
         }
-
 
         internal fun addCustomPing(configuration: TelemetryConfiguration, measurement: TelemetryMeasurement) {
             var preferenceKeys: MutableSet<String>? = configuration.preferencesImportantForTelemetry

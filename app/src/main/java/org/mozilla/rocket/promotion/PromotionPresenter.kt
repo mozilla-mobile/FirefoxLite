@@ -1,9 +1,12 @@
 package org.mozilla.rocket.promotion
 
-
 import android.content.Context
 import android.support.annotation.VisibleForTesting
-import org.mozilla.focus.utils.*
+import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.utils.IntentUtils
+import org.mozilla.focus.utils.NewFeatureNotice
+import org.mozilla.focus.utils.SafeIntent
+import org.mozilla.focus.utils.Settings
 import kotlin.properties.Delegates
 
 interface PromotionViewContract {
@@ -29,7 +32,6 @@ class PromotionModel {
     var rateAppNotificationThreshold by Delegates.notNull<Long>()
     var shareAppDialogThreshold by Delegates.notNull<Long>()
 
-
     var shouldShowPrivacyPolicyUpdate by Delegates.notNull<Boolean>()
 
     var showRateAppDialogFromIntent by Delegates.notNull<Boolean>()
@@ -54,16 +56,13 @@ class PromotionModel {
         shareAppDialogThreshold = AppConfigWrapper.getShareDialogLaunchTimeThreshold(context, didDismissRateDialog)
 
         shouldShowPrivacyPolicyUpdate = newFeatureNotice.shouldShowPrivacyPolicyUpdate()
-
     }
 
     fun parseIntent(safeIntent: SafeIntent?) {
         showRateAppDialogFromIntent = safeIntent?.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false) == true
     }
 
-
     private fun accumulateAppCreateCount() = !didShowRateDialog || !didShowShareDialog || isSurveyEnabled || !didShowRateAppNotification
-
 }
 
 class PromotionPresenter {
@@ -78,13 +77,10 @@ class PromotionPresenter {
 
             if (!promotionModel.didShowRateDialog && promotionModel.appCreateCount >= promotionModel.rateAppDialogThreshold) {
                 promotionViewContract.showRateAppDialog()
-
             } else if (promotionModel.didDismissRateDialog && !promotionModel.didShowRateAppNotification && promotionModel.appCreateCount >= promotionModel.rateAppNotificationThreshold) {
                 promotionViewContract.showRateAppNotification()
-
             } else if (!promotionModel.didShowShareDialog && promotionModel.appCreateCount >= promotionModel.shareAppDialogThreshold) {
                 promotionViewContract.showShareAppDialog()
-
             }
 
             if (promotionModel.isSurveyEnabled && promotionModel.appCreateCount >= AppConfigWrapper.getSurveyNotificationLaunchTimeThreshold()) {
@@ -107,6 +103,4 @@ class PromotionPresenter {
             return false
         }
     }
-
-
 }

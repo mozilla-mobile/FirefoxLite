@@ -4,12 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.privately.home
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +20,6 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
-
 
 class PrivateHomeFragment : LocaleAwareFragment() {
 

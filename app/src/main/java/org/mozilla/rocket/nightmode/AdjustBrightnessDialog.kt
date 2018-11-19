@@ -69,11 +69,9 @@ class AdjustBrightnessDialog : BaseActivity() {
         }
 
         override fun onStartTrackingTouch(seekBar: SeekBar) {
-
         }
 
         override fun onStopTrackingTouch(seekBar: SeekBar) {
-
         }
     }
 
@@ -102,6 +100,5 @@ class AdjustBrightnessDialog : BaseActivity() {
     }
 
     override fun applyLocale() {
-
     }
 }

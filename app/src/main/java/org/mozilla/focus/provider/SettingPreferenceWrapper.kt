@@ -40,5 +40,4 @@ class SettingPreferenceWrapper(private val resolver: ContentResolver) {
         }
         return v ?: defValue
     }
-
 }

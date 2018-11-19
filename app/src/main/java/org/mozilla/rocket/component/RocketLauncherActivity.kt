@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
 
-
 class RocketLauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

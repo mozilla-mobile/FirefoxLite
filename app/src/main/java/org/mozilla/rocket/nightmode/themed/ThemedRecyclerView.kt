@@ -24,7 +24,7 @@ open class ThemedRecyclerView : RecyclerView {
         }
     }
 
-    fun isNightMode() : Boolean {
+    fun isNightMode(): Boolean {
         return isNight
     }
 

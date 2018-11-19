@@ -22,10 +22,10 @@ import kotlin.properties.Delegates
 const val TAG = "Session"
 
 class Session @JvmOverloads constructor(
-        val id: String = UUID.randomUUID().toString(),
-        var parentId: String? = "",
-        var initialUrl: String? = "",
-        private val delegate: Observable<Observer> = ObserverRegistry()
+    val id: String = UUID.randomUUID().toString(),
+    var parentId: String? = "",
+    var initialUrl: String? = "",
+    private val delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Observer> by delegate {
 
     var engineSession: TabViewEngineSession? = null
@@ -79,7 +79,6 @@ class Session @JvmOverloads constructor(
     var canGoForward: Boolean by Delegates.observable(false) { _, old, new ->
         notifyObservers(old, new) { onNavigationStateChanged(this@Session, canGoBack, new) }
     }
-
 
     /**
      * Security information indicating whether or not the current session is
@@ -155,8 +154,10 @@ class Session @JvmOverloads constructor(
          */
         fun onExitFullScreen() = Unit
 
-        fun onGeolocationPermissionsShowPrompt(origin: String,
-                                               callback: GeolocationPermissions.Callback?) = Unit
+        fun onGeolocationPermissionsShowPrompt(
+            origin: String,
+            callback: GeolocationPermissions.Callback?
+        ) = Unit
     }
 
     companion object {
