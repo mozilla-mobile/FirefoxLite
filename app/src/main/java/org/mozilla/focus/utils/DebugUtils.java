@@ -17,7 +17,7 @@ public final class DebugUtils {
 
     }
 
-    public static String loadWebViewVersion(Context context) {
+    static String loadWebViewVersion(Context context) {
         String webViewVersion;
         try {
             webViewVersion = loadWebViewVersion(new WebView(context));
@@ -27,10 +27,10 @@ public final class DebugUtils {
         return webViewVersion;
     }
 
-    public static String loadWebViewVersion(WebView webvView) {
+    private static String loadWebViewVersion(WebView webView) {
         String webViewVersion;
         try {
-            final String userAgent = webvView.getSettings().getUserAgentString();
+            final String userAgent = webView.getSettings().getUserAgentString();
             webViewVersion = parseWebViewVersion(userAgent);
         } catch (Throwable error) {
             webViewVersion = UNKNOWN_WEBVIEW_VERSION;
@@ -38,14 +38,13 @@ public final class DebugUtils {
         return webViewVersion;
     }
 
-    private static String parseWebViewVersion(String userAgent) {
+    public static String parseWebViewVersion(String userAgent) {
         if (TextUtils.isEmpty(userAgent)) {
             return UNKNOWN_WEBVIEW_VERSION;
         }
         final String separator = "Chrome/";
         final int from = userAgent.lastIndexOf(separator) + separator.length();
-        final String webviewVersion = userAgent.substring(from, userAgent.indexOf(" ", from));
-        return webviewVersion;
+        return userAgent.substring(from, userAgent.indexOf(" ", from));
     }
 
 }

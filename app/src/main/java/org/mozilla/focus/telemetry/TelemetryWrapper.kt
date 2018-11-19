@@ -246,7 +246,6 @@ object TelemetryWrapper {
             val telemetryEnabled = isTelemetryEnabled(context)
 
             updateDefaultBrowserStatus(context)
-            updatePrefValue(context, resources.getString(R.string.pref_key_webview_version), DebugUtils.loadWebViewVersion(context))
 
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
@@ -280,10 +279,6 @@ object TelemetryWrapper {
 
     private fun updateDefaultBrowserStatus(context: Context) {
         Settings.updatePrefDefaultBrowserIfNeeded(context, Browsers.isDefaultBrowser(context))
-    }
-
-    private fun updatePrefValue(context: Context, key: String, value: String) {
-        Settings.updatePrefString(context, key, value)
     }
 
     private fun createDefaultSearchProvider(context: Context): DefaultSearchMeasurement.DefaultSearchEngineProvider {
