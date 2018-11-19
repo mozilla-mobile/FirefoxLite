@@ -41,6 +41,5 @@ class SessionTest {
         Session(UUID.randomUUID().toString(), "", "").let { model ->
             assertEquals(false, model.isValid())
         }
-
     }
 }

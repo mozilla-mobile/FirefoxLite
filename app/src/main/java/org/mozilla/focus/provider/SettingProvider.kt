@@ -37,8 +37,13 @@ class SettingProvider : ContentProvider() {
         throw UnsupportedOperationException("Not supported")
     }
 
-    override fun query(uri: Uri, projection: Array<String>?, selection: String?,
-                       selectionArgs: Array<String>?, sortOrder: String?): Cursor? {
+    override fun query(
+        uri: Uri,
+        projection: Array<String>?,
+        selection: String?,
+        selectionArgs: Array<String>?,
+        sortOrder: String?
+    ): Cursor? {
         var key: String? = null
         var defValue = ""
         if (selectionArgs != null) {
@@ -55,11 +60,14 @@ class SettingProvider : ContentProvider() {
         return BundleCursor(bundle)
     }
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?,
-                        selectionArgs: Array<String>?): Int {
+    override fun update(
+        uri: Uri,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): Int {
         throw UnsupportedOperationException("Not supported")
     }
-
 
     private class BundleCursor internal constructor(private var bundle: Bundle?) : MatrixCursor(arrayOf(), 0) {
 

@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
@@ -35,7 +34,6 @@ import java.util.Locale
  */
 class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener,
         View.OnLongClickListener, ScreenNavigator.UrlInputScreen {
-
 
     private val autoCompleteProvider: DomainAutoCompleteProvider = DomainAutoCompleteProvider()
     private lateinit var presenter: UrlInputContract.Presenter
@@ -191,7 +189,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
         val args = arguments
         if (args != null && args.containsKey(ARGUMENT_PARENT_FRAGMENT)) {
-            openNewTab = ScreenNavigator.HOME_FRAGMENT_TAG == args.getString(ARGUMENT_PARENT_FRAGMENT);
+            openNewTab = ScreenNavigator.HOME_FRAGMENT_TAG == args.getString(ARGUMENT_PARENT_FRAGMENT)
         }
 
         val activity = activity

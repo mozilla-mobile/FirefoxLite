@@ -19,5 +19,4 @@ object SettingContract {
     const val PATH_GET_BOOLEAN = "getBoolean"
     const val GET_FLOAT = 1
     const val GET_BOOLEAN = 2
-
 }

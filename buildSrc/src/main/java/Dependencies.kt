@@ -35,7 +35,6 @@ object Versions {
     const val crashlytics = "2.9.3"
     const val google_services_plugin = "3.1.1"
     const val fabric_plugin = "1.25.1"
-
 }
 
 object SystemEnv {

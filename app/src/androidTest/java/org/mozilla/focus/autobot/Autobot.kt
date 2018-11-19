@@ -14,7 +14,9 @@ import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import android.support.v7.widget.RecyclerView
 import android.widget.Switch
@@ -58,8 +60,6 @@ class ScreenshotRobot : MenuRobot() {
         onView(withId(R.id.screenshot_viewer_btn_share)).check(matches(isDisplayed()))
         onView(withId(R.id.screenshot_viewer_btn_info)).check(matches(isDisplayed()))
         onView(withId(R.id.screenshot_viewer_btn_delete)).check(matches(isDisplayed()))
-
-
     }
 
     fun longClickAndDeleteTheFirstItemInMyShots() {
@@ -74,8 +74,6 @@ class ScreenshotRobot : MenuRobot() {
         // Check if come back to my shots panel
         onView(withId(R.id.screenshots)).check(matches(isDisplayed()))
     }
-
-
 }
 
 class SettingRobot {
@@ -88,7 +86,6 @@ class SettingRobot {
 
     private lateinit var leakWatchIdlingResource: ActivityRecreateLeakWatcherIdlingResource
 
-
     init {
         // make sure the pref is on when started
         resetPref()
@@ -98,9 +95,7 @@ class SettingRobot {
         FirebaseHelper.init(settingsActivity.activity, true)
 
         FirebaseHelper.injectEnablerCallback(Delay())
-
     }
-
 
     fun isChecked(): SettingRobot {
         interaction.check(ViewAssertions.matches(ViewMatchers.isChecked()))
@@ -111,7 +106,6 @@ class SettingRobot {
         interaction.check(ViewAssertions.matches(ViewMatchers.isNotChecked()))
         return this
     }
-
 
     fun click(): SettingRobot {
         interaction.perform(ViewActions.click())
@@ -141,19 +135,16 @@ class SettingRobot {
             // call onView to sync and wait for idling resource
             Espresso.onView(ViewMatchers.isRoot())
             Assert.assertFalse(leakWatchIdlingResource.hasLeak())
-
         }
 
         return this
     }
-
 
     private fun resetPref() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val prefName = context.getString(R.string.pref_key_telemetry)
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferences.edit().putBoolean(prefName, true).apply()
-
     }
 
     class Delay : FirebaseHelper.BlockingEnablerCallback {
@@ -163,8 +154,6 @@ class SettingRobot {
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
-
         }
     }
 }
-

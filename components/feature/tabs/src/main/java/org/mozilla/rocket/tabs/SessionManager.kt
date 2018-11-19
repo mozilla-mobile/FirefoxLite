@@ -35,10 +35,9 @@ internal val MSG_REMOVEDED_TAB = 0x1003
  * Class to help on sessions management, such as adding or removing sessions.
  */
 class SessionManager @JvmOverloads constructor(
-        private val tabViewProvider: TabViewProvider,
-        delegate: Observable<Observer> = ObserverRegistry()
+    private val tabViewProvider: TabViewProvider,
+    delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Observer> by delegate {
-
 
     private val sessions = LinkedList<Session>()
 
@@ -119,10 +118,11 @@ class SessionManager @JvmOverloads constructor(
         notifyObservers { onSessionCountChanged(sessions.size) }
     }
 
-    fun add(session: Session,
-            selected: Boolean = false,
-            engineSession: TabViewEngineSession? = null,
-            parent: Session? = null
+    fun add(
+        session: Session,
+        selected: Boolean = false,
+        engineSession: TabViewEngineSession? = null,
+        parent: Session? = null
     ) {
         engineSession?.let { link(session, it) }
         val parentId = parent?.id ?: null
@@ -134,7 +134,7 @@ class SessionManager @JvmOverloads constructor(
      * is defined by @see{org.mozilla.focus.sessions.utils.TabUtil}. Usually it 1) has no parent
      * 2) is not opened from external app 3) will not change focus
      *
-     * @param url       initial url for this tab
+     * @param url initial url for this tab
      * @param arguments to contain dispensable arguments to indicate whether the new tab is from-external? should be focused?...etc.
      * @return id for created tab
      */
@@ -147,7 +147,6 @@ class SessionManager @JvmOverloads constructor(
                 TabUtil.isFromExternal(arguments),
                 TabUtil.toFocus(arguments),
                 arguments)
-
     }
 
     /**
@@ -318,11 +317,13 @@ class SessionManager @JvmOverloads constructor(
         session.unregisterObservers()
     }
 
-    private fun addTabInternal(url: String?,
-                               parentId: String?,
-                               fromExternal: Boolean,
-                               toFocus: Boolean,
-                               arguments: Bundle?): String {
+    private fun addTabInternal(
+        url: String?,
+        parentId: String?,
+        fromExternal: Boolean,
+        toFocus: Boolean,
+        arguments: Bundle?
+    ): String {
 
         val tab = Session()
         tab.url = url
@@ -395,16 +396,17 @@ class SessionManager @JvmOverloads constructor(
     }
 
     data class SessionWithState(
-            val session: Session,
-            val engineSession: TabViewEngineSession? = null
+        val session: Session,
+        val engineSession: TabViewEngineSession? = null
     )
 
     internal inner class WindowClient(var source: Session) : TabViewEngineSession.WindowClient {
 
         override fun onCreateWindow(
-                isDialog: Boolean,
-                isUserGesture: Boolean,
-                msg: Message?): Boolean {
+            isDialog: Boolean,
+            isUserGesture: Boolean,
+            msg: Message?
+        ): Boolean {
 
             if (msg == null) {
                 return false
@@ -427,7 +429,7 @@ class SessionManager @JvmOverloads constructor(
 
         override fun onCloseWindow(es: TabViewEngineSession) {
             if (source.engineSession === es) {
-                sessions.firstOrNull{ it.engineSession == es}
+                sessions.firstOrNull { it.engineSession == es }
                         ?.let { session -> closeTab(session.id) }
             }
         }
@@ -447,14 +449,13 @@ class SessionManager @JvmOverloads constructor(
             val consumers: List<(WebChromeClient.FileChooserParams?) -> Boolean> = wrapConsumers { onShowFileChooser(es, filePathCallback, it) }
             return Consumable.from(fileChooserParams).consumeBy(consumers)
         }
-
     }
 
     /**
      * A class to attach to UI thread for sending message.
      */
     private class Notifier internal constructor(
-            private val observable: SessionManager
+        private val observable: SessionManager
     ) : Handler(Looper.getMainLooper()) {
 
         val ENUM_KEY = "_key_enum"

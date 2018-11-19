@@ -104,7 +104,6 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     }
                     dismissSurveyView(v)
                 }
-
             }
             btnNo.setOnClickListener { _ ->
                 if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER) {

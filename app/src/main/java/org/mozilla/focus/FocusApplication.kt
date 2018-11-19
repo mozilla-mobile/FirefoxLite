@@ -23,7 +23,6 @@ import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import org.mozilla.rocket.privately.PrivateModeActivity
 import java.io.File
 
-
 class FocusApplication : LocaleAwareApplication() {
 
     lateinit var partnerActivator: PartnerActivator
