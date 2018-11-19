@@ -28,7 +28,7 @@
   <string name="preference_dialog_title_search_engine">डिफॉल्ट सर्च इंजन</string>
   <string name="preference_data_saving_block_images">चित्र ब्लौक करियै</string>
   <string name="preference_privacy_storage_clear_browsing_data">ब्राउज़िंग इतिहास मेटैइयै</string>
-  <string name="preference_privacy_storage_save_downloads_to">में डाउनलोड सेव करियै</string>
+  <string name="preference_privacy_storage_save_downloads_to">में डाउनलोड सहेजियै</string>
   <string name="preference_default_browser">डिफ़ॉल्ट ब्राउज़र बनैइयै</string>
   <string name="preference_default_browser_is_setting">सेटिंग्स बदलि रहलो छै...</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
@@ -60,7 +60,7 @@
   <string name="contextmenu_link_copy">लिंक एड्रेस कॉपी करियै</string>
   <string name="contextmenu_image_share">चित्र शेयर करियै</string>
   <string name="contextmenu_image_copy">इमेज एड्रेस कॉपी करियै</string>
-  <string name="contextmenu_image_save">चित्र सवे करियै</string>
+  <string name="contextmenu_image_save">चित्र सहेजियै</string>
   <string name="contextmenu_open_in_new_tab">लिंक नया टैब में खोलियै</string>
   <string name="contextmenu_open_image_in_new_tab">चित्र नया टैब में खोलियै</string>
   <string name="first_run_page1_title">%1$s चुनै ल धन्यवाद</string>
@@ -68,7 +68,7 @@
   <string name="first_run_page2_title">पहनो स तेज ब्राउज़ करियै</string>
   <string name="first_run_page2_text">ट्रैकिंग विज्ञापनों कअ ब्लोक करै लअ टर्बो मोड क उपयोग करियै ताकि तोय तेजि से ब्राउज़ कैर पाबियै.आगर साइट सिनि टूटै छै,तअ मेनू में टर्बो मोड स्विच क टैप करिइयै.</string>
   <string name="first_run_page3_title">डेटा बचाबियै = पैसे बचाबियै</string>
-  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों कअ ब्लोकिंग करै सअ न खालि ब्राउज़िंग कअ बढ़बै छै, इ डेटा बचबै छै. इमेज ब्लोक करै छिऐ तअ आरु सवे करिइयै.</string>
+  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों कअ ब्लोकिंग करै सअ न खालि ब्राउज़िंग कअ बढ़बै छै, इ डेटा बचबै छै. इमेज ब्लोक करै छिऐ तअ आरु सहेजियै.</string>
   <string name="first_run_page4_title">स्क्रीनशॉट सब कुछ</string>
   <string name="first_run_page4_text">पूरे वेब पृष्ठों क स्क्रीनशॉट लियै. एगो स्क्रीनशॉट ऑफ़लाइन देखिइयै (डेटा का उपयोग के बगेर) या वेब पेज पर फिरु स जाय लअ एकरा टैप करिइयै.</string>
   <string name="first_run_upgrade_page_title">हम अपनो के प्रतिक्रिया सुनलियै!</string>
@@ -132,17 +132,17 @@
   <string name="browsing_history_dialog_confirm_clear_message">सब ब्राउजिंग इतिहास मेटैइयै?</string>
   <string name="browsing_history_dialog_btn_clear">मेटैइयै</string>
   <string name="remove_from_list">लिस्ट से हटैइयै</string>
-  <string name="delete_file">फाइल हटाबियै</string>
-  <string name="screenshot_saved">स्क्रीनशॉट सवे होए गेलै</string>
+  <string name="delete_file">फाइल हटैइयै</string>
+  <string name="screenshot_saved">स्क्रीनशॉट सहेजलो गेलै</string>
   <string name="screenshot_failed">स्क्रीनशॉट केपचर फेल होए गेलै</string>
   <string name="screenshot_illustration">पूरे पेज क स्क्रीनशॉट कैप्चर होए गेलै ...</string>
   <string name="screenshot_view">राय</string>
   <string name="screenshot_edit">संपादित करियै</string>
   <string name="screenshot_delete">हटाबियै</string>
   <string name="screenshot_share">शेयर</string>
-  <string name="message_fallback_save_to_primary_external">एसडी कार्ड नै मिलल. फ़ाइल क इंटरनल एस्टोरेज में सेव करल गेल छै</string>
-  <string name="message_start_to_save_to_removable_storage">एसडी कार्ड मे फाइल सवे करल गेल छै</string>
-  <string name="message_removable_storage_space_not_enough">एसडी कार्ड लगभग भैर गेलै. फ़ाइल क इंटरनल एस्टोरेज में सेव करल गेल रहै.</string>
+  <string name="message_fallback_save_to_primary_external">एसडी कार्ड नै मिलल. फ़ाइल क इंटरनल एस्टोरेज में सहेजल गेल छै</string>
+  <string name="message_start_to_save_to_removable_storage">एसडी कार्ड मे फाइल सहेजल गेल छै</string>
+  <string name="message_removable_storage_space_not_enough">एसडी कार्ड लगभग भैर गेलै. फ़ाइल क इंटरनल एस्टोरेज में सहेजल रहै.</string>
   <string name="screenshot_grid_empty_text_title">कोय स्क्रीनशॉट नै छकै</string>
   <string name="screenshot_grid_empty_text_msg_prefix">टेप</string>
   <string name="screenshot_grid_empty_text_msg_postfix">मेनु पे पुरे वेबपेज केपचर करै ल दाबइयै.</string>
@@ -165,7 +165,7 @@
   <string name="message_cleared_browsing_data">ब्राउज़िंग डेटा मेटाल्य गेलै</string>
   <string name="message_deleted_screenshot">स्क्रीनशॉट हटाल्य गेलै</string>
   <string name="message_cannot_find_screenshot">ई स्क्रीनशॉट नै दिखायै सकै छै</string>
-  <string name="remove">हटाइयै</string>
+  <string name="remove">हटैइयै</string>
   <string name="privacy_policy_update_notification_title">उत्पाद अपडेट सूचना</string>
   <string name="privacy_policy_update_notification_action">Firefox Rocket कअ तोहरो आरु हर एक खतिर बेटर बनबे लअ, हम अपनो गोपनीयता नीति मे बदलाओ करलियै यै. अधिक जानै लअ टेप करिइयै.</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद छै?</string>
@@ -194,11 +194,11 @@
   <string name="tab_tray_close_tabs_dialog_msg">सब टैब बंद करियै?</string>
   <string name="themetoy_onboarding_title">अपनो जीवन क रंग़िइयै!</string>
   <string name="themetoy_onboarding_description">थीमस स्विच करै ल होम बेकग्रउंड पर डबल क्लिक करियै.</string>
-  <string name="bookmark_saved">बुकमार्क सेव भेलै</string>
+  <string name="bookmark_saved">बुकमार्क सहेजल गेलै</string>
   <string name="bookmark_removed">बुकमार्क हटैलो गेलै</string>
   <string name="bookmark_saved_edit">संपादित करियै</string>
   <string name="title_activity_edit_bookmark">बुकमार्क संपादित करियै</string>
-  <string name="bookmark_edit_save">सेव करियै</string>
+  <string name="bookmark_edit_save">सहेजियै</string>
   <string name="bookmark_edit_name">नाम</string>
   <string name="bookmark_edit_location">स्थान</string>
   <string name="bookmark_edit_success">बुकमार्क अपडेट भेलै</string>
