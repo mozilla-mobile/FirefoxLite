@@ -116,7 +116,7 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
                 // value may have ',' so we add a placeholder '"' for csv files
                 sb.append(start).append(annotation.name()).append(separator)
-                        .append(annotation.action()).append(separator)
+                        .append(annotation.category()).append(separator)
                         .append(annotation.method()).append(separator)
                         .append(annotation.object()).append(separator)
                         .append('"').append(annotation.value()).append('"').append(separator);
@@ -140,7 +140,7 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
     }
 
     String verifyEventDuplication(TelemetryDoc annotation, HashMap<String, Boolean> lookup) {
-        String key = annotation.action() + annotation.method() + annotation.object() + annotation.value();
+        String key = annotation.category() + annotation.method() + annotation.object() + annotation.value();
         if (lookup.containsKey(key)) {
             return key;
         }
@@ -150,9 +150,9 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
     }
 
     private void verifyEventFormat(TelemetryDoc annotation) {
-        final String action = annotation.action();
+        final String action = annotation.category();
         if (action.length() > TelemetryEventConstant.MAX_LENGTH_CATEGORY) {
-            throw new IllegalArgumentException("The length of action is too long:" + action);
+            throw new IllegalArgumentException("The length of category is too long:" + action);
         }
         final String method = annotation.method();
         if (method.length() > TelemetryEventConstant.MAX_LENGTH_METHOD) {

@@ -12,7 +12,7 @@ import kotlin.annotation.Retention
 annotation class TelemetryDoc(
         val name: String,
         val value: String,
-        val action: String,
+        val category: String,
         val method: String,
         val `object`: String,
         val extras: Array<TelemetryExtra>)
