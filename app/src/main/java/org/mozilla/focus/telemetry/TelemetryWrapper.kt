@@ -297,7 +297,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Turn on Turbo Mode in First Run",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.FIRSTRUN,
             value = Value.TURBO,
@@ -311,7 +311,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Finish First Run",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.FIRSTRUN,
             value = Value.FINISH,
@@ -325,7 +325,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "App is launched by Launcher",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.LAUNCH,
             `object` = Object.APP,
             value = Value.LAUNCHER,
@@ -337,7 +337,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "App is launched by Shortcut",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.LAUNCH,
             `object` = Object.APP,
             value = Value.SHORTCUT,
@@ -349,7 +349,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "App is launched by external app",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.LAUNCH,
             `object` = Object.APP,
             value = Value.EXTERNAL_APP,
@@ -368,7 +368,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Users changed a Setting",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.SETTING,
             value = "settings pref key",
@@ -387,7 +387,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Users clicked on a Setting",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.SETTING,
             value = "settings pref key",
@@ -402,7 +402,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Users clicked on the Learn More link in Settings",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.SETTING,
             value = Value.LEARN_MORE,
@@ -416,7 +416,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Users change Locale in Settings",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.SETTING,
             value = "pref_locale",
@@ -432,7 +432,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Session starts",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.FOREGROUND,
             `object` = Object.APP,
             value = "",
@@ -446,7 +446,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Session ends",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.BACKGROUND,
             `object` = Object.APP,
             value = "",
@@ -468,7 +468,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Long Press ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.LONG_PRESS,
             `object` = Object.BROWSER,
             value = "",
@@ -480,7 +480,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Cancel ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CANCEL,
             `object` = Object.BROWSER_CONTEXTMENU,
             value = "",
@@ -492,7 +492,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Share link via ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHARE,
             `object` = Object.BROWSER_CONTEXTMENU,
             value = Value.LINK,
@@ -504,7 +504,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Share image via ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHARE,
             `object` = Object.BROWSER_CONTEXTMENU,
             value = Value.IMAGE,
@@ -516,7 +516,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Save image via ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SAVE,
             `object` = Object.BROWSER_CONTEXTMENU,
             value = Value.IMAGE,
@@ -528,7 +528,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Copy link via ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.COPY,
             `object` = Object.BROWSER_CONTEXTMENU,
             value = Value.LINK,
@@ -540,7 +540,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Copy image via ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.COPY,
             `object` = Object.BROWSER_CONTEXTMENU,
             value = Value.IMAGE,
@@ -552,7 +552,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Add link via ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.ADD,
             `object` = Object.BROWSER_CONTEXTMENU,
             value = Value.LINK,
@@ -564,7 +564,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Permission-Geolocation",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.PERMISSION,
             `object` = Object.BROWSER,
             value = Value.GEOLOCATION,
@@ -576,7 +576,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Permission-File",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.PERMISSION,
             `object` = Object.BROWSER,
             value = Value.FILE,
@@ -588,7 +588,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Permission-Media",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.PERMISSION,
             `object` = Object.BROWSER,
             value = "${Value.AUDIO},${Value.VIDEO},${Value.EME},${Value.MIDI}",
@@ -610,7 +610,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Enter full screen",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.FULLSCREEN,
             `object` = Object.BROWSER,
             value = Value.ENTER,
@@ -622,7 +622,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Exit full screen",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.FULLSCREEN,
             `object` = Object.BROWSER,
             value = Value.EXIT,
@@ -634,7 +634,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show Menu from Home",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.MENU,
             value = Value.HOME,
@@ -646,7 +646,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show TabTray from Home",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.TABTRAY,
             value = Value.HOME,
@@ -658,7 +658,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show TabTray from Toolbar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.TABTRAY,
             value = Value.TOOLBAR,
@@ -670,7 +670,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show Menu from Toolbar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.MENU,
             value = Value.TOOLBAR,
@@ -682,7 +682,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - Downloads",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.DOWNLOAD,
@@ -694,7 +694,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - History",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.HISTORY,
@@ -706,7 +706,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - MyShots",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.CAPTURE,
@@ -718,7 +718,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Panel - Bookmarks",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.PANEL,
             value = Value.BOOKMARK,
@@ -730,7 +730,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Panel - Downloads",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.PANEL,
             value = Value.DOWNLOAD,
@@ -742,7 +742,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Panel - History",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.PANEL,
             value = Value.HISTORY,
@@ -754,7 +754,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Panel - MyShots",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.PANEL,
             value = Value.CAPTURE,
@@ -766,7 +766,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - TurboMode",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.MENU,
             value = Value.TURBO,
@@ -780,7 +780,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - Night Mode",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.MENU,
             value = Value.NIGHT_MODE,
@@ -794,7 +794,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - Block Images",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.MENU,
             value = Value.BLOCK_IMAGE,
@@ -808,7 +808,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - Clear cache",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.CLEAR_CACHE,
@@ -820,7 +820,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - Settings",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.SETTINGS,
@@ -832,7 +832,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - Exit",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.EXIT,
@@ -844,7 +844,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu - Bookmarks",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.BOOKMARK,
@@ -856,7 +856,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Toolbar - Forward",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
             value = Value.FORWARD,
@@ -868,7 +868,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Toolbar - Reload",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
             value = Value.RELOAD,
@@ -880,7 +880,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Toolbar - Share Link",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHARE,
             `object` = Object.TOOLBAR,
             value = Value.LINK,
@@ -892,7 +892,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Toolbar - Add bookmark",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHARE,
             `object` = Object.TOOLBAR,
             value = Value.BOOKMARK,
@@ -906,7 +906,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Toolbar - Pin shortcut",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.PIN_SHORTCUT,
             `object` = Object.TOOLBAR,
             value = Value.LINK,
@@ -918,7 +918,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Toolbar - Take Screenshot",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
             value = Value.CAPTURE,
@@ -937,7 +937,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Top Site",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.OPEN,
             `object` = Object.HOME,
             value = Value.LINK,
@@ -954,7 +954,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Remove Top Site",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.REMOVE,
             `object` = Object.HOME,
             value = Value.LINK,
@@ -969,7 +969,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Search in Home and add a tab",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.ADD,
             `object` = Object.TAB,
             value = Value.HOME,
@@ -992,7 +992,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Enter an url in SearchBar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.OPEN,
             `object` = Object.SEARCH_BAR,
             value = Value.LINK,
@@ -1003,7 +1003,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Use SearchSuggestion SearchBar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.TYPE_SELECT_QUERY,
             `object` = Object.SEARCH_BAR,
             value = "",
@@ -1022,7 +1022,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Search with text in SearchBar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.TYPE_QUERY,
             `object` = Object.SEARCH_BAR,
             value = "",
@@ -1040,7 +1040,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Toggle Private Mode",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.PRIVATE_MODE,
             value = Value.ENTER + "," + Value.EXIT,
@@ -1052,7 +1052,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Long click on Search Suggestion",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.LONG_PRESS,
             `object` = Object.SEARCH_SUGGESTION,
             value = "",
@@ -1064,7 +1064,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Clear SearchBar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLEAR,
             `object` = Object.SEARCH_BAR,
             value = "",
@@ -1078,7 +1078,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Dismiss SearchBar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CANCEL,
             `object` = Object.SEARCH_BAR,
             value = "",
@@ -1092,7 +1092,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show SearchBar from Home",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.SEARCH_BAR,
             value = Value.SEARCH_BOX,
@@ -1104,7 +1104,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show SearchBar by clicking MINI_URLBAR",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.SEARCH_BAR,
             value = Value.MINI_URLBAR,
@@ -1116,7 +1116,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show SearchBar by clicking SEARCH_BUTTON",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.SEARCH_BAR,
             value = Value.SEARCH_BUTTON,
@@ -1128,7 +1128,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Add Tab from Toolbar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.ADD,
             `object` = Object.TAB,
             value = Value.TOOLBAR,
@@ -1140,7 +1140,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Add Tab from TabTray",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.ADD,
             `object` = Object.TAB,
             value = Value.TABTRAY,
@@ -1152,7 +1152,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Switch Tab From TabTray",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.TAB,
             value = Value.TABTRAY,
@@ -1164,7 +1164,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Remove Tab From TabTray",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.REMOVE,
             `object` = Object.TAB,
             value = Value.TABTRAY,
@@ -1176,7 +1176,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Swipe Tab From TabTray",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SWIPE,
             `object` = Object.TAB,
             value = Value.TABTRAY,
@@ -1188,7 +1188,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Close all From TabTray",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.CLOSE_ALL,
             value = Value.TABTRAY,
@@ -1200,7 +1200,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Remove Download File",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.REMOVE,
             `object` = Object.PANEL,
             value = Value.FILE,
@@ -1213,7 +1213,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Delete Download File",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.DELETE,
             `object` = Object.PANEL,
             value = Value.FILE,
@@ -1225,7 +1225,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Open Download File via snackbar",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.OPEN,
             `object` = Object.PANEL,
             value = Value.FILE,
@@ -1239,7 +1239,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show File ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.MENU,
             value = Value.DOWNLOAD,
@@ -1251,7 +1251,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "History Open Link",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.OPEN,
             `object` = Object.PANEL,
             value = Value.LINK,
@@ -1263,7 +1263,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "History Remove Link",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.REMOVE,
             `object` = Object.PANEL,
             value = Value.LINK,
@@ -1275,7 +1275,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Bookmark Remove Item",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.REMOVE,
             `object` = Object.PANEL,
             value = Value.BOOKMARK,
@@ -1287,7 +1287,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Bookmark Edit Item",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.EDIT,
             `object` = Object.PANEL,
             value = Value.BOOKMARK,
@@ -1299,7 +1299,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Bookmark Open Item",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.OPEN,
             `object` = Object.PANEL,
             value = Value.BOOKMARK,
@@ -1311,7 +1311,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show History ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.MENU,
             value = Value.HISTORY,
@@ -1323,7 +1323,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show Bookmark ContextMenu",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.MENU,
             value = Value.BOOKMARK,
@@ -1335,7 +1335,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Clear History",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLEAR,
             `object` = Object.PANEL,
             value = Value.HISTORY,
@@ -1347,7 +1347,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Open Capture Item",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.OPEN,
             `object` = Object.PANEL,
             value = Value.CAPTURE,
@@ -1359,7 +1359,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Open Capture Link",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.OPEN,
             `object` = Object.CAPTURE,
             value = Value.LINK,
@@ -1376,7 +1376,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Edit Capture Image",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.EDIT,
             `object` = Object.CAPTURE,
             value = Value.IMAGE,
@@ -1395,7 +1395,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Share Capture Image",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHARE,
             `object` = Object.CAPTURE,
             value = Value.IMAGE,
@@ -1414,7 +1414,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show Capture Info",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.CAPTURE,
             value = Value.INFO,
@@ -1431,7 +1431,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Delete Capture Image",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.DELETE,
             `object` = Object.CAPTURE,
             value = Value.IMAGE,
@@ -1448,7 +1448,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "click Rate App",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.FEEDBACK,
             value = "null,dismiss,positive,negative",
@@ -1464,7 +1464,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show Rate App",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.FEEDBACK,
             value = "",
@@ -1482,7 +1482,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Default Browser Notification shown",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.DEFAULT_BROWSER,
             value = "",
@@ -1496,7 +1496,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Default Browser Notification Clicked",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.DEFAULT_BROWSER,
             value = "",
@@ -1512,7 +1512,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Default Browser Service Failed",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.DEFAULT_BROWSER,
             value = "",
@@ -1527,7 +1527,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Promote Share Dialog Clicked",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.PROMOTE_SHARE,
             value = "dismiss,share",
@@ -1541,7 +1541,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Promote Share Dialog shown",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.PROMOTE_SHARE,
             value = "",
@@ -1553,7 +1553,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Change Theme To",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CHANGE,
             `object` = Object.THEMETOY,
             value = "",
@@ -1567,7 +1567,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Reset Theme To",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.RESET,
             `object` = Object.THEMETOY,
             value = "",
@@ -1581,7 +1581,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Erase Private Mode Notification",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLEAR,
             `object` = Object.PRIVATE_MODE,
             value = "",
@@ -1595,7 +1595,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Banner Background",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.BANNER,
             value = Value.BACKGROUND,
@@ -1609,7 +1609,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Banner Item",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.BANNER,
             value = Value.ITEM,
@@ -1625,7 +1625,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Swipe Banner Item",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SWIPE,
             `object` = Object.BANNER,
             value = Value.PAGE,
@@ -1641,7 +1641,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Wifi Finder Survey",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.HOME,
             value = Value.WIFI_FINDER,
@@ -1654,7 +1654,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click VPN Survey",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.HOME,
             value = Value.VPN,
@@ -1667,7 +1667,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Survey Result",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.DOORHANGER,
             value = "negative,positive,dismiss",
@@ -1681,7 +1681,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Show VPN Recommend",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.SHOW,
             `object` = Object.HOME,
             value = Value.VPN_RECOMMEND,
@@ -1695,7 +1695,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click VPN Recommend",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.HOME,
             value = Value.VPN_RECOMMEND,
@@ -1709,7 +1709,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click VPN Recommend",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.VPN_DOORHANGER,
             value = "negative,positive",
@@ -1722,7 +1722,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Dismiss VPN Recommend",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.VPN_DOORHANGER,
             value = Value.DISMISS,
@@ -1759,7 +1759,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Cancel FindInPage",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CANCEL,
             `object` = Object.FIND_IN_PAGE,
             value = "",
@@ -1772,7 +1772,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click FindInPage Next",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.FIND_IN_PAGE,
             value = Value.NEXT,
@@ -1783,7 +1783,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click FindInPage Previous",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.FIND_IN_PAGE,
             value = Value.PREVIOUS,
@@ -1794,7 +1794,7 @@ object TelemetryWrapper {
 
     @TelemetryDoc(
             name = "Click Menu FindInPage",
-            action = Category.ACTION,
+            category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.MENU,
             value = Value.FIND_IN_PAGE,
