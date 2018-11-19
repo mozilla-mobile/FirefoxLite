@@ -880,7 +880,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         final Session currentTab = sessionManager.getFocusSession();
         if (currentTab != null) {
             final TabView current = currentTab.getEngineSession().getTabView();
-            if (current == null) {
+            // The Session.canGoBack property is mainly for UI display purpose and is only sampled
+            // at onNavigationStateChange which is called at onPageFinished, onPageStarted and
+            // onReceivedTitle. We do some sanity check here.
+            if (current == null || !current.canGoBack()) {
                 return;
             }
             WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
