@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/my_shot_mock_menu"
+        android:id="@+id/spotlight_mock_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -12,8 +12,8 @@
         android:id="@+id/my_shot_img_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/my_shot_mock_menu"
-        android:layout_alignBottom="@id/my_shot_mock_menu"
+        android:layout_alignEnd="@id/spotlight_mock_menu"
+        android:layout_alignBottom="@id/spotlight_mock_menu"
         android:layout_marginEnd="45dp"
         android:layout_marginBottom="45dp"
         android:scaleType="fitXY"
