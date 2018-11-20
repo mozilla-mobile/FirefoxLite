@@ -69,6 +69,18 @@ android {
         preDexLibraries true
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+        density {
+            enableSplit = true
+        }
+        abi {
+            enableSplit = true
+        }
+    }
+
     // We have a three dimensional build configuration:
     // BUILD TYPE (debug, release)
 
