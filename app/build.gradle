@@ -318,7 +318,7 @@ clean.doLast {
 
 tasks.whenTaskAdded { task ->
     def name = task.name
-    if (name.contains("generate") && name.contains("Config") && name.contains("Webkit")) {
+    if (name.contains("generate") && name.contains("Webkit") && name.contains("Resources")) {
         task.dependsOn buildBlocklists
     }
 }
