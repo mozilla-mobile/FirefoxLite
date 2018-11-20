@@ -32,7 +32,7 @@ android {
 
         def bitrise_build_number = System.getenv("BITRISE_BUILD_NUMBER")
         if (bitrise_build_number?.trim()) {
-            versionCode bitrise_build_number
+            versionCode bitrise_build_number.toInteger()
             versionNameSuffix "(" + bitrise_build_number + ")"
         }
 
