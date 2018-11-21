@@ -44,15 +44,9 @@
                         "smtad.net",
                         "teracent.com",
                         "teracent.net",
-                        "ytsa.net"
-                    ]
-                }
-            },
-            {
-                "ItIsATracker": {
-                    "dnt": "eff",
-                    "https://itisatracker.com/": [
-                        "itisatracker.com"
+                        "ytsa.net",
+                        "googletagmanager.com",
+                        "adservice.google.com"
                     ]
                 }
             },
@@ -64,7 +58,8 @@
                         "tweetdeck.com",
                         "twimg.com",
                         "twitter.com",
-                        "twitter.jp"
+                        "twitter.jp",
+                        "ads-twitter.com"
                     ]
                 }
             }
@@ -6109,7 +6104,9 @@
                 "Acxiom": {
                     "http://www.acxiom.com/": [
                         "acxiom.com",
-                        "mm7.net"
+                        "mm7.net",
+                        "acxiomapac.com",
+                        "pippio.com"
                     ]
                 }
             },
@@ -6122,6 +6119,36 @@
                 }
             },
             {
+                "Adloox": {
+                    "http://www.adloox.com/": [
+                        "adlooxtracking.com",
+                        "adloox.com"
+                    ]
+                }
+            },
+            {
+                "Adobe": {
+                    "http://www.adobe.com/": [
+                        "adobedtm.com"
+                    ]
+                }
+            },
+            {
+                "Adventori": {
+                    "https://adventori.com": [
+                        "adventori.com"
+                    ]
+                }
+            },
+            {
+                "AIData": {
+                    "http://www.aidata.me/": [
+                        "advombat.ru",
+                        "aidata.me"
+                    ]
+                }
+            },
+            {
                 "Amadesa": {
                     "http://www.amadesa.com/": [
                         "amadesa.com"
@@ -6129,17 +6156,16 @@
                 }
             },
             {
-                "Amazon.com": {
-                    "http://www.amazon.com/": [
-                        "alexa.com",
-                        "alexametrics.com"
+                "Amazing Counters": {
+                    "http://amazingcounters.com/": [
+                        "amazingcounters.com"
                     ]
                 }
             },
             {
-                "Amazing Counters": {
-                    "http://amazingcounters.com/": [
-                        "amazingcounters.com"
+                "Amazon.com": {
+                    "http://www.amazon.com/": [
+                        "alexametrics.com"
                     ]
                 }
             },
@@ -6201,6 +6227,13 @@
                 }
             },
             {
+                "BloomReach": {
+                    "http://www.bloomreach.com/": [
+                        "p.brsrvr.com"
+                    ]
+                }
+            },
+            {
                 "Bluemetrix": {
                     "http://www.bluemetrix.com/": [
                         "bluemetrix.com",
@@ -6239,6 +6272,13 @@
                 }
             },
             {
+                "Cardlytics": {
+                    "http://www.cardlytics.com/": [
+                        "cardlytics.com"
+                    ]
+                }
+            },
+            {
                 "Chartbeat": {
                     "http://chartbeat.com/": [
                         "chartbeat.com",
@@ -6259,7 +6299,8 @@
                         "clicktale.com",
                         "clicktale.net",
                         "pantherssl.com"
-                    ]
+                    ],
+                    "session-replay": "true"
                 }
             },
             {
@@ -6306,22 +6347,16 @@
                         "comscore.com",
                         "scorecardresearch.com",
                         "sitestat.com",
-                        "voicefive.com"
+                        "voicefive.com",
+                        "mdotlabs.com"
                     ]
                 }
             },
             {
                 "Connexity": {
                     "http://www.connexity.com/": [
-                        "connexity.com"
-                    ]
-                }
-            },
-            {
-                "Convert Insights": {
-                    "http://www.convert.com/": [
-                        "convert.com",
-                        "reedge.com"
+                        "connexity.com",
+                        "connexity.net"
                     ]
                 }
             },
@@ -6330,6 +6365,14 @@
                     "http://www.conversantmedia.com/": [
                         "zmedia.com",
                         "conversantmedia.com"
+                    ]
+                }
+            },
+            {
+                "Convert Insights": {
+                    "http://www.convert.com/": [
+                        "convert.com",
+                        "reedge.com"
                     ]
                 }
             },
@@ -6371,9 +6414,17 @@
                 }
             },
             {
+                "Deep Intent": {
+                    "https://www.deepintent.com/": [
+                        "deepintent.com"
+                    ]
+                }
+            },
+            {
                 "Demandbase": {
                     "http://www.demandbase.com/": [
-                        "demandbase.com"
+                        "demandbase.com",
+                        "company-target.com"
                     ]
                 }
             },
@@ -6392,18 +6443,18 @@
                 }
             },
             {
-                "Eloqua": {
-                    "http://www.eloqua.com/": [
-                        "eloqua.com"
-                    ]
-                }
-            },
-            {
                 "EFF": {
                     "https://www.eff.org/": [
                         "trackersimulator.org",
                         "eviltracker.net",
                         "do-not-tracker.org"
+                    ]
+                }
+            },
+            {
+                "Eloqua": {
+                    "http://www.eloqua.com/": [
+                        "eloqua.com"
                     ]
                 }
             },
@@ -6449,6 +6500,13 @@
                 }
             },
             {
+                "Eyeota": {
+                    "http://eyeota.net/": [
+                        "eyeota.net"
+                    ]
+                }
+            },
+            {
                 "Feedjit": {
                     "http://feedjit.com/": [
                         "feedjit.com"
@@ -6473,6 +6531,21 @@
                 "Free-PageRank.com": {
                     "http://www.free-pagerank.com/": [
                         "free-pagerank.com"
+                    ]
+                }
+            },
+            {
+                "Fullstory": {
+                    "https://www.fullstory.com/": [
+                        "fullstory.com"
+                    ],
+                    "session-replay": "true"
+                }
+            },
+            {
+                "GetSiteControl": {
+                    "https://getsitecontrol.com/": [
+                        "getsitecontrol.com"
                     ]
                 }
             },
@@ -6538,6 +6611,13 @@
                 }
             },
             {
+                "HitsLink": {
+                    "http://www.hitslink.com/": [
+                        "hitslink.com"
+                    ]
+                }
+            },
+            {
                 "Hit Sniffer": {
                     "http://www.hitsniffer.com/": [
                         "hitsniffer.com"
@@ -6545,9 +6625,16 @@
                 }
             },
             {
-                "HitsLink": {
-                    "http://www.hitslink.com/": [
-                        "hitslink.com"
+                "Hotjar": {
+                    "https://www.hotjar.com": [
+                        "hotjar.com"
+                    ]
+                }
+            },
+            {
+                "HubSpot": {
+                    "http://www.hubspot.com/": [
+                        "hs-analytics.net"
                     ]
                 }
             },
@@ -6569,11 +6656,18 @@
                 }
             },
             {
+                "Infernotions": {
+                    "https://infernotions.com/": [
+                        "infernotions.com"
+                    ]
+                }
+            },
+            {
                 "INFOnline": {
                     "https://www.infonline.de/": [
                         "infonline.de",
-                        "ioam.de",
-                        "ivwbox.de"
+                        "ivwbox.de",
+                        "ioam.de"
                     ]
                 }
             },
@@ -6615,6 +6709,14 @@
                 }
             },
             {
+                "ItIsATracker": {
+                    "https://itisatracker.com/": [
+                        "itisatracker.com"
+                    ],
+                    "dnt": "eff"
+                }
+            },
+            {
                 "KeyMetric": {
                     "http://www.keymetric.net/": [
                         "keymetric.net"
@@ -6622,16 +6724,16 @@
                 }
             },
             {
-                "Kitcode": {
-                    "http://src.kitcode.net/": [
-                        "src.kitcode.net"
+                "KISSmetrics": {
+                    "http://kissmetrics.com/": [
+                        "kissmetrics.com"
                     ]
                 }
             },
             {
-                "KISSmetrics": {
-                    "http://kissmetrics.com/": [
-                        "kissmetrics.com"
+                "Kitcode": {
+                    "http://src.kitcode.net/": [
+                        "src.kitcode.net"
                     ]
                 }
             },
@@ -6644,7 +6746,7 @@
             },
             {
                 "LivePerson": {
-                    "http://www.liveperson.com/": [
+                    "http://www.liveperson.net/": [
                         "liveperson.com",
                         "nuconomy.com"
                     ]
@@ -6663,6 +6765,15 @@
                         "crwdcntrl.net",
                         "lotame.com"
                     ]
+                }
+            },
+            {
+                "LuckyOrange": {
+                    "https://www.luckyorange.com": [
+                        "luckyorange.com",
+                        "luckyorange.net"
+                    ],
+                    "session-replay": "true"
                 }
             },
             {
@@ -6685,6 +6796,14 @@
                 "Lytiks": {
                     "http://www.lytiks.com/": [
                         "lytiks.com"
+                    ]
+                }
+            },
+            {
+                "MarkMonitor": {
+                    "https://www.markmonitor.com": [
+                        "markmonitor.com",
+                        "9c9media.ca"
                     ]
                 }
             },
@@ -6721,18 +6840,18 @@
                 }
             },
             {
-                "MetrixLab": {
-                    "http://metrixlab.com/": [
-                        "crm-metrix.com",
-                        "customerconversio.com",
-                        "metrixlab.com"
+                "Merkle RKG": {
+                    "https://www.merkleinc.com/": [
+                        "rkdms.com",
+                        "merkleinc.com"
                     ]
                 }
             },
             {
                 "Mixpanel": {
                     "https://mixpanel.com/": [
-                        "mixpanel.com"
+                        "mixpanel.com",
+                        "mxpnl.com"
                     ]
                 }
             },
@@ -6769,6 +6888,13 @@
                 "MyPagerank.Net": {
                     "http://www.mypagerank.net/": [
                         "mypagerank.net"
+                    ]
+                }
+            },
+            {
+                "Narrative": {
+                    "http://narrative.io/2/": [
+                        "narrative.io"
                     ]
                 }
             },
@@ -6823,6 +6949,14 @@
                 "Observer": {
                     "http://observerapp.com/": [
                         "observerapp.com"
+                    ]
+                }
+            },
+            {
+                "OnAudience": {
+                    "http://www.onaudience.com/": [
+                        "onaudience.com",
+                        "behavioralengine.com"
                     ]
                 }
             },
@@ -6893,6 +7027,14 @@
                 }
             },
             {
+                "Protected Media": {
+                    "http://www.protected.media/": [
+                        "protected.media",
+                        "ad-score.com"
+                    ]
+                }
+            },
+            {
                 "Qualaroo": {
                     "http://qualaroo.com/": [
                         "kissinsights.com",
@@ -6926,6 +7068,13 @@
                     "http://www.researchnow.com/": [
                         "researchnow.com",
                         "valuedopinions.co.uk"
+                    ]
+                }
+            },
+            {
+                "Retail Automata": {
+                    "https://retailautomata.com": [
+                        "retailautomata.com"
                     ]
                 }
             },
@@ -6971,13 +7120,6 @@
                 }
             },
             {
-                "Segment.io": {
-                    "https://segment.io/": [
-                        "segment.io"
-                    ]
-                }
-            },
-            {
                 "SeeVolution": {
                     "https://www.seevolution.com/": [
                         "seevolution.com",
@@ -6986,10 +7128,18 @@
                 }
             },
             {
-                "Shortest": {
-                    "http://shorte.st/": [
-                        "shorte.st"
+                "Segment.io": {
+                    "https://segment.io/": [
+                        "segment.io"
                     ]
+                }
+            },
+            {
+                "SessionCam": {
+                    "https://sessioncam.com/": [
+                        "sessioncam.com"
+                    ],
+                    "session-replay": "true"
                 }
             },
             {
@@ -7000,9 +7150,39 @@
                 }
             },
             {
+                "Shortest": {
+                    "http://shorte.st/": [
+                        "shorte.st"
+                    ],
+                    "fingerprinting": "true"
+                }
+            },
+            {
+                "Smartlook": {
+                    "https://www.smartlook.com/": [
+                        "smartlook.com"
+                    ],
+                    "session-replay": "true"
+                }
+            },
+            {
                 "Snoobi": {
                     "http://www.snoobi.com/": [
                         "snoobi.com"
+                    ]
+                }
+            },
+            {
+                "Soasta": {
+                    "https://www.soasta.com": [
+                        "go-mpulse.net"
+                    ]
+                }
+            },
+            {
+                "stat4u": {
+                    "http://stat.4u.pl/": [
+                        "4u.pl"
                     ]
                 }
             },
@@ -7031,21 +7211,6 @@
                 "Stratigent": {
                     "http://www.stratigent.com/": [
                         "stratigent.com"
-                    ]
-                }
-            },
-            {
-                "stat4u": {
-                    "http://stat.4u.pl/": [
-                        "4u.pl"
-                    ]
-                }
-            },
-            {
-                "Tealium": {
-                    "http://tealium.com/": [
-                    "tealium.com", 
-                    "tiqcdn.com"
                     ]
                 }
             },
@@ -7098,6 +7263,14 @@
                 }
             },
             {
+                "V12 Data": {
+                    "https://www.v12data.com/": [
+                        "v12group.com",
+                        "v12data.com"
+                    ]
+                }
+            },
+            {
                 "Vertster": {
                     "http://www.vertster.com/": [
                         "vertster.com"
@@ -7135,6 +7308,13 @@
                 }
             },
             {
+                "Webclicktracker": {
+                    "http://www.webclicktracker.com/": [
+                        "webclicktracker.com"
+                    ]
+                }
+            },
+            {
                 "Web Stats": {
                     "http://www.onlinewebstats.com/": [
                         "onlinewebstats.com"
@@ -7157,13 +7337,6 @@
                 }
             },
             {
-                "Webclicktracker": {
-                    "http://www.webclicktracker.com/": [
-                        "webclicktracker.com"
-                    ]
-                }
-            },
-            {
                 "Webtrekk": {
                     "http://www.webtrekk.com/": [
                         "webtrekk.com",
@@ -7177,6 +7350,14 @@
                         "reinvigorate.net",
                         "webtrends.com",
                         "webtrendslive.com"
+                    ]
+                }
+            },
+            {
+                "White Ops": {
+                    "https://www.whiteops.com/": [
+                        "adzmath.com",
+                        "whiteops.com"
                     ]
                 }
             },
@@ -7283,7 +7464,7 @@
                     "http://www.amazon.com/": [
                         "amazon.com",
                         "cloudfront.net",
-                        "amazonaws.com"
+                        "alexa.com"
                     ]
                 }
             },
@@ -7523,7 +7704,8 @@
                     "http://www.facebook.com/": [
                         "akamaihd.net",
                         "instagram.com",
-                        "fbcdn.net"
+                        "fbcdn.net",
+                        "messenger.com"
                     ]
                 }
             },
@@ -7961,9 +8143,7 @@
                         "microsoftalumni.org",
                         "microsoftstore.com",
                         "msn.com",
-                        "msnbc.com",
                         "msndirect.com",
-                        "nbcnews.com",
                         "office.com",
                         "officelive.com",
                         "outlook.com",
@@ -8041,7 +8221,8 @@
             {
                 "Pinterest": {
                     "http://pinterest.com/": [
-                        "pinterest.com"
+                        "pinterest.com",
+                        "pinimg.com"
                     ]
                 }
             },
@@ -8057,6 +8238,13 @@
                     "http://www.rim.com/": [
                         "rim.com",
                         "scoreloop.com"
+                    ]
+                }
+            },
+            {
+                "Salesforce.com": {
+                    "http://www.salesforce.com/": [
+                        "salesforceliveagent.com"
                     ]
                 }
             },
@@ -8175,6 +8363,13 @@
                 }
             },
             {
+                "TRUSTe": {
+                    "http://www.truste.com/": [
+                        "truste.com"
+                    ]
+                }
+            },
+            {
                 "Tumblr": {
                     "http://www.tumblr.com/": [
                         "tumblr.com"
@@ -8200,13 +8395,6 @@
                 "Tweetboard": {
                     "http://tweetboard.com/": [
                         "tweetboard.com"
-                    ]
-                }
-            },
-            {
-                "TRUSTe": {
-                    "http://www.truste.com/": [
-                        "truste.com"
                     ]
                 }
             },
@@ -8400,14 +8588,13 @@
             {
                 "Yandex": {
                     "http://www.yandex.com/": [
-                        "yandex.com",
-                        "web-visor.com",
-                        "moikrug.ru",
                         "yandex.ru",
+                        "yandex.com",
                         "yandex.st",
                         "yandex.ua",
                         "yandex.com.tr",
-                        "yandex.by"
+                        "yandex.by",
+                        "kinopoisk.ru"
                     ]
                 }
             },
@@ -8501,17 +8688,17 @@
                 }
             },
             {
-                "ShareThis": {
-                    "http://sharethis.com/": [
-                        "sharethis.com"
-                    ]
-                }
-            },
-            {
                 "Shareaholic": {
                     "http://www.shareaholic.com/": [
                         "buzzster.com",
                         "shareaholic.com"
+                    ]
+                }
+            },
+            {
+                "ShareThis": {
+                    "http://sharethis.com/": [
+                        "sharethis.com"
                     ]
                 }
             },
