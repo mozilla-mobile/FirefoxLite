@@ -30,6 +30,15 @@ final public class FirebaseHelper extends FirebaseWrapper {
 ```
 will shown when building with instant run. We have an [issue](https://github.com/mozilla-tw/Rocket/issues/2143) for this so feel free to help with this limitation.
 
+4. To make Android Studio auto-format (ctrl+cmd+L) works with ktlint, run below commands in your project root
+```
+brew install shyiko/ktlint/ktlint
+ktlint --apply-to-idea-project --android 
+```
+for windows users, [download ktlint](https://github.com/shyiko/ktlint/releases) first and run 
+```
+java -jar <the path to your ktlint file>/ktlint --apply-to-idea-project --android 
+```
 Build instructions regarding Firebase
 ------------------
 
