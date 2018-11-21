@@ -27,7 +27,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOS
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 import org.mozilla.focus.utils.Browsers
-import org.mozilla.focus.utils.DebugUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.telemetry.Telemetry
@@ -36,8 +35,11 @@ import org.mozilla.telemetry.annotation.TelemetryDoc
 import org.mozilla.telemetry.annotation.TelemetryExtra
 import org.mozilla.telemetry.config.TelemetryConfiguration
 import org.mozilla.telemetry.event.TelemetryEvent
-import org.mozilla.telemetry.measurement.*
-import org.mozilla.telemetry.net.DebugLogClient
+import org.mozilla.telemetry.measurement.DefaultSearchMeasurement
+import org.mozilla.telemetry.measurement.EventsMeasurement
+import org.mozilla.telemetry.measurement.SearchesMeasurement
+import org.mozilla.telemetry.measurement.SettingsMeasurement
+import org.mozilla.telemetry.measurement.TelemetryMeasurement
 import org.mozilla.telemetry.net.HttpURLConnectionTelemetryClient
 import org.mozilla.telemetry.ping.TelemetryCorePingBuilder
 import org.mozilla.telemetry.ping.TelemetryEventPingBuilder
@@ -240,7 +242,6 @@ object TelemetryWrapper {
                     .configuration
                     .isCollectionEnabled = enabled
         }
-
     }
 
     fun init(context: Context) {
@@ -269,7 +270,6 @@ object TelemetryWrapper {
                     .setSettingsProvider(CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
                     .setUploadEnabled(true) // the default value for UploadEnabled is true, but we want to make it clear.
-
 
             val serializer = JSONPingSerializer()
             val storage = FileTelemetryStorage(configuration, serializer)
