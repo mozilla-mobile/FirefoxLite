@@ -75,39 +75,14 @@ class SessionManager @JvmOverloads constructor(
         return ArrayList(sessions)
     }
 
-    /**
-     * To append sessions from a list of TabModel. If the specified focusTabId exists, the tab associate
-     * to the id will be focused, otherwise no tab will be focused.
-     *
-     *
-     * This is asynchronous call.
-     * TODO: make it asynchronous
-     *
-     * @param sessionList
-     */
-    fun restoreTabs(sessionList: List<Session>, focusTabId: String?) {
-        var insertPos = 0
-        for (session in sessionList) {
-            if (!session.isValid()) {
-                continue
-            }
-
-            this.sessions.add(insertPos++, session)
-        }
-
-        if (this.sessions.size > 0 && this.sessions.size == sessionList.size) {
-            focusRef = WeakReference<Session>(getTab(focusTabId))
-        }
-
-        notifyObservers { onSessionCountChanged(sessions.size) }
-    }
-
     fun restore(states: List<SessionWithState>, focusTabId: String?) {
+        // If Lite opened from external, 0 could be already occupied and should be the last item after restore.
+        var insertPos = 0
 
         for (state in states) {
             if (state.session.isValid()) {
                 getOrCreateEngineSession(state.session).let { link(state.session, it) }
-                this.sessions.add(state.session)
+                this.sessions.add(insertPos++, state.session)
             }
         }
 
