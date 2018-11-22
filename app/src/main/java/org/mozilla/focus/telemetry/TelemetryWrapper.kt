@@ -14,7 +14,6 @@ import android.content.Context
 import android.os.StrictMode
 import android.preference.PreferenceManager
 import android.webkit.PermissionRequest
-import com.adjust.sdk.AdjustConfig
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.Inject
 import org.mozilla.focus.R
@@ -904,6 +903,9 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.BOOKMARK)
                 .extra(Extra.TO, java.lang.Boolean.toString(isAdd))
                 .queue()
+        if (isAdd) {
+            AdjustHelper.trackEvent(EVENT_SAVE_BOOKMKARK)
+        }
     }
 
     @TelemetryDoc(
@@ -916,6 +918,7 @@ object TelemetryWrapper {
     @JvmStatic
     fun clickAddToHome() {
         EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK).queue()
+        AdjustHelper.trackEvent(EVENT_ADD_TO_HOMESCREEN)
     }
 
     @TelemetryDoc(
@@ -1051,6 +1054,9 @@ object TelemetryWrapper {
     @JvmStatic
     fun togglePrivateMode(enter: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.PRIVATE_MODE, if (enter) Value.ENTER else Value.EXIT).queue()
+        if (enter) {
+            AdjustHelper.trackEvent(EVENT_ENTER_PRIVATE_MODE)
+        }
     }
 
     @TelemetryDoc(
@@ -1535,6 +1541,10 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PROMOTE_SHARE, value)
                 .extra(Extra.SOURCE, source)
                 .queue()
+
+        if (Value.SHARE == value) {
+            AdjustHelper.trackEvent(EVENT_SHARE_APP)
+        }
     }
 
     @TelemetryDoc(
@@ -1798,6 +1808,11 @@ object TelemetryWrapper {
     internal fun clickMenuFindInPage() =
             EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.FIND_IN_PAGE)
                     .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
+
+    @JvmStatic
+    fun clickDefaultBrowserInSetting() {
+        AdjustHelper.trackEvent(EVENT_SET_DEFAULT_BROWSER)
+    }
 
     internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {
         var telemetryEvent: TelemetryEvent
