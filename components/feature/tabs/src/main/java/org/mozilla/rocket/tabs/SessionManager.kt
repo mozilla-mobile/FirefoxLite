@@ -82,6 +82,7 @@ class SessionManager @JvmOverloads constructor(
         for (state in states) {
             if (state.session.isValid()) {
                 getOrCreateEngineSession(state.session).let { link(state.session, it) }
+                state.session.engineSession?.webViewState = state.engineSession?.webViewState
                 this.sessions.add(insertPos++, state.session)
             }
         }
