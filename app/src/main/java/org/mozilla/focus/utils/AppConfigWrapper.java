@@ -60,6 +60,14 @@ public class AppConfigWrapper {
         return FirebaseHelper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT);
     }
 
+    public static String getRateAppPositiveString(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_POSITIVE);
+    }
+
+    public static String getRateAppNegativeString(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.RATE_APP_DIALOG_TEXT_NEGATIVE);
+    }
+
     public static String getBannerRootConfig(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.BANNER_MANIFEST);
     }

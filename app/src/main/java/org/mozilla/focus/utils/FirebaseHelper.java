@@ -39,6 +39,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
     // keys for remote config default value
     public static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
     public static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
+    public static final String RATE_APP_DIALOG_TEXT_POSITIVE = "rate_app_dialog_text_positive";
+    public static final String RATE_APP_DIALOG_TEXT_NEGATIVE = "rate_app_dialog_text_negative";
 
     // Key for local broadcast
     public static final String FIREBASE_READY = "Firebase_ready";
@@ -256,6 +258,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
         if (context != null) {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT, context.getString(R.string.rate_app_dialog_text_content));
+            map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_POSITIVE, context.getString(R.string.rate_app_dialog_btn_go_rate));
+            map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_NEGATIVE, context.getString(R.string.rate_app_dialog_btn_feedback));
         }
         map.put(FirebaseHelper.RATE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG);
         map.put(FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION);

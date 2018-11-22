@@ -62,7 +62,12 @@ public class DialogUtils {
             dialog.dismiss();
             telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
         });
-        dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate).setOnClickListener(v -> {
+        final TextView positive = dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate);
+        final String positiveString = AppConfigWrapper.getRateAppPositiveString(context);
+        if (positiveString != null) {
+            positive.setText(positiveString);
+        }
+        positive.setOnClickListener(v -> {
 
             IntentUtils.goToPlayStore(context);
 
@@ -79,8 +84,13 @@ public class DialogUtils {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
         }
 
-        dialogView.findViewById(R.id.dialog_rate_app_btn_feedback).setOnClickListener(v -> {
-            // Users set negative feedback, don't ask them to share in the future
+        final TextView negative = dialogView.findViewById(R.id.dialog_rate_app_btn_feedback);
+        final String negativeString = AppConfigWrapper.getRateAppNegativeString(context);
+        if (negativeString != null) {
+            negative.setText(negativeString);
+        }
+        negative.setOnClickListener(v -> {
+            // Users set negative negative, don't ask them to share in the future
             Settings.getInstance(context).setShareAppDialogDidShow();
             IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url), true);
             dialog.dismiss();
