@@ -20,11 +20,13 @@ public class BeforeTestTask {
     private boolean enableRateAppPromotion;
     private boolean skipFirstRun;
     private boolean clearBrowsingHistory;
+    private boolean skipColorThemeOnBoarding;
 
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
         this.skipFirstRun = builder.skipFirstRun;
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
+        this.skipColorThemeOnBoarding = builder.skipColorThemeOnBoarding;
     }
 
     public void execute() {
@@ -53,11 +55,15 @@ public class BeforeTestTask {
             BrowsingHistoryManager.getInstance().deleteAll(null);
         }
 
+        if (this.skipColorThemeOnBoarding) {
+            ThemeManager.dismissOnboarding(context);
+        }
+
         Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
         BookmarksDatabase.getInstance(context).bookmarkDao().deleteAllBookmarks();
         AndroidTestUtils.setFocusTabId("");
-        // Disable theme on boarding
-        ThemeManager.dismissOnboarding(context);
+        // Disable privacy update notice
+        NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow();
     }
 
 
@@ -66,11 +72,13 @@ public class BeforeTestTask {
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
         private boolean clearBrowsingHistory;
+        private boolean skipColorThemeOnBoarding;
 
         public Builder() {
             this.enableRateAppPromotion = false;
             this.skipFirstRun = true;
             this.clearBrowsingHistory = false;
+            this.skipColorThemeOnBoarding = true;
         }
 
         public Builder setRateAppPromotionEnabled(boolean enable) {
@@ -85,6 +93,11 @@ public class BeforeTestTask {
 
         public Builder clearBrowsingHistory() {
             this.clearBrowsingHistory = true;
+            return this;
+        }
+
+        public Builder setSkipColorThemeOnBoarding(boolean skipThemeOnBoarding) {
+            this.skipColorThemeOnBoarding = skipThemeOnBoarding;
             return this;
         }
 
