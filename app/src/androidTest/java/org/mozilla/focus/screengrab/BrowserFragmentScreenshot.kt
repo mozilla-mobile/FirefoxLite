@@ -36,7 +36,7 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
 
     @JvmField
     @Rule
-    val permissionRule : GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+    val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
 
     @JvmField
     @Rule
@@ -59,7 +59,6 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
             } catch (e: IOException) {
                 throw AssertionError("Could not start web server", e)
             }
-
         }
 
         override fun afterActivityFinished() {
@@ -70,7 +69,6 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
             } catch (e: IOException) {
                 throw AssertionError("Could not stop web server", e)
             }
-
         }
     }
 
@@ -106,9 +104,7 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
 
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_NO_LOCATION_DIALOG)
             clickAllowGeoPermission()
-
         }
-
     }
 
     @Test
@@ -133,7 +129,6 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
             checkSearchInRocketIsDisplayed()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_TEXT_ACTION_DAILOG)
         }
-
     }
 
     companion object {
@@ -145,5 +140,4 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
 
         private val TARGET_URL_LICENSE = "file:///android_asset/gpl.html"
     }
-
 }

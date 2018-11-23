@@ -15,6 +15,7 @@ import android.support.test.InstrumentationRegistry;
 
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.RemoteConfigConstants;
 
 public class Inject {
 
@@ -84,5 +85,9 @@ public class Inject {
 
     public static boolean isUnderEspressoTest() {
         return true;
+    }
+
+    public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
+        return RemoteConfigConstants.SURVEY.VPN_RECOMMENDER;
     }
 }

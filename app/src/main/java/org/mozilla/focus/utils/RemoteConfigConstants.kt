@@ -1,7 +1,9 @@
 package org.mozilla.focus.utils
 
+import org.mozilla.focus.Inject
+
 object RemoteConfigConstants {
-    val FEATURE_SURVEY_DEFAULT = SURVEY.NONE.value
+    val FEATURE_SURVEY_DEFAULT = Inject.getDefaultFeatureSurvey().value
 
     enum class SURVEY constructor(val value: Int) {
         NONE(0), WIFI_FINDING(1), VPN(2), VPN_RECOMMENDER(3);

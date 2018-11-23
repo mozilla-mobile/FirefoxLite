@@ -16,6 +16,7 @@ public class CustomTestRunner extends AndroidJUnitRunner {
         // So, the workaround is to disable the analytics in test runner and refer to the following post:
         // http://izmajlowiczl.blogspot.tw/2014/08/espresso-and-hidden-analytics-calls.html
         arguments.putString("disableAnalytics", "true");
+
         super.onCreate(arguments);
     }
 }
