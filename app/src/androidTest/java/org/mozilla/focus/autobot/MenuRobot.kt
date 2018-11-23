@@ -9,6 +9,7 @@ import android.view.View
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.mozilla.focus.R
+import tools.fastlane.screengrab.Screengrab
 
 /** Some common menu relevant actions **/
 open class MenuRobot {
@@ -36,4 +37,8 @@ open class MenuRobot {
     fun clickPanelMyShots() = onView(withId(R.id.screenshots)).perform(click())
 
     fun pressBack() = Espresso.pressBack()
+
+    fun takeScreenshotViaFastlane(fileName: String) {
+        Screengrab.screenshot(fileName)
+    }
 }
