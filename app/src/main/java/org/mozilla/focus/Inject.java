@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.RemoteConfigConstants;
 
 public class Inject {
 
@@ -74,5 +75,9 @@ public class Inject {
 
     public static boolean isUnderEspressoTest() {
         return false;
+    }
+
+    public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
+        return RemoteConfigConstants.SURVEY.NONE;
     }
 }

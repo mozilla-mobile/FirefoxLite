@@ -23,7 +23,7 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class BookmarksScreenshot : BaseScreenshot() {
 
-    private lateinit var webServer : MockWebServer
+    private lateinit var webServer: MockWebServer
 
     @JvmField
     @Rule
@@ -43,7 +43,6 @@ class BookmarksScreenshot : BaseScreenshot() {
             } catch (e: IOException) {
                 throw AssertionError("Could not start web server", e)
             }
-
         }
 
         override fun afterActivityFinished() {
@@ -55,7 +54,6 @@ class BookmarksScreenshot : BaseScreenshot() {
             } catch (e: IOException) {
                 throw AssertionError("Could not stop web server", e)
             }
-
         }
     }
 
@@ -95,7 +93,6 @@ class BookmarksScreenshot : BaseScreenshot() {
             clickItemMenuEdit()
             pressBack()
             pressBack()
-
         }
 
         session {
@@ -104,7 +101,6 @@ class BookmarksScreenshot : BaseScreenshot() {
             checkRemoveBookmarkToastIsDisplayed(activityTestRule.activity)
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BOOKMARK_REMOVED)
         }
-
     }
 
     companion object {
