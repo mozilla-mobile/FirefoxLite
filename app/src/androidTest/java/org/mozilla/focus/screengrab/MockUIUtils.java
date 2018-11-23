@@ -34,7 +34,7 @@ public class MockUIUtils {
 
     static void showGeoPromptDialog(@NotNull Activity activity, String url) {
         activity.runOnUiThread(() -> {
-            AlertDialog dialog = ((MainActivity)activity).getVisibleBrowserFragment().buildGeoPromptDialog();
+            AlertDialog dialog = ((MainActivity) activity).getVisibleBrowserFragment().buildGeoPromptDialog();
             dialog.show();
         });
     }

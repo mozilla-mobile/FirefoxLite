@@ -14,5 +14,4 @@ open class BaseScreenshot {
         @ClassRule
         val localeTestRule = LocaleTestRule()
     }
-
 }

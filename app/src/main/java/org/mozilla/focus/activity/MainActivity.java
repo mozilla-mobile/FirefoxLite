@@ -1192,8 +1192,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
     }
 
+    @VisibleForTesting
     @UiThread
-    private void showMyShotOnBoarding() {
+    public void showMyShotOnBoarding() {
         pendingMyShotOnBoarding = true;
         showMenu();
     }

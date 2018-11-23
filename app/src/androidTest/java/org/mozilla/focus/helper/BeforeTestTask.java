@@ -6,6 +6,8 @@
 package org.mozilla.focus.helper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 
 import org.mozilla.focus.Inject;
@@ -57,6 +59,9 @@ public class BeforeTestTask {
 
         if (this.skipColorThemeOnBoarding) {
             ThemeManager.dismissOnboarding(context);
+        } else {
+            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
+            sharedPreferences.edit().putInt(ThemeManager.PREF_KEY_INT_ONBOARDING_VERSION, Integer.MIN_VALUE).apply();
         }
 
         Inject.getTabsDatabase(null).tabDao().deleteAllTabs();

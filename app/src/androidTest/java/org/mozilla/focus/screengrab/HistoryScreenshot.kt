@@ -48,7 +48,6 @@ class HistoryScreenshot : BaseScreenshot() {
             } catch (e: IOException) {
                 throw AssertionError("Could not start web server", e)
             }
-
         }
 
         override fun afterActivityFinished() {
@@ -60,7 +59,6 @@ class HistoryScreenshot : BaseScreenshot() {
             } catch (e: IOException) {
                 throw AssertionError("Could not stop web server", e)
             }
-
         }
     }
 
@@ -100,5 +98,4 @@ class HistoryScreenshot : BaseScreenshot() {
         private val TEST_PATH_2 = "/site2/"
         private val HTML_FILE_GET_LOCATION = "get_location.html"
     }
-
 }
