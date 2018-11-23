@@ -217,6 +217,7 @@
   <string name="private_browsing_erase_done">మీ అంతరంగిక విహరణ\nచరిత్ర తొలగించబడింది.</string>
   <string name="my_shot_on_boarding_message">మీ తెరపట్లను ఇక్కడ చూడండి!</string>
   <string name="my_shot_on_boarding_category_message">మీ అనుభవాన్ని మెరుగుపరచడానికి, మేము మీ తెరపట్ల వర్గాల సమాచారాన్ని సేకరిస్తాము.</string>
+  <string name="exp_survey_thanks">మీ అభిప్రాయాన్ని మాకు తెలియజేసినందుకు కృతజ్ఞతలు %1$s</string>
   <string name="exp_survey_yes">సరే, కానివ్వు</string>
   <string name="exp_survey_no">వద్దు</string>
 </resources>
