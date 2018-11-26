@@ -79,6 +79,11 @@
             android:defaultValue="true"
             android:key="pref_key_private_mode_enabled"
             android:title="Private Mode" />
+
+        <SwitchPreference
+            android:defaultValue="@bool/default_allow_mixed_content"
+            android:key="@string/pref_key_allow_mixed_content"
+            android:title="@string/preference_allow_mixed_content" />
     </PreferenceCategory>
 
 </PreferenceScreen>

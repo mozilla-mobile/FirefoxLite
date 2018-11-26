@@ -130,6 +130,9 @@ public class WebViewProvider {
         // We could consider calling setLoadsImagesAutomatically() here too (This will block images not loaded over the network too)
         settings.setBlockNetworkImage(Settings.getInstance(context).shouldBlockImages());
         settings.setLoadsImagesAutomatically(!Settings.getInstance(context).shouldBlockImages());
+        settings.setMixedContentMode(Settings.getInstance(context).getAllowMixedContent()
+                ? WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE :
+                WebSettings.MIXED_CONTENT_NEVER_ALLOW);
     }
 
     public static void applyMultiTabSettings(Context context, WebSettings settings) {

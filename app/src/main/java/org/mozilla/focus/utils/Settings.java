@@ -34,6 +34,8 @@ public class Settings {
     private static final boolean DID_SHOW_RATE_APP_DEFAULT = false;
     private static final boolean DID_SHOW_SHARE_APP_DEFAULT = false;
 
+    private final boolean DEFAULT_ALLOW_MIXED_CONTENT;
+
     public synchronized static Settings getInstance(Context context) {
         if (instance == null) {
             instance = new Settings(context.getApplicationContext());
@@ -53,6 +55,8 @@ public class Settings {
         eventHistory = new EventHistory(preferences);
         newFeatureNotice = NewFeatureNotice.getInstance(context);
         settingPreferenceWrapper = new SettingPreferenceWrapper(context.getContentResolver());
+
+        DEFAULT_ALLOW_MIXED_CONTENT = resources.getBoolean(R.bool.default_allow_mixed_content);
     }
 
     public boolean shouldBlockImages() {
@@ -64,6 +68,17 @@ public class Settings {
     public void setBlockImages(boolean blockImages) {
         final String key = getPreferenceKey(R.string.pref_key_performance_block_images);
         preferences.edit().putBoolean(key, blockImages).apply();
+    }
+
+    public void setAllowMixedContent(boolean allowMixedContent) {
+        final String key = getPreferenceKey(R.string.pref_key_allow_mixed_content);
+        preferences.edit().putBoolean(key, allowMixedContent).apply();
+    }
+
+    public boolean getAllowMixedContent() {
+        return preferences.getBoolean(
+                resources.getString(R.string.pref_key_allow_mixed_content),
+                DEFAULT_ALLOW_MIXED_CONTENT);
     }
 
     public boolean isNightModeEnable() {

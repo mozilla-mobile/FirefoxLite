@@ -183,6 +183,20 @@ public class WebkitView extends NestedWebView implements TabView {
     }
 
     @Override
+    public void setAllowMixedContent(boolean allowMixedContent) {
+        WebSettings settings = getSettings();
+        if ((WebSettings.MIXED_CONTENT_NEVER_ALLOW != settings.getMixedContentMode()) == allowMixedContent ) {
+            return;
+        }
+
+        WebViewProvider.applyAppSettings(getContext(), getSettings());
+
+        if (allowMixedContent) {
+            reloadOnAttached();
+        }
+    }
+
+    @Override
     public void setContentBlockingEnabled(boolean enable) {
         if (webViewClient.isBlockingEnabled() == enable) {
             return;

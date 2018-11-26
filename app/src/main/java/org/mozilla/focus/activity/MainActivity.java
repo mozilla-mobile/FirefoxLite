@@ -832,7 +832,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // Only refresh when disabling turbo mode
         if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)) {
             final boolean turboEnabled = isTurboEnabled();
             BrowserFragment browserFragment = getBrowserFragment();
@@ -847,8 +846,13 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 browserFragment.setImageBlockingEnabled(blockingImages);
             }
             setMenuButtonSelected(R.id.menu_blockimg, blockingImages);
+        } else if (this.getResources().getString(R.string.pref_key_allow_mixed_content).equals(key)) {
+            boolean allowMixedContent = Settings.getInstance(this).getAllowMixedContent();
+            BrowserFragment browserFragment = getBrowserFragment();
+            if (browserFragment != null) {
+                browserFragment.setAllowMixedContent(allowMixedContent);
+            }
         }
-        // For turbo mode, a automatic refresh is done when we disable block image.
     }
 
     void setMenuButtonSelected(int buttonId, boolean selected) {

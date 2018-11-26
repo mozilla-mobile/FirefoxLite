@@ -111,7 +111,11 @@
    
     <!-- After users have tried night mode once, the next time the user opens menu we would like to show them how they can long press the Night Mode icon to show a widget for brightness adjustments. -->
     <string name="night_mode_on_boarding_message">Long press to adjust brightness</string>
-   
+
+
+    <string name="preference_allow_mixed_content">Allow Mixed Content</string>
+
+
     <!-- Content description (not visible, for screen readers etc.): Clear text in URL bar -->
     <string name="content_description_clear_input">Clear input</string>
 

@@ -59,6 +59,8 @@ public interface TabView {
      */
     void setContentBlockingEnabled(boolean enabled);
 
+    void setAllowMixedContent(boolean allowMixedContent);
+
     /**
      * Be invoked by TabChromeClient.onCreateWindow to transport this new-created-window to its parent window.
      *

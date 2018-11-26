@@ -11,4 +11,7 @@
     <integer name="erase_snackbar_delay">500</integer>
 
     <integer name="progress_shift_duration">500</integer>
+
+    <bool name="default_allow_mixed_content">false</bool>
+
 </resources>

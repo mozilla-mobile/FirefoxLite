@@ -575,6 +575,15 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
     }
 
+    public void setAllowMixedContent(boolean allowMixedContent) {
+        for (final Session session : sessionManager.getTabs()) {
+            final TabViewEngineSession es = session.getEngineSession();
+            if (es != null && es.getTabView() != null) {
+                es.getTabView().setAllowMixedContent(allowMixedContent);
+            }
+        }
+    }
+
     public void setImageBlockingEnabled(boolean enabled) {
         // TODO: Better if we can move this logic to some setting-like classes, and provider interface
         // for configuring blocking function of each tab.

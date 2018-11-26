@@ -112,6 +112,9 @@ class TabTrayPresenterTest {
             return false
         }
 
+        override fun setAllowMixedContent(allowMixedContent: Boolean) {
+        }
+
         override fun performExitFullScreen() {
         }
 
