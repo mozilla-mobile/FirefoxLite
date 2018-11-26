@@ -20,6 +20,9 @@ import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public class AdjustHelper {
+
+    private static FocusApplication focusApplication;
+
     public static void setupAdjustIfNeeded(FocusApplication application) {
         // RELEASE: Enable Adjust - This class has different implementations for all build types.
 
@@ -31,6 +34,8 @@ public class AdjustHelper {
         if (!TelemetryWrapper.isTelemetryEnabled(application)) {
             return;
         }
+
+        focusApplication = application;
 
         final AdjustConfig config = new AdjustConfig(application,
                 BuildConfig.ADJUST_TOKEN,
@@ -45,7 +50,9 @@ public class AdjustHelper {
     }
 
     public static void trackEvent(String eventToken) {
-        Adjust.trackEvent(new AdjustEvent(eventToken));
+        if (TelemetryWrapper.isTelemetryEnabled(focusApplication)) {
+            Adjust.trackEvent(new AdjustEvent(eventToken));
+        }
     }
 
     private static final class AdjustLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
