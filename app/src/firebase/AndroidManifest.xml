@@ -3,11 +3,20 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="org.mozilla.focus">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.mozilla.focus">
 
     <!--For fastlane usage-->
     <!-- Allows changing locales -->
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission
+        android:name="android.permission.CHANGE_CONFIGURATION"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Force private mode run in the same process so espresso can perform test and auto screenshot easily -->
+    <application>
+        <activity
+            android:name="org.mozilla.rocket.privately.PrivateModeActivity"
+            tools:remove="android:process" />
+    </application>
 
 </manifest>

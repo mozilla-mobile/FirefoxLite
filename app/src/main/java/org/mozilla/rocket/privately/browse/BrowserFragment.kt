@@ -41,6 +41,7 @@ import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.mozilla.urlutils.UrlUtils
 
+typealias LoadStateListener = org.mozilla.focus.fragment.BrowserFragment.LoadStateListener?
 private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
 
@@ -48,6 +49,7 @@ class BrowserFragment : LocaleAwareFragment(),
         BackKeyHandleable {
 
     private var listener: FragmentListener? = null
+    private var loadStateListener: LoadStateListener = null
 
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
@@ -86,7 +88,7 @@ class BrowserFragment : LocaleAwareFragment(),
         } else {
             if (fragmentActivity is TabsSessionProvider.SessionHost) {
                 sessionManager = fragmentActivity.sessionManager
-                observer = Observer(this)
+                observer = Observer(this, loadStateListener)
             }
         }
     }
@@ -175,6 +177,16 @@ class BrowserFragment : LocaleAwareFragment(),
         return false
     }
 
+    fun setIsLoadingListener(listener: LoadStateListener) {
+        loadStateListener = listener
+        activity?.let {
+            val shared = ViewModelProviders.of(it).get(SharedViewModel::class.java)
+            if (!TextUtils.isEmpty(shared.getUrl().toString()) && !isLoading) {
+                listener?.isLoadingChanged(isLoading)
+            }
+        }
+    }
+
     fun loadUrl(url: String?) {
         url?.let {
             if (it.isNotBlank()) {
@@ -233,7 +245,7 @@ class BrowserFragment : LocaleAwareFragment(),
         listener.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
     }
 
-    class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
+    class Observer(val fragment: BrowserFragment, private val loadStateListener: LoadStateListener) : SessionManager.Observer, Session.Observer {
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
             // do nothing, exist for interface compatibility only.
         }
@@ -321,6 +333,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
         override fun onLoadingStateChanged(session: Session, loading: Boolean) {
             fragment.isLoading = loading
+            val listener = loadStateListener
+            listener?.isLoadingChanged(loading)
             if (loading) {
                 fragment.btnLoad.setImageResource(R.drawable.ic_close)
             } else {

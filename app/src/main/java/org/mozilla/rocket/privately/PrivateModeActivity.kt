@@ -9,6 +9,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CheckResult
+import android.support.annotation.VisibleForTesting
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -24,6 +25,7 @@ import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.privately.browse.BrowserFragment
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
@@ -218,5 +220,11 @@ class PrivateModeActivity : BaseActivity(),
             return true
         }
         return false
+    }
+
+    @VisibleForTesting
+    fun getBrowserFragment(): BrowserFragment? {
+        val frag = getNavHost().childFragmentManager.findFragmentById(R.id.private_nav_host_fragment)//supportFragmentManager.findFragmentById(R.id.fragment_private_browser)
+        return frag as? BrowserFragment
     }
 }

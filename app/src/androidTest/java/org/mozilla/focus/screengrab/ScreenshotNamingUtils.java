@@ -89,4 +89,8 @@ public class ScreenshotNamingUtils {
     static final String SETTINGS_SHARE_GMAIL = SETTINGS_BASE + "11";
     static final String SETTINGS_ABOUT = SETTINGS_BASE + "12";
     static final String SETTINGS_ABOUT_YOUR_RIGHT = SETTINGS_BASE + "13";
+
+    private static final String PRIVATE_BROWSING_BASE = "09_private_";
+    static final String PRIVATE_ERASING_TOAST = PRIVATE_BROWSING_BASE + "1";
+    static final String PRIVATE_ERASING_NOTIFICATION = PRIVATE_BROWSING_BASE + "2";
 }
