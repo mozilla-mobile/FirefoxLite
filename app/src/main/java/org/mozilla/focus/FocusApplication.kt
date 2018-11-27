@@ -100,9 +100,6 @@ class FocusApplication : LocaleAwareApplication() {
             }
 
             override fun onActivityDestroyed(activity: Activity?) {
-                if (activity is PrivateModeActivity) {
-                    isInPrivateProcess = false
-                }
             }
 
             override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
@@ -112,6 +109,7 @@ class FocusApplication : LocaleAwareApplication() {
             }
 
             override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
+                // once PrivateModeActivity exist, this process is for private mode
                 if (activity is PrivateModeActivity) {
                     isInPrivateProcess = true
                 }
