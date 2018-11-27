@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class DialogUtils {
         });
         final TextView positive = dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate);
         final String positiveString = AppConfigWrapper.getRateAppPositiveString(context);
-        if (positiveString != null) {
+        if (!TextUtils.isEmpty(positiveString)) {
             positive.setText(positiveString);
         }
         positive.setOnClickListener(v -> {
@@ -75,18 +76,18 @@ public class DialogUtils {
             telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
         });
         final String title = AppConfigWrapper.getRateAppDialogTitle(context);
-        if (title != null) {
+        if (!TextUtils.isEmpty(title)) {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_textview_title)).setText(title);
         }
 
         final String content = AppConfigWrapper.getRateAppDialogContent(context);
-        if (content != null) {
+        if (!TextUtils.isEmpty(content)) {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
         }
 
         final TextView negative = dialogView.findViewById(R.id.dialog_rate_app_btn_feedback);
         final String negativeString = AppConfigWrapper.getRateAppNegativeString(context);
-        if (negativeString != null) {
+        if (!TextUtils.isEmpty(negativeString)) {
             negative.setText(negativeString);
         }
         negative.setOnClickListener(v -> {
