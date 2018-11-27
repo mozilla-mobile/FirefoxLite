@@ -54,15 +54,14 @@ class PrivateMode {
         }
 
         /**
-         * A helper function to report whether this service is alive.
-         * When there's a private session, it implies a PrivateSessionNotificationService is running.
+         * A helper function to report whether this service is alive
          *
          * @param context
          * @return true if this service is alive
          */
         @Suppress("deprecation")
         @JvmStatic
-        fun hasPrivateSession(context: Context): Boolean {
+        fun isPrivateModeProcessRunning(context: Context): Boolean {
             val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             // Although this method is no longer available to third party applications.  For backwards compatibility,
             // it will still return the caller's own services.

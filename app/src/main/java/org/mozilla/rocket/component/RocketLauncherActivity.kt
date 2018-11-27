@@ -9,7 +9,6 @@ class RocketLauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val action = LaunchIntentDispatcher.dispatch(this, intent)
         when (action) {
             LaunchIntentDispatcher.Action.HANDLED -> finish()

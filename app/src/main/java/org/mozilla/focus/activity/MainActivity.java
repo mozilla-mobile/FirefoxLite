@@ -419,7 +419,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
         final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled(this);
         final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
-        final boolean privateModeActivate = PrivateMode.hasPrivateSession(this);
+        final boolean privateModeActivate = PrivateMode.isPrivateModeProcessRunning(this);
         final Settings settings = Settings.getInstance(getApplicationContext());
 
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
