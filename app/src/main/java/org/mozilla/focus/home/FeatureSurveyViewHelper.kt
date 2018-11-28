@@ -14,6 +14,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.RemoteConfigConstants
 import org.mozilla.focus.utils.Settings
 
@@ -21,7 +22,7 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
 
     object Constants {
         const val DISMISS_DELAY: Long = 5000
-        const val LINK_RECOMMEND_VPN: String = "https://www.expressvpn.com/download-app?a_fid=MozillaFirefoxLite"
+        const val LINK_RECOMMEND_VPN: String = "https://play.google.com/store/apps/details?id=com.expressvpn.vpn&referrer=xvid%3D40mNjnCggknDUBjM9PjByHIMQ8fLBoNz0SVZe%252FEnppY%253D%26data1%3D%26data2%3D%26data3%3D%26data4%3D%26a_aid%3DMozillaFirefoxLite"
         const val PACKAGE_RECOMMEND_VPN: String = "com.expressvpn.vpn"
     }
 
@@ -88,7 +89,10 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     // Open Play Store in a new tab
                     val url = AppConfigWrapper.getVpnRecommenderUrl(context)
                     if (!TextUtils.isEmpty(url)) {
-                        ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+                        if (!IntentUtils.handleExternalUri(context, url)) {
+                            // fallback to open the link using WebView
+                            ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+                        }
                     }
                     TelemetryWrapper.clickVpnRecommend(true)
                 } else {
