@@ -24,6 +24,7 @@ class BasicViewHolder extends BannerViewHolder {
 
     @Override
     public void onBindViewHolder(Context context, BannerDAO bannerDAO) {
+        super.onBindViewHolder(context, bannerDAO);
         try {
             Glide.with(context).load(bannerDAO.values.getString(0)).into(background);
         } catch (JSONException e) {
@@ -31,7 +32,7 @@ class BasicViewHolder extends BannerViewHolder {
             e.printStackTrace();
         }
         background.setOnClickListener(v -> {
-            sendClickBackgroundTelemetry(bannerDAO.id);
+            sendClickBackgroundTelemetry();
             try {
                 onClickListener.onClick(bannerDAO.values.getString(1));
             } catch (JSONException e) {

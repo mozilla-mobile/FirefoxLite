@@ -183,6 +183,11 @@ object TelemetryWrapper {
 
         internal const val NIGHT_MODE = "night_mode"
         internal const val NIGHT_MODE_BRIGHTNESS = "night_mode_brightness"
+
+        internal const val NEW = "new"
+        internal const val UPDATE = "update"
+        internal const val RETURN = "return"
+        internal const val SWIPE = "swipe"
     }
 
     internal object Extra {
@@ -1598,6 +1603,75 @@ object TelemetryWrapper {
     fun erasePrivateModeNotification() {
         EventBuilder(Category.ACTION, Method.CLEAR, Object.PRIVATE_MODE)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Home Impression",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.HOME,
+            value = "",
+            extras = [])
+    @JvmStatic
+    fun showHome() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.HOME)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Banner Impression: new",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.BANNER,
+            value = Value.NEW,
+            extras = [TelemetryExtra(name = Extra.TO, value = "banner page id")])
+    @JvmStatic
+    fun showBannerNew(id: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.BANNER, Value.NEW)
+                .extra(Extra.TO, id)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Banner Impression: update",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.BANNER,
+            value = Value.UPDATE,
+            extras = [TelemetryExtra(name = Extra.TO, value = "banner page id")])
+    @JvmStatic
+    fun showBannerUpdate(id: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.BANNER, Value.UPDATE)
+                .extra(Extra.TO, id)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Banner Impression: return",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.BANNER,
+            value = Value.RETURN,
+            extras = [TelemetryExtra(name = Extra.TO, value = "banner page id")])
+    @JvmStatic
+    fun showBannerReturn(id: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.BANNER, Value.RETURN)
+                .extra(Extra.TO, id)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Banner Impression: swipe",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.BANNER,
+            value = Value.SWIPE,
+            extras = [TelemetryExtra(name = Extra.TO, value = "banner page id")])
+    @JvmStatic
+    fun showBannerSwipe(id: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.BANNER, Value.SWIPE)
+                .extra(Extra.TO, id)
                 .queue()
     }
 
