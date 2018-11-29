@@ -13,6 +13,7 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.annotation.WorkerThread;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -236,6 +237,13 @@ final public class FirebaseHelper extends FirebaseWrapper {
         return remoteConfigDefault;
     }
 
+    @Override
+    void refreshRemoteConfigDefault(Context context) {
+        remoteConfigDefault = null;
+        getRemoteConfigDefault(context);
+    }
+
+
     private HashMap<String, Object> fromFile(Context context) {
 
         // If we don't have read external storage permission, just don't bother reading the config file.
@@ -287,4 +295,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         }
     }
 
+    public static void onLocaleUpdate(Context context) {
+        getInstance().refreshRemoteConfigDefault(context);
+    }
 }

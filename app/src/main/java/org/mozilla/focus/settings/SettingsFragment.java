@@ -143,6 +143,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             }
             TelemetryWrapper.settingsLocaleChangeEvent(key, String.valueOf(locale), TextUtils.isEmpty(value));
             localeManager.updateConfiguration(getActivity(), locale);
+            FirebaseHelper.onLocaleUpdate(getActivity());
 
             // Manually notify SettingsActivity of locale changes (in most other cases activities
             // will detect changes in onActivityResult(), but that doesn't apply to SettingsActivity).
