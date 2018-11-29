@@ -106,4 +106,10 @@ abstract class FirebaseWrapper {
 
     public static void event(Context context, String key, Bundle param) {
     }
+
+    public static void refreshRemoteConfig() {
+    }
+
+    void setUserProperty(Context context, String key, String value) {
+    }
 }

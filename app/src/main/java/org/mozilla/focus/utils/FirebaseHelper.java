@@ -21,11 +21,13 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Implementation for FirebaseWrapper. It's job:
@@ -35,6 +37,9 @@ import java.util.HashMap;
 final public class FirebaseHelper extends FirebaseWrapper {
 
     private static final String TAG = "FirebaseHelper";
+
+    private static final String USER_PROPERTY_APP_LANGUAGE = "app_lang";
+
 
     // keys for remote config default value
     public static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
@@ -191,6 +196,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
             enableCrashlytics(applicationContext, enable);
             enableAnalytics(applicationContext, enable);
+
+            updateAppLanguage(applicationContext);
+
             enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), enable);
             enableRemoteConfig(applicationContext, enable);
 
@@ -217,6 +225,14 @@ final public class FirebaseHelper extends FirebaseWrapper {
             }
         }
 
+    }
+
+    public static void updateAppLanguage(Context context) {
+        Locale current = LocaleManager.getInstance().getCurrentLocale(context);
+        if (current == null) {
+            current = Locale.getDefault();
+        }
+        getInstance().setUserProperty(context, USER_PROPERTY_APP_LANGUAGE, current.toString());
     }
 
     // this is called in FirebaseWrapper's internalInit()

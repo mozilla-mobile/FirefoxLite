@@ -322,7 +322,7 @@ abstract class FirebaseWrapper {
     // Call this method to refresh the value in remote config.
     // Client code can access the remote config value in UI thread. But if the work here is not done,
     // it'll still see the old value.
-    private static void refreshRemoteConfig() {
+    public static void refreshRemoteConfig() {
         final FirebaseRemoteConfig config = remoteConfig.get();
         if (config == null) {
             return;
@@ -376,5 +376,13 @@ abstract class FirebaseWrapper {
             return;
         }
         FirebaseAnalytics.getInstance(context).logEvent(key, param);
+    }
+
+    // Don't want to put refreshRemoteConfig in setUserProperty cause there's limit for fetching the event
+    void setUserProperty(Context context, String key, String value) {
+        if (context == null || key == null) {
+            return;
+        }
+        FirebaseAnalytics.getInstance(context).setUserProperty(key, value);
     }
 }
