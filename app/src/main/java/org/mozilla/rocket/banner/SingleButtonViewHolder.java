@@ -30,6 +30,7 @@ class SingleButtonViewHolder extends BannerViewHolder {
 
     @Override
     public void onBindViewHolder(Context context, BannerDAO bannerDAO) {
+        super.onBindViewHolder(context, bannerDAO);
         try {
             Glide.with(context).load(bannerDAO.values.getString(0)).into(new SimpleTarget<Drawable>() {
                 @Override
@@ -44,7 +45,7 @@ class SingleButtonViewHolder extends BannerViewHolder {
         }
         button.setOnClickListener(v -> {
             try {
-                sendClickItemTelemetry(bannerDAO.id, BUTTON_INDEX);
+                sendClickItemTelemetry(BUTTON_INDEX);
                 onClickListener.onClick(bannerDAO.values.getString(1));
             } catch (JSONException e) {
                 // Invalid manifest
@@ -52,7 +53,7 @@ class SingleButtonViewHolder extends BannerViewHolder {
             }
         });
         background.setOnClickListener(v -> {
-            sendClickBackgroundTelemetry(bannerDAO.id);
+            sendClickBackgroundTelemetry();
         });
     }
 }

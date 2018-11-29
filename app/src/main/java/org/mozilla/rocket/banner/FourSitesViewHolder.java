@@ -45,6 +45,7 @@ class FourSitesViewHolder extends BannerViewHolder {
 
     @Override
     public void onBindViewHolder(Context context, BannerDAO bannerDAO) {
+        super.onBindViewHolder(context, bannerDAO);
         try {
             Glide.with(context).load(bannerDAO.values.getString(0)).into(new SimpleTarget<Drawable>() {
                 @Override
@@ -79,7 +80,7 @@ class FourSitesViewHolder extends BannerViewHolder {
             final int itemPosition = i;
             icons[i].setOnClickListener(v -> {
                 try {
-                    sendClickItemTelemetry(bannerDAO.id, itemPosition);
+                    sendClickItemTelemetry(itemPosition);
                     onClickListener.onClick(bannerDAO.values.getString(index));
                 } catch (JSONException e) {
                     // Invalid manifest
@@ -88,7 +89,7 @@ class FourSitesViewHolder extends BannerViewHolder {
             });
         }
         background.setOnClickListener(v -> {
-            sendClickBackgroundTelemetry(bannerDAO.id);
+            sendClickBackgroundTelemetry();
         });
     }
 }

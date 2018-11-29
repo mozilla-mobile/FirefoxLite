@@ -100,4 +100,12 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerViewHolder> {
     public int getItemCount() {
         return DAOs.size();
     }
+
+    public String getFirstDAOId() {
+        if (DAOs.size() <= 0) {
+            LoggerWrapper.throwOrWarn(LOG_TAG, "Invalid banner size");
+            return "NO_ID";
+        }
+        return DAOs.get(0).id;
+    }
 }
