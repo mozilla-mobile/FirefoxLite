@@ -89,8 +89,9 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     // Open Play Store in a new tab
                     val url = AppConfigWrapper.getVpnRecommenderUrl(context)
                     if (!TextUtils.isEmpty(url)) {
-                        if (!IntentUtils.handleExternalUri(context, url)) {
-                            // fallback to open the link using WebView
+                        // Force to load with GooglePlay instead of Webview to get parameters correctly passed to Google Play.
+                        if (!IntentUtils.handleExternalUri(context, url, false)) {
+                            // fallback to open the link using WebView if there's no one to handle the url
                             ScreenNavigator.get(context).showBrowserScreen(url, true, false)
                         }
                     }

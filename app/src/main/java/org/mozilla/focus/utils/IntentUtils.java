@@ -51,18 +51,18 @@ public class IntentUtils {
 
 
     /**
-     * Find and open the appropriate app for a given Uri. If appropriate, let the user select between
-     * multiple supported apps. Returns a boolean indicating whether the URL was handled. A fallback
-     * URL will be opened in the supplied WebView if appropriate (in which case the URL was handled,
-     * and true will also be returned). If not handled, we should  fall back to webviews error handling
-     * (which ends up calling our error handling code as needed).
-     * <p>
-     * Note: this method "leaks" the target Uri to Android before asking the user whether they
-     * want to use an external app to open the uri. Ultimately the OS can spy on anything we're
-     * doing in the app, so this isn't an actual "bug".
+     * If the uri can be handled by other apps, we use that app to handle it.
+     *
+     * @param context Used to start the activity
+     * @param uri     The target URI
+     * @param ignore  If false, there should be at least one app to open  this URI.
+     *                If true, we'll use our best effort to handle it.
+     *                For example: https://m.bukalapa.com will redirect users to bukalapak://:/?link_click_id...... and try to use it's app to open the url.
+     *                If we set ignore to false and Bukalapak app is not installed, we'll load buakapak://... in the WebView and leads to an Error page.
+     *                If we set ignore to true, the page will stay at previous page (before the redirect). We deliberately choose the latter behavior.
+     * @return true: the URI is valid and handled (if not ignore);  false: the intent is not  valid, or we expect an app to handle it but can't find one.
      */
-    public static boolean handleExternalUri(final Context context, final String uri) {
-        // This code is largely based on Fennec's ExternalIntentDuringPrivateBrowsingPromptFragment.java
+    public static boolean handleExternalUri(final Context context, final String uri, boolean ignore) {
         final Intent intent;
         try {
             intent = Intent.parseUri(uri, 0);
@@ -83,9 +83,13 @@ public class IntentUtils {
         final List<ResolveInfo> matchingActivities = packageManager.queryIntentActivities(intent, 0);
 
         if (matchingActivities.size() > 0) {
+            // only start the activity when there's at least one handler so don't need to catch ActivityNotFoundException here.
             context.startActivity(intent);
+            return true;
+        } else {
+            // there's no one can handle this url, return true if it's okay or false otherwise.
+            return ignore;
         }
-        return true;
     }
 
     private static boolean handleUnsupportedLink(final Context context, final TabView webView, final Intent intent) {

@@ -25,7 +25,7 @@ public class DefaultWebViewClient extends TrackingProtectionWebViewClient {
 
         final Uri uri = Uri.parse(url);
         if (!UrlUtils.isSupportedProtocol(uri.getScheme()) &&
-                IntentUtils.handleExternalUri(webView.getContext(), url)) {
+                IntentUtils.handleExternalUri(webView.getContext(), url, true)) {
             return true;
         }
 

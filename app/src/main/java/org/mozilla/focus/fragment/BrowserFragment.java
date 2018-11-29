@@ -1062,7 +1062,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 return false;
             }
 
-            return IntentUtils.handleExternalUri(getContext(), url);
+            return IntentUtils.handleExternalUri(getContext(), url, true);
         }
 
         @Override
