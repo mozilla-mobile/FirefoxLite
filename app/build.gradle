@@ -20,9 +20,16 @@ android {
         targetSdkVersion Versions.target_sdk
         versionCode Versions.version_code
         versionName Versions.version_name
-        testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
+        if (SystemEnv.auto_screenshot == "1") {
+            testInstrumentationRunner "org.mozilla.focus.test.runner.ScreenshotTestRunner"
+            testInstrumentationRunnerArguments clearPackageData: 'true'
+        } else {
+            // general UI test, using notAnnotation to filter out auto screenshot classes
+            testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
+            testInstrumentationRunnerArguments clearPackageData: 'true', notAnnotation: 'org.mozilla.focus.annotation.ScreengrabOnly'
+        }
         testInstrumentationRunnerArgument 'disableAnalytics', 'true'
-        testInstrumentationRunnerArguments clearPackageData: 'true', notAnnotation: 'org.mozilla.focus.annotation.ScreengrabOnly'
+
         multiDexEnabled true
 
         vectorDrawables {

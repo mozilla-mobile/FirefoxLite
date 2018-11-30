@@ -47,6 +47,7 @@ object SystemEnv {
     val google_api_key: String? = System.getenv("google_api_key")
     val google_crash_reporting_api_key: String? = System.getenv("google_crash_reporting_api_key")
     val project_id: String? = System.getenv("project_id")
+    val auto_screenshot: String? = System.getenv("auto_screenshot")
 }
 
 object Localization {
