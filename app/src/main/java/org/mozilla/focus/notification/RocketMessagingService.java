@@ -9,8 +9,10 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
+
+import static org.mozilla.rocket.util.ExperimentsKt.fretboard;
+import static org.mozilla.rocket.util.ExperimentsKt.getUsingFirebase;
 
 // Prov
 public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
@@ -18,7 +20,7 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
     //
     @Override
     public void onRemoteMessage(Intent intent, String title, String body) {
-        if (!TelemetryWrapper.isTelemetryEnabled(this)) {
+        if (!fretboard.isInExperiment(this, getUsingFirebase())) {
             return;
         }
         // RocketLauncherActivity will handle this intent

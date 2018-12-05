@@ -118,3 +118,13 @@ public static java.lang.String TABLENAME;
 ## Integrate Glide source code
 -dontwarn android.graphics.Bitmap$Config
 -dontwarn android.app.FragmentManager
+
+####################################################################################################
+# Kotlinx
+####################################################################################################
+
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
