@@ -56,9 +56,7 @@
     java.lang.String getId();
     boolean isLimitAdTrackingEnabled();
 }
--keep class dalvik.system.VMRuntime {
-    java.lang.String getRuntime();
-}
+
 -keep class android.os.Build {
     java.lang.String[] SUPPORTED_ABIS;
     java.lang.String CPU_ABI;
@@ -72,27 +70,8 @@
 }
 
 
-### greenDAO 3
--keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
-public static java.lang.String TABLENAME;
-}
--keep class **$Properties
-
-# If you do not use SQLCipher:
--dontwarn org.greenrobot.greendao.database.**
-# If you do not use RxJava:
--dontwarn rx.**
-
-### greenDAO 2
--keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
-public static java.lang.String TABLENAME;
-}
--keep class **$Properties
-
-
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.AppGlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
   **[] $VALUES;
   public *;

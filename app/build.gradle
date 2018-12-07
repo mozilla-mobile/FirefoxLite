@@ -12,6 +12,14 @@ apply from: 'buildscripts/l10n.gradle'
 
 
 android {
+    signingConfigs {
+        testing {
+            keyAlias 'testing'
+            keyPassword 'testing'
+            storeFile file('/Users/nechen/Desktop/test.keystore')
+            storePassword 'testing'
+        }
+    }
     compileSdkVersion Versions.compile_sdk
     buildToolsVersion Versions.build_tools
     defaultConfig {
@@ -48,11 +56,9 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
     }
-
     dexOptions {
         preDexLibraries true
     }
-
     bundle {
         language {
             enableSplit = false
@@ -64,16 +70,16 @@ android {
             enableSplit = true
         }
     }
-
     // We have a three dimensional build configuration:
     // BUILD TYPE (debug, release)
-
     buildTypes {
         release {
+            debuggable true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             matchingFallbacks = ["firebase"]
+            signingConfig signingConfigs.testing
         }
         debug {
             def userName = System.getenv("USER")
@@ -94,14 +100,11 @@ android {
         firebase {
             initWith debug
             applicationIdSuffix ".debug.firebase"
-
             versionNameSuffix applicationIdSuffix
             matchingFallbacks = ["debug", "firebase"]
         }
     }
-
     testBuildType "firebase"
-
     testOptions {
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
@@ -112,14 +115,11 @@ android {
         }
         execution 'ANDROID_TEST_ORCHESTRATOR'
     }
-
     // used by Room, to test migrations
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
-
     flavorDimensions "product", "engine"
-
     productFlavors {
         focus {
             resConfigs Localization.KEPT_LOCALE
@@ -141,7 +141,6 @@ android {
         }
 
     }
-
     variantFilter { variant ->
         def flavors = variant.flavors*.name
         // We only need a nightly release for now
@@ -149,7 +148,6 @@ android {
             setIgnore(true)
         }
     }
-
     sourceSets {
         test {
             resources {
@@ -195,12 +193,10 @@ repositories {
 dependencies {
     implementation project(':telemetry-annotation')
     kapt project(':telemetry-compiler')
-
     implementation project(':third_party:subsampling-scale-image-view')
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
     kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
-
     implementation project(':firebase')
     implementation project(':feature-tabs')
     implementation project(':HttpRequest')
@@ -211,15 +207,17 @@ dependencies {
     implementation project(':logger')
     implementation project(':threadutils')
     implementation project(':cachedrequestloader')
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines_version}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines_version}"
 
 
     // We didn't use CustomTabs so far. This is a build hack to force Android-Components to use
+
     // same version of support library as we are. Android-Components depends on CustomTabs which
+
     // version will be override by this.
+
     // We can get rid of this once Android-Components' issue #404 has been resolve.
     implementation "com.android.support:customtabs:${Versions.support}"
     implementation "com.android.support:support-v4:${Versions.support}"
@@ -235,30 +233,27 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:${Versions.room}"
     implementation "android.arch.navigation:navigation-fragment:${Versions.navigation}"
     kapt "android.arch.persistence.room:compiler:${Versions.room}"
-
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
         // Without this we get weird failures due to dependencies.
         transitive = false
     })
-
     implementation "org.mozilla.components:browser-session:${Versions.android_components}"
     implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
     implementation "org.mozilla.components:browser-domains:${Versions.android_components}"
     implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
     implementation "org.mozilla.components:service-fretboard:${Versions.android_components}"
 
-
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
-    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
+    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}"
+
     // Required by Adjust
 
+    // Required by Adjust
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
-
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
-
     androidTestImplementation("com.android.support.test.espresso:espresso-core:${Versions.espresso}", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -283,7 +278,6 @@ dependencies {
     coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
-
 }
 
 // -------------------------------------------------------------------------------------------------
