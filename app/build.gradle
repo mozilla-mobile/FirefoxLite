@@ -330,9 +330,9 @@ android.applicationVariants.all { variant ->
         if (token != null) {
             buildConfigField 'String', 'ADJUST_TOKEN', '"' + token + '"'
             if (variantName.contains("preview")) {
-                buildConfigField 'String', 'ADJUST_ENVIRONMENT', '"com.adjust.sdk.AdjustConfig.ENVIRONMENT_SANDBOX"'
+                buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'com.adjust.sdk.AdjustConfig.ENVIRONMENT_SANDBOX'
             } else if (variantName.contains("focus")) {
-                buildConfigField 'String', 'ADJUST_ENVIRONMENT', '"com.adjust.sdk.AdjustConfig.ENVIRONMENT_PRODUCTION"'
+                buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'com.adjust.sdk.AdjustConfig.ENVIRONMENT_PRODUCTION'
             } else {
                 buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'null'
             }
