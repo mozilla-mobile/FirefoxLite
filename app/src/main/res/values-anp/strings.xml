@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">अगलो परिणाम जानिइयै</string>
   <string name="accessibility_find_previous_result">पिछ्लो परिणाम जानिइयै</string>
   <string name="accessibility_dismiss_find_in_page">पेज में रद्द करियै</string>
-  <string name="text_selection_search_action">Firefox Rocket मे खोजियै</string>
+  <string name="text_selection_search_action">Firefox Lite में खोजियै</string>
   <string name="about_content_body">%1$s %2$s द्वारा बनाएल गेल एगो तेज आरु हल्लुक ब्राउजर छै. हमर मिशन स्वस्थ आरु खुलल इंटरनेट क बढ़ावा देनाय छै.</string>
   <string name="about_link_learn_more">बेसी जानकारी</string>
   <string name="about_link_support">समर्थन</string>
@@ -69,8 +69,8 @@
   <string name="first_run_page2_text">ट्रैकिंग विज्ञापनों कअ ब्लोक करै लअ टर्बो मोड क उपयोग करियै ताकि तोय तेजि से ब्राउज़ कैर पाबियै.आगर साइट सिनि टूटै छै,तअ मेनू में टर्बो मोड स्विच क टैप करिइयै.</string>
   <string name="first_run_page3_title">डेटा बचाबियै = पैसे बचाबियै</string>
   <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों कअ ब्लोकिंग करै सअ न खालि ब्राउज़िंग कअ बढ़बै छै, इ डेटा बचबै छै. इमेज ब्लोक करै छिऐ तअ आरु सहेजियै.</string>
-  <string name="first_run_page4_title">स्क्रीनशॉट सब कुछ</string>
-  <string name="first_run_page4_text">पूरे वेब पृष्ठों क स्क्रीनशॉट लियै. एगो स्क्रीनशॉट ऑफ़लाइन देखिइयै (डेटा का उपयोग के बगेर) या वेब पेज पर फिरु स जाय लअ एकरा टैप करिइयै.</string>
+  <string name="first_run_page4_title">पुरे पेज के स्क्रीनशॉट</string>
+  <string name="first_run_page4_text">पुरे पृष्ठ के स्क्रीनशॉट लीजियै. डेटा इस्तेमाल किये बिना एकरा ऑफलाइन पढियै या वेब पृष्ठ पर दुबारा जाय लअ टैप करियै</string>
   <string name="first_run_upgrade_page_title">हम अपनो के प्रतिक्रिया सुनलियै!</string>
   <string name="first_run_upgrade_page_text1">1. एके समय म %s मल्टीटास्क खुल रहल छै!</string>
   <string name="first_run_upgrade_page_text1_highlight">एकाधिको टैब्स</string>
@@ -167,12 +167,12 @@
   <string name="message_cannot_find_screenshot">ई स्क्रीनशॉट नै दिखायै सकै छै</string>
   <string name="remove">हटैइयै</string>
   <string name="privacy_policy_update_notification_title">उत्पाद अपडेट सूचना</string>
-  <string name="privacy_policy_update_notification_action">Firefox Rocket कअ तोहरो आरु हर एक खतिर बेटर बनबे लअ, हम अपनो गोपनीयता नीति मे बदलाओ करलियै यै. अधिक जानै लअ टेप करिइयै.</string>
+  <string name="privacy_policy_update_notification_action">Firefox Lite कअ तोहरो आरु हर एक खतिर सबसे अच्छा बनबे लअ, हम अपनो गोपनीयता नीति मे कुछ बदलाओ करलियै यै. अधिक जानै लअ टेप करिइयै.</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद छै?</string>
   <string name="rate_app_dialog_text_content">हमरो उत्पाद क चुने ल धन्यवाद. अपनो कअ प्रतिक्रिया हमारा ल जरुरी छै.</string>
-  <string name="rate_app_dialog_btn_go_rate">हौं, 5 सितारा रेट करियै!</string>
-  <string name="rate_app_notification_action_rate">5 सितारा रेट करियै</string>
-  <string name="rate_app_dialog_btn_feedback">नय,प्रतिक्रिया भेजिइयै.</string>
+  <string name="rate_app_dialog_btn_go_rate">रेट करियै</string>
+  <string name="rate_app_notification_action_rate">रेट करियै</string>
+  <string name="rate_app_dialog_btn_feedback">प्रतिक्रिया भेजिइयै</string>
   <string name="rate_app_notification_action_feedback">प्रतिक्रिया</string>
   <string name="share_app_dialog_text_title">संगी सँ %1$s शेयर करियै!</string>
   <string name="share_app_dialog_text_content">- तेज आरु हल्का\n- डेटा क बचत\n- शक्तिशाली स्क्रीनशॉट</string>
