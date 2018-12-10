@@ -32,8 +32,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-@Keep
-@RunWith(AndroidJUnit4.class)
 public class NavigationTest {
 
     @Rule
@@ -48,7 +46,6 @@ public class NavigationTest {
         activityTestRule.launchActivity(new Intent());
     }
 
-    @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
