@@ -63,6 +63,7 @@
 |Show SearchBar by clicking SEARCH_BUTTON|action|show|search_bar|"search_btn"|"" 
 |Add Tab from Toolbar|action|add|tab|"toolbar"|"" 
 |Add Tab from TabTray|action|add|tab|"tab_tray"|"" 
+|Enter Private Mode from TabTray|action|click|private_mode|"tab_tray"|"" 
 |Switch Tab From TabTray|action|change|tab|"tab_tray"|"" 
 |Remove Tab From TabTray|action|remove|tab|"tab_tray"|"" 
 |Swipe Tab From TabTray|action|swipe|tab|"tab_tray"|"" 

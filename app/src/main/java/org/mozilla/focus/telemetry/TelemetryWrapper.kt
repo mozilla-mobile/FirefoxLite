@@ -1165,6 +1165,18 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Enter Private Mode from TabTray",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.PRIVATE_MODE,
+            value = Value.TABTRAY,
+            extras = [])
+    @JvmStatic
+    fun privateModeTray() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PRIVATE_MODE, Value.TABTRAY).queue()
+    }
+
+    @TelemetryDoc(
             name = "Switch Tab From TabTray",
             category = Category.ACTION,
             method = Method.CHANGE,
@@ -1472,6 +1484,9 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
                 .extra(Extra.SOURCE, source).extra(Extra.VERSION, RATE_APP_NOTIFICATION_TELEMETRY_VERSION.toString())
                 .queue()
+        if (Value.POSITIVE == value) {
+            AdjustHelper.trackEvent(EVENT_FEEDBACK_POSITIVE)
+        }
     }
 
     @TelemetryDoc(
