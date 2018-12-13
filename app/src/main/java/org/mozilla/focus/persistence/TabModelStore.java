@@ -91,7 +91,10 @@ public class TabModelStore {
                     Session session = new Session(entity.getId(),
                             entity.getParentId(),
                             entity.getUrl());
-                    session.setTitle(entity.getTitle());
+                    // We seemed to have historically stored null into the DB. This patch help guarantee Session.title
+                    // will be non-null.
+                    final String title = entity.getTitle() == null ? "" : entity.getTitle();
+                    session.setTitle(title);
                     sessions.add(session);
                 }
 
