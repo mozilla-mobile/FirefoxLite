@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
@@ -37,6 +38,8 @@ import org.mozilla.focus.R;
 public class AnimatedProgressBar extends ProgressBar {
 
     private final static int INTEPOLATOR_NOT_EXIST = 0;
+
+    private final static int DEFAULT_RESOURCE_ID = 0;
 
     /**
      * Animation duration of progress changing.
@@ -257,6 +260,8 @@ public class AnimatedProgressBar extends ProgressBar {
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AnimatedProgressBar);
         final int duration = a.getInteger(R.styleable.AnimatedProgressBar_shiftDuration, 1000);
         final boolean wrap = a.getBoolean(R.styleable.AnimatedProgressBar_wrapShiftDrawable, false);
+        final int resId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, DEFAULT_RESOURCE_ID);
+
         @InterpolatorRes final int itplId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, INTEPOLATOR_NOT_EXIST);
         a.recycle();
 
@@ -293,10 +298,20 @@ public class AnimatedProgressBar extends ProgressBar {
             public void onAnimationRepeat(Animator animator) {
             }
         });
+
+        if (getProgress() == 0) {
+            // If the progress is 0 then we set the view to GONE immediately to avoid animating the
+            // invisible progress.
+            setVisibilityImmediately(View.GONE);
+        }
     }
 
     private void setVisibilityImmediately(int value) {
         super.setVisibility(value);
+        Drawable progressDrawable = getProgressDrawable();
+        if (progressDrawable != null) {
+            progressDrawable.setVisible(value == View.VISIBLE, true);
+        }
     }
 
     private void animateClosing() {
