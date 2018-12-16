@@ -72,7 +72,8 @@ class TabViewEngineObserver(
 
     override fun onGeolocationPermissionsShowPrompt(
         origin: String,
-        callback: GeolocationPermissions.Callback?) {
+        callback: GeolocationPermissions.Callback?
+    ) {
         session.notifyObserversExt { onGeolocationPermissionsShowPrompt(origin, callback) }
     }
 

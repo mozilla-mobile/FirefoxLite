@@ -239,8 +239,8 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     class Observer(
-            val fragment: BrowserFragment,
-            val sessionManager: SessionManager
+        val fragment: BrowserFragment,
+        val sessionManager: SessionManager
     ) : SessionManager.Observer, SessionExtension.Observer {
 
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) {

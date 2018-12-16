@@ -17,10 +17,10 @@ const val ID_EXTERNAL = "_open_from_external_"
 const val BLANK_URL = "about:blank"
 
 fun createOnRestoring(
-        initialUrl: String,
-        private: Boolean,
-        source: Source,
-        id: String
+    initialUrl: String,
+    private: Boolean,
+    source: Source,
+    id: String
 ): Session {
     return Session(initialUrl, private, source, id)
 }
@@ -33,7 +33,6 @@ var Session.favicon: Bitmap?
 
 val Session.engineSessionHolder: EngineSessionHolder
     get() = getOrPutExtension(this).engineSessionHolder
-
 
 fun Session.isFromExternal(): Boolean {
     return this.getParentId() == ID_EXTERNAL
@@ -90,8 +89,8 @@ class SessionExtension {
 
     interface Observer : Session.Observer {
         fun onGeolocationPermissionsShowPrompt(
-                origin: String,
-                callback: GeolocationPermissions.Callback?
+            origin: String,
+            callback: GeolocationPermissions.Callback?
         ) = Unit
 
         /**
@@ -116,4 +115,3 @@ class SessionExtension {
         fun onLongPress(session: Session, hitTarget: TabView.HitTarget) = Unit
     }
 }
-

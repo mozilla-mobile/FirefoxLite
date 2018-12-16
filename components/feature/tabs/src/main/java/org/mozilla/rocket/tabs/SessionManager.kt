@@ -285,7 +285,6 @@ class SessionManager @JvmOverloads constructor(
         session.engineSessionHolder.engineSession = engineSession.also {
             it.windowClient = WindowClient(session)
             it.engineSessionClient = Client()
-
         }
     }
 

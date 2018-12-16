@@ -19,8 +19,8 @@ import org.mozilla.rocket.tabs.utils.TabUtil
  * Contains the details of using Session and SessionManager
  */
 class SessionFeature(
-        val sessionManager: SessionManager,
-        val webViewSlot: ViewGroup
+    val sessionManager: SessionManager,
+    val webViewSlot: ViewGroup
 ) {
 
     var canGoForward: Boolean = false
@@ -113,7 +113,7 @@ class SessionFeature(
         return if (tabView is WebView) tabView else null
     }
 
-    fun existsFullScreen() = focusEngineSession?.tabView?.performExitFullScreen();
+    fun existsFullScreen() = focusEngineSession?.tabView?.performExitFullScreen()
 
     fun setContentBlockingEnabled(enabled: Boolean) {
         // TODO: Better if we can move this logic to some setting-like classes, and provider interface
