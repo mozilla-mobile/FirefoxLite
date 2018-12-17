@@ -68,7 +68,7 @@ class AdjustBrightnessDialog : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        val fromSetting = Intent.isNightModeBrightnessSourceFromSetting(intent)
+        val fromSetting = NightMode.isNightModeBrightnessSourceFromSetting(intent)
         val layoutParams = window.attributes
         Settings.getInstance(this).nightModeBrightnessValue = layoutParams.screenBrightness
         TelemetryWrapper.nightModeBrightnessChangeTo(Constants.valueToProgress(layoutParams.screenBrightness), fromSetting)

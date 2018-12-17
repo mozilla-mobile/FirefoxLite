@@ -27,6 +27,7 @@ import org.mozilla.focus.utils.DialogUtils;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
+import org.mozilla.rocket.nightmode.NightMode;
 
 import java.util.Locale;
 
@@ -71,7 +72,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             startActivity(intent);
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_night_mode_brightness))) {
             Settings.getInstance(getActivity()).setNightModeSpotlight(true);
-            startActivity(org.mozilla.rocket.nightmode.Intent.Companion.getNightModeBrightnessIntent(true));
+            startActivity(NightMode.getNightModeBrightnessIntent(true));
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_default_browser))) {
             TelemetryWrapper.clickDefaultBrowserInSetting();
         }
