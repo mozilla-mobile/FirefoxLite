@@ -284,6 +284,9 @@
     <string name="undo">Undo</string>
     <string name="open">Open</string>
 
+    <!-- The message that indicates users can long press this menu button to see all download status in the panel. -->
+    <string name="menu_longpress_downloads">Long press to open Downloads</string>
+   
     <!-- Download status-->
     <!-- File download status is paused -->
     <string name="pause">paused</string>
