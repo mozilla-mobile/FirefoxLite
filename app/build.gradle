@@ -337,14 +337,24 @@ android.applicationVariants.all { variant ->
                 buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'null'
             }
             println "Added adjust token set from environment variable"
+
+            def tracker = System.getenv("ADJUST_SIDELOAD_TRACKER") ?: null
+            if (tracker != null) {
+                buildConfigField 'String', 'ADJUST_DEFAULT_TRACKER', '"' + tracker + '"'
+            } else {
+                buildConfigField 'String', 'ADJUST_DEFAULT_TRACKER', 'null'
+                logger.error(variant.getName() + ": Not setting adjust default tracker (environment variable not set)")
+            }
         } else {
             buildConfigField 'String', 'ADJUST_TOKEN', 'null'
             buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'null'
+            buildConfigField 'String', 'ADJUST_DEFAULT_TRACKER', 'null'
             println("Not setting adjust token (environment variable not set)")
         }
     } else {
         buildConfigField 'String', 'ADJUST_TOKEN', 'null'
         buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'null'
+        buildConfigField 'String', 'ADJUST_DEFAULT_TRACKER', 'null'
 
         println("Not setting adjust token (Not a focus release build)")
     }
