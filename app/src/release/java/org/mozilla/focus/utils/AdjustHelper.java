@@ -38,6 +38,9 @@ public class AdjustHelper {
                 true);
 
         config.setLogLevel(LogLevel.SUPRESS);
+        if (!TextUtils.isEmpty(BuildConfig.ADJUST_DEFAULT_TRACKER)) {
+            config.setDefaultTracker(BuildConfig.ADJUST_DEFAULT_TRACKER);
+        }
 
         Adjust.onCreate(config);
 
