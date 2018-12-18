@@ -58,7 +58,7 @@ android {
             enableSplit = false
         }
         density {
-            enableSplit = true
+            enableSplit = false
         }
         abi {
             enableSplit = true
