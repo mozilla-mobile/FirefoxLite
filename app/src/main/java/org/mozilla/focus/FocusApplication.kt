@@ -5,8 +5,7 @@
 
 package org.mozilla.focus
 
-import android.app.Activity
-import android.os.Bundle
+import android.content.Context
 import android.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
 import org.mozilla.focus.download.DownloadInfoManager
@@ -18,33 +17,12 @@ import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.rocket.partner.PartnerActivator
-import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
-import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
-import org.mozilla.rocket.privately.PrivateModeActivity
-import java.io.File
+import org.mozilla.rocket.privately.PrivateModeContextWrapper
 
 class FocusApplication : LocaleAwareApplication() {
 
     lateinit var partnerActivator: PartnerActivator
-    var isInPrivateProcess = false
-
-    // Override getCacheDir cause when we create a WebView, it'll asked the application's
-    // getCacheDir() method and create WebView specific cache.
-    override fun getCacheDir(): File {
-        if (isInPrivateProcess) {
-            return File(super.getCacheDir().absolutePath + "-" + PRIVATE_PROCESS_NAME)
-        }
-        return super.getCacheDir()
-    }
-
-    // Override getCacheDir cause when we create a WebView, it'll asked the application's
-    // getDir() method and create WebView specific files.
-    override fun getDir(name: String?, mode: Int): File {
-        if (name == WEBVIEW_FOLDER_NAME && isInPrivateProcess) {
-            return super.getDir("$name-$PRIVATE_PROCESS_NAME", mode)
-        }
-        return super.getDir(name, mode)
-    }
+    lateinit var privateWrappedContext: PrivateModeContextWrapper
 
     override fun onCreate() {
         super.onCreate()
@@ -75,45 +53,11 @@ class FocusApplication : LocaleAwareApplication() {
         partnerActivator = PartnerActivator(this)
         partnerActivator.launch()
 
-        monitorPrivateProcess()
+        privateWrappedContext.inject(this)
     }
 
-    /**
-     *   We use PrivateModeActivity's existence to determine if we are in private mode (process)  or not. We don't use
-     *   ActivityManager.getRunningAppProcesses() cause it sometimes return null.
-     *
-     *   The Application class should also rely on this flag to determine if it want to override getDir() and getCacheDir().
-     *
-     *  Note: we can be in private mode process but don't have any private session yet. ( e.g. We launched
-     *  PrivateModeActivity but haven't create any tab yet)
-     *
-     */
-    private fun monitorPrivateProcess() {
-        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
-            override fun onActivityPaused(activity: Activity?) {
-            }
-
-            override fun onActivityResumed(activity: Activity?) {
-            }
-
-            override fun onActivityStarted(activity: Activity?) {
-            }
-
-            override fun onActivityDestroyed(activity: Activity?) {
-            }
-
-            override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
-            }
-
-            override fun onActivityStopped(activity: Activity?) {
-            }
-
-            override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
-                // once PrivateModeActivity exist, this process is for private mode
-                if (activity is PrivateModeActivity) {
-                    isInPrivateProcess = true
-                }
-            }
-        })
+    override fun attachBaseContext(base: Context?) {
+        privateWrappedContext = PrivateModeContextWrapper(base!!)
+        super.attachBaseContext(privateWrappedContext)
     }
 }
