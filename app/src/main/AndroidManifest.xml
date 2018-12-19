@@ -210,6 +210,9 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="org.mozilla.rocket.periodic.PeriodicReceiver"
+            android:exported="false"
+            android:enabled="true" />
 
         <service
             android:name="org.mozilla.focus.components.RelocateService"

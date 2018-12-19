@@ -10,6 +10,7 @@ object Versions {
     const val support = "28.0.0"
     const val constraint = "1.1.2"
     const val arch_core = "1.1.1"
+    const val arch_work = "1.0.0-beta01"
     const val lifecycle = "1.1.1"
     const val room = "1.1.1"
     const val glide = "4.0.0"
