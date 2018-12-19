@@ -6,6 +6,7 @@
 package org.mozilla.focus
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
@@ -18,6 +19,7 @@ import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.rocket.partner.PartnerActivator
+import org.mozilla.rocket.periodic.PeriodicReceiver
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import org.mozilla.rocket.privately.PrivateModeActivity
@@ -76,6 +78,8 @@ class FocusApplication : LocaleAwareApplication() {
         partnerActivator.launch()
 
         monitorPrivateProcess()
+
+        sendBroadcast(Intent(this, PeriodicReceiver::class.java))
     }
 
     /**
