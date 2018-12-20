@@ -22,6 +22,7 @@ import org.mozilla.rocket.privately.PrivateModeContextWrapper
 class FocusApplication : LocaleAwareApplication() {
 
     lateinit var partnerActivator: PartnerActivator
+    lateinit var base: Context
     lateinit var privateWrappedContext: PrivateModeContextWrapper
 
     override fun onCreate() {
@@ -56,8 +57,13 @@ class FocusApplication : LocaleAwareApplication() {
         privateWrappedContext.inject(this)
     }
 
-    override fun attachBaseContext(base: Context?) {
-        privateWrappedContext = PrivateModeContextWrapper(base!!)
+    override fun getBaseContext(): Context {
+        return base
+    }
+
+    override fun attachBaseContext(baseContext: Context?) {
+        base = baseContext!!
+        privateWrappedContext = PrivateModeContextWrapper(base)
         super.attachBaseContext(privateWrappedContext)
     }
 }
