@@ -80,6 +80,7 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
@@ -99,6 +100,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+import static org.mozilla.rocket.privately.PrivateMode.INTENT_EXTRA_EXIT;
 
 public class MainActivity extends BaseActivity implements FragmentListener,
         ThemeManager.ThemeHost,
@@ -701,7 +703,15 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     private void onExitClicked() {
         GeoPermissionCache.clear();
-        finish();
+        // if there's no private session, we just call finish. Otherwise, we ask PrivateModeActivity to drop
+        // BrowserFragment and show the home screen from there.
+        if (PrivateMode.hasPrivateSession(this)) {
+            final Intent intent = PrivateSessionNotificationService.buildIntent(this, true);
+            intent.setAction(INTENT_EXTRA_EXIT);
+            startActivity(intent);
+        } else {
+            startActivity(ShortcutUtils.getShowHomeIntent());
+        }
     }
 
 

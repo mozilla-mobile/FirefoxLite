@@ -24,6 +24,7 @@ class PrivateMode {
         const val PREF_KEY_SANITIZE_REMINDER = "pref_key_sanitize_reminder"
 
         const val INTENT_EXTRA_SANITIZE = "intent_extra_sanitize"
+        const val INTENT_EXTRA_EXIT = "intent_extra_exit"
         const val PRIVATE_PROCESS_NAME = "private_mode"
         const val WEBVIEW_FOLDER_NAME = "webview"
 

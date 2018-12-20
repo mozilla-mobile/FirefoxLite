@@ -20,6 +20,7 @@ import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.navigation.ScreenNavigator.URL_INPUT_FRAGMENT_TAG
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
+import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
@@ -215,6 +216,12 @@ class PrivateModeActivity : BaseActivity(),
             stopPrivateMode()
             Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
             finishAndRemoveTask()
+            return true
+        }
+        // MainActivity wants to call onExit. We drop the browser and then show Android's home screen.
+        if (intent?.action == PrivateMode.INTENT_EXTRA_EXIT) {
+            dropBrowserFragment()
+            startActivity(ShortcutUtils.getShowHomeIntent())
             return true
         }
         return false

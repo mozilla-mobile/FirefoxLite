@@ -58,9 +58,7 @@ public class ShortcutUtils {
                 .build();
 
         // Display home screen after add to home screen
-        final Intent showHome = new Intent(Intent.ACTION_MAIN);
-        showHome.addCategory(Intent.CATEGORY_HOME);
-        showHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        final Intent showHome = getShowHomeIntent();
         final PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, showHome, PendingIntent.FLAG_UPDATE_CURRENT);
         final IntentSender intentSender = pendingIntent.getIntentSender();
 
@@ -73,6 +71,14 @@ public class ShortcutUtils {
             ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender);
         }
 
+    }
+
+    @NonNull
+    public static Intent getShowHomeIntent() {
+        final Intent showHome = new Intent(Intent.ACTION_MAIN);
+        showHome.addCategory(Intent.CATEGORY_HOME);
+        showHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return showHome;
     }
 
     @TargetApi(26) // Add this to make lint happy
