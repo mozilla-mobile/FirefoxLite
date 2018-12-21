@@ -85,11 +85,6 @@ class BrowserFragment : LocaleAwareFragment(),
             if (BuildConfig.DEBUG) {
                 throw RuntimeException("No activity to use")
             }
-        } else {
-            if (fragmentActivity is TabsSessionProvider.SessionHost) {
-                sessionManager = fragmentActivity.sessionManager
-                observer = Observer(this, loadStateListener)
-            }
         }
     }
 
@@ -124,7 +119,7 @@ class BrowserFragment : LocaleAwareFragment(),
             insets
         }
         sessionManager = TabsSessionProvider.getOrThrow( activity)
-        observer = Observer(this)
+        observer = Observer(this, loadStateListener)
         sessionManager.register(observer)
         sessionManager.focusSession?.register(observer)
 
