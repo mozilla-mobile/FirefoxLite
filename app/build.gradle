@@ -110,6 +110,7 @@ android {
     testBuildType "firebase"
 
     testOptions {
+        animationsDisabled = true
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
         unitTests.all {
