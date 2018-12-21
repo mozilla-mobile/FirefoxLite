@@ -48,6 +48,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DownloadInfoManager.getInstance().markAllItemsAreRead(null);
         mDownloadListAdapter = new DownloadListAdapter(getContext());
         mDownloadReceiver = new BroadcastReceiver() {
             @Override

@@ -46,11 +46,16 @@ import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import org.jetbrains.annotations.NotNull;
+import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.EnqueueDownloadTask;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
@@ -73,6 +78,8 @@ import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FindInPage;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
+import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
+import org.mozilla.rocket.download.DownloadIndicatorLiveData;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedLinearLayout;
@@ -99,6 +106,7 @@ import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
  * Fragment for displaying the browser UI.
  */
 public class BrowserFragment extends LocaleAwareFragment implements View.OnClickListener,
+        View.OnLongClickListener,
         ScreenNavigator.BrowserScreen,
         LifecycleOwner,
         BackKeyHandleable {
@@ -181,6 +189,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ThemedLinearLayout toolbarRoot;
     private ThemedView bottomMenuDivider;
     private ThemedView urlBarDivider;
+    private LottieAnimationView downloadingIndicator;
+    private ImageView downloadUnreadIndicator;
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -414,6 +424,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
         if (menuBtn != null) {
             menuBtn.setOnClickListener(this);
+            menuBtn.setOnLongClickListener(this);
         }
 
         siteIdentity = view.findViewById(R.id.site_identity);
@@ -433,6 +444,26 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
+
+        downloadingIndicator = view.findViewById(R.id.downloading_indicator);
+        downloadUnreadIndicator = view.findViewById(R.id.download_unread_indicator);
+
+        final ViewGroup browserRoot = view.findViewById(R.id.browser_root_view);
+
+        Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicator().observe(getViewLifecycleOwner(), (Integer status) -> {
+            if (status != null) {
+                downloadingIndicator.setVisibility(status == DownloadIndicatorLiveData.Constants.STATUS_DOWNLOADING ? View.VISIBLE : View.GONE);
+                downloadUnreadIndicator.setVisibility(status == DownloadIndicatorLiveData.Constants.STATUS_UNREAD ? View.VISIBLE : View.GONE);
+                if (downloadingIndicator.getVisibility() == View.VISIBLE && !downloadingIndicator.isAnimating()) {
+                    downloadingIndicator.playAnimation();
+                }
+                final Settings.EventHistory eventHistory = Settings.getInstance(getActivity()).getEventHistory();
+                if (!eventHistory.contains(Settings.Event.ShowDownloadIndicatorIntro) && status != DownloadIndicatorLiveData.Constants.STATUS_DEFAULT) {
+                    eventHistory.add(Settings.Event.ShowDownloadIndicatorIntro);
+                    DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(getFragment(), menuBtn, browserRoot);
+                }
+            }
+        });
         return view;
     }
 
@@ -791,7 +822,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         if (SupportUtils.isUrl(url)) {
             if (openNewTab) {
                 sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true));
-
+                dismissDownloadIndicatorIntroView();
                 // In case we call SessionManager#addTab(), which is an async operation calls back in the next
                 // message loop. By posting this runnable we can call back in the same message loop with
                 // TabsContentListener#onFocusChanged(), which is when the view is ready and being attached.
@@ -852,6 +883,21 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_menu:
+                final Integer status = Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicator().getValue();
+                if (status != null && status != DownloadIndicatorLiveData.Constants.STATUS_DEFAULT) {
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Unhandled long click menu item in BrowserFragment");
+        }
+        return false;
     }
 
     @NonNull
@@ -1553,5 +1599,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         ViewUtils.updateStatusBarStyle(!enable, getActivity().getWindow());
     }
 
+    private void dismissDownloadIndicatorIntroView() {
+        final View view = getView().findViewById(R.id.download_indicator_intro_root);
+        if (view != null) {
+            view.setVisibility(View.GONE);
+        }
+    }
 }
 

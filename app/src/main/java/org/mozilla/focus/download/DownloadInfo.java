@@ -33,6 +33,9 @@ public class DownloadInfo {
     private String MimeType = "";
     private String FileUri = "";
     private String FileExtension = "";
+    private double sizeSoFar;
+    private double sizeTotal;
+    private boolean isRead;
 
     public DownloadInfo() {
     }
@@ -151,4 +154,27 @@ public class DownloadInfo {
         return getStatus() != STATUS_DELETED;
     }
 
+    public void setSizeSoFar(double sizeSoFar) {
+        this.sizeSoFar = sizeSoFar;
+    }
+
+    public double getSizeSoFar() {
+        return sizeSoFar;
+    }
+
+    public void setSizeTotal(double sizeTotal) {
+        this.sizeTotal = sizeTotal;
+    }
+
+    public double getSizeTotal() {
+        return sizeTotal;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 }

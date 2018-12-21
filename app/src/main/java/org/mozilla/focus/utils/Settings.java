@@ -269,6 +269,8 @@ public class Settings {
         // Indicate the express vpn app was downloaded before, it may or may not in the device right now
         public static final String VpnAppWasDownloaded = "vpn_app_was_downloaded";
         public static final String VpnRecommenderIgnore = "vpn_recommender_ignore";
+
+        public static final String ShowDownloadIndicatorIntro = "download_indicator_intro";
     }
 
     public static class EventHistory {

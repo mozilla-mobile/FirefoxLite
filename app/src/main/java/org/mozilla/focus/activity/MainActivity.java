@@ -987,6 +987,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             case SHOW_MY_SHOT_ON_BOARDING:
                 showMyShotOnBoarding();
                 break;
+            case SHOW_DOWNLOAD_PANEL:
+                onDownloadClicked();
+                break;
             default:
                 break;
         }
@@ -1198,5 +1201,4 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         pendingMyShotOnBoarding = true;
         showMenu();
     }
-
 }

@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.provider;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -18,9 +19,9 @@ import static org.mozilla.focus.provider.DownloadContract.Download;
 public class DownloadInfoDbHelper {
     // Database Info
     private static final String DATABASE_NAME = "DownloadInfo.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int VERSION_INIT = 1;
+    private static final int VERSION_ADD_STATUS_AND_UNREAD = VERSION_INIT + 1;
 
-    private static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE ";
 
     private static DownloadInfoDbHelper sInstance;
@@ -39,7 +40,9 @@ public class DownloadInfoDbHelper {
             String CREATE_TABLE = CREATE_TABLE_IF_NOT_EXISTS + Download.TABLE_DOWNLOAD + "("
                     + Download._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Download.DOWNLOAD_ID + " INTEGER,"
-                    + Download.FILE_PATH + " TEXT"
+                    + Download.FILE_PATH + " TEXT,"
+                    + Download.STATUS + " INTEGER,"
+                    + Download.IS_READ + " INTEGER DEFAULT 0" // Download item default is unread
                     + ")";
 
             sqLiteDatabase.execSQL(CREATE_TABLE);
@@ -47,17 +50,25 @@ public class DownloadInfoDbHelper {
 
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-            if (oldVersion != newVersion) {
-                sqLiteDatabase.execSQL(DROP_TABLE_IF_EXISTS + Download.TABLE_DOWNLOAD);
-                onCreate(sqLiteDatabase);
-            }
+            if (oldVersion < VERSION_ADD_STATUS_AND_UNREAD) {
+                // add new column status and update all legacy data to 'STATUS_SUCCESSFUL'
+                sqLiteDatabase.execSQL("ALTER TABLE " +  Download.TABLE_DOWNLOAD + " ADD " + Download.STATUS + " INTEGER;");
+                sqLiteDatabase.execSQL("UPDATE " + Download.TABLE_DOWNLOAD + " SET " + Download.STATUS + " = " + String.valueOf(DownloadManager.STATUS_SUCCESSFUL) + ";");
 
+                // add new column unread and mark all legacy data 'IS_READ' = 1
+                sqLiteDatabase.execSQL("ALTER TABLE " +  Download.TABLE_DOWNLOAD + " ADD " + Download.IS_READ + " INTEGER DEFAULT 0;");
+                sqLiteDatabase.execSQL("UPDATE " + Download.TABLE_DOWNLOAD + " SET " + Download.IS_READ + " = 1;");
+            }
         }
     }
 
     private DownloadInfoDbHelper(Context context) {
 
-        mOpenHelper = new OpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mOpenHelper = new OpenHelper(context, DATABASE_NAME, null, getDatabaseVersion());
+    }
+
+    private int getDatabaseVersion() {
+        return VERSION_ADD_STATUS_AND_UNREAD;
     }
 
     public static synchronized DownloadInfoDbHelper getsInstance(Context context) {

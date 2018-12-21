@@ -170,7 +170,7 @@ public class DownloadInfoManager {
     }
 
     public interface AsyncQueryListener {
-        void onQueryComplete(List downloadInfoList);
+        void onQueryComplete(List<DownloadInfo> downloadInfoList);
     }
 
 
@@ -212,6 +212,17 @@ public class DownloadInfoManager {
     public void queryByRowId(Long rowId, AsyncQueryListener listener) {
         String uri = Download.CONTENT_URI.toString();
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, Download._ID + "==?", new String[]{Long.toString(rowId)}, null);
+    }
+
+    public void queryDownloadingAndUnreadIds(AsyncQueryListener listener) {
+        final String uri = Download.CONTENT_URI.toString();
+        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, Download.STATUS + "!=? or " + Download.IS_READ + "=?", new String[]{String.valueOf(DownloadManager.STATUS_SUCCESSFUL), String.valueOf("0")}, null);
+    }
+
+    public void markAllItemsAreRead(AsyncUpdateListener listener) {
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(Download.IS_READ, "1");
+        mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, contentValues, Download.IS_READ + " = ?", new String[]{String.valueOf("0")});
     }
 
     public boolean recordExists(long downloadId) {
@@ -307,9 +318,10 @@ public class DownloadInfoManager {
 
     private static ContentValues getContentValuesFromDownloadInfo(DownloadInfo downloadInfo) {
         final ContentValues contentValues = new ContentValues();
-
         contentValues.put(Download.DOWNLOAD_ID, downloadInfo.getDownloadId());
         contentValues.put(Download.FILE_PATH, downloadInfo.getFileUri());
+        contentValues.put(Download.STATUS, downloadInfo.getStatus());
+        contentValues.put(Download.IS_READ, downloadInfo.isRead());
 
         return contentValues;
     }
@@ -329,6 +341,8 @@ public class DownloadInfoManager {
         info.setFileName(pojo.fileName);
         info.setDownloadId(pojo.downloadId);
         info.setSize(pojo.length);
+        info.setSizeTotal(pojo.length);
+        info.setSizeSoFar(pojo.sizeSoFar);
         info.setStatusInt(pojo.status);
         info.setDate(pojo.timeStamp);
         info.setMediaUri(pojo.mediaUri);
@@ -370,13 +384,16 @@ public class DownloadInfoManager {
                 pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));
                 pojo.status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
                 pojo.length = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                pojo.sizeSoFar = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 pojo.timeStamp = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
                 pojo.mediaUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI));
                 pojo.fileUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                String extension = MimeTypeMap.getFileExtensionFromUrl(URLEncoder.encode(pojo.fileUri, "UTF-8"));
-                pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase(Locale.ROOT));
-                pojo.fileExtension = extension;
-                pojo.fileName = new File(Uri.parse(pojo.fileUri).getPath()).getName();
+                if (pojo.fileUri != null) {
+                    final String extension = MimeTypeMap.getFileExtensionFromUrl(URLEncoder.encode(pojo.fileUri, "UTF-8"));
+                    pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase(Locale.ROOT));
+                    pojo.fileExtension = extension;
+                    pojo.fileName = new File(Uri.parse(pojo.fileUri).getPath()).getName();
+                }
             } else {
                 // No pojo
                 return null;
@@ -397,6 +414,7 @@ public class DownloadInfoManager {
         String desc;
         String mime;
         double length;
+        double sizeSoFar;
         int status;
         long timeStamp;
         String mediaUri;
