@@ -19,8 +19,11 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
+import javax.annotation.Nullable;
+
 public class AdjustHelper {
 
+    @Nullable
     private static FocusApplication focusApplication;
 
     public static void setupAdjustIfNeeded(FocusApplication application) {
@@ -53,7 +56,7 @@ public class AdjustHelper {
     }
 
     public static void trackEvent(String eventToken) {
-        if (TelemetryWrapper.isTelemetryEnabled(focusApplication)) {
+        if (focusApplication != null && TelemetryWrapper.isTelemetryEnabled(focusApplication)) {
             Adjust.trackEvent(new AdjustEvent(eventToken));
         }
     }
