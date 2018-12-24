@@ -224,9 +224,14 @@ object TelemetryWrapper {
         DISMISS
     }
 
+    // context passed here is nullable cause it may come from Java code
     @JvmStatic
-    fun isTelemetryEnabled(context: Context): Boolean {
-        return Inject.isTelemetryEnabled(context)
+    fun isTelemetryEnabled(context: Context?): Boolean {
+        return if (context == null) {
+            false
+        } else {
+            Inject.isTelemetryEnabled(context)
+        }
     }
 
     @JvmStatic
