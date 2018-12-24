@@ -26,7 +26,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isSelected;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static org.hamcrest.core.AllOf.allOf;
 
 @Keep
@@ -64,7 +63,7 @@ public class TurboModeTest {
         onView(allOf(withId(R.id.finish), isDisplayed())).perform(click());
 
         // Open home menu
-        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
+        AndroidTestUtils.tapHomeMenuButton();
 
         // Check if turbo mode is on
         onView(withId(R.id.menu_turbomode)).check(matches(isDisplayed())).check(matches(isSelected()));

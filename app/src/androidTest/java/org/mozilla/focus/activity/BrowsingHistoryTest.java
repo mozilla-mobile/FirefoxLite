@@ -143,7 +143,7 @@ public class BrowsingHistoryTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Open menu
-        onView(allOf(withId(R.id.btn_menu), isDisplayed())).perform(click());
+        AndroidTestUtils.tapBrowserMenuButton();
 
         // Open history panel
         onView(allOf(withId(R.id.menu_history), isDisplayed())).perform(click());
@@ -266,7 +266,7 @@ public class BrowsingHistoryTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Open menu
-        onView(withId(R.id.btn_menu)).perform(click());
+        AndroidTestUtils.tapBrowserMenuButton();
 
         // Open history panel
         onView(withId(R.id.menu_history)).perform(click());

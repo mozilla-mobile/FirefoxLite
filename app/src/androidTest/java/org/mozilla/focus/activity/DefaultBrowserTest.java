@@ -70,7 +70,7 @@ public class DefaultBrowserTest {
         final String prefName = activity.getString(R.string.pref_key_default_browser);
 
         // Click on the menu item
-        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
+        AndroidTestUtils.tapHomeMenuButton();
 
         // Click on Settings
         onView(withId(R.id.menu_preferences)).perform(click());
