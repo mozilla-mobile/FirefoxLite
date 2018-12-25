@@ -233,13 +233,6 @@ public class AnimatedProgressBar extends ProgressBar {
         mIsRtl = (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL);
     }
 
-    @Override
-    public Parcelable onSaveInstanceState() {
-        // Force update as 0 (Don't save state) for ProgressBar to avoid 0 -> 100 end animation
-        setProgress(0);
-        return super.onSaveInstanceState();
-    }
-
     private void cancelAnimations() {
         if (mPrimaryAnimator != null) {
             mPrimaryAnimator.cancel();
@@ -261,6 +254,9 @@ public class AnimatedProgressBar extends ProgressBar {
         a.recycle();
 
         setProgressDrawable(buildDrawable(getProgressDrawable(), wrap, duration, itplId));
+        if (getProgress() == 0) {
+            setVisibilityImmediately(GONE);
+        }
 
         mPrimaryAnimator = createAnimator(getMax(), mListener);
 
@@ -297,6 +293,11 @@ public class AnimatedProgressBar extends ProgressBar {
 
     private void setVisibilityImmediately(int value) {
         super.setVisibility(value);
+        if (value == GONE) {
+            getProgressDrawable().setVisible(false, false);
+        } else {
+            getProgressDrawable().setVisible(true, true);
+        }
     }
 
     private void animateClosing() {
