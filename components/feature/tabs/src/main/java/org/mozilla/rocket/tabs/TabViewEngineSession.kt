@@ -118,7 +118,7 @@ class TabViewEngineSession constructor(
         ): Boolean
     }
 
-    class ViewClient(private val es: TabViewEngineSession) : TabViewClient() {
+    class ViewClient(private val es: TabViewEngineSession) : TabViewClient {
         override fun onPageStarted(url: String?) {
             es.notifyObservers { onLoadingStateChange(true) }
             url?.let { es.notifyObservers { onLocationChange(it) } }
@@ -154,7 +154,7 @@ class TabViewEngineSession constructor(
         }
     }
 
-    class ChromeClient(private val es: TabViewEngineSession) : TabChromeClient() {
+    class ChromeClient(private val es: TabViewEngineSession) : TabChromeClient {
         override fun onCreateWindow(
             isDialog: Boolean,
             isUserGesture: Boolean,

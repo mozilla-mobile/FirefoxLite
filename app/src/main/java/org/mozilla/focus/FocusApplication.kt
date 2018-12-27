@@ -9,6 +9,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
+import dagger.android.AndroidInjector
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -23,7 +24,41 @@ import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import org.mozilla.rocket.privately.PrivateModeActivity
 import java.io.File
 
+
+import android.content.Context
+import dagger.Binds
+import dagger.Component
+import dagger.Module
+import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Qualifier
+import javax.inject.Singleton
+
+@Component(
+    modules = [AppModule::class]
+)
+interface AppComponent : AndroidInjector<FocusApplication> {
+
+    @Component.Builder
+    abstract class Builder : AndroidInjector.Builder<FocusApplication>()
+}
+
+@Module(includes = [AndroidSupportInjectionModule::class])
+abstract class AppModule {
+
+    @Singleton
+    @Binds
+    @AppContext
+    abstract fun provideContext(app: FocusApplication): Context
+}
+
+@Qualifier
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+annotation class AppContext
+
 class FocusApplication : LocaleAwareApplication() {
+
+
+
 
     lateinit var partnerActivator: PartnerActivator
     var isInPrivateProcess = false
@@ -116,4 +151,5 @@ class FocusApplication : LocaleAwareApplication() {
             }
         })
     }
+
 }

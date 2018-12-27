@@ -8,25 +8,19 @@ package org.mozilla.rocket.tabs;
 /**
  * An abstract layer of @see{android.webkit.WebViewClient}
  */
-public class TabViewClient {
+public interface TabViewClient {
 
-    public void onPageStarted(String url) {
-    }
+    void onPageStarted(String url);
 
-    public void onPageFinished(boolean isSecure) {
-    }
+    void onPageFinished(boolean isSecure) ;
 
-    public void onURLChanged(String url) {
-    }
+    void onURLChanged(String url);
 
     /**
      * Return true if the URL was handled, false if we should continue loading the current URL.
      */
-    public boolean handleExternalUrl(String url) {
-        return false;
-    }
+    boolean handleExternalUrl(String url);
 
 
-    public void updateFailingUrl(String url, boolean updateFromError) {
-    }
+    void updateFailingUrl(String url, boolean updateFromError) ;
 }

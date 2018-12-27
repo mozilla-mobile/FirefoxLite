@@ -18,17 +18,13 @@ import android.webkit.WebChromeClient;
 /**
  * An abstract layer of @see{android.webkit.WebChromeClient}
  */
-public class TabChromeClient {
+public interface TabChromeClient {
 
-    public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, Message msg) {
-        return false;
-    }
+    public boolean onCreateWindow(boolean isDialog, boolean isUserGesture, Message msg);
 
-    public void onCloseWindow(TabView tabView) {
-    }
+    public void onCloseWindow(TabView tabView);
 
-    public void onProgressChanged(int progress) {
-    }
+    public void onProgressChanged(int progress);
 
 
     /**
@@ -36,18 +32,13 @@ public class TabChromeClient {
      */
     public boolean onShowFileChooser(TabView tabView,
                                      @Nullable ValueCallback<Uri[]> filePathCallback,
-                                     @Nullable WebChromeClient.FileChooserParams fileChooserParams) {
-        return false;
-    }
+                                     @Nullable WebChromeClient.FileChooserParams fileChooserParams);
 
-    public void onReceivedTitle(TabView view, String title) {
-    }
+    void onReceivedTitle(TabView view, String title);
 
-    public void onReceivedIcon(TabView view, Bitmap icon) {
-    }
+    public void onReceivedIcon(TabView view, Bitmap icon);
 
-    public void onLongPress(TabView.HitTarget hitTarget) {
-    }
+    public void onLongPress(TabView.HitTarget hitTarget);
 
     /**
      * Notify the host application that the current page has entered full screen mode.
@@ -57,8 +48,7 @@ public class TabChromeClient {
      * Some TabView implementations may pass a custom View which contains the web contents in
      * full screen mode.
      */
-    public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback, @Nullable View view) {
-    }
+    public void onEnterFullScreen(@NonNull TabView.FullscreenCallback callback, @Nullable View view);
 
     /**
      * Notify the host application that the current page has exited full screen mode.
@@ -66,9 +56,7 @@ public class TabChromeClient {
      * If a View was passed when the application entered full screen mode then this view must
      * be hidden now.
      */
-    public void onExitFullScreen() {
-    }
+    public void onExitFullScreen();
 
-    public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-    }
+    public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback);
 }

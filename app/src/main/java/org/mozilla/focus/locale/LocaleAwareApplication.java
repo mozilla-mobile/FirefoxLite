@@ -7,8 +7,9 @@ package org.mozilla.focus.locale;
 
 import android.app.Application;
 import android.content.res.Configuration;
+import dagger.android.support.DaggerApplication;
 
-public class LocaleAwareApplication extends Application {
+abstract public class LocaleAwareApplication extends Application {
     private boolean mInBackground;
 
     @Override
