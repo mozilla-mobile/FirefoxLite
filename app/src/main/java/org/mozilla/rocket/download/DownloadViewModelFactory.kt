@@ -11,6 +11,8 @@ class DownloadViewModelFactory private constructor(private val application: Appl
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DownloadIndicatorViewModel::class.java)) {
             return DownloadIndicatorViewModel(application, repository) as T
+        } else if (modelClass.isAssignableFrom(DownloadInfoViewModel::class.java)) {
+            return DownloadInfoViewModel(application, repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

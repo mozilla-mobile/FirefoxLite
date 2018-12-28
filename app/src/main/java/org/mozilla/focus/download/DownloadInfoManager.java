@@ -222,7 +222,7 @@ public class DownloadInfoManager {
     public void markAllItemsAreRead(AsyncUpdateListener listener) {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(Download.IS_READ, "1");
-        mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, contentValues, Download.IS_READ + " = ?", new String[]{String.valueOf("0")});
+        mQueryHandler.startUpdate(TOKEN, listener, Download.CONTENT_URI, contentValues, Download.STATUS + "=? and " + Download.IS_READ + " = ?", new String[]{String.valueOf(DownloadManager.STATUS_SUCCESSFUL), String.valueOf("0")});
     }
 
     public boolean recordExists(long downloadId) {

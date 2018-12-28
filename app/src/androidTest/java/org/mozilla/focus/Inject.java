@@ -21,6 +21,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.download.DownloadInfoViewModel;
 import org.mozilla.rocket.download.DownloadViewModelFactory;
 
 public class Inject {
@@ -105,5 +106,10 @@ public class Inject {
     public static DownloadIndicatorViewModel obtainDownloadIndicatorViewModel(FragmentActivity activity) {
         DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance(activity.getApplication());
         return ViewModelProviders.of(activity, factory).get(DownloadIndicatorViewModel.class);
+    }
+
+    public static DownloadInfoViewModel obtainDownloadInfoViewModel(FragmentActivity activity) {
+        DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance(activity.getApplication());
+        return ViewModelProviders.of(activity, factory).get(DownloadInfoViewModel.class);
     }
 }
