@@ -379,6 +379,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             if (status != null && status != DownloadIndicatorLiveData.Constants.STATUS_DEFAULT) {
                 FragmentListener.notifyParent(HomeFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
             }
+            TelemetryWrapper.longPressDownloadIndicator();
             return false;
         });
 

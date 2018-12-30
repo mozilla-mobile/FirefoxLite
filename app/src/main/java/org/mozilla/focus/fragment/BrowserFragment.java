@@ -893,6 +893,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 if (status != null && status != DownloadIndicatorLiveData.Constants.STATUS_DEFAULT) {
                     FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
                 }
+                TelemetryWrapper.longPressDownloadIndicator();
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled long click menu item in BrowserFragment");

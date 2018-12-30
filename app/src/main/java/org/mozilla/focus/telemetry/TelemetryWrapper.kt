@@ -63,6 +63,7 @@ object TelemetryWrapper {
 
     internal object Category {
         const val ACTION = "action"
+        const val EVENT_DOWNLOADS = "Downloads"
     }
 
     internal object Method {
@@ -1855,6 +1856,19 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.NIGHT_MODE_BRIGHTNESS)
                 .extra(Extra.SOURCE, if (fromSetting) Object.SETTING else Object.MENU)
                 .extra(Extra.TO, value.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Long Press Toolbar Download Indicator",
+            category = Category.EVENT_DOWNLOADS,
+            method = Method.LONG_PRESS,
+            `object` = Object.TOOLBAR,
+            value = Value.DOWNLOAD,
+            extras = [])
+    @JvmStatic
+    fun longPressDownloadIndicator() {
+        EventBuilder(Category.EVENT_DOWNLOADS, Method.LONG_PRESS, Object.TOOLBAR, Value.DOWNLOAD)
                 .queue()
     }
 
