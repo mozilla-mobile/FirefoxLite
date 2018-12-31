@@ -101,7 +101,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203001
+     * Test case no: TC0098
      * Test case name: Empty bookmarks list
      * Steps:
      * 1. Launch app
@@ -119,7 +119,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203002, 0203003
+     * Test case no: TC0099
      * Test case name: Add a website to bookmarks and remove it from bookmarks
      * Steps:
      * 1. Launch app
@@ -174,7 +174,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203004
+     * Test case no: TC0100
      * Test case name: Remove bookmark from bookmark list
      * Steps:
      * 1. Launch app and add a web page to bookmark list
@@ -197,7 +197,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203005
+     * Test case no: TC0101
      * Test case name: Edit bookmark name and location field
      * Steps:
      * 1. Launch app and add a web page to bookmark list
@@ -234,7 +234,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203006
+     * Test case no: TC0102
      * Test case name: Do not change bookmark name and location field
      * Steps:
      * 1. Launch app and add a web page to bookmark list
@@ -257,7 +257,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203007
+     * Test case no: TC0103
      * Test case name: Edit bookmark content and clear location content
      * Steps:
      * 1. Launch app and add a web page to bookmark list
@@ -283,7 +283,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203008
+     * Test case no: TC0104
      * Test case name: Bookmark a web page, user can edit it immediately
      * Steps:
      * 1. Launch app and add a web page to bookmark list
@@ -322,7 +322,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203009
+     * Test case no: TC0105
      * Test case name: Edit bookmark content and clear location content
      * Steps:
      * 1. Launch app and add a web page to bookmark list

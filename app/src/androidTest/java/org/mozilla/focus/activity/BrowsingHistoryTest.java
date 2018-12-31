@@ -109,7 +109,7 @@ public class BrowsingHistoryTest {
     }
 
     /**
-     * Test case no: his_001
+     * Test case no: TC0050
      * Test case name: History is recorded correctly
      * Steps:
      * 1. Launch app
@@ -154,31 +154,17 @@ public class BrowsingHistoryTest {
         onView(withId(R.id.browsing_history_recycler_view))
                 .check(matches(atPosition(2, hasDescendant(withText(targetUrlSite1)))));
 
-    }
-
-    /**
-     * Test case no: his_002
-     * Test case name: Visit a page via history record
-     * Steps:
-     * 1. Follow steps in his_001
-     * 2. Tap on a history
-     * 3. Navigate to the selected history site */
-    @Test
-    public void browsingWebsiteThenTapTheFirstHistoryItem_browsingHistoryRecordCorrectly() {
-
-        final String targetUrl = browsingWebsiteAndOpenHistoryPanel();
-
         // Click the first item in history panel, index 0 is date label so index 1 is the latest one of history item
         onView(ViewMatchers.withId(R.id.browsing_history_recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
         // Check if this history record is target url and loaded again
-        onView(withId(R.id.display_url)).check(matches(withText(targetUrl)));
+        onView(withId(R.id.display_url)).check(matches(withText(targetUrlSite1)));
 
     }
 
     /**
-     * Test case no: his_003
+     * Test case no: TC0051
      * Test case name: Remove a history record
      * Steps:
      * 1. Follow steps in his_001
@@ -211,7 +197,7 @@ public class BrowsingHistoryTest {
 
 
     /**
-     * Test case no: his_004
+     * Test case no: TC0052
      * Test case name: Clear all history record
      * Steps:
      * 1. Follow steps in his_001

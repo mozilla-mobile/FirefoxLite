@@ -65,6 +65,12 @@ public class RemoveTopSitesTest {
         activityTestRule.launchActivity(new Intent());
     }
 
+    /**
+     * Test case no: TC0086
+     * Test case name: One top site deleted
+     * Steps:
+     * 1. Launch app
+     * 2. long click to delete top site */
     @Test
     public void deleteTopSite_deleteSuccessfully() {
 
@@ -95,6 +101,13 @@ public class RemoveTopSitesTest {
                 .check(matches(not(atPosition(siteIndex, hasDescendant(withText(testSite.getTitle()))))));
     }
 
+    /**
+     * Test case no: TC0172
+     * Test case name: cancel removing top site action
+     * Steps:
+     * 1. Launch app
+     * 2. Long click to remove one top site
+     * 3. Press back key */
     @Test
     public void deleteTopSiteAndCancel_topSiteIsStillThere() {
 
@@ -124,6 +137,15 @@ public class RemoveTopSitesTest {
                 .check(matches(atPosition(siteIndex, hasDescendant(withText(testSite.getTitle())))));
     }
 
+    /**
+     * Test case no: TC0007
+     * Test case name: All top sites are deleted sequentially
+     * Steps:
+     * 1. Launch app
+     * 2. remove top site
+     * 3. repeat step 2 until all topsites removed
+     * 4. exit app
+     * 5. relaunch app */
     @Test
     public void deleteAllTopSitesAndRelaunchApp_defaultTopSitesAreLoaded() {
 
