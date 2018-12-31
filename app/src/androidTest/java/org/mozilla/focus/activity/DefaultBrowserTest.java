@@ -57,6 +57,16 @@ public class DefaultBrowserTest {
         uiDevice = UiDevice.getInstance(getInstrumentation());
     }
 
+    /**
+     * Test case no: TC0090
+     * Test case name: Set FIrefox Lite as default browser
+     * Steps:
+     * 1. Set Chrome as a default browser
+     * 2. Launch Rocket
+     * 3. Go to settings page (Tap menu -> settings)
+     * 4. Tap "Make default browser"
+     * 5. Go back to Rocket's settings
+     * 6. Check it correctly set default browser to Firefox Lite */
     @Test
     public void changeDefaultBrowser_prefSwitched() {
 
@@ -69,6 +79,7 @@ public class DefaultBrowserTest {
 
         final String prefName = activity.getString(R.string.pref_key_default_browser);
 
+        // 1. Set Chrome as a default browser
         // Click on the menu item
         onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
 
@@ -92,8 +103,29 @@ public class DefaultBrowserTest {
             throw new AssertionError("Could find the setting", e);
         }
 
-        // Choose our testing app
+        // Choose Chrome browser
         final UiScrollable browserList = new UiScrollable(new UiSelector());
+        final UiSelector chromeView = new UiSelector().text("Chrome");
+
+        try {
+            browserList.scrollIntoView(chromeView);
+            final UiObject browserCandidate = uiDevice.findObject(chromeView);
+            browserCandidate.click();
+
+        } catch (UiObjectNotFoundException e) {
+            throw new AssertionError("Could find the chrome app in default browser", e);
+        }
+
+        // 2. Set Firefox Lite as default browser
+        // Open default browser setting
+        try {
+            allAppsButton.click();
+
+        } catch (UiObjectNotFoundException e) {
+            throw new AssertionError("Could find the setting", e);
+        }
+
+        // Choose Firefox Lite browser
         final UiSelector rocketView = new UiSelector().text(activity.getString(R.string.app_name));
         try {
             browserList.scrollIntoView(rocketView);
@@ -101,7 +133,7 @@ public class DefaultBrowserTest {
             browserCandidate.click();
 
         } catch (UiObjectNotFoundException e) {
-            throw new AssertionError("Could find the app in default browser", e);
+            throw new AssertionError("Could find the Firefox Lite app in default browser", e);
         }
 
         // Now launch Rocket's setting activity
