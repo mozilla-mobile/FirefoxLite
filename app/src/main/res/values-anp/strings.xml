@@ -214,4 +214,6 @@
   <string name="private_browsing_erase_done">अपने के ब्रॉउजिंग इतिहास मेटाए देलो गेलए.</string>
   <string name="my_shot_on_boarding_message">यहां अपनो स्क्रीनशॉट देखियै!</string>
   <string name="my_shot_on_boarding_category_message">अपनो उत्पाद अनुभव क बेहतर बनबै ल, हम आपनो स्क्रीनशॉट श्रेणियों क बारो मे जानकारी जमा करै छि.</string>
+  <string name="exp_survey_yes">हाँ, कृपया</string>
+  <string name="exp_survey_no">नै</string>
 </resources>
