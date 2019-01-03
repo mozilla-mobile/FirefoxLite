@@ -58,10 +58,10 @@ public class ShiftDrawable extends DrawableWrapper {
     @Override
     public boolean setVisible(boolean visible, boolean restart) {
         final boolean result = super.setVisible(visible, restart);
-        if (visible && restart) {
+        if (isVisible()) {
             mAnimator.start();
         } else {
-            mAnimator.cancel();
+            mAnimator.end();
         }
         return result;
     }
