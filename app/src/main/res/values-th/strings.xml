@@ -126,6 +126,7 @@
   <string name="download_cancel">ยกเลิกการดาวน์โหลดแล้ว</string>
   <string name="undo">เลิกทำ</string>
   <string name="open">เปิด</string>
+  <string name="menu_longpress_downloads">กดค้างเพื่อเปิดการดาวน์โหลด</string>
   <string name="pause">ถูกหยุดชั่วคราว</string>
   <string name="pending">กำลังรอ</string>
   <string name="running">กำลังดาวน์โหลด</string>
