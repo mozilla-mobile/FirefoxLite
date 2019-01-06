@@ -126,6 +126,7 @@
   <string name="download_cancel">डाउनलोड रद्द हुआ</string>
   <string name="undo">पहले जैसा करें</string>
   <string name="open">खोलें</string>
+  <string name="menu_longpress_downloads">डाउनलोड को खोलने हेतु कुछ देर दबा कर रखें</string>
   <string name="pause">रोका गया</string>
   <string name="pending">पेन्डिंग</string>
   <string name="running">डाउनलोड हो रहा है</string>
