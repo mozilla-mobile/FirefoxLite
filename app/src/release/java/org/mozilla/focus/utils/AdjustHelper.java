@@ -19,7 +19,13 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
+import javax.annotation.Nullable;
+
 public class AdjustHelper {
+
+    @Nullable
+    private static FocusApplication focusApplication;
+
     public static void setupAdjustIfNeeded(FocusApplication application) {
         // RELEASE: Enable Adjust - This class has different implementations for all build types.
 
@@ -32,12 +38,17 @@ public class AdjustHelper {
             return;
         }
 
+        focusApplication = application;
+
         final AdjustConfig config = new AdjustConfig(application,
                 BuildConfig.ADJUST_TOKEN,
                 BuildConfig.ADJUST_ENVIRONMENT,
                 true);
 
         config.setLogLevel(LogLevel.SUPRESS);
+        if (!TextUtils.isEmpty(BuildConfig.ADJUST_DEFAULT_TRACKER)) {
+            config.setDefaultTracker(BuildConfig.ADJUST_DEFAULT_TRACKER);
+        }
 
         Adjust.onCreate(config);
 
@@ -45,7 +56,9 @@ public class AdjustHelper {
     }
 
     public static void trackEvent(String eventToken) {
-        Adjust.trackEvent(new AdjustEvent(eventToken));
+        if (focusApplication != null && TelemetryWrapper.isTelemetryEnabled(focusApplication)) {
+            Adjust.trackEvent(new AdjustEvent(eventToken));
+        }
     }
 
     private static final class AdjustLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {

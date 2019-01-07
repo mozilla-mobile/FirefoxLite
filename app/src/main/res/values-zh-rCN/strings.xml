@@ -126,6 +126,7 @@
   <string name="download_cancel">下载已取消</string>
   <string name="undo">撤销</string>
   <string name="open">打开</string>
+  <string name="menu_longpress_downloads">长按可打开下载项</string>
   <string name="pause">暂停</string>
   <string name="pending">等待</string>
   <string name="running">正在下载</string>

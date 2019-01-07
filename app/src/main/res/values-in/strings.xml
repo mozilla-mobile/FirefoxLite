@@ -126,6 +126,7 @@
   <string name="download_cancel">Unduhan dibatalkan</string>
   <string name="undo">Urungkan</string>
   <string name="open">Buka</string>
+  <string name="menu_longpress_downloads">Tekan lama untuk membuka Unduhan</string>
   <string name="pause">dijeda</string>
   <string name="pending">Ditunda</string>
   <string name="running">mengunduh</string>

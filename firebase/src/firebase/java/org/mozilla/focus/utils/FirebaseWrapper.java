@@ -347,6 +347,9 @@ abstract class FirebaseWrapper {
     // Client code must implement this method so it's not static here.
     abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
 
+    // Client code must implement this method so it's not static here.
+    abstract void refreshRemoteConfigDefault(Context context);
+
     @Nullable
     public static String getFcmToken() {
         try {

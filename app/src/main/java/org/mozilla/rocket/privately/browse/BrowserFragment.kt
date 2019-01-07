@@ -85,11 +85,6 @@ class BrowserFragment : LocaleAwareFragment(),
             if (BuildConfig.DEBUG) {
                 throw RuntimeException("No activity to use")
             }
-        } else {
-            if (fragmentActivity is TabsSessionProvider.SessionHost) {
-                sessionManager = fragmentActivity.sessionManager
-                observer = Observer(this, loadStateListener)
-            }
         }
     }
 
@@ -123,23 +118,29 @@ class BrowserFragment : LocaleAwareFragment(),
             (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        sessionManager.resume()
+        sessionManager = TabsSessionProvider.getOrThrow( activity)
+        observer = Observer(this, loadStateListener)
         sessionManager.register(observer)
         sessionManager.focusSession?.register(observer)
 
         activity?.let { registerData(it) }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroyView() {
+        super.onDestroyView()
         activity?.let { unregisterData(it) }
 
         sessionManager.focusSession?.unregister(observer)
         sessionManager.unregister(observer)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sessionManager.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
         sessionManager.pause()
     }
 

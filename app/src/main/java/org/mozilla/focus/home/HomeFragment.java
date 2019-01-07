@@ -79,6 +79,7 @@ import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
+import org.mozilla.rocket.banner.BannerViewHolder;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
@@ -94,6 +95,7 @@ import org.mozilla.urlutils.UrlUtils;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -135,6 +137,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final int SCROLL_PERIOD = 10000;
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> bannerObserver = this::setUpBannerFromConfig;
+    private String[] configArray;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
 
@@ -155,6 +158,30 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         super.onCreate(bundle);
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showCurrentBannerTelemetry();
+        TelemetryWrapper.showHome();
+    }
+
+    private void showCurrentBannerTelemetry() {
+        if (banner.getVisibility() != View.VISIBLE || bannerLayoutManager == null) {
+            return;
+        }
+        // Since we're using SnapHelper, the only shown child would be at position 0
+        final int displayedChildPosition = 0;
+        View displayedView = banner.getChildAt(displayedChildPosition);
+        if (displayedView == null) {
+            return;
+        }
+        String id = ((BannerViewHolder) banner.getChildViewHolder(displayedView)).getId();
+        if (id == null) {
+            return;
+        }
+        TelemetryWrapper.showBannerReturn(id);
     }
 
     private void showBanner(boolean enabled) {
@@ -274,6 +301,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setUpBannerFromConfig(String[] configArray) {
+        if (Arrays.equals(this.configArray, configArray)) {
+            return;
+        }
+        boolean isUpdate = this.configArray != null;
+        this.configArray = configArray;
         if (configArray == null || configArray.length == 0) {
             showBanner(false);
             return;
@@ -282,6 +314,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             BannerAdapter bannerAdapter = new BannerAdapter(configArray, arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg));
             banner.setAdapter(bannerAdapter);
             showBanner(true);
+            if (isUpdate) {
+                TelemetryWrapper.showBannerNew(bannerAdapter.getFirstDAOId());
+            } else {
+                TelemetryWrapper.showBannerUpdate(bannerAdapter.getFirstDAOId());
+            }
+
         } catch (JSONException e) {
             LoggerWrapper.throwOrWarn(TAG, "Invalid Config: " + e.getMessage());
         }
@@ -354,9 +392,27 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         SnapHelper snapHelper = new PagerSnapHelper() {
 
             private void sendTelemetry(int superRet, int velocityX) {
+                sendSwipeTelemetry(superRet, velocityX);
+                sendSwipeToIdTelemetry(superRet);
+            }
+
+            // This is kinda deprecated by sendSwipeToIdTelemetry so consider removing it in the future.
+            private void sendSwipeTelemetry(int superRet, int velocityX) {
                 final int itemCount = banner.getAdapter().getItemCount();
                 int boundedTarget = superRet < itemCount ? superRet : itemCount - 1;
                 TelemetryWrapper.swipeBannerItem(velocityX / Math.abs(velocityX), boundedTarget);
+            }
+
+            private void sendSwipeToIdTelemetry(int superRet) {
+                View nextDisplayed = bannerLayoutManager.findViewByPosition(superRet);
+                if (nextDisplayed == null) {
+                    return;
+                }
+                String id = ((BannerViewHolder) banner.getChildViewHolder(nextDisplayed)).getId();
+                if (id == null) {
+                    return;
+                }
+                TelemetryWrapper.showBannerSwipe(id);
             }
 
             @Override

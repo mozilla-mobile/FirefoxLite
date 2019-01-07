@@ -551,6 +551,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 Intent intent = new Intent(this, PrivateModeActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
+                TelemetryWrapper.togglePrivateMode(true);
                 break;
             case R.id.menu_night_mode:
                 final Settings settings = Settings.getInstance(this);

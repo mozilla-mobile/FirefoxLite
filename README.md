@@ -17,7 +17,7 @@ Build instructions
   git clone https://github.com/mozilla-tw/Rocket
   ```
 
-2. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
+2. Open Android Studio and select File->Open and select Rocket to open the project. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
 
 3. Disable Instant Run in: Settings/Build, Execution, Deployment > Instant Run. (See note #1 for details.)
 
@@ -28,7 +28,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
                                           ^
   symbol: class FirebaseWrapper
 ```
-will shown when building with instant run. We have an [issue](https://github.com/mozilla-tw/Rocket/issues/2143) for this so feel free to help with this limitation.
+will shown when building with instant run. We have an [issue](https://github.com/mozilla-tw/Rocket/issues/2143) for this so feel free to help with this limitation. To disable instant run , press Cmd+Shit+a on Mac or Ctrl+Shift+a on Windows and enter "instant run" under "Preference" category. If it still doesn't work, try enter `./gradlew clean"` on mac or `gradlew clean` on Windows using command line in the project root.
 
 Build instructions regarding Firebase
 ------------------

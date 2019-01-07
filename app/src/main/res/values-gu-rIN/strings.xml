@@ -126,6 +126,7 @@
   <string name="download_cancel">ડાઉનલોડ રદ</string>
   <string name="undo">છેલ્લું રદ કરો</string>
   <string name="open">ખોલો</string>
+  <string name="menu_longpress_downloads">ડાઉનલોડ્સ ખોલવા માટે લાંબા સમય સુધી દબાવો</string>
   <string name="pause">અટકાવ્યું</string>
   <string name="pending">બાકી</string>
   <string name="running">ડાઉનલોડ કરી રહ્યું છે</string>
