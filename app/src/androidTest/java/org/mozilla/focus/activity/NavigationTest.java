@@ -6,18 +6,13 @@
 package org.mozilla.focus.activity;
 
 import android.content.Intent;
-import android.support.annotation.Keep;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
 import android.view.KeyEvent;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
@@ -45,6 +40,18 @@ public class NavigationTest {
         AndroidTestUtils.beforeTest();
         activityTestRule.launchActivity(new Intent());
     }
+
+    /**
+     * Test case no: TC_0013
+     * Test case name: Navigation and back and forth to previous site
+     * Steps:
+     * 1. Launch Rocket
+     * 2. Visit a website_1
+     * 3. Visit a website_2
+     * 4. Press Back button
+     * 5. check website_1 is displayed
+     * 6. open menu to click next button
+     * 7. check website_2 is displayed */
 
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
