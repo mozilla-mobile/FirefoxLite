@@ -45,7 +45,7 @@ class DownloadIndicatorLiveData(private val context: Context) : LiveData<Int>(),
             if (!hasDownloading && (item.status == DownloadManager.STATUS_RUNNING || item.status == DownloadManager.STATUS_PENDING)) {
                 hasDownloading = true
             }
-            if (!hasUnread && !item.isRead) {
+            if (!hasUnread && item.status == DownloadManager.STATUS_SUCCESSFUL &&!item.isRead) {
                 hasUnread = true
             }
         }

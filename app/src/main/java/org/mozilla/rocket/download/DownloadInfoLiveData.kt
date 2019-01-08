@@ -14,7 +14,7 @@ import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.CursorUtils
 import org.mozilla.threadutils.ThreadUtils
 
-class DownloadInfoLiveData(private val context: Context) : LiveData<DownloadInfoBundle>() {
+class DownloadInfoLiveData() : LiveData<DownloadInfoBundle>() {
 
     private val downloadInfoBundle: DownloadInfoBundle = DownloadInfoBundle(ArrayList(), -1, -1)
 
@@ -23,6 +23,7 @@ class DownloadInfoLiveData(private val context: Context) : LiveData<DownloadInfo
     var isOpening = false
     private var isLoading = false
     private var isLastPage = false
+    private lateinit var context: Context
 
     private val broadcastReceiver = object : BroadcastReceiver() {
 
@@ -64,6 +65,10 @@ class DownloadInfoLiveData(private val context: Context) : LiveData<DownloadInfo
         get() {
             return downloadInfoBundle.list.any { it.status == DownloadManager.STATUS_RUNNING || it.status == DownloadManager.STATUS_PENDING }
         }
+
+    constructor(ctx: Context) : this() {
+        context = ctx.applicationContext
+    }
 
     override fun onActive() {
         super.onActive()

@@ -37,14 +37,14 @@ object DownloadIndicatorIntroViewHelper {
                 val pointParams = pointer.layoutParams as ConstraintLayout.LayoutParams
                 pointParams.setMargins(0, 0, metrics.widthPixels - menuParams.width / 2 - pointParams.width / 2 - location[0], 0)
 
-                rootView.setOnClickListener { _ -> rootView.visibility = View.GONE }
+                rootView?.setOnClickListener { _ -> rootView.visibility = View.GONE }
                 menu.setOnClickListener { _ ->
                     targetView.performClick()
-                    rootView.visibility = View.GONE
+                    rootView?.visibility = View.GONE
                 }
                 menu.setOnLongClickListener { _ ->
                     targetView.performLongClick()
-                    rootView.visibility = View.GONE
+                    rootView?.visibility = View.GONE
                     false
                 }
             }

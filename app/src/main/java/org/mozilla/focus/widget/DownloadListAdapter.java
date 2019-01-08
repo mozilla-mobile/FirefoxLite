@@ -69,8 +69,8 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void delete(final View view, final long rowId) {
         viewModel.delete(rowId, downloadInfo -> {
             final File file = new File(URI.create(downloadInfo.getFileUri()).getPath());
-            final Snackbar snackBar = getDeleteSnackBar(view, downloadInfo);
             if (file.exists()) {
+                final Snackbar snackBar = getDeleteSnackBar(view, downloadInfo);
                 snackBar.show();
             } else {
                 Toast.makeText(mContext, R.string.cannot_find_the_file, Toast.LENGTH_SHORT).show();

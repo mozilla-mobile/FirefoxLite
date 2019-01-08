@@ -270,7 +270,7 @@ public class Settings {
         public static final String VpnAppWasDownloaded = "vpn_app_was_downloaded";
         public static final String VpnRecommenderIgnore = "vpn_recommender_ignore";
 
-        public static final String ShowDownloadIndicatorIntro = "download_indicator_intro";
+        public static final String ShowDownloadIndicatorIntro = "dl_indicator_intro";
     }
 
     public static class EventHistory {

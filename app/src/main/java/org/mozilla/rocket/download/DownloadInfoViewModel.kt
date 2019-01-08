@@ -7,6 +7,7 @@ import org.mozilla.focus.download.DownloadInfo
 
 class DownloadInfoViewModel(application: Application, private val repository: DownloadInfoRepository) : AndroidViewModel(application) {
 
+    // TODO refactor with coroutine is better
     interface OnOperationComplete {
         fun onComplete(downloadInfo: DownloadInfo)
     }

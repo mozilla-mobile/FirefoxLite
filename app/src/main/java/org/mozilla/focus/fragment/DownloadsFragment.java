@@ -86,7 +86,7 @@ public class DownloadsFragment extends PanelFragment {
     private void prepare() {
         recyclerView.setAdapter(mDownloadListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        // Disable "only" item changed animation since progress update may cause row flashes
+        // Update downloading progress via notifyItemChanged may cause row flashes so we disable item changed animation here
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
     }

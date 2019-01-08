@@ -10,8 +10,6 @@
                 <solid android:color="@color/paletteDarkGreyA100" />
             </shape>
         </clip>
-
-        <color android:color="@color/paletteDarkGreyA100" />
     </item>
     <item android:id="@android:id/progress">
         <clip>
@@ -20,8 +18,6 @@
                 <solid android:color="@color/paletteDarkBlueC100" />
             </shape>
         </clip>
-
-        <color android:color="@color/paletteDarkBlueC100" />
     </item>
 
 </layer-list>
