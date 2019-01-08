@@ -55,7 +55,8 @@ public class OnBoardingTest {
      * 2. check turbo mode is selected on first onbording page
      * 3. move forward and backfard to check 4 pages of onboarding are displayed correctly
      * 4. open menu
-     * 5. check turbo mode is selected */
+     * 5. check turbo mode is selected
+     */
 
     @Test
     public void turnOnTurboModeDuringOnBoarding_turboModeIsOnInMenu() {
@@ -80,7 +81,6 @@ public class OnBoardingTest {
         IdlingRegistry.getInstance().unregister();
         // Click next button in the third on boarding page
         onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
-
 
         // Click finish button to finish on boarding
         onView(allOf(withId(R.id.finish), isDisplayed())).perform(click());

@@ -135,6 +135,7 @@ public class DownloadTest {
      * 3. Click download image
      * 4. Check [Downloading] toast message displayed
      * 5. Check file is shown in download list */
+
     @Test
     public void triggerDownload_showToast() throws InterruptedException, UiObjectNotFoundException, IOException {
 
