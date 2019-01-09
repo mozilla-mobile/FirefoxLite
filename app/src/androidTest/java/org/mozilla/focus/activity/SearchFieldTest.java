@@ -43,8 +43,8 @@ import static org.hamcrest.Matchers.not;
 public class SearchFieldTest {
 
     private static final String TYPED_GENERAL_TEXT = "zerda";
-    private static final String TYPED_GREEK_TEXT  = "αβπΣ";
-    private static final String TYPED_SCIENCE_SYMBOLS_TEXT  = "√°C °F";
+    private static final String TYPED_GREEK_TEXT = "αβπΣ";
+    private static final String TYPED_SCIENCE_SYMBOLS_TEXT = "√°C °F";
 
     private SessionLoadedIdlingResource loadingIdlingResource;
 
@@ -66,6 +66,23 @@ public class SearchFieldTest {
         }
     }
 
+    /**
+     * Test case no: TC0009
+     * Test case name: Clear search
+     * Steps:
+     * 1. Launch app
+     * 2. Tap search field
+     * 3. Check clear button not displayed
+     * 4. type text
+     * 5. click clear button
+     * 6. check text cleared
+     * 7. type some text and press back twice
+     * 8. check we are on homepage
+     * 9. click search field again
+     * 10. type text
+     * 11. click outside search field
+     * 12. check we are on homepage
+     */
     @Test
     public void typeTextInSearchFieldAndClear_textIsClearedAndBackToHome() {
 
@@ -104,6 +121,23 @@ public class SearchFieldTest {
 
     }
 
+    /**
+     * Test case no: TC0011
+     * Test case name: Search special characters
+     * Steps:
+     * 1. Launch app
+     * 2. Tap search field
+     * 3. Type Greek special character
+     * 4. wait for page loaded
+     * 5. check url matches with SearchEngine.buildSearchUrl()
+     * 6. check search button
+     * 7. type some text and press back twice
+     * 8. check we are on homepage
+     * 9. click search field again
+     * 10. Type some science characters
+     * 11. Wait for the page is loaded
+     * 12. Check if current url is matched with SearchEngine.buildSearchUrl()
+     */
     @Test
     public void typeSpecialCharactersInSearchField_searchIsPerformingAccordingly() {
 
