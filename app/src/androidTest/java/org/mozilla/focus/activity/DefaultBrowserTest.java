@@ -66,7 +66,8 @@ public class DefaultBrowserTest {
      * 3. Go to settings page (Tap menu -> settings)
      * 4. Tap "Make default browser"
      * 5. Go back to Rocket's settings
-     * 6. Check it correctly set default browser to Firefox Lite */
+     * 6. Check it correctly set default browser to Firefox Lite
+     */
     @Test
     public void changeDefaultBrowser_prefSwitched() {
 
