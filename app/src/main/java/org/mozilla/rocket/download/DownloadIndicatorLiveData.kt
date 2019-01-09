@@ -56,7 +56,7 @@ class DownloadIndicatorLiveData(private val context: Context) : LiveData<Int>(),
         }
     }
 
-    private fun forceQuery() {
+    fun forceQuery() {
         DownloadInfoManager.getInstance().queryDownloadingAndUnreadIds(this)
     }
 }

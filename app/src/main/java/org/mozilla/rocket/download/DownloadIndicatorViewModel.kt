@@ -8,4 +8,6 @@ class DownloadIndicatorViewModel(application: Application, private val repositor
 
     val downloadIndicator: LiveData<Int>?
         get() = repository.getDownloadIndicator()
+
+    fun updateIndicator() = repository.updateIndicator()
 }

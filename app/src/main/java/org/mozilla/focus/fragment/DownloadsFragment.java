@@ -74,6 +74,9 @@ public class DownloadsFragment extends PanelFragment {
     public void onDestroy() {
         // mark all items are unread when leave the download panel
         Inject.obtainDownloadInfoViewModel(getActivity()).markAllItemsAreRead();
+        // When download indicator is showing and download is failed, we won't get notified by DownloadManager. Then back to BrowserFragment/HomeFragment will not
+        // go through fragment's onResume i.e. LiveData's onActive. So force trigger download indicator update here.
+        Inject.obtainDownloadIndicatorViewModel(getActivity()).updateIndicator();
         super.onDestroy();
     }
 

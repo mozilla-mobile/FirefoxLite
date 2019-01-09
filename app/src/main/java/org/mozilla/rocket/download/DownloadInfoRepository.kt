@@ -14,6 +14,10 @@ class DownloadInfoRepository {
         return downloadIndicator
     }
 
+    fun updateIndicator() {
+        downloadIndicator?.forceQuery()
+    }
+
     fun getDownloadInfoBundle(): LiveData<DownloadInfoBundle>? {
         return downloadInfoBundle
     }
