@@ -44,7 +44,7 @@ class TakeScreenshotTest {
     }
 
     /**
-     * Test case no: TC0053
+     * Test case no: TC0058
      * Test case name: Take Screenshot
      * Steps:
      * 1. Launch app
