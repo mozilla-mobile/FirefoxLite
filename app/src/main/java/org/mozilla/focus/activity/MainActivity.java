@@ -7,6 +7,7 @@ package org.mozilla.focus.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
@@ -80,6 +81,7 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.rocket.download.DownloadBroadcastReceiver;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
@@ -135,6 +137,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private DialogFragment mDialogFragment;
 
     private BroadcastReceiver uiMessageReceiver;
+    private DownloadBroadcastReceiver downloadBroadcastReceiver;
 
     private SessionManager sessionManager;
     private boolean isTabRestoredComplete = false;
@@ -225,6 +228,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void initBroadcastReceivers() {
+
+        downloadBroadcastReceiver = new DownloadBroadcastReceiver();
         uiMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -273,12 +278,20 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(downloadBroadcastReceiver, new IntentFilter(DownloadInfoManager.ROW_UPDATED));
+        registerReceiver(downloadBroadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        Inject.provideDownloadInfoRepository(getApplication()).addDataSource(downloadBroadcastReceiver.getDownloadInfoBundle());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadBroadcastReceiver);
+        unregisterReceiver(downloadBroadcastReceiver);
+        Inject.provideDownloadInfoRepository(getApplication()).removeDataSource(downloadBroadcastReceiver.getDownloadInfoBundle());
+
 
         TelemetryWrapper.stopSession();
 

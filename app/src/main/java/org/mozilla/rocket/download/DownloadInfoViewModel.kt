@@ -3,36 +3,37 @@ package org.mozilla.rocket.download
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import org.mozilla.focus.download.DownloadInfo
 
-class DownloadInfoViewModel(application: Application, private val repository: DownloadInfoRepository) : AndroidViewModel(application) {
+class DownloadInfoViewModel(application: Application, private val repository: DownloadInfoRepository) :
+    AndroidViewModel(application) {
 
     // TODO refactor with coroutine is better
     interface OnOperationComplete {
         fun onComplete(downloadInfo: DownloadInfo)
     }
 
-    val downloadInfoBundle: LiveData<DownloadInfoBundle>?
-        get() = repository.getDownloadInfoBundle()
+    val downloadInfoBundle = repository.downloadInfoBundle
 
     fun cancelDownload(id: Long, listener: OnOperationComplete) {
-        repository.cancelDownload(id, listener)
+        repository.cancel(id, listener)
     }
 
     fun delete(id: Long, listener: OnOperationComplete) {
-        repository.deleteDownload(id, listener)
+        repository.delete(id, listener)
     }
 
     fun removeDownload(id: Long) {
-        repository.removeDownload(id)
+        repository.removeItem(id)
     }
 
     fun hideDownload(id: Long) {
-        repository.hideDownload(id)
+        repository.hideItem(id)
     }
 
     fun addDownload(downloadInfo: DownloadInfo) {
-        repository.addDownload(downloadInfo)
+        repository.addItem(downloadInfo)
     }
 
     fun loadMore(init: Boolean) {
@@ -40,11 +41,11 @@ class DownloadInfoViewModel(application: Application, private val repository: Do
     }
 
     fun isOpening(): Boolean? {
-        return repository.isOpening()
+        return repository.isOpening
     }
 
     fun setOpening(value: Boolean) {
-        repository.setOpening(value)
+        repository.isOpening = value
     }
 
     fun markAllItemsAreRead() {
