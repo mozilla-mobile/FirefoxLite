@@ -43,6 +43,20 @@ class TakeScreenshotTest {
         private val TARGET_URL_SITE = "file:///android_asset/gpl.html"
     }
 
+    /**
+     * Test case no: TC0053
+     * Test case name: Take Screenshot
+     * Steps:
+     * 1. Launch app
+     * 2. Tap screenshot capture button
+     * 3. Tap toast message displays "Screenshot saved"
+     * 4. Tap menu
+     * 5. Tap my shots viewer
+     * 6. Tap first screenshot
+     * 7. Tap delete
+     * 8. Tap confirm delete
+     * 9. Check it goes back to my shots viewer
+     * */
     @Test
     fun takeScreenshot_screenshotIsCaptured() {
 
