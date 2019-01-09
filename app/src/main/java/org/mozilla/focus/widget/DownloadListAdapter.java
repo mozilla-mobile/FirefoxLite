@@ -7,37 +7,27 @@ package org.mozilla.focus.widget;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfo;
-import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.rocket.download.DownloadInfoViewModel;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Created by anlin on 01/08/2017.
@@ -51,44 +41,32 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             = Arrays.asList("apk", "zip", "gz", "tar", "7z", "rar", "war");
     private List<DownloadInfo> mDownloadInfo;
     private Context mContext;
-    private DownloadInfoViewModel viewModel;
 
-    public DownloadListAdapter(Context context, @NonNull DownloadInfoViewModel model) {
+    private DownloadPanelListener mListener;
+
+    public interface DownloadPanelListener{
+
+        View.OnClickListener provideOnClickListener();
+
+        boolean isOpening();
+    }
+
+    public DownloadListAdapter(Context context,DownloadPanelListener listener) {
         mContext = context;
-        viewModel = model;
-        viewModel.loadMore(true);
-        viewModel.setOpening(true);
+        mListener = listener;
+
     }
 
     public void setList(List<DownloadInfo> list) {
+
         if (mDownloadInfo == null) {
             mDownloadInfo = list;
         }
     }
 
-    private void delete(final View view, final long rowId) {
-        viewModel.delete(rowId, downloadInfo -> {
-            final File file = new File(URI.create(downloadInfo.getFileUri()).getPath());
-            if (file.exists()) {
-                final Snackbar snackBar = getDeleteSnackBar(view, downloadInfo);
-                snackBar.show();
-            } else {
-                Toast.makeText(mContext, R.string.cannot_find_the_file, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void cancel(final long rowId) {
-        viewModel.cancelDownload(rowId, downloadInfo -> {
-            final String cancelStr = mContext.getString(R.string.download_cancel);
-            Toast.makeText(mContext, cancelStr, Toast.LENGTH_SHORT).show();
-        });
-    }
-
-
     @Override
     public int getItemViewType(int position) {
-        if (viewModel.isOpening()) {
+        if (mListener.isOpening()) {
             return PanelFragment.ON_OPENING;
         } else {
             if (mDownloadInfo == null || mDownloadInfo.isEmpty()) {
@@ -149,42 +127,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.subtitle.setText(subtitle);
             holder.action.setTag(R.id.status, downloadInfo.getStatus());
             holder.action.setTag(R.id.row_id, downloadInfo.getRowId());
-            holder.action.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    final long rowid = (long) view.getTag(R.id.row_id);
-                    int status = (int) view.getTag(R.id.status);
-                    if (status == DownloadManager.STATUS_RUNNING) {
-                        cancel(rowid);
-                    } else {
-                        final PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                        popupMenu.getMenuInflater().inflate(R.menu.menu_download, popupMenu.getMenu());
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem menuItem) {
-
-                                switch (menuItem.getItemId()) {
-                                    case R.id.remove:
-                                        viewModel.removeDownload(rowid);
-                                        TelemetryWrapper.downloadRemoveFile();
-                                        popupMenu.dismiss();
-                                        return true;
-                                    case R.id.delete:
-                                        delete(view, rowid);
-                                        TelemetryWrapper.downloadDeleteFile();
-                                        popupMenu.dismiss();
-                                        return true;
-                                    default:
-                                        break;
-                                }
-                                return false;
-                            }
-                        });
-                        popupMenu.show();
-                    }
-                    TelemetryWrapper.showFileContextMenu();
-                }
-            });
+            holder.action.setOnClickListener(mListener.provideOnClickListener());
 
             holder.itemView.setTag(downloadInfo);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -314,47 +257,5 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private Snackbar getDeleteSnackBar(View view, final DownloadInfo deletedDownload) {
-        final String deleteStr = mContext.getString(R.string.download_deleted, deletedDownload.getFileName());
-        final File deleteFile = new File(URI.create(deletedDownload.getFileUri()).getPath());
 
-        return Snackbar.make(view, deleteStr, Snackbar.LENGTH_SHORT)
-                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-
-                        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                            try {
-                                if (deleteFile.delete()) {
-                                    //TODO move to view model is better, but we don't have context in DownloadInfoRepository.
-                                    // Otherwise, this removal is not relevant to DownloadInfoLiveData
-                                    DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                                    manager.remove(deletedDownload.getDownloadId());
-
-                                    DownloadInfoManager.getInstance().delete(deletedDownload.getRowId(), null);
-                                } else {
-                                    Toast.makeText(mContext, R.string.cannot_delete_the_file, Toast.LENGTH_SHORT).show();
-                                }
-
-                            } catch (Exception e) {
-                                Log.e(this.getClass().getSimpleName(), "" + e.getMessage());
-                                Toast.makeText(mContext, R.string.cannot_delete_the_file, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onShown(Snackbar transientBottomBar) {
-                        super.onShown(transientBottomBar);
-                        viewModel.hideDownload(deletedDownload.getRowId());
-                    }
-                })
-                .setAction(R.string.undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        viewModel.addDownload(deletedDownload);
-                    }
-                });
-    }
 }
