@@ -116,7 +116,8 @@ public class BrowsingHistoryTest {
      * 2. Visit some websites
      * 3. Tap Menu
      * 4. Tap History
-     * 5. History is shown in correct order */
+     * 5. History is shown in correct order
+     */
     @Test
     public void browsingTwoWebSites_sitesAreDisplayedInOrderInHistoryPanel() {
 
@@ -171,7 +172,8 @@ public class BrowsingHistoryTest {
      * 2. Tap on settings of a history record
      * 3. Context menu is shown with "delete" option
      * 4. Tap on delete
-     * 5. History is deleted */
+     * 5. History is deleted
+     */
     @Test
     public void browsingWebsiteAndDeleteItsHistoryItem_deleteSuccessfully() {
 
@@ -208,7 +210,8 @@ public class BrowsingHistoryTest {
      * 6. Tap "CLEAR BROWSING HISTORY"
      * 7. Dialog shows up again
      * 8. Tap "CLEAR"
-     * 9. History cleared */
+     * 9. History cleared
+     */
     @Test
     public void clearBrowsingHistory_cancelAndClearWorkCorrectly() {
 

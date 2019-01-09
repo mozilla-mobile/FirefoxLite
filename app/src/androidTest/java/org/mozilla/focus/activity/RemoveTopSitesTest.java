@@ -18,7 +18,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -70,7 +69,8 @@ public class RemoveTopSitesTest {
      * Test case name: One top site deleted
      * Steps:
      * 1. Launch app
-     * 2. long click to delete top site */
+     * 2. long click to delete top site
+     */
     @Test
     public void deleteTopSite_deleteSuccessfully() {
 
@@ -107,7 +107,8 @@ public class RemoveTopSitesTest {
      * Steps:
      * 1. Launch app
      * 2. Long click to remove one top site
-     * 3. Press back key */
+     * 3. Press back key
+     */
     @Test
     public void deleteTopSiteAndCancel_topSiteIsStillThere() {
 
@@ -145,7 +146,8 @@ public class RemoveTopSitesTest {
      * 2. remove top site
      * 3. repeat step 2 until all topsites removed
      * 4. exit app
-     * 5. relaunch app */
+     * 5. relaunch app
+     */
     @Test
     public void deleteAllTopSitesAndRelaunchApp_defaultTopSitesAreLoaded() {
 

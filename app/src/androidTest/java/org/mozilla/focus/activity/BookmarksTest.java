@@ -95,7 +95,7 @@ public class BookmarksTest {
 
     @After
     public void tearDown() {
-        if  (sessionLoadedIdlingResource != null) {
+        if (sessionLoadedIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
         }
     }
@@ -107,7 +107,8 @@ public class BookmarksTest {
      * 1. Launch app
      * 2. Tap Menu
      * 3. Tap Bookmark button
-     * 4. Show "No Bookmarks" in bookmarks panel */
+     * 4. Show "No Bookmarks" in bookmarks panel
+     */
     @Test
     public void openBookmarksPanel_showEmptyBookmarksView() {
         // Tap menu
@@ -134,7 +135,8 @@ public class BookmarksTest {
      * 10. Tap browser menu button
      * 11. Bookmark button is activated
      * 12. Tap bookmark button
-     * 13. Show bookmark removed toast */
+     * 13. Show bookmark removed toast
+     */
     @Test
     public void addAndRemoveBookmarks_bookmarkIsAddedAndRemoved() {
 
@@ -180,7 +182,8 @@ public class BookmarksTest {
      * 1. Launch app and add a web page to bookmark list
      * 2. Open bookmark list and tap the action menu of bookmark item
      * 3. Tap remove button
-     * 4. Show "No Bookmarks" in bookmarks panel */
+     * 4. Show "No Bookmarks" in bookmarks panel
+     */
     @Test
     public void removeBookmarkFromBookmarkList_bookmarkIsRemoved() {
 
@@ -205,7 +208,8 @@ public class BookmarksTest {
      * 3. Tap edit button
      * 4. Type some text in the name and location field
      * 5. Tap save button
-     * 6. Bookmark item is updated */
+     * 6. Bookmark item is updated
+     */
     @Test
     public void editBookmarkWithChangingContent_bookmarkIsUpdated() {
         tapBookmarkItemActionMenu();
@@ -241,7 +245,8 @@ public class BookmarksTest {
      * 2. Open bookmark list and tap the action menu of bookmark item
      * 3. Tap edit button
      * 4. Do not change name and location field
-     * 5. Save button is disabled */
+     * 5. Save button is disabled
+     */
     @Test
     public void editBookmarkWithoutChangingContent_saveButtonIsDisabled() {
         tapBookmarkItemActionMenu();
@@ -264,7 +269,8 @@ public class BookmarksTest {
      * 2. Open bookmark list and tap the action menu of bookmark item
      * 3. Tap edit button
      * 4. Clear the location field
-     * 5. Save button is disabled */
+     * 5. Save button is disabled
+     */
     @Test
     public void editBookmarkWithClearingLocationContent_saveButtonIsDisabled() {
         tapBookmarkItemActionMenu();
@@ -290,7 +296,8 @@ public class BookmarksTest {
      * 2. Tap edit button
      * 3. Change the name and location content
      * 4. Tap save button
-     * 5. Check the item in bookmark list if we update it successfully */
+     * 5. Check the item in bookmark list if we update it successfully
+     */
     @Test
     public void addBookmarkAndEdit_bookmarkIsUpdated() {
 
@@ -329,7 +336,8 @@ public class BookmarksTest {
      * 2. Go to bookmark list and edit it
      * 3. Change the name and location content with various words
      * 4. Tap save button
-     * 5. Check the item in bookmark list if we update it successfully */
+     * 5. Check the item in bookmark list if we update it successfully
+     */
     @Test
     public void editBookmarkWithVariousWords_bookmarkIsUpdated() {
 
