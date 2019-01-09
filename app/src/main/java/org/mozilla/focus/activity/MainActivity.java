@@ -80,6 +80,7 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
@@ -701,6 +702,10 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     private void onExitClicked() {
         GeoPermissionCache.clear();
+        if (PrivateMode.hasPrivateSession(this)) {
+            final Intent intent = PrivateSessionNotificationService.buildIntent(this.getApplicationContext(), true);
+            startActivity(intent);
+        }
         finish();
     }
 
