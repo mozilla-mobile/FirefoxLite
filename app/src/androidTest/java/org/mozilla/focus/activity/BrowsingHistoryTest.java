@@ -154,7 +154,7 @@ public class BrowsingHistoryTest {
         onView(withId(R.id.browsing_history_recycler_view))
                 .check(matches(atPosition(2, hasDescendant(withText(targetUrlSite1)))));
 
-        // Click the first item in history panel, index 0 is date label so index 1 is the latest one of history item
+        // Click the first item in history panel, index 0 is date label so index 2 is the latest one of history item
         onView(ViewMatchers.withId(R.id.browsing_history_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
