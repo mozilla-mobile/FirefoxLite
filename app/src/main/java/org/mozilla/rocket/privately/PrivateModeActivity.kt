@@ -137,7 +137,7 @@ class PrivateModeActivity : BaseActivity(),
 
     private fun pushToBack() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME)
         startActivity(intent)
         overridePendingTransition(0, R.anim.pb_exit)
     }
