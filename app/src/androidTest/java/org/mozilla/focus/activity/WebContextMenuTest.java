@@ -187,7 +187,7 @@ public class WebContextMenuTest {
 
     /**
      * Test case no: TC0017
-     * Test case name: share link
+     * Test case name: Share link
      * Steps:
      * 1. Launch Rocket and visit a website with links
      * 2. Long press on a link
@@ -212,7 +212,7 @@ public class WebContextMenuTest {
 
     /**
      * Test case no: TC0184
-     * Test case name: copy link address
+     * Test case name: Copy link address
      * Steps:
      * 1. Launch Rocket and visit a website with links
      * 2. Long press on a link
@@ -242,7 +242,7 @@ public class WebContextMenuTest {
 
     /**
      * Test case no: TC0185
-     * Test case name: share image
+     * Test case name: Share image
      * Steps:
      * 1. Launch Rocket and visit a website with images
      * 2. Long press on the selected image
@@ -268,7 +268,7 @@ public class WebContextMenuTest {
 
     /**
      * Test case no: TC0186
-     * Test case name: Copy image
+     * Test case name: Copy image address
      * Steps:
      * 1. Launch Rocket and visit a website with images
      * 2. Long press on the selected image
@@ -298,7 +298,7 @@ public class WebContextMenuTest {
 
     /**
      * Test case no: TC0187
-     * Test case name: Save, open and delete image
+     * Test case name: Save image
      * Steps:
      * 1. Launch Rocket and visit a website with images
      * 2. Long press on the selected image
