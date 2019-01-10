@@ -11,7 +11,6 @@ import android.content.Context
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -19,8 +18,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import kotlinx.android.synthetic.main.content_portal.view.bottom_sheet
-import kotlinx.android.synthetic.main.content_portal.view.content_panel
+import kotlinx.android.synthetic.main.content_portal.view.*
 import org.mozilla.focus.R
 import org.mozilla.focus.bookmark.BookmarkAdapter
 import org.mozilla.focus.fragment.PanelFragment
@@ -34,7 +32,6 @@ import org.mozilla.rocket.content.ContentPortalViewState.isLastSessionContent
 object ContentPortalViewState {
     @JvmStatic
     var isLastSessionContent = false
-
 }
 
 class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListener {
@@ -78,7 +75,8 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
         recyclerView = findViewById(R.id.recyclerview)
         emptyView = findViewById(R.id.empty_view_container)
         val factory = BookmarkViewModel.Factory(
-                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(context)))
+            BookmarkRepository.getInstance(BookmarksDatabase.getInstance(context))
+        )
 
         val layoutManager = LinearLayoutManager(context)
         adapter = BookmarkAdapter(this)
@@ -87,13 +85,12 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
 
         //https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
         viewModel = ViewModelProviders.of(context as FragmentActivity, factory)
-                .get(BookmarkViewModel::class.java)
+            .get(BookmarkViewModel::class.java)
         viewModel.bookmarks.observe(context as FragmentActivity, Observer<List<BookmarkModel>> { bms ->
             // why run?
             run {
                 if (bms != null && bms.isNotEmpty()) {
                     bottomSheetBehavior.peekHeight = 300 * 3 // fix later
-
                 } else {
                     bottomSheetBehavior.peekHeight = 0 // fix later
                     bottomSheetBehavior.skipCollapsed = true
@@ -109,21 +106,24 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
         if (visibility == VISIBLE) {
             return
         }
-        val anim = AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_in)
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                visibility = VISIBLE
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        })
-        this.startAnimation(anim)
-
+        visibility = VISIBLE
+        // bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+//        val anim = AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_in)
+//        anim.setAnimationListener(object : Animation.AnimationListener {
+//            override fun onAnimationStart(animation: Animation?) {
+//            }
+//
+//            override fun onAnimationRepeat(animation: Animation?) {
+//            }
+//
+//            override fun onAnimationEnd(animation: Animation?) {
+//                visibility = VISIBLE
+//                if (forceExpand) {
+//                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+//                }
+//            }
+//        })
+//        this.startAnimation(anim)
     }
 
     fun hide(): Boolean {
@@ -147,7 +147,6 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
         this.startAnimation(anim)
         return true
     }
-
 
     private fun setupBottomSheet() {
         bottomSheet = findViewById<View>(R.id.bottom_sheet)
@@ -178,13 +177,15 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
                 recyclerView.visibility = View.VISIBLE
                 emptyView.visibility = View.GONE
             }
+            PanelFragment.ON_OPENING -> {
+
+            }
             else -> {
                 recyclerView.visibility = View.GONE
                 emptyView.visibility = View.GONE
             }
         }
     }
-
 
     override fun onItemClicked(url: String?) {
         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
