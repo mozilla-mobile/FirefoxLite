@@ -51,8 +51,8 @@ public class NavigationTest {
      * 4. Press Back button
      * 5. check website_1 is displayed
      * 6. open menu to click next button
-     * 7. check website_2 is displayed */
-
+     * 7. check website_2 is displayed
+     */
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
