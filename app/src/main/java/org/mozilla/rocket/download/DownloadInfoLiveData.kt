@@ -14,8 +14,40 @@ import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.CursorUtils
 import org.mozilla.threadutils.ThreadUtils
 
-class DownloadInfoLiveData() : LiveData<DownloadInfoBundle>() {
+class DownloadStatusLiveData(ctx: Context) : LiveData<DownloadInfoBundle>() {
+    lateinit var context: Context
 
-    private val downloadInfoBundle: DownloadInfoBundle = DownloadInfoBundle(ArrayList(), -1, -1)
+    init {
+        context = ctx.applicationContext
+    }
 
+    private val broadcastReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == DownloadManager.ACTION_DOWNLOAD_COMPLETE) {
+                val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L)
+                if (id > 0) {
+                    DownloadInfoManager.getInstance().queryByDownloadId(id, updateListener)
+                }
+            } else if (intent.action == DownloadInfoManager.ROW_UPDATED) {
+                val id = intent.getLongExtra(DownloadInfoManager.ROW_ID, 0L)
+                if (id > 0) {
+                    DownloadInfoManager.getInstance().queryByRowId(id, updateListener)
+                }
+            }
+        }
+    }
+
+    override fun onActive() {
+        super.onActive()
+        LocalBroadcastManager.getInstance(context)
+            .registerReceiver(broadcastReceiver, IntentFilter(DownloadInfoManager.ROW_UPDATED))
+        context.registerReceiver(broadcastReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    }
+
+    override fun onInactive() {
+        super.onInactive()
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver)
+        context.unregisterReceiver(broadcastReceiver)
+    }
 }

@@ -28,6 +28,7 @@ import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.DownloadListAdapter;
+import org.mozilla.rocket.download.DownloadBroadcastReceiver;
 import org.mozilla.rocket.download.DownloadInfoBundle;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
 
@@ -57,6 +58,18 @@ public class DownloadsFragment extends PanelFragment implements DownloadListAdap
         subscribeUI(downloadListAdapter);
 
         return recyclerView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DownloadBroadcastReceiver.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        DownloadBroadcastReceiver.onPause(getActivity());
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {

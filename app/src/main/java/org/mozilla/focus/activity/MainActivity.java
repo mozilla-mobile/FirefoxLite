@@ -278,21 +278,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter);
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(downloadBroadcastReceiver, new IntentFilter(DownloadInfoManager.ROW_UPDATED));
-        registerReceiver(downloadBroadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        Inject.provideDownloadInfoRepository(getApplication()).addDataSource(downloadBroadcastReceiver.getDownloadInfoBundle());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadBroadcastReceiver);
-        unregisterReceiver(downloadBroadcastReceiver);
-        Inject.provideDownloadInfoRepository(getApplication()).removeDataSource(downloadBroadcastReceiver.getDownloadInfoBundle());
-
-
         TelemetryWrapper.stopSession();
 
         saveTabsToPersistence();
