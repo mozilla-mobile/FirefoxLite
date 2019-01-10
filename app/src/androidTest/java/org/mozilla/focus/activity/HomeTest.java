@@ -101,8 +101,8 @@ public class HomeTest {
      * Test case name: Home page basic assets
      * Steps:
      * 1. Launch Rocket
-     * 2. check visible - project name, search bar, top sites, tab tray */
-
+     * 2. check visible - project name, search bar, top sites, tab tray
+     */
     @Test
     public void checkBasicHomeComponents_allAreVisible() {
         activityRule.launchActivity(new Intent());
