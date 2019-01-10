@@ -51,6 +51,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -69,14 +70,14 @@ import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId
  * 2. Visit a website
  * 3. Long click on a link or image
  * 4. Check if each action in web context menu works
- *   - Open in new tab
- *   - Share link
- *   - Copy link address
- *   - Share image
- *   - Share image address
- *   - Copy image address
- *   - Save image
- * */
+ * - Open in new tab
+ * - Share link
+ * - Copy link address
+ * - Share image
+ * - Share image address
+ * - Copy image address
+ * - Save image
+ */
 
 @RunWith(AndroidJUnit4.class)
 public class WebContextMenuTest {
@@ -158,8 +159,44 @@ public class WebContextMenuTest {
 
         // Check if "New tab opened" text is shown in snack bar
         onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()));
+
+        // Check tab count is 2
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2")));
     }
 
+    /**
+     * Test case no: TC0017
+     * Test case name: Open image in new tab
+     * Steps:
+     * 1. Launch Rocket and visit a website with links
+     * 2. Long press on a link
+     * 3. Tap on the "Share link" on the prompt dialog.
+     * 5. Check intent sent
+     */
+    @Test
+    public void openImageInNewTab() {
+
+        loadTestWebsiteAndOpenContextMenu();
+
+        // Click "Open link in new tab"
+        onView(withText(R.string.contextmenu_open_image_in_new_tab)).perform(click());
+
+        // Check if "New tab opened" text is shown in snack bar
+        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()));
+
+        // Check if switch is shown in snack bar
+        onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Test case no: TC0017
+     * Test case name: share link
+     * Steps:
+     * 1. Launch Rocket and visit a website with links
+     * 2. Long press on a link
+     * 3. Tap on the "Share link" on the prompt dialog.
+     * 5. Check intent sent
+     */
     @Test
     public void shareLink_sendShareIntent() {
 
@@ -173,9 +210,18 @@ public class WebContextMenuTest {
         onView(allOf(withText(R.string.contextmenu_link_share), isDisplayed())).perform(click());
 
         // Check if intent is sent
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf( hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
+        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
     }
 
+    /**
+     * Test case no: TC0184
+     * Test case name: copy link address
+     * Steps:
+     * 1. Launch Rocket and visit a website with links
+     * 2. Long press on a link
+     * 3. Tap on "Copy link address"
+     * 5. Check copied url matches as expected
+     */
     @Test
     public void copyLinkAddress() {
 
@@ -197,6 +243,16 @@ public class WebContextMenuTest {
         Assert.assertEquals(clipItem.getUri(), Uri.parse(getLinkUrl()));
     }
 
+    /**
+     * Test case no: TC0185
+     * Test case name: share image
+     * Steps:
+     * 1. Launch Rocket and visit a website with images
+     * 2. Long press on the selected image
+     * 3. Tap on the "Share image"
+     * 4. Tap on the "Gmail"
+     * 5. Check intent sent
+     */
     @Test
     public void shareImage_sendShareIntent() {
 
@@ -210,9 +266,18 @@ public class WebContextMenuTest {
         onView(allOf(withText(R.string.contextmenu_image_share), isDisplayed())).perform(click());
 
         // Check if intent is sent
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf( hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
+        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
     }
 
+    /**
+     * Test case no: TC0186
+     * Test case name: Copy image
+     * Steps:
+     * 1. Launch Rocket and visit a website with images
+     * 2. Long press on the selected image
+     * 3. Tap on "Copy image address"
+     * 5. Check copied url matches as expected
+     */
     @Test
     public void copyImageAddress() {
 
@@ -234,6 +299,19 @@ public class WebContextMenuTest {
         Assert.assertEquals(clipItem.getUri(), Uri.parse(getLinkUrl()));
     }
 
+    /**
+     * Test case no: TC0187
+     * Test case name: Save, open and delete image
+     * Steps:
+     * 1. Launch Rocket and visit a website with images
+     * 2. Long press on the selected image
+     * 3. Tap on "Save image"
+     * 5. Click menu
+     * 6. Click download manager
+     * 7. Check download item matches as expected
+     * 8. Delete image
+     * 9. Check toast message "deleted image successfully"
+     */
     @Test
     public void saveImageThenDelete_imageSaveAndDeleteSuccessfully() {
 
@@ -259,7 +337,7 @@ public class WebContextMenuTest {
 
         IdlingRegistry.getInstance().unregister(downloadCompleteIdlingResource);
 
-        // Click the first download item and check if the name is matched
+        // Check if first download item name is matched
         onView(withId(R.id.recyclerview))
                 .check(matches(atPosition(0, hasDescendant(withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))));
 
@@ -272,6 +350,11 @@ public class WebContextMenuTest {
                 .inRoot(RootMatchers.isPlatformPopup())
                 .perform(click());
 
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Check if delete successfully message is displayed
         onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
                 .check(matches(isDisplayed()));
