@@ -59,7 +59,6 @@ public class OnBoardingTest {
      * 4. open menu
      * 5. check turbo mode is selected
      */
-
     @Test
     public void turnOnTurboModeDuringOnBoarding_turboModeIsOnInMenu() {
 
