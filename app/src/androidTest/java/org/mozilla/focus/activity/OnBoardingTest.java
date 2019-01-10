@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.BeforeTestTask;
+import org.mozilla.focus.helper.ViewPagerIdlingResource;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -37,6 +38,7 @@ public class OnBoardingTest {
 
     @Rule
     public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    private ViewPagerIdlingResource viewPagerIdlingResource;
 
     @Before
     public void setUp() {
@@ -70,15 +72,20 @@ public class OnBoardingTest {
         // Click next button in the second on-boarding page
         onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
 
+        // Register view pager idling resource
+        viewPagerIdlingResource = new ViewPagerIdlingResource(activityTestRule.getActivity().findViewById(R.id.pager));
+
+        IdlingRegistry.getInstance().register(viewPagerIdlingResource);
+
         // Swipe right to go to second on-boarding page
         onView(allOf(withId(R.id.image), isDisplayed())).perform(swipeRight());
-
-        IdlingRegistry.getInstance().register();
 
         // Swipe left to go to to third on-boarding page
         onView(allOf(withId(R.id.image), isDisplayed())).perform(swipeLeft());
 
-        IdlingRegistry.getInstance().unregister();
+        // Unregister view pager idling resource
+        IdlingRegistry.getInstance().unregister(viewPagerIdlingResource);
+
         // Click next button in the third on boarding page
         onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
 
