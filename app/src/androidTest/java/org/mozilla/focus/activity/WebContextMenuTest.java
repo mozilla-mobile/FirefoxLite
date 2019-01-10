@@ -15,9 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.action.Tap;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.espresso.matcher.RootMatchers;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.DisplayMetrics;
@@ -60,7 +58,6 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
-import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 /**
  * Test case no: navi_10, navi_11
@@ -309,8 +306,6 @@ public class WebContextMenuTest {
      * 5. Click menu
      * 6. Click download manager
      * 7. Check download item matches as expected
-     * 8. Delete image
-     * 9. Check toast message "deleted image successfully"
      */
     @Test
     public void saveImageThenDelete_imageSaveAndDeleteSuccessfully() {
@@ -340,25 +335,6 @@ public class WebContextMenuTest {
         // Check if first download item name is matched
         onView(withId(R.id.recyclerview))
                 .check(matches(atPosition(0, hasDescendant(withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))));
-
-        // Open target download item's action menu
-        onView(withId(R.id.recyclerview)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.menu_action)));
-
-        // Click the remove button
-        onView(withText(R.string.delete_file))
-                .inRoot(RootMatchers.isPlatformPopup())
-                .perform(click());
-
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        // Check if delete successfully message is displayed
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
-                .check(matches(isDisplayed()));
-
     }
 
     private void loadTestWebsiteAndOpenContextMenu() {
