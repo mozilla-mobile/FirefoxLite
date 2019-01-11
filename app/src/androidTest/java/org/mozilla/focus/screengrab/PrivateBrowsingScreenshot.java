@@ -77,14 +77,18 @@ public class PrivateBrowsingScreenshot extends BaseScreenshot {
         // Click private home search field and enter test url
         onView(withId(R.id.pm_home_fake_input)).perform(click());
 
+        // create the idlingResource before the new session is created.
+        loadingIdlingResource = new PrivateSessionLoadedIdlingResource(activityTestRule.getActivity());
+
         onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE), pressImeActionButton());
 
         onView(withId(R.id.display_url)).check(matches(isDisplayed()));
-        loadingIdlingResource = new PrivateSessionLoadedIdlingResource(activityTestRule.getActivity());
 
-        // Check if url is loaded
+        // Once the new session is created, we listen when the session completes loading
         IdlingRegistry.getInstance().register(loadingIdlingResource);
+
         onView(withId(R.id.display_url)).check(matches(withText(TARGET_URL_SITE)));
+
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Finish private browsing
