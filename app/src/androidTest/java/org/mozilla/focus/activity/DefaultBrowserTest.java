@@ -59,7 +59,7 @@ public class DefaultBrowserTest {
 
     /**
      * Test case no: TC0090
-     * Test case name: Set FIrefox Lite as default browser
+     * Test case name: Set FIrefox Lite as default browser when Chrome is default browser
      * Steps:
      * 1. Set Chrome as a default browser
      * 2. Launch Rocket
@@ -69,7 +69,7 @@ public class DefaultBrowserTest {
      * 6. Check it correctly set default browser to Firefox Lite
      */
     @Test
-    public void changeDefaultBrowser_prefSwitched() {
+    public void changeDefaultBrowser_whenChromeIsDefault() {
 
         // Start MainActivity
         mainActivity.launchActivity(new Intent());
@@ -148,4 +148,72 @@ public class DefaultBrowserTest {
 
     }
 
+    /**
+     * Test case no: TC0093
+     * Test case name: Set Firefox Lite as default browser when no default browser
+     * Steps:
+     * 1. Launch Rocket
+     * 2. Go to settings page (Tap menu -> settings)
+     * 3. Tap "Make default browser"
+     * 4. Go back to Rocket's settings
+     * 5. Check it correctly set default browser to Firefox Lite
+     */
+    @Test
+    public void changeDefaultBrowser_whenNoDefault() {
+
+        mainActivity.launchActivity(new Intent());
+        final MainActivity activity = mainActivity.getActivity();
+        if (activity == null) {
+            throw new AssertionError("Could start activity");
+        }
+
+        final String prefName = activity.getString(R.string.pref_key_default_browser);
+
+        // Click on the menu item
+        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
+
+        // Click on Settings
+        onView(withId(R.id.menu_preferences)).perform(click());
+
+        // Click on "Default Browser" setting, this will brings up the Android system setting
+        onData(allOf(
+                is(instanceOf(Preference.class)),
+                withKey(prefName))).
+                onChildView(withClassName(is(Switch.class.getName()))).perform(click());
+
+        // 2. Set Firefox Lite as default browser
+        // Open default browser setting
+        final UiObject allAppsButton = uiDevice
+                .findObject(new UiSelector().text(SETTING_DEFAULT_BROWSER));
+
+        try {
+            allAppsButton.click();
+
+        } catch (UiObjectNotFoundException e) {
+            throw new AssertionError("Could find the setting", e);
+        }
+
+        // Choose Firefox Lite browser
+        final UiScrollable browserList = new UiScrollable(new UiSelector());
+
+        final UiSelector rocketView = new UiSelector().text(activity.getString(R.string.app_name));
+        try {
+            browserList.scrollIntoView(rocketView);
+            final UiObject browserCandidate = uiDevice.findObject(rocketView);
+            browserCandidate.click();
+
+        } catch (UiObjectNotFoundException e) {
+            throw new AssertionError("Could find the Firefox Lite app in default browser", e);
+        }
+
+        // Now launch Rocket's setting activity
+        settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
+
+        // Check if the "Default Browser" pref is correctly displayed (switch checked)
+        onData(allOf(
+                is(instanceOf(Preference.class)),
+                withKey(prefName))).
+                onChildView(withClassName(is(Switch.class.getName()))).check(matches(isChecked()));
+
+    }
 }
