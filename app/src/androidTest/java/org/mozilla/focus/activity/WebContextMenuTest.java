@@ -163,30 +163,6 @@ public class WebContextMenuTest {
 
     /**
      * Test case no: TC0017
-     * Test case name: Open image in new tab
-     * Steps:
-     * 1. Launch Rocket and visit a website with links
-     * 2. Long press on a link
-     * 3. Tap on the "Share link" on the prompt dialog.
-     * 5. Check intent sent
-     */
-    @Test
-    public void openImageInNewTab() {
-
-        loadTestWebsiteAndOpenContextMenu();
-
-        // Click "Open link in new tab"
-        onView(withText(R.string.contextmenu_open_image_in_new_tab)).perform(click());
-
-        // Check if "New tab opened" text is shown in snack bar
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()));
-
-        // Check if switch is shown in snack bar
-        onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Test case no: TC0017
      * Test case name: Share link
      * Steps:
      * 1. Launch Rocket and visit a website with links
