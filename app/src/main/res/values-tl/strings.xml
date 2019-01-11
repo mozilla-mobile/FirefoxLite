@@ -126,6 +126,7 @@
   <string name="download_cancel">Nakansela ang download</string>
   <string name="undo">I-undo</string>
   <string name="open">Buksan</string>
+  <string name="menu_longpress_downloads">Long pindutin upang buksan ang Mga Download</string>
   <string name="pause">nakatigil</string>
   <string name="pending">Nakabinbin</string>
   <string name="running">dinadownload</string>
