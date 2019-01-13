@@ -51,6 +51,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -61,22 +62,6 @@ import static org.hamcrest.core.IsNot.not;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
-/**
- * Test case no: navi_10, navi_11
- * Test case name: Long press on a link/Long press on an image
- * Steps:
- * 1. Launch app
- * 2. Visit a website
- * 3. Long click on a link or image
- * 4. Check if each action in web context menu works
- *   - Open in new tab
- *   - Share link
- *   - Copy link address
- *   - Share image
- *   - Share image address
- *   - Copy image address
- *   - Save image
- * */
 
 @RunWith(AndroidJUnit4.class)
 public class WebContextMenuTest {
@@ -148,6 +133,17 @@ public class WebContextMenuTest {
         }
     }
 
+    /**
+     * Test case no: TC0081
+     * Test case name: Empty bookmarks list
+     * Steps:
+     * 1. Launch app
+     * 2. Open a tab
+     * 3. Long click to show pop context menu
+     * 4. Click "Open link in new tab" and "switch" displayed
+     * 5. Click switch
+     * 6. Check tab count is 2
+     */
     @Test
     public void openLinkInNewTab() {
 
@@ -156,8 +152,15 @@ public class WebContextMenuTest {
         // Click "Open link in new tab"
         onView(withText(R.string.contextmenu_open_in_new_tab)).perform(click());
 
-        // Check if "New tab opened" text is shown in snack bar
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()));
+        // Check if switch is shown in snack bar
+        onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed()));
+
+        // Click switch
+        onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed())).perform(click());
+
+        // Check tab count is 2
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2")));
+
     }
 
     @Test
@@ -173,7 +176,7 @@ public class WebContextMenuTest {
         onView(allOf(withText(R.string.contextmenu_link_share), isDisplayed())).perform(click());
 
         // Check if intent is sent
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf( hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
+        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
     }
 
     @Test
@@ -210,7 +213,7 @@ public class WebContextMenuTest {
         onView(allOf(withText(R.string.contextmenu_image_share), isDisplayed())).perform(click());
 
         // Check if intent is sent
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf( hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
+        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
     }
 
     @Test

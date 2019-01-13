@@ -55,6 +55,16 @@ public class SearchSuggestionTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    /**
+     * Test case no: TC0008
+     * Test case name: Search suggestion
+     * Steps:
+     * 1. Launch app
+     * 2. Tap search field
+     * 3. while typing, search suggestion is displayed at most 5
+     * 4. tap first suggestion
+     * 5. check current url is matched with defaultSearchEngine.buildSearchUrl()
+     */
     @Test
     public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
         activityTestRule.launchActivity(new Intent());
