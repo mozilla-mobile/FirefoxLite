@@ -24,6 +24,7 @@ import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -239,8 +240,11 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     @Override
     void refreshRemoteConfigDefault(Context context) {
+        // Clear remoteConfigDefault
         remoteConfigDefault = null;
         getRemoteConfigDefault(context);
+        // Now also need to reset the default config in Firebase if "Send Usage Data" is turned on.
+        enableRemoteConfig(context, TelemetryWrapper.isTelemetryEnabled(context));
     }
 
 
