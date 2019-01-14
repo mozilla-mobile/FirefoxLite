@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.annotation.ScreengrabOnly;
 import org.mozilla.focus.helper.BeforeTestTask;
-import org.mozilla.focus.helper.PrivateSessionLoadedIdlingResource;
+import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 
@@ -49,7 +49,7 @@ public class PrivateBrowsingScreenshot extends BaseScreenshot {
     private static final int NOTIFICATION_DISPLAY_DELAY = 2000;
 
     private final UiDevice uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-    private PrivateSessionLoadedIdlingResource loadingIdlingResource;
+    private SessionLoadedIdlingResource loadingIdlingResource;
 
     @Rule
     public ActivityTestRule<PrivateModeActivity> activityTestRule = new ActivityTestRule<>(PrivateModeActivity.class, true, false);
@@ -78,7 +78,7 @@ public class PrivateBrowsingScreenshot extends BaseScreenshot {
         onView(withId(R.id.pm_home_fake_input)).perform(click());
 
         // create the idlingResource before the new session is created.
-        loadingIdlingResource = new PrivateSessionLoadedIdlingResource(activityTestRule.getActivity());
+        loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
         onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE), pressImeActionButton());
 
