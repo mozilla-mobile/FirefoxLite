@@ -64,6 +64,18 @@ public class SwitchSearchEngineTest {
         }
     }
 
+    /**
+     * Test case no: TC_0004
+     * Test case name: Change default search engine
+     * Steps:
+     * 1. Launch Rocket
+     * 2. Tap on Menu and then Settings
+     * 3. Tap on "Default search engine"
+     * 4. Change a different search engine
+     * 5. Back to home and search for something
+     * 6. Search result is provided by selected search engine
+     * 7. Repeat 2~6 for different search engines */
+
     @Test
     public void switchSearchEngine_searchViaSearchEngineAccordingly() {
         activityTestRule.launchActivity(new Intent());

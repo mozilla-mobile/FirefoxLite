@@ -21,6 +21,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
@@ -44,11 +45,30 @@ public class SaveRestoreTabsTest {
         tabsDatabase = Inject.getTabsDatabase(null);
     }
 
+    /**
+     * Test case no: TC_0072
+     * Test case name: Empty tab
+     * Steps:
+     * 1. Launch Rocket with no tab
+     * 2. tab number is zero
+     */
+
     @Test
     public void restoreEmptyTab() {
         activityRule.launchActivity(new Intent());
         onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.home_screen_menu)))).check(matches(withText("0")));
     }
+
+    /**
+     * Test case no: TC_0070
+     * Test case name: Tap tray overview - Normal State
+     * Steps:
+     * 1. Launch app with no tab
+     * 2. open first top website on home page
+     * 4. relaunch app
+     * 5. check tab number is 1
+     * 6. open tab tray to check url, icon, website title, website subtitle, close button displayed
+     */
 
     @Test
     public void restoreEmptyTab_addNewTabThenRelaunch() {
@@ -57,21 +77,36 @@ public class SaveRestoreTabsTest {
 
         // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
         // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
+
         onView(ViewMatchers.withId(R.id.main_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click(pressBack())));
+
         relaunchActivity();
 
-        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("1")));
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("1"))).perform(click());
+
+        onView(withId(R.id.tab_tray)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.close_button)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.website_icon)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.website_title)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.website_subtitle)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void restorePreviousTabs() {
-        tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
-        AndroidTestUtils.setFocusTabId(TAB.getId());
 
-        activityRule.launchActivity(new Intent());
-        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2")));
-    }
+    /**
+     * Test case no: TC0075
+     * Test case name: restorePreviousTabs -> add new tab
+     * Steps:
+     * 1. given there are 2 tabs
+     * 2. open a new tab from tab tray
+     * 3. open first top site
+     * 4. relaunch activity
+     * 5. check tab number is 3
+     */
 
     @Test
     public void restorePreviousTabs_addNewTabThenRelaunch() {
@@ -81,7 +116,12 @@ public class SaveRestoreTabsTest {
         activityRule.launchActivity(new Intent());
         onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2")));
 
-        onView(ViewMatchers.withId(R.id.btn_open_new_tab)).perform(click());
+        //open a new tab from tab tray
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2"))).perform(click());
+
+        onView(ViewMatchers.withId(R.id.new_tab_button)).perform(click());
+
+        //open first top site
         onView(ViewMatchers.withId(R.id.main_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         relaunchActivity();

@@ -51,6 +51,12 @@ public class RateAppPromotionTest {
     @Rule
     public final IntentsTestRule<MainActivity> intentTestRule = new IntentsTestRule<>(MainActivity.class, true, false);
 
+    /**
+     * Precondition:
+     * 1. Launch Rocket 6th times
+     * 2. show [love firefox] dialog
+     */
+
     @Before
     public void setUp() {
 
@@ -72,6 +78,14 @@ public class RateAppPromotionTest {
         }
     }
 
+    /**
+     * Test case no: TC_0061
+     * Test case name: In-app promotion - Press RATE 5 START to open Google play
+     * Steps:
+     * 1. tap close button
+     * 2. Press feedback button
+     * 3. check feedback page url matches expectation */
+
     @Test
     public void showRateAppPromotionAndClickRate_intendedToOpenGooglePlay() {
         // By default Espresso Intents does not stub any Intents. Stubbing needs to be setup before
@@ -88,6 +102,14 @@ public class RateAppPromotionTest {
                 hasData(uri),
                 hasFlag(Intent.FLAG_ACTIVITY_NEW_TASK)));
     }
+
+    /**
+     * Test case no: TC_0062
+     * Test case name: In-app promotion - Press FEEDBACK to Mozilla feedback site
+     * Steps:
+     * 1. tap close button
+     * 2. Press feedback button
+     * 3. check feedback page url matches expectation */
 
     @Test
     public void showRateAppPromotionAndClickFeedback_openFeedbackUrl() {
@@ -106,6 +128,14 @@ public class RateAppPromotionTest {
                 .check(matches(withText(feedbackUrl)));
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
     }
+
+    /**
+     * Test case no: TC_0060
+     * Test case name: in-app promotion - Press CLOSE button
+     * Steps:
+     * 1. tap close button
+     * 2. Press back button
+     * 3. back to home page */
 
     @Test
     public void showRateAppPromotionAndClickClose_backToHome() {

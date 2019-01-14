@@ -8,6 +8,7 @@ package org.mozilla.focus.activity;
 import android.content.Intent;
 import android.support.annotation.Keep;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -17,10 +18,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.BeforeTestTask;
-import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.focus.helper.ViewPagerIdlingResource;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -31,10 +34,11 @@ import static org.hamcrest.core.AllOf.allOf;
 
 @Keep
 @RunWith(AndroidJUnit4.class)
-public class TurboModeTest {
+public class OnBoardingTest {
 
     @Rule
     public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    private ViewPagerIdlingResource viewPagerIdlingResource;
 
     @Before
     public void setUp() {
@@ -45,17 +49,41 @@ public class TurboModeTest {
         activityTestRule.launchActivity(new Intent());
     }
 
+    /**
+     * Test case no: TC_0033
+     * Test case name: Go through onboarding
+     * Steps:
+     * 1. Launch Rocket
+     * 2. check turbo mode is selected on first onbording page
+     * 3. move forward and backfard to check 4 pages of onboarding are displayed correctly
+     * 4. open menu
+     * 5. check turbo mode is selected
+     */
     @Test
     public void turnOnTurboModeDuringOnBoarding_turboModeIsOnInMenu() {
 
         // Check if turbo mode switch is on
         onView(allOf(withId(R.id.switch_widget), isDisplayed())).check(matches(isChecked()));
 
-        // Click next button in the first on boarding page
+        // Click next button in the first on-boarding page
         onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
 
-        // Click next button in the second on boarding page
+        // Click next button in the second on-boarding page
         onView(allOf(withId(R.id.next), isDisplayed())).perform(click());
+
+        // Register view pager idling resource
+        viewPagerIdlingResource = new ViewPagerIdlingResource(activityTestRule.getActivity().findViewById(R.id.pager));
+
+        IdlingRegistry.getInstance().register(viewPagerIdlingResource);
+
+        // Swipe right to go to second on-boarding page
+        onView(allOf(withId(R.id.image), isDisplayed())).perform(swipeRight());
+
+        // Swipe left to go to to third on-boarding page
+        onView(allOf(withId(R.id.image), isDisplayed())).perform(swipeLeft());
+
+        // Unregister view pager idling resource
+        IdlingRegistry.getInstance().unregister(viewPagerIdlingResource);
 
         // Click next button in the third on boarding page
         onView(allOf(withId(R.id.next), isDisplayed())).perform(click());

@@ -46,6 +46,7 @@ import static android.support.test.espresso.web.sugar.Web.onWebView;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.findElement;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 
 @RunWith(AndroidJUnit4.class)
@@ -125,7 +126,16 @@ public class DownloadTest {
         }
     };
 
-
+    /**
+     * Test case no: TC_00005
+     * Test case name: Download a file
+     * Steps:
+     * 1. Launch rocket
+     * 2. Visit website with images to download
+     * 3. Click download image
+     * 4. Check [Downloading] toast message displayed
+     * 5. Check file is shown in download list
+     */
     @Test
     public void triggerDownload_showToast() throws InterruptedException, UiObjectNotFoundException, IOException {
 
@@ -150,6 +160,7 @@ public class DownloadTest {
         // Unregister session loaded idling resource
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
+
         // If there's no removable storage for Downloads, we skip this test
         try {
             final File dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(activityRule.getActivity(), "*/*");
@@ -158,6 +169,15 @@ public class DownloadTest {
             onView(withText(R.string.download_started))
                     .inRoot(withDecorView(not(is(activityRule.getActivity().getWindow().getDecorView()))))
                     .check(matches(isDisplayed()));
+            // Open menu
+            onView(withId(R.id.btn_menu)).perform(click());
+
+            // Open download panel
+            onView(withId(R.id.menu_download)).perform(click());
+
+            // Check if download file matches image file name
+            onView(allOf(withId(R.id.title), withText(IMAGE_FILE_NAME_DOWNLOADED))).check(matches(isDisplayed()));
+
         } catch (NoRemovableStorageException e) {
             Log.e(TAG, "there's no removable storage for DownloadTest so we skip this.");
         }
