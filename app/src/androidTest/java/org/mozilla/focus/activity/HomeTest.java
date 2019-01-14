@@ -13,7 +13,6 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.hamcrest.core.AllOf;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Before;
@@ -97,6 +96,13 @@ public class HomeTest {
         }
     }
 
+    /**
+     * Test case no: TC_00006
+     * Test case name: Home page basic assets
+     * Steps:
+     * 1. Launch Rocket
+     * 2. check visible - project name, search bar, top sites, tab tray
+     */
     @Test
     public void checkBasicHomeComponents_allAreVisible() {
         activityRule.launchActivity(new Intent());
