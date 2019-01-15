@@ -126,6 +126,7 @@
   <string name="download_cancel">डाउनलोड रद्द केले</string>
   <string name="undo">पूर्ववत करा</string>
   <string name="open">उघडा</string>
+  <string name="menu_longpress_downloads">डाऊनलोड उघडण्यासाठी लांब दाबा</string>
   <string name="pause">विराम दिले</string>
   <string name="pending">प्रलंबित</string>
   <string name="running">डाउनलोड करत आहे</string>
