@@ -1,4 +1,4 @@
-# Rocket
+# Firefox Lite
 [![Bitrise build status](https://app.bitrise.io/app/2bee753c3b6709ca.svg?token=wKSNHE4YO8gQHd2W_I0tNg&branch=master)](https://www.bitrise.io/app/2bee753c3b6709ca)
 
 Getting Involved
@@ -6,7 +6,7 @@ Getting Involved
 
 We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution. Please read the [Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/).
 
-* Issues: [https://github.com/mozilla-tw/Rocket/issues](https://github.com/mozilla-tw/Rocket/issues)
+* Issues: [https://github.com/mozilla-tw/FirefoxLite/issues](https://github.com/mozilla-tw/FirefoxLite/issues)
 
 Build instructions
 ------------------
@@ -14,21 +14,21 @@ Build instructions
 1. Clone the repository:
 
   ```shell
-  git clone https://github.com/mozilla-tw/Rocket
+  git clone https://github.com/mozilla-tw/FirefoxLite
   ```
 
-2. Open Android Studio and select File->Open and select Rocket to open the project. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
+2. Open Android Studio and select File->Open and select FirefoxLite to open the project. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
 
 3. Disable Instant Run in: Settings/Build, Execution, Deployment > Instant Run. (See note #1 for details.)
 
 [1] We currently don't support instant run. An error message similar to:
 ```
-/Users/tyu/Documents/zerda/Rocket/app/src/main/java/org/mozilla/focus/utils/FirebaseHelper.java:29: error: cannot find symbol
+/Users/tyu/Documents/zerda/FirefoxLite/app/src/main/java/org/mozilla/focus/utils/FirebaseHelper.java:29: error: cannot find symbol
 final public class FirebaseHelper extends FirebaseWrapper {
                                           ^
   symbol: class FirebaseWrapper
 ```
-will shown when building with instant run. We have an [issue](https://github.com/mozilla-tw/Rocket/issues/2143) for this so feel free to help with this limitation. To disable instant run , press Cmd+Shit+a on Mac or Ctrl+Shift+a on Windows and enter "instant run" under "Preference" category. If it still doesn't work, try enter `./gradlew clean"` on mac or `gradlew clean` on Windows using command line in the project root.
+will shown when building with instant run. We have an [issue](https://github.com/mozilla-tw/FirefoxLite/issues/2143) for this so feel free to help with this limitation. To disable instant run , press Cmd+Shit+a on Mac or Ctrl+Shift+a on Windows and enter "instant run" under "Preference" category. If it still doesn't work, try enter `./gradlew clean"` on mac or `gradlew clean` on Windows using command line in the project root.
 
 Build instructions regarding Firebase
 ------------------
@@ -37,7 +37,7 @@ We're leveraging Firebase to offer some extra functionalities. However, Firebase
 
 Here are some Firebase build workarounds that you may need during normal development:
 
-1. If you want to run UI test without setting up firebase tokens, remove `testBuildType "firebase"` from [build.gradle](https://github.com/mozilla-tw/Rocket/blob/4fedf245c4382122283ca8ec701a5ff18c9bf779/app/build.gradle#L122) or you will most likely see error message like this when you run connectedAndroidTest directly:
+1. If you want to run UI test without setting up firebase tokens, remove `testBuildType "firebase"` from [build.gradle](https://github.com/mozilla-tw/FirefoxLite/blob/4fedf245c4382122283ca8ec701a5ff18c9bf779/app/build.gradle#L122) or you will most likely see error message like this when you run connectedAndroidTest directly:
 
 ```
 No tests found. This usually means that your test classes are not in the form that your test runner expects (e.g. don't inherit from TestCase or lack @Test annotations).
