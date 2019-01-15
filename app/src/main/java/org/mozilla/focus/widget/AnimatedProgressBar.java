@@ -175,6 +175,10 @@ public class AnimatedProgressBar extends ProgressBar {
         cancelAnimations();
         mPrimaryAnimator.setIntValues(getProgress(), nextProgress);
         mPrimaryAnimator.start();
+        final Drawable progressDrawable = getProgressDrawable();
+        if (progressDrawable instanceof ShiftDrawable) {
+            ((ShiftDrawable) progressDrawable).start();
+        }
     }
 
     @Override
@@ -246,6 +250,9 @@ public class AnimatedProgressBar extends ProgressBar {
     private void cancelAnimations() {
         if (mPrimaryAnimator != null) {
             mPrimaryAnimator.cancel();
+            if (getProgressDrawable() instanceof ShiftDrawable) {
+                ((ShiftDrawable) getProgressDrawable()).stop();
+            }
         }
         if (mClosingAnimator != null) {
             mClosingAnimator.cancel();
@@ -265,7 +272,9 @@ public class AnimatedProgressBar extends ProgressBar {
         @InterpolatorRes final int itplId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, INTEPOLATOR_NOT_EXIST);
         a.recycle();
 
-        setProgressDrawable(buildDrawable(getProgressDrawable(), wrap, duration, itplId));
+        final Drawable progressDrawable = getProgressDrawable();
+        progressDrawable.setCallback(this);
+        setProgressDrawable(buildDrawable(progressDrawable, wrap, duration, itplId));
 
         mPrimaryAnimator = createAnimator(getMax(), mListener);
 

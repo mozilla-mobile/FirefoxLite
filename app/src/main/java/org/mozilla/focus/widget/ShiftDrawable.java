@@ -5,66 +5,44 @@
 
 package org.mozilla.focus.widget;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 
-public class ShiftDrawable extends DrawableWrapper {
+public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatable {
 
-    private final ValueAnimator mAnimator = ValueAnimator.ofFloat(0f, 1f);
     private final Rect mVisibleRect = new Rect();
+
     private Path mPath;
 
     // align to ScaleDrawable implementation
     private static final int MAX_LEVEL = 10000;
 
-    private static final int DEFAULT_DURATION = 1000;
+    private boolean isRunning = false;
 
-    public ShiftDrawable(@NonNull Drawable d) {
-        this(d, DEFAULT_DURATION);
-    }
-
-    public ShiftDrawable(@NonNull Drawable d, int duration) {
-        this(d, duration, new LinearInterpolator());
-    }
+    private double fraction = 0.0;
 
     public ShiftDrawable(@NonNull Drawable d, int duration, @Nullable Interpolator interpolator) {
         super(d);
-        mAnimator.setDuration(duration);
-        mAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        mAnimator.setInterpolator((interpolator == null) ? new LinearInterpolator() : interpolator);
-        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                if (isVisible()) {
-                    invalidateSelf();
-                }
-            }
-        });
-        mAnimator.start();
-    }
-
-    public Animator getAnimator() {
-        return mAnimator;
     }
 
     @Override
     public boolean setVisible(boolean visible, boolean restart) {
         final boolean isDifferent = super.setVisible(visible, restart);
         if (isDifferent && isVisible()) {
-            mAnimator.start();
+            setFrame();
         } else {
-            mAnimator.end();
+            //mAnimator.end();
+            unscheduleSelf(this);
         }
         return isDifferent;
     }
+
 
     @Override
     protected void onBoundsChange(Rect bounds) {
@@ -82,12 +60,13 @@ public class ShiftDrawable extends DrawableWrapper {
     @Override
     public void draw(Canvas canvas) {
         final Drawable d = getWrappedDrawable();
-        final float fraction = mAnimator.getAnimatedFraction();
         final int width = mVisibleRect.width();
         final int offset = (int) (width * fraction);
         final int stack = canvas.save();
 
-        canvas.clipPath(mPath);
+        if (mPath != null) {
+            canvas.clipPath(mPath);
+        }
 
         // shift from right to left.
         // draw left-half part
@@ -115,5 +94,34 @@ public class ShiftDrawable extends DrawableWrapper {
         mPath = new Path();
         mPath.addRect(b.left, b.top, b.left + width - radius, b.height(), Path.Direction.CCW);
         mPath.addCircle(b.left + width - radius, radius, radius, Path.Direction.CCW);
+    }
+
+    @Override
+    public void start() {
+        if (isRunning) {
+            return;
+        }
+        isRunning = true;
+        setFrame();
+    }
+
+    @Override
+    public void stop() {
+        isRunning = false;
+        unscheduleSelf(this);
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public void run() {
+        fraction += 0.1;
+    }
+
+    private void setFrame() {
+        scheduleSelf(this, 100);
     }
 }
