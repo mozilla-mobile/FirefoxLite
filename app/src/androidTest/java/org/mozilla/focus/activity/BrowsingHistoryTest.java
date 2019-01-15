@@ -204,7 +204,7 @@ public class BrowsingHistoryTest {
     }
 
     /**
-     * Test case no: his_004
+     * Test case no: TC0052
      * Test case name: Clear all history record
      * Steps:
      * 1. Follow steps in his_001
