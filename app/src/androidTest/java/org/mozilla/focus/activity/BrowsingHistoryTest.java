@@ -109,14 +109,19 @@ public class BrowsingHistoryTest {
     }
 
     /**
-     * Test case no: his_001
+     * Test case no: TC0050
      * Test case name: History is recorded correctly
      * Steps:
      * 1. Launch app
-     * 2. Visit some websites
-     * 3. Tap Menu
-     * 4. Tap History
-     * 5. History is shown in correct order */
+     * 2. Tap site_1
+     * 3. Tap site_2
+     * 4. Tap Menu
+     * 5. Tap History
+     * 6. Check site_2 locates first in the list
+     * 7. Check site_1 locates second in the list
+     * 8. Tap the second item in history panel
+     * 9. Check the opened tab url is site_1
+     */
     @Test
     public void browsingTwoWebSites_sitesAreDisplayedInOrderInHistoryPanel() {
 
@@ -148,32 +153,20 @@ public class BrowsingHistoryTest {
         // Open history panel
         onView(allOf(withId(R.id.menu_history), isDisplayed())).perform(click());
 
+        // Check site_2 locates first in the list
         onView(withId(R.id.browsing_history_recycler_view))
                 .check(matches(atPosition(1, hasDescendant(withText(targetUrlSite2)))));
 
+        // Check site_1 locates second in the list
         onView(withId(R.id.browsing_history_recycler_view))
                 .check(matches(atPosition(2, hasDescendant(withText(targetUrlSite1)))));
 
-    }
-
-    /**
-     * Test case no: his_002
-     * Test case name: Visit a page via history record
-     * Steps:
-     * 1. Follow steps in his_001
-     * 2. Tap on a history
-     * 3. Navigate to the selected history site */
-    @Test
-    public void browsingWebsiteThenTapTheFirstHistoryItem_browsingHistoryRecordCorrectly() {
-
-        final String targetUrl = browsingWebsiteAndOpenHistoryPanel();
-
-        // Click the first item in history panel, index 0 is date label so index 1 is the latest one of history item
+        // Tap the second item in history panel (index 0 is date label so index 2 is the latest one of history item)
         onView(ViewMatchers.withId(R.id.browsing_history_recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
-        // Check if this history record is target url and loaded again
-        onView(withId(R.id.display_url)).check(matches(withText(targetUrl)));
+        // Check the opened tab url is site_1
+        onView(withId(R.id.display_url)).check(matches(withText(targetUrlSite1)));
 
     }
 
