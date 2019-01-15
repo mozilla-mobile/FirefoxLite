@@ -95,19 +95,20 @@ public class BookmarksTest {
 
     @After
     public void tearDown() {
-        if  (sessionLoadedIdlingResource != null) {
+        if (sessionLoadedIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
         }
     }
 
     /**
-     * Test case no: 0203001
+     * Test case no: TC0098
      * Test case name: Empty bookmarks list
      * Steps:
      * 1. Launch app
      * 2. Tap Menu
      * 3. Tap Bookmark button
-     * 4. Show "No Bookmarks" in bookmarks panel */
+     * 4. Show "No Bookmarks" in bookmarks panel
+     */
     @Test
     public void openBookmarksPanel_showEmptyBookmarksView() {
         // Tap menu
@@ -119,7 +120,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203002, 0203003
+     * Test case no: TC0099
      * Test case name: Add a website to bookmarks and remove it from bookmarks
      * Steps:
      * 1. Launch app
@@ -134,7 +135,8 @@ public class BookmarksTest {
      * 10. Tap browser menu button
      * 11. Bookmark button is activated
      * 12. Tap bookmark button
-     * 13. Show bookmark removed toast */
+     * 13. Show bookmark removed toast
+     */
     @Test
     public void addAndRemoveBookmarks_bookmarkIsAddedAndRemoved() {
 
@@ -174,13 +176,14 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203004
+     * Test case no: TC0100
      * Test case name: Remove bookmark from bookmark list
      * Steps:
      * 1. Launch app and add a web page to bookmark list
      * 2. Open bookmark list and tap the action menu of bookmark item
      * 3. Tap remove button
-     * 4. Show "No Bookmarks" in bookmarks panel */
+     * 4. Show "No Bookmarks" in bookmarks panel
+     */
     @Test
     public void removeBookmarkFromBookmarkList_bookmarkIsRemoved() {
 
@@ -197,7 +200,7 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203005
+     * Test case no: TC0101
      * Test case name: Edit bookmark name and location field
      * Steps:
      * 1. Launch app and add a web page to bookmark list
@@ -205,7 +208,8 @@ public class BookmarksTest {
      * 3. Tap edit button
      * 4. Type some text in the name and location field
      * 5. Tap save button
-     * 6. Bookmark item is updated */
+     * 6. Bookmark item is updated
+     */
     @Test
     public void editBookmarkWithChangingContent_bookmarkIsUpdated() {
         tapBookmarkItemActionMenu();
@@ -234,14 +238,15 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203006
+     * Test case no: TC0102
      * Test case name: Do not change bookmark name and location field
      * Steps:
      * 1. Launch app and add a web page to bookmark list
      * 2. Open bookmark list and tap the action menu of bookmark item
      * 3. Tap edit button
      * 4. Do not change name and location field
-     * 5. Save button is disabled */
+     * 5. Save button is disabled
+     */
     @Test
     public void editBookmarkWithoutChangingContent_saveButtonIsDisabled() {
         tapBookmarkItemActionMenu();
@@ -257,14 +262,15 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203007
+     * Test case no: TC0103
      * Test case name: Edit bookmark content and clear location content
      * Steps:
      * 1. Launch app and add a web page to bookmark list
      * 2. Open bookmark list and tap the action menu of bookmark item
      * 3. Tap edit button
      * 4. Clear the location field
-     * 5. Save button is disabled */
+     * 5. Save button is disabled
+     */
     @Test
     public void editBookmarkWithClearingLocationContent_saveButtonIsDisabled() {
         tapBookmarkItemActionMenu();
@@ -283,14 +289,15 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203008
+     * Test case no: TC0104
      * Test case name: Bookmark a web page, user can edit it immediately
      * Steps:
      * 1. Launch app and add a web page to bookmark list
      * 2. Tap edit button
      * 3. Change the name and location content
      * 4. Tap save button
-     * 5. Check the item in bookmark list if we update it successfully */
+     * 5. Check the item in bookmark list if we update it successfully
+     */
     @Test
     public void addBookmarkAndEdit_bookmarkIsUpdated() {
 
@@ -322,14 +329,15 @@ public class BookmarksTest {
     }
 
     /**
-     * Test case no: 0203009
+     * Test case no: TC0105
      * Test case name: Edit bookmark content and clear location content
      * Steps:
      * 1. Launch app and add a web page to bookmark list
      * 2. Go to bookmark list and edit it
      * 3. Change the name and location content with various words
      * 4. Tap save button
-     * 5. Check the item in bookmark list if we update it successfully */
+     * 5. Check the item in bookmark list if we update it successfully
+     */
     @Test
     public void editBookmarkWithVariousWords_bookmarkIsUpdated() {
 
