@@ -171,14 +171,15 @@ public class BrowsingHistoryTest {
     }
 
     /**
-     * Test case no: his_003
+     * Test case no: TC0051
      * Test case name: Remove a history record
      * Steps:
      * 1. Follow steps in his_001
      * 2. Tap on settings of a history record
      * 3. Context menu is shown with "delete" option
      * 4. Tap on delete
-     * 5. History is deleted */
+     * 5. History is deleted
+     */
     @Test
     public void browsingWebsiteAndDeleteItsHistoryItem_deleteSuccessfully() {
 
@@ -202,7 +203,6 @@ public class BrowsingHistoryTest {
 
     }
 
-
     /**
      * Test case no: his_004
      * Test case name: Clear all history record
@@ -215,7 +215,8 @@ public class BrowsingHistoryTest {
      * 6. Tap "CLEAR BROWSING HISTORY"
      * 7. Dialog shows up again
      * 8. Tap "CLEAR"
-     * 9. History cleared */
+     * 9. History cleared
+     */
     @Test
     public void clearBrowsingHistory_cancelAndClearWorkCorrectly() {
 
