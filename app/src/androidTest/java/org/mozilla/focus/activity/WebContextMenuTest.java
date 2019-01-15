@@ -15,9 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.action.Tap;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.espresso.matcher.RootMatchers;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.DisplayMetrics;
@@ -60,7 +58,6 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
-import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -137,12 +134,11 @@ public class WebContextMenuTest {
      * Test case no: TC0081
      * Test case name: Empty bookmarks list
      * Steps:
-     * 1. Launch app
-     * 2. Open a tab
-     * 3. Long click to show pop context menu
-     * 4. Click "Open link in new tab" and "switch" displayed
-     * 5. Click switch
-     * 6. Check tab count is 2
+     * 1. Launch Rocket and visit a website with links
+     * 2. Long click to show pop context menu
+     * 3. Check "Open link in new tab" and "switch" displayed
+     * 4. Click switch
+     * 5. Check tab count is 2
      */
     @Test
     public void openLinkInNewTab() {
@@ -152,6 +148,9 @@ public class WebContextMenuTest {
         // Click "Open link in new tab"
         onView(withText(R.string.contextmenu_open_in_new_tab)).perform(click());
 
+        // Check if "New tab opened" text is shown in snack bar
+        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()));
+
         // Check if switch is shown in snack bar
         onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed()));
 
@@ -160,9 +159,17 @@ public class WebContextMenuTest {
 
         // Check tab count is 2
         onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2")));
-
     }
 
+    /**
+     * Test case no: TC0017
+     * Test case name: Share link
+     * Steps:
+     * 1. Launch Rocket and visit a website with links
+     * 2. Long press on a link
+     * 3. Tap on the "Share link" on the prompt dialog.
+     * 5. Check intent sent
+     */
     @Test
     public void shareLink_sendShareIntent() {
 
@@ -179,6 +186,15 @@ public class WebContextMenuTest {
         intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
     }
 
+    /**
+     * Test case no: TC0184
+     * Test case name: Copy link address
+     * Steps:
+     * 1. Launch Rocket and visit a website with links
+     * 2. Long press on a link
+     * 3. Tap on "Copy link address"
+     * 5. Check copied url matches as expected
+     */
     @Test
     public void copyLinkAddress() {
 
@@ -200,6 +216,16 @@ public class WebContextMenuTest {
         Assert.assertEquals(clipItem.getUri(), Uri.parse(getLinkUrl()));
     }
 
+    /**
+     * Test case no: TC0185
+     * Test case name: Share image
+     * Steps:
+     * 1. Launch Rocket and visit a website with images
+     * 2. Long press on the selected image
+     * 3. Tap on the "Share image"
+     * 4. Tap on the "Gmail"
+     * 5. Check intent sent
+     */
     @Test
     public void shareImage_sendShareIntent() {
 
@@ -216,6 +242,15 @@ public class WebContextMenuTest {
         intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
     }
 
+    /**
+     * Test case no: TC0186
+     * Test case name: Copy image address
+     * Steps:
+     * 1. Launch Rocket and visit a website with images
+     * 2. Long press on the selected image
+     * 3. Tap on "Copy image address"
+     * 5. Check copied url matches as expected
+     */
     @Test
     public void copyImageAddress() {
 
@@ -237,6 +272,17 @@ public class WebContextMenuTest {
         Assert.assertEquals(clipItem.getUri(), Uri.parse(getLinkUrl()));
     }
 
+    /**
+     * Test case no: TC0187
+     * Test case name: Save image
+     * Steps:
+     * 1. Launch Rocket and visit a website with images
+     * 2. Long press on the selected image
+     * 3. Tap on "Save image"
+     * 5. Click menu
+     * 6. Click download manager
+     * 7. Check download item matches as expected
+     */
     @Test
     public void saveImageThenDelete_imageSaveAndDeleteSuccessfully() {
 
@@ -262,23 +308,9 @@ public class WebContextMenuTest {
 
         IdlingRegistry.getInstance().unregister(downloadCompleteIdlingResource);
 
-        // Click the first download item and check if the name is matched
+        // Check if first download item name is matched
         onView(withId(R.id.recyclerview))
                 .check(matches(atPosition(0, hasDescendant(withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))));
-
-        // Open target download item's action menu
-        onView(withId(R.id.recyclerview)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.menu_action)));
-
-        // Click the remove button
-        onView(withText(R.string.delete_file))
-                .inRoot(RootMatchers.isPlatformPopup())
-                .perform(click());
-
-        // Check if delete successfully message is displayed
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
-                .check(matches(isDisplayed()));
-
     }
 
     private void loadTestWebsiteAndOpenContextMenu() {
