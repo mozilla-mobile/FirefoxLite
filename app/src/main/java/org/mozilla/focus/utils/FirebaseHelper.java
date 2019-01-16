@@ -194,7 +194,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
             enableCrashlytics(applicationContext, enable);
             enableAnalytics(applicationContext, enable);
             enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), enable);
-            enableRemoteConfig(applicationContext, enable);
+            // we only record the firebaseRemoteConfigFetched event when the app is launched.
+            enableRemoteConfig(applicationContext, enable, TelemetryWrapper::firebaseRemoteConfigFetched);
 
             // now firebase has completed state changing,
             changing = false;
@@ -244,7 +245,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
         remoteConfigDefault = null;
         getRemoteConfigDefault(context);
         // Now also need to reset the default config in Firebase if "Send Usage Data" is turned on.
-        enableRemoteConfig(context, TelemetryWrapper.isTelemetryEnabled(context));
+        // We don't need callback for firebaseRemoteConfigFetched cause we only want to record it when
+        // the app is launched.
+        enableRemoteConfig(context, TelemetryWrapper.isTelemetryEnabled(context), null);
     }
 
 

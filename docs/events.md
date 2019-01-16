@@ -1,5 +1,6 @@
 | Event | category | method | object | value | extra |
 | ---- | ---- | ---- | ---- | ---- | ---- |
+|Firebase RemoteConfig Fetched|action|init|firebase|"null"|"to=true,false," 
 |Turn on Turbo Mode in First Run|action|change|firstrun|"turbo"|"to=true,false," 
 |Finish First Run|action|show|firstrun|"finish"|"on=time spent on First Run," 
 |App is launched by Launcher|action|launch|app|"launcher"|"" 

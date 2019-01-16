@@ -90,6 +90,7 @@ object TelemetryWrapper {
         const val OPEN = "open"
         const val SHOW = "show"
         const val LAUNCH = "launch"
+        const val INIT = "init"
     }
 
     internal object Object {
@@ -121,6 +122,7 @@ object TelemetryWrapper {
         const val DOORHANGER = "doorhanger"
         const val VPN_DOORHANGER = "vpn_doorhanger"
         const val QUICK_SEARCH = "quicksearch"
+        const val FIREBASE = "firebase"
     }
 
     object Value {
@@ -304,6 +306,20 @@ object TelemetryWrapper {
                     .getDefaultSearchEngine(context)
                     .identifier
         }
+    }
+
+    @TelemetryDoc(
+            name = "Firebase RemoteConfig Fetched",
+            category = Category.ACTION,
+            method = Method.INIT,
+            `object` = Object.FIREBASE,
+            value = "null",
+            extras = [TelemetryExtra(name = Extra.TO, value = "true,false")]
+    )
+    @JvmStatic
+    fun firebaseRemoteConfigFetched() {
+        EventBuilder(Category.ACTION, Method.INIT, Object.FIREBASE)
+                .queue()
     }
 
     @TelemetryDoc(
