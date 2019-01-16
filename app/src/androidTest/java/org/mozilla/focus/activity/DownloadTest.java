@@ -9,6 +9,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.RootMatchers;
 import android.support.test.espresso.web.webdriver.Locator;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
@@ -37,6 +39,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -48,6 +51,7 @@ import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
+import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 @RunWith(AndroidJUnit4.class)
 public class DownloadTest {
@@ -139,27 +143,8 @@ public class DownloadTest {
     @Test
     public void triggerDownload_showToast() throws InterruptedException, UiObjectNotFoundException, IOException {
 
-        // Start the activity
-        activityRule.launchActivity(new Intent());
-        final SessionLoadedIdlingResource sessionLoadedIdlingResource = new SessionLoadedIdlingResource(activityRule.getActivity());
-
-        // Click and prepare to enter the URL
-        onView(withId(R.id.home_fragment_fake_input)).perform(click());
-
-        // Enter URL and load the page
-        onView(withId(R.id.url_edit)).perform(replaceText(webServer.url(TEST_PATH).toString()), pressImeActionButton());
-
-        // Waiting for page loading completes
-        IdlingRegistry.getInstance().register(sessionLoadedIdlingResource);
-
-        // Find the element in HTML with id "download" after the page is loaded
-        onWebView()
-                .withElement(findElement(Locator.ID, HTML_ELEMENT_ID_DOWNLOAD))
-                .perform(webClick());
-
-        // Unregister session loaded idling resource
-        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
-
+        // visit website with images to download
+        browsePageAndDownload();
 
         // If there's no removable storage for Downloads, we skip this test
         try {
@@ -183,5 +168,72 @@ public class DownloadTest {
         }
 
         // TODO: 1. Long Click and check context menu 2. Check File name after downloads completed.
+    }
+
+    /**
+     * Test case no: TC0049
+     * Test case name: Remove a download from list
+     * Steps:
+     * 1. Launch rocket
+     * 2. Visit website with images to download
+     * 3. Open downloads
+     * 4. Tap more button
+     * 5. Tap remove from list
+     * 6. Check file is not in the list
+     */
+    @Test
+    public void triggerDownload_FileRemoveFromList() throws InterruptedException, UiObjectNotFoundException, IOException {
+
+        // visit website with images to download
+        browsePageAndDownload();
+
+        try {
+            final File dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(activityRule.getActivity(), "*/*");
+
+            // Open menu
+            onView(withId(R.id.btn_menu)).perform(click());
+
+            // Open download panel
+            onView(withId(R.id.menu_download)).perform(click());
+
+            // Click first item menu action
+            onView(withId(R.id.recyclerview)).perform(
+                    RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.menu_action)));
+
+            // Click delete file
+            onView(withText(R.string.remove_from_list))
+                    .inRoot(RootMatchers.isPlatformPopup()).check(matches(isDisplayed())).perform(click());
+
+            //Check file is not in the list
+            onView(allOf(withId(R.id.title), withText(IMAGE_FILE_NAME_DOWNLOADED))).check(doesNotExist());
+
+        } catch (NoRemovableStorageException e) {
+            Log.e(TAG, "there's no removable storage for DownloadTest so we skip this.");
+        }
+
+    }
+
+    private void browsePageAndDownload() {
+
+        // Start the activity
+        activityRule.launchActivity(new Intent());
+        final SessionLoadedIdlingResource sessionLoadedIdlingResource = new SessionLoadedIdlingResource(activityRule.getActivity());
+
+        // Click and prepare to enter the URL
+        onView(withId(R.id.home_fragment_fake_input)).perform(click());
+
+        // Enter URL and load the page
+        onView(withId(R.id.url_edit)).perform(replaceText(webServer.url(TEST_PATH).toString()), pressImeActionButton());
+
+        // Waiting for page loading completes
+        IdlingRegistry.getInstance().register(sessionLoadedIdlingResource);
+
+        // Find the element in HTML with id "download" after the page is loaded
+        onWebView()
+                .withElement(findElement(Locator.ID, HTML_ELEMENT_ID_DOWNLOAD))
+                .perform(webClick());
+
+        // Unregister session loaded idling resource
+        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
     }
 }
