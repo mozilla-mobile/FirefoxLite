@@ -127,10 +127,7 @@ public class DrawableWrapper extends Drawable {
         mWrapped.setAlpha(i);
     }
 
-    @Override
-    public void scheduleSelf(Runnable what, long when) {
-        mWrapped.scheduleSelf(what, when);
-    }
+
 
     @Override
     public void setChangingConfigurations(int configs) {

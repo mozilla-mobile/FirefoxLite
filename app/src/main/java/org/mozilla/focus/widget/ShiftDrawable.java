@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.widget;
 
+import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -13,9 +14,11 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 
 public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatable {
 
+    private final ValueAnimator mAnimator = ValueAnimator.ofFloat(0f, 1f);
     private final Rect mVisibleRect = new Rect();
 
     private Path mPath;
@@ -23,12 +26,11 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
     // align to ScaleDrawable implementation
     private static final int MAX_LEVEL = 10000;
 
-    private boolean isRunning = false;
-
-    private double fraction = 0.0;
-
     public ShiftDrawable(@NonNull Drawable d, int duration, @Nullable Interpolator interpolator) {
         super(d);
+        mAnimator.setDuration(duration);
+        mAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mAnimator.setInterpolator((interpolator == null) ? new LinearInterpolator() : interpolator);
     }
 
     @Override
@@ -61,6 +63,7 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
     public void draw(Canvas canvas) {
         final Drawable d = getWrappedDrawable();
         final int width = mVisibleRect.width();
+        final float fraction = mAnimator.getAnimatedFraction();
         final int offset = (int) (width * fraction);
         final int stack = canvas.save();
 
@@ -98,27 +101,27 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
 
     @Override
     public void start() {
-        if (isRunning) {
+        if (mAnimator.isRunning()) {
             return;
         }
-        isRunning = true;
+        mAnimator.start();
         setFrame();
     }
 
     @Override
     public void stop() {
-        isRunning = false;
+        mAnimator.cancel();
         unscheduleSelf(this);
     }
 
     @Override
     public boolean isRunning() {
-        return isRunning;
+        return mAnimator.isRunning();
     }
 
     @Override
     public void run() {
-        fraction += 0.1;
+        // use animator to calculate the fraction.
     }
 
     private void setFrame() {

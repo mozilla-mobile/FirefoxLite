@@ -272,9 +272,7 @@ public class AnimatedProgressBar extends ProgressBar {
         @InterpolatorRes final int itplId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, INTEPOLATOR_NOT_EXIST);
         a.recycle();
 
-        final Drawable progressDrawable = getProgressDrawable();
-        progressDrawable.setCallback(this);
-        setProgressDrawable(buildDrawable(progressDrawable, wrap, duration, itplId));
+        setProgressDrawable(buildDrawable(getProgressDrawable(), wrap, duration, itplId));
 
         mPrimaryAnimator = createAnimator(getMax(), mListener);
 
