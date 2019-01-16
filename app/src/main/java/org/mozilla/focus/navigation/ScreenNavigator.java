@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.BackKeyHandleable;
 
 import java.util.Arrays;
@@ -96,6 +97,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * 2. you've called Session#loadUrl() by yourself, and want to move that tab to the foreground.
      */
     public void raiseBrowserScreen(boolean animate) {
+        TelemetryWrapper.statsRaiseBrowserScreen();
         logMethod();
 
         this.transactionHelper.popAllScreens();

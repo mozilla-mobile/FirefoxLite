@@ -91,7 +91,7 @@ abstract class FirebaseWrapper {
     }
 
     // This need to be run in worker thread since FirebaseRemoteConfigSettings has IO access
-    static void enableRemoteConfig(Context context, boolean enable) {
+    static void enableRemoteConfig(Context context, boolean enable, Runnable callback) {
     }
 
     static void setDeveloperModeEnabled(boolean developerModeEnabled) {

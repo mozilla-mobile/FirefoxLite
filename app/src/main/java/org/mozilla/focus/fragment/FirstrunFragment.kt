@@ -24,6 +24,7 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.firstrun.DefaultFirstrunPagerAdapter
 import org.mozilla.focus.firstrun.UpgradeFirstrunPagerAdapter
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
+import org.mozilla.focus.telemetry.TelemetryHelper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.NewFeatureNotice
@@ -37,7 +38,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     private lateinit var bgTransitionDrawable: TransitionDrawable
     private lateinit var bgDrawables: Array<Drawable>
 
-    private var isTelemetryValid = true
     private var telemetryStartTimestamp: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +54,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
         // We will send a telemetry event whenever a new firstrun page is shown. However this page
         // listener won't fire for the initial page we are showing. So we are going to firing here.
-        isTelemetryValid = true
         telemetryStartTimestamp = System.currentTimeMillis()
     }
 
@@ -109,11 +108,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         return view
     }
 
-    override fun onPause() {
-        super.onPause()
-        isTelemetryValid = false
-    }
-
     override fun onClick(view: View) {
         when (view.id) {
             R.id.next -> viewPager.currentItem = viewPager.currentItem + 1
@@ -122,10 +116,11 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
             R.id.finish -> {
                 promoteSetDefaultBrowserIfPreload()
+
+                TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp)
+                TelemetryWrapper.statsFinishFirstRunEvent()
+
                 finishFirstrun()
-                if (isTelemetryValid) {
-                    TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp)
-                }
             }
 
             else -> throw IllegalArgumentException("Unknown view")
@@ -147,6 +142,8 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     }
 
     private fun findPagerAdapter(context: Context, onClickListener: View.OnClickListener): PagerAdapter? {
+        TelemetryHelper.firstLaunchVersion(context)
+        TelemetryWrapper.statsShowFirstRun()
         val pagerAdapter: PagerAdapter?
         val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
         pagerAdapter = if (!shown) {

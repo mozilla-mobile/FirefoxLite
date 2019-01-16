@@ -170,6 +170,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         super.onStart();
         showCurrentBannerTelemetry();
         TelemetryWrapper.showHome();
+        TelemetryWrapper.statsShowHome();
     }
 
     private void showCurrentBannerTelemetry() {
@@ -902,6 +903,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_MENU,
                             null);
                     TelemetryWrapper.showMenuHome();
+                    TelemetryWrapper.statsShowMenuHome();
                     break;
 
                 case R.id.btn_tab_tray:
