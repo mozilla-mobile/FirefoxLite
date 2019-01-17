@@ -337,6 +337,18 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Start First Run",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.FIRSTRUN,
+            value = "null",
+            extras = [])
+    @JvmStatic
+    fun startFirstRunEvent() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN).queue()
+    }
+
+    @TelemetryDoc(
             name = "Finish First Run",
             category = Category.ACTION,
             method = Method.SHOW,

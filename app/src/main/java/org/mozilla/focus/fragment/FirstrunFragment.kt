@@ -104,6 +104,11 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        TelemetryWrapper.startFirstRunEvent()
+    }
+
     override fun onPause() {
         super.onPause()
         isTelemetryValid = false
