@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.helper.BeforeTestTask;
+import org.mozilla.focus.widget.FragmentListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -161,4 +161,7 @@ public final class AndroidTestUtils {
                 .check(matches(isDisplayed()));
     }
 
+    public static String removeStrFormatter(@NotNull String formatedStr) {
+        return formatedStr.replaceAll("($|%.?)[^\\s]+", "");
+    }
 }
