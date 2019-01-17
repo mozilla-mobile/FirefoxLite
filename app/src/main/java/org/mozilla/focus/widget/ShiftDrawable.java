@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.animation.Interpolator;
@@ -20,7 +21,6 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
 
     private final ValueAnimator mAnimator = ValueAnimator.ofFloat(0f, 1f);
     private final Rect mVisibleRect = new Rect();
-
     private Path mPath;
 
     // align to ScaleDrawable implementation
@@ -37,10 +37,10 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
     public boolean setVisible(boolean visible, boolean restart) {
         final boolean isDifferent = super.setVisible(visible, restart);
         if (isDifferent && isVisible()) {
-            setFrame();
+            start();
         } else {
             //mAnimator.end();
-            unscheduleSelf(this);
+            stop();
         }
         return isDifferent;
     }
@@ -62,13 +62,14 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
     @Override
     public void draw(Canvas canvas) {
         final Drawable d = getWrappedDrawable();
-        final int width = mVisibleRect.width();
         final float fraction = mAnimator.getAnimatedFraction();
+        final int width = mVisibleRect.width();
         final int offset = (int) (width * fraction);
         final int stack = canvas.save();
 
         if (mPath != null) {
             canvas.clipPath(mPath);
+
         }
 
         // shift from right to left.
@@ -110,7 +111,7 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
 
     @Override
     public void stop() {
-        mAnimator.cancel();
+        mAnimator.end();
         unscheduleSelf(this);
     }
 
@@ -125,6 +126,7 @@ public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatab
     }
 
     private void setFrame() {
-        scheduleSelf(this, 100);
+        invalidateSelf();
+        scheduleSelf(this, SystemClock.uptimeMillis() + mAnimator.getDuration());
     }
 }

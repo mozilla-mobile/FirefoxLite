@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -175,9 +176,8 @@ public class AnimatedProgressBar extends ProgressBar {
         cancelAnimations();
         mPrimaryAnimator.setIntValues(getProgress(), nextProgress);
         mPrimaryAnimator.start();
-        final Drawable progressDrawable = getProgressDrawable();
-        if (progressDrawable instanceof ShiftDrawable) {
-            ((ShiftDrawable) progressDrawable).start();
+        if (getProgressDrawable() instanceof Animatable) {
+            ((Animatable) getProgressDrawable()).start();
         }
     }
 
@@ -250,12 +250,12 @@ public class AnimatedProgressBar extends ProgressBar {
     private void cancelAnimations() {
         if (mPrimaryAnimator != null) {
             mPrimaryAnimator.cancel();
-            if (getProgressDrawable() instanceof ShiftDrawable) {
-                ((ShiftDrawable) getProgressDrawable()).stop();
-            }
         }
         if (mClosingAnimator != null) {
             mClosingAnimator.cancel();
+        }
+        if (getProgressDrawable() instanceof Animatable) {
+            ((Animatable) getProgressDrawable()).stop();
         }
 
         mClipRatio = 0;
@@ -315,10 +315,10 @@ public class AnimatedProgressBar extends ProgressBar {
 
     private void setVisibilityImmediately(int value) {
         super.setVisibility(value);
-        Drawable progressDrawable = getProgressDrawable();
-        if (progressDrawable != null) {
-            progressDrawable.setVisible(value == View.VISIBLE, true);
-        }
+//        Drawable progressDrawable = getProgressDrawable();
+//        if (progressDrawable != null) {
+//            progressDrawable.setVisible(value == View.VISIBLE, true);
+//        }
     }
 
     private void animateClosing() {
@@ -364,7 +364,7 @@ public class AnimatedProgressBar extends ProgressBar {
     private class EndingRunner implements Runnable {
         @Override
         public void run() {
-            mClosingAnimator.start();
+//            mClosingAnimator.start();
         }
     }
 }
