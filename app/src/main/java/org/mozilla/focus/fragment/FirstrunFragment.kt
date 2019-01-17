@@ -49,8 +49,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
         exitTransition = transition
 
-        // We will send a telemetry event whenever a new firstrun page is shown. However this page
-        // listener won't fire for the initial page we are showing. So we are going to firing here.
         isTelemetryValid = true
         telemetryStartTimestamp = System.currentTimeMillis()
     }
