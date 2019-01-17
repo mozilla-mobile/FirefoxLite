@@ -132,6 +132,14 @@ public final class AndroidTestUtils {
         onView(allOf(withId(R.id.menu_preferences), isDisplayed())).perform(click());
     }
 
+    public static void tapPrivateButtonInMenu() {
+        onView(allOf(withId(R.id.btn_private_browsing), isDisplayed())).perform(click());
+    }
+
+    public static void tapPrivateButtonBackToBrowser() {
+        onView(allOf(withId(R.id.pm_home_back),isDisplayed())).perform(click());
+    }
+
     public static void tapHomeSearchField() {
         onView(allOf(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click());
     }
