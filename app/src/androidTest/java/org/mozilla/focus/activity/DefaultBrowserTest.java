@@ -65,7 +65,7 @@ public class DefaultBrowserTest {
      * 2. Launch app
      * 3. Go to settings page (Tap menu -> settings)
      * 4. Tap "Make default browser"
-     * 5. Go back to Rocket's settings
+     * 5. Go back to Firefox Lite's settings
      * 6. Check it correctly set default browser to Firefox Lite
      */
     @Test
@@ -137,7 +137,7 @@ public class DefaultBrowserTest {
             throw new AssertionError("Could find the Firefox Lite app in default browser", e);
         }
 
-        // Now launch Rocket's setting activity
+        // Now launch Firefox Lite's setting activity
         settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
 
         // Check if the "Default Browser" pref is correctly displayed (switch checked)
@@ -206,7 +206,7 @@ public class DefaultBrowserTest {
             throw new AssertionError("Could find the Firefox Lite app in default browser", e);
         }
 
-        // Now launch Rocket's setting activity
+        // Now launch Firefox Lite's setting activity
         settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
 
         // Check if the "Default Browser" pref is correctly displayed (switch checked)
