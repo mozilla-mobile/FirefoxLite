@@ -137,7 +137,7 @@ public final class AndroidTestUtils {
     }
 
     public static void tapPrivateButtonBackToBrowser() {
-        onView(allOf(withId(R.id.pm_home_back),isDisplayed())).perform(click());
+        onView(allOf(withId(R.id.pm_home_back), isDisplayed())).perform(click());
     }
 
     public static void tapHomeSearchField() {
