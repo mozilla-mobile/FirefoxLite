@@ -11,74 +11,118 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.widget.DownloadListAdapter;
+import org.mozilla.rocket.download.DownloadInfoPack;
+import org.mozilla.rocket.download.DownloadInfoViewModel;
 
-import java.util.List;
+public class DownloadsFragment extends PanelFragment implements DownloadInfoViewModel.OnProgressUpdateListener {
 
-public class DownloadsFragment extends PanelFragment implements DownloadInfoManager.AsyncQueryListener {
+    private static final int MSG_UPDATE_PROGRESS = 1;
+    private static final int QUERY_PROGRESS_DELAY = 500;
+
 
     private RecyclerView recyclerView;
-    private DownloadListAdapter mDownloadListAdapter;
-    private BroadcastReceiver mInsertReceiver;
-    private BroadcastReceiver mDownloadReceiver;
+    private DownloadListAdapter downloadListAdapter;
+    private DownloadInfoViewModel viewModel;
+    private HandlerThread handlerThread;
+    private Handler handler;
 
     public static DownloadsFragment newInstance() {
         return new DownloadsFragment();
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() == DownloadManager.ACTION_DOWNLOAD_COMPLETE) {
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
+                if (id > 0) {
+                    viewModel.notifyDownloadComplete(id);
+                }
+            } else if (intent.getAction() == DownloadInfoManager.ROW_UPDATED) {
+                long id = intent.getLongExtra(DownloadInfoManager.ROW_ID, 0L);
+                if (id > 0) {
+                    viewModel.notifyRowUpdate(id);
+                }
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_downloads, container, false);
+
+        viewModel = Inject.obtainDownloadInfoViewModel(getActivity());
+        downloadListAdapter = new DownloadListAdapter(getContext(), viewModel);
+        viewModel.getDownloadInfoObservable().observe(getViewLifecycleOwner(), downloadInfoPack -> {
+            if (downloadInfoPack != null) {
+                switch (downloadInfoPack.getNotifyType()) {
+                    case DownloadInfoPack.Constants.NOTIFY_DATASET_CHANGED:
+                        downloadListAdapter.setList(downloadInfoPack.getList());
+                        downloadListAdapter.notifyDataSetChanged();
+                        break;
+                    case DownloadInfoPack.Constants.NOTIFY_ITEM_INSERTED:
+                        downloadListAdapter.notifyItemInserted((int) downloadInfoPack.getIndex());
+                        break;
+                    case DownloadInfoPack.Constants.NOTIFY_ITEM_REMOVED:
+                        downloadListAdapter.notifyItemRemoved((int) downloadInfoPack.getIndex());
+                        break;
+                    case DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED:
+                        downloadListAdapter.notifyItemChanged((int) downloadInfoPack.getIndex());
+                        break;
+                }
+            }
+        });
+        viewModel.getToastMessageObservable().observe(getViewLifecycleOwner(), stringId -> {
+            final String msg = getString(stringId);
+            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        });
+        viewModel.getDeleteSnackbarObservable().observe(getViewLifecycleOwner(), downloadInfo -> {
+            final String deleteStr = getString(R.string.download_deleted, downloadInfo.getFileName());
+            Snackbar.make(recyclerView, deleteStr, Snackbar.LENGTH_SHORT)
+                    .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            super.onDismissed(transientBottomBar, event);
+
+                            if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                viewModel.confirmDelete(downloadInfo);
+                            }
+                        }
+
+                        @Override
+                        public void onShown(Snackbar transientBottomBar) {
+                            super.onShown(transientBottomBar);
+                            viewModel.hide(downloadInfo.getRowId());
+                        }
+                    })
+                    .setAction(R.string.undo, view -> viewModel.add(downloadInfo)).show();
+        });
+
         return recyclerView;
-    }
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mDownloadListAdapter = new DownloadListAdapter(getContext());
-        mDownloadReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
-                    long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
-                    if (id > 0) {
-                        DownloadInfoManager.getInstance().queryByDownloadId(id, DownloadsFragment.this);
-                    }
-                }
-            }
-        };
-
-        mInsertReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(DownloadInfoManager.ROW_UPDATED)) {
-                    Long id = intent.getLongExtra(DownloadInfoManager.ROW_ID, 0L);
-                    if (id > 0) {
-                        DownloadInfoManager.getInstance().queryByRowId(id, DownloadsFragment.this);
-                    }
-                }
-            }
-        };
     }
 
     @Override
     public void tryLoadMore() {
-        if (!mDownloadListAdapter.isLoading() && !mDownloadListAdapter.isLastPage()) {
-            mDownloadListAdapter.loadMore();
-        }
+        viewModel.loadMore(false);
     }
 
     // TODO: 6/26/18 Currently DownloadsFragment handles everything in RecyclerView so it does
@@ -91,19 +135,30 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
     @Override
     public void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mInsertReceiver
-                , new IntentFilter(DownloadInfoManager.ROW_UPDATED));
-        getContext().registerReceiver(mDownloadReceiver
-                , new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter(DownloadInfoManager.ROW_UPDATED));
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        viewModel.registerForProgressUpdate(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mInsertReceiver);
-        getContext().unregisterReceiver(mDownloadReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        getActivity().unregisterReceiver(broadcastReceiver);
+        viewModel.unregisterForProgressUpdate();
+
     }
 
+    @Override
+    public void onDestroy() {
+        // mark all items are unread when leave the download panel
+        viewModel.markAllItemsAreRead();
+        // When download indicator is showing and download is failed, we won't get notified by DownloadManager. Then back to BrowserFragment/HomeFragment will not
+        // go through fragment's onResume i.e. LiveData's onActive. So force trigger download indicator update here.
+        Inject.obtainDownloadIndicatorViewModel(getActivity()).updateIndicator();
+        cleanUp();
+        super.onDestroy();
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -112,16 +167,56 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoMana
     }
 
     private void prepare() {
-        recyclerView.setAdapter(mDownloadListAdapter);
+        recyclerView.setAdapter(downloadListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        // Update downloading progress via notifyItemChanged may cause row flashes so we disable item changed animation here
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
     }
 
     @Override
-    public void onQueryComplete(List downloadInfoList) {
+    public void onStartUpdate() {
+        startProgressUpdate();
+    }
 
-        for (int i = 0; i < downloadInfoList.size(); i++) {
-            DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(i);
-            mDownloadListAdapter.updateItem(downloadInfo);
+    @Override
+    public void onCompleteUpdate() {
+        if (handler != null && !handler.hasMessages(MSG_UPDATE_PROGRESS)) {
+            handler.sendEmptyMessageDelayed(MSG_UPDATE_PROGRESS, QUERY_PROGRESS_DELAY);
         }
     }
+
+    @Override
+    public void onStopUpdate() {
+        if (handler != null) {
+            handler.removeMessages(MSG_UPDATE_PROGRESS);
+        }
+    }
+
+    private void startProgressUpdate() {
+        if (handlerThread == null) {
+            handlerThread = new HandlerThread("download-progress");
+            handlerThread.start();
+            handler = new Handler(handlerThread.getLooper()) {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == MSG_UPDATE_PROGRESS) {
+                        viewModel.queryDownloadProgress();
+                    }
+                }
+            };
+        }
+        if (!handler.hasMessages(MSG_UPDATE_PROGRESS)) {
+            handler.sendEmptyMessage(MSG_UPDATE_PROGRESS);
+        }
+    }
+
+    private void cleanUp() {
+        if (handlerThread != null) {
+            handlerThread.quit();
+            handlerThread = null;
+            handler = null;
+        }
+    }
+
 }
