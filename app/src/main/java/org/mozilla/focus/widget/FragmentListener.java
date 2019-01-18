@@ -28,6 +28,7 @@ public interface FragmentListener {
         DROP_BROWSING_PAGES, // no payload
         SHOW_TAB_TRAY, // no payload
         SHOW_MY_SHOT_ON_BOARDING, // no payload
+        SHOW_DOWNLOAD_PANEL // no payload
     }
 
     void onNotified(@NonNull Fragment from,

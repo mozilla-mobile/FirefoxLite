@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,6 +55,7 @@ import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabModelStore;
+import org.mozilla.focus.provider.DownloadContract;
 import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
@@ -81,6 +83,7 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
+import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
@@ -148,6 +151,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     private boolean pendingMyShotOnBoarding;
     private Dialog myshotOnBoardingDialog;
+    private DownloadIndicatorViewModel downloadIndicatorViewModel;
 
     @Override
     public ThemeManager getThemeManager() {
@@ -223,6 +227,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
+
+        downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
     }
 
     private void initBroadcastReceivers() {
@@ -274,12 +280,15 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter);
+        getContentResolver().registerContentObserver(DownloadContract.Download.CONTENT_URI, true, downloadObserver);
+        downloadIndicatorViewModel.updateIndicator();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
+        getContentResolver().unregisterContentObserver(downloadObserver);
 
         TelemetryWrapper.stopSession();
 
@@ -992,6 +1001,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             case SHOW_MY_SHOT_ON_BOARDING:
                 showMyShotOnBoarding();
                 break;
+            case SHOW_DOWNLOAD_PANEL:
+                onDownloadClicked();
+                break;
             default:
                 break;
         }
@@ -1204,4 +1216,10 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         showMenu();
     }
 
+    private ContentObserver downloadObserver = new ContentObserver(null) {
+        @Override
+        public void onChange(boolean selfChange) {
+            downloadIndicatorViewModel.updateIndicator();
+        }
+    };
 }

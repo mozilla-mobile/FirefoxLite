@@ -5,6 +5,7 @@
 
 package org.mozilla.focus;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,10 +13,15 @@ import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
+import android.support.v4.app.FragmentActivity;
 
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
+import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.download.DownloadInfoRepository;
+import org.mozilla.rocket.download.DownloadInfoViewModel;
+import org.mozilla.rocket.download.DownloadViewModelFactory;
 
 public class Inject {
 
@@ -89,5 +95,20 @@ public class Inject {
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.VPN_RECOMMENDER;
+    }
+
+    public static DownloadInfoRepository provideDownloadInfoRepository() {
+        //TODO inject data source, ex production DB or mock DB here
+        return DownloadInfoRepository.getInstance();
+    }
+
+    public static DownloadIndicatorViewModel obtainDownloadIndicatorViewModel(FragmentActivity activity) {
+        DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance();
+        return ViewModelProviders.of(activity, factory).get(DownloadIndicatorViewModel.class);
+    }
+
+    public static DownloadInfoViewModel obtainDownloadInfoViewModel(FragmentActivity activity) {
+        DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance();
+        return ViewModelProviders.of(activity, factory).get(DownloadInfoViewModel.class);
     }
 }

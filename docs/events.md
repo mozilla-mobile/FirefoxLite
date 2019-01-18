@@ -111,6 +111,7 @@
 |Click VPN Recommend|action|click|home|"vpn_recommend"|"" 
 |Click VPN Recommend|action|click|vpn_doorhanger|"negative,positive"|"" 
 |Dismiss VPN Recommend|action|click|vpn_doorhanger|"dismiss"|"" 
+|Long Press Toolbar Download Indicator|Downloads|long_press|toolbar|"download"|"" 
 |Cancel FindInPage|action|cancel|find_in_page|""|"source=other,close_button,back_button,version=2," 
 |Click FindInPage Next|action|click|find_in_page|"next"|"version=2," 
 |Click FindInPage Previous|action|click|find_in_page|"previous"|"version=2," 
