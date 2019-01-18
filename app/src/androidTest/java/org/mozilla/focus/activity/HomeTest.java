@@ -117,7 +117,7 @@ public class HomeTest {
         onView(withId(R.id.main_list)).check(matches(isDisplayed()));
 
         // Check if menu button is visible
-        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_menu_home)).check(matches(isDisplayed()));
 
         // Check if tab tray button is visible
         onView(allOf(withId(R.id.btn_tab_tray), withParent(withId(R.id.home_screen_menu)))).check(matches(isDisplayed()));
