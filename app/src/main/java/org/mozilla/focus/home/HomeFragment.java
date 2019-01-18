@@ -46,6 +46,8 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.widget.ImageView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,6 +82,7 @@ import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.banner.BannerViewHolder;
+import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
@@ -138,6 +141,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> bannerObserver = this::setUpBannerFromConfig;
     private String[] configArray;
+    private LottieAnimationView downloadingIndicator;
+    private ImageView downloadUnreadIndicator;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
 
@@ -367,8 +372,14 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
 
-        this.btnMenu = view.findViewById(R.id.btn_menu);
+        this.btnMenu = view.findViewById(R.id.btn_menu_home);
         this.btnMenu.setOnClickListener(menuItemClickListener);
+        this.btnMenu.setOnLongClickListener(v -> {
+            // Long press menu always show download panel
+            FragmentListener.notifyParent(HomeFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
+            TelemetryWrapper.longPressDownloadIndicator();
+            return false;
+        });
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
@@ -441,6 +452,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         homeScreenBackground = view.findViewById(R.id.home_background);
+
+        downloadingIndicator = view.findViewById(R.id.downloading_indicator);
+        downloadUnreadIndicator = view.findViewById(R.id.download_unread_indicator);
+
+        Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
+            downloadingIndicator.setVisibility(status == DownloadIndicatorViewModel.Status.DOWNLOADING ? View.VISIBLE : View.GONE);
+            downloadUnreadIndicator.setVisibility(status == DownloadIndicatorViewModel.Status.UNREAD ? View.VISIBLE : View.GONE);
+            if (downloadingIndicator.getVisibility() == View.VISIBLE && !downloadingIndicator.isAnimating()) {
+                downloadingIndicator.playAnimation();
+            }
+        });
 
         return view;
     }
@@ -863,7 +885,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         private void dispatchOnClick(View view, FragmentListener listener) {
             switch (view.getId()) {
-                case R.id.btn_menu:
+                case R.id.btn_menu_home:
                     listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_MENU,
                             null);
                     TelemetryWrapper.showMenuHome();
