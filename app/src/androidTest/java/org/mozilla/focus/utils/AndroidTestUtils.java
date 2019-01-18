@@ -38,10 +38,8 @@ import static android.support.test.espresso.action.ViewActions.pressImeActionBut
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -137,8 +135,12 @@ public final class AndroidTestUtils {
         onView(allOf(withId(R.id.btn_private_browsing), isDisplayed())).perform(click());
     }
 
+    public static void tapPrivateButtonInTabtray() {
+        onView(allOf(withId(R.id.btn_private_browsing), isDisplayed())).perform(click());
+    }
+
     public static void tapPrivateButtonBackToBrowser() {
-        onView(allOf(withId(R.id.pm_home_back),isDisplayed())).perform(click());
+        onView(allOf(withId(R.id.pm_home_back), isDisplayed())).perform(click());
     }
 
     public static void tapHomeSearchField() {
