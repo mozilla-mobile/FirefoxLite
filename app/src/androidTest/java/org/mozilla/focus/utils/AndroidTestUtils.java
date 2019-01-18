@@ -121,11 +121,11 @@ public final class AndroidTestUtils {
     }
 
     public static void tapHomeMenuButton() {
-        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
+        onView(withId(R.id.btn_menu_home)).perform(click());
     }
 
     public static void tapBrowserMenuButton() {
-        onView(allOf(withId(R.id.btn_menu), not(withParent(withId(R.id.home_screen_menu))))).perform(click());
+        onView(withId(R.id.btn_menu)).perform(click());
     }
 
     public static void tapSettingButton() {

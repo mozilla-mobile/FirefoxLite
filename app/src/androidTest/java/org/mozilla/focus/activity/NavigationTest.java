@@ -94,7 +94,7 @@ public class NavigationTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Open menu and click next button
-        onView(withId(R.id.btn_menu)).check(matches(isDisplayed())).perform(click());
+        AndroidTestUtils.tapBrowserMenuButton();
         onView(withId(R.id.action_next)).check(matches(isDisplayed())).perform(click());
 
         // Check if site 2 is loaded again
