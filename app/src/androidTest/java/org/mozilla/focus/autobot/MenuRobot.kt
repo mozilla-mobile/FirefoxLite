@@ -4,20 +4,17 @@ import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withParent
-import android.view.View
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.not
 import org.mozilla.focus.R
 import tools.fastlane.screengrab.Screengrab
+import org.mozilla.focus.utils.AndroidTestUtils
 
 /** Some common menu relevant actions **/
 open class MenuRobot {
 
     /** Open menu **/
-    fun clickHomeMenu() = onView(allOf<View>(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click())
+    fun clickHomeMenu() = AndroidTestUtils.tapHomeMenuButton()
 
-    fun clickBrowserMenu() = onView(allOf<View>(withId(R.id.btn_menu), not<View>(withParent(withId(R.id.home_screen_menu))))).perform(click())
+    fun clickBrowserMenu() = AndroidTestUtils.tapBrowserMenuButton()
 
     /** Click menu item **/
     fun clickMenuBookmarks() = onView(withId(R.id.menu_bookmark)).perform(click())
