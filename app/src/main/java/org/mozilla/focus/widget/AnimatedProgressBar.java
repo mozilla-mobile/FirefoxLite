@@ -148,6 +148,10 @@ public class AnimatedProgressBar extends ProgressBar {
                 setVisibility(VISIBLE);
                 announceForAccessibility(startLoadingString());
             }
+            final Drawable progressDrawable = getProgressDrawable();
+            if (progressDrawable instanceof ShiftDrawable) {
+                ((ShiftDrawable) progressDrawable).start();
+            }
         }
 
         if (!mInitialized) {
@@ -233,13 +237,6 @@ public class AnimatedProgressBar extends ProgressBar {
         mIsRtl = (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL);
     }
 
-    @Override
-    public Parcelable onSaveInstanceState() {
-        // Force update as 0 (Don't save state) for ProgressBar to avoid 0 -> 100 end animation
-        setProgress(0);
-        return super.onSaveInstanceState();
-    }
-
     private void cancelAnimations() {
         if (mPrimaryAnimator != null) {
             mPrimaryAnimator.cancel();
@@ -260,7 +257,8 @@ public class AnimatedProgressBar extends ProgressBar {
         @InterpolatorRes final int itplId = a.getResourceId(R.styleable.AnimatedProgressBar_shiftInterpolator, INTEPOLATOR_NOT_EXIST);
         a.recycle();
 
-        setProgressDrawable(buildDrawable(getProgressDrawable(), wrap, duration, itplId));
+        final Drawable progressDrawable = buildDrawable(getProgressDrawable(), wrap, duration, itplId);
+        setProgressDrawable(progressDrawable);
 
         mPrimaryAnimator = createAnimator(getMax(), mListener);
 
@@ -282,6 +280,9 @@ public class AnimatedProgressBar extends ProgressBar {
             @Override
             public void onAnimationEnd(Animator animator) {
                 setVisibilityImmediately(GONE);
+                if (progressDrawable instanceof ShiftDrawable) {
+                    ((ShiftDrawable) progressDrawable).stop();
+                }
             }
 
             @Override
