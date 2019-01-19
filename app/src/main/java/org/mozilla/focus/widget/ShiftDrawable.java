@@ -8,11 +8,13 @@ package org.mozilla.focus.widget;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
@@ -43,12 +45,9 @@ public class ShiftDrawable extends DrawableWrapper {
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                if (isVisible()) {
-                    invalidateSelf();
-                }
+                invalidateSelf();
             }
         });
-        mAnimator.start();
     }
 
     public Animator getAnimator() {
@@ -58,10 +57,8 @@ public class ShiftDrawable extends DrawableWrapper {
     @Override
     public boolean setVisible(boolean visible, boolean restart) {
         final boolean result = super.setVisible(visible, restart);
-        if (isVisible()) {
-            mAnimator.start();
-        } else {
-            mAnimator.end();
+        if (!visible) {
+            stop();
         }
         return result;
     }
@@ -87,7 +84,9 @@ public class ShiftDrawable extends DrawableWrapper {
         final int offset = (int) (width * fraction);
         final int stack = canvas.save();
 
-        canvas.clipPath(mPath);
+        if (mPath != null) {
+            canvas.clipPath(mPath);
+        }
 
         // shift from right to left.
         // draw left-half part
@@ -115,5 +114,17 @@ public class ShiftDrawable extends DrawableWrapper {
         mPath = new Path();
         mPath.addRect(b.left, b.top, b.left + width - radius, b.height(), Path.Direction.CCW);
         mPath.addCircle(b.left + width - radius, radius, radius, Path.Direction.CCW);
+    }
+
+    public void start(){
+        if (mAnimator.isRunning())
+            return;
+        mAnimator.start();
+    }
+
+    public void stop(){
+        if (!mAnimator.isRunning())
+            return;
+        mAnimator.end();
     }
 }
