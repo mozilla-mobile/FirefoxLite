@@ -15,15 +15,18 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.focus.utils.RecyclerViewTestUtils;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
@@ -52,7 +55,6 @@ public class SaveRestoreTabsTest {
      * 1. Launch Rocket with no tab
      * 2. tab number is zero
      */
-
     @Test
     public void restoreEmptyTab() {
         activityRule.launchActivity(new Intent());
@@ -69,7 +71,6 @@ public class SaveRestoreTabsTest {
      * 5. check tab number is 1
      * 6. open tab tray to check url, icon, website title, website subtitle, close button displayed
      */
-
     @Test
     public void restoreEmptyTab_addNewTabThenRelaunch() {
         activityRule.launchActivity(new Intent());
@@ -107,7 +108,6 @@ public class SaveRestoreTabsTest {
      * 4. relaunch activity
      * 5. check tab number is 3
      */
-
     @Test
     public void restorePreviousTabs_addNewTabThenRelaunch() {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
@@ -128,6 +128,45 @@ public class SaveRestoreTabsTest {
 
         onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("3")));
     }
+
+    /**
+     * Test case no: TC0107
+     * Test case name: Tab tray - close all tab
+     * Steps:
+     * 1. Given there are 2 tabs
+     * 2. Open tab tray
+     * 3. Tap Close All -> Cancel
+     * 4. Check tab tray count is 2
+     * 5. Tap Close All -> Ok
+     * 6. Check tab tray number is 0
+     */
+    @Test
+    public void tabTray_closeAllTab() {
+
+        // Given there are 2 tabs
+        tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
+        AndroidTestUtils.setFocusTabId(TAB.getId());
+
+        activityRule.launchActivity(new Intent());
+
+        // Open tab tray
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2"))).perform(click());
+
+        // Tap Close All -> Tap Cancel
+        onView(withId(R.id.close_all_tabs_btn)).perform(click());
+        onView(withText(R.string.action_cancel)).perform(click());
+
+        // Check tab tray count is 2
+        assertThat(RecyclerViewTestUtils.getCountFromRecyclerView(R.id.tab_tray), is(2));
+
+        // Tap Close All -> Tap Ok
+        onView(allOf(withId(R.id.close_all_tabs_btn), isDisplayed())).perform(click());
+        onView(withText(R.string.action_ok)).perform(click());
+
+        // Check tab number is 0
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("0")));
+    }
+
 
     private void relaunchActivity() {
         activityRule.finishActivity();
