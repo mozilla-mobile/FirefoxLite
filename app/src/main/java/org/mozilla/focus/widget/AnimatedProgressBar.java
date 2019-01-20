@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -138,10 +139,19 @@ public class AnimatedProgressBar extends ProgressBar {
         nextProgress = Math.min(nextProgress, getMax());
         nextProgress = Math.max(0, nextProgress);
         mExpectedProgress = nextProgress;
+
+        final Drawable progressDrawable = getProgressDrawable();
+        if (progressDrawable instanceof Animatable) {
+            ((Animatable) progressDrawable).start();
+        }
         if (nextProgress == getMax()) {
             if (getVisibility() == VISIBLE) {
                 setVisibility(GONE);
                 announceForAccessibility(endLoadingString());
+                // I stop the animation here for debugging. Since the closing animation won't run during debugging.
+                if (progressDrawable instanceof Animatable) {
+                    ((Animatable) getProgressDrawable()).stop();
+                }
             }
         } else {
             if (getVisibility() == GONE) {
@@ -280,8 +290,9 @@ public class AnimatedProgressBar extends ProgressBar {
             @Override
             public void onAnimationEnd(Animator animator) {
                 setVisibilityImmediately(GONE);
-                if (progressDrawable instanceof ShiftDrawable) {
-                    ((ShiftDrawable) progressDrawable).stop();
+                // the animation stops when the closing animation ends
+                if (progressDrawable instanceof Animatable) {
+                    ((Animatable) progressDrawable).stop();
                 }
             }
 
@@ -343,7 +354,7 @@ public class AnimatedProgressBar extends ProgressBar {
     private class EndingRunner implements Runnable {
         @Override
         public void run() {
-            mClosingAnimator.start();
+//            mClosingAnimator.start(); // I comment out this for debugging.
         }
     }
 }

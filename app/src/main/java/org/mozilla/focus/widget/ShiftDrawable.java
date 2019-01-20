@@ -5,29 +5,40 @@
 
 package org.mozilla.focus.widget;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-public class ShiftDrawable extends DrawableWrapper {
+public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatable {
 
-    private final ValueAnimator mAnimator = ValueAnimator.ofFloat(0f, 1f);
+    //    private final ValueAnimator mAnimator = ValueAnimator.ofFloat(0f, 1f);
+    private Interpolator interpolator = null;
+
+    private Integer duration = null;
+
+    private float currentFraction = 0;
+
+    private float currentRatio = 0;
+
+    volatile private boolean isRunning = false;
+
     private final Rect mVisibleRect = new Rect();
+
     private Path mPath;
 
     // align to ScaleDrawable implementation
     private static final int MAX_LEVEL = 10000;
 
     private static final int DEFAULT_DURATION = 1000;
+
+    private long animationStart;
 
     public ShiftDrawable(@NonNull Drawable d) {
         this(d, DEFAULT_DURATION);
@@ -39,24 +50,22 @@ public class ShiftDrawable extends DrawableWrapper {
 
     public ShiftDrawable(@NonNull Drawable d, int duration, @Nullable Interpolator interpolator) {
         super(d);
-        mAnimator.setDuration(duration);
-        mAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        mAnimator.setInterpolator((interpolator == null) ? new LinearInterpolator() : interpolator);
-        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                invalidateSelf();
-            }
-        });
     }
 
-    public Animator getAnimator() {
-        return mAnimator;
+    public int getDuration() {
+        return (duration == null) ? DEFAULT_DURATION : duration;
+
+    }
+
+    public Interpolator getInterpolator() {
+        return (interpolator == null) ? new LinearInterpolator() : interpolator;
     }
 
     @Override
     public boolean setVisible(boolean visible, boolean restart) {
         final boolean result = super.setVisible(visible, restart);
+        // don't need to schedule next frame. Let the caller decides when to start the animation
+        // If we are hiding, just
         if (!visible) {
             stop();
         }
@@ -79,9 +88,17 @@ public class ShiftDrawable extends DrawableWrapper {
     @Override
     public void draw(Canvas canvas) {
         final Drawable d = getWrappedDrawable();
-        final float fraction = mAnimator.getAnimatedFraction();
+        // FIXME: playBackTime is not accurate cause it didn't consider: the real playback time is the time the first frame
+        // drawn in vsync's callback, not the time we call start().
+        // Consider:
+        // a. Save the start time in  AnimationState during Vsync' callback
+        // b. use Animator api.
+        final long playBackTime = System.currentTimeMillis() - animationStart;
+        float fraction = playBackTime / (float) 300;
+        fraction = getInterpolator().getInterpolation(fraction);
+        currentRatio = evaluate(fraction, currentRatio, 1);
         final int width = mVisibleRect.width();
-        final int offset = (int) (width * fraction);
+        final int offset = (int) (width * currentRatio);
         final int stack = canvas.save();
 
         if (mPath != null) {
@@ -91,12 +108,15 @@ public class ShiftDrawable extends DrawableWrapper {
         // shift from right to left.
         // draw left-half part
         canvas.save();
+        canvas.drawColor(Color.BLUE);
+
         canvas.translate(-offset, 0);
         d.draw(canvas);
         canvas.restore();
 
         // draw right-half part
         canvas.save();
+        canvas.drawColor(Color.RED);    // I make this RED for debugging
         canvas.translate(width - offset, 0);
         d.draw(canvas);
         canvas.restore();
@@ -116,15 +136,47 @@ public class ShiftDrawable extends DrawableWrapper {
         mPath.addCircle(b.left + width - radius, radius, radius, Path.Direction.CCW);
     }
 
-    public void start(){
-        if (mAnimator.isRunning())
+    @Override
+    public void start() {
+        if (isRunning)
             return;
-        mAnimator.start();
+        isRunning = true;
+        animationStart = System.currentTimeMillis();
+        nextFrame();
     }
 
-    public void stop(){
-        if (!mAnimator.isRunning())
+    @Override
+    public void stop() {
+        if (!isRunning())
             return;
-        mAnimator.end();
+        isRunning = false;
+        unscheduleSelf(this);
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public void run() {
+        if (isRunning) {
+            nextFrame();
+        } else {
+            invalidateSelf();
+            unscheduleSelf(this);
+        }
+
+    }
+
+    private void nextFrame() {
+        invalidateSelf();
+        scheduleSelf(this, getDuration());
+    }
+
+    // we don't have animator, so evaluate myself
+    public Float evaluate(float fraction, Number startValue, Number endValue) {
+        float startFloat = startValue.floatValue();
+        return startFloat + fraction * (endValue.floatValue() - startFloat);
     }
 }
