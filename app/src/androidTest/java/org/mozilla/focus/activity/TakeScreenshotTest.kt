@@ -8,11 +8,10 @@ package org.mozilla.focus.activity
 import android.Manifest
 import android.content.Intent
 import android.support.annotation.Keep
-import android.support.test.rule.ActivityTestRule
+import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,7 +20,6 @@ import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
 
 @Keep
-@Ignore
 @RunWith(AndroidJUnit4::class)
 class TakeScreenshotTest {
 
@@ -31,12 +29,20 @@ class TakeScreenshotTest {
 
     @JvmField
     @Rule
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+    val activityTestRule = IntentsTestRule(MainActivity::class.java, true, false)
 
     @Before
     fun setUp() {
         AndroidTestUtils.beforeTest()
         activityTestRule.launchActivity(Intent())
+
+        // Make pre-existing screenshot
+        session {
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            clickCaptureScreen(activityTestRule.activity)
+            clickBrowserMenu()
+            clickMenuMyShots()
+        }
     }
 
     companion object {
@@ -45,31 +51,20 @@ class TakeScreenshotTest {
 
     /**
      * Test case no: TC0058
-     * Test case name: Take Screenshot
+     * Test case name: Take Screenshot and delete
      * Steps:
-     * 1. Launch app
-     * 2. Tap screenshot capture button
-     * 3. Tap toast message displays "Screenshot saved"
-     * 4. Tap menu
-     * 5. Tap my shots viewer
-     * 6. Tap first screenshot
-     * 7. Tap delete
-     * 8. Tap confirm delete
-     * 9. Check it goes back to my shots viewer
+     * 1. Given pre-existing screenshot
+     * 2. Tap menu -> my shots viewer -> first screenshot
+     * 3. Tap delete
+     * 4. Tap confirm delete
+     * 5. Check it goes back to my shots viewer
      * */
     @Test
-    fun takeScreenshot_screenshotIsCaptured() {
-
-        session {
-            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
-            clickCaptureScreen(activityTestRule.activity)
-            clickBrowserMenu()
-            clickMenuMyShots()
-        }
+    fun takeScreenshot_deleteScreenShot() {
 
         screenshot {
             clickFirstItemInMyShotsAndOpen()
-            longClickAndDeleteTheFirstItemInMyShots()
+            clickAndDeleteTheFirstItemInMyShots()
         }
     }
 }

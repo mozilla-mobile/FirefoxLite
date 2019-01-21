@@ -5,15 +5,10 @@
 
 package org.mozilla.focus.screenshot;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.text.TextUtils;
-
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.screenshot.model.Screenshot;
-import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.StorageUtils;
 
 import java.io.File;
@@ -23,12 +18,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.text.TextUtils;
+
 public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
 
     private final Context context;
 
     public ScreenshotCaptureTask(Context context) {
         this.context = context.getApplicationContext();
+    }
+    public ScreenshotCaptureTask() {
+        this.context = null;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(
             value = "RV_RETURN_VALUE_IGNORED_BAD_PRACTICE",
             justification = "We have nothing to do when the delete fails.")
-    private static String saveBitmapToStorage(Context context, String fileName, Bitmap bitmap) throws IOException {
+    public static String saveBitmapToStorage(Context context, String fileName, Bitmap bitmap) throws IOException {
         File folder = StorageUtils.getTargetDirForSaveScreenshot(context);
         if (!FileUtils.ensureDir(folder)) {
             throw new IOException("Can't create folder");
