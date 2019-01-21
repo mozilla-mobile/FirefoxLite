@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -149,8 +150,8 @@ public class AnimatedProgressBar extends ProgressBar {
                 announceForAccessibility(startLoadingString());
             }
             final Drawable progressDrawable = getProgressDrawable();
-            if (progressDrawable instanceof ShiftDrawable) {
-                ((ShiftDrawable) progressDrawable).start();
+            if (progressDrawable instanceof Animatable) {
+                ((Animatable) progressDrawable).start();
             }
         }
 
@@ -280,8 +281,8 @@ public class AnimatedProgressBar extends ProgressBar {
             @Override
             public void onAnimationEnd(Animator animator) {
                 setVisibilityImmediately(GONE);
-                if (progressDrawable instanceof ShiftDrawable) {
-                    ((ShiftDrawable) progressDrawable).stop();
+                if (progressDrawable instanceof Animatable) {
+                    ((Animatable) progressDrawable).stop();
                 }
             }
 

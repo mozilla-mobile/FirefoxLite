@@ -11,14 +11,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-public class ShiftDrawable extends DrawableWrapper {
+public class ShiftDrawable extends DrawableWrapper implements Runnable, Animatable {
 
     private final ValueAnimator mAnimator = ValueAnimator.ofFloat(0f, 1f);
     private final Rect mVisibleRect = new Rect();
@@ -42,12 +44,6 @@ public class ShiftDrawable extends DrawableWrapper {
         mAnimator.setDuration(duration);
         mAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator.setInterpolator((interpolator == null) ? new LinearInterpolator() : interpolator);
-        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                invalidateSelf();
-            }
-        });
     }
 
     public Animator getAnimator() {
@@ -116,15 +112,38 @@ public class ShiftDrawable extends DrawableWrapper {
         mPath.addCircle(b.left + width - radius, radius, radius, Path.Direction.CCW);
     }
 
+    @Override
     public void start(){
         if (mAnimator.isRunning())
             return;
         mAnimator.start();
+        nextFrame();
     }
 
+    @Override
     public void stop(){
         if (!mAnimator.isRunning())
             return;
         mAnimator.end();
+        unscheduleSelf(this);
+    }
+
+    @Override
+    public boolean isRunning() {
+        return mAnimator.isRunning();
+    }
+
+    @Override
+    public void run() {
+        if (isRunning()){
+            nextFrame();
+        } else {
+            unscheduleSelf(this);
+        }
+    }
+
+    private void nextFrame() {
+        invalidateSelf();
+        scheduleSelf(this, SystemClock.uptimeMillis() + mAnimator.getDuration());
     }
 }

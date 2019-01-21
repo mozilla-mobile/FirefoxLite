@@ -128,11 +128,6 @@ public class DrawableWrapper extends Drawable {
     }
 
     @Override
-    public void scheduleSelf(Runnable what, long when) {
-        mWrapped.scheduleSelf(what, when);
-    }
-
-    @Override
     public void setChangingConfigurations(int configs) {
         mWrapped.setChangingConfigurations(configs);
     }
