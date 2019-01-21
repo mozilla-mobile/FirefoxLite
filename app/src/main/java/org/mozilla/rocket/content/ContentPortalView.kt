@@ -74,9 +74,8 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
     private fun setupData() {
         recyclerView = findViewById(R.id.recyclerview)
         emptyView = findViewById(R.id.empty_view_container)
-        val factory = BookmarkViewModel.Factory(
-            BookmarkRepository.getInstance(BookmarksDatabase.getInstance(context))
-        )
+        val repository = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(context))
+        val factory = BookmarkViewModel.Factory(repository)
 
         val layoutManager = LinearLayoutManager(context)
         adapter = BookmarkAdapter(this)
@@ -84,8 +83,7 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
         recyclerView.layoutManager = layoutManager
 
         //https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
-        viewModel = ViewModelProviders.of(context as FragmentActivity, factory)
-            .get(BookmarkViewModel::class.java)
+        viewModel = ViewModelProviders.of(context as FragmentActivity, factory).get(BookmarkViewModel::class.java)
         viewModel.bookmarks.observe(context as FragmentActivity, Observer<List<BookmarkModel>> { bms ->
             // why run?
             run {
@@ -178,7 +176,6 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
                 emptyView.visibility = View.GONE
             }
             PanelFragment.ON_OPENING -> {
-
             }
             else -> {
                 recyclerView.visibility = View.GONE
