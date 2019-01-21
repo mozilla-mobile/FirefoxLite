@@ -20,13 +20,10 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_portal.view.*
 import org.mozilla.focus.R
-import org.mozilla.focus.bookmark.BookmarkAdapter
 import org.mozilla.focus.fragment.PanelFragment
 import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.focus.persistence.BookmarkModel
-import org.mozilla.focus.persistence.BookmarksDatabase
-import org.mozilla.focus.repository.BookmarkRepository
-import org.mozilla.focus.viewmodel.BookmarkViewModel
+import org.mozilla.rocket.bhaskar.ItemPojo
+import org.mozilla.rocket.bhaskar.Repository
 import org.mozilla.rocket.content.ContentPortalViewState.isLastSessionContent
 
 object ContentPortalViewState {
@@ -34,12 +31,12 @@ object ContentPortalViewState {
     var isLastSessionContent = false
 }
 
-class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListener {
+class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: View
-    private lateinit var adapter: BookmarkAdapter
-    private lateinit var viewModel: BookmarkViewModel
+    private lateinit var adapter: ContentAdapter
+    private lateinit var viewModel: ContentViewModel
     private lateinit var bottomSheet: View
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
@@ -74,29 +71,29 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
     private fun setupData() {
         recyclerView = findViewById(R.id.recyclerview)
         emptyView = findViewById(R.id.empty_view_container)
-        val repository = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(context))
-        val factory = BookmarkViewModel.Factory(repository)
 
-        val layoutManager = LinearLayoutManager(context)
-        adapter = BookmarkAdapter(this)
+        adapter = ContentAdapter(this)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = layoutManager
+        recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL, false)
 
         //https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
-        viewModel = ViewModelProviders.of(context as FragmentActivity, factory).get(BookmarkViewModel::class.java)
-        viewModel.bookmarks.observe(context as FragmentActivity, Observer<List<BookmarkModel>> { bms ->
+        viewModel = ViewModelProviders.of(context as FragmentActivity).get(ContentViewModel::class.java)
+        viewModel.repository =  Repository(
+            context, 521, 20, null, 3, viewModel,null)
+        viewModel.items.observe(context as FragmentActivity, Observer<List<ItemPojo>> { items ->
             // why run?
             run {
-                if (bms != null && bms.isNotEmpty()) {
+                if (items != null && items.isNotEmpty()) {
                     bottomSheetBehavior.peekHeight = 300 * 3 // fix later
                 } else {
                     bottomSheetBehavior.peekHeight = 0 // fix later
                     bottomSheetBehavior.skipCollapsed = true
                 }
                 bottomSheet.requestLayout()
-                adapter.setData(bms)
+                adapter.setData(items)
             }
         })
+        viewModel.loadMore()
         onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
     }
 
@@ -189,11 +186,11 @@ class ContentPortalView : CoordinatorLayout, BookmarkAdapter.BookmarkPanelListen
         ContentPortalViewState.isLastSessionContent = true
     }
 
-    override fun onItemDeleted(bookmark: BookmarkModel?) {
+    override fun onItemDeleted(item: ItemPojo?) {
         Toast.makeText(context, "I don't delete stuff", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onItemEdited(bookmark: BookmarkModel?) {
+    override fun onItemEdited(item: ItemPojo?) {
         Toast.makeText(context, "I don't edit stuff", Toast.LENGTH_SHORT).show()
     }
 }
