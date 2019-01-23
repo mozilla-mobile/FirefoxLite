@@ -7,11 +7,14 @@ package org.mozilla.focus.activity;
 
 import android.content.Intent;
 import android.support.annotation.Keep;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.DisplayMetrics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +34,7 @@ import java.util.List;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -124,4 +128,41 @@ public class HomeTest {
 
     }
 
+    /**
+     * Test case no: TC0039
+     * Test case name: Dismiss menu
+     * Steps:
+     * 1. Launch app
+     * 2. Tap menu
+     * 3. Press back key
+     * 4. Check menu panel not exist
+     * 5. Tap menu
+     * 6. Tap on blank space above menu or
+     * 7. Check menu panel not exist
+     */
+    @Test
+    public void dismissMenu() {
+        activityRule.launchActivity(new Intent());
+
+        // Tap menu
+        AndroidTestUtils.tapHomeMenuButton();
+
+        // Press back
+        Espresso.pressBack();
+
+        // Check menu panel not exist
+        onView(withId(R.id.menu)).check(doesNotExist());
+
+        // Tap menu
+        AndroidTestUtils.tapHomeMenuButton();
+
+        // Tap on blank space above menu
+        final DisplayMetrics displayMetrics = activityRule.getActivity().getResources().getDisplayMetrics();
+        final int displayWidth = displayMetrics.widthPixels;
+        final int displayHeight = displayMetrics.heightPixels;
+        onView(withId(R.id.menu)).perform(AndroidTestUtils.clickXY(displayWidth / 2, -displayHeight / 2, Tap.SINGLE));
+
+        //  Check menu panel not exist
+        onView(withId(R.id.menu)).check(doesNotExist());
+    }
 }
