@@ -14,6 +14,7 @@ import android.support.test.uiautomator.UiSelector;
 import android.widget.Switch;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -158,6 +159,8 @@ public class DefaultBrowserTest {
      * 4. Go back to app's settings
      * 5. Check it correctly set default browser to Firefox Lite
      */
+    // Taken down because of intermittent.
+    @Ignore
     @Test
     public void changeDefaultBrowser_whenNoDefault() {
 
