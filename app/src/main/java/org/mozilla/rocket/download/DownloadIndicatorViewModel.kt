@@ -19,7 +19,9 @@ class DownloadIndicatorViewModel(private val repository: DownloadInfoRepository)
                 var hasDownloading = false
                 var hasUnread = false
                 for (item in list) {
-                    if (!hasDownloading && (item.status == DownloadManager.STATUS_RUNNING || item.status == DownloadManager.STATUS_PENDING)) {
+                    if (!hasDownloading && (item.status == DownloadManager.STATUS_RUNNING ||
+                                item.status == DownloadManager.STATUS_PENDING ||
+                                item.status == DownloadManager.STATUS_PAUSED)) {
                         hasDownloading = true
                     }
                     if (!hasUnread && item.status == DownloadManager.STATUS_SUCCESSFUL && !item.isRead) {
