@@ -5,8 +5,8 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import org.mozilla.focus.R
-import tools.fastlane.screengrab.Screengrab
 import org.mozilla.focus.utils.AndroidTestUtils
+import tools.fastlane.screengrab.Screengrab
 
 /** Some common menu relevant actions **/
 open class MenuRobot {
@@ -26,6 +26,7 @@ open class MenuRobot {
     fun clickMenuBlockImages() = onView(withId(R.id.menu_blockimg)).perform(click())
     fun clickMenuClearCache() = onView(withId(R.id.menu_delete)).perform(click())
     fun clickMenuSettings() = onView(withId(R.id.menu_preferences)).perform(click())
+    fun clickExitApp() = onView(withId(R.id.menu_exit)).perform(click())
 
     /** Click panel item **/
     fun clickPanelDownload() = onView(withId(R.id.downloads)).perform(click())
