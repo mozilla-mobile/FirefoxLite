@@ -30,6 +30,7 @@ import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.helper.ActivityRecreateLeakWatcherIdlingResource
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.widget.TelemetrySwitchPreference
+import org.mozilla.focus.widget.TurboSwitchPreference
 
 inline fun setting(func: SettingRobot.() -> Unit) = SettingRobot().apply(func)
 inline fun screenshot(func: ScreenshotRobot.() -> Unit) = ScreenshotRobot().apply(func)
@@ -117,6 +118,13 @@ class SettingRobot {
         // Click on the switch multiple times...
         interaction = Espresso.onData(
                 Is.`is`(CoreMatchers.instanceOf(TelemetrySwitchPreference::class.java))).onChildView(ViewMatchers.withClassName(Is.`is`(Switch::class.java.name)))
+        return this
+    }
+
+    fun prefTurboMode(): SettingRobot {
+        // Click on the switch multiple times...
+        interaction = Espresso.onData(
+                Is.`is`(CoreMatchers.instanceOf(TurboSwitchPreference::class.java))).onChildView(ViewMatchers.withClassName(Is.`is`(Switch::class.java.name)))
         return this
     }
 
