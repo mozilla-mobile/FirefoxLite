@@ -50,7 +50,7 @@ public class BeforeTestTask {
                 settings.setRateAppDialogDidShow();
             }
             // disable screenshot on boarding
-            settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog);;
+            settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog);
         }
         if (this.clearBrowsingHistory) {
             //TODO: should consider using IdlingResource for DB operation or in-memory DB
