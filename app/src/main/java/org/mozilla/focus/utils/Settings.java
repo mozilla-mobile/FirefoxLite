@@ -300,6 +300,12 @@ public class Settings {
         }
 
         @VisibleForTesting
+        public void removeCount(String eventName) {
+            String key = "pref_" + eventName + "_counter";
+            preferences.edit().remove(key).apply();
+        }
+
+        @VisibleForTesting
         public void setCount(String eventName, int value) {
             String key = "pref_" + eventName + "_counter";
             preferences.edit().putInt(key, value).apply();
