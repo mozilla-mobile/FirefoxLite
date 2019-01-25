@@ -79,13 +79,12 @@ class TabViewEngineObserver(
 
     override fun onExternalResource(
         url: String,
-        fileName: String?,
+        fileName: String,
         contentLength: Long?,
         contentType: String?,
         cookie: String?,
         userAgent: String?
     ) {
-
         val download = Download(url, fileName, contentType, contentLength, userAgent, Environment.DIRECTORY_DOWNLOADS)
         session.download = Consumable.from(download)
     }

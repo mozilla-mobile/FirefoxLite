@@ -14,7 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import mozilla.components.browser.domains.DomainAutoCompleteProvider
+import mozilla.components.browser.domains.autocomplete.ShippedDomainsProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
@@ -26,7 +26,6 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.focus.widget.FragmentListener
-
 import java.util.Locale
 
 /**
@@ -35,7 +34,7 @@ import java.util.Locale
 class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener,
         View.OnLongClickListener, ScreenNavigator.UrlInputScreen {
 
-    private val autoCompleteProvider: DomainAutoCompleteProvider = DomainAutoCompleteProvider()
+    private lateinit var autoCompleteProvider: ShippedDomainsProvider
     private lateinit var presenter: UrlInputContract.Presenter
 
     private lateinit var urlView: InlineAutocompleteEditText
@@ -53,7 +52,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
                 .getDefaultSearchEngine(activity), userAgent)
 
         context?.let {
-            autoCompleteProvider.initialize(it.applicationContext, true, false)
+            autoCompleteProvider = ShippedDomainsProvider()
+            autoCompleteProvider.initialize(it.applicationContext)
         }
     }
 
@@ -154,11 +154,11 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     private fun onCommit() {
-        val input = urlView.autocompleteResult.formattedText.let {
-            if (it.isEmpty()) urlView.text.toString() else it
+        urlView.autocompleteResult?.text?.let {
+            val input = if (it.isEmpty()) urlView.text.toString() else it
+            search(input)
+            TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false)
         }
-        search(input)
-        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false)
     }
 
     private fun search(input: String) {
@@ -241,7 +241,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
     }
 
-    private fun onFilter(searchText: String, view: InlineAutocompleteEditText?) {
+    private fun onFilter(searchText: String) {
         // If the UrlInputFragment has already been hidden, don't bother with filtering. Because of the text
         // input architecture on Android it's possible for onFilter() to be called after we've already
         // hidden the Fragment, see the relevant bug for more background:
@@ -250,8 +250,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             return
         }
         autoCompleteInProgress = true
-        val result = autoCompleteProvider.autocomplete(searchText)
-        view?.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size) { result.url })
+        val result = autoCompleteProvider.getAutocompleteSuggestion(searchText)
+        if (result?.text != null || result?.totalItems != null) {
+            urlView.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.totalItems) { result.url })
+        }
         autoCompleteInProgress = false
     }
 
