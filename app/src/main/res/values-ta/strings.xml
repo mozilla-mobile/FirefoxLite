@@ -10,7 +10,10 @@
   <string name="menu_give_feedback">கருத்து தெரிவிக்கவும்</string>
   <string name="menu_share_with_friends">நண்பர்களுடன் பகிரவும்</string>
   <string name="share_dialog_title">இதன்வழியாக பகிரவும்</string>
-  <string name="text_selection_search_action">பயர்பாக்சு இராக்கெட் உலாவியில் தேடவும்</string>
+  <string name="find_in_page_input">பக்கத்தில் தேடு</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%2$d இல் %1$d</string>
+  <string name="text_selection_search_action">பயர்பாக்சு லைட் உலாவியில் தேடவும்</string>
   <string name="about_content_body">%1$s , %2$s நிறுவனத்தால் தயாரிக்கப்பட்ட ஒரு விரைவான இலேசான உலாவி. ஆரோக்கியமான திறந்த இணையத்தை கிடைக்கச் செய்வதே எங்களின் நோக்கம்.</string>
   <string name="about_link_learn_more">மேலும் அறிய</string>
   <string name="about_link_support">ஆதரவு</string>
@@ -30,7 +33,9 @@
   <string name="preference_mozilla_telemetry_summary">அனைவருக்கும் %1$s வழங்க மற்றும் மேம்படுத்த தேவையானதை மட்டும் சேகரிக்க %2$s உறுதிபூண்டுள்ளது.</string>
   <string name="preference_learn_more">மேலும் அறிய</string>
   <string name="preference_about">பற்றி</string>
-  <string name="content_description_clear_input">துள்ளிய உள்ளீடு</string>
+  <string name="preference_night_mode_brightness">இரவு முறை வெளிச்சம்</string>
+  <string name="night_mode_on_boarding_message">வெளிச்சத்தைச் சரிசெய்ய நெடுநேரம் அழுத்துக</string>
+  <string name="content_description_clear_input">உள்ளீட்டை அழி</string>
   <string name="content_description_dismiss_input">நிராகரி</string>
   <string name="content_description_lock">பாதுகாப்பான இணைப்பு</string>
   <string name="accessibility_announcement_loading">ஏற்றுகிறது</string>
@@ -62,9 +67,10 @@
   <string name="first_run_page2_title">முன்பை விட வேகமாக உலாவுங்கள்</string>
   <string name="first_run_page2_text">தடமறி விளம்பரங்களை தடுத்து சுழலி முறைமையை பயன்படுத்தி உலாவல் வேகத்தை முடுக்குங்கள். வலைத் தளங்கள் தடுமாறினால் பட்டியலில் உள்ள சுழலி முறைமை சாவியைத் தட்டுங்கள்.</string>
   <string name="first_run_page3_title">தரவு சிக்கனம் = பண சிக்கனம்</string>
-  <string name="first_run_page3_text">தடமறி விளம்பரங்களத் தடுத்தால் உலாவல் வேகத்தைக் கூட்டுவதுடன் தரவையும் சிக்கனப்படுத்துகிறது. பிம்பங்களைத் தடுப்பதன் மூலம் கூடுதலாக சிக்கனப்படுத்தலாம்.</string>
-  <string name="first_run_page4_title">அனைத்தையும் திரைப்பிடிப்பு செய்</string>
-  <string name="first_run_page4_text">முழு வலைப் பக்கத்தையும் திரைப்பிடிப்புச் செய். முடக்கலையில் ஒரு திரைப்பிடிப்பபைப் பார் (கைப்பேசி பிணையமின்றி) அல்லது அதைத் தட்டி மீண்டும் வலைப் பக்கத்தைப் பார்.</string>
+  <string name="first_run_page3_text">பின்தொடரல் விளம்பரங்களத் தடுத்து தரவைச் சேமியுங்கள். படங்களைத் தடுப்பதன் மூலம் கூடுதலாகச் சேமிக்கலாம்.</string>
+  <string name="first_run_page4_title">முழுப்பக்கத்தையும் திரைப்பிடிப்பு செய்</string>
+  <string name="first_run_page4_text">முழு வலைப்பக்கத்தையும் திரைப்பிடியுங்கள். தரவுப் பயன்பாடின்றி படியுங்கள் அல்லது வலைப்பக்கத்தை மீண்டும் பார்க்க அதனைத் தட்டுங்கள்.</string>
+  <string name="first_run_page5_title">அடுத்த நிலை தனியுரிமை</string>
   <string name="first_run_upgrade_page_title">உங்களின் கருத்தைக் கேட்டோம்!</string>
   <string name="first_run_upgrade_page_text1">1. ஒரே நேரத்தில் %s வழி திறக்கப்பட்ட பல்வகை செயல்கள்!</string>
   <string name="first_run_upgrade_page_text1_highlight">பல கீற்றுகள்</string>
