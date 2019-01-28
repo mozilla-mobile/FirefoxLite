@@ -8,12 +8,16 @@ import com.google.android.play.core.splitinstall.SplitInstallRequest
 class DynamicDeliveryHelper {
 
     companion object {
+        private  const val MODULE_SYNC = "history"
         @JvmStatic
         fun init(context: Context, success: () -> Int) {
 
             // Creates an instance of SplitInstallManager.
             val splitInstallManager = SplitInstallManagerFactory.create(context)
 
+            if (splitInstallManager.installedModules.contains(MODULE_SYNC)) {
+                //return
+            }
             // Creates a request to install a module.
             val request = SplitInstallRequest
                 .newBuilder()
@@ -32,6 +36,19 @@ class DynamicDeliveryHelper {
         private fun toast(s: String) {
 //        Toast.makeText(context, s, Toast.LENGTH_LONG).show()
             Log.e("aaaa", "[$s]")
+        }
+
+        @JvmStatic
+        fun uninstall(context: Context) {
+            val splitInstallManager = SplitInstallManagerFactory.create(context)
+
+            if (splitInstallManager.installedModules.contains(MODULE_SYNC)) {
+                splitInstallManager.deferredUninstall(listOf(MODULE_SYNC))
+                    .addOnSuccessListener { toast("uninstall successful") }
+                    .addOnFailureListener { toast("uninstall fail") }
+                    .addOnCompleteListener { toast("uninstall complete") }
+
+            }
         }
     }
 }

@@ -7,10 +7,8 @@ package org.mozilla.rocket.history
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.view.View
 import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_main.historySyncStatus
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,10 +19,11 @@ import mozilla.components.browser.storage.sync.SyncAuthInfo
 import mozilla.components.concept.storage.SyncError
 import mozilla.components.feature.sync.FirefoxSyncFeature
 import mozilla.components.feature.sync.SyncStatusObserver
+import mozilla.components.service.fxa.Config
 import mozilla.components.service.fxa.FirefoxAccount
 import mozilla.components.service.fxa.FxaException
-import mozilla.components.service.fxa.Config
 import mozilla.components.service.fxa.Profile
+import org.mozilla.focus.history.BrowsingHistoryManager
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener, CoroutineScope {
@@ -60,52 +59,49 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
         job = Job()
         account = initAccount()
-
-        findViewById<View>(R.id.buttonSignIn).setOnClickListener {
-            launch {
-                val url = account.beginOAuthFlow(scopes, true).await()
-                openWebView(url)
-            }
-        }
-
-        findViewById<View>(R.id.buttonLogout).setOnClickListener {
-            getSharedPreferences(FXA_STATE_PREFS_KEY, Context.MODE_PRIVATE).edit().putString(FXA_STATE_KEY, "").apply()
-            val txtView: TextView = findViewById(R.id.fxaStatusView)
-            txtView.text = getString(R.string.logged_out)
-        }
 
         // NB: ObserverRegistry takes care of unregistering this observer when appropriate, and
         // cleaning up any internal references to 'observer' and 'owner'.
         featureSync.register(syncObserver, owner = this, autoPause = true)
 
-        findViewById<View>(R.id.buttonSyncHistory).setOnClickListener {
-            getAuthenticatedAccount()?.let { account ->
-                val txtView: TextView = findViewById(R.id.historySyncResult)
+        if (getAuthenticatedAccount() == null) {
 
-                launch {
-                    val syncResult = CoroutineScope(Dispatchers.IO + job).async {
-                        featureSync.sync(account)
-                    }.await()
+            // do login
+            launch {
+                val url = account.beginOAuthFlow(scopes, true).await()
+                openWebView(url)
+            }
+            return
+        }
 
-                    check(historyStoreName in syncResult) { "Expected to synchronize a history store" }
+        // already have account, get data now
+        getAuthenticatedAccount()?.let { account ->
+            val txtView: TextView = findViewById(R.id.historySyncResult)
 
-                    val historySyncStatus = syncResult[historyStoreName]!!.status
-                    if (historySyncStatus is SyncError) {
-                        txtView.text = getString(R.string.sync_error, historySyncStatus.exception)
-                    } else {
-                        for (s in historyStorage.getVisited()) {
-                            Log.d("aaaaa","======entry=====$s")
-                        }
-                        val visitedCount = historyStorage.getVisited().size
-                        // visitedCount is passed twice: to get the correct plural form, and then as
-                        // an argument for string formatting.
-                        txtView.text = resources.getQuantityString(
-                            R.plurals.visited_url_count, visitedCount, visitedCount
-                        )
+            launch {
+                val syncResult = CoroutineScope(Dispatchers.IO + job).async {
+                    featureSync.sync(account)
+                }.await()
+
+                check(historyStoreName in syncResult) { "Expected to synchronize a history store" }
+
+                val historySyncStatus = syncResult[historyStoreName]!!.status
+                if (historySyncStatus is SyncError) {
+                    txtView.text = getString(R.string.sync_error, historySyncStatus.exception)
+                } else {
+                    for (url in historyStorage.getVisited()) {
+                        val site =
+                            BrowsingHistoryManager.prepareSiteForFirstInsert(url, "from sync", System.currentTimeMillis())
+                        BrowsingHistoryManager.getInstance().insert(site, null)
                     }
+                    val visitedCount = historyStorage.getVisited().size
+                    // visitedCount is passed twice: to get the correct plural form, and then as
+                    // an argument for string formatting.
+                    txtView.text = "$visitedCount items synced"
+
                 }
             }
         }
@@ -160,7 +156,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
             displayProfile(profile)
             account.toJSONString().let {
                 getSharedPreferences(FXA_STATE_PREFS_KEY, Context.MODE_PRIVATE)
-                        .edit().putString(FXA_STATE_KEY, it).apply()
+                    .edit().putString(FXA_STATE_KEY, it).apply()
             }
         }
     }
@@ -180,6 +176,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
         override fun onIdle() {
             CoroutineScope(Dispatchers.Main).launch {
                 historySyncStatus?.text = getString(R.string.sync_idle)
+                finish()
             }
         }
     }

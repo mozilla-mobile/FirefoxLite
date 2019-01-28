@@ -151,6 +151,13 @@ public class ListPanelDialog extends DialogFragment {
             }
         });
         historyTouchArea = v.findViewById(R.id.history);
+        historyTouchArea.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                DynamicDeliveryHelper.uninstall(getContext());
+                return false;
+            }
+        });
         historyTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +178,7 @@ public class ListPanelDialog extends DialogFragment {
                     } catch (Exception e) {
                         Log.e("aaaa", "error----" + e.getLocalizedMessage());
                         e.printStackTrace();
+                        return 0;
                     }
                     return 1;
                 });
