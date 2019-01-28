@@ -45,7 +45,6 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
             for (i in array.indices) {
                 array[i] = ids[i]
             }
-
             return array
         }
 
@@ -192,7 +191,19 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     private fun updateRunningItems() {
         if (!runningDownloadIds.isEmpty()) {
             for (i in runningDownloadIds.indices) {
-                repository.queryByDownloadId(runningDownloadIds[i], updateListener)
+                repository.queryByDownloadId(runningDownloadIds[i], object : DownloadInfoRepository.OnQueryItemCompleteListener {
+                    override fun onComplete(download: DownloadInfo) {
+                        for (j in 0 until downloadInfoPack.list.size) {
+                            val downloadInfo = downloadInfoPack.list[j]
+                            if (download.downloadId == downloadInfo.downloadId) {
+                                downloadInfo.setStatusInt(download.status)
+                                downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
+                                downloadInfoPack.index = j.toLong()
+                                downloadInfoObservable.value = downloadInfoPack
+                            }
+                        }
+                    }
+                })
             }
         }
     }
@@ -240,6 +251,10 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
 
     fun registerForProgressUpdate(listener: OnProgressUpdateListener) {
         progressUpdateListener = listener
+        // When somebody is listening progress update, we need to notify they to start to update
+        if (isDownloading) {
+            progressUpdateListener?.onStartUpdate()
+        }
         updateRunningItems()
     }
 
