@@ -252,6 +252,9 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
 
+    //TODO: add to Versions
+    implementation 'com.google.android.play:core:1.3.6'
+
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"

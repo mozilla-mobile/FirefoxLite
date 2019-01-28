@@ -5,21 +5,28 @@
 
 package org.mozilla.focus.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import kotlin.Unit;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.dynamic.DynamicDeliveryHelper;
+
+import java.security.Policy;
 
 public class ListPanelDialog extends DialogFragment {
 
@@ -147,6 +154,27 @@ public class ListPanelDialog extends DialogFragment {
         historyTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder();
+                final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder();
+
+                threadPolicyBuilder.penaltyLog().penaltyDialog();
+                // Previously we have penaltyDeath() for debug build, but in order to add crashlytics, we can't use it here.
+                // ( crashlytics has untagged Network violation so it always crashes
+                vmPolicyBuilder.penaltyLog();
+
+                StrictMode.setThreadPolicy(threadPolicyBuilder.build());
+                StrictMode.setVmPolicy(vmPolicyBuilder.build());
+                final Intent loginActivity = new Intent().setClassName(getContext().getPackageName(), "org.mozilla.rocket.history.LoginActivity");
+                DynamicDeliveryHelper.init(getContext(), () -> {
+                    try {
+                        startActivity(loginActivity);
+                    } catch (Exception e) {
+                        Log.e("aaaa", "error----" + e.getLocalizedMessage());
+                        e.printStackTrace();
+                    }
+                    return 1;
+                });
+
                 showItem(TYPE_HISTORY);
                 TelemetryWrapper.showPanelHistory();
             }

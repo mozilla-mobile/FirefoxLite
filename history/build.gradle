@@ -16,6 +16,37 @@ android {
 
     }
 
+    buildTypes {
+        release {
+//            shrinkResources true
+            matchingFallbacks = ["firebase"]
+        }
+        debug {
+            def userName = System.getenv("USER")
+            applicationIdSuffix ".debug." + userName
+            versionNameSuffix applicationIdSuffix
+            matchingFallbacks = ["firebase_no_op"]
+        }
+        // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
+        // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
+        // for some developers (i.e. variables can't be inspected or seen).
+        coverage {
+            initWith debug
+            applicationIdSuffix ".coverage"
+            testCoverageEnabled true
+            matchingFallbacks = ["debug", "firebase_no_op"]
+        }
+        // special build type to develop Firebase related stuff
+        firebase {
+            debuggable true
+//            initWith debug
+            applicationIdSuffix ".debug.firebase"
+
+            versionNameSuffix applicationIdSuffix
+            matchingFallbacks = ["debug", "firebase"]
+        }
+    }
+
     variantFilter { variant ->
         def flavors = variant.flavors*.name
         // We only need a nightly release for now
@@ -57,7 +88,7 @@ dependencies {
 //    implementation "org.mozilla.components:concept-storage:0.40.0-20190124.170640-1"
 //    implementation "org.mozilla.components:browser-storage-sync:0.40.0-20190124.170645-1"
 //    implementation "org.mozilla.components:service-firefox-accounts:0.40.0-20190124.170516-1"
-//    implementation "org.mozilla.components:feature-sync:0.40.0-20190124.170649-1"
+    implementation "org.mozilla.components:feature-sync:${Versions.android_components}"
 }
 
 
