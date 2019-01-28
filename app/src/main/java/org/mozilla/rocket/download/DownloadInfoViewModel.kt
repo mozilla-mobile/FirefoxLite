@@ -3,6 +3,7 @@ package org.mozilla.rocket.download
 import android.app.DownloadManager
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.support.annotation.VisibleForTesting
 import android.util.Log
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfo
@@ -10,7 +11,7 @@ import org.mozilla.threadutils.ThreadUtils
 import java.io.File
 import java.net.URI
 
-class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : ViewModel() {
+class DownloadInfoViewModel(private val repository: DownloadInfoRepository, val downloadInfoObservable: MutableLiveData<DownloadInfoPack>) : ViewModel() {
 
     interface OnProgressUpdateListener {
         fun onStartUpdate()
@@ -18,7 +19,6 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         fun onStopUpdate()
     }
 
-    val downloadInfoObservable = MutableLiveData<DownloadInfoPack>()
     val toastMessageObservable = SingleLiveEvent<Int>()
     val deleteSnackbarObservable = SingleLiveEvent<DownloadInfo>()
     var isOpening = false
@@ -30,7 +30,8 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     private var isLastPage = false
     private var progressUpdateListener: OnProgressUpdateListener? = null
 
-    private var updateListener: DownloadInfoRepository.OnQueryItemCompleteListener = object : DownloadInfoRepository.OnQueryItemCompleteListener {
+    @VisibleForTesting
+    var updateListener: DownloadInfoRepository.OnQueryItemCompleteListener = object : DownloadInfoRepository.OnQueryItemCompleteListener {
         override fun onComplete(download: DownloadInfo) {
             updateItem(download)
         }
@@ -270,5 +271,10 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
 
     companion object {
         private const val PAGE_SIZE = 20
+    }
+
+    @VisibleForTesting
+    fun getDownloadInfoPack(): DownloadInfoPack {
+        return downloadInfoPack
     }
 }
