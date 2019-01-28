@@ -73,14 +73,20 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun loadMore(init: Boolean) {
+        // Once the "Don't keep activity" in developer settings is enabled, loadMore is called twice continuously
+        // due to DownloadFragment is created twice. So we set isLoading immediately to prevent duplicate calls here.
+        if (isLoading) {
+            return
+        }
+        isLoading = true
         if (init) {
-            isLoading = false
             isLastPage = false
             isOpening = false
             itemCount = 0
             downloadInfoPack.list.clear()
         }
-        if (isLastPage || isLoading) {
+        if (isLastPage) {
+            isLoading = false
             return
         }
         repository.loadData(itemCount, PAGE_SIZE, object : DownloadInfoRepository.OnQueryListCompleteListener {
@@ -97,7 +103,6 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
                 }
             }
         })
-        isLoading = true
     }
 
     fun cancel(rowId: Long) {
