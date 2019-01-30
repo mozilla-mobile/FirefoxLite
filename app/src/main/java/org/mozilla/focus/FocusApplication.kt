@@ -6,6 +6,7 @@
 package org.mozilla.focus
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
@@ -22,6 +23,10 @@ import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import org.mozilla.rocket.privately.PrivateModeActivity
 import java.io.File
+import com.google.android.play.core.splitcompat.SplitCompat
+import com.google.android.gms.common.wrappers.InstantApps
+
+
 
 class FocusApplication : LocaleAwareApplication() {
 
@@ -46,6 +51,11 @@ class FocusApplication : LocaleAwareApplication() {
         return super.getDir(name, mode)
     }
 
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
+
+    }
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) {

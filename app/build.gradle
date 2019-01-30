@@ -133,7 +133,7 @@ android {
             resConfigs Localization.KEPT_LOCALE
             dimension "product"
 
-            applicationIdSuffix ".rocket"
+            applicationIdSuffix ".rocket.nevin"
         }
 
         preview {

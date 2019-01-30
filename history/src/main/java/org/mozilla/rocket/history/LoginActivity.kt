@@ -7,6 +7,7 @@ package org.mozilla.rocket.history
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +29,9 @@ import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener, CoroutineScope {
 
+    init {
+        Log.d("aaaa","----preview----")
+    }
     private lateinit var account: FirefoxAccount
     private val scopes: Array<String> = arrayOf("profile", "https://identity.mozilla.com/apps/oldsync")
 
