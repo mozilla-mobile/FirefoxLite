@@ -3,6 +3,8 @@ package org.mozilla.focus.activity;
 
 import android.content.Intent;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -14,7 +16,6 @@ import android.support.test.uiautomator.UiSelector;
 import android.widget.Switch;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +31,8 @@ import static android.support.test.espresso.matcher.PreferenceMatchers.withKey;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 
@@ -89,21 +90,12 @@ public class DefaultBrowserTest {
         onView(withId(R.id.menu_preferences)).perform(click());
 
         // Click on "Default Browser" setting, this will brings up the Android system setting
-        onData(allOf(
-                is(instanceOf(Preference.class)),
-                withKey(prefName))).
-                onChildView(withClassName(is(Switch.class.getName()))).perform(click());
+        clickDefaultBrowserSetting(prefName);
 
         // Open default browser setting
         final UiObject allAppsButton = uiDevice
                 .findObject(new UiSelector().text(SETTING_DEFAULT_BROWSER));
-
-        try {
-            allAppsButton.click();
-
-        } catch (UiObjectNotFoundException e) {
-            throw new AssertionError("Could find the setting", e);
-        }
+        openDefaultBrowserAndroidSetting(allAppsButton);
 
         // Choose Chrome browser
         final UiScrollable browserList = new UiScrollable(new UiSelector());
@@ -117,26 +109,27 @@ public class DefaultBrowserTest {
         } catch (UiObjectNotFoundException e) {
             throw new AssertionError("Could find the chrome app in default browser", e);
         }
+        // Since it is not on root activity so we use ui-automator instead of Espresso Press back
+        UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        mDevice.pressBack();
+
+        // Check if the "Default Browser" pref switch not checked
+        onData(allOf(
+                is(instanceOf(Preference.class)),
+                withKey(prefName))).
+                onChildView(withClassName(is(Switch.class.getName()))).check(matches(not(isChecked())));
+
 
         // 2. Set Firefox Lite as default browser
-        // Open default browser setting
-        try {
-            allAppsButton.click();
 
-        } catch (UiObjectNotFoundException e) {
-            throw new AssertionError("Could find the setting", e);
-        }
+        // Click on "Default Browser" setting, this will brings up the Android system setting
+        clickDefaultBrowserSetting(prefName);
+
+        // Open default browser setting
+        openDefaultBrowserAndroidSetting(allAppsButton);
 
         // Choose Firefox Lite browser
-        final UiSelector rocketView = new UiSelector().text(activity.getString(R.string.app_name));
-        try {
-            browserList.scrollIntoView(rocketView);
-            final UiObject browserCandidate = uiDevice.findObject(rocketView);
-            browserCandidate.click();
-
-        } catch (UiObjectNotFoundException e) {
-            throw new AssertionError("Could find the Firefox Lite app in default browser", e);
-        }
+        chooseLiteAsDefaultBrowser(activity);
 
         // Now launch Firefox Lite's setting activity
         settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
@@ -159,8 +152,6 @@ public class DefaultBrowserTest {
      * 4. Go back to app's settings
      * 5. Check it correctly set default browser to Firefox Lite
      */
-    // Taken down because of intermittent.
-    @Ignore
     @Test
     public void changeDefaultBrowser_whenNoDefault() {
 
@@ -173,30 +164,36 @@ public class DefaultBrowserTest {
         final String prefName = activity.getString(R.string.pref_key_default_browser);
 
         // Click on the menu item
-        onView(allOf(withId(R.id.btn_menu), withParent(withId(R.id.home_screen_menu)))).perform(click());
+        AndroidTestUtils.tapHomeMenuButton();
 
         // Click on Settings
         onView(withId(R.id.menu_preferences)).perform(click());
 
         // Click on "Default Browser" setting, this will brings up the Android system setting
-        onData(allOf(
-                is(instanceOf(Preference.class)),
-                withKey(prefName))).
-                onChildView(withClassName(is(Switch.class.getName()))).perform(click());
+        clickDefaultBrowserSetting(prefName);
 
         // 2. Set Firefox Lite as default browser
         // Open default browser setting
         final UiObject allAppsButton = uiDevice
                 .findObject(new UiSelector().text(SETTING_DEFAULT_BROWSER));
 
-        try {
-            allAppsButton.click();
-
-        } catch (UiObjectNotFoundException e) {
-            throw new AssertionError("Could find the setting", e);
-        }
+        openDefaultBrowserAndroidSetting(allAppsButton);
 
         // Choose Firefox Lite browser
+        chooseLiteAsDefaultBrowser(activity);
+
+        // Now launch Firefox Lite's setting activity
+        settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
+
+        // Check if the "Default Browser" pref is correctly displayed (switch checked)
+        onData(allOf(
+                is(instanceOf(Preference.class)),
+                withKey(prefName))).
+                onChildView(withClassName(is(Switch.class.getName()))).check(matches(isChecked()));
+
+    }
+
+    private void chooseLiteAsDefaultBrowser(MainActivity activity) {
         final UiScrollable browserList = new UiScrollable(new UiSelector());
 
         final UiSelector rocketView = new UiSelector().text(activity.getString(R.string.app_name));
@@ -208,16 +205,25 @@ public class DefaultBrowserTest {
         } catch (UiObjectNotFoundException e) {
             throw new AssertionError("Could find the Firefox Lite app in default browser", e);
         }
+    }
 
-        // Now launch Firefox Lite's setting activity
-        settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
+    @NonNull
+    private UiObject openDefaultBrowserAndroidSetting(UiObject allAppsButton) {
 
-        // Check if the "Default Browser" pref is correctly displayed (switch checked)
+        try {
+            allAppsButton.click();
+
+        } catch (UiObjectNotFoundException e) {
+            throw new AssertionError("Could find the setting", e);
+        }
+        return allAppsButton;
+    }
+
+    private void clickDefaultBrowserSetting(String prefName) {
         onData(allOf(
                 is(instanceOf(Preference.class)),
                 withKey(prefName))).
-                onChildView(withClassName(is(Switch.class.getName()))).check(matches(isChecked()));
-
+                onChildView(withClassName(is(Switch.class.getName()))).perform(click());
     }
 
 }
