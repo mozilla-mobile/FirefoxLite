@@ -45,6 +45,14 @@ No tests found. This usually means that your test classes are not in the form th
 
 If you'd like to test the fully functional Firebase build, you should first setup the environment variables following these [instructions](https://github.com/mozilla-tw/Rocket/blob/4fedf245c4382122283ca8ec701a5ff18c9bf779/app/build.gradle#L346) and select **focusWebkitFirebase**
 
+Pull request checks
+----
+To mimimize the chance you are blocked by our build checks, you can self check these locally:
+1. (build) run `./gradlew clean checkstyle assembleFocusWebkitDebug lint findbugs assembleAndroidTest ktlint`
+2. (size check) run `python tools/metrics/apk_size.py focus webkit`
+3. (Unit test) run `./gradlew testFocusWebkitDebugUnitTest`
+4. (UI test) run `./gradlew connectedAndroidTest`
+
 Docs
 ----
 
