@@ -2,6 +2,7 @@ package org.mozilla.rocket.dynamic
 
 import android.content.Context
 import android.util.Log
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallSessionState
@@ -20,8 +21,6 @@ class DynamicDeliveryHelper {
             if (splitInstallManager.installedModules.contains(MODULE_SYNC)) {
                 //return
             }
-
-
 
             /**
             public @interface SplitInstallSessionStatus {
@@ -52,9 +51,11 @@ class DynamicDeliveryHelper {
             }
 
              **/
-            splitInstallManager.registerListener { state: SplitInstallSessionState ->
-                Log.d("aaaa", "SplitInstallSessionState: $state")
-            }
+            val listener =
+                SplitInstallStateUpdatedListener { state ->
+                    Log.d("aaaa", "SplitInstallSessionState: $state")
+                }
+            splitInstallManager.registerListener(listener)
 
             // Creates a request to install a module.
             val request = SplitInstallRequest
@@ -67,8 +68,17 @@ class DynamicDeliveryHelper {
 
             splitInstallManager
                 .startInstall(request)
-                .addOnSuccessListener { success() }
-                .addOnFailureListener { it -> toast("fail $it") }
+                .addOnSuccessListener { sessionId ->
+                    run {
+                        Log.d("aaaa", "success------$sessionId")
+                        SplitCompat.install(context)
+
+                        success()
+                    }
+                }
+                .addOnFailureListener { toast("fail------$it") }
+
+            splitInstallManager.unregisterListener(listener)
         }
 
         private fun toast(s: String) {

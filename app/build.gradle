@@ -214,6 +214,7 @@ dependencies {
     implementation project(':cachedrequestloader')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutine_android}"
 
     // We didn't use CustomTabs so far. This is a build hack to force Android-Components to use
     // same version of support library as we are. Android-Components depends on CustomTabs which
@@ -252,8 +253,7 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
 
-    //TODO: add to Versions
-    implementation 'com.google.android.play:core:1.3.6'
+    implementation "com.google.android.play:core:${Versions.play_core}"
 
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"

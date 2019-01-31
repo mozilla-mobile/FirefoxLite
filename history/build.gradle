@@ -1,49 +1,27 @@
 apply plugin: 'com.android.dynamic-feature'
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion Versions.compile_sdk
 
 
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
 
     }
 
     buildTypes {
         release {
-//            shrinkResources true
-            matchingFallbacks = ["firebase"]
         }
         debug {
-            def userName = System.getenv("USER")
-            applicationIdSuffix ".debug." + userName
-            versionNameSuffix applicationIdSuffix
-            matchingFallbacks = ["firebase_no_op"]
         }
-        // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
-        // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
-        // for some developers (i.e. variables can't be inspected or seen).
         coverage {
-            initWith debug
-            applicationIdSuffix ".coverage"
-            testCoverageEnabled true
-            matchingFallbacks = ["debug", "firebase_no_op"]
         }
-        // special build type to develop Firebase related stuff
         firebase {
             debuggable true
-//            initWith debug
-            applicationIdSuffix ".debug.firebase"
-
-            versionNameSuffix applicationIdSuffix
-            matchingFallbacks = ["debug", "firebase"]
         }
     }
 
@@ -65,8 +43,6 @@ android {
         preview {
             dimension "product"
         }
-
-        // We can build with two engines: webkit or gecko
         webkit {
             dimension "engine"
         }
@@ -75,19 +51,11 @@ android {
 }
 
 dependencies {
-//    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.10"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
 
     implementation "org.mozilla.components:concept-storage:${Versions.android_components}"
     implementation "org.mozilla.components:browser-storage-sync:${Versions.android_components}"
     implementation "org.mozilla.components:service-firefox-accounts:${Versions.android_components}"
-//    implementation "org.mozilla.components:browser-session:${Versions.android_components}"
-//
-//    implementation "org.mozilla.components:concept-storage:0.40.0-20190124.170640-1"
-//    implementation "org.mozilla.components:browser-storage-sync:0.40.0-20190124.170645-1"
-//    implementation "org.mozilla.components:service-firefox-accounts:0.40.0-20190124.170516-1"
     implementation "org.mozilla.components:feature-sync:${Versions.android_components}"
 }
 

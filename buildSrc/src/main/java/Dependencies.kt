@@ -15,6 +15,8 @@ object Versions {
     const val room = "1.1.1"
     const val glide = "4.0.0"
     const val kotlin = "1.3.0"
+    const val coroutine_android = "1.1.1"
+    const val play_core = "1.3.6"
     const val ktlint = "0.21.0"
     const val gms = "11.8.0"
     const val navigation = "1.0.0-alpha03"
