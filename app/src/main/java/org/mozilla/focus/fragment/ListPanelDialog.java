@@ -161,28 +161,6 @@ public class ListPanelDialog extends DialogFragment {
         historyTouchArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder();
-                final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder();
-
-                threadPolicyBuilder.penaltyLog().penaltyDialog();
-                // Previously we have penaltyDeath() for debug build, but in order to add crashlytics, we can't use it here.
-                // ( crashlytics has untagged Network violation so it always crashes
-                vmPolicyBuilder.penaltyLog();
-
-                StrictMode.setThreadPolicy(threadPolicyBuilder.build());
-                StrictMode.setVmPolicy(vmPolicyBuilder.build());
-                final Intent loginActivity = new Intent().setClassName(getContext().getPackageName(), "org.mozilla.rocket.history.LoginActivity");
-                DynamicDeliveryHelper.init(getContext(), () -> {
-                    try {
-                        startActivity(loginActivity);
-                    } catch (Exception e) {
-                        Log.e("aaaa", "error----" + e.getLocalizedMessage());
-                        e.printStackTrace();
-                        return 0;
-                    }
-                    return 1;
-                });
-
                 showItem(TYPE_HISTORY);
                 TelemetryWrapper.showPanelHistory();
             }

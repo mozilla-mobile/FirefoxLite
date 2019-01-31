@@ -84,6 +84,7 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.dynamic.DynamicDeliveryHelper;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
@@ -418,6 +419,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void showMenu() {
+        DynamicDeliveryHelper.installHistoryModule(this);
         updateMenu();
         menu.show();
     }

@@ -25,13 +25,15 @@ import mozilla.components.service.fxa.FirefoxAccount
 import mozilla.components.service.fxa.FxaException
 import mozilla.components.service.fxa.Profile
 import org.mozilla.focus.history.BrowsingHistoryManager
+import org.mozilla.rocket.dynamic.DynamicDeliveryHelper
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener, CoroutineScope {
 
     init {
-        Log.d("aaaa","----preview----")
+        Log.d(DynamicDeliveryHelper.TAG, "----LoginActivity loaded----")
     }
+
     private lateinit var account: FirefoxAccount
     private val scopes: Array<String> = arrayOf("profile", "https://identity.mozilla.com/apps/oldsync")
 
@@ -81,6 +83,10 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
             return
         }
 
+        syncNow()
+    }
+
+    fun syncNow() {
         // already have account, get data now
         getAuthenticatedAccount()?.let { account ->
             val txtView: TextView = findViewById(R.id.historySyncResult)
@@ -96,16 +102,20 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
                 if (historySyncStatus is SyncError) {
                     txtView.text = getString(R.string.sync_error, historySyncStatus.exception)
                 } else {
-                    for (url in historyStorage.getVisited()) {
+                    val urls = historyStorage.getVisited()
+                    for (url in urls) {
                         val site =
-                            BrowsingHistoryManager.prepareSiteForFirstInsert(url, "from sync", System.currentTimeMillis())
+                            BrowsingHistoryManager.prepareSiteForFirstInsert(
+                                url,
+                                "from sync",
+                                System.currentTimeMillis()
+                            )
                         BrowsingHistoryManager.getInstance().insert(site, null)
                     }
                     val visitedCount = historyStorage.getVisited().size
                     // visitedCount is passed twice: to get the correct plural form, and then as
                     // an argument for string formatting.
                     txtView.text = "$visitedCount items synced"
-
                 }
             }
         }
@@ -130,8 +140,11 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
     }
 
     override fun onLoginComplete(code: String, state: String, fragment: LoginFragment) {
+        // webview's URL shows it complete's it's login, save the user token
         displayAndPersistProfile(code, state)
+        // hide the fragment and the webview
         supportFragmentManager?.popBackStack()
+        syncNow()
     }
 
     private fun getAuthenticatedAccount(): FirefoxAccount? {

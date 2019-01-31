@@ -55,6 +55,7 @@ public class Inject {
     }
 
     public static void enableStrictMode() {
+
         if (AppConstants.isReleaseBuild()) {
             return;
         }

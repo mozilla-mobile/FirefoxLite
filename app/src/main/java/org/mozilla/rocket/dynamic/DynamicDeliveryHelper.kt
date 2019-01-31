@@ -1,25 +1,30 @@
 package org.mozilla.rocket.dynamic
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
-import com.google.android.play.core.splitcompat.SplitCompat
+import android.widget.Toast
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.google.android.play.core.splitinstall.SplitInstallSessionState
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 
 class DynamicDeliveryHelper {
 
     companion object {
+
+        const val TAG = "aabworkshop"
+
         private const val MODULE_SYNC = "history"
+
+
         @JvmStatic
-        fun init(context: Context, success: () -> Int) {
+        fun installHistoryModule(context: Context) {
 
             // Creates an instance of SplitInstallManager.
             val splitInstallManager = SplitInstallManagerFactory.create(context)
 
             if (splitInstallManager.installedModules.contains(MODULE_SYNC)) {
-                //return
+                toast(context, "$MODULE_SYNC module installed")
             }
 
             /**
@@ -53,39 +58,33 @@ class DynamicDeliveryHelper {
              **/
             val listener =
                 SplitInstallStateUpdatedListener { state ->
-                    Log.d("aaaa", "SplitInstallSessionState: $state")
+                    toast(context, "SplitInstallSessionState: SplitInstallStateUpdatedListener:$state")
                 }
             splitInstallManager.registerListener(listener)
 
-            // Creates a request to install a module.
             val request = SplitInstallRequest
                 .newBuilder()
-                // You can download multiple on demand modules per
-                // request by invoking the following method for each
-                // module you want to install.
-                .addModule("history")
+                .addModule(MODULE_SYNC)
                 .build()
 
             splitInstallManager
                 .startInstall(request)
                 .addOnSuccessListener { sessionId ->
-                    run {
-                        Log.d("aaaa", "success------$sessionId")
-                        SplitCompat.install(context)
+                    toast(context, "startInstall success id------$sessionId")
+                    // SplitCompat.install(context)
+                    startHistoryModule(context)
 
-                        success()
-                    }
                 }
-                .addOnFailureListener { toast("fail------$it") }
+                .addOnFailureListener { toast(context, "startInstall fail------$it") }
 
             splitInstallManager.unregisterListener(listener)
         }
 
-        private fun toast(s: String) {
+        private fun toast(context: Context, s: String) {
             //error code
             // https@ //developer.android.com/reference/com/google/android/play/core/splitinstall/model/SplitInstallErrorCode
-//        Toast.makeText(context, s, Toast.LENGTH_LONG).show()
-            Log.e("aaaa", "[$s]")
+            Toast.makeText(context, s, Toast.LENGTH_LONG).show()
+            Log.e(TAG, "toast : [$s]")
         }
 
         @JvmStatic
@@ -94,9 +93,20 @@ class DynamicDeliveryHelper {
 
             if (splitInstallManager.installedModules.contains(MODULE_SYNC)) {
                 splitInstallManager.deferredUninstall(listOf(MODULE_SYNC))
-                    .addOnSuccessListener { toast("uninstall successful") }
-                    .addOnFailureListener { toast("uninstall fail") }
-                    .addOnCompleteListener { toast("uninstall complete") }
+                    .addOnSuccessListener { toast(context, "uninstall successful") }
+                    .addOnFailureListener { toast(context, "uninstall fail") }
+                    .addOnCompleteListener { toast(context, "uninstall complete") }
+            }
+        }
+
+        private fun startHistoryModule(context: Context) {
+            try {
+                val loginActivity =
+                    Intent().setClassName(context.packageName, "org.mozilla.rocket.history.LoginActivity")
+
+                context.startActivity(loginActivity)
+            } catch (e: Exception) {
+                toast(context, "startHistoryModule error" + e.localizedMessage)
             }
         }
     }
