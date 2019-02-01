@@ -240,11 +240,12 @@ dependencies {
         transitive = false
     })
 
-    implementation "org.mozilla.components:browser-session:${Versions.android_components}"
-    implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
-    implementation "org.mozilla.components:browser-domains:${Versions.android_components}"
-    implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
-    implementation "org.mozilla.components:lib-fetch-httpurlconnection:${Versions.android_components}"
+    api "org.mozilla.components:browser-session:${Versions.android_components}"
+    api "org.mozilla.components:service-telemetry:${Versions.android_components}"
+    api "org.mozilla.components:browser-domains:${Versions.android_components}"
+    api "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
+    api "org.mozilla.components:lib-fetch-httpurlconnection:${Versions.android_components}"
+//    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutine_android}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
