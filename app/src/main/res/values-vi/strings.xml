@@ -66,11 +66,15 @@
   <string name="contextmenu_open_in_new_tab">Mở liên kết trong thẻ mới</string>
   <string name="contextmenu_open_image_in_new_tab">Mở hình ảnh trong thẻ mới</string>
   <string name="first_run_page1_title">Cảm ơn bạn đã chọn %1$s</string>
+  <string name="first_run_page1_text">Một trình duyệt được tạo bởi %1$s, phi lợi nhuận đã cam kết với một trang web mở và miễn phí.</string>
   <string name="first_run_page2_title">Duyệt nhanh hơn bao giờ hết</string>
+  <string name="first_run_page2_text">Sử dụng chế độ turbo để chặn quảng cáo theo dõi để bạn và có thể duyệt ở tốc độ nhanh. Nếu các trang web có vẻ bị hỏng, chỉ cần nhấn vào công tắc của chế độ turbo trong menu.</string>
   <string name="first_run_page3_title">Lưu dữ liệu = Tiết kiệm tiền</string>
   <string name="first_run_page3_text">Tiết kiệm chi phí dữ liệu bằng cách chặn quảng cáo. Tiết kiệm hơn nữa khi bạn kích hoạt chặn hình ảnh.</string>
   <string name="first_run_page4_title">Ảnh chụp màn hình toàn bộ trang</string>
+  <string name="first_run_page4_text">Chụp ảnh màn hình của toàn bộ trang. Đọc ngoại tuyến mà không sử dụng dữ liệu hoặc chạm vào nó để xem lại trang web.</string>
   <string name="first_run_page5_title">Quyền riêng tư cấp độ tiếp theo</string>
+  <string name="first_run_page5_text">Duyệt mà không để lại dấu vết và chặn một loạt các trình theo dõi web phổ biến theo mặc định. Đảm bảo an toàn cho dữ liệu bí mật của bạn.</string>
   <string name="first_run_upgrade_page_title">Chúng tôi đã ghi nhận phản hồi của bạn!</string>
   <string name="new_name_upgrade_page_title">Chúng tôi có một cái nhìn mới!</string>
   <string name="new_name_upgrade_page_text">Với sản phẩm đã phát triển, chúng tôi mang đến cho bạn một %1$s mới mẻ, với tên mới và logo mới.</string>
@@ -151,7 +155,8 @@
   <string name="message_start_to_save_to_removable_storage">Tệp được lưu vào thẻ SD</string>
   <string name="message_removable_storage_space_not_enough">Thẻ SD đã gần đầy. Tập tin đã được lưu vào bộ nhớ trong.</string>
   <string name="screenshot_grid_empty_text_title">Không có ảnh chụp màn hình</string>
-  <string name="screenshot_grid_empty_text_msg_prefix">Nhấn</string>
+  <string name="screenshot_grid_empty_text_msg_prefix">"Nhấn "</string>
+  <string name="screenshot_grid_empty_text_msg_postfix">"  trên menu để chụp\ntoàn bộ trang web."</string>
   <string name="screenshot_image_viewer_dialog_title">Thông tin</string>
   <string name="screenshot_image_viewer_dialog_info_time1">Ngày: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_category">Thể loại: %1$s</string>
@@ -187,6 +192,7 @@
   <string name="your_rights_content1">%1$s là phần mềm nguồn mở và miễn phí được tạo bởi %2$s và những người đóng góp khác.</string>
   <string name="your_rights_content2"><![CDATA["%1$s được cung cấp cho bạn theo các điều khoản của "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" và các giấy phép nguồn mở khác."]]></string>
   <string name="your_rights_content3"><![CDATA["Bạn không được cấp bất kỳ quyền hoặc giấy phép nào cho các nhãn hiệu của nền tảng Mozilla hoặc bất kỳ bên nào, bao gồm %3$s, %4$s hoặc tên hoặc logo của %1$s. Thông tin bổ sung có thể được tìm thấy "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">" ta&#803;i &#273;&#226;y "</a>.]]></string>
+  <string name="your_rights_content4"><![CDATA["Đoạn mã bổ sung cho %1$s có sẵn dưới nhiều loại "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">gi&#7845;y ph&#233;p</a>" tự do và nguồn mở khác nhau."]]></string>
   <string name="your_rights_content5"><![CDATA["%1$s cũng sử dụng danh sách chặn được cung cấp bởi Disconnect, Inc. là các công việc riêng biệt và độc lập theo "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>", và có sẵn "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#7903; &#273;&#226;y</a>.]]></string>
   <string name="survey_notification_title">Chúng tôi cần bạn! %1$s</string>
   <string name="survey_notification_description">Định hình một sản phẩm tốt hơn cho Indonesia</string>
@@ -198,6 +204,7 @@
   <string name="tab_tray_close_tabs_btn_text">Đóng tất cả</string>
   <string name="tab_tray_close_tabs_dialog_msg">Đóng tất cả cửa sổ?</string>
   <string name="themetoy_onboarding_title">Tô màu cuộc sống của bạn!</string>
+  <string name="themetoy_onboarding_description">Nhấp đúp vào hình nền trang chủ để chuyển chủ đề.</string>
   <string name="bookmark_saved">Đã lưu dấu trang</string>
   <string name="bookmark_removed">Trang đánh dấu đã được xóa</string>
   <string name="bookmark_saved_edit">CHỈNH SỬA</string>
