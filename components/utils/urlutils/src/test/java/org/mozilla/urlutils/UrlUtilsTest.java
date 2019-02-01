@@ -18,6 +18,17 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class UrlUtilsTest {
+
+    @Test
+    public void etc() {
+        // TREE
+        // LINK LIST
+        // ARRAY
+        // GRAPH
+
+
+    }
+
     @Test
     public void urlsMatchExceptForTrailingSlash() throws Exception {
         assertTrue(UrlUtils.urlsMatchExceptForTrailingSlash("http://www.mozilla.org", "http://www.mozilla.org"));
