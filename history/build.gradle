@@ -21,6 +21,7 @@ android {
         coverage {
         }
         firebase {
+            initWith debug
             debuggable true
         }
     }
@@ -52,6 +53,8 @@ android {
 
 dependencies {
     implementation project(':app')
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutine_android}"
 
     implementation "org.mozilla.components:concept-storage:${Versions.android_components}"
     implementation "org.mozilla.components:browser-storage-sync:${Versions.android_components}"

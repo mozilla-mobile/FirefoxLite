@@ -8,10 +8,12 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -25,10 +27,12 @@ import mozilla.components.service.fxa.FirefoxAccount
 import mozilla.components.service.fxa.FxaException
 import mozilla.components.service.fxa.Profile
 import org.mozilla.focus.history.BrowsingHistoryManager
+import org.mozilla.rocket.dynamic.BaseSplitActivity
 import org.mozilla.rocket.dynamic.DynamicDeliveryHelper
 import kotlin.coroutines.CoroutineContext
 
-class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener, CoroutineScope {
+class LoginActivity : BaseSplitActivity(), LoginFragment.OnLoginCompleteListener, CoroutineScope {
+
 
     init {
         Log.d(DynamicDeliveryHelper.TAG, "----LoginActivity loaded----")
@@ -76,7 +80,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
         if (getAuthenticatedAccount() == null) {
 
             // do login
-            launch {
+            this.launch {
                 val url = account.beginOAuthFlow(scopes, true).await()
                 openWebView(url)
             }
@@ -86,12 +90,20 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
         syncNow()
     }
 
-    fun syncNow() {
+    fun sync(v: View){
+        syncNow()
+    }
+
+    fun logout(v: View){
+        getSharedPreferences(FXA_STATE_PREFS_KEY, Context.MODE_PRIVATE).edit().putString(FXA_STATE_KEY, "").apply()
+    }
+
+    private fun syncNow() {
         // already have account, get data now
         getAuthenticatedAccount()?.let { account ->
             val txtView: TextView = findViewById(R.id.historySyncResult)
 
-            launch {
+            GlobalScope.launch {
                 val syncResult = CoroutineScope(Dispatchers.IO + job).async {
                     featureSync.sync(account)
                 }.await()
@@ -116,6 +128,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
                     // visitedCount is passed twice: to get the correct plural form, and then as
                     // an argument for string formatting.
                     txtView.text = "$visitedCount items synced"
+                    finish()
                 }
             }
         }
@@ -193,7 +206,6 @@ class LoginActivity : AppCompatActivity(), LoginFragment.OnLoginCompleteListener
         override fun onIdle() {
             CoroutineScope(Dispatchers.Main).launch {
                 historySyncStatus?.text = getString(R.string.sync_idle)
-                finish()
             }
         }
     }

@@ -14,7 +14,7 @@ object Versions {
     const val lifecycle = "1.1.1"
     const val room = "1.1.1"
     const val glide = "4.0.0"
-    const val kotlin = "1.3.0"
+    const val kotlin = "1.3.20"
     const val coroutine_android = "1.1.1"
     const val play_core = "1.3.6"
     const val ktlint = "0.21.0"
