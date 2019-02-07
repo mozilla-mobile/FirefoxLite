@@ -3,17 +3,15 @@ package org.mozilla.rocket.component
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import org.mozilla.focus.activity.MainActivity
-import kotlin.coroutines.CoroutineContext
 
-class RocketLauncherActivity : AppCompatActivity(), CoroutineScope {
+class RocketLauncherActivity : AppCompatActivity()
+//    , CoroutineScope
+{
     private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+//    override val coroutineContext: CoroutineContext
+//        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +29,13 @@ class RocketLauncherActivity : AppCompatActivity(), CoroutineScope {
      * Launch the browser activity.
      */
     private fun dispatchNormalIntent() {
-        this.launch {
+//        this.launch {
             val intent = Intent(intent)
             intent.setClass(applicationContext, MainActivity::class.java)
             filterFlags(intent)
             startActivity(intent)
             finish()
-        }
+//        }
 
     }
 

@@ -3,7 +3,7 @@ object Versions {
     const val target_sdk = 28
     const val compile_sdk = 28
     const val build_tools = "28.0.3"
-    const val version_code = 3
+    const val version_code = 4
     const val version_name = "20190201ON"
     const val android_gradle_plugin = "3.2.1"
     const val dicedmelon_jacoco_plugin = "0.1.3"
