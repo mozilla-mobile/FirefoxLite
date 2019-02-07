@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:id="@+id/buttonList"
             tools:context=".MainActivity">
 
@@ -24,45 +24,57 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:text="@string/sign_in" />
+                android:text="@string/sign_in"/>
 
         <Button
                 android:id="@+id/buttonSyncHistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="sync"
-                android:text="@string/sync_history" />
+                android:text="@string/sync_history"/>
 
         <Button
                 android:id="@+id/buttonLogout"
                 android:layout_width="wrap_content"
                 android:onClick="logout"
                 android:layout_height="wrap_content"
-                android:text="@string/log_out" />
+                android:text="@string/log_out"/>
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/fxaStatusView"
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/status_list"
             android:layout_below="@+id/buttonList"
-            android:layout_gravity="center"
-            android:text="" />
+            tools:context=".LoginActivity">
 
-    <TextView
-            android:id="@+id/historySyncStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fxaStatusView"
-            android:layout_gravity="center"
-            android:text="" />
+        <TextView
+                android:id="@+id/fxaStatusView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=""/>
 
-    <TextView
-            android:id="@+id/historySyncResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/historySyncStatus"
-            android:layout_gravity="center"
-            android:text="" />
+        <TextView
+                android:id="@+id/historySyncStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=""/>
+
+        <TextView
+                android:id="@+id/historySyncResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=""/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerview_fxa_history"
+            android:layout_below="@+id/status_list"/>
 
 </RelativeLayout>

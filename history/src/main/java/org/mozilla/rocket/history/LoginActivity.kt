@@ -6,14 +6,13 @@ package org.mozilla.rocket.history
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -26,13 +25,28 @@ import mozilla.components.service.fxa.Config
 import mozilla.components.service.fxa.FirefoxAccount
 import mozilla.components.service.fxa.FxaException
 import mozilla.components.service.fxa.Profile
+import org.mozilla.focus.bookmark.BookmarkAdapter
 import org.mozilla.focus.history.BrowsingHistoryManager
+import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.rocket.dynamic.BaseSplitActivity
 import org.mozilla.rocket.dynamic.DynamicDeliveryHelper
+import java.util.UUID
 import kotlin.coroutines.CoroutineContext
 
-class LoginActivity : BaseSplitActivity(), LoginFragment.OnLoginCompleteListener, CoroutineScope {
+class LoginActivity : BaseSplitActivity(), LoginFragment.OnLoginCompleteListener, CoroutineScope,
+    BookmarkAdapter.BookmarkPanelListener {
+    override fun onItemClicked(url: String?) {
+        url?.let { openWebView(it) }
+    }
 
+    override fun onItemDeleted(bookmark: BookmarkModel?) {
+    }
+
+    override fun onItemEdited(bookmark: BookmarkModel?) {
+    }
+
+    override fun onStatus(status: Int) {
+    }
 
     init {
         Log.d(DynamicDeliveryHelper.TAG, "----LoginActivity loaded----")
@@ -67,11 +81,17 @@ class LoginActivity : BaseSplitActivity(), LoginFragment.OnLoginCompleteListener
         const val FXA_STATE_KEY = "fxaState"
     }
 
+    private lateinit var adapter: BookmarkAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         job = Job()
         account = initAccount()
+        adapter = BookmarkAdapter(this)
+        recyclerview_fxa_history.layoutManager =  LinearLayoutManager(this)
+
+        recyclerview_fxa_history.adapter = adapter
 
         // NB: ObserverRegistry takes care of unregistering this observer when appropriate, and
         // cleaning up any internal references to 'observer' and 'owner'.
@@ -90,11 +110,11 @@ class LoginActivity : BaseSplitActivity(), LoginFragment.OnLoginCompleteListener
         syncNow()
     }
 
-    fun sync(v: View){
+    fun sync(   v: View) {
         syncNow()
     }
 
-    fun logout(v: View){
+    fun logout(v: View) {
         getSharedPreferences(FXA_STATE_PREFS_KEY, Context.MODE_PRIVATE).edit().putString(FXA_STATE_KEY, "").apply()
     }
 
@@ -103,7 +123,7 @@ class LoginActivity : BaseSplitActivity(), LoginFragment.OnLoginCompleteListener
         getAuthenticatedAccount()?.let { account ->
             val txtView: TextView = findViewById(R.id.historySyncResult)
 
-            GlobalScope.launch {
+            launch {
                 val syncResult = CoroutineScope(Dispatchers.IO + job).async {
                     featureSync.sync(account)
                 }.await()
@@ -115,22 +135,31 @@ class LoginActivity : BaseSplitActivity(), LoginFragment.OnLoginCompleteListener
                     txtView.text = getString(R.string.sync_error, historySyncStatus.exception)
                 } else {
                     val urls = historyStorage.getVisited()
-                    for (url in urls) {
-                        val site =
-                            BrowsingHistoryManager.prepareSiteForFirstInsert(
-                                url,
-                                "from sync",
-                                System.currentTimeMillis()
-                            )
-                        BrowsingHistoryManager.getInstance().insert(site, null)
-                    }
-                    val visitedCount = historyStorage.getVisited().size
-                    // visitedCount is passed twice: to get the correct plural form, and then as
-                    // an argument for string formatting.
-                    txtView.text = "$visitedCount items synced"
-                    finish()
+                    makeHistory(urls)
+                    displayData(urls)
+                    txtView.text = "${urls.size} items synced"
                 }
             }
+        }
+    }
+
+    private fun displayData(urls: List<String>) {
+        val bookmarks = ArrayList<BookmarkModel>()
+        for (url in urls) {
+            bookmarks.add(BookmarkModel(UUID.randomUUID().toString(), "From Sync", url))
+        }
+        adapter.setData(bookmarks)
+    }
+
+    private fun makeHistory(urls: List<String>) {
+        for (url in urls) {
+            val site =
+                BrowsingHistoryManager.prepareSiteForFirstInsert(
+                    url,
+                    "from sync",
+                    System.currentTimeMillis()
+                )
+            BrowsingHistoryManager.getInstance().insert(site, null)
         }
     }
 

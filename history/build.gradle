@@ -19,6 +19,7 @@ android {
         debug {
         }
         coverage {
+            debuggable true
         }
         firebase {
             initWith debug
@@ -54,6 +55,7 @@ android {
 dependencies {
     implementation project(':app')
 
+    implementation "com.android.support:recyclerview-v7:${Versions.support}"
 
     implementation "org.mozilla.components:concept-storage:${Versions.android_components}"
     implementation "org.mozilla.components:browser-storage-sync:${Versions.android_components}"

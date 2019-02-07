@@ -419,7 +419,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void showMenu() {
-        DynamicDeliveryHelper.installHistoryModule(this);
         updateMenu();
         menu.show();
     }
@@ -591,7 +590,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 TelemetryWrapper.clickMenuHistory();
                 break;
             case R.id.menu_screenshots:
-                onScreenshotsClicked();
+                DynamicDeliveryHelper.installHistoryModule(this);
+//                onScreenshotsClicked();
                 TelemetryWrapper.clickMenuCapture();
                 break;
             case R.id.menu_preferences:
