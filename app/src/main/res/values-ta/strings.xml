@@ -15,6 +15,7 @@
   <string name="accessibility_find_in_page_result">%2$d இல் %1$d</string>
   <string name="accessibility_find_next_result">அடுத்த முடிவைக் கண்டறிக</string>
   <string name="accessibility_find_previous_result">முந்தைய முடிவைக் கண்டறிக</string>
+  <string name="accessibility_dismiss_find_in_page">பக்கத்தில் கண்டவற்றை நிராகரி</string>
   <string name="text_selection_search_action">பயர்பாக்சு லைட் உலாவியில் தேடவும்</string>
   <string name="about_content_body">%1$s , %2$s நிறுவனத்தால் தயாரிக்கப்பட்ட ஒரு விரைவான இலேசான உலாவி. ஆரோக்கியமான திறந்த இணையத்தை கிடைக்கச் செய்வதே எங்களின் நோக்கம்.</string>
   <string name="about_link_learn_more">மேலும் அறிய</string>
@@ -73,7 +74,10 @@
   <string name="first_run_page4_title">முழுப்பக்கத்தையும் திரைப்பிடிப்பு செய்</string>
   <string name="first_run_page4_text">முழு வலைப்பக்கத்தையும் திரைப்பிடியுங்கள். தரவுப் பயன்பாடின்றி படியுங்கள் அல்லது வலைப்பக்கத்தை மீண்டும் பார்க்க அதனைத் தட்டுங்கள்.</string>
   <string name="first_run_page5_title">அடுத்த நிலை தனியுரிமை</string>
+  <string name="first_run_page5_text">ஒரு தடத்தை இல்லாமல் உலாவுங்கள், மற்றும் முன்னிருப்பாக பொதுவான வலை டிராக்கர்களின் பரவலான தடுப்பு. உங்கள் ரகசியத் தரவின் பாதுகாப்பை உறுதிசெய்யவும்.</string>
   <string name="first_run_upgrade_page_title">உங்களின் கருத்தைக் கேட்டோம்!</string>
+  <string name="new_name_upgrade_page_title">எங்களுக்கு ஒரு புதிய தோற்றம்!</string>
+  <string name="new_name_upgrade_page_text">உருவான தயாரிப்புடன், புதிய பெயர் மற்றும் புதிய லோகோவுடன் புதிதாகப் புதுப்பித்த, %1$s உலாவியை உங்களுக்குத் தருகிறோம்.</string>
   <string name="first_run_upgrade_page_text1">1. ஒரே நேரத்தில் %s வழி திறக்கப்பட்ட பல்வகை செயல்கள்!</string>
   <string name="first_run_upgrade_page_text1_highlight">பல கீற்றுகள்</string>
   <string name="first_run_upgrade_page_text2">2. உங்களுக்கு பிடித்த தளங்களை விரைவாக %s வழி அணுகுங்கள்</string>
@@ -102,6 +106,7 @@
   <string name="permission_toast_location">இருப்பிடம் கிடைக்கவில்லை. உங்கள் இருப்பிடத்தை அறிய அனுமதி தாருங்கள்.</string>
   <string name="permission_toast_storage">சேமிப்பகம் கிடைக்கவில்லை. படங்கள் மற்றும் கோப்புகளை உங்களுடைய கருவியில் சேமிக்க அனுமதியுங்கள்.</string>
   <string name="geolocation_dialog_message">%1$s \nஉங்களுடைய இருப்பிடத்தை அணுக விரும்புகிறது.</string>
+  <string name="geolocation_dialog_message_cache_it">%1$s மீட்தொடங்கும் வரை இத்தளத்திற்கு மீண்டும் கேட்க வேண்டாம்</string>
   <string name="geolocation_dialog_allow">அனுமதி</string>
   <string name="geolocation_dialog_block">தடு</string>
   <string name="setting_dialog_clear_data">தரவினை துடை</string>
@@ -217,4 +222,5 @@
   <string name="private_browsing_erase_message">அந்தரங்க உலாவல் வரலாற்றை அகற்று</string>
   <string name="private_browsing_open_action">திற</string>
   <string name="private_browsing_erase_done">உங்களின் அந்தரங்க உலாவல்\nவரலாறு அகற்றப்பட்டது.</string>
+  <string name="my_shot_on_boarding_message">உங்கள் திரைக்காட்சிகளை இங்கே காண்க!</string>
 </resources>
