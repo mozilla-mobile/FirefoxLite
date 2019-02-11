@@ -126,7 +126,7 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_LICENSE)
             longClickOnWebViewContent(activityTestRule.activity)
             clickTextActionMore()
-            checkSearchInRocketIsDisplayed()
+//            checkSearchInRocketIsDisplayed()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_TEXT_ACTION_DAILOG)
         }
     }

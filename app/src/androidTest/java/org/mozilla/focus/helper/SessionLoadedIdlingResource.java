@@ -8,16 +8,21 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.test.espresso.IdlingResource;
-
 import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import mozilla.components.browser.session.Download;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mozilla.rocket.privately.PrivateModeActivity;
-import org.mozilla.rocket.tabs.*;
+import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.SessionManager;
+import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewEngineSession;
+import org.mozilla.rocket.tabs.TabsSessionProvider;
+
+import mozilla.components.browser.session.Download;
+
 
 /**
  * An IdlingResource implementation that waits until the BrowserFragment is not loading anymore.
