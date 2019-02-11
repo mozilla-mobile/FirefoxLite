@@ -223,4 +223,11 @@
   <string name="private_browsing_open_action">திற</string>
   <string name="private_browsing_erase_done">உங்களின் அந்தரங்க உலாவல்\nவரலாறு அகற்றப்பட்டது.</string>
   <string name="my_shot_on_boarding_message">உங்கள் திரைக்காட்சிகளை இங்கே காண்க!</string>
+  <string name="my_shot_on_boarding_category_message">உங்கள் தயாரிப்பு அனுபவத்தை மேம்படுத்த, உங்கள் திரைப்பிடிப்பு பற்றிய தகவல்களை நாங்கள் சேகரிக்கிறோம்.</string>
+  <string name="btn_vpn">7-நாள் இலவச VPN சேவை உங்களுக்குத் தயாராக உள்ளது. மேலும் தனியாகவும் பாதுகாப்பாகவும் உலாவுவதற்கு இப்போதே நிறுவுங்கள்.</string>
+  <string name="exp_survey_wifi">அருகிலுள்ள தரமான இலவச இணைய இணைப்பு கண்டுபிடிக்க உங்களுக்கு உதவ, “இலவச வைஃபை-கண்டுபிடிப்பான்” ஒருங்கிணைக்க நாங்கள் திட்டமிடுகிறோம்.\n\n ஆர்வமா?</string>
+  <string name="exp_survey_vpn">நீங்கள் கட்டற்றும் தனியாகவும் உலாவும் வகையில் “VPN சேவையை” ஒருங்கிணைக்க திட்டமிட்டுள்ளோம்.\n\n ஆர்வமா?</string>
+  <string name="exp_survey_thanks">எங்களுக்கு %1$s கருத்து வழங்கியதற்கு நன்றி</string>
+  <string name="exp_survey_yes">ஆமாம், தயவு செய்து</string>
+  <string name="exp_survey_no">இல்லை</string>
 </resources>
