@@ -10,6 +10,12 @@
   <string name="menu_give_feedback">ਸੁਝਾਅ ਦਿਓ</string>
   <string name="menu_share_with_friends">ਦੋਸਤਾਂ ਨਾਲ ਸਾਂਝਾ ਕਰੋ</string>
   <string name="share_dialog_title">ਇਸ ਦੇ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ</string>
+  <string name="find_in_page_input">ਸਫ਼ੇ ਵਿੱਚ ਲੱਭੋ</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%2$d ਵਿੱਚੋਂ %1$d</string>
+  <string name="accessibility_find_next_result">ਅਗਲਾ ਨਤੀਜਾ ਲੱਭੋ</string>
+  <string name="accessibility_find_previous_result">ਪਿਛਲਾ ਨਤੀਜਾ ਲੱਭੋ</string>
+  <string name="accessibility_dismiss_find_in_page">ਸਫ਼ੇ ਵਿੱਚ ਲੱਭਣ ਨੂੰ ਖਾਰਜ ਕਰੋ</string>
   <string name="text_selection_search_action">ਫਾਇਰਫਾਕਸ ਲਾਈਟ ਵਿੱਚ ਖੋਜੋ</string>
   <string name="about_content_body">%2$s ਵੱਲੋਂ ਬਣਾਇਆ ਗਿਆ %1$s ਇੱਕ ਹਲਕਾ ਅਤੇ ਤੇਜ਼ ਬਰਾਊਜ਼ਰ ਹੈ। ਸਾਡਾ ਟੀਚਾ ਇੱਕ ਸਿਹਤਮੰਦ ਅਤੇ ਖੁੱਲ੍ਹੇ-ਡੁੱਲ੍ਹੇ ਇੰਟਰਨੈੱਟ ਨੂੰ ਵਧਾਉਣਾ ਫੁਲਾਉਣਾ ਹੈ।</string>
   <string name="about_link_learn_more">ਹੋਰ ਜਾਣੋ</string>
@@ -30,6 +36,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s ਭਰਪੂਰ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ ਕਿ ਸਿਰਫ ਉਹੀ ਕੁੱਝ ਇਕੱਠਾ ਕੀਤਾ ਜਾਵੇ ਜੋ ਕਿ %1$s ਨੂੰ ਹਰੇਕ ਲਈ ਮੁਹੱਈਆ ਕਰਾਉਣ ਅਤੇ ਹੋਰ ਸੁਧਾਰਨ ਲਈ ਲੋੜੀਂਦਾ ਹੋਵੇ।</string>
   <string name="preference_learn_more">ਹੋਰ ਜਾਣੋ</string>
   <string name="preference_about">ਇਸ ਬਾਰੇ</string>
+  <string name="preference_night_mode_brightness">ਰਾਤ ਦਾ ਮੋਡ ਚਮਕ</string>
   <string name="content_description_clear_input">ਇਨਪੁਟ ਨੂੰ ਹਟਾਓ</string>
   <string name="content_description_dismiss_input">ਖਾਰਜ ਕਰੋ</string>
   <string name="content_description_lock">ਸੁਰੱਖਿਅਤ ਕਨੈਕਸ਼ਨ</string>
@@ -75,12 +82,14 @@
   <string name="firstrun_next_button">ਅੱਗੇ</string>
   <string name="label_menu_bookmark">ਬੁੱਕਮਾਰਕ</string>
   <string name="label_menu_download">ਡਾਊਨਲੋਡ</string>
+  <string name="label_menu_find_in_page">ਸਫ਼ੇ ਵਿੱਚ ਲੱਭੋ</string>
   <string name="label_menu_clear_cache">ਕੈਸ਼ ਸਾਫ ਕਰੋ</string>
   <string name="label_menu_history">ਅਤੀਤ</string>
   <string name="label_menu_share">ਸਾਂਝਾ ਕਰੋ</string>
   <string name="label_menu_my_shots">ਮੇਰੇ ਸ਼ਾਟ</string>
   <string name="label_menu_capture_page">ਕੈਪਚਰ ਸਫਾ</string>
   <string name="label_menu_turbo_mode">ਟਰਬੋ ਮੋਡ</string>
+  <string name="label_menu_night_mode">ਨਾਈਟ ਮੋਡ</string>
   <string name="label_menu_block_ads">ਇਸ਼ਤਿਹਾਰਾਂ \'ਤੇ ਪਾਬੰਦੀ ਲਾਓ</string>
   <string name="label_menu_block_image">ਚਿੱਤਰਾਂ \'ਤੇ ਪਾਬੰਦੀ ਲਾਓ</string>
   <string name="label_menu_settings">ਸੈਟਿੰਗਾਂ</string>
@@ -141,6 +150,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix">ਇੱਕ ਪੂਰੇ ਵੈਬ ਸਫੇ ਨੂੰ ਕੈਪਚਰ ਕਰਨ ਲਈ ਮੀਨੂ ਤੇ।</string>
   <string name="screenshot_image_viewer_dialog_title">ਜਾਣਕਾਰੀ</string>
   <string name="screenshot_image_viewer_dialog_info_time1">ਮਿਤੀ: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">ਸ਼੍ਰੇਣੀ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">ਰੈਜ਼ੋਲੂਸ਼ਨ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">ਆਕਾਰ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">ਸਿਰਲੇਖ: %1$s</string>
@@ -196,8 +206,14 @@
   <string name="bookmark_edit_success">ਵਰਕਾ-ਨਿਸ਼ਾਨੀ ਨਵਿਆਈ ਗਈ</string>
   <string name="bookmarks_empty_view_msg">ਕੋਈ ਵਰਕਾ-ਨਿਸ਼ਾਨੀਆਂ ਨਹੀਂ</string>
   <string name="edit_bookmark">ਸੋਧੋ</string>
+  <string name="label_menu_news">ਖ਼ਬਰਾਂ</string>
+  <string name="news_update_btn">ਨਵਾਂ ਅਪਡੇਟ</string>
+  <string name="private_tab">ਪ੍ਰਾਈਵੇਟ ਟੈਬ</string>
   <string name="private_browsing_title">ਪਰਾਈਵੇਟ ਬਰਾਊਜ਼ਿੰਗ</string>
   <string name="private_browsing_erase_message">ਪ੍ਰਾਈਵੇਟ ਬਰਾਊਜ਼ਿੰਗ ਅਤੀਤ ਨੂੰ ਮਿਟਾਓ</string>
   <string name="private_browsing_open_action">ਖੋਲ੍ਹੋ</string>
   <string name="private_browsing_erase_done">ਤੁਹਾਡਾ ਨਿੱਜੀ ਬ੍ਰਾਊਜ਼ਿੰਗ ਅਤੀਤ ਮਿਟਾ ਦਿੱਤਾ ਗਿਆ ਹੈ।</string>
+  <string name="my_shot_on_boarding_message">ਇੱਥੇ ਆਪਣੇ ਸਕ੍ਰੀਨਸ਼ੌਟ ਵੇਖੋ!</string>
+  <string name="exp_survey_yes">ਜੀ, ਜਰੂਰ</string>
+  <string name="exp_survey_no">ਨਹੀਂ</string>
 </resources>
