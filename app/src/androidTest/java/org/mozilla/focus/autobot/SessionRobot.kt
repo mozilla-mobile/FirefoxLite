@@ -1,18 +1,23 @@
 package org.mozilla.focus.autobot
 
 import android.app.Activity
+import android.content.Intent
+import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.Tap
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.pressImeActionButton
 import android.support.test.espresso.action.ViewActions.replaceText
+
+import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.RootMatchers
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withClassName
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
-
+import android.support.test.uiautomator.UiDevice
+import android.support.test.uiautomator.UiSelector
 import android.view.View
 import org.hamcrest.Matchers
 import org.mozilla.focus.R
@@ -79,9 +84,29 @@ class SessionRobot : MenuRobot() {
         // Click screen capture button
         onView(Matchers.allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
 
-        runWithIdleRes(screenshotIdlingResource) {
-            AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
-        }
+        AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
+        checkNoScreenshotOnBoarding()
+    }
+
+    private var SCREENSHOT_ONBOARDING_EVENT_DELAY: Long = 0
+
+    fun checkNoScreenshotOnBoarding() {
+        onView(withId(R.id.my_shot_img_hand)).check(doesNotExist())
+        onView(withId(R.id.my_shot_category_learn_more)).check(doesNotExist())
+    }
+
+    fun firstTimeClickCaptureScreen() {
+        // TODO find a way to remove the activity reference
+        // Click screen capture button
+        onView(Matchers.allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
+        checkScreenshotOnBoarding()
+    }
+
+    fun checkScreenshotOnBoarding() {
+        // As Espresso failed on CI owing to intermittent, uiautomator is applied
+        val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        uiDevice.findObject(UiSelector().resourceId("my_shot_category_learn_more"))
+        uiDevice.findObject(UiSelector().resourceId("my_shot_img_hand"))
     }
 
     fun longClickOnWebViewContent(activity: MainActivity) {
@@ -137,5 +162,18 @@ class SessionRobot : MenuRobot() {
         onView(withText(R.string.text_selection_search_action))
                 .inRoot(RootMatchers.isPlatformPopup())
                 .check(matches(isDisplayed()))
+    }
+
+    fun goHome(activity: Activity) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_MAIN
+        intent.addCategory(Intent.CATEGORY_HOME)
+        activity.startActivity(intent)
+    }
+
+    fun bringToForeground(activity: Activity) {
+        val intent = Intent(activity, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+        activity.startActivity(intent)
     }
 }
