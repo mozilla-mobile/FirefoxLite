@@ -293,7 +293,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                         break;
                     case ACTION_GEO_LOCATION:
                         if (geolocationCallback != null) {
-                            rejectGeoRequest(false);
+                            // I'm not sure why it's so. This method already on Main thread.
+                            // But if I don't do this, webview will keeps requesting for permission.
+                            // See https://github.com/mozilla-tw/Rocket/blob/765f6a1ddbc2b9058813e930f63c62a9797c5fa0/app/src/webkit/java/org/mozilla/focus/webkit/FocusWebChromeClient.java#L126
+                            ThreadUtils.postToMainThread(() -> BrowserFragment.this.rejectGeoRequest(false));
                         }
                         break;
                     case ACTION_CAPTURE:
