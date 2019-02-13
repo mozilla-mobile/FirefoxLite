@@ -16,10 +16,17 @@ Build instructions
   ```shell
   git clone https://github.com/mozilla-tw/FirefoxLite
   ```
+2. Since we're using submodule, run:
 
-2. Open Android Studio and select File->Open and select FirefoxLite to open the project. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
+  ```shell
+git submodule init
+git submodule update
+  ```
 
-3. Disable Instant Run in: Settings/Build, Execution, Deployment > Instant Run. (See note #1 for details.)
+
+3. Open Android Studio and select File->Open and select FirefoxLite to open the project. Make sure to select the right build variant in Android Studio: **focusWebkitDebug**
+
+4. Disable Instant Run in: Settings/Build, Execution, Deployment > Instant Run. (See note #1 for details.)
 
 [1] We currently don't support instant run. An error message similar to:
 ```
