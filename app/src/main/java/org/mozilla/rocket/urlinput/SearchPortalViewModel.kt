@@ -20,12 +20,8 @@ class SearchPortalViewModel(repository: SearchPortalRepository) : ViewModel() {
 
     private fun mergePortals() {
         val result = ArrayList<SearchPortal>()
-        if (liveGlobal.value != null) {
-            result.addAll(liveGlobal.value!!)
-        }
-        if (liveLocale.value != null) {
-            result.addAll(liveLocale.value!!)
-        }
+        liveGlobal.value?.let {result.addAll(it)  }
+        liveLocale.value?.let {result.addAll(it)  }
         searchPortalObservable.value = result
     }
 }
