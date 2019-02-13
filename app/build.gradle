@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'jacoco'
-apply plugin: 'jacoco-android'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply from: '../buildSrc/pmd.gradle'
 apply from: '../buildSrc/checkstyle.gradle'
@@ -113,11 +111,6 @@ android {
         animationsDisabled = true
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-            }
-        }
         execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 
@@ -175,12 +168,6 @@ android {
         // used by Room, to test migrations
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
-}
-
-jacocoAndroidUnitTestReport {
-    csv.enabled false
-    html.enabled true
-    xml.enabled true
 }
 
 repositories {
