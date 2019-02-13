@@ -1,18 +1,23 @@
 package org.mozilla.rocket.privately.browse
 
-import android.app.DownloadManager
+import android.Manifest
+import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -20,8 +25,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
+import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
@@ -31,6 +38,8 @@ import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
+import org.mozilla.permissionhandler.PermissionHandle
+import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
@@ -46,6 +55,7 @@ import org.mozilla.urlutils.UrlUtils
 
 private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
+private const val ACTION_DOWNLOAD = 0
 
 class BrowserFragment : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
@@ -53,6 +63,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private var listener: FragmentListener? = null
 
+    private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
 
@@ -148,6 +159,66 @@ class BrowserFragment : LocaleAwareFragment(),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        permissionHandler = PermissionHandler(object : PermissionHandle {
+            override fun doActionDirect(permission: String?, actionId: Int, params: Parcelable?) {
+
+                this@BrowserFragment.context?.also {
+                    val download = params as Download
+
+                    if (PackageManager.PERMISSION_GRANTED ==
+                            ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ) {
+                        // We do have the permission to write to the external storage. Proceed with the download.
+                        queueDownload(download)
+                    }
+                } ?: run {
+                    Log.e("BrowserFragment.kt", "No context to use, abort callback onDownloadStart")
+                }
+            }
+
+            fun actionDownloadGranted(parcelable: Parcelable?) {
+                val download = parcelable as Download
+                queueDownload(download)
+            }
+
+            override fun doActionGranted(permission: String?, actionId: Int, params: Parcelable?) {
+                actionDownloadGranted(params)
+            }
+
+            override fun doActionSetting(permission: String?, actionId: Int, params: Parcelable?) {
+                actionDownloadGranted(params)
+            }
+
+            override fun doActionNoPermission(permission: String?, actionId: Int, params: Parcelable?) {
+            }
+
+            override fun makeAskAgainSnackBar(actionId: Int): Snackbar {
+                activity?.also {
+                    return PermissionHandler.makeAskAgainSnackBar(
+                            this@BrowserFragment,
+                            it.findViewById(R.id.container),
+                            R.string.permission_toast_storage
+                    )
+                }
+                throw IllegalStateException("No Activity to show Snackbar.")
+            }
+
+            override fun permissionDeniedToast(actionId: Int) {
+                Toast.makeText(getContext(), R.string.permission_toast_storage_deny, Toast.LENGTH_LONG).show()
+            }
+
+            override fun requestPermissions(actionId: Int) {
+                this@BrowserFragment.requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), actionId)
+            }
+
+            private fun queueDownload(download: Download?) {
+                activity?.let { activity ->
+                    download?.let {
+                        EnqueueDownloadTask(activity, it, displayUrlView.text.toString()).execute()
+                    }
+                }
+            }
+        })
         if (context is FragmentListener) {
             listener = context
         } else {
@@ -301,7 +372,7 @@ class BrowserFragment : LocaleAwareFragment(),
             fragment.activity?.let {
                 WebContextMenu.show(true,
                         it,
-                        PrivateDownloadCallback(it, session.url),
+                        PrivateDownloadCallback(fragment, session.url),
                         hitTarget)
             }
         }
@@ -371,22 +442,46 @@ class BrowserFragment : LocaleAwareFragment(),
                 session?.register(this)
             }
         }
+
+        override fun onDownload(session: Session, download: mozilla.components.browser.session.Download): Boolean {
+            val activity = fragment.activity
+            if (activity == null || !activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                return false
+            }
+
+            val d = Download(
+                    download.url,
+                    download.fileName,
+                    download.userAgent!!,
+                    "",
+                    download.contentType!!,
+                    download.contentLength!!,
+                    false
+                    )
+            fragment.permissionHandler.tryAction(
+                    fragment,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    ACTION_DOWNLOAD,
+                    d
+                    )
+            return true
+        }
     }
 
-    class PrivateDownloadCallback(val context: Context, val refererUrl: String?) : DownloadCallback {
+    class PrivateDownloadCallback(val fragment: BrowserFragment, val refererUrl: String?) : DownloadCallback {
         override fun onDownloadStart(download: Download) {
-            if (!TextUtils.isEmpty(download.url)) {
-                val cookie = CookieManager.getInstance().getCookie(download.getUrl())
-                val request = DownloadManager.Request(Uri.parse(download.url))
-                        .addRequestHeader("User-Agent", download.getUserAgent())
-                        .addRequestHeader("Cookie", cookie)
-                        .addRequestHeader("Referer", refererUrl)
-                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                        .setMimeType(download.getMimeType())
-
-                val mgr = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                mgr.enqueue(request)
+            fragment.activity?.let {
+                if (!it.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                    return
+                }
             }
+
+            fragment.permissionHandler.tryAction(
+                    fragment,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    ACTION_DOWNLOAD,
+                    download
+                    )
         }
     }
 }

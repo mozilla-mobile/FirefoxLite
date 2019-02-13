@@ -37,7 +37,7 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
         this.refererUrl = refererUrl;
     }
 
-    enum ErrorCode {
+    public enum ErrorCode {
         SUCCESS, GENERAL_ERROR, STORAGE_UNAVAILABLE, FILE_NOT_SUPPORTED, DOWNLOAD_MANAGER_DISABLED
     }
 
