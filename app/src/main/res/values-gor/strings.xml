@@ -101,7 +101,7 @@
   <string name="label_menu_exit">Lumuwalo</string>
   <string name="permission_toast_location_deny">Momilohu bilulo\'a diliniliyo.</string>
   <string name="permission_toast_storage_deny">Ijin molahu diliniliyo.</string>
-  <string name="permission_dialog_setting">setelan</string>
+  <string name="permission_handler_permission_dialog_setting">setelan</string>
   <string name="permission_dialog_not_now">dīpo yintiye</string>
   <string name="permission_toast_location">Bilulo\'a ja otāwa. Wohiye ījini mongotota bilulo\'amu.</string>
   <string name="permission_toast_storage">Tāhuwa ja sadi-sadiya. Wohiye ījini Firefox Rocket molahu gāmbari wawu berkas to pilākasimu.</string>

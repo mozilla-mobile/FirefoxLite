@@ -94,7 +94,7 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_ERROR_PAGE)
 
             // Simulate show no storage permission snackbar
-            MockUIUtils.showSnackbarAndWait(activityTestRule.activity, R.string.permission_toast_location, R.string.permission_dialog_setting)
+            MockUIUtils.showSnackbarAndWait(activityTestRule.activity, R.string.permission_toast_location, R.string.permission_handler_permission_dialog_setting)
             checkNoLocationPermissionSnackbarIsDisplayed()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_NO_LOCATION_SNACKBAR)
 
