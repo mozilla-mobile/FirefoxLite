@@ -141,7 +141,7 @@ public class DownloadScreenshot extends BaseScreenshot {
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
         // Simulate show no download permission snackbar
-        MockUIUtils.showSnackbarAndWait(activityRule.getActivity(), R.string.permission_toast_storage, R.string.permission_dialog_setting);
+        MockUIUtils.showSnackbarAndWait(activityRule.getActivity(), R.string.permission_toast_storage, R.string.permission_handler_permission_dialog_setting);
         onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.permission_toast_storage))).check(matches(isDisplayed()));
         Screengrab.screenshot(ScreenshotNamingUtils.DOWNLOAD_NO_PERMISSION);
         SystemClock.sleep(MockUIUtils.SHORT_DELAY);
