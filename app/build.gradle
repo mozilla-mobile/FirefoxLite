@@ -196,6 +196,7 @@ dependencies {
     implementation project(':logger')
     implementation project(':threadutils')
     implementation project(':cachedrequestloader')
+    implementation project(':permissionhandler')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
