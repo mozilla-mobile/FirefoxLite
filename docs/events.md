@@ -116,3 +116,4 @@
 |Click FindInPage Next|action|click|find_in_page|"next"|"version=2," 
 |Click FindInPage Previous|action|click|find_in_page|"previous"|"version=2," 
 |Click Menu FindInPage|action|click|menu|"find_in_page"|"version=2," 
+|Click Quick Search|search|click|quicksearch|""|"engine=Facebook,Youtube,Instagram," 

@@ -5,8 +5,11 @@
 
 package org.mozilla.focus.urlinput
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
@@ -16,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.search.SearchEngineManager
@@ -26,7 +30,8 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.focus.widget.FragmentListener
-
+import org.mozilla.rocket.urlinput.QuickSearch
+import org.mozilla.rocket.urlinput.QuickSearchAdapter
 import java.util.Locale
 
 /**
@@ -42,6 +47,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private lateinit var suggestionView: FlowLayout
     private lateinit var clearView: View
     private lateinit var dismissView: View
+    private lateinit var quickSearchView: RecyclerView
     private var lastRequestTime: Long = 0
     private var autoCompleteInProgress: Boolean = false
     private var allowSuggestion: Boolean = false
@@ -85,7 +91,28 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
         initByArguments()
 
+        initQuickSearch(view)
+
         return view
+    }
+
+    private fun initQuickSearch(view: View) {
+        quickSearchView = view.findViewById(R.id.quick_search_recycler_view)
+        quickSearchView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val quickSearchAdapter = QuickSearchAdapter(fun(quickSearch: QuickSearch) {
+            if (TextUtils.isEmpty(urlView.text)) {
+                openUrl(quickSearch.homeUrl)
+            } else {
+                openUrl(quickSearch.generateLink(urlView.text.toString()))
+            }
+            TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
+        })
+        quickSearchView.adapter = quickSearchAdapter
+        Inject.obtainQuickSearchViewModel(activity).quickSearchObservable.observe(
+                viewLifecycleOwner,
+                Observer { quickSearchList ->
+                    quickSearchAdapter.submitList(quickSearchList)
+            })
     }
 
     override fun onStart() {
