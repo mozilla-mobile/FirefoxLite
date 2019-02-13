@@ -100,8 +100,11 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         searchPortalView = view.findViewById(R.id.search_portal)
         searchPortalView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val searchPortalAdapter = SearchPortalAdapter(fun(portal: SearchPortal) {
-            if (TextUtils.isEmpty(urlView.text)) openUrl(portal.homeUrl)
-            else openUrl(String.format(portal.searchUrlPattern, urlView.text))
+            if (TextUtils.isEmpty(urlView.text)) {
+                openUrl(portal.homeUrl)
+            } else {
+                openUrl(portal.generateLink(urlView.text.toString()))
+            }
             TelemetryWrapper.clickQuickSearchEngine(portal.name)
         })
         searchPortalView.adapter = searchPortalAdapter

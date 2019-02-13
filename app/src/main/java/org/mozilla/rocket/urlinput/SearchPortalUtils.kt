@@ -54,7 +54,16 @@ object SearchPortalUtils {
                 val list = ArrayList<SearchPortal>()
                 for (i in 0 until jsonArray.length()) {
                     val jsonObj = jsonArray.get(i) as JSONObject
-                    list.add(SearchPortal(jsonObj.optString("name"), TopSitesUtils.TOP_SITE_ASSET_PREFIX + jsonObj.optString("icon"), jsonObj.optString("searchUrlPattern"), jsonObj.optString("homeUrl")))
+                    val element = SearchPortal(
+                            jsonObj.optString("name"),
+                            TopSitesUtils.TOP_SITE_ASSET_PREFIX + jsonObj.optString("icon"),
+                            jsonObj.optString("searchUrlPattern"),
+                            jsonObj.optString("homeUrl"),
+                            jsonObj.optString("urlPrefix"),
+                            jsonObj.optString("urlSuffix"),
+                            jsonObj.optBoolean("patternEncode")
+                    )
+                    list.add(element)
                 }
                 liveData.postValue(list)
             } catch (ex: JSONException) {

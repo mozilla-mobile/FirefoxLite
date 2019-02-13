@@ -4,4 +4,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.urlinput
 
-data class SearchPortal(var name: String, var icon: String, var searchUrlPattern: String, var homeUrl: String)
+import android.net.Uri
+
+data class SearchPortal(
+    var name: String,
+    var icon: String,
+    var searchUrlPattern: String,
+    var homeUrl: String,
+    var urlPrefix: String = "",
+    var urlSuffix: String = "",
+    var patternEncode: Boolean = false
+) {
+    fun generateLink(keyword: String): String {
+        var url = String.format(searchUrlPattern, keyword)
+        if (patternEncode) {
+            url = Uri.encode(url)
+        }
+        return urlPrefix + url + urlSuffix
+    }
+}
