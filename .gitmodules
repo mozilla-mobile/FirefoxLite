@@ -1,0 +1,3 @@
+[submodule "components/utils/android-permission-handler"]
+	path = components/utils/android-permission-handler
+	url = https://github.com/mozilla-mobile/android-permission-handler.git

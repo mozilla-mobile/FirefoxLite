@@ -41,12 +41,12 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.BaseActivity;
-import org.mozilla.focus.permission.PermissionHandle;
-import org.mozilla.focus.permission.PermissionHandler;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
 import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.permissionhandler.PermissionHandle;
+import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
