@@ -22,6 +22,11 @@ import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
 import org.mozilla.rocket.download.DownloadViewModelFactory;
+import org.mozilla.rocket.urlinput.GlobalDataSource;
+import org.mozilla.rocket.urlinput.LocaleDataSource;
+import org.mozilla.rocket.urlinput.SearchPortalRepository;
+import org.mozilla.rocket.urlinput.SearchPortalViewModel;
+import org.mozilla.rocket.urlinput.SearchPortalViewModelFactory;
 
 public class Inject {
 
@@ -110,5 +115,15 @@ public class Inject {
     public static DownloadInfoViewModel obtainDownloadInfoViewModel(FragmentActivity activity) {
         DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(DownloadInfoViewModel.class);
+    }
+
+    private static SearchPortalRepository provideSearchPortalRepository(Context context) {
+        // TODO add mock data source
+        return SearchPortalRepository.getInstance(GlobalDataSource.getInstance(context), LocaleDataSource.getInstance(context));
+    }
+
+    public static SearchPortalViewModel obtainSearchPortalViewModel(FragmentActivity activity) {
+        SearchPortalViewModelFactory factory = new SearchPortalViewModelFactory(provideSearchPortalRepository(activity.getApplicationContext()));
+        return ViewModelProviders.of(activity, factory).get(SearchPortalViewModel.class);
     }
 }

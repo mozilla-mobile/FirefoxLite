@@ -5,6 +5,7 @@
 
 package org.mozilla.focus;
 
+import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,6 +22,11 @@ import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
 import org.mozilla.rocket.download.DownloadViewModelFactory;
+import org.mozilla.rocket.urlinput.GlobalDataSource;
+import org.mozilla.rocket.urlinput.LocaleDataSource;
+import org.mozilla.rocket.urlinput.SearchPortalRepository;
+import org.mozilla.rocket.urlinput.SearchPortalViewModel;
+import org.mozilla.rocket.urlinput.SearchPortalViewModelFactory;
 
 public class Inject {
 
@@ -100,5 +106,14 @@ public class Inject {
     public static DownloadInfoViewModel obtainDownloadInfoViewModel(FragmentActivity activity) {
         DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(DownloadInfoViewModel.class);
+    }
+
+    private static SearchPortalRepository provideSearchPortalRepository(Application application) {
+        return SearchPortalRepository.getInstance(GlobalDataSource.getInstance(application), LocaleDataSource.getInstance(application));
+    }
+
+    public static SearchPortalViewModel obtainSearchPortalViewModel(FragmentActivity activity) {
+        SearchPortalViewModelFactory factory = new SearchPortalViewModelFactory(provideSearchPortalRepository(activity.getApplication()));
+        return ViewModelProviders.of(activity, factory).get(SearchPortalViewModel.class);
     }
 }

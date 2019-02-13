@@ -6,7 +6,9 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +30,23 @@ public class IOUtils {
 
             return new JSONObject(builder.toString());
         } catch (JSONException e) {
+            throw new AssertionError("Corrupt JSON asset (" + fileName + ")", e);
+        }
+    }
+
+    public static JSONArray readAssetFromJsonArray(Context context, String fileName) throws IOException {
+        try (final BufferedReader reader =
+                     new BufferedReader(new InputStreamReader(context.getAssets().open(fileName), StandardCharsets.UTF_8))) {
+            final StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+
+            return new JSONArray(builder.toString());
+        } catch (JSONException e) {
+            Log.e("ramoss", "jary ex = " + e.getMessage());
             throw new AssertionError("Corrupt JSON asset (" + fileName + ")", e);
         }
     }

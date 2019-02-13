@@ -5,8 +5,11 @@
 
 package org.mozilla.focus.urlinput
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
@@ -16,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.search.SearchEngineManager
@@ -26,7 +30,8 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.focus.widget.FragmentListener
-
+import org.mozilla.rocket.urlinput.SearchPortal
+import org.mozilla.rocket.urlinput.SearchPortalAdapter
 import java.util.Locale
 
 /**
@@ -42,6 +47,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private lateinit var suggestionView: FlowLayout
     private lateinit var clearView: View
     private lateinit var dismissView: View
+    private lateinit var searchPortalView: RecyclerView
     private var lastRequestTime: Long = 0
     private var autoCompleteInProgress: Boolean = false
     private var allowSuggestion: Boolean = false
@@ -84,6 +90,18 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
 
         initByArguments()
+
+        searchPortalView = view.findViewById(R.id.search_portal)
+        searchPortalView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val searchPortalAdapter = SearchPortalAdapter(fun (portal: SearchPortal) {
+            if (TextUtils.isEmpty(urlView.text)) openUrl(portal.homeUrl)
+            else openUrl(String.format(portal.searchUrlPattern, urlView.text))
+            TelemetryWrapper.clickQuickSearchEngine(portal.name)
+        })
+        searchPortalView.adapter = searchPortalAdapter
+        Inject.obtainSearchPortalViewModel(activity).searchPortalObservable.observe(viewLifecycleOwner, Observer { searchPortals ->
+            searchPortalAdapter.submitList(searchPortals)
+        })
 
         return view
     }

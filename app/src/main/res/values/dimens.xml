@@ -9,6 +9,8 @@
     <dimen name="common_margin_m3">12dp</dimen>
     <dimen name="common_margin_m4">20dp</dimen>
     <dimen name="common_margin_m5">24dp</dimen>
+    <dimen name="common_margin_m6">40dp</dimen>
+    <dimen name="common_margin_m7">48dp</dimen>
 
     <dimen name="common_font_size_body1">14sp</dimen>
     <dimen name="common_font_size_btn_text2">14sp</dimen>

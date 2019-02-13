@@ -43,10 +43,10 @@
                 android:lines="1"
                 android:requiresFadingEdge="horizontal"
                 android:selectAllOnFocus="true"
-                app:autocompleteBackgroundColor="@color/colorAutocompleteHighlight"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/darker_gray"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:autocompleteBackgroundColor="@color/colorAutocompleteHighlight" />
 
             <ImageButton
                 android:id="@+id/clear"
@@ -63,11 +63,34 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/input_container"
+            android:background="@color/paletteLightGreyA100" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_portal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_margin_m7"
+            android:layout_above="@id/divider"
+            android:clipToPadding="false"
+            android:background="@color/paletteLightGreyB100"
+            android:paddingStart="16dp" />
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="@dimen/common_margin_m7"
+            android:layout_alignEnd="@id/search_portal"
+            android:layout_alignTop="@id/search_portal"
+            android:background="@drawable/overflow_mask"/>
+
         <org.mozilla.focus.widget.FlowLayout
             android:id="@+id/search_suggestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/input_container"
+            android:layout_above="@id/search_portal"
             android:layout_margin="10dp"
             android:animateLayoutChanges="true"
             tools:background="#55FF0000" />

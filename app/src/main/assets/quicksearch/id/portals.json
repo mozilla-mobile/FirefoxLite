@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Tokopedia",
+    "searchUrlPattern": "https://www.tokopedia.com/search?st=product&q=%s",
+    "homeUrl": "https://www.tokopedia.com",
+    "icon": "ic_tokopedia.png"
+  },
+  {
+    "name": "Buakalapak",
+    "searchUrlPattern": "https://www.bukalapak.com/products?search[keywords]=%s",
+    "homeUrl": "https://www.bukalapak.com",
+    "icon": "ic_bukalapak.png"
+  },
+  {
+    "name": "Shopee",
+    "searchUrlPattern": "https://shopee.co.id/search?keyword=%s",
+    "homeUrl": "https://shopee.co.id",
+    "icon": "ic_sanook.png"
+  }
+]
