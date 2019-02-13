@@ -91,19 +91,25 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
         initByArguments()
 
+        initQuickSearch(view)
+
+        return view
+    }
+
+    private fun initQuickSearch(view: View) {
         searchPortalView = view.findViewById(R.id.search_portal)
         searchPortalView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val searchPortalAdapter = SearchPortalAdapter(fun (portal: SearchPortal) {
+        val searchPortalAdapter = SearchPortalAdapter(fun(portal: SearchPortal) {
             if (TextUtils.isEmpty(urlView.text)) openUrl(portal.homeUrl)
             else openUrl(String.format(portal.searchUrlPattern, urlView.text))
             TelemetryWrapper.clickQuickSearchEngine(portal.name)
         })
         searchPortalView.adapter = searchPortalAdapter
-        Inject.obtainSearchPortalViewModel(activity).searchPortalObservable.observe(viewLifecycleOwner, Observer { searchPortals ->
-            searchPortalAdapter.submitList(searchPortals)
-        })
-
-        return view
+        Inject.obtainSearchPortalViewModel(activity).searchPortalObservable.observe(
+                viewLifecycleOwner,
+                Observer { searchPortals ->
+                    searchPortalAdapter.submitList(searchPortals)
+            })
     }
 
     override fun onStart() {
