@@ -64,6 +64,7 @@ object TelemetryWrapper {
     internal object Category {
         const val ACTION = "action"
         const val EVENT_DOWNLOADS = "Downloads"
+        const val SEARCH = "search"
     }
 
     internal object Method {
@@ -122,6 +123,7 @@ object TelemetryWrapper {
         const val BANNER = "banner"
         const val DOORHANGER = "doorhanger"
         const val VPN_DOORHANGER = "vpn_doorhanger"
+        const val QUICK_SEARCH = "quicksearch"
     }
 
     object Value {
@@ -205,6 +207,7 @@ object TelemetryWrapper {
         // Remove the last character cause Telemetry library will do that for you.( > 15chars)
         const val CATEGORY_VERSION = "category_versio"
         const val VPN_INSTALLED = "vpn_installed"
+        const val ENGINE = "engine"
     }
 
     object Extra_Value {
@@ -1920,6 +1923,19 @@ object TelemetryWrapper {
     @JvmStatic
     fun clickDefaultBrowserInSetting() {
         AdjustHelper.trackEvent(EVENT_SET_DEFAULT_BROWSER)
+    }
+
+    @TelemetryDoc(
+            name = "Click Quick Search",
+            category = Category.SEARCH,
+            method = Method.CLICK,
+            `object` = Object.QUICK_SEARCH,
+            value = "",
+            extras = [TelemetryExtra(name = Extra.ENGINE, value = "Facebook,Youtube,Instagram")])
+    @JvmStatic
+    fun clickQuickSearchEngine(engineName: String) {
+        EventBuilder(Category.SEARCH, Method.CLICK, Object.QUICK_SEARCH, null)
+                .extra(Extra.ENGINE, engineName).queue()
     }
 
     internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {

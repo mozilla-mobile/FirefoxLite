@@ -26,7 +26,7 @@ import java.util.List;
 
 public class TopSitesUtils {
 
-    private static final String TOP_SITE_ASSET_PREFIX = "file:///android_asset/topsites/icon/";
+    public static final String TOP_SITE_ASSET_PREFIX = "file:///android_asset/topsites/icon/";
 
     /**
      * get default topsites data from assets and restore it to SharedPreferences

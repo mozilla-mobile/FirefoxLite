@@ -7,11 +7,13 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
@@ -29,6 +31,20 @@ public class IOUtils {
             return new JSONObject(builder.toString());
         } catch (JSONException e) {
             throw new AssertionError("Corrupt JSON asset (" + fileName + ")", e);
+        }
+    }
+
+    public static JSONArray readRawJsonArray(Context context, int resId) throws IOException {
+        try {
+            InputStream is = context.getResources().openRawResource(resId);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            String json = new String(buffer, "UTF-8");
+            is.close();
+            return new JSONArray(json);
+        } catch (JSONException e) {
+            throw new AssertionError("Corrupt JSON in readRawJsonArray", e);
         }
     }
 }
