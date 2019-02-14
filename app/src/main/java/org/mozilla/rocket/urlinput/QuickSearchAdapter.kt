@@ -7,7 +7,6 @@ package org.mozilla.rocket.urlinput
 import android.os.StrictMode
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,6 @@ class QuickSearchAdapter(private val clickListener: (QuickSearch) -> Unit) : Lis
             val threadPolicy = StrictMode.allowThreadDiskWrites()
             val resource = FavIconUtils.getBitmapFromUri(itemView.context, item.icon)
             icon.setImageBitmap(resource)
-            Log.e("ramoss", "name = " + item.name)
             StrictMode.setThreadPolicy(threadPolicy)
             itemView.setOnClickListener { clickListener(item) }
         }
