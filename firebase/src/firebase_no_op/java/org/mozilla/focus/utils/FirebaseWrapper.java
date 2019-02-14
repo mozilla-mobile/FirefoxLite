@@ -19,6 +19,7 @@ abstract class FirebaseWrapper {
     private static final boolean FIREBASE_BOOLEAN_DEFAULT = false;
     private static final long FIREBASE_LONG_DEFAULT = 0L;
     private static final String FIREBASE_STRING_DEFAULT = "";
+    private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
     // Instance of FirebaseWrapper that provides default values
     private static FirebaseWrapper instance;
@@ -38,6 +39,10 @@ abstract class FirebaseWrapper {
             return (Long) value;
         }
         return FIREBASE_LONG_DEFAULT;
+    }
+
+    static String prettify(String string) {
+        return string.replace(NEWLINE_PLACE_HOLDER, "\n");
     }
 
     // get Remote Config string

@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
@@ -121,10 +120,10 @@ public class DialogUtils {
         dialog.setOnCancelListener(dialogInterface -> telemetryShareApp(context, TelemetryWrapper.Value.DISMISS));
 
         View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, null);
-
-        final TextView textView = dialogView.findViewById(R.id.share_app_dialog_textview_title);
-        textView.setText(context.getString(R.string.share_app_dialog_text_title, context.getString(R.string.app_name)));
-
+        dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_title).setText(
+                AppConfigWrapper.getShareAppDialogTitle(context));
+        dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_content).setText(
+                AppConfigWrapper.getShareAppDialogContent(context));
         dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(v -> {
             dialog.dismiss();
             telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
@@ -133,7 +132,7 @@ public class DialogUtils {
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
             sendIntent.setType("text/plain");
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
-            sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_app_promotion_text, context.getString(R.string.app_name), context.getString(R.string.share_app_google_play_url), context.getString(R.string.mozilla)));
+            sendIntent.putExtra(Intent.EXTRA_TEXT, AppConfigWrapper.getShareAppMessage(context));
             context.startActivity(Intent.createChooser(sendIntent, null));
             dialog.dismiss();
             telemetryShareApp(context, TelemetryWrapper.Value.SHARE);

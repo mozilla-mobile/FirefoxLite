@@ -40,6 +40,7 @@ abstract class FirebaseWrapper {
     private static final boolean FIREBASE_BOOLEAN_DEFAULT = false;
     private static final long FIREBASE_LONG_DEFAULT = 0L;
     private static final String FIREBASE_STRING_DEFAULT = "";
+    private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
     // Instance of FirebaseWrapper that provides default values
     private static FirebaseWrapper instance;
@@ -97,6 +98,10 @@ abstract class FirebaseWrapper {
         }
         throwGetValueException("getRcString");
         return FIREBASE_STRING_DEFAULT;
+    }
+
+    static String prettify(@NonNull String string) {
+        return string.replace(NEWLINE_PLACE_HOLDER, "\n");
     }
 
     static long getRcLong(Context context, String key) {

@@ -95,4 +95,18 @@ public class AppConfigWrapper {
     public static String getFirstLaunchNotificationiMessage(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE);
     }
+
+    static String getShareAppDialogTitle(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.STR_SHARE_APP_DIALOG_TITLE);
+    }
+
+    // Only this field supports prettify
+    static String getShareAppDialogContent(Context context) {
+        final String rcString = FirebaseHelper.getRcString(context, FirebaseHelper.STR_SHARE_APP_DIALOG_CONTENT);
+        return FirebaseHelper.prettify(rcString);
+    }
+
+    static String getShareAppMessage(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.STR_SHARE_APP_DIALOG_MSG);
+    }
 }

@@ -13,7 +13,6 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.annotation.WorkerThread;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -68,6 +67,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
     private static final String FIREBASE_API_KEY = "google_api_key";
     private static final String FIREBASE_PROJECT_ID = "project_id";
 
+    static final String STR_SHARE_APP_DIALOG_TITLE = "str_share_app_dialog_title";
+    static final String STR_SHARE_APP_DIALOG_CONTENT = "str_share_app_dialog_content";
+    static final String STR_SHARE_APP_DIALOG_MSG = "str_share_app_dialog_msg";
 
     private HashMap<String, Object> remoteConfigDefault;
     private static boolean changing = false;
@@ -276,6 +278,15 @@ final public class FirebaseHelper extends FirebaseWrapper {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_POSITIVE, context.getString(R.string.rate_app_dialog_btn_go_rate));
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_NEGATIVE, context.getString(R.string.rate_app_dialog_btn_feedback));
             map.put(FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE, context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A");
+            // Share App
+            map.put(FirebaseHelper.STR_SHARE_APP_DIALOG_TITLE, context.getString(R.string.share_app_dialog_text_title,
+                    context.getString(R.string.app_name)));
+            map.put(FirebaseHelper.STR_SHARE_APP_DIALOG_CONTENT, context.getString(R.string.share_app_dialog_text_content));
+            final String shareAppDialogMsg = context.getString(R.string.share_app_promotion_text,
+                    context.getString(R.string.app_name), context.getString(R.string.share_app_google_play_url),
+                    context.getString(R.string.mozilla));
+            map.put(FirebaseHelper.STR_SHARE_APP_DIALOG_MSG, shareAppDialogMsg);
+
         }
         map.put(FirebaseHelper.RATE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG);
         map.put(FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION);
