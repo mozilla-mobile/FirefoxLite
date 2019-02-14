@@ -103,7 +103,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             if (TextUtils.isEmpty(urlView.text)) {
                 openUrl(quickSearch.homeUrl)
             } else {
-                openUrl(quickSearch.generateLink(urlView.text.toString()))
+                openUrl(quickSearch.generateLink(urlView.originalText))
             }
             TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
         })
