@@ -49,7 +49,6 @@ class FindInPage : BackKeyHandleable {
     override fun onBackPressed(): Boolean {
         return if (container.visibility == View.VISIBLE) {
             hide()
-            TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_BACK)
             true
         } else {
             false
@@ -98,7 +97,6 @@ class FindInPage : BackKeyHandleable {
         queryText.text = null
         queryText.clearFocus()
         container.visibility = View.GONE
-        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS)
     }
 
     private fun initViews() {
@@ -109,7 +107,6 @@ class FindInPage : BackKeyHandleable {
 
         closeBtn.setOnClickListener {
             hide()
-            TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE)
         }
         queryText.setOnClickListener { queryText.isCursorVisible = true }
         prevBtn.setOnClickListener {
