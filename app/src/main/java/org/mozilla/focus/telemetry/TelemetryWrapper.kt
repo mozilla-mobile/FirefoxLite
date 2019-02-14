@@ -21,9 +21,6 @@ import org.mozilla.focus.provider.ScreenshotContract
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS
-import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS
-import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_BACK
-import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 import org.mozilla.focus.utils.AdjustHelper
@@ -222,10 +219,7 @@ object TelemetryWrapper {
     enum class FIND_IN_PAGE {
         OPEN_BY_MENU,
         CLICK_PREVIOUS,
-        CLICK_NEXT,
-        DISMISS_BY_CLOSE,
-        DISMISS_BY_BACK,
-        DISMISS
+        CLICK_NEXT
     }
 
     // context passed here is nullable cause it may come from Java code
@@ -1846,9 +1840,6 @@ object TelemetryWrapper {
             OPEN_BY_MENU -> clickMenuFindInPage()
             CLICK_PREVIOUS -> clickFindInPagePrevious()
             CLICK_NEXT -> clickFindInPageNext()
-            DISMISS_BY_BACK -> cancelFindInPage("back_button")
-            DISMISS_BY_CLOSE -> cancelFindInPage("close_button")
-            DISMISS -> cancelFindInPage("other")
         }
 
         builder.queue()
@@ -1874,18 +1865,6 @@ object TelemetryWrapper {
         EventBuilder(Category.EVENT_DOWNLOADS, Method.LONG_PRESS, Object.TOOLBAR, Value.DOWNLOAD)
                 .queue()
     }
-
-    @TelemetryDoc(
-            name = "Cancel FindInPage",
-            category = Category.ACTION,
-            method = Method.CANCEL,
-            `object` = Object.FIND_IN_PAGE,
-            value = "",
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = "other,close_button,back_button"), TelemetryExtra(name = Extra.VERSION, value = "2")])
-    private fun cancelFindInPage(reason: String) =
-            EventBuilder(Category.ACTION, Method.CANCEL, Object.FIND_IN_PAGE, null)
-                    .extra(Extra.SOURCE, reason)
-                    .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
 
     @TelemetryDoc(
             name = "Click FindInPage Next",

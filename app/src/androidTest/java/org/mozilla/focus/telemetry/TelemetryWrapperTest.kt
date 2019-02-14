@@ -562,9 +562,6 @@ class TelemetryWrapperTest {
     fun testFindInPage() {
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT)
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS)
-        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS)
-        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_BACK)
-        TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.DISMISS_BY_CLOSE)
         TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU)
     }
 }
