@@ -9,7 +9,7 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.IdlingResource
 import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
@@ -26,6 +26,7 @@ import org.hamcrest.core.Is
 import org.junit.Assert
 import org.junit.Rule
 import org.mozilla.focus.R
+import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.helper.ActivityRecreateLeakWatcherIdlingResource
 import org.mozilla.focus.utils.FirebaseHelper
@@ -34,6 +35,7 @@ import org.mozilla.focus.widget.TurboSwitchPreference
 
 inline fun setting(func: SettingRobot.() -> Unit) = SettingRobot().apply(func)
 inline fun screenshot(func: ScreenshotRobot.() -> Unit) = ScreenshotRobot().apply(func)
+inline fun findInPage(func: FindInPageRobot.() -> Unit) = FindInPageRobot().apply(func)
 
 inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
     try {
@@ -79,15 +81,25 @@ class ScreenshotRobot : MenuRobot() {
 
 class FindInPageRobot : MenuRobot() {
 
-    // TODO: Impelment functionalties
-    fun findKeywordInPage(keyword: string) {
+    fun findKeywordInPage(keyword: String) {
+
+        onView(withId(R.id.find_in_page_query_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_query_text)).perform(replaceText(keyword))
     }
 
-    fun naviKeywordSearchInPage(direction: int = 0) {
+    fun naviKeywordSearchInPage(forward: Boolean = false) {
+        // default action is to view the next search result
+        onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_prev_btn)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_next_btn)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
+        if (forward) onView(withId(R.id.find_in_page_prev_btn)).perform(click())
+        else onView(withId(R.id.find_in_page_next_btn)).perform(click())
     }
 
     fun closeFindInPageBar() {
-
+        onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_close_btn)).perform(click())
     }
 }
 
