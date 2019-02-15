@@ -6,6 +6,8 @@ import android.content.Intent
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConfigWrapper
 import java.util.concurrent.TimeUnit
 
 class PeriodicReceiver : BroadcastReceiver() {
@@ -14,7 +16,10 @@ class PeriodicReceiver : BroadcastReceiver() {
         if (context == null) {
             return
         }
-        scheduleFirstLaunchWorker(context, WorkManager.getInstance())
+
+        when (intent?.action) {
+            FirstLaunchWorker.ACTION -> scheduleFirstLaunchWorker(context, WorkManager.getInstance())
+        }
     }
 
     private fun scheduleFirstLaunchWorker(context: Context, workManager: WorkManager) {
@@ -30,9 +35,31 @@ class PeriodicReceiver : BroadcastReceiver() {
             }
         }
 
-        /** This hours can configure by firebase */
-        val delayHoursToInstallTime = 24
+        val config = AppConfigWrapper.getFirstLaunchWorkerTimer(context).toInt()
+        val delayHoursToInstallTime = when (config) {
+            FirstLaunchWorker.TIMER_DISABLED -> {
+                return
+            }
+            FirstLaunchWorker.TIMER_SUSPEND -> {
+                return
+            }
+            else -> {
+                config
+            }
+        }
+        val delayHours: Long = calculateDelayHours(context, delayHoursToInstallTime)
 
+        workManager.cancelAllWorkByTag(FirstLaunchWorker.TAG)
+        val builder = OneTimeWorkRequest.Builder(FirstLaunchWorker::class.java)
+        builder.setInitialDelay(delayHours, TimeUnit.HOURS)
+        builder.addTag(FirstLaunchWorker.TAG)
+        workManager.enqueue(builder.build())
+
+        val message = AppConfigWrapper.getFirstLaunchNotificationiMessage(context)
+        TelemetryWrapper.receiveFirstrunConfig(delayHours.toInt(), message)
+    }
+
+    private fun calculateDelayHours(context: Context, delayHoursToInstallTime: Int): Long {
         /** Find next scheduled hours */
         val pm = context.packageManager
         var firstInstallTime: Long = Long.MAX_VALUE
@@ -46,11 +73,6 @@ class PeriodicReceiver : BroadcastReceiver() {
             false -> delayHoursRemain
         }
 
-        workManager.cancelAllWorkByTag(FirstLaunchWorker.TAG)
-        val builder = OneTimeWorkRequest.Builder(FirstLaunchWorker::class.java)
-        builder.setInitialDelay(hours, TimeUnit.HOURS)
-        builder.addTag(FirstLaunchWorker.TAG)
-        workManager.enqueue(builder.build())
+        return hours
     }
-
 }

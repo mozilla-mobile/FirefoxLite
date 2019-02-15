@@ -5,12 +5,19 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import org.mozilla.focus.BuildConfig
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.DialogUtils
 
 class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
     companion object {
         val TAG: String = FirstLaunchWorker::class.java.simpleName
+        val ACTION: String = BuildConfig.APPLICATION_ID + ".action." + TAG
+
+        const val TIMER_DISABLED = 0
+        const val TIMER_SUSPEND = -1
 
         private const val PREF_KEY_BOOLEAN_NOTIFICATION_FIRED: String = "pref-key-boolean-notification-fired"
 
@@ -30,9 +37,26 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
     }
 
     override fun doWork(): Result {
-        DialogUtils.showDefaultSettingNotification(applicationContext)
+        val message = AppConfigWrapper.getFirstLaunchNotificationiMessage(applicationContext)
+        DialogUtils.showDefaultSettingNotification(applicationContext, message)
+        TelemetryWrapper.showFirstrunNotification(calculateDelayHours(applicationContext), message)
+
         setNotificationFired(applicationContext, true)
         return Result.success()
     }
 
+    private fun calculateDelayHours(context: Context): Int {
+        val pm = context.packageManager
+        var firstInstallTime: Long = System.currentTimeMillis()
+        val packageInfo = pm.getPackageInfo(context.packageName, 0)
+        if (packageInfo != null && packageInfo.packageName == context.packageName) {
+            firstInstallTime = Math.min(firstInstallTime, packageInfo.firstInstallTime)
+        }
+        val delayHoursRemain = (System.currentTimeMillis() - firstInstallTime) / (3600000)
+        val hours: Int = when (delayHoursRemain < 0) {
+            true -> -1
+            false -> delayHoursRemain.toInt()
+        }
+        return hours
+    }
 }

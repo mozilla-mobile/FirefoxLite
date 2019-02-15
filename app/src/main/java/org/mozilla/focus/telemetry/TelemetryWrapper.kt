@@ -80,6 +80,7 @@ object TelemetryWrapper {
         const val FULLSCREEN = "fullscreen"
         const val ADD = "add"
         const val SWIPE = "swipe"
+        const val GET = "get"
 
         const val FOREGROUND = "foreground"
         const val BACKGROUND = "background"
@@ -112,6 +113,7 @@ object TelemetryWrapper {
         const val BROWSER = "browser"
         const val BROWSER_CONTEXTMENU = "browser_contextmenu"
         const val FIRSTRUN = "firstrun"
+        const val FIRSTRUN_PUSH = "firstrun_push"
 
         const val FEEDBACK = "feedback"
         const val DEFAULT_BROWSER = "default_browser"
@@ -205,6 +207,8 @@ object TelemetryWrapper {
         const val CATEGORY_VERSION = "category_versio"
         const val VPN_INSTALLED = "vpn_installed"
         const val ENGINE = "engine"
+        const val DELAY = "delay"
+        const val MESSAGE = "message"
     }
 
     object Extra_Value {
@@ -1520,6 +1524,42 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.SHOW, Object.DEFAULT_BROWSER)
                 .extra(Extra.SOURCE, TelemetryWrapper.Extra_Value.NOTIFICATION)
                 .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Receive Firstrun Push config",
+            category = Category.ACTION,
+            method = Method.GET,
+            `object` = Object.FIRSTRUN_PUSH,
+            value = "",
+            extras = [
+                TelemetryExtra(name = Extra.DELAY, value = "hours"),
+                TelemetryExtra(name = Extra.MESSAGE, value = "message")
+            ])
+    @JvmStatic
+    fun receiveFirstrunConfig(hours: Int, message: String?) {
+        val builder = EventBuilder(Category.ACTION, Method.GET, Object.FIRSTRUN_PUSH)
+                .extra(Extra.DELAY, hours.toString())
+                .extra(Extra.MESSAGE, message ?: "")
+        builder.queue()
+    }
+
+    @TelemetryDoc(
+            name = "Firstrun Push notification shown",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.FIRSTRUN_PUSH,
+            value = "",
+            extras = [
+                TelemetryExtra(name = Extra.DELAY, value = "hours"),
+                TelemetryExtra(name = Extra.MESSAGE, value = "message")
+            ])
+    @JvmStatic
+    fun showFirstrunNotification(hours: Int, message: String?) {
+        val builder = EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN_PUSH)
+                .extra(Extra.DELAY, hours.toString())
+                .extra(Extra.MESSAGE, message ?: "")
+        builder.queue()
     }
 
     @TelemetryDoc(

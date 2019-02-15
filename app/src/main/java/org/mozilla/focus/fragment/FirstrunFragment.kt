@@ -6,6 +6,7 @@
 package org.mozilla.focus.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
@@ -26,6 +27,9 @@ import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.NewFeatureNotice
+import org.mozilla.rocket.banner.OnClickListener
+import org.mozilla.rocket.periodic.FirstLaunchWorker
+import org.mozilla.rocket.periodic.PeriodicReceiver
 
 class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     private lateinit var viewPager: ViewPager
@@ -146,13 +150,24 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         val pagerAdapter: PagerAdapter?
         val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
         pagerAdapter = if (!shown) {
-            DefaultFirstrunPagerAdapter(context, onClickListener)
+            DefaultFirstrunPagerAdapter(context, wrapButtonClickListener(onClickListener))
         } else if (NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
             UpgradeFirstrunPagerAdapter(context, onClickListener)
         } else {
             null
         }
         return pagerAdapter
+    }
+
+    private fun wrapButtonClickListener(onClickListener: View.OnClickListener): View.OnClickListener {
+        return View.OnClickListener { view ->
+            if (view.id == R.id.finish) {
+                activity?.sendBroadcast(Intent(activity, PeriodicReceiver::class.java).apply {
+                    action = FirstLaunchWorker.ACTION
+                })
+            }
+            onClickListener.onClick(view)
+        }
     }
 
     private fun finishFirstrun() {

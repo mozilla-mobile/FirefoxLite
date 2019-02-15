@@ -87,4 +87,12 @@ public class AppConfigWrapper {
     public static String getVpnRecommenderPackage(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.VPN_RECOMMENDER_PACKAGE);
     }
+
+    public static long getFirstLaunchWorkerTimer(Context context) {
+        return FirebaseHelper.getRcLong(context, FirebaseHelper.FIRST_LAUNCH_WORKER_TIMER);
+    }
+
+    public static String getFirstLaunchNotificationiMessage(Context context) {
+        return FirebaseHelper.getRcString(context, FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE);
+    }
 }
