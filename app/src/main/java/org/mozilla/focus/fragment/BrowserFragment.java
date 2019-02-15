@@ -189,7 +189,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ThemedView bottomMenuDivider;
     private ThemedView urlBarDivider;
     private LottieAnimationView downloadingIndicator;
-    private ImageView downloadUnreadIndicator;
+    private ImageView downloadIndicator;
     private View downloadIndicatorIntro;
 
     @Override
@@ -449,15 +449,28 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
 
         downloadingIndicator = view.findViewById(R.id.downloading_indicator);
-        downloadUnreadIndicator = view.findViewById(R.id.download_unread_indicator);
+        downloadIndicator = view.findViewById(R.id.download_unread_indicator);
 
         final ViewGroup browserRoot = view.findViewById(R.id.browser_root_view);
 
         Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
-            downloadingIndicator.setVisibility(status == DownloadIndicatorViewModel.Status.DOWNLOADING ? View.VISIBLE : View.GONE);
-            downloadUnreadIndicator.setVisibility(status == DownloadIndicatorViewModel.Status.UNREAD ? View.VISIBLE : View.GONE);
-            if (downloadingIndicator.getVisibility() == View.VISIBLE && !downloadingIndicator.isAnimating()) {
-                downloadingIndicator.playAnimation();
+            if (status == DownloadIndicatorViewModel.Status.DOWNLOADING) {
+                downloadIndicator.setVisibility(View.GONE);
+                downloadingIndicator.setVisibility(View.VISIBLE);
+                if (!downloadingIndicator.isAnimating()) {
+                    downloadingIndicator.playAnimation();
+                }
+            } else if (status == DownloadIndicatorViewModel.Status.UNREAD) {
+                downloadingIndicator.setVisibility(View.GONE);
+                downloadIndicator.setVisibility(View.VISIBLE);
+                downloadIndicator.setImageResource(R.drawable.notify_download);
+            } else if (status == DownloadIndicatorViewModel.Status.WARNING) {
+                downloadingIndicator.setVisibility(View.GONE);
+                downloadIndicator.setVisibility(View.VISIBLE);
+                downloadIndicator.setImageResource(R.drawable.notify_notice);
+            } else {
+                downloadingIndicator.setVisibility(View.GONE);
+                downloadIndicator.setVisibility(View.GONE);
             }
             final Settings.EventHistory eventHistory = Settings.getInstance(getActivity()).getEventHistory();
             if (!eventHistory.contains(Settings.Event.ShowDownloadIndicatorIntro) && status != DownloadIndicatorViewModel.Status.DEFAULT) {
