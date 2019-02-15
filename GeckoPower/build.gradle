@@ -1,0 +1,71 @@
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+
+    }
+
+    buildTypes {
+        release {
+        }
+        debug {
+            matchingFallbacks = ["debug"]
+        }
+        coverage {
+            initWith debug
+
+        }
+        firebase {
+            initWith debug
+        }
+    }
+    flavorDimensions "product", "engine"
+
+    productFlavors {
+        focus {
+            dimension "product"
+
+        }
+
+        preview {
+            dimension "product"
+        }
+
+        // We can build with two engines: webkit or gecko
+        webkit {
+            dimension "engine"
+        }
+    }
+    variantFilter { variant ->
+        def flavors = variant.flavors*.name
+        // We only need a nightly release for now
+        if (flavors.contains("preview") && variant.buildType.name != "release") {
+            setIgnore(true)
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app')
+    implementation project(':feature-tabs')
+
+    implementation "org.mozilla.components:browser-engine-gecko:0.39.0"
+    implementation "org.mozilla.geckoview:geckoview-x86:65.0.20190125143011"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
+
+}

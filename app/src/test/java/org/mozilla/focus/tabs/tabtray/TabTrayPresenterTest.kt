@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.tabs.tabtray
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Message

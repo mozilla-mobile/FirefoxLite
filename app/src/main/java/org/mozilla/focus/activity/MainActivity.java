@@ -96,11 +96,13 @@ import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
+import org.mozilla.rocket.util.IGeckoViewProvider;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import java.util.ServiceLoader;
 
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 
@@ -1202,10 +1204,21 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
         @Override
         public TabView create() {
+            TabView tabView = null;
             // FIXME: we should avoid casting here.
             // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
             // but there is no promise about this.
-            return (TabView) WebViewProvider.create(this.activity, null);
+            IGeckoViewProvider geckoProvider = null;
+            for (IGeckoViewProvider loader : ServiceLoader.load(IGeckoViewProvider.class)) {
+                geckoProvider = loader;
+            }
+            if (geckoProvider != null) {
+                tabView = geckoProvider.create(activity);
+            }
+            if (tabView == null) {
+                tabView = (TabView) WebViewProvider.create(this.activity, null);
+            }
+            return tabView;
         }
     }
 

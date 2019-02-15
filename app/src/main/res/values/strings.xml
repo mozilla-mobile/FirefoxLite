@@ -108,10 +108,10 @@
 
     <!-- Item in Preferences that shows the night mode adjust brightness widget. -->
     <string name="preference_night_mode_brightness">Night mode brightness</string>
-   
+
     <!-- After users have tried night mode once, the next time the user opens menu we would like to show them how they can long press the Night Mode icon to show a widget for brightness adjustments. -->
     <string name="night_mode_on_boarding_message">Long press to adjust brightness</string>
-   
+
     <!-- Content description (not visible, for screen readers etc.): Clear text in URL bar -->
     <string name="content_description_clear_input">Clear input</string>
 
@@ -204,13 +204,13 @@
     <string name="first_run_page4_text">Take screenshot of an entire page scroll. Read it offline without using data or tap it to revisit the web page.</string>
     <string name="first_run_page5_title">Next-level privacy</string>
     <string name="first_run_page5_text">Browse without a trace, and block a wide range of common web trackers by default. Ensure the security of your confidential data.</string>
-   
+
     <string name="first_run_upgrade_page_title">We heard your feedback!</string>
 
     <string name="new_name_upgrade_page_title">We have a new look!</string>
     <!-- The %1$s here is a placeholder for "Firefox Lite"-->
     <string name="new_name_upgrade_page_text">With the evolved product, we bring you a newly refreshed %1$s, with new name and new logo.</string>
-   
+
     <!-- The %s here is a placeholder for "multiple tabs" (paired with first_run_upgrade_page_text1_highlight) -->
     <string name="first_run_upgrade_page_text1">1. Multitask by opening %s at the same time!</string>
     <string name="first_run_upgrade_page_text1_highlight">multiple tabs</string>
@@ -286,7 +286,7 @@
 
     <!-- The message that indicates users can long press this menu button to see all download status in the panel. -->
     <string name="menu_longpress_downloads">Long press to open Downloads</string>
-   
+
     <!-- Download status-->
     <!-- File download status is paused -->
     <string name="pause">paused</string>
@@ -500,8 +500,8 @@
     <string name="label_menu_news">News</string>
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
-   
-   
+
+
     <!-- Private Browsing-->
 
     <!-- This is used in the menu. User can click the menu item and open a private tab. -->
@@ -523,7 +523,7 @@
 
     <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. Press "Yes, please" then direct users to download vpn app; Press "Nope" then hide the icon in home screen. -->
     <string name="btn_vpn">The 7-day free VPN service is ready for you. Install now to browse more privately and securely.</string>
-   
+
     <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback.-->
     <string name="exp_survey_wifi">We plan to integrate “Free Wifi-Finder” to help you find quality free internet connection nearby.\n\n Interested?</string>
     <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback. -->

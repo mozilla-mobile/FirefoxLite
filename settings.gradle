@@ -1,4 +1,4 @@
-include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler'
+include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', ':GeckoPower', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')

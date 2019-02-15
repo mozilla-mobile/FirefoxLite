@@ -66,7 +66,7 @@ android {
             enableSplit = false
         }
         abi {
-            enableSplit = true
+            enableSplit = false
         }
     }
 
@@ -76,7 +76,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             matchingFallbacks = ["firebase"]
         }
@@ -168,6 +168,9 @@ android {
         // used by Room, to test migrations
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
+    dynamicFeatures = [":GeckoPower"]
+
+
 }
 
 repositories {
@@ -198,7 +201,7 @@ dependencies {
     implementation project(':cachedrequestloader')
     implementation project(':permissionhandler')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
     // We didn't use CustomTabs so far. This is a build hack to force Android-Components to use
     // same version of support library as we are. Android-Components depends on CustomTabs which
@@ -225,13 +228,14 @@ dependencies {
         transitive = false
     })
 
-    implementation "org.mozilla.components:browser-session:${Versions.android_components}"
+    api "org.mozilla.components:browser-session:${Versions.android_components}"
     implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
     implementation "org.mozilla.components:browser-domains:${Versions.android_components}"
     implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
-    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
+    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}"
+    // Required by Adjust
     // Required by Adjust
 
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
@@ -266,6 +270,8 @@ dependencies {
     coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+
+
 
 }
 
