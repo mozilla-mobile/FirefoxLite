@@ -85,6 +85,7 @@ class PrivateModeActivity : BaseActivity(),
             TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
+            TYPE.DROP_BROWSING_PAGES -> dropBrowserFragment()
             else -> {
             }
         }
@@ -124,6 +125,11 @@ class PrivateModeActivity : BaseActivity(),
         if (exitEarly) {
             return
         }
+    }
+
+    private fun dropBrowserFragment() {
+        stopPrivateMode()
+        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
 
     override fun getScreenNavigator(): ScreenNavigator = screenNavigator
