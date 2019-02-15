@@ -77,6 +77,20 @@ class ScreenshotRobot : MenuRobot() {
     }
 }
 
+class FindInPageRobot : MenuRobot() {
+
+    // TODO: Impelment functionalties
+    fun findKeywordInPage(keyword: string) {
+    }
+
+    fun naviKeywordSearchInPage(direction: int = 0) {
+    }
+
+    fun closeFindInPageBar() {
+
+    }
+}
+
 class SettingRobot {
 
     @Rule

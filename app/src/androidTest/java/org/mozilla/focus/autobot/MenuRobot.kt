@@ -23,6 +23,7 @@ open class MenuRobot {
     fun clickMenuHistory() = onView(withId(R.id.menu_history)).perform(click())
     fun clickMenuMyShots() = onView(withId(R.id.menu_screenshots)).perform(click())
     fun clickMenuTurboMode() = onView(withId(R.id.menu_turbomode)).perform(click())
+    fun clickMenuFindInPage() = onview(withId(R.id.menu_find_in_page)).perform(click())
     fun clickMenuBlockImages() = onView(withId(R.id.menu_blockimg)).perform(click())
     fun clickMenuClearCache() = onView(withId(R.id.menu_delete)).perform(click())
     fun clickMenuSettings() = onView(withId(R.id.menu_preferences)).perform(click())
