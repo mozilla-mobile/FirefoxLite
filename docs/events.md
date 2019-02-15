@@ -89,6 +89,8 @@
 |click Rate App|action|click|feedback|"null,dismiss,positive,negative"|"source=contextual_hints,settings,notification," 
 |Show Rate App|action|show|feedback|""|"source=notification," 
 |Default Browser Notification shown|action|show|default_browser|""|"source=notification," 
+|Receive Firstrun Push config|action|get|firstrun_push|""|"delay=hours,message=message," 
+|Firstrun Push notification shown|action|show|firstrun_push|""|"delay=hours,message=message," 
 |Default Browser Notification Clicked|action|click|default_browser|""|"source=notification,version=version," 
 |Default Browser Service Failed|action|change|default_browser|""|"success=true,false," 
 |Promote Share Dialog Clicked|action|click|promote_share|"dismiss,share"|"source=contextual_hints,settings," 

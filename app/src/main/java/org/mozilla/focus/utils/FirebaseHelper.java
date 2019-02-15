@@ -25,6 +25,7 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.periodic.FirstLaunchWorker;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -57,6 +58,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String FEATURE_SURVEY = "feature_survey";
     static final String VPN_RECOMMENDER_URL = "vpn_recommender_url";
     static final String VPN_RECOMMENDER_PACKAGE = "vpn_recommender_package";
+    static final String FIRST_LAUNCH_WORKER_TIMER = "first_launch_worker_timer";
+    static final String FIRST_LAUNCH_NOTIFICATION_MESSAGE = "first_launch_notification_message";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
     private static final String FIREBASE_DB_URL = "firebase_database_url";
@@ -272,6 +275,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_CONTENT, context.getString(R.string.rate_app_dialog_text_content));
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_POSITIVE, context.getString(R.string.rate_app_dialog_btn_go_rate));
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_NEGATIVE, context.getString(R.string.rate_app_dialog_btn_feedback));
+            map.put(FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE, context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A");
         }
         map.put(FirebaseHelper.RATE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG);
         map.put(FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION);
@@ -283,6 +287,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST, ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT);
         map.put(FirebaseHelper.VPN_RECOMMENDER_PACKAGE, FeatureSurveyViewHelper.Constants.PACKAGE_RECOMMEND_VPN);
         map.put(FirebaseHelper.VPN_RECOMMENDER_URL, FeatureSurveyViewHelper.Constants.LINK_RECOMMEND_VPN);
+        map.put(FirebaseHelper.FIRST_LAUNCH_WORKER_TIMER, FirstLaunchWorker.TIMER_DISABLED);
 
         return map;
     }
