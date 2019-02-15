@@ -24,7 +24,6 @@ import org.mozilla.focus.firstrun.DefaultFirstrunPagerAdapter
 import org.mozilla.focus.firstrun.UpgradeFirstrunPagerAdapter
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.NewFeatureNotice
 
@@ -137,7 +136,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
     private fun promoteSetDefaultBrowserIfPreload(): FirstrunFragment {
         // if it's a system app(preload), we'll like to promote set default browser when the user finish first run
-        if (isSystemApp() || !AppConstants.isReleaseBuild()) {
+        if (isSystemApp()) {
             DialogUtils.showDefaultSettingNotification(context)
         }
         return this
