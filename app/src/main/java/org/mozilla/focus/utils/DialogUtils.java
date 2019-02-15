@@ -184,13 +184,22 @@ public class DialogUtils {
     }
 
     public static void showDefaultSettingNotification(Context context) {
+        showDefaultSettingNotification(context, null);
+    }
+
+    public static void showDefaultSettingNotification(Context context, String message) {
 
         // Let NotificationActionBroadcastReceiver handle what to do
         final Intent openDefaultBrowserSetting = IntentUtils.genDefaultBrowserSettingIntentForBroadcastReceiver(context);
         final PendingIntent openRocketPending = PendingIntent.getBroadcast(context, REQUEST_DEFAULT_CLICK, openDefaultBrowserSetting,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        final String title = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A";
+        final String title;
+        if(TextUtils.isEmpty(message)) {
+            title = context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A";
+        } else {
+            title = message;
+        }
         NotificationCompat.Builder builder = NotificationUtil.importantBuilder(context)
                 .setContentTitle(title)
                 .setContentIntent(openRocketPending);
