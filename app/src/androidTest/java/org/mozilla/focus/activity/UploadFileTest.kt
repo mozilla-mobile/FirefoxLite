@@ -145,7 +145,7 @@ class UploadFileTest {
         uiDevice.findObject(UiSelector().text("Documents")).click()
 
         // Tap More options
-        uiDevice.findObject(UiSelector().descriptionContains("More options")).click()
+        uiDevice.findObject(UiSelector().text("Downloads")).click()
 
         // Tap Show internal storage -> Show roots -> Android SDK buit x86
         // Note: internal storage name will vary on same emulator so only verify text contains "x86"
