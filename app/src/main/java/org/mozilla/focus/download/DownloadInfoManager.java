@@ -15,12 +15,17 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 
+import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.utils.CursorUtils;
+import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -318,6 +323,28 @@ public class DownloadInfoManager {
 
     public DownloadManager getDownloadManager() {
         return (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+    }
+
+    public void showOpenDownloadSnackBar(final Long rowId, @NonNull final View container, final String logTag) {
+        queryByRowId(rowId, downloadInfoList -> {
+            final boolean existInLocalDB = downloadInfoList.size() > 0;
+            if (!existInLocalDB) {
+                LoggerWrapper.throwOrWarn(logTag, "Download Completed with unknown local row id");
+                return;
+            }
+            final DownloadInfo downloadInfo = downloadInfoList.get(0);
+            final boolean existInDownloadManager = downloadInfo.existInDownloadManager();
+            if (!existInDownloadManager) {
+                LoggerWrapper.throwOrWarn(logTag, "Download Completed with unknown DownloadManager id");
+            }
+            String completedStr = container.getContext().getString(R.string.download_completed, downloadInfo.getFileName());
+            final Snackbar snackbar = Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG);
+            // Set the open action only if we can.
+            if (existInDownloadManager) {
+                snackbar.setAction(R.string.open, view -> IntentUtils.intentOpenFile(container.getContext(), downloadInfo.getFileUri(), downloadInfo.getMimeType()));
+            }
+            snackbar.show();
+        });
     }
 
     private static ContentValues getContentValuesFromDownloadInfo(DownloadInfo downloadInfo) {

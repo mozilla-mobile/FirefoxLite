@@ -33,7 +33,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -44,7 +43,6 @@ import android.widget.Toast;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.FirstrunFragment;
@@ -241,7 +239,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                         showMessage(msg);
                         break;
                     case Constants.ACTION_NOTIFY_RELOCATE_FINISH:
-                        showOpenSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1));
+                        DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snackBarContainer, LOG_TAG);
                         break;
                     default:
                         break;
@@ -1066,36 +1064,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
 
         Settings.getInstance(this).setRemovableStorageStateOnCreate(exist);
-    }
-
-    private void showOpenSnackBar(Long rowId) {
-        DownloadInfoManager.getInstance().queryByRowId(rowId, downloadInfoList -> {
-            final boolean existInLocalDB = downloadInfoList.size() > 0;
-            if (!existInLocalDB) {
-                logOrCrash("Download Completed with unknown local row id");
-                return;
-            }
-            final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
-            final boolean existInDownloadManager = downloadInfo.existInDownloadManager();
-            if (!existInDownloadManager) {
-                logOrCrash("Download Completed with unknown DownloadManager id");
-            }
-            String completedStr = getString(R.string.download_completed, downloadInfo.getFileName());
-            final Snackbar snackbar = Snackbar.make(snackBarContainer, completedStr, Snackbar.LENGTH_LONG);
-            // Set the open action only if we can.
-            if (existInDownloadManager) {
-                snackbar.setAction(R.string.open, view -> IntentUtils.intentOpenFile(MainActivity.this, downloadInfo.getFileUri(), downloadInfo.getMimeType()));
-            }
-            snackbar.show();
-        });
-    }
-
-    private void logOrCrash(String message) {
-        if (AppConstants.isReleaseBuild()) {
-            Log.e(LOG_TAG, message);
-        } else {
-            throw new IllegalStateException(message);
-        }
     }
 
     @Override

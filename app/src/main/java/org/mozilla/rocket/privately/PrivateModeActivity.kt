@@ -6,16 +6,21 @@
 package org.mozilla.rocket.privately
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.annotation.CheckResult
 import android.support.v4.app.Fragment
+import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen
 import org.mozilla.focus.navigation.ScreenNavigator.HomeScreen
@@ -23,6 +28,7 @@ import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
+import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
@@ -38,10 +44,13 @@ class PrivateModeActivity : BaseActivity(),
         ScreenNavigator.HostActivity,
         TabsSessionProvider.SessionHost {
 
+    private val LOG_TAG = "PrivateModeActivity"
     private var sessionManager: SessionManager? = null
     private lateinit var tabViewProvider: PrivateTabViewProvider
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var screenNavigator: ScreenNavigator
+    private lateinit var uiMessageReceiver: BroadcastReceiver
+    private lateinit var snackBarContainer: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // we don't keep any state if user leave Private-mode
@@ -58,9 +67,11 @@ class PrivateModeActivity : BaseActivity(),
 
         setContentView(R.layout.activity_private_mode)
 
+        snackBarContainer = findViewById(R.id.container)
         makeStatusBarTransparent()
 
         initViewModel()
+        initBroadcastReceivers()
 
         screenNavigator.popToHomeScreen(false)
     }
@@ -68,6 +79,19 @@ class PrivateModeActivity : BaseActivity(),
     private fun initViewModel() {
         sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         sharedViewModel.urlInputState().value = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val uiActionFilter = IntentFilter()
+        uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
+        uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
     }
 
     override fun onDestroy() {
@@ -211,5 +235,15 @@ class PrivateModeActivity : BaseActivity(),
             return true
         }
         return false
+    }
+
+    private fun initBroadcastReceivers() {
+        uiMessageReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (intent.action == Constants.ACTION_NOTIFY_RELOCATE_FINISH) {
+                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snackBarContainer, LOG_TAG)
+                }
+            }
+        }
     }
 }
