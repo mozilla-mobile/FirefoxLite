@@ -101,7 +101,7 @@
   <string name="label_menu_exit">बाहेर पडा</string>
   <string name="permission_toast_location_deny">स्थान परवानगी नाकारली आहे.</string>
   <string name="permission_toast_storage_deny">साठवणूक परवानगी नाकारली आहे.</string>
-  <string name="permission_dialog_setting">सेटिंग</string>
+  <string name="permission_handler_permission_dialog_setting">सेटिंग</string>
   <string name="permission_dialog_not_now">आता नाही</string>
   <string name="permission_toast_location">स्थान उपलब्ध नाही. आपले स्थान माहिती करण्याची परवानगी द्या.</string>
   <string name="permission_toast_storage">संचयन उपलब्ध नाही. आपल्या डिव्हाइसवर फोटो आणि फाईल साठवण्या करिता परवानगी द्या.</string>
