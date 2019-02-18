@@ -101,7 +101,7 @@
   <string name="label_menu_exit">બહાર નીકળો</string>
   <string name="permission_toast_location_deny">સ્થાનની પરવાનગી નામંજૂર કરવામાં આવી છે.</string>
   <string name="permission_toast_storage_deny">સંગ્રહ પરવાનગી નામંજૂર કરવામાં આવી છે.</string>
-  <string name="permission_handler_permission_dialog_setting">સેટિંગ્સ</string>
+  <string name="permission_dialog_setting">સેટિંગ્સ</string>
   <string name="permission_dialog_not_now">હમણાં નહિ</string>
   <string name="permission_toast_location">સ્થાન ઉપલબ્ધ નથી. તમારા સ્થાનને ઍક્સેસ કરવાની પરવાનગી આપો.</string>
   <string name="permission_toast_storage">સંગ્રહ ઉપલબ્ધ નથી. તમારા ઉપકરણ પર ફોટા અને ફાઇલોને સંગ્રહિત કરવાની પરવાનગી આપો.</string>
