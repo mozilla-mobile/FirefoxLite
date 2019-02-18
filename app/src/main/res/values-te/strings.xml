@@ -97,7 +97,7 @@
   <string name="label_menu_exit">నిష్క్రమించు</string>
   <string name="permission_toast_location_deny">స్థాన అనుమతి నిరాకరించబడింది.</string>
   <string name="permission_toast_storage_deny">నిల్వ అనుమతి నిరాకరించబడింది.</string>
-  <string name="permission_handler_permission_dialog_setting">అమరికలు</string>
+  <string name="permission_dialog_setting">అమరికలు</string>
   <string name="permission_dialog_not_now">ఇప్పుడు కాదు</string>
   <string name="permission_toast_location">స్థానం అందుబాటులో లేదు. మీ స్థానాన్ని చూడడానికి అనుమతి ఇవ్వండి.</string>
   <string name="permission_toast_storage">నిల్వ అందుబాటులో లేదు. మీ పరికరంలో ఫొటోలను ఫైళ్ళను నిల్వవుంచడానికి అనుమతి ఇవ్వండి.</string>

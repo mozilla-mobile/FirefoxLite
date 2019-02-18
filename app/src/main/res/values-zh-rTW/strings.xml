@@ -101,7 +101,7 @@
   <string name="label_menu_exit">結束</string>
   <string name="permission_toast_location_deny">定位權限被拒絕。</string>
   <string name="permission_toast_storage_deny">儲存空間權限被拒絕。</string>
-  <string name="permission_handler_permission_dialog_setting">設定</string>
+  <string name="permission_dialog_setting">設定</string>
   <string name="permission_dialog_not_now">現在不要</string>
   <string name="permission_toast_location">無法取得所在位置，請授權取得您的所在位置。</string>
   <string name="permission_toast_storage">儲存空間無法使用，請授權儲存照片與檔案到您的裝置。</string>

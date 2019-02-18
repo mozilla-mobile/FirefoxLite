@@ -90,7 +90,7 @@
   <string name="label_menu_block_image">ചിത്രങ്ങള്‍ തടയുക</string>
   <string name="label_menu_settings">സജ്ജീകരണങ്ങള്‍</string>
   <string name="label_menu_exit">പുറത്തു കടക്കുക</string>
-  <string name="permission_handler_permission_dialog_setting">സജ്ജീകരണം‍</string>
+  <string name="permission_dialog_setting">സജ്ജീകരണം‍</string>
   <string name="permission_dialog_not_now">ഇപ്പോള്‍ വേണ്ട</string>
   <string name="permission_toast_location">സ്ഥാനം ലഭ്യമല്ല. താങ്കളുടെ സ്ഥാനം ലഭിക്കാനുള്ള അനുമതി നൽകൂ.</string>
   <string name="permission_toast_storage">സംഭരണി ലഭ്യമല്ല. താങ്കളുടെ ഉപകരണത്തിൽ ചിത്രങ്ങളും ഫയലുകളും സംരക്ഷിക്കാനുള്ള അനുമതി നൽകൂ.</string>
