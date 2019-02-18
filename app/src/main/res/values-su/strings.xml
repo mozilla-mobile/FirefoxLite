@@ -101,7 +101,7 @@
   <string name="label_menu_exit">Kaluar</string>
   <string name="permission_toast_location_deny">Idin perenah ditolak.</string>
   <string name="permission_toast_storage_deny">Idin teundeunan ditolak.</string>
-  <string name="permission_dialog_setting">setélan</string>
+  <string name="permission_handler_permission_dialog_setting">setélan</string>
   <string name="permission_dialog_not_now">Moal waka</string>
   <string name="permission_toast_location">Perenah teu sayaga. Idinan pikeun ngaksés perenah anjeun.</string>
   <string name="permission_toast_storage">Paneundeunan teu sayaga. Idinan pikeun nyimpen sarupaning foto jeung koropak na parangkat anjeun.</string>
