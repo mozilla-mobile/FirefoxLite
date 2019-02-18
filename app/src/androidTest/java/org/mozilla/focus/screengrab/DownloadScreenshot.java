@@ -183,6 +183,9 @@ public class DownloadScreenshot extends BaseScreenshot {
                 .check(matches(isDisplayed()));
         Screengrab.screenshot(ScreenshotNamingUtils.DOWNLOAD_DOWNLOADED);
 
+        SystemClock.sleep(MockUIUtils.LONG_DELAY);
+        Screengrab.screenshot(ScreenshotNamingUtils.DOWNLOAD_DOWNLOADED);
+
         // Open menu
         // Since right now snackbar will overlap with menu bar and we don't want to wait until snackbar is dismissed,
         // we cannot call onView(withId(R.id.btn_menu) here so call showMenu in MainActivity instead.
@@ -209,9 +212,11 @@ public class DownloadScreenshot extends BaseScreenshot {
                 .inRoot(RootMatchers.isPlatformPopup())
                 .perform(click());
 
+        SystemClock.sleep(MockUIUtils.POPUP_DELAY);
         // Check if delete successfully message is displayed
         onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
                 .check(matches(isDisplayed()));
+
         Screengrab.screenshot(ScreenshotNamingUtils.DOWNLOAD_DELETED);
         SystemClock.sleep(MockUIUtils.SHORT_DELAY);
 

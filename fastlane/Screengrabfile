@@ -1,0 +1,12 @@
+
+#locales ['en','hi','in','jv','su','th','tl','zh-TW','vi']
+locales ['vi','zh-TW']
+clear_previous_screenshots true
+exit_on_test_failure false
+test_instrumentation_runner  'org.mozilla.focus.test.runner.ScreenshotTestRunner'
+app_package_name 'org.mozilla.rocket.debug.firebase'
+use_tests_in_packages ['org.mozilla.focus.screengrab']
+#use_tests_in_classes ['org.mozilla.focus.screengrab.MyShotScreenshot']
+tests_apk_path 'app/build/outputs/apk/androidTest/focusWebkit/firebase/app-focus-webkit-firebase-androidTest.apk'
+app_apk_path 'app/build/outputs/apk/focusWebkit/firebase/app-focus-webkit-firebase.apk'
+reinstall_app true

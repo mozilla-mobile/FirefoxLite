@@ -75,7 +75,7 @@ class HistoryScreenshot : BaseScreenshot() {
         session {
             // browsing two web site, create two history record
             loadPageFromHomeSearchField(activityTestRule.activity, webServer.url(TEST_PATH_1).toString())
-            loadPageFromUrlBar(activityTestRule.activity, webServer.url(TEST_PATH_2).toString())
+            loadLocalPageFromUrlBar(activityTestRule.activity, webServer.url(TEST_PATH_2).toString())
             clickBrowserMenu()
             clickMenuHistory()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.HISTORY_PANEL)

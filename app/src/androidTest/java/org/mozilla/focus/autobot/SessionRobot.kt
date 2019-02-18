@@ -32,6 +32,14 @@ class SessionRobot : MenuRobot() {
     private lateinit var sessionLoadedIdlingResource: SessionLoadedIdlingResource
     private lateinit var screenshotIdlingResource: ScreenshotIdlingResource
 
+    private fun loadLocalPage(activity: MainActivity, url: String) {
+        // TODO find a way to remove the activity reference
+        sessionLoadedIdlingResource = SessionLoadedIdlingResource(activity)
+
+        // Enter test site url
+        onView(Matchers.allOf<View>(withId(R.id.url_edit), isDisplayed())).perform(replaceText(url), pressImeActionButton())
+        onView(Matchers.allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(url)))
+    }
     // Load and check if the test site is loaded
     private fun loadPage(activity: MainActivity, url: String) {
         // TODO find a way to remove the activity reference
@@ -54,6 +62,11 @@ class SessionRobot : MenuRobot() {
     fun loadPageFromUrlBar(activity: MainActivity, url: String) {
         onView(Matchers.allOf<View>(withId(R.id.display_url), isDisplayed())).perform(click())
         loadPage(activity, url)
+    }
+
+    fun loadLocalPageFromUrlBar(activity: MainActivity, url: String) {
+        onView(Matchers.allOf<View>(withId(R.id.display_url), isDisplayed())).perform(click())
+        loadLocalPage(activity, url)
     }
 
     /** Bookmark related */
