@@ -249,6 +249,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
         sessionManager.dropTab(focus.id)
         ScreenNavigator.get(activity).popToHomeScreen(true)
+        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
         return true
     }
 
@@ -332,6 +333,7 @@ class BrowserFragment : LocaleAwareFragment(),
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
         }
+        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
         ScreenNavigator.get(activity).popToHomeScreen(true)
     }
 

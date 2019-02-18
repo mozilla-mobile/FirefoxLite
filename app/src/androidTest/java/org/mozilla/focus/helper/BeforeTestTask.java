@@ -23,12 +23,14 @@ public class BeforeTestTask {
     private boolean skipFirstRun;
     private boolean clearBrowsingHistory;
     private boolean skipColorThemeOnBoarding;
+    private boolean enableSreenshotOnBoarding;
 
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
         this.skipFirstRun = builder.skipFirstRun;
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
         this.skipColorThemeOnBoarding = builder.skipColorThemeOnBoarding;
+        this.enableSreenshotOnBoarding = builder.enableSreenshotOnBoarding;
     }
 
     public void execute() {
@@ -50,7 +52,9 @@ public class BeforeTestTask {
                 settings.setRateAppDialogDidShow();
             }
             // disable screenshot on boarding
-            settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog);
+            if (!this.enableSreenshotOnBoarding) {
+                settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog);
+            }
         }
         if (this.clearBrowsingHistory) {
             //TODO: should consider using IdlingResource for DB operation or in-memory DB
@@ -74,6 +78,7 @@ public class BeforeTestTask {
 
     public static class Builder {
 
+        private boolean enableSreenshotOnBoarding;
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
         private boolean clearBrowsingHistory;
@@ -84,6 +89,7 @@ public class BeforeTestTask {
             this.skipFirstRun = true;
             this.clearBrowsingHistory = false;
             this.skipColorThemeOnBoarding = true;
+            this.enableSreenshotOnBoarding = false;
         }
 
         public Builder setRateAppPromotionEnabled(boolean enable) {
@@ -103,6 +109,11 @@ public class BeforeTestTask {
 
         public Builder setSkipColorThemeOnBoarding(boolean skipThemeOnBoarding) {
             this.skipColorThemeOnBoarding = skipThemeOnBoarding;
+            return this;
+        }
+
+        public Builder enableSreenshotOnBoarding(boolean enableSreenshotOnBoarding) {
+            this.enableSreenshotOnBoarding = enableSreenshotOnBoarding;
             return this;
         }
 
