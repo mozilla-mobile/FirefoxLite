@@ -38,7 +38,7 @@ public class FeatureModule {
     private SplitInstallManager mgr = null;
 
     public static String getFeatureModuleApkPath(Context ctx) {
-        return ctx.getPackageResourcePath().replace("base.apk", "split_geckopower.apk");
+        return ctx.getPackageResourcePath().replace("base.apk", "geckopower-master_2.apk");
     }
 
     public synchronized static FeatureModule getInstance() {

@@ -154,6 +154,12 @@ public final class GeckoLoader {
         if (sSQLiteLibsLoaded) {
             return;
         }
+        Log.d("nevin","1-----"+context.getClassLoader());
+        Log.d("nevin","2-----"+context.getPackageCodePath());
+        Log.d("nevin","3-----"+apkName);
+        Log.d("nevin","4-----"+context.getPackageName());
+        Log.d("nevin","5-----"+context.getCacheDir());
+        Log.d("nevin","6-----"+context.getExternalFilesDir(Environment.DIRECTORY_PICTURES));
 
         loadMozGlue(context);
         loadLibsSetupLocked(context);
