@@ -16,9 +16,10 @@ data class QuickSearch(
     var patternEncode: Boolean = false
 ) {
     fun generateLink(keyword: String): String {
-        var url = String.format(searchUrlPattern, keyword)
-        if (patternEncode) {
-            url = Uri.encode(url)
+        var url = if (patternEncode) {
+            Uri.encode(String.format(searchUrlPattern, keyword))
+        } else {
+            String.format(searchUrlPattern, Uri.encode(keyword))
         }
         return urlPrefix + url + urlSuffix
     }
