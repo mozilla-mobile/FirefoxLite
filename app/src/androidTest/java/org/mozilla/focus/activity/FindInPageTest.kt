@@ -8,12 +8,14 @@ package org.mozilla.focus.activity
 import android.Manifest
 import android.content.Intent
 import android.support.annotation.Keep
+import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.matcher.ViewMatchers.*
 import org.junit.Before
 import org.junit.Ignore
@@ -82,7 +84,7 @@ class FindInPageTest {
             closeButtonForFindInPage()
         }
 
-        onView(withId(R.id.find_in_page)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(Visibility.GONE)))
     }
 
     /**
@@ -106,10 +108,10 @@ class FindInPageTest {
 
         findInPage {
             findKeywordInPage("program")
-            naviKeywordSearchInPage(true)
-            naviKeywordSearchInPage(true)
-            naviKeywordSearchInPage(false)
-            naviKeywordSearchInPage(false)
+            navigateKeywordSearchInPage(true)
+            navigateKeywordSearchInPage(true)
+            navigateKeywordSearchInPage(false)
+            navigateKeywordSearchInPage(false)
         }
     }
 
@@ -130,12 +132,16 @@ class FindInPageTest {
             clickMenuFindInPage()
         }
 
+        onView(withId(R.id.find_in_page)).perform(click())
+
         findInPage {
             findKeywordInPage("program")
         }
 
-        onView(withId(R.id.find_in_page_query_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.find_in_page)).check(matches(isDisplayed()))
+        Espresso.pressBack()
+        Espresso.pressBack()
+
+        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(Visibility.GONE)))
     }
 
     /**

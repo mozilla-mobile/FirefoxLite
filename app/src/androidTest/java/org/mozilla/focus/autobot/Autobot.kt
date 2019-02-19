@@ -87,12 +87,12 @@ class FindInPageRobot : MenuRobot() {
         onView(withId(R.id.find_in_page_query_text)).perform(replaceText(keyword))
     }
 
-    fun naviKeywordSearchInPage(forward: Boolean = false) {
-        // default action is to view the next search result
-        onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.find_in_page_prev_btn)).check(matches(isDisplayed()))
-        onView(withId(R.id.find_in_page_next_btn)).check(matches(isDisplayed()))
-        onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
+    fun navigateKeywordSearchInPage(forward: Boolean = false) {
+//        // default action is to view the next search result
+//        onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
+//        onView(withId(R.id.find_in_page_prev_btn)).check(matches(isDisplayed()))
+//        onView(withId(R.id.find_in_page_next_btn)).check(matches(isDisplayed()))
+//        onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
         if (forward) onView(withId(R.id.find_in_page_prev_btn)).perform(click())
         else onView(withId(R.id.find_in_page_next_btn)).perform(click())
     }
