@@ -9,6 +9,7 @@ import android.Manifest
 import android.content.Intent
 import android.support.annotation.Keep
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
@@ -21,9 +22,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
 import org.mozilla.focus.autobot.findInPage
-import org.mozilla.focus.autobot.runWithIdleRes
 import org.mozilla.focus.autobot.session
-import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
 
 @Keep
@@ -45,7 +44,7 @@ class FindInPageTest {
     }
 
     companion object {
-        private val TARGET_URL_SITE = "file:///android_asset/gpl.html"
+        private const val TARGET_URL_SITE = "file:///android_asset/gpl.html"
     }
 
     /**
@@ -61,6 +60,8 @@ class FindInPageTest {
     @Test
     fun findInPageAndScroll() {
 
+        val keyword = "program"
+
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
             clickBrowserMenu()
@@ -68,10 +69,20 @@ class FindInPageTest {
         }
 
         findInPage {
-            findKeywordInPage("program")
+            findKeywordInPage(keyword)
         }
 
+        onView(withId(R.id.webview_slot)).perform(swipeUp())
+        onView(withId(R.id.webview_slot)).perform(swipeDown())
+        onView(withId(R.id.find_in_page_query_text)).check(matches(withText(keyword)))
         onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
+
+        findInPage {
+            findKeywordInPage("program")
+            closeButtonForFindInPage()
+        }
+
+        onView(withId(R.id.find_in_page)).check(matches(isDisplayed()))
     }
 
     /**
@@ -95,6 +106,10 @@ class FindInPageTest {
 
         findInPage {
             findKeywordInPage("program")
+            naviKeywordSearchInPage(true)
+            naviKeywordSearchInPage(true)
+            naviKeywordSearchInPage(false)
+            naviKeywordSearchInPage(false)
         }
     }
 
@@ -107,9 +122,20 @@ class FindInPageTest {
      * 4. Tap system Back key twice"
      */
     @Test
-    @Ignore
     fun closeFindInPageWithSystemBackKey() {
 
+        session {
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            clickBrowserMenu()
+            clickMenuFindInPage()
+        }
+
+        findInPage {
+            findKeywordInPage("program")
+        }
+
+        onView(withId(R.id.find_in_page_query_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page)).check(matches(isDisplayed()))
     }
 
     /**
@@ -123,7 +149,7 @@ class FindInPageTest {
     @Test
     @Ignore
     fun closeFindInPageWithExternalLink() {
-
+        
     }
 
     /**

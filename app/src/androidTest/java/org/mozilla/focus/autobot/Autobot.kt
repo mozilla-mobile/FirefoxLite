@@ -97,7 +97,7 @@ class FindInPageRobot : MenuRobot() {
         else onView(withId(R.id.find_in_page_next_btn)).perform(click())
     }
 
-    fun closeFindInPageBar() {
+    fun closeButtonForFindInPage() {
         onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
         onView(withId(R.id.find_in_page_close_btn)).perform(click())
     }
