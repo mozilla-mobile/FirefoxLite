@@ -76,7 +76,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             matchingFallbacks = ["firebase"]
         }
@@ -168,6 +167,9 @@ android {
         // used by Room, to test migrations
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
+    dynamicFeatures = [":geckopower"]
+
+
 }
 
 repositories {
@@ -180,12 +182,10 @@ repositories {
 dependencies {
     implementation project(':telemetry-annotation')
     kapt project(':telemetry-compiler')
-
     implementation project(':third_party:subsampling-scale-image-view')
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
     kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
-
     implementation project(':firebase')
     implementation project(':feature-tabs')
     implementation project(':HttpRequest')
@@ -197,16 +197,18 @@ dependencies {
     implementation project(':threadutils')
     implementation project(':cachedrequestloader')
     implementation project(':permissionhandler')
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
     // We didn't use CustomTabs so far. This is a build hack to force Android-Components to use
+
     // same version of support library as we are. Android-Components depends on CustomTabs which
+
     // version will be override by this.
+
     // We can get rid of this once Android-Components' issue #404 has been resolve.
     implementation "com.android.support:customtabs:${Versions.support}"
     implementation "com.android.support:support-v4:${Versions.support}"
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    api "com.android.support:appcompat-v7:${Versions.support}"
     implementation "com.android.support:design:${Versions.support}"
     implementation "com.android.support:cardview-v7:${Versions.support}"
     implementation "com.android.support:recyclerview-v7:${Versions.support}"
@@ -218,28 +220,26 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:${Versions.room}"
     implementation "android.arch.navigation:navigation-fragment:${Versions.navigation}"
     kapt "android.arch.persistence.room:compiler:${Versions.room}"
-
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
         // Without this we get weird failures due to dependencies.
         transitive = false
     })
-
     implementation "org.mozilla.components:browser-session:${Versions.android_components}"
     implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
     implementation "org.mozilla.components:browser-domains:${Versions.android_components}"
     implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
-
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
-    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
+    implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}"
+
+    // Dynamic delivery
+    api "com.google.android.play:core:${Versions.play_core}"
+
     // Required by Adjust
-
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
-
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
-
     androidTestImplementation("com.android.support.test.espresso:espresso-core:${Versions.espresso}", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -266,7 +266,6 @@ dependencies {
     coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
-
 }
 
 // -------------------------------------------------------------------------------------------------

@@ -2,42 +2,49 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/fixed_menu_height"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:layout_gravity="center_horizontal|bottom">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/fixed_menu_height"
+             app:layout_constraintBottom_toBottomOf="parent"
+             android:layout_gravity="center_horizontal|bottom">
 
     <org.mozilla.focus.widget.EqualDistributeGrid
-        android:id="@+id/home_screen_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin"
-        android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin">
+            android:id="@+id/home_screen_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/home_fixed_menu_horizontal_margin"
+            android:layout_marginStart="@dimen/home_fixed_menu_horizontal_margin">
 
         <org.mozilla.focus.tabs.TabCounter
-            android:id="@+id/btn_tab_tray"
-            style="@style/HomeMenuButton"
-            app:drawableColor="@color/home_bottom_button" />
+                android:id="@+id/btn_tab_tray"
+                style="@style/HomeMenuButton"
+                app:drawableColor="@color/home_bottom_button"/>
+
+        <org.mozilla.rocket.nightmode.themed.ThemedImageButton
+                android:id="@+id/btn_home_gecko"
+                style="@style/HomeMenuButton"
+                app:drawableColor="@color/home_bottom_button"
+                android:src="@drawable/action_add"
+                android:tint="@color/browser_menu_button"/>
 
         <include
-            style="@style/HomeMenuButton"
-            layout="@layout/button_open_new_tab"
-            android:visibility="invisible" />
+                style="@style/HomeMenuButton"
+                layout="@layout/button_open_new_tab"
+                android:visibility="invisible"/>
 
         <include
-            style="@style/HomeMenuButton"
-            layout="@layout/button_search"
-            android:visibility="invisible" />
+                style="@style/HomeMenuButton"
+                layout="@layout/button_search"
+                android:visibility="invisible"/>
 
         <include
-            style="@style/HomeMenuButton"
-            layout="@layout/button_capture"
-            android:visibility="invisible" />
+                style="@style/HomeMenuButton"
+                layout="@layout/button_capture"
+                android:visibility="invisible"/>
 
         <include
-            style="@style/HomeMenuButton"
-            layout="@layout/button_more_white" />
+                style="@style/HomeMenuButton"
+                layout="@layout/button_more_white"/>
     </org.mozilla.focus.widget.EqualDistributeGrid>
 </FrameLayout>

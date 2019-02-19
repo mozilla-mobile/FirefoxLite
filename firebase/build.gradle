@@ -37,12 +37,10 @@ android {
 }
 
 dependencies {
-
     firebaseImplementation "com.google.firebase:firebase-core:${Versions.firebase}"
     firebaseImplementation "com.google.firebase:firebase-config:${Versions.firebase}"
     firebaseApi "com.google.firebase:firebase-messaging:${Versions.fcm}"
     firebaseImplementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
-
 }
 
 android.variantFilter { variant ->

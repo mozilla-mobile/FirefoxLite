@@ -83,6 +83,7 @@ import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.banner.BannerViewHolder;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.geckopower.FeatureModule;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
@@ -383,6 +384,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
+        view.findViewById(R.id.btn_home_gecko).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeatureModule.install(v.getContext());
+            }
+        });
         this.tabCounter = view.findViewById(R.id.btn_tab_tray);
         this.tabCounter.setOnClickListener(menuItemClickListener);
         updateTabCounter();

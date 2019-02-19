@@ -4,14 +4,13 @@ apply from: "$rootProject.projectDir/buildSrc/checkstyle.gradle"
 apply from: "$rootProject.projectDir/buildSrc/findbugs.gradle"
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':urlutils')
     implementation "com.android.support:appcompat-v7:${Versions.support}"
     testImplementation "junit:junit:${Versions.junit}"
     androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
-    compileOnly("com.google.code.findbugs:annotations:${Versions.findbugs}")
+    compileOnly "com.google.code.findbugs:annotations:${Versions.findbugs}"
 }
 
 afterEvaluate {

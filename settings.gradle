@@ -1,4 +1,4 @@
-include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler'
+include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils',  'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
@@ -17,3 +17,5 @@ include ':third_party:subsampling-scale-image-view'
 include ':third_party:glide:library'
 include ':third_party:glide:annotation'
 include ':third_party:glide:disklrucache'
+include ':geckopower'
+project(':geckopower').projectDir = new File('components/feature/geckopower')

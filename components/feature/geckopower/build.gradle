@@ -1,0 +1,64 @@
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
+    }
+
+    buildTypes {
+        release {
+
+        }
+        debug {
+
+        }
+        coverage {
+            initWith debug
+            matchingFallbacks = ["debug"]
+        }
+        firebase {
+            initWith debug
+            matchingFallbacks = ["debug"]
+        }
+    }
+    flavorDimensions "product", "engine"
+
+    productFlavors {
+        focus {
+            dimension "product"
+        }
+
+        preview {
+            dimension "product"
+        }
+
+        webkit {
+            dimension "engine"
+        }
+    }
+    variantFilter { variant ->
+        def flavors = variant.flavors*.name
+        // We only need a nightly release for now
+        if (flavors.contains("preview") && variant.buildType.name != "release") {
+            setIgnore(true)
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':app')
+    implementation "org.mozilla.geckoview:geckoview-${Versions.geckoviewChannel}-x86:${Versions.geckoviewVersion}"
+}

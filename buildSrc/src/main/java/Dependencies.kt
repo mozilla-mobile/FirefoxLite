@@ -36,6 +36,9 @@ object Versions {
     const val fabric_plugin = "1.25.1"
     const val fastlane_screengrab = "1.2.0"
     const val jraska_falcon = "2.0.1"
+    const val geckoviewChannel = "nightly"
+    const val geckoviewVersion = "64.0.20180927100037"
+    const val play_core = "1.3.7"
 }
 
 object SystemEnv {
