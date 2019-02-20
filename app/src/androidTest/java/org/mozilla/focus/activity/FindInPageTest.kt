@@ -10,19 +10,24 @@ import android.content.Intent
 import android.support.annotation.Keep
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.*
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.swipeDown
+import android.support.test.espresso.action.ViewActions.swipeUp
 import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.matcher.ViewMatchers
+import android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.withText
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
-import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.autobot.findInPage
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
@@ -84,7 +89,7 @@ class FindInPageTest {
             closeButtonForFindInPage()
         }
 
-        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
     }
 
     /**
@@ -141,7 +146,7 @@ class FindInPageTest {
         Espresso.pressBack()
         Espresso.pressBack()
 
-        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
     }
 
     /**
@@ -155,7 +160,6 @@ class FindInPageTest {
     @Test
     @Ignore
     fun closeFindInPageWithExternalLink() {
-        
     }
 
     /**
@@ -188,6 +192,5 @@ class FindInPageTest {
     @Test
     @Ignore
     fun keyboardBehaviorForFindInPage() {
-
     }
 }
