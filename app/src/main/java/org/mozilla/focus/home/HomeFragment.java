@@ -593,8 +593,20 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (isTabRestoredComplete()) {
             tabCounter.setCount(tabCount);
         }
+        if (AppConfigWrapper.enablePrivateTabs(this.getContext())) {
+            // in private tabs, tabcounter is always enabled...need UX design confirm
+            tabCounter.setEnabled(true);
+        } else {
+            if (tabCount == 0) {
+                tabCounter.setEnabled(false);
+                tabCounter.setAlpha(ALPHA_TAB_COUNTER_DISABLED);
 
-        tabCounter.setEnabled(true);
+            } else {
+                tabCounter.setEnabled(true);
+                tabCounter.setAlpha(1f);
+            }
+        }
+
     }
 
     private boolean isTabRestoredComplete() {

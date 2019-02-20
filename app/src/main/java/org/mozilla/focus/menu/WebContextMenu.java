@@ -29,6 +29,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.download.GetImgHeaderTask;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
@@ -109,6 +110,9 @@ public class WebContextMenu {
 
         final String targetUrl = hitTarget.isLink ? hitTarget.linkURL : hitTarget.imageURL;
         boolean canOpenInNewTab = canOpenInNewTab(dialog.getOwnerActivity(), targetUrl);
+
+        // so far, Private Mode does not support multiple tabs
+        canOpenInNewTab = canOpenInNewTab && (!inPrivate && AppConfigWrapper.enablePrivateTabs(dialog.getContext()));
 
         navigationView.getMenu().findItem(R.id.menu_new_tab).setVisible(canOpenInNewTab && hitTarget.isLink);
         navigationView.getMenu().findItem(R.id.menu_new_tab_image).setVisible(canOpenInNewTab && !hitTarget.isLink && hitTarget.isImage);

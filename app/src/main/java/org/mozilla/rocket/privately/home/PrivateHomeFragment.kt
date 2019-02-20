@@ -16,14 +16,17 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.FileChooserParams
+import android.widget.RelativeLayout
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.tabs.TabCounter
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_TAB_TRAY
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
+import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewEngineSession
@@ -37,6 +40,8 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     private lateinit var logoMan: LottieAnimationView
     private lateinit var fakeInput: View
     private lateinit var tabCounter: TabCounter
+    private lateinit var btnBack: RelativeLayout
+    private lateinit var lottieMask: LottieAnimationView
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
@@ -48,13 +53,25 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         sessionManager.register(managerObserver)
 
         val view = inflater.inflate(R.layout.fragment_private_homescreen, container, false)
+        btnBack = view.findViewById(R.id.pm_home_back)
+        lottieMask = view.findViewById(R.id.pm_home_mask)
         logoMan = view.findViewById(R.id.pm_home_logo)
         fakeInput = view.findViewById(R.id.pm_home_fake_input)
         tabCounter = view.findViewById(R.id.btn_tab_tray)
+        if (AppConfigWrapper.enablePrivateTabs(context)) {
+            tabCounter.visibility = View.VISIBLE
+            lottieMask.visibility = View.GONE
+            btnBack.visibility = View.GONE
+        } else {
+            tabCounter.visibility = View.GONE
+            lottieMask.visibility = View.VISIBLE
+            btnBack.visibility = View.VISIBLE
+        }
 
         ClickListener(this).let {
             fakeInput.setOnClickListener(it)
             tabCounter.setOnClickListener(it)
+            btnBack.setOnClickListener(it)
         }
 
         observeViewModel()
@@ -96,6 +113,9 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     private fun animatePrivateHome() {
+        if (!AppConfigWrapper.enablePrivateTabs(context)) {
+            lottieMask.playAnimation()
+        }
         logoMan.playAnimation()
     }
 
@@ -144,6 +164,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             when (v?.id) {
                 R.id.pm_home_fake_input -> parent.onNotified(fragment, SHOW_URL_INPUT, null)
                 R.id.btn_tab_tray -> parent.onNotified(fragment, SHOW_TAB_TRAY, null)
+                R.id.pm_home_back -> parent.onNotified(fragment, TOGGLE_PRIVATE_MODE, null) // remove this if we have private mode
             }
         }
     }

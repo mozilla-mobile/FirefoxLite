@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -49,6 +50,7 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
@@ -57,6 +59,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.rocket.privately.PrivateMode;
+import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
@@ -224,7 +227,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 break;
 
             case R.id.btn_mode:
-                onModeClicked();
+                // there's no UI to swap, so I can only handle differently here
+                if (AppConfigWrapper.enablePrivateTabs(getContext())) {
+                    onModeClicked();
+                } else {
+                    TelemetryWrapper.privateModeTray();
+                    startActivity(new Intent(getContext(), PrivateModeActivity.class));
+                    getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
+                }
                 break;
 
             default:

@@ -47,6 +47,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
     // Key for local broadcast
     public static final String FIREBASE_READY = "Firebase_ready";
 
+    static final String BOOL_ENABLE_PRIVATE_TABS = "enable_private_tabs";
+
     static final String RATE_APP_DIALOG_THRESHOLD = "rate_app_dialog_threshold";
     static final String RATE_APP_NOTIFICATION_THRESHOLD = "rate_app_notification_threshold";
     static final String SHARE_APP_DIALOG_THRESHOLD = "share_app_dialog_threshold";
@@ -299,6 +301,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.VPN_RECOMMENDER_PACKAGE, FeatureSurveyViewHelper.Constants.PACKAGE_RECOMMEND_VPN);
         map.put(FirebaseHelper.VPN_RECOMMENDER_URL, FeatureSurveyViewHelper.Constants.LINK_RECOMMEND_VPN);
         map.put(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES, FirstLaunchWorker.TIMER_DISABLED);
+        map.put(FirebaseHelper.BOOL_ENABLE_PRIVATE_TABS, AppConfigWrapper.BOOL_ENABLE_PRIVATE_TABS);
 
         return map;
     }
