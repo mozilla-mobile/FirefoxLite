@@ -101,6 +101,7 @@
   <string name="label_menu_exit">Выход</string>
   <string name="permission_toast_location_deny">Запрос на доступ к местоположению отклонен.</string>
   <string name="permission_toast_storage_deny">Запрос на использование хранилища отклонен.</string>
+  <string name="permission_handler_permission_dialog_setting">параметры</string>
   <string name="permission_dialog_not_now">не сейчас</string>
   <string name="permission_toast_location">Местоположение недоступно. Дайте разрешение на доступ к вашему местоположению.</string>
   <string name="permission_toast_storage">Хранилище недоступно. Дайте разрешение на хранение фотографий и файлов на вашем устройстве.</string>

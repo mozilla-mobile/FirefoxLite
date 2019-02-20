@@ -101,6 +101,7 @@
   <string name="label_menu_exit">Thoát</string>
   <string name="permission_toast_location_deny">Quyền truy cập địa điểm bị từ chối.</string>
   <string name="permission_toast_storage_deny">Quyền lưu trữ bị từ chối.</string>
+  <string name="permission_handler_permission_dialog_setting">cài đặt</string>
   <string name="permission_dialog_not_now">không phải bây giờ</string>
   <string name="permission_toast_location">Địa điểm không có sẵn. Cho phép để truy cập vị trí của bạn.</string>
   <string name="permission_toast_storage">Lưu trữ không có sẵn. Cho phép để lưu trữ ảnh và tập tin trên thiết bị của bạn.</string>
