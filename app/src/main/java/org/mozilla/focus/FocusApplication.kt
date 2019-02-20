@@ -46,6 +46,10 @@ class FocusApplication : LocaleAwareApplication() {
         return super.getDir(name, mode)
     }
 
+    override fun getPackageResourcePath(): String {
+        return super.getApplicationInfo().splitPublicSourceDirs[0]
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) {
