@@ -21,6 +21,7 @@ class PrivateMode {
     // Provide common resources, and helper functions
     companion object {
         const val PREF_KEY_PRIVATE_MODE_ENABLED = "pref_key_private_mode_enabled"
+        const val PREF_KEY_PRIVATE_TABS_ENABLED = "pref_key_private_tabs_enabled"
         const val PREF_KEY_SANITIZE_REMINDER = "pref_key_sanitize_reminder"
 
         const val INTENT_EXTRA_SANITIZE = "intent_extra_sanitize"

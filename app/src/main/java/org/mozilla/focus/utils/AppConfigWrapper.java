@@ -6,6 +6,9 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
+
+import static org.mozilla.rocket.privately.PrivateMode.PREF_KEY_PRIVATE_TABS_ENABLED;
 
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
@@ -16,7 +19,10 @@ public class AppConfigWrapper {
     static final int DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD = 2;
 
     public static boolean enablePrivateTabs(Context context) {
-        return FirebaseHelper.getRcBoolean(context, FirebaseHelper.BOOL_ENABLE_PRIVATE_TABS);
+        // either local pref or Firebase Remote Config enables private tabs, it's enabled.
+        return FirebaseHelper.getRcBoolean(context, FirebaseHelper.BOOL_ENABLE_PRIVATE_TABS)
+                || PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_KEY_PRIVATE_TABS_ENABLED, true);
     }
 
     public static long getRateAppNotificationLaunchTimeThreshold(Context context) {
