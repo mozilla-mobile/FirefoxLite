@@ -26,7 +26,6 @@ import org.hamcrest.core.Is
 import org.junit.Assert
 import org.junit.Rule
 import org.mozilla.focus.R
-import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.helper.ActivityRecreateLeakWatcherIdlingResource
 import org.mozilla.focus.utils.FirebaseHelper

@@ -15,7 +15,6 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.matcher.ViewMatchers.*
 import org.junit.Before
 import org.junit.Ignore
@@ -23,6 +22,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
+import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.autobot.findInPage
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
