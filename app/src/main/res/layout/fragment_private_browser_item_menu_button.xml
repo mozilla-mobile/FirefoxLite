@@ -20,6 +20,12 @@
         android:layout_marginEnd="@dimen/browser_fixed_menu_horizontal_margin"
         android:layout_marginStart="@dimen/browser_fixed_menu_horizontal_margin">
 
+        <ImageButton
+            android:id="@+id/pbf_btn_mode"
+            style="@style/MainMenuButton"
+            android:tint="@color/colorPrimaryDark"
+            app:srcCompat="@drawable/private_browsing_mask"/>
+
         <org.mozilla.focus.tabs.TabCounter
             android:id="@+id/btn_tab_tray"
             style="@style/MainMenuButton"
@@ -42,6 +48,12 @@
             style="@style/MainMenuButton"
             android:tint="@color/private_menu_button"
             app:srcCompat="@drawable/ic_refresh" />
+
+        <ImageButton
+            android:id="@+id/btn_delete"
+            style="@style/MainMenuButton"
+            android:tint="@color/private_menu_button"
+            app:srcCompat="@drawable/ic_delete" />
 
         <ImageButton
             android:id="@+id/btn_next"

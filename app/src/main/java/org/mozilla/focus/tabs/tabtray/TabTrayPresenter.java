@@ -29,19 +29,23 @@ public class TabTrayPresenter implements TabTrayContract.Presenter {
     @Override
     public void viewReady() {
         final List<Session> tabs = model.getTabs();
-        model.subscribe(new TabTrayContract.Model.Observer() {
-            @Override
-            public void onUpdate(List<Session> newTabs) {
-                view.refreshData(newTabs, model.getFocusedTab());
-                model.loadTabs(null);
-            }
+        if (tabs.isEmpty()) {
+            view.closeTabTray();
+        } else {
+            model.subscribe(new TabTrayContract.Model.Observer() {
+                @Override
+                public void onUpdate(List<Session> newTabs) {
+                    view.refreshData(newTabs, model.getFocusedTab());
+                    model.loadTabs(null);
+                }
 
-            @Override
-            public void onTabUpdate(Session tab) {
-                view.refreshTabData(tab);
-            }
-        });
-        view.showFocusedTab(tabs.indexOf(model.getFocusedTab()));
+                @Override
+                public void onTabUpdate(Session tab) {
+                    view.refreshTabData(tab);
+                }
+            });
+            view.showFocusedTab(tabs.indexOf(model.getFocusedTab()));
+        }
     }
 
     @Override

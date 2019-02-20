@@ -34,6 +34,7 @@ import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.tabs.TabCounter
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -79,8 +80,10 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var siteIdentity: ImageView
 
     private lateinit var btnLoad: ImageButton
+    private lateinit var btnDelete: ImageButton
     private lateinit var btnNext: ImageButton
     private lateinit var tabCounter: TabCounter
+    private lateinit var btnMode: ImageButton
 
     private var isLoading: Boolean = false
 
@@ -123,9 +126,22 @@ class BrowserFragment : LocaleAwareFragment(),
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
 
+        btnDelete = (view.findViewById(R.id.btn_delete))
         btnNext = (view.findViewById(R.id.btn_next))
+        btnNext.isEnabled = false
         btnLoad = (view.findViewById(R.id.btn_load))
         tabCounter = view.findViewById(R.id.btn_tab_tray)
+        btnMode = view.findViewById(R.id.pbf_btn_mode)
+
+        if (AppConfigWrapper.enablePrivateTabs(context)) {
+            tabCounter.visibility = View.VISIBLE
+            btnMode.visibility = View.GONE
+            btnDelete.visibility = View.GONE
+        } else {
+            tabCounter.visibility = View.GONE
+            btnMode.visibility = View.VISIBLE
+            btnDelete.visibility = View.VISIBLE
+        }
 
         with(clickListener) {
             view.findViewById<View>(R.id.btn_search).setOnClickListener(this)
@@ -133,6 +149,8 @@ class BrowserFragment : LocaleAwareFragment(),
             btnNext.setOnClickListener(this)
             btnLoad.setOnClickListener(this)
             tabCounter.setOnClickListener(this)
+            btnMode.setOnClickListener(this)
+            btnDelete.setOnClickListener(this)
         }
 
         view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
@@ -257,7 +275,12 @@ class BrowserFragment : LocaleAwareFragment(),
 
         sessionManager.dropTab(focus.id)
         ScreenNavigator.get(activity).popToHomeScreen(true)
-        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        if (!AppConfigWrapper.enablePrivateTabs(context)) {
+            // when we have multi tabs, it's easy to show home while there are other tabs opening.
+            // And the user may not want to sanitize right away.
+            // So I think below code is only useful when it's single tab implementation
+            listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        }
         return true
     }
 
@@ -291,7 +314,7 @@ class BrowserFragment : LocaleAwareFragment(),
             if (sessionManager.tabsCount == 0) {
                 sessionManager.addTab(url, TabUtil.argument(null, false, true))
             } else {
-                if (openNewTab) {
+                if (openNewTab && AppConfigWrapper.enablePrivateTabs(context)) {
                     sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true))
                 } else {
                     sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
@@ -314,6 +337,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private fun registerData(activity: FragmentActivity) {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
         shared.getUrl().observe(this, Observer<String> { url ->
+            // here we want to add a new tab, but loadUrl() will decide if it's allowed
             url?.let { loadUrl(it, true, false, null) }
         })
     }
@@ -345,6 +369,14 @@ class BrowserFragment : LocaleAwareFragment(),
         }
     }
 
+    fun onDeleteClicked() {
+        for (tab in sessionManager.getTabs()) {
+            sessionManager.dropTab(tab.id)
+            listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+            ScreenNavigator.get(activity).popToHomeScreen(true)
+        }
+    }
+
     class ClickListener(val fragment: BrowserFragment) : View.OnClickListener {
         val parent: FragmentListener = if (fragment.activity is FragmentListener)
             fragment.activity as FragmentListener
@@ -355,8 +387,10 @@ class BrowserFragment : LocaleAwareFragment(),
                 R.id.btn_search -> parent.onNotified(fragment, TYPE.SHOW_URL_INPUT, fragment.displayUrlView.text)
                 R.id.btn_open_new_tab -> ScreenNavigator.get(fragment.activity).popToHomeScreen(true)
                 R.id.btn_next -> fragment.onNextClicked()
+                R.id.btn_delete -> fragment.onDeleteClicked()
                 R.id.btn_tab_tray -> parent.onNotified(fragment, TYPE.SHOW_TAB_TRAY, null)
                 R.id.btn_load -> fragment.onLoadClicked()
+                R.id.pbf_btn_mode -> fragment.onModeClicked()
             }
         }
     }
@@ -470,6 +504,7 @@ class BrowserFragment : LocaleAwareFragment(),
             fragment.tabCounter.setCount(count)
         }
 
+        //TODO:make sure this will only work for multi tabs in private mode, if yes, we can keep it
         override fun onFocusChanged(session: Session?, factor: Factor) {
             if (session == null) {
                 // FIXME:
