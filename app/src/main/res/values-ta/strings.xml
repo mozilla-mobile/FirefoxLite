@@ -101,7 +101,6 @@
   <string name="label_menu_exit">வெளியேறு</string>
   <string name="permission_toast_location_deny">இருப்பிட அனுமதி மறுக்கப்பட்டுள்ளது.</string>
   <string name="permission_toast_storage_deny">சேமிப்பக அனுமதி மறுக்கப்பட்டுள்ளது.</string>
-  <string name="permission_handler_permission_dialog_setting">அமைவுகள்</string>
   <string name="permission_dialog_not_now">இப்போதில்லை</string>
   <string name="permission_toast_location">இருப்பிடம் கிடைக்கவில்லை. உங்கள் இருப்பிடத்தை அறிய அனுமதி தாருங்கள்.</string>
   <string name="permission_toast_storage">சேமிப்பகம் கிடைக்கவில்லை. படங்கள் மற்றும் கோப்புகளை உங்களுடைய கருவியில் சேமிக்க அனுமதியுங்கள்.</string>
