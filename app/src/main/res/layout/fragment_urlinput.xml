@@ -63,34 +63,43 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/divider"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/quick_search_container"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
             android:layout_above="@id/input_container"
-            android:background="@color/paletteLightGreyA100" />
+            android:visibility="gone">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/quick_search_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_margin_m7"
-            android:layout_above="@id/divider"
-            android:clipToPadding="false"
-            android:background="@color/paletteLightGreyB100"
-            android:paddingStart="16dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/quick_search_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_margin_m7"
+                android:background="@color/paletteLightGreyB100"
+                android:clipToPadding="false"
+                android:paddingStart="16dp" />
 
-        <View
-            android:layout_width="16dp"
-            android:layout_height="@dimen/common_margin_m7"
-            android:layout_alignEnd="@id/quick_search_recycler_view"
-            android:layout_alignTop="@id/quick_search_recycler_view"
-            android:background="@drawable/overflow_mask"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/paletteLightGreyA100"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/quick_search_recycler_view" />
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="@dimen/common_margin_m7"
+                android:layout_alignEnd="@id/quick_search_container"
+                android:layout_alignTop="@id/quick_search_container"
+                android:background="@drawable/overflow_mask"
+                app:layout_constraintEnd_toEndOf="@id/quick_search_recycler_view"
+                app:layout_constraintTop_toTopOf="@id/quick_search_recycler_view" />
+        </android.support.constraint.ConstraintLayout>
 
         <org.mozilla.focus.widget.FlowLayout
             android:id="@+id/search_suggestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/quick_search_recycler_view"
+            android:layout_above="@id/quick_search_container"
             android:layout_margin="10dp"
             android:animateLayoutChanges="true"
             tools:background="#55FF0000" />
