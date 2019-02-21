@@ -47,7 +47,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private lateinit var suggestionView: FlowLayout
     private lateinit var clearView: View
     private lateinit var dismissView: View
-    private lateinit var quickSearchView: RecyclerView
+    private lateinit var quickSearchRecyclerView: RecyclerView
+    private lateinit var quickSearchView: ViewGroup
     private var lastRequestTime: Long = 0
     private var autoCompleteInProgress: Boolean = false
     private var allowSuggestion: Boolean = false
@@ -97,8 +98,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     private fun initQuickSearch(view: View) {
-        quickSearchView = view.findViewById(R.id.quick_search_recycler_view)
-        quickSearchView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        quickSearchView = view.findViewById(R.id.quick_search_container)
+        quickSearchRecyclerView = view.findViewById(R.id.quick_search_recycler_view)
+        quickSearchRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val quickSearchAdapter = QuickSearchAdapter(fun(quickSearch: QuickSearch) {
             if (TextUtils.isEmpty(urlView.text)) {
                 openUrl(quickSearch.homeUrl)
@@ -107,7 +109,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             }
             TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
         })
-        quickSearchView.adapter = quickSearchAdapter
+        quickSearchRecyclerView.adapter = quickSearchAdapter
         Inject.obtainQuickSearchViewModel(activity).quickSearchObservable.observe(
                 viewLifecycleOwner,
                 Observer { quickSearchList ->
@@ -265,6 +267,14 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             item.setOnClickListener(this)
             item.setOnLongClickListener(this)
             this.suggestionView.addView(item)
+        }
+    }
+
+    override fun setQuickSearchVisible(visible: Boolean) {
+        if (visible) {
+            quickSearchView.visibility = View.VISIBLE
+        } else {
+            quickSearchView.visibility = View.GONE
         }
     }
 

@@ -26,6 +26,13 @@ public class UrlInputContract {
          * @param texts
          */
         void setSuggestions(@Nullable List<CharSequence> texts);
+
+        /**
+         * Set quick search view's visibility
+         *
+         * @param visible
+         */
+        void setQuickSearchVisible(boolean visible);
     }
 
     interface Presenter {
