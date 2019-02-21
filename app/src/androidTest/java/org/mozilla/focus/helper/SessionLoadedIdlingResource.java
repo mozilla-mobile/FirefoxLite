@@ -128,10 +128,7 @@ public class SessionLoadedIdlingResource implements IdlingResource {
 
         @Override
         public void onFindResult(@NotNull Session session, @NotNull mozilla.components.browser.session.Session.FindResult result) {
-            isCompleted = result.isDoneCounting();
-            if (result.isDoneCounting()) {
-                invokeCallback();
-            }
+
         }
 
         @Override

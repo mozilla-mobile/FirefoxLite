@@ -1,5 +1,6 @@
 package org.mozilla.focus.autobot
 
+import android.content.Context
 import android.content.Intent
 import android.preference.PreferenceManager
 import android.support.test.InstrumentationRegistry
@@ -9,8 +10,7 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.IdlingResource
 import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.replaceText
+import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
@@ -20,6 +20,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import android.support.v7.widget.RecyclerView
+import android.view.inputmethod.InputMethodManager
 import android.widget.Switch
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
@@ -81,18 +82,14 @@ class ScreenshotRobot : MenuRobot() {
 
 class FindInPageRobot : MenuRobot() {
 
-    fun findKeywordInPage(keyword: String) {
+    fun findKeywordInPage(keyword: String, imeAction : Boolean = true) {
 
         onView(withId(R.id.find_in_page_query_text)).check(matches(isDisplayed()))
         onView(withId(R.id.find_in_page_query_text)).perform(replaceText(keyword))
+        if (imeAction) onView(withId(R.id.find_in_page_query_text)).perform(pressImeActionButton())
     }
 
     fun navigateKeywordSearchInPage(forward: Boolean = false) {
-//        // default action is to view the next search result
-//        onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
-//        onView(withId(R.id.find_in_page_prev_btn)).check(matches(isDisplayed()))
-//        onView(withId(R.id.find_in_page_next_btn)).check(matches(isDisplayed()))
-//        onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
         if (forward) onView(withId(R.id.find_in_page_prev_btn)).perform(click())
         else onView(withId(R.id.find_in_page_next_btn)).perform(click())
     }
@@ -100,6 +97,11 @@ class FindInPageRobot : MenuRobot() {
     fun closeButtonForFindInPage() {
         onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
         onView(withId(R.id.find_in_page_close_btn)).perform(click())
+    }
+
+    fun isKeyboardShown() : Boolean {
+        val inputMethodManager = InstrumentationRegistry.getInstrumentation().targetContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        return inputMethodManager.isAcceptingText
     }
 }
 

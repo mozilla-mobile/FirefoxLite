@@ -7,6 +7,7 @@ package org.mozilla.focus.activity
 
 import android.Manifest
 import android.content.Intent
+import android.net.Uri
 import android.support.annotation.Keep
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
@@ -18,12 +19,10 @@ import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
+import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,13 +31,8 @@ import org.mozilla.focus.autobot.findInPage
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
 
-@Keep
 @RunWith(AndroidJUnit4::class)
 class FindInPageTest {
-
-    @JvmField
-    @Rule
-    val filePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
 
     @JvmField
     @Rule
@@ -52,6 +46,7 @@ class FindInPageTest {
 
     companion object {
         private const val TARGET_URL_SITE = "file:///android_asset/gpl.html"
+        private const val keyword = "program"
     }
 
     /**
@@ -64,10 +59,17 @@ class FindInPageTest {
      * 4. Find a specific word or phrase
      * 5. Scroll up and down
      */
+    /**
+     * Test case no: TC0154
+     * Test case name: Check mini url bar and the bottom action in "Find in page" mode
+     * 1. Launch Rocket
+     * 2. Login facebook.com with your account
+     * 3. Tap Menu -> Find in page
+     * 4. Find the word
+     * 5. Scroll up and down
+     */
     @Test
     fun findInPageAndScroll() {
-
-        val keyword = "program"
 
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
@@ -77,23 +79,24 @@ class FindInPageTest {
 
         findInPage {
             findKeywordInPage(keyword)
-        }
 
-        onView(withId(R.id.webview_slot)).perform(swipeUp())
-        onView(withId(R.id.webview_slot)).perform(swipeDown())
-        onView(withId(R.id.find_in_page_query_text)).check(matches(withText(keyword)))
-        onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
+            onView(withId(R.id.webview_slot)).perform(swipeUp())
+            onView(withId(R.id.webview_slot)).perform(swipeDown())
+            onView(withId(R.id.find_in_page_query_text)).check(matches(withText(keyword)))
+            onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
 
-        findInPage {
-            findKeywordInPage("program")
+
+            onView(withId(R.id.display_url)).check(matches(isDisplayed()))
+            onView(withId(R.id.browser_screen_menu)).check(matches(isDisplayed()))
+
             closeButtonForFindInPage()
-        }
 
-        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        }
     }
 
     /**
-     * Test case no: TC0203
+     * Test case no: TC0148
      * Test case name: Check the finding visibilities
      * Steps:
      * 1. Launch Rocket
@@ -112,7 +115,13 @@ class FindInPageTest {
         }
 
         findInPage {
-            findKeywordInPage("program")
+            findKeywordInPage(keyword)
+
+            onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
+            onView(withId(R.id.find_in_page_prev_btn)).check(matches(isDisplayed()))
+            onView(withId(R.id.find_in_page_next_btn)).check(matches(isDisplayed()))
+            onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
+
             navigateKeywordSearchInPage(true)
             navigateKeywordSearchInPage(true)
             navigateKeywordSearchInPage(false)
@@ -121,7 +130,7 @@ class FindInPageTest {
     }
 
     /**
-     * Test case no: TC0207
+     * Test case no: TC0152
      * Test case name: Close "Find in page" mode via system Back key
      * 1. Launch Rocket
      * 2. Visit mozilla.org
@@ -140,17 +149,17 @@ class FindInPageTest {
         onView(withId(R.id.find_in_page)).perform(click())
 
         findInPage {
-            findKeywordInPage("program")
+            findKeywordInPage(keyword)
+
+            Espresso.pressBack()
+            Espresso.pressBack()
+
+            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
         }
-
-        Espresso.pressBack()
-        Espresso.pressBack()
-
-        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
     }
 
     /**
-     * Test case no: TC0209
+     * Test case no: TC0153
      * Test case name: Open a link from external app then close mode
      * 1. Launch Rocket
      * 2. Visit google.com
@@ -158,21 +167,35 @@ class FindInPageTest {
      * 4. Open a link from external app
      */
     @Test
-    @Ignore
     fun closeFindInPageWithExternalLink() {
+
+        val testUrl = "https://www.google.com"
+        session {
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            clickBrowserMenu()
+            clickMenuFindInPage()
+        }
+
+        onView(withId(R.id.find_in_page)).perform(click())
+
+        findInPage {
+            findKeywordInPage(keyword)
+        }
+
+        onView(withContentDescription("Navigate up")).perform(click());
+
+        val externalLinkIntent = Intent()
+        externalLinkIntent.data = Uri.parse(testUrl)
+
+        activityTestRule.launchActivity(externalLinkIntent)
+
+        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.display_url)).check(matches(withText(testUrl)))
     }
 
+
     /**
-     * Test case no: TC0210
-     * Test case name: Check mini url bar and the bottom action in "Find in page" mode
-     * 1. Launch Rocket
-     * 2. Login facebook.com with your account
-     * 3. Tap Menu -> Find in page
-     * 4. Find the word
-     * 5. Scroll up and down
-     */
-    /**
-     * Tese case no: TC0215
+     * Tese case no: TC0156
      * Test case name: When the keyboard is on, tap Home->Rocket, the keyboard should be opened
      * 1. Launch Rocket
      * 2. Visit a website
@@ -181,7 +204,7 @@ class FindInPageTest {
      * 5. Tap Rocket again
      */
     /**
-     * Test case no: TC0218
+     * Test case no: TC0158
      * Test case name: When user scrolls up/down in Find in page mode, it would not close the keyboard
      * 1. Launch Rocket
      * 2. Visit facebook.com with your account
@@ -190,7 +213,28 @@ class FindInPageTest {
      * 5. Scroll down
      */
     @Test
-    @Ignore
     fun keyboardBehaviorForFindInPage() {
+        session {
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            clickBrowserMenu()
+            clickMenuFindInPage()
+        }
+
+        findInPage {
+            onView(withId(R.id.find_in_page_query_text)).perform(click())
+
+            onView(withContentDescription("Navigate up")).perform(click());
+
+            activityTestRule.launchActivity(Intent())
+
+            assertTrue(isKeyboardShown())
+
+            onView(withId(R.id.webview_slot)).perform(swipeUp())
+            onView(withId(R.id.webview_slot)).perform(swipeDown())
+
+            Assert.assertTrue(isKeyboardShown())
+        }
+
+
     }
 }
