@@ -37,7 +37,9 @@ object QuickSearchUtils {
                             jsonObj.optString("homeUrl"),
                             jsonObj.optString("urlPrefix"),
                             jsonObj.optString("urlSuffix"),
-                            jsonObj.optBoolean("patternEncode")
+                            jsonObj.optBoolean("patternEncode"),
+                            jsonObj.optBoolean("permitSpace", true)
+
                     )
                     list.add(element)
                 }
