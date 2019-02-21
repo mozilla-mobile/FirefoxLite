@@ -106,7 +106,10 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
                 return;
             }
         }
-        Toast.makeText(context, success ? R.string.screenshot_saved : R.string.screenshot_failed, Toast.LENGTH_SHORT).show();
+        if (!Inject.isUnderEspressoTest()) {
+            // don't want to see the toast cause sometimes it blocks the UI
+            Toast.makeText(context, success ? R.string.screenshot_saved : R.string.screenshot_failed, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

@@ -97,7 +97,7 @@ class SessionRobot : MenuRobot() {
         // Click screen capture button
         onView(Matchers.allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
 
-        AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
+        // AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
         checkNoScreenshotOnBoarding()
     }
 

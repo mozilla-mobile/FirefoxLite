@@ -7,36 +7,70 @@ package org.mozilla.focus.activity
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Bitmap
 import android.support.annotation.Keep
+import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.intent.Intents
+import android.support.test.espresso.intent.matcher.IntentMatchers
+import android.support.test.espresso.intent.rule.IntentsTestRule
+import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
+import org.hamcrest.CoreMatchers
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mozilla.fileutils.FileUtils
+import org.mozilla.focus.R
 import org.mozilla.focus.autobot.screenshot
 import org.mozilla.focus.autobot.session
+import org.mozilla.focus.screenshot.ScreenshotCaptureTask.saveBitmapToStorage
+import org.mozilla.focus.screenshot.ScreenshotManager
+import org.mozilla.focus.screenshot.model.Screenshot
 import org.mozilla.focus.utils.AndroidTestUtils
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Keep
-@Ignore
 @RunWith(AndroidJUnit4::class)
 class TakeScreenshotTest {
 
     @JvmField
     @Rule
-    val filePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+    val filePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
+    )
 
     @JvmField
     @Rule
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+    val activityTestRule = IntentsTestRule(MainActivity::class.java, true, false)
 
     @Before
     fun setUp() {
         AndroidTestUtils.beforeTest()
         activityTestRule.launchActivity(Intent())
+
+        val context = activityTestRule.activity
+        val title = "TeST"
+        val url = "https://google.com"
+        val content = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+
+        val timestamp = System.currentTimeMillis()
+        val sdf = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
+
+        val path = saveBitmapToStorage(
+            context, "Screenshot_" + sdf.format(Date(timestamp)), content
+        )
+
+        FileUtils.notifyMediaScanner(activityTestRule.activity, path)
+
+        val screenshot = Screenshot(title, url, timestamp, path)
+        ScreenshotManager.getInstance().insert(screenshot, null)
+
     }
 
     companion object {
@@ -71,5 +105,49 @@ class TakeScreenshotTest {
             clickFirstItemInMyShotsAndOpen()
             longClickAndDeleteTheFirstItemInMyShots()
         }
+    }
+
+    @Test
+    fun screenShare() {
+        session {
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            clickCaptureScreen(activityTestRule.activity)
+            clickBrowserMenu()
+            clickMenuMyShots()
+        }
+
+        screenshot {
+            clickFirstItemInMyShotsAndOpen()
+
+        }
+
+        // TODO: be a part of robot
+        onView(ViewMatchers.withId(R.id.screenshot_viewer_btn_share)).perform(click())
+
+        Intents.intended(
+            CoreMatchers.allOf<Intent>(
+                IntentMatchers.hasAction(CoreMatchers.equalTo<String>(Intent.ACTION_CHOOSER))
+            )
+        )
+    }
+
+    @Test
+    fun insertManually() {
+
+        session {
+            clickBrowserMenu()
+            clickMenuMyShots()
+        }
+
+        screenshot {
+            clickFirstItemInMyShotsAndOpen()
+        }
+        onView(ViewMatchers.withId(R.id.screenshot_viewer_btn_share)).perform(click())
+
+        Intents.intended(
+            CoreMatchers.allOf<Intent>(
+                IntentMatchers.hasAction(CoreMatchers.equalTo<String>(Intent.ACTION_CHOOSER))
+            )
+        )
     }
 }
