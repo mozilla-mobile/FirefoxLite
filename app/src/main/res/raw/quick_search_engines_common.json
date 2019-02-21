@@ -15,6 +15,7 @@
     "name": "Instagram",
     "searchUrlPattern": "https://www.instagram.com/explore/tags/%s/",
     "homeUrl": "https://www.instagram.com",
-    "icon": "ic_instagram.png"
+    "icon": "ic_instagram.png",
+    "permitSpace": false
   }
 ]
