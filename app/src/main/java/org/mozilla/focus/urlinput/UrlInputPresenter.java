@@ -57,9 +57,10 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
 
         if (input.length() == 0) {
             this.view.setSuggestions(null);
+            this.view.setQuickSearchVisible(false);
             return;
         }
-
+        this.view.setQuickSearchVisible(true);
         // No need to provide suggestion for Url input
         if (SupportUtils.isUrl(input.toString())) {
             return;
