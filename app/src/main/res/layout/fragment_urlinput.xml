@@ -76,14 +76,17 @@
             android:layout_height="@dimen/common_margin_m7"
             android:layout_above="@id/divider"
             android:clipToPadding="false"
+            android:visibility="gone"
             android:background="@color/paletteLightGreyB100"
             android:paddingStart="16dp" />
 
         <View
+            android:id="@+id/quick_search_bg"
             android:layout_width="16dp"
             android:layout_height="@dimen/common_margin_m7"
             android:layout_alignEnd="@id/quick_search_recycler_view"
             android:layout_alignTop="@id/quick_search_recycler_view"
+            android:visibility="gone"
             android:background="@drawable/overflow_mask"/>
 
         <org.mozilla.focus.widget.FlowLayout

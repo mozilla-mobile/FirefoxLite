@@ -47,7 +47,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private lateinit var suggestionView: FlowLayout
     private lateinit var clearView: View
     private lateinit var dismissView: View
-    private lateinit var quickSearchView: RecyclerView
+    private var quickSearchView: RecyclerView? = null
+    private var quickSearchBg: View? = null
     private var lastRequestTime: Long = 0
     private var autoCompleteInProgress: Boolean = false
     private var allowSuggestion: Boolean = false
@@ -98,7 +99,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private fun initQuickSearch(view: View) {
         quickSearchView = view.findViewById(R.id.quick_search_recycler_view)
-        quickSearchView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        quickSearchBg = view.findViewById(R.id.quick_search_bg)
+        quickSearchView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val quickSearchAdapter = QuickSearchAdapter(fun(quickSearch: QuickSearch) {
             if (TextUtils.isEmpty(urlView.text)) {
                 openUrl(quickSearch.homeUrl)
@@ -107,7 +109,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             }
             TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
         })
-        quickSearchView.adapter = quickSearchAdapter
+        quickSearchView?.adapter = quickSearchAdapter
         Inject.obtainQuickSearchViewModel(activity).quickSearchObservable.observe(
                 viewLifecycleOwner,
                 Observer { quickSearchList ->
@@ -290,6 +292,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             this@UrlInputFragment.presenter.onInput(originalText, detectThrottle())
         }
         val visibility = if (TextUtils.isEmpty(originalText)) View.GONE else View.VISIBLE
+        quickSearchView?.visibility = visibility
+        quickSearchBg?.visibility = visibility
         this@UrlInputFragment.clearView.visibility = visibility
     }
 
