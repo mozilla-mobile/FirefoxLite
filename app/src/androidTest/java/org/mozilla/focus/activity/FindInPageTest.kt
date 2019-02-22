@@ -5,22 +5,21 @@
 
 package org.mozilla.focus.activity
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.support.annotation.Keep
+import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.swipeDown
 import android.support.test.espresso.action.ViewActions.swipeUp
 import android.support.test.rule.ActivityTestRule
-import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
-import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -29,8 +28,10 @@ import org.junit.runner.RunWith
 import org.mozilla.focus.R
 import org.mozilla.focus.autobot.findInPage
 import org.mozilla.focus.autobot.session
-import org.mozilla.focus.utils.AndroidTestUtils
+import org.mozilla.focus.helper.BeforeTestTask
+import org.mozilla.focus.helper.SessionLoadedIdlingResource
 
+@Keep
 @RunWith(AndroidJUnit4::class)
 class FindInPageTest {
 
@@ -40,12 +41,16 @@ class FindInPageTest {
 
     @Before
     fun setUp() {
-        AndroidTestUtils.beforeTest()
+        BeforeTestTask.Builder()
+                .enableSreenshotOnBoarding(true)
+                .build()
+                .execute()
         activityTestRule.launchActivity(Intent())
     }
 
     companion object {
-        private const val TARGET_URL_SITE = "file:///android_asset/gpl.html"
+        private const val TARGET_URL_SITE_1 = "file:///android_asset/gpl.html"
+        private const val TARGET_URL_SITE_2 = "https://developer.mozilla.org/en-US/Firefox_for_Android"
         private const val keyword = "program"
     }
 
@@ -72,7 +77,7 @@ class FindInPageTest {
     fun findInPageAndScroll() {
 
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
             clickMenuFindInPage()
         }
@@ -84,7 +89,6 @@ class FindInPageTest {
             onView(withId(R.id.webview_slot)).perform(swipeDown())
             onView(withId(R.id.find_in_page_query_text)).check(matches(withText(keyword)))
             onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
-
 
             onView(withId(R.id.display_url)).check(matches(isDisplayed()))
             onView(withId(R.id.browser_screen_menu)).check(matches(isDisplayed()))
@@ -109,7 +113,7 @@ class FindInPageTest {
     fun findInPageWhenSearchKeyword() {
 
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
             clickMenuFindInPage()
         }
@@ -141,7 +145,7 @@ class FindInPageTest {
     fun closeFindInPageWithSystemBackKey() {
 
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
             clickMenuFindInPage()
         }
@@ -169,30 +173,29 @@ class FindInPageTest {
     @Test
     fun closeFindInPageWithExternalLink() {
 
-        val testUrl = "https://www.google.com"
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
             clickMenuFindInPage()
         }
 
-        onView(withId(R.id.find_in_page)).perform(click())
-
         findInPage {
+            onView(withId(R.id.find_in_page)).perform(click())
+
+            assertTrue(isKeyboardShown())
             findKeywordInPage(keyword)
         }
 
-        onView(withContentDescription("Navigate up")).perform(click());
-
-        val externalLinkIntent = Intent()
-        externalLinkIntent.data = Uri.parse(testUrl)
-
-        activityTestRule.launchActivity(externalLinkIntent)
+        val loadingIdlingResource = SessionLoadedIdlingResource(activityTestRule.activity)
+        IdlingRegistry.getInstance().register(loadingIdlingResource)
+        sendBrowsingIntent()
 
         onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.display_url)).check(matches(withText(testUrl)))
-    }
+        onView(withId(R.id.display_url)).check(matches(isDisplayed()))
+        onView(withId(R.id.display_url)).check(matches(withText(TARGET_URL_SITE_2)))
 
+        IdlingRegistry.getInstance().unregister(loadingIdlingResource)
+    }
 
     /**
      * Tese case no: TC0156
@@ -215,26 +218,38 @@ class FindInPageTest {
     @Test
     fun keyboardBehaviorForFindInPage() {
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
             clickMenuFindInPage()
         }
 
         findInPage {
             onView(withId(R.id.find_in_page_query_text)).perform(click())
+        }
 
-            onView(withContentDescription("Navigate up")).perform(click());
+        session {
+            goHome(activityTestRule.activity)
+            bringToForeground(activityTestRule.activity)
+        }
 
-            activityTestRule.launchActivity(Intent())
-
+        findInPage {
             assertTrue(isKeyboardShown())
 
             onView(withId(R.id.webview_slot)).perform(swipeUp())
             onView(withId(R.id.webview_slot)).perform(swipeDown())
 
-            Assert.assertTrue(isKeyboardShown())
+            assertTrue(isKeyboardShown())
         }
-
-
+    }
+    
+    private fun sendBrowsingIntent() {
+        // Simulate third party app sending browsing url intent to rocket
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.data = Uri.parse(TARGET_URL_SITE_2)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+        intent.setPackage(targetContext.packageName)
+        targetContext.startActivity(intent)
     }
 }
