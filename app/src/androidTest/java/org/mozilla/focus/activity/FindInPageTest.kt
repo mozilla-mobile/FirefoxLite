@@ -93,7 +93,7 @@ class FindInPageTest {
             onView(withId(R.id.display_url)).check(matches(isDisplayed()))
             onView(withId(R.id.browser_screen_menu)).check(matches(isDisplayed()))
 
-            closeButtonForFindInPage()
+            onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed())).perform(click())
 
             onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
         }
@@ -121,10 +121,7 @@ class FindInPageTest {
         findInPage {
             findKeywordInPage(keyword)
 
-            onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
-            onView(withId(R.id.find_in_page_prev_btn)).check(matches(isDisplayed()))
-            onView(withId(R.id.find_in_page_next_btn)).check(matches(isDisplayed()))
-            onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
+            checkFindInPageToolBarIsDisplayed()
 
             navigateKeywordSearchInPage(true)
             navigateKeywordSearchInPage(true)

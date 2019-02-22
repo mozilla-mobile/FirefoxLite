@@ -84,8 +84,7 @@ class FindInPageRobot : MenuRobot() {
 
     fun findKeywordInPage(keyword: String, imeAction : Boolean = true) {
 
-        onView(withId(R.id.find_in_page_query_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.find_in_page_query_text)).perform(replaceText(keyword))
+        onView(withId(R.id.find_in_page_query_text)).check(matches(isDisplayed())).perform(replaceText(keyword))
         if (imeAction) onView(withId(R.id.find_in_page_query_text)).perform(pressImeActionButton())
     }
 
@@ -94,14 +93,16 @@ class FindInPageRobot : MenuRobot() {
         else onView(withId(R.id.find_in_page_next_btn)).perform(click())
     }
 
-    fun closeButtonForFindInPage() {
-        onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
-        onView(withId(R.id.find_in_page_close_btn)).perform(click())
-    }
-
     fun isKeyboardShown() : Boolean {
         val inputMethodManager = InstrumentationRegistry.getInstrumentation().targetContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         return inputMethodManager.isAcceptingText
+    }
+
+    fun checkFindInPageToolBarIsDisplayed() {
+        onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_prev_btn)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_next_btn)).check(matches(isDisplayed()))
+        onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed()))
     }
 }
 
