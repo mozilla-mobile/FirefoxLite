@@ -31,7 +31,7 @@
   <string name="preference_privacy_storage_save_downloads_to">儲存下載項目到</string>
   <string name="preference_default_browser">設為預設瀏覽器</string>
   <string name="preference_default_browser_is_setting">正在變更設定…</string>
-  <string name="preference_turbo_mode">Turbo 模式</string>
+  <string name="preference_turbo_mode">極速模式</string>
   <string name="preference_mozilla_telemetry">傳送使用資料</string>
   <string name="preference_mozilla_telemetry_summary">%2$s 致力於只收集用來為眾人改善 %1$s 所需的必要資料。</string>
   <string name="preference_learn_more">了解更多</string>
@@ -68,7 +68,7 @@
   <string name="first_run_page1_title">感謝使用 %1$s</string>
   <string name="first_run_page1_text">這是一套由致力於維持網路自由、開放的非營利組織 %1$s 所打造的網頁瀏覽器。</string>
   <string name="first_run_page2_title">上網變得更快</string>
-  <string name="first_run_page2_text">使用 turbo 模式來封鎖追蹤廣告，這樣就可以用更快的速度上網。若網站用起來有問題，只要在選單暫時關閉即可。</string>
+  <string name="first_run_page2_text">使用極速模式來封鎖追蹤廣告，這樣就可以用更快的速度上網。若網站用起來有問題，只要在選單暫時關閉即可。</string>
   <string name="first_run_page3_title">節省流量 就是省錢</string>
   <string name="first_run_page3_text">透過封鎖追蹤廣告來節省上網流量，若封鎖圖片顯示還可節省更多。</string>
   <string name="first_run_page4_title">拍攝整張頁面的擷圖</string>
@@ -93,7 +93,7 @@
   <string name="label_menu_share">分享</string>
   <string name="label_menu_my_shots">我的擷圖</string>
   <string name="label_menu_capture_page">拍攝擷圖</string>
-  <string name="label_menu_turbo_mode">Turbo 模式</string>
+  <string name="label_menu_turbo_mode">極速模式</string>
   <string name="label_menu_night_mode">夜間模式</string>
   <string name="label_menu_block_ads">封鎖廣告</string>
   <string name="label_menu_block_image">封鎖圖片</string>
@@ -165,8 +165,8 @@
   <string name="screenshot_image_viewer_dialog_info_url1">網址: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">要刪除這張照片嗎？</string>
   <string name="file_picker_title">選擇要上傳的檔案</string>
-  <string name="message_enable_turbo_mode">已開啟 Turbo 模式</string>
-  <string name="message_disable_turbo_mode">已關閉 Turbo 模式</string>
+  <string name="message_enable_turbo_mode">已開啟極速模式</string>
+  <string name="message_disable_turbo_mode">已關閉極速模式</string>
   <string name="message_enable_block_image">現在起將封鎖圖片</string>
   <string name="message_disable_block_image">現在起將顯示圖片</string>
   <string name="message_clear_cache_fail">無法清除快取</string>
