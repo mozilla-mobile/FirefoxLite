@@ -21,7 +21,6 @@ import org.mozilla.focus.autobot.session
 import org.mozilla.focus.utils.AndroidTestUtils
 
 @Keep
-@Ignore
 @RunWith(AndroidJUnit4::class)
 class TakeScreenshotTest {
 
@@ -58,6 +57,7 @@ class TakeScreenshotTest {
      * 9. Check it goes back to my shots viewer
      * */
     @Test
+    @Ignore
     fun takeScreenshot_screenshotIsCaptured() {
 
         session {
