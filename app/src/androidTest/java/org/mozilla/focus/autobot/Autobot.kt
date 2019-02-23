@@ -10,7 +10,9 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.IdlingResource
 import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.action.ViewActions.*
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.replaceText
+import android.support.test.espresso.action.ViewActions.pressImeActionButton
 import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
@@ -82,7 +84,7 @@ class ScreenshotRobot : MenuRobot() {
 
 class FindInPageRobot : MenuRobot() {
 
-    fun findKeywordInPage(keyword: String, imeAction : Boolean = true) {
+    fun findKeywordInPage(keyword: String, imeAction: Boolean = true) {
 
         onView(withId(R.id.find_in_page_query_text)).check(matches(isDisplayed())).perform(replaceText(keyword))
         if (imeAction) onView(withId(R.id.find_in_page_query_text)).perform(pressImeActionButton())
@@ -93,7 +95,7 @@ class FindInPageRobot : MenuRobot() {
         else onView(withId(R.id.find_in_page_next_btn)).perform(click())
     }
 
-    fun isKeyboardShown() : Boolean {
+    fun isKeyboardShown(): Boolean {
         val inputMethodManager = InstrumentationRegistry.getInstrumentation().targetContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         return inputMethodManager.isAcceptingText
     }
