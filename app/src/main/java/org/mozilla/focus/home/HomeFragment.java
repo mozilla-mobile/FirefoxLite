@@ -81,9 +81,9 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
-import org.mozilla.rocket.bhaskar.ItemPojo;
 import org.mozilla.rocket.content.ContentPortalView;
 import org.mozilla.rocket.content.ContentViewModel;
+import org.mozilla.rocket.content.ContentPortalViewKt;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.httptask.SimpleLoadUrlTask;
@@ -413,7 +413,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
+        final View view;
+        if (ContentPortalViewKt.isEnable(getContext())){
+            view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
+        } else {
+            view = inflater.inflate(R.layout.fragment_homescreen, container, false);
+        }
+
         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
 
         this.btnMenu = view.findViewById(R.id.btn_menu_home);

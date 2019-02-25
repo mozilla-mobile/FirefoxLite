@@ -6,6 +6,7 @@
 package org.mozilla.rocket.content
 
 import android.content.Context
+import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.widget.NestedScrollView
@@ -193,4 +194,10 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
         adapter?.setData(items)
     }
+}
+private const val PREF_KEY_STRING_NEWS = "pref_key_string_news"
+
+fun isEnable(context: Context?): Boolean {
+    return context?.let { PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(PREF_KEY_STRING_NEWS, false) } ?: false
 }
