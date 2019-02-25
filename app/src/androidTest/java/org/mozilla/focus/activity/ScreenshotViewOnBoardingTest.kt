@@ -25,7 +25,7 @@ import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.utils.Settings
 
 @RunWith(AndroidJUnit4::class)
-class ScreenshotOnBoardingTest {
+class ScreenshotViewOnBoardingTest {
 
     @JvmField
     @Rule
