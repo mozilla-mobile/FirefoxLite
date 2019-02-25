@@ -101,6 +101,7 @@
   <string name="label_menu_exit">Lumabas</string>
   <string name="permission_toast_location_deny">Tinanggihan ang pahintulot ng lokasyon.</string>
   <string name="permission_toast_storage_deny">Ang pahintulot sa imbakan ay tinanggihan.</string>
+  <string name="permission_handler_permission_dialog_setting">settings</string>
   <string name="permission_dialog_not_now">huwag ngayon</string>
   <string name="permission_toast_location">Hindi makita ang iyong lokasyon. Pakibigyan ng pahintulot ang app na malaman ang iyong lokasyon.</string>
   <string name="permission_toast_storage">Hindi magamit ang sisidlan. Pakibigyan ng pahintulot ang app na magamit ang sisidlan para makapagtago ng mga larawan at files sa iyong device.</string>
