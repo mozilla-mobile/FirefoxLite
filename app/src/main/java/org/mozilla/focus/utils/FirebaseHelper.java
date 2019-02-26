@@ -57,7 +57,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String FEATURE_SURVEY = "feature_survey";
     static final String VPN_RECOMMENDER_URL = "vpn_recommender_url";
     static final String VPN_RECOMMENDER_PACKAGE = "vpn_recommender_package";
-    static final String FIRST_LAUNCH_WORKER_TIMER = "first_launch_worker_timer";
+    static final String FIRST_LAUNCH_TIMER_MINUTES = "first_launch_timer_minutes";
     static final String FIRST_LAUNCH_NOTIFICATION_MESSAGE = "first_launch_notification_message";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
@@ -298,7 +298,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST, ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT);
         map.put(FirebaseHelper.VPN_RECOMMENDER_PACKAGE, FeatureSurveyViewHelper.Constants.PACKAGE_RECOMMEND_VPN);
         map.put(FirebaseHelper.VPN_RECOMMENDER_URL, FeatureSurveyViewHelper.Constants.LINK_RECOMMEND_VPN);
-        map.put(FirebaseHelper.FIRST_LAUNCH_WORKER_TIMER, FirstLaunchWorker.TIMER_DISABLED);
+        map.put(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES, FirstLaunchWorker.TIMER_DISABLED);
 
         return map;
     }

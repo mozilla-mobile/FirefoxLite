@@ -89,7 +89,7 @@ public class AppConfigWrapper {
     }
 
     public static long getFirstLaunchWorkerTimer(Context context) {
-        return FirebaseHelper.getRcLong(context, FirebaseHelper.FIRST_LAUNCH_WORKER_TIMER);
+        return FirebaseHelper.getRcLong(context, FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES);
     }
 
     public static String getFirstLaunchNotificationiMessage(Context context) {

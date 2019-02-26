@@ -1533,13 +1533,13 @@ object TelemetryWrapper {
             `object` = Object.FIRSTRUN_PUSH,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.DELAY, value = "hours"),
+                TelemetryExtra(name = Extra.DELAY, value = "minutes"),
                 TelemetryExtra(name = Extra.MESSAGE, value = "message")
             ])
     @JvmStatic
-    fun receiveFirstrunConfig(hours: Int, message: String?) {
+    fun receiveFirstrunConfig(minutes: Long, message: String?) {
         val builder = EventBuilder(Category.ACTION, Method.GET, Object.FIRSTRUN_PUSH)
-                .extra(Extra.DELAY, hours.toString())
+                .extra(Extra.DELAY, minutes.toString())
                 .extra(Extra.MESSAGE, message ?: "")
         builder.queue()
     }
@@ -1551,13 +1551,13 @@ object TelemetryWrapper {
             `object` = Object.FIRSTRUN_PUSH,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.DELAY, value = "hours"),
+                TelemetryExtra(name = Extra.DELAY, value = "minutes"),
                 TelemetryExtra(name = Extra.MESSAGE, value = "message")
             ])
     @JvmStatic
-    fun showFirstrunNotification(hours: Int, message: String?) {
+    fun showFirstrunNotification(minutes: Long, message: String?) {
         val builder = EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN_PUSH)
-                .extra(Extra.DELAY, hours.toString())
+                .extra(Extra.DELAY, minutes.toString())
                 .extra(Extra.MESSAGE, message ?: "")
         builder.queue()
     }
