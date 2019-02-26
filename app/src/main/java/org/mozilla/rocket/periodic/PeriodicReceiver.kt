@@ -35,8 +35,8 @@ class PeriodicReceiver : BroadcastReceiver() {
             }
         }
 
-        val config = AppConfigWrapper.getFirstLaunchWorkerTimer(context).toInt()
-        val delayHoursToInstallTime = when (config) {
+        val config = AppConfigWrapper.getFirstLaunchWorkerTimer(context)
+        val delayHoursToInstallTime = when (config.toInt()) {
             FirstLaunchWorker.TIMER_DISABLED -> {
                 return
             }
@@ -44,22 +44,25 @@ class PeriodicReceiver : BroadcastReceiver() {
                 return
             }
             else -> {
+                if (config < 0) {
+                    return
+                }
                 config
             }
         }
-        val delayHours: Long = calculateDelayHours(context, delayHoursToInstallTime)
+        val delayMinutes = calculateDelayMinutes(context, delayHoursToInstallTime)
 
         workManager.cancelAllWorkByTag(FirstLaunchWorker.TAG)
         val builder = OneTimeWorkRequest.Builder(FirstLaunchWorker::class.java)
-        builder.setInitialDelay(delayHours, TimeUnit.HOURS)
+        builder.setInitialDelay(delayMinutes, TimeUnit.MINUTES)
         builder.addTag(FirstLaunchWorker.TAG)
         workManager.enqueue(builder.build())
 
         val message = AppConfigWrapper.getFirstLaunchNotificationiMessage(context)
-        TelemetryWrapper.receiveFirstrunConfig(delayHours.toInt(), message)
+        TelemetryWrapper.receiveFirstrunConfig(delayMinutes, message)
     }
 
-    private fun calculateDelayHours(context: Context, delayHoursToInstallTime: Int): Long {
+    private fun calculateDelayMinutes(context: Context, delayMinutesToInstallTime: Long): Long {
         /** Find next scheduled hours */
         val pm = context.packageManager
         var firstInstallTime: Long = Long.MAX_VALUE
@@ -67,12 +70,12 @@ class PeriodicReceiver : BroadcastReceiver() {
         if (packageInfo != null && packageInfo.packageName == context.packageName) {
             firstInstallTime = Math.min(firstInstallTime, packageInfo.firstInstallTime)
         }
-        val delayHoursRemain = delayHoursToInstallTime - ((System.currentTimeMillis() - firstInstallTime) / (3600000))
-        val hours: Long = when (delayHoursRemain < 0 || delayHoursRemain > delayHoursToInstallTime) {
-            true -> 1
-            false -> delayHoursRemain
+        val delayMinutesRemain = delayMinutesToInstallTime - ((System.currentTimeMillis() - firstInstallTime) / (60000))
+        val minutes: Long = when (delayMinutesRemain < 0 || delayMinutesRemain > delayMinutesToInstallTime) {
+            true -> 0
+            false -> delayMinutesRemain
         }
 
-        return hours
+        return minutes
     }
 }

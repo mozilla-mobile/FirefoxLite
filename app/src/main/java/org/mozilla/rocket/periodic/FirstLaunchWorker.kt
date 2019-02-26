@@ -39,24 +39,9 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
     override fun doWork(): Result {
         val message = AppConfigWrapper.getFirstLaunchNotificationiMessage(applicationContext)
         DialogUtils.showDefaultSettingNotification(applicationContext, message)
-        TelemetryWrapper.showFirstrunNotification(calculateDelayHours(applicationContext), message)
+        TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(applicationContext), message)
 
         setNotificationFired(applicationContext, true)
         return Result.success()
-    }
-
-    private fun calculateDelayHours(context: Context): Int {
-        val pm = context.packageManager
-        var firstInstallTime: Long = System.currentTimeMillis()
-        val packageInfo = pm.getPackageInfo(context.packageName, 0)
-        if (packageInfo != null && packageInfo.packageName == context.packageName) {
-            firstInstallTime = Math.min(firstInstallTime, packageInfo.firstInstallTime)
-        }
-        val delayHoursRemain = (System.currentTimeMillis() - firstInstallTime) / (3600000)
-        val hours: Int = when (delayHoursRemain < 0) {
-            true -> -1
-            false -> delayHoursRemain.toInt()
-        }
-        return hours
     }
 }
