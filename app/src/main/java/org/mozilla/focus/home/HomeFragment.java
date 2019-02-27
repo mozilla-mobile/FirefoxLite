@@ -116,7 +116,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
-        ScreenNavigator.HomeScreen {
+        ScreenNavigator.HomeScreen, ContentPortalView.LoadMoreListener {
     private static final String TAG = "HomeFragment";
 
     public static final String TOPSITES_PREF = "topsites_pref";
@@ -150,6 +150,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
     private BannerConfigViewModel bannerConfigViewModel;
+    private ContentViewModel contentViewModel;
     final Observer<String[]> bannerObserver = this::setUpBannerFromConfig;
     private String[] configArray;
     private LottieAnimationView downloadingIndicator;
@@ -163,6 +164,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         }
     };
+    ;
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -183,12 +185,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (activity == null || contentPanel == null) {
             return;
         }
-        ContentViewModel viewModel = ViewModelProviders.of(activity).get(ContentViewModel.class);
-        viewModel.setRepository(new Repository(getContext(), 521, 20, null, 3, viewModel, null));
-        viewModel.getItems().observe(activity,
-            items -> contentPanel.setData(items));
+        contentViewModel = ViewModelProviders.of(activity).get(ContentViewModel.class);
+        contentViewModel.setRepository(new Repository(getContext(), 521, 20, null, 3, contentViewModel, null));
+        contentViewModel.getItems().observe(activity,
+             items -> contentPanel.setData(items));
 
-        viewModel.loadMore();
+        contentViewModel.loadMore();
     }
 
     @Override
@@ -235,6 +237,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             return contentPanel.hide();
         }
         return false;
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (contentViewModel != null) {
+            contentViewModel.loadMore();
+        }
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -420,6 +429,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.arrow2 = view.findViewById(R.id.arrow2);
 
         this.contentPanel = view.findViewById(R.id.content_panel);
+        this.contentPanel.setLoadMoreListener(this);
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);

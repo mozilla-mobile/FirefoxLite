@@ -87,7 +87,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_menu_container"/>
 
-    <include layout="@layout/content_portal"/>
 
 
 

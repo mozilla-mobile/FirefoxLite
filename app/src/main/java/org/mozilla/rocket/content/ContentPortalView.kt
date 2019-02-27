@@ -8,6 +8,7 @@ package org.mozilla.rocket.content
 import android.content.Context
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -29,19 +30,24 @@ object ContentPortalViewState {
 
 class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var emptyView: View
-    private lateinit var adapter: ContentAdapter
-//    private lateinit var viewModel: ContentViewModel
-    private lateinit var bottomSheet: View
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    var loadMoreListener: LoadMoreListener? = null
+
+    private var recyclerView: RecyclerView? = null
+    private var emptyView: View? = null
+    private var adapter: ContentAdapter? = null
+    private var bottomSheet: View? = null
+    private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
+
+    interface LoadMoreListener{
+        fun onLoadMore()
+    }
 
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-            context, attrs, defStyleAttr
+        context, attrs, defStyleAttr
     )
 
     override fun onAttachedToWindow() {
@@ -71,19 +77,41 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         recyclerView = findViewById(R.id.recyclerview)
         emptyView = findViewById(R.id.empty_view_container)
         adapter = ContentAdapter(this)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager =
+        recyclerView?.adapter = adapter
+        recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        findViewById<NestedScrollView>(R.id.main_content).setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+                val pageSize = v.measuredHeight
+                // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
+                // When scrolled to end due to padding
+                if (scrollY > oldScrollY && v.getChildAt(0).measuredHeight - v.measuredHeight - scrollY < pageSize) {
+                    loadMoreListener?.onLoadMore()
+                }
+            })
 
-
-        onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
+        onStatus(PanelFragment.VIEW_TYPE_EMPTY)
     }
 
     fun show() {
         if (visibility == VISIBLE) {
             return
         }
-        visibility = VISIBLE
+        val anim = AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_in)
+        anim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                visibility = VISIBLE
+                // TODO: if previously is collapsed, collapse here.
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        })
+        this.startAnimation(anim)
     }
 
     fun hide(): Boolean {
@@ -99,7 +127,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                // need to set it to expanded, otherwise next time will be closed.
+//                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+//                bottomSheetBehavior?.peekHeight = 0
                 visibility = GONE
             }
         })
@@ -109,12 +139,11 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     }
 
     private fun setupBottomSheet() {
-        bottomSheet = findViewById<View>(R.id.bottom_sheet)
+        bottomSheet = findViewById(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-        bottomSheetBehavior.setBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetBehavior?.setBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
@@ -131,18 +160,18 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     override fun onStatus(status: Int) {
         when (status) {
             PanelFragment.VIEW_TYPE_EMPTY -> {
-                recyclerView.visibility = View.GONE
-                emptyView.visibility = View.VISIBLE
+                recyclerView?.visibility = View.GONE
+                emptyView?.visibility = View.VISIBLE
             }
             PanelFragment.VIEW_TYPE_NON_EMPTY -> {
-                recyclerView.visibility = View.VISIBLE
-                emptyView.visibility = View.GONE
+                recyclerView?.visibility = View.VISIBLE
+                emptyView?.visibility = View.GONE
             }
             PanelFragment.ON_OPENING -> {
             }
             else -> {
-                recyclerView.visibility = View.GONE
-                emptyView.visibility = View.GONE
+                recyclerView?.visibility = View.GONE
+                emptyView?.visibility = View.GONE
             }
         }
     }
@@ -161,13 +190,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     }
 
     fun setData(items: MutableList<ItemPojo>?) {
-        if (items != null && items.size > 0) {
-            bottomSheetBehavior.peekHeight = 300 * 3 // fix later
-        } else {
-            bottomSheetBehavior.peekHeight = 0 // fix later
-            bottomSheetBehavior.skipCollapsed = true
-        }
-        bottomSheet.requestLayout()
-        adapter.setData(items)
+        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
+        adapter?.setData(items)
     }
 }
