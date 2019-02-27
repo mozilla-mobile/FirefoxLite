@@ -1,12 +1,6 @@
 | Event | category | method | object | value | extra |
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|Firebase RemoteConfig Fetched|action|init|firebase|"null"|""
-|RemoteConfig ready when first run ends|exp|rc_fetched|firstrun|"finish"|"success=true/false,"
-|RemoteConfig ready when first run shown|exp|rc_fetched|firstrun|"enter"|"success=true/false,"
-|RemoteConfig ready when Home Toolbar Level 1 shown|exp|rc_fetched|home|"enter"|"success=true/false,"
-|RemoteConfig ready when Home Toolbar Level 2 shown|exp|rc_fetched|home|"toolbar"|"success=true/false,"
-|RemoteConfig ready when Browser Toolbar level 1 shown|exp|rc_fetched|browser|"enter"|"success=true/false,"
-|RemoteConfig ready when Browser Toolbar level 2 shown|exp|rc_fetched|browser|"toolbar"|"success=true/false,"
+|RemoteConfig not fetched - First run|firebase|consumed|firstrun|"negative"|"" 
 |Turn on Turbo Mode in First Run|action|change|firstrun|"turbo"|"to=true,false," 
 |Finish First Run|action|show|firstrun|"finish"|"on=time spent on First Run," 
 |App is launched by Launcher|action|launch|app|"launcher"|"" 

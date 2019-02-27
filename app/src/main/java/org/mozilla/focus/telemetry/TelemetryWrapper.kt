@@ -13,6 +13,7 @@ package org.mozilla.focus.telemetry
 import android.content.Context
 import android.os.StrictMode
 import android.preference.PreferenceManager
+import android.util.Log
 import android.webkit.PermissionRequest
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.Inject
@@ -49,6 +50,8 @@ import org.mozilla.threadutils.ThreadUtils
 import java.util.HashMap
 
 object TelemetryWrapper {
+    private const val TAG = "TelemetryWrapper"
+
     private const val TELEMETRY_APP_NAME_ZERDA = "Zerda"
 
     private const val TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 3
@@ -58,11 +61,17 @@ object TelemetryWrapper {
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
 
+    private var isNewUser = false // the app is in a state when it's first launched after installation
+
+    // the app is in a state when it's Firebase Remote Config is fetched. It's only useful when the app is launched
+    // for the first time. Because the successive launch may not fetch the remote config due to it's time threshold.
+    private var remoteConfigFetched = false
+
     internal object Category {
         const val ACTION = "action"
         const val EVENT_DOWNLOADS = "Downloads"
         const val SEARCH = "search"
-        const val EXPERIMENT = "exp"
+        const val FIREBASE = "firebase"
     }
 
     internal object Method {
@@ -92,8 +101,7 @@ object TelemetryWrapper {
         const val OPEN = "open"
         const val SHOW = "show"
         const val LAUNCH = "launch"
-        const val INIT = "init"
-        const val REMOTE_CONFIG_FETCHED = "rc_fetched"
+        const val CONSUMED = "consumed"
     }
 
     internal object Object {
@@ -126,7 +134,6 @@ object TelemetryWrapper {
         const val DOORHANGER = "doorhanger"
         const val VPN_DOORHANGER = "vpn_doorhanger"
         const val QUICK_SEARCH = "quicksearch"
-        const val FIREBASE = "firebase"
     }
 
     object Value {
@@ -267,7 +274,6 @@ object TelemetryWrapper {
         val threadPolicy = StrictMode.allowThreadDiskWrites()
         try {
             val resources = context.resources
-
             val telemetryEnabled = isTelemetryEnabled(context)
 
             updateDefaultBrowserStatus(context)
@@ -314,141 +320,30 @@ object TelemetryWrapper {
         }
     }
 
-    @Due(date = "2019-10-30", reason = "Impact the performance for loading DefaultSharedPreferences")
-    @TelemetryDoc(
-            name = "Firebase RemoteConfig Fetched",
-            category = Category.ACTION,
-            method = Method.INIT,
-            `object` = Object.FIREBASE,
-            value = "null",
-            extras = [])
+    fun firstLaunch() {
+        isNewUser = true
+    }
+
+
     @JvmStatic
     fun firebaseRemoteConfigFetched() {
-        TelemetryHelper.remoteConfigFetched = true
-        TelemetryHelper.onFirstLaunch(TelemetryHolder.get().configuration.context, TelemetryHelper.RC_READY_REMOTE_CONFIG_FETCHED) {
-            EventBuilder(Category.ACTION, Method.INIT, Object.FIREBASE).queue()
-        }
+        remoteConfigFetched = true
     }
 
-    @Due(date = "2019-10-30", reason = "Impact the performance for loading DefaultSharedPreferences")
     @TelemetryDoc(
-            name = "RemoteConfig ready when first run ends",
-            category = Category.EXPERIMENT,
-            method = Method.REMOTE_CONFIG_FETCHED,
+            name = "RemoteConfig not fetched - First run",
+            category = Category.FIREBASE,
+            method = Method.CONSUMED,
             `object` = Object.FIRSTRUN,
-            value = Value.FINISH,
-            extras = [TelemetryExtra(name = Extra.SUCCESS, value = "true/false")]
-    )
-    fun statsFinishFirstRunEvent() {
-        TelemetryHelper.onFirstLaunch(TelemetryHolder.get().configuration.context, TelemetryHelper.RC_READY_FIRST_RUN_END) {
-            EventBuilder(
-                    Category.EXPERIMENT,
-                    Method.REMOTE_CONFIG_FETCHED,
-                    Object.FIRSTRUN,
-                    Value.FINISH
-            ).extra(Extra.SUCCESS, TelemetryHelper.remoteConfigFetched.toString()).queue()
-        }
-    }
+            value = Value.NEGATIVE,
+            extras = [])
+    fun firstRunFinishCheck() {
 
-    @Due(date = "2019-10-30", reason = "Impact the performance for loading DefaultSharedPreferences")
-    @TelemetryDoc(
-            name = "RemoteConfig ready when first run shown",
-            category = Category.EXPERIMENT,
-            method = Method.REMOTE_CONFIG_FETCHED,
-            `object` = Object.FIRSTRUN,
-            value = Value.ENTER,
-            extras = [TelemetryExtra(name = Extra.SUCCESS, value = "true/false")]
-    )
-    @JvmStatic
-    fun statsShowFirstRun() {
-        TelemetryHelper.onFirstLaunch(TelemetryHolder.get().configuration.context, TelemetryHelper.RC_READY_FIRST_RUN_SHOWN) {
+        checkFirebaseRemoteConfigLifecycle {
             EventBuilder(
-                    Category.EXPERIMENT,
-                    Method.REMOTE_CONFIG_FETCHED,
-                    Object.FIRSTRUN,
-                    Value.ENTER
-            ).extra(Extra.SUCCESS, TelemetryHelper.remoteConfigFetched.toString()).queue()
-        }
-    }
-
-    @Due(date = "2019-10-30", reason = "Impact the performance for loading DefaultSharedPreferences")
-    @TelemetryDoc(
-            name = "RemoteConfig ready when Home Toolbar Level 1 shown",
-            category = Category.EXPERIMENT,
-            method = Method.REMOTE_CONFIG_FETCHED,
-            `object` = Object.HOME,
-            value = Value.ENTER,
-            extras = [TelemetryExtra(name = Extra.SUCCESS, value = "true/false")]
-    )
-    @JvmStatic
-    fun statsShowHome() {
-        TelemetryHelper.onFirstLaunch(TelemetryHolder.get().configuration.context, TelemetryHelper.RC_READY_FIRST_SHOW_HOME) {
-            EventBuilder(Category.EXPERIMENT, Method.REMOTE_CONFIG_FETCHED, Object.HOME, Value.ENTER)
-                    .extra(Extra.SUCCESS, TelemetryHelper.remoteConfigFetched.toString())
-                    .queue()
-        }
-    }
-
-    @Due(date = "2019-10-30", reason = "Impact the performance for loading DefaultSharedPreferences")
-    @TelemetryDoc(
-            name = "RemoteConfig ready when Home Toolbar Level 2 shown",
-            category = Category.EXPERIMENT,
-            method = Method.REMOTE_CONFIG_FETCHED,
-            `object` = Object.HOME,
-            value = Value.TOOLBAR,
-            extras = [TelemetryExtra(name = Extra.SUCCESS, value = "true/false")]
-    )
-    @JvmStatic
-    fun statsShowMenuHome() {
-        TelemetryHelper.onFirstLaunch(TelemetryHolder.get().configuration.context, TelemetryHelper.RC_READY_FIRST_SHOW_HOME_MEU) {
-            EventBuilder(
-                    Category.EXPERIMENT,
-                    Method.REMOTE_CONFIG_FETCHED,
-                    Object.HOME,
-                    Value.TOOLBAR
-            ).extra(Extra.SUCCESS, TelemetryHelper.remoteConfigFetched.toString()).queue()
-        }
-    }
-
-    @Due(date = "2019-10-30", reason = "Impact the performance for loading DefaultSharedPreferences")
-    @TelemetryDoc(
-            name = "RemoteConfig ready when Browser Toolbar level 1 shown",
-            category = Category.EXPERIMENT,
-            method = Method.REMOTE_CONFIG_FETCHED,
-            `object` = Object.BROWSER,
-            value = Value.ENTER,
-            extras = [TelemetryExtra(name = Extra.SUCCESS, value = "true/false")]
-    )
-    @JvmStatic
-    fun statsRaiseBrowserScreen() {
-        TelemetryHelper.onFirstLaunch(TelemetryHolder.get().configuration.context, TelemetryHelper.RC_READY_FIRST_SHOW_BROWSER) {
-            EventBuilder(
-                    Category.EXPERIMENT,
-                    Method.REMOTE_CONFIG_FETCHED,
-                    Object.BROWSER,
-                    Value.ENTER
-            ).extra(Extra.SUCCESS, TelemetryHelper.remoteConfigFetched.toString()).queue()
-        }
-    }
-
-    @Due(date = "2019-10-30", reason = "Impact the performance for loading DefaultSharedPreferences")
-    @TelemetryDoc(
-            name = "RemoteConfig ready when Browser Toolbar level 2 shown",
-            category = Category.EXPERIMENT,
-            method = Method.REMOTE_CONFIG_FETCHED,
-            `object` = Object.BROWSER,
-            value = Value.TOOLBAR,
-            extras = [TelemetryExtra(name = Extra.SUCCESS, value = "true/false")]
-    )
-    @JvmStatic
-    fun statsShowMenuToolbar() {
-        TelemetryHelper.onFirstLaunch(TelemetryHolder.get().configuration.context, TelemetryHelper.RC_READY_FIRST_SHOW_BROWSER_MENU) {
-            EventBuilder(
-                    Category.EXPERIMENT,
-                    Method.REMOTE_CONFIG_FETCHED,
-                    Object.BROWSER,
-                    Value.TOOLBAR
-            ).extra(Extra.SUCCESS, TelemetryHelper.remoteConfigFetched.toString()).queue()
+                    Category.FIREBASE, Method.CONSUMED, Object.FIRSTRUN, Value.NEGATIVE
+            ).queue()
+            Log.d(TAG, "Firebase RemoteConfig needed but not fetched-First Run")
         }
     }
 
@@ -478,6 +373,8 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
                 .extra(Extra.ON, java.lang.Long.toString(duration))
                 .queue()
+
+        firstRunFinishCheck()
     }
 
     @TelemetryDoc(
@@ -2286,5 +2183,14 @@ object TelemetryWrapper {
         companion object {
             private const val MEASUREMENT_CAPTURE_COUNT = "capture_count"
         }
+    }
+
+    // if not a new user, we 'll not do the pass in lambda
+    // we also only want to record the fail case. So return early.
+    private fun checkFirebaseRemoteConfigLifecycle(telemetryAction: () -> Unit) {
+        if (!isNewUser || remoteConfigFetched) {
+            return
+        }
+        telemetryAction()
     }
 }

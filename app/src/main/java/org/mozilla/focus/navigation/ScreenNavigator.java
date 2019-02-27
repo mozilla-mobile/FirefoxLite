@@ -97,7 +97,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * 2. you've called Session#loadUrl() by yourself, and want to move that tab to the foreground.
      */
     public void raiseBrowserScreen(boolean animate) {
-        TelemetryWrapper.statsRaiseBrowserScreen();
         logMethod();
 
         this.transactionHelper.popAllScreens();

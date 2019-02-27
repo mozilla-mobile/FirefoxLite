@@ -24,11 +24,9 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.firstrun.DefaultFirstrunPagerAdapter
 import org.mozilla.focus.firstrun.UpgradeFirstrunPagerAdapter
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
-import org.mozilla.focus.telemetry.TelemetryHelper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.NewFeatureNotice
-import org.mozilla.rocket.banner.OnClickListener
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
 
@@ -118,7 +116,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
                 promoteSetDefaultBrowserIfPreload()
 
                 TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp)
-                TelemetryWrapper.statsFinishFirstRunEvent()
 
                 finishFirstrun()
             }
@@ -142,11 +139,11 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     }
 
     private fun findPagerAdapter(context: Context, onClickListener: View.OnClickListener): PagerAdapter? {
-        TelemetryHelper.firstLaunchVersion(context)
-        TelemetryWrapper.statsShowFirstRun()
         val pagerAdapter: PagerAdapter?
         val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
         pagerAdapter = if (!shown) {
+            // only the real first launch user will send this ping
+            TelemetryWrapper.firstLaunch()
             DefaultFirstrunPagerAdapter(context, wrapButtonClickListener(onClickListener))
         } else if (NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
             UpgradeFirstrunPagerAdapter(context, onClickListener)

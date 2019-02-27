@@ -890,7 +890,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             case R.id.btn_menu:
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
                 TelemetryWrapper.showMenuToolbar();
-                TelemetryWrapper.statsShowMenuToolbar();
                 break;
             case R.id.btn_capture:
                 onCaptureClicked();
