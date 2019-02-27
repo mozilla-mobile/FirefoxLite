@@ -11,13 +11,12 @@
     android:fitsSystemWindows="true"
     android:background="@color/colorUrlInputBackground">
 
-    <FrameLayout
+    <FrameLayout vc
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_menu"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
         tools:ignore="MissingPrefix">
 
@@ -42,7 +41,7 @@
 
                     <TextView
                         style="@style/PanelEmptyHolderText"
-                        android:text="No News is Good News!" />
+                        android:text="@string/news_update_btn" />
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
@@ -63,9 +62,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-medium"
-            android:text="News"
+            android:text="@string/label_menu_news"
             android:textColor="@color/paletteLightBlack100"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </FrameLayout>
 
 </org.mozilla.rocket.content.ContentPortalView>

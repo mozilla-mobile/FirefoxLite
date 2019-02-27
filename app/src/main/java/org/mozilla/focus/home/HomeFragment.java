@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -80,7 +81,9 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.rocket.bhaskar.ItemPojo;
 import org.mozilla.rocket.content.ContentPortalView;
+import org.mozilla.rocket.content.ContentViewModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.httptask.SimpleLoadUrlTask;
@@ -97,6 +100,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.threadutils.ThreadUtils;
+import org.mozilla.rocket.bhaskar.Repository;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
@@ -170,6 +174,21 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         super.onCreate(bundle);
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final FragmentActivity activity = getActivity();
+        if (activity == null || contentPanel == null) {
+            return;
+        }
+        ContentViewModel viewModel = ViewModelProviders.of(activity).get(ContentViewModel.class);
+        viewModel.setRepository(new Repository(getContext(), 521, 20, null, 3, viewModel, null));
+        viewModel.getItems().observe(activity,
+            items -> contentPanel.setData(items));
+
+        viewModel.loadMore();
     }
 
     @Override

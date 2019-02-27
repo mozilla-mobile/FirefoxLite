@@ -5,12 +5,9 @@
 
 package org.mozilla.rocket.content
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
-import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -23,7 +20,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.fragment.PanelFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.bhaskar.ItemPojo
-import org.mozilla.rocket.bhaskar.Repository
 import org.mozilla.rocket.content.ContentPortalViewState.isLastSessionContent
 
 object ContentPortalViewState {
@@ -36,7 +32,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: View
     private lateinit var adapter: ContentAdapter
-    private lateinit var viewModel: ContentViewModel
+//    private lateinit var viewModel: ContentViewModel
     private lateinit var bottomSheet: View
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
@@ -71,33 +67,15 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     }
 
     private fun setupData() {
+        this.setOnClickListener { hide() }
         recyclerView = findViewById(R.id.recyclerview)
         emptyView = findViewById(R.id.empty_view_container)
-
         adapter = ContentAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        viewModel = ViewModelProviders.of(context as FragmentActivity)
-                .get(ContentViewModel::class.java)
-        viewModel.repository = Repository(context, 521, 20, null, 3, viewModel, null)
-        viewModel.items.observe(
-                context as FragmentActivity,
-                Observer<List<ItemPojo>> { items ->
-                // why run?
-                run {
-                    if (items != null && items.isNotEmpty()) {
-                        bottomSheetBehavior.peekHeight = 300 * 3 // fix later
-                    } else {
-                        bottomSheetBehavior.peekHeight = 0 // fix later
-                        bottomSheetBehavior.skipCollapsed = true
-                    }
-                    bottomSheet.requestLayout()
-                    adapter.setData(items)
-                }
-            })
-        viewModel.loadMore()
+
         onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
     }
 
@@ -133,7 +111,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupBottomSheet() {
         bottomSheet = findViewById<View>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         bottomSheetBehavior.setBottomSheetCallback(object :
                 BottomSheetBehavior.BottomSheetCallback() {
@@ -180,5 +158,16 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     override fun onItemEdited(item: ItemPojo?) {
         Toast.makeText(context, "I don't edit stuff", Toast.LENGTH_SHORT).show()
+    }
+
+    fun setData(items: MutableList<ItemPojo>?) {
+        if (items != null && items.size > 0) {
+            bottomSheetBehavior.peekHeight = 300 * 3 // fix later
+        } else {
+            bottomSheetBehavior.peekHeight = 0 // fix later
+            bottomSheetBehavior.skipCollapsed = true
+        }
+        bottomSheet.requestLayout()
+        adapter.setData(items)
     }
 }
