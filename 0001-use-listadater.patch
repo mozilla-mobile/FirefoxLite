@@ -1,0 +1,680 @@
+From f0c628775bc382ff44cb1b7d74a24fe55c28503e Mon Sep 17 00:00:00 2001
+From: Nevin Chen <cnevinchen@gmail.com>
+Date: Wed, 27 Feb 2019 23:14:11 +0800
+Subject: [PATCH] use listadater
+
+---
+ ...ent-portal-Add-a-pref-so-we-can-land.patch | 373 ++++++++++++++++++
+ .../rocket/content/ContentAdapter.java        | 120 ------
+ .../mozilla/rocket/content/ContentAdapter.kt  | 122 ++++++
+ .../rocket/content/ContentPortalView.kt       |   6 +-
+ 4 files changed, 498 insertions(+), 123 deletions(-)
+ create mode 100644 0001-Closes-2712-Content-portal-Add-a-pref-so-we-can-land.patch
+ delete mode 100644 app/src/main/java/org/mozilla/rocket/content/ContentAdapter.java
+ create mode 100644 app/src/main/java/org/mozilla/rocket/content/ContentAdapter.kt
+
+diff --git a/0001-Closes-2712-Content-portal-Add-a-pref-so-we-can-land.patch b/0001-Closes-2712-Content-portal-Add-a-pref-so-we-can-land.patch
+new file mode 100644
+index 00000000..5f8f4993
+--- /dev/null
++++ b/0001-Closes-2712-Content-portal-Add-a-pref-so-we-can-land.patch
+@@ -0,0 +1,373 @@
++From d00f051698d4615ba1f5267fb23e1d349935976c Mon Sep 17 00:00:00 2001
++From: Nevin Chen <cnevinchen@gmail.com>
++Date: Mon, 25 Feb 2019 23:48:30 +0800
++Subject: [PATCH] Closes #2712 - Content portal - Add a pref so we can land it
++ first.
++
++---
++ .../org/mozilla/focus/home/HomeFragment.java  |  9 +-
++ .../rocket/content/ContentPortalView.kt       |  7 ++
++ .../res/layout-h600dp/fragment_homescreen.xml | 24 -----
++ .../fragment_homescreen_news.xml              | 93 ++++++++++++++++++
++ .../main/res/layout/fragment_homescreen.xml   | 23 -----
++ .../res/layout/fragment_homescreen_news.xml   | 94 +++++++++++++++++++
++ app/src/main/res/xml/settings.xml             |  4 +
++ 7 files changed, 206 insertions(+), 48 deletions(-)
++ create mode 100644 app/src/main/res/layout-h600dp/fragment_homescreen_news.xml
++ create mode 100644 app/src/main/res/layout/fragment_homescreen_news.xml
++
++diff --git a/app/src/main/java/org/mozilla/focus/home/HomeFragment.java b/app/src/main/java/org/mozilla/focus/home/HomeFragment.java
++index 02119e0a..743f1f07 100644
++--- a/app/src/main/java/org/mozilla/focus/home/HomeFragment.java
+++++ b/app/src/main/java/org/mozilla/focus/home/HomeFragment.java
++@@ -81,6 +81,7 @@ import org.mozilla.focus.web.WebViewProvider;
++ import org.mozilla.focus.widget.FragmentListener;
++ import org.mozilla.focus.widget.SwipeMotionLayout;
++ import org.mozilla.rocket.content.ContentPortalView;
+++import org.mozilla.rocket.content.ContentPortalViewKt;
++ import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
++ import org.mozilla.rocket.nightmode.themed.ThemedTextView;
++ import org.mozilla.httptask.SimpleLoadUrlTask;
++@@ -385,7 +386,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
++                              @Nullable ViewGroup container,
++                              @Nullable Bundle savedInstanceState) {
++ 
++-        final View view = inflater.inflate(R.layout.fragment_homescreen, container, false);
+++        final View view;
+++        if (ContentPortalViewKt.isEnable(getContext())){
+++            view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
+++        } else {
+++            view = inflater.inflate(R.layout.fragment_homescreen, container, false);
+++        }
+++
++         this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
++ 
++         this.btnMenu = view.findViewById(R.id.btn_menu_home);
++diff --git a/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt b/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt
++index e23efdbf..67dcaebd 100644
++--- a/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt
+++++ b/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt
++@@ -8,6 +8,7 @@ package org.mozilla.rocket.content
++ import android.arch.lifecycle.Observer
++ import android.arch.lifecycle.ViewModelProviders
++ import android.content.Context
+++import android.preference.PreferenceManager
++ import android.support.design.widget.BottomSheetBehavior
++ import android.support.design.widget.CoordinatorLayout
++ import android.support.v4.app.FragmentActivity
++@@ -182,3 +183,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
++         Toast.makeText(context, "I don't edit stuff", Toast.LENGTH_SHORT).show()
++     }
++ }
+++private const val PREF_KEY_STRING_NEWS = "pref_key_string_news"
+++
+++fun isEnable(context: Context?): Boolean {
+++    return context?.let { PreferenceManager.getDefaultSharedPreferences(context)
+++            .getBoolean(PREF_KEY_STRING_NEWS, false) } ?: false
+++}
++\ No newline at end of file
++diff --git a/app/src/main/res/layout-h600dp/fragment_homescreen.xml b/app/src/main/res/layout-h600dp/fragment_homescreen.xml
++index 0711d38b..87d40136 100644
++--- a/app/src/main/res/layout-h600dp/fragment_homescreen.xml
+++++ b/app/src/main/res/layout-h600dp/fragment_homescreen.xml
++@@ -55,26 +55,6 @@
++         app:layout_constraintBottom_toBottomOf="parent"
++         app:layout_constraintTop_toTopOf="parent" />
++ 
++-    <include
++-        android:id="@+id/arrow1"
++-        layout="@layout/button_content"
++-        android:layout_width="wrap_content"
++-        android:layout_height="wrap_content"
++-        app:layout_constraintBottom_toTopOf="@+id/arrow2"
++-        app:layout_constraintEnd_toEndOf="@+id/arrow2"
++-        app:layout_constraintStart_toStartOf="@+id/arrow2" />
++-
++-    <include
++-        android:id="@+id/arrow2"
++-        layout="@layout/button_content"
++-        android:layout_width="wrap_content"
++-        android:layout_height="wrap_content"
++-        android:layout_alignParentBottom="true"
++-        android:layout_marginBottom="12dp"
++-        app:layout_constraintBottom_toBottomOf="parent"
++-        app:layout_constraintEnd_toEndOf="parent"
++-        app:layout_constraintStart_toStartOf="parent" />
++-
++     <include layout="@layout/fragment_homescreen_item_recyclerview"
++         android:id="@+id/main_list"
++         android:layout_width="296dp"
++@@ -86,8 +66,4 @@
++ 
++     <include layout="@layout/fragment_homescreen_item_menu_button"/>
++ 
++-    <include layout="@layout/content_portal"/>
++-
++-
++-
++ </org.mozilla.focus.widget.SwipeMotionLayout>
++diff --git a/app/src/main/res/layout-h600dp/fragment_homescreen_news.xml b/app/src/main/res/layout-h600dp/fragment_homescreen_news.xml
++new file mode 100644
++index 00000000..0711d38b
++--- /dev/null
+++++ b/app/src/main/res/layout-h600dp/fragment_homescreen_news.xml
++@@ -0,0 +1,93 @@
+++<?xml version="1.0" encoding="utf-8"?>
+++<!-- This Source Code Form is subject to the terms of the Mozilla Public
+++   - License, v. 2.0. If a copy of the MPL was not distributed with this
+++   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+++<org.mozilla.focus.widget.SwipeMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+++    android:layout_width="match_parent"
+++    android:layout_height="match_parent"
+++    xmlns:app="http://schemas.android.com/apk/res-auto"
+++    android:id="@+id/home_container">
+++
+++    <org.mozilla.focus.home.HomeScreenBackground
+++        android:id="@+id/home_background"
+++        android:layout_width="match_parent"
+++        android:layout_height="match_parent"
+++        android:background="@drawable/bg_homescreen_color"
+++        android:scaleType="fitStart" />
+++
+++    <ImageView
+++        android:id="@+id/home_wifi_vpn_survey"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        android:layout_marginEnd="17dp"
+++        android:layout_marginTop="21dp"
+++        android:padding="15dp"
+++        android:tint="@android:color/white"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintTop_toTopOf="parent"
+++        android:src="@drawable/vpn" />
+++
+++    <include layout="@layout/fragment_homescreen_item_title"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        app:layout_constraintTop_toTopOf="parent"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent"
+++        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"/>
+++
+++    <android.support.v7.widget.RecyclerView
+++        android:id="@+id/banner"
+++        android:layout_width="0dp"
+++        android:layout_height="0dp"
+++        android:layout_marginBottom="36dp"
+++        app:layout_constraintDimensionRatio="H,2:1"
+++        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"
+++        app:layout_constraintStart_toStartOf="parent"
+++        app:layout_constraintEnd_toEndOf="parent"/>
+++
+++    <include
+++        android:id="@+id/home_fragment_fake_input"
+++        layout="@layout/fragment_homescreen_item_fake_input"
+++        android:layout_width="@dimen/fake_input_width"
+++        android:layout_height="@dimen/fake_input_height"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent"
+++        app:layout_constraintBottom_toBottomOf="parent"
+++        app:layout_constraintTop_toTopOf="parent" />
+++
+++    <include
+++        android:id="@+id/arrow1"
+++        layout="@layout/button_content"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        app:layout_constraintBottom_toTopOf="@+id/arrow2"
+++        app:layout_constraintEnd_toEndOf="@+id/arrow2"
+++        app:layout_constraintStart_toStartOf="@+id/arrow2" />
+++
+++    <include
+++        android:id="@+id/arrow2"
+++        layout="@layout/button_content"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        android:layout_alignParentBottom="true"
+++        android:layout_marginBottom="12dp"
+++        app:layout_constraintBottom_toBottomOf="parent"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent" />
+++
+++    <include layout="@layout/fragment_homescreen_item_recyclerview"
+++        android:id="@+id/main_list"
+++        android:layout_width="296dp"
+++        android:layout_height="wrap_content"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent"
+++        app:layout_constraintTop_toBottomOf="@id/home_fragment_fake_input"
+++        android:layout_marginTop="@dimen/home_padding_url_bar_to_top_sites"/>
+++
+++    <include layout="@layout/fragment_homescreen_item_menu_button"/>
+++
+++    <include layout="@layout/content_portal"/>
+++
+++
+++
+++</org.mozilla.focus.widget.SwipeMotionLayout>
++diff --git a/app/src/main/res/layout/fragment_homescreen.xml b/app/src/main/res/layout/fragment_homescreen.xml
++index d3afda7d..54cf0c9e 100644
++--- a/app/src/main/res/layout/fragment_homescreen.xml
+++++ b/app/src/main/res/layout/fragment_homescreen.xml
++@@ -41,7 +41,6 @@
++         android:layout_width="0dp"
++         android:layout_height="0dp"
++         android:layout_marginBottom="24dp"
++-        android:visibility="gone"
++         app:layout_constraintDimensionRatio="H,2:1"
++         app:layout_constraintStart_toStartOf="parent"
++         app:layout_constraintEnd_toEndOf="parent"
++@@ -56,26 +55,6 @@
++         app:layout_constraintEnd_toEndOf="parent"
++         app:layout_constraintStart_toStartOf="parent"/>
++ 
++-    <include
++-        android:id="@+id/arrow1"
++-        layout="@layout/button_content"
++-        android:layout_width="wrap_content"
++-        android:layout_height="wrap_content"
++-        app:layout_constraintBottom_toTopOf="@+id/arrow2"
++-        app:layout_constraintEnd_toEndOf="@+id/arrow2"
++-        app:layout_constraintStart_toStartOf="@+id/arrow2" />
++-
++-    <include
++-        android:id="@+id/arrow2"
++-        layout="@layout/button_content"
++-        android:layout_width="wrap_content"
++-        android:layout_height="wrap_content"
++-        android:layout_alignParentBottom="true"
++-        android:layout_marginBottom="12dp"
++-        app:layout_constraintBottom_toBottomOf="parent"
++-        app:layout_constraintEnd_toEndOf="parent"
++-        app:layout_constraintStart_toStartOf="parent" />
++-
++     <include layout="@layout/fragment_homescreen_item_menu_button"
++         android:id="@+id/btn_menu_container"/>
++ 
++@@ -87,8 +66,6 @@
++         app:layout_constraintStart_toStartOf="parent"
++         app:layout_constraintBottom_toTopOf="@id/btn_menu_container"/>
++ 
++-    <include layout="@layout/content_portal"/>
++-
++ 
++ 
++ </org.mozilla.focus.widget.SwipeMotionLayout>
++diff --git a/app/src/main/res/layout/fragment_homescreen_news.xml b/app/src/main/res/layout/fragment_homescreen_news.xml
++new file mode 100644
++index 00000000..d3afda7d
++--- /dev/null
+++++ b/app/src/main/res/layout/fragment_homescreen_news.xml
++@@ -0,0 +1,94 @@
+++<?xml version="1.0" encoding="utf-8"?>
+++<!-- This Source Code Form is subject to the terms of the Mozilla Public
+++   - License, v. 2.0. If a copy of the MPL was not distributed with this
+++   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+++<org.mozilla.focus.widget.SwipeMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+++    android:layout_width="match_parent"
+++    android:layout_height="match_parent"
+++    xmlns:app="http://schemas.android.com/apk/res-auto"
+++    android:id="@+id/home_container">
+++
+++    <org.mozilla.focus.home.HomeScreenBackground
+++        android:id="@+id/home_background"
+++        android:layout_width="match_parent"
+++        android:layout_height="match_parent"
+++        android:background="@drawable/bg_homescreen_color"
+++        android:scaleType="fitStart" />
+++
+++    <ImageView
+++        android:id="@+id/home_wifi_vpn_survey"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        android:layout_marginEnd="17dp"
+++        android:layout_marginTop="21dp"
+++        android:padding="15dp"
+++        android:tint="@android:color/white"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintTop_toTopOf="parent"
+++        android:src="@drawable/vpn"
+++        android:visibility="gone"/>
+++
+++    <include layout="@layout/fragment_homescreen_item_title"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        app:layout_constraintTop_toTopOf="parent"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent"
+++        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input" />
+++
+++    <android.support.v7.widget.RecyclerView
+++        android:id="@+id/banner"
+++        android:layout_width="0dp"
+++        android:layout_height="0dp"
+++        android:layout_marginBottom="24dp"
+++        android:visibility="gone"
+++        app:layout_constraintDimensionRatio="H,2:1"
+++        app:layout_constraintStart_toStartOf="parent"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintBottom_toTopOf="@id/home_fragment_fake_input"/>
+++
+++    <include layout="@layout/fragment_homescreen_item_fake_input"
+++        android:id="@+id/home_fragment_fake_input"
+++        android:layout_width="@dimen/fake_input_width"
+++        android:layout_height="@dimen/fake_input_height"
+++        android:layout_marginBottom="@dimen/home_padding_url_bar_to_top_sites"
+++        app:layout_constraintBottom_toTopOf="@id/main_list"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent"/>
+++
+++    <include
+++        android:id="@+id/arrow1"
+++        layout="@layout/button_content"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        app:layout_constraintBottom_toTopOf="@+id/arrow2"
+++        app:layout_constraintEnd_toEndOf="@+id/arrow2"
+++        app:layout_constraintStart_toStartOf="@+id/arrow2" />
+++
+++    <include
+++        android:id="@+id/arrow2"
+++        layout="@layout/button_content"
+++        android:layout_width="wrap_content"
+++        android:layout_height="wrap_content"
+++        android:layout_alignParentBottom="true"
+++        android:layout_marginBottom="12dp"
+++        app:layout_constraintBottom_toBottomOf="parent"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent" />
+++
+++    <include layout="@layout/fragment_homescreen_item_menu_button"
+++        android:id="@+id/btn_menu_container"/>
+++
+++    <include layout="@layout/fragment_homescreen_item_recyclerview"
+++        android:id="@+id/main_list"
+++        android:layout_width="@dimen/top_site_width"
+++        android:layout_height="wrap_content"
+++        app:layout_constraintEnd_toEndOf="parent"
+++        app:layout_constraintStart_toStartOf="parent"
+++        app:layout_constraintBottom_toTopOf="@id/btn_menu_container"/>
+++
+++    <include layout="@layout/content_portal"/>
+++
+++
+++
+++</org.mozilla.focus.widget.SwipeMotionLayout>
++diff --git a/app/src/main/res/xml/settings.xml b/app/src/main/res/xml/settings.xml
++index a71cb756..dcafba5c 100644
++--- a/app/src/main/res/xml/settings.xml
+++++ b/app/src/main/res/xml/settings.xml
++@@ -79,6 +79,10 @@
++             android:defaultValue="true"
++             android:key="pref_key_private_mode_enabled"
++             android:title="Private Mode" />
+++        <SwitchPreference
+++            android:defaultValue="false"
+++            android:key="pref_key_string_news"
+++            android:title="News" />
++     </PreferenceCategory>
++ 
++ </PreferenceScreen>
++-- 
++2.19.1
++
+diff --git a/app/src/main/java/org/mozilla/rocket/content/ContentAdapter.java b/app/src/main/java/org/mozilla/rocket/content/ContentAdapter.java
+deleted file mode 100644
+index 1064ef59..00000000
+--- a/app/src/main/java/org/mozilla/rocket/content/ContentAdapter.java
++++ /dev/null
+@@ -1,120 +0,0 @@
+-package org.mozilla.rocket.content;
+-
+-import android.graphics.Bitmap;
+-import android.graphics.Color;
+-import android.support.annotation.NonNull;
+-import android.support.v7.widget.PopupMenu;
+-import android.support.v7.widget.RecyclerView;
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-
+-import android.widget.ImageView;
+-import com.bumptech.glide.Glide;
+-import com.bumptech.glide.request.target.SimpleTarget;
+-import com.bumptech.glide.request.transition.Transition;
+-import org.mozilla.focus.R;
+-import org.mozilla.focus.fragment.PanelFragment;
+-import org.mozilla.focus.fragment.PanelFragmentStatusListener;
+-
+-import org.mozilla.focus.site.SiteItemViewHolder;
+-import org.mozilla.focus.telemetry.TelemetryWrapper;
+-import org.mozilla.focus.utils.DimenUtils;
+-import org.mozilla.icon.FavIconUtils;
+-import org.mozilla.rocket.bhaskar.ItemPojo;
+-
+-import java.util.List;
+-
+-public class ContentAdapter extends RecyclerView.Adapter<SiteItemViewHolder> {
+-    private List<ItemPojo> items;
+-    private ContentPanelListener listener;
+-
+-    public ContentAdapter(ContentPanelListener listener) {
+-        this.listener = listener;
+-    }
+-
+-    @NonNull
+-    @Override
+-    public SiteItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_website, parent, false);
+-        return new SiteItemViewHolder(v);
+-    }
+-
+-    @Override
+-    public void onBindViewHolder(@NonNull SiteItemViewHolder holder, int position) {
+-        final ItemPojo item = getItem(position);
+-        if (item == null) {
+-            return;
+-        }
+-        String favIconUri = item.coverPic.substring(2, item.coverPic.length() - 2);
+-        Glide.with(holder.imgFav.getContext())
+-                .asBitmap()
+-                .load(favIconUri)
+-                .into(new SimpleTarget<Bitmap>() {
+-                    @Override
+-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+-                        if (DimenUtils.iconTooBlurry(holder.imgFav.getResources(), resource.getWidth())) {
+-                            setImageViewWithDefaultBitmap(holder.imgFav, item.detailUrl);
+-                        } else {
+-                            holder.imgFav.setImageBitmap(resource);
+-                        }
+-                    }
+-                });
+-        holder.rootView.setTag(item.category);
+-        holder.textMain.setText(item.title);
+-        holder.textSecondary.setText(item.description);
+-        holder.rootView.setOnClickListener(v -> {
+-            listener.onItemClicked(item.detailUrl);
+-        });
+-        final PopupMenu popupMenu = new PopupMenu(holder.btnMore.getContext(), holder.btnMore);
+-        popupMenu.setOnMenuItemClickListener(menuItem -> {
+-            if (menuItem.getItemId() == R.id.remove) {
+-                listener.onItemDeleted(item);
+-            }
+-            if (menuItem.getItemId() == R.id.edit) {
+-                listener.onItemEdited(item);
+-            }
+-            return false;
+-        });
+-        popupMenu.inflate(R.menu.menu_bookmarks);
+-        holder.btnMore.setOnClickListener(v -> {
+-            popupMenu.show();
+-            TelemetryWrapper.showBookmarkContextMenu();
+-        });
+-    }
+-
+-    @Override
+-    public int getItemCount() {
+-        return (items != null ? items.size() : 0);
+-    }
+-
+-    public void setData(List<ItemPojo> list) {
+-        this.items = list;
+-        if (getItemCount() == 0) {
+-            listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY);
+-        } else {
+-            listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY);
+-        }
+-        notifyDataSetChanged();
+-    }
+-
+-    private ItemPojo getItem(int index) {
+-        if (index >= 0 && items != null && items.size() > index) {
+-            return items.get(index);
+-        } else {
+-            return null;
+-        }
+-    }
+-
+-    public interface ContentPanelListener extends PanelFragmentStatusListener {
+-        void onItemClicked(String url);
+-
+-        void onItemDeleted(ItemPojo item);
+-
+-        void onItemEdited(ItemPojo item);
+-    }
+-
+-    private void setImageViewWithDefaultBitmap(ImageView imageView, String url) {
+-        imageView.setImageBitmap(DimenUtils.getInitialBitmap(imageView.getResources(), FavIconUtils.getRepresentativeCharacter(url), Color.WHITE));
+-    }
+-}
+\ No newline at end of file
+diff --git a/app/src/main/java/org/mozilla/rocket/content/ContentAdapter.kt b/app/src/main/java/org/mozilla/rocket/content/ContentAdapter.kt
+new file mode 100644
+index 00000000..d1678b30
+--- /dev/null
++++ b/app/src/main/java/org/mozilla/rocket/content/ContentAdapter.kt
+@@ -0,0 +1,122 @@
++package org.mozilla.rocket.content
++
++import android.graphics.Bitmap
++import android.graphics.Color
++import android.support.v7.recyclerview.extensions.ListAdapter
++import android.support.v7.util.DiffUtil
++import android.support.v7.widget.PopupMenu
++import android.view.LayoutInflater
++import android.view.ViewGroup
++import android.widget.ImageView
++import com.bumptech.glide.Glide
++import com.bumptech.glide.request.target.SimpleTarget
++import com.bumptech.glide.request.transition.Transition
++import org.mozilla.focus.R
++import org.mozilla.focus.fragment.PanelFragment
++import org.mozilla.focus.fragment.PanelFragmentStatusListener
++import org.mozilla.focus.site.SiteItemViewHolder
++import org.mozilla.focus.telemetry.TelemetryWrapper
++import org.mozilla.focus.utils.DimenUtils
++import org.mozilla.icon.FavIconUtils
++import org.mozilla.rocket.bhaskar.ItemPojo
++
++class ContentAdapter(private val listener: ContentPanelListener) :
++    ListAdapter<ItemPojo, SiteItemViewHolder>(COMPARATOR) {
++//    private var items: List<ItemPojo>? = null
++
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SiteItemViewHolder {
++        val v = LayoutInflater.from(parent.context)
++            .inflate(R.layout.item_history_website, parent, false)
++        return SiteItemViewHolder(v)
++    }
++
++    override fun onBindViewHolder(holder: SiteItemViewHolder, position: Int) {
++        val item = getItem(position) ?: return
++        val favIconUri = item.coverPic.substring(2, item.coverPic.length - 2)
++        Glide.with(holder.imgFav.context).asBitmap().load(favIconUri)
++            .into(object : SimpleTarget<Bitmap>() {
++                override fun onResourceReady(
++                    resource: Bitmap, transition: Transition<in Bitmap>
++                ) {
++                    if (DimenUtils.iconTooBlurry(holder.imgFav.resources, resource.width)) {
++                        setImageViewWithDefaultBitmap(holder.imgFav, item.detailUrl)
++                    } else {
++                        holder.imgFav.setImageBitmap(resource)
++                    }
++                }
++            })
++        holder.rootView.tag = item.category
++        holder.textMain.text = item.title
++        holder.textSecondary.text = item.description
++        holder.rootView.setOnClickListener { listener.onItemClicked(item.detailUrl) }
++        val popupMenu = PopupMenu(holder.btnMore.context, holder.btnMore)
++        popupMenu.setOnMenuItemClickListener { menuItem ->
++            if (menuItem.itemId == R.id.remove) {
++                listener.onItemDeleted(item)
++            }
++            if (menuItem.itemId == R.id.edit) {
++                listener.onItemEdited(item)
++            }
++            false
++        }
++        popupMenu.inflate(R.menu.menu_bookmarks)
++        holder.btnMore.setOnClickListener {
++            popupMenu.show()
++            TelemetryWrapper.showBookmarkContextMenu()
++        }
++    }
++
++    override fun submitList(list: MutableList<ItemPojo>?) {
++        super.submitList(list)
++        if (itemCount == 0) {
++            listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY)
++        } else {
++            listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
++        }
++    }
++
++
++//    fun setData(list: List<ItemPojo>) {
++//        this.items = list
++//        if (itemCount == 0) {
++//            listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY)
++//        } else {
++//            listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
++//        }
++//        notifyDataSetChanged()
++//    }
++//
++//    override fun getItem(index: Int): ItemPojo? {
++//        return if (index >= 0 && items != null && items!!.size > index) {
++//            items!![index]
++//        } else {
++//            null
++//        }
++//    }
++
++    interface ContentPanelListener : PanelFragmentStatusListener {
++        fun onItemClicked(url: String)
++
++        fun onItemDeleted(item: ItemPojo?)
++
++        fun onItemEdited(item: ItemPojo?)
++    }
++
++    private fun setImageViewWithDefaultBitmap(imageView: ImageView, url: String) {
++        imageView.setImageBitmap(
++            DimenUtils.getInitialBitmap(
++                imageView.resources, FavIconUtils.getRepresentativeCharacter(url), Color.WHITE
++            )
++        )
++    }
++
++    companion object {
++        private val COMPARATOR = object : DiffUtil.ItemCallback<ItemPojo>() {
++            override fun areItemsTheSame(oldItem: ItemPojo, newItem: ItemPojo): Boolean =
++                oldItem.id == newItem.id
++
++            override fun areContentsTheSame(oldItem: ItemPojo, newItem: ItemPojo): Boolean =
++                oldItem == newItem
++        }
++    }
++}
+\ No newline at end of file
+diff --git a/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt b/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt
+index 67dcaebd..a51f0f49 100644
+--- a/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt
++++ b/app/src/main/java/org/mozilla/rocket/content/ContentPortalView.kt
+@@ -95,11 +95,11 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
+                         bottomSheetBehavior.skipCollapsed = true
+                     }
+                     bottomSheet.requestLayout()
+-                    adapter.setData(items)
++                    adapter.submitList(items?.toMutableList())
+                 }
+             })
+         viewModel.loadMore()
+-        onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
++        onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+     }
+ 
+     fun show() {
+@@ -170,7 +170,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
+         }
+     }
+ 
+-    override fun onItemClicked(url: String?) {
++    override fun onItemClicked(url: String) {
+         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+         ContentPortalViewState.isLastSessionContent = true
+     }
+-- 
+2.19.1
+

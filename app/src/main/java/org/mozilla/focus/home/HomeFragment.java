@@ -82,6 +82,7 @@ import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.rocket.content.ContentPortalView;
+import org.mozilla.rocket.content.ContentRepository;
 import org.mozilla.rocket.content.ContentViewModel;
 import org.mozilla.rocket.content.ContentPortalViewKt;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
@@ -179,21 +180,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        final FragmentActivity activity = getActivity();
-        if (activity == null || contentPanel == null) {
-            return;
-        }
-        contentViewModel = ViewModelProviders.of(activity).get(ContentViewModel.class);
-        contentViewModel.setRepository(new Repository(getContext(), 521, 20, null, 3, contentViewModel, null));
-        contentViewModel.getItems().observe(activity,
-             items -> contentPanel.setData(items));
-
-        contentViewModel.loadMore();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         showCurrentBannerTelemetry();
@@ -240,8 +226,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void listScrolled(int visibleItemCount, int lastVisibleItemPosition, int totalItemCount) {
-        contentViewModel.listScrolled(visibleItemCount, lastVisibleItemPosition, totalItemCount);
+    public void loadMore() {
+        contentViewModel.loadMore();
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -610,6 +596,22 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         bannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
         bannerConfigViewModel.getConfig().observe(this, bannerObserver);
         initBanner(getContext());
+        setupContentViewModel();
+    }
+
+    private void setupContentViewModel() {
+        final FragmentActivity activity = getActivity();
+        if (activity == null || contentPanel == null) {
+            return;
+        }
+        contentViewModel = ViewModelProviders.of(activity).get(ContentViewModel.class);
+        final Repository repository = ContentRepository.getInstance(getContext());
+        repository.setOnDataChangedListener(contentViewModel);
+        contentViewModel.setRepository(repository);
+        contentViewModel.getItems().observe(activity,
+                items -> contentPanel.setData(items));
+
+        contentViewModel.loadMore();
     }
 
     @Override

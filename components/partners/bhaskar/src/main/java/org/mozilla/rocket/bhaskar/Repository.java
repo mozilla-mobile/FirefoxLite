@@ -63,6 +63,10 @@ public class Repository {
         nextSubscription();
     }
 
+    public void setOnDataChangedListener(OnDataChangedListener listener){
+        this.onDataChangedListener = listener;
+    }
+
     private void nextSubscription() {
         if (currentPageSubscription != null) {
             return;

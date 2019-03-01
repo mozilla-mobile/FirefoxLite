@@ -9,8 +9,10 @@ import android.content.Context
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
@@ -37,8 +39,8 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private var bottomSheet: View? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
-    interface LoadMoreListener{
-        fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int)
+    interface LoadMoreListener {
+        fun loadMore()
     }
 
     constructor(context: Context) : super(context)
@@ -74,35 +76,40 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupData() {
         this.setOnClickListener { hide() }
         recyclerView = findViewById(R.id.recyclerview)
+        val animator = recyclerView?.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
         emptyView = findViewById(R.id.empty_view_container)
         adapter = ContentAdapter(this)
         recyclerView?.adapter = adapter
         recyclerView?.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        findViewById<NestedScrollView>(R.id.main_content).setOnScrollChangeListener(
-//            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
-//                val pageSize = v.measuredHeight
-//                // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
-//                // When scrolled to end due to padding
-//                if (scrollY > oldScrollY && v.getChildAt(0).measuredHeight - v.measuredHeight - scrollY < pageSize) {
-//
-//                }
-//            })
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        findViewById<NestedScrollView>(R.id.main_content).setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+                val pageSize = v.measuredHeight
+                // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
+                // When scrolled to end due to padding
+                if (scrollY > oldScrollY && v.getChildAt(0).measuredHeight - v.measuredHeight - scrollY < pageSize) {
+                    loadMoreListener?.loadMore()
+                }
+            })
         setupScrollListener()
         onStatus(PanelFragment.VIEW_TYPE_EMPTY)
     }
 
     private fun setupScrollListener() {
-        val layoutManager = recyclerView?.layoutManager as LinearLayoutManager
-        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val totalItemCount = layoutManager.itemCount
-                val visibleItemCount = layoutManager.childCount
-                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                loadMoreListener?.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
-            }
-        })
+//        val layoutManager = recyclerView?.layoutManager as LinearLayoutManager
+//        findViewById<NestedScrollView>(R.id.main_content).setOnScrollChangeListener(
+//            NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
+////                val totalItemCount = layoutManager.itemCount
+////                val visibleItemCount = layoutManager.childCount
+////                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+////                if (visibleItemCount + lastVisibleItem + ContentViewModel.VISIBLE_THRESHOLD >= totalItemCount) {
+////                    loadMoreListener?.loadMore()
+////                }
+//
+//            })
     }
 
     fun show() {
@@ -203,12 +210,15 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     fun setData(items: MutableList<ItemPojo>?) {
         bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
-        adapter?.submitList(items)
+        adapter?.submitList(items?.toMutableList())
     }
 }
+
 private const val PREF_KEY_STRING_NEWS = "pref_key_string_news"
 
 fun isEnable(context: Context?): Boolean {
-    return context?.let { PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(PREF_KEY_STRING_NEWS, false) } ?: false
+    return context?.let {
+        PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(PREF_KEY_STRING_NEWS, false)
+    } ?: false
 }

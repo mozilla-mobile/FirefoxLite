@@ -10,17 +10,11 @@ class ContentViewModel : ViewModel(), Repository.OnDataChangedListener {
     val items = MutableLiveData<List<ItemPojo>>()
 
     companion object {
-        private const val VISIBLE_THRESHOLD = 10
+        internal const val VISIBLE_THRESHOLD = 10
     }
 
     override fun onDataChanged(itemPojoList: MutableList<ItemPojo>?) {
         items.postValue(itemPojoList)
-    }
-
-    fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
-        if (visibleItemCount + lastVisibleItemPosition + VISIBLE_THRESHOLD >= totalItemCount) {
-            repository?.loadMore()
-        }
     }
 
     fun loadMore() {
