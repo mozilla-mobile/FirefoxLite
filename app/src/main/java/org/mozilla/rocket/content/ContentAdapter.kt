@@ -1,120 +1,124 @@
-package org.mozilla.rocket.content;
+package org.mozilla.rocket.content
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.support.v7.recyclerview.extensions.ListAdapter
+import android.support.v7.util.DiffUtil
+import android.support.v7.widget.PopupMenu
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import org.mozilla.focus.R
+import org.mozilla.focus.fragment.PanelFragment
+import org.mozilla.focus.fragment.PanelFragmentStatusListener
+import org.mozilla.focus.site.SiteItemViewHolder
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.DimenUtils
+import org.mozilla.icon.FavIconUtils
+import org.mozilla.rocket.bhaskar.ItemPojo
 
-import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import org.mozilla.focus.R;
-import org.mozilla.focus.fragment.PanelFragment;
-import org.mozilla.focus.fragment.PanelFragmentStatusListener;
+class ContentAdapter(private val listener: ContentPanelListener) : ListAdapter<ItemPojo, SiteItemViewHolder>(
+    COMPARATOR
+) {
 
-import org.mozilla.focus.site.SiteItemViewHolder;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.bhaskar.ItemPojo;
-
-import java.util.List;
-
-public class ContentAdapter extends RecyclerView.Adapter<SiteItemViewHolder> {
-    private List<ItemPojo> items;
-    private ContentPanelListener listener;
-
-    public ContentAdapter(ContentPanelListener listener) {
-        this.listener = listener;
+    init {
+        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                if (itemCount == 0) {
+                    listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+                } else {
+                    listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
+                }
+            }
+        })
     }
 
-    @NonNull
-    @Override
-    public SiteItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_website, parent, false);
-        return new SiteItemViewHolder(v);
-    }
+    object COMPARATOR : DiffUtil.ItemCallback<ItemPojo>() {
 
-    @Override
-    public void onBindViewHolder(@NonNull SiteItemViewHolder holder, int position) {
-        final ItemPojo item = getItem(position);
-        if (item == null) {
-            return;
+        override fun areItemsTheSame(oldItem: ItemPojo, newItem: ItemPojo): Boolean {
+            return oldItem.id == newItem.id
         }
-        String favIconUri = item.coverPic.substring(2, item.coverPic.length() - 2);
-        Glide.with(holder.imgFav.getContext())
-                .asBitmap()
-                .load(favIconUri)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        if (DimenUtils.iconTooBlurry(holder.imgFav.getResources(), resource.getWidth())) {
-                            setImageViewWithDefaultBitmap(holder.imgFav, item.detailUrl);
-                        } else {
-                            holder.imgFav.setImageBitmap(resource);
-                        }
+
+        override fun areContentsTheSame(oldItem: ItemPojo, newItem: ItemPojo): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+//    private var items: List<ItemPojo>? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SiteItemViewHolder {
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_history_website, parent, false)
+        return SiteItemViewHolder(v)
+    }
+
+    override fun onBindViewHolder(holder: SiteItemViewHolder, position: Int) {
+        val item = getItem(position) ?: return
+        val favIconUri = item.coverPic.substring(2, item.coverPic.length - 2)
+        Glide.with(holder.imgFav.context)
+            .asBitmap()
+            .load(favIconUri)
+            .into(object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>) {
+                    if (DimenUtils.iconTooBlurry(holder.imgFav.resources, resource.width)) {
+                        setImageViewWithDefaultBitmap(holder.imgFav, item.detailUrl)
+                    } else {
+                        holder.imgFav.setImageBitmap(resource)
                     }
-                });
-        holder.rootView.setTag(item.category);
-        holder.textMain.setText(item.title);
-        holder.textSecondary.setText(item.description);
-        holder.rootView.setOnClickListener(v -> {
-            listener.onItemClicked(item.detailUrl);
-        });
-        final PopupMenu popupMenu = new PopupMenu(holder.btnMore.getContext(), holder.btnMore);
-        popupMenu.setOnMenuItemClickListener(menuItem -> {
-            if (menuItem.getItemId() == R.id.remove) {
-                listener.onItemDeleted(item);
+                }
+            })
+        holder.rootView.tag = item.category
+        holder.textMain.text = item.title
+        holder.textSecondary.text = item.description
+        holder.rootView.setOnClickListener { listener.onItemClicked(item.detailUrl) }
+        val popupMenu = PopupMenu(holder.btnMore.context, holder.btnMore)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.remove) {
+                listener.onItemDeleted(item)
             }
-            if (menuItem.getItemId() == R.id.edit) {
-                listener.onItemEdited(item);
+            if (menuItem.itemId == R.id.edit) {
+                listener.onItemEdited(item)
             }
-            return false;
-        });
-        popupMenu.inflate(R.menu.menu_bookmarks);
-        holder.btnMore.setOnClickListener(v -> {
-            popupMenu.show();
-            TelemetryWrapper.showBookmarkContextMenu();
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return (items != null ? items.size() : 0);
-    }
-
-    public void setData(List<ItemPojo> list) {
-        this.items = list;
-        if (getItemCount() == 0) {
-            listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY);
-        } else {
-            listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY);
+            false
         }
-        notifyDataSetChanged();
-    }
-
-    private ItemPojo getItem(int index) {
-        if (index >= 0 && items != null && items.size() > index) {
-            return items.get(index);
-        } else {
-            return null;
+        popupMenu.inflate(R.menu.menu_bookmarks)
+        holder.btnMore.setOnClickListener {
+            popupMenu.show()
+            TelemetryWrapper.showBookmarkContextMenu()
         }
     }
+//
+//    override fun getItemCount(): Int {
+//        return if (items != null) items!!.size else 0
+//    }
 
-    public interface ContentPanelListener extends PanelFragmentStatusListener {
-        void onItemClicked(String url);
+//    private fun getItem(index: Int): ItemPojo? {
+//        return if (index >= 0 && items != null && items!!.size > index) {
+//            items!![index]
+//        } else {
+//            null
+//        }
+//    }
 
-        void onItemDeleted(ItemPojo item);
+    interface ContentPanelListener : PanelFragmentStatusListener {
+        fun onItemClicked(url: String)
 
-        void onItemEdited(ItemPojo item);
+        fun onItemDeleted(item: ItemPojo?)
+
+        fun onItemEdited(item: ItemPojo?)
     }
 
-    private void setImageViewWithDefaultBitmap(ImageView imageView, String url) {
-        imageView.setImageBitmap(DimenUtils.getInitialBitmap(imageView.getResources(), FavIconUtils.getRepresentativeCharacter(url), Color.WHITE));
+    private fun setImageViewWithDefaultBitmap(imageView: ImageView, url: String) {
+        imageView.setImageBitmap(
+            DimenUtils.getInitialBitmap(
+                imageView.resources,
+                FavIconUtils.getRepresentativeCharacter(url),
+                Color.WHITE
+            )
+        )
     }
 }

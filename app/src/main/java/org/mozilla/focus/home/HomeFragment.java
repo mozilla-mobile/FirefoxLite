@@ -240,10 +240,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void onLoadMore() {
-        if (contentViewModel != null) {
-            contentViewModel.loadMore();
-        }
+    public void listScrolled(int visibleItemCount, int lastVisibleItemPosition, int totalItemCount) {
+        contentViewModel.listScrolled(visibleItemCount, lastVisibleItemPosition, totalItemCount);
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -435,8 +433,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.arrow2 = view.findViewById(R.id.arrow2);
 
         this.contentPanel = view.findViewById(R.id.content_panel);
-        this.contentPanel.setLoadMoreListener(this);
-
+        if (this.contentPanel != null) {
+            this.contentPanel.setLoadMoreListener(this);
+        }
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
         this.tabCounter = view.findViewById(R.id.btn_tab_tray);
