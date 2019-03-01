@@ -9,6 +9,7 @@ import android.content.Context
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -39,17 +40,34 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private var bottomSheet: View? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
+    companion object {
+        // FIXME: for some reason onApplyWindowInsets  is not called from BrowserFragment -> HomeFragment
+        // I guess some view in BrowserFragment has consumed that WindowsInsets. But I can't find it now.
+        // This must be fixed before merge
+        var cachedPaddingTop = 0
+    }
+
     interface LoadMoreListener {
         fun loadMore()
     }
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        setPadding(0, cachedPaddingTop, 0, 0)
+    }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context, attrs, defStyleAttr
     )
+
+    init {
+        ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+            cachedPaddingTop = insets?.systemWindowInsetTop ?: 0
+            setPadding(0, cachedPaddingTop, 0, 0)
+            insets
+        }
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -67,10 +85,10 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
         setupData()
 
-        this.setOnApplyWindowInsetsListener { _, insets ->
-            setPadding(0, insets?.systemWindowInsetTop ?: 0, 0, 0)
-            insets
-        }
+//        this.setOnApplyWindowInsetsListener { _, insets ->
+//            setPadding(0, insets?.systemWindowInsetTop ?: 0, 0, 0)
+//            insets
+//        }
     }
 
     private fun setupData() {
@@ -83,8 +101,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         emptyView = findViewById(R.id.empty_view_container)
         adapter = ContentAdapter(this)
         recyclerView?.adapter = adapter
-        recyclerView?.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         findViewById<NestedScrollView>(R.id.main_content).setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val pageSize = v.measuredHeight
@@ -94,22 +111,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
                     loadMoreListener?.loadMore()
                 }
             })
-        setupScrollListener()
         onStatus(PanelFragment.VIEW_TYPE_EMPTY)
-    }
-
-    private fun setupScrollListener() {
-//        val layoutManager = recyclerView?.layoutManager as LinearLayoutManager
-//        findViewById<NestedScrollView>(R.id.main_content).setOnScrollChangeListener(
-//            NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
-////                val totalItemCount = layoutManager.itemCount
-////                val visibleItemCount = layoutManager.childCount
-////                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-////                if (visibleItemCount + lastVisibleItem + ContentViewModel.VISIBLE_THRESHOLD >= totalItemCount) {
-////                    loadMoreListener?.loadMore()
-////                }
-//
-//            })
     }
 
     fun show() {
