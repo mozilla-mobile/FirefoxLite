@@ -172,14 +172,14 @@
   <string name="message_disable_block_image">Hình ảnh đang được hiển thị</string>
   <string name="message_clear_cache_fail">Không thể xóa bộ nhớ đệm</string>
   <string name="message_storage_unavailable_cancel_download">Không thể truy cập bộ nhớ. Tải về bị hủy.</string>
-  <string name="message_cleared_cached">Đã xóa bộ nhớ đệm của %1$s</string>
+  <string name="message_cleared_cached">Đã xóa %1$s bộ nhớ đệm</string>
   <string name="message_cleared_browsing_data">Đã xóa dữ liệu duyệt web</string>
   <string name="message_deleted_screenshot">Ảnh chụp màn hình đã bị xóa</string>
   <string name="message_cannot_find_screenshot">Không thể hiển thị ảnh chụp màn hình</string>
   <string name="remove">Xóa</string>
   <string name="privacy_policy_update_notification_title">Thông báo cập nhật sản phẩm</string>
   <string name="privacy_policy_update_notification_action">Để làm cho Firefox Lite tốt hơn cho bạn và mọi người, chúng tôi đã thực hiện một số thay đổi đối với chính sách quyền riêng tư của mình. Nhấn để tìm hiểu thêm.</string>
-  <string name="rate_app_dialog_text_title">Yêu %1$s?</string>
+  <string name="rate_app_dialog_text_title">Thích ứng dụng %1$s?</string>
   <string name="rate_app_dialog_text_content">Cảm ơn bạn đã chọn sản phẩm của chúng tôi. Phản hồi của bạn rất quan trọng với chúng tôi.</string>
   <string name="rate_app_dialog_btn_go_rate">Đánh giá chúng tôi</string>
   <string name="rate_app_notification_action_rate">ĐÁNH GIÁ CHÚNG TÔI</string>
