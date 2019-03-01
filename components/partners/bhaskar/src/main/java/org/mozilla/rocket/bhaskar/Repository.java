@@ -145,7 +145,7 @@ public class Repository {
             itemPojo.articleFrom = row.getString("articleFrom");
             itemPojo.category = row.getString("category");
             itemPojo.city = row.getString("city");
-            itemPojo.coverPic = row.getString("coverPic");
+            itemPojo.coverPic = new JSONArray(row.getString("coverPic")).getString(0);
             itemPojo.description = row.getString("description");
             itemPojo.detailUrl = row.getString("detailUrl");
             itemPojo.keywords = row.getString("keywords");

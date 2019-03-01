@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/news_item"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:background="@drawable/news_item_bg">
+
+    <ImageView
+        android:id="@+id/news_item_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_globe"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/news_item_headline"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        tools:ignore="Deprecation"
+        android:id="@+id/news_item_headline"
+        style="@style/Body1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:maxLines="2"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/colorDownloadText"
+        tools:text="adssdsadasdasedasdasds/nsdsadsaadasdsaad"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/news_item_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/news_item_source"
+    />
+
+    <TextView
+        tools:ignore="Deprecation"
+        android:id="@+id/news_item_source"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:maxLines="1"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toStartOf="@id/news_item_headline"
+        app:layout_constraintTop_toBottomOf="@id/news_item_headline"
+        app:layout_constraintEnd_toStartOf="@id/news_item_time"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="BCC"
+        style="@style/Body5"/>
+
+    <TextView
+        tools:ignore="Deprecation"
+        android:textAlignment="viewEnd"
+        android:id="@+id/news_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:maxLines="1"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toEndOf="@id/news_item_source"
+        app:layout_constraintTop_toBottomOf="@id/news_item_headline"
+        app:layout_constraintTop_toTopOf="@id/news_item_source"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="5 month ago"
+        style="@style/Body5"/>
+
+
+</android.support.constraint.ConstraintLayout>
