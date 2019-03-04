@@ -135,6 +135,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Nullable private ImageButton arrow1;
     @Nullable private ImageButton arrow2;
     @Nullable private ContentPortalView contentPanel;
+    boolean isLoading = false;
     private View themeOnboardingLayer;
     private TabCounter tabCounter;
     private ThemedTextView fakeInput;
@@ -227,7 +228,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void loadMore() {
-        contentViewModel.loadMore();
+        if(!isLoading) {
+            contentViewModel.loadMore();
+            isLoading = true;
+        }
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -609,7 +613,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         repository.setOnDataChangedListener(contentViewModel);
         contentViewModel.setRepository(repository);
         contentViewModel.getItems().observe(activity,
-                items -> contentPanel.setData(items));
+            items -> {
+                contentPanel.setData(items);
+                isLoading = false;
+            });
 
         contentViewModel.loadMore();
     }

@@ -13,7 +13,6 @@ import android.support.v4.view.ViewCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
@@ -55,7 +54,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        setPadding(0, cachedPaddingTop, 0, 0)
+//        setPadding(0, cachedPaddingTop, 0, 0)
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -65,7 +64,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     init {
         ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
             cachedPaddingTop = insets?.systemWindowInsetTop ?: 0
-            setPadding(0, cachedPaddingTop, 0, 0)
+            //setPadding(0, cachedPaddingTop, 0, 0)
             insets
         }
     }
@@ -95,10 +94,10 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupData() {
         this.setOnClickListener { hide() }
         recyclerView = findViewById(R.id.recyclerview)
-        val animator = recyclerView?.itemAnimator
-        if (animator is SimpleItemAnimator) {
-            animator.supportsChangeAnimations = false
-        }
+//        val animator = recyclerView?.itemAnimator
+//        if (animator is SimpleItemAnimator) {
+//            animator.supportsChangeAnimations = false
+//        }
         emptyView = findViewById(R.id.empty_view_container)
         adapter = ContentAdapter(this)
         recyclerView?.adapter = adapter
@@ -181,6 +180,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupBottomSheet() {
         bottomSheet = findViewById(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
+//        bottomSheetBehavior?.isFitToContents = false
+//        bottomSheetBehavior?.peekHeight = 0
+        bottomSheetBehavior?.skipCollapsed = true
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior?.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -231,7 +233,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     fun setData(items: MutableList<ItemPojo>?) {
         stopLoading()
-        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
+//        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
         adapter?.submitList(items?.toMutableList())
     }
 }

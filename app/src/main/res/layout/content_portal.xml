@@ -15,21 +15,30 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_gravity="top"
+        app:layout_insetEdge="top"/>
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_menu"
         app:behavior_hideable="true"
+
+        app:layout_dodgeInsetEdges="top"
         app:layout_behavior="@string/bottom_sheet_behavior"
         tools:ignore="MissingPrefix">
 
         <ProgressBar
-                android:id="@+id/news_item_loading"
+            android:id="@+id/news_item_loading"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:indeterminate="true"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/news_main"
             app:layout_constraintStart_toStartOf="parent"
