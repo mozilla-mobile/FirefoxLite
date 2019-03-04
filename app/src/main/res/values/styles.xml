@@ -299,6 +299,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Body3">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="Body4">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">12sp</item>

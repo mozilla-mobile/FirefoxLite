@@ -17,6 +17,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_portal.view.*
 import org.mozilla.focus.R
@@ -93,6 +94,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     private fun setupData() {
         this.setOnClickListener { hide() }
+        findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
+            loadMoreListener?.loadMore()
+        }
         recyclerView = findViewById(R.id.recyclerview)
 //        val animator = recyclerView?.itemAnimator
 //        if (animator is SimpleItemAnimator) {
@@ -102,7 +106,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         adapter = ContentAdapter(this)
         recyclerView?.adapter = adapter
         recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        findViewById<NestedScrollView>(R.id.news_main).setOnScrollChangeListener(
+        findViewById<NestedScrollView>(R.id.news_main)?.setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val pageSize = v.measuredHeight
                 // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
@@ -119,7 +123,8 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         news_item_loading.visibility = View.VISIBLE
         news_item_loading.animate()
     }
-    private fun stopLoading(){
+
+    private fun stopLoading() {
         news_item_loading.visibility = View.GONE
     }
 
@@ -180,7 +185,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupBottomSheet() {
         bottomSheet = findViewById(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
-
+//        bottomSheetBehavior.isFitToContents
 //        bottomSheetBehavior?.isFitToContents = false
 //        bottomSheetBehavior?.peekHeight = 0
         bottomSheetBehavior?.skipCollapsed = true
