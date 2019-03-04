@@ -20,6 +20,10 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.tabs.Session
 
 class FindInPage : BackKeyHandleable {
+
+    interface OnHideListener {
+        fun onHide()
+    }
     private val container: View
     private val queryText: TextView
     private val resultText: TextView
@@ -31,8 +35,9 @@ class FindInPage : BackKeyHandleable {
     private val accessibilityFormat: String
 
     private var session: Session? = null
+    private val hideListener: OnHideListener
 
-    constructor(rootView: View) {
+    constructor(rootView: View, listener: OnHideListener) {
         container = rootView.findViewById(R.id.find_in_page)
         queryText = container.findViewById(R.id.find_in_page_query_text)
         resultText = container.findViewById(R.id.find_in_page_result_text)
@@ -44,6 +49,7 @@ class FindInPage : BackKeyHandleable {
         accessibilityFormat = container.context.getString(R.string.accessibility_find_in_page_result)
 
         initViews()
+        hideListener = listener
     }
 
     override fun onBackPressed(): Boolean {
@@ -97,6 +103,7 @@ class FindInPage : BackKeyHandleable {
         queryText.text = null
         queryText.clearFocus()
         container.visibility = View.GONE
+        hideListener.onHide()
     }
 
     private fun initViews() {

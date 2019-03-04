@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
@@ -150,6 +151,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private boolean pendingMyShotOnBoarding;
     private Dialog myshotOnBoardingDialog;
     private DownloadIndicatorViewModel downloadIndicatorViewModel;
+    private boolean skipOrientationUpdate = false;
 
     @Override
     public ThemeManager getThemeManager() {
@@ -379,6 +381,15 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         menu = new BottomSheetDialog(this, R.style.BottomSheetTheme);
         menu.setContentView(sheet);
         menu.setCanceledOnTouchOutside(true);
+        menu.setOnDismissListener(dialog -> {
+            // When clicking download/history/bookmarks/screenshot in menu, menu(BottomSheetDialog) will be dismissed firstly
+            // then show ListPanelDialog. We don't want to switch screen orientation from sensor to portrait within a very short time.
+            // So using skipOrientationUpdate to distinguish this case.
+            if (screenNavigator.isBrowserInForeground() && !skipOrientationUpdate) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+            }
+            skipOrientationUpdate = false;
+        });
         myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
@@ -416,6 +427,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void showMenu() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         updateMenu();
         menu.show();
     }
@@ -484,6 +496,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void showListPanel(int type) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
         dialogFragment.show(getSupportFragmentManager(), "");
@@ -572,6 +585,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 TelemetryWrapper.menuNightModeChangeTo(nightModeEnabled);
                 break;
             case R.id.menu_find_in_page:
+                skipOrientationUpdate = true;
                 onFindInPageClicked();
                 break;
             case R.id.menu_delete:
@@ -579,14 +593,17 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 TelemetryWrapper.clickMenuClearCache();
                 break;
             case R.id.menu_download:
+                skipOrientationUpdate = true;
                 onDownloadClicked();
                 TelemetryWrapper.clickMenuDownload();
                 break;
             case R.id.menu_history:
+                skipOrientationUpdate = true;
                 onHistoryClicked();
                 TelemetryWrapper.clickMenuHistory();
                 break;
             case R.id.menu_screenshots:
+                skipOrientationUpdate = true;
                 onScreenshotsClicked();
                 TelemetryWrapper.clickMenuCapture();
                 break;
@@ -600,6 +617,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 TelemetryWrapper.clickMenuExit();
                 break;
             case R.id.menu_bookmark:
+                skipOrientationUpdate = true;
                 onBookmarksClicked();
                 TelemetryWrapper.clickMenuBookmark();
                 break;
@@ -946,6 +964,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             return;
         }
 
+        ScreenNavigator.UrlInputScreen urlInputScreen = screenNavigator.getUrlInputScreen();
+        if (urlInputScreen != null) {
+            this.screenNavigator.updateUrlInputOrientation();
+        }
+
         if (!this.screenNavigator.canGoBack()) {
             finish();
             return;
@@ -1001,6 +1024,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 this.screenNavigator.popUrlScreen();
                 break;
             case SHOW_TAB_TRAY:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 TabTray.show(getSupportFragmentManager());
                 break;
             case REFRESH_TOP_SITE:
@@ -1014,6 +1038,13 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 break;
             case SHOW_DOWNLOAD_PANEL:
                 onDownloadClicked();
+                break;
+            case TAB_TRAY_IS_DISMISSED:
+            case PANEL_MENU_IS_DISMISSED:
+                // TabTray or ListPanelDialog is dismissed, restore orientation to sensor if browser is in foreground
+                if (screenNavigator.isBrowserInForeground()) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+                }
                 break;
             default:
                 break;

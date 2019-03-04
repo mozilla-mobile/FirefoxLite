@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_gravity="center_horizontal|bottom"
+    android:layout_alignParentBottom="true"
     tools:background="#0000FF"
     android:background="@color/privateBackground">
 

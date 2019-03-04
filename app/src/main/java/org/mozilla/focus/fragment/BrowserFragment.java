@@ -16,7 +16,9 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.TransitionDrawable;
@@ -24,6 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -35,6 +38,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +103,7 @@ import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
+import java.util.concurrent.TimeUnit;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
 
@@ -189,9 +194,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ThemedLinearLayout toolbarRoot;
     private ThemedView bottomMenuDivider;
     private ThemedView urlBarDivider;
+    private ThemedRelativeLayout browserMenuContainer;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
     private View downloadIndicatorIntro;
+    private Long landscapeDuration;
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -361,6 +368,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     @Override
     public void onPause() {
         sessionManager.pause();
+        logLandscapeModeDuration(false);
         super.onPause();
     }
 
@@ -413,6 +421,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         menuBtn = view.findViewById(R.id.btn_menu);
         toolbarRoot = view.findViewById(R.id.toolbar_root);
         bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
+        browserMenuContainer = view.findViewById(R.id.browser_menu_container);
         urlBarDivider = view.findViewById(R.id.url_bar_divider);
         if (tabCounter != null) {
             tabCounter.setOnClickListener(this);
@@ -432,7 +441,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
 
         siteIdentity = view.findViewById(R.id.site_identity);
-        findInPage = new FindInPage(view);
+        findInPage = new FindInPage(view, () -> getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR));
 
         progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
         initialiseNormalBrowserUi();
@@ -665,6 +674,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             return;
         }
         hasPendingScreenCaptureTask = false;
+        // show screen capture fragment, restore orientation to portrait
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
         capturingFragment.show(getChildFragmentManager(), "capturingFragment");
 
@@ -1611,13 +1622,51 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         bottomMenuDivider.setNightMode(enable);
         backgroundView.setNightMode(enable);
         urlBarDivider.setNightMode(enable);
+        browserMenuContainer.setNightMode(enable);
 
         ViewUtils.updateStatusBarStyle(!enable, getActivity().getWindow());
+    }
+
+    public void onScreenshotComplete() {
+        // Screenshot is complete, restore browser screen orientation to sensor
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+        }
     }
 
     private void dismissDownloadIndicatorIntroView() {
         if (downloadIndicatorIntro != null) {
             downloadIndicatorIntro.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            toolbarRoot.setVisibility(View.GONE);
+            browserMenuContainer.setVisibility(View.GONE);
+            bottomMenuDivider.setVisibility(View.GONE);
+            logLandscapeModeDuration(true);
+        } else {
+            toolbarRoot.setVisibility(View.VISIBLE);
+            browserMenuContainer.setVisibility(View.VISIBLE);
+            bottomMenuDivider.setVisibility(View.VISIBLE);
+            logLandscapeModeDuration(false);
+        }
+    }
+
+    private void logLandscapeModeDuration(boolean enter) {
+        if (enter) {
+            landscapeDuration = System.currentTimeMillis();
+            TelemetryWrapper.enterLandscapeMode();
+        } else {
+            if (landscapeDuration > 0L) {
+                long duration = System.currentTimeMillis() - landscapeDuration;
+                TelemetryWrapper.exitLandscapeMode(duration);
+                landscapeDuration = 0L;
+            }
         }
     }
 }

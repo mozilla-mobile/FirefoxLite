@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.widget.FragmentListener;
 
 public class ListPanelDialog extends DialogFragment {
 
@@ -229,5 +231,11 @@ public class ListPanelDialog extends DialogFragment {
             default:
                 throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));
         }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        FragmentListener.notifyParent(this, FragmentListener.TYPE.PANEL_MENU_IS_DISMISSED, null);
     }
 }

@@ -118,3 +118,5 @@
 |Click FindInPage Previous|action|click|find_in_page|"previous"|"version=2," 
 |Click Menu FindInPage|action|click|menu|"find_in_page"|"version=2," 
 |Click Quick Search|search|click|quicksearch|""|"engine=Facebook,Youtube,Instagram," 
+|Enter Landscape Mode|Enter landscape mode|change|landscape_mode|"enter"|"" 
+|Exit Landscape Mode|Enter landscape mode|change|landscape_mode|"exit"|"duration=duration in ms," 

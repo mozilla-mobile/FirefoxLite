@@ -62,6 +62,7 @@ object TelemetryWrapper {
         const val ACTION = "action"
         const val EVENT_DOWNLOADS = "Downloads"
         const val SEARCH = "search"
+        const val ENTER_LANDSCAPE_MODE = "Enter landscape mode"
     }
 
     internal object Method {
@@ -123,6 +124,7 @@ object TelemetryWrapper {
         const val DOORHANGER = "doorhanger"
         const val VPN_DOORHANGER = "vpn_doorhanger"
         const val QUICK_SEARCH = "quicksearch"
+        const val LANDSCAPE_MODE = "landscape_mode"
     }
 
     object Value {
@@ -209,6 +211,7 @@ object TelemetryWrapper {
         const val ENGINE = "engine"
         const val DELAY = "delay"
         const val MESSAGE = "message"
+        const val DURATION = "duration"
     }
 
     object Extra_Value {
@@ -1955,6 +1958,31 @@ object TelemetryWrapper {
     fun clickQuickSearchEngine(engineName: String) {
         EventBuilder(Category.SEARCH, Method.CLICK, Object.QUICK_SEARCH, null)
                 .extra(Extra.ENGINE, engineName).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Enter Landscape Mode",
+            category = Category.ENTER_LANDSCAPE_MODE,
+            method = Method.CHANGE,
+            `object` = Object.LANDSCAPE_MODE,
+            value = Value.ENTER,
+            extras = [])
+    @JvmStatic
+    fun enterLandscapeMode() {
+        EventBuilder(Category.ENTER_LANDSCAPE_MODE, Method.CHANGE, Object.LANDSCAPE_MODE, Value.ENTER).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Exit Landscape Mode",
+            category = Category.ENTER_LANDSCAPE_MODE,
+            method = Method.CHANGE,
+            `object` = Object.LANDSCAPE_MODE,
+            value = Value.EXIT,
+            extras = [TelemetryExtra(name = Extra.DURATION, value = "duration in ms")])
+    @JvmStatic
+    fun exitLandscapeMode(duration: Long) {
+        EventBuilder(Category.ENTER_LANDSCAPE_MODE, Method.CHANGE, Object.LANDSCAPE_MODE, Value.EXIT)
+                .extra(Extra.DURATION, duration.toString()).queue()
     }
 
     internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {

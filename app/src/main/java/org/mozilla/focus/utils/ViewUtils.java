@@ -116,7 +116,6 @@ public class ViewUtils {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
         return original;
     }
@@ -131,7 +130,6 @@ public class ViewUtils {
         Window window = activity.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         window.getDecorView().setSystemUiVisibility(visibility);
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public static void updateStatusBarStyle(final boolean isLight, final Window window) {

@@ -51,6 +51,7 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
@@ -321,6 +322,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         if (presenter != null) {
             presenter.tabTrayClosed();
         }
+        FragmentListener.notifyParent(this, FragmentListener.TYPE.TAB_TRAY_IS_DISMISSED, null);
     }
 
     private void setupBottomSheetCallback() {

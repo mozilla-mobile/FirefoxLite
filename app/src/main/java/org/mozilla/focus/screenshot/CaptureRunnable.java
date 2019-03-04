@@ -2,6 +2,7 @@ package org.mozilla.focus.screenshot;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
@@ -104,6 +105,9 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
                 // My shot on boarding didn't show before and capture is succeed, skip to show toast
                 browserFragment.showMyShotOnBoarding();
                 return;
+            }
+            if (browserFragment != null) {
+                browserFragment.onScreenshotComplete();
             }
         }
         Toast.makeText(context, success ? R.string.screenshot_saved : R.string.screenshot_failed, Toast.LENGTH_SHORT).show();

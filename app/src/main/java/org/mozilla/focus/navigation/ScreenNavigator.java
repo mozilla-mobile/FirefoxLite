@@ -8,6 +8,7 @@ package org.mozilla.focus.navigation;
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     private TransactionHelper transactionHelper;
 
     private HostActivity activity;
+    private int lastOrientation = -1;
 
     private FragmentManager.FragmentLifecycleCallbacks lifecycleCallbacks = new FragmentManager.FragmentLifecycleCallbacks() {
         @Override
@@ -97,6 +99,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      */
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
+        setOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
 
         this.transactionHelper.popAllScreens();
     }
@@ -137,6 +140,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public void addHomeScreen(boolean animate) {
         logMethod();
 
+       setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG, TransactionHelper.EntryData.TYPE_ATTACHED);
         log("found exist home: " + found);
         if (!found) {
@@ -149,6 +153,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      */
     public void popToHomeScreen(boolean animate) {
         logMethod();
+        setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG,
                 TransactionHelper.EntryData.TYPE_ROOT);
@@ -165,13 +170,19 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
     public void addUrlScreen(String url) {
         logMethod();
+
+        setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Fragment top = getTopFragment();
 
         String tag = BROWSER_FRAGMENT_TAG;
         if (top instanceof HomeScreen) {
             tag = HOME_FRAGMENT_TAG;
+            // We need to remember which fragment came before UrlInputFragment is showed, thus we can restore the screen orientation
+            // when UrlInputFragment is dismissed.
+            lastOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         } else if (top instanceof BrowserScreen) {
             tag = BROWSER_FRAGMENT_TAG;
+            lastOrientation = ActivityInfo.SCREEN_ORIENTATION_USER;
         } else if (BuildConfig.DEBUG) {
             throw new RuntimeException("unexpected caller of UrlInputScreen");
         }
@@ -181,10 +192,23 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
     public void popUrlScreen() {
         logMethod();
+        setOrientation(lastOrientation);
         Fragment top = getTopFragment();
         if (top instanceof UrlInputScreen) {
             this.transactionHelper.dismissUrlInput();
         }
+    }
+
+    public UrlInputScreen getUrlInputScreen() {
+        Fragment top = getTopFragment();
+        if (top instanceof UrlInputScreen) {
+            return (UrlInputScreen) top;
+        }
+        return null;
+    }
+
+    public void updateUrlInputOrientation() {
+        setOrientation(lastOrientation);
     }
 
     @Nullable
@@ -262,6 +286,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
         UrlInputScreen createUrlInputScreen(@Nullable String url, String parentFragmentTag);
 
+        void setRequestedOrientation(int requestedOrientation);
     }
 
     /**
@@ -299,5 +324,9 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * Contract class for ScreenNavigator, to present an UrlInputFragment
      */
     public interface UrlInputScreen extends Screen {
+    }
+
+    private void setOrientation(int orientation) {
+        activity.setRequestedOrientation(orientation);
     }
 }
