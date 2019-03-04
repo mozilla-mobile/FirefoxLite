@@ -73,7 +73,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         super.onAttachedToWindow()
         init()
         if (isLastSessionContent) {
-            show()
+            show(false)
         }
         // reset default value
         isLastSessionContent = false
@@ -114,10 +114,21 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         onStatus(PanelFragment.VIEW_TYPE_EMPTY)
     }
 
-    fun show() {
+    fun showInternal() {
+        visibility = VISIBLE
+        // TODO: if previously is collapsed, collapse here.
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    fun show(animated: Boolean) {
         if (visibility == VISIBLE) {
             return
         }
+        if (!animated) {
+            showInternal()
+            return
+        }
+
         val anim = AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_in)
         anim.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -127,9 +138,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                visibility = VISIBLE
-                // TODO: if previously is collapsed, collapse here.
-                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+                showInternal()
             }
         })
         this.startAnimation(anim)

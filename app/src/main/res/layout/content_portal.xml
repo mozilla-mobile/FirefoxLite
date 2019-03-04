@@ -83,6 +83,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            android:visibility="gone"
             android:text="@string/news_update_btn"
             style="@style/ButtonText2"
             android:textColor="@color/paletteDarkBlueC100"

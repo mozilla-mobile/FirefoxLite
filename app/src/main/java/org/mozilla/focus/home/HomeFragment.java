@@ -1047,7 +1047,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public void onSwipeUp() {
             if (contentPanel != null) {
-                contentPanel.show();
+                contentPanel.show(true);
             } else {
                 btnMenu.performClick();
             }
