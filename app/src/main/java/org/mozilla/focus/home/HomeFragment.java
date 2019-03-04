@@ -231,6 +231,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if(!isLoading) {
             contentViewModel.loadMore();
             isLoading = true;
+            // FIXME: I'm not going to do this. We need the api to notify us when there's a network error.
+            ThreadUtils.postToMainThreadDelayed(() -> isLoading = false, 000);
         }
     }
 
