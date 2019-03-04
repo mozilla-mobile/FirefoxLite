@@ -9,9 +9,6 @@ class ContentViewModel : ViewModel(), Repository.OnDataChangedListener {
     var repository: Repository? = null
     val items = MutableLiveData<List<ItemPojo>>()
 
-    companion object {
-        internal const val VISIBLE_THRESHOLD = 10
-    }
 
     override fun onDataChanged(itemPojoList: MutableList<ItemPojo>?) {
         items.postValue(itemPojoList)

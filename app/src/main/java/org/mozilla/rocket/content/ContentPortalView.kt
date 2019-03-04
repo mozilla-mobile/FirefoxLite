@@ -102,7 +102,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         adapter = ContentAdapter(this)
         recyclerView?.adapter = adapter
         recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        findViewById<NestedScrollView>(R.id.main_content).setOnScrollChangeListener(
+        findViewById<NestedScrollView>(R.id.news_main).setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val pageSize = v.measuredHeight
                 // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
