@@ -8,26 +8,21 @@
     android:id="@+id/content_panel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
     android:background="@color/colorUrlInputBackground"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_gravity="top"
-        app:layout_insetEdge="top"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/bottom_sheet"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_menu"
         app:behavior_hideable="true"
-
+        android:layout_marginTop="24dp"
         app:layout_dodgeInsetEdges="top"
         app:layout_behavior="@string/bottom_sheet_behavior"
         tools:ignore="MissingPrefix">

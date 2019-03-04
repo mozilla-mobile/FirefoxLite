@@ -180,6 +180,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupBottomSheet() {
         bottomSheet = findViewById(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
+
 //        bottomSheetBehavior?.isFitToContents = false
 //        bottomSheetBehavior?.peekHeight = 0
         bottomSheetBehavior?.skipCollapsed = true
