@@ -19,6 +19,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import kotlinx.android.synthetic.main.content_portal.view.*
 import org.mozilla.focus.R
 import org.mozilla.focus.fragment.PanelFragment
 import org.mozilla.focus.navigation.ScreenNavigator
@@ -108,10 +109,19 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
                 // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
                 // When scrolled to end due to padding
                 if (scrollY > oldScrollY && v.getChildAt(0).measuredHeight - v.measuredHeight - scrollY < pageSize) {
+                    animateLoading()
                     loadMoreListener?.loadMore()
                 }
             })
         onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+    }
+
+    private fun animateLoading() {
+        news_item_loading.visibility = View.VISIBLE
+        news_item_loading.animate()
+    }
+    private fun stopLoading(){
+        news_item_loading.visibility = View.GONE
     }
 
     fun showInternal() {
@@ -220,6 +230,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     }
 
     fun setData(items: MutableList<ItemPojo>?) {
+        stopLoading()
         bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
         adapter?.submitList(items?.toMutableList())
     }
