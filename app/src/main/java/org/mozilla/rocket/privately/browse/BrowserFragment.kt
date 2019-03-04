@@ -290,6 +290,10 @@ class BrowserFragment : LocaleAwareFragment(),
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        permissionHandler.onRequestPermissionsResult(context, requestCode, permissions, grantResults)
+    }
+
     private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
     private fun goForward() = sessionManager.focusSession?.engineSession?.goForward()
     private fun stop() = sessionManager.focusSession?.engineSession?.stopLoading()
