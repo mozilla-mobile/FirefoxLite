@@ -58,12 +58,12 @@ class PeriodicReceiver : BroadcastReceiver() {
         builder.addTag(FirstLaunchWorker.TAG)
         workManager.enqueue(builder.build())
 
-        val message = AppConfigWrapper.getFirstLaunchNotificationiMessage(context)
+        val message = AppConfigWrapper.getFirstLaunchNotificationMessage(context)
         TelemetryWrapper.receiveFirstrunConfig(delayMinutes, message)
     }
 
     private fun calculateDelayMinutes(context: Context, delayMinutesToInstallTime: Long): Long {
-        /** Find next scheduled hours */
+        /** Find next scheduled delay in minutes */
         val pm = context.packageManager
         var firstInstallTime: Long = Long.MAX_VALUE
         val packageInfo = pm.getPackageInfo(context.packageName, 0)
