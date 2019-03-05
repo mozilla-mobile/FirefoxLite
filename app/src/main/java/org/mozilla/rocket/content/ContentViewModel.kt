@@ -9,7 +9,6 @@ class ContentViewModel : ViewModel(), Repository.OnDataChangedListener {
     var repository: Repository? = null
     val items = MutableLiveData<List<ItemPojo>>()
 
-
     override fun onDataChanged(itemPojoList: MutableList<ItemPojo>?) {
         items.postValue(itemPojoList)
     }

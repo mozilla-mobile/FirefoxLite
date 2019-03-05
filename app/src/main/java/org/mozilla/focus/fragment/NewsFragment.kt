@@ -38,7 +38,7 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
         recyclerView = v.findViewById(R.id.recyclerview)
         emptyView = v.findViewById(R.id.empty_view_container)
         recyclerView?.clipToPadding = false
-        progressView = v.findViewById(R.id.new_progress)
+        progressView = v.findViewById(R.id.news_progress)
         return v
     }
 
@@ -52,7 +52,7 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
 
         setupContentViewModel()
 
-        onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
+//        onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
     }
 
     override fun tryLoadMore() {
@@ -66,14 +66,14 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
 
     override fun onStatus(status: Int) {
         if (PanelFragment.VIEW_TYPE_EMPTY == status) {
-            recyclerView!!.visibility = View.GONE
-            emptyView!!.visibility = View.VISIBLE
+            recyclerView?.visibility = View.GONE
+            emptyView?.visibility = View.VISIBLE
         } else if (PanelFragment.VIEW_TYPE_NON_EMPTY == status) {
-            recyclerView!!.visibility = View.VISIBLE
-            emptyView!!.visibility = View.GONE
+            recyclerView?.visibility = View.VISIBLE
+            emptyView?.visibility = View.GONE
         } else {
-            recyclerView!!.visibility = View.GONE
-            emptyView!!.visibility = View.GONE
+            recyclerView?.visibility = View.GONE
+            emptyView?.visibility = View.GONE
         }
     }
 
