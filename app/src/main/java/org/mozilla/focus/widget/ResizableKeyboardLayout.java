@@ -27,12 +27,6 @@ import org.mozilla.focus.R;
  */
 public class ResizableKeyboardLayout extends CoordinatorLayout {
 
-    private final int idOfViewToHide;
-
-    @Nullable
-    private View viewToHide;
-    private int marginBottom;
-
     public ResizableKeyboardLayout(Context context) {
         this(context, null);
     }
@@ -44,16 +38,6 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
     public ResizableKeyboardLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        final TypedArray styleAttributeArray = getContext().getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.ResizableKeyboardLayout,
-                0, 0);
-
-        try {
-            idOfViewToHide = styleAttributeArray.getResourceId(R.styleable.ResizableKeyboardLayout_viewToHideWhenActivated, -1);
-        } finally {
-            styleAttributeArray.recycle();
-        }
         this.setOnApplyWindowInsetsListener((v, insets) -> {
             int difference = insets.getSystemWindowInsetBottom();
             if (getLayoutParams() instanceof MarginLayoutParams) {
@@ -61,21 +45,5 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
             }
             return insets;
         });
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        if (idOfViewToHide != -1) {
-            viewToHide = findViewById(idOfViewToHide);
-        }
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
-        viewToHide = null;
     }
 }
