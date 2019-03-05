@@ -174,7 +174,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     private fun finishFirstrun() {
         NewFeatureNotice.getInstance(context).setFirstRunDidShow()
         NewFeatureNotice.getInstance(context).setLiteUpdateDidShow()
-
+        fragmentManager?.popBackStack()
         (activity as MainActivity).firstrunFinished()
     }
 

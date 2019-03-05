@@ -23,10 +23,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_menu"
+        android:layout_marginTop="24dp"
         app:behavior_hideable="true"
         app:behavior_peekHeight="@dimen/tab_tray_peekHeight"
         app:layout_behavior="@string/bottom_sheet_behavior"
         tools:ignore="MissingPrefix">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/empty_view_container"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                style="@style/PanelEmptyHolderImage"
+                android:id="@+id/empty_view_image"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_illustration_no_bookmarks"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                style="@style/Body3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/paletteDarkGreyD100"
+                android:gravity="center"
+                android:text="@string/error_page_recover_a"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="@dimen/common_margin_m2"
+                app:layout_constraintTop_toBottomOf="@+id/empty_view_image"
+                app:layout_constraintBottom_toTopOf="@+id/news_try_again"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <Button
+                android:id="@+id/news_try_again"
+                style="@style/ButtonText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_page_button"
+                android:textColor="@color/paletteDarkBlueC100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+            />
+        </android.support.constraint.ConstraintLayout>
+
 
         <ProgressBar
             android:id="@+id/news_item_loading"
@@ -52,60 +102,12 @@
             android:fillViewport="true"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <RelativeLayout
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/empty_view_container"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <ImageView
-                        style="@style/PanelEmptyHolderImage"
-                        android:id="@+id/empty_view_image"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:src="@drawable/ic_illustration_no_bookmarks"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="ContentDescription"/>
-
-                    <TextView
-                        style="@style/Body3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/paletteDarkGreyD100"
-                        android:gravity="center"
-                        android:text="@string/error_page_recover_a"
-                        android:layout_marginBottom="40dp"
-                        android:layout_marginTop="@dimen/common_margin_m2"
-                        app:layout_constraintTop_toBottomOf="@+id/empty_view_image"
-                        app:layout_constraintBottom_toTopOf="@+id/news_try_again"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
-
-                    <Button
-                        android:id="@+id/news_try_again"
-                        style="@style/ButtonText2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/error_page_button"
-                        android:textColor="@color/paletteDarkBlueC100"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                    />
-                </android.support.constraint.ConstraintLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nestedScrollingEnabled="false"/>
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"/>
 
 
         </android.support.v4.widget.NestedScrollView>

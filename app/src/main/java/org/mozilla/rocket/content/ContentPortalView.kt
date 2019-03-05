@@ -13,11 +13,11 @@ import android.support.v4.view.ViewCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_portal.view.*
 import org.mozilla.focus.R
@@ -65,7 +65,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     init {
         ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
             cachedPaddingTop = insets?.systemWindowInsetTop ?: 0
-            setPadding(0, cachedPaddingTop, 0, 0)
+//            setPadding(0, cachedPaddingTop, 0, 0)
             insets
         }
     }
@@ -94,18 +94,19 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     private fun setupData() {
         this.setOnClickListener { hide() }
-        findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
+        findViewById<View>(R.id.news_try_again)?.setOnClickListener {
             loadMoreListener?.loadMore()
         }
         recyclerView = findViewById(R.id.recyclerview)
-//        val animator = recyclerView?.itemAnimator
-//        if (animator is SimpleItemAnimator) {
-//            animator.supportsChangeAnimations = false
-//        }
+        val animator = recyclerView?.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
         emptyView = findViewById(R.id.empty_view_container)
         adapter = ContentAdapter(this)
         recyclerView?.adapter = adapter
-        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         findViewById<NestedScrollView>(R.id.news_main)?.setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val pageSize = v.measuredHeight
@@ -116,7 +117,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
                     loadMoreListener?.loadMore()
                 }
             })
-        onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+        onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
     }
 
     private fun animateLoading() {
@@ -240,7 +241,13 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     fun setData(items: MutableList<ItemPojo>?) {
         stopLoading()
 //        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
-        adapter?.submitList(items?.toMutableList())
+
+
+        val start: Int = adapter?.items?.size ?: 0
+//        val end = items?.size ?: 0
+        adapter?.items = items
+        adapter?.notifyItemRangeInserted(start, 20)
+//        adapter?.notifyDataSetChanged()
     }
 }
 

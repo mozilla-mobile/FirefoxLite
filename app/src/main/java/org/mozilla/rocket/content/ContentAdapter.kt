@@ -1,6 +1,5 @@
 package org.mozilla.rocket.content
 
-import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,22 +15,23 @@ import org.mozilla.focus.fragment.PanelFragment
 import org.mozilla.focus.fragment.PanelFragmentStatusListener
 import org.mozilla.rocket.bhaskar.ItemPojo
 
-class ContentAdapter(private val listener: ContentPanelListener) : ListAdapter<ItemPojo, NewsViewHolder>(
-    COMPARATOR
-) {
+class ContentAdapter(private val listener: ContentPanelListener) :
+    RecyclerView.Adapter<NewsViewHolder>() {
 
-    init {
-        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (itemCount == 0) {
-                    listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY)
-                } else {
-                    listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
-                }
-            }
-        })
-    }
+    var items: List<ItemPojo>? = null
+
+//    init {
+//        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+//            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+//                super.onItemRangeInserted(positionStart, itemCount)
+//                if (itemCount == 0) {
+//                    listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+//                } else {
+//                    listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
+//                }
+//            }
+//        })
+//    }
 
     object COMPARATOR : DiffUtil.ItemCallback<ItemPojo>() {
 
@@ -54,6 +54,19 @@ class ContentAdapter(private val listener: ContentPanelListener) : ListAdapter<I
         holder.bind(item, View.OnClickListener { listener.onItemClicked(item.detailUrl) })
     }
 
+    //
+    override fun getItemCount(): Int {
+        return if (items != null) items!!.size else 0
+    }
+
+    private fun getItem(index: Int): ItemPojo? {
+        return if (index >= 0) {
+            items?.get(index)
+        } else {
+            null
+        }
+    }
+
     interface ContentPanelListener : PanelFragmentStatusListener {
         fun onItemClicked(url: String)
 
@@ -66,7 +79,8 @@ class ContentAdapter(private val listener: ContentPanelListener) : ListAdapter<I
 class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     companion object {
-        var requestOptions = RequestOptions().apply { transforms(CenterCrop(), RoundedCorners(16)) }
+        var requestOptions =
+            RequestOptions().apply { transforms(CenterCrop(), RoundedCorners(16)) }
     }
 
     fun bind(item: ItemPojo, listener: View.OnClickListener) {
@@ -75,9 +89,7 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.findViewById<TextView>(R.id.news_item_source).text = "bahaskar"
         itemView.findViewById<TextView>(R.id.news_item_time).text = "today"
 
-        Glide.with(itemView.context)
-            .load(item.coverPic)
-            .apply(requestOptions)
+        Glide.with(itemView.context).load(item.coverPic).apply(requestOptions)
             .into(itemView.findViewById(R.id.news_item_image))
     }
 }
