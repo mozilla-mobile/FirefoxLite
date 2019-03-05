@@ -16,9 +16,9 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.home.HomeFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen
-import org.mozilla.focus.navigation.ScreenNavigator.HomeScreen
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -27,7 +27,6 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.privately.browse.BrowserFragment
-import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
@@ -145,8 +144,19 @@ class PrivateModeActivity : BaseActivity(),
         TODO("PrivateModeActivity should never show first-run")
     }
 
-    override fun createHomeScreen(): HomeScreen {
-        return PrivateHomeFragment.create()
+    override fun createHomeScreen(): HomeFragment? {
+        findViewById<View>(R.id.browser).visibility = View.GONE
+        findViewById<View>(R.id.home).visibility = View.VISIBLE
+        return null
+    }
+
+    override fun isBrowserScreenInForeground(): Boolean {
+        return findViewById<View>(R.id.browser).visibility == View.VISIBLE
+    }
+
+    override fun showBrowserScreen() {
+        findViewById<View>(R.id.browser).visibility = View.VISIBLE
+        findViewById<View>(R.id.home).visibility = View.GONE
     }
 
     override fun createUrlInputScreen(url: String?, parentFragmentTag: String?): UrlInputScreen {

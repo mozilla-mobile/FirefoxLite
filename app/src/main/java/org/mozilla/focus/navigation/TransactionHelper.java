@@ -52,8 +52,8 @@ class TransactionHelper implements DefaultLifecycleObserver {
         if (isStateSaved()) {
             return;
         }
-        this.prepareHomeScreen(animated, type).commit();
-        this.activity.getSupportFragmentManager().executePendingTransactions();
+        // TODO: add animation here
+        this.activity.createHomeScreen();
     }
 
     void showFirstRun() {
@@ -107,26 +107,6 @@ class TransactionHelper implements DefaultLifecycleObserver {
             entryCount--;
         }
         manager.executePendingTransactions();
-    }
-
-    boolean popScreensUntil(@Nullable String targetEntryName, @EntryData.EntryType int type) {
-        boolean clearAll = (targetEntryName == null);
-        FragmentManager manager = this.activity.getSupportFragmentManager();
-        int entryCount = manager.getBackStackEntryCount();
-        boolean found = false;
-        while (entryCount > 0) {
-            FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(entryCount - 1);
-            if (!clearAll
-                    && TextUtils.equals(targetEntryName, getEntryTag(entry))
-                    && type == getEntryType(entry)) {
-                found = true;
-                break;
-            }
-            manager.popBackStack();
-            entryCount--;
-        }
-        manager.executePendingTransactions();
-        return found;
     }
 
     @Nullable
@@ -210,6 +190,10 @@ class TransactionHelper implements DefaultLifecycleObserver {
     private boolean isStateSaved() {
         FragmentManager manager = this.activity.getSupportFragmentManager();
         return manager == null || manager.isStateSaved();
+    }
+
+    public void showBrowserScreen(boolean animate) {
+        this.activity.showBrowserScreen();
     }
 
     private static class BackStackListener implements FragmentManager.OnBackStackChangedListener {

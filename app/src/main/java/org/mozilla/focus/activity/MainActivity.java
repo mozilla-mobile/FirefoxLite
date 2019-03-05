@@ -957,7 +957,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private boolean dismissContentPortal() {
-        Fragment fragment = this.screenNavigator.getTopFragment();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.home);
         if (fragment instanceof HomeFragment) {
             return ((HomeFragment) fragment).hideContentPortal();
         }
@@ -1045,8 +1046,20 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     @Override
     public HomeFragment createHomeScreen() {
-        final HomeFragment fragment = HomeFragment.create();
-        return fragment;
+        findViewById(R.id.browser).setVisibility(View.GONE);
+        findViewById(R.id.home).setVisibility(View.VISIBLE);
+        return null;
+    }
+
+    @Override
+    public void showBrowserScreen() {
+        findViewById(R.id.browser).setVisibility(View.VISIBLE);
+        findViewById(R.id.home).setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean isBrowserScreenInForeground() {
+        return findViewById(R.id.browser).getVisibility() == View.VISIBLE;
     }
 
     private void showMessage(@NonNull CharSequence msg) {
