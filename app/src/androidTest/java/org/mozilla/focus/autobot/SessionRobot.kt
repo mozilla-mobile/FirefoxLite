@@ -16,6 +16,10 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withClassName
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.web.sugar.Web.onWebView
+import android.support.test.espresso.web.webdriver.DriverAtoms.findElement
+import android.support.test.espresso.web.webdriver.DriverAtoms.webClick
+import android.support.test.espresso.web.webdriver.Locator
 import android.support.test.uiautomator.UiDevice
 import android.support.test.uiautomator.UiSelector
 import android.view.View
@@ -188,5 +192,14 @@ class SessionRobot : MenuRobot() {
         val intent = Intent(activity, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         activity.startActivity(intent)
+    }
+
+
+    fun tapLocatorOnWebView(activity: MainActivity, locatorString: String) {
+        sessionLoadedIdlingResource = SessionLoadedIdlingResource(activity)
+
+        onWebView()
+                .withElement(findElement(Locator.XPATH, locatorString))
+                .perform(webClick())
     }
 }

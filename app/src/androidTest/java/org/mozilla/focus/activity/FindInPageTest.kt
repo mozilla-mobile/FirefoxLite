@@ -5,26 +5,33 @@
 
 package org.mozilla.focus.activity
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Intent
 import android.net.Uri
 import android.support.annotation.Keep
 import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.swipeDown
 import android.support.test.espresso.action.ViewActions.swipeUp
-import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.intent.Intents.intended
+import android.support.test.espresso.intent.Intents.intending
+import android.support.test.espresso.intent.matcher.IntentMatchers.*
+import android.support.test.espresso.intent.rule.IntentsTestRule
+import android.support.test.espresso.matcher.RootMatchers.isPlatformPopup
 import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,6 +40,9 @@ import org.mozilla.focus.autobot.findInPage
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
+import org.hamcrest.core.AllOf.allOf
+import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsNot.not
 
 @Keep
 @RunWith(AndroidJUnit4::class)
@@ -40,7 +50,7 @@ class FindInPageTest {
 
     @JvmField
     @Rule
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+    val activityTestRule = IntentsTestRule(MainActivity::class.java, true, false)
 
     @Before
     fun setUp() {
@@ -53,7 +63,8 @@ class FindInPageTest {
 
     companion object {
         private const val TARGET_URL_SITE_1 = "file:///android_asset/gpl.html"
-        private const val TARGET_URL_SITE_2 = "https://developer.mozilla.org/en-US/Firefox_for_Android"
+        private const val TARGET_URL_SITE_2 = "https://en.m.wikipedia.org/wiki/Firefox"
+//        private const val TARGET_URL_SITE_3 = "https://en.m.wikipedia.org/wiki/Mozilla_Foundation"
         private const val keyword = "program"
     }
 
@@ -78,7 +89,6 @@ class FindInPageTest {
      */
     @Test
     fun findInPageAndScroll() {
-
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
@@ -114,7 +124,6 @@ class FindInPageTest {
      * */
     @Test
     fun findInPageWhenSearchKeyword() {
-
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
@@ -143,20 +152,18 @@ class FindInPageTest {
      */
     @Test
     fun closeFindInPageWithSystemBackKey() {
-
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
             clickMenuFindInPage()
         }
 
-        onView(withId(R.id.find_in_page)).perform(click())
-
         findInPage {
+            onView(withId(R.id.find_in_page)).perform(click())
             findKeywordInPage(keyword)
 
-            Espresso.pressBack()
-            Espresso.pressBack()
+            pressBack()
+            pressBack()
 
             onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
         }
@@ -172,7 +179,6 @@ class FindInPageTest {
      */
     @Test
     fun closeFindInPageWithExternalLink() {
-
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
             clickBrowserMenu()
@@ -198,6 +204,71 @@ class FindInPageTest {
     }
 
     /**
+     * Test case no: TC0155
+     * Test case name: User can open a link in “Find in page” mode
+     * 1. Launch Rocket
+     * 2. Visit en.wikipedia.org/wiki/Mozilla
+     * 3. Tap Menu -> Find in page
+     * 4. Tap the link"
+     */
+    @Test
+    fun findInPageAndOpenALink() {
+        session {
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_2)
+            clickBrowserMenu()
+            clickMenuFindInPage()
+        }
+
+        findInPage {
+            onView(withId(R.id.find_in_page_query_text)).perform(click())
+        }
+
+        session {
+            tapLocatorOnWebView(activityTestRule.activity, "//a[@title='Mozilla Foundation']")
+            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        }
+    }
+
+    /**
+     * Test case no: TC0157
+     * Test case name: User can share a word in Find in page mode
+     * 1. Launch Rocket
+     * 2. Visit a website
+     * 3. Tap Menu -> Find in page
+     * 4. Long press a word
+     * 5. Tap Share
+     * 6. Tap system Back key
+     */
+    @Test
+    fun findInPageAndShare() {
+        session {
+            loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
+            clickBrowserMenu()
+            clickMenuFindInPage()
+
+            onView(withId(R.id.webview_slot)).perform(click())
+            longClickOnWebViewContent(activityTestRule.activity)
+            intending(not(isInternal())).respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, null))
+            onView(allOf(withText("Share"), isDisplayed())).inRoot(isPlatformPopup()).perform(click())
+            intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND)))))
+            pressBack()
+            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        }
+
+    }
+
+    /**
+     * Test case no: TC0151
+     * Test case name: Don't hide keyboard by scrolling down or tapping system Back key
+     * 1. Launch Rocket
+     * 2. Visit mozilla.org
+     * 3. Tap Menu -> Find in page
+     * 4. Find a specific word or phrase
+     * 5. Scroll up/down
+     * 6. Tap the search field
+     * 7. Tap system Back key"
+     */
+    /**
      * Tese case no: TC0156
      * Test case name: When the keyboard is on, tap Home->Rocket, the keyboard should be opened
      * 1. Launch Rocket
@@ -215,7 +286,20 @@ class FindInPageTest {
      * 4. Scroll up
      * 5. Scroll down
      */
-    @Test
+    /**
+     * above test cases will be merged into one
+     * 1. Launch Rocket
+     * 2. Visit a website
+     * 3. Tap Menu -> Find in Page
+     * 4. Tap Home
+     * 5. Tap Rocket again
+     * 6. Search a keyword
+     * 7. Scroll up
+     * 8. Scroll down
+     * 9. Tap the search field
+     * 10. Tap system back key
+     */
+    @Ignore
     fun keyboardBehaviorForFindInPage() {
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE_1)
@@ -235,10 +319,16 @@ class FindInPageTest {
         findInPage {
             assertTrue(isKeyboardShown())
 
+            findKeywordInPage(keyword, false)
+
             onView(withId(R.id.webview_slot)).perform(swipeUp())
             onView(withId(R.id.webview_slot)).perform(swipeDown())
 
             assertTrue(isKeyboardShown())
+
+            pressBack()
+
+            assertFalse(isKeyboardShown())
         }
     }
 

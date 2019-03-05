@@ -20,6 +20,10 @@ import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.web.sugar.Web.onWebView
+import android.support.test.espresso.web.webdriver.DriverAtoms.findElement
+import android.support.test.espresso.web.webdriver.DriverAtoms.webClick
+import android.support.test.espresso.web.webdriver.Locator
 import android.support.test.rule.ActivityTestRule
 import android.support.v7.widget.RecyclerView
 import android.view.inputmethod.InputMethodManager
@@ -30,8 +34,10 @@ import org.hamcrest.core.Is
 import org.junit.Assert
 import org.junit.Rule
 import org.mozilla.focus.R
+import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.helper.ActivityRecreateLeakWatcherIdlingResource
+import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.widget.TelemetrySwitchPreference
 import org.mozilla.focus.widget.TurboSwitchPreference
