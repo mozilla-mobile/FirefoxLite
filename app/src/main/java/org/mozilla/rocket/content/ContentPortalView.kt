@@ -54,9 +54,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-//        setPadding(0, cachedPaddingTop, 0, 0)
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context, attrs, defStyleAttr
@@ -85,11 +83,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         setupBottomSheet()
 
         setupData()
-
-//        this.setOnApplyWindowInsetsListener { _, insets ->
-//            setPadding(0, insets?.systemWindowInsetTop ?: 0, 0, 0)
-//            insets
-//        }
     }
 
     private fun setupData() {
@@ -172,9 +165,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                // need to set it to expanded, otherwise next time will be closed.
-//                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-//                bottomSheetBehavior?.peekHeight = 0
                 visibility = GONE
             }
         })
@@ -242,12 +232,13 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         stopLoading()
 //        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
 
-
-        val start: Int = adapter?.items?.size ?: 0
-//        val end = items?.size ?: 0
-        adapter?.items = items
-        adapter?.notifyItemRangeInserted(start, 20)
+//
+//        val start: Int = adapter?.items?.size ?: 0
+////        val end = items?.size ?: 0
+//        adapter?.items = items
+//        adapter?.notifyItemRangeInserted(start, 20)
 //        adapter?.notifyDataSetChanged()
+        adapter?.submitList(items?.toMutableList())
     }
 }
 

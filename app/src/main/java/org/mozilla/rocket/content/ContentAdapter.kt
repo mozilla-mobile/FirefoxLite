@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content
 
+import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,9 +17,9 @@ import org.mozilla.focus.fragment.PanelFragmentStatusListener
 import org.mozilla.rocket.bhaskar.ItemPojo
 
 class ContentAdapter(private val listener: ContentPanelListener) :
-    RecyclerView.Adapter<NewsViewHolder>() {
+    ListAdapter<ItemPojo,NewsViewHolder>(COMPARATOR) {
 
-    var items: List<ItemPojo>? = null
+//    var items: List<ItemPojo>? = null
 
 //    init {
 //        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
@@ -55,17 +56,17 @@ class ContentAdapter(private val listener: ContentPanelListener) :
     }
 
     //
-    override fun getItemCount(): Int {
-        return if (items != null) items!!.size else 0
-    }
+//    override fun getItemCount(): Int {
+//        return if (items != null) items!!.size else 0
+//    }
 
-    private fun getItem(index: Int): ItemPojo? {
-        return if (index >= 0) {
-            items?.get(index)
-        } else {
-            null
-        }
-    }
+//    private fun getItem(index: Int): ItemPojo? {
+//        return if (index >= 0) {
+//            items?.get(index)
+//        } else {
+//            null
+//        }
+//    }
 
     interface ContentPanelListener : PanelFragmentStatusListener {
         fun onItemClicked(url: String)
