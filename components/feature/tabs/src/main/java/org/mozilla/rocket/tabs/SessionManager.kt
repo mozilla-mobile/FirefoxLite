@@ -101,7 +101,7 @@ class SessionManager @JvmOverloads constructor(
         parent: Session? = null
     ) {
         engineSession?.let { link(session, it) }
-        val parentId = parent?.id ?: null
+        val parentId = parent?.id
         session.url?.let { addTabInternal(it, parentId, session.isFromExternal, selected, null) }
     }
 

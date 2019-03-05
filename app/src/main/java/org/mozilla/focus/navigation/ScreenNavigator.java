@@ -98,7 +98,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
 
-        this.transactionHelper.popAllScreens();
+        this.transactionHelper.showBrowserScreen(animate);
     }
 
     /**
@@ -125,9 +125,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      */
     // TODO: Make geo dialog a view in browser fragment, so we can remove this method
     public boolean isBrowserInForeground() {
-        boolean result = (activity.getSupportFragmentManager().getBackStackEntryCount() == 0);
-        log("isBrowserInForeground: " + result);
-        return result;
+        return activity.isBrowserScreenInForeground();
     }
 
     /**
@@ -136,12 +134,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      */
     public void addHomeScreen(boolean animate) {
         logMethod();
-
-        boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG, TransactionHelper.EntryData.TYPE_ATTACHED);
-        log("found exist home: " + found);
-        if (!found) {
-            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ATTACHED);
-        }
+        this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ATTACHED);
     }
 
     /**
@@ -149,13 +142,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      */
     public void popToHomeScreen(boolean animate) {
         logMethod();
-
-        boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG,
-                TransactionHelper.EntryData.TYPE_ROOT);
-        log("found exist home: " + found);
-        if (!found) {
-            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT);
-        }
+        this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT);
     }
 
     public void addFirstRunScreen() {
@@ -259,6 +246,10 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         BrowserScreen getBrowserScreen();
 
         HomeScreen createHomeScreen();
+
+        void showBrowserScreen();
+
+        boolean isBrowserScreenInForeground();
 
         UrlInputScreen createUrlInputScreen(@Nullable String url, String parentFragmentTag);
 

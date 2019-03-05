@@ -56,44 +56,11 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
         }
         this.setOnApplyWindowInsetsListener((v, insets) -> {
             int difference = insets.getSystemWindowInsetBottom();
-
-            if (difference != 0) {
-                // Keyboard showing -> Set difference has bottom padding.
-                if (getPaddingBottom() != difference) {
-                    setPadding(0, 0, 0, difference);
-                    // Zerda modification: We don't want extra margin in BrowserFragment for main
-                    // toolbar, so we truncate them.
-                    if (getLayoutParams() instanceof MarginLayoutParams) {
-                        ((MarginLayoutParams) getLayoutParams()).bottomMargin = 0;
-                    }
-
-                    if (viewToHide != null) {
-                        viewToHide.setVisibility(View.GONE);
-                    }
-                }
-            } else {
-                // Keyboard not showing -> Reset bottom padding.
-                if (getPaddingBottom() != 0) {
-                    setPadding(0, 0, 0, 0);
-                    // Zerda modification: Restore previously canceled margin
-                    ((MarginLayoutParams) getLayoutParams()).bottomMargin = marginBottom;
-
-                    if (viewToHide != null) {
-                        viewToHide.setVisibility(View.VISIBLE);
-                    }
-                }
+            if (getLayoutParams() instanceof MarginLayoutParams) {
+                ((MarginLayoutParams) getLayoutParams()).bottomMargin = difference;
             }
             return insets;
         });
-    }
-
-    // Zerda modification: Intercept bottomMargin
-    @Override
-    public void setLayoutParams(ViewGroup.LayoutParams params) {
-        super.setLayoutParams(params);
-        if (params instanceof MarginLayoutParams) {
-            marginBottom = (((MarginLayoutParams) params).bottomMargin);
-        }
     }
 
     @Override

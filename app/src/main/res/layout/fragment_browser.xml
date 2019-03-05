@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/browser_root_view"
@@ -10,10 +11,14 @@
 
     <org.mozilla.rocket.nightmode.themed.ThemedLinearLayout
         android:id="@+id/browser_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/browser_background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fb_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
             android:id="@+id/background"
@@ -37,7 +42,7 @@
                     android:clipChildren="false"
                     app:layout_scrollFlags="">
 
-                    <include layout="@layout/toolbar" />
+                    <include layout="@layout/toolbar"/>
 
                     <!-- divider between appbar and web-vew, will be covered by progress bar -->
                     <org.mozilla.rocket.nightmode.themed.ThemedView
@@ -46,7 +51,7 @@
                         android:layout_height="1dp"
                         android:layout_gravity="bottom"
                         android:background="@drawable/url_bar_divider"
-                        tools:background="#FF0000" />
+                        tools:background="#FF0000"/>
 
                     <org.mozilla.focus.widget.AnimatedProgressBar
                         android:id="@+id/progress"
@@ -59,7 +64,7 @@
                         android:progressDrawable="@drawable/photon_progressbar"
                         app:shiftDuration="@integer/progress_shift_duration"
                         app:wrapShiftDrawable="true"
-                        tools:progress="50" />
+                        tools:progress="50"/>
                 </FrameLayout>
 
             </android.support.design.widget.AppBarLayout>
@@ -69,9 +74,7 @@
         <org.mozilla.focus.widget.ResizableKeyboardLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="49dp"
-            android:clipChildren="false"
+            android:layout_height="600dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -81,12 +84,11 @@
 
                 <FrameLayout
                     android:id="@+id/webview_slot"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp" />
+                    android:layout_height="match_parent"/>
                 <include
                     layout="@layout/find_in_page"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -95,19 +97,35 @@
 
     <org.mozilla.rocket.nightmode.themed.ThemedView
         android:id="@+id/bottom_menu_divider"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/fixed_menu_height"
         android:background="@drawable/browser_menu_divider"
-        tools:background="#FF0000" />
+        tools:background="#FF0000"
+        app:layout_constraintTop_toBottomOf="@+id/browser_container"
+        app:layout_constraintBottom_toTopOf="@+id/fb_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <include layout="@layout/fragment_browser_item_menu_button" />
+    <include
+        android:id="@+id/fb_menu"
+        layout="@layout/fragment_browser_item_menu_button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/fixed_menu_height"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_menu_divider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+    />
 
     <FrameLayout
         android:id="@+id/video_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@android:color/black"
-        android:visibility="gone" />
-</FrameLayout>
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+    />
+</android.support.constraint.ConstraintLayout>
