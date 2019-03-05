@@ -86,6 +86,11 @@ public class Repository {
 
             private List<ItemPojo> lastValue;
 
+            private void removeObserver() {
+                liveData.removeObserver(this);
+                currentPageSubscription = null;
+            }
+
             @Override
             public void onChanged(@Nullable Pair<Integer, String> integerStringPair) {
                 if (integerStringPair == null) {
@@ -93,6 +98,9 @@ public class Repository {
                 }
                 if (integerStringPair.first != null) {
                     if (TextUtils.isEmpty(integerStringPair.second)) {
+                        if (integerStringPair.first == ResponseData.SOURCE_NETWORK) {
+                            removeObserver();
+                        }
                         return;
                     }
                     try {
@@ -107,8 +115,7 @@ public class Repository {
                                     onCacheInvalidateListener.onCacheInvalidate();
                                 }
                             }
-                            liveData.removeObserver(this);
-                            currentPageSubscription = null;
+                            removeObserver();
                         }
                         Repository.this.updateData(page, itemPojoList);
                         lastValue = itemPojoList;
