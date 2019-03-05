@@ -65,7 +65,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     init {
         ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
             cachedPaddingTop = insets?.systemWindowInsetTop ?: 0
-            //setPadding(0, cachedPaddingTop, 0, 0)
+            setPadding(0, cachedPaddingTop, 0, 0)
             insets
         }
     }
@@ -188,7 +188,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 //        bottomSheetBehavior.isFitToContents
 //        bottomSheetBehavior?.isFitToContents = false
 //        bottomSheetBehavior?.peekHeight = 0
-        bottomSheetBehavior?.skipCollapsed = true
+//        bottomSheetBehavior?.skipCollapsed = true
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior?.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
