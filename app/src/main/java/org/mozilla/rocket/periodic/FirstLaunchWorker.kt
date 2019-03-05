@@ -37,7 +37,7 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
     }
 
     override fun doWork(): Result {
-        val message = AppConfigWrapper.getFirstLaunchNotificationiMessage(applicationContext)
+        val message = AppConfigWrapper.getFirstLaunchNotificationMessage(applicationContext)
         DialogUtils.showDefaultSettingNotification(applicationContext, message)
         TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(applicationContext), message)
 

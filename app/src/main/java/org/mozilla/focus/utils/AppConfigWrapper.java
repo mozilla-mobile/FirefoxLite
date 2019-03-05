@@ -92,7 +92,7 @@ public class AppConfigWrapper {
         return FirebaseHelper.getRcLong(context, FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES);
     }
 
-    public static String getFirstLaunchNotificationiMessage(Context context) {
+    public static String getFirstLaunchNotificationMessage(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE);
     }
 
