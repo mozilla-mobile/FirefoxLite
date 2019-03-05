@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 
     firebaseImplementation "com.google.firebase:firebase-core:${Versions.firebase}"
     firebaseImplementation "com.google.firebase:firebase-config:${Versions.firebase}"

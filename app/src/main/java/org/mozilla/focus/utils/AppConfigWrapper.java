@@ -97,7 +97,8 @@ public class AppConfigWrapper {
     }
 
     static String getShareAppDialogTitle(Context context) {
-        return FirebaseHelper.getRcString(context, FirebaseHelper.STR_SHARE_APP_DIALOG_TITLE);
+        String rcString = FirebaseHelper.getRcString(context, FirebaseHelper.STR_SHARE_APP_DIALOG_TITLE);
+        return FirebaseHelper.prettify(rcString);
     }
 
     // Only this field supports prettify

@@ -14,13 +14,16 @@ import android.content.Intent;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.text.HtmlCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
@@ -120,10 +123,13 @@ public class DialogUtils {
         dialog.setOnCancelListener(dialogInterface -> telemetryShareApp(context, TelemetryWrapper.Value.DISMISS));
 
         View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, null);
-        dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_title).setText(
-                AppConfigWrapper.getShareAppDialogTitle(context));
-        dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_content).setText(
-                AppConfigWrapper.getShareAppDialogContent(context));
+
+        final TextView title = dialogView.findViewById(R.id.share_app_dialog_textview_title);
+        setTextClickableHtml(title, AppConfigWrapper.getShareAppDialogTitle(context));
+
+        final TextView content = dialogView.findViewById(R.id.share_app_dialog_textview_content);
+        setTextClickableHtml(content, AppConfigWrapper.getShareAppDialogContent(context));
+
         dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(v -> {
             dialog.dismiss();
             telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
@@ -141,6 +147,11 @@ public class DialogUtils {
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
         Settings.getInstance(context).setShareAppDialogDidShow();
+    }
+
+    private static void setTextClickableHtml(@NonNull TextView textView, @NonNull String string) {
+        textView.setText(HtmlCompat.fromHtml(string, HtmlCompat.FROM_HTML_MODE_COMPACT));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private static void telemetryShareApp(final Context context, String value) {

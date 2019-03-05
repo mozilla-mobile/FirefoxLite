@@ -23,6 +23,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -40,7 +42,6 @@ abstract class FirebaseWrapper {
     private static final boolean FIREBASE_BOOLEAN_DEFAULT = false;
     private static final long FIREBASE_LONG_DEFAULT = 0L;
     private static final String FIREBASE_STRING_DEFAULT = "";
-    private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
     // Instance of FirebaseWrapper that provides default values
     private static FirebaseWrapper instance;
@@ -101,7 +102,14 @@ abstract class FirebaseWrapper {
     }
 
     static String prettify(@NonNull String string) {
-        return string.replace(NEWLINE_PLACE_HOLDER, "\n");
+        String prettified;
+        try {
+            prettified = StringEscapeUtils.unescapeJava(string);
+        } catch (Exception e) {
+            prettified = string;
+        }
+
+        return prettified;
     }
 
     static long getRcLong(Context context, String key) {
