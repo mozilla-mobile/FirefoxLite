@@ -7,11 +7,27 @@ import org.mozilla.rocket.bhaskar.Repository
 
 class ContentViewModel : ViewModel(), Repository.OnDataChangedListener {
     var repository: Repository? = null
-    val items = MutableLiveData<List<ItemPojo>>()
+    val items = MutableLiveData<MutableList<ItemPojo>>()
 
+    init {
+        items.value = ArrayList()
+    }
 
     override fun onDataChanged(itemPojoList: MutableList<ItemPojo>?) {
-        items.postValue(itemPojoList)
+        val newList = ArrayList<ItemPojo>()
+        // exclude existing items from new data
+        items.value?.let {
+            itemPojoList?.removeAll(it)
+            // add the old item to new list
+            newList.addAll(it)
+        }
+        // add the new items in new list
+        itemPojoList?.let {
+            newList.addAll(it)
+        }
+
+        // use a new list , so diff utils will knows
+        items.postValue(newList)
     }
 
     fun loadMore() {

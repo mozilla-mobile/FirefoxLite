@@ -228,7 +228,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         Toast.makeText(context, "I don't edit stuff", Toast.LENGTH_SHORT).show()
     }
 
-    fun setData(items: MutableList<ItemPojo>?) {
+    fun setData(items: List<ItemPojo>?) {
         stopLoading()
 //        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
 
@@ -238,7 +238,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 //        adapter?.items = items
 //        adapter?.notifyItemRangeInserted(start, 20)
 //        adapter?.notifyDataSetChanged()
-        adapter?.submitList(items?.toMutableList())
+        adapter?.submitList(items)
     }
 }
 

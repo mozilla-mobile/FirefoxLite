@@ -23,6 +23,6 @@ class ContentRepository {
         }
 
         private fun buildRepository(context: Context): Repository =
-            Repository(context, 521, 20, null, 3, null, null)
+            Repository(context, 521, 10, null, 3, null, null)
     }
 }
