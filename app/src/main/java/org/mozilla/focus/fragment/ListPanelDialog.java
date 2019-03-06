@@ -23,6 +23,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 public class ListPanelDialog extends DialogFragment {
 
+    public final static int TYPE_DEFAULT = 0;
     public final static int TYPE_DOWNLOADS = 1;
     public final static int TYPE_HISTORY = 2;
     public final static int TYPE_SCREENSHOTS = 3;
@@ -236,6 +237,7 @@ public class ListPanelDialog extends DialogFragment {
                 divider.setVisibility(View.GONE);
                 panelBottom.setVisibility(View.GONE);
                 scrollView.setPadding(0, 0, 0, 0);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
             default:
                 throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));

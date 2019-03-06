@@ -190,7 +190,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (item instanceof Site && mContext instanceof FragmentListener) {
                 ScreenNavigator.get(mContext).showBrowserScreen(((Site) item).getUrl(), true, false);
                 mHistoryListener.onItemClicked();
-                HomeFragmentViewState.setLastSessionContent(false);
+                HomeFragmentViewState.reset();
                 TelemetryWrapper.historyOpenLink();
             }
         }

@@ -223,7 +223,7 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.screenshot_viewer_btn_open_url:
                 TelemetryWrapper.openCaptureLink(mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
-                HomeFragmentViewState.setLastSessionContent(false);
+                HomeFragmentViewState.reset();
                 Intent urlIntent = new Intent();
                 urlIntent.putExtra(EXTRA_URL, mScreenshot.getUrl());
                 setResult(RESULT_OPEN_URL, urlIntent);

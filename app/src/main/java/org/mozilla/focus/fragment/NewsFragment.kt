@@ -20,6 +20,7 @@ import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.content.ContentAdapter
 import org.mozilla.rocket.content.ContentRepository
 import org.mozilla.rocket.content.ContentViewModel
+import org.mozilla.rocket.content.HomeFragmentViewState
 import org.mozilla.threadutils.ThreadUtils
 
 class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
@@ -53,7 +54,7 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
 
         setupContentViewModel()
 
-//        onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
+        onStatus(PanelFragment.VIEW_TYPE_EMPTY)
     }
 
     override fun tryLoadMore() {
@@ -81,6 +82,7 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
 
     override fun onItemClicked(url: String) {
         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+        HomeFragmentViewState.set(ListPanelDialog.TYPE_NEWS)
         closePanel()
     }
 

@@ -12,7 +12,7 @@ class RocketLauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val action = LaunchIntentDispatcher.dispatch(this, intent)
-        HomeFragmentViewState.isLastSessionContent = false
+        HomeFragmentViewState.reset()
         when (action) {
             LaunchIntentDispatcher.Action.HANDLED -> finish()
             LaunchIntentDispatcher.Action.NORMAL -> dispatchNormalIntent()

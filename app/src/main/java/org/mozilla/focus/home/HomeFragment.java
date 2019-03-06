@@ -67,6 +67,7 @@ import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.banner.BannerViewHolder;
+import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
@@ -474,6 +475,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        HomeFragmentViewState.apply((MainActivity) getActivity());
     }
 
     @Override
