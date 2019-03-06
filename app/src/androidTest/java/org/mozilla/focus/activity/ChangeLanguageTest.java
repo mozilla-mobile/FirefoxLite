@@ -13,7 +13,6 @@ import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mozilla.focus.R;
@@ -34,7 +33,6 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 
-@Ignore
 public class ChangeLanguageTest {
 
     // This is the lang name of Android system. We hard code it here so it will only fits emulator
