@@ -14,7 +14,6 @@ import org.mozilla.cachedrequestloader.CachedRequestLoader;
 import org.mozilla.cachedrequestloader.ResponseData;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -91,43 +90,66 @@ public class Repository {
                 currentPageSubscription = null;
             }
 
+            /**
+                         *
+                         * @param oldValuesFromCache
+                         * @param newValuesFromNetwork
+                         * @return if the cache is found dirty during this check
+                         */
+            private boolean updateCacheStatus(List<ItemPojo> oldValuesFromCache, List<ItemPojo> newValuesFromNetwork) {
+                if (oldValuesFromCache == null) {
+                    return false;
+                }
+                List<ItemPojo> diff = new ArrayList<>(oldValuesFromCache);
+                diff.removeAll(newValuesFromNetwork);
+                boolean cacheIsDirty = diff.size() != 0;
+                if (cacheIsDirty && onCacheInvalidateListener != null) {
+                    onCacheInvalidateListener.onCacheInvalidate();
+                }
+                return cacheIsDirty;
+            }
+
             @Override
             public void onChanged(@Nullable Pair<Integer, String> integerStringPair) {
-                if (integerStringPair == null) {
+                if (integerStringPair == null || integerStringPair.first == null) {
                     return;
                 }
-                if (integerStringPair.first != null) {
-                    if (TextUtils.isEmpty(integerStringPair.second)) {
-                        if (integerStringPair.first == ResponseData.SOURCE_NETWORK) {
-                            removeObserver();
-                        }
-                        return;
-                    }
+                // Parse the data, from cache or from Network
+                if (!TextUtils.isEmpty(integerStringPair.second)) {
                     try {
                         List<ItemPojo> itemPojoList = Repository.this.parseData(integerStringPair.second);
-                        // Removes the subscription and mark as done once network returns.
-                        if (integerStringPair.first == ResponseData.SOURCE_NETWORK) {
-                            if (lastValue != null) {
-                                List<ItemPojo> diff = new ArrayList<>(lastValue);
-                                diff.removeAll(itemPojoList);
-                                cacheIsDirty = diff.size() == 0;
-                                if (cacheIsDirty && onCacheInvalidateListener != null) {
-                                    onCacheInvalidateListener.onCacheInvalidate();
-                                }
+                        if (!cacheIsDirty) {
+                            cacheIsDirty = updateCacheStatus(lastValue, itemPojoList);
+                            if (cacheIsDirty && integerStringPair.first == ResponseData.SOURCE_NETWORK) {
+                                Repository.this.correctData(lastValue, itemPojoList);
+                                removeObserver();
+                                return;
                             }
-                            removeObserver();
                         }
-                        Repository.this.updateData(page, itemPojoList);
-                        lastValue = itemPojoList;
+                        if (integerStringPair.first == ResponseData.SOURCE_NETWORK || !cacheIsDirty) {
+                            Repository.this.addData(page, itemPojoList);
+                            lastValue = itemPojoList;
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+                // Removes the subscription and mark as done once network returns, no matter
+                // if there is a Network error or not.
+                if (integerStringPair.first == ResponseData.SOURCE_NETWORK) {
+                    removeObserver();
                 }
             }
         };
     }
 
-    private void updateData(int page, List<ItemPojo> newItems) {
+    private void correctData(List<ItemPojo> oldItems, List<ItemPojo> newItems) {
+        itemPojoList.removeAll(oldItems);
+        itemPojoList.addAll(newItems);
+        this.onDataChangedListener.onDataChanged(itemPojoList);
+    }
+
+    private void addData(int page, List<ItemPojo> newItems) {
         if (page == FIRST_PAGE) {
             itemPojoList.clear();
         }

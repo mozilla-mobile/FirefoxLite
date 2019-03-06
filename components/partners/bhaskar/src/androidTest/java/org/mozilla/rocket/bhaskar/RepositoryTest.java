@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -47,18 +49,30 @@ public class RepositoryTest {
         }
     }
 
+    // This task is flasky since it assumes cache is always faster
     @Test
     public void testLoadingAndLoadMore() throws InterruptedException {
         final CountDownLatch countDownLatch1 = new CountDownLatch(1);
         final CountDownLatch countDownLatch2 = new CountDownLatch(1);
         final int LOAD_SIZE = 3;
         final AtomicInteger atomicInteger = new AtomicInteger(0);
+        final List<ItemPojo> firstResult = new ArrayList<>();
         Repository repository = new Repository(InstrumentationRegistry.getContext(), 521, LOAD_SIZE, null, SOCKET_TAG, itemPojoList -> {
             if (atomicInteger.intValue() == 0) {
                 Assert.assertEquals(LOAD_SIZE, itemPojoList.size());
-                countDownLatch1.countDown();
             }
             if (atomicInteger.intValue() == 1) {
+                List<ItemPojo> subList = itemPojoList.subList(0, LOAD_SIZE);
+                if (subList.equals(firstResult)) {
+                    Assert.assertEquals(LOAD_SIZE * 2, itemPojoList.size());
+                    countDownLatch2.countDown();
+                } else {
+                    Assert.assertEquals(LOAD_SIZE, itemPojoList.size());
+                    firstResult.addAll(itemPojoList);
+                    countDownLatch1.countDown();
+                }
+            }
+            if (atomicInteger.intValue() == 2) {
                 Assert.assertEquals(LOAD_SIZE * 2, itemPojoList.size());
                 countDownLatch2.countDown();
             }
