@@ -377,6 +377,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         });
         this.arrow1 = view.findViewById(R.id.arrow1);
         this.arrow2 = view.findViewById(R.id.arrow2);
+        if (this.arrow1 != null) {
+            this.arrow1.setOnClickListener((v -> showContentPortal()));
+        }
+        if (this.arrow2 != null) {
+            this.arrow2.setOnClickListener((v -> showContentPortal()));
+        }
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
@@ -993,9 +999,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public void onSwipeUp() {
             if (arrow1 != null) {
-                if (getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).showListPanel(ListPanelDialog.TYPE_NEWS);
-                }
+                showContentPortal();
             } else {
                 btnMenu.performClick();
             }
@@ -1035,6 +1039,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             return true;
         }
 
+    }
+
+    private void showContentPortal() {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).showListPanel(ListPanelDialog.TYPE_NEWS);
+        }
     }
 
     private static class UpdateHistoryWrapper implements FavIconUtils.Consumer<List<String>> {

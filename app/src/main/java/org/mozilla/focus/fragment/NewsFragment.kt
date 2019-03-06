@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.content.ContentAdapter
@@ -41,6 +42,9 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
         emptyView = v.findViewById(R.id.empty_view_container)
         recyclerView?.clipToPadding = false
         progressView = v.findViewById(R.id.news_progress)
+        v.findViewById<Button>(R.id.news_try_again).setOnClickListener{
+            viewModel?.loadMore()
+        }
         return v
     }
 
@@ -73,7 +77,6 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
         } else if (PanelFragment.VIEW_TYPE_NON_EMPTY == status) {
             recyclerView?.visibility = View.VISIBLE
             emptyView?.visibility = View.GONE
-            progressView?.visibility = View.GONE
         } else {
             recyclerView?.visibility = View.GONE
             emptyView?.visibility = View.GONE
