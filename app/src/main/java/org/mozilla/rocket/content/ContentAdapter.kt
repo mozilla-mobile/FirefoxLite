@@ -72,7 +72,6 @@ class ContentAdapter(private val listener: ContentPanelListener) : RecyclerView.
         } else {
             listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
         }
-//        notifyItemRangeInserted(startPos, count)
         notifyDataSetChanged()
     }
 

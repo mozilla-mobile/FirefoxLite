@@ -63,7 +63,7 @@ public class Repository {
         nextSubscription();
     }
 
-    public void setOnDataChangedListener(OnDataChangedListener listener){
+    public void setOnDataChangedListener(OnDataChangedListener listener) {
         this.onDataChangedListener = listener;
     }
 
@@ -103,6 +103,15 @@ public class Repository {
                 if (integerStringPair.first != null) {
                     if (TextUtils.isEmpty(integerStringPair.second)) {
                         if (integerStringPair.first == ResponseData.SOURCE_NETWORK) {
+
+                            // if result is null, means it's first observation, ignore that event
+                            // but if the result is "", means network request complete with no
+                            // data, so still notify the observer means nothing happened since
+                            // last fetched.
+                            // TODO: use network failure callback instead
+                            if ("".equals(integerStringPair.second)) {
+                                onDataChangedListener.onDataChanged(itemPojoList);
+                            }
                             removeObserver();
                         }
                         return;

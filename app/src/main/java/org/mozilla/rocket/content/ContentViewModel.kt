@@ -9,6 +9,7 @@ class ContentViewModel : ViewModel(), Repository.OnDataChangedListener {
     var repository: Repository? = null
     val items = MutableLiveData<List<ItemPojo>>()
 
+    // the library use LiveData as callback to onDataChanged. So here will always on main thread
     override fun onDataChanged(itemPojoList: MutableList<ItemPojo>?) {
         val newList = ArrayList<ItemPojo>()
         // exclude existing items from itemPojoList

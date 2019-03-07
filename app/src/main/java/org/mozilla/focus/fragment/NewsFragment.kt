@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import kotlinx.android.synthetic.main.fragment_news.*
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.content.ContentAdapter
@@ -42,7 +43,7 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
         emptyView = v.findViewById(R.id.empty_view_container)
         recyclerView?.clipToPadding = false
         progressView = v.findViewById(R.id.news_progress)
-        v.findViewById<Button>(R.id.news_try_again).setOnClickListener{
+        v.findViewById<Button>(R.id.news_try_again).setOnClickListener {
             viewModel?.loadMore()
         }
         return v
@@ -58,7 +59,7 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
 
         setupContentViewModel()
 
-        onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+        // let news_init_loading display a bit till fetch completes
     }
 
     override fun tryLoadMore() {
@@ -72,9 +73,11 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
 
     override fun onStatus(status: Int) {
         if (PanelFragment.VIEW_TYPE_EMPTY == status) {
+            news_init_loading?.visibility = View.GONE
             recyclerView?.visibility = View.GONE
             emptyView?.visibility = View.VISIBLE
         } else if (PanelFragment.VIEW_TYPE_NON_EMPTY == status) {
+            news_init_loading?.visibility = View.GONE
             recyclerView?.visibility = View.VISIBLE
             emptyView?.visibility = View.GONE
         } else {
@@ -101,7 +104,6 @@ class NewsFragment : PanelFragment(), ContentAdapter.ContentPanelListener {
                     if (items == null) {
                         // load the items on first subscribe
                         viewModel?.loadMore()
-                        onStatus(VIEW_TYPE_EMPTY)
                     } else {
                         progressView?.visibility = View.GONE
                         adapter?.setData(items)
