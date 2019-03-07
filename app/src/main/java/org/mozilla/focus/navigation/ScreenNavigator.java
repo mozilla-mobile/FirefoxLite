@@ -97,7 +97,8 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      */
     public void raiseBrowserScreen(boolean animate) {
         logMethod();
-
+        // assume UrlInputFragment is the only thing we don't want to keep the state
+        popUrlScreen();
         this.transactionHelper.showBrowserScreen(animate);
     }
 
