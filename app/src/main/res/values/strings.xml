@@ -69,7 +69,7 @@
     <string name="about_link_privacy">Privacy Notice</string>
     <!--Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
     <string name="life_feed">Life Feed</string>
-    <!-- The %1$s here is a placeholder for "Life Feed"--><!--Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
+    <!-- The %1$s here is a placeholder for "Life Feed". Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
     <string name="about_link_life_feed">Learn more about %1$s</string>
 
     <!-- This label is shown below the name of the default search engine in settings -->
@@ -212,7 +212,7 @@
     <string name="first_run_page5_title">Next-level privacy</string>
     <string name="first_run_page5_text">Browse without a trace, and block a wide range of common web trackers by default. Ensure the security of your confidential data.</string>
     <string name="first_run_page6_title">Discover new things</string>
-    <!-- The %1$s here is a placeholder for "Life Feed", the %2$s is "Learn more" which is localized in lifefeed_learn_more--><!--Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
+    <!-- The %1$s here is a placeholder for "Life Feed", the %2$s is "Learn more" which is localized in lifefeed_learn_more. Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
     <string name="first_run_page6_text">Just one flip, keep yourself updated with the “%1$s” - a variety of contents from the most popular topics to the hottest deals. %2$s</string>
     <string name="lifefeed_learn_more">Learn more</string> 
    
