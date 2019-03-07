@@ -30,7 +30,7 @@
             android:id="@+id/empty_view_image"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/ic_illustration_no_bookmarks"
+            android:src="@drawable/image_internet_error"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

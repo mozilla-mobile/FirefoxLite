@@ -9,12 +9,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_item"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:background="@drawable/tab_tray_item_bkg"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="4dp"
-    android:layout_width="match_parent"
-    android:layout_height="76dp"
-    android:background="@drawable/news_item_bg">
+    android:outlineProvider="background"
+    android:elevation="4dp">
 
     <ImageView
         android:id="@+id/news_item_image"
@@ -23,6 +25,9 @@
         android:layout_marginEnd="16dp"
         tools:src="@drawable/ic_globe"
         android:scaleType="centerCrop"
+        android:background="@drawable/news_item_bg"
+        android:outlineProvider="background"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/news_item_headline"
@@ -35,7 +40,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ellipsize="end"
-        android:singleLine="true"
         android:maxLines="2"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="8dp"

@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content
 
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,9 +92,11 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: ItemPojo, listener: View.OnClickListener) {
         itemView.findViewById<View>(R.id.news_item).setOnClickListener(listener)
         itemView.findViewById<TextView>(R.id.news_item_headline).text = item.title
-        itemView.findViewById<TextView>(R.id.news_item_source).text = "bahaskar"
-        itemView.findViewById<TextView>(R.id.news_item_time).text = "today"
-
+        itemView.findViewById<TextView>(R.id.news_item_source).text = "" // don't show for now
+        itemView.findViewById<TextView>(R.id.news_item_time).text =
+            DateUtils.getRelativeTimeSpanString(
+                item.publishTime, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS
+            )
         Glide.with(itemView.context)
                 .load(item.coverPic)
                 .apply(requestOptions)
