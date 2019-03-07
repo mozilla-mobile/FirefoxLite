@@ -185,11 +185,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
 
-    // return true if there's a content portal to hide
-    public boolean hideContentPortal() {
-             return false;
-    }
-
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
 
         private AtomicInteger countdown;
