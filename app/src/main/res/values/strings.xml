@@ -212,9 +212,8 @@
     <string name="first_run_page5_title">Next-level privacy</string>
     <string name="first_run_page5_text">Browse without a trace, and block a wide range of common web trackers by default. Ensure the security of your confidential data.</string>
     <string name="first_run_page6_title">Discover new things</string>
-    <!-- The %1$s here is a placeholder for "Life Feed", the %2$s is "Learn more" which is localized in lifefeed_learn_more. Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
+    <!-- The %1$s here is a placeholder for "Life Feed", the %2$s is "Learn more" which is localized in preference_learn_more. Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
     <string name="first_run_page6_text">Just one flip, keep yourself updated with the “%1$s” - a variety of contents from the most popular topics to the hottest deals. %2$s</string>
-    <string name="lifefeed_learn_more">Learn more</string> 
    
     <string name="first_run_upgrade_page_title">We heard your feedback!</string>
 
