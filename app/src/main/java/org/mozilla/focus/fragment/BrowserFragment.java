@@ -187,6 +187,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ThemedImageButton menuBtn;
     private ThemedLinearLayout toolbarRoot;
     private ThemedView bottomMenuDivider;
+    private ThemedRelativeLayout  bottomMenu;
     private ThemedView urlBarDivider;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
@@ -412,6 +413,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         menuBtn = view.findViewById(R.id.btn_menu);
         toolbarRoot = view.findViewById(R.id.toolbar_root);
         bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
+        bottomMenu = view.findViewById(R.id.bottom_menu);
+
         urlBarDivider = view.findViewById(R.id.url_bar_divider);
         if (tabCounter != null) {
             tabCounter.setOnClickListener(this);
@@ -1607,6 +1610,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         tabCounter.setNightMode(enable);
 
         bottomMenuDivider.setNightMode(enable);
+        bottomMenu.setNightMode(enable);
         backgroundView.setNightMode(enable);
         urlBarDivider.setNightMode(enable);
 

@@ -16,7 +16,7 @@
         android:background="@drawable/browser_background"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fb_menu"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -74,7 +74,7 @@
         <org.mozilla.focus.widget.ResizableKeyboardLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -102,12 +102,12 @@
         android:background="@drawable/browser_menu_divider"
         tools:background="#FF0000"
         app:layout_constraintTop_toBottomOf="@+id/browser_container"
-        app:layout_constraintBottom_toTopOf="@+id/fb_menu"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <include
-        android:id="@+id/fb_menu"
+        android:id="@+id/bottom_menu"
         layout="@layout/fragment_browser_item_menu_button"
         android:layout_width="0dp"
         android:layout_height="@dimen/fixed_menu_height"

@@ -346,9 +346,17 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         getWindow().getDecorView().setSystemUiVisibility(visibility);
 
         snackBarContainer = findViewById(R.id.container);
+        browser = findViewById(R.id.browser);
+        home = findViewById(R.id.home);
+        browserFragment = (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
+        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.home);
         setUpMenu();
     }
 
+    @Nullable View browser;
+    @Nullable View home;
+    @Nullable BrowserFragment browserFragment;
+    @Nullable HomeFragment homeFragment;
 
     public void postSurveyNotification() {
         Intent intent = IntentUtils.createInternalOpenUrlIntent(this,
@@ -788,12 +796,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         settings.setNightMode(enabled);
         applyNightModeBrightness(enabled, settings, getWindow());
 
-        Fragment fragment = this.screenNavigator.getTopFragment();
-        if (fragment instanceof BrowserFragment) { // null fragment will not make instanceof to be true
-            ((BrowserFragment) fragment).setNightModeEnabled(enabled);
-        } else if (fragment instanceof HomeFragment) {
-            ((HomeFragment) fragment).setNightModeEnabled(enabled);
-        }
+        browserFragment.setNightModeEnabled(enabled);
+        homeFragment.setNightModeEnabled(enabled);
     }
 
     private boolean isNightModeEnabled(Settings settings) {
@@ -802,7 +806,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     @VisibleForTesting
     public BrowserFragment getBrowserFragment() {
-        return (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
+        return browserFragment;
+    }
+
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
     }
 
     private void onBookMarkClicked() {
@@ -991,9 +999,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 TabTray.show(getSupportFragmentManager());
                 break;
             case REFRESH_TOP_SITE:
-                Fragment fragment = this.screenNavigator.getTopFragment();
-                if (fragment instanceof HomeFragment) {
-                    ((HomeFragment) fragment).updateTopSitesData();
+                if (isHomeScreenInForeground()) {
+                    homeFragment.updateTopSitesData();
                 }
                 break;
             case SHOW_MY_SHOT_ON_BOARDING:
@@ -1029,21 +1036,26 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     @Override
-    public HomeFragment createHomeScreen() {
-        findViewById(R.id.browser).setVisibility(View.GONE);
-        findViewById(R.id.home).setVisibility(View.VISIBLE);
+    public HomeFragment showHomeScreen() {
+        browser.setVisibility(View.GONE);
+        home.setVisibility(View.VISIBLE);
         return null;
     }
 
     @Override
     public void showBrowserScreen() {
-        findViewById(R.id.browser).setVisibility(View.VISIBLE);
-        findViewById(R.id.home).setVisibility(View.GONE);
+        browser.setVisibility(View.VISIBLE);
+        home.setVisibility(View.GONE);
     }
 
     @Override
     public boolean isBrowserScreenInForeground() {
-        return findViewById(R.id.browser).getVisibility() == View.VISIBLE;
+        return browser.getVisibility() == View.VISIBLE;
+    }
+
+    @Override
+    public boolean isHomeScreenInForeground() {
+        return home.getVisibility() == View.VISIBLE;
     }
 
     private void showMessage(@NonNull CharSequence msg) {

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/fixed_menu_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/browser_background"
     android:layout_gravity="center_horizontal|bottom">
 
     <org.mozilla.focus.widget.EqualDistributeGrid
@@ -28,4 +30,4 @@
 
         <include layout="@layout/button_more" />
     </org.mozilla.focus.widget.EqualDistributeGrid>
-</FrameLayout>
+</org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>

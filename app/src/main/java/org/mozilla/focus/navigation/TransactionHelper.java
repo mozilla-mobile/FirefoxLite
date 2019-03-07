@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.animation.Animation;
 
 import org.mozilla.focus.R;
@@ -53,7 +52,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
             return;
         }
         // TODO: add animation here
-        this.activity.createHomeScreen();
+        this.activity.showHomeScreen();
     }
 
     void showFirstRun() {
@@ -99,16 +98,6 @@ class TransactionHelper implements DefaultLifecycleObserver {
         return EntryData.TYPE_ROOT == getEntryType(lastEntry);
     }
 
-    void popAllScreens() {
-        FragmentManager manager = this.activity.getSupportFragmentManager();
-        int entryCount = manager.getBackStackEntryCount();
-        while (entryCount > 0) {
-            manager.popBackStack();
-            entryCount--;
-        }
-        manager.executePendingTransactions();
-    }
-
     @Nullable
     Fragment getLatestCommitFragment() {
         FragmentManager manager = this.activity.getSupportFragmentManager();
@@ -135,7 +124,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     private FragmentTransaction prepareHomeScreen(boolean animated, @EntryData.EntryType int type) {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final HomeScreen homeScreen = this.activity.createHomeScreen();
+        final HomeScreen homeScreen = this.activity.showHomeScreen();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         int enterAnim = animated ? R.anim.tab_transition_fade_in : 0;

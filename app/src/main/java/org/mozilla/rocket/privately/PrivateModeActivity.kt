@@ -168,7 +168,7 @@ class PrivateModeActivity : BaseActivity(),
         TODO("PrivateModeActivity should never show first-run")
     }
 
-    override fun createHomeScreen(): HomeFragment? {
+    override fun showHomeScreen(): HomeFragment? {
         findViewById<View>(R.id.browser).visibility = View.GONE
         findViewById<View>(R.id.home).visibility = View.VISIBLE
         return null
@@ -176,6 +176,10 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun isBrowserScreenInForeground(): Boolean {
         return findViewById<View>(R.id.browser).visibility == View.VISIBLE
+    }
+
+    override fun isHomeScreenInForeground(): Boolean {
+        return findViewById<View>(R.id.home).visibility == View.VISIBLE
     }
 
     override fun showBrowserScreen() {

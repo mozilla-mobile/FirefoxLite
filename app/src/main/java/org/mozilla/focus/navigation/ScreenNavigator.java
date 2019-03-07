@@ -153,12 +153,11 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
     public void addUrlScreen(String url) {
         logMethod();
-        Fragment top = getTopFragment();
 
         String tag = BROWSER_FRAGMENT_TAG;
-        if (top instanceof HomeScreen) {
+        if (activity.isHomeScreenInForeground()) {
             tag = HOME_FRAGMENT_TAG;
-        } else if (top instanceof BrowserScreen) {
+        } else if (activity.isBrowserScreenInForeground()) {
             tag = BROWSER_FRAGMENT_TAG;
         } else if (BuildConfig.DEBUG) {
             throw new RuntimeException("unexpected caller of UrlInputScreen");
@@ -246,11 +245,13 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
         BrowserScreen getBrowserScreen();
 
-        HomeScreen createHomeScreen();
+        HomeScreen showHomeScreen();
 
         void showBrowserScreen();
 
         boolean isBrowserScreenInForeground();
+
+        boolean isHomeScreenInForeground();
 
         UrlInputScreen createUrlInputScreen(@Nullable String url, String parentFragmentTag);
 
