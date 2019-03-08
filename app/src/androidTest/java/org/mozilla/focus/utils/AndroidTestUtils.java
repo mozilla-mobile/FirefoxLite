@@ -167,4 +167,11 @@ public final class AndroidTestUtils {
     public static String removeStrFormatter(@NotNull String formatedStr) {
         return formatedStr.replaceAll("($|%.?)[^\\s]+", "");
     }
+
+    // we have two view with the same id: btn_search in HomeFragment and BrowserFragment.
+    public static void clickSearchIconAtBottom() {
+        onView(allOf(withId(R.id.btn_search),
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).perform(click());
+    }
+
 }

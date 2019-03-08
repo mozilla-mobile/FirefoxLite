@@ -75,7 +75,7 @@ public class BrowsingIntentTest {
                 .check(matches(withText(TARGET_URL_SITE_1)));
 
         // Click search button
-        onView(withId(R.id.btn_search)).perform(click());
+        AndroidTestUtils.clickSearchIconAtBottom();
 
         // Browsing site 2
         onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_2), pressImeActionButton());

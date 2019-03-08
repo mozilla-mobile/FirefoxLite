@@ -73,7 +73,7 @@ public class NavigationTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button and clear existing text in search field
-        onView(withId(R.id.btn_search)).perform(click());
+        AndroidTestUtils.clickSearchIconAtBottom();
         onView(withId(R.id.url_edit)).perform(clearText());
 
         // Enter site 2 url

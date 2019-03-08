@@ -160,9 +160,7 @@ public class SearchFieldTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button
-        // we have two view with the same id: btn_search in HomeFragment and BrowserFragment.
-        onView(allOf(withId(R.id.btn_search),
-                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).perform(click());
+        AndroidTestUtils.clickSearchIconAtBottom();
 
         // Type some science characters
         onView(withId(R.id.url_edit)).perform(clearText()).perform(replaceText(TYPED_SCIENCE_SYMBOLS_TEXT), pressImeActionButton());
