@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
+import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
@@ -33,6 +34,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 
+@FlakyTest
 public class ChangeLanguageTest {
 
     // This is the lang name of Android system. We hard code it here so it will only fits emulator

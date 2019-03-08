@@ -153,6 +153,7 @@ public class DefaultBrowserTest {
      * 5. Check it correctly set default browser to Firefox Lite
      */
     @Test
+    @SdkSuppress(minSdkVersion = 24, maxSdkVersion = 25)
     public void changeDefaultBrowser_whenNoDefault() {
 
         mainActivity.launchActivity(new Intent());

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.annotation.Keep;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -59,6 +60,7 @@ public class OnBoardingTest {
      * 4. open menu
      * 5. check turbo mode is selected
      */
+    @FlakyTest
     @Test
     public void turnOnTurboModeDuringOnBoarding_turboModeIsOnInMenu() {
 
