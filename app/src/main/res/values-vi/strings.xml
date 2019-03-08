@@ -22,10 +22,13 @@
   <string name="about_link_support">Hỗ trợ</string>
   <string name="about_link_your_rights">Quyền lợi của bạn / Giấy phép</string>
   <string name="about_link_privacy">Chính sách riêng tư</string>
+  <string name="life_feed">Tin tức hàng ngày</string>
+  <string name="about_link_life_feed">Tìm hiểu thêm về %1$s</string>
   <string name="preference_search_engine_default">Công cụ tìm kiếm mặc định</string>
   <string name="preference_language">Ngôn ngữ</string>
   <string name="preference_language_systemdefault">Mặc định hệ thống</string>
   <string name="preference_dialog_title_search_engine">Công cụ tìm kiếm mặc định</string>
+  <string name="preference_dialog_title_news_source">Nguồn tin tức</string>
   <string name="preference_data_saving_block_images">Chặn hình ảnh</string>
   <string name="preference_privacy_storage_clear_browsing_data">Xóa dữ liệu truy cập</string>
   <string name="preference_privacy_storage_save_downloads_to">Lưu các bản tải xuống vào</string>
@@ -75,6 +78,8 @@
   <string name="first_run_page4_text">Chụp ảnh màn hình của toàn bộ trang. Đọc ngoại tuyến mà không sử dụng dữ liệu hoặc chạm vào nó để xem lại trang web.</string>
   <string name="first_run_page5_title">Quyền riêng tư cấp độ tiếp theo</string>
   <string name="first_run_page5_text">Duyệt mà không để lại dấu vết và chặn một loạt các trình theo dõi web phổ biến theo mặc định. Đảm bảo an toàn cho dữ liệu bí mật của bạn.</string>
+  <string name="first_run_page6_title">Khám phá những điều mới</string>
+  <string name="first_run_page6_text">Chỉ cần một lần lật, hãy cập nhật cho bạn với “%1$s” - một loạt nội dung từ các chủ đề phổ biến nhất đến các giao dịch hấp dẫn nhất. %2$s</string>
   <string name="first_run_upgrade_page_title">Chúng tôi đã ghi nhận phản hồi của bạn!</string>
   <string name="new_name_upgrade_page_title">Chúng tôi có một cái nhìn mới!</string>
   <string name="new_name_upgrade_page_text">Với sản phẩm đã phát triển, chúng tôi mang đến cho bạn một %1$s mới mẻ, với tên mới và logo mới.</string>

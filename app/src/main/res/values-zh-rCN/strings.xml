@@ -22,6 +22,7 @@
   <string name="about_link_support">技术支持</string>
   <string name="about_link_your_rights">您的权利 / 许可协议</string>
   <string name="about_link_privacy">隐私声明</string>
+  <string name="about_link_life_feed">详细了解“%1$s”</string>
   <string name="preference_search_engine_default">默认搜索引擎</string>
   <string name="preference_language">语言</string>
   <string name="preference_language_systemdefault">系统默认</string>

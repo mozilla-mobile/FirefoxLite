@@ -22,10 +22,13 @@
   <string name="about_link_support">Dukông</string>
   <string name="about_link_your_rights">Hak / Idin Droeneuh</string>
   <string name="about_link_privacy">Jaga Rahsia</string>
+  <string name="life_feed">Haba barô</string>
+  <string name="about_link_life_feed">Ta kalön lom keu bhah %1$s</string>
   <string name="preference_search_engine_default">Meusén mita teutap</string>
   <string name="preference_language">Basa</string>
   <string name="preference_language_systemdefault">Sistem teutap</string>
   <string name="preference_dialog_title_search_engine">Meusén mita teutap</string>
+  <string name="preference_dialog_title_news_source">Nè haba</string>
   <string name="preference_data_saving_block_images">Bék deuh gamba - gamba</string>
   <string name="preference_privacy_storage_clear_browsing_data">Peugléh data peuhah wèb</string>
   <string name="preference_privacy_storage_save_downloads_to">Keubah keuneubah u</string>
@@ -75,9 +78,11 @@
   <string name="first_run_page4_text">Cök neuleumah layeue nibak mandum laman wèb. Kalön \'oh watèe hana jaringan ngön hana ngui data atawa neuthèp keu neugisa keulayi bak laman web nyan.</string>
   <string name="first_run_page5_title">Privasi tingkat lanjut</string>
   <string name="first_run_page5_text">Seumeulop hana euncit, tham alat seumeutöt wèb nyang biasa. Peuaman data peunténg droeneuh.</string>
+  <string name="first_run_page6_title">Limeuh nyang barô-barô</string>
+  <string name="first_run_page6_text">Sigö cukèh sagai, neuseubarô sabè ngön “%1$s” - meubagoe bhah nibak nyang palèng geuthèe na sampoe án nyang gawat that dum. %2$s</string>
   <string name="first_run_upgrade_page_title">Kamoe meudeungö saran droeneuh!</string>
   <string name="new_name_upgrade_page_title">Kamoe na neuleumah barô!</string>
-  <string name="new_name_upgrade_page_text">Ngön produk nyang sabé meuubah, kamoe mumè keu Droeneuh %1$s nyang barô, ngön nan barô dan logo barô.</string>
+  <string name="new_name_upgrade_page_text">Ngön produk nyang sabé meutamah, kamoe meuba keu droeneuh %1$s nyang barô, nan barô ngön logo barô.</string>
   <string name="first_run_upgrade_page_text1">1. Multibuet waté ipeuhah %s meusigö!</string>
   <string name="first_run_upgrade_page_text1_highlight">Multitab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs nyang droen galak beubagah ngön %s</string>
@@ -101,6 +106,7 @@
   <string name="label_menu_exit">Teubiët</string>
   <string name="permission_toast_location_deny">Idin neuduek geutulak.</string>
   <string name="permission_toast_storage_deny">Idin keuneubah geutulak.</string>
+  <string name="permission_handler_permission_dialog_setting">peuatô</string>
   <string name="permission_dialog_not_now">bèk jinoë</string>
   <string name="permission_toast_location">Neuduek hana jitupeue. Neubri idin keu jitupeue neuduekneuh.</string>
   <string name="permission_toast_storage">Hana bak keubah. Neupeuidin keu keubah fôtô ngön beureukaih lam peukakaih Droeneuh.</string>

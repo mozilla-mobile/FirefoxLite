@@ -22,10 +22,13 @@
   <string name="about_link_support">Dukungan</string>
   <string name="about_link_your_rights">Hak / Izin Anda</string>
   <string name="about_link_privacy">Kebijakan Privasi</string>
+  <string name="life_feed">Kabar Harian</string>
+  <string name="about_link_life_feed">Pelajari lebih lanjut tentang %1$s</string>
   <string name="preference_search_engine_default">Mesin pencari baku</string>
   <string name="preference_language">Bahasa</string>
   <string name="preference_language_systemdefault">Bawaan sistem</string>
   <string name="preference_dialog_title_search_engine">Mesin pencari baku</string>
+  <string name="preference_dialog_title_news_source">Sumber berita</string>
   <string name="preference_data_saving_block_images">Blokir gambar</string>
   <string name="preference_privacy_storage_clear_browsing_data">Bersihkan data penjelajahan</string>
   <string name="preference_privacy_storage_save_downloads_to">Simpan unduhan ke</string>
@@ -75,6 +78,8 @@
   <string name="first_run_page4_text">Cuplik layar keseluruhan penggeseran layar. Baca secara luring tanpa kuota data atau ketuk untuk mengunjungi laman Web tersebut.</string>
   <string name="first_run_page5_title">Privasi tingkat selanjutnya</string>
   <string name="first_run_page5_text">Jelajahi tanpa pelacak dan blokir sebagian besar pelacak web secara baku. Pastikan keamanan data rahasia Anda.</string>
+  <string name="first_run_page6_title">Temukan hal baru</string>
+  <string name="first_run_page6_text">Hanya sekali tampil, dapatkan informasi terkini dengan “%1$s” - kumpulan berbagai konten dari topik populer hingga penawaran menarik. %2$s</string>
   <string name="first_run_upgrade_page_title">Kami mendengar masukan Anda!</string>
   <string name="new_name_upgrade_page_title">Tampilan baru!</string>
   <string name="new_name_upgrade_page_text">Melalui evolusi produk, kami hadirkan %1$s yang segar, dengan nama dan logo baru.</string>
