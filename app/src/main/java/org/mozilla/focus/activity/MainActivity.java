@@ -950,7 +950,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
 
         if (!this.screenNavigator.canGoBack()) {
-            finish();
+            if (isHomeScreenInForeground()) {
+                finish();
+            } else {
+                showHomeScreen();
+            }
             return;
         }
 
@@ -1037,9 +1041,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     @Override
     public HomeFragment showHomeScreen() {
-        browser.setVisibility(View.GONE);
         home.setVisibility(View.VISIBLE);
-        return null;
+        browser.setVisibility(View.GONE);
+        return homeFragment;
     }
 
     @Override

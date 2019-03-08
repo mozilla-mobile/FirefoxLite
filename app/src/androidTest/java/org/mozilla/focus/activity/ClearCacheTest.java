@@ -54,7 +54,7 @@ public class ClearCacheTest {
     public void clearCache() {
 
         // Tap menu
-        AndroidTestUtils.tapBrowserMenuButton();
+        AndroidTestUtils.tapHomeMenuButton();
 
         // Tap clear cache
         onView(withId(R.id.menu_delete)).perform(click());

@@ -10,6 +10,7 @@ import android.support.annotation.Keep;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -32,9 +33,7 @@ import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
@@ -161,12 +160,13 @@ public class SearchFieldTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button
-        onView(withId(R.id.btn_search)).perform(click());
+        // we have two view with the same id: btn_search in HomeFragment and BrowserFragment.
+        onView(allOf(withId(R.id.btn_search),
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).perform(click());
 
         // Type some science characters
         onView(withId(R.id.url_edit)).perform(clearText()).perform(replaceText(TYPED_SCIENCE_SYMBOLS_TEXT), pressImeActionButton());
 
-        // Wait for the page is loaded
         IdlingRegistry.getInstance().register(loadingIdlingResource);
 
         // Check if current url is matched with SearchEngine.buildSearchUrl()

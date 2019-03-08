@@ -121,6 +121,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
             R.id.skip -> finishFirstrun()
 
             R.id.finish -> {
+
                 promoteSetDefaultBrowserIfPreload()
                 finishFirstrun()
                 if (isTelemetryValid) {

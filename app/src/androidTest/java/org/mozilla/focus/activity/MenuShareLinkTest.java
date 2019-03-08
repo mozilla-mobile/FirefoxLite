@@ -142,7 +142,7 @@ public class MenuShareLinkTest {
     public void shareLinkDisabledOnHomePage() {
 
         // Tap menu
-        onView(withId(R.id.btn_menu)).check(matches(isDisplayed())).perform(click());
+        AndroidTestUtils.tapHomeMenuButton();
 
         // Check share btn disabled
         onView(withId(R.id.action_share)).check(matches(not(isEnabled())));

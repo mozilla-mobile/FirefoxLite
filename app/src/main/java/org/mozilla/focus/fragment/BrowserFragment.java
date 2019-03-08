@@ -883,7 +883,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                 TelemetryWrapper.clickToolbarSearch();
                 break;
             case R.id.btn_open_new_tab:
-                ScreenNavigator.get(getContext()).addHomeScreen(true);
+                ScreenNavigator.get(getContext()).showHomeScreen(true);
                 TelemetryWrapper.clickAddTabToolbar();
                 break;
             case R.id.btn_tab_tray:

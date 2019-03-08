@@ -509,7 +509,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        ScreenNavigator.get(getContext()).addHomeScreen(false);
+        ScreenNavigator.get(getContext()).showHomeScreen(false);
         TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
     }

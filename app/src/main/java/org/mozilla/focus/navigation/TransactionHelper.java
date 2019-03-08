@@ -48,9 +48,6 @@ class TransactionHelper implements DefaultLifecycleObserver {
     }
 
     void showHomeScreen(boolean animated, @EntryData.EntryType int type) {
-        if (isStateSaved()) {
-            return;
-        }
         // TODO: add animation here
         this.activity.showHomeScreen();
     }
@@ -79,7 +76,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
                 .commit();
     }
 
-    void dismissUrlInput() {
+    void popTopFragmentFromStack() {
         final FragmentManager mgr = this.activity.getSupportFragmentManager();
         if (mgr.isStateSaved()) {
             return;

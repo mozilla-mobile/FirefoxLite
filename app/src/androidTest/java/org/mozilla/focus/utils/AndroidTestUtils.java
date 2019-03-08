@@ -16,9 +16,11 @@ import android.support.test.espresso.action.GeneralClickAction;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
+import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
@@ -38,11 +40,7 @@ import static android.support.test.espresso.action.ViewActions.pressImeActionBut
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -70,7 +68,10 @@ public final class AndroidTestUtils {
     }
 
     public static void removeNewAddedTab() {
-        onView(withId(R.id.counter_box)).perform(click());
+
+        // we have two view with the same id: counter_box in HomeFragment and BrowserFragment.
+        onView(Matchers.allOf(withId(R.id.counter_box),
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).perform(click());
         onView(withId(R.id.tab_tray)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.close_button)));
     }

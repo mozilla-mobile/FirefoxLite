@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import org.mozilla.focus.BuildConfig;
+import org.mozilla.focus.fragment.FirstrunFragment;
 import org.mozilla.focus.widget.BackKeyHandleable;
 
 import java.util.Arrays;
@@ -133,7 +134,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * Add a home fragment to back stack, so user can press back key to go back to previous
      * fragment. Use this when you want to start a new tab.
      */
-    public void addHomeScreen(boolean animate) {
+    public void showHomeScreen(boolean animate) {
         logMethod();
         this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ATTACHED);
     }
@@ -143,6 +144,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      */
     public void popToHomeScreen(boolean animate) {
         logMethod();
+        popFirstrunScreen();
         this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT);
     }
 
@@ -170,7 +172,15 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         logMethod();
         Fragment top = getTopFragment();
         if (top instanceof UrlInputScreen) {
-            this.transactionHelper.dismissUrlInput();
+            this.transactionHelper.popTopFragmentFromStack();
+        }
+    }
+
+    public void popFirstrunScreen() {
+        logMethod();
+        Fragment top = getTopFragment();
+        if (top instanceof FirstrunFragment) {
+            this.transactionHelper.popTopFragmentFromStack();
         }
     }
 
@@ -223,7 +233,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         }
 
         @Override
-        public void addHomeScreen(boolean animate) {
+        public void showHomeScreen(boolean animate) {
         }
 
         @Override

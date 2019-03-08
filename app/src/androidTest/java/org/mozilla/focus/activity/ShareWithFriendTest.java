@@ -57,7 +57,7 @@ public class ShareWithFriendTest {
         }
 
         // Tap menu -> settings
-        AndroidTestUtils.tapBrowserMenuButton();
+        AndroidTestUtils.tapHomeMenuButton();
         AndroidTestUtils.tapSettingButton();
 
         // Tap share with friends -> close
