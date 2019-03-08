@@ -8,7 +8,6 @@ import android.support.test.espresso.action.Tap
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.pressImeActionButton
 import android.support.test.espresso.action.ViewActions.replaceText
-
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.RootMatchers
@@ -91,12 +90,7 @@ class SessionRobot : MenuRobot() {
 
     /** Screenshot related */
     fun clickCaptureScreen(activity: MainActivity) {
-        // TODO find a way to remove the activity reference
-        screenshotIdlingResource = ScreenshotIdlingResource(activity)
-
-        // Click screen capture button
-        onView(Matchers.allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
-
+        clickScreenCaptureButton()
         AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
         checkNoScreenshotOnBoarding()
     }
@@ -108,10 +102,13 @@ class SessionRobot : MenuRobot() {
         onView(withId(R.id.my_shot_category_learn_more)).check(doesNotExist())
     }
 
-    fun firstTimeClickCaptureScreen() {
-        // TODO find a way to remove the activity reference
+    private fun clickScreenCaptureButton() {
         // Click screen capture button
-        onView(Matchers.allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
+        onView(withId(R.id.btn_capture)).perform(click())
+    }
+
+    fun firstTimeClickCaptureScreen() {
+        clickScreenCaptureButton()
         checkScreenshotOnBoarding()
     }
 

@@ -26,7 +26,8 @@
 
         <include layout="@layout/button_search" />
 
-        <include layout="@layout/button_capture" />
+        <include layout="@layout/button_capture"
+                 android:id="@+id/btn_capture"/>
 
         <include layout="@layout/button_more" />
     </org.mozilla.focus.widget.EqualDistributeGrid>

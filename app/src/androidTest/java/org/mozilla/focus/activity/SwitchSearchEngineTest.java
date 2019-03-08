@@ -124,7 +124,7 @@ public class SwitchSearchEngineTest {
         final String[] searchEngineName = engine.getName().split(" ");
 
         // Open menu
-        AndroidTestUtils.tapBrowserMenuButton();
+        AndroidTestUtils.tapHomeMenuButton();
 
         // Open settings
         AndroidTestUtils.tapSettingButton();
