@@ -11,7 +11,20 @@ class ContentViewModel : ViewModel(), Repository.OnDataChangedListener {
 
 
     override fun onDataChanged(itemPojoList: MutableList<ItemPojo>?) {
-        items.postValue(itemPojoList)
+        val newList = ArrayList<ItemPojo>()
+        // exclude existing items from itemPojoList
+        items.value?.let {
+            itemPojoList?.removeAll(it)
+            // there are new items, add the old item to new list first
+            newList.addAll(it)
+        }
+        // add the new items in the new list
+        itemPojoList?.let {
+            newList.addAll(it)
+        }
+
+        // return the new list , so diff utils will think this is something to diff
+        items.value = newList
     }
 
     fun loadMore() {

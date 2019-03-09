@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_panel"
+    android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorUrlInputBackground"
@@ -15,41 +16,54 @@
     app:layout_constraintStart_toStartOf="parent">
 
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:id="@+id/bottom_sheet"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_menu"
-        app:behavior_hideable="true"
-        android:layout_marginTop="24dp"
-        app:layout_dodgeInsetEdges="top"
+        android:orientation="vertical"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        tools:ignore="MissingPrefix">
+        app:behavior_hideable="true">
 
-        <ProgressBar
-            android:id="@+id/news_item_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:indeterminate="true"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/news_main"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-        />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp"/>
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/news_main"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="48dp"
-            app:layout_constraintBottom_toTopOf="@+id/news_item_loading"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:fillViewport="true"
-            app:layout_constraintEnd_toEndOf="parent">
+        <RelativeLayout
+
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_menu"
+            tools:ignore="MissingPrefix">
+
+            <TextView
+                android:id="@+id/news_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/label_menu_news"
+                style="@style/Headline4"
+                android:textAllCaps="true"
+                android:textColor="@color/paletteLightBlack100"/>
+
+            <Button
+                android:id="@+id/news_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                android:text="@string/news_update_btn"
+                style="@style/ButtonText2"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="64dp"
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -99,47 +113,13 @@
                     />
                 </android.support.constraint.ConstraintLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nestedScrollingEnabled="false"/>
+
             </RelativeLayout>
 
 
-        </android.support.v4.widget.NestedScrollView>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/news_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/label_menu_news"
-            style="@style/Headline4"
-            android:textAllCaps="true"
-            android:textColor="@color/paletteLightBlack100"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/news_main"/>
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/news_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:visibility="gone"
-            android:text="@string/news_update_btn"
-            style="@style/ButtonText2"
-            android:textColor="@color/paletteDarkBlueC100"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/news_main"/>
-
-
-    </android.support.constraint.ConstraintLayout>
 
 </org.mozilla.rocket.content.ContentPortalView>

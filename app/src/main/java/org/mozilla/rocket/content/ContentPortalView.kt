@@ -10,7 +10,6 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.ViewCompat
-import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -19,7 +18,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.Toast
-import kotlinx.android.synthetic.main.content_portal.view.*
 import org.mozilla.focus.R
 import org.mozilla.focus.fragment.PanelFragment
 import org.mozilla.focus.navigation.ScreenNavigator
@@ -29,6 +27,8 @@ import org.mozilla.rocket.content.ContentPortalViewState.isLastSessionContent
 object ContentPortalViewState {
     @JvmStatic
     var isLastSessionContent = false
+    var lasPos = 0
+    var lasPosOffset = 0
 }
 
 class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
@@ -85,12 +85,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         setupBottomSheet()
 
         setupData()
-
-//        this.setOnApplyWindowInsetsListener { _, insets ->
-//            setPadding(0, insets?.systemWindowInsetTop ?: 0, 0, 0)
-//            insets
-//        }
     }
+
+    private var linearLayoutManager: LinearLayoutManager? = null
 
     private fun setupData() {
         this.setOnClickListener { hide() }
@@ -104,28 +101,47 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 //        }
         emptyView = findViewById(R.id.empty_view_container)
         adapter = ContentAdapter(this)
+        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                if (itemCount == 0) {
+                    onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+                } else {
+                    onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
+//                    recyclerView?.scrollToPosition(ContentPortalViewState.lasPos)
+                    linearLayoutManager?.scrollToPositionWithOffset(ContentPortalViewState.lasPos,ContentPortalViewState.lasPosOffset)
+                }
+            }
+        })
         recyclerView?.adapter = adapter
-        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        findViewById<NestedScrollView>(R.id.news_main)?.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
-                val pageSize = v.measuredHeight
-                // v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - scrollY is -49dp
-                // When scrolled to end due to padding
-                if (scrollY > oldScrollY && v.getChildAt(0).measuredHeight - v.measuredHeight - scrollY < pageSize) {
-                    animateLoading()
-                    loadMoreListener?.loadMore()
+        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager = linearLayoutManager
+        linearLayoutManager?.let {
+            recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val totalItemCount = it.itemCount
+                    val visibleItemCount = it.childCount
+                    val lastVisibleItem = it.findLastVisibleItemPosition()
+                    if (visibleItemCount + lastVisibleItem + 10 >= totalItemCount) {
+                        animateLoading()
+                        loadMoreListener?.loadMore()
+                    }
                 }
             })
+        }
+
         onStatus(PanelFragment.VIEW_TYPE_EMPTY)
     }
 
     private fun animateLoading() {
-        news_item_loading.visibility = View.VISIBLE
-        news_item_loading.animate()
+//        news_item_loading.visibility = View.VISIBLE
+//        news_item_loading.animate()
     }
 
     private fun stopLoading() {
-        news_item_loading.visibility = View.GONE
+//        news_item_loading.visibility = View.GONE
     }
 
     fun showInternal() {
@@ -185,10 +201,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupBottomSheet() {
         bottomSheet = findViewById(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
-//        bottomSheetBehavior.isFitToContents
-//        bottomSheetBehavior?.isFitToContents = false
 //        bottomSheetBehavior?.peekHeight = 0
-        bottomSheetBehavior?.skipCollapsed = true
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior?.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -227,6 +240,10 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     override fun onItemClicked(url: String) {
         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
         ContentPortalViewState.isLastSessionContent = true
+
+        linearLayoutManager?.findFirstCompletelyVisibleItemPosition()?.let {
+            ContentPortalViewState.lasPosOffset = it
+        }
     }
 
     override fun onItemDeleted(item: ItemPojo?) {
@@ -239,8 +256,8 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     fun setData(items: MutableList<ItemPojo>?) {
         stopLoading()
-//        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
-        adapter?.submitList(items?.toMutableList())
+        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
+        adapter?.submitList(items)
     }
 }
 

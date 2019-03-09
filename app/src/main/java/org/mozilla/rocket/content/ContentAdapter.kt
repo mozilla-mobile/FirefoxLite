@@ -21,16 +21,7 @@ class ContentAdapter(private val listener: ContentPanelListener) : ListAdapter<I
 ) {
 
     init {
-        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (itemCount == 0) {
-                    listener.onStatus(PanelFragment.VIEW_TYPE_EMPTY)
-                } else {
-                    listener.onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
-                }
-            }
-        })
+
     }
 
     object COMPARATOR : DiffUtil.ItemCallback<ItemPojo>() {
@@ -51,7 +42,10 @@ class ContentAdapter(private val listener: ContentPanelListener) : ListAdapter<I
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val item = getItem(position) ?: return
-        holder.bind(item, View.OnClickListener { listener.onItemClicked(item.detailUrl) })
+        holder.bind(item, View.OnClickListener {
+            listener.onItemClicked(item.detailUrl)
+            ContentPortalViewState.lasPos = position
+        })
     }
 
     interface ContentPanelListener : PanelFragmentStatusListener {
