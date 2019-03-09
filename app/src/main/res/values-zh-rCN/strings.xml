@@ -22,11 +22,13 @@
   <string name="about_link_support">技术支持</string>
   <string name="about_link_your_rights">您的权利 / 许可协议</string>
   <string name="about_link_privacy">隐私声明</string>
+  <string name="life_feed">生活助手</string>
   <string name="about_link_life_feed">详细了解“%1$s”</string>
   <string name="preference_search_engine_default">默认搜索引擎</string>
   <string name="preference_language">语言</string>
   <string name="preference_language_systemdefault">系统默认</string>
   <string name="preference_dialog_title_search_engine">默认搜索引擎</string>
+  <string name="preference_dialog_title_news_source">新闻来源</string>
   <string name="preference_data_saving_block_images">无图模式</string>
   <string name="preference_privacy_storage_clear_browsing_data">清除浏览数据</string>
   <string name="preference_privacy_storage_save_downloads_to">下载文件至</string>
@@ -76,6 +78,8 @@
   <string name="first_run_page4_text">不但能滚动截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
   <string name="first_run_page5_title">新一代隐私权保护</string>
   <string name="first_run_page5_text">无痕浏览。默认阻止各种常见的网络跟踪器。确保私密数据的安全性。</string>
+  <string name="first_run_page6_title">探索新知</string>
+  <string name="first_run_page6_text">您只需轻轻翻转，即可在“%1$s”处获取新资讯 - 涵盖最流行的话题到最热门的促销等各种内容。%2$s</string>
   <string name="first_run_upgrade_page_title">我们收到了您的反馈！</string>
   <string name="new_name_upgrade_page_title">我们焕然一新！</string>
   <string name="new_name_upgrade_page_text">随着产品的演化，我们为您带来了焕然一新的 %1$s，新名称、新标志。</string>

@@ -22,10 +22,13 @@
   <string name="about_link_support">การสนับสนุน</string>
   <string name="about_link_your_rights">สิทธิของคุณ / สัญญาอนุญาต</string>
   <string name="about_link_privacy">ประกาศความเป็นส่วนตัว</string>
+  <string name="life_feed">ฟีดการดำเนินชีวิต</string>
+  <string name="about_link_life_feed">เรียนรู้เพิ่มเติมเกี่ยวกับ %1$s</string>
   <string name="preference_search_engine_default">เครื่องมือค้นหาเริ่มต้น</string>
   <string name="preference_language">ภาษา</string>
   <string name="preference_language_systemdefault">ค่าเริ่มต้นของระบบ</string>
   <string name="preference_dialog_title_search_engine">เครื่องมือค้นหาเริ่มต้น</string>
+  <string name="preference_dialog_title_news_source">แหล่งที่มาข่าว</string>
   <string name="preference_data_saving_block_images">ปิดกั้นภาพ</string>
   <string name="preference_privacy_storage_clear_browsing_data">ล้างข้อมูลการท่องเว็บ</string>
   <string name="preference_privacy_storage_save_downloads_to">บันทึกการดาวน์โหลดไปยัง</string>
@@ -75,6 +78,7 @@
   <string name="first_run_page4_text">จับภาพหน้าจอส่วนที่เลื่อนทั้งหน้า อ่านภาพหน้าจอออฟไลน์โดยไม่ต้องใช้ข้อมูลหรือแตะภาพหน้าจอเพื่อเยี่ยมชมหน้าเว็บใหม่</string>
   <string name="first_run_page5_title">ความเป็นส่วนตัวระดับถัดไป</string>
   <string name="first_run_page5_text">ท่องเว็บโดยไม่มีร่องรอย และปิดกั้นตัวติดตามเว็บทั่วไปจำนวนมากโดยค่าเริ่มต้น ทำให้มั่นใจในความปลอดภัยของข้อมูลที่เป็นความลับของคุณ</string>
+  <string name="first_run_page6_title">ค้นพบสิ่งใหม่ ๆ</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
   <string name="new_name_upgrade_page_title">เรามีหน้าตาใหม่!</string>
   <string name="new_name_upgrade_page_text">ด้วยผลิตภัณฑ์ที่ได้รับการพัฒนา เรานำ %1$s แบบใหม่พร้อมชื่อใหม่และโลโก้ใหม่มาให้คุณ</string>
