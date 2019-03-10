@@ -22,10 +22,13 @@
   <string name="about_link_support">Поддержка</string>
   <string name="about_link_your_rights">Ваши права / Лицензии</string>
   <string name="about_link_privacy">Уведомление о конфиденциальности</string>
+  <string name="life_feed">Ленты новостей</string>
+  <string name="about_link_life_feed">Узнайте больше о %1$s</string>
   <string name="preference_search_engine_default">Поисковая система по умолчанию</string>
   <string name="preference_language">Язык</string>
   <string name="preference_language_systemdefault">Язык устройства</string>
   <string name="preference_dialog_title_search_engine">Поисковая система по умолчанию</string>
+  <string name="preference_dialog_title_news_source">Источник новостей</string>
   <string name="preference_data_saving_block_images">Блокировать изображения</string>
   <string name="preference_privacy_storage_clear_browsing_data">Удалять данные веб-сёрфинга</string>
   <string name="preference_privacy_storage_save_downloads_to">Сохранять загрузки в</string>
@@ -75,6 +78,8 @@
   <string name="first_run_page4_text">Сделайте скриншот всей страницы. Читайте её оффлайн без использования Интернета или нажмите на него, чтобы вернуться на веб-страницу.</string>
   <string name="first_run_page5_title">Следующий уровень приватности</string>
   <string name="first_run_page5_text">Просмотр страниц без слежки и блокировка распространенных веб-трекеров по умолчанию. Обеспечьте безопасность ваших конфиденциальных данных.</string>
+  <string name="first_run_page6_title">Откройте для себя новые вещи</string>
+  <string name="first_run_page6_text">Всего лишь одно нажатие, и вы сможете быть в курсе последних событий с помощью «%1$s» — с самым разнообразным содержимым от наиболее популярных тем до самых горячих предложений. %2$s</string>
   <string name="first_run_upgrade_page_title">Мы услышали ваше мнение!</string>
   <string name="new_name_upgrade_page_title">У нас новый вид!</string>
   <string name="new_name_upgrade_page_text">Благодаря развитию продукта, мы предлагаем вам обновленный %1$s с новым именем и логотипом.</string>
