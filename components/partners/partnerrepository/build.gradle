@@ -8,7 +8,7 @@ apply from: "$rootProject.projectDir/buildSrc/findbugs.gradle"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':partnerrepository')
+    implementation project(':cachedrequestloader')
 
     implementation "com.android.support:appcompat-v7:$Versions.support"
     testImplementation "junit:junit:$Versions.junit"
