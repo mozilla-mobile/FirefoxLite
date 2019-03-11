@@ -24,6 +24,10 @@ abstract class FirebaseWrapper {
     // Instance of FirebaseWrapper that provides default values
     private static FirebaseWrapper instance;
 
+    public interface RemoteConfigFetchCallback {
+        void onFetched();
+    }
+
     static FirebaseWrapper getInstance() {
         return instance;
     }
@@ -96,7 +100,7 @@ abstract class FirebaseWrapper {
     }
 
     // This need to be run in worker thread since FirebaseRemoteConfigSettings has IO access
-    static void enableRemoteConfig(Context context, boolean enable) {
+    static void enableRemoteConfig(Context context, boolean enable, RemoteConfigFetchCallback callback) {
     }
 
     static void setDeveloperModeEnabled(boolean developerModeEnabled) {
@@ -105,7 +109,7 @@ abstract class FirebaseWrapper {
     // Client code must implement this method so it's not static here.
     abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
 
-    abstract void refreshRemoteConfigDefault(Context context);
+    abstract void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback);
 
     public static String getFcmToken() {
         return FIREBASE_STRING_DEFAULT;
