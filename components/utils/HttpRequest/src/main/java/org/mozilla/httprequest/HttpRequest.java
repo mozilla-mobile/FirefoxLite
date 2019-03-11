@@ -12,7 +12,7 @@ import java.net.URLConnection;
 public class HttpRequest {
 
     public static String get(URL url, final String userAgent) {
-        return get(url, -1, userAgent);
+        return get(url, 2000, userAgent);
     }
 
 

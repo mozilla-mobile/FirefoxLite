@@ -30,7 +30,7 @@ public class CachedRequestLoader implements RequestLoaderDelegation.RequestLoade
     }
 
     public CachedRequestLoader(Context context, String subscriptionKey, String subscriptionUrl, String userAgent, int socketTag) {
-        this(context, subscriptionKey, subscriptionUrl, userAgent, socketTag, false);
+        this(context, subscriptionKey, subscriptionUrl, userAgent, socketTag, true);
     }
 
     @VisibleForTesting
