@@ -72,6 +72,7 @@ public class NewsSourcePreference extends ListPreference {
             Settings.getInstance(getContext()).setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER);
             setSummary(getValue());
             NewsSourceManager.getInstance().setNewsSource(getValue());
+
             Log.d(NewsSourceManager.TAG, "User setup pref:" + getValue());
         }
     }
