@@ -9,6 +9,7 @@ import android.widget.Switch;
 import org.mozilla.focus.R;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.SupportUtils;
 
 public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
 
@@ -16,24 +17,34 @@ public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
 
     public DefaultFirstrunPagerAdapter(Context context, View.OnClickListener listener) {
         super(context, listener);
-        this.pages = new FirstrunPage[]{
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page2_title),
-                        context.getString(R.string.first_run_page2_text),
-                        "first_run_img_2.json"),
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page4_title),
-                        context.getString(R.string.first_run_page4_text),
-                        "first_run_img_4.json"),
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page5_title),
-                        context.getString(R.string.first_run_page5_text),
-                        R.drawable.ic_onboarding_privacy),
-                new FirstrunPage(
-                        context.getString(R.string.first_run_page3_title),
-                        context.getString(R.string.first_run_page3_text),
-                        "first_run_img_3.json")
-        };
+
+        this.pages.add(new FirstrunPage(
+                context.getString(R.string.first_run_page2_title),
+                context.getString(R.string.first_run_page2_text),
+                "first_run_img_2.json"));
+        this.pages.add(new FirstrunPage(
+                context.getString(R.string.first_run_page4_title),
+                context.getString(R.string.first_run_page4_text),
+                "first_run_img_4.json"));
+        this.pages.add(new FirstrunPage(
+                context.getString(R.string.first_run_page5_title),
+                context.getString(R.string.first_run_page5_text),
+                R.drawable.ic_onboarding_privacy));
+        this.pages.add(new FirstrunPage(
+                context.getString(R.string.first_run_page3_title),
+                context.getString(R.string.first_run_page3_text),
+                "first_run_img_3.json"));
+
+        if (context.getResources().getInteger(R.integer.news_portal) > 0) {
+            final String feedURL = SupportUtils.getSumoURLForTopic(context, "firefox-lite-feed");
+            final String lifeFeed = context.getString(R.string.life_feed);
+            final String learnMore = context.getString(R.string.about_link_learn_more);
+            final String learnMoreLink = "<a href=\"" + feedURL + "\">" + learnMore + "</a>";
+            this.pages.add(new FirstrunPage(
+                    context.getString(R.string.first_run_page6_title),
+                    context.getString(R.string.first_run_page6_text, lifeFeed, learnMoreLink),
+                    R.drawable.onboarding_lifefeed));
+        }
     }
 
     @Override

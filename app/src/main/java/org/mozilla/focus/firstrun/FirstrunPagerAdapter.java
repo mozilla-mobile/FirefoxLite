@@ -7,8 +7,10 @@ package org.mozilla.focus.firstrun;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.text.HtmlCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,11 @@ import com.airbnb.lottie.OnCompositionLoadedListener;
 
 import org.mozilla.focus.R;
 
+import java.util.ArrayList;
+
 public class FirstrunPagerAdapter extends PagerAdapter {
 
-    protected FirstrunPage[] pages;
+    protected ArrayList<FirstrunPage> pages = new ArrayList<>();
     protected Context context;
     private View.OnClickListener listener;
 
@@ -37,13 +41,14 @@ public class FirstrunPagerAdapter extends PagerAdapter {
         final View view = LayoutInflater.from(context).inflate(
                 R.layout.firstrun_page, pager, false);
 
-        final FirstrunPage page = pages[position];
+        final FirstrunPage page = pages.get(position);
 
         final TextView titleView = (TextView) view.findViewById(R.id.title);
         titleView.setText(page.title);
 
         final TextView textView = (TextView) view.findViewById(R.id.text);
-        textView.setText(page.text);
+        textView.setText(HtmlCompat.fromHtml(page.text, HtmlCompat.FROM_HTML_MODE_COMPACT));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
         if (page.lottieString != null) {
@@ -63,7 +68,7 @@ public class FirstrunPagerAdapter extends PagerAdapter {
 
         final Button buttonView = (Button) view.findViewById(R.id.button);
         buttonView.setOnClickListener(listener);
-        if (position == pages.length - 1) {
+        if (position == pages.size() - 1) {
             buttonView.setText(R.string.firstrun_close_button);
             buttonView.setId(R.id.finish);
         } else {
@@ -82,7 +87,7 @@ public class FirstrunPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return pages.length;
+        return pages.size();
     }
 
     @Override

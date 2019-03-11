@@ -12,6 +12,7 @@ public class NewFeatureNotice {
     private static final int MULTI_TAB_FROM_VERSION_1_0_TO_2_0 = 1;
     private static final int FIREBASE_FROM_VERSION_2_0_TO_2_1 = 2;
     private static final int LITE_FROM_VERSION_2_1_TO_4_0 = 3;
+    private static final int LITE_FROM_VERSION_4_0_TO_1_1_4 = 4;
 
     private static NewFeatureNotice instance;
 
@@ -29,12 +30,20 @@ public class NewFeatureNotice {
     }
 
     public boolean shouldShowLiteUpdate() {
-        return LITE_FROM_VERSION_2_1_TO_4_0 == getLastShownFeatureVersion() + 1;
+        return from21to40() || from40to114();
+    }
+
+    public boolean from21to40() {
+        return LITE_FROM_VERSION_2_1_TO_4_0 > getLastShownFeatureVersion();
+    }
+
+    public boolean from40to114() {
+        return LITE_FROM_VERSION_4_0_TO_1_1_4 > getLastShownFeatureVersion();
     }
 
     public void setLiteUpdateDidShow() {
         setFirstRunDidShow();
-        setLastShownFeatureVersion(LITE_FROM_VERSION_2_1_TO_4_0);
+        setLastShownFeatureVersion(LITE_FROM_VERSION_4_0_TO_1_1_4);
     }
 
     public boolean shouldShowPrivacyPolicyUpdate() {
