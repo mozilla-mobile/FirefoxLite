@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.mozilla.fileutils.FileUtils;
@@ -24,10 +25,14 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.content.NewsSourceManager;
 import org.mozilla.rocket.periodic.FirstLaunchWorker;
+import org.mozilla.threadutils.ThreadUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+
+import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
 /**
  * Implementation for FirebaseWrapper. It's job:
@@ -180,6 +185,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
             }
             // although we should check for weakApplicationContext.get() every time before we use it,
             // but since it's an application context so we should be fine here.
+            // but since it's an application context so we should be fine here.
             final Context applicationContext = weakApplicationContext.get();
 
             // this is only for testing. So we can simulate slow network..etc
@@ -199,8 +205,21 @@ final public class FirebaseHelper extends FirebaseWrapper {
             enableCrashlytics(applicationContext, enable);
             enableAnalytics(applicationContext, enable);
             enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), enable);
-            enableRemoteConfig(applicationContext, enable);
-
+            enableRemoteConfig(applicationContext, enable, () -> {
+                ThreadUtils.postToBackgroundThread(() -> {
+                    final String pref = applicationContext.getString(R.string.pref_s_news);
+                    final String source = getRcString(applicationContext, pref);
+                    final Settings settings = Settings.getInstance(applicationContext);
+                    final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
+                    Log.d(NewsSourceManager.TAG, "Remote Config fetched");
+                    if (!TextUtils.isEmpty(source) && (canOverride || TextUtils.isEmpty(settings.getNewsSource()))) {
+                        Log.d(NewsSourceManager.TAG, "Remote Config is used:" + source);
+                        settings.setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
+                        settings.setNewsSource(source);
+                        NewsSourceManager.getInstance().setNewsSource(source);
+                    }
+                });
+            });
             // now firebase has completed state changing,
             changing = false;
             // we'll check if the cached state is the same as our current one. If not, issue
@@ -244,12 +263,12 @@ final public class FirebaseHelper extends FirebaseWrapper {
     }
 
     @Override
-    void refreshRemoteConfigDefault(Context context) {
+    void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback) {
         // Clear remoteConfigDefault
         remoteConfigDefault = null;
         getRemoteConfigDefault(context);
         // Now also need to reset the default config in Firebase if "Send Usage Data" is turned on.
-        enableRemoteConfig(context, TelemetryWrapper.isTelemetryEnabled(context));
+        enableRemoteConfig(context, TelemetryWrapper.isTelemetryEnabled(context), callback);
     }
 
 
@@ -316,6 +335,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
     }
 
     public static void onLocaleUpdate(Context context) {
-        getInstance().refreshRemoteConfigDefault(context);
+        getInstance().refreshRemoteConfigDefault(context, null);
     }
 }

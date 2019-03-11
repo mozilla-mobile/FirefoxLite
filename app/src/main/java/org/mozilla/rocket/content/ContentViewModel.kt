@@ -7,6 +7,12 @@ import org.mozilla.lite.partner.Repository
 
 class ContentViewModel : ViewModel(), Repository.OnDataChangedListener<NewsItem> {
     var repository: Repository<out NewsItem>? = null
+        set(value) {
+            if (field != value) {
+                items.value = null
+            }
+            field = value
+        }
     val items = MutableLiveData<List<NewsItem>>()
 
     override fun onDataChanged(NewsItemList: MutableList<NewsItem>?) {

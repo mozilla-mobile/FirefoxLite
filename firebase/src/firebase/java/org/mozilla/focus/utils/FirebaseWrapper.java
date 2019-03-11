@@ -73,6 +73,9 @@ abstract class FirebaseWrapper {
     private static long remoteConfigCacheExpirationInSeconds = DEFAULT_CACHE_EXPIRATION_IN_SECONDS;
     private static boolean developerModeEnabled;
 
+    public interface RemoteConfigFetchCallback {
+        void onFetched();
+    }
 
     // get Remote Config string
     static String getRcString(@NonNull Context context, @NonNull String key) {
@@ -300,7 +303,7 @@ abstract class FirebaseWrapper {
     }
 
     // This need to be run in worker thread since FirebaseRemoteConfigSettings has IO access
-    static void enableRemoteConfig(Context context, boolean enable) {
+    static void enableRemoteConfig(Context context, boolean enable, RemoteConfigFetchCallback callback) {
         if (!enable) {
             remoteConfig = null;
             return;
@@ -321,13 +324,13 @@ abstract class FirebaseWrapper {
         if (config.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
             remoteConfigCacheExpirationInSeconds = 0;
         }
-        refreshRemoteConfig();
+        refreshRemoteConfig(callback);
     }
 
     // Call this method to refresh the value in remote config.
     // Client code can access the remote config value in UI thread. But if the work here is not done,
     // it'll still see the old value.
-    private static void refreshRemoteConfig() {
+    private static void refreshRemoteConfig(final RemoteConfigFetchCallback callback) {
         final FirebaseRemoteConfig config = remoteConfig.get();
         if (config == null) {
             return;
@@ -338,6 +341,9 @@ abstract class FirebaseWrapper {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Firebase RemoteConfig Fetch Successfully ");
                     config.activateFetched();
+                    if (callback != null) {
+                        callback.onFetched();
+                    }
                 } else {
                     Log.d(TAG, "Firebase RemoteConfig Fetch Failed: ");
                 }
@@ -353,7 +359,7 @@ abstract class FirebaseWrapper {
     abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
 
     // Client code must implement this method so it's not static here.
-    abstract void refreshRemoteConfigDefault(Context context);
+    abstract void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback);
 
     @Nullable
     public static String getFcmToken() {
