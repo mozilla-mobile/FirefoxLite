@@ -12,6 +12,7 @@ import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.DisplayMetrics;
@@ -140,6 +141,7 @@ public class HomeTest {
      * 6. Tap on blank space above menu or
      * 7. Check menu panel not exist
      */
+    @FlakyTest
     @Test
     public void dismissMenu() {
         activityRule.launchActivity(new Intent());

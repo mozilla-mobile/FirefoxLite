@@ -19,7 +19,7 @@ public class CustomTestRunner extends AndroidJUnitRunner {
         arguments.putString("disableAnalytics", "true");
         arguments.putString("clearPackageData", "true");
         // Using notAnnotation to exclude auto screenshot classes when running UI test.
-        arguments.putString("notAnnotation", "org.mozilla.focus.annotation.ScreengrabOnly");
+        arguments.putString("notAnnotation", "org.mozilla.focus.annotation.ScreengrabOnly,android.support.test.filters.FlakyTest");
 
         super.onCreate(arguments);
     }

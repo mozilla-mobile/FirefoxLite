@@ -24,7 +24,7 @@ android {
         } else {
             // general UI test, using notAnnotation to filter out auto screenshot classes
             testInstrumentationRunner "org.mozilla.focus.test.runner.CustomTestRunner"
-            testInstrumentationRunnerArguments clearPackageData: 'true', notAnnotation: 'org.mozilla.focus.annotation.ScreengrabOnly'
+            testInstrumentationRunnerArguments clearPackageData: 'true', notAnnotation: 'org.mozilla.focus.annotation.ScreengrabOnly,android.support.test.filters.FlakyTest'
         }
         testInstrumentationRunnerArgument 'disableAnalytics', 'true'
 

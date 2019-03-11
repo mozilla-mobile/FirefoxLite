@@ -36,9 +36,10 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 
-// Only device with API>=24 can set default browser via system settings
+// Only device with API>=24 can set default browser via system settings.
+// However, Browser select dialog behavior is different between API 24,25 (7.X) and API 26 (8.0) so this test caters to API 24, 25
 @RunWith(AndroidJUnit4.class)
-@SdkSuppress(minSdkVersion = 24, maxSdkVersion = 27)
+@SdkSuppress(minSdkVersion = 24, maxSdkVersion = 25)
 public class DefaultBrowserTest {
 
     // This is the title of Android system setting. We hard code it here so it will only fits emulator
