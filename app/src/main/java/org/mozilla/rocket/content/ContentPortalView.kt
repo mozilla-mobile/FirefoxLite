@@ -97,7 +97,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         if (visibility == VISIBLE) {
             return
         }
-
         HomeFragmentViewState.lastOpenNews()
         contentPortalListener?.onShow()
 

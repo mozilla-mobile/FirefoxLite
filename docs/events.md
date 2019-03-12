@@ -71,6 +71,8 @@
 |Remove Download File|action|remove|panel|"file"|"" 
 |Delete Download File|action|delete|panel|"file"|"" 
 |Open Download File via snackbar|action|open|panel|"file"|"snackbar=true,false," 
+|Open lifefeed news|action|open|panel|"lifefeed_news"|"" 
+|Click on news item|action|click|panel|"lifefeed_news"|"position=1,2,3...,feed=Newspoint,DainikBhaskar.com,source=India TV,Business World,HW News English...etc,category=Uttar Pradesh,National,Tech Knowledge....etc,subcategory=top-news,entertainment,Lucknow...etc," 
 |Show File ContextMenu|action|show|menu|"download"|"" 
 |History Open Link|action|open|panel|"link"|"" 
 |History Remove Link|action|remove|panel|"link"|"" 
