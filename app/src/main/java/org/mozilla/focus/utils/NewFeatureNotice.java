@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.VisibleForTesting;
+import org.mozilla.focus.R;
 
 public class NewFeatureNotice {
 
@@ -17,6 +18,7 @@ public class NewFeatureNotice {
     private static NewFeatureNotice instance;
 
     private final SharedPreferences preferences;
+    private final boolean hasNewsPortal;
 
     public synchronized static NewFeatureNotice getInstance(Context context) {
         if (instance == null) {
@@ -27,6 +29,7 @@ public class NewFeatureNotice {
 
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        hasNewsPortal = context.getResources().getInteger(R.integer.news_portal) > 0;
     }
 
     public boolean shouldShowLiteUpdate() {
@@ -38,7 +41,7 @@ public class NewFeatureNotice {
     }
 
     public boolean from40to114() {
-        return LITE_FROM_VERSION_4_0_TO_1_1_4 > getLastShownFeatureVersion();
+        return LITE_FROM_VERSION_4_0_TO_1_1_4 > getLastShownFeatureVersion() && hasNewsPortal;
     }
 
     public void setLiteUpdateDidShow() {
