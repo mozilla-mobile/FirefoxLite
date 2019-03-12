@@ -44,7 +44,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         addPreferencesFromResource(R.xml.settings);
         final PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
-        if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild()) {
+        if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild() && !AppConstants.isNightlyBuild()) {
             Preference category = findPreference(getString(R.string.pref_key_category_development));
             rootPreferences.removePreference(category);
         }

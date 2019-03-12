@@ -15,6 +15,7 @@ public final class AppConstants {
     private static final String BUILD_TYPE_FIREBASE = "firebase";
     private static final String BUILD_TYPE_BETA = "beta";
     private static final String BUILD_TYPE_RELEASE = "release";
+    private static final String FLAVOR_product_NIGHTLY = "preview";
 
     private AppConstants() {
     }
@@ -42,4 +43,9 @@ public final class AppConstants {
     public static boolean supportsDownloadingFiles() {
         return true;
     }
+
+    public static boolean isNightlyBuild() {
+        return BuildConfig.FLAVOR_product == FLAVOR_product_NIGHTLY;
+    }
+
 }
