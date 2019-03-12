@@ -6,6 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.lite.partner.Repository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,8 +45,13 @@ public class RepositoryNewsPoint extends Repository<NewsPointItem> {
             String m  = safeGetString(row, "m");
             String separator = "" + '\0';
             String[] tags = row.getJSONArray("tags").join(separator).split(separator);
-            String sourceName = "newspoint";
-            NewsPointItem newspointeItem = new NewsPointItem(id, sourceName, imageUrl, hl, mwu, 0, imageid, pn, dm, pid, lid, lang, tn, wu, pnu, fu, sec, m, tags);
+            long timestamp = 0;
+            try {
+                timestamp = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'IST' yyyy", Locale.US).parse(dl).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            NewsPointItem newspointeItem = new NewsPointItem(id, imageUrl, hl, mwu, timestamp, imageid, pn, dm, pid, lid, lang, tn, wu, pnu, fu, sec, m, tags);
             ret.add(newspointeItem);
         }
         return ret;

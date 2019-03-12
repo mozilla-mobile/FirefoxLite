@@ -4,22 +4,23 @@ import org.mozilla.lite.partner.NewsItem
 
 data class NewsPointItem(
     override val id: String,
-    override val source: String,
-    override val imageUrl: String,
+    override val imageUrl: String?,
     override val title: String,
     override val newsUrl: String,
     override val time: Long,
-    val imageid: String,
-    val pn: String,
+    val imageid: String?,
+    override val partner: String,
     val dm: String,
     val pid: Long,
     val lid: Long,
     val lang: String,
-    val tn: String,
+    override val category: String,
     val wu: String,
     val pnu: String,
     val fu: String,
-    val sec: String,
+    override val subcategory: String,
     val m: String,
     val tags: Array<String>
-) : NewsItem
+) : NewsItem {
+    override val source: String = "Newspoint"
+}

@@ -34,13 +34,13 @@ public class RepositoryBhaskar extends Repository<BhaskarItem> {
             String keywords = row.getString("keywords");
             String language = row.getString("language");
             String province = row.getString("province");
-            long publishTime = row.getInt("publishTime");
+            long publishTime = row.getLong("publishTime");
             String subcategory = row.getString("subcategory");
             String summary = row.getString("summary");
             String separator = "" + '\0';
             String[] tags = row.getJSONArray("tags").join(separator).split(separator);
             String title = row.getString("title");
-            BhaskarItem itemPojo = new BhaskarItem(id, "Bhaskar", coverPic, title, detailUrl, publishTime, summary, language, category, subcategory, keywords, description, tags, articleFrom, province, city);
+            BhaskarItem itemPojo = new BhaskarItem(id, coverPic, title, detailUrl, publishTime, summary, language, category, subcategory, keywords, description, tags, articleFrom, province, city);
             ret.add(itemPojo);
         }
         return ret;
