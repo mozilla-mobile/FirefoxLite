@@ -19,14 +19,7 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
         }
 
         if (NewFeatureNotice.getInstance(context).from40to114() && context.getResources().getInteger(R.integer.news_portal) > 0) {
-            final String feedURL = SupportUtils.getSumoURLForTopic(context, "firefox-lite-feed");
-            final String lifeFeed = context.getString(R.string.life_feed);
-            final String learnMore = context.getString(R.string.about_link_learn_more);
-            final String learnMoreLink = "<a href=\"" + feedURL + "\">" + learnMore + "</a>";
-            this.pages.add(new FirstrunPage(
-                    context.getString(R.string.first_run_page6_title),
-                    context.getString(R.string.first_run_page6_text, lifeFeed, learnMoreLink),
-                    R.drawable.onboarding_lifefeed));
+            FirstRunLibrary.buildLifeFeedFirstrun(context);
         }
 
 

@@ -7,7 +7,6 @@ package org.mozilla.focus.firstrun;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.text.HtmlCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.LinkMovementMethod;
@@ -47,7 +46,7 @@ public class FirstrunPagerAdapter extends PagerAdapter {
         titleView.setText(page.title);
 
         final TextView textView = (TextView) view.findViewById(R.id.text);
-        textView.setText(HtmlCompat.fromHtml(page.text, HtmlCompat.FROM_HTML_MODE_COMPACT));
+        textView.setText(page.text);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
