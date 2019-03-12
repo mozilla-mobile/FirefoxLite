@@ -34,12 +34,12 @@ public class NewsSourceManager {
 
     public void init(Context context) {
 
-        loadHasBeenTriggered = true;
         ThreadUtils.postToBackgroundThread(() -> {
+            loadHasBeenTriggered = true;
             final Settings settings = Settings.getInstance(context);
             final String source = settings.getNewsSource();
             if (TextUtils.isEmpty(source)) {
-                if (new Random().nextInt(2) % 2 == 0) {
+                if (new Random().nextInt(1) % 2 == 0) {
                     newsSource = NEWS_DB;
                 } else {
                     newsSource = NEWS_NP;
@@ -58,7 +58,7 @@ public class NewsSourceManager {
     }
 
     public String getNewsSource() {
-        awaitLoadingSearchEnginesLocked();
+        awaitLoadingNewsSourceLocked();
         return newsSource;
     }
 
@@ -67,10 +67,8 @@ public class NewsSourceManager {
         ContentRepository.reset();
     }
 
-    // Our (searchEngines == null) check is deemed to be an unsynchronised access. Similarly loadHasBeenTriggered
-    // also doesn't need synchronisation:
     @SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "Variable is not being accessed, it is merely being tested for existence")
-    public void awaitLoadingSearchEnginesLocked() {
+    private void awaitLoadingNewsSourceLocked() {
         if (!loadHasBeenTriggered) {
             throw new IllegalStateException("Attempting to retrieve search engines without a corresponding init()");
         }
