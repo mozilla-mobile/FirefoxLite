@@ -81,7 +81,7 @@ class NewsViewHolder<T : NewsItem>(itemView: View) : RecyclerView.ViewHolder(ite
         }
 
         time?.text = DateUtils.getRelativeTimeSpanString(
-                item.time, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS
+                item.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
         )
 
         item.imageUrl?.let {
