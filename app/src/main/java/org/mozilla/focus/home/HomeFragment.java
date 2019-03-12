@@ -619,12 +619,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         final Repository repository = ContentRepository.getInstance(getContext());
         repository.setOnDataChangedListener(contentViewModel);
         contentViewModel.setRepository(repository);
-        contentViewModel.getItems().observe(activity,
+        contentViewModel.getItems().observe(getViewLifecycleOwner(),
             items -> {
                 contentPanel.setData(items);
                 isLoading = false;
             });
-
+        // creating a repository will also create a new subscription.
+        // we deliberately create a new subscription again to load data aggressively.
         contentViewModel.loadMore();
     }
 
