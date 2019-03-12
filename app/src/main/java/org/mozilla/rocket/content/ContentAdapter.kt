@@ -46,7 +46,7 @@ class ContentAdapter<T : NewsItem>(private val listener: ContentPanelListener) :
 
     interface ContentPanelListener {
         fun onItemClicked(url: String)
-        fun onStatus(status: Int)
+        fun onStatus(items: MutableList<NewsItem>?)
     }
 }
 

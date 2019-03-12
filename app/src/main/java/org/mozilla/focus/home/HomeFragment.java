@@ -75,6 +75,7 @@ import org.mozilla.focus.utils.*;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
+import org.mozilla.lite.partner.NewsItem;
 import org.mozilla.lite.partner.Repository;
 import org.mozilla.rocket.content.*;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
@@ -566,6 +567,20 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         playContentPortalAnimation();
         if (contentPanel != null) {
             contentPanel.onResume();
+            checkNewsRepositoryReset();
+        }
+    }
+
+    private void checkNewsRepositoryReset() {
+        // News Repository is reset and empty when the user changes the news source.
+        // We create a new Repository and inject to contentViewModel here.
+        // TODO: similar code happens in setupContentViewModel(), need to refine them
+        if (ContentRepository.isEmpty() && contentViewModel != null && contentPanel != null) {
+            final Repository<? extends NewsItem> repository = ContentRepository.getInstance(getContext());
+            repository.setOnDataChangedListener(contentViewModel);
+            contentViewModel.setRepository(repository);
+            contentViewModel.getItems().setValue(null);
+            contentViewModel.loadMore();
         }
     }
 
