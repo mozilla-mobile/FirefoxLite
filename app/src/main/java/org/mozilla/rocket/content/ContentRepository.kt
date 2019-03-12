@@ -28,8 +28,12 @@ class ContentRepository {
 
         @JvmStatic
         fun reset() {
+            INSTANCE?.reset()
             INSTANCE = null
         }
+
+        @JvmStatic
+        fun isEmpty() = INSTANCE == null
 
         private fun buildRepository(context: Context): Repository<out NewsItem> {
             return if (NewsSourceManager.getInstance().newsSource == NEWS_DB) {

@@ -23,7 +23,7 @@ public abstract class Repository<T extends NewsItem> {
     private Context context;
     private String userAgent;
     private int socketTag;
-    private OnDataChangedListener<T> onDataChangedListener;
+    @Nullable private OnDataChangedListener<T> onDataChangedListener;
     private OnCacheInvalidateListener onCacheInvalidateListener;
     private List<T> itemPojoList;
     private boolean cacheIsDirty = false;
@@ -56,8 +56,14 @@ public abstract class Repository<T extends NewsItem> {
         nextSubscription();
     }
 
-    public void setOnDataChangedListener(OnDataChangedListener listener) {
+    public void setOnDataChangedListener(@Nullable OnDataChangedListener listener) {
         this.onDataChangedListener = listener;
+    }
+
+    public void reset() {
+        itemPojoList = new ArrayList<>();
+        cacheIsDirty = true;
+        this.onDataChangedListener = null;
     }
 
     private void nextSubscription() {
@@ -137,7 +143,9 @@ public abstract class Repository<T extends NewsItem> {
                     // last fetched.
                     // TODO: use network failure callback instead
                     if (integerStringPair.first == ResponseData.SOURCE_NETWORK && "".equals(integerStringPair.second)) {
-                        onDataChangedListener.onDataChanged(cloneData());
+                        if (onDataChangedListener != null) {
+                            onDataChangedListener.onDataChanged(cloneData());
+                        }
                     }
                 }
                 // Removes the subscription and mark as done once network returns, no matter
@@ -156,6 +164,9 @@ public abstract class Repository<T extends NewsItem> {
     private void correctData(List<T> oldItems, List<T> newItems) {
         itemPojoList.removeAll(oldItems);
         addData(false, newItems);
+        if (this.onDataChangedListener != null) {
+            this.onDataChangedListener.onDataChanged(itemPojoList);
+        }
     }
 
     private void addData(int page, List<T> newItems) {
@@ -170,7 +181,9 @@ public abstract class Repository<T extends NewsItem> {
             newItems.removeAll(itemPojoList);
         }
         itemPojoList.addAll(newItems);
-        this.onDataChangedListener.onDataChanged(cloneData());
+        if (this.onDataChangedListener != null) {
+            this.onDataChangedListener.onDataChanged(cloneData());
+        }
     }
 
     private String getSubscriptionKey(int page) {

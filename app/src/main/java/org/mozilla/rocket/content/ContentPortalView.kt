@@ -67,17 +67,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         emptyView = findViewById(R.id.empty_view_container)
         progressCenter = findViewById(R.id.news_progress_center)
         adapter = ContentAdapter(this)
-        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
 
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (itemCount == 0) {
-                    onStatus(VIEW_TYPE_EMPTY)
-                } else {
-                    onStatus(VIEW_TYPE_NON_EMPTY)
-                }
-            }
-        })
         recyclerView?.adapter = adapter
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView?.layoutManager = linearLayoutManager
@@ -136,21 +126,20 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         }
 
         HomeFragmentViewState.reset()
+        AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_out)?.also {
+            it.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                }
 
-        val anim = AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_out)
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-            }
+                override fun onAnimationRepeat(animation: Animation?) {
+                }
 
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                visibility = GONE
-            }
-        })
-
-        this.startAnimation(anim)
+                override fun onAnimationEnd(animation: Animation?) {
+                    visibility = GONE
+                }
+            })
+            this.startAnimation(it)
+        }
         return true
     }
 
@@ -173,21 +162,24 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         })
     }
 
-    override fun onStatus(status: Int) {
-        when (status) {
-            VIEW_TYPE_EMPTY -> {
+    override fun onStatus(items: MutableList<NewsItem>?) {
+        when {
+            items == null -> {
+                recyclerView?.visibility = View.GONE
+                emptyView?.visibility = View.GONE
+                progressCenter?.visibility = View.VISIBLE
+                bottomSheetBehavior?.skipCollapsed = true
+            }
+            items.size == 0 -> {
                 recyclerView?.visibility = View.GONE
                 emptyView?.visibility = View.VISIBLE
                 progressCenter?.visibility = View.GONE
+                bottomSheetBehavior?.skipCollapsed = true
             }
-            VIEW_TYPE_NON_EMPTY -> {
+            else -> {
                 recyclerView?.visibility = View.VISIBLE
                 emptyView?.visibility = View.GONE
                 progressCenter?.visibility = View.GONE
-            }
-            else -> {
-                recyclerView?.visibility = View.GONE
-                emptyView?.visibility = View.GONE
             }
         }
     }
@@ -202,7 +194,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     }
 
     fun setData(items: MutableList<NewsItem>?) {
-        bottomSheetBehavior?.skipCollapsed = items == null || items.size == 0
+
+        onStatus(items)
+
         adapter?.submitList(items)
         HomeFragmentViewState.lastScrollPos?.let {
             val size = items?.size
@@ -224,7 +218,5 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     companion object {
         private const val NEWS_THRESHOLD = 10
-        const val VIEW_TYPE_EMPTY = 0
-        const val VIEW_TYPE_NON_EMPTY = 1
     }
 }
