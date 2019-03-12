@@ -28,12 +28,12 @@ class ContentViewModel : ViewModel(), Repository.OnDataChangedListener<NewsItem>
             newList.addAll(it)
         }
 
-        // return the new list , so diff utils will think this is something to diff
+        // return the new list, so diff utils will think this is something to diff
         items.value = newList
     }
 
     fun loadMore() {
         repository?.loadMore()
-        // now wait for  OnDataChangedListener.onDataChanged to return the result
+        // now wait for OnDataChangedListener.onDataChanged to return the result
     }
 }

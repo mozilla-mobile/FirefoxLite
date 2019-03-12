@@ -18,7 +18,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ProgressBar
 import org.mozilla.focus.R
-import org.mozilla.focus.fragment.PanelFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
 
@@ -79,9 +78,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 if (itemCount == 0) {
-                    onStatus(PanelFragment.VIEW_TYPE_EMPTY)
+                    onStatus(VIEW_TYPE_EMPTY)
                 } else {
-                    onStatus(PanelFragment.VIEW_TYPE_NON_EMPTY)
+                    onStatus(VIEW_TYPE_NON_EMPTY)
                 }
             }
         })
@@ -147,9 +146,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                // need to set it to expanded, otherwise next time will be closed.
-//                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-//                bottomSheetBehavior?.peekHeight = 0
                 visibility = GONE
             }
         })
@@ -179,17 +175,15 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     override fun onStatus(status: Int) {
         when (status) {
-            PanelFragment.VIEW_TYPE_EMPTY -> {
+            VIEW_TYPE_EMPTY -> {
                 recyclerView?.visibility = View.GONE
                 emptyView?.visibility = View.VISIBLE
                 progressCenter?.visibility = View.GONE
             }
-            PanelFragment.VIEW_TYPE_NON_EMPTY -> {
+            VIEW_TYPE_NON_EMPTY -> {
                 recyclerView?.visibility = View.VISIBLE
                 emptyView?.visibility = View.GONE
                 progressCenter?.visibility = View.GONE
-            }
-            PanelFragment.ON_OPENING -> {
             }
             else -> {
                 recyclerView?.visibility = View.GONE
@@ -224,6 +218,8 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     companion object {
         private const val NEWS_THRESHOLD = 10
+        const val VIEW_TYPE_EMPTY = 0
+        const val VIEW_TYPE_NON_EMPTY = 1
     }
 }
 

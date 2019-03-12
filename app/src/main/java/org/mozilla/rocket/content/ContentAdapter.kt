@@ -7,13 +7,13 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
-import org.mozilla.focus.fragment.PanelFragmentStatusListener
 import org.mozilla.lite.partner.NewsItem
 
 class ContentAdapter<T : NewsItem>(private val listener: ContentPanelListener) :
@@ -44,8 +44,9 @@ class ContentAdapter<T : NewsItem>(private val listener: ContentPanelListener) :
         })
     }
 
-    interface ContentPanelListener : PanelFragmentStatusListener {
+    interface ContentPanelListener {
         fun onItemClicked(url: String)
+        fun onStatus(status: Int)
     }
 }
 
@@ -56,22 +57,38 @@ class NewsViewHolder<T : NewsItem>(itemView: View) : RecyclerView.ViewHolder(ite
                 RequestOptions().apply { transforms(CenterCrop(), RoundedCorners(16)) }
     }
 
+    var view: View? = null
+    var headline: TextView? = null
+    var source: TextView? = null
+    var time: TextView? = null
+    var image: ImageView? = null
+
+    init {
+        view = itemView.findViewById(R.id.news_item)
+        headline = itemView.findViewById(R.id.news_item_headline)
+        source = itemView.findViewById(R.id.news_item_source)
+        time = itemView.findViewById(R.id.news_item_time)
+        image = itemView.findViewById(R.id.news_item_image)
+    }
+
     fun bind(item: NewsItem, listener: View.OnClickListener) {
-        itemView.findViewById<View>(R.id.news_item).setOnClickListener(listener)
-        itemView.findViewById<TextView>(R.id.news_item_headline).text = item.title
+        view?.setOnClickListener(listener)
+
+        headline?.text = item.title
+
         item.partner.let {
-                itemView.findViewById<TextView>(R.id.news_item_source).text =
-                it // don't show for now
+            source?.text = it
         }
 
-        itemView.findViewById<TextView>(R.id.news_item_time).text =
-                DateUtils.getRelativeTimeSpanString(
-                        item.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
-                )
+        time?.text = DateUtils.getRelativeTimeSpanString(
+                item.time, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS
+        )
 
         item.imageUrl?.let {
-            Glide.with(itemView.context).load(it).apply(requestOptions)
-                    .into(itemView.findViewById(R.id.news_item_image))
+            if (image != null) {
+                    Glide.with(itemView.context).load(it).apply(requestOptions)
+                    .into(image)
+            }
         }
     }
 }

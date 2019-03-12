@@ -113,6 +113,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
+
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
         ScreenNavigator.HomeScreen, ContentPortalView.LoadMoreListener {
     private static final String TAG = "HomeFragment";
@@ -125,6 +127,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
     public static final String BANNER_MANIFEST_DEFAULT = "";
+    private static final long LOADMORE_THRESHOLD = 3000L;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -163,7 +166,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         }
     };
-    ;
 
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
@@ -228,8 +230,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (!isLoading) {
             contentViewModel.loadMore();
             isLoading = true;
-            // FIXME: I'm not going to do this. We need the api to notify us when there's a network error.
-            ThreadUtils.postToMainThreadDelayed(() -> isLoading = false, 000);
+            ThreadUtils.postToMainThreadDelayed(() -> isLoading = false, LOADMORE_THRESHOLD);
         }
     }
 
@@ -1063,6 +1064,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         public void onSwipeUp() {
             if (contentPanel != null) {
                 contentPanel.show(true);
+                final String source = Settings.getInstance(getContext()).getNewsSource();
+                NewsSourceManager.getInstance().setNewsSource(source);
+                // the user had seen the news. Treat it as an user selection so no on can change it
+                Settings.getInstance(getContext()).setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER);
             } else {
                 btnMenu.performClick();
             }
