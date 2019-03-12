@@ -4,19 +4,19 @@ import android.support.annotation.DrawableRes;
 
 class FirstrunPage {
     public final String title;
-    public final String text;
+    public final CharSequence text;
     public final String lottieString;
     public final @DrawableRes
     int imageResource;
 
-    FirstrunPage(String title, String text, String lottieString) {
+    FirstrunPage(String title, CharSequence text, String lottieString) {
         this.title = title;
         this.text = text;
         this.lottieString = lottieString;
         this.imageResource = -1;
     }
 
-    FirstrunPage(String title, String text, int imageResource) {
+    FirstrunPage(String title, CharSequence text, int imageResource) {
         this.title = title;
         this.text = text;
         this.lottieString = null;
