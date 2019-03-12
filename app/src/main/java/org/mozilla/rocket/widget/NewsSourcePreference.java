@@ -17,6 +17,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.StorageUtils;
+import org.mozilla.rocket.content.ContentRepository;
 import org.mozilla.rocket.content.NewsSourceManager;
 import org.mozilla.threadutils.ThreadUtils;
 
