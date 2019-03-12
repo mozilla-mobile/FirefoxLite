@@ -1191,6 +1191,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (contentPanel != null) {
             HomeFragmentViewState.lastOpenNews();
             contentPanel.show(true);
+            TelemetryWrapper.openLifeFeedNews();
         }
     }
 }

@@ -94,7 +94,7 @@ public class NewFeatureNotice {
                 .apply();
     }
 
-    private int getLastShownFeatureVersion() {
+    public int getLastShownFeatureVersion() {
         return preferences.getInt(PREF_KEY_INT_FEATURE_UPGRADE_VERSION, 0);
     }
 }

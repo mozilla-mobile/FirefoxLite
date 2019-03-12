@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.lite.partner.NewsItem
 
 class ContentAdapter<T : NewsItem>(private val listener: ContentPanelListener) :
@@ -40,7 +41,13 @@ class ContentAdapter<T : NewsItem>(private val listener: ContentPanelListener) :
     override fun onBindViewHolder(holder: NewsViewHolder<T>, position: Int) {
         val item = getItem(position) ?: return
         holder.bind(item, View.OnClickListener {
-            listener.onItemClicked(item.newsUrl)
+                TelemetryWrapper.clickOnNewsItem(
+                        pos = position.toString(),
+                        feed = item.source,
+                        source = item.partner,
+                        category = item.category,
+                        subCategory = item.subcategory)
+                listener.onItemClicked(item.newsUrl)
         })
     }
 

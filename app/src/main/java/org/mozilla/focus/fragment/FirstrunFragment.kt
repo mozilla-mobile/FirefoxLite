@@ -122,11 +122,13 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
             R.id.finish -> {
                 promoteSetDefaultBrowserIfPreload()
-                finishFirstrun()
 
                 if (isTelemetryValid) {
-                    TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp)
+                    val mode = NewFeatureNotice.getInstance(context).lastShownFeatureVersion
+                    TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp, mode)
                 }
+                // reset the pref
+                finishFirstrun()
             }
 
             else -> throw IllegalArgumentException("Unknown view")

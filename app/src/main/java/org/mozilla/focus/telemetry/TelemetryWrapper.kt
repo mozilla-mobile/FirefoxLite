@@ -13,6 +13,7 @@ package org.mozilla.focus.telemetry
 import android.content.Context
 import android.os.StrictMode
 import android.preference.PreferenceManager
+import android.util.Log
 import android.webkit.PermissionRequest
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.Inject
@@ -152,6 +153,7 @@ object TelemetryWrapper {
         internal const val LINK = "link"
         internal const val FINISH = "finish"
         internal const val INFO = "info"
+        internal const val LIFEFEED_NEWS = "lifefeed_news"
 
         internal const val ENTER = "enter"
         internal const val EXIT = "exit"
@@ -209,6 +211,10 @@ object TelemetryWrapper {
         const val ENGINE = "engine"
         const val DELAY = "delay"
         const val MESSAGE = "message"
+        const val POSITION = "position"
+        const val FEED = "feed"
+        const val SUB_CATEGORY = "subcategory"
+        const val MODE = "mode"
     }
 
     object Extra_Value {
@@ -279,6 +285,7 @@ object TelemetryWrapper {
                             resources.getString(R.string.pref_key_default_browser),
                             resources.getString(R.string.pref_key_storage_save_downloads_to),
                             resources.getString(R.string.pref_key_webview_version),
+                            resources.getString(R.string.pref_s_news),
                             resources.getString(R.string.pref_key_locale))
                     .setSettingsProvider(CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
@@ -332,9 +339,10 @@ object TelemetryWrapper {
             value = Value.FINISH,
             extras = [TelemetryExtra(name = Extra.ON, value = "time spent on First Run")])
     @JvmStatic
-    fun finishFirstRunEvent(duration: Long) {
+    fun finishFirstRunEvent(duration: Long, mode: Int) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
                 .extra(Extra.ON, java.lang.Long.toString(duration))
+                .extra(Extra.MODE, Integer.toString(mode))
                 .queue()
     }
 
@@ -1270,6 +1278,40 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Open lifefeed news",
+            category = Category.ACTION,
+            method = Method.OPEN,
+            `object` = Object.PANEL,
+            value = Value.LIFEFEED_NEWS,
+            extras = [])
+    @JvmStatic
+    fun openLifeFeedNews() {
+        EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.LIFEFEED_NEWS)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click on news item",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.PANEL,
+            value = Value.LIFEFEED_NEWS,
+            extras = [TelemetryExtra(name = Extra.POSITION, value = "1,2,3..."),
+                    TelemetryExtra(name = Extra.FEED, value = "Newspoint,DainikBhaskar.com"),
+                    TelemetryExtra(name = Extra.SOURCE, value = "India TV,Business World,HW News English...etc"),
+                    TelemetryExtra(name = Extra.CATEGORY, value = "Uttar Pradesh,National,Tech Knowledge....etc"),
+                    TelemetryExtra(name = Extra.SUB_CATEGORY, value = "top-news,entertainment,Lucknow...etc")])
+    fun clickOnNewsItem(pos: String, feed: String, source: String, category: String, subCategory: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.LIFEFEED_NEWS)
+                .extra(Extra.POSITION, pos)
+                .extra(Extra.FEED, feed)
+                .extra(Extra.SOURCE, source)
+                .extra(Extra.CATEGORY, category)
+                .extra(Extra.SUB_CATEGORY, subCategory)
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Show File ContextMenu",
             category = Category.ACTION,
             method = Method.SHOW,
@@ -1963,11 +2005,14 @@ object TelemetryWrapper {
 
         init {
             lazyInit()
+            Log.d(TAG, "EVENT:$category/$method/$`object`/$value")
+
             telemetryEvent = TelemetryEvent.create(category, method, `object`, value)
             firebaseEvent = FirebaseEvent.create(category, method, `object`, value)
         }
 
         fun extra(key: String, value: String): EventBuilder {
+            Log.d(TAG, "EXTRA:$key/$value")
             telemetryEvent.extra(key, value)
             firebaseEvent.param(key, value)
             return this
@@ -2016,6 +2061,8 @@ object TelemetryWrapper {
 
         companion object {
 
+            const val TAG = "TelemetryWrapper"
+
             fun lazyInit() {
 
                 if (FirebaseEvent.isInitialized()) {
@@ -2024,7 +2071,7 @@ object TelemetryWrapper {
                 val context = TelemetryHolder.get().configuration.context ?: return
                 val prefKeyWhitelist = HashMap<String, String>()
                 prefKeyWhitelist[context.getString(R.string.pref_key_search_engine)] = "search_engine"
-                prefKeyWhitelist[context.getString(R.string.pref_s_news)] = "news"
+                prefKeyWhitelist[context.getString(R.string.pref_s_news)] = "pref_s_news"
 
                 prefKeyWhitelist[context.getString(R.string.pref_key_privacy_block_ads)] = "privacy_ads"
                 prefKeyWhitelist[context.getString(R.string.pref_key_privacy_block_analytics)] = "privacy_analytics"
