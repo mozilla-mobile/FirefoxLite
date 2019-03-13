@@ -22,7 +22,7 @@ import org.mozilla.lite.partner.NewsItem
 
 class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
 
-    var loadMoreListener: LoadMoreListener? = null
+    var contentPortalListener: ContentPortalListener? = null
 
     private var recyclerView: RecyclerView? = null
     private var emptyView: View? = null
@@ -31,8 +31,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private var bottomSheet: View? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
-    interface LoadMoreListener {
+    interface ContentPortalListener {
         fun loadMore()
+        fun onShow()
     }
 
     constructor(context: Context) : super(context)
@@ -61,7 +62,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupView() {
         this.setOnClickListener { hide() }
         findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
-            loadMoreListener?.loadMore()
+            contentPortalListener?.loadMore()
         }
         recyclerView = findViewById(R.id.recyclerview)
         emptyView = findViewById(R.id.empty_view_container)
@@ -79,7 +80,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
                     val visibleItemCount = it.childCount
                     val lastVisibleItem = it.findLastVisibleItemPosition()
                     if (visibleItemCount + lastVisibleItem + NEWS_THRESHOLD >= totalItemCount) {
-                            loadMoreListener?.loadMore()
+                            contentPortalListener?.loadMore()
                     }
                 }
             })
@@ -98,6 +99,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         }
 
         HomeFragmentViewState.lastOpenNews()
+        contentPortalListener?.onShow()
 
         if (!animated) {
             showInternal()
@@ -126,6 +128,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         }
 
         HomeFragmentViewState.reset()
+        ContentRepository.reset()
         AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_out)?.also {
             it.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
