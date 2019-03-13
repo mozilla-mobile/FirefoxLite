@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -36,7 +37,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private static int debugClicks = 0;
     private static final int DEBUG_CLICKS_THRESHOLD = 19;
     private final static String PREF_KEY_ROOT = "root_preferences";
+    private boolean hasContentPortal = false;
 
+    @Override
+    public void onAttach (Context context) {
+        super.onAttach(context);
+        hasContentPortal = Settings.isContentPortalEnabled(context);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +53,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         final PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
         if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild() && !AppConstants.isNightlyBuild()) {
             Preference category = findPreference(getString(R.string.pref_key_category_development));
+            rootPreferences.removePreference(category);
+        }
+        if (!hasContentPortal) {
+            Preference category = findPreference(getString(R.string.pref_s_news));
             rootPreferences.removePreference(category);
         }
 
