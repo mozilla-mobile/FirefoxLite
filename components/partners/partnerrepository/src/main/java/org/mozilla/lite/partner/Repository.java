@@ -14,7 +14,6 @@ import org.mozilla.cachedrequestloader.ResponseData;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class Repository<T extends NewsItem> {
     private PageSubscription currentPageSubscription;
@@ -29,8 +28,9 @@ public abstract class Repository<T extends NewsItem> {
     private List<T> itemPojoList;
     private boolean cacheIsDirty = false;
     private Parser<T> parser;
+    private boolean dedup;
 
-    public Repository(Context context, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionKeyName, int firstPage, Parser<T> parser) {
+    public Repository(Context context, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionKeyName, int firstPage, Parser<T> parser, boolean dedup) {
         this.context = context;
         this.onDataChangedListener = onDataChangedListener;
         this.onCacheInvalidateListener = onCacheInvalidateListener;
@@ -40,6 +40,7 @@ public abstract class Repository<T extends NewsItem> {
         this.userAgent = userAgent;
         this.socketTag = socketTag;
         this.parser = parser;
+        this.dedup = dedup;
         itemPojoList = new ArrayList<>();
         nextSubscription();
     }
@@ -136,7 +137,7 @@ public abstract class Repository<T extends NewsItem> {
                     // last fetched.
                     // TODO: use network failure callback instead
                     if (integerStringPair.first == ResponseData.SOURCE_NETWORK && "".equals(integerStringPair.second)) {
-                        onDataChangedListener.onDataChanged(itemPojoList);
+                        onDataChangedListener.onDataChanged(Collections.unmodifiableList(itemPojoList));
                     }
                 }
                 // Removes the subscription and mark as done once network returns, no matter
@@ -150,13 +151,19 @@ public abstract class Repository<T extends NewsItem> {
 
     private void correctData(List<T> oldItems, List<T> newItems) {
         itemPojoList.removeAll(oldItems);
-        itemPojoList.addAll(newItems);
-        this.onDataChangedListener.onDataChanged(itemPojoList);
+        addData(false, newItems);
     }
 
     private void addData(int page, List<T> newItems) {
-        if (page == firstPage) {
+        addData(page == firstPage, newItems);
+    }
+
+    private void addData(boolean reset, List<T> newItems) {
+        if (reset) {
             itemPojoList.clear();
+        }
+        if (dedup) {
+            newItems.removeAll(itemPojoList);
         }
         itemPojoList.addAll(newItems);
         this.onDataChangedListener.onDataChanged(Collections.unmodifiableList(itemPojoList));

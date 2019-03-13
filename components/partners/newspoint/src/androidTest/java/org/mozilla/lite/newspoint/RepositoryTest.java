@@ -39,7 +39,7 @@ public class RepositoryTest {
             Repository repository = new Repository<NewsPointItem>(InstrumentationRegistry.getContext(), null, SOCKET_TAG, itemPojoList -> {
                 Assert.assertEquals(LOAD_SIZE, itemPojoList.size());
                 countDownLatch.countDown();
-            }, null, "FAKE", RepositoryNewsPoint.FIRST_PAGE, RepositoryNewsPoint.PARSER) {
+            }, null, "FAKE", RepositoryNewsPoint.FIRST_PAGE, RepositoryNewsPoint.PARSER, false) {
                 @Override
                 protected String getSubscriptionUrl(int pageNumber) {
                     return webServer.url(FAKE_PATH).toString();

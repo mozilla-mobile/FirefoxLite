@@ -4,7 +4,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -44,7 +43,7 @@ public class RepositoryTest {
             Repository repository = new Repository<BhaskarItem>(InstrumentationRegistry.getContext(), null, SOCKET_TAG, itemPojoList -> {
                 Assert.assertEquals(LOAD_SIZE, itemPojoList.size());
                 countDownLatch.countDown();
-            }, null, "FAKE", RepositoryBhaskar.FIRST_PAGE, RepositoryBhaskar.PARSER) {
+            }, null, "FAKE", RepositoryBhaskar.FIRST_PAGE, RepositoryBhaskar.PARSER, false) {
                 @Override
                 protected String getSubscriptionUrl(int pageNumber) {
                     return webServer.url(FAKE_PATH).toString();

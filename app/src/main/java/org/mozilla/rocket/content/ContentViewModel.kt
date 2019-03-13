@@ -15,21 +15,9 @@ class ContentViewModel : ViewModel(), Repository.OnDataChangedListener<NewsItem>
         }
     val items = MutableLiveData<List<NewsItem>>()
 
-    override fun onDataChanged(NewsItemList: MutableList<NewsItem>?) {
-        val newList = ArrayList<NewsItem>()
-        // exclude existing items from NewsItemList
-        items.value?.let {
-            NewsItemList?.removeAll(it)
-            // there are new items, add the old item to new list first
-            newList.addAll(it)
-        }
-        // add the new items in the new list
-        NewsItemList?.let {
-            newList.addAll(it)
-        }
-
+    override fun onDataChanged(newsItemList: List<NewsItem>?) {
         // return the new list, so diff utils will think this is something to diff
-        items.value = newList
+        items.value = newsItemList
     }
 
     fun loadMore() {
