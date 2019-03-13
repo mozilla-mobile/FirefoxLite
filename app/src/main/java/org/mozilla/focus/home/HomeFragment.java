@@ -38,7 +38,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,7 +110,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
-        ScreenNavigator.HomeScreen, ContentPortalView.LoadMoreListener {
+        ScreenNavigator.HomeScreen, ContentPortalView.ContentPortalListener {
     private static final String TAG = "HomeFragment";
 
     public static final String TOPSITES_PREF = "topsites_pref";
@@ -234,6 +233,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             isLoading = true;
             ThreadUtils.postToMainThreadDelayed(() -> isLoading = false, LOADMORE_THRESHOLD);
         }
+    }
+
+    @Override
+    public void onShow() {
+        checkNewsRepositoryReset();
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -425,7 +429,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.arrow2 = view.findViewById(R.id.arrow2);
         this.contentPanel = view.findViewById(R.id.content_panel);
         if (this.contentPanel != null) {
-            this.contentPanel.setLoadMoreListener(this);
+            this.contentPanel.setContentPortalListener(this);
         }
 
         final View arrowContainer = view.findViewById(R.id.arrow_container);
@@ -567,7 +571,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         playContentPortalAnimation();
         if (contentPanel != null) {
             contentPanel.onResume();
-            checkNewsRepositoryReset();
         }
     }
 
