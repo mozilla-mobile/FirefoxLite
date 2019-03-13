@@ -43,7 +43,7 @@
         android:lines="2"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:textColor="@color/colorDownloadText"
+        android:textColor="@color/paletteDarkGreyB100"
         tools:text="AAaaaA\nbbbbbbbb"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/news_item_image"
