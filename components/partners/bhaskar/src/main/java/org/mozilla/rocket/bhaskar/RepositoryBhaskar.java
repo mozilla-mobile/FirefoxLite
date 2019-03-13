@@ -47,7 +47,7 @@ public class RepositoryBhaskar extends Repository<BhaskarItem> {
     };
 
     public RepositoryBhaskar(Context context) {
-        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, FIRST_PAGE, PARSER);
+        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, FIRST_PAGE, PARSER, true);
     }
 
     @Override

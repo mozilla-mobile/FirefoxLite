@@ -82,7 +82,7 @@ public class RepositoryNewsPoint extends Repository<NewsPointItem> {
     }
 
     public RepositoryNewsPoint(Context context) {
-        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, FIRST_PAGE, PARSER);
+        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, FIRST_PAGE, PARSER, true);
     }
 
     @Override
