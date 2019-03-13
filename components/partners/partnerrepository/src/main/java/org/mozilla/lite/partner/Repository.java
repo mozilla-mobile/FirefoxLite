@@ -8,7 +8,7 @@ import android.support.v4.util.Pair;
 import android.text.TextUtils;
 
 import org.json.JSONException;
-import org.mozilla.cachedrequestloader.CachedRequestLoader;
+import org.mozilla.cachedrequestloader.BackgroundCachedRequestLoader;
 import org.mozilla.cachedrequestloader.ResponseData;
 
 import java.util.ArrayList;
@@ -80,8 +80,8 @@ public abstract class Repository<T extends NewsItem> {
         currentPageSubscription = ret;
     }
 
-    private CachedRequestLoader createLoader(int page) {
-        return new CachedRequestLoader(context, getSubscriptionKey(page), getSubscriptionUrl(page), userAgent, socketTag, cacheIsDirty);
+    private BackgroundCachedRequestLoader createLoader(int page) {
+        return new BackgroundCachedRequestLoader(context, getSubscriptionKey(page), getSubscriptionUrl(page), userAgent, socketTag, cacheIsDirty);
     }
 
     private Observer<Pair<Integer, String>> createObserver(LiveData<Pair<Integer, String>> liveData, int page) {
@@ -202,7 +202,7 @@ public abstract class Repository<T extends NewsItem> {
 
     private static class PageSubscription {
         private int page;
-        private CachedRequestLoader cachedRequestLoader;
+        private BackgroundCachedRequestLoader cachedRequestLoader;
         private Observer<Pair<Integer, String>> observer;
     }
 
