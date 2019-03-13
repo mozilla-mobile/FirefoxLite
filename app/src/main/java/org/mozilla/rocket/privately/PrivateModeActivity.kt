@@ -13,7 +13,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.annotation.CheckResult
 import android.support.v4.app.Fragment
-import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
 import org.mozilla.focus.BuildConfig
@@ -86,12 +85,12 @@ class PrivateModeActivity : BaseActivity(),
         val uiActionFilter = IntentFilter()
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
-        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
+        registerReceiver(uiMessageReceiver, uiActionFilter)
     }
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
+        unregisterReceiver(uiMessageReceiver)
     }
 
     override fun onDestroy() {

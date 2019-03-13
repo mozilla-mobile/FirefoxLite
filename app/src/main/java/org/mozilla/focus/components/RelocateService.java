@@ -283,7 +283,6 @@ public class RelocateService extends IntentService {
         broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION);
         broadcastIntent.putExtra(Constants.EXTRA_ROW_ID, rowId);
 
-        LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
-
+        context.sendBroadcast(broadcastIntent);
     }
 }

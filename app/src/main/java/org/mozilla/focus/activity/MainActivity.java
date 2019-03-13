@@ -276,8 +276,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
         final IntentFilter uiActionFilter = new IntentFilter(Constants.ACTION_NOTIFY_UI);
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
-        uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter);
+
+        final IntentFilter relocateFilter = new IntentFilter(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
+        relocateFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
+        registerReceiver(uiMessageReceiver, relocateFilter);
+
         getContentResolver().registerContentObserver(DownloadContract.Download.CONTENT_URI, true, downloadObserver);
         downloadIndicatorViewModel.updateIndicator();
     }
@@ -286,6 +290,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
+        unregisterReceiver(uiMessageReceiver);
         getContentResolver().unregisterContentObserver(downloadObserver);
 
         TelemetryWrapper.stopSession();
