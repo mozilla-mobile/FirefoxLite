@@ -6,7 +6,6 @@
 package org.mozilla.rocket.content
 
 import android.content.Context
-import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -221,13 +220,4 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         const val VIEW_TYPE_EMPTY = 0
         const val VIEW_TYPE_NON_EMPTY = 1
     }
-}
-
-private const val PREF_KEY_STRING_NEWS = "pref_key_string_news"
-
-fun isEnable(context: Context?): Boolean {
-    return context?.let {
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(PREF_KEY_STRING_NEWS, false)
-    } ?: false
 }

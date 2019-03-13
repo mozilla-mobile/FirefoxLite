@@ -12,6 +12,7 @@ import org.mozilla.cachedrequestloader.CachedRequestLoader;
 import org.mozilla.cachedrequestloader.ResponseData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -158,7 +159,7 @@ public abstract class Repository<T extends NewsItem> {
             itemPojoList.clear();
         }
         itemPojoList.addAll(newItems);
-        this.onDataChangedListener.onDataChanged(itemPojoList);
+        this.onDataChangedListener.onDataChanged(Collections.unmodifiableList(itemPojoList));
     }
 
     private String getSubscriptionKey(int page) {

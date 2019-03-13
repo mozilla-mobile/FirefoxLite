@@ -34,7 +34,7 @@ public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
                 context.getString(R.string.first_run_page3_text),
                 "first_run_img_3.json"));
 
-        if (context.getResources().getInteger(R.integer.news_portal) > 0) {
+        if (Settings.isContentPortalEnabled(context)) {
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
     }

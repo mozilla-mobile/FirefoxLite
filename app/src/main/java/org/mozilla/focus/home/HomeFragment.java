@@ -157,6 +157,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private String[] configArray;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
+    private boolean hasContentPortal = false;
+
+    @Override
+    public void onAttach (Context context) {
+        super.onAttach(context);
+        hasContentPortal = Settings.isContentPortalEnabled(context);
+    }
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
 
@@ -402,7 +409,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                              @Nullable Bundle savedInstanceState) {
 
         final View view;
-        if (ContentPortalViewKt.isEnable(getContext())) {
+        if (hasContentPortal) {
             view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
         } else {
             view = inflater.inflate(R.layout.fragment_homescreen, container, false);

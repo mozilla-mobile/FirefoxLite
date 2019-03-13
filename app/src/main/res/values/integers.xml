@@ -3,5 +3,4 @@
     <integer name="design_snackbar_text_max_lines" tools:override="true">5</integer>
     <integer name="tab_transition_time">250</integer>
     <integer name="tab_tray_transition_time">100</integer>
-    <integer name="news_portal">0</integer>
 </resources>
