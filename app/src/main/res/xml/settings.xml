@@ -86,8 +86,8 @@
             android:title="Private Mode" />
         <SwitchPreference
             android:defaultValue="false"
-            android:key="pref_key_string_news"
-            android:title="News" />
+            android:key="pref_key_content_portal"
+            android:title="Content Portal" />
     </PreferenceCategory>
 
 </PreferenceScreen>

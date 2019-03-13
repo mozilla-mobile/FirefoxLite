@@ -28,6 +28,8 @@ public class Settings {
     public static final int STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE = 0x9527; // beautiful random number
     public static final int STORAGE_MSG_TYPE_REMOVABLE_AVAILABLE = 0x5987;
 
+    private static final String PREF_KEY_CONTENT_PORTAL = "pref_key_content_portal";
+
     private static Settings instance;
     private static final boolean BLOCK_IMAGE_DEFAULT = false;
     private static final boolean TURBO_MODE_DEFAULT = true;
@@ -157,6 +159,11 @@ public class Settings {
         preferences.edit()
                 .putString(getPreferenceKey(R.string.pref_s_news), source)
                 .apply();
+    }
+
+    public static boolean isContentPortalEnabled(Context context) {
+        return context.getResources().getBoolean(R.bool.enable_content_portal) || PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_KEY_CONTENT_PORTAL, false);
     }
 
     @Nullable

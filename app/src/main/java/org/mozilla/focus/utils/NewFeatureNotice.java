@@ -29,7 +29,7 @@ public class NewFeatureNotice {
 
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        hasNewsPortal = context.getResources().getInteger(R.integer.news_portal) > 0;
+        hasNewsPortal = Settings.isContentPortalEnabled(context);
     }
 
     public boolean shouldShowLiteUpdate() {
