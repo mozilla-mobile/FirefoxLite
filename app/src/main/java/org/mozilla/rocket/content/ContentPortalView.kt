@@ -54,11 +54,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         setupBottomSheet()
 
         setupView()
-
-        if (HomeFragmentViewState.TYPE_NEWS == HomeFragmentViewState.state) {
-            show(false)
-            HomeFragmentViewState.state = HomeFragmentViewState.TYPE_DEFAULT
-        }
     }
 
     private var linearLayoutManager: LinearLayoutManager? = null
@@ -111,6 +106,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         if (visibility == VISIBLE) {
             return
         }
+
+        HomeFragmentViewState.lastOpenNews()
+
         if (!animated) {
             showInternal()
             return
@@ -136,6 +134,9 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         if (visibility == GONE) {
             return false
         }
+
+        HomeFragmentViewState.reset()
+
         val anim = AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_out)
         anim.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -197,8 +198,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         // use findFirstVisibleItemPosition so we don't need to remember offset
         linearLayoutManager?.findFirstVisibleItemPosition()?.let {
             HomeFragmentViewState.lastScrollPos = it
-            // remember the state, so the next time will open news portal
-            HomeFragmentViewState.state = HomeFragmentViewState.TYPE_NEWS
         }
     }
 
@@ -212,6 +211,14 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
                 // forget about last scroll position
                 HomeFragmentViewState.lastScrollPos = null
             }
+        }
+    }
+
+    fun onResume() {
+        if (HomeFragmentViewState.isLastOpenNews()) {
+            show(false)
+        } else {
+            hide()
         }
     }
 

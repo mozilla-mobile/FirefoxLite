@@ -524,6 +524,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
                     .setPositiveButton(R.string.action_ok, (dialog, which) -> {
+                        HomeFragmentViewState.reset();
                         presenter.closeAllTabs();
                         TelemetryWrapper.closeAllTabFromTabTray();
                     })
