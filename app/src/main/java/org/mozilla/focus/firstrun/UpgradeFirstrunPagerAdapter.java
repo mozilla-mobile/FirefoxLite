@@ -6,7 +6,6 @@ import android.view.View;
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.SupportUtils;
 
 public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
 
@@ -20,7 +19,7 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
         }
 
         if (NewFeatureNotice.getInstance(context).from40to114() && Settings.isContentPortalEnabled(context)) {
-            FirstRunLibrary.buildLifeFeedFirstrun(context);
+            this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
 
 
