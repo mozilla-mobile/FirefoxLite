@@ -38,6 +38,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,14 +71,7 @@ import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FirebaseHelper;
-import org.mozilla.focus.utils.OnSwipeListener;
-import org.mozilla.focus.utils.RemoteConfigConstants;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.TopSitesUtils;
-import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.utils.*;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
@@ -428,12 +422,21 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         final View arrowContainer = view.findViewById(R.id.arrow_container);
         if (arrowContainer != null) {
-            arrowContainer.setOnClickListener(v -> {
-                if (this.contentPanel != null) {
-                    contentPanel.show(true);
+            arrowContainer.setOnTouchListener(new SwipeMotionDetector(getContext(), new OnSwipeListener() {
+
+                @Override
+                public boolean onSingleTapConfirmed() {
+                    showContentPortal();
+                    return true;
                 }
-            });
+                @Override
+                public  void onSwipeUp() {
+                    showContentPortal();
+                }
+
+            }));
         }
+
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
         this.tabCounter = view.findViewById(R.id.btn_tab_tray);
@@ -1063,7 +1066,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public void onSwipeUp() {
             if (contentPanel != null) {
-                contentPanel.show(true);
+                showContentPortal();
                 final String source = Settings.getInstance(getContext()).getNewsSource();
                 NewsSourceManager.getInstance().setNewsSource(source);
                 // the user had seen the news. Treat it as an user selection so no on can change it
@@ -1153,5 +1156,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             item.setNightMode(enable);
         }
         ViewUtils.updateStatusBarStyle(!enable, getActivity().getWindow());
+    }
+
+    private void showContentPortal() {
+        if (contentPanel != null) {
+            contentPanel.show(true);
+        }
     }
 }
