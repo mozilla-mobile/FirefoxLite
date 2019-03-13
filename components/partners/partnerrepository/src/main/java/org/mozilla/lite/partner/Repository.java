@@ -137,7 +137,7 @@ public abstract class Repository<T extends NewsItem> {
                     // last fetched.
                     // TODO: use network failure callback instead
                     if (integerStringPair.first == ResponseData.SOURCE_NETWORK && "".equals(integerStringPair.second)) {
-                        onDataChangedListener.onDataChanged(Collections.unmodifiableList(itemPojoList));
+                        onDataChangedListener.onDataChanged(cloneData());
                     }
                 }
                 // Removes the subscription and mark as done once network returns, no matter
@@ -147,6 +147,10 @@ public abstract class Repository<T extends NewsItem> {
                 }
             }
         };
+    }
+
+    private List<T> cloneData() {
+        return Collections.unmodifiableList(new ArrayList<>(itemPojoList));
     }
 
     private void correctData(List<T> oldItems, List<T> newItems) {
@@ -166,7 +170,7 @@ public abstract class Repository<T extends NewsItem> {
             newItems.removeAll(itemPojoList);
         }
         itemPojoList.addAll(newItems);
-        this.onDataChangedListener.onDataChanged(Collections.unmodifiableList(itemPojoList));
+        this.onDataChangedListener.onDataChanged(cloneData());
     }
 
     private String getSubscriptionKey(int page) {
