@@ -562,7 +562,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         setupBannerTimer();
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
         initFeatureSurveyViewIfNecessary(getView());
+
         playContentPortalAnimation();
+        if (contentPanel != null) {
+            contentPanel.onResume();
+        }
     }
 
     private void playContentPortalAnimation() {
@@ -1167,6 +1171,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void showContentPortal() {
         if (contentPanel != null) {
+            HomeFragmentViewState.lastOpenNews();
             contentPanel.show(true);
         }
     }
