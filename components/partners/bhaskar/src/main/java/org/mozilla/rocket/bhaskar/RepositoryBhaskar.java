@@ -15,7 +15,6 @@ public class RepositoryBhaskar extends Repository<BhaskarItem> {
     static final String DEFAULT_SUBSCRIPTION_URL = "http://appfeed.bhaskar.com/webfeed/apidata/firefox?pageSize=%d&channel_slno=%d&pageNumber=%d";
     static final int FIRST_PAGE = 1;
     static final int DEFAULT_CHANNEL = 521;
-    static final int PAGE_SIZE = 10;
 
     static Parser<BhaskarItem> PARSER = source -> {
         List<BhaskarItem> ret = new ArrayList<>();
@@ -53,6 +52,6 @@ public class RepositoryBhaskar extends Repository<BhaskarItem> {
 
     @Override
     protected String getSubscriptionUrl(int pageNumber) {
-        return String.format(Locale.US, DEFAULT_SUBSCRIPTION_URL, PAGE_SIZE, DEFAULT_CHANNEL, pageNumber);
+        return String.format(Locale.US, DEFAULT_SUBSCRIPTION_URL, DEFAULT_PAGE_SIZE, DEFAULT_CHANNEL, pageNumber);
     }
 }

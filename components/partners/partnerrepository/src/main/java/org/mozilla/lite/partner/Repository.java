@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Repository<T extends NewsItem> {
+    protected static final int DEFAULT_PAGE_SIZE = 30;
     private PageSubscription currentPageSubscription;
     private final String subscriptionKeyName;
     private final int firstPage;

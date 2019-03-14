@@ -17,7 +17,6 @@ public class RepositoryNewsPoint extends Repository<NewsPointItem> {
     static final String SUBSCRIPTION_KEY_NAME = "newspoint";
     static final String DEFAULT_SUBSCRIPTION_URL = "http://release.nprssfeeds.indiatimes.com/NPRSS/feed/fx/atp?channel=*&section=top-news&lang=english&curpg=%d&pp=%d&v=v1";
     static final int FIRST_PAGE = 1;
-    static final int PAGE_SIZE = 10;
 
     static Parser<NewsPointItem> PARSER = source -> {
         List<NewsPointItem> ret = new ArrayList<>();
@@ -88,6 +87,6 @@ public class RepositoryNewsPoint extends Repository<NewsPointItem> {
 
     @Override
     protected String getSubscriptionUrl(int pageNumber) {
-        return String.format(Locale.US, DEFAULT_SUBSCRIPTION_URL, pageNumber, PAGE_SIZE);
+        return String.format(Locale.US, DEFAULT_SUBSCRIPTION_URL, pageNumber, DEFAULT_PAGE_SIZE);
     }
 }
