@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.mozilla.lite.partner.Repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,7 +39,7 @@ public class RepositoryBhaskar extends Repository<BhaskarItem> {
             String subcategory = row.getString("subcategory");
             String summary = row.getString("summary");
             String separator = "" + '\0';
-            String[] tags = row.getJSONArray("tags").join(separator).split(separator);
+            List<String> tags = Arrays.asList(row.getJSONArray("tags").join(separator).split(separator));
             String title = row.getString("title");
             BhaskarItem itemPojo = new BhaskarItem(id, coverPic, title, detailUrl, publishTime, summary, language, category, subcategory, keywords, description, tags, articleFrom, province, city);
             ret.add(itemPojo);

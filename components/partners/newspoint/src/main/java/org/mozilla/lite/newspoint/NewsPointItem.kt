@@ -20,7 +20,7 @@ data class NewsPointItem(
     val fu: String,
     override val subcategory: String,
     val m: String,
-    val tags: Array<String>
+    val tags: List<String>
 ) : NewsItem {
     override val source: String = "Newspoint"
 }

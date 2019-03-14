@@ -14,7 +14,7 @@ data class BhaskarItem(
     override val subcategory: String,
     val keywords: String,
     val description: String,
-    val tags: Array<String>,
+    val tags: List<String>,
     val articleFrom: String,
     val province: String,
     val city: String
