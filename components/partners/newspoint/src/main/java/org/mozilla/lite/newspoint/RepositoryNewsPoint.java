@@ -9,6 +9,7 @@ import org.mozilla.lite.partner.Repository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,7 +45,7 @@ public class RepositoryNewsPoint extends Repository<NewsPointItem> {
             String mwu  = safeGetString(row, "mwu");
             String m  = safeGetString(row, "m");
             String separator = "" + '\0';
-            String[] tags = row.getJSONArray("tags").join(separator).split(separator);
+            List<String> tags = Arrays.asList(row.getJSONArray("tags").join(separator).split(separator));
             long timestamp = 0;
             try {
                 timestamp = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'IST' yyyy", Locale.US).parse(dl).getTime();
