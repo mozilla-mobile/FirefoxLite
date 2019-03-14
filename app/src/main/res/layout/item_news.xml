@@ -9,78 +9,82 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_item"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="4dp"
     android:layout_width="match_parent"
-    android:layout_height="76dp"
-    android:background="@drawable/tab_tray_item_bkg"
-    android:outlineProvider="background"
-    android:elevation="4dp">
+    android:layout_height="80dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/tab_tray_item_bkg"
+        android:outlineProvider="background"
+        android:elevation="2dp"/>
+
 
     <ImageView
         android:id="@+id/news_item_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="16dp"
-        tools:src="@drawable/ic_globe"
-        android:scaleType="centerCrop"
         android:background="@drawable/news_item_bg"
         android:outlineProvider="background"
-        android:elevation="2dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/news_item_headline"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="6dp"/>
+
 
     <TextView
-        tools:ignore="Deprecation"
         android:id="@+id/news_item_headline"
         style="@style/Body1"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:ellipsize="end"
         android:lines="2"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
         android:textColor="@color/paletteDarkGreyB100"
         tools:text="AAaaaA\nbbbbbbbb"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/news_item_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/news_item_source"
-    />
+        android:elevation="4dp"/>
 
     <TextView
-        tools:ignore="Deprecation"
         android:id="@+id/news_item_source"
+        style="@style/Body5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintStart_toStartOf="@id/news_item_headline"
         app:layout_constraintTop_toBottomOf="@id/news_item_headline"
         app:layout_constraintEnd_toStartOf="@id/news_item_time"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="BCC"
-        style="@style/Body5"/>
+        android:elevation="4dp"
+        tools:text="BCC"/>
 
     <TextView
-        tools:ignore="Deprecation"
-        android:textAlignment="viewEnd"
         android:id="@+id/news_item_time"
+        style="@style/Body5"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:maxLines="1"
-        android:layout_marginEnd="16dp"
+        android:textAlignment="viewEnd"
         app:layout_constraintStart_toEndOf="@id/news_item_source"
         app:layout_constraintBottom_toBottomOf="@id/news_item_source"
-        app:layout_constraintTop_toTopOf="@id/news_item_source"
+        app:layout_constraintTop_toBottomOf="@id/news_item_headline"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="5 month ago"
-        style="@style/Body5"/>
+        android:elevation="4dp"
+        tools:text="5 month ago"/>
 
 
 </android.support.constraint.ConstraintLayout>
