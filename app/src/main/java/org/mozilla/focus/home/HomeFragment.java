@@ -168,6 +168,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     };
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupContentViewModel();
+    }
+
     public static HomeFragment create() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -237,6 +243,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void onShow() {
+        updateSourcePriority();
         checkNewsRepositoryReset();
     }
 
@@ -587,6 +594,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+    private void updateSourcePriority() {
+        // the user had seen the news. Treat it as an user selection so no on can change it
+        Settings.getInstance(getContext()).setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER);
+    }
+
     private void playContentPortalAnimation() {
         final Animation fadeout = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_out);
         final Animation fadein = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_in);
@@ -640,7 +652,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         bannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
         bannerConfigViewModel.getConfig().observe(this, bannerObserver);
         initBanner(getContext());
-        setupContentViewModel();
     }
 
     private void setupContentViewModel() {
@@ -1096,10 +1107,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         public void onSwipeUp() {
             if (contentPanel != null) {
                 showContentPortal();
-                final String source = Settings.getInstance(getContext()).getNewsSource();
-                NewsSourceManager.getInstance().setNewsSource(source);
-                // the user had seen the news. Treat it as an user selection so no on can change it
-                Settings.getInstance(getContext()).setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER);
             } else {
                 btnMenu.performClick();
             }
@@ -1189,7 +1196,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void showContentPortal() {
         if (contentPanel != null) {
-            HomeFragmentViewState.lastOpenNews();
             contentPanel.show(true);
         }
     }
