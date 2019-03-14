@@ -63,6 +63,8 @@ public abstract class Repository<T extends NewsItem> {
     public void reset() {
         itemPojoList = new ArrayList<>();
         cacheIsDirty = true;
+        currentPage = firstPage;
+        currentPageSubscription = null;
         this.onDataChangedListener = null;
     }
 
