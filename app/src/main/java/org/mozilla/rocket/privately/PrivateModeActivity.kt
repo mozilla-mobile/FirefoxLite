@@ -5,6 +5,7 @@
 
 package org.mozilla.rocket.privately
 
+import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -34,6 +35,7 @@ import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.content.HomeFragmentViewState
 import org.mozilla.rocket.privately.browse.BrowserFragment
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.tabs.SessionManager
@@ -127,13 +129,24 @@ class PrivateModeActivity : BaseActivity(),
             return
         }
 
-        val handled = screenNavigator.visibleBrowserScreen?.onBackPressed() ?: false
-        if (handled) {
+        if (screenNavigator.visibleBrowserScreen?.onBackPressed() == true) {
             return
         }
 
         if (!this.screenNavigator.canGoBack()) {
-            finish()
+            // since we don't keep sessions, finish means destroy all tabs
+            // this may need UX confirm if we want to give more clear message like "this will clear your tabs..."
+            if (sessionManager?.hasTabs() == true) {
+                AlertDialog.Builder(this).setMessage(R.string.tab_tray_close_tabs_dialog_msg)
+                    .setPositiveButton(R.string.action_ok) { _, _ ->
+                        dropBrowserFragment()
+                        finish()
+                    }
+                    .setNegativeButton(R.string.action_cancel) { dialog, _ -> dialog.dismiss() }
+                    .show()
+            } else {
+                finish()
+            }
             return
         }
 
