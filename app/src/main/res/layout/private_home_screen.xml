@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.mozilla.rocket.privately.PrivateModeActivity">
+
+    <org.mozilla.focus.home.PrivateHomeScreenBackground
+        android:id="@+id/pm_home_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_home" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/pm_home_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pm_home_fake_input"
+        android:layout_alignEnd="@id/pm_home_fake_input"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="logo_man_private.json"
+        app:lottie_loop="false" />
+
+
+    <include
+        android:id="@+id/pm_home_brand_logo"
+        layout="@layout/fragment_homescreen_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pm_home_brand_title"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/pm_home_brand_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pm_home_fake_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/pm_home_title_margin"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/private_browsing_title"
+        android:textColor="@color/paletteWhite100"
+        android:textSize="20sp" />
+
+    <include
+        android:id="@+id/pm_home_fake_input"
+        layout="@layout/fragment_homescreen_item_fake_input"
+        android:layout_width="@dimen/fake_input_width"
+        android:layout_height="@dimen/fake_input_height"
+        android:layout_centerInParent="true" />
+
+    <include layout="@layout/private_home_screen_menu" />
+
+</RelativeLayout>

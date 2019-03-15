@@ -59,6 +59,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.focus.widget.FragmentListener;
+import org.mozilla.rocket.privately.PrivateHost;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.tabs.Session;
@@ -233,7 +234,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                     onModeClicked();
                 } else {
                     TelemetryWrapper.privateModeTray();
-                    startActivity(new Intent(getContext(), PrivateModeActivity.class));
+                    if (AppConfigWrapper.enablePrivateTabs(getContext())) {
+                        startActivity(new Intent(getContext(), PrivateHost.class));
+                    } else {
+                        startActivity(new Intent(getContext(), PrivateModeActivity.class));
+                    }
                     getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 }
                 break;

@@ -83,6 +83,7 @@ import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
+import org.mozilla.rocket.privately.PrivateHost;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.promotion.PromotionModel;
@@ -720,7 +721,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     private void onModeClicked() {
         TelemetryWrapper.togglePrivateMode(true);
-        startActivity(new Intent(this, PrivateModeActivity.class));
+        if (AppConfigWrapper.enablePrivateTabs(this)) {
+            startActivity(new Intent(this, PrivateHost.class));
+        } else {
+            startActivity(new Intent(this, PrivateModeActivity.class));
+        }
         overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
     }
 

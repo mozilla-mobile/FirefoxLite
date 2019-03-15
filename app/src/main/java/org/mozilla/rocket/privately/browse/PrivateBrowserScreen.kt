@@ -32,7 +32,9 @@ import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.tabs.TabCounter
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -43,6 +45,8 @@ import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.SessionManager.Factor
+import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
 import org.mozilla.rocket.tabs.TabViewEngineSession
@@ -57,13 +61,14 @@ private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
 private const val ACTION_DOWNLOAD = 0
 
-class BrowserFragment : LocaleAwareFragment(),
+class PrivateBrowserScreen : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
 
     private var listener: FragmentListener? = null
 
     private lateinit var permissionHandler: PermissionHandler
+    private lateinit var clickListener: ClickListener
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
 
@@ -75,20 +80,27 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var siteIdentity: ImageView
 
     private lateinit var btnLoad: ImageButton
+    private lateinit var btnDelete: ImageButton
     private lateinit var btnNext: ImageButton
+    private lateinit var tabCounter: TabCounter
+    private lateinit var btnMode: ImageButton
 
     private var isLoading: Boolean = false
 
     private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        clickListener = ClickListener(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_private_browser, container, false)
+        return inflater.inflate(R.layout.private_browser_screen, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -114,18 +126,32 @@ class BrowserFragment : LocaleAwareFragment(),
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
 
-        view.findViewById<View>(R.id.btn_mode).setOnClickListener { onModeClicked() }
-        view.findViewById<View>(R.id.btn_search).setOnClickListener { onSearchClicked() }
-        view.findViewById<View>(R.id.btn_delete).setOnClickListener { onDeleteClicked() }
+        btnDelete = (view.findViewById(R.id.btn_delete))
+        btnNext = (view.findViewById(R.id.btn_next))
+        btnNext.isEnabled = false
+        btnLoad = (view.findViewById(R.id.btn_load))
+        tabCounter = view.findViewById(R.id.btn_tab_tray)
+        btnMode = view.findViewById(R.id.pbf_btn_mode)
 
-        btnLoad = (view.findViewById<ImageButton>(R.id.btn_load))
-                .also { it.setOnClickListener { onLoadClicked() } }
+        if (AppConfigWrapper.enablePrivateTabs(context)) {
+            tabCounter.visibility = View.VISIBLE
+            btnMode.visibility = View.GONE
+            btnDelete.visibility = View.GONE
+        } else {
+            tabCounter.visibility = View.GONE
+            btnMode.visibility = View.VISIBLE
+            btnDelete.visibility = View.VISIBLE
+        }
 
-        btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton)
-                .also {
-                    it.isEnabled = false
-                    it.setOnClickListener { onNextClicked() }
-                }
+        with(clickListener) {
+            view.findViewById<View>(R.id.btn_search).setOnClickListener(this)
+            view.findViewById<View>(R.id.btn_open_new_tab).setOnClickListener(this)
+            btnNext.setOnClickListener(this)
+            btnLoad.setOnClickListener(this)
+            tabCounter.setOnClickListener(this)
+            btnMode.setOnClickListener(this)
+            btnDelete.setOnClickListener(this)
+        }
 
         view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
             (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
@@ -162,7 +188,7 @@ class BrowserFragment : LocaleAwareFragment(),
         permissionHandler = PermissionHandler(object : PermissionHandle {
             override fun doActionDirect(permission: String?, actionId: Int, params: Parcelable?) {
 
-                this@BrowserFragment.context?.also {
+                this@PrivateBrowserScreen.context?.also {
                     val download = params as Download
 
                     if (PackageManager.PERMISSION_GRANTED ==
@@ -172,7 +198,7 @@ class BrowserFragment : LocaleAwareFragment(),
                         queueDownload(download)
                     }
                 } ?: run {
-                    Log.e("BrowserFragment.kt", "No context to use, abort callback onDownloadStart")
+                    Log.e("PrivateBrowserScreen.kt", "No context to use, abort callback onDownloadStart")
                 }
             }
 
@@ -195,7 +221,7 @@ class BrowserFragment : LocaleAwareFragment(),
             override fun makeAskAgainSnackBar(actionId: Int): Snackbar {
                 activity?.also {
                     return PermissionHandler.makeAskAgainSnackBar(
-                            this@BrowserFragment,
+                            this@PrivateBrowserScreen,
                             it.findViewById(R.id.container),
                             R.string.permission_toast_storage
                     )
@@ -208,7 +234,7 @@ class BrowserFragment : LocaleAwareFragment(),
             }
 
             override fun requestPermissions(actionId: Int) {
-                this@BrowserFragment.requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), actionId)
+                this@PrivateBrowserScreen.requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), actionId)
             }
 
             private fun queueDownload(download: Download?) {
@@ -249,7 +275,12 @@ class BrowserFragment : LocaleAwareFragment(),
 
         sessionManager.dropTab(focus.id)
         ScreenNavigator.get(activity).popToHomeScreen(true)
-        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        if (!AppConfigWrapper.enablePrivateTabs(context)) {
+            // when we have multi tabs, it's easy to show home while there are other tabs opening.
+            // And the user may not want to sanitize right away.
+            // So I think below code is only useful when it's single tab implementation
+            listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        }
         return true
     }
 
@@ -283,7 +314,11 @@ class BrowserFragment : LocaleAwareFragment(),
             if (sessionManager.tabsCount == 0) {
                 sessionManager.addTab(url, TabUtil.argument(null, false, true))
             } else {
-                sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
+                if (openNewTab && AppConfigWrapper.enablePrivateTabs(context)) {
+                    sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true))
+                } else {
+                    sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
+                }
             }
 
             ThreadUtils.postToMainThread(onViewReadyCallback)
@@ -302,7 +337,8 @@ class BrowserFragment : LocaleAwareFragment(),
     private fun registerData(activity: FragmentActivity) {
         val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
         shared.getUrl().observe(this, Observer<String> { url ->
-            url?.let { loadUrl(it, false, false, null) }
+            // here we want to add a new tab, but loadUrl() will decide if it's allowed
+            url?.let { loadUrl(it, true, false, null) }
         })
     }
 
@@ -333,15 +369,33 @@ class BrowserFragment : LocaleAwareFragment(),
         }
     }
 
-    private fun onDeleteClicked() {
+    fun onDeleteClicked() {
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
+            listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+            ScreenNavigator.get(activity).popToHomeScreen(true)
         }
-        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
-        ScreenNavigator.get(activity).popToHomeScreen(true)
     }
 
-    class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
+    class ClickListener(val fragment: PrivateBrowserScreen) : View.OnClickListener {
+        val parent: FragmentListener = if (fragment.activity is FragmentListener)
+            fragment.activity as FragmentListener
+        else throw RuntimeException("")
+
+        override fun onClick(v: View?) {
+            when (v?.id) {
+                R.id.btn_search -> parent.onNotified(fragment, TYPE.SHOW_URL_INPUT, fragment.displayUrlView.text)
+                R.id.btn_open_new_tab -> ScreenNavigator.get(fragment.activity).popToHomeScreen(true)
+                R.id.btn_next -> fragment.onNextClicked()
+                R.id.btn_delete -> fragment.onDeleteClicked()
+                R.id.btn_tab_tray -> parent.onNotified(fragment, TYPE.SHOW_TAB_TRAY, null)
+                R.id.btn_load -> fragment.onLoadClicked()
+                R.id.pbf_btn_mode -> fragment.onModeClicked()
+            }
+        }
+    }
+
+    class Observer(val fragment: PrivateBrowserScreen) : SessionManager.Observer, Session.Observer {
         override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
             // do nothing, exist for interface compatibility only.
         }
@@ -405,7 +459,7 @@ class BrowserFragment : LocaleAwareFragment(),
                 }
             }
 
-            callback?.let { it.fullScreenExited() }
+            callback?.fullScreenExited()
             callback = null
 
             // WebView gets focus, but unable to open the keyboard after exit Fullscreen for Android 7.0+
@@ -447,6 +501,39 @@ class BrowserFragment : LocaleAwareFragment(),
                 session = fragment.sessionManager.focusSession
                 session?.register(this)
             }
+            fragment.tabCounter.setCount(count)
+        }
+
+        //TODO:make sure this will only work for multi tabs in private mode, if yes, we can keep it
+        override fun onFocusChanged(session: Session?, factor: Factor) {
+            if (session == null) {
+                // FIXME:
+                // if (factor == SessionManager.Factor.FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
+                if (factor == SessionManager.Factor.FACTOR_NO_FOCUS) {
+                    ScreenNavigator.get(fragment.activity).popToHomeScreen(true)
+                } else {
+                    fragment.activity?.finish()
+                }
+            } else {
+                transitToTab(session)
+                refreshChrome(session)
+            }
+        }
+
+        private fun transitToTab(target: Session) {
+            val tabView = target.engineSession?.tabView
+                    ?: throw RuntimeException("Tabview should be created at this moment and never be null")
+
+            // ensure it does not have attach to parent earlier.
+            target.engineSession?.detach()
+
+            val outView = findExistingTabView(fragment.tabViewSlot)
+            fragment.tabViewSlot.removeView(outView)
+
+            tabView.view?.let { fragment.tabViewSlot.addView(it) }
+
+            changeSession(target)
+            // startTransitionAnimation(null, inView, null)
         }
 
         override fun onDownload(session: Session, download: mozilla.components.browser.session.Download): Boolean {
@@ -472,9 +559,37 @@ class BrowserFragment : LocaleAwareFragment(),
                     )
             return true
         }
+
+        private fun refreshChrome(session: Session) {
+            onUrlChanged(session, session.url)
+            fragment.progressView.progress = 0
+            val identity = if (session.securityInfo.secure) SITE_LOCK else SITE_GLOBE
+            fragment.siteIdentity.setImageLevel(identity)
+        }
+
+        private fun findExistingTabView(parent: ViewGroup): View? {
+            val viewCount = parent.childCount
+            for (childIdx in 0..viewCount) {
+                val childView = parent.getChildAt(childIdx)
+                if (childView is TabView) {
+                    return childView
+                }
+            }
+            return null
+        }
+
+        private fun changeSession(nextSession: Session?) {
+            if (this.session != null) {
+                this.session!!.unregister(this)
+            }
+            this.session = nextSession
+            if (this.session != null) {
+                this.session!!.register(this)
+            }
+        }
     }
 
-    class PrivateDownloadCallback(val fragment: BrowserFragment, val refererUrl: String?) : DownloadCallback {
+    class PrivateDownloadCallback(val fragment: PrivateBrowserScreen, val refererUrl: String?) : DownloadCallback {
         override fun onDownloadStart(download: Download) {
             fragment.activity?.let {
                 if (!it.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {

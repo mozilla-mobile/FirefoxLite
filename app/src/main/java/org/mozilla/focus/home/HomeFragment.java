@@ -727,10 +727,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (isTabRestoredComplete()) {
             tabCounter.setCount(tabCount);
         }
-        // nevin: don't change tab counter behaviour?
+
         if (tabCount == 0) {
             tabCounter.setEnabled(false);
             tabCounter.setAlpha(ALPHA_TAB_COUNTER_DISABLED);
+
         } else {
             tabCounter.setEnabled(true);
             tabCounter.setAlpha(1f);

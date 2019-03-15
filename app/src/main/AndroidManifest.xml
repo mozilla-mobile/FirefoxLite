@@ -105,10 +105,19 @@
             android:configChanges="orientation|screenSize"
             android:taskAffinity=""
             android:theme="@style/PrivateModeTheme"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"/>
 
-
-        </activity>
+        <activity
+            android:name="org.mozilla.rocket.privately.PrivateHost"
+            android:enabled="true"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:process=":private_mode"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize"
+            android:taskAffinity=""
+            android:theme="@style/PrivateModeTheme"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- SettingsActivity title is set dynamically for multilocale support -->
         <activity

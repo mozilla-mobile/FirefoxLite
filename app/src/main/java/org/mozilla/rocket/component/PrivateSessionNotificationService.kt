@@ -13,6 +13,8 @@ import android.os.IBinder
 import org.mozilla.focus.R
 import org.mozilla.focus.notification.NotificationId
 import org.mozilla.focus.notification.NotificationUtil
+import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.rocket.privately.PrivateHost
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.privately.PrivateModeActivity
 
@@ -87,7 +89,11 @@ class PrivateSessionNotificationService : Service() {
 
         @JvmStatic
         fun buildIntent(applicationContext: Context, sanitize: Boolean): Intent {
-            val intent = Intent(applicationContext, PrivateModeActivity::class.java)
+            val intent = if (AppConfigWrapper.enablePrivateTabs(applicationContext)) {
+                Intent(applicationContext, PrivateModeActivity::class.java)
+            } else {
+                Intent(applicationContext, PrivateHost::class.java)
+            }
             if (sanitize) {
                 intent.action = PrivateMode.INTENT_EXTRA_SANITIZE
             }

@@ -6,6 +6,7 @@ package org.mozilla.rocket.privately.home
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,54 +14,75 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient.FileChooserParams
 import android.widget.RelativeLayout
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.tabs.TabCounter
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.widget.FragmentListener
+import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_TAB_TRAY
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
+import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.TabViewEngineSession
+import org.mozilla.rocket.tabs.TabsSessionProvider
 
-class PrivateHomeFragment : LocaleAwareFragment(),
+class PrivateHomeScreen : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
 
-    private lateinit var btnBack: RelativeLayout
-    private lateinit var lottieMask: LottieAnimationView
+    private lateinit var sessionManager: SessionManager
+    private lateinit var managerObserver: SessionManagerObserver
     private lateinit var logoMan: LottieAnimationView
     private lateinit var fakeInput: View
+    private lateinit var tabCounter: TabCounter
+    private lateinit var btnBack: RelativeLayout
+    private lateinit var lottieMask: LottieAnimationView
 
-    @Override
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
+        managerObserver = SessionManagerObserver(this)
     }
 
-    @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_private_homescreen, container, false)
+        sessionManager = TabsSessionProvider.getOrThrow(activity)
+        sessionManager.register(managerObserver)
+
+        val view = inflater.inflate(R.layout.private_home_screen, container, false)
         btnBack = view.findViewById(R.id.pm_home_back)
         lottieMask = view.findViewById(R.id.pm_home_mask)
         logoMan = view.findViewById(R.id.pm_home_logo)
         fakeInput = view.findViewById(R.id.pm_home_fake_input)
-
-        btnBack.setOnClickListener {
-            var parent = activity
-            if (parent is FragmentListener) {
-                parent.onNotified(this, TOGGLE_PRIVATE_MODE, null)
-            }
+        tabCounter = view.findViewById(R.id.btn_tab_tray)
+        if (AppConfigWrapper.enablePrivateTabs(context)) {
+            tabCounter.visibility = View.VISIBLE
+            lottieMask.visibility = View.GONE
+            btnBack.visibility = View.GONE
+        } else {
+            tabCounter.visibility = View.GONE
+            lottieMask.visibility = View.VISIBLE
+            btnBack.visibility = View.VISIBLE
         }
 
-        fakeInput.setOnClickListener {
-            var parent = activity
-            if (parent is FragmentListener) {
-                parent.onNotified(this, SHOW_URL_INPUT, null)
-            }
+        ClickListener(this).let {
+            fakeInput.setOnClickListener(it)
+            tabCounter.setOnClickListener(it)
+            btnBack.setOnClickListener(it)
         }
 
         observeViewModel()
+        updateTabCounter(sessionManager.tabsCount)
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sessionManager.unregister(managerObserver)
     }
 
     override fun getFragment(): Fragment {
@@ -85,13 +107,15 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     companion object {
-        fun create(): PrivateHomeFragment {
-            return PrivateHomeFragment()
+        fun create(): PrivateHomeScreen {
+            return PrivateHomeScreen()
         }
     }
 
     private fun animatePrivateHome() {
-        lottieMask.playAnimation()
+        if (!AppConfigWrapper.enablePrivateTabs(context)) {
+            lottieMask.playAnimation()
+        }
         logoMan.playAnimation()
     }
 
@@ -124,6 +148,45 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             return anim
         } else {
             return super.onCreateAnimation(transit, enter, nextAnim)
+        }
+    }
+
+    fun updateTabCounter(count: Int) {
+        tabCounter.setCount(count)
+    }
+
+    class ClickListener(val fragment: Fragment) : View.OnClickListener {
+        val parent: FragmentListener = if (fragment.activity is FragmentListener)
+            fragment.activity as FragmentListener
+        else throw RuntimeException("")
+
+        override fun onClick(v: View?) {
+            when (v?.id) {
+                R.id.pm_home_fake_input -> parent.onNotified(fragment, SHOW_URL_INPUT, null)
+                R.id.btn_tab_tray -> parent.onNotified(fragment, SHOW_TAB_TRAY, null)
+                R.id.pm_home_back -> parent.onNotified(fragment, TOGGLE_PRIVATE_MODE, null) // remove this if we have private mode
+            }
+        }
+    }
+
+    class SessionManagerObserver(private val hostFragment: PrivateHomeScreen) : SessionManager.Observer {
+        override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
+            // do nothing
+        }
+
+        override fun handleExternalUrl(url: String?): Boolean {
+            // do nothing
+            return false
+        }
+
+        override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?): Boolean {
+            // do nothing
+            return false
+        }
+
+        override fun onSessionCountChanged(count: Int) {
+            super.onSessionCountChanged(count)
+            hostFragment.updateTabCounter(count)
         }
     }
 }

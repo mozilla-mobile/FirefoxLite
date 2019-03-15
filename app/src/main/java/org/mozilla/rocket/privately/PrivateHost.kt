@@ -5,6 +5,7 @@
 
 package org.mozilla.rocket.privately
 
+import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -26,19 +27,21 @@ import org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen
 import org.mozilla.focus.navigation.ScreenNavigator.HomeScreen
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
+import org.mozilla.focus.tabs.tabtray.TabTray
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.utils.Constants
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
-import org.mozilla.rocket.privately.browse.BrowserFragment
-import org.mozilla.rocket.privately.home.PrivateHomeFragment
+import org.mozilla.rocket.privately.browse.PrivateBrowserScreen
+import org.mozilla.rocket.privately.home.PrivateHomeScreen
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
-class PrivateModeActivity : BaseActivity(),
+class PrivateHost : BaseActivity(),
         FragmentListener,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
@@ -65,7 +68,7 @@ class PrivateModeActivity : BaseActivity(),
             return
         }
 
-        setContentView(R.layout.activity_private_mode)
+        setContentView(R.layout.activity_private_host)
 
         snackBarContainer = findViewById(R.id.container)
         makeStatusBarTransparent()
@@ -109,7 +112,12 @@ class PrivateModeActivity : BaseActivity(),
             TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
-            TYPE.DROP_BROWSING_PAGES -> dropBrowserFragment()
+            TYPE.DROP_BROWSING_PAGES -> dropPrivateBrowserScreen()
+            TYPE.SHOW_TAB_TRAY -> {
+                if (AppConfigWrapper.enablePrivateTabs(this)) {
+                    TabTray.show(supportFragmentManager, true)
+                }
+            }
             else -> {
             }
         }
@@ -120,13 +128,24 @@ class PrivateModeActivity : BaseActivity(),
             return
         }
 
-        val handled = screenNavigator.visibleBrowserScreen?.onBackPressed() ?: false
-        if (handled) {
+        if (screenNavigator.visibleBrowserScreen?.onBackPressed() == true) {
             return
         }
 
         if (!this.screenNavigator.canGoBack()) {
-            finish()
+            // since we don't keep sessions, finish means destroy all tabs
+            // this may need UX confirm if we want to give more clear message like "this will clear your tabs..."
+            if (sessionManager?.hasTabs() == true) {
+                AlertDialog.Builder(this).setMessage(R.string.tab_tray_close_tabs_dialog_msg)
+                        .setPositiveButton(R.string.action_ok) { _, _ ->
+                            dropPrivateBrowserScreen()
+                            finish()
+                            }
+                        .setNegativeButton(R.string.action_cancel) { dialog, _ -> dialog.dismiss() }
+                        .show()
+            } else {
+                finish()
+            }
             return
         }
 
@@ -151,7 +170,7 @@ class PrivateModeActivity : BaseActivity(),
         }
     }
 
-    private fun dropBrowserFragment() {
+    private fun dropPrivateBrowserScreen() {
         stopPrivateMode()
         Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
     }
@@ -159,7 +178,7 @@ class PrivateModeActivity : BaseActivity(),
     override fun getScreenNavigator(): ScreenNavigator = screenNavigator
 
     override fun getBrowserScreen(): BrowserScreen {
-        return supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment
+        return supportFragmentManager.findFragmentById(R.id.browser) as PrivateBrowserScreen
     }
 
     override fun createFirstRunScreen(): Screen {
@@ -170,7 +189,7 @@ class PrivateModeActivity : BaseActivity(),
     }
 
     override fun createHomeScreen(): HomeScreen {
-        return PrivateHomeFragment.create()
+        return PrivateHomeScreen.create()
     }
 
     override fun createUrlInputScreen(url: String?, parentFragmentTag: String?): UrlInputScreen {

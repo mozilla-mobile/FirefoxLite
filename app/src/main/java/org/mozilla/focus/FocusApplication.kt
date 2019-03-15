@@ -19,6 +19,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.rocket.content.NewsSourceManager
 import org.mozilla.rocket.partner.PartnerActivator
+import org.mozilla.rocket.privately.PrivateHost
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import org.mozilla.rocket.privately.PrivateModeActivity
@@ -112,7 +113,7 @@ class FocusApplication : LocaleAwareApplication() {
 
             override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
                 // once PrivateModeActivity exist, this process is for private mode
-                if (activity is PrivateModeActivity) {
+                if (activity is PrivateModeActivity || activity is PrivateHost) {
                     isInPrivateProcess = true
                 }
             }
