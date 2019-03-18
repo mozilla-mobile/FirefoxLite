@@ -22,10 +22,7 @@ import android.util.DisplayMetrics;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.helper.BeforeTestTask;
@@ -141,6 +138,7 @@ public class WebContextMenuTest {
      * 5. Check tab count is 2
      */
     @Test
+    @Ignore
     public void openLinkInNewTab() {
 
         loadTestWebsiteAndOpenContextMenu();
@@ -284,6 +282,7 @@ public class WebContextMenuTest {
      * 7. Check download item matches as expected
      */
     @Test
+    @Ignore
     public void saveImageThenDelete_imageSaveAndDeleteSuccessfully() {
 
         loadTestWebsiteAndOpenContextMenu();
