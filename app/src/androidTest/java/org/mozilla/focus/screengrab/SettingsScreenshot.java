@@ -113,7 +113,7 @@ public class SettingsScreenshot extends BaseScreenshot {
 
         // Click give feedback
         onData(PreferenceMatchers.withKey(resources.getString(R.string.pref_key_give_feedback))).perform(click());
-        onView(withText(R.string.rate_app_dialog_btn_feedback)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(R.id.dialog_rate_app_btn_feedback)).inRoot(isDialog()).check(matches(isDisplayed()));
         Screengrab.screenshot(ScreenshotNamingUtils.SETTINGS_FEEDBACK);
         Espresso.pressBack();
 
