@@ -99,6 +99,10 @@ public class Settings {
         return newFeatureNotice.shouldShowLiteUpdate() || !newFeatureNotice.hasShownFirstRun();
     }
 
+    public void setContentPortalNewsEnabled(boolean enabled) {
+        preferences.edit().putBoolean(PREF_KEY_CONTENT_PORTAL, enabled).apply();
+    }
+
     public boolean shouldSaveToRemovableStorage() {
         // FIXME: rely on String-array-order is not a good idea
         final String[] defined = resources.getStringArray(R.array.data_saving_path_values);

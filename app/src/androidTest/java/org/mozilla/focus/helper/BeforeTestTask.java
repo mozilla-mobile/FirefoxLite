@@ -24,6 +24,7 @@ public class BeforeTestTask {
     private boolean clearBrowsingHistory;
     private boolean skipColorThemeOnBoarding;
     private boolean enableSreenshotOnBoarding;
+    private boolean enableContentPortalNews;
 
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
@@ -31,6 +32,7 @@ public class BeforeTestTask {
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
         this.skipColorThemeOnBoarding = builder.skipColorThemeOnBoarding;
         this.enableSreenshotOnBoarding = builder.enableSreenshotOnBoarding;
+        this.enableContentPortalNews = builder.enableContentPortalNews;
     }
 
     public void execute() {
@@ -61,6 +63,10 @@ public class BeforeTestTask {
             BrowsingHistoryManager.getInstance().deleteAll(null);
         }
 
+        if (this.enableContentPortalNews) {
+            settings.setContentPortalNewsEnabled(true);
+        }
+
         if (this.skipColorThemeOnBoarding) {
             ThemeManager.dismissOnboarding(context);
         } else {
@@ -83,6 +89,7 @@ public class BeforeTestTask {
         private boolean skipFirstRun;
         private boolean clearBrowsingHistory;
         private boolean skipColorThemeOnBoarding;
+        private boolean enableContentPortalNews;
 
         public Builder() {
             this.enableRateAppPromotion = false;
@@ -90,6 +97,7 @@ public class BeforeTestTask {
             this.clearBrowsingHistory = false;
             this.skipColorThemeOnBoarding = true;
             this.enableSreenshotOnBoarding = false;
+            this.enableContentPortalNews = false;
         }
 
         public Builder setRateAppPromotionEnabled(boolean enable) {
@@ -114,6 +122,11 @@ public class BeforeTestTask {
 
         public Builder enableSreenshotOnBoarding(boolean enableSreenshotOnBoarding) {
             this.enableSreenshotOnBoarding = enableSreenshotOnBoarding;
+            return this;
+        }
+
+        public Builder enableContentPortalNews(boolean enableContentPortalNews) {
+            this.enableContentPortalNews = enableContentPortalNews;
             return this;
         }
 

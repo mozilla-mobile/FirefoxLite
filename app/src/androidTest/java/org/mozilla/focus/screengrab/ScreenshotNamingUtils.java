@@ -93,4 +93,10 @@ public class ScreenshotNamingUtils {
     private static final String PRIVATE_BROWSING_BASE = "09_private_";
     static final String PRIVATE_ERASING_TOAST = PRIVATE_BROWSING_BASE + "1";
     static final String PRIVATE_ERASING_NOTIFICATION = PRIVATE_BROWSING_BASE + "2";
+
+    private static final String PORTAL_NEWS_BASE = "10_portalNews_";
+    static final String PORTAL_NEWS_ONBOARDING = PORTAL_NEWS_BASE + 1;
+    static final String PORTAL_NEWS_SOURCE = PORTAL_NEWS_BASE + 2;
+    static final String PORTAL_NEWS_SOURCE_DIALOG = PORTAL_NEWS_BASE + 3;
+    static final String PORTAL_NEWS_ABOUT_LIFE_FEED = PORTAL_NEWS_BASE + 4;
 }
