@@ -8,26 +8,21 @@ package org.mozilla.focus.activity
 import android.app.Activity
 import android.app.Instrumentation
 import android.content.Intent
-import android.net.Uri
 import android.support.annotation.Keep
-import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.swipeDown
-import android.support.test.espresso.action.ViewActions.swipeUp
 import android.support.test.runner.AndroidJUnit4
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.intent.Intents.intended
 import android.support.test.espresso.intent.Intents.intending
-import android.support.test.espresso.intent.matcher.IntentMatchers.*
+import android.support.test.espresso.intent.matcher.IntentMatchers.isInternal
+import android.support.test.espresso.intent.matcher.IntentMatchers.hasAction
+import android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.espresso.matcher.RootMatchers.isPlatformPopup
-import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
-import android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -39,7 +34,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.autobot.findInPage
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.helper.BeforeTestTask
-import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.hamcrest.core.AllOf.allOf
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsNot.not
@@ -72,7 +66,7 @@ class FindInPageTest {
      * Test case no: TC0147
      * Test case name: Find a specific word or phrase on a page
      * Steps
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit mozilla.org
      * 3. Tap Menu -> Find in page
      * 4. Find a specific word or phrase
@@ -98,17 +92,14 @@ class FindInPageTest {
         findInPage {
             findKeywordInPage(keyword)
 
-            onView(withId(R.id.webview_slot)).perform(swipeUp())
-            onView(withId(R.id.webview_slot)).perform(swipeDown())
-            onView(withId(R.id.find_in_page_query_text)).check(matches(withText(keyword)))
-            onView(withId(R.id.find_in_page_result_text)).check(matches(isDisplayed()))
+            swipeOnWebview("UP")
+            swipeOnWebview("Down")
 
-            onView(withId(R.id.display_url)).check(matches(isDisplayed()))
-            onView(withId(R.id.browser_screen_menu)).check(matches(isDisplayed()))
+            findKeywordInPageChecking(keyword)
 
             onView(withId(R.id.find_in_page_close_btn)).check(matches(isDisplayed())).perform(click())
 
-            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+            findInPageClosed()
         }
     }
 
@@ -116,7 +107,7 @@ class FindInPageTest {
      * Test case no: TC0148
      * Test case name: Check the finding visibilities
      * Steps:
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit a webpage
      * 3. Tap Menu -> Find in page
      * 4. Search a word
@@ -165,14 +156,14 @@ class FindInPageTest {
             pressBack()
             pressBack()
 
-            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+            findInPageClosed()
         }
     }
 
     /**
      * Test case no: TC0153
      * Test case name: Open a link from external app then close mode
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit google.com
      * 3. Tap Menu -> Find in page
      * 4. Open a link from external app
@@ -192,21 +183,20 @@ class FindInPageTest {
             findKeywordInPage(keyword)
         }
 
-        val loadingIdlingResource = SessionLoadedIdlingResource(activityTestRule.activity)
-        IdlingRegistry.getInstance().register(loadingIdlingResource)
-        sendBrowsingIntent()
+        session {
+            sendBrowsingIntent(activityTestRule.activity, TARGET_URL_SITE_2)
+        }
 
-        onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.display_url)).check(matches(isDisplayed()))
+        findInPage {
+            findInPageClosed()
+        }
         onView(withId(R.id.display_url)).check(matches(withText(TARGET_URL_SITE_2)))
-
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource)
     }
 
     /**
      * Test case no: TC0155
      * Test case name: User can open a link in “Find in page” mode
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit en.wikipedia.org/wiki/Mozilla
      * 3. Tap Menu -> Find in page
      * 4. Tap the link"
@@ -225,14 +215,17 @@ class FindInPageTest {
 
         session {
             tapLocatorOnWebView(activityTestRule.activity, "//a[@title='Mozilla Foundation']")
-            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        }
+
+        findInPage {
+            findInPageClosed()
         }
     }
 
     /**
      * Test case no: TC0157
      * Test case name: User can share a word in Find in page mode
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit a website
      * 3. Tap Menu -> Find in page
      * 4. Long press a word
@@ -252,15 +245,17 @@ class FindInPageTest {
             onView(allOf(withText("Share"), isDisplayed())).inRoot(isPlatformPopup()).perform(click())
             intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND)))))
             pressBack()
-            onView(withId(R.id.find_in_page)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
         }
 
+        findInPage {
+            findInPageClosed()
+        }
     }
 
     /**
      * Test case no: TC0151
      * Test case name: Don't hide keyboard by scrolling down or tapping system Back key
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit mozilla.org
      * 3. Tap Menu -> Find in page
      * 4. Find a specific word or phrase
@@ -271,7 +266,7 @@ class FindInPageTest {
     /**
      * Tese case no: TC0156
      * Test case name: When the keyboard is on, tap Home->Rocket, the keyboard should be opened
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit a website
      * 3. Tap Menu -> Find in page
      * 4. Tap Home
@@ -280,7 +275,7 @@ class FindInPageTest {
     /**
      * Test case no: TC0158
      * Test case name: When user scrolls up/down in Find in page mode, it would not close the keyboard
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit facebook.com with your account
      * 3. Tap Menu -> Find in page
      * 4. Scroll up
@@ -288,7 +283,7 @@ class FindInPageTest {
      */
     /**
      * above test cases will be merged into one
-     * 1. Launch Rocket
+     * 1. Launch Lite
      * 2. Visit a website
      * 3. Tap Menu -> Find in Page
      * 4. Tap Home
@@ -321,8 +316,8 @@ class FindInPageTest {
 
             findKeywordInPage(keyword, false)
 
-            onView(withId(R.id.webview_slot)).perform(swipeUp())
-            onView(withId(R.id.webview_slot)).perform(swipeDown())
+            swipeOnWebview("UP")
+            swipeOnWebview("Down")
 
             assertTrue(isKeyboardShown())
 
@@ -330,16 +325,5 @@ class FindInPageTest {
 
             assertFalse(isKeyboardShown())
         }
-    }
-
-    private fun sendBrowsingIntent() {
-        // Simulate third party app sending browsing url intent to rocket
-        val intent = Intent()
-        intent.action = Intent.ACTION_VIEW
-        intent.data = Uri.parse(TARGET_URL_SITE_2)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
-        intent.setPackage(targetContext.packageName)
-        targetContext.startActivity(intent)
     }
 }
