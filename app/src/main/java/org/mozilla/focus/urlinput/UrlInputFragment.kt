@@ -16,6 +16,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.widget.TextView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
@@ -184,7 +185,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private fun onCommit() {
         val input = urlView.autocompleteResult.formattedText.let {
-            if (it.isEmpty()) urlView.text.toString() else it
+            when {
+                it.isEmpty() || !URLUtil.isValidUrl(urlView.text.toString()) -> urlView.text.toString()
+                else -> it
+            }
         }
         search(input)
         TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false)
