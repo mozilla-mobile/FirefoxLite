@@ -15,7 +15,8 @@ import java.util.Locale;
 
 public class RepositoryNewsPoint extends Repository<NewsPointItem> {
     static final String SUBSCRIPTION_KEY_NAME = "newspoint";
-    static final String DEFAULT_SUBSCRIPTION_URL = "http://release.nprssfeeds.indiatimes.com/NPRSS/feed/fx/atp?channel=*&section=top-news&lang=english&curpg=%d&pp=%d&v=v1";
+    static final String DEFAULT_SUBSCRIPTION_URL = "http://partnersnp.indiatimes.com/feed/fx/atp?channel=*&section=top-news&lang=english&curpg=%d&pp=%d&v=v1&fromtime=1551267146210";
+
     static final int FIRST_PAGE = 1;
 
     static Parser<NewsPointItem> PARSER = source -> {
