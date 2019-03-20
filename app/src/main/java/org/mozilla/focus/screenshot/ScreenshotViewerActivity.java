@@ -287,6 +287,11 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
     private void initScreenshotInfo(boolean withShare) {
         if (mScreenshot != null) {
             new ScreenshotInfoTask(this, mScreenshot, mInfoItems, withShare).execute();
+            // getCategory may fetch data from internet, isolate it from ScreenshotInfoTask to avoid displaying screenshot lately due to network operation delay
+            ThreadUtils.postToBackgroundThread(() -> {
+                mScreenshot.setCategory(ScreenshotManager.getInstance().getCategory(ScreenshotViewerActivity.this, mScreenshot.getUrl()));
+                mScreenshot.setCategoryVersion(ScreenshotManager.getInstance().getCategoryVersion());
+            });
         }
     }
 
@@ -495,9 +500,6 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
             if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
                 return null;
             }
-            // set the category for later use
-            screenshot.setCategory(ScreenshotManager.getInstance().getCategory(activity, screenshot.getUrl()));
-            screenshot.setCategoryVersion(ScreenshotManager.getInstance().getCategoryVersion());
 
             final File imgFile = new File(screenshot.getImageUri());
             if (imgFile.exists()) {
@@ -529,7 +531,7 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
             infoItems.get(1).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_resolution1, String.format(Locale.getDefault(), "%dx%d", width, height));
             infoItems.get(2).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_size1, fileSizeText);
             infoItems.get(3).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_title1, screenshot.getTitle());
-            // UX allow empty string if screenshot is not ready. But this shouldn't happen here.
+            // UX allow empty string if screenshot is not ready.
             infoItems.get(4).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_category, screenshot.getCategory());
             infoItems.get(5).title = activity.getString(R.string.screenshot_image_viewer_dialog_info_url1, screenshot.getUrl());
 
