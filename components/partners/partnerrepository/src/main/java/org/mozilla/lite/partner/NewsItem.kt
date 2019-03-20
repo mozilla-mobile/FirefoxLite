@@ -7,7 +7,7 @@ interface NewsItem {
     val title: String
     val newsUrl: String
     val time: Long
-    val partner: String
-    val category: String
-    val subcategory: String
+    val partner: String?
+    val category: String?
+    val subcategory: String?
 }

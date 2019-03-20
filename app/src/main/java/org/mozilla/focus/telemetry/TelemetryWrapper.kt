@@ -1301,13 +1301,13 @@ object TelemetryWrapper {
                     TelemetryExtra(name = Extra.SOURCE, value = "India TV,Business World,HW News English...etc"),
                     TelemetryExtra(name = Extra.CATEGORY, value = "Uttar Pradesh,National,Tech Knowledge....etc"),
                     TelemetryExtra(name = Extra.SUB_CATEGORY, value = "top-news,entertainment,Lucknow...etc")])
-    fun clickOnNewsItem(pos: String, feed: String, source: String, category: String, subCategory: String) {
+    fun clickOnNewsItem(pos: String, feed: String, source: String?, category: String?, subCategory: String?) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.LIFEFEED_NEWS)
                 .extra(Extra.POSITION, pos)
                 .extra(Extra.FEED, feed)
-                .extra(Extra.SOURCE, source)
-                .extra(Extra.CATEGORY, category)
-                .extra(Extra.SUB_CATEGORY, subCategory)
+                .extra(Extra.SOURCE, source ?: "")
+                .extra(Extra.CATEGORY, category ?: "")
+                .extra(Extra.SUB_CATEGORY, subCategory ?: "")
                 .queue()
     }
 
