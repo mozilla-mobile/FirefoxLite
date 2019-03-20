@@ -46,11 +46,16 @@ public class RepositoryNewsPoint extends Repository<NewsPointItem> {
             String m  = safeGetString(row, "m");
             String separator = "" + '\0';
             List<String> tags = Arrays.asList(row.getJSONArray("tags").join(separator).split(separator));
+            if (id == null || hl == null || mwu == null || dl == null) {
+                continue;
+            }
             long timestamp = 0;
             try {
                 timestamp = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'IST' yyyy", Locale.US).parse(dl).getTime();
             } catch (ParseException e) {
                 e.printStackTrace();
+                // skip this item
+                continue;
             }
             NewsPointItem newspointeItem = new NewsPointItem(id, imageUrl, hl, mwu, timestamp, imageid, pn, dm, pid, lid, lang, tn, wu, pnu, fu, sec, m, tags);
             ret.add(newspointeItem);

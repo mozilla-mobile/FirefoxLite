@@ -22,24 +22,35 @@ public class RepositoryBhaskar extends Repository<BhaskarItem> {
         JSONObject root = new JSONObject(source);
         JSONObject data = root.getJSONObject("data");
         JSONArray rows = data.getJSONArray("rows");
-        for (int i = 0 ; i < rows.length() ; i++) {
+        for (int i = 0; i < rows.length(); i++) {
             JSONObject row = rows.getJSONObject(i);
-            String id = row.getString("id");
-            String articleFrom = row.getString("articleFrom");
-            String category = row.getString("category");
-            String city = row.getString("city");
-            String coverPic = new JSONArray(row.getString("coverPic")).getString(0);
-            String description = row.getString("description");
-            String detailUrl = row.getString("detailUrl");
-            String keywords = row.getString("keywords");
-            String language = row.getString("language");
-            String province = row.getString("province");
-            long publishTime = row.getLong("publishTime");
-            String subcategory = row.getString("subcategory");
-            String summary = row.getString("summary");
+            String id = row.optString("id", null);
+            String articleFrom = row.optString("articleFrom", null);
+            String category = row.optString("category", null);
+            String city = row.optString("city", null);
+            final String coverPics = row.optString("coverPic", null);
+            String coverPic = null;
+            if (coverPics != null) {
+                final JSONArray picsArray = new JSONArray(coverPics);
+                if (picsArray.length() > 0) {
+                    coverPic = picsArray.getString(0);
+                }
+            }
+            String description = row.optString("description", null);
+            String detailUrl = row.optString("detailUrl", null);
+            String keywords = row.optString("keywords", null);
+            String language = row.optString("language", null);
+            String province = row.optString("province", null);
+            long publishTime = row.optLong("publishTime", -1L);
+            String subcategory = row.optString("subcategory", null);
+            String summary = row.optString("summary", null);
             String separator = "" + '\0';
             List<String> tags = Arrays.asList(row.getJSONArray("tags").join(separator).split(separator));
             String title = row.getString("title");
+            if (id == null || title == null || detailUrl == null || publishTime == -1L) {
+                // skip this item
+                continue;
+            }
             BhaskarItem itemPojo = new BhaskarItem(id, coverPic, title, detailUrl, publishTime, summary, language, category, subcategory, keywords, description, tags, articleFrom, province, city);
             ret.add(itemPojo);
         }
