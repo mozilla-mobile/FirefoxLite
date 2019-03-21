@@ -36,6 +36,10 @@ public class Site {
     @NonNull
     private String url;
 
+    @Ignore
+    @NonNull
+    private boolean isDefault = false;
+
     @ColumnInfo(name = "view_count")
     private long viewCount;
 
@@ -126,5 +130,13 @@ public class Site {
                 ", lastViewTimestamp='" + lastViewTimestamp + '\'' +
                 ", favIconUri='" + favIconUri + '\'' +
                 '}';
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 }

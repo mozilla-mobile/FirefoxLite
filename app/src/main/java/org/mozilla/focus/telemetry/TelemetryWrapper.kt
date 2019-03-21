@@ -55,6 +55,7 @@ object TelemetryWrapper {
     private const val TOOL_BAR_CAPTURE_TELEMETRY_VERSION = 3
     private const val RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 3
     private const val DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION = 2
+    private const val OPEN_HOME_LINK_VERSION = "2"
     private const val FIND_IN_PAGE_VERSION = 2
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
@@ -967,11 +968,14 @@ object TelemetryWrapper {
             method = Method.OPEN,
             `object` = Object.HOME,
             value = Value.LINK,
-            extras = [TelemetryExtra(name = Extra.ON, value = "Top Site Position")])
+            extras = [TelemetryExtra(name = Extra.ON, value = "Top Site Position"),
+                    TelemetryExtra(name = Extra.ON, value = "Preset Top Site like **")])
     @JvmStatic
-    fun clickTopSiteOn(index: Int) {
+    fun clickTopSiteOn(index: Int, source: String) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
                 .extra(Extra.ON, Integer.toString(index))
+                .extra(Extra.SOURCE, source)
+                .extra(Extra.VERSION, OPEN_HOME_LINK_VERSION)
                 .queue()
 
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOPSITE)

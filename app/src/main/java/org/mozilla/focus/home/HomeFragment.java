@@ -755,7 +755,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 ViewParent viewParent = v.getParent();
                 if (viewParent instanceof ViewGroup) {
                     int index = ((ViewGroup) v.getParent()).indexOfChild(v);
-                    TelemetryWrapper.clickTopSiteOn(index);
+                    TelemetryWrapper.clickTopSiteOn(index, site.isDefault() ? site.getTitle() : "");
                 }
             }
         }
