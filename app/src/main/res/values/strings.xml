@@ -516,7 +516,7 @@
     <!-- Content portal -->
     <!-- Title of news portal page -->
     <string name="label_menu_news">News</string>
-    <string name="label_menu_latest_&_top_trending_news">Latest & Top Trending News</string>
+    <string name="label_menu_latest_&amp_top_trending_news">Latest &amp Top Trending News</string>
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
    
