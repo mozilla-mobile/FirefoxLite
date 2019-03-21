@@ -7,7 +7,7 @@
   },
   {
     "name": "Buakalapak",
-    "urlPrefix": "https://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=",
+    "urlPrefix": "https://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&aff_sub=quicksearch&url=",
     "searchUrlPattern": "https://m.bukalapak.com/products?keywords=%s",
     "patternEncode": true,
     "urlSuffix": "%26{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers-{affiliate_id}%26utm_medium%3Daffiliate",
