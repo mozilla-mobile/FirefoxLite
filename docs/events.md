@@ -48,7 +48,7 @@
 |Click Toolbar - Add bookmark|action|share|toolbar|"bookmark"|"to=true,false," 
 |Click Toolbar - Pin shortcut|action|pin_shortcut|toolbar|"link"|"" 
 |Click Toolbar - Take Screenshot|action|click|toolbar|"capture"|"version=ping version,category=category name,category_versio=category version," 
-|Click Top Site|action|open|home|"link"|"on=Top Site Position," 
+|Click Top Site|action|open|home|"link"|"on=Top Site Position,on=Preset Top Site like **," 
 |Remove Top Site|action|remove|home|"link"|"default=true,false," 
 |Search in Home and add a tab|action|add|tab|"home"|"" 
 |Enter an url in SearchBar|action|open|search_bar|"link"|"" 
