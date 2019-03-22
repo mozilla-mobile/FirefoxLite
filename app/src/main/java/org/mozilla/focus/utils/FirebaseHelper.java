@@ -17,6 +17,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -202,10 +203,13 @@ final public class FirebaseHelper extends FirebaseWrapper {
             // this methods is blocking.
             updateInstanceId(applicationContext, enable);
 
+            // init Firebase so it can get app_id ..etc
+            FirebaseApp.initializeApp(applicationContext);
+
             enableCrashlytics(applicationContext, enable);
             enableAnalytics(applicationContext, enable);
             enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), enable);
-            enableRemoteConfig(applicationContext, enable, () -> {
+            enableRemoteConfig(applicationContext,  () -> {
                 ThreadUtils.postToBackgroundThread(() -> {
                     final String pref = applicationContext.getString(R.string.pref_s_news);
                     final String source = getRcString(applicationContext, pref);
@@ -261,16 +265,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
         return remoteConfigDefault;
     }
-
-    @Override
-    void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback) {
-        // Clear remoteConfigDefault
-        remoteConfigDefault = null;
-        getRemoteConfigDefault(context);
-        // Now also need to reset the default config in Firebase if "Send Usage Data" is turned on.
-        enableRemoteConfig(context, TelemetryWrapper.isTelemetryEnabled(context), callback);
-    }
-
 
     private HashMap<String, Object> fromFile(Context context) {
 
@@ -332,9 +326,5 @@ final public class FirebaseHelper extends FirebaseWrapper {
         } else {
             return context.getString(resId);
         }
-    }
-
-    public static void onLocaleUpdate(Context context) {
-        getInstance().refreshRemoteConfigDefault(context, null);
     }
 }

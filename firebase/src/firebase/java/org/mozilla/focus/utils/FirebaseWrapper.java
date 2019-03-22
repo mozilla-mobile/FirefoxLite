@@ -75,6 +75,7 @@ abstract class FirebaseWrapper {
 
     public interface RemoteConfigFetchCallback {
         void onFetched();
+//        void onFailed();
     }
 
     // get Remote Config string
@@ -296,19 +297,12 @@ abstract class FirebaseWrapper {
     }
 
     static void enableAnalytics(Context context, boolean enable) {
-        if (enable) {
-            FirebaseApp.initializeApp(context);
-        }
+
         FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(enable);
     }
 
     // This need to be run in worker thread since FirebaseRemoteConfigSettings has IO access
-    static void enableRemoteConfig(Context context, boolean enable, RemoteConfigFetchCallback callback) {
-        if (!enable) {
-            remoteConfig = null;
-            return;
-        }
-
+    static void enableRemoteConfig(Context context, RemoteConfigFetchCallback callback) {
 
         final FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
         remoteConfig = new WeakReference<>(config);
@@ -357,9 +351,6 @@ abstract class FirebaseWrapper {
 
     // Client code must implement this method so it's not static here.
     abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
-
-    // Client code must implement this method so it's not static here.
-    abstract void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback);
 
     @Nullable
     public static String getFcmToken() {

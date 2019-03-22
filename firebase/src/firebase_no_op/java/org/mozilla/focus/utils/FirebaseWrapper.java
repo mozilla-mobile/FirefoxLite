@@ -109,8 +109,6 @@ abstract class FirebaseWrapper {
     // Client code must implement this method so it's not static here.
     abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
 
-    abstract void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback);
-
     public static String getFcmToken() {
         return FIREBASE_STRING_DEFAULT;
     }
