@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.home;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,8 +18,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
+import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.DimenUtils;
@@ -29,9 +30,9 @@ import java.util.List;
 
 class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
 
-    List<Site> sites = new ArrayList<>();
-    final View.OnClickListener clickListener;
-    final View.OnLongClickListener longClickListener;
+    private List<Site> sites = new ArrayList<>();
+    private final View.OnClickListener clickListener;
+    private final View.OnLongClickListener longClickListener;
 
     TopSiteAdapter(@NonNull List<Site> sites,
                    @Nullable View.OnClickListener clickListener,
@@ -41,15 +42,16 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         this.longClickListener = longClickListener;
     }
 
+    @NotNull
     @Override
-    public SiteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SiteViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_top_site, parent, false);
 
         return new SiteViewHolder(view);
     }
 
-    private int addWhiteToColorCode(int colorCode, float percentage) {
+    private int addWhiteToColorCode(int colorCode, @SuppressWarnings("SameParameterValue") float percentage) {
         int result = (int) (colorCode + 0xFF * percentage / 2);
         if (result > 0xFF) {
             result = 0xFF;
@@ -57,42 +59,26 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         return result;
     }
 
-    private void setImageViewWithBackground(ImageView imageView, Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
-        setBackgroundColor(imageView, bitmap);
-        // To avoid flashing, the view is invisible until loaded.
-        imageView.setVisibility(View.VISIBLE);
-    }
-
-    private void defaultSetImageViewWithBackground(ImageView imageView, String url, int backgroundColor) {
-        final Resources resources = imageView.getResources();
-        final Bitmap bitmap = DimenUtils.getInitialBitmap(resources, FavIconUtils.getRepresentativeCharacter(url), backgroundColor);
-        setImageViewWithBackground(imageView, bitmap);
-        // To avoid flashing, the view is invisible until loaded.
-        imageView.setVisibility(View.VISIBLE);
-    }
-
     @Override
-    public void onBindViewHolder(SiteViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull SiteViewHolder holder, int position) {
         final Site site = sites.get(position);
         holder.text.setText(site.getTitle());
-        String favIconUri = site.getFavIconUri();
-        if (favIconUri != null) {
-            // Tried AsyncTask and other simple offloading, the performance drops significantly.
-            // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
-            final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskWrites();
-            Bitmap resource = FavIconUtils.getBitmapFromUri(holder.itemView.getContext(), favIconUri);
-            if (resource == null) {
-                defaultSetImageViewWithBackground(holder.img, site.getUrl(), Color.WHITE);
-            } else if (DimenUtils.iconTooBlurry(holder.img.getResources(), resource.getWidth())) {
-                defaultSetImageViewWithBackground(holder.img, site.getUrl(), FavIconUtils.getDominantColor(resource));
-            } else {
-                setImageViewWithBackground(holder.img, resource);
-            }
-            StrictMode.setThreadPolicy(threadPolicy);
-        } else {
-            defaultSetImageViewWithBackground(holder.img, site.getUrl(), Color.WHITE);
-        }
+
+        // Tried AsyncTask and other simple offloading, the performance drops significantly.
+        // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
+        // Favicon
+        final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskWrites();
+        Bitmap favicon = getFavicon(holder.itemView.getContext(), site);
+        StrictMode.setThreadPolicy(threadPolicy);
+        holder.img.setVisibility(View.VISIBLE);
+        holder.img.setImageBitmap(favicon);
+
+        // Background color
+        int backgroundColor = calculateBackgroundColor(favicon);
+        ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(backgroundColor));
+
+        // Pin
+        holder.pinView.setPinColor(backgroundColor);
 
         // let click listener knows which site is clicked
         holder.itemView.setTag(site);
@@ -105,14 +91,39 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         }
     }
 
-    private void setBackgroundColor(ImageView imageView, Bitmap favicon) {
+    private Bitmap getFavicon(Context context, Site site) {
+        String faviconUri = site.getFavIconUri();
+        Bitmap favicon = null;
+        if (faviconUri != null) {
+            favicon = FavIconUtils.getBitmapFromUri(context, faviconUri);
+        }
+
+        return getBestFavicon(context.getResources(), site.getUrl(), favicon);
+    }
+
+    private Bitmap getBestFavicon(Resources res, String url, @Nullable Bitmap favicon) {
+        if (favicon == null) {
+            return createFavicon(res, url, Color.WHITE);
+        } else if (DimenUtils.iconTooBlurry(res, favicon.getWidth())) {
+            return createFavicon(res, url, FavIconUtils.getDominantColor(favicon));
+        } else {
+            return favicon;
+        }
+    }
+
+    private Bitmap createFavicon(Resources resources, String url, int backgroundColor) {
+        return DimenUtils.getInitialBitmap(resources, FavIconUtils.getRepresentativeCharacter(url),
+                backgroundColor);
+    }
+
+    private int calculateBackgroundColor(Bitmap favicon) {
         int dominantColor = FavIconUtils.getDominantColor(favicon);
         int alpha = (dominantColor & 0xFF000000);
         // Add 25% white to dominant Color
         int red = addWhiteToColorCode((dominantColor & 0x00FF0000) >> 16, 0.25f) << 16;
         int green = addWhiteToColorCode((dominantColor & 0x0000FF00) >> 8, 0.25f) << 8;
         int blue = addWhiteToColorCode((dominantColor & 0x000000FF), 0.25f);
-        ViewCompat.setBackgroundTintList(imageView, ColorStateList.valueOf(alpha + red + green + blue));
+        return alpha + red + green + blue;
     }
 
     @Override
@@ -120,20 +131,9 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         return sites.size();
     }
 
-    public void addSite(int index, @NonNull Site toAdd) {
+    void addSite(int index, @NonNull Site toAdd) {
         this.sites.add(index, toAdd);
         notifyItemInserted(index);
-    }
-
-    public void removeSite(@NonNull Site toRemove) {
-        for (int i = 0; i < this.sites.size(); i++) {
-            final Site site = this.sites.get(i);
-            if (site.getId() == toRemove.getId()) {
-                this.sites.remove(i);
-                notifyDataSetChanged();
-//                notifyItemRemoved(i);
-            }
-        }
     }
 
     public void setSites(@NonNull List<Site> sites) {

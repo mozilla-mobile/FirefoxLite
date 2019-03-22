@@ -16,10 +16,12 @@ class SiteViewHolder extends RecyclerView.ViewHolder {
 
     AppCompatImageView img;
     TextView text;
+    PinViewWrapper pinView;
 
     public SiteViewHolder(View itemView) {
         super(itemView);
         img = (AppCompatImageView) itemView.findViewById(R.id.content_image);
         text = (TextView) itemView.findViewById(R.id.text);
+        pinView = new PinViewWrapper(itemView.findViewById(R.id.pin_indicator));
     }
 }
