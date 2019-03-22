@@ -46,7 +46,6 @@ abstract class FirebaseWrapper {
     private static FirebaseWrapper instance;
 
 
-
     // ==== Remote Config =====
     // FirebaseRemoteConfig has access to context internally so it need to be WeakReference
     private static WeakReference<FirebaseRemoteConfig> remoteConfig;
@@ -153,22 +152,15 @@ abstract class FirebaseWrapper {
     }
 
     @WorkerThread
-    static void updateInstanceId(Context context, boolean enable) {
+    static void deleteInstanceId(Context context) {
         try {
-            if (enable) {
-                // if FirebaseApp has already initialized, it'll return it's instance.
-                // if the app starts with Firebase disabled, call initializeApp() before getInstance()
-                FirebaseApp.initializeApp(context);
-                // This method is synchronized and runs in background thread
-                FirebaseInstanceId.getInstance().getToken();
-            } else {
-                // This method is synchronized and runs in background thread
-                FirebaseInstanceId.getInstance().deleteInstanceId();
+            // This method is synchronized and runs in background thread
+            FirebaseInstanceId.getInstance().deleteInstanceId();
 
-            }
+
             // below catch is important, if the app starts with Firebase disabled, calling getInstance()
             // will throw IllegalStateException
-        } catch (IllegalStateException | IOException e) {
+        } catch (IOException e) {
             Log.e(TAG, "FirebaseInstanceId update failed ", e);
         }
 

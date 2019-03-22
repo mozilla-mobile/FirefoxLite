@@ -75,7 +75,7 @@ abstract class FirebaseWrapper {
     }
 
 
-    static void updateInstanceId(Context context, boolean enable) {
+    static void deleteInstanceId(Context context) {
     }
 
     static void initInternal(FirebaseWrapper wrapper) {

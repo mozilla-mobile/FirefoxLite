@@ -78,8 +78,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String STR_SHARE_APP_DIALOG_MSG = "str_share_app_dialog_msg";
 
     private HashMap<String, Object> remoteConfigDefault;
-    private static boolean changing = false;
-    private static Boolean pending = null;
 
     @Nullable
     private static BlockingEnablerCallback enablerCallback;
@@ -101,13 +99,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
         if (getInstance() == null) {
             initInternal(new FirebaseHelper());
         }
-        bind(context, enabled);
-    }
-
-
-    public static boolean bind(@NonNull final Context context, boolean enabled) {
         checkIfApiReady(context);
-        return enableFirebase(context.getApplicationContext(), enabled);
+        enableFirebase(context.getApplicationContext(), enabled);
     }
 
     private static void checkIfApiReady(Context context) {
@@ -126,28 +119,41 @@ final public class FirebaseHelper extends FirebaseWrapper {
     }
 
     /**
-     * @param context Should be application context. It's used for component enable/disable, and
+     * @param applicationContext Should be application context. It's used for component enable/disable, and
      * @param enable  A boolean to determine if we should enable Firebase or not
      * @return Return true if a new runnable is created. otherwise return false.I need this return value for testing (as the return value of bind() method)
      */
-    private static boolean enableFirebase(final Context context, final boolean enable) {
+    private static boolean enableFirebase(final Context applicationContext, final boolean enable) {
 
-        // if the task is already running, we cache the value in pending, and avoid creating a new AsyncTask.
-        // I use a variable here, instead of keeping a reference to the AsyncTask below and use
-        // its running state as this flag. Cause I'm hesitated to keep a reference to an AsyncTask.
-        if (changing) {
-            pending = enable;
-            return false;
+
+        setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
+        FirebaseApp.initializeApp(applicationContext);
+
+        enableAnalytics(applicationContext, enable);
+        enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
+        enableRemoteConfig(applicationContext, () -> {
+            ThreadUtils.postToBackgroundThread(() -> {
+                final String pref = applicationContext.getString(R.string.pref_s_news);
+                final String source = getRcString(applicationContext, pref);
+                final Settings settings = Settings.getInstance(applicationContext);
+                final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
+                Log.d(NewsSourceManager.TAG, "Remote Config fetched");
+                if (!TextUtils.isEmpty(source) && (canOverride || TextUtils.isEmpty(settings.getNewsSource()))) {
+                    Log.d(NewsSourceManager.TAG, "Remote Config is used:" + source);
+                    settings.setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
+                    settings.setNewsSource(source);
+                    NewsSourceManager.getInstance().setNewsSource(source);
+                }
+            });
+        });
+
+        if (!enable) {
+            new BlockingEnabler(applicationContext).execute();
+
         }
-        // Now it's time to change the state of firebase helper.
-        changing = true;
-        // starting from now, there's no pending state. (pending state will only be used in the runnable)
-        pending = null;
-
-        final BlockingEnabler blockingEnabler = new BlockingEnabler(context, enable);
-        blockingEnabler.doInBackground();
         return true;
     }
+
 
     // an interface for testing code to inject delay to BlockingEnabler
     public interface BlockingEnablerCallback {
@@ -161,19 +167,14 @@ final public class FirebaseHelper extends FirebaseWrapper {
         WeakReference<Context> weakApplicationContext;
 
         // We only need application context here.
-        BlockingEnabler(Context c, boolean state) {
-            enable = state;
+        BlockingEnabler(Context c) {
             weakApplicationContext = new WeakReference<>(c.getApplicationContext());
-
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
 
-
-
             // although we should check for weakApplicationContext.get() every time before we use it,
-            // but since it's an application context so we should be fine here.
             // but since it's an application context so we should be fine here.
             final Context applicationContext = weakApplicationContext.get();
 
@@ -183,52 +184,10 @@ final public class FirebaseHelper extends FirebaseWrapper {
                 callback.runDelayOnExecution();
             }
 
-            setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
-
-            // make sure we are in the changing state
-            changing = true;
-
             // this methods is blocking.
-            updateInstanceId(applicationContext, enable);
-
-            // init Firebase so it can get app_id ..etc
-            FirebaseApp.initializeApp(applicationContext);
-
-            enableAnalytics(applicationContext, enable);
-            enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), enable);
-            enableRemoteConfig(applicationContext,  () -> {
-                ThreadUtils.postToBackgroundThread(() -> {
-                    final String pref = applicationContext.getString(R.string.pref_s_news);
-                    final String source = getRcString(applicationContext, pref);
-                    final Settings settings = Settings.getInstance(applicationContext);
-                    final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
-                    Log.d(NewsSourceManager.TAG, "Remote Config fetched");
-                    if (!TextUtils.isEmpty(source) && (canOverride || TextUtils.isEmpty(settings.getNewsSource()))) {
-                        Log.d(NewsSourceManager.TAG, "Remote Config is used:" + source);
-                        settings.setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
-                        settings.setNewsSource(source);
-                        NewsSourceManager.getInstance().setNewsSource(source);
-                    }
-                });
-            });
-            // now firebase has completed state changing,
-            changing = false;
-            // we'll check if the cached state is the same as our current one. If not, issue
-            // a state change again.
-            if (pending != null && pending != enable) {
-                enableFirebase(applicationContext, pending);
-            } else {
-                // after now, there'll be now pending state.
-                pending = null;
-            }
+            deleteInstanceId(applicationContext);
 
             return null;
-        }
-
-        protected void onPostExecute(Void result) {
-            if (pending == null) {
-                LocalBroadcastManager.getInstance(weakApplicationContext.get()).sendBroadcast(new Intent(FIREBASE_READY));
-            }
         }
 
     }
