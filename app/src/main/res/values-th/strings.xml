@@ -79,6 +79,7 @@
   <string name="first_run_page5_title">ความเป็นส่วนตัวระดับถัดไป</string>
   <string name="first_run_page5_text">ท่องเว็บโดยไม่มีร่องรอย และปิดกั้นตัวติดตามเว็บทั่วไปจำนวนมากโดยค่าเริ่มต้น ทำให้มั่นใจในความปลอดภัยของข้อมูลที่เป็นความลับของคุณ</string>
   <string name="first_run_page6_title">ค้นพบสิ่งใหม่ ๆ</string>
+  <string name="first_run_page6_text">ไม่พลาดทุกข่าวสารด้วย “%1$s” เพียงพลิกครั้งเดียว คุณก็จะพบเนื้อหาตั้งแต่หัวข้อที่ยอดนิยมที่สุดจนถึงดีลสุดฮอต %2$s</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
   <string name="new_name_upgrade_page_title">เรามีหน้าตาใหม่!</string>
   <string name="new_name_upgrade_page_text">ด้วยผลิตภัณฑ์ที่ได้รับการพัฒนา เรานำ %1$s แบบใหม่พร้อมชื่อใหม่และโลโก้ใหม่มาให้คุณ</string>

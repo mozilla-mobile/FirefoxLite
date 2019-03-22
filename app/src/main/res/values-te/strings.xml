@@ -21,10 +21,12 @@
   <string name="about_link_support">తోడ్పాటు</string>
   <string name="about_link_your_rights">మీ హక్కులు / లైసెన్సులు</string>
   <string name="about_link_privacy">గోప్యతా విధానం</string>
+  <string name="about_link_life_feed">%1$s గురించి మరింత తెలుసుకోండి</string>
   <string name="preference_search_engine_default">అప్రమేయ శోధన యంత్రం</string>
   <string name="preference_language">భాష</string>
   <string name="preference_language_systemdefault">వ్యవస్థ అప్రమేయం</string>
   <string name="preference_dialog_title_search_engine">అప్రమేయ శోధన యంత్రం</string>
+  <string name="preference_dialog_title_news_source">వార్తల మూలం</string>
   <string name="preference_data_saving_block_images">బొమ్మలను నిరోధించు</string>
   <string name="preference_privacy_storage_clear_browsing_data">విహరణ చరిత్రను తుడిచేయి</string>
   <string name="preference_privacy_storage_save_downloads_to">దింపుకోళ్ళను ఇక్కడ భద్రపరుచు</string>
@@ -72,6 +74,7 @@
   <string name="first_run_page4_title">మెత్తం పేజీనంతా తెరపట్టు తీయి</string>
   <string name="first_run_page4_text">పూర్తి వెబ్ పేజీల తెరపట్లు తీసుకోండి. తెరపట్టును ఆఫ్‌లైనులో (డేటా వాడుకోకుండా) చూడండి లేదా వెబ్ పేజీను మళ్ళీ చూడడానికి దానిపై తాకండి.</string>
   <string name="first_run_page5_title">తరువాత స్థాయి అంతరంగికత</string>
+  <string name="first_run_page6_title">కొత్త విషయాలు కనుగొనండి</string>
   <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందన విన్నాము!</string>
   <string name="new_name_upgrade_page_title">మాకు కొత్త రూపం వచ్చింది!</string>
   <string name="first_run_upgrade_page_text1">1. ఒకేసారి %s తెరవడం ద్వారా మల్టీటాస్కింగు చెయ్యండి!</string>
@@ -97,6 +100,7 @@
   <string name="label_menu_exit">నిష్క్రమించు</string>
   <string name="permission_toast_location_deny">స్థాన అనుమతి నిరాకరించబడింది.</string>
   <string name="permission_toast_storage_deny">నిల్వ అనుమతి నిరాకరించబడింది.</string>
+  <string name="permission_handler_permission_dialog_setting">అమరికలు</string>
   <string name="permission_dialog_not_now">ఇప్పుడు కాదు</string>
   <string name="permission_toast_location">స్థానం అందుబాటులో లేదు. మీ స్థానాన్ని చూడడానికి అనుమతి ఇవ్వండి.</string>
   <string name="permission_toast_storage">నిల్వ అందుబాటులో లేదు. మీ పరికరంలో ఫొటోలను ఫైళ్ళను నిల్వవుంచడానికి అనుమతి ఇవ్వండి.</string>

@@ -65,7 +65,7 @@
   <string name="contextmenu_link_copy">Salén peunawôt alamat</string>
   <string name="contextmenu_image_share">Bulueng gamba</string>
   <string name="contextmenu_image_copy">Salén alamat gamba</string>
-  <string name="contextmenu_image_save">Keubah alamat</string>
+  <string name="contextmenu_image_save">Keubah gamba</string>
   <string name="contextmenu_open_in_new_tab">Peuhah peunawôt bak tab barô</string>
   <string name="contextmenu_open_image_in_new_tab">Peuhah gamba bak tab barô</string>
   <string name="first_run_page1_title">Sabah ka neupiléh %1$s</string>
