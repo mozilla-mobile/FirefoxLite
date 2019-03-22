@@ -127,15 +127,15 @@ final public class FirebaseHelper extends FirebaseWrapper {
     private static boolean enableFirebase(final Context applicationContext, final boolean enable) {
 
 
-        Companion.setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
+        Companion.getInstance().setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
         FirebaseApp.initializeApp(applicationContext);
 
-        Companion.enableAnalytics(applicationContext, enable);
-        Companion.enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
-        Companion.enableRemoteConfig(applicationContext, () -> {
+        Companion.getInstance().enableAnalytics(applicationContext, enable);
+        Companion.getInstance().enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
+        Companion.getInstance().enableRemoteConfig(applicationContext, () -> {
             ThreadUtils.postToBackgroundThread(() -> {
                 final String pref = applicationContext.getString(R.string.pref_s_news);
-                final String source = Companion.getRcString(applicationContext, pref);
+                final String source = Companion.getInstance().getRcString(applicationContext, pref);
                 final Settings settings = Settings.getInstance(applicationContext);
                 final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
                 Log.d(NewsSourceManager.TAG, "Remote Config fetched");
@@ -174,7 +174,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
             }
 
             // this methods is blocking.
-            Companion.deleteInstanceId();
+            Companion.getInstance().deleteInstanceId();
 
             return null;
         }

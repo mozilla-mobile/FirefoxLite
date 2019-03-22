@@ -121,7 +121,7 @@ class FirebaseEvent {
             return;
         }
         if (TelemetryWrapper.isTelemetryEnabled(context)) {
-            FirebaseHelper.Companion.event(context.getApplicationContext(), this.eventName, this.eventParam);
+            FirebaseHelper.Companion.getInstance().event(context.getApplicationContext(), this.eventName, this.eventParam);
         }
     }
 
