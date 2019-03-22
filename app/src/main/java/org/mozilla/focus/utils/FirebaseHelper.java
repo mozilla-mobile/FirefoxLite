@@ -9,15 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.google.firebase.FirebaseApp;
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
@@ -26,12 +23,10 @@ import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.content.NewsSourceManager;
 import org.mozilla.rocket.periodic.FirstLaunchWorker;
 import org.mozilla.threadutils.ThreadUtils;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
@@ -78,6 +73,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String STR_SHARE_APP_DIALOG_CONTENT = "str_share_app_dialog_content";
     static final String STR_SHARE_APP_DIALOG_MSG = "str_share_app_dialog_msg";
 
+    static final String NEWLINE_PLACE_HOLDER = "<BR>";
+
     private HashMap<String, Object> remoteConfigDefault;
 
     @Nullable
@@ -104,6 +101,11 @@ final public class FirebaseHelper extends FirebaseWrapper {
         enableFirebase(context.getApplicationContext(), enabled);
     }
 
+    public static String prettify(String string) {
+        return string.replace(NEWLINE_PLACE_HOLDER, "\n");
+    }
+
+
     private static void checkIfApiReady(Context context) {
         if (AppConstants.isBuiltWithFirebase()) {
             final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
@@ -126,10 +128,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
      */
     private static boolean enableFirebase(final Context applicationContext, final boolean enable) {
 
-
         Companion.getInstance().setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
-        FirebaseApp.initializeApp(applicationContext);
-
+        Companion.getInstance().init(applicationContext);
         Companion.getInstance().enableAnalytics(applicationContext, enable);
         Companion.getInstance().enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
         Companion.getInstance().enableRemoteConfig(applicationContext, () -> {
@@ -145,6 +145,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
                     settings.setNewsSource(source);
                     NewsSourceManager.getInstance().setNewsSource(source);
                 }
+                LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(new Intent(FirebaseHelper.FIREBASE_READY));
             });
         });
 
@@ -183,7 +184,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     @NotNull
     @Override
-    public HashMap<String, Object> getRemoteConfigDefault$firebase_firebase(@NotNull Context context) {
+    public HashMap<String, Object> getRemoteConfigDefault(@NotNull Context context) {
 
         if (remoteConfigDefault == null) {
             final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();

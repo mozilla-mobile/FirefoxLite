@@ -103,7 +103,7 @@ public class AppConfigWrapper {
     // Only this field supports prettify
     static String getShareAppDialogContent(Context context) {
         final String rcString = FirebaseHelper.Companion.getInstance().getRcString(context, FirebaseHelper.STR_SHARE_APP_DIALOG_CONTENT);
-        return FirebaseHelper.Companion.getInstance().prettify(rcString);
+        return FirebaseHelper.prettify(rcString);
     }
 
     static String getShareAppMessage(Context context) {
