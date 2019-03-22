@@ -46,20 +46,6 @@ abstract class FirebaseWrapper {
     private static FirebaseWrapper instance;
 
 
-    // ==== Crashlytics =====
-    private static final String DIR_FABRIC_ROOT = "//data//data//%s//files//.Fabric";
-    private static final String DIR_FABRIC_CRASHLYTICS_CORE = DIR_FABRIC_ROOT + "//com.crashlytics.sdk.android.crashlytics-core";
-    private static final String DIR_FABRIC_CRASHLYTICS_CORE_LOG = DIR_FABRIC_CRASHLYTICS_CORE + "//log-files";
-    private static final String DIR_FABRIC_ANSWERS = DIR_FABRIC_ROOT + "//com.crashlytics.sdk.android:answers";
-    private static final String DIR_FABRIC_SETTINGS = DIR_FABRIC_ROOT + "//io.fabric.sdk.android:fabric";
-
-
-    private static final String FIREBASE_CRASH_HANDLER_CLASS = "com.crashlytics.android.core.CrashlyticsUncaughtExceptionHandler";
-    private static final String FIREBASE_CRASH_HANDLER_DEFAULT = "defaultHandler";
-
-    private static Thread.UncaughtExceptionHandler systemCrashHandler;
-    private static Thread.UncaughtExceptionHandler firebaseCrashHandler;
-
 
     // ==== Remote Config =====
     // FirebaseRemoteConfig has access to context internally so it need to be WeakReference
@@ -209,91 +195,6 @@ abstract class FirebaseWrapper {
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 
         context.getPackageManager().setComponentEnabledSetting(component, newState, PackageManager.DONT_KILL_APP);
-    }
-
-    private static void initCrashlytics(Context context) {
-        try {
-            final Fabric fabric = new Fabric.Builder(context)
-                    .kits(new Crashlytics())
-                    .debuggable(developerModeEnabled)           // Enables Crashlytics debugger
-                    .build();
-            Fabric.with(fabric);
-            Log.i(TAG, "CrashlyticsInitProvider initialization successful");
-        } catch (IllegalStateException e) {
-            Log.e(TAG, "CrashlyticsInitProvider initialization unsuccessful", e);
-        }
-    }
-
-    // If we disable Crashlytics at runtime, we'll need to switch to the origin UncaughtExceptionHandler
-    private static void setupUncaughtExceptionHandler() {
-
-        final Thread.UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
-
-        try {
-            // If the cached handler if from Firebase
-            if (handler != null && handler.getClass().getName().equals(FIREBASE_CRASH_HANDLER_CLASS)) {
-                firebaseCrashHandler = handler;
-                // We use reflection to get it's  systemHandler. Which should be RuntimeInit$UncaughtHandler
-                final Field systemHandler = handler.getClass().getDeclaredField(FIREBASE_CRASH_HANDLER_DEFAULT); //NoSuchFieldException
-                // Make it accessible
-                systemHandler.setAccessible(true);
-
-                systemCrashHandler = (Thread.UncaughtExceptionHandler) systemHandler.get(handler);
-
-            } else {
-
-                firebaseCrashHandler = null;
-                systemCrashHandler = handler;
-            }
-
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-
-            systemCrashHandler = handler;
-
-            Log.e(TAG, "initCrashlytics failed: " + e);
-
-        }
-    }
-
-    // Replace DefaultUncaughtExceptionHandler with our naive implementation
-    // We don't need to cache the original UncaughtExceptionHandler
-    // If we want to restart crashlytics, we just restart the app and don't call this method here.
-    static void enableCrashlytics(Context context, boolean enable) {
-
-        setupUncaughtExceptionHandler();
-
-        if (enable) {
-            initCrashlytics(context);
-            if (firebaseCrashHandler != null) {
-                Thread.setDefaultUncaughtExceptionHandler(firebaseCrashHandler);
-            }
-        } else if (systemCrashHandler != null) {
-            Thread.setDefaultUncaughtExceptionHandler(systemCrashHandler);
-            removeCrashReportDirectory(context);
-        }
-    }
-
-    private static void removeCrashReportDirectory(Context context) {
-
-        deleteAllFiles(context, DIR_FABRIC_CRASHLYTICS_CORE);
-        deleteAllFiles(context, DIR_FABRIC_CRASHLYTICS_CORE_LOG);
-        deleteAllFiles(context, DIR_FABRIC_ANSWERS);
-        deleteAllFiles(context, DIR_FABRIC_SETTINGS);
-
-    }
-
-    private static void deleteAllFiles(Context context, String dirFabricCrashlyticsCore) {
-        final String path = String.format(dirFabricCrashlyticsCore, context.getPackageName());
-        final File crashlyticsReportDir = new File(path);
-        try {
-            if (crashlyticsReportDir.exists() && crashlyticsReportDir.isDirectory()) {
-                for (File report : crashlyticsReportDir.listFiles()) {
-                    report.delete();
-                }
-            }
-        } catch (SecurityException e) {
-            Log.e(TAG, "Fail when deleting all files in : " + dirFabricCrashlyticsCore, e);
-        }
     }
 
     static void enableAnalytics(Context context, boolean enable) {

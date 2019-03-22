@@ -89,12 +89,6 @@ abstract class FirebaseWrapper {
     }
 
 
-    // Replace DefaultUncaughtExceptionHandler with our naive implementation
-    // We don't need to cache the original UncaughtExceptionHandler
-    // If we want to restart crashlytics, we just restart the app and don't call this method here.
-    static void enableCrashlytics(Context context, boolean enable) {
-
-    }
 
     static void enableAnalytics(Context context, boolean enable) {
     }

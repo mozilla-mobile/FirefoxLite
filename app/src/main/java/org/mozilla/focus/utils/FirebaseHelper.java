@@ -145,7 +145,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         pending = null;
 
         final BlockingEnabler blockingEnabler = new BlockingEnabler(context, enable);
-        blockingEnabler.execute();
+        blockingEnabler.doInBackground();
         return true;
     }
 
@@ -171,19 +171,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         protected Void doInBackground(Void... voids) {
 
 
-            // make StrictMode quiet here, cause Crashlytics has StrictMode.onUntaggedSocket violation
-            // and some I/O access below will also conduct StrictModeDiskReadViolation. I'll set it back after all works are done
-            final StrictMode.ThreadPolicy cachedThreadPolicy = StrictMode.getThreadPolicy();
-            final StrictMode.VmPolicy cacheVmPolicy = StrictMode.getVmPolicy();
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().build());
 
-            if (weakApplicationContext == null || weakApplicationContext.get() == null) {
-                // set back the policy if this happened.
-                StrictMode.setThreadPolicy(cachedThreadPolicy);
-                StrictMode.setVmPolicy(cacheVmPolicy);
-                return null;
-            }
             // although we should check for weakApplicationContext.get() every time before we use it,
             // but since it's an application context so we should be fine here.
             // but since it's an application context so we should be fine here.
@@ -206,7 +194,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
             // init Firebase so it can get app_id ..etc
             FirebaseApp.initializeApp(applicationContext);
 
-            enableCrashlytics(applicationContext, enable);
             enableAnalytics(applicationContext, enable);
             enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), enable);
             enableRemoteConfig(applicationContext,  () -> {
@@ -234,9 +221,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
                 // after now, there'll be now pending state.
                 pending = null;
             }
-
-            StrictMode.setThreadPolicy(cachedThreadPolicy);
-            StrictMode.setVmPolicy(cacheVmPolicy);
 
             return null;
         }
