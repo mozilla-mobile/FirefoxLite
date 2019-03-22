@@ -22,10 +22,13 @@
   <string name="about_link_support">સહાય</string>
   <string name="about_link_your_rights">તમારા અધિકારો / પરવાનગીઓ</string>
   <string name="about_link_privacy">ગોપનીયતા સૂચના</string>
+  <string name="life_feed">મુખ્ય લેખકો</string>
+  <string name="about_link_life_feed">%1$s વિશે વધુ જાણો</string>
   <string name="preference_search_engine_default">મૂળભૂત શોધ એંજીન</string>
   <string name="preference_language">ભાષા</string>
   <string name="preference_language_systemdefault">સિસ્ટમ મૂળભૂત</string>
   <string name="preference_dialog_title_search_engine">મૂળભૂત શોધ એંજીન</string>
+  <string name="preference_dialog_title_news_source">સમાચાર સ્રોત</string>
   <string name="preference_data_saving_block_images">છબીઓ અવરોધિત કરો</string>
   <string name="preference_privacy_storage_clear_browsing_data">બ્રાઉઝિંગ ડેટા સાફ કરો</string>
   <string name="preference_privacy_storage_save_downloads_to">ડાઉનલોડને આમાં સાચવો</string>
@@ -75,6 +78,8 @@
   <string name="first_run_page4_text">સમગ્ર પૃષ્ઠ સ્ક્રોલનું સ્ક્રીનશોટ લો. ડેટાનો ઉપયોગ કર્યા વિના તેને ઑફલાઇન વાંચો અથવા વેબ પૃષ્ઠ પર ફરીથી મુલાકાત લેવા તે દબાવો.</string>
   <string name="first_run_page5_title">આગળની કક્ષાની ગોપનીયતા</string>
   <string name="first_run_page5_text">ટ્રેસ વિના બ્રાઉઝ કરો અને ડિફૉલ્ટ રૂપે સામાન્ય વેબ ટ્રેકર્સની વિશાળ શ્રેણીને અવરોધિત કરો. તમારા ગોપનીય ડેટાની સુરક્ષાની ખાતરી કરો.</string>
+  <string name="first_run_page6_title">નવી વસ્તુઓ શોધો</string>
+  <string name="first_run_page6_text">ફક્ત એક ફ્લિપ કરો, પોતાને “%1$s” સાથે અપડેટ કરો - સૌથી વધુ લોકપ્રિય વિષયોથી વિવિધ હૉટેસ્ટ સોદા સુધી. %2$s</string>
   <string name="first_run_upgrade_page_title">અમે તમારી પ્રતિક્રિયા સાંભળી!</string>
   <string name="new_name_upgrade_page_title">અમારી પાસે એક નવો દેખાવ છે!</string>
   <string name="new_name_upgrade_page_text">વિકસિત ઉત્પાદન સાથે, અમે તમારી માટે નવાં નામ અને નવાં લોગો સાથે નવું તાજું %1$s લાવીએ છીએ.</string>
