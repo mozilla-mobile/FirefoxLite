@@ -23,7 +23,7 @@ import java.util.HashMap
 /**
  * It's a wrapper to communicate with Firebase
  */
-abstract class FirebaseWrapper {
+abstract class FirebaseWrapper : FirebaseContract{
 
     interface RemoteConfigFetchCallback {
         fun onFetched()
@@ -34,7 +34,7 @@ abstract class FirebaseWrapper {
     internal abstract fun getRemoteConfigDefault(context: Context): HashMap<String, Any>
 
     // get Remote Config string
-    fun getRcString(context: Context, key: String): String {
+    override fun getRcString(context: Context, key: String): String {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized")
             throwRcNotInitException()
@@ -59,11 +59,11 @@ abstract class FirebaseWrapper {
         return FIREBASE_STRING_DEFAULT
     }
 
-    fun prettify(string: String): String {
+    override fun prettify(string: String): String {
         return string.replace(NEWLINE_PLACE_HOLDER, "\n")
     }
 
-    fun getRcLong(context: Context, key: String): Long {
+    override fun getRcLong(context: Context, key: String): Long {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized")
             throwRcNotInitException()
@@ -90,7 +90,7 @@ abstract class FirebaseWrapper {
         return FIREBASE_LONG_DEFAULT
     }
 
-    fun getRcBoolean(context: Context, key: String): Boolean {
+    override fun getRcBoolean(context: Context, key: String): Boolean {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized")
             throwRcNotInitException()
@@ -116,7 +116,7 @@ abstract class FirebaseWrapper {
     }
 
     @WorkerThread
-    fun deleteInstanceId() {
+    override fun deleteInstanceId() {
         try {
             // This method is synchronized and runs in background thread
             FirebaseInstanceId.getInstance().deleteInstanceId()
@@ -129,7 +129,7 @@ abstract class FirebaseWrapper {
     }
 
 
-    fun enableCloudMessaging(context: Context, componentName: String, enable: Boolean) {
+    override fun enableCloudMessaging(context: Context, componentName: String, enable: Boolean) {
 
         val component = ComponentName(context, componentName)
 
@@ -141,13 +141,13 @@ abstract class FirebaseWrapper {
         )
     }
 
-    fun enableAnalytics(context: Context, enable: Boolean) {
+    override fun enableAnalytics(context: Context, enable: Boolean) {
 
         FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(enable)
     }
 
     // This need to be run in worker thread since FirebaseRemoteConfigSettings has IO access
-    fun enableRemoteConfig(context: Context, callback: RemoteConfigFetchCallback) {
+    override fun enableRemoteConfig(context: Context, callback: RemoteConfigFetchCallback) {
 
         val config = FirebaseRemoteConfig.getInstance()
         remoteConfig = WeakReference(config)
@@ -162,14 +162,7 @@ abstract class FirebaseWrapper {
         if (config.info.configSettings.isDeveloperModeEnabled) {
             remoteConfigCacheExpirationInSeconds = 0
         }
-        refreshRemoteConfig(callback)
-    }
 
-    // Call this method to refresh the value in remote config.
-    // Client code can access the remote config value in UI thread. But if the work here is not done,
-    // it'll still see the old value.
-    private fun refreshRemoteConfig(callback: RemoteConfigFetchCallback?) {
-        val config = remoteConfig!!.get() ?: return
         config.fetch(remoteConfigCacheExpirationInSeconds).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "Firebase RemoteConfig Fetch Successfully ")
@@ -181,13 +174,13 @@ abstract class FirebaseWrapper {
         }
     }
 
-    fun setDeveloperModeEnabled(developerModeEnabled: Boolean) {
+    override fun setDeveloperModeEnabled(developerModeEnabled: Boolean) {
         FirebaseWrapper.developerModeEnabled = developerModeEnabled
     }
 
     // If Firebase is not initialized, getInstance() will throw an exception here
     // Since  This method is for debugging, return empty string is acceptable
-    val fcmToken: String?
+    override val fcmToken: String?
         get() {
             try {
                 return FirebaseInstanceId.getInstance().token
@@ -196,6 +189,13 @@ abstract class FirebaseWrapper {
                 return FIREBASE_STRING_DEFAULT
             }
         }
+
+    override fun event(context: Context?, @Size(min = 1L, max = 40L) key: String, param: Bundle?) {
+        if (context == null) {
+            return
+        }
+        FirebaseAnalytics.getInstance(context).logEvent(key, param)
+    }
 
     private fun throwGetValueException(method: String) {
         if (developerModeEnabled) {
@@ -207,13 +207,6 @@ abstract class FirebaseWrapper {
         if (developerModeEnabled) {
             throw IllegalStateException("FirebaseWrapper not initialized")
         }
-    }
-
-    fun event(context: Context?, @Size(min = 1L, max = 40L) key: String, param: Bundle?) {
-        if (context == null) {
-            return
-        }
-        FirebaseAnalytics.getInstance(context).logEvent(key, param)
     }
 
     companion object {
