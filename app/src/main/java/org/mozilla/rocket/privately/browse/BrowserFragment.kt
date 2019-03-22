@@ -34,6 +34,7 @@ import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
+import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
@@ -45,6 +46,7 @@ import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
+import org.mozilla.rocket.tabs.TabViewClient
 import org.mozilla.rocket.tabs.TabViewEngineSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.TabUtil
@@ -471,6 +473,16 @@ class BrowserFragment : LocaleAwareFragment(),
                     d
                     )
             return true
+        }
+
+        override fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?) {
+            val builder = HttpAuthenticationDialogBuilder.Builder(fragment.activity, host, realm)
+                    .setOkListener { _, _, username, password -> callback.proceed(username, password) }
+                    .setCancelListener { callback.cancel() }
+                    .build()
+
+            builder.createDialog()
+            builder.show()
         }
     }
 

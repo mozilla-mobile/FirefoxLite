@@ -5,6 +5,8 @@
 
 package org.mozilla.rocket.tabs;
 
+import android.support.annotation.NonNull;
+
 /**
  * An abstract layer of @see{android.webkit.WebViewClient}
  */
@@ -28,5 +30,14 @@ public class TabViewClient {
 
 
     public void updateFailingUrl(String url, boolean updateFromError) {
+    }
+
+    public void onHttpAuthRequest(@NonNull HttpAuthCallback callback, String host, String realm) {
+    }
+
+    public interface HttpAuthCallback {
+        void proceed(String username, String password);
+
+        void cancel();
     }
 }

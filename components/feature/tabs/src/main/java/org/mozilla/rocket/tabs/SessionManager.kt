@@ -425,6 +425,10 @@ class SessionManager @JvmOverloads constructor(
             val consumers: List<(WebChromeClient.FileChooserParams?) -> Boolean> = wrapConsumers { onShowFileChooser(es, filePathCallback, it) }
             return Consumable.from(fileChooserParams).consumeBy(consumers)
         }
+
+        override fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?) {
+            notifyObservers { onHttpAuthRequest(callback, host, realm) }
+        }
     }
 
     /**

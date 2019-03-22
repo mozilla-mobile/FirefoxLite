@@ -70,6 +70,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
+import org.mozilla.focus.web.HttpAuthenticationDialogBuilder;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FindInPage;
@@ -89,6 +90,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewClient;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.tabs.utils.TabUtil;
@@ -1335,6 +1337,17 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onNavigationStateChanged(@NotNull Session session, boolean canGoBack, boolean canGoForward) {
         }
+
+        @Override
+        public void onHttpAuthRequest(@NotNull TabViewClient.HttpAuthCallback callback, @Nullable String host, @Nullable String realm) {
+            HttpAuthenticationDialogBuilder builder = new HttpAuthenticationDialogBuilder.Builder(getActivity(), host, realm)
+                    .setOkListener((host1, realm1, username, password) -> callback.proceed(username, password))
+                    .setCancelListener(callback::cancel)
+                    .build();
+
+            builder.createDialog();
+            builder.show();
+        }
     }
 
     class SessionManagerObserver implements SessionManager.Observer {
@@ -1499,6 +1512,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public boolean onShowFileChooser(@NotNull TabViewEngineSession es, @org.jetbrains.annotations.Nullable ValueCallback<Uri[]> filePathCallback, @org.jetbrains.annotations.Nullable WebChromeClient.FileChooserParams fileChooserParams) {
             return sessionObserver.onShowFileChooser(es, filePathCallback, fileChooserParams);
+        }
+
+        @Override
+        public void onHttpAuthRequest(@NotNull TabViewClient.HttpAuthCallback callback, @Nullable String host, @Nullable String realm) {
+            sessionObserver.onHttpAuthRequest(callback, host, realm);
         }
     }
 
