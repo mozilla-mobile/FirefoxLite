@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingEnd="24dp"
+    android:paddingStart="24dp"
+    android:paddingTop="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/http_auth_dialog_title"
+        android:textColor="@color/paletteBlack100"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:hintTextAppearance="@style/HintTextAppearance">
+
+        <EditText
+            android:id="@+id/httpAuthUsername"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/paletteDarkBlueC100"
+            android:hint="@string/http_auth_dialog_user_name"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/paletteBlack100"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp"
+            android:theme="@style/ColorHandleTheme" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/HintTextAppearance">
+
+        <EditText
+            android:id="@+id/httpAuthPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/paletteDarkBlueC100"
+            android:hint="@string/http_auth_dialog_password"
+            android:inputType="textPassword"
+            android:textColor="@color/paletteBlack100"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp"
+            android:theme="@style/ColorHandleTheme" />
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

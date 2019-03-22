@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
+import android.webkit.HttpAuthHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -126,5 +127,9 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
         currentPageURL = url;
 
         super.onPageStarted(view, url, favicon);
+    }
+
+    @Override
+    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
     }
 }

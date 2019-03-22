@@ -14,6 +14,7 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.SessionManager.Observer
+import org.mozilla.rocket.tabs.TabViewClient
 import org.mozilla.rocket.tabs.TabViewEngineSession
 
 import java.util.ArrayList
@@ -93,6 +94,10 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
 
                 override fun onSessionCountChanged(count: Int) {
                     observer.onUpdate(sessionManager.getTabs())
+                }
+
+                override fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?) {
+                    // do nothing
                 }
             }
         }

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -19,8 +20,8 @@ import android.webkit.WebViewClient;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.urlutils.UrlUtils;
 import org.mozilla.rocket.tabs.TabViewClient;
+import org.mozilla.urlutils.UrlUtils;
 
 /**
  * WebViewClient layer that handles browser specific WebViewClient functionality, such as error pages
@@ -254,6 +255,25 @@ import org.mozilla.rocket.tabs.TabViewClient;
     public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
         super.doUpdateVisitedHistory(view, url, isReload);
         this.debugOverlay.updateHistory();
+    }
+
+    @Override
+    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        final TabViewClient.HttpAuthCallback httpAuthCallback = new TabViewClient.HttpAuthCallback() {
+            @Override
+            public void proceed(String username, String password) {
+                handler.proceed(username, password);
+            }
+
+            @Override
+            public void cancel() {
+                handler.cancel();
+            }
+        };
+
+        if (viewClient != null) {
+            viewClient.onHttpAuthRequest(httpAuthCallback, host, realm);
+        }
     }
 
     final void setDebugOverlay(@NonNull WebViewDebugOverlay overlay) {

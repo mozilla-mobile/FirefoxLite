@@ -355,4 +355,12 @@
         <item name="android:spacing">0dp</item>
     </style>
 
+    <style name="HintTextAppearance">
+        <item name="android:textColor">@color/paletteBlack100</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ColorHandleTheme">
+        <item name="android:colorControlActivated">@color/paletteDarkBlueC100</item>
+    </style>
 </resources>

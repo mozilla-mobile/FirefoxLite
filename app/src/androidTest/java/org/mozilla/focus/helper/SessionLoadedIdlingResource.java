@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
+import org.mozilla.rocket.tabs.TabViewClient;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 
@@ -156,6 +157,10 @@ public class SessionLoadedIdlingResource implements IdlingResource {
 
         @Override
         public void onSessionCountChanged(int count) {
+        }
+
+        @Override
+        public void onHttpAuthRequest(@NotNull TabViewClient.HttpAuthCallback callback, @Nullable String host, @Nullable String realm) {
         }
     }
 

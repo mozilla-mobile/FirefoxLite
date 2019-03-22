@@ -88,6 +88,7 @@ import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
+import org.mozilla.rocket.tabs.TabViewClient;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
@@ -1083,6 +1084,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         public boolean onShowFileChooser(@NotNull TabViewEngineSession es, @org.jetbrains.annotations.Nullable ValueCallback<Uri[]> filePathCallback, @org.jetbrains.annotations.Nullable WebChromeClient.FileChooserParams fileChooserParams) {
             // do nothing
             return false;
+        }
+
+        @Override
+        public void onHttpAuthRequest(@NotNull TabViewClient.HttpAuthCallback callback, @Nullable String host, @Nullable String realm) {
+            // do nothing
         }
     }
 

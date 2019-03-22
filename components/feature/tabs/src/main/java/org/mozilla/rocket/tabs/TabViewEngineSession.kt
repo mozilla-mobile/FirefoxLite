@@ -116,6 +116,7 @@ class TabViewEngineSession constructor(
             filePathCallback: ValueCallback<Array<Uri>>?,
             fileChooserParams: WebChromeClient.FileChooserParams?
         ): Boolean
+        fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?)
     }
 
     class ViewClient(private val es: TabViewEngineSession) : TabViewClient() {
@@ -151,6 +152,10 @@ class TabViewEngineSession constructor(
 
         override fun handleExternalUrl(url: String?): Boolean {
             return es.engineSessionClient?.handleExternalUrl(url) ?: false
+        }
+
+        override fun onHttpAuthRequest(callback: HttpAuthCallback, host: String?, realm: String?) {
+            es.engineSessionClient?.onHttpAuthRequest(callback, host, realm)
         }
     }
 
