@@ -7,25 +7,18 @@ package org.mozilla.focus.utils
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 
 /**
  * It's a wrapper to communicate with Firebase
  */
-abstract class FirebaseWrapper : FirebaseContract() {
+class FirebaseNoOpImp : FirebaseContract() {
 
     override fun init(context: Context) {
     }
 
     // get Remote Config string
     override fun getRcString(context: Context, key: String): String {
-        if (instance == null) {
-            Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized")
-            throwRcNotInitException()
-
-            return FIREBASE_STRING_DEFAULT
-        }
-        val value = getRemoteConfigDefault(context)[key]
+        val value = remoteConfigDefault[key]
         if (value is String) {
             return value
         } else {
@@ -35,7 +28,7 @@ abstract class FirebaseWrapper : FirebaseContract() {
     }
 
     override fun getRcLong(context: Context, key: String): Long {
-        val value = instance!!.getRemoteConfigDefault(context)[key]
+        val value = remoteConfigDefault[key]
         if (value is Int) {
             return value.toLong()
         } else if (value is Long) {
@@ -46,7 +39,7 @@ abstract class FirebaseWrapper : FirebaseContract() {
     }
 
     override fun getRcBoolean(context: Context, key: String): Boolean {
-        val value = instance!!.getRemoteConfigDefault(context)[key]
+        val value = remoteConfigDefault[key]
         if (value is Boolean) {
             return value
         }
@@ -79,7 +72,5 @@ abstract class FirebaseWrapper : FirebaseContract() {
         throw RuntimeException("Calling FirebaseWrapper.$method failed")
     }
 
-    private fun throwRcNotInitException() {
-        throw IllegalStateException("FirebaseWrapper not initialized")
-    }
+
 }

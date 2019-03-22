@@ -5,15 +5,14 @@ import android.os.Bundle
 
 abstract class FirebaseContract {
 
+    var remoteConfigDefault = HashMap<String, Any>()
+
     interface Callback {
         fun onRemoteConfigFetched()
         //        void onFailed();
     }
 
     abstract fun init(context: Context)
-
-    // Client code must implement this method so it's not static here.
-    abstract fun getRemoteConfigDefault(context: Context): HashMap<String, Any>
 
     abstract fun getFcmToken(): String?
 
@@ -36,7 +35,7 @@ abstract class FirebaseContract {
     abstract fun event(context: Context?, key: String, param: Bundle?)
 
     companion object {
-        internal val TAG = "FirebaseWrapper"
+        internal val TAG = "FirebaseContract"
 
         // ==== Remote Config =====
         // An app can fetch a maximum of 5 times in a 60 minute window before the SDK begins to throttle.
@@ -51,14 +50,5 @@ abstract class FirebaseContract {
 
         var developerMode: Boolean = false
 
-        // ==== Instance of FirebaseWrapper that provides default values ====
-        var instance: FirebaseWrapper? = null
-
-        fun initInternal(wrapper: FirebaseWrapper) {
-            if (instance != null) {
-                return
-            }
-            instance = wrapper
-        }
     }
 }

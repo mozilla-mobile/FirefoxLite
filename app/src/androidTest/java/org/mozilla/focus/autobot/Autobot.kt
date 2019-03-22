@@ -93,7 +93,7 @@ class SettingRobot {
 
         settingsActivity.launchActivity(Intent())
 
-        FirebaseHelper.init(settingsActivity.activity, true)
+        FirebaseHelper.init(settingsActivity.activity, true, FirebaseHelper.provideFirebaseNoOpImpl())
 
         FirebaseHelper.injectEnablerCallback(Delay())
     }

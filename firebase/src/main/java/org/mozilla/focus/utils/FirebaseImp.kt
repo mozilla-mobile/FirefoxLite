@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference
 /**
  * It's a wrapper to communicate with Firebase
  */
-abstract class FirebaseWrapper : FirebaseContract() {
+class FirebaseImpl : FirebaseContract() {
 
     private var remoteConfig: WeakReference<FirebaseRemoteConfig>? = null
 
@@ -33,15 +33,10 @@ abstract class FirebaseWrapper : FirebaseContract() {
 
     // get Remote Config string
     override fun getRcString(context: Context, key: String): String {
-        if (instance == null) {
-            Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized")
-            throwRcNotInitException()
 
-            return FIREBASE_STRING_DEFAULT
-        }
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
-            val value = getRemoteConfigDefault(context)[key]
+            val value = remoteConfigDefault[key]
             if (value is String) {
                 return value
             } else {
@@ -58,14 +53,9 @@ abstract class FirebaseWrapper : FirebaseContract() {
     }
 
     override fun getRcLong(context: Context, key: String): Long {
-        if (instance == null) {
-            Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized")
-            throwRcNotInitException()
-            return FIREBASE_LONG_DEFAULT
-        }
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
-            val value = instance!!.getRemoteConfigDefault(context)[key]
+            val value = remoteConfigDefault[key]
             if (value is Int) {
                 return value.toLong()
             } else if (value is Long) {
@@ -85,14 +75,9 @@ abstract class FirebaseWrapper : FirebaseContract() {
     }
 
     override fun getRcBoolean(context: Context, key: String): Boolean {
-        if (instance == null) {
-            Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized")
-            throwRcNotInitException()
-            return FIREBASE_BOOLEAN_DEFAULT
-        }
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
-            val value = instance!!.getRemoteConfigDefault(context)[key]
+            val value = remoteConfigDefault[key]
             if (value is Boolean) {
                 return value
             }
@@ -148,8 +133,8 @@ abstract class FirebaseWrapper : FirebaseContract() {
         remoteConfig = WeakReference(config)
         val configSettings = FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(developerMode).build()
         config.setConfigSettings(configSettings)
-        if (instance != null) {
-            config.setDefaults(instance!!.getRemoteConfigDefault(context))
+        if (remoteConfigDefault.size > 0) {
+            config.setDefaults(remoteConfigDefault)
         }
         // If app is using developer mode, cacheExpiration is set to 0, so each fetch will
         // retrieve values from the service.
@@ -194,13 +179,8 @@ abstract class FirebaseWrapper : FirebaseContract() {
 
     private fun throwGetValueException(method: String) {
         if (developerMode) {
-            throw RuntimeException("Calling FirebaseWrapper.$method failed")
+            throw RuntimeException("Calling FirebaseImpl.$method failed")
         }
     }
 
-    private fun throwRcNotInitException() {
-        if (developerMode) {
-            throw IllegalStateException("FirebaseWrapper not initialized")
-        }
-    }
 }

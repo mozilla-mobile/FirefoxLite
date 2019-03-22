@@ -36,7 +36,7 @@ import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIOR
  * 1. Call init() to start the wrapper in a background thread
  * 2. Implement getRemoteConfigDefault to provide Remote Config default value
  */
-final public class FirebaseHelper extends FirebaseWrapper {
+final public class FirebaseHelper {
 
     private static final String TAG = "FirebaseHelper";
 
@@ -75,7 +75,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
-    private HashMap<String, Object> remoteConfigDefault;
+    public static FirebaseContract firebaseContract;
 
     @Nullable
     private static BlockingEnablerCallback enablerCallback;
@@ -92,33 +92,36 @@ final public class FirebaseHelper extends FirebaseWrapper {
         enablerCallback = callback;
     }
 
-    public static void init(final Context context, boolean enabled) {
+    public static void init(final Context context, boolean enabled, FirebaseContract contract) {
 
-        if (Companion.getInstance() == null) {
-            Companion.initInternal(new FirebaseHelper());
+        if (firebaseContract == null) {
+            firebaseContract = contract;
         }
-        checkIfApiReady(context);
+        firebaseContract.setRemoteConfigDefault(getRemoteConfigDefault(context));
+
         enableFirebase(context.getApplicationContext(), enabled);
     }
 
-    public static String prettify(String string) {
+    static String prettify(String string) {
         return string.replace(NEWLINE_PLACE_HOLDER, "\n");
     }
 
+    public static FirebaseContract provideFirebaseNoOpImpl() {
+        return new FirebaseNoOpImp();
+    }
 
-    private static void checkIfApiReady(Context context) {
-        if (AppConstants.isBuiltWithFirebase()) {
-            final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
-            final String dbUrl = getStringResourceByName(context, FIREBASE_DB_URL);
-            final String crashReport = getStringResourceByName(context, FIREBASE_CRASH_REPORT);
-            final String appId = getStringResourceByName(context, FIREBASE_APP_ID);
-            final String apiKey = getStringResourceByName(context, FIREBASE_API_KEY);
-            final String projectId = getStringResourceByName(context, FIREBASE_PROJECT_ID);
-            if (webId.isEmpty() || dbUrl.isEmpty() || crashReport.isEmpty() ||
-                    appId.isEmpty() || apiKey.isEmpty() || projectId.isEmpty()) {
-                throw new IllegalStateException("Firebase related keys are not set");
-            }
+    public static FirebaseContract provideFirebaseImpl(Context context) {
+        final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
+        final String dbUrl = getStringResourceByName(context, FIREBASE_DB_URL);
+        final String crashReport = getStringResourceByName(context, FIREBASE_CRASH_REPORT);
+        final String appId = getStringResourceByName(context, FIREBASE_APP_ID);
+        final String apiKey = getStringResourceByName(context, FIREBASE_API_KEY);
+        final String projectId = getStringResourceByName(context, FIREBASE_PROJECT_ID);
+        if (webId.isEmpty() || dbUrl.isEmpty() || crashReport.isEmpty() ||
+                appId.isEmpty() || apiKey.isEmpty() || projectId.isEmpty()) {
+            throw new IllegalStateException("Firebase related keys are not set");
         }
+        return new FirebaseImpl();
     }
 
     /**
@@ -126,16 +129,19 @@ final public class FirebaseHelper extends FirebaseWrapper {
      * @param enable  A boolean to determine if we should enable Firebase or not
      * @return Return true if a new runnable is created. otherwise return false.I need this return value for testing (as the return value of bind() method)
      */
-    private static boolean enableFirebase(final Context applicationContext, final boolean enable) {
+    public static void enableFirebase(final Context applicationContext, final boolean enable) {
 
-        Companion.getInstance().setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
-        Companion.getInstance().init(applicationContext);
-        Companion.getInstance().enableAnalytics(applicationContext, enable);
-        Companion.getInstance().enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
-        Companion.getInstance().enableRemoteConfig(applicationContext, () -> {
+        if (firebaseContract == null) {
+            return;
+        }
+        firebaseContract.setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
+        firebaseContract.init(applicationContext);
+        firebaseContract.enableAnalytics(applicationContext, enable);
+        firebaseContract.enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
+        firebaseContract.enableRemoteConfig(applicationContext, () -> {
             ThreadUtils.postToBackgroundThread(() -> {
                 final String pref = applicationContext.getString(R.string.pref_s_news);
-                final String source = Companion.getInstance().getRcString(applicationContext, pref);
+                final String source = firebaseContract.getRcString(applicationContext, pref);
                 final Settings settings = Settings.getInstance(applicationContext);
                 final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
                 Log.d(NewsSourceManager.TAG, "Remote Config fetched");
@@ -153,7 +159,6 @@ final public class FirebaseHelper extends FirebaseWrapper {
             new BlockingEnabler().execute();
 
         }
-        return true;
     }
 
 
@@ -163,7 +168,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     }
 
     // AsyncTask is useful cause we don't need to write a specific idling resource for it.
-    public static class BlockingEnabler extends AsyncTask<Void, Void, Void> {
+    private static class BlockingEnabler extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -175,31 +180,26 @@ final public class FirebaseHelper extends FirebaseWrapper {
             }
 
             // this methods is blocking.
-            Companion.getInstance().deleteInstanceId();
+            firebaseContract.deleteInstanceId();
 
             return null;
         }
 
     }
 
-    @NotNull
-    @Override
-    public HashMap<String, Object> getRemoteConfigDefault(@NotNull Context context) {
+    private static HashMap<String, Object> getRemoteConfigDefault(@NotNull Context context) {
 
-        if (remoteConfigDefault == null) {
-            final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();
-            if (mayUseLocalFile && Looper.myLooper() != Looper.getMainLooper()) {
-                // this only happens during init with
-                remoteConfigDefault = fromFile(context);
-            } else {
-                remoteConfigDefault = fromResourceString(context);
-            }
+        final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();
+        if (mayUseLocalFile && Looper.myLooper() != Looper.getMainLooper()) {
+            // this only happens during init with
+            return fromFile(context);
+        } else {
+            return fromResourceString(context);
         }
-
-        return remoteConfigDefault;
     }
 
-    private HashMap<String, Object> fromFile(Context context) {
+
+    private static HashMap<String, Object> fromFile(Context context) {
 
         // If we don't have read external storage permission, just don't bother reading the config file.
         if (FileUtils.canReadExternalStorage(context)) {
@@ -216,7 +216,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     }
 
     // This is the default value from resource string ( so we can leverage l10n)
-    private HashMap<String, Object> fromResourceString(Context context) {
+    private static HashMap<String, Object> fromResourceString(Context context) {
         final HashMap<String, Object> map = new HashMap<>();
         if (context != null) {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));
