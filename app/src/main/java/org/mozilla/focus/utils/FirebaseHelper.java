@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
+import org.jetbrains.annotations.NotNull;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -96,8 +97,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     public static void init(final Context context, boolean enabled) {
 
-        if (getInstance() == null) {
-            initInternal(new FirebaseHelper());
+        if (Companion.getInstance() == null) {
+            Companion.initInternal(new FirebaseHelper());
         }
         checkIfApiReady(context);
         enableFirebase(context.getApplicationContext(), enabled);
@@ -126,15 +127,15 @@ final public class FirebaseHelper extends FirebaseWrapper {
     private static boolean enableFirebase(final Context applicationContext, final boolean enable) {
 
 
-        setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
+        Companion.setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
         FirebaseApp.initializeApp(applicationContext);
 
-        enableAnalytics(applicationContext, enable);
-        enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
-        enableRemoteConfig(applicationContext, () -> {
+        Companion.enableAnalytics(applicationContext, enable);
+        Companion.enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
+        Companion.enableRemoteConfig(applicationContext, () -> {
             ThreadUtils.postToBackgroundThread(() -> {
                 final String pref = applicationContext.getString(R.string.pref_s_news);
-                final String source = getRcString(applicationContext, pref);
+                final String source = Companion.getRcString(applicationContext, pref);
                 final Settings settings = Settings.getInstance(applicationContext);
                 final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
                 Log.d(NewsSourceManager.TAG, "Remote Config fetched");
@@ -148,7 +149,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         });
 
         if (!enable) {
-            new BlockingEnabler(applicationContext).execute();
+            new BlockingEnabler().execute();
 
         }
         return true;
@@ -162,21 +163,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     // AsyncTask is useful cause we don't need to write a specific idling resource for it.
     public static class BlockingEnabler extends AsyncTask<Void, Void, Void> {
-        boolean enable;
-        // We only reference application context here. But to make lint happy, I'll use an extra WeakReference for it.
-        WeakReference<Context> weakApplicationContext;
-
-        // We only need application context here.
-        BlockingEnabler(Context c) {
-            weakApplicationContext = new WeakReference<>(c.getApplicationContext());
-        }
 
         @Override
         protected Void doInBackground(Void... voids) {
-
-            // although we should check for weakApplicationContext.get() every time before we use it,
-            // but since it's an application context so we should be fine here.
-            final Context applicationContext = weakApplicationContext.get();
 
             // this is only for testing. So we can simulate slow network..etc
             final BlockingEnablerCallback callback = FirebaseHelper.enablerCallback;
@@ -185,16 +174,16 @@ final public class FirebaseHelper extends FirebaseWrapper {
             }
 
             // this methods is blocking.
-            deleteInstanceId(applicationContext);
+            Companion.deleteInstanceId();
 
             return null;
         }
 
     }
 
-    // this is called in FirebaseWrapper's internalInit()
+    @NotNull
     @Override
-    HashMap<String, Object> getRemoteConfigDefault(Context context) {
+    public HashMap<String, Object> getRemoteConfigDefault$firebase_firebase(@NotNull Context context) {
 
         if (remoteConfigDefault == null) {
             final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();

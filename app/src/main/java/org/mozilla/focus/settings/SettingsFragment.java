@@ -97,7 +97,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             final Intent debugShare = new Intent();
             debugShare.setAction(Intent.ACTION_SEND);
             debugShare.setType("text/plain");
-            debugShare.putExtra(Intent.EXTRA_TEXT, FirebaseHelper.getFcmToken());
+            debugShare.putExtra(Intent.EXTRA_TEXT, FirebaseHelper.Companion.getFcmToken());
             startActivity(Intent.createChooser(debugShare, "This token is only for QA to test in Nightly and debug build"));
             return true;
         }
