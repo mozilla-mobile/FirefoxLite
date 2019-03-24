@@ -15,6 +15,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
@@ -75,6 +76,7 @@ final public class FirebaseHelper {
 
     static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
+    @SuppressFBWarnings(value = "MS_CANNOT_BE_FINAL", justification = "Abstract class can be replaced with an empty implementation. But I'm not determined to do it.")
     public static FirebaseContract firebaseContract;
 
     @Nullable

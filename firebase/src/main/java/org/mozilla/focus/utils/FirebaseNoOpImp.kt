@@ -71,6 +71,4 @@ class FirebaseNoOpImp : FirebaseContract() {
     private fun throwGetValueException(method: String) {
         throw RuntimeException("Calling FirebaseWrapper.$method failed")
     }
-
-
 }

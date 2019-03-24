@@ -49,6 +49,5 @@ abstract class FirebaseContract {
         internal var remoteConfigCacheExpirationInSeconds = DEFAULT_CACHE_EXPIRATION_IN_SECONDS
 
         var developerMode: Boolean = false
-
     }
 }

@@ -182,5 +182,4 @@ class FirebaseImpl : FirebaseContract() {
             throw RuntimeException("Calling FirebaseImpl.$method failed")
         }
     }
-
 }
