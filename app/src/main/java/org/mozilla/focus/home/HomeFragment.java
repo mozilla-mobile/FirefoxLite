@@ -182,14 +182,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     };
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupContentViewModel();
     }
 
     public static HomeFragment create() {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override
@@ -448,7 +447,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         }
 
-        this.recyclerView = (RecyclerView) view.findViewById(R.id.main_list);
+        this.recyclerView = view.findViewById(R.id.main_list);
 
         this.btnMenu = view.findViewById(R.id.btn_menu_home);
         this.btnMenu.setOnClickListener(menuItemClickListener);
@@ -511,7 +510,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
             // This is kinda deprecated by sendSwipeToIdTelemetry so consider removing it in the future.
             private void sendSwipeTelemetry(int superRet, int velocityX) {
-                final int itemCount = banner.getAdapter().getItemCount();
+                RecyclerView.Adapter adapter = banner.getAdapter();
+                if (adapter == null) {
+                    return;
+                }
+                final int itemCount = adapter.getItemCount();
                 int boundedTarget = superRet < itemCount ? superRet : itemCount - 1;
                 TelemetryWrapper.swipeBannerItem(velocityX / Math.abs(velocityX), boundedTarget);
             }
@@ -538,7 +541,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         };
         snapHelper.attachToRecyclerView(banner);
 
-        SwipeMotionLayout home_container = (SwipeMotionLayout) view.findViewById(R.id.home_container);
+        SwipeMotionLayout home_container = view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());
 
         if (ThemeManager.shouldShowOnboarding(view.getContext())) {
@@ -600,7 +603,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         updateTopSitesData();
         setupBannerTimer();
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
-        initFeatureSurveyViewIfNecessary(getView());
+
+        View fragmentView = getView();
+        if (fragmentView != null) {
+            initFeatureSurveyViewIfNecessary(fragmentView);
+        }
 
         playContentPortalAnimation();
         if (contentPanel != null) {
@@ -687,7 +694,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             return;
         }
         contentViewModel = ViewModelProviders.of(activity).get(ContentViewModel.class);
-        final Repository repository = ContentRepository.getInstance(getContext());
+        final Repository<? extends NewsItem> repository = ContentRepository.getInstance(getContext());
         repository.setOnDataChangedListener(contentViewModel);
         contentViewModel.setRepository(repository);
         contentViewModel.getItems().observe(getViewLifecycleOwner(),
@@ -730,7 +737,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Override
     public void appendSite(@NonNull Site site) {
         final TopSiteAdapter adapter = (TopSiteAdapter) this.recyclerView.getAdapter();
-        adapter.addSite(adapter.getItemCount(), site);
+        if (adapter != null) {
+            adapter.addSite(adapter.getItemCount(), site);
+        }
     }
 
     @Override
@@ -743,6 +752,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         throw new NoSuchMethodError("Not implement yet");
     }
 
+    @SuppressWarnings("unused")
     public void setPresenter(TopSitesContract.Presenter presenter) {
         this.presenter = presenter;
     }
@@ -845,9 +855,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         mergeQueryAndDefaultSites(querySites);
     };
 
-    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = result -> {
-        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
-    };
+    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = result ->
+            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT,
+                            TOP_SITES_QUERY_MIN_VIEW_COUNT,
+                            mTopSitesQueryListener);
 
     private void mergeQueryAndDefaultSites(List<Site> querySites) {
         //if query data are equal to the default data, merge them
@@ -955,7 +966,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             PackageInfo packageInfo = null;
             final String packageName = AppConfigWrapper.getVpnRecommenderPackage(getActivity());
             try {
-                packageInfo = getActivity().getPackageManager().getPackageInfo(packageName, 0);
+                Activity activity = getActivity();
+                if (activity != null) {
+                    packageInfo = activity.getPackageManager().getPackageInfo(packageName, 0);
+                }
             } catch (PackageManager.NameNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -1011,7 +1025,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         private WeakReference<Handler> handlerWeakReference;
         private WeakReference<Context> contextWeakReference;
 
-        public MigrateHistoryRunnable(Handler handler, Context context) {
+        MigrateHistoryRunnable(Handler handler, Context context) {
             handlerWeakReference = new WeakReference<>(handler);
             contextWeakReference = new WeakReference<>(context);
         }
@@ -1093,7 +1107,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private class SessionManagerObserver implements SessionManager.Observer {
 
         @Override
-        public void onFocusChanged(@Nullable Session tab, SessionManager.Factor factor) {
+        public void onFocusChanged(@Nullable Session tab, @NotNull SessionManager.Factor factor) {
             // do nothing
         }
 
@@ -1158,9 +1172,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public void onSwipeDown() {
-            if (contentPanel != null) {
-                // do nothing
-            } else {
+            if (contentPanel == null) {
                 fakeInput.performClick();
             }
         }
@@ -1235,7 +1247,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             final ThemedTextView item = recyclerView.getChildAt(i).findViewById(R.id.text);
             item.setNightMode(enable);
         }
-        ViewUtils.updateStatusBarStyle(!enable, getActivity().getWindow());
+        Activity activity = getActivity();
+        if (activity != null) {
+            ViewUtils.updateStatusBarStyle(!enable, activity.getWindow());
+        }
     }
 
     private void showContentPortal() {
