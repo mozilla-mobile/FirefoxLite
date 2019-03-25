@@ -207,6 +207,13 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 0) {
+            if (requestCode == REQUEST_CODE_EDIT_SCREENSHOT) {
+
+                setupView(true);
+                initScreenshotInfo(false);
+            }
+        }
         permissionHandler.onActivityResult(this, requestCode, resultCode, data);
     }
 
@@ -310,7 +317,7 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
                     editIntent.setDataAndType(uri, "image/*");
                     editIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     try {
-                        startActivity(Intent.createChooser(editIntent, null));
+                        startActivityForResult(Intent.createChooser(editIntent, null), REQUEST_CODE_EDIT_SCREENSHOT);
                         TelemetryWrapper.editCaptureImage(true, mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
                     } catch (ActivityNotFoundException e) {
                         TelemetryWrapper.editCaptureImage(false, mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
