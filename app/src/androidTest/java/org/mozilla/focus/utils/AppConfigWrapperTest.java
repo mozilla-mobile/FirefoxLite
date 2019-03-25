@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.activity.MainActivity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mozilla.focus.utils.AppConfigWrapper.DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD;
 import static org.mozilla.focus.utils.AppConfigWrapper.SURVEY_NOTIFICATION_POST_THRESHOLD;
 import static org.mozilla.focus.utils.DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG;
@@ -19,39 +20,14 @@ import static org.mozilla.focus.utils.DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE
 @RunWith(AndroidJUnit4.class)
 public class AppConfigWrapperTest {
 
-
     @Test
-    public void getRateAppNotificationLaunchTimeThreshold() {
-        final long threshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold();
-        assertEquals(APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION, threshold);
-
-    }
-
-    @Test
-    public void getShareDialogLaunchTimeThreshold() {
-        final long extended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(false);
-        assertEquals(APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG, extended);
-
-        final long nonExtended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(true);
-        assertEquals(APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG + APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION - APP_CREATE_THRESHOLD_FOR_RATE_DIALOG, nonExtended);
-    }
-
-    @Test
-    public void getRateDialogLaunchTimeThreshold() {
-        final long threshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold();
-        assertEquals(APP_CREATE_THRESHOLD_FOR_RATE_DIALOG, threshold);
-
-    }
-
-    @Test
-    public void getSurveyNotificationLaunchTimeThreshold() {
-        final long threshold = AppConfigWrapper.getSurveyNotificationLaunchTimeThreshold();
-        assertEquals(SURVEY_NOTIFICATION_POST_THRESHOLD, threshold);
-    }
-
-    @Test
-    public void getDriveDefaultBrowserFromMenuSettingThreshold() {
-        final long threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold();
-        assertEquals(DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD, threshold);
+    public void validateFirebaseSetting() {
+        final long rateAppDialog = AppConfigWrapper.getRateDialogLaunchTimeThreshold();
+        final long rateAppNotification = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold();
+        final long shareDialogExtend = AppConfigWrapper.getShareDialogLaunchTimeThreshold(true);
+        final long shareDialog = AppConfigWrapper.getShareDialogLaunchTimeThreshold(false);
+        assertTrue(rateAppDialog < rateAppNotification);
+        assertTrue(shareDialogExtend == rateAppNotification + shareDialog - rateAppDialog);
+        assertTrue(rateAppDialog < shareDialog);
     }
 }

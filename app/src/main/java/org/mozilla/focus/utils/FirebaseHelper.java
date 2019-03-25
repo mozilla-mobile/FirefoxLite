@@ -218,8 +218,9 @@ final public class FirebaseHelper {
         return fromResourceString(context);
     }
 
+    @VisibleForTesting
     // This is the default value from resource string ( so we can leverage l10n)
-    private static HashMap<String, Object> fromResourceString(Context context) {
+    static HashMap<String, Object> fromResourceString(Context context) {
         final HashMap<String, Object> map = new HashMap<>();
         if (context != null) {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));

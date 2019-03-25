@@ -11,7 +11,13 @@ import android.os.Bundle
 /**
  * It's a wrapper to communicate with Firebase
  */
-class FirebaseNoOpImp : FirebaseContract() {
+class FirebaseNoOpImp : FirebaseContract {
+
+    constructor() : super()
+
+    constructor(hashMap: HashMap<String, Any>) : super() {
+        this.remoteConfigDefault = hashMap
+    }
 
     override fun init(context: Context) {
     }
@@ -46,7 +52,11 @@ class FirebaseNoOpImp : FirebaseContract() {
     override fun deleteInstanceId() {
     }
 
-    override fun enableCloudMessaging(context: Context, componentName: String, enable: Boolean) {
+    override fun enableCloudMessaging(
+        context: Context,
+        componentName: String,
+        enable: Boolean
+    ) {
     }
 
     override fun enableAnalytics(context: Context, enable: Boolean) {
