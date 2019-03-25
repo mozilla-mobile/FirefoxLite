@@ -21,8 +21,6 @@ class FirebaseNoOpImp : FirebaseContract() {
         val value = remoteConfigDefault[key]
         if (value is String) {
             return value
-        } else {
-            throwGetValueException("getRcString")
         }
         return FIREBASE_STRING_DEFAULT
     }
@@ -34,7 +32,6 @@ class FirebaseNoOpImp : FirebaseContract() {
         } else if (value is Long) {
             return (value as Long?)!!
         }
-        throwGetValueException("getRcLong")
         return FIREBASE_LONG_DEFAULT
     }
 
@@ -43,7 +40,6 @@ class FirebaseNoOpImp : FirebaseContract() {
         if (value is Boolean) {
             return value
         }
-        throwGetValueException("getRcBoolean")
         return FIREBASE_BOOLEAN_DEFAULT
     }
 
@@ -66,9 +62,5 @@ class FirebaseNoOpImp : FirebaseContract() {
     override fun getFcmToken() = ""
 
     override fun event(context: Context?, key: String, param: Bundle?) {
-    }
-
-    private fun throwGetValueException(method: String) {
-        throw RuntimeException("Calling FirebaseWrapper.$method failed")
     }
 }

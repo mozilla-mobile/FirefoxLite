@@ -133,7 +133,8 @@ final public class FirebaseHelper {
      */
     public static void enableFirebase(final Context applicationContext, final boolean enable) {
 
-        if (firebaseContract == null) {
+        // applicationContext is nullable for unit tests
+        if (firebaseContract == null || applicationContext == null) {
             return;
         }
         firebaseContract.setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
