@@ -18,14 +18,13 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import java.io.IOException
-import java.lang.ref.WeakReference
 
 /**
  * It's a wrapper to communicate with Firebase
  */
 class FirebaseImpl : FirebaseContract() {
 
-    private var remoteConfig: WeakReference<FirebaseRemoteConfig>? = null
+    private lateinit var remoteConfig: FirebaseRemoteConfig
 
     override fun init(context: Context) {
         FirebaseApp.initializeApp(context)
@@ -33,65 +32,15 @@ class FirebaseImpl : FirebaseContract() {
 
     // get Remote Config string
     override fun getRcString(key: String): String {
-
-        // if remoteConfig is not initialized, we go to default config directly
-        if (remoteConfig == null) {
-            val value = remoteConfigDefault[key]
-            if (value is String) {
-                return value
-            } else {
-                throwGetValueException("getRcString")
-            }
-        }
-
-        val config = remoteConfig!!.get()
-        if (config != null) {
-            return config.getString(key)
-        }
-        throwGetValueException("getRcString")
-        return FIREBASE_STRING_DEFAULT
+        return remoteConfig.getString(key)
     }
 
     override fun getRcLong(key: String): Long {
-        // if remoteConfig is not initialized, we go to default config directly
-        if (remoteConfig == null) {
-            val value = remoteConfigDefault[key]
-            if (value is Int) {
-                return value.toLong()
-            } else if (value is Long) {
-                return (value as Long?)!!
-            }
-            throwGetValueException("getRcLong")
-            return FIREBASE_LONG_DEFAULT
-        }
-
-        val config = remoteConfig!!.get()
-        if (config != null) {
-            // config.getValue will never return null (checked from FirebaseRemoteConfig‘s decompiled source)
-            return config.getValue(key).asLong()
-        }
-        throwGetValueException("getRcLong")
-        return FIREBASE_LONG_DEFAULT
+        return remoteConfig.getLong(key)
     }
 
     override fun getRcBoolean(key: String): Boolean {
-        // if remoteConfig is not initialized, we go to default config directly
-        if (remoteConfig == null) {
-            val value = remoteConfigDefault[key]
-            if (value is Boolean) {
-                return value
-            }
-            throwGetValueException("getRcBoolean")
-            return FIREBASE_BOOLEAN_DEFAULT
-        }
-
-        val config = remoteConfig!!.get()
-        if (config != null) {
-            // config.getValue will never return null (checked from FirebaseRemoteConfig‘s decompiled source)
-            return config.getValue(key).asBoolean()
-        }
-        throwGetValueException("getRcBoolean")
-        return FIREBASE_BOOLEAN_DEFAULT
+        return remoteConfig.getBoolean(key)
     }
 
     @WorkerThread
@@ -129,23 +78,22 @@ class FirebaseImpl : FirebaseContract() {
     // This need to be run in worker thread since FirebaseRemoteConfigSettings has IO access
     override fun enableRemoteConfig(context: Context, callback: Callback) {
 
-        val config = FirebaseRemoteConfig.getInstance()
-        remoteConfig = WeakReference(config)
+        remoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(developerMode).build()
-        config.setConfigSettings(configSettings)
+        remoteConfig.setConfigSettings(configSettings)
         if (remoteConfigDefault.size > 0) {
-            config.setDefaults(remoteConfigDefault)
+            remoteConfig.setDefaults(remoteConfigDefault)
         }
         // If app is using developer mode, cacheExpiration is set to 0, so each fetch will
         // retrieve values from the service.
-        if (config.info.configSettings.isDeveloperModeEnabled) {
+        if (remoteConfig.info.configSettings.isDeveloperModeEnabled) {
             remoteConfigCacheExpirationInSeconds = 0
         }
 
-        config.fetch(remoteConfigCacheExpirationInSeconds).addOnCompleteListener { task ->
+        remoteConfig.fetch(remoteConfigCacheExpirationInSeconds).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "Firebase RemoteConfig Fetch Successfully ")
-                config.activateFetched()
+                remoteConfig.activateFetched()
                 callback.onRemoteConfigFetched()
             } else {
                 Log.d(TAG, "Firebase RemoteConfig Fetch Failed: ")
@@ -175,11 +123,5 @@ class FirebaseImpl : FirebaseContract() {
             return
         }
         FirebaseAnalytics.getInstance(context).logEvent(key, param)
-    }
-
-    private fun throwGetValueException(method: String) {
-        if (developerMode) {
-            throw RuntimeException("Calling FirebaseImpl.$method failed")
-        }
     }
 }
