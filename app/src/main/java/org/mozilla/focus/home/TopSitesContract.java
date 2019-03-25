@@ -52,6 +52,13 @@ public class TopSitesContract {
         void setView(View view);
 
         /**
+         * Connect this Presenter to a Model
+         *
+         * @param model to be connected
+         */
+        void setModel(Model model);
+
+        /**
          * To ask Presenter to get stored sites and fill into View
          */
         void populateSites();
@@ -70,6 +77,8 @@ public class TopSitesContract {
          */
         void removeSite(@NonNull Site site);
 
+        void pinSite(@NonNull Site site);
+
         /**
          * To set a site list into Model
          *
@@ -81,5 +90,10 @@ public class TopSitesContract {
          * To get a site list into Model
          */
         List<Site> getSites();
+    }
+
+    interface Model {
+        List<Site> getSites();
+        void pinSite(Site site);
     }
 }

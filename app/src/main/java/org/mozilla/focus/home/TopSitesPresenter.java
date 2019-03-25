@@ -15,6 +15,7 @@ import java.util.List;
 public class TopSitesPresenter implements TopSitesContract.Presenter {
 
     private TopSitesContract.View view;
+    private TopSitesContract.Model model;
 
     private List<Site> sites;
 
@@ -25,6 +26,11 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
     @Override
     public void setView(@NonNull TopSitesContract.View view) {
         this.view = view;
+    }
+
+    @Override
+    public void setModel(TopSitesContract.Model model) {
+        this.model = model;
     }
 
     @Override
@@ -48,6 +54,11 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
         if (this.view != null) {
             this.view.removeSite(site);
         }
+    }
+
+    @Override
+    public void pinSite(@NonNull Site site) {
+        this.model.pinSite(site);
     }
 
     @Override

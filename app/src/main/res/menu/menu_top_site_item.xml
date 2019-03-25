@@ -6,4 +6,7 @@
     <item
         android:id="@+id/remove"
         android:title="@string/remove" />
+    <item
+        android:id="@+id/pin"
+        android:title="(L10N) Pin site" />
 </menu>
