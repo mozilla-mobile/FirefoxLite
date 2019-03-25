@@ -1,5 +1,6 @@
 package org.mozilla.focus.utils;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -18,29 +19,26 @@ import static org.mozilla.focus.utils.DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE
 @RunWith(AndroidJUnit4.class)
 public class AppConfigWrapperTest {
 
-    @Rule
-    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
-
 
     @Test
     public void getRateAppNotificationLaunchTimeThreshold() {
-        final long threshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(null);
+        final long threshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(InstrumentationRegistry.getTargetContext());
         assertEquals(APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION, threshold);
 
     }
 
     @Test
     public void getShareDialogLaunchTimeThreshold() {
-        final long extended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(null, false);
+        final long extended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(InstrumentationRegistry.getTargetContext(), false);
         assertEquals(APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG, extended);
 
-        final long nonExtended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(null, true);
+        final long nonExtended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(InstrumentationRegistry.getTargetContext(), true);
         assertEquals(APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG + APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION - APP_CREATE_THRESHOLD_FOR_RATE_DIALOG, nonExtended);
     }
 
     @Test
     public void getRateDialogLaunchTimeThreshold() {
-        final long threshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold(null);
+        final long threshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold(InstrumentationRegistry.getTargetContext());
         assertEquals(APP_CREATE_THRESHOLD_FOR_RATE_DIALOG, threshold);
 
     }
