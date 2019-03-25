@@ -40,13 +40,14 @@ import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -70,21 +71,31 @@ import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.*;
+import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.utils.OnSwipeListener;
+import org.mozilla.focus.utils.RemoteConfigConstants;
+import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.SwipeMotionDetector;
+import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
-import org.mozilla.lite.partner.NewsItem;
-import org.mozilla.lite.partner.Repository;
-import org.mozilla.rocket.content.*;
-import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
-import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
+import org.mozilla.lite.partner.NewsItem;
+import org.mozilla.lite.partner.Repository;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.banner.BannerViewHolder;
+import org.mozilla.rocket.content.ContentPortalView;
+import org.mozilla.rocket.content.ContentRepository;
+import org.mozilla.rocket.content.ContentViewModel;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
+import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
@@ -110,7 +121,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
-public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View,
+public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View, TopSitesContract.Model,
         ScreenNavigator.HomeScreen, ContentPortalView.ContentPortalListener {
     private static final String TAG = "HomeFragment";
 
@@ -153,6 +164,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
     private boolean hasContentPortal = false;
+    private PinSiteManager pinSiteManager;
 
     @Override
     public void onAttach (Context context) {
@@ -185,6 +197,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         super.onCreate(bundle);
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
+        this.presenter.setModel(this);
+
+        this.pinSiteManager = new PinSiteManager(this);
     }
 
     @Override
@@ -246,6 +261,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public void onShow() {
         updateSourcePriority();
         checkNewsRepositoryReset();
+    }
+
+    @Override
+    public List<Site> getSites() {
+        return presenter.getSites();
+    }
+
+    @Override
+    public void pinSite(Site site) {
+        pinSiteManager.pinSite(site);
+        presenter.populateSites();
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -684,8 +710,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void showSites(@NonNull List<Site> sites) {
+        TopSideComparator topSideComparator = new TopSideComparator();
+        Collections.sort(sites, topSideComparator);
+
         if (this.topSiteAdapter == null) {
-            this.topSiteAdapter = new TopSiteAdapter(sites, clickListener, clickListener);
+            this.topSiteAdapter = new TopSiteAdapter(sites, clickListener, clickListener, pinSiteManager);
             this.recyclerView.setAdapter(topSiteAdapter);
         } else {
             this.recyclerView.setAdapter(topSiteAdapter);
@@ -769,8 +798,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             final PopupMenu popupMenu = new PopupMenu(v.getContext(), v, Gravity.CLIP_HORIZONTAL);
             popupMenu.getMenuInflater().inflate(R.menu.menu_top_site_item, popupMenu.getMenu());
+
+            MenuItem pinItem = popupMenu.getMenu().findItem(R.id.pin);
+            if (pinItem != null) {
+                pinItem.setVisible(!pinSiteManager.isPinSite(site));
+            }
+
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
+                    case R.id.pin:
+                        presenter.pinSite(site);
+                        break;
                     case R.id.remove:
                         if (site.getId() < 0) {
                             presenter.removeSite(site);

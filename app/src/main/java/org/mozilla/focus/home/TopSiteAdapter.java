@@ -33,13 +33,16 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
     private List<Site> sites = new ArrayList<>();
     private final View.OnClickListener clickListener;
     private final View.OnLongClickListener longClickListener;
+    private final PinSiteManager pinSiteManager;
 
     TopSiteAdapter(@NonNull List<Site> sites,
                    @Nullable View.OnClickListener clickListener,
-                   @Nullable View.OnLongClickListener longClickListener) {
+                   @Nullable View.OnLongClickListener longClickListener,
+                   @NonNull PinSiteManager pinSiteManager) {
         this.sites.addAll(sites);
         this.clickListener = clickListener;
         this.longClickListener = longClickListener;
+        this.pinSiteManager = pinSiteManager;
     }
 
     @NotNull
@@ -78,6 +81,7 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(backgroundColor));
 
         // Pin
+        holder.pinView.setVisibility(pinSiteManager.isPinSite(site) ? View.VISIBLE : View.GONE);
         holder.pinView.setPinColor(backgroundColor);
 
         // let click listener knows which site is clicked
