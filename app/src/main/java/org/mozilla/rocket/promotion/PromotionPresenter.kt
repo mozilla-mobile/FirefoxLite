@@ -36,9 +36,9 @@ class PromotionModel {
 
     var showRateAppDialogFromIntent by Delegates.notNull<Boolean>()
 
-    constructor(context: Context, safeIntent: SafeIntent) : this(context, Settings.getInstance(context).eventHistory, NewFeatureNotice.getInstance(context), safeIntent)
+    constructor(context: Context, safeIntent: SafeIntent) : this(Settings.getInstance(context).eventHistory, NewFeatureNotice.getInstance(context), safeIntent)
     @VisibleForTesting
-    constructor(context: Context, history: Settings.EventHistory, newFeatureNotice: NewFeatureNotice, safeIntent: SafeIntent) {
+    constructor(history: Settings.EventHistory, newFeatureNotice: NewFeatureNotice, safeIntent: SafeIntent) {
 
         parseIntent(safeIntent)
 
@@ -51,9 +51,9 @@ class PromotionModel {
             history.add(Settings.Event.AppCreate)
         }
         appCreateCount = history.getCount(Settings.Event.AppCreate)
-        rateAppDialogThreshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold(context)
-        rateAppNotificationThreshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(context)
-        shareAppDialogThreshold = AppConfigWrapper.getShareDialogLaunchTimeThreshold(context, didDismissRateDialog)
+        rateAppDialogThreshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold()
+        rateAppNotificationThreshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold()
+        shareAppDialogThreshold = AppConfigWrapper.getShareDialogLaunchTimeThreshold(didDismissRateDialog)
 
         shouldShowPrivacyPolicyUpdate = newFeatureNotice.shouldShowPrivacyPolicyUpdate()
     }

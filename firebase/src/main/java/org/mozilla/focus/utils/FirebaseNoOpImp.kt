@@ -17,7 +17,7 @@ class FirebaseNoOpImp : FirebaseContract() {
     }
 
     // get Remote Config string
-    override fun getRcString(context: Context, key: String): String {
+    override fun getRcString(key: String): String {
         val value = remoteConfigDefault[key]
         if (value is String) {
             return value
@@ -25,7 +25,7 @@ class FirebaseNoOpImp : FirebaseContract() {
         return FIREBASE_STRING_DEFAULT
     }
 
-    override fun getRcLong(context: Context, key: String): Long {
+    override fun getRcLong(key: String): Long {
         val value = remoteConfigDefault[key]
         if (value is Int) {
             return value.toLong()
@@ -35,7 +35,7 @@ class FirebaseNoOpImp : FirebaseContract() {
         return FIREBASE_LONG_DEFAULT
     }
 
-    override fun getRcBoolean(context: Context, key: String): Boolean {
+    override fun getRcBoolean(key: String): Boolean {
         val value = remoteConfigDefault[key]
         if (value is Boolean) {
             return value

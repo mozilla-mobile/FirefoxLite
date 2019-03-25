@@ -27,7 +27,7 @@ class PromotionModelTest {
         `when`(safeIntent.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false)).thenReturn(true)
         `when`(newFeatureNotice.shouldShowPrivacyPolicyUpdate()).thenReturn(false)
 
-        val promotionModel = PromotionModel(context, eventHistory, newFeatureNotice, safeIntent)
+        val promotionModel = PromotionModel(eventHistory, newFeatureNotice, safeIntent)
 
         promotionModel.parseIntent(safeIntent)
         assertEquals(true, promotionModel.showRateAppDialogFromIntent)

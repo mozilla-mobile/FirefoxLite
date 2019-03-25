@@ -425,7 +425,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         turboModeButton.setSelected(isTurboEnabled());
         blockImageButton.setSelected(isBlockingImages());
 
-        final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled(this);
+        final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled();
         final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
         final boolean privateModeActivate = PrivateMode.hasPrivateSession(this);
         final Settings settings = Settings.getInstance(getApplicationContext());

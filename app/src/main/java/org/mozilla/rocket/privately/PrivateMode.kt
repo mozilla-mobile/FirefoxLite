@@ -33,7 +33,7 @@ class PrivateMode {
         fun isEnable(context: Context): Boolean {
             // We look at Firebase Remote Config if in Release and Beta build type
             if (AppConstants.isReleaseBuild() || AppConstants.isBetaBuild()) {
-                return AppConfigWrapper.isPrivateModeEnabled(context)
+                return AppConfigWrapper.isPrivateModeEnabled()
             }
             // In Debug and Firebase(debug) build type, enable Private Mode by default
             return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_KEY_PRIVATE_MODE_ENABLED, true)

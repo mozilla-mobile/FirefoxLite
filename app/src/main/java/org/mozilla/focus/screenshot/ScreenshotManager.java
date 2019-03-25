@@ -121,7 +121,7 @@ public class ScreenshotManager {
     private boolean initFromRemote(Context context) throws InterruptedException {
         // Blocking until either cache or network;
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        final String manifest = AppConfigWrapper.getScreenshotCategoryUrl(context);
+        final String manifest = AppConfigWrapper.getScreenshotCategoryUrl();
         if (TextUtils.isEmpty(manifest)) {
             return false;
         }

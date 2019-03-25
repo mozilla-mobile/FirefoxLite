@@ -32,7 +32,7 @@ class FirebaseImpl : FirebaseContract() {
     }
 
     // get Remote Config string
-    override fun getRcString(context: Context, key: String): String {
+    override fun getRcString(key: String): String {
 
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
@@ -52,7 +52,7 @@ class FirebaseImpl : FirebaseContract() {
         return FIREBASE_STRING_DEFAULT
     }
 
-    override fun getRcLong(context: Context, key: String): Long {
+    override fun getRcLong(key: String): Long {
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
             val value = remoteConfigDefault[key]
@@ -74,7 +74,7 @@ class FirebaseImpl : FirebaseContract() {
         return FIREBASE_LONG_DEFAULT
     }
 
-    override fun getRcBoolean(context: Context, key: String): Boolean {
+    override fun getRcBoolean(key: String): Boolean {
         // if remoteConfig is not initialized, we go to default config directly
         if (remoteConfig == null) {
             val value = remoteConfigDefault[key]

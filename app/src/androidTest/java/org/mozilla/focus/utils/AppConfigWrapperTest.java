@@ -22,23 +22,23 @@ public class AppConfigWrapperTest {
 
     @Test
     public void getRateAppNotificationLaunchTimeThreshold() {
-        final long threshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(InstrumentationRegistry.getTargetContext());
+        final long threshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold();
         assertEquals(APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION, threshold);
 
     }
 
     @Test
     public void getShareDialogLaunchTimeThreshold() {
-        final long extended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(InstrumentationRegistry.getTargetContext(), false);
+        final long extended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(false);
         assertEquals(APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG, extended);
 
-        final long nonExtended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(InstrumentationRegistry.getTargetContext(), true);
+        final long nonExtended = AppConfigWrapper.getShareDialogLaunchTimeThreshold(true);
         assertEquals(APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG + APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION - APP_CREATE_THRESHOLD_FOR_RATE_DIALOG, nonExtended);
     }
 
     @Test
     public void getRateDialogLaunchTimeThreshold() {
-        final long threshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold(InstrumentationRegistry.getTargetContext());
+        final long threshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold();
         assertEquals(APP_CREATE_THRESHOLD_FOR_RATE_DIALOG, threshold);
 
     }

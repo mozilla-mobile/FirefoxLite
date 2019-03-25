@@ -144,7 +144,7 @@ final public class FirebaseHelper {
         firebaseContract.enableRemoteConfig(applicationContext, () -> {
             ThreadUtils.postToBackgroundThread(() -> {
                 final String pref = applicationContext.getString(R.string.pref_s_news);
-                final String source = firebaseContract.getRcString(applicationContext, pref);
+                final String source = firebaseContract.getRcString(pref);
                 final Settings settings = Settings.getInstance(applicationContext);
                 final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
                 Log.d(NewsSourceManager.TAG, "Remote Config fetched");

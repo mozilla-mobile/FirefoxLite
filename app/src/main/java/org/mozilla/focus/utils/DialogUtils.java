@@ -64,7 +64,7 @@ public class DialogUtils {
             telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
         });
         final TextView positive = dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate);
-        final String positiveString = AppConfigWrapper.getRateAppPositiveString(context);
+        final String positiveString = AppConfigWrapper.getRateAppPositiveString();
         if (!TextUtils.isEmpty(positiveString)) {
             positive.setText(positiveString);
         }
@@ -75,18 +75,18 @@ public class DialogUtils {
             dialog.dismiss();
             telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
         });
-        final String title = AppConfigWrapper.getRateAppDialogTitle(context);
+        final String title = AppConfigWrapper.getRateAppDialogTitle();
         if (!TextUtils.isEmpty(title)) {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_textview_title)).setText(title);
         }
 
-        final String content = AppConfigWrapper.getRateAppDialogContent(context);
+        final String content = AppConfigWrapper.getRateAppDialogContent();
         if (!TextUtils.isEmpty(content)) {
             ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
         }
 
         final TextView negative = dialogView.findViewById(R.id.dialog_rate_app_btn_feedback);
-        final String negativeString = AppConfigWrapper.getRateAppNegativeString(context);
+        final String negativeString = AppConfigWrapper.getRateAppNegativeString();
         if (!TextUtils.isEmpty(negativeString)) {
             negative.setText(negativeString);
         }
@@ -121,9 +121,9 @@ public class DialogUtils {
 
         View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, null);
         dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_title).setText(
-                AppConfigWrapper.getShareAppDialogTitle(context));
+                AppConfigWrapper.getShareAppDialogTitle());
         dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_content).setText(
-                AppConfigWrapper.getShareAppDialogContent(context));
+                AppConfigWrapper.getShareAppDialogContent());
         dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(v -> {
             dialog.dismiss();
             telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
@@ -132,7 +132,7 @@ public class DialogUtils {
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
             sendIntent.setType("text/plain");
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
-            sendIntent.putExtra(Intent.EXTRA_TEXT, AppConfigWrapper.getShareAppMessage(context));
+            sendIntent.putExtra(Intent.EXTRA_TEXT, AppConfigWrapper.getShareAppMessage());
             context.startActivity(Intent.createChooser(sendIntent, null));
             dialog.dismiss();
             telemetryShareApp(context, TelemetryWrapper.Value.SHARE);

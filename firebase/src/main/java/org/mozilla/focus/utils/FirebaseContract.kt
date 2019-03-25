@@ -16,11 +16,11 @@ abstract class FirebaseContract {
 
     abstract fun getFcmToken(): String?
 
-    abstract fun getRcString(context: Context, key: String): String
+    abstract fun getRcString(key: String): String
 
-    abstract fun getRcLong(context: Context, key: String): Long
+    abstract fun getRcLong(key: String): Long
 
-    abstract fun getRcBoolean(context: Context, key: String): Boolean
+    abstract fun getRcBoolean(key: String): Boolean
 
     abstract fun deleteInstanceId()
 
