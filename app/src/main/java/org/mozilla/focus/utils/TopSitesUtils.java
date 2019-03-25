@@ -7,6 +7,7 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +28,13 @@ import java.util.List;
 public class TopSitesUtils {
 
     public static final String TOP_SITE_ASSET_PREFIX = "file:///android_asset/topsites/icon/";
+
+    private static final String KEY_ID = "id";
+    private static final String KEY_TITLE = "title";
+    private static final String KEY_URL = "url";
+    private static final String KEY_VIEW_COUNT = "viewCount";
+    private static final String KEY_LAST_VIEW_TIMESTAMP = "lastViewTimestamp";
+    private static final String KEY_FAVICON = "favicon";
 
     /**
      * get default topsites data from assets and restore it to SharedPreferences
@@ -81,12 +89,12 @@ public class TopSitesUtils {
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json_site = (JSONObject) jsonArray.get(i);
-                    final long id = json_site.getLong("id");
-                    final String title = json_site.getString("title");
-                    final String url = json_site.getString("url");
-                    final long viewCount = json_site.getLong("viewCount");
-                    final long lastViewed = json_site.getLong("lastViewTimestamp");
-                    final String faviconUri = TOP_SITE_ASSET_PREFIX + json_site.getString("favicon");
+                    final long id = json_site.getLong(KEY_ID);
+                    final String title = json_site.getString(KEY_TITLE);
+                    final String url = json_site.getString(KEY_URL);
+                    final long viewCount = json_site.getLong(KEY_VIEW_COUNT);
+                    final long lastViewed = json_site.getLong(KEY_LAST_VIEW_TIMESTAMP);
+                    final String faviconUri = TOP_SITE_ASSET_PREFIX + json_site.getString(KEY_FAVICON);
                     Site site = new Site(id, title, url, viewCount, lastViewed, faviconUri);
                     site.setDefault(true);
                     defaultSites.add(site);
@@ -96,6 +104,53 @@ public class TopSitesUtils {
             e.printStackTrace();
         } finally {
             return defaultSites;
+        }
+    }
+
+    public static JSONArray sitesToJson(List<Site> sites) {
+        JSONArray array = new JSONArray();
+        for (int i = 0; i < sites.size(); ++i) {
+            Site site = sites.get(i);
+            JSONObject jsonSite = siteToJson(site);
+            if (jsonSite != null) {
+                array.put(jsonSite);
+            }
+        }
+        return array;
+    }
+
+    public static List<Site> jsonToSites(String jsonData) {
+        List<Site> sites = new ArrayList<>();
+        try {
+            JSONArray array = new JSONArray(jsonData);
+            for (int i = 0; i < array.length(); ++i) {
+                JSONObject obj = array.getJSONObject(i);
+                sites.add(new Site(obj.getLong(KEY_ID),
+                        obj.getString(KEY_TITLE),
+                        obj.getString(KEY_URL),
+                        obj.getLong(KEY_VIEW_COUNT),
+                        obj.getLong(KEY_LAST_VIEW_TIMESTAMP),
+                        obj.getString(KEY_FAVICON)));
+            }
+
+        } catch (JSONException ignored) {
+        }
+        return sites;
+    }
+
+    @Nullable
+    private static JSONObject siteToJson(Site site) {
+        try {
+            JSONObject node = new JSONObject();
+            node.put(KEY_ID, site.getId());
+            node.put(KEY_URL, site.getUrl());
+            node.put(KEY_TITLE, site.getTitle());
+            node.put(KEY_FAVICON, site.getFavIconUri());
+            node.put(KEY_LAST_VIEW_TIMESTAMP, site.getLastViewTimestamp());
+            node.put(KEY_VIEW_COUNT, site.getViewCount());
+            return node;
+        } catch (JSONException e) {
+            return null;
         }
     }
 }

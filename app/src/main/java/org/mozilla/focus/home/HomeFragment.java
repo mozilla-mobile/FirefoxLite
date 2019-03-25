@@ -176,7 +176,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         public void handleMessage(Message msg) {
             if (msg.what == MSG_ID_REFRESH) {
-                BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                refreshTopSites();
             }
         }
     };
@@ -197,8 +197,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
         this.presenter.setModel(this);
-
-        this.pinSiteManager = new PinSiteManager(this);
     }
 
     @Override
@@ -268,9 +266,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void pinSite(Site site) {
-        pinSiteManager.pinSite(site);
-        presenter.populateSites();
+    public void pinSite(Site site, Runnable onUpdateComplete) {
+        pinSiteManager.pin(site);
+        onUpdateComplete.run();
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -683,9 +681,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         super.onActivityCreated(savedInstanceState);
         doWithActivity(getActivity(), themeManager -> themeManager.subscribeThemeChange(homeScreenBackground));
 
+        Context context = getContext();
+
         bannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
         bannerConfigViewModel.getConfig().observe(this, bannerObserver);
-        initBanner(getContext());
+        initBanner(context);
+
+        if (context != null) {
+            this.pinSiteManager = new PinSiteManager(new SharedPreferencePinSiteDelegate(context));
+        }
     }
 
     private void setupContentViewModel() {
@@ -811,26 +815,27 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
             MenuItem pinItem = popupMenu.getMenu().findItem(R.id.pin);
             if (pinItem != null) {
-                pinItem.setVisible(!pinSiteManager.isPinSite(site));
+                pinItem.setVisible(!pinSiteManager.isPinned(site));
             }
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.pin:
-                        presenter.pinSite(site);
+                        presenter.pinSite(site, HomeFragment.this::refreshTopSites);
                         break;
                     case R.id.remove:
                         if (site.getId() < 0) {
                             presenter.removeSite(site);
                             removeDefaultSites(site);
                             TopSitesUtils.saveDefaultSites(getContext(), HomeFragment.this.orginalDefaultSites);
-                            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+                            refreshTopSites();
                             TelemetryWrapper.removeTopSite(true);
                         } else {
                             site.setViewCount(1);
                             BrowsingHistoryManager.getInstance().updateLastEntry(site, mTopSiteUpdateListener);
                             TelemetryWrapper.removeTopSite(false);
                         }
+                        pinSiteManager.unpinned(site);
                         break;
                     default:
                         throw new IllegalStateException("Unhandled menu item");
@@ -852,30 +857,25 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         }
 
-        mergeQueryAndDefaultSites(querySites);
+        constructTopSiteList(querySites);
     };
 
-    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = result ->
-            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT,
-                            TOP_SITES_QUERY_MIN_VIEW_COUNT,
-                            mTopSitesQueryListener);
+    private QueryHandler.AsyncUpdateListener mTopSiteUpdateListener = result -> refreshTopSites();
 
-    private void mergeQueryAndDefaultSites(List<Site> querySites) {
-        //if query data are equal to the default data, merge them
+    private void refreshTopSites() {
+        BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT,
+                TOP_SITES_QUERY_MIN_VIEW_COUNT,
+                mTopSitesQueryListener);
+    }
+
+    private void constructTopSiteList(List<Site> historySites) {
+        //if history data are equal to the default data, merge them
         initDefaultSitesFromJSONArray(this.orginalDefaultSites);
         List<Site> topSites = new ArrayList<>(this.presenter.getSites());
-        for (Site topSite : topSites) {
-            Iterator<Site> querySitesIterator = querySites.iterator();
-            while (querySitesIterator.hasNext()) {
-                Site temp = querySitesIterator.next();
-                if (UrlUtils.urlsMatchExceptForTrailingSlash(topSite.getUrl(), temp.getUrl())) {
-                    topSite.setViewCount(topSite.getViewCount() + temp.getViewCount());
-                    querySitesIterator.remove();
-                }
-            }
-        }
 
-        topSites.addAll(querySites);
+        mergeHistorySiteToTopSites(historySites, topSites);
+        mergePinSiteToTopSites(pinSiteManager.getPinSites(), topSites);
+
         TopSideComparator topSideComparator = new TopSideComparator();
         Collections.sort(topSites, topSideComparator);
 
@@ -888,6 +888,22 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.presenter.setSites(topSites);
         this.presenter.populateSites();
+    }
+
+    private void mergeHistorySiteToTopSites(List<Site> historySites, List<Site> topSites) {
+        for (Site topSite : topSites) {
+            removeDuplicatedSites(historySites,
+                    topSite,
+                    site -> topSite.setViewCount(topSite.getViewCount() + site.getViewCount()));
+        }
+        topSites.addAll(historySites);
+    }
+
+    private void mergePinSiteToTopSites(List<Site> pinSites, List<Site> topSites) {
+        for (Site pinSite : pinSites) {
+            removeDuplicatedSites(topSites, pinSite, site -> {});
+        }
+        topSites.addAll(pinSites);
     }
 
     private void initDefaultSites() {
@@ -1007,10 +1023,25 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         initDefaultSites();
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sharedPreferences.contains(TOP_SITES_V2_PREF)) {
-            BrowsingHistoryManager.getInstance().queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT, mTopSitesQueryListener);
+            refreshTopSites();
         } else {
             new Thread(new MigrateHistoryRunnable(uiHandler, getContext())).start();
         }
+    }
+
+    private void removeDuplicatedSites(List<Site> sites, Site site, OnRemovedListener listener) {
+        final Iterator<Site> siteIterator = sites.iterator();
+        while (siteIterator.hasNext()) {
+            Site nextSite = siteIterator.next();
+            if (UrlUtils.urlsMatchExceptForTrailingSlash(nextSite.getUrl(), site.getUrl())) {
+                siteIterator.remove();
+                listener.onRemoved(nextSite);
+            }
+        }
+    }
+
+    private interface OnRemovedListener {
+        void onRemoved(Site site);
     }
 
     private static void parseCursorToSite(Cursor cursor, List<String> urls, List<byte[]> icons) {
