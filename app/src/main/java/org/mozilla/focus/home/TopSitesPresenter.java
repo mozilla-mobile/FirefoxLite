@@ -57,8 +57,8 @@ public class TopSitesPresenter implements TopSitesContract.Presenter {
     }
 
     @Override
-    public void pinSite(@NonNull Site site) {
-        this.model.pinSite(site);
+    public void pinSite(@NonNull Site site, Runnable onUpdateComplete) {
+        this.model.pinSite(site, onUpdateComplete);
     }
 
     @Override

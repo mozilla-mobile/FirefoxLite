@@ -77,7 +77,7 @@ public class TopSitesContract {
          */
         void removeSite(@NonNull Site site);
 
-        void pinSite(@NonNull Site site);
+        void pinSite(@NonNull Site site, Runnable onUpdateComplete);
 
         /**
          * To set a site list into Model
@@ -94,6 +94,6 @@ public class TopSitesContract {
 
     interface Model {
         List<Site> getSites();
-        void pinSite(Site site);
+        void pinSite(Site site, Runnable onUpdateComplete);
     }
 }

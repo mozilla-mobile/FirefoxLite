@@ -81,7 +81,7 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         ViewCompat.setBackgroundTintList(holder.img, ColorStateList.valueOf(backgroundColor));
 
         // Pin
-        holder.pinView.setVisibility(pinSiteManager.isPinSite(site) ? View.VISIBLE : View.GONE);
+        holder.pinView.setVisibility(pinSiteManager.isPinned(site) ? View.VISIBLE : View.GONE);
         holder.pinView.setPinColor(backgroundColor);
 
         // let click listener knows which site is clicked

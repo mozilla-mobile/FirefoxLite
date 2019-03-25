@@ -5,31 +5,80 @@
 
 package org.mozilla.focus.home
 
+import android.content.Context
 import org.mozilla.focus.history.model.Site
+import org.mozilla.focus.utils.TopSitesUtils
 
-internal class PinSiteManager(private val model: TopSitesContract.Model) {
+internal class PinSiteManager(
+        private val pinSiteDelegate: PinSiteDelegate
+) : PinSiteDelegate by pinSiteDelegate
+
+interface PinSiteDelegate {
+    fun isPinned(site: Site): Boolean
+    fun pin(site: Site)
+    fun unpinned(site: Site)
+    fun getPinSites() : List<Site>
+}
+
+class SharedPreferencePinSiteDelegate(context: Context) : PinSiteDelegate {
+
     companion object {
-        const val pinSiteViewCountInterval = 100
+        private const val PREF_NAME = "pin_sites"
+        private const val KEY_JSON = "json"
+
+        private const val viewCountInterval = 100L
+    }
+    private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+    private val sites = mutableListOf<Site>()
+
+    init {
+        load(sites)
     }
 
-    private val pinSiteCount: Int
-        get() {
-            var count = 0
-            for (site in model.sites) {
-                if (isPinSite(site)) {
-                    count++
-                }
-            }
-            return count
+    override fun isPinned(site: Site): Boolean {
+        return sites.any { it.id == site.id }
+    }
+
+    override fun pin(site: Site) {
+        sites.add(Site(
+                site.id,
+                site.title,
+                site.url,
+                site.viewCount,
+                site.lastViewTimestamp,
+                site.favIconUri
+        ))
+        save(sites)
+    }
+
+    override fun unpinned(site: Site) {
+        sites.removeAll { it.id == site.id }
+        save(sites)
+    }
+
+    override fun getPinSites(): List<Site> {
+        return sites
+    }
+
+    private fun getViewCountForPinSiteAt(index: Int): Long {
+        return Long.MAX_VALUE - index * viewCountInterval
+    }
+
+    private fun save(sites: List<Site>) {
+        sites.forEachIndexed { index, site ->
+            site.viewCount = getViewCountForPinSiteAt(index)
         }
-
-    fun isPinSite(site: Site): Boolean {
-        return site.viewCount >= Long.MAX_VALUE - pinSiteViewCountInterval * HomeFragment.TOP_SITES_QUERY_LIMIT
+        val json = TopSitesUtils.sitesToJson(sites)
+        pref.edit().putString(KEY_JSON, json.toString()).apply()
     }
 
-    fun pinSite(site: Site) {
-        val pinCount = pinSiteCount
-        val nextViewCount = Long.MAX_VALUE - pinCount * pinSiteViewCountInterval
-        site.viewCount = nextViewCount
+    private fun load(results: MutableList<Site>) {
+        results.clear()
+
+        pref.getString(KEY_JSON, "")?.let {
+            results.addAll(TopSitesUtils.jsonToSites(it))
+        }
     }
 }
+
