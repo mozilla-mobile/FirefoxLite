@@ -7,17 +7,11 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.jetbrains.annotations.NotNull;
-import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.FeatureSurveyViewHelper;
@@ -81,9 +75,6 @@ final public class FirebaseHelper {
 
     @SuppressFBWarnings(value = "MS_CANNOT_BE_FINAL", justification = "Abstract class can be replaced with an empty implementation. But I'm not determined to do it.")
     public static FirebaseContract firebaseContract;
-
-    // the file name to used when you want to set the default value of RemoteConfig
-    private static final String REMOTE_CONFIG_JSON = "remote_config.json";
 
     private FirebaseHelper() {
     }
@@ -152,25 +143,6 @@ final public class FirebaseHelper {
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(new Intent(FirebaseHelper.FIREBASE_READY));
             });
         });
-
-        if (!enable) {
-            new BlockingEnabler().execute();
-
-        }
-    }
-
-    // AsyncTask is useful cause we don't need to write a specific idling resource for it.
-    private static class BlockingEnabler extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            // this methods is blocking.
-            firebaseContract.deleteInstanceId();
-
-            return null;
-        }
-
     }
 
     @NonNull
