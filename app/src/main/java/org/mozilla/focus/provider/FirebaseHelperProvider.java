@@ -32,7 +32,7 @@ public class FirebaseHelperProvider extends ContentProvider {
         if (AppConstants.isBuiltWithFirebase()) {
             contract = FirebaseHelper.provideFirebaseImpl(context);
         } else {
-            contract = FirebaseHelper.provideFirebaseNoOpImpl();
+            contract = FirebaseHelper.provideFirebaseNoOpImpl(context);
         }
         FirebaseHelper.init(context, enable, contract);
         return true;

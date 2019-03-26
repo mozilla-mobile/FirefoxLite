@@ -18,11 +18,12 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import java.io.IOException
+import java.util.HashMap
 
 /**
  * It's a wrapper to communicate with Firebase
  */
-class FirebaseImpl : FirebaseContract() {
+class FirebaseImpl(fromResourceString: HashMap<String, Any>) : FirebaseContract(fromResourceString) {
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
 

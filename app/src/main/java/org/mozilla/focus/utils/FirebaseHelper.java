@@ -79,19 +79,10 @@ final public class FirebaseHelper {
     @SuppressFBWarnings(value = "MS_CANNOT_BE_FINAL", justification = "Abstract class can be replaced with an empty implementation. But I'm not determined to do it.")
     public static FirebaseContract firebaseContract;
 
-    @Nullable
-    private static BlockingEnablerCallback enablerCallback;
-
     // the file name to used when you want to set the default value of RemoteConfig
     private static final String REMOTE_CONFIG_JSON = "remote_config.json";
 
     private FirebaseHelper() {
-    }
-
-    // inject delay to BlockingEnabler
-    @VisibleForTesting
-    public static void injectEnablerCallback(BlockingEnablerCallback callback) {
-        enablerCallback = callback;
     }
 
     public static void init(final Context context, boolean enabled, FirebaseContract contract) {
@@ -99,7 +90,7 @@ final public class FirebaseHelper {
         if (firebaseContract == null) {
             firebaseContract = contract;
         }
-        firebaseContract.setRemoteConfigDefault(getRemoteConfigDefault(context));
+        firebaseContract.setRemoteConfigDefault(contract.getRemoteConfigDefault());
 
         enableFirebase(context.getApplicationContext(), enabled);
     }
@@ -108,8 +99,8 @@ final public class FirebaseHelper {
         return string.replace(NEWLINE_PLACE_HOLDER, "\n");
     }
 
-    public static FirebaseContract provideFirebaseNoOpImpl() {
-        return new FirebaseNoOpImp();
+    public static FirebaseContract provideFirebaseNoOpImpl(Context context) {
+        return new FirebaseNoOpImp(fromResourceString(context));
     }
 
     public static FirebaseContract provideFirebaseImpl(Context context) {
@@ -123,7 +114,8 @@ final public class FirebaseHelper {
                 appId.isEmpty() || apiKey.isEmpty() || projectId.isEmpty()) {
             throw new IllegalStateException("Firebase related keys are not set");
         }
-        return new FirebaseImpl();
+
+        return new FirebaseImpl(fromResourceString(context));
     }
 
     /**
@@ -164,23 +156,11 @@ final public class FirebaseHelper {
         }
     }
 
-
-    // an interface for testing code to inject delay to BlockingEnabler
-    public interface BlockingEnablerCallback {
-        void runDelayOnExecution();
-    }
-
     // AsyncTask is useful cause we don't need to write a specific idling resource for it.
     private static class BlockingEnabler extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
-
-            // this is only for testing. So we can simulate slow network..etc
-            final BlockingEnablerCallback callback = FirebaseHelper.enablerCallback;
-            if (callback != null) {
-                callback.runDelayOnExecution();
-            }
 
             // this methods is blocking.
             firebaseContract.deleteInstanceId();
@@ -190,36 +170,18 @@ final public class FirebaseHelper {
 
     }
 
-    private static HashMap<String, Object> getRemoteConfigDefault(@NotNull Context context) {
-
-        final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();
-        if (mayUseLocalFile && Looper.myLooper() != Looper.getMainLooper()) {
-            // this only happens during init with
-            return fromFile(context);
+    @NonNull
+    private static String getStringResourceByName(Context context, String aString) {
+        String packageName = context.getPackageName();
+        int resId = context.getResources()
+                .getIdentifier(aString, "string", packageName);
+        if (resId == 0) {
+            return "";
         } else {
-            return fromResourceString(context);
+            return context.getString(resId);
         }
     }
 
-
-    private static HashMap<String, Object> fromFile(Context context) {
-
-        // If we don't have read external storage permission, just don't bother reading the config file.
-        if (FileUtils.canReadExternalStorage(context)) {
-            try {
-                return FileUtils.fromJsonOnDisk(REMOTE_CONFIG_JSON);
-            } catch (Exception e) {
-                Log.w(TAG, "Some problem when reading RemoteConfig file from local disk: ", e);
-                // For any exception, we read the default resource file.
-                return fromResourceString(context);
-            }
-        }
-
-        return fromResourceString(context);
-    }
-
-    @VisibleForTesting
-    // This is the default value from resource string ( so we can leverage l10n)
     static HashMap<String, Object> fromResourceString(Context context) {
         final HashMap<String, Object> map = new HashMap<>();
         if (context != null) {
@@ -251,17 +213,5 @@ final public class FirebaseHelper {
         map.put(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES, FirstLaunchWorker.TIMER_DISABLED);
 
         return map;
-    }
-
-    @NonNull
-    private static String getStringResourceByName(Context context, String aString) {
-        String packageName = context.getPackageName();
-        int resId = context.getResources()
-                .getIdentifier(aString, "string", packageName);
-        if (resId == 0) {
-            return "";
-        } else {
-            return context.getString(resId);
-        }
     }
 }

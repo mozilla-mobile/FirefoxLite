@@ -11,13 +11,7 @@ import android.os.Bundle
 /**
  * It's a wrapper to communicate with Firebase
  */
-class FirebaseNoOpImp : FirebaseContract {
-
-    constructor() : super()
-
-    constructor(hashMap: HashMap<String, Any>) : super() {
-        this.remoteConfigDefault = hashMap
-    }
+class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()) : FirebaseContract(remoteConfigDefault) {
 
     override fun init(context: Context) {
     }

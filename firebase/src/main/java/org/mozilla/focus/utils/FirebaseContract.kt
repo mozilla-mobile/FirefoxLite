@@ -3,9 +3,7 @@ package org.mozilla.focus.utils
 import android.content.Context
 import android.os.Bundle
 
-abstract class FirebaseContract {
-
-    var remoteConfigDefault = HashMap<String, Any>()
+abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = HashMap()) {
 
     interface Callback {
         fun onRemoteConfigFetched()
