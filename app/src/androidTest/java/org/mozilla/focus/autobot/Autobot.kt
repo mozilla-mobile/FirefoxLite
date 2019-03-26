@@ -28,7 +28,6 @@ import org.junit.Rule
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.helper.ActivityRecreateLeakWatcherIdlingResource
-import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.widget.TelemetrySwitchPreference
 import org.mozilla.focus.widget.TurboSwitchPreference
 
@@ -92,10 +91,6 @@ class SettingRobot {
         resetPref()
 
         settingsActivity.launchActivity(Intent())
-
-        FirebaseHelper.init(settingsActivity.activity, true)
-
-        FirebaseHelper.injectEnablerCallback(Delay())
     }
 
     fun isChecked(): SettingRobot {
@@ -153,15 +148,5 @@ class SettingRobot {
         val prefName = context.getString(R.string.pref_key_telemetry)
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferences.edit().putBoolean(prefName, true).apply()
-    }
-
-    class Delay : FirebaseHelper.BlockingEnablerCallback {
-        override fun runDelayOnExecution() {
-            try {
-                Thread.sleep(3000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
     }
 }

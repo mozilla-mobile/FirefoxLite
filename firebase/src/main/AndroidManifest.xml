@@ -30,13 +30,5 @@
             android:initOrder="100"
             tools:node="remove" />
 
-
-        <provider
-            android:name="com.crashlytics.android.CrashlyticsInitProvider"
-            android:authorities="${applicationId}.crashlyticsinitprovider"
-            android:enabled="false"
-            android:exported="false"
-            android:initOrder="100"
-            tools:node="remove" />
     </application>
 </manifest>

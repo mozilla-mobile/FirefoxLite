@@ -39,7 +39,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onAttach (Context context) {
         super.onAttach(context);
-        hasContentPortal = AppConfigWrapper.hasNewsPortal(context);
+        hasContentPortal = AppConfigWrapper.hasNewsPortal();
     }
 
     @Override
@@ -94,7 +94,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             final Intent debugShare = new Intent();
             debugShare.setAction(Intent.ACTION_SEND);
             debugShare.setType("text/plain");
-            debugShare.putExtra(Intent.EXTRA_TEXT, FirebaseHelper.getFcmToken());
+            final FirebaseContract firebase = FirebaseHelper.firebaseContract;
+            if (firebase != null) {
+                debugShare.putExtra(Intent.EXTRA_TEXT, firebase.getFcmToken());
+            }
             startActivity(Intent.createChooser(debugShare, "This token is only for QA to test in Nightly and debug build"));
             return true;
         }
@@ -151,7 +154,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             }
             TelemetryWrapper.settingsLocaleChangeEvent(key, String.valueOf(locale), TextUtils.isEmpty(value));
             localeManager.updateConfiguration(getActivity(), locale);
-            FirebaseHelper.onLocaleUpdate(getActivity());
 
             // Manually notify SettingsActivity of locale changes (in most other cases activities
             // will detect changes in onActivityResult(), but that doesn't apply to SettingsActivity).

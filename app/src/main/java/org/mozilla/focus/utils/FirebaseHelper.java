@@ -9,14 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.jetbrains.annotations.NotNull;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
@@ -24,12 +24,10 @@ import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.content.NewsSourceManager;
 import org.mozilla.rocket.periodic.FirstLaunchWorker;
 import org.mozilla.threadutils.ThreadUtils;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
@@ -39,7 +37,7 @@ import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIOR
  * 1. Call init() to start the wrapper in a background thread
  * 2. Implement getRemoteConfigDefault to provide Remote Config default value
  */
-final public class FirebaseHelper extends FirebaseWrapper {
+final public class FirebaseHelper {
 
     private static final String TAG = "FirebaseHelper";
 
@@ -79,12 +77,10 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String STR_SHARE_APP_DIALOG_CONTENT = "str_share_app_dialog_content";
     static final String STR_SHARE_APP_DIALOG_MSG = "str_share_app_dialog_msg";
 
-    private HashMap<String, Object> remoteConfigDefault;
-    private static boolean changing = false;
-    private static Boolean pending = null;
+    static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
-    @Nullable
-    private static BlockingEnablerCallback enablerCallback;
+    @SuppressFBWarnings(value = "MS_CANNOT_BE_FINAL", justification = "Abstract class can be replaced with an empty implementation. But I'm not determined to do it.")
+    public static FirebaseContract firebaseContract;
 
     // the file name to used when you want to set the default value of RemoteConfig
     private static final String REMOTE_CONFIG_JSON = "remote_config.json";
@@ -92,210 +88,104 @@ final public class FirebaseHelper extends FirebaseWrapper {
     private FirebaseHelper() {
     }
 
-    // inject delay to BlockingEnabler
-    @VisibleForTesting
-    public static void injectEnablerCallback(BlockingEnablerCallback callback) {
-        enablerCallback = callback;
-    }
+    public static void init(final Context context, boolean enabled, FirebaseContract contract) {
 
-    public static void init(final Context context, boolean enabled) {
-
-        if (getInstance() == null) {
-            initInternal(new FirebaseHelper());
+        if (firebaseContract == null) {
+            firebaseContract = contract;
         }
-        bind(context, enabled);
+        firebaseContract.setRemoteConfigDefault(contract.getRemoteConfigDefault());
+
+        enableFirebase(context.getApplicationContext(), enabled);
     }
 
-
-    public static boolean bind(@NonNull final Context context, boolean enabled) {
-        checkIfApiReady(context);
-        return enableFirebase(context.getApplicationContext(), enabled);
+    static String prettify(String string) {
+        return string.replace(NEWLINE_PLACE_HOLDER, "\n");
     }
 
-    private static void checkIfApiReady(Context context) {
-        if (AppConstants.isBuiltWithFirebase()) {
-            final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
-            final String dbUrl = getStringResourceByName(context, FIREBASE_DB_URL);
-            final String crashReport = getStringResourceByName(context, FIREBASE_CRASH_REPORT);
-            final String appId = getStringResourceByName(context, FIREBASE_APP_ID);
-            final String apiKey = getStringResourceByName(context, FIREBASE_API_KEY);
-            final String projectId = getStringResourceByName(context, FIREBASE_PROJECT_ID);
-            if (webId.isEmpty() || dbUrl.isEmpty() || crashReport.isEmpty() ||
-                    appId.isEmpty() || apiKey.isEmpty() || projectId.isEmpty()) {
-                throw new IllegalStateException("Firebase related keys are not set");
-            }
+    public static FirebaseContract provideFirebaseNoOpImpl(Context context) {
+        return new FirebaseNoOpImp(fromResourceString(context));
+    }
+
+    public static FirebaseContract provideFirebaseImpl(Context context) {
+        final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
+        final String dbUrl = getStringResourceByName(context, FIREBASE_DB_URL);
+        final String crashReport = getStringResourceByName(context, FIREBASE_CRASH_REPORT);
+        final String appId = getStringResourceByName(context, FIREBASE_APP_ID);
+        final String apiKey = getStringResourceByName(context, FIREBASE_API_KEY);
+        final String projectId = getStringResourceByName(context, FIREBASE_PROJECT_ID);
+        if (webId.isEmpty() || dbUrl.isEmpty() || crashReport.isEmpty() ||
+                appId.isEmpty() || apiKey.isEmpty() || projectId.isEmpty()) {
+            throw new IllegalStateException("Firebase related keys are not set");
         }
+
+        return new FirebaseImpl(fromResourceString(context));
     }
 
     /**
-     * @param context Should be application context. It's used for component enable/disable, and
+     * @param applicationContext Should be application context. It's used for component enable/disable, and
      * @param enable  A boolean to determine if we should enable Firebase or not
      * @return Return true if a new runnable is created. otherwise return false.I need this return value for testing (as the return value of bind() method)
      */
-    private static boolean enableFirebase(final Context context, final boolean enable) {
+    public static void enableFirebase(final Context applicationContext, final boolean enable) {
 
-        // if the task is already running, we cache the value in pending, and avoid creating a new AsyncTask.
-        // I use a variable here, instead of keeping a reference to the AsyncTask below and use
-        // its running state as this flag. Cause I'm hesitated to keep a reference to an AsyncTask.
-        if (changing) {
-            pending = enable;
-            return false;
+        // applicationContext is nullable for unit tests
+        if (firebaseContract == null || applicationContext == null) {
+            return;
         }
-        // Now it's time to change the state of firebase helper.
-        changing = true;
-        // starting from now, there's no pending state. (pending state will only be used in the runnable)
-        pending = null;
+        firebaseContract.setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
+        firebaseContract.init(applicationContext);
+        firebaseContract.enableAnalytics(applicationContext, enable);
+        firebaseContract.enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
+        firebaseContract.enableRemoteConfig(applicationContext, () -> {
+            ThreadUtils.postToBackgroundThread(() -> {
+                final String pref = applicationContext.getString(R.string.pref_s_news);
+                final String source = firebaseContract.getRcString(pref);
+                final Settings settings = Settings.getInstance(applicationContext);
+                final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
+                Log.d(NewsSourceManager.TAG, "Remote Config fetched");
+                if (!TextUtils.isEmpty(source) && (canOverride || TextUtils.isEmpty(settings.getNewsSource()))) {
+                    Log.d(NewsSourceManager.TAG, "Remote Config is used:" + source);
+                    settings.setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
+                    settings.setNewsSource(source);
+                    NewsSourceManager.getInstance().setNewsSource(source);
+                }
+                LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(new Intent(FirebaseHelper.FIREBASE_READY));
+            });
+        });
 
-        final BlockingEnabler blockingEnabler = new BlockingEnabler(context, enable);
-        blockingEnabler.execute();
-        return true;
-    }
+        if (!enable) {
+            new BlockingEnabler().execute();
 
-    // an interface for testing code to inject delay to BlockingEnabler
-    public interface BlockingEnablerCallback {
-        void runDelayOnExecution();
+        }
     }
 
     // AsyncTask is useful cause we don't need to write a specific idling resource for it.
-    public static class BlockingEnabler extends AsyncTask<Void, Void, Void> {
-        boolean enable;
-        // We only reference application context here. But to make lint happy, I'll use an extra WeakReference for it.
-        WeakReference<Context> weakApplicationContext;
-
-        // We only need application context here.
-        BlockingEnabler(Context c, boolean state) {
-            enable = state;
-            weakApplicationContext = new WeakReference<>(c.getApplicationContext());
-
-        }
+    private static class BlockingEnabler extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
 
-
-            // make StrictMode quiet here, cause Crashlytics has StrictMode.onUntaggedSocket violation
-            // and some I/O access below will also conduct StrictModeDiskReadViolation. I'll set it back after all works are done
-            final StrictMode.ThreadPolicy cachedThreadPolicy = StrictMode.getThreadPolicy();
-            final StrictMode.VmPolicy cacheVmPolicy = StrictMode.getVmPolicy();
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().build());
-
-            if (weakApplicationContext == null || weakApplicationContext.get() == null) {
-                // set back the policy if this happened.
-                StrictMode.setThreadPolicy(cachedThreadPolicy);
-                StrictMode.setVmPolicy(cacheVmPolicy);
-                return null;
-            }
-            // although we should check for weakApplicationContext.get() every time before we use it,
-            // but since it's an application context so we should be fine here.
-            // but since it's an application context so we should be fine here.
-            final Context applicationContext = weakApplicationContext.get();
-
-            // this is only for testing. So we can simulate slow network..etc
-            final BlockingEnablerCallback callback = FirebaseHelper.enablerCallback;
-            if (callback != null) {
-                callback.runDelayOnExecution();
-            }
-
-            setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
-
-            // make sure we are in the changing state
-            changing = true;
-
             // this methods is blocking.
-            updateInstanceId(applicationContext, enable);
-
-            enableCrashlytics(applicationContext, enable);
-            enableAnalytics(applicationContext, enable);
-            enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), enable);
-            enableRemoteConfig(applicationContext, enable, () -> {
-                ThreadUtils.postToBackgroundThread(() -> {
-                    final String pref = applicationContext.getString(R.string.pref_s_news);
-                    final String source = getRcString(applicationContext, pref);
-                    final Settings settings = Settings.getInstance(applicationContext);
-                    final boolean canOverride = settings.canOverride(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
-                    Log.d(NewsSourceManager.TAG, "Remote Config fetched");
-                    if (!TextUtils.isEmpty(source) && (canOverride || TextUtils.isEmpty(settings.getNewsSource()))) {
-                        Log.d(NewsSourceManager.TAG, "Remote Config is used:" + source);
-                        settings.setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_FIREBASE);
-                        settings.setNewsSource(source);
-                        NewsSourceManager.getInstance().setNewsSource(source);
-                    }
-
-                    final String url = AppConfigWrapper.getLifeFeedProviderUrl(applicationContext, settings.getNewsSource());
-                    ThreadUtils.postToMainThread(() -> NewsSourceManager.getInstance().setNewsSourceUrl(url));
-                });
-            });
-            // now firebase has completed state changing,
-            changing = false;
-            // we'll check if the cached state is the same as our current one. If not, issue
-            // a state change again.
-            if (pending != null && pending != enable) {
-                enableFirebase(applicationContext, pending);
-            } else {
-                // after now, there'll be now pending state.
-                pending = null;
-            }
-
-            StrictMode.setThreadPolicy(cachedThreadPolicy);
-            StrictMode.setVmPolicy(cacheVmPolicy);
+            firebaseContract.deleteInstanceId();
 
             return null;
         }
 
-        protected void onPostExecute(Void result) {
-            if (pending == null) {
-                LocalBroadcastManager.getInstance(weakApplicationContext.get()).sendBroadcast(new Intent(FIREBASE_READY));
-            }
+    }
+
+    @NonNull
+    private static String getStringResourceByName(Context context, String aString) {
+        String packageName = context.getPackageName();
+        int resId = context.getResources()
+                .getIdentifier(aString, "string", packageName);
+        if (resId == 0) {
+            return "";
+        } else {
+            return context.getString(resId);
         }
-
     }
 
-    // this is called in FirebaseWrapper's internalInit()
-    @Override
-    HashMap<String, Object> getRemoteConfigDefault(@Nullable Context context) {
-
-        if (remoteConfigDefault == null) {
-            final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();
-            if (mayUseLocalFile && Looper.myLooper() != Looper.getMainLooper() && context != null) {
-                // this only happens during init with
-                remoteConfigDefault = fromFile(context);
-            } else {
-                remoteConfigDefault = fromResourceString(context);
-            }
-        }
-
-        return remoteConfigDefault;
-    }
-
-    @Override
-    void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback) {
-        // Clear remoteConfigDefault
-        remoteConfigDefault = null;
-        getRemoteConfigDefault(context);
-        // Now also need to reset the default config in Firebase if "Send Usage Data" is turned on.
-        enableRemoteConfig(context, TelemetryWrapper.isTelemetryEnabled(context), callback);
-    }
-
-
-    private HashMap<String, Object> fromFile(Context context) {
-
-        // If we don't have read external storage permission, just don't bother reading the config file.
-        if (FileUtils.canReadExternalStorage(context)) {
-            try {
-                return FileUtils.fromJsonOnDisk(REMOTE_CONFIG_JSON);
-            } catch (Exception e) {
-                Log.w(TAG, "Some problem when reading RemoteConfig file from local disk: ", e);
-                // For any exception, we read the default resource file.
-                return fromResourceString(context);
-            }
-        }
-
-        return fromResourceString(context);
-    }
-
-    // This is the default value from resource string ( so we can leverage l10n)
-    private HashMap<String, Object> fromResourceString(@Nullable Context context) {
+    static HashMap<String, Object> fromResourceString(@Nullable Context context) {
         final HashMap<String, Object> map = new HashMap<>();
         if (context != null) {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));
@@ -330,21 +220,5 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
 
         return map;
-    }
-
-    @NonNull
-    private static String getStringResourceByName(Context context, String aString) {
-        String packageName = context.getPackageName();
-        int resId = context.getResources()
-                .getIdentifier(aString, "string", packageName);
-        if (resId == 0) {
-            return "";
-        } else {
-            return context.getString(resId);
-        }
-    }
-
-    public static void onLocaleUpdate(Context context) {
-        getInstance().refreshRemoteConfigDefault(context, null);
     }
 }

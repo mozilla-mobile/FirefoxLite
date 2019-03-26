@@ -35,7 +35,7 @@ public class NewFeatureNotice {
 
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        hasNewsPortal = AppConfigWrapper.hasNewsPortal(context);
+        hasNewsPortal = AppConfigWrapper.hasNewsPortal();
 
         this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
     }

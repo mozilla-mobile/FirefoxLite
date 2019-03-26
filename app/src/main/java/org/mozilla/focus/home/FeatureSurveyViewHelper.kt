@@ -86,7 +86,7 @@ class FeatureSurveyViewHelper internal constructor(private val context: Context,
                     parentView.removeView(rootView)
                     isViewInit = false
                     // Open Play Store in a new tab
-                    val url = AppConfigWrapper.getVpnRecommenderUrl(context)
+                    val url = AppConfigWrapper.getVpnRecommenderUrl()
                     if (!TextUtils.isEmpty(url)) {
                         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
                     }

@@ -22,7 +22,7 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
                     R.drawable.ic_onboarding_first_use));
         }
 
-        final boolean shouldShowNews = featureNotice.from40to114() && AppConfigWrapper.hasNewsPortal(context);
+        final boolean shouldShowNews = featureNotice.from40to114() && AppConfigWrapper.hasNewsPortal();
         final boolean shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding();
         if (shouldShowNews || shouldShowShoppingLink) {
             featureNotice.hasShownEcShoppingLink();

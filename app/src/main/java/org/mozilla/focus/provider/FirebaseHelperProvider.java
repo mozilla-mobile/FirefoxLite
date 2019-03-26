@@ -12,8 +12,12 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.FirebaseContract;
 import org.mozilla.focus.utils.FirebaseHelper;
 
+// this is a bad name. it didn't provide FirebaseHelper instance, it's a content provider.
+// todo: rename it
 public class FirebaseHelperProvider extends ContentProvider {
     private static final String TAG = "CrashlyticsInitProvider";
 
@@ -24,8 +28,13 @@ public class FirebaseHelperProvider extends ContentProvider {
         final Context context = this.getContext();
         final boolean enable = TelemetryWrapper.isTelemetryEnabled(context);
 
-        FirebaseHelper.init(context, enable);
-
+        FirebaseContract contract;
+        if (AppConstants.isBuiltWithFirebase()) {
+            contract = FirebaseHelper.provideFirebaseImpl(context);
+        } else {
+            contract = FirebaseHelper.provideFirebaseNoOpImpl(context);
+        }
+        FirebaseHelper.init(context, enable, contract);
         return true;
     }
 
@@ -48,6 +57,4 @@ public class FirebaseHelperProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
-
-
 }
