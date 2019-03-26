@@ -94,7 +94,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             final Intent debugShare = new Intent();
             debugShare.setAction(Intent.ACTION_SEND);
             debugShare.setType("text/plain");
-            final FirebaseContract firebase = FirebaseHelper.firebaseContract;
+            final FirebaseContract firebase = FirebaseHelper.getFirebase();
             if (firebase != null) {
                 debugShare.putExtra(Intent.EXTRA_TEXT, firebase.getFcmToken());
             }
