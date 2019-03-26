@@ -39,7 +39,7 @@ public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
         final NewFeatureNotice featureNotice = NewFeatureNotice.getInstance(context);
         final boolean shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding();
 
-        if (AppConfigWrapper.hasNewsPortal(context) || shouldShowShoppingLink) {
+        if (AppConfigWrapper.hasNewsPortal() || shouldShowShoppingLink) {
             featureNotice.hasShownEcShoppingLink();
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }

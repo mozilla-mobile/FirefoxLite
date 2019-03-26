@@ -153,7 +153,7 @@ public final class AndroidTestUtils {
 
         // Force app created count to hit threshold to show app promotion dialog
         final Settings.EventHistory history = Settings.getInstance(context).getEventHistory();
-        history.setCount(Settings.Event.AppCreate, (int) AppConfigWrapper.getRateDialogLaunchTimeThreshold(context));
+        history.setCount(Settings.Event.AppCreate, (int) AppConfigWrapper.getRateDialogLaunchTimeThreshold());
     }
 
     public static void toastContainsText(@NotNull final Activity activity, final int strId) {

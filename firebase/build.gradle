@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply from: '../buildSrc/pmd.gradle'
 apply from: '../buildSrc/checkstyle.gradle'
 apply from: '../buildSrc/findbugs.gradle'
@@ -38,10 +40,12 @@ android {
 
 dependencies {
 
-    firebaseImplementation "com.google.firebase:firebase-core:${Versions.firebase}"
-    firebaseImplementation "com.google.firebase:firebase-config:${Versions.firebase}"
-    firebaseApi "com.google.firebase:firebase-messaging:${Versions.fcm}"
-    firebaseImplementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+
+    implementation "com.google.firebase:firebase-core:${Versions.firebase}"
+    implementation "com.google.firebase:firebase-config:${Versions.firebase}"
+    api "com.google.firebase:firebase-messaging:${Versions.fcm}"
+    implementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
 
 }
 
@@ -53,4 +57,7 @@ android.variantFilter { variant ->
 
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
+}
+repositories {
+    mavenCentral()
 }

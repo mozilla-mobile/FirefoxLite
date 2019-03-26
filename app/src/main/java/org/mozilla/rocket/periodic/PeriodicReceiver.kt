@@ -35,7 +35,7 @@ class PeriodicReceiver : BroadcastReceiver() {
             }
         }
 
-        val config = AppConfigWrapper.getFirstLaunchWorkerTimer(context)
+        val config = AppConfigWrapper.getFirstLaunchWorkerTimer()
         val delayHoursToInstallTime = when (config.toInt()) {
             FirstLaunchWorker.TIMER_DISABLED -> {
                 return
@@ -58,7 +58,7 @@ class PeriodicReceiver : BroadcastReceiver() {
         builder.addTag(FirstLaunchWorker.TAG)
         workManager.enqueue(builder.build())
 
-        val message = AppConfigWrapper.getFirstLaunchNotificationMessage(context)
+        val message = AppConfigWrapper.getFirstLaunchNotificationMessage()
         TelemetryWrapper.receiveFirstrunConfig(delayMinutes, message)
     }
 
