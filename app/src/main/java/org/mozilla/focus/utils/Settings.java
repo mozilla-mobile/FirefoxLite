@@ -162,7 +162,7 @@ public class Settings {
     }
 
     public static boolean isContentPortalEnabled(Context context) {
-        return context.getResources().getBoolean(R.bool.enable_content_portal) || PreferenceManager.getDefaultSharedPreferences(context)
+        return AppConfigWrapper.isLifeFeedEnabled(context) || PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_KEY_CONTENT_PORTAL, false);
     }
 
