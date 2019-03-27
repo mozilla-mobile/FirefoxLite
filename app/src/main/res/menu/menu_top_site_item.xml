@@ -8,5 +8,5 @@
         android:title="@string/remove" />
     <item
         android:id="@+id/pin"
-        android:title="(L10N) Pin site" />
+        android:title="@string/pin_site" />
 </menu>
