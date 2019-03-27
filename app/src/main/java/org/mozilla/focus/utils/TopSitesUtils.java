@@ -7,7 +7,7 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
+import android.support.annotation.RawRes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,12 +29,12 @@ public class TopSitesUtils {
 
     public static final String TOP_SITE_ASSET_PREFIX = "file:///android_asset/topsites/icon/";
 
-    private static final String KEY_ID = "id";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_URL = "url";
-    private static final String KEY_VIEW_COUNT = "viewCount";
-    private static final String KEY_LAST_VIEW_TIMESTAMP = "lastViewTimestamp";
-    private static final String KEY_FAVICON = "favicon";
+    public static final String KEY_ID = "id";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_URL = "url";
+    public static final String KEY_VIEW_COUNT = "viewCount";
+    public static final String KEY_LAST_VIEW_TIMESTAMP = "lastViewTimestamp";
+    public static final String KEY_FAVICON = "favicon";
 
     /**
      * get default topsites data from assets and restore it to SharedPreferences
@@ -45,7 +45,7 @@ public class TopSitesUtils {
     public static JSONArray getDefaultSitesJsonArrayFromAssets(Context context) {
         JSONArray obj = null;
         try {
-            obj = new JSONArray(loadDefaultSitesFromAssets(context));
+            obj = new JSONArray(loadDefaultSitesFromAssets(context, R.raw.topsites));
             long lastViewTimestampSystem = System.currentTimeMillis();
             for (int i = 0; i < obj.length(); i++) {
                 ((JSONObject) obj.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
@@ -57,10 +57,10 @@ public class TopSitesUtils {
         return obj;
     }
 
-    private static String loadDefaultSitesFromAssets(Context context) {
+    public static String loadDefaultSitesFromAssets(Context context, @RawRes int resId) {
         String json = "[]";
         try {
-            InputStream is = context.getResources().openRawResource(R.raw.topsites);
+            InputStream is = context.getResources().openRawResource(resId);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -104,53 +104,6 @@ public class TopSitesUtils {
             e.printStackTrace();
         } finally {
             return defaultSites;
-        }
-    }
-
-    public static JSONArray sitesToJson(List<Site> sites) {
-        JSONArray array = new JSONArray();
-        for (int i = 0; i < sites.size(); ++i) {
-            Site site = sites.get(i);
-            JSONObject jsonSite = siteToJson(site);
-            if (jsonSite != null) {
-                array.put(jsonSite);
-            }
-        }
-        return array;
-    }
-
-    public static List<Site> jsonToSites(String jsonData) {
-        List<Site> sites = new ArrayList<>();
-        try {
-            JSONArray array = new JSONArray(jsonData);
-            for (int i = 0; i < array.length(); ++i) {
-                JSONObject obj = array.getJSONObject(i);
-                sites.add(new Site(obj.getLong(KEY_ID),
-                        obj.getString(KEY_TITLE),
-                        obj.getString(KEY_URL),
-                        obj.getLong(KEY_VIEW_COUNT),
-                        obj.getLong(KEY_LAST_VIEW_TIMESTAMP),
-                        obj.getString(KEY_FAVICON)));
-            }
-
-        } catch (JSONException ignored) {
-        }
-        return sites;
-    }
-
-    @Nullable
-    private static JSONObject siteToJson(Site site) {
-        try {
-            JSONObject node = new JSONObject();
-            node.put(KEY_ID, site.getId());
-            node.put(KEY_URL, site.getUrl());
-            node.put(KEY_TITLE, site.getTitle());
-            node.put(KEY_FAVICON, site.getFavIconUri());
-            node.put(KEY_LAST_VIEW_TIMESTAMP, site.getLastViewTimestamp());
-            node.put(KEY_VIEW_COUNT, site.getViewCount());
-            return node;
-        } catch (JSONException e) {
-            return null;
         }
     }
 }
