@@ -5,8 +5,6 @@
 
 package org.mozilla.focus.utils;
 
-import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -112,7 +110,7 @@ public class AppConfigWrapper {
      * @return true if Content Portal News is enabled in Firebase Remote Config
      */
     public static boolean hasNewsPortal() {
-        return FirebaseHelper.firebaseContract.getRcBoolean(FirebaseHelper.ENABLE_LIFE_FEED);
+        return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_LIFE_FEED);
     }
 
     public static boolean hasEcommerceShoppingLink() {
@@ -128,7 +126,7 @@ public class AppConfigWrapper {
     public static ArrayList<ShoppingLink> getEcommerceShoppingLinks() {
         ArrayList<ShoppingLink> shoppingLinks = new ArrayList<>();
 
-        final String rcString = FirebaseHelper.firebaseContract.getRcString(FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS);
+        final String rcString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS);
         try {
             final JSONArray jsonArray = new JSONArray(rcString);
             for (int i = 0; i < jsonArray.length(); i++) {
