@@ -22,8 +22,6 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun deleteInstanceId()
 
-    abstract fun enableCloudMessaging(context: Context, componentName: String, enable: Boolean)
-
     abstract fun enableAnalytics(context: Context, enable: Boolean)
 
     abstract fun enableRemoteConfig(context: Context, callback: Callback)

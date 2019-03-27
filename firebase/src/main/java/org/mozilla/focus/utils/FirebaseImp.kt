@@ -57,20 +57,6 @@ class FirebaseImpl(fromResourceString: HashMap<String, Any>) : FirebaseContract(
         }
     }
 
-    override fun enableCloudMessaging(
-        context: Context,
-        componentName: String,
-        enable: Boolean
-    ) {
-
-        val component = ComponentName(context, componentName)
-
-        val newState = if (enable) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-        else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-
-        context.packageManager.setComponentEnabledSetting(component, newState, PackageManager.DONT_KILL_APP)
-    }
-
     override fun enableAnalytics(context: Context, enable: Boolean) {
 
         FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(enable)
