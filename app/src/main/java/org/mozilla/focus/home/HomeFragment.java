@@ -815,7 +815,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
             MenuItem pinItem = popupMenu.getMenu().findItem(R.id.pin);
             if (pinItem != null) {
-                pinItem.setVisible(!pinSiteManager.isPinned(site));
+                pinItem.setVisible(pinSiteManager.isEnabled() && !pinSiteManager.isPinned(site));
             }
 
             popupMenu.setOnMenuItemClickListener(item -> {
