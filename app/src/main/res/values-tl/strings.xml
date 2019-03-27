@@ -23,7 +23,7 @@
   <string name="about_link_your_rights">Ang Iyong mga Karapatan / Lisensya</string>
   <string name="about_link_privacy">Abiso sa Privacy</string>
   <string name="life_feed">Life Feed</string>
-  <string name="about_link_life_feed">Learn more about %1$s</string>
+  <string name="about_link_life_feed">Alamin %1$s</string>
   <string name="preference_search_engine_default">Default na search engine</string>
   <string name="preference_language">Wika</string>
   <string name="preference_language_systemdefault">Default sa sistema</string>

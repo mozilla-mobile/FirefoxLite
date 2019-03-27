@@ -22,10 +22,13 @@
   <string name="about_link_support">ஆதரவு</string>
   <string name="about_link_your_rights">உங்கள் உரிமைகள் / உரிமங்கள்</string>
   <string name="about_link_privacy">தனியுரிமை அறிவிப்பு</string>
+  <string name="life_feed">வாழ்க்கை ஊட்டம்</string>
+  <string name="about_link_life_feed">%1$s பற்றி மேலும் அறிக</string>
   <string name="preference_search_engine_default">முன்னிருப்பு தேடுபொறி</string>
   <string name="preference_language">மொழி</string>
   <string name="preference_language_systemdefault">கருவி முன்னிருப்பு</string>
   <string name="preference_dialog_title_search_engine">முன்னிருப்பு தேடுபொறி</string>
+  <string name="preference_dialog_title_news_source">செய்தி மூலம்</string>
   <string name="preference_data_saving_block_images">படங்களைத் தடு</string>
   <string name="preference_privacy_storage_clear_browsing_data">உலாவி வரலாற்றை துடை</string>
   <string name="preference_privacy_storage_save_downloads_to">பதிவிறக்கங்களைச் சேமி</string>
@@ -75,6 +78,8 @@
   <string name="first_run_page4_text">முழு வலைப்பக்கத்தையும் திரைப்பிடியுங்கள். தரவுப் பயன்பாடின்றி படியுங்கள் அல்லது வலைப்பக்கத்தை மீண்டும் பார்க்க அதனைத் தட்டுங்கள்.</string>
   <string name="first_run_page5_title">அடுத்த நிலை தனியுரிமை</string>
   <string name="first_run_page5_text">ஒரு தடத்தை இல்லாமல் உலாவுங்கள், மற்றும் முன்னிருப்பாக பொதுவான வலை டிராக்கர்களின் பரவலான தடுப்பு. உங்கள் ரகசியத் தரவின் பாதுகாப்பை உறுதிசெய்யவும்.</string>
+  <string name="first_run_page6_title">புதியவற்றைக் கண்டறி</string>
+  <string name="first_run_page6_text">ஒற்றை நகர்வில், “%1$s” உடன் உங்களைப் புதுப்பித்துக்கொள்ளுங்கள் - பரபரப்பான செய்திகளிலிருந்து சிறந்த சலுகைகள் வரை பல்வகை உள்ளடக்கங்கள். %2$s</string>
   <string name="first_run_upgrade_page_title">உங்களின் கருத்தைக் கேட்டோம்!</string>
   <string name="new_name_upgrade_page_title">எங்களுக்கு ஒரு புதிய தோற்றம்!</string>
   <string name="new_name_upgrade_page_text">உருவான தயாரிப்புடன், புதிய பெயர் மற்றும் புதிய லோகோவுடன் புதிதாகப் புதுப்பித்த, %1$s உலாவியை உங்களுக்குத் தருகிறோம்.</string>
@@ -101,6 +106,7 @@
   <string name="label_menu_exit">வெளியேறு</string>
   <string name="permission_toast_location_deny">இருப்பிட அனுமதி மறுக்கப்பட்டுள்ளது.</string>
   <string name="permission_toast_storage_deny">சேமிப்பக அனுமதி மறுக்கப்பட்டுள்ளது.</string>
+  <string name="permission_handler_permission_dialog_setting">அமைவுகள்</string>
   <string name="permission_dialog_not_now">இப்போதில்லை</string>
   <string name="permission_toast_location">இருப்பிடம் கிடைக்கவில்லை. உங்கள் இருப்பிடத்தை அறிய அனுமதி தாருங்கள்.</string>
   <string name="permission_toast_storage">சேமிப்பகம் கிடைக்கவில்லை. படங்கள் மற்றும் கோப்புகளை உங்களுடைய கருவியில் சேமிக்க அனுமதியுங்கள்.</string>
