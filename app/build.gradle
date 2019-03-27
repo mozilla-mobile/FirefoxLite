@@ -78,13 +78,11 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            matchingFallbacks = ["firebase"]
         }
         debug {
             def userName = System.getenv("USER")
             applicationIdSuffix ".debug." + userName
             versionNameSuffix applicationIdSuffix
-            matchingFallbacks = ["firebase_no_op"]
         }
         // Use a separate buildType for coverage: testCoverageEnabled produces slower code (4-5x slower
         // in places that I've benchmarked), and more importantly seems to break debugging with Android Studio
@@ -93,7 +91,7 @@ android {
             initWith debug
             applicationIdSuffix ".coverage"
             testCoverageEnabled true
-            matchingFallbacks = ["debug", "firebase_no_op"]
+            matchingFallbacks = ["debug"]
         }
         // special build type to develop Firebase related stuff
         firebase {
@@ -101,7 +99,7 @@ android {
             applicationIdSuffix ".debug.firebase"
 
             versionNameSuffix applicationIdSuffix
-            matchingFallbacks = ["debug", "firebase"]
+            matchingFallbacks = ["debug"]
         }
     }
 

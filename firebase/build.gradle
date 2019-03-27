@@ -15,8 +15,9 @@ android {
 
 
     buildTypes {
-        firebase {
 
+        // this is used by app module's firebase build type
+        debug {
             resValue "string", "default_web_client_id", SystemEnv.default_web_client_id ?: ""
             resValue "string", "firebase_database_url", SystemEnv.firebase_database_url ?: ""
             resValue "string", "gcm_defaultSenderId", SystemEnv.gcm_defaultSenderId ?: ""
@@ -33,7 +34,17 @@ android {
             resValue "string", "com.crashlytics.android.build_id", UUID.randomUUID().toString()
         }
 
-        firebase_no_op {
+        // this is used by app module's beta and release build types
+        release {
+            minifyEnabled false
+            resValue "string", "default_web_client_id", SystemEnv.default_web_client_id ?: ""
+            resValue "string", "firebase_database_url", SystemEnv.firebase_database_url ?: ""
+            resValue "string", "gcm_defaultSenderId", SystemEnv.gcm_defaultSenderId ?: ""
+            resValue "string", "google_api_key", SystemEnv.google_api_key ?: ""
+            resValue "string", "google_app_id", SystemEnv.google_app_id ?: ""
+            resValue "string", "google_crash_reporting_api_key", SystemEnv.google_crash_reporting_api_key ?: ""
+            resValue "string", "project_id", SystemEnv.project_id ?: ""
+            resValue "string", "com.crashlytics.android.build_id", UUID.randomUUID().toString()
         }
     }
 }
@@ -49,15 +60,7 @@ dependencies {
 
 }
 
-android.variantFilter { variant ->
-    if (variant.buildType.name.endsWith('release') || variant.buildType.name.endsWith('debug')) {
-        variant.setIgnore(true);
-    }
-}
 
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
-}
-repositories {
-    mavenCentral()
 }
