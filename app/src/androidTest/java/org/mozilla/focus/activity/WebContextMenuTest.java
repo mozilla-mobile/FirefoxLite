@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.filters.FlakyTest;
 import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.GrantPermissionRule;
@@ -283,6 +284,7 @@ public class WebContextMenuTest {
      * 6. Click download manager
      * 7. Check download item matches as expected
      */
+    @FlakyTest
     @Test
     public void saveImageThenDelete_imageSaveAndDeleteSuccessfully() {
 
