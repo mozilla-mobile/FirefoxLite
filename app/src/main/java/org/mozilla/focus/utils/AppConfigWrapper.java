@@ -10,6 +10,7 @@ import android.content.Context;
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
     static final boolean PRIVATE_MODE_ENABLED_DEFAULT = true;
+    static final boolean LIFE_FEED_ENABLED_DEFAULT = false;
 
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
@@ -94,6 +95,10 @@ public class AppConfigWrapper {
 
     public static String getFirstLaunchNotificationMessage(Context context) {
         return FirebaseHelper.getRcString(context, FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE);
+    }
+
+    public static boolean isLifeFeedEnabled(Context context) {
+        return FirebaseHelper.getRcBoolean(context, FirebaseHelper.ENABLE_LIFE_FEED);
     }
 
     static String getShareAppDialogTitle(Context context) {
