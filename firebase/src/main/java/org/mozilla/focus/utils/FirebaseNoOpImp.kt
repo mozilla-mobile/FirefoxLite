@@ -46,13 +46,6 @@ class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()) : F
     override fun deleteInstanceId() {
     }
 
-    override fun enableCloudMessaging(
-        context: Context,
-        componentName: String,
-        enable: Boolean
-    ) {
-    }
-
     override fun enableAnalytics(context: Context, enable: Boolean) {
     }
 

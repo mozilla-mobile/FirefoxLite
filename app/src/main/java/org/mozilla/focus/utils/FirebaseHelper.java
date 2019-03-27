@@ -150,7 +150,6 @@ final public class FirebaseHelper {
         }
         firebaseContract.setDeveloperModeEnabled(AppConstants.isFirebaseBuild());
         firebaseContract.init(applicationContext);
-        firebaseContract.enableCloudMessaging(applicationContext, RocketMessagingService.class.getName(), true);
         firebaseContract.enableRemoteConfig(applicationContext, () -> {
             ThreadUtils.postToBackgroundThread(() -> {
                 final String pref = applicationContext.getString(R.string.pref_s_news);
