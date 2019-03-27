@@ -5,9 +5,7 @@
 
 package org.mozilla.focus.utils
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.annotation.Size
 import android.support.annotation.WorkerThread
