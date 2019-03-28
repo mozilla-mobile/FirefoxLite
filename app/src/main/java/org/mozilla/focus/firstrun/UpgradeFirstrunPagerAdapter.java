@@ -7,7 +7,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
-import org.mozilla.rocket.home.pinsite.SharedPreferencePinSiteDelegate;
+import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 
 public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
 
@@ -24,7 +24,7 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
 
-        PinSiteManager pinSiteManager = new PinSiteManager(new SharedPreferencePinSiteDelegate(context));
+        PinSiteManager pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
         if (pinSiteManager.isEnabled() && pinSiteManager.isFirstTimeEnable()) {
             this.pages.add(new FirstrunPage(
                     context.getString(R.string.second_run_upgrade_page_title),

@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.VisibleForTesting;
 
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
-import org.mozilla.rocket.home.pinsite.SharedPreferencePinSiteDelegate;
+import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 
 public class NewFeatureNotice {
 
@@ -35,7 +35,7 @@ public class NewFeatureNotice {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         hasNewsPortal = Settings.isContentPortalEnabled(context);
 
-        this.pinSiteManager = new PinSiteManager(new SharedPreferencePinSiteDelegate(context));
+        this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
     }
 
     public boolean shouldShowLiteUpdate() {
