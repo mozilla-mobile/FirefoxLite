@@ -39,7 +39,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         private const val KEY_FIRST_INIT = "first_init"
 
         // The number of pinned sites the new user will see
-        private const val DEFAULT_NEW_USER_PIN_COUNT = 4
+        private const val DEFAULT_NEW_USER_PIN_COUNT = 2
 
         private const val viewCountInterval = 100L
 
