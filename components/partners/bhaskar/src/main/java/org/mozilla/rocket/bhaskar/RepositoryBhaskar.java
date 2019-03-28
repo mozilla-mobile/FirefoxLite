@@ -12,7 +12,6 @@ import java.util.Locale;
 
 public class RepositoryBhaskar extends Repository<BhaskarItem> {
     static final String SUBSCRIPTION_KEY_NAME = "bhaskar";
-    static final String DEFAULT_SUBSCRIPTION_URL = "http://appfeed.bhaskar.com/webfeed/apidata/firefox?pageSize=%d&channel_slno=%d&pageNumber=%d";
     static final int FIRST_PAGE = 1;
     static final int DEFAULT_CHANNEL = 521;
 
@@ -57,12 +56,12 @@ public class RepositoryBhaskar extends Repository<BhaskarItem> {
         return ret;
     };
 
-    public RepositoryBhaskar(Context context) {
-        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, FIRST_PAGE, PARSER, true);
+    public RepositoryBhaskar(Context context, String subscriptionUrl) {
+        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, subscriptionUrl, FIRST_PAGE, PARSER, true);
     }
 
     @Override
     protected String getSubscriptionUrl(int pageNumber) {
-        return String.format(Locale.US, DEFAULT_SUBSCRIPTION_URL, DEFAULT_PAGE_SIZE, DEFAULT_CHANNEL, pageNumber);
+        return String.format(Locale.US, subscriptionUrl, DEFAULT_PAGE_SIZE, DEFAULT_CHANNEL, pageNumber);
     }
 }

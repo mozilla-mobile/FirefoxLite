@@ -7,7 +7,6 @@ import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.bhaskar.RepositoryBhaskar
 import org.mozilla.rocket.widget.NewsSourcePreference.NEWS_DB
-import java.lang.IllegalStateException
 
 class ContentRepository {
     companion object {
@@ -33,13 +32,18 @@ class ContentRepository {
         }
 
         @JvmStatic
+        fun resetSubscriptionUrl(subscriptionUrl: String) {
+            INSTANCE?.setSubscriptionUrl(subscriptionUrl)
+        }
+
+        @JvmStatic
         fun isEmpty() = INSTANCE == null
 
         private fun buildRepository(context: Context): Repository<out NewsItem> {
             return if (NewsSourceManager.getInstance().newsSource == NEWS_DB) {
-                RepositoryBhaskar(context)
+                RepositoryBhaskar(context, NewsSourceManager.getInstance().newsSourceUrl)
             } else {
-                RepositoryNewsPoint(context)
+                RepositoryNewsPoint(context, NewsSourceManager.getInstance().newsSourceUrl)
             }
         }
     }

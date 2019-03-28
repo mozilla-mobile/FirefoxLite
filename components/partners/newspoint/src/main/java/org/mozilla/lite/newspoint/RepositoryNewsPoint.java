@@ -1,6 +1,7 @@
 package org.mozilla.lite.newspoint;
 
 import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +16,6 @@ import java.util.Locale;
 
 public class RepositoryNewsPoint extends Repository<NewsPointItem> {
     static final String SUBSCRIPTION_KEY_NAME = "newspoint";
-    static final String DEFAULT_SUBSCRIPTION_URL = "http://partnersnp.indiatimes.com/feed/fx/atp?channel=*&section=top-news&lang=english&curpg=%d&pp=%d&v=v1&fromtime=1551267146210";
 
     static final int FIRST_PAGE = 1;
 
@@ -87,12 +87,12 @@ public class RepositoryNewsPoint extends Repository<NewsPointItem> {
         }
     }
 
-    public RepositoryNewsPoint(Context context) {
-        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, FIRST_PAGE, PARSER, true);
+    public RepositoryNewsPoint(Context context, String subscriptionUrl) {
+        super(context, null, 3, null, null, SUBSCRIPTION_KEY_NAME, subscriptionUrl, FIRST_PAGE, PARSER, true);
     }
 
     @Override
     protected String getSubscriptionUrl(int pageNumber) {
-        return String.format(Locale.US, DEFAULT_SUBSCRIPTION_URL, pageNumber, DEFAULT_PAGE_SIZE);
+        return String.format(Locale.US, subscriptionUrl, pageNumber, DEFAULT_PAGE_SIZE);
     }
 }

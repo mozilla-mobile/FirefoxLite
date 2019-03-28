@@ -65,6 +65,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String FIRST_LAUNCH_TIMER_MINUTES = "first_launch_timer_minutes";
     static final String FIRST_LAUNCH_NOTIFICATION_MESSAGE = "first_launch_notification_message";
     static final String ENABLE_LIFE_FEED = "enable_life_feed";
+    static final String LIFE_FEED_PROVIDERS = "life_feed_providers";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
     private static final String FIREBASE_DB_URL = "firebase_database_url";
@@ -219,6 +220,9 @@ final public class FirebaseHelper extends FirebaseWrapper {
                         settings.setNewsSource(source);
                         NewsSourceManager.getInstance().setNewsSource(source);
                     }
+
+                    final String url = AppConfigWrapper.getLifeFeedProviderUrl(applicationContext, settings.getNewsSource());
+                    ThreadUtils.postToMainThread(() -> NewsSourceManager.getInstance().setNewsSourceUrl(url));
                 });
             });
             // now firebase has completed state changing,
@@ -320,6 +324,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.VPN_RECOMMENDER_URL, FeatureSurveyViewHelper.Constants.LINK_RECOMMEND_VPN);
         map.put(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES, FirstLaunchWorker.TIMER_DISABLED);
         map.put(FirebaseHelper.ENABLE_LIFE_FEED, AppConfigWrapper.LIFE_FEED_ENABLED_DEFAULT);
+        map.put(FirebaseHelper.LIFE_FEED_PROVIDERS, AppConfigWrapper.LIFE_FEED_PROVIDERS_DEFAULT);
 
         return map;
     }

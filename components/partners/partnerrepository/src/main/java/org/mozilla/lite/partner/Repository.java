@@ -15,8 +15,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public abstract class Repository<T extends NewsItem> {
     protected static final int DEFAULT_PAGE_SIZE = 30;
+    @SuppressFBWarnings(value = "URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD", justification = "Variable would be read in the child classes")
+    protected String subscriptionUrl;
     private PageSubscription currentPageSubscription;
     private final String subscriptionKeyName;
     private final int firstPage;
@@ -31,11 +35,12 @@ public abstract class Repository<T extends NewsItem> {
     private Parser<T> parser;
     private boolean dedup;
 
-    public Repository(Context context, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionKeyName, int firstPage, Parser<T> parser, boolean dedup) {
+    public Repository(Context context, String userAgent, int socketTag, OnDataChangedListener onDataChangedListener, OnCacheInvalidateListener onCacheInvalidateListener, String subscriptionKeyName, String subscriptionUrl, int firstPage, Parser<T> parser, boolean dedup) {
         this.context = context;
         this.onDataChangedListener = onDataChangedListener;
         this.onCacheInvalidateListener = onCacheInvalidateListener;
         this.subscriptionKeyName = subscriptionKeyName;
+        this.subscriptionUrl = subscriptionUrl;
         this.firstPage = firstPage;
         currentPage = firstPage;
         this.userAgent = userAgent;
@@ -50,15 +55,21 @@ public abstract class Repository<T extends NewsItem> {
         nextSubscription();
     }
 
-    // Not used yet and not tested yet.
     public void reloadData() {
         itemPojoList = new ArrayList<>();
         cacheIsDirty = true;
+        currentPage = firstPage;
+        currentPageSubscription = null;
         nextSubscription();
     }
 
     public void setOnDataChangedListener(@Nullable OnDataChangedListener listener) {
         this.onDataChangedListener = listener;
+    }
+
+    public void setSubscriptionUrl(String subscriptionUrl) {
+        this.subscriptionUrl = subscriptionUrl;
+        reloadData();
     }
 
     public void reset() {
