@@ -8,13 +8,17 @@ package org.mozilla.rocket.content;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.util.Random;
 
-import static org.mozilla.rocket.widget.NewsSourcePreference.*;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_DB;
+import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_NP;
+import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
 public class NewsSourceManager {
     public static final String TAG = "NewsSource";
@@ -22,6 +26,8 @@ public class NewsSourceManager {
     private static NewsSourceManager instance = new NewsSourceManager();
 
     private String newsSource = null;
+
+    private String newsSourceUrl = "";
 
     private boolean loadHasBeenTriggered;
 
@@ -65,6 +71,15 @@ public class NewsSourceManager {
     public void setNewsSource(String newsSource) {
         this.newsSource = newsSource;
         ContentRepository.reset();
+    }
+
+    public String getNewsSourceUrl() {
+        return newsSourceUrl;
+    }
+
+    public void setNewsSourceUrl(String newsSourceUrl) {
+        this.newsSourceUrl = newsSourceUrl;
+        ContentRepository.resetSubscriptionUrl(newsSourceUrl);
     }
 
     @SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "Variable is not being accessed, it is merely being tested for existence")

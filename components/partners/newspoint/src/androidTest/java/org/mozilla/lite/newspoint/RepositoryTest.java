@@ -22,6 +22,7 @@ public class RepositoryTest {
 
     private static final int SOCKET_TAG = 1234;
     private static final String FAKE_PATH = "/atp?channel=*&section=top-news&lang=english&curpg=%d&pp=%d&v=v1";
+    private static final String DEFAULT_SUBSCRIPTION_URL = "http://partnersnp.indiatimes.com/feed/fx/atp?channel=*&section=top-news&lang=english&curpg=%d&pp=%d&v=v1&fromtime=1551267146210";
 
     @Test
     public void testParsing() throws InterruptedException {
@@ -39,7 +40,7 @@ public class RepositoryTest {
             Repository repository = new Repository<NewsPointItem>(InstrumentationRegistry.getContext(), null, SOCKET_TAG, itemPojoList -> {
                 Assert.assertEquals(LOAD_SIZE, itemPojoList.size());
                 countDownLatch.countDown();
-            }, null, "FAKE", RepositoryNewsPoint.FIRST_PAGE, RepositoryNewsPoint.PARSER, false) {
+            }, null, "FAKE", DEFAULT_SUBSCRIPTION_URL, RepositoryNewsPoint.FIRST_PAGE, RepositoryNewsPoint.PARSER, false) {
                 @Override
                 protected String getSubscriptionUrl(int pageNumber) {
                     return webServer.url(FAKE_PATH).toString();

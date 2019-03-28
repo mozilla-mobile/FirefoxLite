@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import org.mozilla.focus.R;
+import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.StorageUtils;
@@ -73,6 +74,7 @@ public class NewsSourcePreference extends ListPreference {
             Settings.getInstance(getContext()).setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER);
             setSummary(getValue());
             NewsSourceManager.getInstance().setNewsSource(getValue());
+            NewsSourceManager.getInstance().setNewsSourceUrl(AppConfigWrapper.getLifeFeedProviderUrl(getContext(), getValue()));
 
             Log.d(NewsSourceManager.TAG, "User setup pref:" + getValue());
         }

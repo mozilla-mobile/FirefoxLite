@@ -26,6 +26,7 @@ public class RepositoryTest {
 
     private static final int SOCKET_TAG = 1234;
     private static final String FAKE_PATH = "/firefox?pageSize=%d&channel_slno=%d&pageNumber=%d";
+    private static final String DEFAULT_SUBSCRIPTION_URL = "http://appfeed.bhaskar.com/webfeed/apidata/firefox?pageSize=%d&channel_slno=%d&pageNumber=%d";
 
     @Test
     public void testParsing() throws InterruptedException {
@@ -43,7 +44,7 @@ public class RepositoryTest {
             Repository repository = new Repository<BhaskarItem>(InstrumentationRegistry.getContext(), null, SOCKET_TAG, itemPojoList -> {
                 Assert.assertEquals(LOAD_SIZE, itemPojoList.size());
                 countDownLatch.countDown();
-            }, null, "FAKE", RepositoryBhaskar.FIRST_PAGE, RepositoryBhaskar.PARSER, false) {
+            }, null, "FAKE", DEFAULT_SUBSCRIPTION_URL, RepositoryBhaskar.FIRST_PAGE, RepositoryBhaskar.PARSER, false) {
                 @Override
                 protected String getSubscriptionUrl(int pageNumber) {
                     return webServer.url(FAKE_PATH).toString();
@@ -64,7 +65,7 @@ public class RepositoryTest {
         final int LOAD_SIZE = 3;
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         final List<BhaskarItem> firstResult = new ArrayList<>();
-        Repository repository = new RepositoryBhaskar(InstrumentationRegistry.getContext()) {
+        Repository repository = new RepositoryBhaskar(InstrumentationRegistry.getContext(), DEFAULT_SUBSCRIPTION_URL) {
             @Override
             protected String getSubscriptionUrl(int pageNumber) {
                 return String.format(Locale.US, DEFAULT_SUBSCRIPTION_URL, LOAD_SIZE, DEFAULT_CHANNEL, pageNumber);
