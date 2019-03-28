@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.VisibleForTesting;
-import org.mozilla.focus.R;
+
+import org.mozilla.rocket.home.pinsite.PinSiteManager;
+import org.mozilla.rocket.home.pinsite.SharedPreferencePinSiteDelegate;
 
 public class NewFeatureNotice {
 
@@ -20,6 +22,8 @@ public class NewFeatureNotice {
     private final SharedPreferences preferences;
     private final boolean hasNewsPortal;
 
+    private final PinSiteManager pinSiteManager;
+
     public synchronized static NewFeatureNotice getInstance(Context context) {
         if (instance == null) {
             instance = new NewFeatureNotice(context.getApplicationContext());
@@ -30,10 +34,13 @@ public class NewFeatureNotice {
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         hasNewsPortal = Settings.isContentPortalEnabled(context);
+
+        this.pinSiteManager = new PinSiteManager(new SharedPreferencePinSiteDelegate(context));
     }
 
     public boolean shouldShowLiteUpdate() {
-        return from21to40() || from40to114();
+        boolean showPinSite = pinSiteManager.isEnabled() && pinSiteManager.isFirstTimeEnable();
+        return from21to40() || from40to114() || showPinSite;
     }
 
     public boolean from21to40() {

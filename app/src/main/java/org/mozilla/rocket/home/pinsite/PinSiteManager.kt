@@ -7,6 +7,7 @@ package org.mozilla.rocket.home.pinsite
 
 import android.content.Context
 import android.preference.PreferenceManager
+import mozilla.components.support.base.log.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -25,11 +26,14 @@ interface PinSiteDelegate {
     fun pin(site: Site)
     fun unpinned(site: Site)
     fun getPinSites(): List<Site>
+    fun isFirstTimeEnable(): Boolean
 }
 
 class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDelegate {
 
     companion object {
+        private const val TAG = "PinSiteManager"
+
         private const val PREF_NAME = "pin_sites"
         private const val KEY_JSON = "json"
         private const val KEY_FIRST_INIT = "first_init"
@@ -52,10 +56,31 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val sites = mutableListOf<Site>()
 
+    private val rootNode: JSONObject
     private var isEnabled = false
 
+    private val partnerList = mutableListOf<Site>()
+
     init {
-        load(sites)
+        val jsonString = TopSitesUtils.loadDefaultSitesFromAssets(context, R.raw.pin_sites)
+        this.rootNode = JSONObject(jsonString)
+        this.isEnabled = isEnabled(rootNode)
+
+        log("isEnable: $isEnabled")
+        log("isFirstInit: ${isFirstInit()}")
+
+        if (this.isEnabled && isFirstInit()) {
+            val partnerSites = getPartnerList(rootNode)
+            if (hasTopSiteRecord()) {
+                log("init for update user")
+                initForUpdateUser(partnerList, partnerSites)
+            } else {
+                log("init for new user")
+                initForNewUser(partnerList, partnerSites)
+            }
+        } else {
+            log("no initialization needed")
+        }
     }
 
     override fun isEnabled(): Boolean {
@@ -88,6 +113,10 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         return sites
     }
 
+    override fun isFirstTimeEnable(): Boolean {
+        return isFirstInit()
+    }
+
     private fun getViewCountForPinSiteAt(index: Int): Long {
         return Long.MAX_VALUE - index * viewCountInterval
     }
@@ -98,36 +127,36 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         }
         val json = sitesToJson(sites)
         pref.edit().putString(KEY_JSON, json.toString()).apply()
+        log("save")
     }
 
     private fun load(results: MutableList<Site>) {
-        results.clear()
-
-        val jsonString = TopSitesUtils.loadDefaultSitesFromAssets(context, R.raw.pin_sites)
-        val rootNode = JSONObject(jsonString)
-
-        this.isEnabled = isEnabled(rootNode)
         if (!this.isEnabled) {
+            log("load - no enabled")
             return
         }
 
-        if (isFirstInit()) {
-            val partnerSites = getPartnerList(rootNode)
-            if (hasTopSiteRecord()) {
-                initForUpdateUser(results, partnerSites)
-            } else {
-                initForNewUser(results, partnerSites)
-            }
+        log("load - enabled")
+        results.clear()
+
+        if (partnerList.isNotEmpty()) {
+            results.addAll(0, partnerList)
+            partnerList.clear()
+            log("load partner list")
+            save(results)
         } else {
+            log("load saved pin site pref")
             loadSavedPinnedSite(results)
+        }
+
+        if (isFirstInit()) {
+            log("init finished")
+            onFirstInitComplete()
         }
     }
 
     private fun initForUpdateUser(results: MutableList<Site>, partnerSites: List<Site>) {
         results.addAll(partnerSites)
-
-        save(results)
-        onFirstInitComplete()
     }
 
     private fun initForNewUser(results: MutableList<Site>, partnerSites: List<Site>) {
@@ -141,8 +170,8 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             results.add(defaultTopSites.removeAt(0))
         }
 
-        save(results)
-        onFirstInitComplete()
+//        save(results)
+//        onFirstInitComplete()
     }
 
     private fun loadSavedPinnedSite(results: MutableList<Site>) {
@@ -224,5 +253,9 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
 
     private fun getPartnerList(rootNode: JSONObject): List<Site> {
         return jsonToSites(rootNode.getJSONArray(JSON_KEY_PARTNER), true)
+    }
+
+    private fun log(msg: String) {
+        Log.log(tag = TAG, message = msg)
     }
 }
