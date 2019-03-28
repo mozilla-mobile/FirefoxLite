@@ -8,6 +8,7 @@ package org.mozilla.focus.widget;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -191,7 +192,8 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private String statusConvertStr(int status) {
+    @VisibleForTesting
+    public String statusConvertStr(int status) {
         switch (status) {
             case DownloadManager.STATUS_PAUSED:
                 return mContext.getResources().getString(R.string.pause);
