@@ -42,6 +42,12 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
 
         private const val JSON_KEY_IS_ENABLED = "isEnabled"
         private const val JSON_KEY_PARTNER = "partner"
+
+        fun resetPinSiteData(context: Context) {
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).apply {
+                edit().putBoolean(KEY_FIRST_INIT, true).putString(KEY_JSON, "").apply()
+            }
+        }
     }
 
     private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -79,6 +85,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     }
 
     override fun getPinSites(): List<Site> {
+        load(sites)
         return sites
     }
 
@@ -109,7 +116,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             val partnerSites = getPartnerList(rootNode)
             if (hasTopSiteRecord()) {
                 initForUpdateUser(results, partnerSites)
-
             } else {
                 initForNewUser(results, partnerSites)
             }
@@ -202,7 +208,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             node.put(TopSitesUtils.KEY_TITLE, site.title)
             node.put(TopSitesUtils.KEY_FAVICON, site.favIconUri)
             node.put(TopSitesUtils.KEY_VIEW_COUNT, site.viewCount)
-            node
         } catch (e: JSONException) {
             if (BuildConfig.DEBUG) {
                 throw e
