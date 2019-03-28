@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.home
+package org.mozilla.rocket.home.pinsite
 
 import android.content.Context
 import android.preference.PreferenceManager
@@ -14,10 +14,9 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.utils.TopSitesUtils
-import java.util.*
 
 internal class PinSiteManager(
-        private val pinSiteDelegate: PinSiteDelegate
+    private val pinSiteDelegate: PinSiteDelegate
 ) : PinSiteDelegate by pinSiteDelegate
 
 interface PinSiteDelegate {
@@ -25,7 +24,7 @@ interface PinSiteDelegate {
     fun isPinned(site: Site): Boolean
     fun pin(site: Site)
     fun unpinned(site: Site)
-    fun getPinSites() : List<Site>
+    fun getPinSites(): List<Site>
 }
 
 class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDelegate {
@@ -119,7 +118,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             } else {
                 initForNewUser(results, partnerSites)
             }
-
         } else {
             loadSavedPinnedSite(results)
         }
@@ -190,7 +188,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
                         0,
                         faviconPrefix + obj.getString(TopSitesUtils.KEY_FAVICON)))
             }
-
         } catch (ignored: JSONException) {
             if (BuildConfig.DEBUG) {
                 throw ignored
@@ -229,4 +226,3 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         return jsonToSites(rootNode.getJSONArray(JSON_KEY_PARTNER), true)
     }
 }
-

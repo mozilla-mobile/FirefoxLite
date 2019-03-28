@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.mozilla.focus.R;
+import org.mozilla.rocket.home.pinsite.PinViewWrapper;
 
 class SiteViewHolder extends RecyclerView.ViewHolder {
 
