@@ -10,7 +10,7 @@ class DownloadViewModelFactory private constructor(private val repository: Downl
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DownloadIndicatorViewModel::class.java)) {
-            return DownloadIndicatorViewModel(repository) as T
+            return DownloadIndicatorViewModel(repository, MutableLiveData()) as T
         } else if (modelClass.isAssignableFrom(DownloadInfoViewModel::class.java)) {
             return DownloadInfoViewModel(repository, MutableLiveData()) as T
         }
