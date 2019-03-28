@@ -87,6 +87,8 @@
   <string name="first_run_upgrade_page_text1_highlight">多个标签页</string>
   <string name="first_run_upgrade_page_text2">2. 把喜爱的网站 %s ，下次访问更快捷！</string>
   <string name="first_run_upgrade_page_text2_highlight">添加到主屏幕</string>
+  <string name="second_run_upgrade_page_title">固定您最喜爱的网站</string>
+  <string name="second_run_upgrade_page_text">您现在可以固定任何常用网站，以使其不被移动。为了让您快速上手，我们已为您固定了若干常用网站。</string>
   <string name="firstrun_close_button">了解！</string>
   <string name="firstrun_skip_button">跳过</string>
   <string name="firstrun_next_button">下一步</string>
@@ -182,6 +184,7 @@
   <string name="message_deleted_screenshot">截图已删除</string>
   <string name="message_cannot_find_screenshot">无法显示此截图</string>
   <string name="remove">移除</string>
+  <string name="pin_site">固定站点</string>
   <string name="privacy_policy_update_notification_title">产品更新通知</string>
   <string name="privacy_policy_update_notification_action">为了让 Firefox Lite 更适合您和每个人，我们对隐私政策进行了一些修改。点击以了解更多信息。</string>
   <string name="rate_app_dialog_text_title">喜欢 %1$s 吗？</string>
@@ -221,6 +224,7 @@
   <string name="bookmarks_empty_view_msg">无书签</string>
   <string name="edit_bookmark">编辑</string>
   <string name="label_menu_news">新闻</string>
+  <string name="label_menu_latest_top_trending_news">最新热门资讯</string>
   <string name="news_update_btn">点按更新</string>
   <string name="private_tab">隐私标签页</string>
   <string name="private_browsing_title">隐私浏览</string>
@@ -235,4 +239,7 @@
   <string name="exp_survey_thanks">感谢您提供反馈 %1$s</string>
   <string name="exp_survey_yes">是的，我想要</string>
   <string name="exp_survey_no">不需要</string>
+  <string name="http_auth_dialog_title">需要验证身份</string>
+  <string name="http_auth_dialog_user_name">用户名</string>
+  <string name="http_auth_dialog_password">密码</string>
 </resources>
