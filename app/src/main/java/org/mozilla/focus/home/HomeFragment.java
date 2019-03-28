@@ -901,7 +901,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void mergePinSiteToTopSites(List<Site> pinSites, List<Site> topSites) {
         for (Site pinSite : pinSites) {
-            removeDuplicatedSites(topSites, pinSite, site -> {});
+            removeDuplicatedSites(topSites, pinSite, site -> { /* Do nothing */ });
         }
         topSites.addAll(pinSites);
     }

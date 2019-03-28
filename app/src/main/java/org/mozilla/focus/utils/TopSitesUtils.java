@@ -57,6 +57,13 @@ public class TopSitesUtils {
         return obj;
     }
 
+    public static void clearTopSiteData(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .remove(HomeFragment.TOPSITES_PREF)
+                .apply();
+    }
+
     public static String loadDefaultSitesFromAssets(Context context, @RawRes int resId) {
         String json = "[]";
         try {
