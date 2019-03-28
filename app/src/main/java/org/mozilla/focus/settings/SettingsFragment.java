@@ -34,13 +34,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private static int debugClicks = 0;
     private static final int DEBUG_CLICKS_THRESHOLD = 19;
     private final static String PREF_KEY_ROOT = "root_preferences";
-    private boolean hasContentPortal = false;
-
-    @Override
-    public void onAttach (Context context) {
-        super.onAttach(context);
-        hasContentPortal = AppConfigWrapper.hasNewsPortal();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +45,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             Preference category = findPreference(getString(R.string.pref_key_category_development));
             rootPreferences.removePreference(category);
         }
-        if (!hasContentPortal) {
+        if (!NewFeatureNotice.getInstance(getActivity()).isNewsEnabled()) {
             Preference category = findPreference(getString(R.string.pref_s_news));
             rootPreferences.removePreference(category);
         }
