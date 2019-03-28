@@ -13,6 +13,8 @@ public class NewFeatureNotice {
     private static final String PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN = "firstrun_shown";
     private static final String PREF_KEY_BOOLEAN_EC_SHOPPINGLINK_SHOWN = "ec_shoppingLink_shown";
     private static final String PREF_KEY_INT_FEATURE_UPGRADE_VERSION = "firstrun_upgrade_version";
+    private static final String PREF_KEY_CONTENT_PORTAL = "pref_key_content_portal";
+
     private static final int MULTI_TAB_FROM_VERSION_1_0_TO_2_0 = 1;
     private static final int FIREBASE_FROM_VERSION_2_0_TO_2_1 = 2;
     private static final int LITE_FROM_VERSION_2_1_TO_4_0 = 3;
@@ -21,7 +23,6 @@ public class NewFeatureNotice {
     private static NewFeatureNotice instance;
 
     private final SharedPreferences preferences;
-    private final boolean hasNewsPortal;
     private boolean hasShownEcShoppingLink = false;
 
     private final PinSiteManager pinSiteManager;
@@ -35,8 +36,6 @@ public class NewFeatureNotice {
 
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        hasNewsPortal = AppConfigWrapper.hasNewsPortal();
-
         this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
     }
 
@@ -50,7 +49,12 @@ public class NewFeatureNotice {
     }
 
     public boolean from40to114() {
-        return LITE_FROM_VERSION_4_0_TO_1_1_4 > getLastShownFeatureVersion() && hasNewsPortal;
+        return LITE_FROM_VERSION_4_0_TO_1_1_4 > getLastShownFeatureVersion() && isNewsEnabled();
+    }
+
+    public boolean isNewsEnabled() {
+        return preferences.getBoolean(PREF_KEY_CONTENT_PORTAL, false) &&
+                AppConfigWrapper.isLifeFeedEnabled();
     }
 
     public void setLiteUpdateDidShow() {
