@@ -16,7 +16,6 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.notification.RocketMessagingService;
 import org.mozilla.focus.screenshot.ScreenshotManager;
 import org.mozilla.rocket.content.NewsSourceManager;
 import org.mozilla.rocket.periodic.FirstLaunchWorker;
@@ -27,9 +26,9 @@ import java.util.HashMap;
 import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
 /**
- * Implementation for FirebaseWrapper. It's job:
- * 1. Call init() to start the wrapper in a background thread
- * 2. Implement getRemoteConfigDefault to provide Remote Config default value
+ * A wrapper around FirebaseContract. It's job:
+ * 1. Interact with FirebaseContract and initialize Firebase
+ * 2. Provide helper methods for Firebase related features
  */
 final public class FirebaseHelper {
 
@@ -78,7 +77,12 @@ final public class FirebaseHelper {
     private FirebaseHelper() {
     }
 
-    // the entry point to inject FirebaseContract and start the library.
+    /**
+    *  The entry point to inject FirebaseContract and start the library.
+     * @param context The entry point to inject FirebaseContract and start the library.
+     * @param enabled false if start Firebase without Analytics, true otherwise.
+     * @param contract The Firebase implementation to init. If NoOp, remote config will return the passed-in default value
+     */
     public static void init(final Context context, boolean enabled, FirebaseContract contract) {
 
         if (firebaseContract == null) {
@@ -92,17 +96,31 @@ final public class FirebaseHelper {
 
     }
 
-    // helper method to display new line from remote config
+    /**
+     * A helper method to display new line from remote config
+     *
+     * @param string The remote config string on server.
+     * @return Replace "</BR>" with a new line character
+     */
     static String prettify(String string) {
         return string.replace(NEWLINE_PLACE_HOLDER, "\n");
     }
 
-    // provider dummy Firebase implementation
+    /**
+     * provider dummy Firebase implementation
+     *
+     * @param context Context used to start Firebase
+     * @return FirebaseContract that defines Firebase behavior
+     */
     public static FirebaseContract provideFirebaseNoOpImpl(Context context) {
-        return new FirebaseNoOpImp(fromResourceString(context));
+        return new FirebaseNoOpImp(provideDefaultValues(context));
     }
 
-    // provider actual Firebase implementation
+    /**
+     * Provider actual Firebase implementation
+     * @param context Context used to start Firebase
+     * @return FirebaseContract that defines Firebase behavior
+     */
     public static FirebaseContract provideFirebaseImpl(Context context) {
         final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
         final String dbUrl = getStringResourceByName(context, FIREBASE_DB_URL);
@@ -116,9 +134,15 @@ final public class FirebaseHelper {
             throw new IllegalStateException("Firebase related keys are not set");
         }
 
-        return new FirebaseImpl(fromResourceString(context));
+        return new FirebaseImpl(provideDefaultValues(context));
     }
 
+
+    /**
+     * Get the implementation of FirebaseContract.
+     * This will throw IllegalStateException if FirebaseHelper is not initiallzed.
+     * @return Implementation of FirebaseContract
+     */
     @NonNull
     public static FirebaseContract getFirebase() {
 
@@ -127,7 +151,11 @@ final public class FirebaseHelper {
         return firebaseContract;
     }
 
-    public static void enableAnalytics(final Context applicationContext, final boolean enable) {
+    /**
+     * @param applicationContext Used to disable Firebase Analytics. Allow null for Unit Tests.
+     * @param enable If true, enable Firebase Analytics.
+     */
+    public static void enableAnalytics(@Nullable final Context applicationContext, final boolean enable) {
 
         checkFirebaseInitState();
 
@@ -180,7 +208,11 @@ final public class FirebaseHelper {
         }
     }
 
-    private static HashMap<String, Object> fromResourceString(@Nullable Context context) {
+    /**
+     * @param context Some default values are from resource string, if context is null and they'll be null.
+     * @return A Hashmap contains key-value pair for remote config default value
+     */
+    private static HashMap<String, Object> provideDefaultValues(@Nullable Context context) {
         final HashMap<String, Object> map = new HashMap<>();
         if (context != null) {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));

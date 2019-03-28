@@ -7,6 +7,7 @@ package org.mozilla.focus.utils
 
 import android.content.Context
 import android.os.Bundle
+import java.util.HashMap
 
 /**
  * It's a wrapper to communicate with Firebase

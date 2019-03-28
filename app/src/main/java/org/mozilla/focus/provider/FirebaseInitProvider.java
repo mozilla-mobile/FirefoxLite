@@ -11,17 +11,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import android.util.Log;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.FirebaseContract;
 import org.mozilla.focus.utils.FirebaseHelper;
 
-// this is a bad name. it didn't provide FirebaseHelper instance, it's a content provider.
-// todo: rename it
-public class FirebaseHelperProvider extends ContentProvider {
-    private static final String TAG = "CrashlyticsInitProvider";
+public class FirebaseInitProvider extends ContentProvider {
+    private static final String TAG = "FirebaseInitProvider";
 
-    public FirebaseHelperProvider() {
+    public FirebaseInitProvider() {
     }
 
     public boolean onCreate() {
@@ -29,10 +28,14 @@ public class FirebaseHelperProvider extends ContentProvider {
         final boolean enable = TelemetryWrapper.isTelemetryEnabled(context);
 
         FirebaseContract contract;
+        // Only debug build uses FirebaseNoOpImpl. Cause external contributors will not
+        // work on Firebase related features.
         if (AppConstants.isBuiltWithFirebase()) {
             contract = FirebaseHelper.provideFirebaseImpl(context);
+            Log.d(TAG, "We are using FirebaseImpl");
         } else {
             contract = FirebaseHelper.provideFirebaseNoOpImpl(context);
+            Log.d(TAG, "We are using FirebaseNoOpImpl");
         }
         FirebaseHelper.init(context, enable, contract);
         return true;
