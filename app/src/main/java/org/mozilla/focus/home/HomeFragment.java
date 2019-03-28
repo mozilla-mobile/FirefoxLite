@@ -95,7 +95,7 @@ import org.mozilla.rocket.content.ContentRepository;
 import org.mozilla.rocket.content.ContentViewModel;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
-import org.mozilla.rocket.home.pinsite.SharedPreferencePinSiteDelegate;
+import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
@@ -690,7 +690,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         initBanner(context);
 
         if (context != null) {
-            this.pinSiteManager = new PinSiteManager(new SharedPreferencePinSiteDelegate(context));
+            this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
         }
     }
 

@@ -16,7 +16,11 @@ import org.mozilla.focus.R
 import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.utils.TopSitesUtils
 
-internal class PinSiteManager(
+fun getPinSiteManager(context: Context): PinSiteManager {
+    return PinSiteManager(SharedPreferencePinSiteDelegate(context))
+}
+
+class PinSiteManager(
     private val pinSiteDelegate: PinSiteDelegate
 ) : PinSiteDelegate by pinSiteDelegate
 
@@ -132,7 +136,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
 
     private fun load(results: MutableList<Site>) {
         if (!this.isEnabled) {
-            log("load - no enabled")
+            log("load - not enabled")
             return
         }
 
