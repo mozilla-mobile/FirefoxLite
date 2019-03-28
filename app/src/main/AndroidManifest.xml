@@ -219,7 +219,7 @@
             android:exported="false" />
 
         <provider
-            android:name="org.mozilla.focus.provider.FirebaseHelperProvider"
+            android:name="org.mozilla.focus.provider.FirebaseInitProvider"
             android:authorities="${applicationId}.provider.firebasehelperprovider"
             android:enabled="true"
             android:exported="false"
