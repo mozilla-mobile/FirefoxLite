@@ -87,6 +87,8 @@
   <string name="first_run_upgrade_page_text1_highlight">nhiều thẻ</string>
   <string name="first_run_upgrade_page_text2">2. Truy cập các trang web yêu thích của bạn một cách nhanh chóng theo %s</string>
   <string name="first_run_upgrade_page_text2_highlight">thêm chúng vào màn hình chính!</string>
+  <string name="second_run_upgrade_page_title">Ghim các trang web yêu thích của bạn</string>
+  <string name="second_run_upgrade_page_text">Bây giờ bạn có thể ghim bất kỳ trang web hàng đầu nào để nó không bị di chuyển. Để giúp bạn bắt đầu, chúng tôi đã ghim một số trang web hàng đầu để bạn thử.</string>
   <string name="firstrun_close_button">Đã hiểu!</string>
   <string name="firstrun_skip_button">Bỏ qua</string>
   <string name="firstrun_next_button">Tiếp</string>
@@ -182,6 +184,7 @@
   <string name="message_deleted_screenshot">Ảnh chụp màn hình đã bị xóa</string>
   <string name="message_cannot_find_screenshot">Không thể hiển thị ảnh chụp màn hình</string>
   <string name="remove">Xóa</string>
+  <string name="pin_site">Ghim trang</string>
   <string name="privacy_policy_update_notification_title">Thông báo cập nhật sản phẩm</string>
   <string name="privacy_policy_update_notification_action">Để làm cho Firefox Lite tốt hơn cho bạn và mọi người, chúng tôi đã thực hiện một số thay đổi đối với chính sách quyền riêng tư của mình. Nhấn để tìm hiểu thêm.</string>
   <string name="rate_app_dialog_text_title">Thích ứng dụng %1$s?</string>
@@ -221,6 +224,7 @@
   <string name="bookmarks_empty_view_msg">Không có dấu trang</string>
   <string name="edit_bookmark">Chỉnh sửa</string>
   <string name="label_menu_news">Tin tức</string>
+  <string name="label_menu_latest_top_trending_news">Tin tức mới nhất &amp; xu hướng hàng đầu</string>
   <string name="news_update_btn">Cập nhật mới</string>
   <string name="private_tab">Thẻ riêng tư</string>
   <string name="private_browsing_title">Duyệt web riêng tư</string>
@@ -235,4 +239,7 @@
   <string name="exp_survey_thanks">Cảm ơn bạn đã cho chúng tôi thông tin phản hồi %1$s</string>
   <string name="exp_survey_yes">VÂNG, LÀM ƠN</string>
   <string name="exp_survey_no">KHÔNG</string>
+  <string name="http_auth_dialog_title">Yêu cầu xác thực</string>
+  <string name="http_auth_dialog_user_name">Tên đăng nhập</string>
+  <string name="http_auth_dialog_password">Mật khẩu</string>
 </resources>
