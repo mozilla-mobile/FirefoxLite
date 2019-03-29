@@ -52,7 +52,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         // The number of pinned sites the new user will see
         private const val DEFAULT_NEW_USER_PIN_COUNT = 2
 
-        private const val viewCountInterval = 100L
+        private const val PINNED_SITE_VIEW_COUNT_INTERVAL = 100L
 
         private const val JSON_KEY_BOOLEAN_IS_ENABLED = "isEnabled"
         private const val JSON_KEY_STRING_PARTNER = "partner"
@@ -129,7 +129,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     }
 
     private fun getViewCountForPinSiteAt(index: Int): Long {
-        return Long.MAX_VALUE - index * viewCountInterval
+        return Long.MAX_VALUE - index * PINNED_SITE_VIEW_COUNT_INTERVAL
     }
 
     private fun save(sites: List<Site>) {
@@ -180,14 +180,13 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         while (remainPinCount-- > 0 && defaultTopSites.isNotEmpty()) {
             results.add(defaultTopSites.removeAt(0))
         }
-
-//        save(results)
-//        onFirstInitComplete()
     }
 
     private fun loadSavedPinnedSite(results: MutableList<Site>) {
-        pref.getString(KEY_STRING_JSON, "")?.let {
-            results.addAll(jsonToSites(JSONArray(it), false))
+        val jsonString = pref.getString(KEY_STRING_JSON, "")
+        try {
+            results.addAll(jsonToSites(JSONArray(jsonString), false))
+        } catch (ignored: JSONException) {
         }
     }
 
@@ -235,11 +234,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     }
 
     private fun getFaviconUrl(json: JSONObject): String {
-        return try {
-            json.getString(TopSitesUtils.KEY_FAVICON)
-        } catch (e: JSONException) {
-            ""
-        }
+        return json.optString(TopSitesUtils.KEY_FAVICON)
     }
 
     private fun siteToJson(site: Site): JSONObject? {
