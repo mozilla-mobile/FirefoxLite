@@ -1031,6 +1031,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+    // TODO: Reduce complexity here, a possible solution is to use the HashMap for site list
     private void removeDuplicatedSites(List<Site> sites, Site site, OnRemovedListener listener) {
         final Iterator<Site> siteIterator = sites.iterator();
         while (siteIterator.hasNext()) {
