@@ -5,6 +5,7 @@
 
 package org.mozilla.rocket.home.pinsite
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.preference.PreferenceManager
 import android.util.Log
@@ -225,15 +226,20 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
                         obj.getString(TopSitesUtils.KEY_URL),
                         obj.getLong(TopSitesUtils.KEY_VIEW_COUNT),
                         0,
-                        faviconPrefix + obj.getString(TopSitesUtils.KEY_FAVICON)))
+                        faviconPrefix + getFaviconUrl(obj)))
             }
         } catch (ignored: JSONException) {
-            if (BuildConfig.DEBUG) {
-                throw ignored
-            }
         }
 
         return sites
+    }
+
+    private fun getFaviconUrl(json: JSONObject): String {
+        return try {
+            json.getString(TopSitesUtils.KEY_FAVICON)
+        } catch (e: JSONException) {
+            ""
+        }
     }
 
     private fun siteToJson(site: Site): JSONObject? {
@@ -245,9 +251,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             node.put(TopSitesUtils.KEY_FAVICON, site.favIconUri)
             node.put(TopSitesUtils.KEY_VIEW_COUNT, site.viewCount)
         } catch (e: JSONException) {
-            if (BuildConfig.DEBUG) {
-                throw e
-            }
             null
         }
     }
@@ -265,6 +268,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         return jsonToSites(rootNode.getJSONArray(JSON_KEY_STRING_PARTNER), true)
     }
 
+    @SuppressLint("LogUsage")
     private fun log(msg: String) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, msg)
