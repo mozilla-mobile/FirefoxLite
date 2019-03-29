@@ -7,7 +7,7 @@ package org.mozilla.rocket.home.pinsite
 
 import android.content.Context
 import android.preference.PreferenceManager
-import mozilla.components.support.base.log.Log
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -17,6 +17,11 @@ import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.home.HomeFragment
 import org.mozilla.focus.utils.TopSitesUtils
 
+/**
+ * TODO: The current implementation of SharedPreferenceSiteDelegate only relies on persistent data,
+ * so its instance can be created whenever it's needed. However, I'm considering make it a single
+ * instance, so we can preserve some states and reduce IO frequency
+ */
 fun getPinSiteManager(context: Context): PinSiteManager {
     return PinSiteManager(SharedPreferencePinSiteDelegate(context))
 }
@@ -74,7 +79,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         log("isEnable: $isEnabled")
         log("isFirstInit: ${isFirstInit()}")
 
-        if (this.isEnabled && isFirstInit()) {
+        if (this.isEnabled) {
             val partnerSites = getPartnerList(rootNode)
             if (hasTopSiteRecord()) {
                 log("init for update user")
@@ -144,9 +149,9 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         log("load - enabled")
         results.clear()
 
-        if (partnerList.isNotEmpty()) {
+        val isFirstInit = isFirstInit()
+        if (isFirstInit && partnerList.isNotEmpty()) {
             results.addAll(0, partnerList)
-            partnerList.clear()
             log("load partner list")
             save(results)
         } else {
@@ -154,7 +159,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             loadSavedPinnedSite(results)
         }
 
-        if (isFirstInit()) {
+        if (isFirstInit) {
             log("init finished")
             onFirstInitComplete()
         }
@@ -261,6 +266,8 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     }
 
     private fun log(msg: String) {
-        Log.log(tag = TAG, message = msg)
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, msg)
+        }
     }
 }
