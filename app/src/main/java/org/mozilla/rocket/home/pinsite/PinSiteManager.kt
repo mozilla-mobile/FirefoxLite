@@ -14,6 +14,7 @@ import org.json.JSONObject
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.history.model.Site
+import org.mozilla.focus.home.HomeFragment
 import org.mozilla.focus.utils.TopSitesUtils
 
 fun getPinSiteManager(context: Context): PinSiteManager {
@@ -39,20 +40,20 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         private const val TAG = "PinSiteManager"
 
         private const val PREF_NAME = "pin_sites"
-        private const val KEY_JSON = "json"
-        private const val KEY_FIRST_INIT = "first_init"
+        private const val KEY_STRING_JSON = "json"
+        private const val KEY_BOOLEAN_FIRST_INIT = "first_init"
 
         // The number of pinned sites the new user will see
         private const val DEFAULT_NEW_USER_PIN_COUNT = 2
 
         private const val viewCountInterval = 100L
 
-        private const val JSON_KEY_IS_ENABLED = "isEnabled"
-        private const val JSON_KEY_PARTNER = "partner"
+        private const val JSON_KEY_BOOLEAN_IS_ENABLED = "isEnabled"
+        private const val JSON_KEY_STRING_PARTNER = "partner"
 
         fun resetPinSiteData(context: Context) {
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).apply {
-                edit().putBoolean(KEY_FIRST_INIT, true).putString(KEY_JSON, "").apply()
+                edit().putBoolean(KEY_BOOLEAN_FIRST_INIT, true).putString(KEY_STRING_JSON, "").apply()
             }
         }
     }
@@ -130,7 +131,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             site.viewCount = getViewCountForPinSiteAt(index)
         }
         val json = sitesToJson(sites)
-        pref.edit().putString(KEY_JSON, json.toString()).apply()
+        pref.edit().putString(KEY_STRING_JSON, json.toString()).apply()
         log("save")
     }
 
@@ -179,17 +180,17 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     }
 
     private fun loadSavedPinnedSite(results: MutableList<Site>) {
-        pref.getString(KEY_JSON, "")?.let {
+        pref.getString(KEY_STRING_JSON, "")?.let {
             results.addAll(jsonToSites(JSONArray(it), false))
         }
     }
 
     private fun isFirstInit(): Boolean {
-        return pref.getBoolean(KEY_FIRST_INIT, true)
+        return pref.getBoolean(KEY_BOOLEAN_FIRST_INIT, true)
     }
 
     private fun onFirstInitComplete() {
-        pref.edit().putBoolean(KEY_FIRST_INIT, false).apply()
+        pref.edit().putBoolean(KEY_BOOLEAN_FIRST_INIT, false).apply()
     }
 
     private fun sitesToJson(sites: List<Site>): JSONArray {
@@ -248,15 +249,15 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
 
     private fun hasTopSiteRecord(): Boolean {
         val defaultPref = PreferenceManager.getDefaultSharedPreferences(context)
-        return defaultPref.getString("topsites_pref", "")?.isNotEmpty() ?: false
+        return defaultPref.getString(HomeFragment.TOPSITES_PREF, "")?.isNotEmpty() ?: false
     }
 
     private fun isEnabled(rootNode: JSONObject): Boolean {
-        return rootNode.getBoolean(JSON_KEY_IS_ENABLED)
+        return rootNode.getBoolean(JSON_KEY_BOOLEAN_IS_ENABLED)
     }
 
     private fun getPartnerList(rootNode: JSONObject): List<Site> {
-        return jsonToSites(rootNode.getJSONArray(JSON_KEY_PARTNER), true)
+        return jsonToSites(rootNode.getJSONArray(JSON_KEY_STRING_PARTNER), true)
     }
 
     private fun log(msg: String) {
