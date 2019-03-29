@@ -87,6 +87,7 @@
   <string name="first_run_upgrade_page_text1_highlight">หลายแท็บ</string>
   <string name="first_run_upgrade_page_text2">2. เข้าถึงเว็บไซต์โปรดของคุณอย่างรวดเร็วโดย %s</string>
   <string name="first_run_upgrade_page_text2_highlight">เพิ่มเว็บไซต์ไปยังหน้าจอหลัก!</string>
+  <string name="second_run_upgrade_page_title">ปักหมุดไซต์โปรดของคุณ</string>
   <string name="firstrun_close_button">ตกลง เข้าใจแล้ว!</string>
   <string name="firstrun_skip_button">ข้าม</string>
   <string name="firstrun_next_button">ถัดไป</string>
@@ -109,7 +110,7 @@
   <string name="permission_handler_permission_dialog_setting">การตั้งค่า</string>
   <string name="permission_dialog_not_now">ไม่ใช่ตอนนี้</string>
   <string name="permission_toast_location">ตำแหน่งที่ตั้งไม่พร้อมใช้งาน อนุญาตให้เข้าถึงตำแหน่งที่ตั้งของคุณ</string>
-  <string name="permission_toast_storage">ที่เก็บข้อมูลไม่พร้อมใช้งาน อนุญาตให้เก็บภาพและไฟล์ในอุปกรณ์ของคุณ</string>
+  <string name="permission_toast_storage">ที่เก็บข้อมูลไม่พร้อมใช้งาน อนุญาตให้เก็บรูปถ่ายและไฟล์ในอุปกรณ์ของคุณ</string>
   <string name="geolocation_dialog_message">%1$s ต้องการเข้าถึงตำแหน่งที่ตั้งของคุณ</string>
   <string name="geolocation_dialog_message_cache_it">ไม่ต้องถามอีกสำหรับไซต์นี้จนกระทั่ง %1$s เริ่มการทำงานใหม่</string>
   <string name="geolocation_dialog_allow">อนุญาต</string>
@@ -182,6 +183,7 @@
   <string name="message_deleted_screenshot">ลบภาพหน้าจอแล้ว</string>
   <string name="message_cannot_find_screenshot">ไม่สามารถแสดงผลภาพหน้าจอ</string>
   <string name="remove">เอาออก</string>
+  <string name="pin_site">ปักหมุดไซต์</string>
   <string name="privacy_policy_update_notification_title">ประกาศการอัปเดตผลิตภัณฑ์</string>
   <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Lite ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="rate_app_dialog_text_title">รัก %1$s?</string>
@@ -235,4 +237,6 @@
   <string name="exp_survey_thanks">ขอบคุณที่ให้ข้อคิดเห็นกับเรา %1$s</string>
   <string name="exp_survey_yes">ใช่ ได้โปรด</string>
   <string name="exp_survey_no">ไม่</string>
+  <string name="http_auth_dialog_user_name">ชื่อผู้ใช้</string>
+  <string name="http_auth_dialog_password">รหัสผ่าน</string>
 </resources>
