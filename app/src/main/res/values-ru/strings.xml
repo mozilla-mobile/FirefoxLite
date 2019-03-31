@@ -87,6 +87,8 @@
   <string name="first_run_upgrade_page_text1_highlight">множество вкладок</string>
   <string name="first_run_upgrade_page_text2">2. Мгновенно получите доступ к любимым сайтам %s</string>
   <string name="first_run_upgrade_page_text2_highlight">добавив их на главный экран!</string>
+  <string name="second_run_upgrade_page_title">Закрепите свои любимые сайты</string>
+  <string name="second_run_upgrade_page_text">Теперь вы можете закрепить любой хороший сайт и он не будет перемещаться. Для начала, мы закрепили несколько популярных сайтов за вас.</string>
   <string name="firstrun_close_button">Ок, понятно!</string>
   <string name="firstrun_skip_button">Пропустить</string>
   <string name="firstrun_next_button">Далее</string>
@@ -182,6 +184,7 @@
   <string name="message_deleted_screenshot">Скриншот удалён</string>
   <string name="message_cannot_find_screenshot">Не удалось отобразить скриншот</string>
   <string name="remove">Удалить</string>
+  <string name="pin_site">Закрепить сайт</string>
   <string name="privacy_policy_update_notification_title">Уведомление об обновлении продукта</string>
   <string name="privacy_policy_update_notification_action">Чтобы сделать Firefox Lite лучше для вас и для всех, мы внесли некоторые изменения в нашу политику конфиденциальности. Нажмите, чтобы узнать больше.</string>
   <string name="rate_app_dialog_text_title">Нравится %1$s?</string>
@@ -221,6 +224,7 @@
   <string name="bookmarks_empty_view_msg">Без закладок</string>
   <string name="edit_bookmark">Изменить</string>
   <string name="label_menu_news">Новости</string>
+  <string name="label_menu_latest_top_trending_news">Топ последних новостей</string>
   <string name="news_update_btn">Новое обновление</string>
   <string name="private_tab">Приватная вкладка</string>
   <string name="private_browsing_title">Приватный просмотр</string>
@@ -235,4 +239,7 @@
   <string name="exp_survey_thanks">Благодарим Вас за предоставленный отзыв %1$s</string>
   <string name="exp_survey_yes">ДА, ПОЖАЛУЙСТА</string>
   <string name="exp_survey_no">НЕТ</string>
+  <string name="http_auth_dialog_title">Требуется аутентификация</string>
+  <string name="http_auth_dialog_user_name">Имя пользователя</string>
+  <string name="http_auth_dialog_password">Пароль</string>
 </resources>
