@@ -14,7 +14,7 @@
   <string name="find_in_page_result">%1$d/%2$d</string>
   <string name="accessibility_find_in_page_result">%2$dഇല്‍ %1$d</string>
   <string name="accessibility_dismiss_find_in_page">താളിലെ തിരച്ചില്‍ നിര്‍ത്തുക</string>
-  <string name="text_selection_search_action">Firefox Rocket ഇതിൽ തിരയൂ</string>
+  <string name="text_selection_search_action">Firefox Lite -ൽ തിരയൂ</string>
   <string name="about_content_body">%1$s %2$s നിർമ്മിച്ച വേഗമേറിയ ചെറിയ ബ്രൗസറാണ്. ഞങ്ങളുടെ ലക്ഷ്യം ആരോഗ്യമുള്ള തുറന്ന ഇന്റർനെറ്റിന്റെ വളർച്ചയാണ്.</string>
   <string name="about_link_learn_more">കൂടുതല്‍ അറിയുക</string>
   <string name="about_link_support">പിന്തുണ</string>
@@ -169,7 +169,7 @@
   <string name="rate_app_dialog_text_content">ഞങ്ങളുടെ ഉല്പന്നം തിരഞ്ഞെടുത്തതിനു നന്ദി. താങ്കളുടെ പ്രതികരണം ഞങ്ങൾക്ക് വിലപ്പെട്ടത്താണ്.</string>
   <string name="rate_app_dialog_btn_go_rate">ശരി, 5 നക്ഷത്രങ്ങൾ റേറ്റ് ചെയ്യൂ!</string>
   <string name="rate_app_notification_action_rate">5 നക്ഷത്രങ്ങൾ റേറ്റ് ചെയ്യൂ</string>
-  <string name="rate_app_dialog_btn_feedback">വേണ്ട, പ്രതികരണം അയയ്ക്കൂ.</string>
+  <string name="rate_app_dialog_btn_feedback">പ്രതികരണം അയയ്ക്കൂ</string>
   <string name="rate_app_notification_action_feedback">പ്രതികരണം</string>
   <string name="share_app_dialog_text_title">%1$s കൂട്ടുകാരുമായി പങ്കുവെക്കുക!</string>
   <string name="share_app_dialog_text_content">- വേഗമേറിയതും ലഘുവും\n- ഡാറ്റാ ലാഭിക്കുന്നത്\n- കിടിലം സ്ക്രീൻഷോട്ടുകൾ</string>
