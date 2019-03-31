@@ -113,7 +113,9 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 final int progress = (int) (100 * downloadInfo.getSizeSoFar() / downloadInfo.getSizeTotal());
                 holder.progressBar.setProgress(progress);
                 holder.progressBar.setVisibility(View.VISIBLE);
-                subtitle = progress + "%";
+                Double downloadedBytes = (downloadInfo.getSizeSoFar() / 1024 / 1024);
+                Double totalBytes = (downloadInfo.getSizeTotal() / 1024 / 1024);
+                subtitle = downloadedBytes.shortValue() + "MB" + "/" + totalBytes.shortValue() + "MB";
                 holder.action.setImageLevel(ACTION_CANCEL);
             } else {
                 subtitle = statusConvertStr(downloadInfo.getStatus());
