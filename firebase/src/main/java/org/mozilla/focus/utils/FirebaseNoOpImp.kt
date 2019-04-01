@@ -61,4 +61,7 @@ class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()) : F
 
     override fun event(context: Context?, key: String, param: Bundle?) {
     }
+
+    override fun setFirebaseUserProperty(context: Context, tag: String, value: String) {
+    }
 }

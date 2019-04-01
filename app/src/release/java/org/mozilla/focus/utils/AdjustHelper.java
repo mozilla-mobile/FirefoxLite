@@ -7,22 +7,23 @@ package org.mozilla.focus.utils;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.adjust.sdk.Adjust;
-import com.adjust.sdk.AdjustConfig;
-import com.adjust.sdk.AdjustEvent;
-import com.adjust.sdk.LogLevel;
+import com.adjust.sdk.*;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.FocusApplication;
+import org.mozilla.focus.R;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 
 import javax.annotation.Nullable;
 
 public class AdjustHelper {
 
+    private static final String UNEXPECTED_TOKEN = "unexpected";
     @Nullable
     private static FocusApplication focusApplication;
 
@@ -44,6 +45,14 @@ public class AdjustHelper {
                 BuildConfig.ADJUST_TOKEN,
                 BuildConfig.ADJUST_ENVIRONMENT,
                 true);
+        config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
+            @Override
+            public void onAttributionChanged(AdjustAttribution attribution) {
+                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
+                final String key = application.getString(R.string.pref_key_s_tracker_token);
+                preferences.edit().putString(key, attribution.trackerToken).apply();
+            }
+        });
 
         config.setLogLevel(LogLevel.SUPRESS);
         if (!TextUtils.isEmpty(BuildConfig.ADJUST_DEFAULT_TRACKER)) {

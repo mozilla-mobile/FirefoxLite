@@ -35,6 +35,9 @@ final public class FirebaseHelper {
 
     private static final String TAG = "FirebaseHelper";
 
+    // keys for user properties
+    public static final String USER_PROPERTY_TRACKER = "tracker";
+
     // keys for remote config default value
     public static final String RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title";
     public static final String RATE_APP_DIALOG_TEXT_CONTENT = "rate_app_dialog_text_content";
@@ -279,5 +282,11 @@ final public class FirebaseHelper {
         if (firebaseContract == null) {
             throw new IllegalStateException("Firebase Helper not initialized");
         }
+    }
+
+    public static void setUserProperty(Context context, String tag, String value) {
+        checkFirebaseInitState();
+
+        getFirebase().setFirebaseUserProperty(context, tag, value);
     }
 }

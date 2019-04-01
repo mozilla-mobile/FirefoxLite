@@ -109,4 +109,8 @@ class FirebaseImpl(fromResourceString: HashMap<String, Any>) : FirebaseContract(
         }
         FirebaseAnalytics.getInstance(context).logEvent(key, param)
     }
+
+    override fun setFirebaseUserProperty(context: Context, tag: String, value: String) {
+        FirebaseAnalytics.getInstance(context).setUserProperty(tag, value)
+    }
 }
