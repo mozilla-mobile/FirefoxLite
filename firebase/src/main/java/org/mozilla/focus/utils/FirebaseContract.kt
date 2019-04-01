@@ -30,6 +30,8 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun event(context: Context?, key: String, param: Bundle?)
 
+    abstract fun setFirebaseUserProperty(context: Context, tag: String, value: String)
+
     companion object {
         internal val TAG = "FirebaseContract"
 
