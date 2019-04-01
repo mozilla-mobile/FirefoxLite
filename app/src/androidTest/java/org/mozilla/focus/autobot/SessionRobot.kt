@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.action.Tap
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.pressImeActionButton
@@ -27,7 +26,6 @@ import android.support.test.uiautomator.UiSelector
 import android.view.View
 import org.hamcrest.Matchers
 import org.mozilla.focus.R
-import org.mozilla.focus.activity.FindInPageTest
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.helper.ScreenshotIdlingResource
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
@@ -205,10 +203,11 @@ class SessionRobot : MenuRobot() {
                 .perform(webClick())
     }
 
-    fun sendBrowsingIntent(activity: Activity, url: String) {
+    fun sendBrowsingIntent(activity: MainActivity, url: String) {
 //        sessionLoadedIdlingResource = SessionLoadedIdlingResource(activity)
 //        IdlingRegistry.getInstance().register(sessionLoadedIdlingResource)
 
+        sessionLoadedIdlingResource = SessionLoadedIdlingResource(activity)
         // Simulate third party app sending browsing url intent to rocket
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
