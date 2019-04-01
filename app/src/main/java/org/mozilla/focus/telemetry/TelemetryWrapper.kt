@@ -48,6 +48,7 @@ import org.mozilla.telemetry.serialize.JSONPingSerializer
 import org.mozilla.telemetry.storage.FileTelemetryStorage
 import org.mozilla.threadutils.ThreadUtils
 import java.util.HashMap
+import java.util.concurrent.atomic.AtomicInteger
 
 object TelemetryWrapper {
     private const val TELEMETRY_APP_NAME_ZERDA = "Zerda"
@@ -59,6 +60,9 @@ object TelemetryWrapper {
     private const val FIND_IN_PAGE_VERSION = 2
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
+
+    @JvmStatic
+    private val sRefCount = AtomicInteger(0)
 
     internal object Category {
         const val ACTION = "action"
@@ -461,7 +465,9 @@ object TelemetryWrapper {
             extras = [])
     @JvmStatic
     fun startSession() {
-        TelemetryHolder.get().recordSessionStart()
+        if (sRefCount.getAndIncrement() == 0) {
+            TelemetryHolder.get().recordSessionStart()
+        }
 
         EventBuilder(Category.ACTION, Method.FOREGROUND, Object.APP).queue()
     }
@@ -475,7 +481,9 @@ object TelemetryWrapper {
             extras = [])
     @JvmStatic
     fun stopSession() {
-        TelemetryHolder.get().recordSessionEnd()
+        if (sRefCount.decrementAndGet() == 0) {
+            TelemetryHolder.get().recordSessionEnd()
+        }
 
         EventBuilder(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
     }
