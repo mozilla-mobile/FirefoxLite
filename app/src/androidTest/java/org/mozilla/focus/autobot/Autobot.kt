@@ -117,7 +117,7 @@ class FindInPageRobot : MenuRobot() {
     fun swipeOnWebview(direction: String) {
         when (direction) {
             "UP" -> onView(withId(R.id.webview_slot)).perform(ViewActions.swipeUp())
-            "DOWN" ->onView(withId(R.id.webview_slot)).perform(ViewActions.swipeDown())
+            "DOWN" -> onView(withId(R.id.webview_slot)).perform(ViewActions.swipeDown())
         }
     }
 
