@@ -19,6 +19,8 @@ import android.widget.ProgressBar
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
+import android.view.LayoutInflater
+import android.widget.LinearLayout
 
 class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
 
@@ -28,12 +30,18 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private var emptyView: View? = null
     private var progressCenter: ProgressBar? = null
     private var adapter: ContentAdapter<NewsItem>? = null
-    private var bottomSheet: View? = null
+    private var bottomSheet: LinearLayout? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
+
+    private var contentType: ContentType = ContentType.News
 
     interface NewsListListener {
         fun loadMore()
         fun onShow(context: Context)
+    }
+
+    sealed class ContentType {
+        object News : ContentType()
     }
 
     constructor(context: Context) : super(context)
@@ -54,12 +62,19 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
         setupBottomSheet()
 
-        setupView()
+        when(contentType){
+            ContentType.News -> setupViewNews()
+        }
     }
+
 
     private var linearLayoutManager: LinearLayoutManager? = null
 
-    private fun setupView() {
+    private fun setupViewNews() {
+
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        inflater.inflate(R.layout.content_news, bottomSheet)
+
         this.setOnClickListener { hide() }
         findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
             newsListListener?.loadMore()
