@@ -30,7 +30,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -86,13 +85,12 @@ import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.lite.partner.NewsItem;
-import org.mozilla.lite.partner.Repository;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.banner.BannerViewHolder;
+import org.mozilla.rocket.content.NewsPresenter;
 import org.mozilla.rocket.content.ContentPortalView;
-import org.mozilla.rocket.content.ContentRepository;
-import org.mozilla.rocket.content.ContentViewModel;
+import org.mozilla.rocket.content.NewsViewContract;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
@@ -121,10 +119,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
-
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View, TopSitesContract.Model,
-        ScreenNavigator.HomeScreen, ContentPortalView.ContentPortalListener {
+        ScreenNavigator.HomeScreen, NewsViewContract {
     private static final String TAG = "HomeFragment";
 
     public static final String TOPSITES_PREF = "topsites_pref";
@@ -135,7 +131,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
     public static final String BANNER_MANIFEST_DEFAULT = "";
-    private static final long LOADMORE_THRESHOLD = 3000L;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -143,7 +138,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Nullable private ImageButton arrow1;
     @Nullable private ImageButton arrow2;
     @Nullable private ContentPortalView contentPanel;
-    boolean isLoading = false;
+
     private View themeOnboardingLayer;
     private TabCounter tabCounter;
     private ThemedTextView fakeInput;
@@ -160,12 +155,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
     private BannerConfigViewModel bannerConfigViewModel;
-    private ContentViewModel contentViewModel;
     final Observer<String[]> bannerObserver = this::setUpBannerFromConfig;
     private String[] configArray;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
     private boolean hasContentPortal = false;
+    @Nullable
+    private NewsPresenter newsPresenter = null;
     private PinSiteManager pinSiteManager;
 
     @Override
@@ -182,12 +178,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         }
     };
-
-    @Override
-    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setupContentViewModel();
-    }
 
     public static HomeFragment create() {
         return new HomeFragment();
@@ -248,21 +238,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void loadMore() {
-        if (!isLoading) {
-            contentViewModel.loadMore();
-            isLoading = true;
-            ThreadUtils.postToMainThreadDelayed(() -> isLoading = false, LOADMORE_THRESHOLD);
-        }
-    }
-
-    @Override
-    public void onShow() {
-        updateSourcePriority();
-        checkNewsRepositoryReset();
-    }
-
-    @Override
     public List<Site> getSites() {
         return presenter.getSites();
     }
@@ -271,6 +246,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public void pinSite(Site site, Runnable onUpdateComplete) {
         pinSiteManager.pin(site);
         onUpdateComplete.run();
+    }
+
+    @Override
+    public void setData(@Nullable List<? extends NewsItem> items) {
+        contentPanel.setData(items);
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -443,6 +423,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         final View view;
         if (hasContentPortal) {
             view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
+            newsPresenter = new NewsPresenter(this);
         } else {
             view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         }
@@ -461,8 +442,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.arrow1 = view.findViewById(R.id.arrow1);
         this.arrow2 = view.findViewById(R.id.arrow2);
         this.contentPanel = view.findViewById(R.id.content_panel);
-        if (this.contentPanel != null) {
-            this.contentPanel.setContentPortalListener(this);
+        if (this.newsPresenter != null) {
+            this.contentPanel.setContentPortalListener(newsPresenter);
         }
 
         final View arrowContainer = view.findViewById(R.id.arrow_container);
@@ -582,6 +563,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         });
 
+        if (newsPresenter != null) {
+            newsPresenter.setupContentViewModel(getActivity());
+        }
+
         return view;
     }
 
@@ -613,24 +598,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (contentPanel != null) {
             contentPanel.onResume();
         }
-    }
-
-    private void checkNewsRepositoryReset() {
-        // News Repository is reset and empty when the user changes the news source.
-        // We create a new Repository and inject to contentViewModel here.
-        // TODO: similar code happens in setupContentViewModel(), need to refine them
-        if (ContentRepository.isEmpty() && contentViewModel != null && contentPanel != null) {
-            final Repository<? extends NewsItem> repository = ContentRepository.getInstance(getContext());
-            repository.setOnDataChangedListener(contentViewModel);
-            contentViewModel.setRepository(repository);
-            contentViewModel.getItems().setValue(null);
-            contentViewModel.loadMore();
-        }
-    }
-
-    private void updateSourcePriority() {
-        // the user had seen the news. Treat it as an user selection so no on can change it
-        Settings.getInstance(getContext()).setPriority(PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER);
     }
 
     private void playContentPortalAnimation() {
@@ -692,25 +659,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (context != null) {
             this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
         }
-    }
-
-    private void setupContentViewModel() {
-        final FragmentActivity activity = getActivity();
-        if (activity == null || contentPanel == null) {
-            return;
-        }
-        contentViewModel = ViewModelProviders.of(activity).get(ContentViewModel.class);
-        final Repository<? extends NewsItem> repository = ContentRepository.getInstance(getContext());
-        repository.setOnDataChangedListener(contentViewModel);
-        contentViewModel.setRepository(repository);
-        contentViewModel.getItems().observe(getViewLifecycleOwner(),
-            items -> {
-                contentPanel.setData(items);
-                isLoading = false;
-            });
-        // creating a repository will also create a new subscription.
-        // we deliberately create a new subscription again to load data aggressively.
-        contentViewModel.loadMore();
     }
 
     @Override
