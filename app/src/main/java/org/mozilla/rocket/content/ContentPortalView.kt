@@ -8,6 +8,7 @@ package org.mozilla.rocket.content
 import android.content.Context
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -21,6 +22,7 @@ import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import org.mozilla.rocket.content.data.Ticket
 
 class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
 
@@ -42,6 +44,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     sealed class ContentType {
         object News : ContentType()
+        object Ticket : ContentType()
     }
 
     constructor(context: Context) : super(context)
@@ -64,9 +67,23 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
         when(contentType){
             ContentType.News -> setupViewNews()
+            ContentType.Ticket -> setupViewTicket()
         }
+
     }
 
+    private fun setupViewTicket() {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        inflater.inflate(R.layout.content_ticket, bottomSheet)
+
+        recyclerView = findViewById(R.id.ct_ticket_list)
+        val ticketAdapter = TicketAdapter(this)
+        recyclerView?.layoutManager = GridLayoutManager(context, TICKET_GRID_SPAN)
+        recyclerView?.adapter = ticketAdapter
+
+        ticketAdapter.submitList(getTickets())
+
+    }
 
     private var linearLayoutManager: LinearLayoutManager? = null
 
@@ -160,6 +177,57 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         return true
     }
 
+    private fun getTickets() = ArrayList<Ticket>().apply {
+        add(
+            Ticket(
+                "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fc%2Ftiket-voucher%2Ftiket-voucher-lainnya%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+                "Pulsa",
+                R.drawable.image_pulsa
+            )
+        )
+
+        add(
+            Ticket(
+                "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fc%2Ftiket-voucher%2Ftiket-voucher-lainnya%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+                "Flight Ticket",
+                R.drawable.image_flight
+            )
+        )
+
+        add(
+            Ticket(
+                "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fc%2Ftiket-voucher%2Ftiket-voucher-lainnya%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+                "Event",
+                R.drawable.image_event
+            )
+        )
+
+        add(
+            Ticket(
+                "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fc%2Ftiket-voucher%2Ftiket-voucher-lainnya%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+                "Data Package",
+                R.drawable.image_data_package
+            )
+        )
+
+        add(
+            Ticket(
+                "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fc%2Ftiket-voucher%2Ftiket-voucher-lainnya%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+                "Game",
+                R.drawable.image_game
+            )
+        )
+
+        add(
+            Ticket(
+                "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fc%2Ftiket-voucher%2Ftiket-voucher-lainnya%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+                "Train",
+                R.drawable.image_train
+            )
+        )
+
+    }
+
     private fun setupBottomSheet() {
         bottomSheet = findViewById(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
@@ -235,5 +303,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     companion object {
         private const val NEWS_THRESHOLD = 10
+        private const val TICKET_GRID_SPAN = 2
     }
 }
