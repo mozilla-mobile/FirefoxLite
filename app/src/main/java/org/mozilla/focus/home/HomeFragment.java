@@ -443,7 +443,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.arrow2 = view.findViewById(R.id.arrow2);
         this.contentPanel = view.findViewById(R.id.content_panel);
         if (this.newsPresenter != null) {
-            this.contentPanel.setContentPortalListener(newsPresenter);
+            this.contentPanel.setNewsListListener(newsPresenter);
         }
 
         final View arrowContainer = view.findViewById(R.id.arrow_container);
