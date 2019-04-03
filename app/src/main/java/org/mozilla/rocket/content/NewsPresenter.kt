@@ -15,7 +15,7 @@ interface NewsViewContract {
     fun setData(items: List<NewsItem>?)
 }
 
-class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPortalView.ContentPortalListener {
+class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPortalView.NewsListListener {
 
     companion object {
         private val LOADMORE_THRESHOLD = 3000L

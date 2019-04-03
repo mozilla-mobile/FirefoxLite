@@ -22,7 +22,7 @@ import org.mozilla.lite.partner.NewsItem
 
 class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
 
-    var contentPortalListener: ContentPortalListener? = null
+    var newsListListener: NewsListListener? = null
 
     private var recyclerView: RecyclerView? = null
     private var emptyView: View? = null
@@ -31,7 +31,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private var bottomSheet: View? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
-    interface ContentPortalListener {
+    interface NewsListListener {
         fun loadMore()
         fun onShow(context: Context)
     }
@@ -62,7 +62,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
     private fun setupView() {
         this.setOnClickListener { hide() }
         findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
-            contentPortalListener?.loadMore()
+            newsListListener?.loadMore()
         }
         recyclerView = findViewById(R.id.recyclerview)
         emptyView = findViewById(R.id.empty_view_container)
@@ -80,7 +80,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
                     val visibleItemCount = it.childCount
                     val lastVisibleItem = it.findLastVisibleItemPosition()
                     if (visibleItemCount + lastVisibleItem + NEWS_THRESHOLD >= totalItemCount) {
-                            contentPortalListener?.loadMore()
+                            newsListListener?.loadMore()
                     }
                 }
             })
@@ -98,7 +98,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
             return
         }
         HomeFragmentViewState.lastOpenNews()
-        contentPortalListener?.onShow(context)
+        newsListListener?.onShow(context)
 
         if (!animated) {
             showInternal()
