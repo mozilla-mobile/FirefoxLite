@@ -33,7 +33,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     interface ContentPortalListener {
         fun loadMore()
-        fun onShow()
+        fun onShow(context: Context)
     }
 
     constructor(context: Context) : super(context)
@@ -98,7 +98,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
             return
         }
         HomeFragmentViewState.lastOpenNews()
-        contentPortalListener?.onShow()
+        contentPortalListener?.onShow(context)
 
         if (!animated) {
             showInternal()
@@ -164,7 +164,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         })
     }
 
-    override fun onStatus(items: MutableList<NewsItem>?) {
+    override fun onStatus(items: MutableList<out NewsItem>?) {
         when {
             items == null -> {
                 recyclerView?.visibility = View.GONE
@@ -195,7 +195,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         }
     }
 
-    fun setData(items: MutableList<NewsItem>?) {
+    fun setData(items: MutableList<out NewsItem>?) {
 
         onStatus(items)
 
