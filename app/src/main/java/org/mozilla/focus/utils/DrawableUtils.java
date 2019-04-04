@@ -6,6 +6,7 @@
 package org.mozilla.focus.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
 public class DrawableUtils {
@@ -34,5 +36,16 @@ public class DrawableUtils {
 
         return bitmap;
 
+    }
+
+    @Nullable
+    public static Drawable getAndroidDrawable(Context context, @Nullable String drawableName) {
+        String packageName = context.getPackageName();
+        int resourceId = context.getResources().getIdentifier(drawableName, "drawable", packageName);
+        if (resourceId == 0) {
+            return null;
+        } else {
+            return context.getDrawable(resourceId);
+        }
     }
 }

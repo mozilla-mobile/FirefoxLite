@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.DrawableUtils
 import org.mozilla.rocket.content.data.Ticket
 
 class TicketAdapter(private val listener: ContentAdapter.ContentPanelListener) : ListAdapter<Ticket, TicketViewHolder>(
@@ -55,6 +56,8 @@ class TicketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         view?.setOnClickListener(listener)
 
         name?.text = item.name
-        image?.setImageResource(item.image)
+        DrawableUtils.getAndroidDrawable(itemView.context, item.image)?.let {
+            image?.setImageDrawable(it)
+        }
     }
 }
