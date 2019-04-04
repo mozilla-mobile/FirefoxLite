@@ -423,7 +423,14 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         final View view;
         if (hasContentPortal) {
             view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
-            newsPresenter = new NewsPresenter(this);
+
+            setupContentPortalView(view);
+            // if we need to display e-commerce tickets in Content Poratl, we do nothing here.
+            // Cause e-commerce related initialization happens in AppConfigWrapper.
+            if (AppConfigWrapper.getEcommerceTickets(getContext()).isEmpty()) {
+                newsPresenter = new NewsPresenter(this);
+                this.contentPanel.setNewsListListener(newsPresenter);
+            }
         } else {
             view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         }
@@ -439,29 +446,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             TelemetryWrapper.longPressDownloadIndicator();
             return false;
         });
-        this.arrow1 = view.findViewById(R.id.arrow1);
-        this.arrow2 = view.findViewById(R.id.arrow2);
-        this.contentPanel = view.findViewById(R.id.content_panel);
-        if (this.newsPresenter != null) {
-            this.contentPanel.setNewsListListener(newsPresenter);
-        }
-
-        final View arrowContainer = view.findViewById(R.id.arrow_container);
-        if (arrowContainer != null) {
-            arrowContainer.setOnTouchListener(new SwipeMotionDetector(getContext(), new OnSwipeListener() {
-
-                @Override
-                public boolean onSingleTapConfirmed() {
-                    showContentPortal();
-                    return true;
-                }
-                @Override
-                public  void onSwipeUp() {
-                    showContentPortal();
-                }
-
-            }));
-        }
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
@@ -1239,6 +1223,28 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (contentPanel != null) {
             contentPanel.show(true);
             TelemetryWrapper.openLifeFeedNews();
+        }
+    }
+
+    private void setupContentPortalView(View view) {
+        this.arrow1 = view.findViewById(R.id.arrow1);
+        this.arrow2 = view.findViewById(R.id.arrow2);
+        this.contentPanel = view.findViewById(R.id.content_panel);
+        final View arrowContainer = view.findViewById(R.id.arrow_container);
+        if (arrowContainer != null) {
+            arrowContainer.setOnTouchListener(new SwipeMotionDetector(getContext(), new OnSwipeListener() {
+
+                @Override
+                public boolean onSingleTapConfirmed() {
+                    showContentPortal();
+                    return true;
+                }
+                @Override
+                public  void onSwipeUp() {
+                    showContentPortal();
+                }
+
+            }));
         }
     }
 }

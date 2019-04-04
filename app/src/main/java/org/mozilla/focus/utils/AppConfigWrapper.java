@@ -10,6 +10,10 @@ import android.content.Context;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mozilla.rocket.content.data.Ticket;
+import org.mozilla.rocket.content.data.TicketKey;
+
+import java.util.ArrayList;
 
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
@@ -104,6 +108,39 @@ public class AppConfigWrapper {
 
     public static boolean isLifeFeedEnabled(Context context) {
         return FirebaseHelper.getRcBoolean(context, FirebaseHelper.ENABLE_LIFE_FEED);
+    }
+
+
+    /**
+     * Return a list of vouchers and tickets for e-commerce content portal.
+     * This is also used to determine if the user should see e-commerce or News in content portal.
+     * In the future, the user may have both e-commerce and News. But now, let's make it simple.
+     * @param context Used to get remote config string
+     * @return ArrayList of tickets or empty list if we encounter an error.
+     */
+    public static ArrayList<Ticket> getEcommerceTickets(Context context) {
+        ArrayList<Ticket> tickets = new ArrayList<>();
+
+        if (context == null) {
+            return tickets;
+        }
+
+        final String rcString = FirebaseHelper.getRcString(context, FirebaseHelper.STR_E_COMMERCE_TICKETS);
+        try {
+            final JSONArray jsonArray = new JSONArray(rcString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                final JSONObject object = (JSONObject) jsonArray.get(i);
+                tickets.add(new Ticket(
+                        object.optString(TicketKey.KEY_URL),
+                        object.optString(TicketKey.KEY_NAME),
+                        object.optString(TicketKey.KEY_IMAGE)));
+            }
+
+        } catch (JSONException e) {
+            // skip and do nothing
+        }
+
+        return tickets;
     }
 
     public static String getLifeFeedProviderUrl(Context context, String provider) {
