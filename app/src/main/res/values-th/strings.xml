@@ -223,6 +223,7 @@
   <string name="bookmarks_empty_view_msg">ไม่มีที่คั่นหน้า</string>
   <string name="edit_bookmark">แก้ไข</string>
   <string name="label_menu_news">ข่าว</string>
+  <string name="label_menu_latest_top_trending_news">ข่าวล่าสุดและได้รับความนิยมสูงสุด</string>
   <string name="news_update_btn">การอัปเดตใหม่</string>
   <string name="private_tab">แท็บส่วนตัว</string>
   <string name="private_browsing_title">การท่องเว็บแบบส่วนตัว</string>
@@ -237,6 +238,7 @@
   <string name="exp_survey_thanks">ขอบคุณที่ให้ข้อคิดเห็นกับเรา %1$s</string>
   <string name="exp_survey_yes">ใช่ ได้โปรด</string>
   <string name="exp_survey_no">ไม่</string>
+  <string name="http_auth_dialog_title">ต้องมีการรับรองความถูกต้อง</string>
   <string name="http_auth_dialog_user_name">ชื่อผู้ใช้</string>
   <string name="http_auth_dialog_password">รหัสผ่าน</string>
 </resources>
