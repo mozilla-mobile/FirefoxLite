@@ -519,7 +519,7 @@
     <string name="label_menu_latest_top_trending_news">Latest &amp; Top Trending News</string>
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
-    <!-- Description of service provided by which parnter-->
+    <!-- A prefix that shows before the logo of a given partner. This string tries to show a user that the service he/she is using is provided by this given partner. -->
     <string name="logo_text">Service provided by</string>
    
     <!-- Private Browsing-->
