@@ -8,6 +8,7 @@ import android.widget.Switch;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
 
 public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
@@ -34,7 +35,10 @@ public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
                 context.getString(R.string.first_run_page3_text),
                 "first_run_img_3.json"));
 
-        if (Settings.isContentPortalEnabled(context)) {
+        final NewFeatureNotice featureNotice = NewFeatureNotice.getInstance(context);
+        final boolean shouldShowTicket = featureNotice.shouldShowEcTicketOnboarding();
+
+        if (Settings.isContentPortalEnabled(context) || shouldShowTicket) {
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
     }
