@@ -326,6 +326,8 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES, FirstLaunchWorker.TIMER_DISABLED);
         map.put(FirebaseHelper.ENABLE_LIFE_FEED, AppConfigWrapper.LIFE_FEED_ENABLED_DEFAULT);
         map.put(FirebaseHelper.LIFE_FEED_PROVIDERS, AppConfigWrapper.LIFE_FEED_PROVIDERS_DEFAULT);
+        map.put(FirebaseHelper.STR_E_COMMERCE_TICKETS, AppConfigWrapper.STR_E_COMMERCE_TICKETS_DEFAULT);
+
 
         return map;
     }

@@ -54,7 +54,7 @@ public class Inject {
         try {
             final Resources resources = context.getResources();
             final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            final boolean isEnabledByDefault = AppConstants.isBetaBuild() || AppConstants.isReleaseBuild();
+            final boolean isEnabledByDefault = AppConstants.isBuiltWithFirebase();
             // Telemetry is not enable by default in debug build. But the user / developer can choose to turn it on
             // in AndroidTest, this is enabled by default
             return preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), isEnabledByDefault);

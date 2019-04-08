@@ -13,14 +13,18 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
 
     public UpgradeFirstrunPagerAdapter(Context context, View.OnClickListener listener) {
         super(context, listener);
-        if (NewFeatureNotice.getInstance(context).from21to40()) {
+        final NewFeatureNotice featureNotice = NewFeatureNotice.getInstance(context);
+
+        if (featureNotice.from21to40()) {
             this.pages.add(new FirstrunPage(
                     context.getString(R.string.new_name_upgrade_page_title),
                     context.getString(R.string.new_name_upgrade_page_text, context.getString(R.string.app_name)),
                     R.drawable.ic_onboarding_first_use));
         }
 
-        if (NewFeatureNotice.getInstance(context).from40to114() && Settings.isContentPortalEnabled(context)) {
+        final boolean shouldShowNews = featureNotice.from40to114() && Settings.isContentPortalEnabled(context);
+        final boolean shouldShowTicket = featureNotice.shouldShowEcTicketOnboarding();
+        if (shouldShowNews || shouldShowTicket) {
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
 
