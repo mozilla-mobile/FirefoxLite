@@ -133,7 +133,8 @@ public class AppConfigWrapper {
                 tickets.add(new Ticket(
                         object.optString(TicketKey.KEY_URL),
                         object.optString(TicketKey.KEY_NAME),
-                        object.optString(TicketKey.KEY_IMAGE)));
+                        object.optString(TicketKey.KEY_IMAGE),
+                        object.optString(TicketKey.KEY_SOURCE)));
             }
 
         } catch (JSONException e) {

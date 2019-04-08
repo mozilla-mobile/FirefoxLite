@@ -1222,7 +1222,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showContentPortal() {
         if (contentPanel != null) {
             contentPanel.show(true);
-            TelemetryWrapper.openLifeFeedNews();
+            if (AppConfigWrapper.getEcommerceTickets(getContext()).isEmpty()) {
+                TelemetryWrapper.openLifeFeedNews();
+            } else {
+                TelemetryWrapper.openLifeFeedEc();
+            }
         }
     }
 
