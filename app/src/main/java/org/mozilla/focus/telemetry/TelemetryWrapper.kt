@@ -159,6 +159,7 @@ object TelemetryWrapper {
         internal const val FINISH = "finish"
         internal const val INFO = "info"
         internal const val LIFEFEED_NEWS = "lifefeed_news"
+        internal const val LIFEFEED_EC = "lifefeed_ec"
 
         internal const val ENTER = "enter"
         internal const val EXIT = "exit"
@@ -1320,6 +1321,36 @@ object TelemetryWrapper {
                 .extra(Extra.SOURCE, source ?: "")
                 .extra(Extra.CATEGORY, category ?: "")
                 .extra(Extra.SUB_CATEGORY, subCategory ?: "")
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Open lifefeed EC",
+            category = Category.ACTION,
+            method = Method.OPEN,
+            `object` = Object.PANEL,
+            value = Value.LIFEFEED_EC,
+            extras = [])
+    @JvmStatic
+    fun openLifeFeedEc() {
+        EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.LIFEFEED_EC)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click on EC item",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.PANEL,
+            value = Value.LIFEFEED_EC,
+            extras = [TelemetryExtra(name = Extra.POSITION, value = "1,2,3..."),
+                    TelemetryExtra(name = Extra.SOURCE, value = "bukalapak,tokopedia"),
+                    TelemetryExtra(name = Extra.CATEGORY, value = "pulsa,data,game,train,flight,event")])
+    fun clickOnEcItem(pos: String, source: String?, category: String?) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.LIFEFEED_EC)
+                .extra(Extra.POSITION, pos)
+                .extra(Extra.SOURCE, source ?: "")
+                .extra(Extra.CATEGORY, category ?: "")
                 .queue()
     }
 

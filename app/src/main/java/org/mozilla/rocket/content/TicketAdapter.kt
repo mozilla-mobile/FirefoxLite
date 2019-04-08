@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DrawableUtils
 import org.mozilla.rocket.content.data.Ticket
 
@@ -35,6 +36,10 @@ class TicketAdapter(private val listener: ContentAdapter.ContentPanelListener) :
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
         val item = getItem(position) ?: return
         holder.bind(item, View.OnClickListener {
+            TelemetryWrapper.clickOnEcItem(
+                    pos = position.toString(),
+                    source = item.source,
+                    category = item.name)
             listener.onItemClicked(item.url)
         })
     }
