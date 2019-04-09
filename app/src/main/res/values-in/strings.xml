@@ -226,6 +226,7 @@
   <string name="label_menu_news">Berita</string>
   <string name="label_menu_latest_top_trending_news">Berita Terkini &amp; Tren Teratas</string>
   <string name="news_update_btn">Ada kabar terbaru</string>
+  <string name="logo_text">Layanan disediakan oleh</string>
   <string name="private_tab">Tab privat</string>
   <string name="private_browsing_title">Penjelajahan Pribadi</string>
   <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
