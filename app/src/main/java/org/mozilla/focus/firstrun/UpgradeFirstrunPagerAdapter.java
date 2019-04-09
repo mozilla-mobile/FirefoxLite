@@ -23,8 +23,8 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
         }
 
         final boolean shouldShowNews = featureNotice.from40to114() && Settings.isContentPortalEnabled(context);
-        final boolean shouldShowTicket = featureNotice.shouldShowEcTicketOnboarding();
-        if (shouldShowNews || shouldShowTicket) {
+        final boolean shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding();
+        if (shouldShowNews || shouldShowShoppingLink) {
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
 

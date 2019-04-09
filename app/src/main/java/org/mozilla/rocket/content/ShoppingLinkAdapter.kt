@@ -11,29 +11,29 @@ import android.widget.TextView
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DrawableUtils
-import org.mozilla.rocket.content.data.Ticket
+import org.mozilla.rocket.content.data.ShoppingLink
 
-class TicketAdapter(private val listener: ContentAdapter.ContentPanelListener) : ListAdapter<Ticket, TicketViewHolder>(
+class ShoppingLinkAdapter(private val listener: ContentAdapter.ContentPanelListener) : ListAdapter<ShoppingLink, ShoppingLinkViewHolder>(
         COMPARATOR
         ) {
 
-    object COMPARATOR : DiffUtil.ItemCallback<Ticket>() {
+    object COMPARATOR : DiffUtil.ItemCallback<ShoppingLink>() {
 
-        override fun areItemsTheSame(oldItem: Ticket, newItem: Ticket): Boolean {
+        override fun areItemsTheSame(oldItem: ShoppingLink, newItem: ShoppingLink): Boolean {
             return oldItem.url == newItem.url
         }
 
-        override fun areContentsTheSame(oldItem: Ticket, newItem: Ticket): Boolean {
+        override fun areContentsTheSame(oldItem: ShoppingLink, newItem: ShoppingLink): Boolean {
             return oldItem == newItem
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_tickets, parent, false)
-        return TicketViewHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingLinkViewHolder {
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_shoppinglink, parent, false)
+        return ShoppingLinkViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ShoppingLinkViewHolder, position: Int) {
         val item = getItem(position) ?: return
         holder.bind(item, View.OnClickListener {
             TelemetryWrapper.clickOnEcItem(
@@ -45,19 +45,19 @@ class TicketAdapter(private val listener: ContentAdapter.ContentPanelListener) :
     }
 }
 
-class TicketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ShoppingLinkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var view: View? = null
     var image: ImageView? = null
     var name: TextView? = null
 
     init {
-        view = itemView.findViewById(R.id.ticket_item)
-        image = itemView.findViewById(R.id.ticket_category_image)
-        name = itemView.findViewById(R.id.ticket_category_text)
+        view = itemView.findViewById(R.id.shoppinglink_item)
+        image = itemView.findViewById(R.id.shoppinglink_category_image)
+        name = itemView.findViewById(R.id.shoppinglink_category_text)
     }
 
-    fun bind(item: Ticket, listener: View.OnClickListener) {
+    fun bind(item: ShoppingLink, listener: View.OnClickListener) {
         view?.setOnClickListener(listener)
 
         name?.text = item.name

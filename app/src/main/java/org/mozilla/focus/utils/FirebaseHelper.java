@@ -66,7 +66,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     static final String FIRST_LAUNCH_NOTIFICATION_MESSAGE = "first_launch_notification_message";
     static final String ENABLE_LIFE_FEED = "enable_life_feed";
     static final String LIFE_FEED_PROVIDERS = "life_feed_providers";
-    static final String STR_E_COMMERCE_TICKETS = "str_e_commerce_tickets";
+    static final String STR_E_COMMERCE_SHOPPINGLINKS = "str_e_commerce_shoppinglinks";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
     private static final String FIREBASE_DB_URL = "firebase_database_url";
@@ -326,7 +326,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
         map.put(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES, FirstLaunchWorker.TIMER_DISABLED);
         map.put(FirebaseHelper.ENABLE_LIFE_FEED, AppConfigWrapper.LIFE_FEED_ENABLED_DEFAULT);
         map.put(FirebaseHelper.LIFE_FEED_PROVIDERS, AppConfigWrapper.LIFE_FEED_PROVIDERS_DEFAULT);
-        map.put(FirebaseHelper.STR_E_COMMERCE_TICKETS, AppConfigWrapper.STR_E_COMMERCE_TICKETS_DEFAULT);
+        map.put(FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS, AppConfigWrapper.STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT);
 
 
         return map;

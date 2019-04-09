@@ -11,7 +11,7 @@ import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 public class NewFeatureNotice {
 
     private static final String PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN = "firstrun_shown";
-    private static final String PREF_KEY_BOOLEAN_EC_TICKET_SHOWN = "ec_ticket_shown";
+    private static final String PREF_KEY_BOOLEAN_EC_SHOPPINGLINK_SHOWN = "ec_shoppingLink_shown";
     private static final String PREF_KEY_INT_FEATURE_UPGRADE_VERSION = "firstrun_upgrade_version";
     private static final int MULTI_TAB_FROM_VERSION_1_0_TO_2_0 = 1;
     private static final int FIREBASE_FROM_VERSION_2_0_TO_2_1 = 2;
@@ -22,7 +22,7 @@ public class NewFeatureNotice {
 
     private final SharedPreferences preferences;
     private final boolean hasNewsPortal;
-    private final boolean hasEcTicket;
+    private final boolean hasEcShoppingLink;
 
     private final PinSiteManager pinSiteManager;
 
@@ -36,14 +36,14 @@ public class NewFeatureNotice {
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         hasNewsPortal = Settings.isContentPortalEnabled(context);
-        hasEcTicket = !AppConfigWrapper.getEcommerceTickets(context).isEmpty();
+        hasEcShoppingLink = !AppConfigWrapper.getEcommerceShoppingLinks(context).isEmpty();
 
         this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
     }
 
     public boolean shouldShowLiteUpdate() {
         boolean showPinSite = pinSiteManager.isEnabled() && pinSiteManager.isFirstTimeEnable();
-        return from21to40() || from40to114() || shouldShowEcTicketOnboarding() || showPinSite;
+        return from21to40() || from40to114() || shouldShowEcShoppingLinkOnboarding() || showPinSite;
     }
 
     public boolean from21to40() {
@@ -56,7 +56,7 @@ public class NewFeatureNotice {
 
     public void setLiteUpdateDidShow() {
         setFirstRunDidShow();
-        setEcTicketDidShow();
+        setEcShoppingLinkDidShow();
         setLastShownFeatureVersion(LITE_FROM_VERSION_4_0_TO_1_1_4);
     }
 
@@ -83,13 +83,13 @@ public class NewFeatureNotice {
                 .apply();
     }
 
-    private void setEcTicketDidShow() {
-        if (!hasEcTicket) {
+    private void setEcShoppingLinkDidShow() {
+        if (!hasEcShoppingLink) {
             return;
         }
-        // ec ticket on-boarding has shown. set to true;
+        // ec shopping link on-boarding has shown. set to true;
         preferences.edit()
-                .putBoolean(PREF_KEY_BOOLEAN_EC_TICKET_SHOWN, true)
+                .putBoolean(PREF_KEY_BOOLEAN_EC_SHOPPINGLINK_SHOWN, true)
                 .apply();
     }
 
@@ -120,9 +120,9 @@ public class NewFeatureNotice {
     }
 
     /**
-     * @return true if we have the E-Commerce Ticket feature and haven't shown the on-boarding
+     * @return true if we have the E-Commerce ShoppingLink feature and haven't shown the on-boarding
      */
-    public boolean shouldShowEcTicketOnboarding() {
-        return hasEcTicket && !preferences.getBoolean(PREF_KEY_BOOLEAN_EC_TICKET_SHOWN, false);
+    public boolean shouldShowEcShoppingLinkOnboarding() {
+        return hasEcShoppingLink && !preferences.getBoolean(PREF_KEY_BOOLEAN_EC_SHOPPINGLINK_SHOWN, false);
     }
 }
