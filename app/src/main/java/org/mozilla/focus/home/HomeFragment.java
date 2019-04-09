@@ -249,8 +249,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void setData(@Nullable List<? extends NewsItem> items) {
-        contentPanel.setData(items);
+    public void updateNews(@Nullable List<? extends NewsItem> items) {
+        contentPanel.setNewsContent(items);
     }
 
     private static class LoadRootConfigTask extends SimpleLoadUrlTask {
@@ -548,7 +548,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         });
 
         if (newsPresenter != null) {
-            newsPresenter.setupContentViewModel(getActivity());
+            newsPresenter.setupNewsViewModel(getActivity());
         }
 
         return view;

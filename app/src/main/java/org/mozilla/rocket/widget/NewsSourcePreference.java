@@ -6,21 +6,12 @@ package org.mozilla.rocket.widget;
 
 import android.content.Context;
 import android.preference.ListPreference;
-import android.preference.PreferenceManager;
-import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
-import android.support.annotation.WorkerThread;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import org.mozilla.focus.R;
 import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.StorageUtils;
-import org.mozilla.rocket.content.ContentRepository;
 import org.mozilla.rocket.content.NewsSourceManager;
-import org.mozilla.threadutils.ThreadUtils;
 
 public class NewsSourcePreference extends ListPreference {
 

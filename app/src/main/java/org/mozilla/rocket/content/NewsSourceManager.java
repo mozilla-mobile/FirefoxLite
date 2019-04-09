@@ -70,7 +70,7 @@ public class NewsSourceManager {
 
     public void setNewsSource(String newsSource) {
         this.newsSource = newsSource;
-        ContentRepository.reset();
+        NewsRepository.reset();
     }
 
     public String getNewsSourceUrl() {
@@ -79,7 +79,7 @@ public class NewsSourceManager {
 
     public void setNewsSourceUrl(String newsSourceUrl) {
         this.newsSourceUrl = newsSourceUrl;
-        ContentRepository.resetSubscriptionUrl(newsSourceUrl);
+        NewsRepository.resetSubscriptionUrl(newsSourceUrl);
     }
 
     @SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "Variable is not being accessed, it is merely being tested for existence")

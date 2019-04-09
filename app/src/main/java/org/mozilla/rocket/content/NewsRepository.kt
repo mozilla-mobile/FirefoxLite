@@ -8,7 +8,7 @@ import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.bhaskar.RepositoryBhaskar
 import org.mozilla.rocket.widget.NewsSourcePreference.NEWS_DB
 
-class ContentRepository {
+class NewsRepository {
     companion object {
 
         @SuppressLint("StaticFieldLeak")
