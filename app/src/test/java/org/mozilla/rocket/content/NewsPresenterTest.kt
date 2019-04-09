@@ -15,14 +15,14 @@ class NewsPresenterTest {
     lateinit var newsPresenter: NewsPresenter
 
     lateinit var viewContract: NewsViewContract
-    lateinit var newsViewModel: ContentViewModel
+    lateinit var newsViewModel: NewsViewModel
 
     @Before
     fun warmUp() {
         viewContract = mock(NewsViewContract::class.java)
-        newsViewModel = mock(ContentViewModel::class.java)
+        newsViewModel = mock(NewsViewModel::class.java)
         newsPresenter = NewsPresenter(viewContract)
-        newsPresenter.contentViewModel = newsViewModel
+        newsPresenter.newsViewModel = newsViewModel
     }
 
     @Test

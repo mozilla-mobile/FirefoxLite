@@ -13,7 +13,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DrawableUtils
 import org.mozilla.rocket.content.data.ShoppingLink
 
-class ShoppingLinkAdapter(private val listener: ContentAdapter.ContentPanelListener) : ListAdapter<ShoppingLink, ShoppingLinkViewHolder>(
+class ShoppingLinkAdapter(private val listener: ContentPortalListener) : ListAdapter<ShoppingLink, ShoppingLinkViewHolder>(
         COMPARATOR
         ) {
 

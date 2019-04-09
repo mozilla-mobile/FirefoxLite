@@ -24,16 +24,24 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import org.mozilla.focus.utils.AppConfigWrapper
 
-class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener {
+interface ContentPortalListener {
+    fun onItemClicked(url: String)
+    fun onStatus(items: MutableList<out NewsItem>?)
+}
 
-    var newsListListener: NewsListListener? = null
+class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
+    // shared views for News and E-Commerce
     private var recyclerView: RecyclerView? = null
-    private var emptyView: View? = null
-    private var progressCenter: ProgressBar? = null
-    private var adapter: ContentAdapter<NewsItem>? = null
     private var bottomSheet: LinearLayout? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
+
+    // views for News
+    var newsListListener: NewsListListener? = null
+    private var newsEmptyView: View? = null
+    private var newsProgressCenter: ProgressBar? = null
+    private var newsAdapter: NewsAdapter<NewsItem>? = null
+    private var newsListLayoutManager: LinearLayoutManager? = null
 
     interface NewsListListener {
         fun loadMore()
@@ -56,7 +64,7 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     private fun init() {
 
-        setupBottomSheet()
+        setupContentPortalView()
 
         if (AppConfigWrapper.getEcommerceShoppingLinks(context).isEmpty()) {
             setupViewNews()
@@ -77,26 +85,24 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         shoppinglinkAdapter.submitList(AppConfigWrapper.getEcommerceShoppingLinks(context))
     }
 
-    private var linearLayoutManager: LinearLayoutManager? = null
-
     private fun setupViewNews() {
 
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.content_news, bottomSheet)
 
-        this.setOnClickListener { hide() }
+
         findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
             newsListListener?.loadMore()
         }
-        recyclerView = findViewById(R.id.recyclerview)
-        emptyView = findViewById(R.id.empty_view_container)
-        progressCenter = findViewById(R.id.news_progress_center)
-        adapter = ContentAdapter(this)
+        recyclerView = findViewById(R.id.news_list)
+        newsEmptyView = findViewById(R.id.empty_view_container)
+        newsProgressCenter = findViewById(R.id.news_progress_center)
+        newsAdapter = NewsAdapter(this)
 
-        recyclerView?.adapter = adapter
-        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView?.layoutManager = linearLayoutManager
-        linearLayoutManager?.let {
+        recyclerView?.adapter = newsAdapter
+        newsListLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager = newsListLayoutManager
+        newsListLayoutManager?.let {
             recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -111,12 +117,17 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         }
     }
 
-    fun showInternal() {
+    private fun showInternal() {
         visibility = VISIBLE
         // TODO: if previously is collapsed, collapse here.
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
+    /**
+     * Display content portal view.
+     *
+     * @param animated false if we don't want the animation. E.g.  restore the view state
+     */
     fun show(animated: Boolean) {
         if (visibility == VISIBLE) {
             return
@@ -145,13 +156,16 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         }
     }
 
+    /**
+     * Hide content portal view.
+     */
     fun hide(): Boolean {
         if (visibility == GONE) {
             return false
         }
 
         HomeFragmentViewState.reset()
-        ContentRepository.reset()
+        NewsRepository.reset()
         AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_out)?.also {
             it.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
@@ -169,7 +183,10 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         return true
     }
 
-    private fun setupBottomSheet() {
+    private fun setupContentPortalView() {
+
+        this.setOnClickListener { hide() }
+
         bottomSheet = findViewById(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
@@ -192,20 +209,20 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         when {
             items == null -> {
                 recyclerView?.visibility = View.GONE
-                emptyView?.visibility = View.GONE
-                progressCenter?.visibility = View.VISIBLE
+                newsEmptyView?.visibility = View.GONE
+                newsProgressCenter?.visibility = View.VISIBLE
                 bottomSheetBehavior?.skipCollapsed = true
             }
             items.size == 0 -> {
                 recyclerView?.visibility = View.GONE
-                emptyView?.visibility = View.VISIBLE
-                progressCenter?.visibility = View.GONE
+                newsEmptyView?.visibility = View.VISIBLE
+                newsProgressCenter?.visibility = View.GONE
                 bottomSheetBehavior?.skipCollapsed = true
             }
             else -> {
                 recyclerView?.visibility = View.VISIBLE
-                emptyView?.visibility = View.GONE
-                progressCenter?.visibility = View.GONE
+                newsEmptyView?.visibility = View.GONE
+                newsProgressCenter?.visibility = View.GONE
             }
         }
     }
@@ -214,26 +231,32 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
 
         // use findFirstVisibleItemPosition so we don't need to remember offset
-        linearLayoutManager?.findFirstVisibleItemPosition()?.let {
+        newsListLayoutManager?.findFirstVisibleItemPosition()?.let {
             HomeFragmentViewState.lastScrollPos = it
         }
     }
 
-    fun setData(items: MutableList<out NewsItem>?) {
+    /**
+     * Update news content on content portal view
+     * */
+    fun setNewsContent(items: MutableList<out NewsItem>?) {
 
         onStatus(items)
 
-        adapter?.submitList(items)
+        newsAdapter?.submitList(items)
         HomeFragmentViewState.lastScrollPos?.let {
             val size = items?.size
             if (size != null && size > it) {
-                linearLayoutManager?.scrollToPosition(it)
+                newsListLayoutManager?.scrollToPosition(it)
                 // forget about last scroll position
                 HomeFragmentViewState.lastScrollPos = null
             }
         }
     }
 
+    /**
+     * Check if content portal view need to show or hide itself base on previous sate
+     * */
     fun onResume() {
         if (HomeFragmentViewState.isLastOpenNews()) {
             show(false)

@@ -17,7 +17,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.lite.partner.NewsItem
 
-class ContentAdapter<T : NewsItem>(private val listener: ContentPanelListener) :
+class NewsAdapter<T : NewsItem>(private val listener: ContentPortalListener) :
         ListAdapter<NewsItem, NewsViewHolder<T>>(
         COMPARATOR
         ) {
@@ -49,11 +49,6 @@ class ContentAdapter<T : NewsItem>(private val listener: ContentPanelListener) :
                         subCategory = item.subcategory)
                 listener.onItemClicked(item.newsUrl)
         })
-    }
-
-    interface ContentPanelListener {
-        fun onItemClicked(url: String)
-        fun onStatus(items: MutableList<out NewsItem>?)
     }
 }
 

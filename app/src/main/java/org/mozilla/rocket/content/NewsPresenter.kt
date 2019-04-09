@@ -13,40 +13,40 @@ import org.mozilla.threadutils.ThreadUtils
 
 interface NewsViewContract {
     fun getViewLifecycleOwner(): LifecycleOwner
-    fun setData(items: List<NewsItem>?)
+    fun updateNews(items: List<NewsItem>?)
 }
 
 class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPortalView.NewsListListener {
 
     @VisibleForTesting
-    var contentViewModel: ContentViewModel? = null
+    var newsViewModel: NewsViewModel? = null
 
     companion object {
         private val LOADMORE_THRESHOLD = 3000L
     }
     private var isLoading = false
 
-    fun setupContentViewModel(fragmentActivity: FragmentActivity?) {
+    fun setupNewsViewModel(fragmentActivity: FragmentActivity?) {
         if (fragmentActivity == null) {
             return
         }
-        contentViewModel = ViewModelProviders.of(fragmentActivity).get(ContentViewModel::class.java)
-        val repository = ContentRepository.getInstance(fragmentActivity)
-        repository.setOnDataChangedListener(contentViewModel)
-        contentViewModel?.repository = repository
-        contentViewModel?.items?.observe(newsViewContract.getViewLifecycleOwner(),
+        newsViewModel = ViewModelProviders.of(fragmentActivity).get(NewsViewModel::class.java)
+        val repository = NewsRepository.getInstance(fragmentActivity)
+        repository.setOnDataChangedListener(newsViewModel)
+        newsViewModel?.repository = repository
+        newsViewModel?.items?.observe(newsViewContract.getViewLifecycleOwner(),
                 Observer { items ->
-                    newsViewContract.setData(items)
+                    newsViewContract.updateNews(items)
                     isLoading = false
                 })
         // creating a repository will also create a new subscription.
         // we deliberately create a new subscription again to load data aggressively.
-        contentViewModel?.loadMore()
+        newsViewModel?.loadMore()
     }
 
     override fun loadMore() {
         if (!isLoading) {
-            contentViewModel?.loadMore()
+            newsViewModel?.loadMore()
             isLoading = true
             ThreadUtils.postToMainThreadDelayed({ isLoading = false }, LOADMORE_THRESHOLD)
         }
@@ -59,14 +59,14 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPor
 
     fun checkNewsRepositoryReset(context: Context) {
         // News Repository is reset and empty when the user changes the news source.
-        // We create a new Repository and inject to contentViewModel here.
-        // TODO: similar code happens in setupContentViewModel(), need to refine them
-        if (ContentRepository.isEmpty() && contentViewModel != null) {
-            val repository = ContentRepository.getInstance(context)
-            repository.setOnDataChangedListener(contentViewModel)
-            contentViewModel?.repository = repository
-            contentViewModel?.items?.value = null
-            contentViewModel?.loadMore()
+        // We create a new Repository and inject to newsViewModel here.
+        // TODO: similar code happens in setupNewsViewModel(), need to refine them
+        if (NewsRepository.isEmpty() && newsViewModel != null) {
+            val repository = NewsRepository.getInstance(context)
+            repository.setOnDataChangedListener(newsViewModel)
+            newsViewModel?.repository = repository
+            newsViewModel?.items?.value = null
+            newsViewModel?.loadMore()
         }
     }
 
