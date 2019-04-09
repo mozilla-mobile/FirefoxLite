@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.support.annotation.VisibleForTesting
 import android.support.v4.app.FragmentActivity
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
@@ -17,12 +18,13 @@ interface NewsViewContract {
 
 class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPortalView.NewsListListener {
 
+    @VisibleForTesting
+    var contentViewModel: ContentViewModel? = null
+
     companion object {
         private val LOADMORE_THRESHOLD = 3000L
     }
-
-    private var contentViewModel: ContentViewModel? = null
-    internal var isLoading = false
+    private var isLoading = false
 
     fun setupContentViewModel(fragmentActivity: FragmentActivity?) {
         if (fragmentActivity == null) {
