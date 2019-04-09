@@ -226,6 +226,7 @@
   <string name="label_menu_news">新闻</string>
   <string name="label_menu_latest_top_trending_news">最新热门资讯</string>
   <string name="news_update_btn">点按更新</string>
+  <string name="logo_text">服务提供商：</string>
   <string name="private_tab">隐私标签页</string>
   <string name="private_browsing_title">隐私浏览</string>
   <string name="private_browsing_erase_message">清除隐私浏览历史</string>
