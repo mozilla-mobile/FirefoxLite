@@ -10,8 +10,8 @@ import android.content.Context;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mozilla.rocket.content.data.Ticket;
-import org.mozilla.rocket.content.data.TicketKey;
+import org.mozilla.rocket.content.data.ShoppingLink;
+import org.mozilla.rocket.content.data.ShoppingLinkKey;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class AppConfigWrapper {
     static final boolean PRIVATE_MODE_ENABLED_DEFAULT = true;
     static final boolean LIFE_FEED_ENABLED_DEFAULT = false;
     static final String LIFE_FEED_PROVIDERS_DEFAULT = "";
-    static final String STR_E_COMMERCE_TICKETS_DEFAULT = "";
+    static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
 
 
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
@@ -114,36 +114,36 @@ public class AppConfigWrapper {
 
 
     /**
-     * Return a list of vouchers and tickets for e-commerce content portal.
+     * Return a list of vouchers and shopping links for e-commerce content portal.
      * This is also used to determine if the user should see e-commerce or News in content portal.
      * In the future, the user may have both e-commerce and News. But now, let's make it simple.
      * @param context Used to get remote config string
-     * @return ArrayList of tickets or empty list if we encounter an error.
+     * @return ArrayList of shopping links or empty list if we encounter an error.
      */
-    public static ArrayList<Ticket> getEcommerceTickets(Context context) {
-        ArrayList<Ticket> tickets = new ArrayList<>();
+    public static ArrayList<ShoppingLink> getEcommerceShoppingLinks(Context context) {
+        ArrayList<ShoppingLink> shoppingLinks = new ArrayList<>();
 
         if (context == null) {
-            return tickets;
+            return shoppingLinks;
         }
 
-        final String rcString = FirebaseHelper.getRcString(context, FirebaseHelper.STR_E_COMMERCE_TICKETS);
+        final String rcString = FirebaseHelper.getRcString(context, FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS);
         try {
             final JSONArray jsonArray = new JSONArray(rcString);
             for (int i = 0; i < jsonArray.length(); i++) {
                 final JSONObject object = (JSONObject) jsonArray.get(i);
-                tickets.add(new Ticket(
-                        object.optString(TicketKey.KEY_URL),
-                        object.optString(TicketKey.KEY_NAME),
-                        object.optString(TicketKey.KEY_IMAGE),
-                        object.optString(TicketKey.KEY_SOURCE)));
+                shoppingLinks.add(new ShoppingLink(
+                        object.optString(ShoppingLinkKey.KEY_URL),
+                        object.optString(ShoppingLinkKey.KEY_NAME),
+                        object.optString(ShoppingLinkKey.KEY_IMAGE),
+                        object.optString(ShoppingLinkKey.KEY_SOURCE)));
             }
 
         } catch (JSONException e) {
             // skip and do nothing
         }
 
-        return tickets;
+        return shoppingLinks;
     }
 
     public static String getLifeFeedProviderUrl(Context context, String provider) {

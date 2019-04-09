@@ -36,9 +36,9 @@ public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
                 "first_run_img_3.json"));
 
         final NewFeatureNotice featureNotice = NewFeatureNotice.getInstance(context);
-        final boolean shouldShowTicket = featureNotice.shouldShowEcTicketOnboarding();
+        final boolean shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding();
 
-        if (Settings.isContentPortalEnabled(context) || shouldShowTicket) {
+        if (Settings.isContentPortalEnabled(context) || shouldShowShoppingLink) {
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
     }

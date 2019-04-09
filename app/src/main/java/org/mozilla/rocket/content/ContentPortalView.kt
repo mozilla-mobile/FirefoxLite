@@ -58,23 +58,23 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
         setupBottomSheet()
 
-        if (AppConfigWrapper.getEcommerceTickets(context).isEmpty()) {
+        if (AppConfigWrapper.getEcommerceShoppingLinks(context).isEmpty()) {
             setupViewNews()
         } else {
-            setupViewTicket()
+            setupViewShoppingLink()
         }
     }
 
-    private fun setupViewTicket() {
+    private fun setupViewShoppingLink() {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.content_ticket, bottomSheet)
+        inflater.inflate(R.layout.content_shoppinglink, bottomSheet)
 
-        recyclerView = findViewById(R.id.ct_ticket_list)
-        val ticketAdapter = TicketAdapter(this)
-        recyclerView?.layoutManager = GridLayoutManager(context, TICKET_GRID_SPAN)
-        recyclerView?.adapter = ticketAdapter
+        recyclerView = findViewById(R.id.ct_shoppinglink_list)
+        val shoppinglinkAdapter = ShoppingLinkAdapter(this)
+        recyclerView?.layoutManager = GridLayoutManager(context, SHOPPINGLINK_GRID_SPAN)
+        recyclerView?.adapter = shoppinglinkAdapter
 
-        ticketAdapter.submitList(AppConfigWrapper.getEcommerceTickets(context))
+        shoppinglinkAdapter.submitList(AppConfigWrapper.getEcommerceShoppingLinks(context))
     }
 
     private var linearLayoutManager: LinearLayoutManager? = null
@@ -244,6 +244,6 @@ class ContentPortalView : CoordinatorLayout, ContentAdapter.ContentPanelListener
 
     companion object {
         private const val NEWS_THRESHOLD = 10
-        private const val TICKET_GRID_SPAN = 2
+        private const val SHOPPINGLINK_GRID_SPAN = 2
     }
 }
