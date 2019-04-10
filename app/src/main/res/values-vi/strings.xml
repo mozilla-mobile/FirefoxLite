@@ -226,6 +226,7 @@
   <string name="label_menu_news">Tin tức</string>
   <string name="label_menu_latest_top_trending_news">Tin tức mới nhất &amp; xu hướng hàng đầu</string>
   <string name="news_update_btn">Cập nhật mới</string>
+  <string name="logo_text">Dịch vụ được cung cấp bởi</string>
   <string name="private_tab">Thẻ riêng tư</string>
   <string name="private_browsing_title">Duyệt web riêng tư</string>
   <string name="private_browsing_erase_message">Xóa lịch sử duyệt web riêng tư</string>
