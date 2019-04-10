@@ -26,6 +26,7 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
         final boolean shouldShowNews = featureNotice.from40to114() && AppConfigWrapper.isLifeFeedEnabled(context);
         final boolean shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding();
         if (shouldShowNews || shouldShowShoppingLink) {
+            featureNotice.hasShownEcShoppingLink();
             this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
         }
 

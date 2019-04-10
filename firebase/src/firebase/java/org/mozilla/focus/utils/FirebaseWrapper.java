@@ -77,8 +77,13 @@ abstract class FirebaseWrapper {
         void onFetched();
     }
 
-    // get Remote Config string
-    static String getRcString(@NonNull Context context, @NonNull String key) {
+    /**
+     * get Remote Config string
+     * @param context if the default string is from Android resource, context is required.
+     * @param key the key for remote config string
+     * @return the remote config string
+     */
+    static String getRcString(@Nullable Context context, @NonNull String key) {
         if (instance == null) {
             Log.e(TAG, "getRcString: failed, FirebaseWrapper not initialized");
             throwRcNotInitException();
@@ -356,7 +361,7 @@ abstract class FirebaseWrapper {
     }
 
     // Client code must implement this method so it's not static here.
-    abstract HashMap<String, Object> getRemoteConfigDefault(Context context);
+    abstract HashMap<String, Object> getRemoteConfigDefault(@Nullable Context context);
 
     // Client code must implement this method so it's not static here.
     abstract void refreshRemoteConfigDefault(Context context, RemoteConfigFetchCallback callback);

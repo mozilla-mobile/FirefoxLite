@@ -7,6 +7,7 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 
+import android.support.annotation.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,17 +118,12 @@ public class AppConfigWrapper {
      * Return a list of vouchers and shopping links for e-commerce content portal.
      * This is also used to determine if the user should see e-commerce or News in content portal.
      * In the future, the user may have both e-commerce and News. But now, let's make it simple.
-     * @param context Used to get remote config string
      * @return ArrayList of shopping links or empty list if we encounter an error.
      */
-    public static ArrayList<ShoppingLink> getEcommerceShoppingLinks(Context context) {
+    public static ArrayList<ShoppingLink> getEcommerceShoppingLinks() {
         ArrayList<ShoppingLink> shoppingLinks = new ArrayList<>();
 
-        if (context == null) {
-            return shoppingLinks;
-        }
-
-        final String rcString = FirebaseHelper.getRcString(context, FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS);
+        final String rcString = FirebaseHelper.getRcString(null, FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS);
         try {
             final JSONArray jsonArray = new JSONArray(rcString);
             for (int i = 0; i < jsonArray.length(); i++) {

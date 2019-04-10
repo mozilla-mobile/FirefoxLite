@@ -66,7 +66,7 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
         setupContentPortalView()
 
-        if (AppConfigWrapper.getEcommerceShoppingLinks(context).isEmpty()) {
+        if (AppConfigWrapper.getEcommerceShoppingLinks().isEmpty()) {
             setupViewNews()
         } else {
             setupViewShoppingLink()
@@ -82,7 +82,7 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         recyclerView?.layoutManager = GridLayoutManager(context, SHOPPINGLINK_GRID_SPAN)
         recyclerView?.adapter = shoppinglinkAdapter
 
-        shoppinglinkAdapter.submitList(AppConfigWrapper.getEcommerceShoppingLinks(context))
+        shoppinglinkAdapter.submitList(AppConfigWrapper.getEcommerceShoppingLinks())
     }
 
     private fun setupViewNews() {

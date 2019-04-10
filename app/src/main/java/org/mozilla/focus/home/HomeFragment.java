@@ -427,7 +427,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             setupContentPortalView(view);
             // if we need to display e-commerce shopping links in Content Portal, we do nothing here.
             // Cause e-commerce related initialization happens in AppConfigWrapper.
-            if (AppConfigWrapper.getEcommerceShoppingLinks(getContext()).isEmpty()) {
+            if (AppConfigWrapper.getEcommerceShoppingLinks().isEmpty()) {
                 newsPresenter = new NewsPresenter(this);
                 this.contentPanel.setNewsListListener(newsPresenter);
             }
@@ -1222,7 +1222,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showContentPortal() {
         if (contentPanel != null) {
             contentPanel.show(true);
-            if (AppConfigWrapper.getEcommerceShoppingLinks(getContext()).isEmpty()) {
+            if (AppConfigWrapper.getEcommerceShoppingLinks().isEmpty()) {
                 TelemetryWrapper.openLifeFeedNews();
             } else {
                 TelemetryWrapper.openLifeFeedEc();
