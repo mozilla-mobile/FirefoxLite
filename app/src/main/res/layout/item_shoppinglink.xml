@@ -12,6 +12,7 @@
     android:layout_height="wrap_content"
     android:minHeight="146dp"
     android:minWidth="146dp"
+    android:clipToPadding="false"
     android:padding="@dimen/common_margin_m1">
 
     <RelativeLayout

@@ -46,7 +46,6 @@
         android:id="@+id/ct_shoppinglink_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ct_shoppinglink_list"
         android:layout_marginBottom="@dimen/common_margin_m4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,12 +54,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Headline4"
+            android:textColor="@color/paletteLightBlack100"
+            android:layout_marginEnd="@dimen/common_margin_m1"
             android:text="@string/logo_text"/>
         <ImageView
             android:layout_width="wrap_content"
-            android:textAlignment="gravity"
-            android:baselineAlignBottom="true"
             android:layout_height="wrap_content"
+            android:baselineAlignBottom="true"
             android:src="@drawable/logo_bukalapak"/>
 
 
