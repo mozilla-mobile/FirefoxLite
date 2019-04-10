@@ -6,7 +6,6 @@ import android.view.View;
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.NewFeatureNotice;
-import org.mozilla.focus.utils.Settings;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 
@@ -23,7 +22,7 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
                     R.drawable.ic_onboarding_first_use));
         }
 
-        final boolean shouldShowNews = featureNotice.from40to114() && AppConfigWrapper.isLifeFeedEnabled(context);
+        final boolean shouldShowNews = featureNotice.from40to114() && AppConfigWrapper.hasNewsPortal(context);
         final boolean shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding();
         if (shouldShowNews || shouldShowShoppingLink) {
             featureNotice.hasShownEcShoppingLink();

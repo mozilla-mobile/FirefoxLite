@@ -66,10 +66,10 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
         setupContentPortalView()
 
-        if (AppConfigWrapper.getEcommerceShoppingLinks().isEmpty()) {
-            setupViewNews()
-        } else {
+        if (AppConfigWrapper.hasEcommerceShoppingLink()) {
             setupViewShoppingLink()
+        } else {
+            setupViewNews()
         }
     }
 

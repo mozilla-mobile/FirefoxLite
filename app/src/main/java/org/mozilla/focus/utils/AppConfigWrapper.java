@@ -109,10 +109,17 @@ public class AppConfigWrapper {
         return FirebaseHelper.getRcString(context, FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE);
     }
 
-    public static boolean isLifeFeedEnabled(Context context) {
+    /**
+     * @param context not used. Could be null
+     * @return true if Content Portal News is enabled in Firebase Remote Config
+     */
+    public static boolean hasNewsPortal(Context context) {
         return FirebaseHelper.getRcBoolean(context, FirebaseHelper.ENABLE_LIFE_FEED);
     }
 
+    public static boolean hasEcommerceShoppingLink() {
+        return !getEcommerceShoppingLinks().isEmpty();
+    }
 
     /**
      * Return a list of vouchers and shopping links for e-commerce content portal.
