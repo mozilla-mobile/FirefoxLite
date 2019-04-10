@@ -78,17 +78,19 @@ final public class FirebaseHelper {
     }
 
     /**
-    *  The entry point to inject FirebaseContract and start the library.
+    *  The entry point to inject FirebaseContract and start the library. This method can only
+    *  be called once or a IllegalStateException will be thrown.
      * @param context The entry point to inject FirebaseContract and start the library.
      * @param enabled false if start Firebase without Analytics, true otherwise.
      * @param contract The Firebase implementation to init. If NoOp, remote config will return the passed-in default value
      */
-    public static void init(final Context context, boolean enabled, FirebaseContract contract) {
+    public static void init(final Context context, boolean enabled, @NonNull FirebaseContract contract) {
 
         if (firebaseContract == null) {
             firebaseContract = contract;
+        } else {
+            throw new IllegalStateException("FirebaseHelper has already initialized");
         }
-        firebaseContract.setRemoteConfigDefault(contract.getRemoteConfigDefault());
 
         initInternal(context.getApplicationContext());
 
@@ -102,7 +104,7 @@ final public class FirebaseHelper {
      * @param string The remote config string on server.
      * @return Replace "</BR>" with a new line character
      */
-    static String prettify(String string) {
+    static String prettify(@NonNull String string) {
         return string.replace(NEWLINE_PLACE_HOLDER, "\n");
     }
 
@@ -197,10 +199,10 @@ final public class FirebaseHelper {
     }
 
     @NonNull
-    private static String getStringResourceByName(Context context, String aString) {
+    private static String getStringResourceByName(@NonNull Context context, @NonNull String resourceName) {
         String packageName = context.getPackageName();
         int resId = context.getResources()
-                .getIdentifier(aString, "string", packageName);
+                .getIdentifier(resourceName, "string", packageName);
         if (resId == 0) {
             return "";
         } else {
