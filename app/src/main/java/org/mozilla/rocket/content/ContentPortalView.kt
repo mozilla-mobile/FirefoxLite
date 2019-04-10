@@ -90,7 +90,6 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.content_news, bottomSheet)
 
-
         findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
             newsListListener?.loadMore()
         }

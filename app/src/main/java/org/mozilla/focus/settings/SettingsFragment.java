@@ -23,10 +23,7 @@ import org.mozilla.focus.activity.SettingsActivity;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.utils.DialogUtils;
-import org.mozilla.focus.utils.FirebaseHelper;
-import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.*;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
 
@@ -42,7 +39,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onAttach (Context context) {
         super.onAttach(context);
-        hasContentPortal = Settings.isContentPortalEnabled(context);
+        hasContentPortal = AppConfigWrapper.isLifeFeedEnabled(context);
     }
 
     @Override
