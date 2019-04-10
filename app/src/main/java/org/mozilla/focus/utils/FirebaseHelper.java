@@ -253,11 +253,11 @@ final public class FirebaseHelper extends FirebaseWrapper {
 
     // this is called in FirebaseWrapper's internalInit()
     @Override
-    HashMap<String, Object> getRemoteConfigDefault(Context context) {
+    HashMap<String, Object> getRemoteConfigDefault(@Nullable Context context) {
 
         if (remoteConfigDefault == null) {
             final boolean mayUseLocalFile = AppConstants.isDevBuild() || AppConstants.isBetaBuild();
-            if (mayUseLocalFile && Looper.myLooper() != Looper.getMainLooper()) {
+            if (mayUseLocalFile && Looper.myLooper() != Looper.getMainLooper() && context != null) {
                 // this only happens during init with
                 remoteConfigDefault = fromFile(context);
             } else {
@@ -295,7 +295,7 @@ final public class FirebaseHelper extends FirebaseWrapper {
     }
 
     // This is the default value from resource string ( so we can leverage l10n)
-    private HashMap<String, Object> fromResourceString(Context context) {
+    private HashMap<String, Object> fromResourceString(@Nullable Context context) {
         final HashMap<String, Object> map = new HashMap<>();
         if (context != null) {
             map.put(FirebaseHelper.RATE_APP_DIALOG_TEXT_TITLE, context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));

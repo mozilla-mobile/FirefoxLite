@@ -22,7 +22,7 @@ public class NewFeatureNotice {
 
     private final SharedPreferences preferences;
     private final boolean hasNewsPortal;
-    private final boolean hasEcShoppingLink;
+    private boolean hasShownEcShoppingLink = false;
 
     private final PinSiteManager pinSiteManager;
 
@@ -36,7 +36,6 @@ public class NewFeatureNotice {
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         hasNewsPortal = AppConfigWrapper.isLifeFeedEnabled(context);
-        hasEcShoppingLink = !AppConfigWrapper.getEcommerceShoppingLinks(context).isEmpty();
 
         this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
     }
@@ -84,7 +83,7 @@ public class NewFeatureNotice {
     }
 
     private void setEcShoppingLinkDidShow() {
-        if (!hasEcShoppingLink) {
+        if (!hasShownEcShoppingLink) {
             return;
         }
         // ec shopping link on-boarding has shown. set to true;
@@ -123,6 +122,11 @@ public class NewFeatureNotice {
      * @return true if we have the E-Commerce ShoppingLink feature and haven't shown the on-boarding
      */
     public boolean shouldShowEcShoppingLinkOnboarding() {
+        final boolean hasEcShoppingLink = !AppConfigWrapper.getEcommerceShoppingLinks().isEmpty();
         return hasEcShoppingLink && !preferences.getBoolean(PREF_KEY_BOOLEAN_EC_SHOPPINGLINK_SHOWN, false);
+    }
+
+    public void hasShownEcShoppingLink() {
+        hasShownEcShoppingLink = true;
     }
 }
