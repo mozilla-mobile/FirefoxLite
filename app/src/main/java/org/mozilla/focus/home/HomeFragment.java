@@ -167,7 +167,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Override
     public void onAttach (Context context) {
         super.onAttach(context);
-        hasContentPortal = Settings.isContentPortalEnabled(context);
+        hasContentPortal = AppConfigWrapper.isLifeFeedEnabled(context);
     }
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {

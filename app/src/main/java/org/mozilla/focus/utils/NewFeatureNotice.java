@@ -35,7 +35,7 @@ public class NewFeatureNotice {
 
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        hasNewsPortal = Settings.isContentPortalEnabled(context);
+        hasNewsPortal = AppConfigWrapper.isLifeFeedEnabled(context);
         hasEcShoppingLink = !AppConfigWrapper.getEcommerceShoppingLinks(context).isEmpty();
 
         this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
