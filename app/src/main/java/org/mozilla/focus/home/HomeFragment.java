@@ -159,16 +159,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private String[] configArray;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
-    private boolean hasContentPortal = false;
     @Nullable
     private NewsPresenter newsPresenter = null;
     private PinSiteManager pinSiteManager;
-
-    @Override
-    public void onAttach (Context context) {
-        super.onAttach(context);
-        hasContentPortal = AppConfigWrapper.isLifeFeedEnabled(context);
-    }
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
 
@@ -421,15 +414,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                              @Nullable Bundle savedInstanceState) {
 
         final View view;
-        if (hasContentPortal) {
-            view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
+        boolean hasNewsPortal = AppConfigWrapper.hasNewsPortal(getContext());
+        if (hasNewsPortal || AppConfigWrapper.hasEcommerceShoppingLink()) {
+            view = inflater.inflate(R.layout.fragment_homescreen_content, container, false);
 
             setupContentPortalView(view);
-            // if we need to display e-commerce shopping links in Content Portal, we do nothing here.
-            // Cause e-commerce related initialization happens in AppConfigWrapper.
-            if (AppConfigWrapper.getEcommerceShoppingLinks().isEmpty()) {
+
+            if (hasNewsPortal && contentPanel != null) {
                 newsPresenter = new NewsPresenter(this);
-                this.contentPanel.setNewsListListener(newsPresenter);
+                contentPanel.setNewsListListener(newsPresenter);
             }
         } else {
             view = inflater.inflate(R.layout.fragment_homescreen, container, false);
@@ -1222,10 +1215,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showContentPortal() {
         if (contentPanel != null) {
             contentPanel.show(true);
-            if (AppConfigWrapper.getEcommerceShoppingLinks().isEmpty()) {
-                TelemetryWrapper.openLifeFeedNews();
-            } else {
+            if (AppConfigWrapper.hasEcommerceShoppingLink()) {
                 TelemetryWrapper.openLifeFeedEc();
+            } else {
+                TelemetryWrapper.openLifeFeedNews();
             }
         }
     }

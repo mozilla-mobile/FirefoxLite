@@ -39,7 +39,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onAttach (Context context) {
         super.onAttach(context);
-        hasContentPortal = AppConfigWrapper.isLifeFeedEnabled(context);
+        hasContentPortal = AppConfigWrapper.hasNewsPortal(context);
     }
 
     @Override
