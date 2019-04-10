@@ -522,7 +522,7 @@
     <!-- A prefix that shows before the logo of a given partner. This string tries to show a user that the service he/she is using is provided by this given partner. -->
     <string name="logo_text">Service provided by</string>
 
-    <string name="label_menu_e_commerce" translatable="false">E-voucher &amp; Ticket</string>
+    <string name="label_menu_e_commerce" translatable="false">E-Voucher &amp; Ticket</string>
    
     <!-- Private Browsing-->
 
