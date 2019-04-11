@@ -23,6 +23,7 @@ import org.mozilla.lite.partner.NewsItem
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.rocket.content.data.ShoppingLink
 
 interface ContentPortalListener {
     fun onItemClicked(url: String)
@@ -82,7 +83,9 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         recyclerView?.layoutManager = GridLayoutManager(context, SHOPPINGLINK_GRID_SPAN)
         recyclerView?.adapter = shoppinglinkAdapter
 
-        shoppinglinkAdapter.submitList(AppConfigWrapper.getEcommerceShoppingLinks())
+        val ecommerceShoppingLinks = AppConfigWrapper.getEcommerceShoppingLinks()
+        ecommerceShoppingLinks.add(ShoppingLink("", "footer", "", ""))
+        shoppinglinkAdapter.submitList(ecommerceShoppingLinks)
     }
 
     private fun setupViewNews() {
