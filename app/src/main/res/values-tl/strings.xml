@@ -87,6 +87,7 @@
   <string name="first_run_upgrade_page_text1_highlight">maraming mga tab</string>
   <string name="first_run_upgrade_page_text2">2. Puntahan ang iyong mga paboritong website nang mas mabilis sa pamamagitan ng %s</string>
   <string name="first_run_upgrade_page_text2_highlight">idagdag sa home screen!</string>
+  <string name="second_run_upgrade_page_title">I-pin ang iyong mga paboritong sites</string>
   <string name="firstrun_close_button">OK, naintindihan ko!</string>
   <string name="firstrun_skip_button">Laktawan</string>
   <string name="firstrun_next_button">Susunod</string>
@@ -182,6 +183,7 @@
   <string name="message_deleted_screenshot">Nabura na ang screenshot</string>
   <string name="message_cannot_find_screenshot">Hindi maipakita ang screenshot</string>
   <string name="remove">Alisin</string>
+  <string name="pin_site">I-pin ang site</string>
   <string name="privacy_policy_update_notification_title">Abiso sa Update ng Produkto</string>
   <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Firefox Lite para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
   <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
@@ -235,4 +237,6 @@
   <string name="exp_survey_thanks">Maraming salamat sa pagbibigay ng feedback %1$s</string>
   <string name="exp_survey_yes">OO</string>
   <string name="exp_survey_no">HINDI</string>
+  <string name="http_auth_dialog_user_name">Username</string>
+  <string name="http_auth_dialog_password">Password</string>
 </resources>
