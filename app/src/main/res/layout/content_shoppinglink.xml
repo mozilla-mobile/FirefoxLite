@@ -46,6 +46,7 @@
         android:id="@+id/ct_shoppinglink_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginBottom="@dimen/common_margin_m4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +62,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:baselineAlignBottom="true"
             android:src="@drawable/logo_bukalapak"/>
 
 
