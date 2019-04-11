@@ -109,7 +109,6 @@ android {
         animationsDisabled = true
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
-        execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 
     // used by Room, to test migrations
@@ -259,7 +258,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:${Versions.espresso}"
     androidTestImplementation "tools.fastlane:screengrab:${Versions.fastlane_screengrab}"
     androidTestImplementation "com.jraska:falcon:${Versions.jraska_falcon}"
-    androidTestUtil "com.android.support.test:orchestrator:${Versions.test_runner}"
+//    androidTestUtil "com.android.support.test:orchestrator:${Versions.test_runner}"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
