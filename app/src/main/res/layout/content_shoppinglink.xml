@@ -35,36 +35,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/ct_shoppinglink_service"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:src="@drawable/image_pulsa"
         tools:itemCount="6"
         tools:listitem="@layout/item_shoppinglink"
         tools:spanCount="2"
         tools:layoutManager="android.support.v7.widget.GridLayoutManager"/>
-
-    <LinearLayout
-        android:id="@+id/ct_shoppinglink_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginBottom="@dimen/common_margin_m4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Headline4"
-            android:textColor="@color/paletteLightBlack100"
-            android:layout_marginEnd="@dimen/common_margin_m1"
-            android:text="@string/logo_text"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_bukalapak"/>
-
-
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
