@@ -22,7 +22,7 @@
   <string name="about_link_support">Dukông</string>
   <string name="about_link_your_rights">Hak / Idin Droeneuh</string>
   <string name="about_link_privacy">Jaga Rahsia</string>
-  <string name="life_feed">Haba barô</string>
+  <string name="life_feed">Haba geutanyoe</string>
   <string name="about_link_life_feed">Ta kalön lom keu bhah %1$s</string>
   <string name="preference_search_engine_default">Meusén mita teutap</string>
   <string name="preference_language">Basa</string>
@@ -87,6 +87,8 @@
   <string name="first_run_upgrade_page_text1_highlight">Multitab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs nyang droen galak beubagah ngön %s</string>
   <string name="first_run_upgrade_page_text2_highlight">tamah atanyan lam layeu phôn!</string>
+  <string name="second_run_upgrade_page_title">Peukab situs favorit droen</string>
+  <string name="second_run_upgrade_page_text">Jinoe ka jeut ta peukab situs nyang hayeu bah bek jeut i seuk-seuk lé. Ka meupeukab padum boh situs nyang hayeu bah jeut neu tré ju.</string>
   <string name="firstrun_close_button">Göt, lôn muphôm!</string>
   <string name="firstrun_skip_button">Liwat</string>
   <string name="firstrun_next_button">Lanjut</string>
@@ -182,6 +184,7 @@
   <string name="message_deleted_screenshot">Drop layeuë ka teusampôh</string>
   <string name="message_cannot_find_screenshot">Han jeuët peuleumah drop layeuë</string>
   <string name="remove">Sampôh</string>
+  <string name="pin_site">Peukab situs</string>
   <string name="privacy_policy_update_notification_title">Bri Thèe Pubarô Produk</string>
   <string name="privacy_policy_update_notification_action">Mangat jeuet Firefox Lite leubèh göt keu Droeneuh ngön ban mandum ureueng, kamoe meupeugöt padum-padum boh hai barô lam keubijakan privasi kamoe. Neuteugön keu neumeurunoe leubèh lanjut lom.</string>
   <string name="rate_app_dialog_text_title">Galak keu %1$s?</string>
@@ -221,7 +224,9 @@
   <string name="bookmarks_empty_view_msg">Hana peutanda</string>
   <string name="edit_bookmark">Andam</string>
   <string name="label_menu_news">Haba</string>
+  <string name="label_menu_latest_top_trending_news">Haba barô &amp; trending</string>
   <string name="news_update_btn">Haba barô</string>
+  <string name="logo_text">Layanan jipeuna lé</string>
   <string name="private_tab">Tab rahsia</string>
   <string name="private_browsing_title">Peuhah Wèb Rahsia</string>
   <string name="private_browsing_erase_message">Sampôh riwayat peuhah wèb privat</string>
@@ -235,4 +240,7 @@
   <string name="exp_survey_thanks">Teurimöng gaséh ka neubrithèe bak kamoe %1$s</string>
   <string name="exp_survey_yes">JEUT</string>
   <string name="exp_survey_no">H\'AN</string>
+  <string name="http_auth_dialog_title">Peureulè autentikasi</string>
+  <string name="http_auth_dialog_user_name">Nan ureung ngui</string>
+  <string name="http_auth_dialog_password">Lageum tamöng</string>
 </resources>
