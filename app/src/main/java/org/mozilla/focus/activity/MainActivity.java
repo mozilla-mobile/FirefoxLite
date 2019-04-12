@@ -113,6 +113,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     private PromotionModel promotionModel;
 
+    // Url request from onNewIntent() need to wait till fragments are resumed.
     private String pendingUrl;
 
     private BottomSheetDialog menu;
@@ -188,14 +189,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
                 final String url = intent.getDataString();
 
-                if (Settings.getInstance(this).shouldShowFirstrun()) {
-                    pendingUrl = url;
-                    this.screenNavigator.addFirstRunScreen();
-                } else {
-                    boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
-                            false);
-                    this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
-                }
+                boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
+                        false);
+                this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
             } else {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     this.screenNavigator.addFirstRunScreen();
@@ -959,13 +955,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     public void firstrunFinished() {
-        if (pendingUrl != null) {
-            // We have received an URL in onNewIntent(). Let's load it now.
-            this.screenNavigator.showBrowserScreen(pendingUrl, true, true);
-            pendingUrl = null;
-        } else {
-            this.screenNavigator.popToHomeScreen(false);
-        }
+        this.screenNavigator.popToHomeScreen(false);
     }
 
     @Override
