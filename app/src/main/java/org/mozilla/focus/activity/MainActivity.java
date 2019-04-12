@@ -327,11 +327,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-
-        if (pendingUrl != null && !Settings.getInstance(this).shouldShowFirstrun()) {
-            // We have received an URL in onNewIntent(). Let's load it now.
-            // Unless we're trying to show the firstrun screen, in which case we leave it pending until
-            // firstrun is dismissed.
+        if (pendingUrl != null) {
             final SafeIntent intent = new SafeIntent(getIntent());
             boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
             this.screenNavigator.showBrowserScreen(pendingUrl, openInNewTab, true);
