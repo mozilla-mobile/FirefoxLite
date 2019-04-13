@@ -226,6 +226,7 @@
   <string name="label_menu_news">செய்திகள்</string>
   <string name="label_menu_latest_top_trending_news">சமீபத்திய பிரபலமான செய்திகள்</string>
   <string name="news_update_btn">புதிய புதுப்பிப்பு</string>
+  <string name="logo_text">சேவை வழங்குநர்</string>
   <string name="private_tab">தனிப்பட்ட கீற்று</string>
   <string name="private_browsing_title">அந்தரங்க உலாவல்</string>
   <string name="private_browsing_erase_message">அந்தரங்க உலாவல் வரலாற்றை அகற்று</string>

@@ -87,6 +87,8 @@
   <string name="first_run_upgrade_page_text1_highlight">બહુવિધ ટૅબ્સ</string>
   <string name="first_run_upgrade_page_text2">2. તમારા મનપસંદ સાઇટ્સને ઝડપથી %s દ્વારા ઍક્સેસ કરો</string>
   <string name="first_run_upgrade_page_text2_highlight">તેમને હોમ સ્ક્રીન પર ઉમેરી રહ્યાં છે!</string>
+  <string name="second_run_upgrade_page_title">તમારી મનપસંદ સાઇટ્સને પિન કરો</string>
+  <string name="second_run_upgrade_page_text">હવે તમે કોઈ ટોચની સાઇટને પિન કરી શકો છો જેથી તે ખસેડવામાં નહીં આવે. તેને પ્રારંભ કરવા માટે, અમે તમારા માટે પ્રયાસ કરવા કેટલીક ટોચની સાઇટ્સને પિન કરી છે.</string>
   <string name="firstrun_close_button">OK, સમજાઇ ગયું!</string>
   <string name="firstrun_skip_button">છોડો</string>
   <string name="firstrun_next_button">આગળ</string>
@@ -182,6 +184,7 @@
   <string name="message_deleted_screenshot">સ્ક્રીનશોટ કાઢી નાખ્યો</string>
   <string name="message_cannot_find_screenshot">સ્ક્રીનશોટ બતાવી શકતાં નથી</string>
   <string name="remove">દૂર કરો</string>
+  <string name="pin_site">સાઇટ પીન કરો</string>
   <string name="privacy_policy_update_notification_title">ઉત્પાદન અધ્યતન બનાવવાની સૂચના</string>
   <string name="privacy_policy_update_notification_action">Firefox Lite ને તમારાં માટે અને બીજા બધાં માટે વધુ સારુ બનાવવા, અમે ખાનગી પાૅલીસિમાં અમુક સુધારા કરેલ છે. વધું જાણવાં માટે આ દબાવો.</string>
   <string name="rate_app_dialog_text_title">%1$s ગમ્યું?</string>
@@ -221,7 +224,9 @@
   <string name="bookmarks_empty_view_msg">બુકમાર્ક નથી</string>
   <string name="edit_bookmark">ફેરફાર</string>
   <string name="label_menu_news">સમાચાર</string>
+  <string name="label_menu_latest_top_trending_news">તાજેતરના અને ટોચના વલણ સમાચાર</string>
   <string name="news_update_btn">નવું અપડેટ</string>
+  <string name="logo_text">દ્વારા પૂરી પાડવામાં આવેલ સેવા</string>
   <string name="private_tab">ખાનગી ટૅબ</string>
   <string name="private_browsing_title">ખાનગી બ્રાઉઝિંગ</string>
   <string name="private_browsing_erase_message">ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખો</string>
@@ -235,4 +240,7 @@
   <string name="exp_survey_thanks">અમને પ્રતિસાદ આપવા બદલ આપનો આભાર %1$s</string>
   <string name="exp_survey_yes">હા, કૃપા કરીને</string>
   <string name="exp_survey_no">ના</string>
+  <string name="http_auth_dialog_title">પ્રમાણીકરણ આવશ્યક છે</string>
+  <string name="http_auth_dialog_user_name">વપરાશકર્તા નામ</string>
+  <string name="http_auth_dialog_password">પાસવર્ડ</string>
 </resources>
