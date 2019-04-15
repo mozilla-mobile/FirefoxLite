@@ -1,4 +1,4 @@
-include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', ':newspoint', ':partnerrepository', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler', ':bhaskar', ':newspoint', ':partnerrepository'
+include ':feature-tabs', ':fileutils', ':HttpRequest', ':httptask', ':logger', ':threadutils', ':newspoint', ':partnerrepository', ':strictmodeviolator', 'urlutils', ':icon', ':cachedrequestloader', ':telemetry-annotation', ':telemetry-compiler', ':permissionhandler', ':bhaskar', ':newspoint', ':partnerrepository'
 project(':feature-tabs').projectDir = new File(rootDir, 'components/feature/tabs')
 project(':HttpRequest').projectDir = new File(rootDir, 'components/utils/HttpRequest')
 project(':httptask').projectDir = new File(rootDir, 'components/utils/httptask')
@@ -14,6 +14,7 @@ project(':permissionhandler').projectDir = new File('components/utils/android-pe
 project(':bhaskar').projectDir = new File(rootDir, 'components/partners/bhaskar')
 project(':newspoint').projectDir = new File(rootDir, 'components/partners/newspoint')
 project(':partnerrepository').projectDir = new File(rootDir, 'components/partners/partnerrepository')
+project(':strictmodeviolator').projectDir = new File(rootDir, 'components/utils/strictmodeviolator')
 
 include ':app', ':firebase'
 include ':third_party:subsampling-scale-image-view'
