@@ -1,9 +1,7 @@
 package org.mozilla.focus.utils
 
-import android.content.Context
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.Mockito.mock
 import org.mozilla.focus.utils.FirebaseHelper.RATE_APP_DIALOG_THRESHOLD
 import org.mozilla.focus.utils.FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD
 import org.mozilla.focus.utils.FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD
@@ -26,7 +24,7 @@ class AppConfigWrapperTest {
             this[SHARE_APP_DIALOG_THRESHOLD] = shareDialog
         }
 
-        FirebaseHelper.init(mock(Context::class.java), false, FirebaseNoOpImp(map))
+        FirebaseHelper.replaceContract(FirebaseNoOpImp(map))
 
         assertEquals(rateDialog, AppConfigWrapper.getRateDialogLaunchTimeThreshold().toInt())
 

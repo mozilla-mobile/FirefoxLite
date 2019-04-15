@@ -1,6 +1,5 @@
 package org.mozilla.rocket.promotion
 
-import android.content.Context
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.`when`
@@ -18,11 +17,10 @@ class PromotionModelTest {
     fun intentHasValidExtraShouldShouldRateAppDialog() {
 
         val safeIntent = mock(SafeIntent::class.java)
-        val context = mock(Context::class.java)
         val eventHistory = mock(Settings.EventHistory::class.java)
         val newFeatureNotice = mock(NewFeatureNotice::class.java)
 
-        FirebaseHelper.init(context, false, FirebaseNoOpImp())
+        FirebaseHelper.replaceContract(FirebaseNoOpImp())
 
         `when`(safeIntent.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false)).thenReturn(true)
         `when`(newFeatureNotice.shouldShowPrivacyPolicyUpdate()).thenReturn(false)
