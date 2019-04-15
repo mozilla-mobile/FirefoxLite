@@ -29,6 +29,7 @@ import org.mozilla.rocket.urlinput.LocaleDataSource;
 import org.mozilla.rocket.urlinput.QuickSearchRepository;
 import org.mozilla.rocket.urlinput.QuickSearchViewModel;
 import org.mozilla.rocket.urlinput.QuickSearchViewModelFactory;
+import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 import javax.annotation.Nullable;
 
@@ -50,18 +51,14 @@ public class Inject {
 
     public static boolean isTelemetryEnabled(Context context) {
         // The first access to shared preferences will require a disk read.
-        final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskReads();
-        try {
+        return StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
             final Resources resources = context.getResources();
             final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             final boolean isEnabledByDefault = AppConstants.isBuiltWithFirebase();
             // Telemetry is not enable by default in debug build. But the user / developer can choose to turn it on
             // in AndroidTest, this is enabled by default
             return preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), isEnabledByDefault);
-        } finally {
-            StrictMode.setThreadPolicy(threadPolicy);
-        }
-
+        });
     }
 
     public static void enableStrictMode() {

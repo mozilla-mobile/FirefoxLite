@@ -25,6 +25,7 @@ import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
+import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,9 +72,9 @@ class TopSiteAdapter extends RecyclerView.Adapter<SiteViewHolder> {
         // Tried AsyncTask and other simple offloading, the performance drops significantly.
         // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
         // Favicon
-        final StrictMode.ThreadPolicy threadPolicy = StrictMode.allowThreadDiskWrites();
-        Bitmap favicon = getFavicon(holder.itemView.getContext(), site);
-        StrictMode.setThreadPolicy(threadPolicy);
+        Bitmap favicon = StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
+            return getFavicon(holder.itemView.getContext(), site);
+        });
         holder.img.setVisibility(View.VISIBLE);
         holder.img.setImageBitmap(favicon);
 

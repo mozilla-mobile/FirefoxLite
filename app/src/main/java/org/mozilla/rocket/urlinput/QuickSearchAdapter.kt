@@ -14,6 +14,7 @@ import android.widget.ImageView
 import kotlinx.android.synthetic.main.quick_search_item.view.quick_search_img
 import org.mozilla.focus.R
 import org.mozilla.icon.FavIconUtils
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class QuickSearchAdapter(private val clickListener: (QuickSearch) -> Unit) : ListAdapter<QuickSearch, QuickSearchAdapter.EngineViewHolder>(QuickSearchDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): EngineViewHolder {
@@ -29,10 +30,10 @@ class QuickSearchAdapter(private val clickListener: (QuickSearch) -> Unit) : Lis
         var icon: ImageView = itemView.quick_search_img
 
         fun bind(item: QuickSearch, clickListener: (QuickSearch) -> Unit) {
-            val threadPolicy = StrictMode.allowThreadDiskWrites()
-            val resource = FavIconUtils.getBitmapFromUri(itemView.context, item.icon)
-            icon.setImageBitmap(resource)
-            StrictMode.setThreadPolicy(threadPolicy)
+            StrictModeViolation.tempGrant({ obj: StrictMode.ThreadPolicy.Builder -> obj.permitDiskWrites() }) {
+                val resource = FavIconUtils.getBitmapFromUri(itemView.context, item.icon)
+                icon.setImageBitmap(resource)
+            }
             itemView.setOnClickListener { clickListener(item) }
         }
     }

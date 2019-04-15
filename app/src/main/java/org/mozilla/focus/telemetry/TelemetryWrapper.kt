@@ -11,7 +11,7 @@
 package org.mozilla.focus.telemetry
 
 import android.content.Context
-import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy.Builder
 import android.preference.PreferenceManager
 import android.util.Log
 import android.webkit.PermissionRequest
@@ -29,6 +29,7 @@ import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.theme.ThemeManager
+import org.mozilla.strictmodeviolator.StrictModeViolation
 import org.mozilla.telemetry.Telemetry
 import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.telemetry.annotation.TelemetryDoc
@@ -271,10 +272,9 @@ object TelemetryWrapper {
     }
 
     fun init(context: Context) {
-        // When initializing the telemetry library it will make sure that all directories exist and
-        // are readable/writable.
-        val threadPolicy = StrictMode.allowThreadDiskWrites()
-        try {
+        StrictModeViolation.tempGrant({ obj: Builder -> obj.permitDiskReads() }) {
+            // When initializing the telemetry library it will make sure that all directories exist and
+            // are readable/writable.
             val resources = context.resources
 
             val telemetryEnabled = isTelemetryEnabled(context)
@@ -312,12 +312,12 @@ object TelemetryWrapper {
             val client = HttpURLConnectionTelemetryClient()
             val scheduler = JobSchedulerTelemetryScheduler()
 
-            TelemetryHolder.set(Telemetry(configuration, storage, client, scheduler)
-                    .addPingBuilder(TelemetryCorePingBuilder(configuration))
-                    .addPingBuilder(TelemetryEventPingBuilder(configuration))
-                    .setDefaultSearchProvider(createDefaultSearchProvider(context)))
-        } finally {
-            StrictMode.setThreadPolicy(threadPolicy)
+            TelemetryHolder.set(
+                    Telemetry(configuration, storage, client, scheduler)
+                            .addPingBuilder(TelemetryCorePingBuilder(configuration))
+                            .addPingBuilder(TelemetryEventPingBuilder(configuration))
+                            .setDefaultSearchProvider(createDefaultSearchProvider(context))
+            )
         }
     }
 
