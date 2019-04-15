@@ -11,6 +11,8 @@ import android.content.res.Resources;
 import android.os.LocaleList;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import kotlin.jvm.functions.Function1;
+import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -35,14 +37,11 @@ public class Locales {
      * @param context
      */
     public static void initializeLocale(Context context) {
-        final LocaleManager localeManager = LocaleManager.getInstance();
-        final StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskReads();
-        StrictMode.allowThreadDiskWrites();
-        try {
+        StrictModeViolation.<Void>tempGrant(builder -> builder.permitDiskReads().permitDiskWrites(), () -> {
+            final LocaleManager localeManager = LocaleManager.getInstance();
             localeManager.getAndApplyPersistedLocale(context);
-        } finally {
-            StrictMode.setThreadPolicy(savedPolicy);
-        }
+            return null;
+        });
     }
 
     /**
