@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.StrictMode;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -23,6 +24,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.webkit.DefaultWebView;
 import org.mozilla.focus.webkit.TrackingProtectionWebViewClient;
 import org.mozilla.focus.webkit.WebkitView;
+import org.mozilla.strictmodeviolator.StrictModeViolation;
 import org.mozilla.threadutils.ThreadUtils;
 
 /**
@@ -206,7 +208,12 @@ public class WebViewProvider {
     // We're caching the ua since buildUserAgentString is pretty heavy.
     public static String getUserAgentString(Context context) {
         if (userAgentString == null) {
-            userAgentString = buildUserAgentString(context, context.getResources().getString(R.string.useragent_appname));
+            // FIXME: 4/15/19 We currently consider blocking when getting the useragent acceptable, fix this to fix a
+            // 120 ms performance bottleneck.
+            StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
+                userAgentString = buildUserAgentString(context, context.getResources().getString(R.string.useragent_appname));
+                return null;
+            });
             // we only update the webview version when we first request for user agent string
             ThreadUtils.postToBackgroundThread(() -> Settings.updatePrefString(context, context.getString(R.string.pref_key_webview_version), DebugUtils.parseWebViewVersion(userAgentString)));
         }
