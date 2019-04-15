@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -96,6 +97,16 @@ final public class FirebaseHelper {
 
         enableAnalytics(context.getApplicationContext(), enabled);
 
+    }
+
+    /**
+     * This method should only be used for tests. We replace FirebaseContract. to change the default value
+     *
+     * @param contract FirebaseContract used to provide default value.
+     */
+    @VisibleForTesting
+    public static void replaceContract(@NonNull FirebaseContract contract) {
+        firebaseContract = contract;
     }
 
     /**
