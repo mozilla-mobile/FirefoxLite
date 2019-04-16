@@ -215,6 +215,8 @@
     <string name="first_run_page6_title">Discover new things</string>
     <!-- The %1$s here is a placeholder for "Life Feed", the %2$s is "Learn more" which is localized in preference_learn_more. Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
     <string name="first_run_page6_text">Just one flip, keep yourself updated with the “%1$s” - a variety of contents from the most popular topics to the hottest deals. %2$s</string>
+    <string name="first_run_page7_title">Prevent from being tracked</string>
+    <string name="first_run_page7_text">Now you can check how many trackers are blocked in private mode.</string>
    
     <string name="first_run_upgrade_page_title">We heard your feedback!</string>
 
@@ -537,7 +539,10 @@
     <string name="private_browsing_open_action">OPEN</string>
     <!-- A message shown briefly after user have cleared the private browsing history via tapping the notification. -->
     <string name="private_browsing_erase_done">Your private browsing\nhistory has been erased.</string>
-
+    <!-- A description is shown below the switch of block trackers when opening tracker blocked panel -->
+    <string name="private_browsing_tracker_blocked_description">Enjoy browsing with extra protection.</string>
+   
+   
     <!-- Message shown when the user is using screenshot for the first time. Guide them how to go to "My shots". -->
     <string name="my_shot_on_boarding_message">View your screenshots here!</string>
     <!-- The notice shown along with the message when the user captures screenshot for the first time -->
