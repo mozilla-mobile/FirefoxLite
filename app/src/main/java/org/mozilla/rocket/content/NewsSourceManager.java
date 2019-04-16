@@ -14,8 +14,6 @@ import org.mozilla.threadutils.ThreadUtils;
 
 import java.util.Random;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_DB;
 import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_NP;
 import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
@@ -29,8 +27,6 @@ public class NewsSourceManager {
 
     private String newsSourceUrl = "";
 
-    private boolean loadHasBeenTriggered;
-
     public static NewsSourceManager getInstance() {
         return instance;
     }
@@ -41,7 +37,6 @@ public class NewsSourceManager {
     public void init(Context context) {
 
         ThreadUtils.postToBackgroundThread(() -> {
-            loadHasBeenTriggered = true;
             final Settings settings = Settings.getInstance(context);
             final String source = settings.getNewsSource();
             if (TextUtils.isEmpty(source)) {
@@ -64,7 +59,9 @@ public class NewsSourceManager {
     }
 
     public String getNewsSource() {
-        awaitLoadingNewsSourceLocked();
+        if (newsSource == null) {
+            throw new IllegalStateException("NewsSourceManager is not initialized");
+        }
         return newsSource;
     }
 
@@ -80,20 +77,5 @@ public class NewsSourceManager {
     public void setNewsSourceUrl(String newsSourceUrl) {
         this.newsSourceUrl = newsSourceUrl;
         NewsRepository.resetSubscriptionUrl(newsSourceUrl);
-    }
-
-    @SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "Variable is not being accessed, it is merely being tested for existence")
-    private void awaitLoadingNewsSourceLocked() {
-        if (!loadHasBeenTriggered) {
-            throw new IllegalStateException("Attempting to retrieve search engines without a corresponding init()");
-        }
-
-        while (newsSource == null) {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-                // Ignore
-            }
-        }
     }
 }
