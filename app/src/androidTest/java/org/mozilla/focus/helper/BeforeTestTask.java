@@ -58,13 +58,10 @@ public class BeforeTestTask {
                 settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog);
             }
         }
+
         if (this.clearBrowsingHistory) {
             //TODO: should consider using IdlingResource for DB operation or in-memory DB
             BrowsingHistoryManager.getInstance().deleteAll(null);
-        }
-
-        if (this.enableContentPortalNews) {
-            settings.setContentPortalNewsEnabled(true);
         }
 
         if (this.skipColorThemeOnBoarding) {
