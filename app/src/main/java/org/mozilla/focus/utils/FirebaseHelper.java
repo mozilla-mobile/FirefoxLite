@@ -83,12 +83,17 @@ final public class FirebaseHelper {
     *  be called once or a IllegalStateException will be thrown.
      * @param context The entry point to inject FirebaseContract and start the library.
      * @param enabled false if start Firebase without Analytics, true otherwise.
-     * @param contract The Firebase implementation to init. If NoOp, remote config will return the passed-in default value
      */
-    public static void init(final Context context, boolean enabled, @NonNull FirebaseContract contract) {
+    public static void init(final Context context, boolean enabled) {
 
         if (firebaseContract == null) {
-            firebaseContract = contract;
+            if (AppConstants.isBuiltWithFirebase()) {
+                firebaseContract = FirebaseHelper.provideFirebaseImpl(context);
+                Log.d(TAG, "We are using FirebaseImpl");
+            } else {
+                firebaseContract = FirebaseHelper.provideFirebaseNoOpImpl(context);
+                Log.d(TAG, "We are using FirebaseNoOpImpl");
+            }
         } else {
             throw new IllegalStateException("FirebaseHelper has already initialized");
         }
