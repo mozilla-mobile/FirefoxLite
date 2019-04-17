@@ -26,6 +26,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.Browsers
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.telemetry.Telemetry
@@ -296,6 +297,8 @@ object TelemetryWrapper {
                     .setSettingsProvider(CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
                     .setUploadEnabled(true) // the default value for UploadEnabled is true, but we want to make it clear.
+
+            FirebaseHelper.init(context, telemetryEnabled)
 
             val serializer = JSONPingSerializer()
             val storage = FileTelemetryStorage(configuration, serializer)
