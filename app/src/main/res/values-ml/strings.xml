@@ -24,6 +24,7 @@
   <string name="preference_language">ഭാഷ</string>
   <string name="preference_language_systemdefault">സിസ്റ്റത്തിൽ സ്വതവേയുള്ളതു്</string>
   <string name="preference_dialog_title_search_engine">സ്വതവേയുള്ള സെര്‍ച്ച് എഞ്ചിന്‍</string>
+  <string name="preference_dialog_title_news_source">വാര്‍ത്താ ഉറവിടം</string>
   <string name="preference_data_saving_block_images">ചിത്രങ്ങള്‍ തടയുക</string>
   <string name="preference_privacy_storage_clear_browsing_data">ബ്രൗസിങ്ങ് ഡാറ്റ മായ്കുക</string>
   <string name="preference_privacy_storage_save_downloads_to">ഡൗൺലോഡുകൾ സൂക്ഷിക്കേണ്ട സ്ഥലം</string>
@@ -34,6 +35,8 @@
   <string name="preference_mozilla_telemetry_summary">%1$s എല്ലാവര്‍ക്കും മെച്ചപ്പെട്ടതാക്കാൻ ആവശ്യമുള്ള ഡാറ്റ മാത്രം ശേഖരിക്കാൻ %2$s ശ്രമിക്കുന്നു.</string>
   <string name="preference_learn_more">കൂടുതല്‍ അറിയുക</string>
   <string name="preference_about">കുറിച്ച്</string>
+  <string name="preference_night_mode_brightness">രാത്രി രീതിയിലെ തെളിച്ചം</string>
+  <string name="night_mode_on_boarding_message">തെളിച്ചം ക്രമീകരിക്കാൻ നീട്ടി അമര്‍ത്തുക</string>
   <string name="content_description_clear_input">ഇന്‍പുട്ട് വെടിപ്പാക്കുക</string>
   <string name="content_description_dismiss_input">കളയുക</string>
   <string name="content_description_lock">സുരക്ഷിതമായ കണക്ഷന്‍</string>
@@ -69,11 +72,13 @@
   <string name="first_run_page3_text">പിന്തുടരുന്ന പരസ്യങ്ങൾ തടയുന്നത് ബ്രൗസിംഗിന്റെ വേഗത വര്‍ധിപ്പിക്കുക മാത്രമല്ല, അത് ഡാറ്റ സംരക്ഷിക്കുകയും ചെയ്യുന്നു. ചിത്രങ്ങൾ തടയുന്നതിലൂടെ കൂടുതല്‍ ഡാറ്റ സംരക്ഷിക്കൂ.</string>
   <string name="first_run_page4_title">എല്ലാത്തിന്റെയും സ്ക്രീൻഷോട്ടെടുക്കൂ</string>
   <string name="first_run_page4_text">മുഴുവൻ വെബ് പേജുകളുടേയും സ്ക്രീൻഷോട്ടുകളെടുക്കൂ. ഒരു സ്ക്രീൻഷോട്ട് ഓഫ്‌ലൈനായി (ഡാറ്റ ഉപയോഗിക്കാതെ) കാണൂ അല്ലെങ്കിൽ ആ വെബ് പേജ് വീണ്ടും സന്ദർശിക്കാനായി അമർത്തൂ.</string>
+  <string name="first_run_page6_title">പുതിയ കാര്യങ്ങള്‍ കണ്ടെത്തൂ</string>
   <string name="first_run_upgrade_page_title">ഞങ്ങൾ താങ്കളുടെ പ്രതികരണം കേട്ടു!</string>
   <string name="first_run_upgrade_page_text1">1. ഒരേ സമയം %s തുറക്കുന്നതിലൂടെ വളരെയധികം കാര്യങ്ങൾ ചെയ്യൂ!</string>
   <string name="first_run_upgrade_page_text1_highlight">ഒന്നിലധികം ടാബുകൾ</string>
   <string name="first_run_upgrade_page_text2">2. താങ്കളുടെ പ്രിയപ്പെട്ട സൈറ്റുകൾ %s വേഗം സന്ദർശിക്കൂ</string>
   <string name="first_run_upgrade_page_text2_highlight">പൂമുഖത്തിലേക്ക് ചേർക്കുന്നതിലൂടെ</string>
+  <string name="second_run_upgrade_page_title">നിങ്ങളുടെ ഇഷ്ടപ്പെട്ട സൈറ്റുകള്‍ പിൻ ചെയ്ത് വെക്കൂ</string>
   <string name="firstrun_close_button">മനസ്സിലായി!</string>
   <string name="firstrun_skip_button">ഒഴിവാക്കു</string>
   <string name="firstrun_next_button">അടുത്തത്</string>
@@ -86,6 +91,7 @@
   <string name="label_menu_my_shots">എന്റെ ഷോട്ടുകള്‍</string>
   <string name="label_menu_capture_page">താള്‍ എടുക്കുക</string>
   <string name="label_menu_turbo_mode">വേഗ മോഡ്</string>
+  <string name="label_menu_night_mode">രാത്രി രീതി</string>
   <string name="label_menu_block_ads">പരസ്യം തടയുക</string>
   <string name="label_menu_block_image">ചിത്രങ്ങള്‍ തടയുക</string>
   <string name="label_menu_settings">സജ്ജീകരണങ്ങള്‍</string>
