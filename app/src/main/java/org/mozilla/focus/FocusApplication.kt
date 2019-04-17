@@ -22,12 +22,17 @@ import org.mozilla.rocket.partner.PartnerActivator
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import org.mozilla.rocket.privately.PrivateModeActivity
+import org.mozilla.rocket.settings.SettingsProvider
 import java.io.File
 
 class FocusApplication : LocaleAwareApplication() {
 
     lateinit var partnerActivator: PartnerActivator
     var isInPrivateProcess = false
+
+    val settings by lazy {
+        SettingsProvider(this)
+    }
 
     // Override getCacheDir cause when we create a WebView, it'll asked the application's
     // getCacheDir() method and create WebView specific cache.
