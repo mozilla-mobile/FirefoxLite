@@ -6,12 +6,25 @@
 package org.mozilla.rocket.settings
 
 import android.content.Context
+import org.mozilla.focus.R
 import org.mozilla.rocket.preference.PreferencesFactory
 
 class PrivateBrowsingSettings(context: Context, prefFactory: PreferencesFactory) {
     companion object {
         private const val PREF_NAME = "private_browsing"
+
+        private const val DEFAULT_TURBO_MODE_ENABLED = true
     }
 
-    val preferences = prefFactory.createPreferences(context, PREF_NAME)
+    private val preferences = prefFactory.createPreferences(context, PREF_NAME)
+    private val resources = context.resources
+
+    fun shouldUseTurboMode() = preferences.getBoolean(
+            resources.getString(R.string.pref_key_pb_turbo_enabled),
+            DEFAULT_TURBO_MODE_ENABLED
+    )
+
+    fun setTurboMode(enabled: Boolean) {
+        preferences.putBoolean(resources.getString(R.string.pref_key_pb_turbo_enabled), enabled)
+    }
 }

@@ -15,6 +15,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.web.BrowsingSession;
@@ -59,7 +60,13 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
         // background loading of the lists as early as possible.
         triggerPreload(context);
 
-        this.blockingEnabled = Settings.getInstance(context).shouldUseTurboMode();
+
+        FocusApplication app = ((FocusApplication) context.getApplicationContext());
+        if (app.isInPrivateProcess()) {
+            this.blockingEnabled = app.getSettings().getPrivateBrowsingSettings().shouldUseTurboMode();
+        } else {
+            this.blockingEnabled = Settings.getInstance(context).shouldUseTurboMode();
+        }
     }
 
     public void setBlockingEnabled(boolean enabled) {
