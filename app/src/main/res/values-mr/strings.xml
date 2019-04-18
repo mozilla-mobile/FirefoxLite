@@ -88,6 +88,7 @@
   <string name="first_run_upgrade_page_text2">2. %s द्वारे आपल्या आवडीच्या साइट मध्ये लवकर प्रवेश करा</string>
   <string name="first_run_upgrade_page_text2_highlight">त्यांना मुख्य पडद्यावर जोडूया!</string>
   <string name="second_run_upgrade_page_title">आपल्या आवडत्या साइट पिन करा</string>
+  <string name="second_run_upgrade_page_text">आता आपण कुठलीही टॉप साइट पिन करू शकता जेणेकरून ती हलणार नाही. आपल्याला सुरूवात करून देण्यासाठी, आम्ही आपल्या वापरासाठी काही टॉप साइट पिन करून ठेवल्या आहेत.</string>
   <string name="firstrun_close_button">ठीक आहे, समजले!</string>
   <string name="firstrun_skip_button">वगळा</string>
   <string name="firstrun_next_button">पुढचे</string>
@@ -223,7 +224,9 @@
   <string name="bookmarks_empty_view_msg">कोणतेही वाचनखुणा नाहीत</string>
   <string name="edit_bookmark">संपादित करा</string>
   <string name="label_menu_news">बातम्या</string>
+  <string name="label_menu_latest_top_trending_news">नवीनतम आणि टॉप ट्रेन्डिंग बातम्या</string>
   <string name="news_update_btn">नवीन अद्यतन</string>
+  <string name="logo_text">याद्वारे सेवा प्रदान केली</string>
   <string name="private_tab">खाजगी टॅब</string>
   <string name="private_browsing_title">खाजगी ब्राउझिंग</string>
   <string name="private_browsing_erase_message">खाजगी ब्राऊजिंग इतिहास पुसा</string>
