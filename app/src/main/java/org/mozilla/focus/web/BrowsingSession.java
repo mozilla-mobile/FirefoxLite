@@ -5,7 +5,9 @@
 
 package org.mozilla.focus.web;
 
-import java.lang.ref.WeakReference;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 
 /**
  * A global object keeping the state of the current browsing session.
@@ -15,10 +17,6 @@ import java.lang.ref.WeakReference;
 public class BrowsingSession {
     private static BrowsingSession instance;
 
-    public interface TrackingCountListener {
-        void onTrackingCountChanged(int trackingCount);
-    }
-
     public static synchronized BrowsingSession getInstance() {
         if (instance == null) {
             instance = new BrowsingSession();
@@ -27,22 +25,22 @@ public class BrowsingSession {
     }
 
     private int blockedTrackers;
-    private WeakReference<TrackingCountListener> listenerWeakReference;
+    private MutableLiveData<Integer> blockedCountData = new MutableLiveData<>();
 
     private BrowsingSession() {
-        listenerWeakReference = new WeakReference<>(null);
     }
 
     public void countBlockedTracker() {
         blockedTrackers++;
-
-        final TrackingCountListener listener = listenerWeakReference.get();
-        if (listener != null) {
-            listener.onTrackingCountChanged(blockedTrackers);
-        }
+        blockedCountData.postValue(blockedTrackers);
     }
 
     public void resetTrackerCount() {
         blockedTrackers = 0;
+        blockedCountData.postValue(blockedTrackers);
+    }
+
+    public LiveData<Integer> getBlockedTrackerCount() {
+        return Transformations.map(blockedCountData, input -> input);
     }
 }
