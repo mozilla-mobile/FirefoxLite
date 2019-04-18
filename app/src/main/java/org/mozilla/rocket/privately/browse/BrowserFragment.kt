@@ -224,7 +224,7 @@ class BrowserFragment : LocaleAwareFragment(),
         if (context is FragmentListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -236,7 +236,7 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun applyLocale() {
         // We create and destroy a new WebView here to force the internal state of WebView to know
         // about the new language. See issue #666.
-        val unneeded = WebView(getContext())
+        val unneeded = WebView(context)
         unneeded.destroy()
     }
 
@@ -370,7 +370,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
         override fun onTitleChanged(session: Session, title: String?) {
             session.let {
-                if (!fragment.displayUrlView.text.toString().equals(it.url)) {
+                if (fragment.displayUrlView.text.toString() != it.url) {
                     fragment.displayUrlView.text = it.url
                 }
             }
@@ -407,7 +407,7 @@ class BrowserFragment : LocaleAwareFragment(),
                 }
             }
 
-            callback?.let { it.fullScreenExited() }
+            callback?.fullScreenExited()
             callback = null
 
             // WebView gets focus, but unable to open the keyboard after exit Fullscreen for Android 7.0+
