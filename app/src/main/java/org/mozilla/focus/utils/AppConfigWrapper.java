@@ -5,9 +5,13 @@
 
 package org.mozilla.focus.utils;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mozilla.rocket.content.data.Coupon;
+import org.mozilla.rocket.content.data.CouponKey;
 import org.mozilla.rocket.content.data.ShoppingLink;
 import org.mozilla.rocket.content.data.ShoppingLinkKey;
 
@@ -19,6 +23,7 @@ public class AppConfigWrapper {
     static final boolean LIFE_FEED_ENABLED_DEFAULT = false;
     static final String LIFE_FEED_PROVIDERS_DEFAULT = "";
     static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
+    static final String STR_E_COMMERCE_COUPONS_DEFAULT = "";
 
 
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
@@ -131,11 +136,7 @@ public class AppConfigWrapper {
             final JSONArray jsonArray = new JSONArray(rcString);
             for (int i = 0; i < jsonArray.length(); i++) {
                 final JSONObject object = (JSONObject) jsonArray.get(i);
-                shoppingLinks.add(new ShoppingLink(
-                        object.optString(ShoppingLinkKey.KEY_URL),
-                        object.optString(ShoppingLinkKey.KEY_NAME),
-                        object.optString(ShoppingLinkKey.KEY_IMAGE),
-                        object.optString(ShoppingLinkKey.KEY_SOURCE)));
+                shoppingLinks.add(toShoppingLink(object));
             }
 
         } catch (JSONException e) {
@@ -143,6 +144,43 @@ public class AppConfigWrapper {
         }
 
         return shoppingLinks;
+    }
+
+    @NonNull
+    private static ShoppingLink toShoppingLink(JSONObject object) {
+        return new ShoppingLink(
+                object.optString(ShoppingLinkKey.KEY_URL),
+                object.optString(ShoppingLinkKey.KEY_NAME),
+                object.optString(ShoppingLinkKey.KEY_IMAGE),
+                object.optString(ShoppingLinkKey.KEY_SOURCE));
+    }
+
+    public static boolean hasEcommerceCoupons() {
+        return !getEcommerceCoupons().isEmpty();
+    }
+
+    public static ArrayList<Coupon> getEcommerceCoupons() {
+        ArrayList<Coupon> coupons = new ArrayList<>();
+
+        final String rcString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_E_COMMERCE_COUPONS);
+        try {
+            final JSONArray jsonArray = new JSONArray(rcString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                final JSONObject object = (JSONObject) jsonArray.get(i);
+                final ShoppingLink shoppingLink = toShoppingLink(object);
+                final Coupon coupon = new Coupon(
+                        shoppingLink,
+                        object.optLong(CouponKey.KEY_START),
+                        object.optLong(CouponKey.KEY_END),
+                        object.optBoolean(CouponKey.KEY_ACTIVE)
+                );
+                coupons.add(coupon);
+            }
+        } catch (JSONException e) {
+            // skip and do nothing
+        }
+
+        return coupons;
     }
 
     public static boolean isLifeFeedEnabled() {
