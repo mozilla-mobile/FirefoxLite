@@ -94,14 +94,19 @@ final public class FirebaseHelper {
                 firebaseContract = provideFirebaseNoOpImpl(context);
                 Log.d(TAG, "We are using FirebaseNoOpImpl");
             }
+
+            // if firebaseContract is only used to initialized Firebase Helper once. It
+            // doesn't make sense to use the new contract to initialize again.
+            initInternal(context.getApplicationContext());
+
+            enableAnalytics(context.getApplicationContext(), enabled);
+
+            Log.d(TAG, "Firebase Helper initialized");
         } else {
-            throw new IllegalStateException("FirebaseHelper has already initialized");
+
+            Log.d(TAG, "FirebaseHelper has already initialized");
+
         }
-
-        initInternal(context.getApplicationContext());
-
-        enableAnalytics(context.getApplicationContext(), enabled);
-
     }
 
     /**
