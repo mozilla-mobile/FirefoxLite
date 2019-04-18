@@ -13,7 +13,6 @@ public final class AppConstants {
 
     private static final String BUILD_TYPE_DEBUG = "debug";
     private static final String BUILD_TYPE_FIREBASE = "firebase";
-    private static final String BUILD_TYPE_BETA = "beta";
     private static final String BUILD_TYPE_RELEASE = "release";
     private static final String FLAVOR_product_NIGHTLY = "preview";
 
@@ -29,15 +28,11 @@ public final class AppConstants {
     }
 
     public static boolean isBuiltWithFirebase() {
-        return isBetaBuild() || isReleaseBuild() || isFirebaseBuild();
+        return isReleaseBuild() || isFirebaseBuild();
     }
 
     public static boolean isReleaseBuild() {
         return BUILD_TYPE_RELEASE.equals(BuildConfig.BUILD_TYPE);
-    }
-
-    public static boolean isBetaBuild() {
-        return BUILD_TYPE_BETA.equals(BuildConfig.BUILD_TYPE);
     }
 
     public static boolean supportsDownloadingFiles() {

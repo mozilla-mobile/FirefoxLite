@@ -50,10 +50,6 @@ public class AppConfigWrapper {
         return DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD;
     }
 
-    public static boolean isPrivateModeEnabled() {
-        return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_PRIVATE_MODE);
-    }
-
     public static boolean getMyshotUnreadEnabled() {
         return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_MY_SHOT_UNREAD);
     }

@@ -9,8 +9,6 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.preference.PreferenceManager
 import org.mozilla.fileutils.FileUtils
-import org.mozilla.focus.utils.AppConfigWrapper
-import org.mozilla.focus.utils.AppConstants
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
@@ -20,24 +18,11 @@ class PrivateMode {
 
     // Provide common resources, and helper functions
     companion object {
-        const val PREF_KEY_PRIVATE_MODE_ENABLED = "pref_key_private_mode_enabled"
         const val PREF_KEY_SANITIZE_REMINDER = "pref_key_sanitize_reminder"
 
         const val INTENT_EXTRA_SANITIZE = "intent_extra_sanitize"
         const val PRIVATE_PROCESS_NAME = "private_mode"
         const val WEBVIEW_FOLDER_NAME = "webview"
-
-        // Private Mode is currently behind a pref and is default off.
-        // The option to enable it is on Nightly. The logic is in SettingsFragment.
-        @JvmStatic
-        fun isEnable(context: Context): Boolean {
-            // We look at Firebase Remote Config if in Release and Beta build type
-            if (AppConstants.isReleaseBuild() || AppConstants.isBetaBuild()) {
-                return AppConfigWrapper.isPrivateModeEnabled()
-            }
-            // In Debug and Firebase(debug) build type, enable Private Mode by default
-            return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_KEY_PRIVATE_MODE_ENABLED, true)
-        }
 
         @JvmStatic
         fun sanitize(context: Context) {
