@@ -204,6 +204,9 @@ final public class FirebaseHelper {
                     settings.setNewsSource(source);
                     NewsSourceManager.getInstance().setNewsSource(source);
                 }
+                final String url = AppConfigWrapper.getLifeFeedProviderUrl(settings.getNewsSource());
+                ThreadUtils.postToMainThread(() -> NewsSourceManager.getInstance().setNewsSourceUrl(url));
+
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(new Intent(FirebaseHelper.FIREBASE_READY));
             });
         });
