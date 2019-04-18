@@ -80,10 +80,7 @@
     <PreferenceCategory
         android:key="@string/pref_key_category_development"
         android:title="For Development">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="pref_key_private_mode_enabled"
-            android:title="Private Mode" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

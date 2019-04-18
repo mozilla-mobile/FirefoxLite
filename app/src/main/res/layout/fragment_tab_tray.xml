@@ -59,7 +59,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/tab_tray_bottom_sheet_start_margin"
-                android:visibility="invisible"
                 android:layout_alignParentStart="true">
 
                 <ImageView

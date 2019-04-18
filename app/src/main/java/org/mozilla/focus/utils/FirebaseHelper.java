@@ -48,7 +48,6 @@ final public class FirebaseHelper {
     static final String RATE_APP_NOTIFICATION_THRESHOLD = "rate_app_notification_threshold";
     static final String SHARE_APP_DIALOG_THRESHOLD = "share_app_dialog_threshold";
     static final String ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread";
-    static final String ENABLE_PRIVATE_MODE = "enable_private_mode";
     static final String BANNER_MANIFEST = "banner_manifest";
     static final String SCREENSHOT_CATEGORY_MANIFEST = "screenshot_category_manifest";
     static final String FEATURE_SURVEY = "feature_survey";
@@ -261,7 +260,6 @@ final public class FirebaseHelper {
         map.put(FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG);
         map.put(FirebaseHelper.ENABLE_MY_SHOT_UNREAD, MainActivity.ENABLE_MY_SHOT_UNREAD_DEFAULT);
         map.put(FirebaseHelper.BANNER_MANIFEST, HomeFragment.BANNER_MANIFEST_DEFAULT);
-        map.put(FirebaseHelper.ENABLE_PRIVATE_MODE, AppConfigWrapper.PRIVATE_MODE_ENABLED_DEFAULT);
         map.put(FirebaseHelper.FEATURE_SURVEY, RemoteConfigConstants.INSTANCE.getFEATURE_SURVEY_DEFAULT());
         map.put(FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST, ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT);
         map.put(FirebaseHelper.VPN_RECOMMENDER_PACKAGE, FeatureSurveyViewHelper.Constants.PACKAGE_RECOMMEND_VPN);
