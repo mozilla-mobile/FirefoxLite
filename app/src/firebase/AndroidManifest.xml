@@ -11,12 +11,4 @@
     <uses-permission
         android:name="android.permission.CHANGE_CONFIGURATION"
         tools:ignore="ProtectedPermissions" />
-
-    <!-- Force private mode run in the same process so espresso can perform test and auto screenshot easily -->
-    <application>
-        <activity
-            android:name="org.mozilla.rocket.privately.PrivateModeActivity"
-            tools:remove="android:process" />
-    </application>
-
 </manifest>
