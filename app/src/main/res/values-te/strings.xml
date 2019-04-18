@@ -15,12 +15,14 @@
   <string name="accessibility_find_in_page_result">%2$d లో %1$d</string>
   <string name="accessibility_find_next_result">తదుపరి ఫలితాన్ని కనుగొనండి</string>
   <string name="accessibility_find_previous_result">మునుపటి ఫలితాన్ని కనుగొనండి</string>
+  <string name="accessibility_dismiss_find_in_page">పేజీలో వెతకడాన్ని రద్ధుచేయి</string>
   <string name="text_selection_search_action">Firefox Liteతో వెతుకు</string>
   <string name="about_content_body">%1$s అనేది %2$s వారు తయారుచేసిన వేగవంతమైన, తేలికైన విహారిణి. ఆరోగ్యకరమైన, స్వేచ్ఛాయుతమైన అంతర్జాలాన్ని వృద్ధిచేయడం మా ఆశయం.</string>
   <string name="about_link_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="about_link_support">తోడ్పాటు</string>
   <string name="about_link_your_rights">మీ హక్కులు / లైసెన్సులు</string>
   <string name="about_link_privacy">గోప్యతా విధానం</string>
+  <string name="life_feed">జీవనాడి</string>
   <string name="about_link_life_feed">%1$s గురించి మరింత తెలుసుకోండి</string>
   <string name="preference_search_engine_default">అప్రమేయ శోధన యంత్రం</string>
   <string name="preference_language">భాష</string>
@@ -38,6 +40,7 @@
   <string name="preference_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="preference_about">గురించి</string>
   <string name="preference_night_mode_brightness">రాత్రి రీతి ప్రకాశస్థాయి</string>
+  <string name="night_mode_on_boarding_message">ప్రకాశాన్ని సరిదిద్దుకోడానికి ఎక్కవసేపు నొక్కి ఉంచండి</string>
   <string name="content_description_clear_input">ఇన్‌పుట్ తుడిచివేయి</string>
   <string name="content_description_dismiss_input">విస్మరించు</string>
   <string name="content_description_lock">సురక్షిత అనుసంధానం</string>
@@ -81,6 +84,7 @@
   <string name="first_run_upgrade_page_text1_highlight">పలు ట్యాబులు</string>
   <string name="first_run_upgrade_page_text2">2. మీ అభిమాన సైట్లను %s త్వరగా చేరుకోండి!</string>
   <string name="first_run_upgrade_page_text2_highlight">ముంగిలి తెరకు చేర్చుకోవడం ద్వారా!</string>
+  <string name="second_run_upgrade_page_title">మీ అభిమాన సైట్లను పిన్ చేసుకోండి</string>
   <string name="firstrun_close_button">సరే, అర్థమైంది!</string>
   <string name="firstrun_skip_button">దాటవేయి</string>
   <string name="firstrun_next_button">తదుపరి</string>
@@ -125,6 +129,7 @@
   <string name="download_cancel">దింపుకోలు రద్దయింది</string>
   <string name="undo">చర్య రద్దుచెయ్యి</string>
   <string name="open">తెరువు</string>
+  <string name="menu_longpress_downloads">దింపుకోళ్ళను తెరవడానికి ఎక్కవసేపు నొక్కి ఉంచండి</string>
   <string name="pause">నిలిపివేయబడింది</string>
   <string name="pending">వేచివుంది</string>
   <string name="running">దింపుకుంటూంది</string>
@@ -175,10 +180,13 @@
   <string name="message_deleted_screenshot">తెరపట్టు తొలగించబడింది</string>
   <string name="message_cannot_find_screenshot">తెరపట్టును చూపించలేము</string>
   <string name="remove">తొలగించు</string>
+  <string name="pin_site">సైటును పిన్‌చేయి</string>
   <string name="privacy_policy_update_notification_title">ఉత్పత్తి తాజాకరణ గమనిక</string>
   <string name="privacy_policy_update_notification_action">Firefox Rocket‌ని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. తెలుసుకోడానికి తాకండి.</string>
   <string name="rate_app_dialog_text_title">%1$s నచ్చిందా?</string>
   <string name="rate_app_dialog_text_content">మా ఉత్పాదనను ఎంచుకున్నందుకు కృతజ్ఞతలు. మీ ప్రతిస్పందన మాకు చాలా ముఖ్యం.</string>
+  <string name="rate_app_dialog_btn_go_rate">మమ్మల్ని రేట్ చేయండి</string>
+  <string name="rate_app_notification_action_rate">మమ్మల్ని రేట్ చేయండి</string>
   <string name="rate_app_dialog_btn_feedback">ప్రతిస్పందన తెలియజేయండి</string>
   <string name="rate_app_notification_action_feedback">ప్రతిస్పందన</string>
   <string name="share_app_dialog_text_title">%1$s‌ను స్నేహితులతో పంచుకోండి!</string>
@@ -212,7 +220,9 @@
   <string name="bookmarks_empty_view_msg">ఇష్టాంశాలేమీ లేవు</string>
   <string name="edit_bookmark">మార్చు</string>
   <string name="label_menu_news">వార్తలు</string>
+  <string name="label_menu_latest_top_trending_news">తాజా &amp; ట్రెండవుతూన్న వార్తలు</string>
   <string name="news_update_btn">కొత్త నవీకరణ</string>
+  <string name="logo_text">సేవను అదించువారు</string>
   <string name="private_tab">అంతరంగిక ట్యాబు</string>
   <string name="private_browsing_title">అంతరంగిక విహరణ</string>
   <string name="private_browsing_erase_message">అంతరంగిక విహరణ చరిత్రను తుడిచివేయి</string>
@@ -223,4 +233,7 @@
   <string name="exp_survey_thanks">మీ అభిప్రాయాన్ని మాకు తెలియజేసినందుకు కృతజ్ఞతలు %1$s</string>
   <string name="exp_survey_yes">సరే, కానివ్వు</string>
   <string name="exp_survey_no">వద్దు</string>
+  <string name="http_auth_dialog_title">అథీకరణ అవసరం</string>
+  <string name="http_auth_dialog_user_name">వాడుకరి పేరు</string>
+  <string name="http_auth_dialog_password">సంకేతపదం</string>
 </resources>
