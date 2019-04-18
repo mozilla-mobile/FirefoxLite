@@ -88,10 +88,10 @@ final public class FirebaseHelper {
 
         if (firebaseContract == null) {
             if (AppConstants.isBuiltWithFirebase()) {
-                firebaseContract = FirebaseHelper.provideFirebaseImpl(context);
+                firebaseContract = provideFirebaseImpl(context);
                 Log.d(TAG, "We are using FirebaseImpl");
             } else {
-                firebaseContract = FirebaseHelper.provideFirebaseNoOpImpl(context);
+                firebaseContract = provideFirebaseNoOpImpl(context);
                 Log.d(TAG, "We are using FirebaseNoOpImpl");
             }
         } else {
@@ -130,7 +130,7 @@ final public class FirebaseHelper {
      * @param context Context used to start Firebase
      * @return FirebaseContract that defines Firebase behavior
      */
-    public static FirebaseContract provideFirebaseNoOpImpl(Context context) {
+    private static FirebaseContract provideFirebaseNoOpImpl(Context context) {
         return new FirebaseNoOpImp(provideDefaultValues(context));
     }
 
@@ -139,7 +139,7 @@ final public class FirebaseHelper {
      * @param context Context used to start Firebase
      * @return FirebaseContract that defines Firebase behavior
      */
-    public static FirebaseContract provideFirebaseImpl(Context context) {
+    private static FirebaseContract provideFirebaseImpl(Context context) {
         final String webId = getStringResourceByName(context, FIREBASE_WEB_ID);
         final String dbUrl = getStringResourceByName(context, FIREBASE_DB_URL);
         final String crashReport = getStringResourceByName(context, FIREBASE_CRASH_REPORT);
