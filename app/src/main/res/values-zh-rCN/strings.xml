@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">无痕浏览。默认阻止各种常见的网络跟踪器。确保私密数据的安全性。</string>
   <string name="first_run_page6_title">探索新知</string>
   <string name="first_run_page6_text">您只需轻轻翻转，即可在“%1$s”处获取新资讯 - 涵盖最流行的话题到最热门的促销等各种内容。%2$s</string>
+  <string name="first_run_page7_title">杜绝跟踪</string>
+  <string name="first_run_page7_text">现在，您可以检查在隐私模式下拦截了多少跟踪器。</string>
   <string name="first_run_upgrade_page_title">我们收到了您的反馈！</string>
   <string name="new_name_upgrade_page_title">我们焕然一新！</string>
   <string name="new_name_upgrade_page_text">随着产品的演化，我们为您带来了焕然一新的 %1$s，新名称、新标志。</string>
@@ -232,6 +234,7 @@
   <string name="private_browsing_erase_message">清除隐私浏览历史</string>
   <string name="private_browsing_open_action">打开</string>
   <string name="private_browsing_erase_done">您的隐私浏览\n历史已被清除。</string>
+  <string name="private_browsing_tracker_blocked_description">享受额外保护的浏览。</string>
   <string name="my_shot_on_boarding_message">在这里查看您的截图！</string>
   <string name="my_shot_on_boarding_category_message">为了改善您的产品体验，我们会收集有关您的屏幕截图类别的信息。</string>
   <string name="btn_vpn">VPN 服务 7 天免费使用。立即安装，上网可以更私密、更安全。</string>

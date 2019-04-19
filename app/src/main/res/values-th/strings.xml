@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">ท่องเว็บโดยไม่มีร่องรอย และปิดกั้นตัวติดตามเว็บทั่วไปจำนวนมากโดยค่าเริ่มต้น ทำให้มั่นใจในความปลอดภัยของข้อมูลที่เป็นความลับของคุณ</string>
   <string name="first_run_page6_title">ค้นพบสิ่งใหม่ ๆ</string>
   <string name="first_run_page6_text">ไม่พลาดทุกข่าวสารด้วย “%1$s” เพียงพลิกครั้งเดียว คุณก็จะพบเนื้อหาตั้งแต่หัวข้อที่ยอดนิยมที่สุดจนถึงดีลสุดฮอต %2$s</string>
+  <string name="first_run_page7_title">ป้องกันไม่ให้ถูกติดตาม</string>
+  <string name="first_run_page7_text">ตอนนี้คุณสามารถตรวจสอบจำนวนตัวติดตามที่ถูกปิดกั้นในโหมดส่วนตัว</string>
   <string name="first_run_upgrade_page_title">เราได้รับข้อคิดเห็นของคุณแล้ว!</string>
   <string name="new_name_upgrade_page_title">เรามีหน้าตาใหม่!</string>
   <string name="new_name_upgrade_page_text">ด้วยผลิตภัณฑ์ที่ได้รับการพัฒนา เรานำ %1$s แบบใหม่พร้อมชื่อใหม่และโลโก้ใหม่มาให้คุณ</string>
@@ -232,6 +234,7 @@
   <string name="private_browsing_erase_message">ล้างประวัติการท่องเว็บแบบส่วนตัว</string>
   <string name="private_browsing_open_action">เปิด</string>
   <string name="private_browsing_erase_done">ล้างประวัติการท่องเว็บแบบส่วนตัวของคุณแล้ว</string>
+  <string name="private_browsing_tracker_blocked_description">เพลิดเพลินกับการท่องเว็บด้วยการป้องกันพิเศษ</string>
   <string name="my_shot_on_boarding_message">ดูภาพหน้าจอของคุณที่นี่!</string>
   <string name="my_shot_on_boarding_category_message">เพื่อปรับปรุงประสบการณ์ผลิตภัณฑ์ของคุณ เราเก็บรวบรวมข้อมูลเกี่ยวกับหมวดหมู่ของภาพหน้าจอของคุณ</string>
   <string name="btn_vpn">บริการ VPN ฟรี 7 วันพร้อมแล้วสำหรับคุณ ติดตั้งตอนนี้เพื่อท่องเว็บอย่างเป็นส่วนตัวและปลอดภัยมากขึ้น</string>
