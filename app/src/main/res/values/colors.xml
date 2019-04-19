@@ -12,6 +12,7 @@
     <color name="paletteDarkGreyD100">#FF737373</color>
     <color name="paletteDarkGreyD50">#7F737373</color>
     <color name="paletteDarkGreyE100">#B1B1B3</color>
+    <color name="paletteDarkGreyE50">#80B1B1B3</color>
     <color name="paletteLightGreyA100">#FFE4E4E4</color>
     <color name="paletteLightGreyB100">#FFF9F9FA</color>
     <color name="paletteWhite100">#FFFFFFFF</color>
@@ -27,6 +28,7 @@
     <color name="paletteDarkBlueC20">#330A84FF</color>
     <color name="paletteLightBlue100">#FF41B7E6</color>
     <color name="palettePurple100">#FFC85DEF</color>
+    <color name="palettePurple50">#80C85DEF</color>
 
     <color name="about_logo_color">#FF353857</color>
 

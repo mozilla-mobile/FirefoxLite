@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_tracker_popup"
+    android:clickable="true"
+    tools:ignore="KeyboardInaccessibleWidget">
+
+    <FrameLayout
+        android:id="@+id/tracker_count_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_trackerblocked_frame"
+        android:backgroundTint="@color/palettePurple100"
+        android:layout_marginStart="@dimen/common_margin_m4"
+        android:layout_marginEnd="@dimen/common_margin_m2"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tracker_title"
+        app:layout_constraintRight_toLeftOf="@+id/tracker_title">
+
+        <TextView
+            android:id="@+id/tracker_count"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/paletteWhite100"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            style="@style/Body1"
+            android:textSize="14dp"
+            tools:ignore="SpUsage"
+            tools:text="99" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/ic_trackerblocked_info"
+        android:backgroundTint="@color/paletteWhite100"
+        app:layout_constraintLeft_toLeftOf="@id/tracker_count_container"
+        app:layout_constraintTop_toTopOf="@id/tracker_count_container"
+        app:layout_constraintRight_toRightOf="@id/tracker_count_container"
+        app:layout_constraintBottom_toBottomOf="@id/tracker_count_container" />
+
+    <TextView
+        android:id="@+id/tracker_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/private_browsing_tracker_blocked"
+        android:textColor="@color/paletteWhite100"
+        android:layout_marginEnd="@dimen/common_margin_m2"
+        android:layout_marginTop="@dimen/common_margin_m5"
+        app:layout_constraintRight_toLeftOf="@+id/tracker_switch"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tracker_count_container"
+        style="@style/Body1" />
+
+    <TextView
+        android:id="@+id/tracker_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/private_browsing_tracker_blocked_description"
+        android:textColor="@color/paletteDarkGreyE100"
+        android:layout_marginBottom="@dimen/common_margin_m5"
+        app:layout_constraintLeft_toLeftOf="@id/tracker_title"
+        app:layout_constraintTop_toBottomOf="@id/tracker_title"
+        app:layout_constraintRight_toRightOf="@id/tracker_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/Body5" />
+
+    <Switch
+        android:id="@+id/tracker_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:layout_marginStart="@dimen/common_margin_m2"
+        android:layout_marginEnd="@dimen/common_margin_m4"
+        app:layout_constraintLeft_toRightOf="@id/tracker_title"
+        app:layout_constraintTop_toTopOf="@id/tracker_title"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
