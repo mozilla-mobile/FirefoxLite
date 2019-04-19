@@ -540,7 +540,7 @@
     <string name="private_browsing_open_action">OPEN</string>
     <!-- A message shown briefly after user have cleared the private browsing history via tapping the notification. -->
     <string name="private_browsing_erase_done">Your private browsing\nhistory has been erased.</string>
-    <!-- Show how many trackers blocked on tracker blocked panel. In front of "Trackers blocked", show the number of blocking trackers--> 
+    <!-- Show how many trackers blocked on tracker blocked panel. In front of "Trackers blocked", show the number of blocking trackers. --> 
     <string name="private_browsing_tracker_blocked">Trackers blocked</string>
     <!-- A description is shown below the switch of block trackers when opening tracker blocked panel -->
     <string name="private_browsing_tracker_blocked_description">Enjoy browsing with extra protection.</string>
