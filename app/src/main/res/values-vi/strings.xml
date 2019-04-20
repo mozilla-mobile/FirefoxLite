@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">Duyệt mà không để lại dấu vết và chặn một loạt các trình theo dõi web phổ biến theo mặc định. Đảm bảo an toàn cho dữ liệu bí mật của bạn.</string>
   <string name="first_run_page6_title">Khám phá những điều mới</string>
   <string name="first_run_page6_text">Chỉ cần một lần lật, hãy cập nhật cho bạn với “%1$s” - một loạt nội dung từ các chủ đề phổ biến nhất đến các giao dịch hấp dẫn nhất. %2$s</string>
+  <string name="first_run_page7_title">Ngăn chặn theo dõi</string>
+  <string name="first_run_page7_text">Bây giờ bạn có thể kiểm tra có bao nhiêu trình theo dõi bị chặn trong chế độ riêng tư.</string>
   <string name="first_run_upgrade_page_title">Chúng tôi đã ghi nhận phản hồi của bạn!</string>
   <string name="new_name_upgrade_page_title">Chúng tôi có một cái nhìn mới!</string>
   <string name="new_name_upgrade_page_text">Với sản phẩm đã phát triển, chúng tôi mang đến cho bạn một %1$s mới mẻ, với tên mới và logo mới.</string>
@@ -232,6 +234,7 @@
   <string name="private_browsing_erase_message">Xóa lịch sử duyệt web riêng tư</string>
   <string name="private_browsing_open_action">MỞ</string>
   <string name="private_browsing_erase_done">Trình duyệt riêng tư của bạn\nlịch sử đã bị xóa.</string>
+  <string name="private_browsing_tracker_blocked_description">Tận hưởng duyệt web với lớp bảo vệ được thêm.</string>
   <string name="my_shot_on_boarding_message">Xem ảnh chụp màn hình của bạn ở đây!</string>
   <string name="my_shot_on_boarding_category_message">Để cải thiện trải nghiệm sản phẩm của bạn, chúng tôi thu thập thông tin về các loại ảnh chụp màn hình của bạn.</string>
   <string name="btn_vpn">Dịch vụ VPN miễn phí 7 ngày đã sẵn sàng cho bạn. Cài đặt ngay để duyệt riêng tư và an toàn hơn.</string>

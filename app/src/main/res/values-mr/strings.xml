@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">मागमूसावीन ब्राउझ करा, आणि असंख्य साधारण वेब ट्रॅकर पूर्वनिर्धारीतरित्या आडवा. आपल्या गुप्त माहितीची सुरक्षा निश्चित करा.</string>
   <string name="first_run_page6_title">नवीन गोष्टी शोधा</string>
   <string name="first_run_page6_text">फक्त एक फ्लिप करा, आपल्यास “%1$s” सह अद्ययावत ठेवा - सर्वात लोकप्रिय विषयांवरील विविध सामग्री सर्वाधिक हॉट डीलमध्ये. %2$s</string>
+  <string name="first_run_page7_title">ट्रॅक करण्यापासून प्रतिबंधित करा</string>
+  <string name="first_run_page7_text">आता आपण खाजगी मोडमध्ये किती ट्रॅकर अवरोधित केले आहेत ते तपासू शकता.</string>
   <string name="first_run_upgrade_page_title">आम्ही आपला अभिप्राय ऐकला!</string>
   <string name="new_name_upgrade_page_title">आम्ही नवीन रूप धारण केलंय!</string>
   <string name="new_name_upgrade_page_text">विकसित उत्पादनासह, आम्ही नवीन आणि ताजे %1$s सादर करत आहे, नवीन नाव व चिन्हासह.</string>
@@ -232,6 +234,7 @@
   <string name="private_browsing_erase_message">खाजगी ब्राऊजिंग इतिहास पुसा</string>
   <string name="private_browsing_open_action">उघडा</string>
   <string name="private_browsing_erase_done">आपला ब्राउझिंग इतिहास\nमिटवला गेला आहे.</string>
+  <string name="private_browsing_tracker_blocked_description">अतिरिक्त संरक्षणासह ब्राउझिंगचा आनंद घ्या.</string>
   <string name="my_shot_on_boarding_message">येथे आपले स्क्रीनशॉट्स पहा!</string>
   <string name="my_shot_on_boarding_category_message">आपला अनुभव सुधारण्यासाठी, आम्ही आपल्या स्क्रीनशॉटच्या श्रेणीची माहिती गोळा करतो.</string>
   <string name="btn_vpn">7-दिवस विनामुल्य VPN सेवा आपल्यासाठी तयार आहे. अधिक खाजगीरीत्या आणि सुरक्षिततेने ब्राउझ करण्यासाठी आता स्थापित करा.</string>

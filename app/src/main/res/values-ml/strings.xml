@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">ഒരു അടയാളവുമില്ലാതെ ബ്രൗസുചെയ്യുക, ഒപ്പം സ്ഥിരമായി പൊതുവായ വെബ് ട്രാക്കറുകളുടെ വിപുലമായ ശ്രേണിയെ തടഞ്ഞുവയ്ക്കുക. നിങ്ങളുടെ രഹസ്യ ഡാറ്റയുടെ സുരക്ഷ ഉറപ്പാക്കുക.</string>
   <string name="first_run_page6_title">പുതിയ കാര്യങ്ങള്‍ കണ്ടെത്തൂ</string>
   <string name="first_run_page6_text">ഒരു ഫ്ലിപ്പില്‍, “%1$s” നെ പറ്റി സ്വയം അപ്ഡേറ്റായി നിലനിർത്തുക - വ്യത്യസ്ഥതയുള്ള ഉള്ളടക്കങ്ങള്‍, ഏറ്റവുമധികം ചർച്ചചെയ്യപ്പെടുന്ന വിഷയങ്ങൾ മുതൽ ഏറ്റവും കൂടുതൽ പ്രചാരമുള്ള ഡീലുകള്‍ വരെ. %2$s</string>
+  <string name="first_run_page7_title">ട്രാക്കിങ്ങ് തടയുക</string>
+  <string name="first_run_page7_text">സ്വകാര്യത മോഡില്‍ എത്ര ട്രാക്കറുകള്‍ തടഞ്ഞു എന്ന് ഇപ്പോള്‍ കാണാം.</string>
   <string name="first_run_upgrade_page_title">ഞങ്ങൾ താങ്കളുടെ പ്രതികരണം കേട്ടു!</string>
   <string name="new_name_upgrade_page_title">ഞങ്ങൾക്ക് ഒരു പുതിയ രൂപം ഉണ്ട്!</string>
   <string name="new_name_upgrade_page_text">വികസിച്ച ഉല്പന്നത്തോട് കൂടി, പുതിയ നാമവും പുതിയ ലോഗോയും ഉപയോഗിച്ച്, ഞങ്ങൾ നിങ്ങൾക്ക് പുതുതായി പുതുക്കിയ %1$s കൊണ്ടുവരുന്നു.</string>
@@ -232,6 +234,7 @@
   <string name="private_browsing_erase_message">സ്വകാര്യ ബ്രൗസിങ്ങ് നാൾവഴി വെടിപ്പാക്കുക</string>
   <string name="private_browsing_open_action">തുറക്കൂ</string>
   <string name="private_browsing_erase_done">നിങ്ങളുടെ സ്വകാര്യ ബ്രൌസിങ്ങ്\nനാള്‍വഴി മായ്ചു.</string>
+  <string name="private_browsing_tracker_blocked_description">അധിക സുരക്ഷയോടെ ബ്രൌസിങ്ങ് ആസ്വദിക്കു.</string>
   <string name="my_shot_on_boarding_message">നിങ്ങളുടെ സ്ക്രീൻഷോട്ട് ഇവിടെ കാണുക!</string>
   <string name="my_shot_on_boarding_category_message">നിങ്ങളുടെ ഉൽപ്പന്ന അനുഭവം മെച്ചപ്പെടുത്തുന്നതിന്, നിങ്ങളുടെ സ്ക്രീന്ഷോട്ട് വിഭാഗങ്ങള്‍ ഞങ്ങൾ ശേഖരിക്കും.</string>
   <string name="btn_vpn">7-ദിന സൗജന്യ VPN സേവനം നിങ്ങൾക്കായി തയ്യാറാണ്. കൂടുതൽ സ്വകാര്യമായും സുരക്ഷിതമായും ബ്രൗസുചെയ്യുന്നതിന് ഇപ്പോൾ ഇൻസ്റ്റാൾ ചെയ്യുക.</string>

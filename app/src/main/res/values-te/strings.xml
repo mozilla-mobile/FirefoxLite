@@ -78,6 +78,7 @@
   <string name="first_run_page4_text">పూర్తి వెబ్ పేజీల తెరపట్లు తీసుకోండి. తెరపట్టును ఆఫ్‌లైనులో (డేటా వాడుకోకుండా) చూడండి లేదా వెబ్ పేజీను మళ్ళీ చూడడానికి దానిపై తాకండి.</string>
   <string name="first_run_page5_title">తరువాత స్థాయి అంతరంగికత</string>
   <string name="first_run_page6_title">కొత్త విషయాలు కనుగొనండి</string>
+  <string name="first_run_page7_title">జాడ తెలుసుకోనీకుండా నియంత్రించండి</string>
   <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందన విన్నాము!</string>
   <string name="new_name_upgrade_page_title">మాకు కొత్త రూపం వచ్చింది!</string>
   <string name="first_run_upgrade_page_text1">1. ఒకేసారి %s తెరవడం ద్వారా మల్టీటాస్కింగు చెయ్యండి!</string>
@@ -228,6 +229,7 @@
   <string name="private_browsing_erase_message">అంతరంగిక విహరణ చరిత్రను తుడిచివేయి</string>
   <string name="private_browsing_open_action">తెరువు</string>
   <string name="private_browsing_erase_done">మీ అంతరంగిక విహరణ\nచరిత్ర తొలగించబడింది.</string>
+  <string name="private_browsing_tracker_blocked_description">అధిక సంరక్షణతో విహరణను ఆనందించండి.</string>
   <string name="my_shot_on_boarding_message">మీ తెరపట్లను ఇక్కడ చూడండి!</string>
   <string name="my_shot_on_boarding_category_message">మీ అనుభవాన్ని మెరుగుపరచడానికి, మేము మీ తెరపట్ల వర్గాల సమాచారాన్ని సేకరిస్తాము.</string>
   <string name="exp_survey_thanks">మీ అభిప్రాయాన్ని మాకు తెలియజేసినందుకు కృతజ్ఞతలు %1$s</string>

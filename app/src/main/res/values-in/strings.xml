@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">Jelajahi tanpa pelacak dan blokir sebagian besar pelacak web secara baku. Pastikan keamanan data rahasia Anda.</string>
   <string name="first_run_page6_title">Temukan hal baru</string>
   <string name="first_run_page6_text">Hanya sekali tampil, dapatkan informasi terkini dengan “%1$s” - kumpulan berbagai konten dari topik populer hingga penawaran menarik. %2$s</string>
+  <string name="first_run_page7_title">Cegah agar tidak dilacak</string>
+  <string name="first_run_page7_text">Sekarang Anda dapat memeriksa berapa banyak pelacak yang diblokir dalam mode privat.</string>
   <string name="first_run_upgrade_page_title">Kami mendengar masukan Anda!</string>
   <string name="new_name_upgrade_page_title">Tampilan baru!</string>
   <string name="new_name_upgrade_page_text">Melalui evolusi produk, kami hadirkan %1$s yang segar, dengan nama dan logo baru.</string>
@@ -232,6 +234,7 @@
   <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
   <string name="private_browsing_open_action">BUKA</string>
   <string name="private_browsing_erase_done">Riwayat penjelajahan pribadi Anda\ntelah dihapus.</string>
+  <string name="private_browsing_tracker_blocked_description">Nikmati penjelajahan dengan perlindungan ekstra.</string>
   <string name="my_shot_on_boarding_message">Lihat cuplikan layar Anda di sini!</string>
   <string name="my_shot_on_boarding_category_message">Untuk meningkatkan pengalaman produk, kami mengumpulkan informasi tentang kategori cuplikan layar Anda.</string>
   <string name="btn_vpn">Layanan VPN gratis selama 7 hari telah tersedia untuk Anda. Pasang sekarang untuk menjelajah lebih pribadi dan aman.</string>
