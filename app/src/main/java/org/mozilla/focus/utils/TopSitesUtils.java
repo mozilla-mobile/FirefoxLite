@@ -66,18 +66,15 @@ public class TopSitesUtils {
 
     public static String loadDefaultSitesFromAssets(Context context, @RawRes int resId) {
         String json = "[]";
-        try {
-            InputStream is = context.getResources().openRawResource(resId);
+        try (final InputStream is = context.getResources().openRawResource(resId)) {
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
-            is.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
             ex.printStackTrace();
-        } finally {
-            return json;
         }
+        return json;
     }
 
     public static void saveDefaultSites(Context context, JSONArray obj) {
