@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">Просмотр страниц без слежки и блокировка распространенных веб-трекеров по умолчанию. Обеспечьте безопасность ваших конфиденциальных данных.</string>
   <string name="first_run_page6_title">Откройте для себя новые вещи</string>
   <string name="first_run_page6_text">Всего лишь одно нажатие, и вы сможете быть в курсе последних событий с помощью «%1$s» — с самым разнообразным содержимым от наиболее популярных тем до самых горячих предложений. %2$s</string>
+  <string name="first_run_page7_title">Защищает вас от отслеживания</string>
+  <string name="first_run_page7_text">Теперь вы можете посмотреть, сколько трекеров было заблокировано в приватном режиме.</string>
   <string name="first_run_upgrade_page_title">Мы услышали ваше мнение!</string>
   <string name="new_name_upgrade_page_title">У нас новый вид!</string>
   <string name="new_name_upgrade_page_text">Благодаря развитию продукта, мы предлагаем вам обновленный %1$s с новым именем и логотипом.</string>
@@ -226,11 +228,13 @@
   <string name="label_menu_news">Новости</string>
   <string name="label_menu_latest_top_trending_news">Топ последних новостей</string>
   <string name="news_update_btn">Новое обновление</string>
+  <string name="logo_text">Услуги предоставлены</string>
   <string name="private_tab">Приватная вкладка</string>
   <string name="private_browsing_title">Приватный просмотр</string>
   <string name="private_browsing_erase_message">Удалить историю приватного просмотра</string>
   <string name="private_browsing_open_action">ОТКРЫТЬ</string>
   <string name="private_browsing_erase_done">Ваша история приватного\nпросмотра стёрта.</string>
+  <string name="private_browsing_tracker_blocked_description">Наслаждайтесь веб-сёрфингом с дополнительной защитой.</string>
   <string name="my_shot_on_boarding_message">Ваши скриншоты здесь!</string>
   <string name="my_shot_on_boarding_category_message">Чтобы улучшить качество работы, мы собираем информацию о категориях ваших скриншотов.</string>
   <string name="btn_vpn">7-дневный бесплатный VPN готов для Вас. Установите сейчас, чтобы сёрфить более конфиденциально и надежно.</string>
