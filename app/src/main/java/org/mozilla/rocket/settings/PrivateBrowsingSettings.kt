@@ -20,11 +20,11 @@ class PrivateBrowsingSettings(context: Context, prefFactory: PreferencesFactory)
     private val resources = context.resources
 
     fun shouldUseTurboMode() = preferences.getBoolean(
-            resources.getString(R.string.pref_key_pb_turbo_enabled),
+            resources.getString(R.string.pref_key_pb_boolean_turbo_enabled),
             DEFAULT_TURBO_MODE_ENABLED
     )
 
     fun setTurboMode(enabled: Boolean) {
-        preferences.putBoolean(resources.getString(R.string.pref_key_pb_turbo_enabled), enabled)
+        preferences.putBoolean(resources.getString(R.string.pref_key_pb_boolean_turbo_enabled), enabled)
     }
 }
