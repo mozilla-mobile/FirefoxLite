@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -96,6 +97,7 @@ import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.rocket.util.LoggerWrapper;
+import org.mozilla.strictmodeviolator.StrictModeViolation;
 import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
@@ -626,7 +628,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         initBanner(context);
 
         if (context != null) {
-            this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
+            StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
+                this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
+                return null;
+            });
         }
     }
 
