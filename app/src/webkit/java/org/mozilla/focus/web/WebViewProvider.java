@@ -50,7 +50,10 @@ public class WebViewProvider {
     public static View create(final Context context,
                               final AttributeSet attrs,
                               final WebSettingsHook hook) {
-        WebView.enableSlowWholeDocumentDraw();
+        StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
+            WebView.enableSlowWholeDocumentDraw();
+            return null;
+        });
         final WebkitView webkitView = new WebkitView(context, attrs);
         final WebSettings settings = webkitView.getSettings();
 
