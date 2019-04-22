@@ -21,12 +21,11 @@ import android.view.ViewGroup
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import kotlinx.android.synthetic.main.fragment_private_browser_item_menu_button.*
+import kotlinx.android.synthetic.main.fragment_private_browser_item_menu_button.view.*
 import org.mozilla.focus.BuildConfig
+import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -34,6 +33,7 @@ import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
+import org.mozilla.focus.web.BrowsingSession
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -42,13 +42,9 @@ import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.privately.SharedViewModel
-import org.mozilla.rocket.tabs.Session
-import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.*
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
-import org.mozilla.rocket.tabs.TabViewClient
-import org.mozilla.rocket.tabs.TabViewEngineSession
-import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
@@ -78,6 +74,9 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private lateinit var btnLoad: ImageButton
     private lateinit var btnNext: ImageButton
+    private lateinit var btnTracker: View
+
+    private lateinit var trackerPopup: TrackerPopup
 
     private var isLoading: Boolean = false
 
@@ -116,8 +115,9 @@ class BrowserFragment : LocaleAwareFragment(),
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
 
+        initTrackerView(view)
+
         view.findViewById<View>(R.id.btn_mode).setOnClickListener { onModeClicked() }
-        view.findViewById<View>(R.id.btn_search).setOnClickListener { onSearchClicked() }
         view.findViewById<View>(R.id.btn_delete).setOnClickListener { onDeleteClicked() }
 
         btnLoad = (view.findViewById<ImageButton>(R.id.btn_load))
@@ -128,6 +128,11 @@ class BrowserFragment : LocaleAwareFragment(),
                     it.isEnabled = false
                     it.setOnClickListener { onNextClicked() }
                 }
+
+        btnTracker = view.btn_tracker.apply {
+            setOnClickListener { onTrackerButtonClicked() }
+        }
+        monitorTrackerBlocked { count -> updateTrackerBlockedCount(count) }
 
         view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
             (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
@@ -328,6 +333,10 @@ class BrowserFragment : LocaleAwareFragment(),
         listener.onNotified(this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
     }
 
+    private fun onTrackerButtonClicked() {
+        view?.let { parentView -> trackerPopup.show(parentView) }
+    }
+
     private fun onLoadClicked() {
         when (isLoading) {
             true -> stop()
@@ -341,6 +350,57 @@ class BrowserFragment : LocaleAwareFragment(),
         }
         listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
         ScreenNavigator.get(activity).popToHomeScreen(true)
+    }
+
+    private fun initTrackerView(parentView: View) {
+        trackerPopup = TrackerPopup(parentView.context)
+        updateTrackerButtonState(isTurboModeEnabled(parentView.context))
+
+        trackerPopup.onSwitchToggled = { enabled ->
+            val appContext = (parentView.context.applicationContext as FocusApplication)
+            appContext.settings.privateBrowsingSettings.setTurboMode(enabled)
+            sessionManager.focusSession?.engineSession?.tabView?.setContentBlockingEnabled(enabled)
+
+            updateTrackerButtonState(enabled)
+            stop()
+            reload()
+        }
+    }
+
+    private fun isTurboModeEnabled(context: Context): Boolean {
+        val appContext = (context.applicationContext as FocusApplication)
+        return appContext.settings.privateBrowsingSettings.shouldUseTurboMode()
+    }
+
+    private fun updateTrackerButtonState(isEnabled: Boolean) {
+        if (isEnabled) {
+            btn_tracker.btn_tracker_on.visibility = View.VISIBLE
+            btn_tracker.btn_tracker_off.visibility = View.GONE
+        } else {
+            btn_tracker.btn_tracker_on.visibility = View.GONE
+            btn_tracker.btn_tracker_off.visibility = View.VISIBLE
+        }
+    }
+
+    private fun monitorTrackerBlocked(onUpdate: (Int) -> Unit) {
+        BrowsingSession.getInstance().blockedTrackerCount.observe(viewLifecycleOwner, Observer {
+            val count = it ?: return@Observer
+            onUpdate(count)
+        })
+    }
+
+    private fun updateTrackerBlockedCount(count: Int) {
+        when (count) {
+            0 -> btnTracker.btn_tracker_on.progress = 0f
+            else -> {
+                val isAnimating = btnTracker.btn_tracker_on.isAnimating
+                val isFinished = btnTracker.btn_tracker_on.frame >= btnTracker.btn_tracker_on.maxFrame
+                if (!isAnimating && !isFinished) {
+                    btnTracker.btn_tracker_on.playAnimation()
+                }
+            }
+        }
+        trackerPopup.blockedCount = count
     }
 
     class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
