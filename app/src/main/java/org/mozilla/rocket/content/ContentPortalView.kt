@@ -67,11 +67,26 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
         setupContentPortalView()
 
-        if (AppConfigWrapper.hasEcommerceShoppingLink()) {
+        if (AppConfigWrapper.hasEcommerceCoupons()) {
+            setupViewCouponList()
+        } else if (AppConfigWrapper.hasEcommerceShoppingLink()) {
             setupViewShoppingLink()
         } else {
             setupViewNews()
         }
+    }
+
+    private fun setupViewCouponList() {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        inflater.inflate(R.layout.content_coupon, bottomSheet)
+
+        recyclerView = findViewById(R.id.content_coupons)
+        val couponAdapter = CouponAdapter(this)
+        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.adapter = couponAdapter
+
+        val coupons = AppConfigWrapper.getEcommerceCoupons()
+        couponAdapter.submitList(coupons)
     }
 
     private fun setupViewShoppingLink() {
