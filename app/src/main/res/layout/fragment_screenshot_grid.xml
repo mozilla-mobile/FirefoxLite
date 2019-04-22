@@ -31,13 +31,8 @@
                 android:src="@drawable/screenshots_empty" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
                 android:text="@string/screenshot_grid_empty_text_title"
-                android:textColor="@color/colorDownloadSubText"
-                android:textSize="14sp" />
+                style="@style/PanelEmptyHolderText" />
 
             <TextView
                 android:id="@+id/screenshot_grid_empty_text"
