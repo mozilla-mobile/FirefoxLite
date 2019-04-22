@@ -127,9 +127,7 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        if (blockingEnabled) {
-            BrowsingSession.getInstance().resetTrackerCount();
-        }
+        BrowsingSession.getInstance().resetTrackerCount();
 
         currentPageURL = url;
 
