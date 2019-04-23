@@ -14,7 +14,11 @@
 
         <EditText
             android:id="@+id/bookmark_name"
-            style="@style/NewEditTextInputStyle" />
+            style="@style/NewEditTextInputStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/bookmark_name_label"
@@ -38,7 +42,11 @@
         <EditText
             android:id="@+id/bookmark_location"
             android:inputType="textUri"
-            style="@style/NewEditTextInputStyle" />
+            style="@style/NewEditTextInputStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/bookmark_location_label"
