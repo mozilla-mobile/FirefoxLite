@@ -21,7 +21,11 @@ import android.view.ViewGroup
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_private_browser_item_menu_button.*
 import kotlinx.android.synthetic.main.fragment_private_browser_item_menu_button.view.*
 import org.mozilla.focus.BuildConfig
@@ -42,9 +46,13 @@ import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.privately.SharedViewModel
-import org.mozilla.rocket.tabs.*
+import org.mozilla.rocket.tabs.Session
+import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
 import org.mozilla.rocket.tabs.TabView.HitTarget
+import org.mozilla.rocket.tabs.TabViewEngineSession
+import org.mozilla.rocket.tabs.TabsSessionProvider
+import org.mozilla.rocket.tabs.TabViewClient
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
