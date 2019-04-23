@@ -70,7 +70,15 @@ import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.*;
+import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.utils.OnSwipeListener;
+import org.mozilla.focus.utils.RemoteConfigConstants;
+import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.SwipeMotionDetector;
+import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
@@ -80,8 +88,8 @@ import org.mozilla.lite.partner.NewsItem;
 import org.mozilla.rocket.banner.BannerAdapter;
 import org.mozilla.rocket.banner.BannerConfigViewModel;
 import org.mozilla.rocket.banner.BannerViewHolder;
-import org.mozilla.rocket.content.NewsPresenter;
 import org.mozilla.rocket.content.ContentPortalView;
+import org.mozilla.rocket.content.NewsPresenter;
 import org.mozilla.rocket.content.NewsViewContract;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
@@ -1207,7 +1215,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showContentPortal() {
         if (contentPanel != null) {
             contentPanel.show(true);
-            if (AppConfigWrapper.hasEcommerceShoppingLink()) {
+            if (AppConfigWrapper.hasEcommerceCoupons()) {
+                TelemetryWrapper.openLifeFeedPromo();
+            } else if (AppConfigWrapper.hasEcommerceShoppingLink()) {
                 TelemetryWrapper.openLifeFeedEc();
             } else {
                 TelemetryWrapper.openLifeFeedNews();

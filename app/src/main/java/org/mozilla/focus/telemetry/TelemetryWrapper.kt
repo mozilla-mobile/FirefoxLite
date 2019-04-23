@@ -162,6 +162,7 @@ object TelemetryWrapper {
         internal const val INFO = "info"
         internal const val LIFEFEED_NEWS = "lifefeed_news"
         internal const val LIFEFEED_EC = "lifefeed_ec"
+        internal const val LIFEFEED_PROMO = "lifefeed_promo"
 
         internal const val ENTER = "enter"
         internal const val EXIT = "exit"
@@ -223,6 +224,7 @@ object TelemetryWrapper {
         const val FEED = "feed"
         const val SUB_CATEGORY = "subcategory"
         const val MODE = "mode"
+        const val ID = "id"
     }
 
     object Extra_Value {
@@ -1361,6 +1363,42 @@ object TelemetryWrapper {
                 .extra(Extra.POSITION, pos)
                 .extra(Extra.SOURCE, source ?: "")
                 .extra(Extra.CATEGORY, category ?: "")
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Open lifefeed promo",
+            category = Category.ACTION,
+            method = Method.OPEN,
+            `object` = Object.PANEL,
+            value = Value.LIFEFEED_PROMO,
+            extras = [])
+    @JvmStatic
+    fun openLifeFeedPromo() {
+        EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.LIFEFEED_PROMO)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click on promo item",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.PANEL,
+            value = Value.LIFEFEED_PROMO,
+            extras = [TelemetryExtra(name = Extra.POSITION, value = "1,2,3..."),
+                TelemetryExtra(name = Extra.ID, value = "custom sequence number"),
+                TelemetryExtra(name = Extra.FEED, value = "banner,list"),
+                TelemetryExtra(name = Extra.SOURCE, value = "bukalapak,tokopedia"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "product,coupons"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY, value = "smartphones,computer,limited-time,credit-card")])
+    fun clickOnPromoItem(pos: String, id: String?, feed: String?, source: String?, category: String?, subcategory: String?) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.LIFEFEED_PROMO)
+                .extra(Extra.POSITION, pos)
+                .extra(Extra.ID, id ?: "")
+                .extra(Extra.FEED, feed ?: "")
+                .extra(Extra.SOURCE, source ?: "")
+                .extra(Extra.CATEGORY, category ?: "")
+                .extra(Extra.SUB_CATEGORY, subcategory ?: "")
                 .queue()
     }
 
