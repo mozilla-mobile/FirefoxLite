@@ -9,7 +9,7 @@ import android.content.Context
 import android.preference.PreferenceManager
 
 interface PreferencesFactory {
-    fun createPreferences(context: Context, name: String): Preferences
+    fun createPreferences(context: Context, name: String = ""): Preferences
 }
 
 class AndroidPreferencesFactory : PreferencesFactory {
