@@ -527,7 +527,7 @@
 
     <string name="label_menu_e_commerce" translatable="false">E-Voucher &amp; Tiket</string>
     <string name="label_menu_e_commerce_coupon" translatable="false">Kupon</string>
-    <string name="coupon_valid_description" translatable="false">Valid period %s - %s</string>
+    <string name="coupon_valid_description" translatable="false">Berlaku hingga %s</string>
 
     <!-- Private Browsing-->
 
