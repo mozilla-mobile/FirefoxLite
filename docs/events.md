@@ -75,6 +75,8 @@
 |Click on news item|action|click|panel|"lifefeed_news"|"position=1,2,3...,feed=Newspoint,DainikBhaskar.com,source=India TV,Business World,HW News English...etc,category=Uttar Pradesh,National,Tech Knowledge....etc,subcategory=top-news,entertainment,Lucknow...etc," 
 |Open lifefeed EC|action|open|panel|"lifefeed_ec"|"" 
 |Click on EC item|action|click|panel|"lifefeed_ec"|"position=1,2,3...,source=bukalapak,tokopedia,category=pulsa,data,game,train,flight,event," 
+|Open lifefeed promo|action|open|panel|"lifefeed_promo"|"" 
+|Click on promo item|action|click|panel|"lifefeed_promo"|"position=1,2,3...,id=custom sequence number,feed=banner,list,source=bukalapak,tokopedia,category=product,coupons,subcategory=smartphones,computer,limited-time,credit-card," 
 |Show File ContextMenu|action|show|menu|"download"|"" 
 |History Open Link|action|open|panel|"link"|"" 
 |History Remove Link|action|remove|panel|"link"|"" 

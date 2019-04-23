@@ -37,10 +37,13 @@ class CouponAdapter(private val listener: ContentPortalListener) : ListAdapter<C
     override fun onBindViewHolder(holder: CouponViewHolder, position: Int) {
         val item = getItem(position) ?: return
         holder.bind(item, View.OnClickListener {
-            TelemetryWrapper.clickOnEcItem(
+            TelemetryWrapper.clickOnPromoItem(
                     pos = position.toString(),
+                    id = item.id,
+                    feed = item.feed,
                     source = item.link.source,
-                    category = item.link.name
+                    category = item.category,
+                    subcategory = item.subcategory
             )
             listener.onItemClicked(item.link.url)
         })
