@@ -15,6 +15,7 @@ public final class AppConstants {
     private static final String BUILD_TYPE_FIREBASE = "firebase";
     private static final String BUILD_TYPE_RELEASE = "release";
     private static final String FLAVOR_product_NIGHTLY = "preview";
+    private static final String FLAVOR_product_PRODUCTION = "focus";
 
     private AppConstants() {
     }
@@ -41,6 +42,10 @@ public final class AppConstants {
 
     public static boolean isNightlyBuild() {
         return BuildConfig.FLAVOR_product == FLAVOR_product_NIGHTLY;
+    }
+
+    public static boolean isProductionBuild() {
+        return isReleaseBuild() && BuildConfig.FLAVOR_product == FLAVOR_product_PRODUCTION;
     }
 
 }

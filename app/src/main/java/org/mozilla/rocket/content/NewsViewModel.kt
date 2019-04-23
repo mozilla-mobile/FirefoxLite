@@ -6,6 +6,7 @@ import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 
 class NewsViewModel : ViewModel(), Repository.OnDataChangedListener<NewsItem> {
+
     var repository: Repository<out NewsItem>? = null
         set(value) {
             if (field != value) {

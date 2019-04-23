@@ -8,29 +8,38 @@ package org.mozilla.rocket.content
 import android.content.Context
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.app.FragmentActivity
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import org.mozilla.banner.BannerAdapter
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.lite.partner.NewsItem
-import android.view.LayoutInflater
-import android.widget.LinearLayout
-import org.mozilla.banner.BannerAdapter
 import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.utils.AppConstants
+import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.data.ShoppingLink
+import org.mozilla.rocket.content.view.ContentFragment
 
 interface ContentPortalListener {
     fun onItemClicked(url: String)
     fun onStatus(items: MutableList<out NewsItem>?)
 }
+
+const val TYPE_NEWS = 1 shl 0
+const val TYPE_TICKET = 1 shl 1
+const val TYPE_COUPON = 1 shl 2
+const val TYPE_KEY = "contentType"
 
 class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
@@ -63,22 +72,49 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
             context, attrs, defStyleAttr
     )
 
-    // this is called when HomeFragment is created. Since this view always attach to HomeFragment
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        init()
-    }
-
-    private fun init() {
 
         setupContentPortalView()
 
+        if (features().size == 1 || AppConstants.isReleaseBuild()) {
+            initLegacyContentPortal()
+        }
+    }
+
+    private fun features(): ArrayList<Int> {
+
+        val features = ArrayList<Int>()
         if (AppConfigWrapper.hasEcommerceCoupons()) {
-            setupViewCouponList()
-        } else if (AppConfigWrapper.hasEcommerceShoppingLink()) {
-            setupViewShoppingLink()
-        } else {
-            setupViewNews()
+            features.add(TYPE_COUPON)
+        }
+        if (AppConfigWrapper.hasEcommerceShoppingLink()) {
+            features.add(TYPE_TICKET)
+        }
+
+        if (AppConfigWrapper.hasNewsPortal()) {
+            features.add(TYPE_NEWS)
+        }
+
+        return features
+    }
+
+    // we don't support News in ContentFragment yet
+    private fun adjust(features: ArrayList<Int>): ArrayList<Int> {
+        val list = ArrayList<Int>()
+        for (feature in features) {
+            if (feature != TYPE_NEWS) {
+                list.add(feature)
+            }
+        }
+        return list
+    }
+
+    private fun initLegacyContentPortal() {
+        when {
+            AppConfigWrapper.hasEcommerceCoupons() -> setupViewCouponList()
+            AppConfigWrapper.hasEcommerceShoppingLink() -> setupViewShoppingLink()
+            else -> setupViewNews()
         }
     }
 
@@ -86,7 +122,7 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.content_coupon, bottomSheet)
 
-        recyclerView = findViewById(R.id.content_coupons)
+        var recyclerView = findViewById<RecyclerView>(R.id.content_coupons)
         val couponAdapter = CouponAdapter(this)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = couponAdapter
@@ -150,6 +186,17 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         visibility = VISIBLE
         // TODO: if previously is collapsed, collapse here.
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+
+        if (features().size != 1 && !AppConstants.isReleaseBuild()) {
+            initContentFragment()
+        }
+    }
+
+    private fun initContentFragment() {
+        val adjustFeature = adjust(features())
+        context.inTransaction {
+            add(R.id.bottom_sheet, ContentFragment.newInstance(adjustFeature), TAG_CONTENT_FRAGMENT)
+        }
     }
 
     /**
@@ -308,5 +355,10 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
     companion object {
         private const val NEWS_THRESHOLD = 10
         private const val SHOPPINGLINK_GRID_SPAN = 2
+        const val TAG_CONTENT_FRAGMENT = "TAG_CONTENT_FRAGMENT"
     }
+}
+
+inline fun Context.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
+    (this as? FragmentActivity)?.supportFragmentManager?.beginTransaction()?.func()?.commit()
 }
