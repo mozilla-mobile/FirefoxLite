@@ -363,4 +363,9 @@
     <style name="ColorHandleTheme">
         <item name="android:colorControlActivated">@color/paletteDarkBlueC100</item>
     </style>
+
+    <style name="EcTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
