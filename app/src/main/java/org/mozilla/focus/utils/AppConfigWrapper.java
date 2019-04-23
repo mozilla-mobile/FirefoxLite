@@ -174,6 +174,13 @@ public class AppConfigWrapper {
                         object.optBoolean(CouponKey.KEY_ACTIVE),
                         shoppingLink
                 );
+
+                // In current UI design, user don't know the promotion start time,
+                // to avoid confusing user, filter out those items are not available currently
+                if (coupon.getStart() > System.currentTimeMillis()) {
+                    continue;
+                }
+
                 coupons.add(coupon);
             }
         } catch (JSONException e) {

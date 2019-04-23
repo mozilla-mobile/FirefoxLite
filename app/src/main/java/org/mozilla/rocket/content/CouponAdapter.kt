@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import org.mozilla.focus.R
+import org.mozilla.focus.glide.GlideApp
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.data.Coupon
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 
 class CouponAdapter(private val listener: ContentPortalListener) : ListAdapter<Coupon, CouponViewHolder>(
@@ -53,7 +53,7 @@ class CouponViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var name: TextView? = null
     var validPeriod: TextView? = null
 
-    private val dateFormat = SimpleDateFormat("dd MMM yy", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
     init {
         view = itemView.findViewById(R.id.coupon_item)
@@ -64,9 +64,17 @@ class CouponViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(item: Coupon, listener: View.OnClickListener) {
         view?.setOnClickListener(listener)
+
+        GlideApp.with(itemView.context)
+                .asBitmap()
+                .placeholder(R.drawable.placeholder)
+                .fitCenter()
+                .load(item.link.image)
+                .into(image)
+
         name?.text = item.link.name
 
-        val validPeriodStr = toValidPeriodFormat(item.start, item.end)
+        val validPeriodStr = toValidPeriodFormat(item.end)
         if (validPeriodStr.isNotEmpty()) {
             validPeriod?.text = validPeriodStr
             validPeriod?.visibility = View.VISIBLE
@@ -75,26 +83,11 @@ class CouponViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    private fun toValidPeriodFormat(start: Long, end: Long): String {
-        if (start == 0L || end == 0L || end < start) {
+    private fun toValidPeriodFormat(end: Long): String {
+        if (end == 0L) {
             return ""
         }
 
-        val startCalendar = Calendar.getInstance()
-        startCalendar.timeInMillis = start
-
-        val endCalendar = Calendar.getInstance()
-        endCalendar.timeInMillis = end
-
-        val startStr =
-                if (startCalendar.get(Calendar.YEAR) == endCalendar.get(Calendar.YEAR) && startCalendar.get(Calendar.MONTH) == endCalendar.get(Calendar.MONTH)) {
-                    startCalendar.get(Calendar.DAY_OF_MONTH).toString()
-                } else {
-                    dateFormat.format(start)
-                }
-
-        val endStr = dateFormat.format(end)
-
-        return itemView.context.getString(R.string.coupon_valid_description, startStr, endStr)
+        return itemView.context.getString(R.string.coupon_valid_description, dateFormat.format(end))
     }
 }
