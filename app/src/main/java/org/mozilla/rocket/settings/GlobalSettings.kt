@@ -9,5 +9,5 @@ import android.content.Context
 import org.mozilla.rocket.preference.PreferencesFactory
 
 class GlobalSettings(context: Context, prefFactory: PreferencesFactory) {
-    val preferences = prefFactory.createPreferences(context, "")
+    val preferences = prefFactory.createPreferences(context)
 }
