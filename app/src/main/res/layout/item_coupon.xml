@@ -3,34 +3,31 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="true"
-    android:paddingStart="16dp"
-    android:paddingTop="1dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="@dimen/common_margin_m1">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="-7dp"
+    android:minHeight="76dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
 
     <org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
         android:id="@+id/coupon_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/tab_tray_item_bkg"
-        android:elevation="1dp"
-        android:minHeight="76sp"
-        android:outlineProvider="background"
-        tools:ignore="contentDescription">
+        android:foreground="?android:attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/coupon_item_image"
-            android:layout_width="64sp"
-            android:layout_height="40sp"
+            android:layout_width="64dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/common_margin_m4"
-            android:src="@drawable/logo_bukalapak" />
+            android:layout_marginStart="@dimen/common_margin_m4" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,25 +42,23 @@
 
             <org.mozilla.rocket.nightmode.themed.ThemedTextView
                 android:id="@+id/coupon_item_headline"
-                style="@style/Body2"
+                style="@style/Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/common_margin_m1"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="@color/paletteDarkGreyB100"
-                tools:text="website_title" />
+                android:textColor="@color/paletteDarkGreyC100"
+                tools:text="Coupon title" />
 
             <TextView
                 android:id="@+id/coupon_item_time"
                 style="@style/Body5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="start"
                 android:maxLines="2"
                 android:textColor="@color/paletteDarkGreyD100"
-                tools:text="Valid period 1 - 28 Jan 2019" />
-
+                tools:text="Valid until 30 January 2020" />
         </LinearLayout>
     </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
-</FrameLayout>
+</android.support.v7.widget.CardView>
