@@ -270,6 +270,7 @@ dependencies {
     implementation project(':bhaskar')
     implementation project(':newspoint')
     implementation project(':partnerrepository')
+    implementation project(':banner')
 }
 
 // -------------------------------------------------------------------------------------------------
