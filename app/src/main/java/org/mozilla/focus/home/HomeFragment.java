@@ -417,7 +417,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         final View view;
         boolean hasNewsPortal = AppConfigWrapper.hasNewsPortal();
-        if (hasNewsPortal || AppConfigWrapper.hasEcommerceShoppingLink()) {
+        if (hasNewsPortal || AppConfigWrapper.hasEcommerceShoppingLink() || AppConfigWrapper.hasEcommerceCoupons()) {
             view = inflater.inflate(R.layout.fragment_homescreen_content, container, false);
 
             setupContentPortalView(view);
