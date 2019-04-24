@@ -8,6 +8,8 @@ package org.mozilla.rocket.settings
 import android.content.Context
 import org.mozilla.focus.R
 import org.mozilla.rocket.preference.PreferencesFactory
+import org.mozilla.rocket.preference.bypassStrictMode
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class PrivateBrowsingSettings(context: Context, prefFactory: PreferencesFactory) {
     companion object {
@@ -16,7 +18,10 @@ class PrivateBrowsingSettings(context: Context, prefFactory: PreferencesFactory)
         private const val DEFAULT_TURBO_MODE_ENABLED = true
     }
 
-    private val preferences = prefFactory.createPreferences(context, PREF_NAME)
+    private val preferences = StrictModeViolation.tempGrant({ it.permitDiskReads() }) {
+        prefFactory.createPreferences(context, PREF_NAME).bypassStrictMode()
+    }
+
     private val resources = context.resources
 
     fun shouldUseTurboMode() = preferences.getBoolean(
