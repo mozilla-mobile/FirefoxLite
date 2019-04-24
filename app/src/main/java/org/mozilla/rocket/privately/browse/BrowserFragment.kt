@@ -497,11 +497,11 @@ class BrowserFragment : LocaleAwareFragment(),
         override fun onLoadingStateChanged(session: Session, loading: Boolean) {
             fragment.isLoading = loading
             if (loading) {
-                fragment.btnLoad.setImageResource(R.drawable.ic_close)
+                fragment.btnLoad.setImageResource(R.drawable.edit_close)
             } else {
                 val es = fragment.sessionManager.focusSession?.engineSession ?: return
                 fragment.btnNext.isEnabled = es.tabView?.canGoForward() ?: false
-                fragment.btnLoad.setImageResource(R.drawable.ic_refresh)
+                fragment.btnLoad.setImageResource(R.drawable.action_refresh)
             }
         }
 

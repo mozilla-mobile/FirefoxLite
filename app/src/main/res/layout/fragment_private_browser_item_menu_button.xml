@@ -36,13 +36,13 @@
             android:id="@+id/btn_delete"
             style="@style/MainMenuButton"
             android:tint="@color/private_menu_button"
-            app:srcCompat="@drawable/ic_delete" />
+            app:srcCompat="@drawable/menu_delete" />
 
         <ImageButton
             android:id="@+id/btn_load"
             style="@style/MainMenuButton"
             android:tint="@color/private_menu_button"
-            app:srcCompat="@drawable/ic_refresh" />
+            app:srcCompat="@drawable/action_refresh" />
 
         <FrameLayout
             android:id="@+id/btn_tracker"
