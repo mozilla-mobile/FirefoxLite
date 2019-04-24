@@ -9,6 +9,7 @@ import android.webkit.WebViewDatabase
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabViewProvider
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class PrivateTabViewProvider(private val host: Activity) : TabViewProvider() {
 
@@ -21,7 +22,9 @@ class PrivateTabViewProvider(private val host: Activity) : TabViewProvider() {
         WebStorage.getInstance().deleteAllData()
         val webViewDatabase = WebViewDatabase.getInstance(context)
         webViewDatabase.clearFormData()
-        webViewDatabase.clearHttpAuthUsernamePassword()
+        StrictModeViolation.tempGrant({ it.permitDiskWrites() }) {
+            webViewDatabase.clearHttpAuthUsernamePassword()
+        }
     }
 
     object WebViewSettingsHook : WebViewProvider.WebSettingsHook {
