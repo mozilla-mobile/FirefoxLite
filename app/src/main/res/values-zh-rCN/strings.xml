@@ -234,6 +234,7 @@
   <string name="private_browsing_erase_message">清除隐私浏览历史</string>
   <string name="private_browsing_open_action">打开</string>
   <string name="private_browsing_erase_done">您的隐私浏览\n历史已被清除。</string>
+  <string name="private_browsing_tracker_blocked">跟踪器拦截数量</string>
   <string name="private_browsing_tracker_blocked_description">享受额外保护的浏览。</string>
   <string name="my_shot_on_boarding_message">在这里查看您的截图！</string>
   <string name="my_shot_on_boarding_category_message">为了改善您的产品体验，我们会收集有关您的屏幕截图类别的信息。</string>

@@ -22,10 +22,13 @@
   <string name="about_link_support">技術支援</string>
   <string name="about_link_your_rights">您的權利 / 授權條款</string>
   <string name="about_link_privacy">隱私權公告</string>
+  <string name="life_feed">生活情報站</string>
+  <string name="about_link_life_feed">了解%1$s的更多資訊</string>
   <string name="preference_search_engine_default">預設搜尋引擎</string>
   <string name="preference_language">語言</string>
   <string name="preference_language_systemdefault">系統預設</string>
   <string name="preference_dialog_title_search_engine">預設搜尋引擎</string>
+  <string name="preference_dialog_title_news_source">新聞來源</string>
   <string name="preference_data_saving_block_images">封鎖圖片</string>
   <string name="preference_privacy_storage_clear_browsing_data">清除瀏覽資料</string>
   <string name="preference_privacy_storage_save_downloads_to">儲存下載項目到</string>
@@ -75,6 +78,10 @@
   <string name="first_run_page4_text">拍攝整個頁面的長條擷圖，儲存後即可離線閱讀，之後不用再耗費流量或點擊重新開啟。</string>
   <string name="first_run_page5_title">更進一步的隱私保護</string>
   <string name="first_run_page5_text">瀏覽不留痕跡，還會預設封鎖一系列常見的網頁追蹤器，可確保您的機密資料安全。</string>
+  <string name="first_run_page6_title">探索新事物</string>
+  <string name="first_run_page6_text">只要翻一下，就可以透過「%1$s」獲得最新消息 - 各種線上熱門主題與折扣資訊。%2$s</string>
+  <string name="first_run_page7_title">防止被追蹤</string>
+  <string name="first_run_page7_text">現在起，您可以於隱私模式中看到封鎖了多少追蹤器。</string>
   <string name="first_run_upgrade_page_title">我們聽到了您的意見！</string>
   <string name="new_name_upgrade_page_title">我們有全新外觀！</string>
   <string name="new_name_upgrade_page_text">隨著產品不斷進化，我們推出全新的 %1$s，改為新的名稱也更換商標。</string>
@@ -82,6 +89,8 @@
   <string name="first_run_upgrade_page_text1_highlight">多個分頁標籤</string>
   <string name="first_run_upgrade_page_text2">2. %s，快速開啟最愛的網站！</string>
   <string name="first_run_upgrade_page_text2_highlight">把它們加到主畫面</string>
+  <string name="second_run_upgrade_page_title">釘選最愛網站</string>
+  <string name="second_run_upgrade_page_text">您可以釘選任何熱門網站，快速開啟。為了讓您快速使用，我們已釘選了一些熱門網站讓您試試。</string>
   <string name="firstrun_close_button">好，知道了！</string>
   <string name="firstrun_skip_button">略過</string>
   <string name="firstrun_next_button">下一個</string>
@@ -101,6 +110,7 @@
   <string name="label_menu_exit">結束</string>
   <string name="permission_toast_location_deny">定位權限被拒絕。</string>
   <string name="permission_toast_storage_deny">儲存空間權限被拒絕。</string>
+  <string name="permission_handler_permission_dialog_setting">設定</string>
   <string name="permission_dialog_not_now">現在不要</string>
   <string name="permission_toast_location">無法取得所在位置，請授權取得您的所在位置。</string>
   <string name="permission_toast_storage">儲存空間無法使用，請授權儲存照片與檔案到您的裝置。</string>
@@ -176,6 +186,7 @@
   <string name="message_deleted_screenshot">已刪除擷圖</string>
   <string name="message_cannot_find_screenshot">無法顯示擷圖</string>
   <string name="remove">移除</string>
+  <string name="pin_site">釘選網站</string>
   <string name="privacy_policy_update_notification_title">產品更新公告</string>
   <string name="privacy_policy_update_notification_action">為了讓 Firefox Lite 能為您與所有人變得更好，我們修改了部分的隱私權保護政策。可點擊此處了解更多資訊。</string>
   <string name="rate_app_dialog_text_title">喜歡 %1$s 嗎？</string>
@@ -215,12 +226,16 @@
   <string name="bookmarks_empty_view_msg">無書籤</string>
   <string name="edit_bookmark">編輯</string>
   <string name="label_menu_news">新聞</string>
+  <string name="label_menu_latest_top_trending_news">最新熱門新聞</string>
   <string name="news_update_btn">最新消息</string>
+  <string name="logo_text">服務提供者：</string>
   <string name="private_tab">隱私分頁</string>
   <string name="private_browsing_title">隱私瀏覽模式</string>
   <string name="private_browsing_erase_message">清除隱私瀏覽紀錄</string>
   <string name="private_browsing_open_action">開啟</string>
   <string name="private_browsing_erase_done">已清除您的隱私瀏覽紀錄。</string>
+  <string name="private_browsing_tracker_blocked">追蹤器封鎖數量</string>
+  <string name="private_browsing_tracker_blocked_description">享受上網時的額外保護。</string>
   <string name="my_shot_on_boarding_message">在此檢視您的擷圖！</string>
   <string name="my_shot_on_boarding_category_message">為了改善產品使用體驗，我們會收集您拍攝的擷圖分類。</string>
   <string name="btn_vpn">免費的 7 天試用 VPN 服務已經準備好了，現在安裝即可更私密、更安全地上網。</string>
@@ -229,4 +244,7 @@
   <string name="exp_survey_thanks">感謝提供意見回饋給我們 %1$s</string>
   <string name="exp_survey_yes">好的，謝謝</string>
   <string name="exp_survey_no">不要</string>
+  <string name="http_auth_dialog_title">需要驗證</string>
+  <string name="http_auth_dialog_user_name">使用者名稱</string>
+  <string name="http_auth_dialog_password">密碼</string>
 </resources>
