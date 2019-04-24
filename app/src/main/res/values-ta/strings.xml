@@ -234,6 +234,7 @@
   <string name="private_browsing_erase_message">அந்தரங்க உலாவல் வரலாற்றை அகற்று</string>
   <string name="private_browsing_open_action">திற</string>
   <string name="private_browsing_erase_done">உங்களின் அந்தரங்க உலாவல்\nவரலாறு அகற்றப்பட்டது.</string>
+  <string name="private_browsing_tracker_blocked">தடுக்கப்பட்ட பின்தொடரிகள்</string>
   <string name="private_browsing_tracker_blocked_description">கூடுதல் பாதுகாப்புடன் உலாவி மகிழுங்கள்.</string>
   <string name="my_shot_on_boarding_message">உங்கள் திரைக்காட்சிகளை இங்கே காண்க!</string>
   <string name="my_shot_on_boarding_category_message">உங்கள் தயாரிப்பு அனுபவத்தை மேம்படுத்த, உங்கள் திரைப்பிடிப்பு பற்றிய தகவல்களை நாங்கள் சேகரிக்கிறோம்.</string>
