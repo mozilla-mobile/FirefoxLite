@@ -243,7 +243,7 @@ class PrivateModeActivity : BaseActivity(),
     private fun stopPrivateMode() {
         PrivateSessionNotificationService.stop(this)
         PrivateMode.sanitize(this.applicationContext)
-        TabViewProvider.purify(this)
+        tabViewProvider.purify(this)
     }
 
     @CheckResult

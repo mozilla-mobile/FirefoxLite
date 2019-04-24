@@ -20,15 +20,6 @@ public abstract class TabViewProvider {
      * To clean up some persistent data which effect provided TabView, but not directly inside the TabView.
      * <p>
      * For instance, a cookie effect a @see{android.webkit.WebView} but it is stores in another place.
-     * This method might be invoked at any time, any place. Therefore it is static method.
-     * Current the only one TabView implementation is for Webkit based WebView, so it is ok for now.
-     * TODO: If we have more implementation, rewrite this.
      */
-    public static void purify(final Context context) {
-        CookieManager.getInstance().removeAllCookies(null);
-        WebStorage.getInstance().deleteAllData();
-        final WebViewDatabase webViewDatabase = WebViewDatabase.getInstance(context);
-        webViewDatabase.clearFormData();
-        webViewDatabase.clearHttpAuthUsernamePassword();
-    }
+    public void purify(final Context context) {}
 }
