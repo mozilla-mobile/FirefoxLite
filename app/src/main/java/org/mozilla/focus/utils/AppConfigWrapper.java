@@ -24,6 +24,7 @@ public class AppConfigWrapper {
     static final String LIFE_FEED_PROVIDERS_DEFAULT = "";
     static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPONS_DEFAULT = "";
+    static final String STR_E_COMMERCE_COUPON_BANNER_DEFAULT = "";
 
 
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
@@ -189,6 +190,10 @@ public class AppConfigWrapper {
         }
 
         return coupons;
+    }
+
+    public static String getCouponBannerRootConfig() {
+        return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_COUPON_BANNER_MANIFEST);
     }
 
     public static boolean isLifeFeedEnabled() {

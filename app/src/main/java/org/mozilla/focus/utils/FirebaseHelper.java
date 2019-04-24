@@ -62,6 +62,7 @@ final public class FirebaseHelper {
     static final String LIFE_FEED_PROVIDERS = "life_feed_providers";
     static final String STR_E_COMMERCE_SHOPPINGLINKS = "str_e_commerce_shoppinglinks";
     static final String STR_E_COMMERCE_COUPONS = "str_e_commerce_coupons";
+    static final String STR_COUPON_BANNER_MANIFEST = "str_coupon_banner_manifest";
 
     private static final String FIREBASE_WEB_ID = "default_web_client_id";
     private static final String FIREBASE_DB_URL = "firebase_database_url";
@@ -273,7 +274,7 @@ final public class FirebaseHelper {
         map.put(FirebaseHelper.LIFE_FEED_PROVIDERS, AppConfigWrapper.LIFE_FEED_PROVIDERS_DEFAULT);
         map.put(FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS, AppConfigWrapper.STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT);
         map.put(FirebaseHelper.STR_E_COMMERCE_COUPONS, AppConfigWrapper.STR_E_COMMERCE_COUPONS_DEFAULT);
-
+        map.put(FirebaseHelper.STR_COUPON_BANNER_MANIFEST, AppConfigWrapper.STR_E_COMMERCE_COUPON_BANNER_DEFAULT);
 
         return map;
     }
