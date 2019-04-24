@@ -38,10 +38,10 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/common_margin_m4"
         android:clipToPadding="false"
-        android:paddingBottom="60dp"
+        android:paddingBottom="@dimen/common_margin_m4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content_banners" />
-    
+
 </android.support.constraint.ConstraintLayout>
