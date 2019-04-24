@@ -1,14 +1,11 @@
-package org.mozilla.rocket.banner;
+package org.mozilla.banner;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
-
 import org.json.JSONException;
-import org.mozilla.focus.R;
 
 class BasicViewHolder extends BannerViewHolder {
     static final int VIEW_TYPE = 0;
@@ -16,8 +13,8 @@ class BasicViewHolder extends BannerViewHolder {
     private ImageView background;
     private OnClickListener onClickListener;
 
-    BasicViewHolder(ViewGroup parent, OnClickListener onClickListener) {
-        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.banner0, parent, false));
+    BasicViewHolder(ViewGroup parent, OnClickListener onClickListener, TelemetryListener telemetryListener) {
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.banner0, parent, false), telemetryListener);
         this.onClickListener = onClickListener;
         background = itemView.findViewById(R.id.banner_background);
     }

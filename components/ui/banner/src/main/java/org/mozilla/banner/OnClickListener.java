@@ -1,4 +1,4 @@
-package org.mozilla.rocket.banner;
+package org.mozilla.banner;
 
 public interface OnClickListener {
     void onClick(String arg);

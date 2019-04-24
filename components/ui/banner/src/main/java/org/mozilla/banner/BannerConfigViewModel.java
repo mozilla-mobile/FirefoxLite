@@ -1,4 +1,4 @@
-package org.mozilla.rocket.banner;
+package org.mozilla.banner;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;

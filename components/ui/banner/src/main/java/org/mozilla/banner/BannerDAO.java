@@ -1,4 +1,4 @@
-package org.mozilla.rocket.banner;
+package org.mozilla.banner;
 
 import org.json.JSONArray;
 

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="banner_icon_to_text">6dp</dimen>
+    <dimen name="banner_text_to_bottom">6dp</dimen>
+</resources>

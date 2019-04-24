@@ -7,8 +7,8 @@
 
     <TextView
         android:gravity="center"
-        android:background="@color/paletteBlack100"
-        android:textColor="@color/paletteWhite100"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
         android:id="@+id/button"
         android:layout_width="96dp"
         android:layout_height="38dp"

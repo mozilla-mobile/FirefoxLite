@@ -1,17 +1,14 @@
-package org.mozilla.rocket.banner;
+package org.mozilla.banner;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-
 import org.json.JSONException;
-import org.mozilla.focus.R;
 
 class SingleButtonViewHolder extends BannerViewHolder {
     static final int VIEW_TYPE = 1;
@@ -21,8 +18,8 @@ class SingleButtonViewHolder extends BannerViewHolder {
     private OnClickListener onClickListener;
     private TextView button;
 
-    SingleButtonViewHolder(ViewGroup parent, OnClickListener onClickListener) {
-        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.banner1, parent, false));
+    SingleButtonViewHolder(ViewGroup parent, OnClickListener onClickListener, TelemetryListener telemetryListener) {
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.banner1, parent, false), telemetryListener);
         this.onClickListener = onClickListener;
         background = itemView.findViewById(R.id.banner_background);
         button = itemView.findViewById(R.id.button);
