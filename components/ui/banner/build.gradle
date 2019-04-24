@@ -1,0 +1,26 @@
+apply from: '../../../buildSrc/android-library-base.gradle'
+apply from: "$rootProject.projectDir/buildSrc/pmd.gradle"
+apply from: "$rootProject.projectDir/buildSrc/checkstyle.gradle"
+apply from: "$rootProject.projectDir/buildSrc/findbugs.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':urlutils')
+    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    testImplementation "junit:junit:${Versions.junit}"
+    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+    implementation "com.android.support:recyclerview-v7:${Versions.support}"
+    implementation project(':logger')
+    implementation project(':third_party:glide:annotation')
+    implementation project(':third_party:glide:library')
+    kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
+}
+
+afterEvaluate {
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle'
+}
