@@ -175,9 +175,10 @@ public class AppConfigWrapper {
                         shoppingLink
                 );
 
-                // In current UI design, user don't know the promotion start time,
-                // to avoid confusing user, filter out those items are not available currently
-                if (coupon.getStart() > System.currentTimeMillis()) {
+                // Filter out the invalid coupons - NotStartYet, Expired and Inactive
+                if (coupon.getStart() > System.currentTimeMillis()
+                        || coupon.getEnd() < System.currentTimeMillis()
+                        || !coupon.getActive()) {
                     continue;
                 }
 
