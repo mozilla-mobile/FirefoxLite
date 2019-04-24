@@ -32,6 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.Consumer;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.PopupMenu;
@@ -151,15 +152,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private JSONArray orginalDefaultSites = null;
     private SessionManager sessionManager;
     private final SessionManagerObserver observer = new SessionManagerObserver();
-    private RecyclerView banner;
+    private RecyclerView homeBanner;
     private LinearLayoutManager bannerLayoutManager;
     private BroadcastReceiver receiver;
-    private LoadRootConfigTask.OnRootConfigLoadedListener onRootConfigLoadedListener;
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
-    private BannerConfigViewModel bannerConfigViewModel;
-    final Observer<String[]> bannerObserver = this::setUpBannerFromConfig;
-    private String[] configArray;
+    private BannerConfigViewModel homeBannerConfigViewModel;
+    private BannerConfigViewModel couponBannerConfigViewModel;
+    final Observer<String[]> homeBannerObserver = this::setUpHomeBannerFromConfig;
+    final Observer<String[]> couponBannerObserver = this::setUpCouponBannerFromConfig;
+    private String[] homeBannerconfigArray;
+    private String[] couponBannerconfigArray;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
     @Nullable
@@ -195,27 +198,27 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void showCurrentBannerTelemetry() {
-        if (banner.getVisibility() != View.VISIBLE || bannerLayoutManager == null) {
+        if (homeBanner.getVisibility() != View.VISIBLE || bannerLayoutManager == null) {
             return;
         }
         // Since we're using SnapHelper, the only shown child would be at position 0
         final int displayedChildPosition = 0;
-        View displayedView = banner.getChildAt(displayedChildPosition);
+        View displayedView = homeBanner.getChildAt(displayedChildPosition);
         if (displayedView == null) {
             return;
         }
-        String id = ((BannerViewHolder) banner.getChildViewHolder(displayedView)).getId();
+        String id = ((BannerViewHolder) homeBanner.getChildViewHolder(displayedView)).getId();
         if (id == null) {
             return;
         }
         TelemetryWrapper.showBannerReturn(id);
     }
 
-    private void showBanner(boolean enabled) {
+    private void showView(@NonNull View v, boolean enabled) {
         if (enabled) {
-            banner.setVisibility(View.VISIBLE);
+            v.setVisibility(View.VISIBLE);
         } else {
-            banner.setVisibility(View.GONE);
+            v.setVisibility(View.GONE);
         }
     }
 
@@ -258,10 +261,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             void onRootConfigLoaded(String[] configArray);
         }
 
-        WeakReference<OnRootConfigLoadedListener> onRootConfigLoadedListenerRef;
+        OnRootConfigLoadedListener onRootConfigLoadedListener;
 
-        LoadRootConfigTask(WeakReference<OnRootConfigLoadedListener> onConfigLoadedListenerRef) {
-            this.onRootConfigLoadedListenerRef = onConfigLoadedListenerRef;
+        LoadRootConfigTask(OnRootConfigLoadedListener onRootConfigLoadedListener) {
+            this.onRootConfigLoadedListener = onRootConfigLoadedListener;
         }
 
         @Override
@@ -275,10 +278,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         protected void onPostExecute(String line) {
             // Improper root Manifest Url;
             if (line == null || TextUtils.isEmpty(line)) {
-                return;
-            }
-            OnRootConfigLoadedListener onRootConfigLoadedListener = onRootConfigLoadedListenerRef.get();
-            if (onRootConfigLoadedListener == null) {
                 return;
             }
             try {
@@ -326,61 +325,147 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
+    private void initHomeBanner(Context context) {
+        initBanner(context, AppConfigWrapper.getBannerRootConfig(), CURRENT_HOME_BANNER_CONFIG, homeBannerConfigViewModel, this::hideHomeBannerProcedure);
+    }
+
+    private void initCouponBanner(Context context) {
+        initBanner(context, AppConfigWrapper.getCouponBannerRootConfig(), CURRENT_COUPON_BANNER_CONFIG, couponBannerConfigViewModel, contentPanel::hideCouponBanner);
+    }
+
+    private void hideHomeBannerProcedure(Void v) {
+        homeBanner.setAdapter(null);
+        showView(homeBanner, false);
+    }
+
     // TODO: 10/3/18 Now we have cachedrequestloader, should consider migrate to use it.
-    private void initBanner(Context context) {
+    private void initBanner(Context context, String manifest, String cacheName, BannerConfigViewModel bannerConfigViewModel, Consumer<Void> hideBannerProcedure) {
         // Setup from Cache
         try {
-            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG, bannerConfigViewModel.getConfig(), HomeFragment::stringToStringArray).execute();
+            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName, bannerConfigViewModel.getConfig(), HomeFragment::stringToStringArray).execute();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             LoggerWrapper.throwOrWarn(TAG, "Failed to open Cache directory when reading cached banner config");
         }
         // Setup from Network
-        String manifest = AppConfigWrapper.getBannerRootConfig();
         if (TextUtils.isEmpty(manifest)) {
-            deleteCache(context);
-            banner.setAdapter(null);
-            showBanner(false);
+            deleteCache(context, cacheName);
+            hideBannerProcedure.accept(null);
         } else {
-            // Not using a local variable to prevent reference to be cleared before returning.
-            onRootConfigLoadedListener = configArray -> {
-                writeToCache(context, configArray);
-                bannerConfigViewModel.getConfig().setValue(configArray);
-                onRootConfigLoadedListener = null;
-            };
-            new LoadRootConfigTask(new WeakReference<>(onRootConfigLoadedListener)).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
+            Callback callback = new Callback(context, cacheName, bannerConfigViewModel);
+            new LoadRootConfigTask(callback).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
         }
     }
 
-    private void setUpBannerFromConfig(String[] configArray) {
-        if (Arrays.equals(this.configArray, configArray)) {
+    private static class Callback implements LoadRootConfigTask.OnRootConfigLoadedListener {
+
+        private WeakReference<Context> contextRef;
+        private String cacheName;
+        private BannerConfigViewModel bannerConfigViewModel;
+
+        Callback(Context context, String cacheName, BannerConfigViewModel bannerConfigViewModel) {
+            this.contextRef = new WeakReference<>(context);
+            this.cacheName = cacheName;
+            this.bannerConfigViewModel = bannerConfigViewModel;
+        }
+
+        @Override
+        public void onRootConfigLoaded(String[] configArray) {
+            Context context = contextRef.get();
+            if (context != null) {
+                writeToCache(context, configArray, cacheName);
+                bannerConfigViewModel.getConfig().setValue(configArray);
+            }
+        }
+    }
+
+    private void setUpCouponBannerFromConfig(String[] configArray) {
+        TelemetryListener bannerInnerTelemetryListener = new TelemetryListener() {
+            @Override
+            public void sendClickItemTelemetry(String id, int itemPosition) {
+
+            }
+
+            @Override
+            public void sendClickBackgroundTelemetry(String id) {
+
+            }
+        };
+        BannerTelemtryListener bannerSelfTelemetryListener = new BannerTelemtryListener() {
+            @Override
+            public void showBannerNew(String id) {
+
+            }
+
+            @Override
+            public void showBannerUpdate(String id) {
+
+            }
+        };
+        setUpBannerFromConfig(configArray, this::updateCouponConfig, couponBannerconfigArray, bannerInnerTelemetryListener, bannerSelfTelemetryListener, contentPanel::hideCouponBanner, contentPanel::showCouponBanner);
+    }
+
+    private void setUpHomeBannerFromConfig(String[] configArray) {
+        TelemetryListener bannerInnerTelemetryListener = new TelemetryListener() {
+            @Override
+            public void sendClickItemTelemetry(String id, int itemPosition) {
+                TelemetryWrapper.clickBannerItem(id, itemPosition);
+            }
+
+            @Override
+            public void sendClickBackgroundTelemetry(String id) {
+                TelemetryWrapper.clickBannerBackground(id);
+            }
+        };
+        BannerTelemtryListener bannerSelfTelemetryListener = new BannerTelemtryListener() {
+            @Override
+            public void showBannerNew(String id) {
+                TelemetryWrapper.showBannerNew(id);
+            }
+
+            @Override
+            public void showBannerUpdate(String id) {
+                TelemetryWrapper.showBannerUpdate(id);
+            }
+        };
+        setUpBannerFromConfig(configArray, this::updateHomeConfig, homeBannerconfigArray, bannerInnerTelemetryListener, bannerSelfTelemetryListener, this::hideHomeBannerProcedure, this::showHomeBannerProcedure);
+    }
+
+    private void showHomeBannerProcedure(BannerAdapter b) {
+        homeBanner.setAdapter(b);
+        showView(homeBanner, true);
+    }
+
+    private void updateCouponConfig(String[] configArray) {
+        couponBannerconfigArray = configArray;
+    }
+
+    private void updateHomeConfig(String[] configArray) {
+        homeBannerconfigArray = configArray;
+    }
+
+    private interface BannerTelemtryListener {
+        void showBannerNew(String id);
+        void showBannerUpdate(String id);
+    }
+
+    private void setUpBannerFromConfig(String[] configArray, Consumer<String[]> configUpdater, String[] oldConfigArray, TelemetryListener telemetryListener, BannerTelemtryListener bannerTelemtryListener, Consumer<Void> hideBannerConsumer, Consumer<BannerAdapter> showBannerConsumer) {
+        if (Arrays.equals(oldConfigArray, configArray)) {
             return;
         }
-        boolean isUpdate = this.configArray != null;
-        this.configArray = configArray;
+        boolean isUpdate = oldConfigArray != null;
+        configUpdater.accept(configArray);
         if (configArray == null || configArray.length == 0) {
-            showBanner(false);
+            hideBannerConsumer.accept(null);
             return;
         }
         try {
-            TelemetryListener telemetryListener = new TelemetryListener() {
-                @Override
-                public void sendClickItemTelemetry(String id, int itemPosition) {
-                    TelemetryWrapper.clickBannerItem(id, itemPosition);
-                }
-
-                @Override
-                public void sendClickBackgroundTelemetry(String id) {
-                    TelemetryWrapper.clickBannerBackground(id);
-                }
-            };
             BannerAdapter bannerAdapter = new BannerAdapter(configArray, arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg), telemetryListener);
-            banner.setAdapter(bannerAdapter);
-            showBanner(true);
+            showBannerConsumer.accept(bannerAdapter);
             if (isUpdate) {
-                TelemetryWrapper.showBannerNew(bannerAdapter.getFirstDAOId());
+                bannerTelemtryListener.showBannerNew(bannerAdapter.getFirstDAOId());
             } else {
-                TelemetryWrapper.showBannerUpdate(bannerAdapter.getFirstDAOId());
+                bannerTelemtryListener.showBannerUpdate(bannerAdapter.getFirstDAOId());
             }
 
         } catch (JSONException e) {
@@ -388,9 +473,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private void writeToCache(Context context, String[] configArray) {
+    private static void writeToCache(Context context, String[] configArray, String cacheName) {
         try {
-            final Runnable runnable = new FileUtils.WriteStringToFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG), stringArrayToString(configArray));
+            final Runnable runnable = new FileUtils.WriteStringToFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName), stringArrayToString(configArray));
             ThreadUtils.postToBackgroundThread(runnable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -398,9 +483,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private void deleteCache(Context context) {
+    private void deleteCache(Context context, String cacheName) {
         try {
-            final Runnable runnable = new FileUtils.DeleteFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), CURRENT_BANNER_CONFIG));
+            final Runnable runnable = new FileUtils.DeleteFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName));
             ThreadUtils.postToBackgroundThread(runnable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -409,9 +494,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private static final String UNIT_SEPARATOR = Character.toString((char) 0x1F);
-    private static final String CURRENT_BANNER_CONFIG = "CURRENT_BANNER_CONFIG";
+    // Please don't rename the string
+    private static final String CURRENT_HOME_BANNER_CONFIG = "CURRENT_BANNER_CONFIG";
+    private static final String CURRENT_COUPON_BANNER_CONFIG = "CURRENT_COUPON_BANNER_CONFIG";
 
-    private String stringArrayToString(String[] stringArray) {
+    private static String stringArrayToString(String[] stringArray) {
         return TextUtils.join(UNIT_SEPARATOR, stringArray);
     }
 
@@ -470,9 +557,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             TelemetryWrapper.showSearchBarHome();
         });
-        this.banner = view.findViewById(R.id.banner);
+        this.homeBanner = view.findViewById(R.id.banner);
         bannerLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-        banner.setLayoutManager(bannerLayoutManager);
+        homeBanner.setLayoutManager(bannerLayoutManager);
         SnapHelper snapHelper = new PagerSnapHelper() {
 
             private void sendTelemetry(int superRet, int velocityX) {
@@ -482,7 +569,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
             // This is kinda deprecated by sendSwipeToIdTelemetry so consider removing it in the future.
             private void sendSwipeTelemetry(int superRet, int velocityX) {
-                RecyclerView.Adapter adapter = banner.getAdapter();
+                RecyclerView.Adapter adapter = homeBanner.getAdapter();
                 if (adapter == null) {
                     return;
                 }
@@ -496,7 +583,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 if (nextDisplayed == null) {
                     return;
                 }
-                String id = ((BannerViewHolder) banner.getChildViewHolder(nextDisplayed)).getId();
+                String id = ((BannerViewHolder) homeBanner.getChildViewHolder(nextDisplayed)).getId();
                 if (id == null) {
                     return;
                 }
@@ -511,7 +598,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 return superRet;
             }
         };
-        snapHelper.attachToRecyclerView(banner);
+        snapHelper.attachToRecyclerView(homeBanner);
 
         SwipeMotionLayout home_container = view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());
@@ -569,7 +656,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                initBanner(context);
+                initHomeBanner(context);
             }
         };
         Context context = getContext();
@@ -604,13 +691,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
             @Override
             public void run() {
-                RecyclerView.Adapter adapter = banner.getAdapter();
+                RecyclerView.Adapter adapter = homeBanner.getAdapter();
                 if (adapter == null) {
                     cancel();
                     return;
                 }
                 int nextPage = (bannerLayoutManager.findFirstVisibleItemPosition() + 1) % adapter.getItemCount();
-                banner.smoothScrollToPosition(nextPage);
+                homeBanner.smoothScrollToPosition(nextPage);
             }
         }, SCROLL_PERIOD, SCROLL_PERIOD);
     }
@@ -643,9 +730,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         Context context = getContext();
 
-        bannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
-        bannerConfigViewModel.getConfig().observe(this, bannerObserver);
-        initBanner(context);
+        homeBannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
+        homeBannerConfigViewModel.getConfig().observe(this, homeBannerObserver);
+        if (AppConfigWrapper.hasEcommerceCoupons()) {
+            couponBannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
+            couponBannerConfigViewModel.getConfig().observe(this, couponBannerObserver);
+        }
+        initHomeBanner(context);
 
         if (context != null) {
             StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
@@ -659,7 +750,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public void onDestroyView() {
         sessionManager.unregister(this.observer);
         doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
-        bannerConfigViewModel.getConfig().removeObserver(bannerObserver);
+        homeBannerConfigViewModel.getConfig().removeObserver(homeBannerObserver);
+        if (AppConfigWrapper.hasEcommerceCoupons()) {
+            couponBannerConfigViewModel.getConfig().removeObserver(couponBannerObserver);
+        }
         super.onDestroyView();
     }
 
@@ -1233,6 +1327,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (contentPanel != null) {
             contentPanel.show(true);
             if (AppConfigWrapper.hasEcommerceCoupons()) {
+                initCouponBanner(getContext());
                 TelemetryWrapper.openLifeFeedPromo();
             } else if (AppConfigWrapper.hasEcommerceShoppingLink()) {
                 TelemetryWrapper.openLifeFeedEc();
