@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_tracker_popup"
     android:clickable="true"
     android:elevation="3dp"
+    tools:background="@drawable/background_tracker_popup"
     tools:ignore="KeyboardInaccessibleWidget">
 
     <FrameLayout
