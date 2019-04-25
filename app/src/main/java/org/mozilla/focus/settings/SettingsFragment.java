@@ -45,7 +45,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             Preference category = findPreference(getString(R.string.pref_key_category_development));
             rootPreferences.removePreference(category);
         }
-        if (!NewFeatureNotice.getInstance(getActivity()).isNewsEnabled()) {
+        if (!AppConfigWrapper.isLifeFeedEnabled()) {
             Preference category = findPreference(getString(R.string.pref_s_news));
             rootPreferences.removePreference(category);
         }
