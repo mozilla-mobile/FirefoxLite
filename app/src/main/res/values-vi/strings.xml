@@ -234,6 +234,7 @@
   <string name="private_browsing_erase_message">Xóa lịch sử duyệt web riêng tư</string>
   <string name="private_browsing_open_action">MỞ</string>
   <string name="private_browsing_erase_done">Trình duyệt riêng tư của bạn\nlịch sử đã bị xóa.</string>
+  <string name="private_browsing_tracker_blocked">Trình theo dõi đã chặn</string>
   <string name="private_browsing_tracker_blocked_description">Tận hưởng duyệt web với lớp bảo vệ được thêm.</string>
   <string name="my_shot_on_boarding_message">Xem ảnh chụp màn hình của bạn ở đây!</string>
   <string name="my_shot_on_boarding_category_message">Để cải thiện trải nghiệm sản phẩm của bạn, chúng tôi thu thập thông tin về các loại ảnh chụp màn hình của bạn.</string>
