@@ -57,6 +57,7 @@ class TrackerPopup(context: Context) : PopupWindow(
     init {
         val view = contentView
         elevation = contentView.elevation
+        setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.background_tracker_popup))
 
         val switchView = contentView.tracker_switch
         DrawableCompat.setTintList(
