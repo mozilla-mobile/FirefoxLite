@@ -1,10 +1,11 @@
 package org.mozilla.rocket.component
 
+import android.app.Application
 import android.content.Intent
 import android.content.Intent.ACTION_MAIN
+import androidx.test.core.app.ApplicationProvider
 import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_COMMAND
 import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_OPEN_URL
-import org.robolectric.RuntimeEnvironment
 
 // @RunWith(RobolectricTestRunner::class)
 class LaunchIntentDispatcherTest {
@@ -25,7 +26,7 @@ class LaunchIntentDispatcherTest {
     }
 
     fun test(intent: Intent, value: LaunchIntentDispatcher.Action) {
-        RuntimeEnvironment.application.applicationContext?.apply {
+        ApplicationProvider.getApplicationContext<Application>().apply {
             val dispatch = LaunchIntentDispatcher.dispatch(this, intent)
             assert(dispatch == value)
         }

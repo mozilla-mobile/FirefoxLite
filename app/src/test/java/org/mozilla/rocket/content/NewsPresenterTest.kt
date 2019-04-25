@@ -1,5 +1,7 @@
 package org.mozilla.rocket.content
 
+import android.app.Application
+import androidx.test.core.app.ApplicationProvider
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,7 +12,6 @@ import org.mozilla.rocket.content.news.NewsPresenter
 import org.mozilla.rocket.content.news.NewsViewContract
 import org.mozilla.rocket.content.news.NewsViewModel
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class NewsPresenterTest {
@@ -37,7 +38,7 @@ class NewsPresenterTest {
 
     @Test
     fun `when Repository is not set, checkNewsRepositoryReset() should force load more news items`() {
-        newsPresenter.checkNewsRepositoryReset(RuntimeEnvironment.application)
+        newsPresenter.checkNewsRepositoryReset(ApplicationProvider.getApplicationContext<Application>())
         Mockito.verify(newsViewModel, times(1)).loadMore()
     }
 }

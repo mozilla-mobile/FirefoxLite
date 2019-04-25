@@ -24,6 +24,7 @@ object Versions {
     const val android_components = "0.27.0"
     const val adjust = "4.11.4"
     const val junit = "4.12"
+    const val androidx_test_core = "1.1.0"
     const val mockito = "2.12.0"
     const val robolectric = "4.2"
     const val espresso = "3.0.2"
