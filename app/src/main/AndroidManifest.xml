@@ -193,6 +193,12 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
+        <provider
+            android:name="org.mozilla.rocket.preference.PreferencesContentProvider"
+            android:authorities="${applicationId}.provider.preferencesprovider"
+            android:enabled="true"
+            android:exported="false" />
+
         <receiver
             android:name="org.mozilla.focus.components.DownloadCompleteReceiver"
             android:enabled="true"
