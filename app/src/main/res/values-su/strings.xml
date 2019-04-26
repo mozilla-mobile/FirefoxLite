@@ -234,6 +234,8 @@
   <string name="private_browsing_erase_message">Pupus jujutan langlangan nyamuni</string>
   <string name="private_browsing_open_action">BUKA</string>
   <string name="private_browsing_erase_done">Jujutan langlangan nyamuni\nanjeun geus dihapus.</string>
+  <string name="private_browsing_tracker_blocked">Palacak dipeungpeuk</string>
+  <string name="private_browsing_tracker_blocked_description">Wilujeng ngalanglang kalawan panyalindungan leuwih.</string>
   <string name="my_shot_on_boarding_message">Ilikan téwakan layar anjeun di dieu!</string>
   <string name="my_shot_on_boarding_category_message">Pikeun ngaronjatkeun pangalaman produk anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
   <string name="btn_vpn">Ladénan VPN bébas 7 poé geus sayaga. Instal ayeuna pikeun ngalanglang leuwih nyamuni tur aman.</string>
