@@ -2,12 +2,17 @@ package org.mozilla.banner;
 
 import android.content.Context;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public abstract class BannerViewHolder extends RecyclerView.ViewHolder  {
     protected @Nullable String id;
+    private @Nullable JSONObject jsonObject;
     private TelemetryListener telemetryListener;
 
     BannerViewHolder(View itemView, TelemetryListener telemetryListener) {
@@ -19,18 +24,38 @@ public abstract class BannerViewHolder extends RecyclerView.ViewHolder  {
     @CallSuper
     public void onBindViewHolder(Context context, BannerDAO bannerDAO) {
         id = bannerDAO.id;
+        this.jsonObject = createTelemetryBase(bannerDAO);
+        try {
+            addTelemetryData(bannerDAO, jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     final void sendClickItemTelemetry(int itemPosition) {
-        if (id != null && telemetryListener != null) {
-            telemetryListener.sendClickItemTelemetry(id, itemPosition);
+        if (jsonObject != null && telemetryListener != null) {
+            telemetryListener.sendClickItemTelemetry(jsonObject.toString(), itemPosition);
         }
     }
 
     final void sendClickBackgroundTelemetry() {
-        if (id != null && telemetryListener != null) {
-            telemetryListener.sendClickBackgroundTelemetry(id);
+        if (jsonObject != null && telemetryListener != null) {
+            telemetryListener.sendClickBackgroundTelemetry(jsonObject.toString());
         }
+    }
+
+    private JSONObject createTelemetryBase(BannerDAO bannerDAO) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("id", bannerDAO.id == null ? "-1" : bannerDAO.id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    protected void addTelemetryData(BannerDAO bannerDAO, JSONObject jsonObject) throws JSONException {
+
     }
 
     @Nullable

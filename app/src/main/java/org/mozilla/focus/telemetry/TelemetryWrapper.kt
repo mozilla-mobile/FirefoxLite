@@ -1391,6 +1391,7 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.SOURCE, value = "bukalapak,tokopedia"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "product,coupons"),
                 TelemetryExtra(name = Extra.SUB_CATEGORY, value = "smartphones,computer,limited-time,credit-card")])
+    @JvmStatic
     fun clickOnPromoItem(pos: String, id: String?, feed: String?, source: String?, category: String?, subcategory: String?) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.LIFEFEED_PROMO)
                 .extra(Extra.POSITION, pos)

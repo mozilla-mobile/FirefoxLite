@@ -1,7 +1,7 @@
 package org.mozilla.banner;
 
 public interface TelemetryListener {
-    void sendClickItemTelemetry(String id, int itemPosition);
+    void sendClickItemTelemetry(String jsonString, int itemPosition);
 
-    void sendClickBackgroundTelemetry(String id);
+    void sendClickBackgroundTelemetry(String jsonString);
 }
