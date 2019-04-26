@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 class BasicViewHolder extends BannerViewHolder {
     static final int VIEW_TYPE = 0;
@@ -37,5 +38,17 @@ class BasicViewHolder extends BannerViewHolder {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    protected void addTelemetryData(BannerDAO bannerDAO, JSONObject jsonObject) throws JSONException {
+        // check version 2
+        if (bannerDAO.values.length() > 5) {
+            jsonObject.put("feed", "banner");
+            jsonObject.put("pos", bannerDAO.values.get(2));
+            jsonObject.put("source", bannerDAO.values.get(3));
+            jsonObject.put("category", bannerDAO.values.get(4));
+            jsonObject.put("sub_category", bannerDAO.values.get(5));
+        }
     }
 }
