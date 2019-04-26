@@ -5,14 +5,21 @@ import android.arch.lifecycle.ViewModel;
 
 public class BannerConfigViewModel extends ViewModel {
 
-    private MutableLiveData<String[]> bannerConfig;
+    private MutableLiveData<String[]> homeBannerConfig;
+    private MutableLiveData<String[]> couponBannerConfig;
 
-    public MutableLiveData<String[]> getConfig() {
-        if (bannerConfig == null) {
-            bannerConfig = new MutableLiveData<>();
+    public MutableLiveData<String[]> getHomeConfig() {
+        if (homeBannerConfig == null) {
+            homeBannerConfig = new MutableLiveData<>();
         }
-        return bannerConfig;
+        return homeBannerConfig;
     }
 
+    public MutableLiveData<String[]> getCouponConfig() {
+        if (couponBannerConfig == null) {
+            couponBannerConfig = new MutableLiveData<>();
+        }
+        return couponBannerConfig;
+    }
 
 }

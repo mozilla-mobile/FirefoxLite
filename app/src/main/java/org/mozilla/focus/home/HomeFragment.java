@@ -6,6 +6,7 @@
 package org.mozilla.focus.home;
 
 import android.app.Activity;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.db.SupportSQLiteDatabase;
@@ -157,8 +158,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private BroadcastReceiver receiver;
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
-    private BannerConfigViewModel homeBannerConfigViewModel;
-    private BannerConfigViewModel couponBannerConfigViewModel;
+    private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> homeBannerObserver = this::setUpHomeBannerFromConfig;
     final Observer<String[]> couponBannerObserver = this::setUpCouponBannerFromConfig;
     private String[] homeBannerconfigArray;
@@ -326,11 +326,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void initHomeBanner(Context context) {
-        initBanner(context, AppConfigWrapper.getBannerRootConfig(), CURRENT_HOME_BANNER_CONFIG, homeBannerConfigViewModel, this::hideHomeBannerProcedure);
+        initBanner(context, AppConfigWrapper.getBannerRootConfig(), CURRENT_HOME_BANNER_CONFIG, bannerConfigViewModel.getHomeConfig(), this::hideHomeBannerProcedure);
     }
 
     private void initCouponBanner(Context context) {
-        initBanner(context, AppConfigWrapper.getCouponBannerRootConfig(), CURRENT_COUPON_BANNER_CONFIG, couponBannerConfigViewModel, contentPanel::hideCouponBanner);
+        initBanner(context, AppConfigWrapper.getCouponBannerRootConfig(), CURRENT_COUPON_BANNER_CONFIG, bannerConfigViewModel.getCouponConfig(), contentPanel::hideCouponBanner);
     }
 
     private void hideHomeBannerProcedure(Void v) {
@@ -339,10 +339,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     // TODO: 10/3/18 Now we have cachedrequestloader, should consider migrate to use it.
-    private void initBanner(Context context, String manifest, String cacheName, BannerConfigViewModel bannerConfigViewModel, Consumer<Void> hideBannerProcedure) {
+    private void initBanner(Context context, String manifest, String cacheName, MutableLiveData<String[]> configLiveData, Consumer<Void> hideBannerProcedure) {
         // Setup from Cache
         try {
-            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName, bannerConfigViewModel.getConfig(), HomeFragment::stringToStringArray).execute();
+            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName, configLiveData, HomeFragment::stringToStringArray).execute();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             LoggerWrapper.throwOrWarn(TAG, "Failed to open Cache directory when reading cached banner config");
@@ -352,7 +352,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             deleteCache(context, cacheName);
             hideBannerProcedure.accept(null);
         } else {
-            Callback callback = new Callback(context, cacheName, bannerConfigViewModel);
+            Callback callback = new Callback(context, cacheName, configLiveData);
             new LoadRootConfigTask(callback).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
         }
     }
@@ -361,12 +361,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         private WeakReference<Context> contextRef;
         private String cacheName;
-        private BannerConfigViewModel bannerConfigViewModel;
+        private MutableLiveData<String[]> configLiveData;
 
-        Callback(Context context, String cacheName, BannerConfigViewModel bannerConfigViewModel) {
+        Callback(Context context, String cacheName, MutableLiveData<String[]> configLiveData) {
             this.contextRef = new WeakReference<>(context);
             this.cacheName = cacheName;
-            this.bannerConfigViewModel = bannerConfigViewModel;
+            this.configLiveData = configLiveData;
         }
 
         @Override
@@ -374,7 +374,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             Context context = contextRef.get();
             if (context != null) {
                 writeToCache(context, configArray, cacheName);
-                bannerConfigViewModel.getConfig().setValue(configArray);
+                configLiveData.setValue(configArray);
             }
         }
     }
@@ -754,11 +754,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         Context context = getContext();
 
-        homeBannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
-        homeBannerConfigViewModel.getConfig().observe(this, homeBannerObserver);
+        bannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
+        bannerConfigViewModel.getHomeConfig().observe(this, homeBannerObserver);
         if (AppConfigWrapper.hasEcommerceCoupons()) {
-            couponBannerConfigViewModel = ViewModelProviders.of(this).get(BannerConfigViewModel.class);
-            couponBannerConfigViewModel.getConfig().observe(this, couponBannerObserver);
+            bannerConfigViewModel.getCouponConfig().observe(this, couponBannerObserver);
         }
         initHomeBanner(context);
 
@@ -774,9 +773,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public void onDestroyView() {
         sessionManager.unregister(this.observer);
         doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
-        homeBannerConfigViewModel.getConfig().removeObserver(homeBannerObserver);
+        bannerConfigViewModel.getHomeConfig().removeObserver(homeBannerObserver);
         if (AppConfigWrapper.hasEcommerceCoupons()) {
-            couponBannerConfigViewModel.getConfig().removeObserver(couponBannerObserver);
+            bannerConfigViewModel.getCouponConfig().removeObserver(couponBannerObserver);
         }
         super.onDestroyView();
     }
