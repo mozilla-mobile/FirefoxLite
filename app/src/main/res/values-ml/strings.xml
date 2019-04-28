@@ -234,6 +234,7 @@
   <string name="private_browsing_erase_message">സ്വകാര്യ ബ്രൗസിങ്ങ് നാൾവഴി വെടിപ്പാക്കുക</string>
   <string name="private_browsing_open_action">തുറക്കൂ</string>
   <string name="private_browsing_erase_done">നിങ്ങളുടെ സ്വകാര്യ ബ്രൌസിങ്ങ്\nനാള്‍വഴി മായ്ചു.</string>
+  <string name="private_browsing_tracker_blocked">ട്രാക്കറുകള്‍ തടഞ്ഞു</string>
   <string name="private_browsing_tracker_blocked_description">അധിക സുരക്ഷയോടെ ബ്രൌസിങ്ങ് ആസ്വദിക്കു.</string>
   <string name="my_shot_on_boarding_message">നിങ്ങളുടെ സ്ക്രീൻഷോട്ട് ഇവിടെ കാണുക!</string>
   <string name="my_shot_on_boarding_category_message">നിങ്ങളുടെ ഉൽപ്പന്ന അനുഭവം മെച്ചപ്പെടുത്തുന്നതിന്, നിങ്ങളുടെ സ്ക്രീന്ഷോട്ട് വിഭാഗങ്ങള്‍ ഞങ്ങൾ ശേഖരിക്കും.</string>

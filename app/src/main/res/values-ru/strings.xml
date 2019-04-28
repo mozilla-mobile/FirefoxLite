@@ -234,6 +234,7 @@
   <string name="private_browsing_erase_message">Удалить историю приватного просмотра</string>
   <string name="private_browsing_open_action">ОТКРЫТЬ</string>
   <string name="private_browsing_erase_done">Ваша история приватного\nпросмотра стёрта.</string>
+  <string name="private_browsing_tracker_blocked">Трекеров заблокировано</string>
   <string name="private_browsing_tracker_blocked_description">Наслаждайтесь веб-сёрфингом с дополнительной защитой.</string>
   <string name="my_shot_on_boarding_message">Ваши скриншоты здесь!</string>
   <string name="my_shot_on_boarding_category_message">Чтобы улучшить качество работы, мы собираем информацию о категориях ваших скриншотов.</string>
