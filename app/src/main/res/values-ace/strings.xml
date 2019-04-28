@@ -44,13 +44,13 @@
   <string name="content_description_clear_input">Peugléh input</string>
   <string name="content_description_dismiss_input">Peubiyeue</string>
   <string name="content_description_lock">Koneksi aman</string>
-  <string name="accessibility_announcement_loading">Teungöh peuhah</string>
-  <string name="accessibility_announcement_loading_finished">Halaman web ka teuhah</string>
+  <string name="accessibility_announcement_loading">Teungöh ipeuhah</string>
+  <string name="accessibility_announcement_loading_finished">Situihweb ka teuhah</string>
   <string name="content_description_menu">Peuniléh laén</string>
   <string name="content_description_forward">Jak u keue</string>
-  <string name="content_description_reload">Peuhah keulayi situs web</string>
+  <string name="content_description_reload">Peuhah keulayi situihweb</string>
   <string name="content_description_back">Gisa u likôt</string>
-  <string name="content_description_stop">Bèk lé peuhah situs web</string>
+  <string name="content_description_stop">Bèk lé peuhah situihweb</string>
   <string name="content_description_customtab_exit">Gisa u app saknyoe</string>
   <string name="content_description_blocking_switch">Tham seuneutöt</string>
   <string name="external_app_prompt_no_app_title">Mita saboh app nyang jeuet peuhah link</string>
@@ -74,12 +74,14 @@
   <string name="first_run_page2_text">Ngui mode turbo keu neublokir iklan peulacak mangat droeneuh jeuet neuseumeulop ngon bagah. Meunyo situs na meuri reuloh, jeuet neupumaté tombol mode turbo bak bagian menu.</string>
   <string name="first_run_page3_title">Himat data = Himat pèng</string>
   <string name="first_run_page3_text">Neuhimat biaya data ngön neutham iklan peulacak. Neuhimat leubèh le lom meunyo neutham gamba.</string>
-  <string name="first_run_page4_title">Keubah ban dum neuleumah layeue</string>
-  <string name="first_run_page4_text">Cök neuleumah layeue nibak mandum laman wèb. Kalön \'oh watèe hana jaringan ngön hana ngui data atawa neuthèp keu neugisa keulayi bak laman web nyan.</string>
+  <string name="first_run_page4_title">Droplayeue man sabôh</string>
+  <string name="first_run_page4_text">Cök droplayeue nibak mandum laman wèb. Kalön \'oh watèe hana jaringan hana payah paket data atawa peuhah keulayi bak laman web nyan.</string>
   <string name="first_run_page5_title">Privasi tingkat lanjut</string>
   <string name="first_run_page5_text">Seumeulop hana euncit, tham alat seumeutöt wèb nyang biasa. Peuaman data peunténg droeneuh.</string>
   <string name="first_run_page6_title">Limeuh nyang barô-barô</string>
   <string name="first_run_page6_text">Sigö cukèh sagai, neuseubarô sabè ngön “%1$s” - meubagoe bhah nibak nyang palèng geuthèe na sampoe án nyang gawat that dum. %2$s</string>
+  <string name="first_run_page7_title">Peutham nibak jiseutöt</string>
+  <string name="first_run_page7_text">Jinoe ka jeut neucekpadum droen awak seutöt nyangka itheun lam mode privat.</string>
   <string name="first_run_upgrade_page_title">Kamoe meudeungö saran droeneuh!</string>
   <string name="new_name_upgrade_page_title">Kamoe na neuleumah barô!</string>
   <string name="new_name_upgrade_page_text">Ngön produk nyang sabé meutamah, kamoe meuba keu droeneuh %1$s nyang barô, nan barô ngön logo barô.</string>
@@ -155,7 +157,7 @@
   <string name="screenshot_failed">Hana meuhasé drop layeue</string>
   <string name="screenshot_illustration">Cok drop layeuë dum meusaboh laman…</string>
   <string name="screenshot_view">KALÖN</string>
-  <string name="screenshot_edit">ANDAM</string>
+  <string name="screenshot_edit">PEUSANEUT</string>
   <string name="screenshot_delete">SAMPÔH</string>
   <string name="screenshot_share">BULUENG</string>
   <string name="message_fallback_save_to_primary_external">Hana SD card meuteumeuëng. Beureukaih meukeubah bak internal storage.</string>
@@ -232,6 +234,8 @@
   <string name="private_browsing_erase_message">Sampôh riwayat peuhah wèb privat</string>
   <string name="private_browsing_open_action">PEUHAH</string>
   <string name="private_browsing_erase_done">Riwayat peuhah wèb ngön rahsia \nDroeneuh ka geusampôh.</string>
+  <string name="private_browsing_tracker_blocked">Awak seutöt ka jitheun</string>
+  <string name="private_browsing_tracker_blocked_description">Mangat sit neubrowsing ngön peulindông nyang teuga.</string>
   <string name="my_shot_on_boarding_message">Kalön deuneurop layeuë droëneuh di sinoë!</string>
   <string name="my_shot_on_boarding_category_message">Keu tapeujroh peungalaman produk droen, kamoe meupeusapat maklumat bhaih katagori deuneurop layeue droeneuh.</string>
   <string name="btn_vpn">Layanan VPN pré keu 7 uroe ka na keu droeneuh. Neupasang jinoe keu neupeuhah wèb leubèh privat ngön aman.</string>
@@ -240,7 +244,7 @@
   <string name="exp_survey_thanks">Teurimöng gaséh ka neubrithèe bak kamoe %1$s</string>
   <string name="exp_survey_yes">JEUT</string>
   <string name="exp_survey_no">H\'AN</string>
-  <string name="http_auth_dialog_title">Peureulè autentikasi</string>
+  <string name="http_auth_dialog_title">Peureulè otentikasi</string>
   <string name="http_auth_dialog_user_name">Nan ureung ngui</string>
   <string name="http_auth_dialog_password">Lageum tamöng</string>
 </resources>
