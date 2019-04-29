@@ -6,10 +6,15 @@
 package org.mozilla.rocket.preference
 
 import android.content.Context
+import android.database.ContentObserver
+import android.os.Handler
+import android.os.Looper
 
 class GlobalPreferencesFactory : PreferencesFactory {
     override fun createPreferences(context: Context, name: String): Preferences {
         return object : Preferences {
+            private val observers = HashMap<() -> Unit, ContentObserver>()
+
             override fun putString(key: String, value: String) {
                 PreferencesContentProvider.put(context, name, key, value)
             }
@@ -48,6 +53,22 @@ class GlobalPreferencesFactory : PreferencesFactory {
 
             override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
                 return PreferencesContentProvider.get(context, name, key, defaultValue)
+            }
+
+            override fun addObserver(key: String, callback: () -> Unit) {
+                val observer = object : ContentObserver(Handler(Looper.getMainLooper())) {
+                    override fun onChange(selfChange: Boolean) {
+                        callback()
+                    }
+                }
+                this.observers[callback] = observer
+                PreferencesContentProvider.addObserver(context, name, key, observer)
+            }
+
+            override fun removeObserver(key: String, callback: () -> Unit) {
+                this.observers.remove(callback)?.let {
+                    PreferencesContentProvider.removeObserver(context, it)
+                }
             }
         }
     }
