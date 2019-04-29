@@ -40,7 +40,7 @@ public class NewsSourceManager {
             final Settings settings = Settings.getInstance(context);
             final String source = settings.getNewsSource();
             if (TextUtils.isEmpty(source)) {
-                if (new Random().nextInt(1) % 2 == 0) {
+                if (new Random().nextInt(2) == 0) {
                     newsSource = NEWS_DB;
                 } else {
                     newsSource = NEWS_NP;
