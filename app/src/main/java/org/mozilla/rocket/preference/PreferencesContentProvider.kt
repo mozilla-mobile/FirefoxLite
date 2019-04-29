@@ -9,6 +9,7 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
+import android.database.ContentObserver
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
@@ -39,6 +40,8 @@ class PreferencesContentProvider : ContentProvider() {
         const val OP_GET_BOOLEAN = 8
         const val OP_PUT_BOOLEAN = 9
 
+        const val OP_OBSERVE = 10
+
         fun <T> makeUri(prefName: String, op: Int, key: String, value: T): Uri {
             val auth = "content://$AUTHORITY"
             return Uri.parse("$auth/$prefName?" +
@@ -58,7 +61,16 @@ class PreferencesContentProvider : ContentProvider() {
             }
 
             val uri = makeUri(prefName, op, key, value)
-            context.contentResolver.update(uri, null, null, null)
+            context.contentResolver.update(uri, ContentValues(), null, null)
+        }
+
+        fun addObserver(context: Context, prefName: String, key: String, observer: ContentObserver) {
+            val uri = makeUri(prefName, OP_OBSERVE, key, Any())
+            context.contentResolver.registerContentObserver(uri, false, observer)
+        }
+
+        fun removeObserver(context: Context, observer: ContentObserver) {
+            context.contentResolver.unregisterContentObserver(observer)
         }
 
         inline fun <reified T> get(
@@ -142,6 +154,10 @@ class PreferencesContentProvider : ContentProvider() {
             OP_PUT_BOOLEAN -> pref.edit().putBoolean(key, value.toBoolean()).apply()
             else -> throw IllegalArgumentException("Unknown op: $op")
         }
+
+        val notifyUri = makeUri(prefName, OP_OBSERVE, key, Any())
+        context.contentResolver.notifyChange(notifyUri, null)
+
         return 0
     }
 
