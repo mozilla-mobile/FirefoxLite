@@ -22,10 +22,13 @@
   <string name="about_link_support">ਸਹਾਇਤਾ</string>
   <string name="about_link_your_rights">ਤੁਹਾਡੇ ਹੱਕ / ਲਸੰਸ</string>
   <string name="about_link_privacy">ਪਰਦੇਦਾਰੀ ਸੂਚਨਾ</string>
+  <string name="life_feed">ਜ਼ਿੰਦਗੀ ਫੀਡ</string>
+  <string name="about_link_life_feed">%1$s ਬਾਰੇ ਜਾਣੋ</string>
   <string name="preference_search_engine_default">ਡਿਫੌਲਟ ਖੋਜ ਇੰਜਣ</string>
   <string name="preference_language">ਭਾਸ਼ਾ</string>
   <string name="preference_language_systemdefault">ਸਿਸਟਮ ਡਿਫੌਲਟ</string>
   <string name="preference_dialog_title_search_engine">ਡਿਫੌਲਟ ਖੋਜ ਇੰਜਣ</string>
+  <string name="preference_dialog_title_news_source">ਖ਼ਬਰਾਂ ਦਾ ਸਰੋਤ</string>
   <string name="preference_data_saving_block_images">ਚਿੱਤਰਾਂ ਨੂੰ ਬਲੌਕ ਕਰੋ</string>
   <string name="preference_privacy_storage_clear_browsing_data">ਬ੍ਰਾਊਜ਼ਿੰਗ ਡੇਟਾ ਨੂੰ ਹਟਾਓ</string>
   <string name="preference_privacy_storage_save_downloads_to">ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਇੱਥੇ ਸੰਭਾਲੋ</string>
@@ -75,6 +78,7 @@
   <string name="first_run_page4_text">ਪੂਰੇ ਸਫ਼ੇ ਨੂੰ ਸਕਰੋਲ ਕਰਕੇ ਸਕਰੀਨਸ਼ਾਟ ਲਵੋ। ਇਸ ਨੂੰ ਔਫਲਾਇਨ ਬਗੈਰ ਡੇਟਾ ਵਰਤੇ ਪੜ੍ਹੋ ਜਾਂ ਮੁੜ ਕੇ ਉਸ ਵਰਕੇ ਤੇ ਜਾਣ ਲਈ ਇਸ ਨੂੰ ਛੂਹੋ।</string>
   <string name="first_run_page5_title">ਅਗਲੇ-ਪੱਧਰ ਦੀ ਪਰਦੇਦਾਰੀ</string>
   <string name="first_run_page5_text">ਬਿਨਾਂ ਪੈੜਾਂ ਛੱਡੇ ਬਰਾਊਜ਼ ਕਰੋ, ਅਤੇ ਡਿਫਾਲਟ ਰੂਪ ਵਿੱਚ ਆਮ ਵੈਬ ਟਰੈਕਕਰਜ਼ ਦੀ ਵਿਸ਼ਾਲ ਲੜੀ ਉਤੇ ਪਾਬੰਦੀ ਕਰੋ। ਆਪਣੇ ਗੁਪਤ ਡਾਟਾ ਦੀ ਸੁਰੱਖਿਆ ਨੂੰ ਯਕੀਨੀ ਬਣਾਓ।</string>
+  <string name="first_run_page6_title">ਨਵੀਆਂ ਚੀਜ਼ਾਂ ਲੱਭੋ</string>
   <string name="first_run_upgrade_page_title">ਅਸੀਂ ਤੁਹਾਡਾ ਸੁਝਾਅ ਸੁਣਿਆ!</string>
   <string name="new_name_upgrade_page_title">ਸਾਡੇ ਕੋਲ ਨਵੀਂ ਦਿੱਖ ਹੈ!</string>
   <string name="new_name_upgrade_page_text">ਵਿਕਾਸ ਹੋਏ ਉਤਪਾਦ ਦੇ ਨਾਲ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਨਵੇਂ ਨਾਂ ਅਤੇ ਨਵੇਂ ਲੋਗੋ ਦੇ ਨਾਲ ਇੱਕ ਤਾਜ਼ਾ ਰਿਫ੍ਰੈਸ਼ਡ %1$s ਲਿਆਉਂਦੇ ਹਾਂ।</string>
@@ -82,6 +86,7 @@
   <string name="first_run_upgrade_page_text1_highlight">ਬਹੁਤ ਟੈਬ</string>
   <string name="first_run_upgrade_page_text2">%s ਦੁਆਰਾ ਛੇਤੀ ਨਾਲ ਆਪਣੀ ਪਸੰਦੀਂਦਾ ਸਾਈਟਾਂ ਤੇ ਪਹੁੰਚੋ</string>
   <string name="first_run_upgrade_page_text2_highlight">ਉਹਨਾਂ ਨੂੰ ਹੋਮ ਸਕ੍ਰੀਨ ਤੇ ਜੋੜਨਾ!</string>
+  <string name="second_run_upgrade_page_title">ਆਪਣੀਆਂ ਮਨਪਸੰਦ ਸਾਈਟਾਂ ਨੂੰ ਟੰਗੋ</string>
   <string name="firstrun_close_button">ਠੀਕ ਹੈ, ਇਹ ਮਿਲ ਗਿਆ!</string>
   <string name="firstrun_skip_button">ਛੱਡੋ</string>
   <string name="firstrun_next_button">ਅੱਗੇ</string>
@@ -177,6 +182,7 @@
   <string name="message_deleted_screenshot">ਸਕਰੀਨਸ਼ਾਂਟ ਹਟਾਇਆ</string>
   <string name="message_cannot_find_screenshot">ਡਿਸਪਲੇਅ ਸਕ੍ਰੀਨਸ਼ਾਟ ਨਹੀਂ ਕਰ ਸਕਦਾ</string>
   <string name="remove">ਹਟਾਓ</string>
+  <string name="pin_site">ਸਾਈਟ ਟੰਗੋ</string>
   <string name="privacy_policy_update_notification_title">ਉਤਪਾਦ ਅਪਡੇਟ ਨੋਟਿਸ</string>
   <string name="privacy_policy_update_notification_action">ਤੁਹਾਡੇ ਲਈ ਤੇ ਹਰੇਕ ਲਈ ਫਾਇਰਫਾਕਸ ਰੌਕੇਟ ਨੂੰ ਵਧੀਆ ਬਣਾਉਣ ਲਈ, ਅਸੀਂ ਆਪਣੀ ਪਰਦੇਦਾਰੀ ਨੀਤੀ ਵਿੱਚ ਕੁਝ ਬਦਲਾਅ ਕੀਤੇ ਹਨ। ਹੋਰ ਜਾਨਣ ਲਈ ਛੂਹੋ।</string>
   <string name="rate_app_dialog_text_title">%1$s ਚੰਗੀ ਲੱਗੀ?</string>
@@ -217,11 +223,13 @@
   <string name="edit_bookmark">ਸੋਧੋ</string>
   <string name="label_menu_news">ਖ਼ਬਰਾਂ</string>
   <string name="news_update_btn">ਨਵਾਂ ਅਪਡੇਟ</string>
+  <string name="logo_text">ਸੇਵਾ ਦਿੱਤੀ ਜਾ ਰਹੀ ਹੈ</string>
   <string name="private_tab">ਪ੍ਰਾਈਵੇਟ ਟੈਬ</string>
   <string name="private_browsing_title">ਪਰਾਈਵੇਟ ਬਰਾਊਜ਼ਿੰਗ</string>
   <string name="private_browsing_erase_message">ਪ੍ਰਾਈਵੇਟ ਬਰਾਊਜ਼ਿੰਗ ਅਤੀਤ ਨੂੰ ਮਿਟਾਓ</string>
   <string name="private_browsing_open_action">ਖੋਲ੍ਹੋ</string>
   <string name="private_browsing_erase_done">ਤੁਹਾਡਾ ਨਿੱਜੀ ਬ੍ਰਾਊਜ਼ਿੰਗ ਅਤੀਤ ਮਿਟਾ ਦਿੱਤਾ ਗਿਆ ਹੈ।</string>
+  <string name="private_browsing_tracker_blocked">ਟਰੈਕਰਾਂ ਉੱਤੇ ਪਾਬੰਦੀ ਲਗਾਈ</string>
   <string name="my_shot_on_boarding_message">ਇੱਥੇ ਆਪਣੇ ਸਕ੍ਰੀਨਸ਼ੌਟ ਵੇਖੋ!</string>
   <string name="my_shot_on_boarding_category_message">ਤੁਹਾਡੇ ਉਤਪਾਦ ਅਨੁਭਵ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਲਈ, ਅਸੀਂ ਤੁਹਾਡੇ ਸਕ੍ਰੀਨਸ਼ਾਟ ਦੇ ਵਰਗਾਂ ਦੇ ਬਾਰੇ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਕਰਦੇ ਹਾਂ।</string>
   <string name="btn_vpn">7-ਦਿਨ ਦੀ ਮੁਫਤ VPN ਸੇਵਾ ਤੁਹਾਡੇ ਲਈ ਤਿਆਰ ਹੈ। ਪ੍ਰਾਈਵੇਟ ਅਤੇ ਸੁਰੱਖਿਅਤ ਢੰਗ ਨਾਲ ਬਰਾਊਜ਼ ਕਰਨ ਲਈ ਹੁਣ ਇੰਸਟਾਲ ਕਰੋ।</string>
@@ -230,4 +238,7 @@
   <string name="exp_survey_thanks">ਸਾਨੂੰ ਫੀਡਬੈਕ %1$s ਦੇਣ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ</string>
   <string name="exp_survey_yes">ਜੀ, ਜਰੂਰ</string>
   <string name="exp_survey_no">ਨਹੀਂ</string>
+  <string name="http_auth_dialog_title">ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ</string>
+  <string name="http_auth_dialog_user_name">ਵਰਤੋਂਕਾਰ ਨਾਂ</string>
+  <string name="http_auth_dialog_password">ਪਾਸਵਰਡ</string>
 </resources>
