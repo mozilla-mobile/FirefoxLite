@@ -9,16 +9,18 @@ import android.preference.ListPreference;
 import android.support.annotation.StringDef;
 import android.util.AttributeSet;
 import android.util.Log;
+
 import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.rocket.content.NewsSourceManager;
 
 public class NewsSourcePreference extends ListPreference {
 
+    // "DainikBhaskar.com" doesn't provide their feed anymore.
     public final static String NEWS_DB = "DainikBhaskar.com";
     public final static String NEWS_NP = "Newspoint";
 
-    @StringDef({NEWS_DB, NEWS_NP})
+    @StringDef({NEWS_NP})
     public @interface NewsSource {
     }
 
@@ -46,8 +48,7 @@ public class NewsSourcePreference extends ListPreference {
     protected void onAttachedToActivity() {
         super.onAttachedToActivity();
 
-        final String[] entries = {NEWS_DB, NEWS_NP};
-
+        final String[] entries = {NEWS_NP};
 
         setEntries(entries);
         setEntryValues(entries);

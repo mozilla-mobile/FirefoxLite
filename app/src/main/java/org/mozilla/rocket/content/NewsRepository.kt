@@ -5,8 +5,6 @@ import android.content.Context
 import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
-import org.mozilla.rocket.bhaskar.RepositoryBhaskar
-import org.mozilla.rocket.widget.NewsSourcePreference.NEWS_DB
 
 class NewsRepository {
     companion object {
@@ -40,11 +38,7 @@ class NewsRepository {
         fun isEmpty() = INSTANCE == null
 
         private fun buildRepository(context: Context): Repository<out NewsItem> {
-            return if (NewsSourceManager.getInstance().newsSource == NEWS_DB) {
-                RepositoryBhaskar(context, NewsSourceManager.getInstance().newsSourceUrl)
-            } else {
-                RepositoryNewsPoint(context, NewsSourceManager.getInstance().newsSourceUrl)
-            }
+            return RepositoryNewsPoint(context, NewsSourceManager.getInstance().newsSourceUrl)
         }
     }
 }
