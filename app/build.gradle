@@ -267,7 +267,6 @@ dependencies {
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
 
-    implementation project(':bhaskar')
     implementation project(':newspoint')
     implementation project(':partnerrepository')
     implementation project(':banner')
