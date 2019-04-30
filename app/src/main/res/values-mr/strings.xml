@@ -234,6 +234,7 @@
   <string name="private_browsing_erase_message">खाजगी ब्राऊजिंग इतिहास पुसा</string>
   <string name="private_browsing_open_action">उघडा</string>
   <string name="private_browsing_erase_done">आपला ब्राउझिंग इतिहास\nमिटवला गेला आहे.</string>
+  <string name="private_browsing_tracker_blocked">ट्रॅकर अवरोधित</string>
   <string name="private_browsing_tracker_blocked_description">अतिरिक्त संरक्षणासह ब्राउझिंगचा आनंद घ्या.</string>
   <string name="my_shot_on_boarding_message">येथे आपले स्क्रीनशॉट्स पहा!</string>
   <string name="my_shot_on_boarding_category_message">आपला अनुभव सुधारण्यासाठी, आम्ही आपल्या स्क्रीनशॉटच्या श्रेणीची माहिती गोळा करतो.</string>
