@@ -11,7 +11,6 @@ project(':cachedrequestloader').projectDir = new File(rootDir, 'components/utils
 project(':telemetry-annotation').projectDir = new File(rootDir, 'components/service/telemetry-annotation')
 project(':telemetry-compiler').projectDir = new File(rootDir, 'components/service/telemetry-compiler')
 project(':permissionhandler').projectDir = new File('components/utils/android-permission-handler/permissionhandler')
-project(':bhaskar').projectDir = new File(rootDir, 'components/partners/bhaskar')
 project(':newspoint').projectDir = new File(rootDir, 'components/partners/newspoint')
 project(':partnerrepository').projectDir = new File(rootDir, 'components/partners/partnerrepository')
 project(':strictmodeviolator').projectDir = new File(rootDir, 'components/utils/strictmodeviolator')
