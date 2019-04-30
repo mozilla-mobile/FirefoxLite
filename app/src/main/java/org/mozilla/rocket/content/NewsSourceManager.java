@@ -12,8 +12,6 @@ import android.util.Log;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.threadutils.ThreadUtils;
 
-import java.util.Random;
-
 import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_DB;
 import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_NP;
 import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
@@ -39,12 +37,9 @@ public class NewsSourceManager {
         ThreadUtils.postToBackgroundThread(() -> {
             final Settings settings = Settings.getInstance(context);
             final String source = settings.getNewsSource();
-            if (TextUtils.isEmpty(source)) {
-                if (new Random().nextInt(1) % 2 == 0) {
-                    newsSource = NEWS_DB;
-                } else {
-                    newsSource = NEWS_NP;
-                }
+            // "DainikBhaskar.com" doesn't provide their feed anymore. Switch to "Newspoint" by default
+            if (TextUtils.isEmpty(source) || NEWS_DB.equals(source)) {
+                newsSource = NEWS_NP;
                 Log.d(NewsSourceManager.TAG, "NewsSourceManager sets default:" + newsSource);
 
                 settings.setNewsSource(newsSource);
@@ -52,9 +47,7 @@ public class NewsSourceManager {
             } else {
                 newsSource = settings.getNewsSource();
                 Log.d(NewsSourceManager.TAG, "NewsSourceManager already set:" + newsSource);
-
             }
-
         });
     }
 
