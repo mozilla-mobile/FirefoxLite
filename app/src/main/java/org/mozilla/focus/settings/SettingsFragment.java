@@ -45,10 +45,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             Preference category = findPreference(getString(R.string.pref_key_category_development));
             rootPreferences.removePreference(category);
         }
-        if (!AppConfigWrapper.isLifeFeedEnabled()) {
-            Preference category = findPreference(getString(R.string.pref_s_news));
-            rootPreferences.removePreference(category);
-        }
 
         final Preference preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness));
         preferenceNightMode.setEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
