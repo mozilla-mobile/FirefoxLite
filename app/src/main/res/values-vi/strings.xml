@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="action_cancel">HỦY</string>
+  <string name="action_cancel">HỦY BỎ</string>
   <string name="action_ok">OK</string>
   <string name="urlbar_hint">Tìm kiếm hoặc nhập địa chỉ</string>
   <string name="menu_settings">Cài đặt</string>
