@@ -1,16 +1,26 @@
 package org.mozilla.rocket.content.view.ecommerce
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.json.JSONException
+import org.json.JSONObject
+import org.mozilla.banner.BannerAdapter
+import org.mozilla.banner.BannerConfigViewModel
+import org.mozilla.banner.TelemetryListener
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalListener
 import org.mozilla.rocket.content.CouponAdapter
@@ -58,6 +68,8 @@ class EcFragment : Fragment(), ContentPortalListener {
 
                     val coupons = AppConfigWrapper.getEcommerceCoupons()
                     couponAdapter.submitList(coupons)
+
+                    setupCouponBanner(this)
                 }
             }
             TYPE_TICKET -> {
@@ -75,5 +87,68 @@ class EcFragment : Fragment(), ContentPortalListener {
             }
         }
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    private fun setupCouponBanner(view: View) {
+        val banner = view.findViewById<RecyclerView>(R.id.content_banners)
+        banner.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(banner)
+
+        val vm = ViewModelProviders.of(activity!!).get(BannerConfigViewModel::class.java)
+        vm.couponConfig.observe(viewLifecycleOwner, Observer {it?.apply {
+
+            var bannerInnerTelemetryListener: TelemetryListener =
+                object : TelemetryListener {
+                    override fun sendClickItemTelemetry(
+                        jsonString: String,
+                        itemPosition: Int
+                    ) {
+                    }
+
+                    override fun sendClickBackgroundTelemetry(jsonString: String) {
+                        val jsonObject: JSONObject
+                        try {
+                            jsonObject = JSONObject(jsonString)
+                            var pos: String? = jsonObject.optString("pos")
+                            if (pos == null) {
+                                pos = "-1"
+                            }
+                            val feed = jsonObject.optString("feed")
+                            val id = jsonObject.optString("id")
+                            val source = jsonObject.optString("source")
+                            val category = jsonObject.optString("category")
+                            val subCategory = jsonObject.optString("sub_category")
+
+                            TelemetryWrapper.clickOnPromoItem(
+                                pos,
+                                id,
+                                feed,
+                                source,
+                                category,
+                                subCategory
+                            )
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            val bannerAdapter = BannerAdapter(
+                this,
+                { arg ->
+                    FragmentListener.notifyParent(
+                        this@EcFragment,
+                        FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB,
+                        arg
+                    )
+                },
+                bannerInnerTelemetryListener
+            )
+            banner?.adapter = bannerAdapter
+            banner?.visibility = View.VISIBLE
+        }
+
+        })
     }
 }
