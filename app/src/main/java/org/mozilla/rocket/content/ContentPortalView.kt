@@ -82,12 +82,13 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         if (AppConfigWrapper.hasEcommerceCoupons()) {
             features.add(TYPE_COUPON)
         }
+
         if (AppConfigWrapper.hasEcommerceShoppingLink()) {
             features.add(TYPE_TICKET)
         }
 
         if (AppConfigWrapper.hasNewsPortal()) {
-            features.add(TYPE_NEWS)
+            // features.add(TYPE_NEWS) // we don't support News in Tab now.
         }
 
         return features

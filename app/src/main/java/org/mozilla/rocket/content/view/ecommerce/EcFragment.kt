@@ -31,16 +31,9 @@ import org.mozilla.rocket.content.TYPE_TICKET
 import org.mozilla.rocket.content.data.ShoppingLink
 
 class EcFragment : Fragment(), ContentPortalListener {
-    override fun onItemClicked(url: String) {
-        ScreenNavigator.get(context).showBrowserScreen(url, true, false)
-
-    }
-
-    override fun onStatus(items: MutableList<out NewsItem>?) {
-    }
 
     companion object {
-        fun newInstance(feature :Int): EcFragment {
+        fun newInstance(feature: Int): EcFragment {
             val args = Bundle().apply {
                 putInt(TYPE_KEY, feature)
             }
@@ -48,8 +41,17 @@ class EcFragment : Fragment(), ContentPortalListener {
         }
     }
 
+    override fun onItemClicked(url: String) {
+        ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+    }
+
+    override fun onStatus(items: MutableList<out NewsItem>?) {
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         when (arguments?.getInt(TYPE_KEY)) {
             TYPE_COUPON -> {
@@ -58,7 +60,6 @@ class EcFragment : Fragment(), ContentPortalListener {
                     val couponAdapter = CouponAdapter(this@EcFragment)
                     recyclerView?.layoutManager = LinearLayoutManager(context)
                     recyclerView?.adapter = couponAdapter
-
                     val coupons = AppConfigWrapper.getEcommerceCoupons()
                     couponAdapter.submitList(coupons)
 
@@ -90,58 +91,47 @@ class EcFragment : Fragment(), ContentPortalListener {
         snapHelper.attachToRecyclerView(banner)
 
         val vm = ViewModelProviders.of(activity!!).get(BannerConfigViewModel::class.java)
-        vm.couponConfig.observe(viewLifecycleOwner, Observer {it?.apply {
+        vm.couponConfig.observe(viewLifecycleOwner, Observer {
+            if (it == null) {
+                return@Observer
+            }
 
-            var bannerInnerTelemetryListener: TelemetryListener =
-                object : TelemetryListener {
-                    override fun sendClickItemTelemetry(
-                        jsonString: String,
-                        itemPosition: Int
-                    ) {
-                    }
-
-                    override fun sendClickBackgroundTelemetry(jsonString: String) {
-                        val jsonObject: JSONObject
-                        try {
-                            jsonObject = JSONObject(jsonString)
-                            var pos: String? = jsonObject.optString("pos")
-                            if (pos == null) {
-                                pos = "-1"
-                            }
-                            val feed = jsonObject.optString("feed")
-                            val id = jsonObject.optString("id")
-                            val source = jsonObject.optString("source")
-                            val category = jsonObject.optString("category")
-                            val subCategory = jsonObject.optString("sub_category")
-
-                            TelemetryWrapper.clickOnPromoItem(
-                                pos,
-                                id,
-                                feed,
-                                source,
-                                category,
-                                subCategory
-                            )
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            val bannerAdapter = BannerAdapter(
-                this,
-                { arg ->
-                    FragmentListener.notifyParent(
-                        this@EcFragment,
-                        FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB,
-                        arg
-                    )
-                },
-                bannerInnerTelemetryListener
-            )
-            banner?.adapter = bannerAdapter
+            banner?.adapter = BannerAdapter(
+                    it,
+                    { arg ->
+                        FragmentListener.notifyParent(
+                                this@EcFragment,
+                                FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB,
+                                arg
+                        )
+                    },
+                    telmetryListener)
             banner?.visibility = View.VISIBLE
+        })
+    }
+
+    private val telmetryListener = object : TelemetryListener {
+        override fun sendClickItemTelemetry(jsonString: String, itemPosition: Int) {
         }
 
-        })
+        override fun sendClickBackgroundTelemetry(jsonString: String) {
+            val jsonObject: JSONObject
+            try {
+                jsonObject = JSONObject(jsonString)
+                var pos: String? = jsonObject.optString("pos")
+                if (pos == null) {
+                    pos = "-1"
+                }
+                val feed = jsonObject.optString("feed")
+                val id = jsonObject.optString("id")
+                val source = jsonObject.optString("source")
+                val category = jsonObject.optString("category")
+                val subCategory = jsonObject.optString("sub_category")
+
+                TelemetryWrapper.clickOnPromoItem(pos, id, feed, source, category, subCategory)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
     }
 }

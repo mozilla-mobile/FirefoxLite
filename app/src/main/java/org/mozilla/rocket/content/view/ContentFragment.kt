@@ -29,9 +29,7 @@ class ContentFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.content_tab, container, false)
     }
 
@@ -42,6 +40,19 @@ class ContentFragment : Fragment() {
                 val pager = view.findViewById<ViewPager>(R.id.content_viewpager)
                 view.findViewById<TabLayout>(R.id.content_tab).setupWithViewPager(pager)
                 pager.adapter = ContentFragmentAdapter(childFragmentManager, this)
+                pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                    override fun onPageScrollStateChanged(p0: Int) {
+                    }
+
+                    override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
+                    }
+
+                    override fun onPageSelected(p0: Int) {
+                        // need to call request Layout to force BottomsheetBehaviour to call our
+                        // findScrollingChild() implementation to find the corresponding scrolling child
+                        view.requestLayout()
+                    }
+                })
             }
         }
     }
@@ -49,10 +60,7 @@ class ContentFragment : Fragment() {
     /**
      * Adapter that builds a page for each content type .
      */
-    inner class ContentFragmentAdapter(
-        fm: FragmentManager, private val features: ArrayList<Int>
-    ) : FragmentPagerAdapter(fm) {
-
+    inner class ContentFragmentAdapter(fm: FragmentManager, private val features: ArrayList<Int>) : FragmentPagerAdapter(fm) {
 
         override fun getCount() = features.size
 
