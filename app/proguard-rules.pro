@@ -89,6 +89,8 @@ public static java.lang.String TABLENAME;
 }
 -keep class **$Properties
 
+# Customized BottomSheetBehavior for ViewPager
+-keep class android.support.design.widget.ViewPagerBottomSheetBehavior
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
