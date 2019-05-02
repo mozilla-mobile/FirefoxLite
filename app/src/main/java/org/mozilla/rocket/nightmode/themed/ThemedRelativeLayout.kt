@@ -8,9 +8,9 @@ import android.widget.RelativeLayout
 open class ThemedRelativeLayout : RelativeLayout {
     private var isNight: Boolean = false
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {

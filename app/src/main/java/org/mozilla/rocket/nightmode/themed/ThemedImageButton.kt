@@ -4,8 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 
-class ThemedImageButton(context: Context, attrs: AttributeSet) : android.support.v7.widget.AppCompatImageButton(context, attrs) {
+class ThemedImageButton : android.support.v7.widget.AppCompatImageButton {
     private var isNight: Boolean = false
+
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
