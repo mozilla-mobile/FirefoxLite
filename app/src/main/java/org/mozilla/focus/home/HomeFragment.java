@@ -164,7 +164,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> homeBannerObserver = this::setUpHomeBannerFromConfig;
     private String[] homeBannerconfigArray;
-    private String[] couponBannerconfigArray;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
     @Nullable
@@ -420,10 +419,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showHomeBannerProcedure(BannerAdapter b) {
         homeBanner.setAdapter(b);
         showView(homeBanner, true);
-    }
-
-    private void updateCouponConfig(String[] configArray) {
-        couponBannerconfigArray = configArray;
     }
 
     private void updateHomeConfig(String[] configArray) {

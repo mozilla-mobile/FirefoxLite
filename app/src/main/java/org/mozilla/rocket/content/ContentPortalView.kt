@@ -93,7 +93,7 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         }
 
         if (AppConfigWrapper.hasNewsPortal()) {
-            features.add(TYPE_NEWS)
+             features.add(TYPE_NEWS) // we don't support News in Tab now.
         }
 
         return features
