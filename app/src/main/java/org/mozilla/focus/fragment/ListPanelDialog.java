@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +40,8 @@ public class ListPanelDialog extends DialogFragment {
     private TextView title;
     private boolean firstLaunch = true;
     private BottomSheetBehavior bottomSheetBehavior;
+
+    private DialogInterface.OnDismissListener onDismissListener;
 
     public static ListPanelDialog newInstance(int type) {
         ListPanelDialog listPanelDialog = new ListPanelDialog();
@@ -160,6 +163,18 @@ public class ListPanelDialog extends DialogFragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (this.onDismissListener != null) {
+            this.onDismissListener.onDismiss(dialog);
+        }
+        super.onDismiss(dialog);
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
+        this.onDismissListener = listener;
     }
 
     private void setSelectedItem(int selectedItem) {

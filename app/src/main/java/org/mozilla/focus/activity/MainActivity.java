@@ -82,6 +82,7 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.landing.PortraitStateModel;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
@@ -151,6 +152,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private boolean pendingMyShotOnBoarding;
     private Dialog myshotOnBoardingDialog;
     private DownloadIndicatorViewModel downloadIndicatorViewModel;
+
+    private PortraitStateModel portraitStateModel = new PortraitStateModel();
 
     @Override
     public ThemeManager getThemeManager() {
@@ -358,6 +361,10 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
     }
 
+    public PortraitStateModel getPortraitStateModel() {
+        return portraitStateModel;
+    }
+
     private String getSurveyUrl() {
         String currentLang = Locale.getDefault().getLanguage();
         String indonesiaLang = new Locale("id").getLanguage();
@@ -371,6 +378,10 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         menu = new BottomSheetDialog(this, R.style.BottomSheetTheme);
         menu.setContentView(sheet);
         menu.setCanceledOnTouchOutside(true);
+
+        menu.setOnShowListener(dialog -> portraitStateModel.request(menu));
+        menu.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(menu));
+
         myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
         nextButton = menu.findViewById(R.id.action_next);
         loadingButton = menu.findViewById(R.id.action_loading);
@@ -476,8 +487,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void showListPanel(int type) {
-        DialogFragment dialogFragment = ListPanelDialog.newInstance(type);
+        ListPanelDialog dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
+
+        portraitStateModel.request(dialogFragment);
+        dialogFragment.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(dialogFragment));
+
         dialogFragment.show(getSupportFragmentManager(), "");
         mDialogFragment = dialogFragment;
     }
@@ -523,7 +538,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (!v.isEnabled()) {
             return;
         }
-        menu.cancel();
         switch (v.getId()) {
             case R.id.menu_blockimg:
                 //  Toggle
@@ -606,6 +620,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 throw new RuntimeException("Unknown id in menu, onMenuItemClicked() is only for" +
                         " known ids");
         }
+        menu.cancel();
     }
 
     private void driveDefaultBrowser() {
