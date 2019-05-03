@@ -47,11 +47,8 @@ import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.airbnb.lottie.LottieAnimationView;
 
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
@@ -63,7 +60,6 @@ import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.screenshot.CaptureRunnable;
-import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
@@ -81,12 +77,13 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
+import org.mozilla.rocket.content.BottomBarItemAdapter;
 import org.mozilla.rocket.content.HomeFragmentViewState;
+import org.mozilla.rocket.content.view.BrowserBottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
-import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedLinearLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
@@ -105,16 +102,20 @@ import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
+import java.util.List;
 import java.util.WeakHashMap;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_WARNING;
 
 /**
  * Fragment for displaying the browser UI.
  */
-public class BrowserFragment extends LocaleAwareFragment implements View.OnClickListener,
-        View.OnLongClickListener,
-        ScreenNavigator.BrowserScreen,
+public class BrowserFragment extends LocaleAwareFragment implements ScreenNavigator.BrowserScreen,
         LifecycleOwner,
         BackKeyHandleable {
 
@@ -131,6 +132,14 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
+    private static final List<Integer> DEFAULT_BOTTOM_BAR_ITEMS = Arrays.asList(
+            BottomBarItemAdapter.TYPE_TAB_COUNTER,
+            BottomBarItemAdapter.TYPE_NEW_TAB,
+            BottomBarItemAdapter.TYPE_SEARCH,
+            BottomBarItemAdapter.TYPE_CAPTURE,
+            BottomBarItemAdapter.TYPE_MENU
+    );
+
     private int systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE;
 
     private DownloadCallback downloadCallback = new DownloadCallback();
@@ -144,12 +153,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private ThemedRelativeLayout backgroundView;
     private TransitionDrawable backgroundTransition;
-    private TabCounter tabCounter;
     private ThemedTextView urlView;
     private AnimatedProgressBar progressView;
     private ThemedImageView siteIdentity;
     private Dialog webContextMenu;
-    private ThemedRelativeLayout bottomMenuContainer;
 
     private View mainContent;
     private int mainContentBottomMargin;
@@ -193,16 +200,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private SessionObserver sessionObserver = new SessionObserver();
     final SessionManager.Observer managerObserver = new SessionManagerObserver(sessionObserver);
 
-    private ThemedImageButton newTabBtn;
-    private ThemedImageButton searchBtn;
-    private ThemedImageButton captureBtn;
-    private ThemedImageButton menuBtn;
     private ThemedLinearLayout toolbarRoot;
     private ThemedView bottomMenuDivider;
     private ThemedView urlBarDivider;
-    private LottieAnimationView downloadingIndicator;
-    private ImageView downloadIndicator;
     private View downloadIndicatorIntro;
+    private BrowserBottomBar browserBottomBar;
+    private BottomBarItemAdapter bottomBarItemAdapter;
 
     private long landscapeStartTime = 0L;
 
@@ -407,7 +410,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_browser, container, false);
 
-        videoContainer = (ViewGroup) view.findViewById(R.id.video_container);
+        videoContainer = view.findViewById(R.id.video_container);
         browserContainer = view.findViewById(R.id.browser_container);
 
         mainContent = view.findViewById(R.id.main_content);
@@ -425,81 +428,102 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         });
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
-        tabCounter = view.findViewById(R.id.btn_tab_tray);
-        newTabBtn = view.findViewById(R.id.btn_open_new_tab);
-        searchBtn = view.findViewById(R.id.btn_search);
-        captureBtn = view.findViewById(R.id.btn_capture);
-        menuBtn = view.findViewById(R.id.btn_menu);
+        setupBottomBar(view);
+        setupDownloadIndicatorIntro(view);
+
         toolbarRoot = view.findViewById(R.id.toolbar_root);
-        bottomMenuContainer = view.findViewById(R.id.browser_menu_container);
         bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
         urlBarDivider = view.findViewById(R.id.url_bar_divider);
-        if (tabCounter != null) {
-            tabCounter.setOnClickListener(this);
-        }
-        if (newTabBtn != null) {
-            newTabBtn.setOnClickListener(this);
-        }
-        if (searchBtn != null) {
-            searchBtn.setOnClickListener(this);
-        }
-        if (captureBtn != null) {
-            captureBtn.setOnClickListener(this);
-        }
-        if (menuBtn != null) {
-            menuBtn.setOnClickListener(this);
-            menuBtn.setOnLongClickListener(this);
-        }
 
         siteIdentity = view.findViewById(R.id.site_identity);
         findInPage = new FindInPage(view);
 
-        progressView = (AnimatedProgressBar) view.findViewById(R.id.progress);
+        progressView = view.findViewById(R.id.progress);
         initialiseNormalBrowserUi();
 
-        webViewSlot = (ViewGroup) view.findViewById(R.id.webview_slot);
+        webViewSlot = view.findViewById(R.id.webview_slot);
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
 
         sessionManager.register(this.managerObserver, this, false);
 
-        if (tabCounter != null && isTabRestoredComplete()) {
-            tabCounter.setCount(sessionManager.getTabsCount());
+        if (isTabRestoredComplete()) {
+            bottomBarItemAdapter.setTabCount(sessionManager.getTabsCount());
         }
 
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
+        return view;
+    }
 
-        downloadingIndicator = view.findViewById(R.id.downloading_indicator);
-        downloadIndicator = view.findViewById(R.id.download_unread_indicator);
+    private void setupBottomBar(View rootView) {
+        browserBottomBar = rootView.findViewById(R.id.browser_bottom_bar);
+        browserBottomBar.setOnItemClickListener((type, position) -> {
+            switch (type) {
+                case BottomBarItemAdapter.TYPE_TAB_COUNTER:
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
+                    TelemetryWrapper.showTabTrayToolbar();
+                    break;
+                case BottomBarItemAdapter.TYPE_MENU:
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
+                    TelemetryWrapper.showMenuToolbar();
+                    break;
+                case BottomBarItemAdapter.TYPE_NEW_TAB:
+                    HomeFragmentViewState.reset();
+                    ScreenNavigator.get(getContext()).addHomeScreen(true);
+                    TelemetryWrapper.clickAddTabToolbar();
+                    break;
+                case BottomBarItemAdapter.TYPE_SEARCH:
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
+                    TelemetryWrapper.clickToolbarSearch();
+                    break;
+                case BottomBarItemAdapter.TYPE_CAPTURE:
+                    onCaptureClicked();
+                    // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
+            }
+        });
+        browserBottomBar.setOnItemLongClickListener((type, position) -> {
+            if (type == BottomBarItemAdapter.TYPE_MENU) {
+                // Long press menu always show download panel
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
+                TelemetryWrapper.longPressDownloadIndicator();
+                return true;
+            }
+            return false;
+        });
+        bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar);
+        bottomBarItemAdapter.setItems(DEFAULT_BOTTOM_BAR_ITEMS);
+    }
 
-        final ViewGroup browserRoot = view.findViewById(R.id.browser_root_view);
+    private void setupDownloadIndicatorIntro(View rootView) {
+        final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
 
         Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
-            if (status == DownloadIndicatorViewModel.Status.DOWNLOADING) {
-                downloadIndicator.setVisibility(View.GONE);
-                downloadingIndicator.setVisibility(View.VISIBLE);
-                if (!downloadingIndicator.isAnimating()) {
-                    downloadingIndicator.playAnimation();
-                }
-            } else if (status == DownloadIndicatorViewModel.Status.UNREAD) {
-                downloadingIndicator.setVisibility(View.GONE);
-                downloadIndicator.setVisibility(View.VISIBLE);
-                downloadIndicator.setImageResource(R.drawable.notify_download);
-            } else if (status == DownloadIndicatorViewModel.Status.WARNING) {
-                downloadingIndicator.setVisibility(View.GONE);
-                downloadIndicator.setVisibility(View.VISIBLE);
-                downloadIndicator.setImageResource(R.drawable.notify_notice);
-            } else {
-                downloadingIndicator.setVisibility(View.GONE);
-                downloadIndicator.setVisibility(View.GONE);
+            switch (status) {
+                case DOWNLOADING:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);
+                    break;
+                case UNREAD:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_UNREAD);
+                    break;
+                case WARNING:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_WARNING);
+                    break;
+                case DEFAULT:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DEFAULT);
+                    break;
             }
             final Settings.EventHistory eventHistory = Settings.getInstance(getActivity()).getEventHistory();
             if (!eventHistory.contains(Settings.Event.ShowDownloadIndicatorIntro) && status != DownloadIndicatorViewModel.Status.DEFAULT) {
                 eventHistory.add(Settings.Event.ShowDownloadIndicatorIntro);
-                DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(this, menuBtn, browserRoot, viewRef -> downloadIndicatorIntro = viewRef);
+                BrowserBottomBar.BottomBarItem menuItem = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_MENU);
+                if (menuItem != null && menuItem.getView() != null) {
+                    DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(this, menuItem.getView(), browserRoot, viewRef -> downloadIndicatorIntro = viewRef);
+                }
             }
         });
-        return view;
     }
 
     @Override
@@ -554,13 +578,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toolbarRoot.setVisibility(View.GONE);
-            bottomMenuContainer.setVisibility(View.GONE);
+            browserBottomBar.setVisibility(View.GONE);
             bottomMenuDivider.setVisibility(View.GONE);
             updateMainContentBottomMargin(0);
             onLandscapeModeStart();
         } else {
             toolbarRoot.setVisibility(View.VISIBLE);
-            bottomMenuContainer.setVisibility(View.VISIBLE);
+            browserBottomBar.setVisibility(View.VISIBLE);
             bottomMenuDivider.setVisibility(View.VISIBLE);
             updateMainContentBottomMargin(mainContentBottomMargin);
             onLandscapeModeFinish();
@@ -630,7 +654,10 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     }
 
     private void initialiseNormalBrowserUi() {
-        urlView.setOnClickListener(this);
+        urlView.setOnClickListener(v -> {
+            FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
+            TelemetryWrapper.clickUrlbar();
+        });
     }
 
     @Override
@@ -944,53 +971,6 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     public void openPreference() {
         FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.display_url:
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
-                TelemetryWrapper.clickUrlbar();
-                break;
-            case R.id.btn_search:
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
-                TelemetryWrapper.clickToolbarSearch();
-                break;
-            case R.id.btn_open_new_tab:
-                HomeFragmentViewState.reset();
-                ScreenNavigator.get(getContext()).addHomeScreen(true);
-                TelemetryWrapper.clickAddTabToolbar();
-                break;
-            case R.id.btn_tab_tray:
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
-                TelemetryWrapper.showTabTrayToolbar();
-                break;
-            case R.id.btn_menu:
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
-                TelemetryWrapper.showMenuToolbar();
-                break;
-            case R.id.btn_capture:
-                onCaptureClicked();
-                // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
-                break;
-            default:
-                throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
-        }
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_menu:
-                // Long press menu always show download panel
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
-                TelemetryWrapper.longPressDownloadIndicator();
-                break;
-            default:
-                throw new IllegalArgumentException("Unhandled long click menu item in BrowserFragment");
-        }
-        return false;
     }
 
     @NonNull
@@ -1493,7 +1473,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         @Override
         public void onSessionCountChanged(int count) {
             if (isTabRestoredComplete()) {
-                tabCounter.setCountWithAnimation(count);
+                bottomBarItemAdapter.setTabCount(count, true);
             }
         }
 
@@ -1721,14 +1701,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         urlView.setNightMode(enable);
         siteIdentity.setNightMode(enable);
 
-        newTabBtn.setNightMode(enable);
-        searchBtn.setNightMode(enable);
-        captureBtn.setNightMode(enable);
-        menuBtn.setNightMode(enable);
-        tabCounter.setNightMode(enable);
+        bottomBarItemAdapter.setNightMode(enable);
 
         bottomMenuDivider.setNightMode(enable);
-        bottomMenuContainer.setNightMode(enable);
         backgroundView.setNightMode(enable);
         urlBarDivider.setNightMode(enable);
 
