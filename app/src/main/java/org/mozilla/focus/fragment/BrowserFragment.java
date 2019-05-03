@@ -78,6 +78,7 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.content.BottomBarItemAdapter;
+import org.mozilla.rocket.content.BottomBarViewModel;
 import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.content.view.BrowserBottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
@@ -102,8 +103,6 @@ import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.List;
 import java.util.WeakHashMap;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
@@ -131,14 +130,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
-
-    private static final List<Integer> DEFAULT_BOTTOM_BAR_ITEMS = Arrays.asList(
-            BottomBarItemAdapter.TYPE_TAB_COUNTER,
-            BottomBarItemAdapter.TYPE_NEW_TAB,
-            BottomBarItemAdapter.TYPE_SEARCH,
-            BottomBarItemAdapter.TYPE_CAPTURE,
-            BottomBarItemAdapter.TYPE_MENU
-    );
 
     private int systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE;
 
@@ -494,7 +485,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             return false;
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar);
-        bottomBarItemAdapter.setItems(DEFAULT_BOTTOM_BAR_ITEMS);
+        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
+        bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
     }
 
     private void setupDownloadIndicatorIntro(View rootView) {
