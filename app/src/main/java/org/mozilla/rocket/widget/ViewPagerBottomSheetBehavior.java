@@ -1,6 +1,7 @@
-package android.support.design.widget;
+package org.mozilla.rocket.widget;
 
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -11,8 +12,6 @@ import android.view.ViewGroup;
 /**
  * Override {@link #findScrollingChild(View)} to support {@link ViewPager}'s nested scrolling.
  *
- * By the way, In order to override package level method and field.
- * This class put in the same package path where {@link BottomSheetBehavior} located.
  */
 public class ViewPagerBottomSheetBehavior<V extends View> extends BottomSheetBehavior<V> {
 
@@ -29,6 +28,8 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends BottomSheetBeh
             return view;
         }
 
+        // Previous approach uses DFS to find the scrolling child. Now we consider the current
+        // selected page for ViewPager first, so the second page cou;d still gets touch event
         if (view instanceof ViewPager) {
             ViewPager viewPager = (ViewPager) view;
             View currentViewPagerChild = viewPager.getChildAt(viewPager.getCurrentItem());
