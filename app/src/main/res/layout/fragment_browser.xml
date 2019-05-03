@@ -95,15 +95,17 @@
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </org.mozilla.rocket.nightmode.themed.ThemedLinearLayout>
 
-    <include
-        android:id="@+id/browser_menu_container"
-        layout="@layout/fragment_browser_item_menu_button" />
+    <org.mozilla.rocket.content.view.BrowserBottomBar
+        android:id="@+id/browser_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fixed_menu_height"
+        android:layout_alignParentBottom="true"/>
 
     <org.mozilla.rocket.nightmode.themed.ThemedView
         android:id="@+id/bottom_menu_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/browser_menu_container"
+        android:layout_above="@+id/browser_bottom_bar"
         android:background="@drawable/browser_menu_divider"
         tools:background="#FF0000" />
 
