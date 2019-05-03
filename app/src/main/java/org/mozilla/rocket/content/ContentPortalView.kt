@@ -6,7 +6,6 @@
 package org.mozilla.rocket.content
 
 import android.content.Context
-import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
@@ -27,6 +26,7 @@ import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.data.ShoppingLink
 import org.mozilla.rocket.content.view.ContentFragment
+import org.mozilla.rocket.widget.BottomSheetBehavior
 
 interface ContentPortalListener {
     fun onItemClicked(url: String)
