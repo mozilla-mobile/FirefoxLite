@@ -420,7 +420,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
         setupBottomBar(view);
-        setupDownloadIndicatorIntro(view);
 
         toolbarRoot = view.findViewById(R.id.toolbar_root);
         bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
@@ -487,9 +486,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar);
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
+
+        setupDownloadIndicator(rootView);
     }
 
-    private void setupDownloadIndicatorIntro(View rootView) {
+    private void setupDownloadIndicator(View rootView) {
         final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
 
         Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
