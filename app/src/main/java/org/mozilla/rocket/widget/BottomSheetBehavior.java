@@ -1036,7 +1036,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             return;
         }
 
-        ViewParent viewParent = viewRef.get().getParent();
+        final V ref = viewRef.get();
+        if (ref == null) {
+            return;
+        }
+
+        ViewParent viewParent = ref.getParent();
         if (!(viewParent instanceof CoordinatorLayout)) {
             return;
         }
@@ -1054,7 +1059,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
-            if (child == viewRef.get()) {
+            if (child == ref) {
                 continue;
             }
 
