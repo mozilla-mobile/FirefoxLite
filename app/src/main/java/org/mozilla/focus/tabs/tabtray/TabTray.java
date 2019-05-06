@@ -11,10 +11,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 public class TabTray {
-    public static void show(FragmentManager manager) {
+    @Nullable
+    public static TabTrayFragment show(FragmentManager manager) {
         if (!manager.isStateSaved()) {
-            TabTrayFragment.newInstance().show(manager, TabTrayFragment.FRAGMENT_TAG);
+            TabTrayFragment tabTray = TabTrayFragment.newInstance();
+            tabTray.show(manager, TabTrayFragment.FRAGMENT_TAG);
+            return tabTray;
         }
+        return null;
     }
 
     public static void dismiss(FragmentManager manager) {

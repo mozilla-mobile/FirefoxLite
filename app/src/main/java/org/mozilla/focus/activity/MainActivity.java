@@ -58,6 +58,7 @@ import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.tabtray.TabTray;
+import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.urlinput.UrlInputFragment;
 import org.mozilla.focus.utils.AppConfigWrapper;
@@ -1001,9 +1002,14 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             case DISMISS_URL_INPUT:
                 this.screenNavigator.popUrlScreen();
                 break;
-            case SHOW_TAB_TRAY:
-                TabTray.show(getSupportFragmentManager());
+            case SHOW_TAB_TRAY: {
+                TabTrayFragment tabTray = TabTray.show(getSupportFragmentManager());
+                if (tabTray != null) {
+                    tabTray.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(tabTray));
+                    portraitStateModel.request(tabTray);
+                }
                 break;
+            }
             case REFRESH_TOP_SITE:
                 Fragment fragment = this.screenNavigator.getTopFragment();
                 if (fragment instanceof HomeFragment) {
