@@ -670,6 +670,13 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         }
         hasPendingScreenCaptureTask = false;
         final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
+
+        PortraitStateModel portraitState = getPortraitStateModel();
+        if (portraitState != null) {
+            portraitState.request(capturingFragment);
+            capturingFragment.addOnDismissListener(dialog -> portraitState.cancelRequest(capturingFragment));
+        }
+
         capturingFragment.show(getChildFragmentManager(), "capturingFragment");
 
         final int WAIT_INTERVAL = 150;
