@@ -13,11 +13,11 @@ import android.view.View
 
 import java.util.WeakHashMap
 
-class PortraitStateModel {
+class PortraitStateModel : PortraitModel {
     private val stateData = MutableLiveData<Boolean>()
     private val requests = WeakHashMap<Any, Boolean>()
 
-    val portraitState: LiveData<Boolean>
+    override val isPortraitState: LiveData<Boolean>
         get() = stateData
 
     init {
@@ -48,6 +48,11 @@ class PortraitStateModel {
 
     fun cancelRequest(fragment: DialogFragment) {
         cancelRequestWithToken(fragment)
+    }
+
+    override fun resetState() {
+        requests.clear()
+        checkState()
     }
 
     private fun requestWithToken(token: Any) {

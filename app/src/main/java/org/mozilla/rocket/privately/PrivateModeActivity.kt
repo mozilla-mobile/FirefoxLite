@@ -5,6 +5,8 @@
 
 package org.mozilla.rocket.privately
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -32,6 +34,9 @@ import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.landing.NavigationModel
+import org.mozilla.rocket.landing.OrientationState
+import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.privately.browse.BrowserFragment
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.tabs.SessionManager
@@ -51,6 +56,8 @@ class PrivateModeActivity : BaseActivity(),
     private lateinit var screenNavigator: ScreenNavigator
     private lateinit var uiMessageReceiver: BroadcastReceiver
     private lateinit var snackBarContainer: View
+
+    private val portraitStateModel = PortraitStateModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // we don't keep any state if user leave Private-mode
@@ -74,6 +81,8 @@ class PrivateModeActivity : BaseActivity(),
         initBroadcastReceivers()
 
         screenNavigator.popToHomeScreen(false)
+
+        monitorOrientationState()
     }
 
     private fun initViewModel() {
@@ -149,6 +158,19 @@ class PrivateModeActivity : BaseActivity(),
         if (exitEarly) {
             return
         }
+    }
+
+    private fun monitorOrientationState() {
+        val orientationState = OrientationState(object : NavigationModel {
+            override val navigationState: LiveData<String>
+                get() = ScreenNavigator.get(this@PrivateModeActivity).navigationState
+        }, portraitStateModel)
+
+        orientationState.observe(this, Observer { orientation ->
+            orientation?.let {
+                requestedOrientation = it
+            }
+        })
     }
 
     private fun dropBrowserFragment() {

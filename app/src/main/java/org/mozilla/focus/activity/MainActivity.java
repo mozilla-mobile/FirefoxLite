@@ -83,6 +83,7 @@ import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.landing.OrientationState;
 import org.mozilla.rocket.landing.PortraitStateModel;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
@@ -227,6 +228,21 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 .registerOnSharedPreferenceChangeListener(this);
 
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
+
+        monitorOrientationState();
+    }
+
+    private void monitorOrientationState() {
+        OrientationState orientationState = new OrientationState(
+                () -> ScreenNavigator.get(MainActivity.this).getNavigationState(),
+                portraitStateModel);
+
+        orientationState.observe(this, orientation -> {
+            if (orientation == null) {
+                return;
+            }
+            setRequestedOrientation(orientation);
+        });
     }
 
     private void initBroadcastReceivers() {
