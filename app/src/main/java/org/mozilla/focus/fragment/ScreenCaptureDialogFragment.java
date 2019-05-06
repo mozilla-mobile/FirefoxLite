@@ -25,11 +25,16 @@ import com.airbnb.lottie.OnCompositionLoadedListener;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScreenCaptureDialogFragment extends DialogFragment {
 
     private LottieAnimationView mLottieAnimationView;
 
     private static final String ANIMATE_DONE = "screenshots-done.json";
+
+    private List<DialogInterface.OnDismissListener> mOnDismissListeners = new ArrayList<>();
 
     public static ScreenCaptureDialogFragment newInstance() {
         ScreenCaptureDialogFragment screenCaptureDialogFragment = new ScreenCaptureDialogFragment();
@@ -66,6 +71,14 @@ public class ScreenCaptureDialogFragment extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        for (DialogInterface.OnDismissListener listener : mOnDismissListeners) {
+            listener.onDismiss(dialog);
+        }
+    }
+
     public void dismiss(boolean waitAnimation) {
         if (waitAnimation) {
             LottieComposition.Factory.fromAssetFileName(getContext(), ANIMATE_DONE, new OnCompositionLoadedListener() {
@@ -92,4 +105,7 @@ public class ScreenCaptureDialogFragment extends DialogFragment {
         }
     }
 
+    public void addOnDismissListener(DialogInterface.OnDismissListener listener) {
+        mOnDismissListeners.add(listener);
+    }
 }

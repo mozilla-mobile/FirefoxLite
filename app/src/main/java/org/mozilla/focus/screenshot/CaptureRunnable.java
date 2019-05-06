@@ -74,7 +74,7 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
         if (captureSuccess) {
             Settings.getInstance(refContext.get()).setHasUnreadMyShot(true);
         }
-        screenCaptureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+        screenCaptureDialogFragment.addOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 promptScreenshotResult(captureSuccess);
