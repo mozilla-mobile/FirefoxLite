@@ -473,6 +473,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     onCaptureClicked();
                     // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
                     break;
+                case BottomBarItemAdapter.TYPE_PIN_SHORTCUT:
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.PIN_SHORTCUT, null);
+                    TelemetryWrapper.clickAddToHome();
+                    break;
                 default:
                     throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
             }
