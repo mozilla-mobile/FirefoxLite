@@ -15,7 +15,10 @@ import org.mozilla.rocket.content.view.BrowserBottomBar.BottomBarItem
 import org.mozilla.rocket.content.view.BrowserBottomBar.BottomBarItem.ImageItem
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton
 
-class BottomBarItemAdapter(private val browserBottomBar: BrowserBottomBar) {
+class BottomBarItemAdapter(
+        private val browserBottomBar: BrowserBottomBar,
+        private val theme: Theme = Theme.LIGHT
+) {
     private var items: List<BottomBarItem>? = null
 
     fun setItems(types: List<Int>) {
@@ -28,13 +31,16 @@ class BottomBarItemAdapter(private val browserBottomBar: BrowserBottomBar) {
     private fun convertToItems(types: List<Int>): List<BottomBarItem> =
             types.map(this::convertToItem)
 
-    private fun convertToItem(type: Int): BottomBarItem = when(type) {
-        TYPE_TAB_COUNTER -> TabCounterItem(type)
-        TYPE_MENU -> MenuItem(type)
-        TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add)
-        TYPE_SEARCH -> ImageItem(type, R.drawable.action_search)
-        TYPE_CAPTURE -> ImageItem(type, R.drawable.action_capture)
-        else -> error("Unexpected BottomBarItem ItemType: $type")
+    private fun convertToItem(type: Int): BottomBarItem {
+        val tintResId = theme.buttonColorResId
+        return when(type) {
+            TYPE_TAB_COUNTER -> TabCounterItem(type, tintResId)
+            TYPE_MENU -> MenuItem(type, theme.buttonColorResId)
+            TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add, tintResId)
+            TYPE_SEARCH -> ImageItem(type, R.drawable.action_search, tintResId)
+            TYPE_CAPTURE -> ImageItem(type, R.drawable.action_capture, tintResId)
+            else -> error("Unexpected BottomBarItem ItemType: $type")
+        }
     }
 
     fun setNightMode(isNight: Boolean) {
@@ -105,21 +111,38 @@ class BottomBarItemAdapter(private val browserBottomBar: BrowserBottomBar) {
     fun findItem(type: Int): BottomBarItem? =
             items?.find { it.type == type }
 
-    private class TabCounterItem(type: Int) : BottomBarItem(type) {
+    private class TabCounterItem(
+            type: Int,
+            private val tintResId: Int
+    ) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
             return TabCounter(contextThemeWrapper, null, 0).apply {
                 layoutParams = ViewGroup.LayoutParams(contextThemeWrapper, null)
-                tintDrawables(ContextCompat.getColorStateList(contextThemeWrapper, R.color.browser_menu_button))
+                tintDrawables(ContextCompat.getColorStateList(contextThemeWrapper, tintResId))
             }
         }
     }
 
-    private class MenuItem(type: Int) : BottomBarItem(type) {
+    private class MenuItem(
+            type: Int,
+            private val tintResId: Int
+    ) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.button_more, null)
+                    .also { view ->
+                        view.findViewById<ThemedImageButton>(R.id.btn_menu).apply {
+                            val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
+                            imageTintList = ContextCompat.getColorStateList(contextThemeWrapper, tintResId)
+                        }
+                    }
         }
+    }
+
+    sealed class Theme(val buttonColorResId: Int) {
+        object LIGHT : Theme(buttonColorResId = R.color.browser_menu_button)
+        object DARK : Theme(buttonColorResId = R.color.home_bottom_button)
     }
 
     companion object {
