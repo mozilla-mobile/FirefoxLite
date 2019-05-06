@@ -55,6 +55,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.EnqueueDownloadTask;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
@@ -81,6 +82,7 @@ import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.landing.PortraitStateModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedLinearLayout;
@@ -1059,9 +1061,29 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void showFindInPage() {
         final Session focusTab = sessionManager.getFocusSession();
         if (focusTab != null) {
+            View findInPageView = findInPage.getView();
+
+            PortraitStateModel portraitState = getPortraitStateModel();
+            if (portraitState != null) {
+                portraitState.request(findInPageView);
+                findInPage.setOnDismissListener(view -> {
+                    portraitState.cancelRequest(findInPageView);
+                    return null;
+                });
+            }
+
             findInPage.show(focusTab);
             TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU);
         }
+    }
+
+    private PortraitStateModel getPortraitStateModel() throws ClassCastException {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return null;
+        }
+
+        return ((MainActivity) activity).getPortraitStateModel();
     }
 
     private void hideFindInPage() {
