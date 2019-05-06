@@ -12,21 +12,38 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.db.SupportSQLiteOpenHelper;
 import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.db.SupportSQLiteQueryBuilder;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.*;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.text.method.LinkMovementMethod;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.ValueCallback;
@@ -34,7 +51,7 @@ import android.webkit.WebChromeClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.airbnb.lottie.LottieAnimationView;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,30 +71,52 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
-import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.*;
+import org.mozilla.focus.utils.AppConfigWrapper;
+import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.utils.OnSwipeListener;
+import org.mozilla.focus.utils.RemoteConfigConstants;
+import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.utils.SwipeMotionDetector;
+import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.content.portal.ContentPortalView;
+import org.mozilla.rocket.content.BottomBarItemAdapter;
+import org.mozilla.rocket.content.BottomBarViewModel;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
-import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.content.portal.ContentPortalView;
+import org.mozilla.rocket.content.view.BrowserBottomBar;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
-import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
-import org.mozilla.rocket.tabs.*;
+import org.mozilla.rocket.tabs.Session;
+import org.mozilla.rocket.tabs.SessionManager;
+import org.mozilla.rocket.tabs.TabViewClient;
+import org.mozilla.rocket.tabs.TabViewEngineSession;
+import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_WARNING;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.TYPE_TAB_COUNTER;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View, TopSitesContract.Model,
         ScreenNavigator.HomeScreen, BannerHelper.HomeBannerHelperListener {
@@ -94,7 +133,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
-    private ThemedImageButton btnMenu;
     @Nullable private ImageButton arrow1;
     @Nullable private ImageButton arrow2;
     @Nullable private ContentPortalView contentPanel;
@@ -103,7 +141,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @NonNull private ContentFeature contentFeature = new ContentFeature();
 
     private View lifeFeedOnboardingLayer;
-    private TabCounter tabCounter;
     private ThemedTextView fakeInput;
     private HomeScreenBackground homeScreenBackground;
     private SiteItemClickListener clickListener = new SiteItemClickListener();
@@ -118,8 +155,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final int SCROLL_PERIOD = 10000;
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> homeBannerObserver = bannerHelper::setUpHomeBannerFromConfig;
-    private LottieAnimationView downloadingIndicator;
-    private ImageView downloadIndicator;
+    private BottomBarItemAdapter bottomBarItemAdapter;
     private PinSiteManager pinSiteManager;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
@@ -234,21 +270,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.recyclerView = view.findViewById(R.id.main_list);
 
-        this.btnMenu = view.findViewById(R.id.btn_menu_home);
-        this.btnMenu.setOnClickListener(menuItemClickListener);
-
-        this.btnMenu.setOnLongClickListener(v -> {
-            // Long press menu always show download panel
-            FragmentListener.notifyParent(HomeFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
-            TelemetryWrapper.longPressDownloadIndicator();
-            return false;
-        });
+        setupBottomBar(view);
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         sessionManager.register(this.observer);
-        this.tabCounter = view.findViewById(R.id.btn_tab_tray);
-        this.tabCounter.setOnClickListener(menuItemClickListener);
-        updateTabCounter();
 
         this.fakeInput = view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(v -> {
@@ -321,30 +346,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         homeScreenBackground = view.findViewById(R.id.home_background);
-
-        downloadingIndicator = view.findViewById(R.id.downloading_indicator);
-        downloadIndicator = view.findViewById(R.id.download_unread_indicator);
-
-        Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
-            if (status == DownloadIndicatorViewModel.Status.DOWNLOADING) {
-                downloadIndicator.setVisibility(View.GONE);
-                downloadingIndicator.setVisibility(View.VISIBLE);
-                if (!downloadingIndicator.isAnimating()) {
-                    downloadingIndicator.playAnimation();
-                }
-            } else if (status == DownloadIndicatorViewModel.Status.UNREAD) {
-                downloadingIndicator.setVisibility(View.GONE);
-                downloadIndicator.setVisibility(View.VISIBLE);
-                downloadIndicator.setImageResource(R.drawable.notify_download);
-            } else if (status == DownloadIndicatorViewModel.Status.WARNING) {
-                downloadingIndicator.setVisibility(View.GONE);
-                downloadIndicator.setVisibility(View.VISIBLE);
-                downloadIndicator.setImageResource(R.drawable.notify_notice);
-            } else {
-                downloadingIndicator.setVisibility(View.GONE);
-                downloadIndicator.setVisibility(View.GONE);
-            }
-        });
 
         return view;
     }
@@ -507,20 +508,98 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.fakeInput.setVisibility(visibility);
     }
 
+    private void setupBottomBar(View rootView) {
+        BrowserBottomBar browserBottomBar = rootView.findViewById(R.id.bottom_bar);
+        browserBottomBar.setItemVisibility(1, View.INVISIBLE);
+        browserBottomBar.setItemVisibility(2, View.INVISIBLE);
+        browserBottomBar.setItemVisibility(3, View.INVISIBLE);
+        final Activity parent = getActivity();
+        browserBottomBar.setOnItemClickListener((type, position) -> {
+            switch (type) {
+                case BottomBarItemAdapter.TYPE_TAB_COUNTER:
+                    if (parent instanceof FragmentListener) {
+                        FragmentListener listener = (FragmentListener) parent;
+                        listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
+                        TelemetryWrapper.showTabTrayHome();
+                    }
+                    break;
+                case BottomBarItemAdapter.TYPE_MENU:
+                    showMenu();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
+            }
+        });
+        browserBottomBar.setOnItemLongClickListener((type, position) -> {
+            if (type == BottomBarItemAdapter.TYPE_MENU) {
+                if (parent instanceof FragmentListener) {
+                    FragmentListener listener = (FragmentListener) parent;
+                    // Long press menu always show download panel
+                    listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
+                    TelemetryWrapper.longPressDownloadIndicator();
+                }
+                return true;
+            }
+            return false;
+        });
+        bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar, BottomBarItemAdapter.Theme.DARK.INSTANCE);
+        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
+        bottomBarViewModel.getItems().observe(this, items -> {
+            bottomBarItemAdapter.setItems(items);
+            updateTabCounter();
+        });
+
+        setupDownloadIndicator();
+    }
+
+    private void showMenu() {
+        Activity parent = getActivity();
+        if (parent instanceof FragmentListener) {
+            FragmentListener listener = (FragmentListener) parent;
+            listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
+            TelemetryWrapper.showMenuHome();
+        }
+    }
+
     private void updateTabCounter() {
         int tabCount = sessionManager != null ? sessionManager.getTabsCount() : 0;
         if (isTabRestoredComplete()) {
-            tabCounter.setCount(tabCount);
+            bottomBarItemAdapter.setTabCount(tabCount);
         }
+        setTabCounterEnabled(tabCount > 0);
+    }
 
-        if (tabCount == 0) {
-            tabCounter.setEnabled(false);
-            tabCounter.setAlpha(ALPHA_TAB_COUNTER_DISABLED);
-
-        } else {
-            tabCounter.setEnabled(true);
-            tabCounter.setAlpha(1f);
+    private void setTabCounterEnabled(boolean enabled) {
+        BrowserBottomBar.BottomBarItem tabCounterItem = bottomBarItemAdapter.findItem(TYPE_TAB_COUNTER);
+        if (tabCounterItem != null && tabCounterItem.getView() != null) {
+            View tabCounter = tabCounterItem.getView();
+            if (enabled) {
+                tabCounter.setEnabled(true);
+                tabCounter.setAlpha(1f);
+            } else {
+                tabCounter.setEnabled(false);
+                tabCounter.setAlpha(ALPHA_TAB_COUNTER_DISABLED);
+            }
         }
+    }
+
+    private void setupDownloadIndicator() {
+        Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
+            switch (status) {
+                case DOWNLOADING:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);
+                    break;
+                case UNREAD:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_UNREAD);
+                    break;
+                case WARNING:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_WARNING);
+                    break;
+                case DEFAULT:
+                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DEFAULT);
+                    break;
+            }
+        });
     }
 
     private boolean isTabRestoredComplete() {
@@ -847,36 +926,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
     }
 
-    private View.OnClickListener menuItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final Activity parent = getActivity();
-            if (parent instanceof FragmentListener) {
-                dispatchOnClick(v, (FragmentListener) parent);
-            }
-        }
-
-        private void dispatchOnClick(View view, FragmentListener listener) {
-            switch (view.getId()) {
-                case R.id.btn_menu_home:
-                    listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_MENU,
-                            null);
-                    TelemetryWrapper.showMenuHome();
-                    break;
-
-                case R.id.btn_tab_tray:
-                    listener.onNotified(HomeFragment.this,
-                            FragmentListener.TYPE.SHOW_TAB_TRAY,
-                            null);
-                    TelemetryWrapper.showTabTrayHome();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    };
-
     private class SessionManagerObserver implements SessionManager.Observer {
 
         @Override
@@ -939,7 +988,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             if (contentPanel != null) {
                 showContentPortal();
             } else {
-                btnMenu.performClick();
+                showMenu();
             }
         }
 
@@ -1013,8 +1062,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     public void setNightModeEnabled(boolean enable) {
         fakeInput.setNightMode(enable);
-        btnMenu.setNightMode(enable);
-        tabCounter.setNightMode(enable);
+        bottomBarItemAdapter.setNightMode(enable);
         homeScreenBackground.setNightMode(enable);
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             final ThemedTextView item = recyclerView.getChildAt(i).findViewById(R.id.text);

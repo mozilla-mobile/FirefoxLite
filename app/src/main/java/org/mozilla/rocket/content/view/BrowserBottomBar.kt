@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.view
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import android.util.ArrayMap
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.Gravity
@@ -17,6 +18,7 @@ class BrowserBottomBar : FrameLayout {
     private lateinit var grid: EqualDistributeGrid
     private var onItemClickListener: OnItemClickListener? = null
     private var onItemLongClickListener: OnItemLongClickListener? = null
+    private val itemVisibilityMap = ArrayMap<Int, Int>()
 
     constructor(context: Context) : super(context) {
         init()
@@ -54,10 +56,16 @@ class BrowserBottomBar : FrameLayout {
                 setOnClickListener { onItemClickListener?.onItemClick(item.type, index) }
                 setOnLongClickListener { onItemLongClickListener?.onItemLongClick(item.type, index) ?: false }
             }.let { view ->
+                view.visibility = itemVisibilityMap.getOrDefault(index, View.VISIBLE)
                 item.view = view
                 grid.addView(view)
             }
         }
+    }
+
+    fun setItemVisibility(position: Int, visibility: Int) {
+        grid.getChildAt(position)?.visibility = visibility
+        itemVisibilityMap[position] = visibility
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -81,14 +89,18 @@ class BrowserBottomBar : FrameLayout {
 
         abstract fun createView(context: Context): View
 
-        class ImageItem(type: Int, private val drawableResId: Int) : BottomBarItem(type) {
+        class ImageItem(
+                type: Int,
+                private val drawableResId: Int,
+                private val tintResId: Int
+        ) : BottomBarItem(type) {
             override fun createView(context: Context): View {
                 val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
                 return ThemedImageButton(contextThemeWrapper, null, 0).apply {
                     layoutParams = ViewGroup.LayoutParams(contextThemeWrapper, null)
                     scaleType = ImageView.ScaleType.CENTER
                     setImageResource(drawableResId)
-                    imageTintList = ContextCompat.getColorStateList(contextThemeWrapper, R.color.browser_menu_button)
+                    imageTintList = ContextCompat.getColorStateList(contextThemeWrapper, tintResId)
                 }
             }
         }

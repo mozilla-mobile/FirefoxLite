@@ -483,7 +483,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             }
             return false;
         });
-        bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar);
+        bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
