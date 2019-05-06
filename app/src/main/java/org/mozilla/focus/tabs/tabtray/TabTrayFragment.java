@@ -106,6 +106,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private ThemedImageView imgPrivateBrowsing, imgNewTab;
     private ThemedView bottomDivider;
 
+    @Nullable
+    private DialogInterface.OnDismissListener onDismissListener;
+
     public static TabTrayFragment newInstance() {
         return new TabTrayFragment();
     }
@@ -317,9 +320,16 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        if (onDismissListener != null) {
+            onDismissListener.onDismiss(dialog);
+        }
         if (presenter != null) {
             presenter.tabTrayClosed();
         }
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
+        this.onDismissListener = listener;
     }
 
     private void setupBottomSheetCallback() {
