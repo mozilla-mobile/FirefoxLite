@@ -10,12 +10,14 @@ import android.support.annotation.NonNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mozilla.rocket.content.BottomBarItemAdapter;
 import org.mozilla.rocket.content.ecommerce.data.Coupon;
 import org.mozilla.rocket.content.ecommerce.data.CouponKey;
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink;
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLinkKey;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
@@ -232,5 +234,23 @@ public class AppConfigWrapper {
 
     static String getShareAppMessage() {
         return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_SHARE_APP_DIALOG_MSG);
+    }
+
+    public static List<BottomBarItemAdapter.ItemData> getBottomBarItems() {
+        List<BottomBarItemAdapter.ItemData> itemDataList = new ArrayList<>();
+        String jsonString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_BOTTOM_BAR_ITEMS);
+        try {
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject row = jsonArray.getJSONObject(i);
+                int type = row.getInt("type");
+                itemDataList.add(new BottomBarItemAdapter.ItemData(type));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return itemDataList;
     }
 }

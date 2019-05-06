@@ -21,19 +21,19 @@ class BottomBarItemAdapter(
 ) {
     private var items: List<BottomBarItem>? = null
 
-    fun setItems(types: List<Int>) {
+    fun setItems(types: List<ItemData>) {
         convertToItems(types).let {
             items = it
             browserBottomBar.setItems(it)
         }
     }
 
-    private fun convertToItems(types: List<Int>): List<BottomBarItem> =
+    private fun convertToItems(types: List<ItemData>): List<BottomBarItem> =
             types.map(this::convertToItem)
 
-    private fun convertToItem(type: Int): BottomBarItem {
+    private fun convertToItem(itemData: ItemData): BottomBarItem {
         val tintResId = theme.buttonColorResId
-        return when(type) {
+        return when(val type = itemData.type) {
             TYPE_TAB_COUNTER -> TabCounterItem(type, tintResId)
             TYPE_MENU -> MenuItem(type, theme.buttonColorResId)
             TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add, tintResId)
@@ -144,6 +144,8 @@ class BottomBarItemAdapter(
         object LIGHT : Theme(buttonColorResId = R.color.browser_menu_button)
         object DARK : Theme(buttonColorResId = R.color.home_bottom_button)
     }
+
+    data class ItemData(val type: Int)
 
     companion object {
         const val TYPE_TAB_COUNTER = 0
