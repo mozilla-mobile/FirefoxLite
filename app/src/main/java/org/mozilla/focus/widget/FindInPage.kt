@@ -20,7 +20,9 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.tabs.Session
 
 class FindInPage : BackKeyHandleable {
-    private val container: View
+    val view: View
+    var onDismissListener: ((View) -> Unit)? = null
+
     private val queryText: TextView
     private val resultText: TextView
     private val prevBtn: View
@@ -33,21 +35,21 @@ class FindInPage : BackKeyHandleable {
     private var session: Session? = null
 
     constructor(rootView: View) {
-        container = rootView.findViewById(R.id.find_in_page)
-        queryText = container.findViewById(R.id.find_in_page_query_text)
-        resultText = container.findViewById(R.id.find_in_page_result_text)
-        nextBtn = container.findViewById(R.id.find_in_page_next_btn)
-        prevBtn = container.findViewById(R.id.find_in_page_prev_btn)
-        closeBtn = container.findViewById(R.id.find_in_page_close_btn)
+        view = rootView.findViewById(R.id.find_in_page)
+        queryText = view.findViewById(R.id.find_in_page_query_text)
+        resultText = view.findViewById(R.id.find_in_page_result_text)
+        nextBtn = view.findViewById(R.id.find_in_page_next_btn)
+        prevBtn = view.findViewById(R.id.find_in_page_prev_btn)
+        closeBtn = view.findViewById(R.id.find_in_page_close_btn)
 
-        resultFormat = container.context.getString(R.string.find_in_page_result)
-        accessibilityFormat = container.context.getString(R.string.accessibility_find_in_page_result)
+        resultFormat = view.context.getString(R.string.find_in_page_result)
+        accessibilityFormat = view.context.getString(R.string.accessibility_find_in_page_result)
 
         initViews()
     }
 
     override fun onBackPressed(): Boolean {
-        return if (container.visibility == View.VISIBLE) {
+        return if (view.visibility == View.VISIBLE) {
             hide()
             true
         } else {
@@ -71,13 +73,13 @@ class FindInPage : BackKeyHandleable {
     }
 
     fun show(current: Session?) {
-        if (container.visibility == View.VISIBLE) {
+        if (view.visibility == View.VISIBLE) {
             return
         }
 
         if (current != null) {
             session = current
-            container.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
             // FIXME: post to another round to increase possibility of showing keyboard
             // Find-in-page button of menu is in another window, meanwhile the find-in-page view
             // is in another window. Showing-keyboard might fail if the focused view is invisible.
@@ -89,14 +91,15 @@ class FindInPage : BackKeyHandleable {
     }
 
     fun hide() {
-        if (container.visibility != View.VISIBLE) {
+        if (view.visibility != View.VISIBLE) {
             return
         }
 
+        onDismissListener?.invoke(view)
         ViewUtils.hideKeyboard(queryText)
         queryText.text = null
         queryText.clearFocus()
-        container.visibility = View.GONE
+        view.visibility = View.GONE
     }
 
     private fun initViews() {
