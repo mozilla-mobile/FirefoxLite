@@ -114,12 +114,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         getBrowserScreen().loadUrl(url, withNewTab, isFromExternal, () -> raiseBrowserScreen(true));
     }
 
-    public void restoreBrowserScreen(@NonNull String tabId) {
-        logMethod();
-        getBrowserScreen().switchToTab(tabId);
-        raiseBrowserScreen(false);
-    }
-
     /**
      * @return Whether user can directly see browser fragment
      */
