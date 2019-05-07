@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/privateBackground"
@@ -10,6 +10,7 @@
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/browser_menu_container"
         android:orientation="vertical"
         tools:background="#FF0000">
 
@@ -24,7 +25,7 @@
             <FrameLayout
                 android:id="@+id/urlbar"
                 android:layout_width="match_parent"
-                android:layout_height="26dp"
+                android:layout_height="wrap_content"
                 android:clipChildren="false"
                 app:layout_scrollFlags="">
 
@@ -58,7 +59,6 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="48dp"
             android:clipChildren="false"
             android:orientation="vertical">
 
@@ -72,7 +72,9 @@
 
     </LinearLayout>
 
-    <include layout="@layout/fragment_private_browser_item_menu_button" />
+    <include
+        android:id="@+id/browser_menu_container"
+        layout="@layout/fragment_private_browser_item_menu_button" />
 
     <FrameLayout
         android:id="@+id/video_container"
@@ -80,4 +82,4 @@
         android:layout_height="match_parent"
         android:background="@android:color/black"
         android:visibility="gone" />
-</FrameLayout>
+</RelativeLayout>

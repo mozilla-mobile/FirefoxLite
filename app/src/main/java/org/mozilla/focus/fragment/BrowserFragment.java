@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.TransitionDrawable;
@@ -146,6 +147,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private AnimatedProgressBar progressView;
     private ThemedImageView siteIdentity;
     private Dialog webContextMenu;
+    private ThemedRelativeLayout bottomMenuContainer;
 
     //GeoLocationPermission
     private String geolocationOrigin;
@@ -416,6 +418,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         captureBtn = view.findViewById(R.id.btn_capture);
         menuBtn = view.findViewById(R.id.btn_menu);
         toolbarRoot = view.findViewById(R.id.toolbar_root);
+        bottomMenuContainer = view.findViewById(R.id.browser_menu_container);
         bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
         urlBarDivider = view.findViewById(R.id.url_bar_divider);
         if (tabCounter != null) {
@@ -529,6 +532,21 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             if (done) {
                 fileChooseAction = null;
             }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            toolbarRoot.setVisibility(View.GONE);
+            bottomMenuContainer.setVisibility(View.GONE);
+            bottomMenuDivider.setVisibility(View.GONE);
+        } else {
+            toolbarRoot.setVisibility(View.VISIBLE);
+            bottomMenuContainer.setVisibility(View.VISIBLE);
+            bottomMenuDivider.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1656,6 +1674,7 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         tabCounter.setNightMode(enable);
 
         bottomMenuDivider.setNightMode(enable);
+        bottomMenuContainer.setNightMode(enable);
         backgroundView.setNightMode(enable);
         urlBarDivider.setNightMode(enable);
 

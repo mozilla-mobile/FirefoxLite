@@ -129,8 +129,7 @@
 
         <activity
             android:name="org.mozilla.focus.screenshot.ScreenshotViewerActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
 
         <!-- This will either be an actual FCM messaging service, or a dummy service that do nothing-->
         <service
@@ -257,7 +256,8 @@
         <activity
             android:name="org.mozilla.rocket.nightmode.AdjustBrightnessDialog"
             android:theme="@style/TransparentTheme"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

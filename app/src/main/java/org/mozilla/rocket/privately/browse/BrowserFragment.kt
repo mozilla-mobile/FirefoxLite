@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
@@ -83,6 +84,8 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var btnLoad: ImageButton
     private lateinit var btnNext: ImageButton
     private lateinit var btnTracker: View
+    private lateinit var browserMenuContainer: ViewGroup
+    private lateinit var toolbarRoot: ViewGroup
 
     private lateinit var trackerPopup: TrackerPopup
 
@@ -146,6 +149,10 @@ class BrowserFragment : LocaleAwareFragment(),
             (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
+
+        browserMenuContainer = view.findViewById(R.id.browser_menu_container)
+        toolbarRoot = view.findViewById(R.id.toolbar_root)
+
         sessionManager = TabsSessionProvider.getOrThrow( activity)
         observer = Observer(this)
         sessionManager.register(observer)
@@ -244,6 +251,19 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        trackerPopup.dismiss()
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            toolbarRoot.visibility = View.GONE
+            browserMenuContainer.visibility = View.GONE
+        } else {
+            toolbarRoot.visibility = View.VISIBLE
+            browserMenuContainer.visibility = View.VISIBLE
+        }
     }
 
     override fun applyLocale() {
