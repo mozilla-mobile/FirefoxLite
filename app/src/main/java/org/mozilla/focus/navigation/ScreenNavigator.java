@@ -7,6 +7,8 @@ package org.mozilla.focus.navigation;
 
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -205,6 +207,11 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         boolean result = !transactionHelper.shouldFinish();
         log("canGoBack: " + result);
         return result;
+    }
+
+    public LiveData<String> getNavigationState() {
+        return Transformations.map(transactionHelper.getTopFragmentState(),
+                fragmentTag -> fragmentTag.isEmpty() ? BROWSER_FRAGMENT_TAG : fragmentTag);
     }
 
     private void logMethod(Object... args) {
