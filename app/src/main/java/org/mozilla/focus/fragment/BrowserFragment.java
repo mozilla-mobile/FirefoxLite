@@ -13,6 +13,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -59,6 +61,9 @@ import org.mozilla.focus.download.EnqueueDownloadTask;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.navigation.ScreenNavigator;
+import org.mozilla.focus.persistence.BookmarkModel;
+import org.mozilla.focus.persistence.BookmarksDatabase;
+import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.CaptureRunnable;
 import org.mozilla.focus.tabs.tabtray.TabTray;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -68,6 +73,7 @@ import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder;
 import org.mozilla.focus.widget.AnimatedProgressBar;
@@ -103,6 +109,7 @@ import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.WeakHashMap;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
@@ -196,14 +203,19 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private ThemedView urlBarDivider;
     private View downloadIndicatorIntro;
     private BrowserBottomBar browserBottomBar;
+    private BookmarkViewModel bookmarkViewModel;
     private BottomBarViewModel bottomBarViewModel;
     private BottomBarItemAdapter bottomBarItemAdapter;
+    private LiveData<List<BookmarkModel>> bookmarkLiveData;
 
     private long landscapeStartTime = 0L;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
+                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(requireContext())));
+        bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
         bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
     }
 
@@ -477,6 +489,27 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.PIN_SHORTCUT, null);
                     TelemetryWrapper.clickAddToHome();
                     break;
+                case BottomBarItemAdapter.TYPE_BOOKMARK:
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.BOOKMARK, null);
+                    break;
+                case BottomBarItemAdapter.TYPE_REFRESH:
+                    if (isLoading()) {
+                        stop();
+                    } else {
+                        reload();
+                    }
+                    TelemetryWrapper.clickToolbarReload();
+                    break;
+                case BottomBarItemAdapter.TYPE_SHARE:
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHARE, null);
+                    TelemetryWrapper.clickToolbarShare();
+                    break;
+                case BottomBarItemAdapter.TYPE_NEXT:
+                    if (canGoForward()) {
+                        goForward();
+                    }
+                    TelemetryWrapper.clickToolbarForward();
+                    break;
                 default:
                     throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
             }
@@ -493,8 +526,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
         bottomBarViewModel.getItems().observe(this, items -> {
             bottomBarItemAdapter.setItems(items);
-            if (isTabRestoredComplete()) {
-                bottomBarItemAdapter.setTabCount(sessionManager.getTabsCount());
+            Session current = sessionManager.getFocusSession();
+            if (current != null) {
+                bindBookmarkButtonState(current.getUrl());
+                bottomBarItemAdapter.setCanGoForward(canGoForward());
             }
         });
 
@@ -655,8 +690,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             }
         }
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
-        // check if newer config exists when Browser screen go foreground
-        bottomBarViewModel.refresh();
     }
 
     private void initialiseNormalBrowserUi() {
@@ -789,6 +822,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         if (currentListener != null) {
             currentListener.isLoadingChanged(isLoading);
         }
+        bottomBarItemAdapter.setRefreshing(isLoading);
     }
 
     @Override
@@ -1155,6 +1189,18 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         findInPage.hide();
     }
 
+    private void bindBookmarkButtonState(String url) {
+        // unsubscribe the previous subscription
+        if (bookmarkLiveData != null) {
+            bookmarkLiveData.removeObservers(this);
+        }
+        bookmarkLiveData = bookmarkViewModel.getBookmarksByUrl(url);
+        bookmarkLiveData.observe(this, bookmarks -> {
+            boolean activateBookmark = bookmarks != null && bookmarks.size() > 0;
+            bottomBarItemAdapter.setBookmark(activateBookmark);
+        });
+    }
+
     class SessionObserver implements Session.Observer, TabViewEngineSession.Client {
         @Nullable
         private Session session;
@@ -1190,7 +1236,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 updateIsLoading(false);
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.UPDATE_MENU, null);
                 backgroundTransition.startTransition(ANIMATION_DURATION);
-
             }
         }
 
@@ -1205,6 +1250,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 return;
             }
             updateURL(url);
+            bindBookmarkButtonState(url);
         }
 
         @Override
@@ -1423,6 +1469,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         @Override
         public void onNavigationStateChanged(@NotNull Session session, boolean canGoBack, boolean canGoForward) {
+            bottomBarItemAdapter.setCanGoForward(canGoForward);
         }
 
         @Override
@@ -1517,6 +1564,14 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             siteIdentity.setImageLevel(identity);
 
             hideFindInPage();
+
+            Session current = sessionManager.getFocusSession();
+            if (current != null) {
+                bindBookmarkButtonState(current.getUrl());
+                bottomBarItemAdapter.setCanGoForward(canGoForward());
+            }
+            // check if newer config exists whenever navigating to Browser screen
+            bottomBarViewModel.refresh();
         }
 
         @SuppressWarnings("SameParameterValue")
