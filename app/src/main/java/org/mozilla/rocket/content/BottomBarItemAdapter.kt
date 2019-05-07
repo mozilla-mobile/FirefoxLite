@@ -10,13 +10,13 @@ import android.widget.ImageView
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.tabs.TabCounter
-import org.mozilla.rocket.content.view.BrowserBottomBar
-import org.mozilla.rocket.content.view.BrowserBottomBar.BottomBarItem
-import org.mozilla.rocket.content.view.BrowserBottomBar.BottomBarItem.ImageItem
+import org.mozilla.rocket.content.view.BottomBar
+import org.mozilla.rocket.content.view.BottomBar.BottomBarItem
+import org.mozilla.rocket.content.view.BottomBar.BottomBarItem.ImageItem
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton
 
 class BottomBarItemAdapter(
-        private val browserBottomBar: BrowserBottomBar,
+        private val bottomBar: BottomBar,
         private val theme: Theme = Theme.LIGHT
 ) {
     private var items: List<BottomBarItem>? = null
@@ -24,7 +24,7 @@ class BottomBarItemAdapter(
     fun setItems(types: List<ItemData>) {
         convertToItems(types).let {
             items = it
-            browserBottomBar.setItems(it)
+            bottomBar.setItems(it)
         }
     }
 
