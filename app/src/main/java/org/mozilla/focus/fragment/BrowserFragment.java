@@ -86,7 +86,7 @@ import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.content.BottomBarItemAdapter;
 import org.mozilla.rocket.content.BottomBarViewModel;
 import org.mozilla.rocket.content.HomeFragmentViewState;
-import org.mozilla.rocket.content.view.BrowserBottomBar;
+import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.landing.PortraitComponent;
@@ -158,6 +158,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
     private View mainContent;
     private int mainContentBottomMargin;
+    private BottomBar bottomBar;
 
     //GeoLocationPermission
     private String geolocationOrigin;
@@ -202,7 +203,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private ThemedView bottomMenuDivider;
     private ThemedView urlBarDivider;
     private View downloadIndicatorIntro;
-    private BrowserBottomBar browserBottomBar;
     private BookmarkViewModel bookmarkViewModel;
     private BottomBarViewModel bottomBarViewModel;
     private BottomBarItemAdapter bottomBarItemAdapter;
@@ -461,8 +461,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void setupBottomBar(View rootView) {
-        browserBottomBar = rootView.findViewById(R.id.browser_bottom_bar);
-        browserBottomBar.setOnItemClickListener((type, position) -> {
+        bottomBar = rootView.findViewById(R.id.browser_bottom_bar);
+        bottomBar.setOnItemClickListener((type, position) -> {
             switch (type) {
                 case BottomBarItemAdapter.TYPE_TAB_COUNTER:
                     FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
@@ -514,7 +514,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
             }
         });
-        browserBottomBar.setOnItemLongClickListener((type, position) -> {
+        bottomBar.setOnItemLongClickListener((type, position) -> {
             if (type == BottomBarItemAdapter.TYPE_MENU) {
                 // Long press menu always show download panel
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
@@ -523,7 +523,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             }
             return false;
         });
-        bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
+        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
         bottomBarViewModel.getItems().observe(this, items -> {
             bottomBarItemAdapter.setItems(items);
             Session current = sessionManager.getFocusSession();
@@ -557,7 +557,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             final Settings.EventHistory eventHistory = Settings.getInstance(getActivity()).getEventHistory();
             if (!eventHistory.contains(Settings.Event.ShowDownloadIndicatorIntro) && status != DownloadIndicatorViewModel.Status.DEFAULT) {
                 eventHistory.add(Settings.Event.ShowDownloadIndicatorIntro);
-                BrowserBottomBar.BottomBarItem menuItem = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_MENU);
+                BottomBar.BottomBarItem menuItem = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_MENU);
                 if (menuItem != null && menuItem.getView() != null) {
                     DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(this, menuItem.getView(), browserRoot, viewRef -> downloadIndicatorIntro = viewRef);
                 }
@@ -617,13 +617,13 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toolbarRoot.setVisibility(View.GONE);
-            browserBottomBar.setVisibility(View.GONE);
+            bottomBar.setVisibility(View.GONE);
             bottomMenuDivider.setVisibility(View.GONE);
             updateMainContentBottomMargin(0);
             onLandscapeModeStart();
         } else {
             toolbarRoot.setVisibility(View.VISIBLE);
-            browserBottomBar.setVisibility(View.VISIBLE);
+            bottomBar.setVisibility(View.VISIBLE);
             bottomMenuDivider.setVisibility(View.VISIBLE);
             updateMainContentBottomMargin(mainContentBottomMargin);
             onLandscapeModeFinish();

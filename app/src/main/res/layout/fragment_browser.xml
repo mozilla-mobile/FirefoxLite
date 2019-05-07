@@ -95,7 +95,7 @@
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </org.mozilla.rocket.nightmode.themed.ThemedLinearLayout>
 
-    <org.mozilla.rocket.content.view.BrowserBottomBar
+    <org.mozilla.rocket.content.view.BottomBar
         android:id="@+id/browser_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fixed_menu_height"
@@ -105,7 +105,7 @@
         android:id="@+id/bottom_menu_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/browser_bottom_bar"
+        android:layout_above="@id/browser_bottom_bar"
         android:background="@drawable/browser_menu_divider"
         tools:background="#FF0000" />
 

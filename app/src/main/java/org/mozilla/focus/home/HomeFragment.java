@@ -89,7 +89,7 @@ import org.mozilla.rocket.content.BottomBarViewModel;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
-import org.mozilla.rocket.content.view.BrowserBottomBar;
+import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
@@ -509,12 +509,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setupBottomBar(View rootView) {
-        BrowserBottomBar browserBottomBar = rootView.findViewById(R.id.bottom_bar);
-        browserBottomBar.setItemVisibility(1, View.INVISIBLE);
-        browserBottomBar.setItemVisibility(2, View.INVISIBLE);
-        browserBottomBar.setItemVisibility(3, View.INVISIBLE);
+        BottomBar bottomBar = rootView.findViewById(R.id.bottom_bar);
+        bottomBar.setItemVisibility(1, View.INVISIBLE);
+        bottomBar.setItemVisibility(2, View.INVISIBLE);
+        bottomBar.setItemVisibility(3, View.INVISIBLE);
         final Activity parent = getActivity();
-        browserBottomBar.setOnItemClickListener((type, position) -> {
+        bottomBar.setOnItemClickListener((type, position) -> {
             switch (type) {
                 case BottomBarItemAdapter.TYPE_TAB_COUNTER:
                     if (parent instanceof FragmentListener) {
@@ -530,7 +530,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
             }
         });
-        browserBottomBar.setOnItemLongClickListener((type, position) -> {
+        bottomBar.setOnItemLongClickListener((type, position) -> {
             if (type == BottomBarItemAdapter.TYPE_MENU) {
                 if (parent instanceof FragmentListener) {
                     FragmentListener listener = (FragmentListener) parent;
@@ -542,7 +542,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             return false;
         });
-        bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar, BottomBarItemAdapter.Theme.DARK.INSTANCE);
+        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.DARK.INSTANCE);
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, items -> {
             bottomBarItemAdapter.setItems(items);
@@ -570,7 +570,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setTabCounterEnabled(boolean enabled) {
-        BrowserBottomBar.BottomBarItem tabCounterItem = bottomBarItemAdapter.findItem(TYPE_TAB_COUNTER);
+        BottomBar.BottomBarItem tabCounterItem = bottomBarItemAdapter.findItem(TYPE_TAB_COUNTER);
         if (tabCounterItem != null && tabCounterItem.getView() != null) {
             View tabCounter = tabCounterItem.getView();
             if (enabled) {
