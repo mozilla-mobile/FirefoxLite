@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.support.annotation.VisibleForTesting;
 
 import org.mozilla.focus.R;
 
@@ -12,11 +11,7 @@ import java.util.HashSet;
 
 public class ThemeManager {
 
-    private static final int ONBOARDING_VERSION = 1;
-
     private static final String PREF_KEY_STRING_CURRENT_THEME = "pref_key_string_current_theme";
-    @VisibleForTesting
-    public static final String PREF_KEY_INT_ONBOARDING_VERSION = "pref_key_int_onboarding_version";
 
     public interface Themeable {
         void onThemeChanged();
@@ -69,15 +64,6 @@ public class ThemeManager {
         saveCurrentTheme(getSharedPreferences(baseContext), themeSet);
         currentThemeSet = themeSet;
         dirty = true;
-    }
-
-    public static boolean shouldShowOnboarding(Context context) {
-        int currentOnBoardingVersion = getSharedPreferences(context).getInt(PREF_KEY_INT_ONBOARDING_VERSION, 0);
-        return currentOnBoardingVersion < ONBOARDING_VERSION;
-    }
-
-    public static void dismissOnboarding(Context context) {
-        getSharedPreferences(context).edit().putInt(PREF_KEY_INT_ONBOARDING_VERSION, ONBOARDING_VERSION).apply();
     }
 
     public static String getCurrentThemeName(Context context) {
