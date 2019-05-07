@@ -5,6 +5,7 @@ import android.support.annotation.Keep;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
+import static android.support.test.espresso.Espresso.onIdle;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -36,6 +38,11 @@ public class ClearBrowsingDataTest {
                 .build()
                 .execute();
         activityRule.launchActivity(new Intent());
+    }
+
+    @After
+    public void tearDown() {
+        onIdle();
     }
 
     /**
