@@ -199,6 +199,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private ImageView downloadIndicator;
     private View downloadIndicatorIntro;
 
+    private long landscapeStartTime = 0L;
+
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
@@ -543,11 +545,27 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             toolbarRoot.setVisibility(View.GONE);
             bottomMenuContainer.setVisibility(View.GONE);
             bottomMenuDivider.setVisibility(View.GONE);
+            onLandscapeModeStart();
         } else {
             toolbarRoot.setVisibility(View.VISIBLE);
             bottomMenuContainer.setVisibility(View.VISIBLE);
             bottomMenuDivider.setVisibility(View.VISIBLE);
+            onLandscapeModeFinish();
         }
+    }
+
+    private void onLandscapeModeStart() {
+        landscapeStartTime = System.currentTimeMillis();
+        TelemetryWrapper.enterLandscapeMode();
+    }
+
+    private void onLandscapeModeFinish() {
+        if (landscapeStartTime == 0L) {
+            return;
+        }
+        long duration = System.currentTimeMillis() - landscapeStartTime;
+        TelemetryWrapper.exitLandscapeMode(duration);
+        landscapeStartTime = 0L;
     }
 
     public void onCaptureClicked() {
