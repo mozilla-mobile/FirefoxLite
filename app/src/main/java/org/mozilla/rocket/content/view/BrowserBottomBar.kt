@@ -89,7 +89,7 @@ class BrowserBottomBar : FrameLayout {
 
         abstract fun createView(context: Context): View
 
-        class ImageItem(
+        open class ImageItem(
                 type: Int,
                 private val drawableResId: Int,
                 private val tintResId: Int

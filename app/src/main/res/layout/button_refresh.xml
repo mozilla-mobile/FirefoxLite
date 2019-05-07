@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_loading"
+    style="@style/MainMenuBrowsingButton">
+
+    <org.mozilla.rocket.nightmode.themed.ThemedImageButton
+        android:id="@+id/action_refresh"
+        style="@style/MainMenuButton"
+        android:layout_gravity="center"
+        android:contentDescription="@string/content_description_reload"
+        android:src="@drawable/action_refresh"
+        android:clickable="false" />
+
+    <org.mozilla.rocket.nightmode.themed.ThemedImageButton
+        android:id="@+id/action_stop"
+        style="@style/MainMenuButton"
+        android:layout_gravity="center"
+        android:contentDescription="@string/content_description_stop"
+        android:src="@drawable/edit_close"
+        android:clickable="false"
+        android:visibility="gone" />
+
+</FrameLayout>
