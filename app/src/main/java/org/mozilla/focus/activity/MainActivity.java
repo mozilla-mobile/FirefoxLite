@@ -1123,10 +1123,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     public void onQueryComplete(List<SessionManager.SessionWithState> states, String currentTabId) {
         isTabRestoredComplete = true;
         getSessionManager().restore(states, currentTabId);
-        Session currentTab = getSessionManager().getFocusSession();
-        if (!Settings.getInstance(this).shouldShowFirstrun() && currentTab != null && !getSupportFragmentManager().isStateSaved()) {
-            screenNavigator.restoreBrowserScreen(currentTab.getId());
-        }
     }
 
     private void restoreTabsFromPersistence() {
