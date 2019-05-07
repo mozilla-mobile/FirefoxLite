@@ -10,7 +10,6 @@ import android.view.View
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.utils.AppConfigWrapper
-import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.SupportUtils
 
 object LifeFeedOnboarding {
@@ -20,15 +19,13 @@ object LifeFeedOnboarding {
 
     @JvmStatic
     fun shouldShow(context: Context): Boolean {
-        val featureNotice = NewFeatureNotice.getInstance(context)
-        val shouldShowNews = shouldShowOnboarding(context) && AppConfigWrapper.hasNewsPortal()
-        val shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding()
-        return shouldShowNews || shouldShowShoppingLink
+        val shouldShowNews = AppConfigWrapper.hasNewsPortal()
+        val shouldShowShoppingLink = AppConfigWrapper.hasEcommerceShoppingLink()
+        return shouldShowOnboarding(context) && (shouldShowNews || shouldShowShoppingLink)
     }
 
     @JvmStatic
     fun hasShown(context: Context) {
-        NewFeatureNotice.getInstance(context).hasShownEcShoppingLink()
         hasShownOnboarding(context)
     }
 

@@ -8,8 +8,6 @@ import android.widget.Switch;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
 
 public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
@@ -35,14 +33,6 @@ public class DefaultFirstrunPagerAdapter extends FirstrunPagerAdapter {
                 context.getString(R.string.first_run_page3_title),
                 context.getString(R.string.first_run_page3_text),
                 "first_run_img_3.json"));
-
-        final NewFeatureNotice featureNotice = NewFeatureNotice.getInstance(context);
-        final boolean shouldShowShoppingLink = featureNotice.shouldShowEcShoppingLinkOnboarding();
-
-        if (AppConfigWrapper.hasNewsPortal() || shouldShowShoppingLink) {
-            featureNotice.hasShownEcShoppingLink();
-            this.pages.add(FirstRunLibrary.buildLifeFeedFirstrun(context));
-        }
     }
 
     @Override
