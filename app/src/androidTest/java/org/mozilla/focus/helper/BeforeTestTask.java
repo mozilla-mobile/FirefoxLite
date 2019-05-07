@@ -6,8 +6,6 @@
 package org.mozilla.focus.helper;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 
 import org.mozilla.focus.Inject;
@@ -16,20 +14,18 @@ import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.theme.ThemeManager;
+import org.mozilla.rocket.content.LifeFeedOnboarding;
 
 public class BeforeTestTask {
     private boolean enableRateAppPromotion;
     private boolean skipFirstRun;
     private boolean clearBrowsingHistory;
-    private boolean skipColorThemeOnBoarding;
     private boolean enableSreenshotOnBoarding;
 
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
         this.skipFirstRun = builder.skipFirstRun;
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
-        this.skipColorThemeOnBoarding = builder.skipColorThemeOnBoarding;
         this.enableSreenshotOnBoarding = builder.enableSreenshotOnBoarding;
     }
 
@@ -41,7 +37,7 @@ public class BeforeTestTask {
 
         if (this.skipFirstRun) {
             NewFeatureNotice.getInstance(context).setLiteUpdateDidShow();
-            ThemeManager.dismissOnboarding(context);
+            LifeFeedOnboarding.hasShown(context);
         } else {
             NewFeatureNotice.getInstance(context).resetFirstRunDidShow();
         }
@@ -61,13 +57,6 @@ public class BeforeTestTask {
             BrowsingHistoryManager.getInstance().deleteAll(null);
         }
 
-        if (this.skipColorThemeOnBoarding) {
-            ThemeManager.dismissOnboarding(context);
-        } else {
-            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
-            sharedPreferences.edit().putInt(ThemeManager.PREF_KEY_INT_ONBOARDING_VERSION, Integer.MIN_VALUE).apply();
-        }
-
         Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
         BookmarksDatabase.getInstance(context).bookmarkDao().deleteAllBookmarks();
         AndroidTestUtils.setFocusTabId("");
@@ -82,13 +71,11 @@ public class BeforeTestTask {
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
         private boolean clearBrowsingHistory;
-        private boolean skipColorThemeOnBoarding;
 
         public Builder() {
             this.enableRateAppPromotion = false;
             this.skipFirstRun = true;
             this.clearBrowsingHistory = false;
-            this.skipColorThemeOnBoarding = true;
             this.enableSreenshotOnBoarding = false;
         }
 
@@ -104,11 +91,6 @@ public class BeforeTestTask {
 
         public Builder clearBrowsingHistory() {
             this.clearBrowsingHistory = true;
-            return this;
-        }
-
-        public Builder setSkipColorThemeOnBoarding(boolean skipThemeOnBoarding) {
-            this.skipColorThemeOnBoarding = skipThemeOnBoarding;
             return this;
         }
 

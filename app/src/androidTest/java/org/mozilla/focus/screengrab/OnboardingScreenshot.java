@@ -43,7 +43,6 @@ public class OnboardingScreenshot extends BaseScreenshot {
     public void setUp() {
         new BeforeTestTask.Builder()
                 .setSkipFirstRun(false)
-                .setSkipColorThemeOnBoarding(false)
                 .build()
                 .execute();
         activityTestRule.launchActivity(new Intent());
@@ -70,12 +69,6 @@ public class OnboardingScreenshot extends BaseScreenshot {
 
         // Click finish button to finish on boarding
         onView(allOf(withId(R.id.finish), isDisplayed())).perform(click());
-
-        onView(withId(R.id.fragment_homescreen_theme_onboarding)).check(matches(isDisplayed()));
-
-        Screengrab.screenshot(ScreenshotNamingUtils.ONBOARDING_COLOR_THEME);
-
-        onView(withId(R.id.fragment_homescreen_theme_onboarding)).perform(click());
 
         // Show my shot onboarding view
         activityTestRule.getActivity().runOnUiThread(activityTestRule.getActivity()::showMyShotOnBoarding);
