@@ -40,6 +40,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -52,6 +53,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -93,6 +95,7 @@ import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.lite.partner.NewsItem;
 import org.mozilla.rocket.content.ContentPortalView;
+import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.NewsPresenter;
 import org.mozilla.rocket.content.NewsViewContract;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
@@ -144,7 +147,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Nullable private ImageButton arrow2;
     @Nullable private ContentPortalView contentPanel;
 
-    private View themeOnboardingLayer;
+    private View lifeFeedOnboardingLayer;
     private TabCounter tabCounter;
     private ThemedTextView fakeInput;
     private HomeScreenBackground homeScreenBackground;
@@ -627,15 +630,17 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         SwipeMotionLayout home_container = view.findViewById(R.id.home_container);
         home_container.setOnSwipeListener(new GestureListenerAdapter());
 
-        if (ThemeManager.shouldShowOnboarding(view.getContext())) {
-            LayoutInflater.from(view.getContext()).inflate(R.layout.fragment_homescreen_themetoy, home_container);
-            themeOnboardingLayer = home_container.findViewById(R.id.fragment_homescreen_theme_onboarding);
-            themeOnboardingLayer.setOnClickListener(v -> {
-                if (themeOnboardingLayer != null) {
-                    ThemeManager.dismissOnboarding(themeOnboardingLayer.getContext().getApplicationContext());
-                    ((ViewGroup) themeOnboardingLayer.getParent()).removeView(themeOnboardingLayer);
-                    themeOnboardingLayer = null;
-                }
+        if (LifeFeedOnboarding.shouldShow(getContext())) {
+            LifeFeedOnboarding.hasShown(getContext());
+
+            LayoutInflater.from(view.getContext()).inflate(R.layout.fragment_homescreen_life_feed_onboarding, home_container);
+            final TextView contentTextView = home_container.findViewById(R.id.life_feed_onboarding_content);
+            contentTextView.setText(LifeFeedOnboarding.getContentText(getContext()));
+            contentTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+            lifeFeedOnboardingLayer = home_container.findViewById(R.id.life_feed_onboarding_root);
+            lifeFeedOnboardingLayer.setOnClickListener(v -> {
+                dismissLifeFeedOnboarding();
             });
         }
 
@@ -670,6 +675,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         return view;
+    }
+
+    private void dismissLifeFeedOnboarding() {
+        if (lifeFeedOnboardingLayer != null) {
+            ((ViewGroup) lifeFeedOnboardingLayer.getParent()).removeView(lifeFeedOnboardingLayer);
+            lifeFeedOnboardingLayer = null;
+        }
     }
 
     @Override
@@ -736,6 +748,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         timer.cancel();
         timer = null;
         stopAnimation();
+
+        dismissLifeFeedOnboarding();
     }
 
     private void stopAnimation() {
