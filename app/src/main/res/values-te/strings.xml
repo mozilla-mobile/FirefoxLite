@@ -183,7 +183,7 @@
   <string name="remove">తొలగించు</string>
   <string name="pin_site">సైటును పిన్‌చేయి</string>
   <string name="privacy_policy_update_notification_title">ఉత్పత్తి తాజాకరణ గమనిక</string>
-  <string name="privacy_policy_update_notification_action">Firefox Rocket‌ని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. తెలుసుకోడానికి తాకండి.</string>
+  <string name="privacy_policy_update_notification_action">Firefox Liteని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. ఇంకా తెలుసుకోడానికి తాకండి.</string>
   <string name="rate_app_dialog_text_title">%1$s నచ్చిందా?</string>
   <string name="rate_app_dialog_text_content">మా ఉత్పాదనను ఎంచుకున్నందుకు కృతజ్ఞతలు. మీ ప్రతిస్పందన మాకు చాలా ముఖ్యం.</string>
   <string name="rate_app_dialog_btn_go_rate">మమ్మల్ని రేట్ చేయండి</string>
