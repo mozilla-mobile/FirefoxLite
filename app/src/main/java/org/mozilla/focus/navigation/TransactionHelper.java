@@ -7,6 +7,8 @@ package org.mozilla.focus.navigation;
 
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +29,7 @@ import static org.mozilla.focus.navigation.ScreenNavigator.URL_INPUT_FRAGMENT_TA
 class TransactionHelper implements DefaultLifecycleObserver {
     private final ScreenNavigator.HostActivity activity;
     private BackStackListener backStackListener;
+    private MutableLiveData<String> topFragmentState = new MutableLiveData<>();
 
     private static final String ENTRY_TAG_SEPARATOR = "#";
 
@@ -141,6 +144,10 @@ class TransactionHelper implements DefaultLifecycleObserver {
         return manager.findFragmentByTag(tag);
     }
 
+    LiveData<String> getTopFragmentState() {
+        return topFragmentState;
+    }
+
     private FragmentTransaction prepareFirstRun() {
         final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         final ScreenNavigator.Screen screen = this.activity.createFirstRunScreen();
@@ -212,6 +219,10 @@ class TransactionHelper implements DefaultLifecycleObserver {
         return manager == null || manager.isStateSaved();
     }
 
+    private void onFragmentBroughtToFront(String fragmentTag) {
+        topFragmentState.setValue(fragmentTag);
+    }
+
     private static class BackStackListener implements FragmentManager.OnBackStackChangedListener {
         private Runnable stateRunnable;
         private TransactionHelper helper;
@@ -228,6 +239,9 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
             FragmentManager manager = this.helper.activity.getSupportFragmentManager();
             Fragment fragment = manager.findFragmentById(R.id.browser);
+
+            notifyTopFragment(manager);
+
             if (fragment instanceof BrowserScreen) {
                 setBrowserState(shouldKeepBrowserRunning(this.helper), this.helper);
             }
@@ -296,6 +310,16 @@ class TransactionHelper implements DefaultLifecycleObserver {
                 this.stateRunnable.run();
                 this.stateRunnable = null;
             }
+        }
+
+        private void notifyTopFragment(FragmentManager manager) {
+            int entryCount = manager.getBackStackEntryCount();
+            String fragmentTag = "";
+            if (entryCount > 0) {
+                FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(entryCount - 1);
+                fragmentTag = helper.getEntryTag(entry);
+            }
+            helper.onFragmentBroughtToFront(fragmentTag);
         }
 
         @Nullable
