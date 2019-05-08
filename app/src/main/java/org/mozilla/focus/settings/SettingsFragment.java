@@ -26,6 +26,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.*;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
+import org.mozilla.telemetry.TelemetryHolder;
 
 import java.util.Locale;
 
@@ -83,10 +84,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             final Intent debugShare = new Intent();
             debugShare.setAction(Intent.ACTION_SEND);
             debugShare.setType("text/plain");
+            String testingId = "";
             final FirebaseContract firebase = FirebaseHelper.getFirebase();
             if (firebase != null) {
-                debugShare.putExtra(Intent.EXTRA_TEXT, firebase.getFcmToken());
+                testingId += firebase.getFcmToken() + "\n\n";
             }
+            testingId += TelemetryHolder.get().getClientId();
+            debugShare.putExtra(Intent.EXTRA_TEXT, testingId);
             startActivity(Intent.createChooser(debugShare, "This token is only for QA to test in Nightly and debug build"));
             return true;
         }
