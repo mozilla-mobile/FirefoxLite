@@ -84,6 +84,7 @@ import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.landing.OrientationState;
+import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
@@ -396,8 +397,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         menu.setContentView(sheet);
         menu.setCanceledOnTouchOutside(true);
 
-        menu.setOnShowListener(dialog -> portraitStateModel.request(menu));
-        menu.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(menu));
+        menu.setOnShowListener(dialog -> portraitStateModel.request(PortraitComponent.BottomMenu.INSTANCE));
+        menu.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.BottomMenu.INSTANCE));
 
         myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
         nextButton = menu.findViewById(R.id.action_next);
@@ -507,8 +508,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         ListPanelDialog dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
 
-        portraitStateModel.request(dialogFragment);
-        dialogFragment.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(dialogFragment));
+        portraitStateModel.request(PortraitComponent.ListPanelDialog.INSTANCE);
+        dialogFragment.setOnDismissListener(dialog ->
+                portraitStateModel.cancelRequest(PortraitComponent.ListPanelDialog.INSTANCE));
 
         dialogFragment.show(getSupportFragmentManager(), "");
         mDialogFragment = dialogFragment;
@@ -1021,8 +1023,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             case SHOW_TAB_TRAY: {
                 TabTrayFragment tabTray = TabTray.show(getSupportFragmentManager());
                 if (tabTray != null) {
-                    tabTray.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(tabTray));
-                    portraitStateModel.request(tabTray);
+                    tabTray.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.TabTray.INSTANCE));
+                    portraitStateModel.request(PortraitComponent.TabTray.INSTANCE);
                 }
                 break;
             }

@@ -83,6 +83,7 @@ import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
@@ -709,8 +710,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
         PortraitStateModel portraitState = getPortraitStateModel();
         if (portraitState != null) {
-            portraitState.request(capturingFragment);
-            capturingFragment.addOnDismissListener(dialog -> portraitState.cancelRequest(capturingFragment));
+            portraitState.request(PortraitComponent.ScreenCapture.INSTANCE);
+            capturingFragment.addOnDismissListener(dialog ->
+                    portraitState.cancelRequest(PortraitComponent.ScreenCapture.INSTANCE));
         }
 
         capturingFragment.show(getChildFragmentManager(), "capturingFragment");
@@ -1104,13 +1106,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     public void showFindInPage() {
         final Session focusTab = sessionManager.getFocusSession();
         if (focusTab != null) {
-            View findInPageView = findInPage.getView();
-
             PortraitStateModel portraitState = getPortraitStateModel();
             if (portraitState != null) {
-                portraitState.request(findInPageView);
+                portraitState.request(PortraitComponent.FindInPage.INSTANCE);
                 findInPage.setOnDismissListener(view -> {
-                    portraitState.cancelRequest(findInPageView);
+                    portraitState.cancelRequest(PortraitComponent.FindInPage.INSTANCE);
                     return null;
                 });
             }
