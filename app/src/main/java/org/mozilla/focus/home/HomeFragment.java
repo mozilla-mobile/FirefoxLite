@@ -86,6 +86,7 @@ import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.content.BottomBarItemAdapter;
 import org.mozilla.rocket.content.BottomBarViewModel;
+import org.mozilla.rocket.content.ChromeViewModel;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
@@ -116,7 +117,6 @@ import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DEF
 import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
 import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
 import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_WARNING;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.TYPE_TAB_COUNTER;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View, TopSitesContract.Model,
         ScreenNavigator.HomeScreen, BannerHelper.HomeBannerHelperListener {
@@ -128,7 +128,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public static final int TOP_SITES_QUERY_MIN_VIEW_COUNT = 6;
     private static final int MSG_ID_REFRESH = 8269;
 
-    private static final float ALPHA_TAB_COUNTER_DISABLED = 0.3f;
     public static final String BANNER_MANIFEST_DEFAULT = "";
 
     private TopSitesContract.Presenter presenter;
@@ -153,6 +152,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private BroadcastReceiver receiver;
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
+    private ChromeViewModel chromeViewModel;
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> homeBannerObserver = bannerHelper::setUpHomeBannerFromConfig;
     private BottomBarItemAdapter bottomBarItemAdapter;
@@ -178,6 +178,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter.setView(this);
         this.presenter.setModel(this);
         bannerHelper.setListener(this);
+        chromeViewModel = Inject.obtainChromeViewModel(getActivity());
     }
 
     @Override
@@ -277,12 +278,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         this.fakeInput = view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(v -> {
-            final Activity parent = getActivity();
-            if (parent instanceof FragmentListener) {
-                ((FragmentListener) parent).onNotified(HomeFragment.this,
-                        FragmentListener.TYPE.SHOW_URL_INPUT,
-                        null);
-            }
+            chromeViewModel.getShowUrlInput().call();
             TelemetryWrapper.showSearchBarHome();
         });
         this.homeBanner = view.findViewById(R.id.banner);
@@ -513,18 +509,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         bottomBar.setItemVisibility(1, View.INVISIBLE);
         bottomBar.setItemVisibility(2, View.INVISIBLE);
         bottomBar.setItemVisibility(3, View.INVISIBLE);
-        final Activity parent = getActivity();
         bottomBar.setOnItemClickListener((type, position) -> {
             switch (type) {
                 case BottomBarItemAdapter.TYPE_TAB_COUNTER:
-                    if (parent instanceof FragmentListener) {
-                        FragmentListener listener = (FragmentListener) parent;
-                        listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
-                        TelemetryWrapper.showTabTrayHome();
-                    }
+                    chromeViewModel.getShowTabTray().call();
+                    TelemetryWrapper.showTabTrayHome();
                     break;
                 case BottomBarItemAdapter.TYPE_MENU:
-                    showMenu();
+                    chromeViewModel.getShowMenu().call();
+                    TelemetryWrapper.showMenuHome();
                     break;
                 default:
                     throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
@@ -532,55 +525,24 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         });
         bottomBar.setOnItemLongClickListener((type, position) -> {
             if (type == BottomBarItemAdapter.TYPE_MENU) {
-                if (parent instanceof FragmentListener) {
-                    FragmentListener listener = (FragmentListener) parent;
-                    // Long press menu always show download panel
-                    listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
-                    TelemetryWrapper.longPressDownloadIndicator();
-                }
+                chromeViewModel.getShowDownloadPanel().call();
+                TelemetryWrapper.longPressDownloadIndicator();
                 return true;
             }
             return false;
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.DARK.INSTANCE);
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
-        bottomBarViewModel.getItems().observe(this, items -> {
-            bottomBarItemAdapter.setItems(items);
-            updateTabCounter();
+        bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
+
+        chromeViewModel.getTabCount().observe(this, pair -> {
+            int count = pair.getFirst();
+            boolean needAnimation = pair.getSecond();
+            bottomBarItemAdapter.setTabCount(count, needAnimation);
         });
+        chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
 
         setupDownloadIndicator();
-    }
-
-    private void showMenu() {
-        Activity parent = getActivity();
-        if (parent instanceof FragmentListener) {
-            FragmentListener listener = (FragmentListener) parent;
-            listener.onNotified(HomeFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
-            TelemetryWrapper.showMenuHome();
-        }
-    }
-
-    private void updateTabCounter() {
-        int tabCount = sessionManager != null ? sessionManager.getTabsCount() : 0;
-        if (isTabRestoredComplete()) {
-            bottomBarItemAdapter.setTabCount(tabCount);
-        }
-        setTabCounterEnabled(tabCount > 0);
-    }
-
-    private void setTabCounterEnabled(boolean enabled) {
-        BottomBar.BottomBarItem tabCounterItem = bottomBarItemAdapter.findItem(TYPE_TAB_COUNTER);
-        if (tabCounterItem != null && tabCounterItem.getView() != null) {
-            View tabCounter = tabCounterItem.getView();
-            if (enabled) {
-                tabCounter.setEnabled(true);
-                tabCounter.setAlpha(1f);
-            } else {
-                tabCounter.setEnabled(false);
-                tabCounter.setAlpha(ALPHA_TAB_COUNTER_DISABLED);
-            }
-        }
     }
 
     private void setupDownloadIndicator() {
@@ -940,7 +902,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         @Override
         public void onSessionCountChanged(int count) {
-            updateTabCounter();
+            int tabCount = sessionManager != null ? sessionManager.getTabsCount() : 0;
+            if (isTabRestoredComplete()) {
+                chromeViewModel.onTabCountChanged(tabCount);
+            }
         }
 
         @Override
@@ -988,7 +953,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             if (contentPanel != null) {
                 showContentPortal();
             } else {
-                showMenu();
+                chromeViewModel.getShowMenu().call();
+                TelemetryWrapper.showMenuHome();
             }
         }
 
@@ -1062,7 +1028,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     public void setNightModeEnabled(boolean enable) {
         fakeInput.setNightMode(enable);
-        bottomBarItemAdapter.setNightMode(enable);
         homeScreenBackground.setNightMode(enable);
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             final ThemedTextView item = recyclerView.getChildAt(i).findViewById(R.id.text);

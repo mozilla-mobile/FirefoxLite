@@ -32,6 +32,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.pm.ShortcutManagerCompat;
+import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -82,6 +83,11 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
+import org.mozilla.rocket.content.BottomBarItemAdapter;
+import org.mozilla.rocket.content.ChromeViewModel;
+import org.mozilla.rocket.content.HomeFragmentViewState;
+import org.mozilla.rocket.content.MenuViewModel;
+import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.landing.OrientationState;
 import org.mozilla.rocket.landing.PortraitComponent;
@@ -121,15 +127,10 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private String pendingUrl;
 
     private BottomSheetDialog menu;
+    private BottomBarItemAdapter bottomBarItemAdapter;
+    private MenuViewModel menuViewModel;
     private View myshotIndicator;
-    private View nextButton;
-    private View loadingButton;
-    private View shareButton;
     private View myshotButton;
-    private View bookmarkIcon;
-    private View refreshIcon;
-    private View stopIcon;
-    private View pinShortcut;
     private View snackBarContainer;
     private View privateModeButton;
     private View nightModeButton;
@@ -148,6 +149,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     private static final String LOG_TAG = "MainActivity";
 
+    private ChromeViewModel chromeViewModel;
     private BookmarkViewModel bookmarkViewModel;
 
     private ThemeManager themeManager;
@@ -180,6 +182,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     protected void onCreate(Bundle savedInstanceState) {
         themeManager = new ThemeManager(this);
         super.onCreate(savedInstanceState);
+        chromeViewModel = Inject.obtainChromeViewModel(this);
+        downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
 
         asyncInitialize();
 
@@ -229,6 +233,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 .registerOnSharedPreferenceChangeListener(this);
 
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
+        observeChromeAction();
 
         monitorOrientationState();
     }
@@ -400,21 +405,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         menu.setOnShowListener(dialog -> portraitStateModel.request(PortraitComponent.BottomMenu.INSTANCE));
         menu.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.BottomMenu.INSTANCE));
 
+        setupMenuBottomBar(menu);
+
         myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
-        nextButton = menu.findViewById(R.id.action_next);
-        loadingButton = menu.findViewById(R.id.action_loading);
         privateModeButton = menu.findViewById(R.id.btn_private_browsing);
         privateModeIndicator = menu.findViewById(R.id.menu_private_mode_indicator);
-        shareButton = menu.findViewById(R.id.action_share);
-        bookmarkIcon = menu.findViewById(R.id.action_bookmark);
-        refreshIcon = menu.findViewById(R.id.action_refresh);
-        stopIcon = menu.findViewById(R.id.action_stop);
-        pinShortcut = menu.findViewById(R.id.action_pin_shortcut);
         myshotButton = menu.findViewById(R.id.menu_screenshots);
-        final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
-        if (!requestPinShortcutSupported) {
-            pinShortcut.setVisibility(View.GONE);
-        }
 
         turboModeButton = menu.findViewById(R.id.menu_turbomode);
         turboModeButton.setSelected(isTurboEnabled());
@@ -425,6 +421,81 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         nightModeButton = menu.findViewById(R.id.menu_night_mode);
         nightModeButton.setOnLongClickListener(onLongClickListener);
         nightModeButton.setSelected(isNightModeEnabled(Settings.getInstance(getApplicationContext())));
+    }
+
+    private void setupMenuBottomBar(AppCompatDialog dialog) {
+        BottomBar bottomBar = dialog.findViewById(R.id.menu_bottom_bar);
+        bottomBar.setOnItemClickListener((type, position) -> {
+            menu.cancel();
+            switch (type) {
+                case BottomBarItemAdapter.TYPE_TAB_COUNTER:
+                    chromeViewModel.getShowTabTray().call();
+                    TelemetryWrapper.showTabTrayToolbar();
+                    break;
+                case BottomBarItemAdapter.TYPE_MENU:
+                    chromeViewModel.getShowMenu().call();
+                    TelemetryWrapper.showMenuToolbar();
+                    break;
+                case BottomBarItemAdapter.TYPE_NEW_TAB:
+                    chromeViewModel.getShowNewTab().call();
+                    TelemetryWrapper.clickAddTabToolbar();
+                    break;
+                case BottomBarItemAdapter.TYPE_SEARCH:
+                    chromeViewModel.getShowUrlInput().call();
+                    TelemetryWrapper.clickToolbarSearch();
+                    break;
+                case BottomBarItemAdapter.TYPE_CAPTURE:
+                    chromeViewModel.getDoScreenshot().call();
+                    // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
+                    break;
+                case BottomBarItemAdapter.TYPE_PIN_SHORTCUT:
+                    chromeViewModel.getPinShortcut().call();
+                    TelemetryWrapper.clickAddToHome();
+                    break;
+                case BottomBarItemAdapter.TYPE_BOOKMARK:
+                    chromeViewModel.getToggleBookmark().call();
+                    break;
+                case BottomBarItemAdapter.TYPE_REFRESH:
+                    chromeViewModel.getRefreshOrStop().call();
+                    TelemetryWrapper.clickToolbarReload();
+                    break;
+                case BottomBarItemAdapter.TYPE_SHARE:
+                    chromeViewModel.getShare().call();
+                    TelemetryWrapper.clickToolbarShare();
+                    break;
+                case BottomBarItemAdapter.TYPE_NEXT:
+                    chromeViewModel.getGoNext().call();
+                    TelemetryWrapper.clickToolbarForward();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
+            }
+        });
+        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
+        menuViewModel = Inject.obtainMenuViewModel(this);
+        menuViewModel.getBottomItems().observe(this, bottomItems -> {
+            bottomBarItemAdapter.setItems(bottomItems);
+            hidePinShortcutButtonIfNotSupported();
+        });
+        menuViewModel.isBottomBarEnabled().observe(this, bottomBarItemAdapter::setEnabled);
+
+        chromeViewModel.getTabCount().observe(this, pair -> {
+            int count = pair.getFirst();
+            boolean needAnimation = pair.getSecond();
+            bottomBarItemAdapter.setTabCount(count, needAnimation);
+        });
+        chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
+        chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
+    }
+
+    private void hidePinShortcutButtonIfNotSupported() {
+        final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
+        if (!requestPinShortcutSupported) {
+            BottomBar.BottomBarItem pinShortcutItem = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_PIN_SHORTCUT);
+            if (pinShortcutItem != null && pinShortcutItem.getView() != null) {
+                pinShortcutItem.getView().setVisibility(View.GONE);
+            }
+        }
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
@@ -479,21 +550,21 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
 
         final BrowserFragment browserFragment = getVisibleBrowserFragment();
-        final boolean canGoForward = browserFragment != null && browserFragment.canGoForward();
-        setEnable(nextButton, canGoForward);
-        setLoadingButton(browserFragment);
-        setEnable(bookmarkIcon, browserFragment != null);
-        setEnable(shareButton, browserFragment != null);
-        setEnable(pinShortcut, browserFragment != null);
+        final boolean hasFocus = browserFragment != null;
+        menuViewModel.onTabFocusChanged(hasFocus);
         Session current = getSessionManager().getFocusSession();
         if (current == null) {
             return;
         }
-
         bookmarkViewModel.getBookmarksByUrl(current.getUrl()).observe(this, bookmarks -> {
             boolean activateBookmark = bookmarks != null && bookmarks.size() > 0;
-            bookmarkIcon.setActivated(activateBookmark);
+            bottomBarItemAdapter.setBookmark(activateBookmark);
         });
+
+        boolean hasNewConfig = menuViewModel.refresh();
+        if (hasNewConfig) {
+            chromeViewModel.invalidate();
+        }
     }
 
     private boolean isTurboEnabled() {
@@ -604,7 +675,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 TelemetryWrapper.clickMenuClearCache();
                 break;
             case R.id.menu_download:
-                onDownloadClicked();
+                chromeViewModel.getShowDownloadPanel().call();
                 TelemetryWrapper.clickMenuDownload();
                 break;
             case R.id.menu_history:
@@ -628,13 +699,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 onBookmarksClicked();
                 TelemetryWrapper.clickMenuBookmark();
                 break;
-            case R.id.action_next:
-            case R.id.action_loading:
-            case R.id.action_bookmark:
-            case R.id.action_share:
-            case R.id.action_pin_shortcut:
-                onMenuBrowsingItemClicked(v);
-                break;
             default:
                 throw new RuntimeException("Unknown id in menu, onMenuItemClicked() is only for" +
                         " known ids");
@@ -657,66 +721,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (count == threshold && !Browsers.isDefaultBrowser(this)) {
             DialogUtils.showDefaultSettingNotification(this);
             TelemetryWrapper.showDefaultSettingNotification();
-        }
-    }
-
-    private void setEnable(View v, boolean enable) {
-        v.setEnabled(enable);
-        if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup) v;
-            for (int i = 0; i < vg.getChildCount(); i++) {
-                setEnable(((ViewGroup) v).getChildAt(i), enable);
-            }
-        }
-    }
-
-    private void setLoadingButton(BrowserFragment fragment) {
-        if (fragment == null) {
-            setEnable(loadingButton, false);
-            refreshIcon.setVisibility(View.VISIBLE);
-            stopIcon.setVisibility(View.GONE);
-            loadingButton.setTag(false);
-        } else {
-            setEnable(loadingButton, true);
-            boolean isLoading = fragment.isLoading();
-            refreshIcon.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-            stopIcon.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-            loadingButton.setTag(isLoading);
-        }
-    }
-
-    public void onMenuBrowsingItemClicked(View v) {
-        final BrowserFragment browserFragment = getVisibleBrowserFragment();
-        if (browserFragment == null) {
-            return;
-        }
-        switch (v.getId()) {
-            case R.id.action_next:
-                onNextClicked(browserFragment);
-                TelemetryWrapper.clickToolbarForward();
-                break;
-            case R.id.action_loading:
-                if ((boolean) v.getTag()) {
-                    onStopClicked(browserFragment);
-                } else {
-                    onRefreshClicked(browserFragment);
-                }
-                TelemetryWrapper.clickToolbarReload();
-                break;
-            case R.id.action_bookmark:
-                onBookMarkClicked();
-                break;
-            case R.id.action_share:
-                onShareClicked(browserFragment);
-                TelemetryWrapper.clickToolbarShare();
-                break;
-            case R.id.action_pin_shortcut:
-                onAddToHomeClicked();
-                TelemetryWrapper.clickAddToHome();
-                break;
-            default:
-                throw new RuntimeException("Unknown id in menu, onMenuBrowsingItemClicked() is" +
-                        " only for known ids");
         }
     }
 
@@ -811,6 +815,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void setNightModeEnabled(Settings settings, boolean enabled) {
+        chromeViewModel.onNightModeChanged(enabled);
         settings.setNightMode(enabled);
         applyNightModeBrightness(enabled, settings, getWindow());
 
@@ -836,12 +841,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (currentTab == null) {
             return;
         }
-        final boolean isActivated = bookmarkIcon.isActivated();
+        final boolean isActivated = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
         TelemetryWrapper.clickToolbarBookmark(!isActivated);
         if (isActivated) {
             bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
-            bookmarkIcon.setActivated(false);
         } else {
             if (TextUtils.isEmpty(currentTab.getUrl())) {
                 //TODO: Edge case - should add a hint for failing to add the bookmark
@@ -853,20 +857,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
             snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
             snackbar.show();
-            bookmarkIcon.setActivated(true);
         }
-    }
-
-    private void onNextClicked(final BrowserFragment browserFragment) {
-        browserFragment.goForward();
-    }
-
-    private void onRefreshClicked(final BrowserFragment browserFragment) {
-        browserFragment.reload();
-    }
-
-    private void onStopClicked(final BrowserFragment browserFragment) {
-        browserFragment.stop();
     }
 
     @Override
@@ -992,14 +983,42 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         this.screenNavigator.popToHomeScreen(false);
     }
 
+    private void observeChromeAction() {
+        chromeViewModel.getShowTabTray().observe(this, unit -> {
+            TabTrayFragment tabTray = TabTray.show(getSupportFragmentManager());
+            if (tabTray != null) {
+                tabTray.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.TabTray.INSTANCE));
+                portraitStateModel.request(PortraitComponent.TabTray.INSTANCE);
+            }
+        });
+        chromeViewModel.getShowMenu().observe(this, unit -> showMenu());
+        chromeViewModel.getShowNewTab().observe(this, unit -> {
+            HomeFragmentViewState.reset();
+            ScreenNavigator.get(this).addHomeScreen(true);
+            TelemetryWrapper.clickAddTabToolbar();
+        });
+        chromeViewModel.getShowUrlInput().observe(this, url -> {
+            if (getSupportFragmentManager().isStateSaved()) {
+                return;
+            }
+            this.screenNavigator.addUrlScreen(url);
+        });
+        chromeViewModel.getPinShortcut().observe(this, unit -> onAddToHomeClicked());
+        chromeViewModel.getToggleBookmark().observe(this, unit -> onBookMarkClicked());
+        chromeViewModel.getShare().observe(this, unit -> {
+            BrowserFragment browserFragment = getVisibleBrowserFragment();
+            if (browserFragment != null) {
+                onShareClicked(browserFragment);
+            }
+        });
+        chromeViewModel.getShowDownloadPanel().observe(this, unit -> onDownloadClicked());
+    }
+
     @Override
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
             case OPEN_PREFERENCE:
                 openPreferences();
-                break;
-            case SHOW_MENU:
-                this.showMenu();
                 break;
             case UPDATE_MENU:
                 this.updateMenu();
@@ -1010,24 +1029,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             case OPEN_URL_IN_NEW_TAB:
                 openUrl(true, payload);
                 break;
-            case SHOW_URL_INPUT:
-                if (getSupportFragmentManager().isStateSaved()) {
-                    return;
-                }
-                final String url = (payload != null) ? payload.toString() : null;
-                this.screenNavigator.addUrlScreen(url);
-                break;
             case DISMISS_URL_INPUT:
                 this.screenNavigator.popUrlScreen();
                 break;
-            case SHOW_TAB_TRAY: {
-                TabTrayFragment tabTray = TabTray.show(getSupportFragmentManager());
-                if (tabTray != null) {
-                    tabTray.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.TabTray.INSTANCE));
-                    portraitStateModel.request(PortraitComponent.TabTray.INSTANCE);
-                }
-                break;
-            }
             case REFRESH_TOP_SITE:
                 Fragment fragment = this.screenNavigator.getTopFragment();
                 if (fragment instanceof HomeFragment) {
@@ -1036,21 +1040,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 break;
             case SHOW_MY_SHOT_ON_BOARDING:
                 showMyShotOnBoarding();
-                break;
-            case SHOW_DOWNLOAD_PANEL:
-                onDownloadClicked();
-                break;
-            case PIN_SHORTCUT:
-                onAddToHomeClicked();
-                break;
-            case BOOKMARK:
-                onBookMarkClicked();
-                break;
-            case SHARE:
-                BrowserFragment browserFragment = getVisibleBrowserFragment();
-                if (browserFragment != null) {
-                    onShareClicked(browserFragment);
-                }
                 break;
             default:
                 break;
