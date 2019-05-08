@@ -53,6 +53,23 @@ class BottomBarItemAdapter(
     fun findItem(type: Int): BottomBarItem? =
             items?.find { it.type == type }
 
+    fun setEnabled(enabled: Boolean) {
+        items?.forEach { item ->
+            item.view?.let { view ->
+                setEnabled(view, enabled)
+            }
+        }
+    }
+
+    private fun setEnabled(view: View, enabled: Boolean) {
+        view.isEnabled = enabled
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                setEnabled(view.getChildAt(i), enabled)
+            }
+        }
+    }
+
     fun setNightMode(isNight: Boolean) {
         items?.forEach {
             val view = it.view
@@ -73,11 +90,20 @@ class BottomBarItemAdapter(
     fun setTabCount(count: Int, animationEnabled: Boolean = false) {
         getItems(TYPE_TAB_COUNTER)
                 .map { (it as TabCounterItem).view as TabCounter }
-                .forEach {
-                    if (animationEnabled) {
-                        it.setCount(count)
-                    } else {
-                        it.setCountWithAnimation(count)
+                .forEach { tabCounter ->
+                    tabCounter.apply {
+                        if (animationEnabled) {
+                            setCount(count)
+                        } else {
+                            setCountWithAnimation(count)
+                        }
+                        if (count > 0) {
+                            isEnabled = true
+                            alpha = 1f
+                        } else {
+                            isEnabled = false
+                            alpha = 0.3f
+                        }
                     }
                 }
     }
