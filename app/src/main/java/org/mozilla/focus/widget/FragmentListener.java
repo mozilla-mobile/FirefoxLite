@@ -26,12 +26,7 @@ public interface FragmentListener {
         REFRESH_TOP_SITE, // no payload
         TOGGLE_PRIVATE_MODE, // no payload
         DROP_BROWSING_PAGES, // no payload
-        SHOW_TAB_TRAY, // no payload
-        SHOW_MY_SHOT_ON_BOARDING, // no payload
-        SHOW_DOWNLOAD_PANEL, // no payload
-        PIN_SHORTCUT, // no payload
-        BOOKMARK, // no payload
-        SHARE // no payload
+        SHOW_MY_SHOT_ON_BOARDING // no payload
     }
 
     void onNotified(@NonNull Fragment from,
