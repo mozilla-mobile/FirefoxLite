@@ -5,17 +5,12 @@
 
 package org.mozilla.rocket.landing
 
-import android.app.Dialog
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.support.v4.app.DialogFragment
-import android.view.View
-
-import java.util.WeakHashMap
 
 class PortraitStateModel : PortraitModel {
     private val stateData = MutableLiveData<Boolean>()
-    private val requests = WeakHashMap<Any, Boolean>()
+    private val requests = HashSet<PortraitComponent>()
 
     override val isPortraitState: LiveData<Boolean>
         get() = stateData
@@ -24,59 +19,27 @@ class PortraitStateModel : PortraitModel {
         stateData.value = false
     }
 
-    @Suppress("unused")
-    fun request(view: View) {
-        requestWithToken(view)
+    fun request(component: PortraitComponent) {
+        requests.add(component)
+        checkPortraitState()
     }
 
-    @Suppress("unused")
-    fun cancelRequest(view: View) {
-        cancelRequestWithToken(view)
-    }
-
-    fun request(dialog: Dialog) {
-        requestWithToken(dialog)
-    }
-
-    fun cancelRequest(dialog: Dialog) {
-        cancelRequestWithToken(dialog)
-    }
-
-    fun request(fragment: DialogFragment) {
-        requestWithToken(fragment)
-    }
-
-    fun cancelRequest(fragment: DialogFragment) {
-        cancelRequestWithToken(fragment)
+    fun cancelRequest(component: PortraitComponent) {
+        requests.remove(component)
+        checkPortraitState()
     }
 
     override fun resetState() {
         requests.clear()
-        checkState()
+        checkPortraitState()
     }
 
-    private fun requestWithToken(token: Any) {
-        requests[token] = true
-        checkState()
-    }
-
-    private fun cancelRequestWithToken(token: Any) {
-        requests.remove(token)
-        checkState()
-    }
-
-    private fun checkState() {
-        var isShown = false
-        for (key in requests.keys) {
-            if (requests[key] == true) {
-                isShown = true
-                break
-            }
-        }
+    private fun checkPortraitState() {
+        val hasPortraitPage = requests.isNotEmpty()
 
         val currentState = stateData.value
-        if (currentState != isShown) {
-            stateData.value = isShown
+        if (currentState != hasPortraitPage) {
+            stateData.value = hasPortraitPage
         }
     }
 }
