@@ -51,12 +51,14 @@ class TransactionHelper implements DefaultLifecycleObserver {
         this.backStackListener.onStop();
     }
 
-    void showHomeScreen(boolean animated, @EntryData.EntryType int type) {
+    void showHomeScreen(boolean animated, @EntryData.EntryType int type, boolean executeImmediatly) {
         if (isStateSaved()) {
             return;
         }
         this.prepareHomeScreen(animated, type).commit();
-        this.activity.getSupportFragmentManager().executePendingTransactions();
+        if (executeImmediatly) {
+            this.activity.getSupportFragmentManager().executePendingTransactions();
+        }
     }
 
     void showFirstRun() {
@@ -112,7 +114,9 @@ class TransactionHelper implements DefaultLifecycleObserver {
         manager.executePendingTransactions();
     }
 
-    boolean popScreensUntil(@Nullable String targetEntryName, @EntryData.EntryType int type) {
+    @SuppressWarnings({"WeakerAccess", "SameParameterValue"})
+    boolean popScreensUntil(@Nullable String targetEntryName, @EntryData.EntryType int type,
+                            boolean executeImmediately) {
         boolean clearAll = (targetEntryName == null);
         FragmentManager manager = this.activity.getSupportFragmentManager();
         int entryCount = manager.getBackStackEntryCount();
@@ -128,7 +132,10 @@ class TransactionHelper implements DefaultLifecycleObserver {
             manager.popBackStack();
             entryCount--;
         }
-        manager.executePendingTransactions();
+
+        if (executeImmediately) {
+            manager.executePendingTransactions();
+        }
         return found;
     }
 
@@ -146,6 +153,10 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     LiveData<String> getTopFragmentState() {
         return topFragmentState;
+    }
+
+    void executePendingTransaction() {
+        this.activity.getSupportFragmentManager().executePendingTransactions();
     }
 
     private FragmentTransaction prepareFirstRun() {

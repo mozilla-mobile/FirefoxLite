@@ -139,11 +139,16 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public void addHomeScreen(boolean animate) {
         logMethod();
 
-        boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG, TransactionHelper.EntryData.TYPE_ATTACHED);
+        boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG,
+                TransactionHelper.EntryData.TYPE_ATTACHED,
+                false);
         log("found exist home: " + found);
         if (!found) {
-            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ATTACHED);
+            this.transactionHelper.showHomeScreen(animate,
+                    TransactionHelper.EntryData.TYPE_ATTACHED,
+                    false);
         }
+        this.transactionHelper.executePendingTransaction();
     }
 
     /**
@@ -153,11 +158,12 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         logMethod();
 
         boolean found = this.transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG,
-                TransactionHelper.EntryData.TYPE_ROOT);
+                TransactionHelper.EntryData.TYPE_ROOT, false);
         log("found exist home: " + found);
         if (!found) {
-            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT);
+            this.transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT, false);
         }
+        this.transactionHelper.executePendingTransaction();
     }
 
     public void addFirstRunScreen() {
