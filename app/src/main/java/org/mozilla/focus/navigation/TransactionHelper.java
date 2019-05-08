@@ -90,7 +90,7 @@ class TransactionHelper implements DefaultLifecycleObserver {
         if (mgr.isStateSaved()) {
             return;
         }
-        mgr.popBackStack();
+        mgr.popBackStackImmediate();
     }
 
     boolean shouldFinish() {
