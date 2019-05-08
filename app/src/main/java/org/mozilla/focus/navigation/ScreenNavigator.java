@@ -209,9 +209,9 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         return result;
     }
 
-    public LiveData<String> getNavigationState() {
+    public LiveData<NavigationState> getNavigationState() {
         return Transformations.map(transactionHelper.getTopFragmentState(),
-                fragmentTag -> fragmentTag.isEmpty() ? BROWSER_FRAGMENT_TAG : fragmentTag);
+                fragmentTag -> new NavigationState(fragmentTag.isEmpty() ? BROWSER_FRAGMENT_TAG : fragmentTag));
     }
 
     private void logMethod(Object... args) {
@@ -306,5 +306,38 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * Contract class for ScreenNavigator, to present an UrlInputFragment
      */
     public interface UrlInputScreen extends Screen {
+    }
+
+    public static class NavigationState {
+        private String tag;
+
+        NavigationState(String tag) {
+            this.tag = tag;
+        }
+
+        public String getTag() {
+            return this.tag;
+        }
+
+        public boolean isHome() {
+            return this.tag.equals(HOME_FRAGMENT_TAG);
+        }
+
+        public boolean isBrowser() {
+            return this.tag.equals(BROWSER_FRAGMENT_TAG);
+        }
+
+        @Override
+        public int hashCode() {
+            return tag.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof NavigationState) {
+                return this.tag.equals(((NavigationState) obj).tag);
+            }
+            return false;
+        }
     }
 }

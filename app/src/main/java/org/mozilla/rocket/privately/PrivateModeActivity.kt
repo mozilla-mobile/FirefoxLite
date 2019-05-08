@@ -162,7 +162,7 @@ class PrivateModeActivity : BaseActivity(),
 
     private fun monitorOrientationState() {
         val orientationState = OrientationState(object : NavigationModel {
-            override val navigationState: LiveData<String>
+            override val navigationState: LiveData<ScreenNavigator.NavigationState>
                 get() = ScreenNavigator.get(this@PrivateModeActivity).navigationState
         }, portraitStateModel)
 

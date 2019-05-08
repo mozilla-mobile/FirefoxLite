@@ -16,13 +16,13 @@ class OrientationState(
     portraitModel: PortraitModel
 ) : MediatorLiveData<Int>() {
 
-    private var currentFragment: String = ""
+    private var navigationState: ScreenNavigator.NavigationState? = null
     private var isPortraitRequested: Boolean = false
 
     init {
-        addSource(navigationModel.navigationState) { topFragmentTag ->
-            topFragmentTag?.let {
-                currentFragment = it
+        addSource(navigationModel.navigationState) { currentState ->
+            currentState?.let {
+                navigationState = it
                 portraitModel.resetState()
                 checkOrientation()
             }
@@ -37,21 +37,18 @@ class OrientationState(
     }
 
     private fun checkOrientation() {
-        val orientation = if (isBrowserFragment(currentFragment) && !isPortraitRequested) {
+        val navigationState = navigationState ?: return
+        val orientation = if (navigationState.isBrowser && !isPortraitRequested) {
             ActivityInfo.SCREEN_ORIENTATION_USER
         } else {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
         value = orientation
     }
-
-    private fun isBrowserFragment(tag: String): Boolean {
-        return tag == ScreenNavigator.BROWSER_FRAGMENT_TAG
-    }
 }
 
 interface NavigationModel {
-    val navigationState: LiveData<String>
+    val navigationState: LiveData<ScreenNavigator.NavigationState>
 }
 
 interface PortraitModel {
