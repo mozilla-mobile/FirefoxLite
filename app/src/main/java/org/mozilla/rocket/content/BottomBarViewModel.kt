@@ -28,7 +28,7 @@ class BottomBarViewModel : ViewModel() {
         private val DEFAULT_BOTTOM_BAR_ITEMS = Arrays.asList(
                 ItemData(BottomBarItemAdapter.TYPE_TAB_COUNTER),
                 ItemData(BottomBarItemAdapter.TYPE_NEW_TAB),
-                ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
+                ItemData(BottomBarItemAdapter.TYPE_SEARCH),
                 ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
                 ItemData(BottomBarItemAdapter.TYPE_MENU)
         )
