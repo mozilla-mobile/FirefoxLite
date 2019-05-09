@@ -80,6 +80,8 @@
   <string name="first_run_page5_text">बिना ट्रेस हुए ब्राउज़ करें, और डिफ़ॉल्ट रूप से आम वेब ट्रैकर्स की एक विस्तृत श्रृंखला को ब्लॉक करें। अपने गोपनीय डेटा की सुरक्षा सुनिश्चित करें।</string>
   <string name="first_run_page6_title">नई चीजों की खोज करें</string>
   <string name="first_run_page6_text">बस एक बटन दबाना, अपने आप को \"%1$s\" के साथ अपडेट रखें - सबसे लोकप्रिय विषयों से लेकर सबसे ताज़ा सौदों तक विभिन्न प्रकार की सामग्री। %2$s</string>
+  <string name="first_run_page7_title">ट्रैक होने से रोकें</string>
+  <string name="first_run_page7_text">अब आप निजी मोड में कितने ट्रैकर अवरुद्ध हैं उन्हें देख सकते हैं।</string>
   <string name="first_run_upgrade_page_title">हमने आपकी राय सुनी!</string>
   <string name="new_name_upgrade_page_title">हमारे पास एक नया लुक है!</string>
   <string name="new_name_upgrade_page_text">विकसित प्रोडक्ट के साथ, एक नए नाम और नए लोगो के साथ, हम आपके लिए बिलकुल नया %1$s लाये हैं।</string>
@@ -226,11 +228,14 @@
   <string name="label_menu_news">न्यूज़</string>
   <string name="label_menu_latest_top_trending_news">ताजा एवं प्रमुख मशहूर ख़बरें</string>
   <string name="news_update_btn">नई अपडेट</string>
+  <string name="logo_text">द्वारा सेवा प्राप्त</string>
   <string name="private_tab">निजी टैब</string>
   <string name="private_browsing_title">निजी ब्राउज़िंग</string>
   <string name="private_browsing_erase_message">निजी ब्राउज़िंग इतिहास मिटाएं</string>
   <string name="private_browsing_open_action">खोलें</string>
   <string name="private_browsing_erase_done">आपका निजी ब्राउज़िंग\nइतिहास मिटा दिया गया है।</string>
+  <string name="private_browsing_tracker_blocked">ट्रैकर्स अवरुद्ध</string>
+  <string name="private_browsing_tracker_blocked_description">अतरिक्त सुरक्षा के साथ ब्राउज़िंग का आनंद लें।</string>
   <string name="my_shot_on_boarding_message">अपने स्क्रीनशॉटों को यहाँ देखें!</string>
   <string name="my_shot_on_boarding_category_message">आपके प्रोडक्ट अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट श्रेणियों के बारे में जानकारियाँ जमा करते हैं।</string>
   <string name="btn_vpn">7-दिनों की निःशुल्क VPN सेवा आपके लिए तैयार है। और भी अधिक निजी एवं सुरक्षित रूप से ब्राउज करने हेतु अभी इनस्टॉल करें।</string>
