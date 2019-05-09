@@ -24,7 +24,10 @@ import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.focus.navigation.ScreenNavigator.*
+import org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen
+import org.mozilla.focus.navigation.ScreenNavigator.HomeScreen
+import org.mozilla.focus.navigation.ScreenNavigator.Screen
+import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.utils.Constants
