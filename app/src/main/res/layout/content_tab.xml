@@ -11,13 +11,12 @@
         android:id="@+id/content_tab"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_margin_m7"
-        app:tabIndicatorColor="@android:color/transparent"
-    />
+        app:tabIndicatorColor="@android:color/transparent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/content_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>
