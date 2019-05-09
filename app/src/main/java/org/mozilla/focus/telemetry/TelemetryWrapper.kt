@@ -63,6 +63,10 @@ object TelemetryWrapper {
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
 
+    // List of site title which are the partners of affiliate program.
+    // Please use the exact title name from pin_sites.json
+    private val AFFILIATE_SITES = listOf("Bukalapak", "Tokopedia")
+
     @JvmStatic
     private val sRefCount = AtomicInteger(0)
 
@@ -994,7 +998,9 @@ object TelemetryWrapper {
             `object` = Object.HOME,
             value = Value.LINK,
             extras = [TelemetryExtra(name = Extra.ON, value = "Top Site Position"),
-                    TelemetryExtra(name = Extra.ON, value = "Preset Top Site like **")])
+                TelemetryExtra(name = Extra.SOURCE, value = "Preset Top Site like **"),
+                TelemetryExtra(name = Extra.VERSION, value = OPEN_HOME_LINK_VERSION)
+            ])
     @JvmStatic
     fun clickTopSiteOn(index: Int, source: String) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
@@ -1005,6 +1011,11 @@ object TelemetryWrapper {
 
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOPSITE)
                 .queue()
+
+        // Record a separate click count from those affiliate program partners.
+        if (AFFILIATE_SITES.contains(source)) {
+            AdjustHelper.trackEvent(EVENT_CLICK_AFFILIATE_LINK)
+        }
     }
 
     @TelemetryDoc(
@@ -1073,6 +1084,8 @@ object TelemetryWrapper {
                 telemetry.configuration.context)
 
         telemetry.recordSearch(SearchesMeasurement.LOCATION_SUGGESTION, searchEngine.identifier)
+
+        AdjustHelper.trackEvent(EVENT_START_SEARCH)
     }
 
     @TelemetryDoc(
@@ -1091,6 +1104,8 @@ object TelemetryWrapper {
                 telemetry.configuration.context)
 
         telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.identifier)
+
+        AdjustHelper.trackEvent(EVENT_START_SEARCH)
     }
 
     @TelemetryDoc(
@@ -1996,6 +2011,10 @@ object TelemetryWrapper {
     fun clickVpnRecommend(positive: Boolean) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.VPN_DOORHANGER, if (positive) Value.POSITIVE else Value.NEGATIVE)
                 .queue()
+
+        if (positive) {
+            AdjustHelper.trackEvent(EVENT_GET_VPN)
+        }
     }
 
     @TelemetryDoc(
