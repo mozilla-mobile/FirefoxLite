@@ -12,18 +12,18 @@ import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.pressImeActionButton
 import android.support.test.espresso.action.ViewActions.replaceText
-import android.support.test.espresso.action.ViewActions.pressKey
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import android.view.KeyEvent
-import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
+import org.junit.Before
+import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
@@ -31,6 +31,7 @@ import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
 
+@Ignore
 @Keep
 @RunWith(AndroidJUnit4::class)
 class ScreenOrientationTest {
@@ -89,6 +90,7 @@ class ScreenOrientationTest {
     fun testSecondLevelMenu() {
         // Prepare
         gotoBrowserScreen()
+
         AndroidTestUtils.tapBrowserMenuButton()
         onView(withId(R.id.menu_history)).perform(click())
 
@@ -105,11 +107,8 @@ class ScreenOrientationTest {
     @Test
     fun testFindInPage() {
         // Prepare
-        sessionLoadedIdlingResource = SessionLoadedIdlingResource(activityTestRule.activity)
         gotoBrowserScreen()
-        IdlingRegistry.getInstance().register(sessionLoadedIdlingResource)
         AndroidTestUtils.tapBrowserMenuButton()
-        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource)
 
         onView(withId(R.id.menu_find_in_page)).perform(click())
 
@@ -143,7 +142,6 @@ class ScreenOrientationTest {
     fun testUrlInput() {
         // Prepare
         gotoBrowserScreen()
-
         onView(withId(R.id.display_url)).perform(click())
 
         // Test - Should be SCREEN_ORIENTATION_PORTRAIT when the url fragment is presented
@@ -162,10 +160,17 @@ class ScreenOrientationTest {
     }
 
     private fun gotoBrowserScreen() {
+        sessionLoadedIdlingResource = SessionLoadedIdlingResource(activityTestRule.activity)
+
         onView(withId(R.id.home_fragment_fake_input))
                 .perform(click())
         onView(withId(R.id.url_edit)).check(matches(isDisplayed()))
-        onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_1))
-        onView(withId(R.id.url_edit)).perform(pressKey(KeyEvent.KEYCODE_ENTER))
+        onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_1), pressImeActionButton())
+
+        IdlingRegistry.getInstance().register(sessionLoadedIdlingResource)
+
+        onView(withId(R.id.display_url)).check(matches(isDisplayed()))
+
+        IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource)
     }
 }
