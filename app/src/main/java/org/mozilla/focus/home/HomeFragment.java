@@ -163,7 +163,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final int SCROLL_PERIOD = 10000;
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> homeBannerObserver = this::setUpHomeBannerFromConfig;
+    final Observer<String[]> couponBannerObserver = this::setUpCouponBannerFromConfig;
     private String[] homeBannerconfigArray;
+    private String[] couponBannerconfigArray;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
     @Nullable
@@ -331,7 +333,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void initCouponBanner(Context context) {
-        initBanner(context, AppConfigWrapper.getCouponBannerRootConfig(), CURRENT_COUPON_BANNER_CONFIG, bannerConfigViewModel.getCouponConfig(), null);
+        initBanner(context, AppConfigWrapper.getCouponBannerRootConfig(), CURRENT_COUPON_BANNER_CONFIG, bannerConfigViewModel.getCouponConfig(), contentPanel::hideCouponBanner);
     }
 
     private void hideHomeBannerProcedure(Void v) {
@@ -351,9 +353,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         // Setup from Network
         if (TextUtils.isEmpty(manifest)) {
             deleteCache(context, cacheName);
-            if (hideBannerProcedure != null) {
-                hideBannerProcedure.accept(null);
-            }
+            hideBannerProcedure.accept(null);
         } else {
             Callback callback = new Callback(context, cacheName, configLiveData);
             new LoadRootConfigTask(callback).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
@@ -380,6 +380,48 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 configLiveData.setValue(configArray);
             }
         }
+    }
+
+    private void setUpCouponBannerFromConfig(String[] configArray) {
+        TelemetryListener bannerInnerTelemetryListener = new TelemetryListener() {
+            @Override
+            public void sendClickItemTelemetry(String jsonString, int itemPosition) {
+
+            }
+
+            @Override
+            public void sendClickBackgroundTelemetry(String jsonString) {
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(jsonString);
+                    String pos = jsonObject.optString("pos");
+                    if (pos == null) {
+                        pos = "-1";
+                    }
+                    @Nullable final String feed = jsonObject.optString("feed");
+                    @Nullable final String id = jsonObject.optString("id");
+                    @Nullable final String source = jsonObject.optString("source");
+                    @Nullable final String category = jsonObject.optString("category");
+                    @Nullable final String subCategory = jsonObject.optString("sub_category");
+
+                    TelemetryWrapper.clickOnPromoItem(pos, id, feed, source, category, subCategory);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        BannerTelemtryListener bannerSelfTelemetryListener = new BannerTelemtryListener() {
+            @Override
+            public void showBannerNew(String id) {
+
+            }
+
+            @Override
+            public void showBannerUpdate(String id) {
+
+            }
+        };
+        setUpBannerFromConfig(configArray, this::updateCouponConfig, couponBannerconfigArray, bannerInnerTelemetryListener, bannerSelfTelemetryListener, contentPanel::hideCouponBanner, contentPanel::showCouponBanner);
     }
 
     private void setUpHomeBannerFromConfig(String[] configArray) {
@@ -419,6 +461,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showHomeBannerProcedure(BannerAdapter b) {
         homeBanner.setAdapter(b);
         showView(homeBanner, true);
+    }
+
+    private void updateCouponConfig(String[] configArray) {
+        couponBannerconfigArray = configArray;
     }
 
     private void updateHomeConfig(String[] configArray) {
@@ -724,6 +770,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         bannerConfigViewModel = ViewModelProviders.of(getActivity()).get(BannerConfigViewModel.class);
         bannerConfigViewModel.getHomeConfig().observe(this, homeBannerObserver);
+        if (AppConfigWrapper.hasEcommerceCoupons()) {
+            bannerConfigViewModel.getCouponConfig().observe(this, couponBannerObserver);
+        }
         initHomeBanner(context);
 
         if (context != null) {
@@ -739,6 +788,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         sessionManager.unregister(this.observer);
         doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
         bannerConfigViewModel.getHomeConfig().removeObserver(homeBannerObserver);
+        if (AppConfigWrapper.hasEcommerceCoupons()) {
+            bannerConfigViewModel.getCouponConfig().removeObserver(couponBannerObserver);
+        }
         super.onDestroyView();
     }
 
