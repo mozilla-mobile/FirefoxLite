@@ -9,23 +9,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/browser_menu_container"
-        layout="@layout/fragment_browser_item_menu_button" />
-
-    <org.mozilla.rocket.nightmode.themed.ThemedView
-        android:id="@+id/bottom_menu_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/browser_menu_container"
-        android:background="@drawable/browser_menu_divider"
-        tools:background="#FF0000" />
-
     <org.mozilla.rocket.nightmode.themed.ThemedLinearLayout
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_menu_divider"
         android:background="@drawable/browser_background"
         android:orientation="vertical">
 
@@ -85,7 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/fixed_menu_height">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,6 +94,18 @@
 
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </org.mozilla.rocket.nightmode.themed.ThemedLinearLayout>
+
+    <include
+        android:id="@+id/browser_menu_container"
+        layout="@layout/fragment_browser_item_menu_button" />
+
+    <org.mozilla.rocket.nightmode.themed.ThemedView
+        android:id="@+id/bottom_menu_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/browser_menu_container"
+        android:background="@drawable/browser_menu_divider"
+        tools:background="#FF0000" />
 
     <FrameLayout
         android:id="@+id/video_container"
