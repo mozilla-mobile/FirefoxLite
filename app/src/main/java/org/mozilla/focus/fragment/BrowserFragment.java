@@ -151,6 +151,9 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
     private Dialog webContextMenu;
     private ThemedRelativeLayout bottomMenuContainer;
 
+    private View mainContent;
+    private int mainContentBottomMargin;
+
     //GeoLocationPermission
     private String geolocationOrigin;
     private GeolocationPermissions.Callback geolocationCallback;
@@ -407,6 +410,12 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
         videoContainer = (ViewGroup) view.findViewById(R.id.video_container);
         browserContainer = view.findViewById(R.id.browser_container);
 
+        mainContent = view.findViewById(R.id.main_content);
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(mainContent);
+        if (params != null) {
+            mainContentBottomMargin = params.bottomMargin;
+        }
+
         urlView = view.findViewById(R.id.display_url);
 
         backgroundView = view.findViewById(R.id.background);
@@ -547,12 +556,30 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
             toolbarRoot.setVisibility(View.GONE);
             bottomMenuContainer.setVisibility(View.GONE);
             bottomMenuDivider.setVisibility(View.GONE);
+            updateMainContentBottomMargin(0);
             onLandscapeModeStart();
         } else {
             toolbarRoot.setVisibility(View.VISIBLE);
             bottomMenuContainer.setVisibility(View.VISIBLE);
             bottomMenuDivider.setVisibility(View.VISIBLE);
+            updateMainContentBottomMargin(mainContentBottomMargin);
             onLandscapeModeFinish();
+        }
+    }
+
+    @Nullable
+    private ViewGroup.MarginLayoutParams getMarginLayoutParams(View view) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        if (params instanceof ViewGroup.MarginLayoutParams) {
+            return (ViewGroup.MarginLayoutParams) params;
+        }
+        return null;
+    }
+
+    private void updateMainContentBottomMargin(int marginBottom) {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(mainContent);
+        if (params != null) {
+            params.bottomMargin = marginBottom;
         }
     }
 
