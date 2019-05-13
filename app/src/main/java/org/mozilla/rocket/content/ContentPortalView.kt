@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import org.mozilla.banner.BannerAdapter
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.AppConfigWrapper
@@ -46,10 +44,6 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
     private var recyclerView: RecyclerView? = null
     private var bottomSheet: LinearLayout? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
-
-    // views for coupon
-    private var banner: RecyclerView? = null
-    private var bannerLayoutManager: LinearLayoutManager? = null
 
     // views for News
     var newsListListener: NewsListListener? = null
@@ -139,12 +133,6 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         val couponAdapter = CouponAdapter(this)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = couponAdapter
-
-        banner = findViewById(R.id.content_banners)
-        bannerLayoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        banner!!.layoutManager = bannerLayoutManager
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(banner)
 
         val coupons = AppConfigWrapper.getEcommerceCoupons()
         couponAdapter.submitList(coupons)
@@ -335,17 +323,6 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
                 HomeFragmentViewState.lastScrollPos = null
             }
         }
-    }
-
-    fun showCouponBanner(b: BannerAdapter) {
-        banner?.adapter = b
-        banner?.visibility = View.VISIBLE
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun hideCouponBanner(void: Void?) {
-        banner?.adapter = null
-        banner?.visibility = View.GONE
     }
 
     /**
