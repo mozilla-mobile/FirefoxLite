@@ -470,7 +470,9 @@ class SessionManager @JvmOverloads constructor(
         }
 
         fun addedTab(msg: Message) {
-            val pair = msg.obj as Pair<Session, Bundle?>
+            val pair = (msg.obj as Pair<*, *>).let {
+                (it.first as Session to it.second as Bundle?)
+            }
             observable.notifyObservers { onSessionAdded(pair.first, pair.second) }
         }
 

@@ -76,8 +76,8 @@ final public class FirebaseHelper {
     static final String STR_SHARE_APP_DIALOG_CONTENT = "str_share_app_dialog_content";
     static final String STR_SHARE_APP_DIALOG_MSG = "str_share_app_dialog_msg";
 
-    static final String STR_BOTTOM_BAR_ITEMS = "str_bottom_bar_items";
-    static final String STR_MENU_BOTTOM_BAR_ITEMS = "str_menu_bottom_bar_items";
+    public static final String STR_BOTTOM_BAR_ITEMS = "str_bottom_bar_items";
+    public static final String STR_MENU_BOTTOM_BAR_ITEMS = "str_menu_bottom_bar_items";
 
     private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
@@ -100,7 +100,7 @@ final public class FirebaseHelper {
                 Log.d(TAG, "We are using FirebaseImp");
             } else {
                 firebaseContract = provideFirebaseNoOpImpl(context);
-                Log.d(TAG, "We are using FirebaseNoOpImpl");
+                Log.d(TAG, "We are using FirebaseNoOpImp");
             }
 
             // if firebaseContract is only used to initialized Firebase Helper once. It

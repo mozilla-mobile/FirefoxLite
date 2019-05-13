@@ -2,7 +2,6 @@ package org.mozilla.rocket.content
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import org.mozilla.focus.Inject
 
 class MenuViewModelFactory private constructor() : ViewModelProvider.NewInstanceFactory() {
 

@@ -21,7 +21,7 @@ import java.util.HashMap
 /**
  * It's a wrapper to communicate with Firebase
  */
-class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContract(fromResourceString) {
+open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContract(fromResourceString) {
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
 

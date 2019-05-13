@@ -25,9 +25,11 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.helper.ScreenshotIdlingResource
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
+import org.mozilla.rocket.content.BottomBarItemAdapter
+import org.mozilla.rocket.content.BottomBarViewModel
 
 inline fun session(func: SessionRobot.() -> Unit) = SessionRobot().apply(func)
-class SessionRobot : MenuRobot() {
+class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomation by menuAutomation {
 
     private lateinit var sessionLoadedIdlingResource: SessionLoadedIdlingResource
     private lateinit var screenshotIdlingResource: ScreenshotIdlingResource
@@ -69,11 +71,6 @@ class SessionRobot : MenuRobot() {
         loadLocalPage(activity, url)
     }
 
-    /** Bookmark related */
-    fun toggleBookmark() {
-        onView(withId(R.id.action_bookmark)).perform(click())
-    }
-
     fun checkAddBookmarkSnackbarIsDisplayed() {
         onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
                 .check(matches(isDisplayed()))
@@ -95,7 +92,10 @@ class SessionRobot : MenuRobot() {
         screenshotIdlingResource = ScreenshotIdlingResource(activity)
 
         // Click screen capture button
-        onView(Matchers.allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
+        bottomBar {
+            val bottomBarTabCapturePos = BottomBarViewModel.DEFAULT_BOTTOM_BAR_ITEMS.indexOfType(BottomBarItemAdapter.TYPE_CAPTURE)
+            clickBrowserBottomBarItem(bottomBarTabCapturePos)
+        }
 
         AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
         checkNoScreenshotOnBoarding()
@@ -111,12 +111,16 @@ class SessionRobot : MenuRobot() {
     fun firstTimeClickCaptureScreen() {
         // TODO find a way to remove the activity reference
         // Click screen capture button
-        onView(Matchers.allOf(withId(R.id.btn_capture), isDisplayed())).perform(click())
+        bottomBar {
+            val bottomBarTabCapturePos = BottomBarViewModel.DEFAULT_BOTTOM_BAR_ITEMS.indexOfType(BottomBarItemAdapter.TYPE_CAPTURE)
+            clickBrowserBottomBarItem(bottomBarTabCapturePos)
+        }
         checkScreenshotOnBoarding()
     }
 
     fun checkScreenshotOnBoarding() {
         // As Espresso failed on CI owing to intermittent, uiautomator is applied
+        // TODO: check this, it will pass even the tutorial view doesn't show
         val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         uiDevice.findObject(UiSelector().resourceId("my_shot_category_learn_more"))
         uiDevice.findObject(UiSelector().resourceId("my_shot_img_hand"))
@@ -147,10 +151,6 @@ class SessionRobot : MenuRobot() {
 
     fun clickAllowGeoPermission() {
         onView(withText(R.string.geolocation_dialog_allow)).inRoot(RootMatchers.isDialog()).perform(click())
-    }
-
-    fun clickTabTray() {
-        onView(withId(R.id.btn_tab_tray)).perform(click())
     }
 
     fun clickCloseAllTabs() {
