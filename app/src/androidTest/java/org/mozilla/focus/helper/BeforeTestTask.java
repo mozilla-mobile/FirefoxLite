@@ -21,12 +21,14 @@ public class BeforeTestTask {
     private boolean skipFirstRun;
     private boolean clearBrowsingHistory;
     private boolean enableSreenshotOnBoarding;
+    private boolean enableDownloadIndicatorIntro;
 
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
         this.skipFirstRun = builder.skipFirstRun;
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
         this.enableSreenshotOnBoarding = builder.enableSreenshotOnBoarding;
+        this.enableDownloadIndicatorIntro = builder.enableDownloadIndicatorIntro;
     }
 
     public void execute() {
@@ -51,6 +53,10 @@ public class BeforeTestTask {
             if (!this.enableSreenshotOnBoarding) {
                 settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog);
             }
+            // disable download indicator intro
+            if (!this.enableDownloadIndicatorIntro) {
+                settings.getEventHistory().add(Settings.Event.ShowDownloadIndicatorIntro);
+            }
         }
         if (this.clearBrowsingHistory) {
             //TODO: should consider using IdlingResource for DB operation or in-memory DB
@@ -68,6 +74,7 @@ public class BeforeTestTask {
     public static class Builder {
 
         private boolean enableSreenshotOnBoarding;
+        private boolean enableDownloadIndicatorIntro;
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
         private boolean clearBrowsingHistory;
@@ -77,6 +84,7 @@ public class BeforeTestTask {
             this.skipFirstRun = true;
             this.clearBrowsingHistory = false;
             this.enableSreenshotOnBoarding = false;
+            this.enableDownloadIndicatorIntro = false;
         }
 
         public Builder setRateAppPromotionEnabled(boolean enable) {
@@ -96,6 +104,11 @@ public class BeforeTestTask {
 
         public Builder enableSreenshotOnBoarding(boolean enableSreenshotOnBoarding) {
             this.enableSreenshotOnBoarding = enableSreenshotOnBoarding;
+            return this;
+        }
+
+        public Builder enableDownloadIndicatorIntro(boolean enableDownloadIndicatorIntro) {
+            this.enableDownloadIndicatorIntro = enableDownloadIndicatorIntro;
             return this;
         }
 

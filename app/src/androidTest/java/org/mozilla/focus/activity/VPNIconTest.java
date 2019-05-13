@@ -39,7 +39,7 @@ public class VPNIconTest {
     public void after() {
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         final Settings settings = Settings.getInstance(context);
-        settings.getEventHistory().removeCount(Settings.Event.FeatureSurveyWifiFinding);
+        settings.getEventHistory().clear();
     }
 
     /**

@@ -13,10 +13,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.BottomBarRobot;
+import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.CustomViewMatcher;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.rocket.content.BottomBarItemAdapter;
+import org.mozilla.rocket.content.MenuViewModel;
 
 import java.io.IOException;
 
@@ -139,8 +143,8 @@ public class BookmarksTest {
      */
     @Test
     public void addAndRemoveBookmarks_bookmarkIsAddedAndRemoved() {
-
-        final String targetUrl = browsingPageAndBookmarkPage();
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        final String targetUrl = browsingPageAndBookmarkPage(menuBookmarkPos);
 
         // Show bookmark saved snackbar
         onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.bookmark_saved)))
@@ -149,7 +153,8 @@ public class BookmarksTest {
                 .check(matches(isDisplayed()));
 
         // Tap browser menu button
-        AndroidTestUtils.showHomeMenu(activityTestRule);
+        // Since right now snackbar will overlap with menu bar and we don't want to wait until snackbar is dismissed
+        AndroidTestUtils.showMenu(activityTestRule);
 
         // Tap bookmark list button
         onView(withId(R.id.menu_bookmark)).perform(click());
@@ -164,10 +169,13 @@ public class BookmarksTest {
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
 
         // Tap browser menu button
-        AndroidTestUtils.showHomeMenu(activityTestRule);
+        // Since right now snackbar will overlap with menu bar and we don't want to wait until snackbar is dismissed
+        AndroidTestUtils.showMenu(activityTestRule);
 
         // Bookmark button is activated, and tap it
-        onView(withId(R.id.action_bookmark)).check(matches(CustomViewMatcher.isActivate())).perform(click());
+        onView(new BottomBarRobot().menuBottomBarItemView(menuBookmarkPos))
+                .check(matches(CustomViewMatcher.isActivate()))
+                .perform(click());
 
         // Show bookmark removed toast
         onView(withText(R.string.bookmark_removed))
@@ -186,8 +194,8 @@ public class BookmarksTest {
      */
     @Test
     public void removeBookmarkFromBookmarkList_bookmarkIsRemoved() {
-
-        tapBookmarkItemActionMenu();
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the remove button
         onView(withText(R.string.remove_from_list))
@@ -212,7 +220,8 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithChangingContent_bookmarkIsUpdated() {
-        tapBookmarkItemActionMenu();
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
@@ -234,7 +243,6 @@ public class BookmarksTest {
         // Check if the target item bookmark is updated
         onView(withId(R.id.recyclerview))
                 .check(matches(atPosition(0, hasDescendant(withText(containsString(MOCK_BOOKMARK_CONTENT))))));
-
     }
 
     /**
@@ -249,7 +257,8 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithoutChangingContent_saveButtonIsDisabled() {
-        tapBookmarkItemActionMenu();
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
@@ -258,7 +267,6 @@ public class BookmarksTest {
 
         // Without changing bookmark content, check if save button is disabled
         onView(withText(R.string.bookmark_edit_save)).check(matches(not(isEnabled())));
-
     }
 
     /**
@@ -273,7 +281,8 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithClearingLocationContent_saveButtonIsDisabled() {
-        tapBookmarkItemActionMenu();
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
@@ -285,7 +294,6 @@ public class BookmarksTest {
 
         // Without changing bookmark content, check if save button is disabled
         onView(withText(R.string.bookmark_edit_save)).check(matches(not(isEnabled())));
-
     }
 
     /**
@@ -300,8 +308,8 @@ public class BookmarksTest {
      */
     @Test
     public void addBookmarkAndEdit_bookmarkIsUpdated() {
-
-        browsingPageAndBookmarkPage();
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        browsingPageAndBookmarkPage(menuBookmarkPos);
 
         // Click the edit button on snackbar
         onView(allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
@@ -325,7 +333,6 @@ public class BookmarksTest {
         // Check if the first item of bookmark list is the bookmark we just edited
         onView(withId(R.id.recyclerview))
                 .check(matches(atPosition(0, hasDescendant(withText(containsString(MOCK_BOOKMARK_CONTENT))))));
-
     }
 
     /**
@@ -340,8 +347,8 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithVariousWords_bookmarkIsUpdated() {
-
-        tapBookmarkItemActionMenu();
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
@@ -360,10 +367,9 @@ public class BookmarksTest {
         // Check if the first item of bookmark list is the bookmark we just edited
         onView(withId(R.id.recyclerview))
                 .check(matches(atPosition(0, hasDescendant(withText(containsString(MOCK_BOOKMARK_CONTENT_LONG))))));
-
     }
 
-    private String browsingPageAndBookmarkPage() {
+    private String browsingPageAndBookmarkPage(int menuBottomBarBookmarkPos) {
         final String targetUrl = webServer.url(TEST_SITE_1).toString();
         sessionLoadedIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
@@ -380,16 +386,17 @@ public class BookmarksTest {
         AndroidTestUtils.tapBrowserMenuButton();
 
         // Tap bookmark button
-        onView(withId(R.id.action_bookmark)).check(matches(not(CustomViewMatcher.isActivate()))).perform(click());
+        new BottomBarRobot().clickMenuBottomBarItem(menuBottomBarBookmarkPos);
 
         return targetUrl;
     }
 
-    private void tapBookmarkItemActionMenu() {
-        final String targetUrl = browsingPageAndBookmarkPage();
+    private void tapBookmarkItemActionMenu(int menuBottomBarBookmarkPos) {
+        final String targetUrl = browsingPageAndBookmarkPage(menuBottomBarBookmarkPos);
 
         // Tap browser menu button
-        AndroidTestUtils.showHomeMenu(activityTestRule);
+        // Since right now snackbar will overlap with menu bar and we don't want to wait until snackbar is dismissed
+        AndroidTestUtils.showMenu(activityTestRule);
 
         // Tap bookmark list button
         onView(withId(R.id.menu_bookmark)).perform(click());

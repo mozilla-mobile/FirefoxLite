@@ -25,10 +25,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.BottomBarRobot;
+import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.rocket.content.BottomBarViewModel;
 
 import java.util.List;
 
@@ -40,10 +43,11 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.TYPE_MENU;
+import static org.mozilla.rocket.content.BottomBarItemAdapter.TYPE_TAB_COUNTER;
 
 @Keep
 @RunWith(AndroidJUnit4.class)
@@ -122,10 +126,12 @@ public class HomeTest {
         onView(withId(R.id.main_list)).check(matches(isDisplayed()));
 
         // Check if menu button is visible
-        onView(withId(R.id.btn_menu_home)).check(matches(isDisplayed()));
+        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
+        onView(new BottomBarRobot().homeBottomBarItemView(bottomBarMenuPos)).check(matches(isDisplayed()));
 
         // Check if tab tray button is visible
-        onView(allOf(withId(R.id.btn_tab_tray), withParent(withId(R.id.home_screen_menu)))).check(matches(isDisplayed()));
+        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_TAB_COUNTER);
+        onView(new BottomBarRobot().homeBottomBarItemView(bottomBarTabCounterPos)).check(matches(isDisplayed()));
 
     }
 

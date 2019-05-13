@@ -22,11 +22,15 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.annotation.ScreengrabOnly;
+import org.mozilla.focus.autobot.BottomBarRobot;
+import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.ScreenshotIdlingResource;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.rocket.content.BottomBarItemAdapter;
+import org.mozilla.rocket.content.BottomBarViewModel;
 
 import tools.fastlane.screengrab.FalconScreenshotStrategy;
 import tools.fastlane.screengrab.Screengrab;
@@ -79,7 +83,7 @@ public class MyShotScreenshot extends BaseScreenshot {
     }
 
     @Test
-    public void screenshotMyShot () {
+    public void screenshotMyShot() {
 
         // Browsing a web page
         onView(allOf(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click());
@@ -105,11 +109,12 @@ public class MyShotScreenshot extends BaseScreenshot {
         screenshotIdlingResource = new ScreenshotIdlingResource(activityTestRule.getActivity());
 
         // Click screen capture button
-        onView(withId(R.id.btn_capture)).perform(click());
+        int bottomBarCapturePos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_CAPTURE);
+        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarCapturePos);
         IdlingRegistry.getInstance().register(screenshotIdlingResource);
 
         // Open menu
-        onView(allOf(withId(R.id.btn_menu), isDisplayed())).perform(click());
+        AndroidTestUtils.tapHomeMenuButton();
         IdlingRegistry.getInstance().unregister(screenshotIdlingResource);
 
         // Click my shot and take a screenshot of panel and toast

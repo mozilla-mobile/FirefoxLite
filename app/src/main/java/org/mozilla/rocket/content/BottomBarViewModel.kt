@@ -25,7 +25,7 @@ class BottomBarViewModel : ViewModel() {
     private fun getConfiguredItems(): List<ItemData>? = AppConfigWrapper.getBottomBarItems()
 
     companion object {
-        private val DEFAULT_BOTTOM_BAR_ITEMS = Arrays.asList(
+        val DEFAULT_BOTTOM_BAR_ITEMS: List<ItemData> = Arrays.asList(
                 ItemData(BottomBarItemAdapter.TYPE_TAB_COUNTER),
                 ItemData(BottomBarItemAdapter.TYPE_NEW_TAB),
                 ItemData(BottomBarItemAdapter.TYPE_SEARCH),

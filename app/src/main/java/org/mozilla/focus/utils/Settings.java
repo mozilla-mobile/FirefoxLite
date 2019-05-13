@@ -340,5 +340,10 @@ public class Settings {
             String key = "pref_" + eventName + "_counter";
             preferences.edit().putInt(key, value).apply();
         }
+
+        @VisibleForTesting
+        public void clear() {
+            preferences.edit().clear().apply();
+        }
     }
 }
