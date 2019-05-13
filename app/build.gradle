@@ -107,7 +107,7 @@ android {
         }
     }
 
-    testBuildType "firebase"
+    testBuildType "debug"
 
     testOptions {
         animationsDisabled = true
