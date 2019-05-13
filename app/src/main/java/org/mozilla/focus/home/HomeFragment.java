@@ -6,47 +6,27 @@
 package org.mozilla.focus.home;
 
 import android.app.Activity;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.db.SupportSQLiteOpenHelper;
 import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.db.SupportSQLiteQueryBuilder;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.StrictMode;
+import android.os.*;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.Consumer;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
-import android.text.TextUtils;
+import android.support.v7.widget.*;
 import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.ValueCallback;
@@ -54,9 +34,7 @@ import android.webkit.WebChromeClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.airbnb.lottie.LottieAnimationView;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +42,7 @@ import org.json.JSONObject;
 import org.mozilla.banner.BannerAdapter;
 import org.mozilla.banner.BannerConfigViewModel;
 import org.mozilla.banner.BannerViewHolder;
-import org.mozilla.banner.TelemetryListener;
+import org.mozilla.banner.OnClickListener;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
@@ -73,25 +51,15 @@ import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
-import org.mozilla.focus.network.SocketTags;
 import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FirebaseHelper;
-import org.mozilla.focus.utils.OnSwipeListener;
-import org.mozilla.focus.utils.RemoteConfigConstants;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.SwipeMotionDetector;
-import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.focus.utils.*;
 import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
-import org.mozilla.httptask.SimpleLoadUrlTask;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.lite.partner.NewsItem;
 import org.mozilla.rocket.content.ContentPortalView;
@@ -104,31 +72,17 @@ import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
-import org.mozilla.rocket.tabs.Session;
-import org.mozilla.rocket.tabs.SessionManager;
-import org.mozilla.rocket.tabs.TabViewClient;
-import org.mozilla.rocket.tabs.TabViewEngineSession;
-import org.mozilla.rocket.tabs.TabsSessionProvider;
+import org.mozilla.rocket.tabs.*;
 import org.mozilla.rocket.theme.ThemeManager;
-import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
-import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View, TopSitesContract.Model,
-        ScreenNavigator.HomeScreen, NewsViewContract {
+        ScreenNavigator.HomeScreen, NewsViewContract, BannerHelper.HomeBannerHelperListener {
     private static final String TAG = "HomeFragment";
 
     public static final String TOPSITES_PREF = "topsites_pref";
@@ -147,6 +101,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Nullable private ImageButton arrow2;
     @Nullable private ContentPortalView contentPanel;
 
+    private BannerHelper bannerHelper = new BannerHelper();
+
     private View lifeFeedOnboardingLayer;
     private TabCounter tabCounter;
     private ThemedTextView fakeInput;
@@ -162,8 +118,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
     private BannerConfigViewModel bannerConfigViewModel;
-    final Observer<String[]> homeBannerObserver = this::setUpHomeBannerFromConfig;
-    private String[] homeBannerconfigArray;
+    final Observer<String[]> homeBannerObserver = bannerHelper::setUpHomeBannerFromConfig;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
     @Nullable
@@ -189,6 +144,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
         this.presenter.setModel(this);
+        bannerHelper.setListener(this);
     }
 
     @Override
@@ -253,241 +209,21 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         contentPanel.setNewsContent(items);
     }
 
-    private static class LoadRootConfigTask extends SimpleLoadUrlTask {
-
-        private AtomicInteger countdown;
-        private String userAgent;
-
-        private interface OnRootConfigLoadedListener {
-            void onRootConfigLoaded(String[] configArray);
-        }
-
-        OnRootConfigLoadedListener onRootConfigLoadedListener;
-
-        LoadRootConfigTask(OnRootConfigLoadedListener onRootConfigLoadedListener) {
-            this.onRootConfigLoadedListener = onRootConfigLoadedListener;
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            // Intercept UA;
-            userAgent = strings[1];
-            return super.doInBackground(strings);
-        }
-
-        @Override
-        protected void onPostExecute(String line) {
-            // Improper root Manifest Url;
-            if (line == null || TextUtils.isEmpty(line)) {
-                return;
-            }
-            try {
-                JSONArray jsonArray = new JSONArray(line);
-                int length = jsonArray.length();
-                String[] configArray = new String[length];
-                countdown = new AtomicInteger(length);
-                LoadConfigTask.OnConfigLoadedListener onConfigLoadedListener = (config, index) -> {
-                    configArray[index] = config;
-                    if (countdown.decrementAndGet() == 0) {
-                        onRootConfigLoadedListener.onRootConfigLoaded(configArray);
-                    }
-                };
-                for (int i = 0; i < length; i++) {
-                    new LoadConfigTask(new WeakReference<>(onConfigLoadedListener), i).execute(jsonArray.getString(i), userAgent, Integer.toString(SocketTags.BANNER));
-                }
-            } catch (JSONException e) {
-                onRootConfigLoadedListener.onRootConfigLoaded(null);
-            }
-        }
-    }
-
-    private static class LoadConfigTask extends SimpleLoadUrlTask {
-
-        private interface OnConfigLoadedListener {
-            void onConfigLoaded(String config, int index);
-        }
-
-        private WeakReference<OnConfigLoadedListener> onConfigLoadedListenerRef;
-        private int index;
-
-        LoadConfigTask(WeakReference<OnConfigLoadedListener> onConfigLoadedListenerRef, int index) {
-            this.onConfigLoadedListenerRef = onConfigLoadedListenerRef;
-            this.index = index;
-        }
-
-        @Override
-        protected void onPostExecute(String line) {
-            // Trim \n \r since these will not be written to cache.
-            line = line.replace("\n", "").replace("\r", "");
-            OnConfigLoadedListener onConfigLoadedListener = onConfigLoadedListenerRef.get();
-            if (onConfigLoadedListener != null) {
-                onConfigLoadedListener.onConfigLoaded(line, index);
-            }
-        }
-    }
-
-    private void initHomeBanner(Context context) {
-        initBanner(context, AppConfigWrapper.getBannerRootConfig(), CURRENT_HOME_BANNER_CONFIG, bannerConfigViewModel.getHomeConfig(), this::hideHomeBannerProcedure);
-    }
-
-    private void initCouponBanner(Context context) {
-        initBanner(context, AppConfigWrapper.getCouponBannerRootConfig(), CURRENT_COUPON_BANNER_CONFIG, bannerConfigViewModel.getCouponConfig(), null);
-    }
-
-    private void hideHomeBannerProcedure(Void v) {
+    @Override
+    public void hideHomeBannerProcedure(Void v) {
         homeBanner.setAdapter(null);
         showView(homeBanner, false);
     }
 
-    // TODO: 10/3/18 Now we have cachedrequestloader, should consider migrate to use it.
-    private void initBanner(Context context, String manifest, String cacheName, MutableLiveData<String[]> configLiveData, Consumer<Void> hideBannerProcedure) {
-        // Setup from Cache
-        try {
-            new FileUtils.ReadStringFromFileTask<>(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName, configLiveData, HomeFragment::stringToStringArray).execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            LoggerWrapper.throwOrWarn(TAG, "Failed to open Cache directory when reading cached banner config");
-        }
-        // Setup from Network
-        if (TextUtils.isEmpty(manifest)) {
-            deleteCache(context, cacheName);
-            if (hideBannerProcedure != null) {
-                hideBannerProcedure.accept(null);
-            }
-        } else {
-            Callback callback = new Callback(context, cacheName, configLiveData);
-            new LoadRootConfigTask(callback).execute(manifest, WebViewProvider.getUserAgentString(getActivity()), Integer.toString(SocketTags.BANNER));
-        }
-    }
-
-    private static class Callback implements LoadRootConfigTask.OnRootConfigLoadedListener {
-
-        private WeakReference<Context> contextRef;
-        private String cacheName;
-        private MutableLiveData<String[]> configLiveData;
-
-        Callback(Context context, String cacheName, MutableLiveData<String[]> configLiveData) {
-            this.contextRef = new WeakReference<>(context);
-            this.cacheName = cacheName;
-            this.configLiveData = configLiveData;
-        }
-
-        @Override
-        public void onRootConfigLoaded(String[] configArray) {
-            Context context = contextRef.get();
-            if (context != null) {
-                writeToCache(context, configArray, cacheName);
-                configLiveData.setValue(configArray);
-            }
-        }
-    }
-
-    private void setUpHomeBannerFromConfig(String[] configArray) {
-        TelemetryListener bannerInnerTelemetryListener = new TelemetryListener() {
-            @Override
-            public void sendClickItemTelemetry(String jsonString, int itemPosition) {
-                try {
-                    TelemetryWrapper.clickBannerItem(new JSONObject(jsonString).getString("id"), itemPosition);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void sendClickBackgroundTelemetry(String jsonString) {
-                try {
-                    TelemetryWrapper.clickBannerBackground(new JSONObject(jsonString).getString("id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        BannerTelemtryListener bannerSelfTelemetryListener = new BannerTelemtryListener() {
-            @Override
-            public void showBannerNew(String id) {
-                TelemetryWrapper.showBannerNew(id);
-            }
-
-            @Override
-            public void showBannerUpdate(String id) {
-                TelemetryWrapper.showBannerUpdate(id);
-            }
-        };
-        setUpBannerFromConfig(configArray, this::updateHomeConfig, homeBannerconfigArray, bannerInnerTelemetryListener, bannerSelfTelemetryListener, this::hideHomeBannerProcedure, this::showHomeBannerProcedure);
-    }
-
-    private void showHomeBannerProcedure(BannerAdapter b) {
+    @Override
+    public void showHomeBannerProcedure(BannerAdapter b) {
         homeBanner.setAdapter(b);
         showView(homeBanner, true);
     }
 
-    private void updateHomeConfig(String[] configArray) {
-        homeBannerconfigArray = configArray;
-    }
-
-    private interface BannerTelemtryListener {
-        void showBannerNew(String id);
-        void showBannerUpdate(String id);
-    }
-
-    private void setUpBannerFromConfig(String[] configArray, Consumer<String[]> configUpdater, String[] oldConfigArray, TelemetryListener telemetryListener, BannerTelemtryListener bannerTelemtryListener, Consumer<Void> hideBannerConsumer, Consumer<BannerAdapter> showBannerConsumer) {
-        if (Arrays.equals(oldConfigArray, configArray)) {
-            return;
-        }
-        boolean isUpdate = oldConfigArray != null;
-        configUpdater.accept(configArray);
-        if (configArray == null || configArray.length == 0) {
-            hideBannerConsumer.accept(null);
-            return;
-        }
-        try {
-            BannerAdapter bannerAdapter = new BannerAdapter(configArray, arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg), telemetryListener);
-            showBannerConsumer.accept(bannerAdapter);
-            if (isUpdate) {
-                bannerTelemtryListener.showBannerNew(bannerAdapter.getFirstDAOId());
-            } else {
-                bannerTelemtryListener.showBannerUpdate(bannerAdapter.getFirstDAOId());
-            }
-
-        } catch (JSONException e) {
-            LoggerWrapper.throwOrWarn(TAG, "Invalid Config: " + e.getMessage());
-        }
-    }
-
-    private static void writeToCache(Context context, String[] configArray, String cacheName) {
-        try {
-            final Runnable runnable = new FileUtils.WriteStringToFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName), stringArrayToString(configArray));
-            ThreadUtils.postToBackgroundThread(runnable);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            LoggerWrapper.throwOrWarn(TAG, "Failed to open cache directory when writing banner config to cache");
-        }
-    }
-
-    private void deleteCache(Context context, String cacheName) {
-        try {
-            final Runnable runnable = new FileUtils.DeleteFileRunnable(new File(new FileUtils.GetCache(new WeakReference<>(context)).get(), cacheName));
-            ThreadUtils.postToBackgroundThread(runnable);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            LoggerWrapper.throwOrWarn(TAG, "Failed to open cache directory when deleting banner cache");
-        }
-    }
-
-    private static final String UNIT_SEPARATOR = Character.toString((char) 0x1F);
-    // Please don't rename the string
-    private static final String CURRENT_HOME_BANNER_CONFIG = "CURRENT_BANNER_CONFIG";
-    private static final String CURRENT_COUPON_BANNER_CONFIG = "CURRENT_COUPON_BANNER_CONFIG";
-
-    private static String stringArrayToString(String[] stringArray) {
-        return TextUtils.join(UNIT_SEPARATOR, stringArray);
-    }
-
-    private static String[] stringToStringArray(String string) {
-        if (TextUtils.isEmpty(string)) {
-            return new String[]{};
-        }
-        return string.split(UNIT_SEPARATOR);
+    @Override
+    public OnClickListener onBannerClickListener() {
+        return arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg);
     }
 
     @Override
@@ -646,7 +382,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                initHomeBanner(context);
+                bannerHelper.initHomeBanner(context, bannerConfigViewModel.getHomeConfig());
             }
         };
         Context context = getContext();
@@ -724,7 +460,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
         bannerConfigViewModel = ViewModelProviders.of(getActivity()).get(BannerConfigViewModel.class);
         bannerConfigViewModel.getHomeConfig().observe(this, homeBannerObserver);
-        initHomeBanner(context);
+        bannerHelper.initHomeBanner(context, bannerConfigViewModel.getHomeConfig());
 
         if (context != null) {
             StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
@@ -1312,7 +1048,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (contentPanel != null) {
             contentPanel.show(true);
             if (AppConfigWrapper.hasEcommerceCoupons()) {
-                initCouponBanner(getContext());
+                bannerHelper.initCouponBanner(getContext(), bannerConfigViewModel.getCouponConfig());
                 TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.ARROW);
             } else {
                 TelemetryWrapper.openLifeFeedNews();
