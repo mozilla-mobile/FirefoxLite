@@ -25,7 +25,7 @@ import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.data.ShoppingLink
-import org.mozilla.rocket.content.view.ContentFragment
+import org.mozilla.rocket.content.view.ecommerce.EcTabFragment
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
 interface ContentPortalListener {
@@ -102,11 +102,11 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
     private fun initContentFragment(features: ArrayList<Int>) {
         val adjusted = adjust(features)
         context?.inTransaction {
-            replace(R.id.bottom_sheet, ContentFragment.newInstance(adjusted), TAG_CONTENT_FRAGMENT)
+            replace(R.id.bottom_sheet, EcTabFragment.newInstance(adjusted), TAG_CONTENT_FRAGMENT)
         }
     }
 
-    // we don't support News in ContentFragment yet
+    // we don't support News in EcTabFragment yet
     private fun adjust(features: ArrayList<Int>): ArrayList<Int> {
         val list = ArrayList<Int>()
         for (feature in features) {

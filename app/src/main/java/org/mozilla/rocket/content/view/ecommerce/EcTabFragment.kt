@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.view
+package org.mozilla.rocket.content.view.ecommerce
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -15,7 +15,6 @@ import org.mozilla.rocket.content.TYPE_COUPON
 import org.mozilla.rocket.content.TYPE_KEY
 import org.mozilla.rocket.content.TYPE_NEWS
 import org.mozilla.rocket.content.TYPE_TICKET
-import org.mozilla.rocket.content.view.ecommerce.EcFragment
 import org.mozilla.rocket.content.view.news.NewsFragment
 import java.lang.IllegalStateException
 import java.util.ArrayList
@@ -24,14 +23,15 @@ import java.util.ArrayList
  * Fragment that host the tabs for different types of content portal
  *
  */
-class ContentFragment : Fragment() {
+class EcTabFragment : Fragment() {
 
     companion object {
-        fun newInstance(features: ArrayList<Int>): ContentFragment {
+        fun newInstance(features: ArrayList<Int>): EcTabFragment {
             val args = Bundle().apply {
                 putIntegerArrayList(TYPE_KEY, features)
             }
-            return ContentFragment().apply { arguments = args }
+            return EcTabFragment()
+                .apply { arguments = args }
         }
     }
 
