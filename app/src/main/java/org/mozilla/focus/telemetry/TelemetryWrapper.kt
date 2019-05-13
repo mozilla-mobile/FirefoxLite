@@ -62,6 +62,7 @@ object TelemetryWrapper {
     private const val FIND_IN_PAGE_VERSION = 2
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
+    private const val LIFE_FEED_PROMO_VERSION = "2"
 
     // List of site title which are the partners of affiliate program.
     // Please use the exact title name from pin_sites.json
@@ -242,6 +243,8 @@ object TelemetryWrapper {
         internal const val WEB_SEARCH = "web_search"
         internal const val TEXT_SELECTION = "text_selection"
         internal const val DEFAULT = "default"
+        const val TAB = "tab"
+        const val ARROW = "arrow"
     }
 
     enum class FIND_IN_PAGE {
@@ -1391,10 +1394,13 @@ object TelemetryWrapper {
             method = Method.OPEN,
             `object` = Object.PANEL,
             value = Value.LIFEFEED_PROMO,
-            extras = [])
+            extras = [TelemetryExtra(name = Extra.SOURCE, value = Extra_Value.TAB + "," + Extra_Value.ARROW),
+                TelemetryExtra(name = Extra.VERSION, value = LIFE_FEED_PROMO_VERSION)])
     @JvmStatic
-    fun openLifeFeedPromo() {
+    fun openLifeFeedPromo(source: String) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.LIFEFEED_PROMO)
+                .extra(Extra.SOURCE, source)
+                .extra(Extra.VERSION, LIFE_FEED_PROMO_VERSION)
                 .queue()
     }
 

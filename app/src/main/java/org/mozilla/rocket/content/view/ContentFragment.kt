@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.TYPE_COUPON
 import org.mozilla.rocket.content.TYPE_KEY
 import org.mozilla.rocket.content.TYPE_NEWS
@@ -53,6 +54,11 @@ class ContentFragment : Fragment() {
                     }
 
                     override fun onPageSelected(p0: Int) {
+                        if (this@apply.size > p0 && this@apply[p0] == TYPE_COUPON) {
+                            TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.TAB)
+                        } else {
+                            TelemetryWrapper.openLifeFeedEc()
+                        }
                         // need to call request Layout to force BottomsheetBehaviour to call our
                         // findScrollingChild() implementation to find the corresponding scrolling child
                         view.requestLayout()
