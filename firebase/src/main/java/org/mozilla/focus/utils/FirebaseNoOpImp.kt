@@ -12,7 +12,7 @@ import java.util.HashMap
 /**
  * It's a wrapper to communicate with Firebase
  */
-class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()) : FirebaseContract(remoteConfigDefault) {
+open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()) : FirebaseContract(remoteConfigDefault) {
 
     override fun init(context: Context) {
     }

@@ -17,7 +17,7 @@ import org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId
 
 inline fun bookmark(func: BookmarkRobot.() -> Unit) = BookmarkRobot().apply(func)
 
-class BookmarkRobot : MenuRobot() {
+class BookmarkRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomation by menuAutomation {
 
     fun checkEmptyViewIsDisplayed() {
         onView(withText(R.string.bookmarks_empty_view_msg)).check(matches(isDisplayed()))

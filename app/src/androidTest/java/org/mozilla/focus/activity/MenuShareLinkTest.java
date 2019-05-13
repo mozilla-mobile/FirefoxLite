@@ -20,9 +20,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.BottomBarRobot;
+import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.rocket.content.BottomBarItemAdapter;
+import org.mozilla.rocket.content.MenuViewModel;
 
 import java.io.IOException;
 
@@ -142,10 +146,11 @@ public class MenuShareLinkTest {
     public void shareLinkDisabledOnHomePage() {
 
         // Tap menu
-        onView(withId(R.id.btn_menu)).check(matches(isDisplayed())).perform(click());
+        AndroidTestUtils.tapHomeMenuButton();
 
         // Check share btn disabled
-        onView(withId(R.id.action_share)).check(matches(not(isEnabled())));
+        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
+        onView(new BottomBarRobot().menuBottomBarItemView(menuBottomBarSharePos)).check(matches(not(isEnabled())));
     }
 
 
@@ -162,7 +167,8 @@ public class MenuShareLinkTest {
 
         // Tap menu -> share link
         AndroidTestUtils.tapBrowserMenuButton();
-        onView(withId(R.id.action_share)).check(matches(isDisplayed())).perform(click());
+        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
+        onView(new BottomBarRobot().menuBottomBarItemView(menuBottomBarSharePos)).check(matches(isDisplayed())).perform(click());
 
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
     }

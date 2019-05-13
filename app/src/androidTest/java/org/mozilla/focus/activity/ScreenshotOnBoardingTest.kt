@@ -56,7 +56,7 @@ class ScreenshotOnBoardingTest {
     @After
     fun tearDown() {
         val settings = Settings.getInstance(context)
-        settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog)
+        settings.eventHistory.clear()
     }
 
     /**
