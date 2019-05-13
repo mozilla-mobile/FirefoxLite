@@ -40,13 +40,13 @@ class ScreenshotOnBoardingTest {
 
     @Before
     fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         BeforeTestTask.Builder()
                 .enableSreenshotOnBoarding(true)
                 .build()
                 .execute()
         activityTestRule.launchActivity(Intent())
-        context = InstrumentationRegistry.getInstrumentation().targetContext
-        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     }
 
     companion object {
@@ -55,8 +55,7 @@ class ScreenshotOnBoardingTest {
 
     @After
     fun tearDown() {
-        val settings = Settings.getInstance(context)
-        settings.getEventHistory().add(Settings.Event.ShowMyShotOnBoardingDialog)
+        Settings.getInstance(context).eventHistory.clear()
     }
 
     /**

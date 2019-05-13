@@ -155,7 +155,7 @@ public class DownloadTest {
                     .inRoot(withDecorView(not(is(activityRule.getActivity().getWindow().getDecorView()))))
                     .check(matches(isDisplayed()));
             // Open menu
-            onView(withId(R.id.btn_menu)).perform(click());
+            AndroidTestUtils.tapHomeMenuButton();
 
             // Open download panel
             onView(withId(R.id.menu_download)).perform(click());
@@ -191,7 +191,7 @@ public class DownloadTest {
             final File dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(activityRule.getActivity(), "*/*");
 
             // Open menu
-            onView(withId(R.id.btn_menu)).perform(click());
+            AndroidTestUtils.tapHomeMenuButton();
 
             // Open download panel
             onView(withId(R.id.menu_download)).perform(click());
