@@ -115,7 +115,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
         })
         quickSearchRecyclerView.adapter = quickSearchAdapter
-        Inject.obtainQuickSearchViewModel(activity).quickSearchObservable.observe(
+        Inject.obtainQuickSearchViewModel(activity!!).quickSearchObservable.observe(
                 viewLifecycleOwner,
                 Observer { quickSearchList ->
                     quickSearchAdapter.submitList(quickSearchList)

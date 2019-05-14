@@ -86,7 +86,7 @@ class DownloadInfoRepository {
         @Volatile private var INSTANCE: DownloadInfoRepository? = null
 
         @JvmStatic
-        fun getInstance(): DownloadInfoRepository? =
+        fun getInstance(): DownloadInfoRepository =
                 INSTANCE ?: synchronized(this) {
                     INSTANCE ?: DownloadInfoRepository().also {
                         INSTANCE = it
