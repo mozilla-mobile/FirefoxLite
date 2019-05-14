@@ -19,9 +19,9 @@ object LifeFeedOnboarding {
 
     @JvmStatic
     fun shouldShow(context: Context): Boolean {
-        val shouldShowNews = AppConfigWrapper.hasNewsPortal()
-        val shouldShowShoppingLink = AppConfigWrapper.hasEcommerceShoppingLink()
-        return shouldShowOnboarding(context) && (shouldShowNews || shouldShowShoppingLink)
+        val hasNewsPortal = AppConfigWrapper.hasNewsPortal()
+        val hasEcommmerceContent = AppConfigWrapper.hasEcommerceShoppingLink() || AppConfigWrapper.hasEcommerceCoupons()
+        return shouldShowOnboarding(context) && (hasNewsPortal || hasEcommmerceContent)
     }
 
     @JvmStatic
