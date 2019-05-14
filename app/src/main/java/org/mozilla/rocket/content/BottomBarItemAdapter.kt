@@ -190,6 +190,8 @@ class BottomBarItemAdapter(
                     .inflate(R.layout.button_more, null)
                     .apply {
                         findViewById<ThemedImageButton>(R.id.btn_menu).setTint(context, theme.buttonColorResId)
+                        val downloadColorResId = if (theme == Theme.LIGHT) R.color.paletteDarkBlueC100 else theme.buttonColorResId
+                        findViewById<ThemedImageButton>(R.id.download_unread_indicator).setTint(context, downloadColorResId)
                     }
         }
     }
