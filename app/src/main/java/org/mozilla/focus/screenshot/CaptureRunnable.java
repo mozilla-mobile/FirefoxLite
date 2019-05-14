@@ -1,7 +1,6 @@
 package org.mozilla.focus.screenshot;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +11,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.rocket.content.ChromeViewModel;
 
 import java.lang.ref.WeakReference;
 
@@ -27,8 +27,10 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
     }
 
 
-    public CaptureRunnable(Context context, BrowserFragment browserFragment, ScreenCaptureDialogFragment screenCaptureDialogFragment, View container) {
-        super(context);
+    public CaptureRunnable(Context context, BrowserFragment browserFragment,
+                           ScreenCaptureDialogFragment screenCaptureDialogFragment, View container,
+                           ChromeViewModel.ScreenCaptureTelemetryData telemetryData) {
+        super(context, telemetryData);
         refContext = new WeakReference<>(context);
         refBrowserFragment = new WeakReference<>(browserFragment);
         refScreenCaptureDialogFragment = new WeakReference<>(screenCaptureDialogFragment);
