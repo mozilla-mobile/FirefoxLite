@@ -2,6 +2,8 @@ package org.mozilla.rocket.content
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.os.Parcel
+import android.os.Parcelable
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
@@ -17,7 +19,7 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
     val showMenu = SingleLiveEvent<Unit>()
     val showNewTab = SingleLiveEvent<Unit>()
     val showUrlInput = SingleLiveEvent<String?>()
-    val doScreenshot = SingleLiveEvent<Unit>()
+    val doScreenshot = SingleLiveEvent<ScreenCaptureTelemetryData>()
     val pinShortcut = SingleLiveEvent<Unit>()
     val toggleBookmark = SingleLiveEvent<Unit>()
     // TODO: separate to startRefresh / stopLoading
@@ -78,4 +80,26 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
     }
 
     data class TabCountChangedEvent(val count: Int, val withAnimation: Boolean)
+
+    data class ScreenCaptureTelemetryData(val mode: String, val position: Int) : Parcelable {
+        constructor(source: Parcel) : this(
+                source.readString()!!,
+                source.readInt()
+        )
+
+        override fun describeContents() = 0
+
+        override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+            writeString(mode)
+            writeInt(position)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.Creator<ScreenCaptureTelemetryData> = object : Parcelable.Creator<ScreenCaptureTelemetryData> {
+                override fun createFromParcel(source: Parcel): ScreenCaptureTelemetryData = ScreenCaptureTelemetryData(source)
+                override fun newArray(size: Int): Array<ScreenCaptureTelemetryData?> = arrayOfNulls(size)
+            }
+        }
+    }
 }

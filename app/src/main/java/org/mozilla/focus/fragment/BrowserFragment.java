@@ -86,6 +86,7 @@ import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.content.BottomBarItemAdapter;
 import org.mozilla.rocket.content.BottomBarViewModel;
 import org.mozilla.rocket.content.ChromeViewModel;
+import org.mozilla.rocket.content.ChromeViewModel.ScreenCaptureTelemetryData;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
@@ -116,6 +117,7 @@ import java.util.WeakHashMap;
 import kotlin.Unit;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
+import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.WEBVIEW;
 import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
 import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
 import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
@@ -198,6 +200,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private static final int ACTION_CAPTURE = 3;
 
     private boolean hasPendingScreenCaptureTask = false;
+    private ScreenCaptureTelemetryData pendingScreenCaptureTelemetryData;
 
     private SessionObserver sessionObserver = new SessionObserver();
     final SessionManager.Observer managerObserver = new SessionManagerObserver(sessionObserver);
@@ -259,13 +262,12 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                         showGeolocationPermissionPrompt();
                         break;
                     case ACTION_CAPTURE:
-                        showLoadingAndCapture();
+                        showLoadingAndCapture((ScreenCaptureTelemetryData) params);
                         break;
                     default:
                         throw new IllegalArgumentException("Unknown actionId");
                 }
             }
-
 
             private void actionDownloadGranted(Parcelable parcelable) {
                 Download download = (Download) parcelable;
@@ -278,8 +280,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 }
             }
 
-            private void actionCaptureGranted() {
-                hasPendingScreenCaptureTask = true;
+            private void actionCaptureGranted(ScreenCaptureTelemetryData telemetryData) {
+                setPendingScreenCaptureTask(telemetryData);
             }
 
             private void doActionGrantedOrSetting(String permission, int actionId, Parcelable params) {
@@ -294,7 +296,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                         showGeolocationPermissionPrompt();
                         break;
                     case ACTION_CAPTURE:
-                        actionCaptureGranted();
+                        actionCaptureGranted((ScreenCaptureTelemetryData) params);
                         break;
                     default:
                         throw new IllegalArgumentException("Unknown actionId");
@@ -408,8 +410,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         sessionManager.resume();
         super.onResume();
         if (hasPendingScreenCaptureTask) {
-            showLoadingAndCapture();
-            hasPendingScreenCaptureTask = false;
+            showLoadingAndCapture(pendingScreenCaptureTelemetryData);
+            clearPendingScreenCaptureTask();
         }
     }
 
@@ -468,8 +470,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void observeChromeAction() {
-        chromeViewModel.getDoScreenshot().observe(this, unit -> {
-            permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, null);
+        chromeViewModel.getDoScreenshot().observe(this, telemetryData -> {
+            permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, telemetryData);
         });
         chromeViewModel.getRefreshOrStop().observe(this, unit -> {
             if (isLoading()) {
@@ -491,43 +493,44 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             switch (type) {
                 case BottomBarItemAdapter.TYPE_TAB_COUNTER:
                     chromeViewModel.getShowTabTray().call();
-                    TelemetryWrapper.showTabTrayToolbar();
+                    TelemetryWrapper.showTabTrayToolbar(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_MENU:
                     chromeViewModel.getShowMenu().call();
-                    TelemetryWrapper.showMenuToolbar();
+                    TelemetryWrapper.showMenuToolbar(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_NEW_TAB:
                     chromeViewModel.getShowNewTab().call();
-                    TelemetryWrapper.clickAddTabToolbar();
+                    TelemetryWrapper.clickAddTabToolbar(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_SEARCH:
                     chromeViewModel.getShowUrlInput().setValue(getUrl());
-                    TelemetryWrapper.clickToolbarSearch();
+                    TelemetryWrapper.clickToolbarSearch(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_CAPTURE:
-                    chromeViewModel.getDoScreenshot().call();
+                    chromeViewModel.getDoScreenshot().setValue(new ScreenCaptureTelemetryData(WEBVIEW, position));
                     // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
                     break;
                 case BottomBarItemAdapter.TYPE_PIN_SHORTCUT:
                     chromeViewModel.getPinShortcut().call();
-                    TelemetryWrapper.clickAddToHome();
+                    TelemetryWrapper.clickAddToHome(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_BOOKMARK:
+                    boolean isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
+                    TelemetryWrapper.clickToolbarBookmark(!isActivated, WEBVIEW, position);
                     chromeViewModel.getToggleBookmark().call();
-                    // handling Telemetry in MainActivity
                     break;
                 case BottomBarItemAdapter.TYPE_REFRESH:
                     chromeViewModel.getRefreshOrStop().call();
-                    TelemetryWrapper.clickToolbarReload();
+                    TelemetryWrapper.clickToolbarReload(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_SHARE:
                     chromeViewModel.getShare().call();
-                    TelemetryWrapper.clickToolbarShare();
+                    TelemetryWrapper.clickToolbarShare(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_NEXT:
                     chromeViewModel.getGoNext().call();
-                    TelemetryWrapper.clickToolbarForward();
+                    TelemetryWrapper.clickToolbarForward(WEBVIEW, position);
                     break;
                 default:
                     throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
@@ -823,11 +826,21 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         return captureStateListener;
     }
 
-    private void showLoadingAndCapture() {
+    private void setPendingScreenCaptureTask(ScreenCaptureTelemetryData telemetryData) {
+        hasPendingScreenCaptureTask = true;
+        pendingScreenCaptureTelemetryData = telemetryData;
+    }
+
+    private void clearPendingScreenCaptureTask() {
+        hasPendingScreenCaptureTask = false;
+        pendingScreenCaptureTelemetryData = null;
+    }
+
+    private void showLoadingAndCapture(ScreenCaptureTelemetryData telemetryData) {
         if (!isResumed()) {
             return;
         }
-        hasPendingScreenCaptureTask = false;
+        clearPendingScreenCaptureTask();
         final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
 
         PortraitStateModel portraitState = getPortraitStateModel();
@@ -841,7 +854,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         final int WAIT_INTERVAL = 150;
         // Post delay to wait for Dialog to show
-        HANDLER.postDelayed(new CaptureRunnable(getContext(), this, capturingFragment, getActivity().findViewById(R.id.container)), WAIT_INTERVAL);
+        HANDLER.postDelayed(new CaptureRunnable(getContext(), this, capturingFragment, getActivity().findViewById(R.id.container), telemetryData), WAIT_INTERVAL);
     }
 
     private void updateIsLoading(final boolean isLoading) {
