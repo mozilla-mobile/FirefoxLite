@@ -60,6 +60,14 @@ To mimimize the chance you are blocked by our build checks, you can self check t
 3. (Unit test) run `./gradlew testFocusWebkitDebugUnitTest`
 4. (UI test) run `./gradlew connectedAndroidTest`
 
+ktlint
+----
+Run `ktlint --install-git-pre-commit-hook` or `ktlint --install-git-pre-push-hook` for hooks
+Run `./gradlew ktlint` or `ktlint` to run check
+Run `./gradlew ktlintformat -F` or `ktlint -F` to fix format
+If you want to go extreme,run `ktlint -a -F`. This will use Android rule and gives you a lot of complains about max length, but we are not using right now.
+See https://ktlint.github.io/ for details.
+
 Docs
 ----
 
