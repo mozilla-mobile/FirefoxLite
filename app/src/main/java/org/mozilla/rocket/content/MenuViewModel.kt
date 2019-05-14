@@ -60,7 +60,7 @@ class MenuViewModel : ViewModel() {
         val DEFAULT_MENU_BOTTOM_ITEMS: List<ItemData> = Arrays.asList(
                 ItemData(BottomBarItemAdapter.TYPE_NEXT),
                 ItemData(BottomBarItemAdapter.TYPE_REFRESH),
-                ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
+                ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
                 ItemData(BottomBarItemAdapter.TYPE_PIN_SHORTCUT),
                 ItemData(BottomBarItemAdapter.TYPE_SHARE)
         )
