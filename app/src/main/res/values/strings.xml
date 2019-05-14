@@ -522,6 +522,52 @@
     <string name="label_menu_latest_top_trending_news">Latest &amp; Top Trending News</string>
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
+    <!-- Title of news preferences -->
+    <string name="title_news_preferences">News preferences</string>
+    <!-- This is the dialog for choosing news language -->
+    <string name="news_language_dialog_title">News language</string>
+    <string name="news_language_dialog_option_english">English</string>
+    <string name="news_language_dialog_option_hindi">Hindi</string>
+    <string name="news_language_dialog_option_marathi">Marathi</string>
+    <string name="news_language_dialog_option_kannada">Kannada</string>
+    <string name="news_language_dialog_option_gujarati">Gujarati</string>
+    <string name="news_language_dialog_option_malayalam">Malayalam</string>
+    <string name="news_language_dialog_option_tamil">Tamil</string>
+    <string name="news_language_dialog_option_telugu">Telugu</string>
+    <string name="news_language_dialog_option_urdu">Urdu</string>
+    <string name="news_language_dialog_option_nepali">Nepali</string>
+    <string name="news_language_dialog_option_asamiya">Asamiya</string>
+    <string name="news_language_dialog_option_punjabi">Punjabi</string>
+    <string name="news_language_dialog_option_bengali">Bengali</string>
+    <!-- This is the panel for editing show or hide news categories-->
+    <string name="news_category_title">Interests</string>
+    <string name="news_category_option_top_news">Top-news</string>
+    <string name="news_category_option_india">India</string>
+    <string name="news_category_option_world">World</string>
+    <string name="news_category_option_technology">Technology</string>
+    <string name="news_category_option_education">Education</string>
+    <string name="news_category_option_politics">Politics</string>
+    <string name="news_category_option_career">Career</string>
+    <string name="news_category_option_cricket">Cricket</string>
+    <string name="news_category_option_sports">Sports</string>
+    <string name="news_category_option_entertainment">Entertainment</string>
+    <string name="news_category_option_business">Business</string>
+    <string name="news_category_option_health">Health</string>
+    <string name="news_category_option_movie_reviews">Movie-reviews</string>
+    <string name="news_category_option_automobile">Automobile</string>
+    <string name="news_category_option_regional">Regional</string>
+    <string name="news_category_option_travel">Travel</string>
+    <string name="news_category_option_lifestyle">Lifestyle</string>
+    <string name="news_category_option_food">Food</string>
+    <string name="news_category_option_video">Video</string>
+    <string name="news_category_option_city">City</string>
+    <string name="news_category_option_events">Events</string>
+    <string name="news_category_option_religion">Religion</string>
+    <string name="news_category_option_crime">Crime</string>
+    <string name="news_category_option_astrology">Astrology</string>
+    <string name="news_category_option_science">Science</string>
+    <string name="news_category_option_jokes">Jokes</string>
+    
     <!-- A prefix that shows before the logo of a given partner. This string tries to show a user that the service he/she is using is provided by this given partner. -->
     <string name="logo_text">Service provided by</string>
 
