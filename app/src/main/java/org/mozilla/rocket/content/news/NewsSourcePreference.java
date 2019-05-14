@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.rocket.widget;
+package org.mozilla.rocket.content.news;
 
 import android.content.Context;
 import android.preference.ListPreference;
@@ -12,7 +12,7 @@ import android.util.Log;
 
 import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.content.NewsSourceManager;
+import org.mozilla.rocket.content.news.data.NewsSourceManager;
 
 public class NewsSourcePreference extends ListPreference {
 

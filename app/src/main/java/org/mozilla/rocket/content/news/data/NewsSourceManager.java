@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.rocket.content;
+package org.mozilla.rocket.content.news.data;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -12,9 +12,9 @@ import android.util.Log;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.threadutils.ThreadUtils;
 
-import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_DB;
-import static org.mozilla.rocket.widget.NewsSourcePreference.NEWS_NP;
-import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
+import static org.mozilla.rocket.content.news.NewsSourcePreference.NEWS_DB;
+import static org.mozilla.rocket.content.news.NewsSourcePreference.NEWS_NP;
+import static org.mozilla.rocket.content.news.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
 public class NewsSourceManager {
     public static final String TAG = "NewsSource";

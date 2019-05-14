@@ -6,6 +6,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
+import org.mozilla.rocket.content.news.NewsPresenter
+import org.mozilla.rocket.content.news.NewsViewContract
+import org.mozilla.rocket.content.news.NewsViewModel
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 

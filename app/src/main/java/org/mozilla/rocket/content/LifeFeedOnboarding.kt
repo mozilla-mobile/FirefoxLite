@@ -10,6 +10,7 @@ import android.view.View
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.utils.SupportUtils
+import org.mozilla.rocket.content.portal.ContentFeature
 
 object LifeFeedOnboarding {
 
@@ -47,12 +48,18 @@ object LifeFeedOnboarding {
     }
 
     private fun shouldShowOnboarding(context: Context): Boolean {
-        val currentOnBoardingVersion = getSharedPreferences(context).getInt(PREF_KEY_INT_LIFE_FEED_ONBOARDING_VERSION, 0)
+        val currentOnBoardingVersion = getSharedPreferences(
+            context
+        )
+            .getInt(PREF_KEY_INT_LIFE_FEED_ONBOARDING_VERSION, 0)
         return currentOnBoardingVersion < ONBOARDING_VERSION
     }
 
     private fun hasShownOnboarding(context: Context) {
-        getSharedPreferences(context).edit().putInt(PREF_KEY_INT_LIFE_FEED_ONBOARDING_VERSION, ONBOARDING_VERSION).apply()
+        getSharedPreferences(context).edit().putInt(
+            PREF_KEY_INT_LIFE_FEED_ONBOARDING_VERSION,
+            ONBOARDING_VERSION
+        ).apply()
     }
 
     private fun getSharedPreferences(context: Context): SharedPreferences {

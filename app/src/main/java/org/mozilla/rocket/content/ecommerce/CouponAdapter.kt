@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.content.ecommerce
 
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
@@ -11,12 +11,13 @@ import android.widget.TextView
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.rocket.content.data.Coupon
+import org.mozilla.rocket.content.portal.ContentPortalListener
+import org.mozilla.rocket.content.ecommerce.data.Coupon
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class CouponAdapter(private val listener: ContentPortalListener) : ListAdapter<Coupon, CouponViewHolder>(
-        COMPARATOR
+    COMPARATOR
 ) {
     object COMPARATOR : DiffUtil.ItemCallback<Coupon>() {
         override fun areItemsTheSame(oldItem: Coupon, newItem: Coupon): Boolean {

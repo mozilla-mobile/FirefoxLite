@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.content.news
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
@@ -8,7 +8,9 @@ import android.support.annotation.VisibleForTesting
 import android.support.v4.app.FragmentActivity
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY
+import org.mozilla.rocket.content.portal.ContentPortalView
+import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.news.NewsSourcePreference.PREF_INT_NEWS_PRIORITY
 import org.mozilla.threadutils.ThreadUtils
 
 interface NewsViewContract {
@@ -16,7 +18,8 @@ interface NewsViewContract {
     fun updateNews(items: List<NewsItem>?)
 }
 
-class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPortalView.NewsListListener {
+class NewsPresenter(private val newsViewContract: NewsViewContract) :
+    ContentPortalView.NewsListListener {
 
     @VisibleForTesting
     var newsViewModel: NewsViewModel? = null
@@ -31,7 +34,8 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPor
             return
         }
         newsViewModel = ViewModelProviders.of(fragmentActivity).get(NewsViewModel::class.java)
-        val repository = NewsRepository.getInstance(fragmentActivity)
+        val repository =
+            NewsRepository.getInstance(fragmentActivity)
         repository.setOnDataChangedListener(newsViewModel)
         newsViewModel?.repository = repository
         newsViewModel?.items?.observe(newsViewContract.getViewLifecycleOwner(),
@@ -48,7 +52,9 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPor
         if (!isLoading) {
             newsViewModel?.loadMore()
             isLoading = true
-            ThreadUtils.postToMainThreadDelayed({ isLoading = false }, LOADMORE_THRESHOLD)
+            ThreadUtils.postToMainThreadDelayed({ isLoading = false },
+                LOADMORE_THRESHOLD
+            )
         }
     }
 
@@ -62,7 +68,8 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : ContentPor
         // We create a new Repository and inject to newsViewModel here.
         // TODO: similar code happens in setupNewsViewModel(), need to refine them
         if (NewsRepository.isEmpty() && newsViewModel != null) {
-            val repository = NewsRepository.getInstance(context)
+            val repository =
+                NewsRepository.getInstance(context)
             repository.setOnDataChangedListener(newsViewModel)
             newsViewModel?.repository = repository
             newsViewModel?.items?.value = null

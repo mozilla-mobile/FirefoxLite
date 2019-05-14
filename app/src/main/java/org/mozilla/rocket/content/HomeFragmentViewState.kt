@@ -22,7 +22,7 @@ object HomeFragmentViewState {
 
     @JvmStatic
     fun lastOpenNews() {
-        state = HomeFragmentViewState.TYPE_NEWS
+        state = TYPE_NEWS
     }
 
     fun isLastOpenNews(): Boolean {

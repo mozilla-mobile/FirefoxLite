@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.content.portal
 
 import org.mozilla.focus.utils.AppConfigWrapper
 

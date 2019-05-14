@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.rocket.content
+package org.mozilla.rocket.content.portal
 
 import android.content.Context
 import android.support.design.widget.CoordinatorLayout
@@ -22,7 +22,10 @@ import android.widget.ProgressBar
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.view.ecommerce.EcTabFragment
+import org.mozilla.rocket.content.HomeFragmentViewState
+import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.ecommerce.EcTabFragment
+import org.mozilla.rocket.content.news.NewsAdapter
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
 interface ContentPortalListener {
@@ -30,7 +33,8 @@ interface ContentPortalListener {
     fun onStatus(items: MutableList<out NewsItem>?)
 }
 
-class ContentPortalView : CoordinatorLayout, ContentPortalListener {
+class ContentPortalView : CoordinatorLayout,
+    ContentPortalListener {
 
     // shared views for News and E-Commerce
     private var recyclerView: RecyclerView? = null
@@ -75,7 +79,9 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
     private fun initEcTabFragment() {
         context?.inTransaction {
-            replace(R.id.bottom_sheet, EcTabFragment.newInstance(), TAG_CONTENT_FRAGMENT)
+            replace(R.id.bottom_sheet, EcTabFragment.newInstance(),
+                TAG_CONTENT_FRAGMENT
+            )
         }
     }
 

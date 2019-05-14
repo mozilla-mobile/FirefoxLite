@@ -18,13 +18,13 @@ import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.screenshot.ScreenshotManager;
-import org.mozilla.rocket.content.NewsSourceManager;
+import org.mozilla.rocket.content.news.data.NewsSourceManager;
 import org.mozilla.rocket.periodic.FirstLaunchWorker;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.util.HashMap;
 
-import static org.mozilla.rocket.widget.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
+import static org.mozilla.rocket.content.news.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
 /**
  * A wrapper around FirebaseContract. It's job:
