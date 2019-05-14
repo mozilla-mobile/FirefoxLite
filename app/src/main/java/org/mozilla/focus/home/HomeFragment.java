@@ -535,10 +535,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
-        chromeViewModel.getTabCount().observe(this, pair -> {
-            int count = pair.getFirst();
-            boolean needAnimation = pair.getSecond();
-            bottomBarItemAdapter.setTabCount(count, needAnimation);
+        chromeViewModel.getTabCount().observe(this, changedEvent -> {
+            bottomBarItemAdapter.setTabCount(changedEvent.getCount(), changedEvent.getWithAnimation());
         });
         chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
 
