@@ -9,7 +9,6 @@ import android.content.Context
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -24,7 +23,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.data.ShoppingLink
 import org.mozilla.rocket.content.view.ecommerce.EcTabFragment
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
@@ -72,11 +70,17 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         setupContentPortalView()
 
         // if there's only one feature or it's production build, we init the legacy content portal
-        val features = features()
-        if (features.size == 1 || AppConfigWrapper.hasNewsPortal()) {
-            initLegacyContentPortal()
+        if (AppConfigWrapper.hasNewsPortal()) {
+            setupViewNews()
         } else {
-            initContentFragment(features)
+            initEcTabFragment()
+        }
+    }
+
+    private fun initEcTabFragment() {
+        val features = features()
+        context?.inTransaction {
+            replace(R.id.bottom_sheet, EcTabFragment.newInstance(features), TAG_CONTENT_FRAGMENT)
         }
     }
 
@@ -97,59 +101,6 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         }
 
         return features
-    }
-
-    private fun initContentFragment(features: ArrayList<Int>) {
-        val adjusted = adjust(features)
-        context?.inTransaction {
-            replace(R.id.bottom_sheet, EcTabFragment.newInstance(adjusted), TAG_CONTENT_FRAGMENT)
-        }
-    }
-
-    // we don't support News in EcTabFragment yet
-    private fun adjust(features: ArrayList<Int>): ArrayList<Int> {
-        val list = ArrayList<Int>()
-        for (feature in features) {
-            if (feature != TYPE_NEWS) {
-                list.add(feature)
-            }
-        }
-        return list
-    }
-
-    private fun initLegacyContentPortal() {
-        when {
-            AppConfigWrapper.hasEcommerceCoupons() -> setupViewCouponList()
-            AppConfigWrapper.hasEcommerceShoppingLink() -> setupViewShoppingLink()
-            else -> setupViewNews()
-        }
-    }
-
-    private fun setupViewCouponList() {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.content_coupon, bottomSheet)
-
-        val recyclerView = findViewById<RecyclerView>(R.id.content_coupons)
-        val couponAdapter = CouponAdapter(this)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = couponAdapter
-
-        val coupons = AppConfigWrapper.getEcommerceCoupons()
-        couponAdapter.submitList(coupons)
-    }
-
-    private fun setupViewShoppingLink() {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.content_shoppinglink, bottomSheet)
-
-        recyclerView = findViewById(R.id.ct_shoppinglink_list)
-        val shoppinglinkAdapter = ShoppingLinkAdapter(this)
-        recyclerView?.layoutManager = GridLayoutManager(context, SHOPPINGLINK_GRID_SPAN)
-        recyclerView?.adapter = shoppinglinkAdapter
-
-        val ecommerceShoppingLinks = AppConfigWrapper.getEcommerceShoppingLinks()
-        ecommerceShoppingLinks.add(ShoppingLink("", "footer", "", ""))
-        shoppinglinkAdapter.submitList(ecommerceShoppingLinks)
     }
 
     private fun setupViewNews() {
@@ -338,7 +289,6 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
     companion object {
         private const val NEWS_THRESHOLD = 10
-        private const val SHOPPINGLINK_GRID_SPAN = 2
         private const val TAG_CONTENT_FRAGMENT = "TAG_CONTENT_FRAGMENT"
     }
 }
