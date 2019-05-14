@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.extension.invalidate
 
 class ChromeViewModel(settings: Settings) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
@@ -34,11 +35,11 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
     }
 
     fun invalidate() {
-        isNightMode.value = isNightMode.value
-        tabCount.value = tabCount.value
-        isRefreshing.value = isRefreshing.value
-        canGoBack.value = canGoBack.value
-        canGoForward.value = canGoForward.value
+        isNightMode.invalidate()
+        tabCount.invalidate()
+        isRefreshing.invalidate()
+        canGoBack.invalidate()
+        canGoForward.invalidate()
     }
 
     fun onNightModeChanged(isEnabled: Boolean) {
