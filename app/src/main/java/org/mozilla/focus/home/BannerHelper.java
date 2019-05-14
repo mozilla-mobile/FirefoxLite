@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class BannerHelper {
+public class BannerHelper {
 
     interface HomeBannerHelperListener {
         void showHomeBannerProcedure(BannerAdapter b);
@@ -123,7 +123,7 @@ class BannerHelper {
         }
     }
 
-    void initCouponBanner(Context context, MutableLiveData<String[]> configLiveData) {
+    public void initCouponBanner(Context context, MutableLiveData<String[]> configLiveData) {
         initBanner(context, AppConfigWrapper.getCouponBannerRootConfig(), CURRENT_COUPON_BANNER_CONFIG, configLiveData, null);
     }
 

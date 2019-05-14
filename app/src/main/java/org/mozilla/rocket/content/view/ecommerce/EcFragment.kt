@@ -17,6 +17,7 @@ import org.mozilla.banner.BannerAdapter
 import org.mozilla.banner.BannerConfigViewModel
 import org.mozilla.banner.TelemetryListener
 import org.mozilla.focus.R
+import org.mozilla.focus.home.BannerHelper
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
@@ -94,8 +95,13 @@ class EcFragment : Fragment(), ContentPortalListener {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(banner)
 
-        val vm = ViewModelProviders.of(activity!!).get(BannerConfigViewModel::class.java)
-        vm.couponConfig.observe(viewLifecycleOwner, Observer {
+        val viewModelProvider = ViewModelProviders.of(activity!!)
+        val viewModel = viewModelProvider.get(BannerConfigViewModel::class.java)
+        val bannerLiveData = viewModel.couponConfig
+
+        BannerHelper().initCouponBanner(context, bannerLiveData)
+
+        bannerLiveData.observe(viewLifecycleOwner, Observer {
             if (it == null) {
                 return@Observer
             }
@@ -109,12 +115,12 @@ class EcFragment : Fragment(), ContentPortalListener {
                                 arg
                         )
                     },
-                    telmetryListener)
+                    telemetryListener)
             banner?.visibility = View.VISIBLE
         })
     }
 
-    private val telmetryListener = object : TelemetryListener {
+    private val telemetryListener = object : TelemetryListener {
         override fun sendClickItemTelemetry(jsonString: String, itemPosition: Int) {
         }
 

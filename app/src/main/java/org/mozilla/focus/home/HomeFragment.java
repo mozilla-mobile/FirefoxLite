@@ -1048,7 +1048,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (contentPanel != null) {
             contentPanel.show(true);
             if (AppConfigWrapper.hasEcommerceCoupons()) {
-                bannerHelper.initCouponBanner(getContext(), bannerConfigViewModel.getCouponConfig());
                 TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.ARROW);
             } else {
                 TelemetryWrapper.openLifeFeedNews();
