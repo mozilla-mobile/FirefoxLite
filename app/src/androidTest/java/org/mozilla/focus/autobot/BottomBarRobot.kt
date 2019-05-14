@@ -16,10 +16,10 @@ inline fun bottomBar(func: BottomBarRobot.() -> Unit) = BottomBarRobot().apply(f
 
 // Need to call before the ViewModel created
 inline fun bottomBar(
-        bottomBarItems: List<BottomBarItemAdapter.ItemData>,
-        MenuBottomBarItems: List<BottomBarItemAdapter.ItemData>,
-        func: BottomBarRobot.() -> Unit
-)  {
+    bottomBarItems: List<BottomBarItemAdapter.ItemData>,
+    MenuBottomBarItems: List<BottomBarItemAdapter.ItemData>,
+    func: BottomBarRobot.() -> Unit
+) {
     BottomBarRobot().apply {
         mockBottomBarItems(bottomBarItems)
         mockMenuBottomBarItems(MenuBottomBarItems)
