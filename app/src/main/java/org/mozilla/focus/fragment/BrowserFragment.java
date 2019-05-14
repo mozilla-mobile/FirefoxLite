@@ -583,7 +583,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             final Settings.EventHistory eventHistory = Settings.getInstance(getActivity()).getEventHistory();
             if (!eventHistory.contains(Settings.Event.ShowDownloadIndicatorIntro) && status != DownloadIndicatorViewModel.Status.DEFAULT) {
                 eventHistory.add(Settings.Event.ShowDownloadIndicatorIntro);
-                BottomBar.BottomBarItem menuItem = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_MENU);
+                BottomBar.BottomBarItem menuItem = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_MENU);
                 if (menuItem != null && menuItem.getView() != null) {
                     DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(this, menuItem.getView(), browserRoot, viewRef -> downloadIndicatorIntro = viewRef);
                 }
