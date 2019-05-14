@@ -21,7 +21,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.view.ecommerce.EcTabFragment
 import org.mozilla.rocket.widget.BottomSheetBehavior
@@ -30,11 +29,6 @@ interface ContentPortalListener {
     fun onItemClicked(url: String)
     fun onStatus(items: MutableList<out NewsItem>?)
 }
-
-const val TYPE_NEWS = 1 shl 0
-const val TYPE_TICKET = 1 shl 1
-const val TYPE_COUPON = 1 shl 2
-const val TYPE_KEY = "contentType"
 
 class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
@@ -49,6 +43,8 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
     private var newsProgressCenter: ProgressBar? = null
     private var newsAdapter: NewsAdapter<NewsItem>? = null
     private var newsListLayoutManager: LinearLayoutManager? = null
+
+    private val contentFeature = ContentFeature()
 
     interface NewsListListener {
         fun loadMore()
@@ -70,7 +66,7 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
         setupContentPortalView()
 
         // if there's only one feature or it's production build, we init the legacy content portal
-        if (AppConfigWrapper.hasNewsPortal()) {
+        if (contentFeature.hasNews()) {
             setupViewNews()
         } else {
             initEcTabFragment()
@@ -78,29 +74,9 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
     }
 
     private fun initEcTabFragment() {
-        val features = features()
         context?.inTransaction {
-            replace(R.id.bottom_sheet, EcTabFragment.newInstance(features), TAG_CONTENT_FRAGMENT)
+            replace(R.id.bottom_sheet, EcTabFragment.newInstance(), TAG_CONTENT_FRAGMENT)
         }
-    }
-
-    // get the features from remote config
-    private fun features(): ArrayList<Int> {
-
-        val features = ArrayList<Int>()
-        if (AppConfigWrapper.hasEcommerceCoupons()) {
-            features.add(TYPE_COUPON)
-        }
-
-        if (AppConfigWrapper.hasEcommerceShoppingLink()) {
-            features.add(TYPE_TICKET)
-        }
-
-        if (AppConfigWrapper.hasNewsPortal()) {
-            features.add(TYPE_NEWS) // we don't support News in Tab now.
-        }
-
-        return features
     }
 
     private fun setupViewNews() {

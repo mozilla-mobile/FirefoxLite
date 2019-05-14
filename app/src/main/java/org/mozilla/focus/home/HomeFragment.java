@@ -66,6 +66,7 @@ import org.mozilla.rocket.content.ContentPortalView;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.NewsPresenter;
 import org.mozilla.rocket.content.NewsViewContract;
+import org.mozilla.rocket.content.ContentFeature;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
@@ -101,7 +102,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Nullable private ImageButton arrow2;
     @Nullable private ContentPortalView contentPanel;
 
-    private BannerHelper bannerHelper = new BannerHelper();
+    @NonNull private BannerHelper bannerHelper = new BannerHelper();
+    @NonNull private ContentFeature contentFeature = new ContentFeature();
 
     private View lifeFeedOnboardingLayer;
     private TabCounter tabCounter;
@@ -232,13 +234,12 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                              @Nullable Bundle savedInstanceState) {
 
         final View view;
-        boolean hasNewsPortal = AppConfigWrapper.hasNewsPortal();
-        if (hasNewsPortal || AppConfigWrapper.hasEcommerceShoppingLink() || AppConfigWrapper.hasEcommerceCoupons()) {
+        if (contentFeature.hasContentPortal()) {
             view = inflater.inflate(R.layout.fragment_homescreen_content, container, false);
 
             setupContentPortalView(view);
 
-            if (hasNewsPortal && contentPanel != null) {
+            if (contentFeature.hasNews() && contentPanel != null) {
                 newsPresenter = new NewsPresenter(this);
                 contentPanel.setNewsListListener(newsPresenter);
             }
@@ -1047,9 +1048,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void showContentPortal() {
         if (contentPanel != null) {
             contentPanel.show(true);
-            if (AppConfigWrapper.hasEcommerceCoupons()) {
+
+            if (contentFeature.hasCoupon()) {
+                // default tab for ec is coupon. so we send the telemetry as coupon
                 TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.ARROW);
-            } else {
+            } else if (contentFeature.hasNews()) {
                 TelemetryWrapper.openLifeFeedNews();
             }
         }

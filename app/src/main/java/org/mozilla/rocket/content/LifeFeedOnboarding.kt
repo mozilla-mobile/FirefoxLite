@@ -9,7 +9,6 @@ import android.text.style.ClickableSpan
 import android.view.View
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
-import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.SupportUtils
 
 object LifeFeedOnboarding {
@@ -19,9 +18,7 @@ object LifeFeedOnboarding {
 
     @JvmStatic
     fun shouldShow(context: Context): Boolean {
-        val hasNewsPortal = AppConfigWrapper.hasNewsPortal()
-        val hasEcommmerceContent = AppConfigWrapper.hasEcommerceShoppingLink() || AppConfigWrapper.hasEcommerceCoupons()
-        return shouldShowOnboarding(context) && (hasNewsPortal || hasEcommmerceContent)
+        return shouldShowOnboarding(context) && ContentFeature().hasContentPortal()
     }
 
     @JvmStatic

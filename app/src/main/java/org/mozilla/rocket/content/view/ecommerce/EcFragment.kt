@@ -23,12 +23,12 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.lite.partner.NewsItem
+import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_COUPON
+import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_KEY
+import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_TICKET
 import org.mozilla.rocket.content.ContentPortalListener
 import org.mozilla.rocket.content.CouponAdapter
 import org.mozilla.rocket.content.ShoppingLinkAdapter
-import org.mozilla.rocket.content.TYPE_COUPON
-import org.mozilla.rocket.content.TYPE_KEY
-import org.mozilla.rocket.content.TYPE_TICKET
 import org.mozilla.rocket.content.data.ShoppingLink
 
 /**

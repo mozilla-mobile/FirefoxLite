@@ -1,0 +1,45 @@
+package org.mozilla.rocket.content
+
+import org.mozilla.focus.utils.AppConfigWrapper
+
+/**
+ * A presenter to store the logic of providing content portal features
+ *
+ * */
+class ContentFeature {
+
+    companion object {
+        const val TYPE_NEWS = 1 shl 0
+        const val TYPE_TICKET = 1 shl 1
+        const val TYPE_COUPON = 1 shl 2
+        const val TYPE_KEY = "contentType"
+    }
+
+    fun hasNews() = AppConfigWrapper.hasNewsPortal()
+
+    fun hasCoupon() = AppConfigWrapper.hasEcommerceCoupons()
+
+    fun hasShoppingLink() = AppConfigWrapper.hasEcommerceShoppingLink()
+
+    fun hasContentPortal() = hasNews() || (hasCoupon() && hasShoppingLink())
+
+    // get the features from remote config
+    // if we want to change the order of tabs we should do it here.
+    fun features(): ArrayList<Int> {
+
+        val features = ArrayList<Int>()
+        if (hasCoupon()) {
+            features.add(TYPE_COUPON)
+        }
+
+        if (hasShoppingLink()) {
+            features.add(TYPE_TICKET)
+        }
+
+        if (hasNews()) {
+            features.add(TYPE_NEWS)
+        }
+
+        return features
+    }
+}
