@@ -12,12 +12,15 @@ import android.util.Log;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.threadutils.ThreadUtils;
 
-import static org.mozilla.rocket.content.news.NewsSourcePreference.NEWS_DB;
-import static org.mozilla.rocket.content.news.NewsSourcePreference.NEWS_NP;
-import static org.mozilla.rocket.content.news.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
 
 public class NewsSourceManager {
     public static final String TAG = "NewsSource";
+
+    // "DainikBhaskar.com" doesn't provide their feed anymore.
+    private final static String NEWS_DB = "DainikBhaskar.com";
+    private final static String NEWS_NP = "Newspoint";
+
+    public final static String PREF_INT_NEWS_PRIORITY = "pref_int_news_priority";
 
     private static NewsSourceManager instance = new NewsSourceManager();
 
@@ -49,13 +52,6 @@ public class NewsSourceManager {
                 Log.d(NewsSourceManager.TAG, "NewsSourceManager already set:" + newsSource);
             }
         });
-    }
-
-    public String getNewsSource() {
-        if (newsSource == null) {
-            throw new IllegalStateException("NewsSourceManager is not initialized");
-        }
-        return newsSource;
     }
 
     public void setNewsSource(String newsSource) {
