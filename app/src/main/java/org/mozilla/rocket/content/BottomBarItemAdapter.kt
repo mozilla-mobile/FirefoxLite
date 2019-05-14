@@ -195,9 +195,9 @@ class BottomBarItemAdapter(
     }
 
     private class BookmarkItem(type: Int, theme: Theme) : ImageItem(
-        type,
-        R.drawable.ic_add_bookmark,
-        if (theme == Theme.LIGHT) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
+            type,
+            R.drawable.ic_add_bookmark,
+            if (theme == Theme.LIGHT) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
     )
 
     private class RefreshItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
