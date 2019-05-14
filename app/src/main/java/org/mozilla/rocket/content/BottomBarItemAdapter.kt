@@ -16,8 +16,8 @@ import org.mozilla.rocket.content.view.BottomBar.BottomBarItem.ImageItem
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton
 
 class BottomBarItemAdapter(
-        private val bottomBar: BottomBar,
-        private val theme: Theme = Theme.LIGHT
+    private val bottomBar: BottomBar,
+    private val theme: Theme = Theme.LIGHT
 ) {
     private var items: List<BottomBarItem>? = null
 
@@ -32,7 +32,7 @@ class BottomBarItemAdapter(
             types.map(this::convertToItem)
 
     private fun convertToItem(itemData: ItemData): BottomBarItem {
-        return when(val type = itemData.type) {
+        return when (val type = itemData.type) {
             TYPE_TAB_COUNTER -> TabCounterItem(type, theme)
             TYPE_MENU -> MenuItem(type, theme)
             TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add, theme.buttonColorResId)
@@ -174,10 +174,7 @@ class BottomBarItemAdapter(
                 }
     }
 
-    private class TabCounterItem(
-            type: Int,
-            private val theme: Theme
-    ) : BottomBarItem(type) {
+    private class TabCounterItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
             return TabCounter(contextThemeWrapper, null, 0).apply {
@@ -187,10 +184,7 @@ class BottomBarItemAdapter(
         }
     }
 
-    private class MenuItem(
-            type: Int,
-            private val theme: Theme
-    ) : BottomBarItem(type) {
+    private class MenuItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.button_more, null)
@@ -201,15 +195,12 @@ class BottomBarItemAdapter(
     }
 
     private class BookmarkItem(type: Int, theme: Theme) : ImageItem(
-            type,
-            R.drawable.ic_add_bookmark,
-            if (theme == Theme.LIGHT) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
+        type,
+        R.drawable.ic_add_bookmark,
+        if (theme == Theme.LIGHT) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
     )
 
-    private class RefreshItem(
-            type: Int,
-            private val theme: Theme
-    ) : BottomBarItem(type) {
+    private class RefreshItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.button_refresh, null)

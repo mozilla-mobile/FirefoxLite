@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.content.BottomBarItemAdapter.ItemData
-import java.util.*
+import java.util.Arrays
 
 class BottomBarViewModel : ViewModel() {
     val items = MutableLiveData<List<ItemData>>()

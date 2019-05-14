@@ -2,7 +2,6 @@ package org.mozilla.focus.autobot
 
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import org.mozilla.focus.R
@@ -39,7 +38,7 @@ interface MenuAutomation {
 }
 
 /** Some common menu relevant actions **/
-open class MenuRobot: MenuAutomation {
+open class MenuRobot : MenuAutomation {
 
     /** Open menu **/
     override fun clickHomeMenu() = AndroidTestUtils.tapHomeMenuButton()
