@@ -17,13 +17,7 @@ class DownloadViewModelFactory private constructor(private val repository: Downl
     }
 
     companion object {
-
-        @Volatile private var INSTANCE: DownloadViewModelFactory? = null
-
         @JvmStatic
-        fun getInstance(): DownloadViewModelFactory? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: DownloadViewModelFactory(Inject.provideDownloadInfoRepository()).also { INSTANCE = it }
-                }
+        val instance: DownloadViewModelFactory by lazy { DownloadViewModelFactory(Inject.provideDownloadInfoRepository()) }
     }
 }
