@@ -80,7 +80,7 @@ public class NavigationTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button and clear existing text in search field
-        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
+        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
         new BottomBarRobot().clickBrowserBottomBarItem(bottomBarSearchPos);
         onView(withId(R.id.url_edit)).perform(clearText());
 
@@ -103,7 +103,7 @@ public class NavigationTest {
 
         // Open menu and click next button
         AndroidTestUtils.tapBrowserMenuButton();
-        int menuBottomBarNextPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_NEXT);
+        int menuBottomBarNextPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_NEXT);
         new BottomBarRobot().clickMenuBottomBarItem(menuBottomBarNextPos);
 
         // Check if site 2 is loaded again
