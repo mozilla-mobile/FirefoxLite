@@ -1348,7 +1348,13 @@ object TelemetryWrapper {
                     TelemetryExtra(name = Extra.SOURCE, value = "India TV,Business World,HW News English...etc"),
                     TelemetryExtra(name = Extra.CATEGORY, value = "Uttar Pradesh,National,Tech Knowledge....etc"),
                     TelemetryExtra(name = Extra.SUB_CATEGORY, value = "top-news,entertainment,Lucknow...etc")])
-    fun clickOnNewsItem(pos: String, feed: String, source: String?, category: String?, subCategory: String?) {
+    fun clickOnNewsItem(
+        pos: String,
+        feed: String,
+        source: String?,
+        category: String?,
+        subCategory: String?
+    ) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.LIFEFEED_NEWS)
                 .extra(Extra.POSITION, pos)
                 .extra(Extra.FEED, feed)
@@ -1417,7 +1423,14 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.CATEGORY, value = "product,coupons"),
                 TelemetryExtra(name = Extra.SUB_CATEGORY, value = "smartphones,computer,limited-time,credit-card")])
     @JvmStatic
-    fun clickOnPromoItem(pos: String, id: String?, feed: String?, source: String?, category: String?, subcategory: String?) {
+    fun clickOnPromoItem(
+        pos: String,
+        id: String?,
+        feed: String?,
+        source: String?,
+        category: String?,
+        subcategory: String?
+    ) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.LIFEFEED_PROMO)
                 .extra(Extra.POSITION, pos)
                 .extra(Extra.ID, id ?: "")
@@ -2145,7 +2158,12 @@ object TelemetryWrapper {
                 .extra(Extra.DURATION, duration.toString()).queue()
     }
 
-    internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {
+    internal class EventBuilder @JvmOverloads constructor(
+        category: String,
+        method: String,
+        `object`: String?,
+        value: String? = null
+    ) {
         var telemetryEvent: TelemetryEvent
         var firebaseEvent: FirebaseEvent
 
@@ -2284,7 +2302,10 @@ object TelemetryWrapper {
             addCustomPing(configuration, CaptureCountMeasurement(context))
         }
 
-        internal fun addCustomPing(configuration: TelemetryConfiguration, measurement: TelemetryMeasurement) {
+        internal fun addCustomPing(
+            configuration: TelemetryConfiguration,
+            measurement: TelemetryMeasurement
+        ) {
             var preferenceKeys: MutableSet<String>? = configuration.preferencesImportantForTelemetry
             if (preferenceKeys == null) {
                 configuration.setPreferencesImportantForTelemetry(*arrayOf())

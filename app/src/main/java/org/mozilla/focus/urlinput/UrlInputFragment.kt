@@ -65,7 +65,11 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_urlinput, container, false)
 
         dismissView = view.findViewById(R.id.dismiss)
@@ -296,7 +300,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         autoCompleteInProgress = false
     }
 
-    private fun onTextChange(originalText: String, @Suppress("UNUSED_PARAMETER") autocompleteText: String) {
+    private fun onTextChange(
+        originalText: String,
+        @Suppress("UNUSED_PARAMETER") autocompleteText: String
+    ) {
         if (autoCompleteInProgress) {
             return
         }

@@ -68,7 +68,7 @@ class TabViewEngineSession constructor(
             webViewState = Bundle()
         }
         tabView?.let {
-            //TODO: should we update latest url, title of TabView to Session?
+            // TODO: should we update latest url, title of TabView to Session?
             it.saveViewState(webViewState)
         }
     }
@@ -116,7 +116,11 @@ class TabViewEngineSession constructor(
             filePathCallback: ValueCallback<Array<Uri>>?,
             fileChooserParams: WebChromeClient.FileChooserParams?
         ): Boolean
-        fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?)
+        fun onHttpAuthRequest(
+            callback: TabViewClient.HttpAuthCallback,
+            host: String?,
+            realm: String?
+        )
     }
 
     class ViewClient(private val es: TabViewEngineSession) : TabViewClient() {
@@ -217,7 +221,11 @@ class TabViewEngineSession constructor(
     }
 
     class FindListener(private val es: TabViewEngineSession) : TabView.FindListener {
-        override fun onFindResultReceived(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
+        override fun onFindResultReceived(
+            activeMatchOrdinal: Int,
+            numberOfMatches: Int,
+            isDoneCounting: Boolean
+        ) {
             es.notifyObservers { onFindResult(activeMatchOrdinal, numberOfMatches, isDoneCounting) }
         }
     }

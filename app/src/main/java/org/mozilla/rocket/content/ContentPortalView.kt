@@ -203,7 +203,7 @@ class ContentPortalView : CoordinatorLayout, ContentPortalListener {
 
     // helper method to work with FragmentManager
     private inline fun Context.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        ( this as? FragmentActivity)?.supportFragmentManager?.beginTransaction()?.func()?.commit()
+        (this as? FragmentActivity)?.supportFragmentManager?.beginTransaction()?.func()?.commit()
     }
 
     /**

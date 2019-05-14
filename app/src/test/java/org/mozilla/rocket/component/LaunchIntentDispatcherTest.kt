@@ -6,7 +6,7 @@ import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_COMMA
 import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_OPEN_URL
 import org.robolectric.RuntimeEnvironment
 
-//@RunWith(RobolectricTestRunner::class)
+// @RunWith(RobolectricTestRunner::class)
 class LaunchIntentDispatcherTest {
 
 //    @Test

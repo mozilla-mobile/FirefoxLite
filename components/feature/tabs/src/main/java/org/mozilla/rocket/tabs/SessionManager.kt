@@ -393,9 +393,8 @@ class SessionManager @JvmOverloads constructor(
                     false,
                     isUserGesture, null)
 
-            val tab = getTab(id)
-                    ?: // FIXME: why null?
-                    return false
+            val tab = getTab(id) // FIXME: why null?
+                    ?: return false
             if (tab.engineSession == null || tab.engineSession!!.tabView == null) {
                 throw RuntimeException("webview is null, previous creation failed")
             }
@@ -421,12 +420,20 @@ class SessionManager @JvmOverloads constructor(
             return Consumable.from(url).consumeBy(consumers)
         }
 
-        override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+        override fun onShowFileChooser(
+            es: TabViewEngineSession,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: WebChromeClient.FileChooserParams?
+        ): Boolean {
             val consumers: List<(WebChromeClient.FileChooserParams?) -> Boolean> = wrapConsumers { onShowFileChooser(es, filePathCallback, it) }
             return Consumable.from(fileChooserParams).consumeBy(consumers)
         }
 
-        override fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?) {
+        override fun onHttpAuthRequest(
+            callback: TabViewClient.HttpAuthCallback,
+            host: String?,
+            realm: String?
+        ) {
             notifyObservers { onHttpAuthRequest(callback, host, realm) }
         }
     }

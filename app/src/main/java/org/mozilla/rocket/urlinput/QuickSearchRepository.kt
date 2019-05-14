@@ -6,7 +6,10 @@ package org.mozilla.rocket.urlinput
 
 import android.arch.lifecycle.LiveData
 
-class QuickSearchRepository(private val globalDataSource: QuickSearchDataSource, private val localeDataSource: QuickSearchDataSource)/*: QuickSearchDataSource */ {
+class QuickSearchRepository(
+    private val globalDataSource: QuickSearchDataSource,
+    private val localeDataSource: QuickSearchDataSource
+)/*: QuickSearchDataSource */ {
 
     fun fetchGlobal(): LiveData<List<QuickSearch>> {
         return globalDataSource.fetchEngines()
@@ -21,7 +24,10 @@ class QuickSearchRepository(private val globalDataSource: QuickSearchDataSource,
         @Volatile private var INSTANCE: QuickSearchRepository? = null
 
         @JvmStatic
-        fun getInstance(globalDataSource: QuickSearchDataSource, localeDataSource: QuickSearchDataSource): QuickSearchRepository? =
+        fun getInstance(
+            globalDataSource: QuickSearchDataSource,
+            localeDataSource: QuickSearchDataSource
+        ): QuickSearchRepository? =
                 INSTANCE ?: synchronized(this) {
                     INSTANCE ?: QuickSearchRepository(globalDataSource, localeDataSource).also {
                         INSTANCE = it

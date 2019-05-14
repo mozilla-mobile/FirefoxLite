@@ -163,9 +163,9 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
 
         if (index == -1) {
             downloadInfoPack.list.add(downloadInfo)
-            //The crash will happen when data set size is 1 after add item.
-            //Because we define item count is 1 and mDownloadInfo is empty that means nothing and show empty view.
-            //So use notifyDataSetChanged() instead of notifyItemInserted when data size is 1 after add item.
+            // The crash will happen when data set size is 1 after add item.
+            // Because we define item count is 1 and mDownloadInfo is empty that means nothing and show empty view.
+            // So use notifyDataSetChanged() instead of notifyItemInserted when data size is 1 after add item.
             if (downloadInfoPack.list.size > 1) {
                 downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_INSERTED
                 downloadInfoPack.index = (downloadInfoPack.list.size - 1).toLong()

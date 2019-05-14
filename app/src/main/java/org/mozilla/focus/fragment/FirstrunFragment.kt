@@ -57,7 +57,11 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         telemetryStartTimestamp = System.currentTimeMillis()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_firstrun, container, false)
         view.isClickable = true
 
@@ -95,7 +99,11 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
                 }
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {}
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
