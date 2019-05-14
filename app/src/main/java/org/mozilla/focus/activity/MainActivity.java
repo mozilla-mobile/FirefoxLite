@@ -36,7 +36,6 @@ import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -89,6 +88,7 @@ import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.content.MenuViewModel;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.landing.OrientationState;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
@@ -109,6 +109,8 @@ import org.mozilla.urlutils.UrlUtils;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+
+import kotlin.Unit;
 
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 
@@ -132,7 +134,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private View myshotIndicator;
     private View myshotButton;
     private View snackBarContainer;
-    private View privateModeButton;
     private View nightModeButton;
     private View turboModeButton;
     private View blockImageButton;
@@ -397,7 +398,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void setUpMenu() {
-        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, (ViewGroup) null);
+        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
         menu = new BottomSheetDialog(this, R.style.BottomSheetTheme);
         menu.setContentView(sheet);
         menu.setCanceledOnTouchOutside(true);
@@ -408,7 +409,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         setupMenuBottomBar(menu);
 
         myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
-        privateModeButton = menu.findViewById(R.id.btn_private_browsing);
         privateModeIndicator = menu.findViewById(R.id.menu_private_mode_indicator);
         myshotButton = menu.findViewById(R.id.menu_screenshots);
 
@@ -473,14 +473,16 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
         menuViewModel = Inject.obtainMenuViewModel(this);
-        menuViewModel.getBottomItems().observe(this, bottomItems -> {
+        LiveDataExtensionKt.nonNullObserve(menuViewModel.getBottomItems(), this, bottomItems -> {
             bottomBarItemAdapter.setItems(bottomItems);
             hidePinShortcutButtonIfNotSupported();
+            return Unit.INSTANCE;
         });
         menuViewModel.isBottomBarEnabled().observe(this, bottomBarItemAdapter::setEnabled);
 
-        chromeViewModel.getTabCount().observe(this, changedEvent -> {
+        LiveDataExtensionKt.nonNullObserve(chromeViewModel.getTabCount(), this, changedEvent -> {
             bottomBarItemAdapter.setTabCount(changedEvent.getCount(), changedEvent.getWithAnimation());
+            return Unit.INSTANCE;
         });
         chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
         chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
@@ -1062,14 +1064,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     @Override
     public UrlInputFragment createUrlInputScreen(@Nullable String url, String parentFragmentTag) {
-        final UrlInputFragment fragment = UrlInputFragment.create(url, parentFragmentTag, true);
-        return fragment;
+        return UrlInputFragment.create(url, parentFragmentTag, true);
     }
 
     @Override
     public HomeFragment createHomeScreen() {
-        final HomeFragment fragment = HomeFragment.create();
-        return fragment;
+        return HomeFragment.create();
     }
 
     private void showMessage(@NonNull CharSequence msg) {
@@ -1081,12 +1081,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void asyncInitialize() {
-        (new Thread(new Runnable() {
-            @Override
-            public void run() {
-                asyncCheckStorage();
-            }
-        })).start();
+        new Thread(this::asyncCheckStorage).start();
     }
 
     /**
