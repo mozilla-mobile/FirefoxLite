@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.content.ecommerce
 
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
@@ -12,10 +12,11 @@ import android.widget.TextView
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DrawableUtils
-import org.mozilla.rocket.content.data.ShoppingLink
+import org.mozilla.rocket.content.portal.ContentPortalListener
+import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 
 class ShoppingLinkAdapter(private val listener: ContentPortalListener) : ListAdapter<ShoppingLink, ShoppingLinkViewHolder>(
-        COMPARATOR
+    COMPARATOR
         ) {
 
     companion object {

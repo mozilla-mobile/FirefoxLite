@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.data
+package org.mozilla.rocket.content.ecommerce.data
 
 data class ShoppingLink(
     val url: String,

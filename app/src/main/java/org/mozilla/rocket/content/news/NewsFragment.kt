@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.view.news
+package org.mozilla.rocket.content.news
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

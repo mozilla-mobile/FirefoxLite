@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.view.ecommerce
+package org.mozilla.rocket.content.ecommerce
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -11,11 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.rocket.content.ContentFeature
-import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_COUPON
-import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_NEWS
-import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_TICKET
-import org.mozilla.rocket.content.view.news.NewsFragment
+import org.mozilla.rocket.content.portal.ContentFeature
+import org.mozilla.rocket.content.news.NewsFragment
+import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
+import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_NEWS
+import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_TICKET
 import java.lang.IllegalStateException
 import java.util.ArrayList
 

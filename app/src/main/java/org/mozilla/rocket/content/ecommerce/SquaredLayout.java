@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.view;
+package org.mozilla.rocket.content.ecommerce;
 
 import android.content.Context;
 import android.util.AttributeSet;

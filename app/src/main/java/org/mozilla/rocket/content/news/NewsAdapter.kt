@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.content.news
 
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
@@ -16,10 +16,11 @@ import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.lite.partner.NewsItem
+import org.mozilla.rocket.content.portal.ContentPortalListener
 
 class NewsAdapter<T : NewsItem>(private val listener: ContentPortalListener) :
         ListAdapter<NewsItem, NewsViewHolder<T>>(
-        COMPARATOR
+            COMPARATOR
         ) {
 
     object COMPARATOR : DiffUtil.ItemCallback<NewsItem>() {

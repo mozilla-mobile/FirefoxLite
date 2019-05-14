@@ -10,10 +10,10 @@ import android.support.annotation.NonNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mozilla.rocket.content.data.Coupon;
-import org.mozilla.rocket.content.data.CouponKey;
-import org.mozilla.rocket.content.data.ShoppingLink;
-import org.mozilla.rocket.content.data.ShoppingLinkKey;
+import org.mozilla.rocket.content.ecommerce.data.Coupon;
+import org.mozilla.rocket.content.ecommerce.data.CouponKey;
+import org.mozilla.rocket.content.ecommerce.data.ShoppingLink;
+import org.mozilla.rocket.content.ecommerce.data.ShoppingLinkKey;
 
 import java.util.ArrayList;
 

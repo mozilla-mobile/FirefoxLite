@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.data
+package org.mozilla.rocket.content.ecommerce.data
 
 object CouponKey {
     const val KEY_ID = "id"
