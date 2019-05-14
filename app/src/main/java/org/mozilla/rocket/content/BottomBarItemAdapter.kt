@@ -22,6 +22,9 @@ class BottomBarItemAdapter(
     private var items: List<BottomBarItem>? = null
 
     fun setItems(types: List<ItemData>) {
+        val hasDuplicate = types.groupBy { it }.size < types.size
+        require(!hasDuplicate) { "Cannot set duplicated items to BottomBarItemAdapter" }
+
         convertToItems(types).let {
             items = it
             bottomBar.setItems(it)
@@ -47,15 +50,11 @@ class BottomBarItemAdapter(
         }
     }
 
-    private fun getItems(type: Int): List<BottomBarItem> =
-            items?.filter { it.type == type } ?: emptyList()
-
-    fun findItem(type: Int): BottomBarItem? =
-            items?.find { it.type == type }
+    fun getItem(type: Int): BottomBarItem? = items?.find { it.type == type }
 
     fun setEnabled(enabled: Boolean) {
-        items?.forEach { item ->
-            item.view?.let { view ->
+        items?.forEach {
+            it.view?.let { view ->
                 setEnabled(view, enabled)
             }
         }
@@ -88,31 +87,27 @@ class BottomBarItemAdapter(
 
     @JvmOverloads
     fun setTabCount(count: Int, animationEnabled: Boolean = false) {
-        getItems(TYPE_TAB_COUNTER)
-                .map { (it as TabCounterItem).view as TabCounter }
-                .forEach { tabCounter ->
-                    tabCounter.apply {
-                        if (animationEnabled) {
-                            setCount(count)
-                        } else {
-                            setCountWithAnimation(count)
-                        }
-                        if (count > 0) {
-                            isEnabled = true
-                            alpha = 1f
-                        } else {
-                            isEnabled = false
-                            alpha = 0.3f
-                        }
-                    }
-                }
+        getItem(TYPE_TAB_COUNTER)?.view?.apply {
+            this as TabCounter
+            if (animationEnabled) {
+                setCount(count)
+            } else {
+                setCountWithAnimation(count)
+            }
+            if (count > 0) {
+                isEnabled = true
+                alpha = 1f
+            } else {
+                isEnabled = false
+                alpha = 0.3f
+            }
+        }
     }
 
     fun setDownloadState(state: Int) {
-        getItems(TYPE_MENU).forEach {
-            val view = requireNotNull(it.view)
-            val stateIcon = view.findViewById<ImageView>(R.id.download_unread_indicator)
-            val downloadingAnimationView = view.findViewById<LottieAnimationView>(R.id.downloading_indicator)
+        getItem(TYPE_MENU)?.view?.apply {
+            val stateIcon = findViewById<ImageView>(R.id.download_unread_indicator)
+            val downloadingAnimationView = findViewById<LottieAnimationView>(R.id.downloading_indicator)
             when (state) {
                 DOWNLOAD_STATE_DEFAULT -> {
                     stateIcon.visibility = View.GONE
@@ -141,37 +136,35 @@ class BottomBarItemAdapter(
                     }
                     downloadingAnimationView.visibility = View.GONE
                 }
+                else -> error("Unexpected download state")
             }
         }
     }
 
     fun setBookmark(isBookmark: Boolean) {
-        getItems(TYPE_BOOKMARK)
-                .forEach {
-                    it.view?.isActivated = isBookmark
-                }
+        getItem(TYPE_BOOKMARK)?.view?.apply {
+            isActivated = isBookmark
+        }
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
-        getItems(TYPE_REFRESH)
-                .forEach {
-                    val refreshIcon = it.view?.findViewById<ThemedImageButton>(R.id.action_refresh)
-                    val stopIcon = it.view?.findViewById<ThemedImageButton>(R.id.action_stop)
-                    if (isRefreshing) {
-                        refreshIcon?.visibility = View.INVISIBLE
-                        stopIcon?.visibility = View.VISIBLE
-                    } else {
-                        refreshIcon?.visibility = View.VISIBLE
-                        stopIcon?.visibility = View.INVISIBLE
-                    }
-                }
+        getItem(TYPE_REFRESH)?.view?.apply {
+            val refreshIcon = findViewById<ThemedImageButton>(R.id.action_refresh)
+            val stopIcon = findViewById<ThemedImageButton>(R.id.action_stop)
+            if (isRefreshing) {
+                refreshIcon.visibility = View.INVISIBLE
+                stopIcon.visibility = View.VISIBLE
+            } else {
+                refreshIcon.visibility = View.VISIBLE
+                stopIcon.visibility = View.INVISIBLE
+            }
+        }
     }
 
     fun setCanGoForward(canGoForward: Boolean) {
-        getItems(TYPE_NEXT)
-                .forEach {
-                    it.view?.isEnabled = canGoForward
-                }
+        getItem(TYPE_NEXT)?.view?.apply {
+            isEnabled = canGoForward
+        }
     }
 
     private class TabCounterItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
