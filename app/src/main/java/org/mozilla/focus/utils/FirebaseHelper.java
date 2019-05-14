@@ -24,7 +24,7 @@ import org.mozilla.threadutils.ThreadUtils;
 
 import java.util.HashMap;
 
-import static org.mozilla.rocket.content.news.NewsSourcePreference.PREF_INT_NEWS_PRIORITY;
+import static org.mozilla.rocket.content.news.data.NewsSourceManager.PREF_INT_NEWS_PRIORITY;
 
 /**
  * A wrapper around FirebaseContract. It's job:

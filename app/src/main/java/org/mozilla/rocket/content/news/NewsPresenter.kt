@@ -10,7 +10,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.portal.ContentPortalView
 import org.mozilla.rocket.content.news.data.NewsRepository
-import org.mozilla.rocket.content.news.NewsSourcePreference.PREF_INT_NEWS_PRIORITY
+import org.mozilla.rocket.content.news.data.NewsSourceManager.PREF_INT_NEWS_PRIORITY
 import org.mozilla.threadutils.ThreadUtils
 
 interface NewsViewContract {
