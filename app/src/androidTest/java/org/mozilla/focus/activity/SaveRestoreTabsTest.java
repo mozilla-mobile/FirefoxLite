@@ -61,7 +61,7 @@ public class SaveRestoreTabsTest {
      */
     @Test
     public void restoreEmptyTab() {
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
+        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
         checkHomeTabCounterText(bottomBarTabCounterPos, "0");
     }
@@ -78,7 +78,7 @@ public class SaveRestoreTabsTest {
      */
     @Test
     public void restoreEmptyTab_addNewTabThenRelaunch() {
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
+        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
         checkBrowserTabCounterText(bottomBarTabCounterPos, "0");
 
@@ -119,7 +119,7 @@ public class SaveRestoreTabsTest {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
         AndroidTestUtils.setFocusTabId(TAB.getId());
 
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
+        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
 
         //open a new tab from tab tray
@@ -156,7 +156,7 @@ public class SaveRestoreTabsTest {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
         AndroidTestUtils.setFocusTabId(TAB.getId());
 
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
+        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
 
         // Open tab tray
