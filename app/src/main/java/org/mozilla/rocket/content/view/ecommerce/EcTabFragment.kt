@@ -11,10 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.rocket.content.TYPE_COUPON
-import org.mozilla.rocket.content.TYPE_KEY
-import org.mozilla.rocket.content.TYPE_NEWS
-import org.mozilla.rocket.content.TYPE_TICKET
+import org.mozilla.rocket.content.ContentFeature
+import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_COUPON
+import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_NEWS
+import org.mozilla.rocket.content.ContentFeature.Companion.TYPE_TICKET
 import org.mozilla.rocket.content.view.news.NewsFragment
 import java.lang.IllegalStateException
 import java.util.ArrayList
@@ -26,12 +26,8 @@ import java.util.ArrayList
 class EcTabFragment : Fragment() {
 
     companion object {
-        fun newInstance(features: ArrayList<Int>): EcTabFragment {
-            val args = Bundle().apply {
-                putIntegerArrayList(TYPE_KEY, features)
-            }
+        fun newInstance(): EcTabFragment {
             return EcTabFragment()
-                .apply { arguments = args }
         }
     }
 
@@ -46,7 +42,7 @@ class EcTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
-            arguments?.getIntegerArrayList(TYPE_KEY)?.apply {
+            ContentFeature().features().apply {
                 val pager = view.findViewById<ViewPager>(R.id.content_viewpager)
                 view.findViewById<TabLayout>(R.id.content_tab).setupWithViewPager(pager)
                 pager.adapter = ContentFragmentAdapter(childFragmentManager, this)
