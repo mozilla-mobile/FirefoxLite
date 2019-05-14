@@ -393,8 +393,7 @@ class SessionManager @JvmOverloads constructor(
                     false,
                     isUserGesture, null)
 
-            val tab = getTab(id) // FIXME: why null?
-                    ?: return false
+            val tab = getTab(id) ?: return false // FIXME: why null?
             if (tab.engineSession == null || tab.engineSession!!.tabView == null) {
                 throw RuntimeException("webview is null, previous creation failed")
             }

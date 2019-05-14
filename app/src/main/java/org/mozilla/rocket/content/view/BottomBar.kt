@@ -90,9 +90,9 @@ class BottomBar : FrameLayout {
         abstract fun createView(context: Context): View
 
         open class ImageItem(
-                type: Int,
-                private val drawableResId: Int,
-                private val tintResId: Int
+            type: Int,
+            private val drawableResId: Int,
+            private val tintResId: Int
         ) : BottomBarItem(type) {
             override fun createView(context: Context): View {
                 val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
