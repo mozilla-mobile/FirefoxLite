@@ -19,7 +19,12 @@ object DownloadIndicatorIntroViewHelper {
         fun onInflated(view: View)
     }
 
-    fun initDownloadIndicatorIntroView(fragment: Fragment, targetView: View?, parentView: ViewGroup?, listener: OnViewInflated) {
+    fun initDownloadIndicatorIntroView(
+        fragment: Fragment,
+        targetView: View?,
+        parentView: ViewGroup?,
+        listener: OnViewInflated
+    ) {
         targetView?.postDelayed({
             if (fragment.isResumed && parentView != null) {
 

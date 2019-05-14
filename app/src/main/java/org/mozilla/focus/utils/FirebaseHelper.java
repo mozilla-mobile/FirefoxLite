@@ -93,7 +93,7 @@ final public class FirebaseHelper {
         if (firebaseContract == null) {
             if (AppConstants.isBuiltWithFirebase()) {
                 firebaseContract = provideFirebaseImpl(context);
-                Log.d(TAG, "We are using FirebaseImpl");
+                Log.d(TAG, "We are using FirebaseImp");
             } else {
                 firebaseContract = provideFirebaseNoOpImpl(context);
                 Log.d(TAG, "We are using FirebaseNoOpImpl");
@@ -161,7 +161,7 @@ final public class FirebaseHelper {
             throw new IllegalStateException("Firebase related keys are not set");
         }
 
-        return new FirebaseImpl(provideDefaultValues(context));
+        return new FirebaseImp(provideDefaultValues(context));
     }
 
 

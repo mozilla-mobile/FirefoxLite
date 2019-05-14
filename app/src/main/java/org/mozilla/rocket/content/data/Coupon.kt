@@ -10,4 +10,13 @@ object CouponKey {
     const val KEY_ACTIVE = "active"
 }
 
-data class Coupon(val id: String, val category: String, val subcategory: String, val feed: String, val start: Long, val end: Long, val active: Boolean, val link: ShoppingLink)
+data class Coupon(
+    val id: String,
+    val category: String,
+    val subcategory: String,
+    val feed: String,
+    val start: Long,
+    val end: Long,
+    val active: Boolean,
+    val link: ShoppingLink
+)

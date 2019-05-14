@@ -73,7 +73,11 @@ class TabViewEngineObserver(
     ) =
             session.notifyObservers { onGeolocationPermissionsShowPrompt(origin, callback) }
 
-    override fun onFindResult(activeMatchOrdinal: Int, numberOfMatches: Int, isDoneCounting: Boolean) {
+    override fun onFindResult(
+        activeMatchOrdinal: Int,
+        numberOfMatches: Int,
+        isDoneCounting: Boolean
+    ) {
         session.findResults += FindResult(activeMatchOrdinal, numberOfMatches, isDoneCounting)
     }
 

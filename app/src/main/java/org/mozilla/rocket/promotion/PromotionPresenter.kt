@@ -38,7 +38,11 @@ class PromotionModel {
 
     constructor(context: Context, safeIntent: SafeIntent) : this(Settings.getInstance(context).eventHistory, NewFeatureNotice.getInstance(context), safeIntent)
     @VisibleForTesting
-    constructor(history: Settings.EventHistory, newFeatureNotice: NewFeatureNotice, safeIntent: SafeIntent) {
+    constructor(
+        history: Settings.EventHistory,
+        newFeatureNotice: NewFeatureNotice,
+        safeIntent: SafeIntent
+    ) {
 
         parseIntent(safeIntent)
 
@@ -69,7 +73,10 @@ class PromotionPresenter {
     companion object {
 
         @JvmStatic
-        fun runPromotion(promotionViewContract: PromotionViewContract, promotionModel: PromotionModel) {
+        fun runPromotion(
+            promotionViewContract: PromotionViewContract,
+            promotionModel: PromotionModel
+        ) {
             if (runPromotionFromIntent(promotionViewContract, promotionModel)) {
                 // Don't run other promotion if we already displayed above promotion
                 return
@@ -94,7 +101,10 @@ class PromotionPresenter {
 
         @JvmStatic
         // return true if promotion is already handled
-        fun runPromotionFromIntent(promotionViewContract: PromotionViewContract, promotionModel: PromotionModel): Boolean {
+        fun runPromotionFromIntent(
+            promotionViewContract: PromotionViewContract,
+            promotionModel: PromotionModel
+        ): Boolean {
             // When we receive this action, it means we need to show "Love Rocket" dialog
             if (promotionModel.showRateAppDialogFromIntent) {
                 promotionViewContract.showRateAppDialogFromIntent()

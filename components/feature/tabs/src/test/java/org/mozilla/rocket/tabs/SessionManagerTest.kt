@@ -190,20 +190,28 @@ class SessionManagerTest {
     fun testAddTab5() {
         // Add a tab from internal and focus it. onFocusChanged should be invoked once
         val spy0 = spy(object : Observer {
-            override fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onHttpAuthRequest(
+                callback: TabViewClient.HttpAuthCallback,
+                host: String?,
+                realm: String?
+            ) {
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
             override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
             override fun handleExternalUrl(url: String?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onShowFileChooser(
+                es: TabViewEngineSession,
+                filePathCallback: ValueCallback<Array<Uri>>?,
+                fileChooserParams: WebChromeClient.FileChooserParams?
+            ): Boolean {
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onFocusChanged(tab: Session?, factor: Factor) {
@@ -219,20 +227,28 @@ class SessionManagerTest {
 
         // Add a tab from external. onFocusChanged should be invoked
         val spy1 = spy(object : Observer {
-            override fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onHttpAuthRequest(
+                callback: TabViewClient.HttpAuthCallback,
+                host: String?,
+                realm: String?
+            ) {
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
             override fun updateFailingUrl(url: String?, updateFromError: Boolean) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
             override fun handleExternalUrl(url: String?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onShowFileChooser(
+                es: TabViewEngineSession,
+                filePathCallback: ValueCallback<Array<Uri>>?,
+                fileChooserParams: WebChromeClient.FileChooserParams?
+            ): Boolean {
+                TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onFocusChanged(tab: Session?, factor: Factor) {

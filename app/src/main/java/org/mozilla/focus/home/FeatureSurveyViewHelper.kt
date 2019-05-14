@@ -17,7 +17,10 @@ import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.RemoteConfigConstants
 import org.mozilla.focus.utils.Settings
 
-class FeatureSurveyViewHelper internal constructor(private val context: Context, private val featureSurvey: RemoteConfigConstants.SURVEY) : View.OnClickListener {
+class FeatureSurveyViewHelper internal constructor(
+    private val context: Context,
+    private val featureSurvey: RemoteConfigConstants.SURVEY
+) : View.OnClickListener {
 
     object Constants {
         const val DISMISS_DELAY: Long = 5000

@@ -23,7 +23,11 @@ object QuickSearchUtils {
         loadEnginesFromAssets(context, R.raw.quick_search_engines, liveData)
     }
 
-    private fun loadEnginesFromAssets(context: Context, resId: Int, liveData: MutableLiveData<List<QuickSearch>>) {
+    private fun loadEnginesFromAssets(
+        context: Context,
+        resId: Int,
+        liveData: MutableLiveData<List<QuickSearch>>
+    ) {
         ThreadUtils.postToBackgroundThread {
             try {
                 val jsonArray = IOUtils.readRawJsonArray(context, resId)

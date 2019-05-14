@@ -153,7 +153,7 @@ class BrowserFragment : LocaleAwareFragment(),
         browserMenuContainer = view.findViewById(R.id.browser_menu_container)
         toolbarRoot = view.findViewById(R.id.toolbar_root)
 
-        sessionManager = TabsSessionProvider.getOrThrow( activity)
+        sessionManager = TabsSessionProvider.getOrThrow(activity)
         observer = Observer(this)
         sessionManager.register(observer)
         sessionManager.focusSession?.register(observer)
@@ -211,7 +211,11 @@ class BrowserFragment : LocaleAwareFragment(),
                 actionDownloadGranted(params)
             }
 
-            override fun doActionNoPermission(permission: String?, actionId: Int, params: Parcelable?) {
+            override fun doActionNoPermission(
+                permission: String?,
+                actionId: Int,
+                params: Parcelable?
+            ) {
             }
 
             override fun makeAskAgainSnackBar(actionId: Int): Snackbar {
@@ -312,7 +316,12 @@ class BrowserFragment : LocaleAwareFragment(),
         tabViewSlot.removeView(tabView.view)
     }
 
-    override fun loadUrl(url: String, openNewTab: Boolean, isFromExternal: Boolean, onViewReadyCallback: Runnable?) {
+    override fun loadUrl(
+        url: String,
+        openNewTab: Boolean,
+        isFromExternal: Boolean,
+        onViewReadyCallback: Runnable?
+    ) {
         if (url.isNotBlank()) {
             displayUrlView.text = url
             if (sessionManager.tabsCount == 0) {
@@ -325,7 +334,11 @@ class BrowserFragment : LocaleAwareFragment(),
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         permissionHandler.onRequestPermissionsResult(context, requestCode, permissions, grantResults)
     }
 
@@ -441,7 +454,11 @@ class BrowserFragment : LocaleAwareFragment(),
             return false
         }
 
-        override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+        override fun onShowFileChooser(
+            es: TabViewEngineSession,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: WebChromeClient.FileChooserParams?
+        ): Boolean {
             // do nothing, exist for interface compatibility only.
             return false
         }
@@ -539,7 +556,10 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         }
 
-        override fun onDownload(session: Session, download: mozilla.components.browser.session.Download): Boolean {
+        override fun onDownload(
+            session: Session,
+            download: mozilla.components.browser.session.Download
+        ): Boolean {
             val activity = fragment.activity
             if (activity == null || !activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 return false
@@ -563,7 +583,11 @@ class BrowserFragment : LocaleAwareFragment(),
             return true
         }
 
-        override fun onHttpAuthRequest(callback: TabViewClient.HttpAuthCallback, host: String?, realm: String?) {
+        override fun onHttpAuthRequest(
+            callback: TabViewClient.HttpAuthCallback,
+            host: String?,
+            realm: String?
+        ) {
             val builder = HttpAuthenticationDialogBuilder.Builder(fragment.activity, host, realm)
                     .setOkListener { _, _, username, password -> callback.proceed(username, password) }
                     .setCancelListener { callback.cancel() }
