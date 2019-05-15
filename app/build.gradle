@@ -107,8 +107,6 @@ android {
         }
     }
 
-    testBuildType "debug"
-
     testOptions {
         animationsDisabled = true
         unitTests.returnDefaultValues = true
