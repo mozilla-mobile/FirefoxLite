@@ -211,10 +211,7 @@ class BottomBarItemAdapter(
         object DARK : Theme(buttonColorResId = R.color.home_bottom_button)
     }
 
-    data class ItemData(val type: Int) {
-        // TODO: workaround to fix the kotlin and JVM 1.8 compatible issue: https://youtrack.jetbrains.com/issue/KT-31027
-        override fun hashCode(): Int = type
-    }
+    data class ItemData(val type: Int)
 
     companion object {
         const val TYPE_TAB_COUNTER = 0
