@@ -61,12 +61,9 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
-import org.mozilla.lite.partner.NewsItem;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
-import org.mozilla.rocket.content.news.NewsPresenter;
-import org.mozilla.rocket.content.news.NewsViewContract;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
@@ -83,7 +80,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View, TopSitesContract.Model,
-        ScreenNavigator.HomeScreen, NewsViewContract, BannerHelper.HomeBannerHelperListener {
+        ScreenNavigator.HomeScreen, BannerHelper.HomeBannerHelperListener {
     private static final String TAG = "HomeFragment";
 
     public static final String TOPSITES_PREF = "topsites_pref";
@@ -123,8 +120,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     final Observer<String[]> homeBannerObserver = bannerHelper::setUpHomeBannerFromConfig;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
-    @Nullable
-    private NewsPresenter newsPresenter = null;
     private PinSiteManager pinSiteManager;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
@@ -207,11 +202,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
-    public void updateNews(@Nullable List<? extends NewsItem> items) {
-        contentPanel.setNewsContent(items);
-    }
-
-    @Override
     public void hideHomeBannerProcedure(Void v) {
         homeBanner.setAdapter(null);
         showView(homeBanner, false);
@@ -238,11 +228,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             view = inflater.inflate(R.layout.fragment_homescreen_content, container, false);
 
             setupContentPortalView(view);
-
-            if (contentFeature.hasNews() && contentPanel != null) {
-                newsPresenter = new NewsPresenter(this);
-                contentPanel.setNewsListListener(newsPresenter);
-            }
         } else {
             view = inflater.inflate(R.layout.fragment_homescreen, container, false);
         }
@@ -360,10 +345,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 downloadIndicator.setVisibility(View.GONE);
             }
         });
-
-        if (newsPresenter != null) {
-            newsPresenter.setupNewsViewModel(getActivity());
-        }
 
         return view;
     }

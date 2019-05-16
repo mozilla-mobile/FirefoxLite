@@ -48,7 +48,7 @@ class EcFragment : Fragment(), ContentPortalListener {
         ScreenNavigator.get(context).showBrowserScreen(url, true, false)
     }
 
-    override fun onStatus(items: MutableList<out NewsItem>?) {
+    override fun onStatus(items: List<NewsItem>?) {
     }
 
     override fun onCreateView(
