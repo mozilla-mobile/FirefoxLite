@@ -165,7 +165,7 @@ public class SearchFieldTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button
-        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
+        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
         new BottomBarRobot().clickBrowserBottomBarItem(bottomBarSearchPos);
 
         // Type some science characters

@@ -149,7 +149,7 @@ public class MenuShareLinkTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Check share btn disabled
-        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
+        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
         onView(new BottomBarRobot().menuBottomBarItemView(menuBottomBarSharePos)).check(matches(not(isEnabled())));
     }
 
@@ -167,7 +167,7 @@ public class MenuShareLinkTest {
 
         // Tap menu -> share link
         AndroidTestUtils.tapBrowserMenuButton();
-        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
+        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
         onView(new BottomBarRobot().menuBottomBarItemView(menuBottomBarSharePos)).check(matches(isDisplayed())).perform(click());
 
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
