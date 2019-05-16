@@ -59,11 +59,8 @@
 
     <include layout="@layout/fragment_homescreen_item_arrow"/>
 
-    <org.mozilla.rocket.content.view.BrowserBottomBar
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fixed_menu_height"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    <include layout="@layout/fragment_homescreen_item_menu_button"
+             android:id="@+id/btn_menu_container"/>
 
     <include layout="@layout/fragment_homescreen_item_recyclerview"
         android:id="@+id/main_list"
@@ -71,7 +68,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_bar"/>
+        app:layout_constraintBottom_toTopOf="@id/btn_menu_container"/>
 
     <include layout="@layout/content_portal"/>
 
