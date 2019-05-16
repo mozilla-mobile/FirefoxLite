@@ -64,10 +64,6 @@
         app:layout_constraintTop_toBottomOf="@id/home_fragment_fake_input"
         android:layout_marginTop="@dimen/home_padding_url_bar_to_top_sites"/>
 
-    <org.mozilla.rocket.content.view.BrowserBottomBar
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fixed_menu_height"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    <include layout="@layout/fragment_homescreen_item_menu_button"/>
 
 </org.mozilla.focus.widget.SwipeMotionLayout>
