@@ -18,10 +18,5 @@
         android:layout_height="1dp"
         android:background="@color/colorDivider" />
 
-    <org.mozilla.rocket.content.view.BottomBar
-        android:id="@+id/menu_bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fixed_menu_height"
-        android:layout_gravity="bottom"/>
-
+    <include layout="@layout/bottom_sheet_main_menu_bottom"/>
 </LinearLayout>
