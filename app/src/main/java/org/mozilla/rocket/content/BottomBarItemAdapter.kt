@@ -39,7 +39,6 @@ class BottomBarItemAdapter(
             TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add, tintResId)
             TYPE_SEARCH -> ImageItem(type, R.drawable.action_search, tintResId)
             TYPE_CAPTURE -> ImageItem(type, R.drawable.action_capture, tintResId)
-            TYPE_PIN_SHORTCUT -> ImageItem(type, R.drawable.action_add_to_home, tintResId)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
@@ -154,7 +153,6 @@ class BottomBarItemAdapter(
         const val TYPE_NEW_TAB = 2
         const val TYPE_SEARCH = 3
         const val TYPE_CAPTURE = 4
-        const val TYPE_PIN_SHORTCUT = 5
 
         const val DOWNLOAD_STATE_DEFAULT = 0
         const val DOWNLOAD_STATE_DOWNLOADING = 1

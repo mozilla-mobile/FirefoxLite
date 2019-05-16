@@ -1040,9 +1040,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             case SHOW_DOWNLOAD_PANEL:
                 onDownloadClicked();
                 break;
-            case PIN_SHORTCUT:
-                onAddToHomeClicked();
-                break;
             default:
                 break;
         }
