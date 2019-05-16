@@ -14,7 +14,13 @@ class MenuViewModelFactory private constructor() : ViewModelProvider.NewInstance
     }
 
     companion object {
+
+        @Volatile private var INSTANCE: MenuViewModelFactory? = null
+
         @JvmStatic
-        val instance: MenuViewModelFactory by lazy { MenuViewModelFactory() }
+        fun getInstance(): MenuViewModelFactory? =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: MenuViewModelFactory().also { INSTANCE = it }
+                }
     }
 }

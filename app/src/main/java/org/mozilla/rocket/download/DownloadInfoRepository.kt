@@ -82,7 +82,15 @@ class DownloadInfoRepository {
     }
 
     companion object {
+
+        @Volatile private var INSTANCE: DownloadInfoRepository? = null
+
         @JvmStatic
-        val instance: DownloadInfoRepository by lazy { DownloadInfoRepository() }
+        fun getInstance(): DownloadInfoRepository? =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: DownloadInfoRepository().also {
+                        INSTANCE = it
+                    }
+                }
     }
 }
