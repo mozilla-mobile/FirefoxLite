@@ -85,7 +85,7 @@ import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.content.BottomBarItemAdapter;
 import org.mozilla.rocket.content.BottomBarViewModel;
-import org.mozilla.rocket.content.ChromeViewModel;
+import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
@@ -203,7 +203,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private ThemedView bottomMenuDivider;
     private ThemedView urlBarDivider;
     private View downloadIndicatorIntro;
-    private ChromeViewModel chromeViewModel;
     private BookmarkViewModel bookmarkViewModel;
     private BottomBarViewModel bottomBarViewModel;
     private BottomBarItemAdapter bottomBarItemAdapter;
@@ -218,7 +217,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 BookmarkRepository.getInstance(BookmarksDatabase.getInstance(requireContext())));
         bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
         bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
-        chromeViewModel = Inject.obtainChromeViewModel(getActivity());
     }
 
     @Override
@@ -440,7 +438,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         });
         backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
 
-        observeChromeAction();
         setupBottomBar(view);
 
         toolbarRoot = view.findViewById(R.id.toolbar_root);
@@ -460,26 +457,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         sessionManager.register(this.managerObserver, this, false);
 
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
-
         return view;
-    }
-
-    private void observeChromeAction() {
-        chromeViewModel.getDoScreenshot().observe(this, unit -> {
-            permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, null);
-        });
-        chromeViewModel.getRefreshOrStop().observe(this, unit -> {
-            if (isLoading()) {
-                stop();
-            } else {
-                reload();
-            }
-        });
-        chromeViewModel.getGoNext().observe(this, unit -> {
-            if (canGoForward()) {
-                goForward();
-            }
-        });
     }
 
     private void setupBottomBar(View rootView) {
@@ -487,43 +465,49 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         bottomBar.setOnItemClickListener((type, position) -> {
             switch (type) {
                 case BottomBarItemAdapter.TYPE_TAB_COUNTER:
-                    chromeViewModel.getShowTabTray().call();
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_TAB_TRAY, null);
                     TelemetryWrapper.showTabTrayToolbar();
                     break;
                 case BottomBarItemAdapter.TYPE_MENU:
-                    chromeViewModel.getShowMenu().call();
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MENU, null);
                     TelemetryWrapper.showMenuToolbar();
                     break;
                 case BottomBarItemAdapter.TYPE_NEW_TAB:
-                    chromeViewModel.getShowNewTab().call();
+                    HomeFragmentViewState.reset();
+                    ScreenNavigator.get(getContext()).addHomeScreen(true);
                     TelemetryWrapper.clickAddTabToolbar();
                     break;
                 case BottomBarItemAdapter.TYPE_SEARCH:
-                    chromeViewModel.getShowUrlInput().setValue(getUrl());
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
                     TelemetryWrapper.clickToolbarSearch();
                     break;
                 case BottomBarItemAdapter.TYPE_CAPTURE:
-                    chromeViewModel.getDoScreenshot().call();
+                    onCaptureClicked();
                     // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
                     break;
                 case BottomBarItemAdapter.TYPE_PIN_SHORTCUT:
-                    chromeViewModel.getPinShortcut().call();
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.PIN_SHORTCUT, null);
                     TelemetryWrapper.clickAddToHome();
                     break;
                 case BottomBarItemAdapter.TYPE_BOOKMARK:
-                    chromeViewModel.getToggleBookmark().call();
-                    // handling Telemetry in MainActivity
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.BOOKMARK, null);
                     break;
                 case BottomBarItemAdapter.TYPE_REFRESH:
-                    chromeViewModel.getRefreshOrStop().call();
+                    if (isLoading()) {
+                        stop();
+                    } else {
+                        reload();
+                    }
                     TelemetryWrapper.clickToolbarReload();
                     break;
                 case BottomBarItemAdapter.TYPE_SHARE:
-                    chromeViewModel.getShare().call();
+                    FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHARE, null);
                     TelemetryWrapper.clickToolbarShare();
                     break;
                 case BottomBarItemAdapter.TYPE_NEXT:
-                    chromeViewModel.getGoNext().call();
+                    if (canGoForward()) {
+                        goForward();
+                    }
                     TelemetryWrapper.clickToolbarForward();
                     break;
                 default:
@@ -533,7 +517,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         bottomBar.setOnItemLongClickListener((type, position) -> {
             if (type == BottomBarItemAdapter.TYPE_MENU) {
                 // Long press menu always show download panel
-                chromeViewModel.getShowDownloadPanel().call();
+                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_DOWNLOAD_PANEL, null);
                 TelemetryWrapper.longPressDownloadIndicator();
                 return true;
             }
@@ -545,17 +529,9 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             Session current = sessionManager.getFocusSession();
             if (current != null) {
                 bindBookmarkButtonState(current.getUrl());
+                bottomBarItemAdapter.setCanGoForward(canGoForward());
             }
         });
-
-        chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
-        chromeViewModel.getTabCount().observe(this, pair -> {
-            int count = pair.getFirst();
-            boolean needAnimation = pair.getSecond();
-            bottomBarItemAdapter.setTabCount(count, needAnimation);
-        });
-        chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
-        chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
 
         setupDownloadIndicator(rootView);
     }
@@ -684,6 +660,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         landscapeStartTime = 0L;
     }
 
+    public void onCaptureClicked() {
+        permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, null);
+    }
+
     public void goBackground() {
         final Session current = sessionManager.getFocusSession();
         if (current != null) {
@@ -714,7 +694,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
     private void initialiseNormalBrowserUi() {
         urlView.setOnClickListener(v -> {
-            chromeViewModel.getShowUrlInput().setValue(getUrl());
+            FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_URL_INPUT, getUrl());
             TelemetryWrapper.clickUrlbar();
         });
     }
@@ -842,6 +822,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         if (currentListener != null) {
             currentListener.isLoadingChanged(isLoading);
         }
+        bottomBarItemAdapter.setRefreshing(isLoading);
     }
 
     @Override
@@ -1245,7 +1226,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
             if (loading) {
                 loadedUrl = null;
-                chromeViewModel.onPageLoadingStarted();
                 updateIsLoading(true);
                 updateURL(session.getUrl());
                 backgroundTransition.resetTransition();
@@ -1253,7 +1233,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 // The URL which is supplied in onTabFinished() could be fake (see #301), but webview's
                 // URL is always correct _except_ for error pages
                 updateUrlFromWebView(session);
-                chromeViewModel.onPageLoadingStopped();
                 updateIsLoading(false);
                 FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.UPDATE_MENU, null);
                 backgroundTransition.startTransition(ANIMATION_DURATION);
@@ -1490,7 +1469,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         @Override
         public void onNavigationStateChanged(@NotNull Session session, boolean canGoBack, boolean canGoForward) {
-            chromeViewModel.onNavigationStateChanged(canGoBack, canGoForward);
+            bottomBarItemAdapter.setCanGoForward(canGoForward);
         }
 
         @Override
@@ -1547,7 +1526,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         @Override
         public void onSessionCountChanged(int count) {
             if (isTabRestoredComplete()) {
-                chromeViewModel.onTabCountChanged(count, true);
+                bottomBarItemAdapter.setTabCount(count, true);
             }
         }
 
@@ -1589,7 +1568,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             Session current = sessionManager.getFocusSession();
             if (current != null) {
                 bindBookmarkButtonState(current.getUrl());
-                chromeViewModel.onNavigationStateChanged(canGoBack(), canGoForward());
+                bottomBarItemAdapter.setCanGoForward(canGoForward());
             }
             // check if newer config exists whenever navigating to Browser screen
             bottomBarViewModel.refresh();
@@ -1782,6 +1761,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         toolbarRoot.setNightMode(enable);
         urlView.setNightMode(enable);
         siteIdentity.setNightMode(enable);
+
+        bottomBarItemAdapter.setNightMode(enable);
 
         bottomMenuDivider.setNightMode(enable);
         backgroundView.setNightMode(enable);
