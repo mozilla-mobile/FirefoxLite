@@ -506,7 +506,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void setupBottomBar(View rootView) {
         BottomBar bottomBar = rootView.findViewById(R.id.bottom_bar);
-        // Hard code to only show the first and last items in home page for now
         bottomBar.setItemVisibility(1, View.INVISIBLE);
         bottomBar.setItemVisibility(2, View.INVISIBLE);
         bottomBar.setItemVisibility(3, View.INVISIBLE);
