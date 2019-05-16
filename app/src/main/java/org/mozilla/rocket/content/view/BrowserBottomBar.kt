@@ -14,7 +14,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.widget.EqualDistributeGrid
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton
 
-class BottomBar : FrameLayout {
+class BrowserBottomBar : FrameLayout {
     private lateinit var grid: EqualDistributeGrid
     private var onItemClickListener: OnItemClickListener? = null
     private var onItemLongClickListener: OnItemLongClickListener? = null
