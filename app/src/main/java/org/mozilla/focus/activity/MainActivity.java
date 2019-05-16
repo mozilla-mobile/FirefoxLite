@@ -560,7 +560,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             boolean activateBookmark = bookmarks != null && bookmarks.size() > 0;
             bottomBarItemAdapter.setBookmark(activateBookmark);
         });
-        bottomBarItemAdapter.setCanGoForward(chromeViewModel.getCanGoForward().getValue());
 
         boolean hasNewConfig = menuViewModel.refresh();
         if (hasNewConfig) {
