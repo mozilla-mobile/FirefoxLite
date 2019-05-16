@@ -59,7 +59,7 @@
 
     <include layout="@layout/fragment_homescreen_item_arrow"/>
 
-    <org.mozilla.rocket.content.view.BottomBar
+    <org.mozilla.rocket.content.view.BrowserBottomBar
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fixed_menu_height"
