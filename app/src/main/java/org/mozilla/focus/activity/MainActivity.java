@@ -84,7 +84,6 @@ import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.content.BottomBarItemAdapter;
 import org.mozilla.rocket.content.ChromeViewModel;
-import org.mozilla.rocket.content.ChromeViewModel.ScreenCaptureTelemetryData;
 import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.content.MenuViewModel;
 import org.mozilla.rocket.content.view.BottomBar;
@@ -114,7 +113,6 @@ import java.util.Locale;
 import kotlin.Unit;
 
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.MENU;
 
 public class MainActivity extends BaseActivity implements FragmentListener,
         ThemeManager.ThemeHost,
@@ -432,44 +430,42 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             switch (type) {
                 case BottomBarItemAdapter.TYPE_TAB_COUNTER:
                     chromeViewModel.getShowTabTray().call();
-                    TelemetryWrapper.showTabTrayToolbar(MENU, position);
+                    TelemetryWrapper.showTabTrayToolbar();
                     break;
                 case BottomBarItemAdapter.TYPE_MENU:
                     chromeViewModel.getShowMenu().call();
-                    TelemetryWrapper.showMenuToolbar(MENU, position);
+                    TelemetryWrapper.showMenuToolbar();
                     break;
                 case BottomBarItemAdapter.TYPE_NEW_TAB:
                     chromeViewModel.getShowNewTab().call();
-                    TelemetryWrapper.clickAddTabToolbar(MENU, position);
+                    TelemetryWrapper.clickAddTabToolbar();
                     break;
                 case BottomBarItemAdapter.TYPE_SEARCH:
                     chromeViewModel.getShowUrlInput().call();
-                    TelemetryWrapper.clickToolbarSearch(MENU, position);
+                    TelemetryWrapper.clickToolbarSearch();
                     break;
                 case BottomBarItemAdapter.TYPE_CAPTURE:
-                    chromeViewModel.getDoScreenshot().setValue(new ScreenCaptureTelemetryData(MENU, position));
+                    chromeViewModel.getDoScreenshot().call();
                     // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
                     break;
                 case BottomBarItemAdapter.TYPE_PIN_SHORTCUT:
                     chromeViewModel.getPinShortcut().call();
-                    TelemetryWrapper.clickAddToHome(MENU, position);
+                    TelemetryWrapper.clickAddToHome();
                     break;
                 case BottomBarItemAdapter.TYPE_BOOKMARK:
-                    boolean isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
-                    TelemetryWrapper.clickToolbarBookmark(!isActivated, MENU, position);
                     chromeViewModel.getToggleBookmark().call();
                     break;
                 case BottomBarItemAdapter.TYPE_REFRESH:
                     chromeViewModel.getRefreshOrStop().call();
-                    TelemetryWrapper.clickToolbarReload(MENU, position);
+                    TelemetryWrapper.clickToolbarReload();
                     break;
                 case BottomBarItemAdapter.TYPE_SHARE:
                     chromeViewModel.getShare().call();
-                    TelemetryWrapper.clickToolbarShare(MENU, position);
+                    TelemetryWrapper.clickToolbarShare();
                     break;
                 case BottomBarItemAdapter.TYPE_NEXT:
                     chromeViewModel.getGoNext().call();
-                    TelemetryWrapper.clickToolbarForward(MENU, position);
+                    TelemetryWrapper.clickToolbarForward();
                     break;
                 default:
                     throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
@@ -847,6 +843,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             return;
         }
         final boolean isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
+        TelemetryWrapper.clickToolbarBookmark(!isActivated);
         if (isActivated) {
             bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
@@ -999,6 +996,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         chromeViewModel.getShowNewTab().observe(this, unit -> {
             HomeFragmentViewState.reset();
             ScreenNavigator.get(this).addHomeScreen(true);
+            TelemetryWrapper.clickAddTabToolbar();
         });
         chromeViewModel.getShowUrlInput().observe(this, url -> {
             if (getSupportFragmentManager().isStateSaved()) {

@@ -12,10 +12,9 @@ import android.text.TextUtils;
 
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.screenshot.model.Screenshot;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.StorageUtils;
-import org.mozilla.rocket.content.ChromeViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,11 +26,9 @@ import java.util.Locale;
 public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
 
     private final Context context;
-    private ChromeViewModel.ScreenCaptureTelemetryData telemetryData;
 
-    public ScreenshotCaptureTask(Context context, ChromeViewModel.ScreenCaptureTelemetryData telemetryData) {
+    public ScreenshotCaptureTask(Context context) {
         this.context = context.getApplicationContext();
-        this.telemetryData = telemetryData;
     }
 
     @Override
@@ -51,8 +48,7 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
                 Screenshot screenshot = new Screenshot(title, url, timestamp, path);
                 ScreenshotManager.getInstance().insert(screenshot, null);
 
-                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(context, url), ScreenshotManager.getInstance().getCategoryVersion(),
-                        telemetryData.getMode(), telemetryData.getPosition());
+                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(context, url), ScreenshotManager.getInstance().getCategoryVersion());
 
             }
 

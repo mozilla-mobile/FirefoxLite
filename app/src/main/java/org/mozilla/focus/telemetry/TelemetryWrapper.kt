@@ -245,8 +245,6 @@ object TelemetryWrapper {
         internal const val DEFAULT = "default"
         const val TAB = "tab"
         const val ARROW = "arrow"
-        internal const val WEBVIEW = "webview"
-        internal const val MENU = "menu"
     }
 
     enum class FIND_IN_PAGE {
@@ -718,18 +716,10 @@ object TelemetryWrapper {
             method = Method.SHOW,
             `object` = Object.TABTRAY,
             value = Value.TOOLBAR,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun showTabTrayToolbar(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.TOOLBAR)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun showTabTrayToolbar() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.TOOLBAR).queue()
     }
 
     @TelemetryDoc(
@@ -738,18 +728,10 @@ object TelemetryWrapper {
             method = Method.SHOW,
             `object` = Object.MENU,
             value = Value.TOOLBAR,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun showMenuToolbar(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.TOOLBAR)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun showMenuToolbar() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.MENU, Value.TOOLBAR).queue()
     }
 
     @TelemetryDoc(
@@ -932,18 +914,10 @@ object TelemetryWrapper {
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
             value = Value.FORWARD,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun clickToolbarForward(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.FORWARD)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun clickToolbarForward() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.FORWARD).queue()
     }
 
     @TelemetryDoc(
@@ -952,18 +926,10 @@ object TelemetryWrapper {
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
             value = Value.RELOAD,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun clickToolbarReload(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun clickToolbarReload() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD).queue()
     }
 
     @TelemetryDoc(
@@ -972,18 +938,10 @@ object TelemetryWrapper {
             method = Method.SHARE,
             `object` = Object.TOOLBAR,
             value = Value.LINK,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun clickToolbarShare(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun clickToolbarShare() {
+        EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK).queue()
     }
 
     @TelemetryDoc(
@@ -992,19 +950,11 @@ object TelemetryWrapper {
             method = Method.SHARE,
             `object` = Object.TOOLBAR,
             value = Value.BOOKMARK,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.TO, value = "true,false"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [TelemetryExtra(name = Extra.TO, value = "true,false")])
     @JvmStatic
-    fun clickToolbarBookmark(isAdd: Boolean, mode: String, position: Int) {
+    fun clickToolbarBookmark(isAdd: Boolean) {
         EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.BOOKMARK)
-                .extra(Extra.VERSION, "2")
                 .extra(Extra.TO, java.lang.Boolean.toString(isAdd))
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
                 .queue()
         if (isAdd) {
             AdjustHelper.trackEvent(EVENT_SAVE_BOOKMKARK)
@@ -1017,18 +967,10 @@ object TelemetryWrapper {
             method = Method.PIN_SHORTCUT,
             `object` = Object.TOOLBAR,
             value = Value.LINK,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun clickAddToHome(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun clickAddToHome() {
+        EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.TOOLBAR, Value.LINK).queue()
         AdjustHelper.trackEvent(EVENT_ADD_TO_HOMESCREEN)
     }
 
@@ -1038,20 +980,16 @@ object TelemetryWrapper {
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
             value = Value.CAPTURE,
-            extras = [TelemetryExtra(name = Extra.VERSION, value = "4"),
+            extras = [TelemetryExtra(name = Extra.VERSION, value = "ping version"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category name"),
-                TelemetryExtra(name = Extra.CATEGORY_VERSION, value = "category version"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "0-4")
+                TelemetryExtra(name = Extra.CATEGORY_VERSION, value = "category version")
             ])
     @JvmStatic
-    fun clickToolbarCapture(category: String, categoryVersion: Int, mode: String, position: Int) {
+    fun clickToolbarCapture(category: String, categoryVersion: Int) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.CAPTURE)
-                .extra(Extra.VERSION, "4")
+                .extra(Extra.VERSION, Integer.toString(TOOL_BAR_CAPTURE_TELEMETRY_VERSION))
                 .extra(Extra.CATEGORY, category)
                 .extra(Extra.CATEGORY_VERSION, Integer.toString(categoryVersion))
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
                 .queue()
         AdjustHelper.trackEvent(EVENT_TAKE_SCREENSHOT)
     }
@@ -1258,18 +1196,10 @@ object TelemetryWrapper {
             method = Method.SHOW,
             `object` = Object.SEARCH_BAR,
             value = Value.SEARCH_BUTTON,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun clickToolbarSearch(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun clickToolbarSearch() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON).queue()
     }
 
     @TelemetryDoc(
@@ -1278,18 +1208,10 @@ object TelemetryWrapper {
             method = Method.ADD,
             `object` = Object.TAB,
             value = Value.TOOLBAR,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
+            extras = [])
     @JvmStatic
-    fun clickAddTabToolbar(mode: String, position: Int) {
-        EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOOLBAR)
-                .extra(Extra.VERSION, "2")
-                .extra(Extra.MODE, mode)
-                .extra(Extra.POSITION, Integer.toString(position))
-                .queue()
+    fun clickAddTabToolbar() {
+        EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOOLBAR).queue()
     }
 
     @TelemetryDoc(
