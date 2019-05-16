@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:paddingEnd="@dimen/browser_fixed_menu_horizontal_margin"
-        android:paddingStart="@dimen/browser_fixed_menu_horizontal_margin">
+        android:layout_marginEnd="@dimen/browser_fixed_menu_horizontal_margin"
+        android:layout_marginStart="@dimen/browser_fixed_menu_horizontal_margin">
 
         <org.mozilla.focus.tabs.TabCounter
             android:id="@+id/btn_tab_tray"
