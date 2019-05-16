@@ -12,14 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.RecyclerViewTestUtils;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.BottomBarViewModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -61,9 +57,8 @@ public class SaveRestoreTabsTest {
      */
     @Test
     public void restoreEmptyTab() {
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
-        checkHomeTabCounterText(bottomBarTabCounterPos, "0");
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.home_screen_menu)))).check(matches(withText("0")));
     }
 
     /**
@@ -78,20 +73,18 @@ public class SaveRestoreTabsTest {
      */
     @Test
     public void restoreEmptyTab_addNewTabThenRelaunch() {
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "0");
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.home_screen_menu)))).check(matches(withText("0")));
 
         // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
         // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
 
-        onView(withId(R.id.main_list))
+        onView(ViewMatchers.withId(R.id.main_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click(pressBack())));
 
         relaunchActivity();
 
-        checkHomeTabCounterText(bottomBarTabCounterPos, "1");
-        onView(new BottomBarRobot().homeBottomBarItemView(bottomBarTabCounterPos)).perform(click());
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("1"))).perform(click());
 
         onView(withId(R.id.tab_tray)).check(matches(isDisplayed()));
 
@@ -104,6 +97,7 @@ public class SaveRestoreTabsTest {
         onView(withId(R.id.website_subtitle)).check(matches(isDisplayed()));
     }
 
+
     /**
      * Test case no: TC0075
      * Test case name: restorePreviousTabs -> add new tab
@@ -115,27 +109,24 @@ public class SaveRestoreTabsTest {
      * 5. check tab number is 3
      */
     @Test
-    public void restorePreviousTabs_addNewTabThenRelaunch() throws InterruptedException {
+    public void restorePreviousTabs_addNewTabThenRelaunch() {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
         AndroidTestUtils.setFocusTabId(TAB.getId());
 
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2")));
 
         //open a new tab from tab tray
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "2");
-        onView(new BottomBarRobot().browserBottomBarItemView(bottomBarTabCounterPos)).perform(click());
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2"))).perform(click());
 
-        // wait for tab tray to show up
-        Thread.sleep(500);
-        onView(withId(R.id.new_tab_button)).perform(click());
+        onView(ViewMatchers.withId(R.id.new_tab_button)).perform(click());
 
         //open first top site
         onView(ViewMatchers.withId(R.id.main_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         relaunchActivity();
 
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "3");
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("3")));
     }
 
     /**
@@ -150,22 +141,18 @@ public class SaveRestoreTabsTest {
      * 6. Check tab tray number is 0
      */
     @Test
-    public void tabTray_closeAllTab() throws InterruptedException {
+    public void tabTray_closeAllTab() {
 
         // Given there are 2 tabs
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
         AndroidTestUtils.setFocusTabId(TAB.getId());
 
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
 
         // Open tab tray
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "2");
-        onView(new BottomBarRobot().browserBottomBarItemView(bottomBarTabCounterPos)).perform(click());
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2"))).perform(click());
 
         // Tap Close All -> Tap Cancel
-        // wait for tab tray to show up
-        Thread.sleep(500);
         onView(withId(R.id.close_all_tabs_btn)).perform(click());
         onView(withText(R.string.action_cancel)).perform(click());
 
@@ -177,22 +164,12 @@ public class SaveRestoreTabsTest {
         onView(withText(R.string.action_ok)).perform(click());
 
         // Check tab number is 0
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "0");
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("0")));
     }
 
 
     private void relaunchActivity() {
         activityRule.finishActivity();
         activityRule.launchActivity(new Intent());
-    }
-
-    private void checkHomeTabCounterText(int tabCounterPos, String text) {
-        onView(allOf(withId(R.id.counter_text), isDescendantOfA(new BottomBarRobot().homeBottomBarItemView(tabCounterPos))))
-                .check(matches(withText(text)));
-    }
-
-    private void checkBrowserTabCounterText(int tabCounterPos, String text) {
-        onView(allOf(withId(R.id.counter_text), isDescendantOfA(new BottomBarRobot().browserBottomBarItemView(tabCounterPos))))
-                .check(matches(withText(text)));
     }
 }

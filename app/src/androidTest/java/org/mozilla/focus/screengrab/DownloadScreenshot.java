@@ -189,7 +189,7 @@ public class DownloadScreenshot extends BaseScreenshot {
         // Open menu
         // Since right now snackbar will overlap with menu bar and we don't want to wait until snackbar is dismissed,
         // we cannot call onView(withId(R.id.btn_menu) here so call showMenu in MainActivity instead.
-        AndroidTestUtils.showMenu(activityRule);
+        AndroidTestUtils.showHomeMenu(activityRule);
 
         // Open download panel
         onView(withId(R.id.menu_download)).check(matches(isDisplayed())).perform(click());

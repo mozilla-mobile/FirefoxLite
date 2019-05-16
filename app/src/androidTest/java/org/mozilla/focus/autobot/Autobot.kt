@@ -43,7 +43,7 @@ inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
     }
 }
 
-class ScreenshotRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomation by menuAutomation {
+class ScreenshotRobot : MenuRobot() {
 
     fun clickFirstItemInMyShotsAndOpen() {
         // Click the first item in my shots panel

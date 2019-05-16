@@ -19,21 +19,17 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
+import org.junit.Before
+import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
-import org.mozilla.focus.autobot.bottomBar
-import org.mozilla.focus.autobot.indexOfType
 import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.content.BottomBarItemAdapter.Companion.TYPE_TAB_COUNTER
-import org.mozilla.rocket.content.BottomBarViewModel.Companion.DEFAULT_BOTTOM_BAR_ITEMS
 
 @Ignore
 @Keep
@@ -130,9 +126,7 @@ class ScreenOrientationTest {
     fun testTabTray() {
         // Prepare
         gotoBrowserScreen()
-        bottomBar {
-            clickBrowserBottomBarItem(DEFAULT_BOTTOM_BAR_ITEMS.indexOfType(TYPE_TAB_COUNTER))
-        }
+        onView(withId(R.id.btn_tab_tray)).perform(click())
 
         // Test - Should be SCREEN_ORIENTATION_PORTRAIT when the second level menu is opened
         assertEquals(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, activityTestRule.activity.requestedOrientation)

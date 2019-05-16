@@ -13,15 +13,9 @@ import android.view.KeyEvent;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.mozilla.focus.R;
-import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.BottomBarViewModel;
-import org.mozilla.rocket.content.MenuViewModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -59,7 +53,6 @@ public class NavigationTest {
      * 6. open menu to click next button
      * 7. check website_2 is displayed
      */
-    @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
         final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
@@ -80,8 +73,7 @@ public class NavigationTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button and clear existing text in search field
-        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarSearchPos);
+        onView(withId(R.id.btn_search)).perform(click());
         onView(withId(R.id.url_edit)).perform(clearText());
 
         // Enter site 2 url
@@ -103,8 +95,7 @@ public class NavigationTest {
 
         // Open menu and click next button
         AndroidTestUtils.tapBrowserMenuButton();
-        int menuBottomBarNextPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_NEXT);
-        new BottomBarRobot().clickMenuBottomBarItem(menuBottomBarNextPos);
+        onView(withId(R.id.action_next)).check(matches(isDisplayed())).perform(click());
 
         // Check if site 2 is loaded again
         IdlingRegistry.getInstance().register(loadingIdlingResource);

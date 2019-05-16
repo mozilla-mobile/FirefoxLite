@@ -20,13 +20,6 @@ import android.view.animation.Animation;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.content.BottomBarViewModel;
-import org.mozilla.rocket.content.BottomBarViewModelFactory;
-import org.mozilla.rocket.content.ChromeViewModel;
-import org.mozilla.rocket.content.ChromeViewModelFactory;
-import org.mozilla.rocket.content.MenuViewModel;
-import org.mozilla.rocket.content.MenuViewModelFactory;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
@@ -136,22 +129,6 @@ public class Inject {
     public static QuickSearchViewModel obtainQuickSearchViewModel(FragmentActivity activity) {
         QuickSearchViewModelFactory factory = new QuickSearchViewModelFactory(provideQuickSearchRepository(activity.getApplicationContext()));
         return ViewModelProviders.of(activity, factory).get(QuickSearchViewModel.class);
-    }
-
-    public static BottomBarViewModel obtainBottomBarViewModel(FragmentActivity activity) {
-        BottomBarViewModelFactory factory = BottomBarViewModelFactory.getInstance();
-        return ViewModelProviders.of(activity, factory).get(BottomBarViewModel.class);
-    }
-
-    public static MenuViewModel obtainMenuViewModel(FragmentActivity activity) {
-        MenuViewModelFactory factory = MenuViewModelFactory.getInstance();
-        return ViewModelProviders.of(activity, factory).get(MenuViewModel.class);
-    }
-
-    public static ChromeViewModel obtainChromeViewModel(FragmentActivity activity) {
-        Settings settings = Settings.getInstance(activity);
-        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings);
-        return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 
     public static void startAnimation(View view, Animation animation) {
