@@ -120,12 +120,12 @@ public final class AndroidTestUtils {
     }
 
     public static void tapHomeMenuButton() {
-        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
+        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
         new BottomBarRobot().clickHomeBottomBarItem(bottomBarMenuPos);
     }
 
     public static void tapBrowserMenuButton() {
-        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
+        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
         new BottomBarRobot().clickBrowserBottomBarItem(bottomBarMenuPos);
     }
 

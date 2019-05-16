@@ -143,7 +143,7 @@ public class BookmarksTest {
      */
     @Test
     public void addAndRemoveBookmarks_bookmarkIsAddedAndRemoved() {
-        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
         final String targetUrl = browsingPageAndBookmarkPage(menuBookmarkPos);
 
         // Show bookmark saved snackbar
@@ -194,7 +194,7 @@ public class BookmarksTest {
      */
     @Test
     public void removeBookmarkFromBookmarkList_bookmarkIsRemoved() {
-        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
         tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the remove button
@@ -220,7 +220,7 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithChangingContent_bookmarkIsUpdated() {
-        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
         tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button
@@ -257,7 +257,7 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithoutChangingContent_saveButtonIsDisabled() {
-        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
         tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button
@@ -281,7 +281,7 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithClearingLocationContent_saveButtonIsDisabled() {
-        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
         tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button
@@ -308,7 +308,7 @@ public class BookmarksTest {
      */
     @Test
     public void addBookmarkAndEdit_bookmarkIsUpdated() {
-        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
         browsingPageAndBookmarkPage(menuBookmarkPos);
 
         // Click the edit button on snackbar
@@ -347,7 +347,7 @@ public class BookmarksTest {
      */
     @Test
     public void editBookmarkWithVariousWords_bookmarkIsUpdated() {
-        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
+        int menuBookmarkPos = BottomBarRobotKt.indexOfType(MenuViewModel.Companion.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_BOOKMARK);
         tapBookmarkItemActionMenu(menuBookmarkPos);
 
         // Click the edit button

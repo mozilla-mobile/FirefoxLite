@@ -109,7 +109,7 @@ public class MyShotScreenshot extends BaseScreenshot {
         screenshotIdlingResource = new ScreenshotIdlingResource(activityTestRule.getActivity());
 
         // Click screen capture button
-        int bottomBarCapturePos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_CAPTURE);
+        int bottomBarCapturePos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_CAPTURE);
         new BottomBarRobot().clickBrowserBottomBarItem(bottomBarCapturePos);
         IdlingRegistry.getInstance().register(screenshotIdlingResource);
 
