@@ -14,7 +14,13 @@ class BottomBarViewModelFactory private constructor() : ViewModelProvider.NewIns
     }
 
     companion object {
+
+        @Volatile private var INSTANCE: BottomBarViewModelFactory? = null
+
         @JvmStatic
-        val instance: BottomBarViewModelFactory by lazy { BottomBarViewModelFactory() }
+        fun getInstance(): BottomBarViewModelFactory? =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: BottomBarViewModelFactory().also { INSTANCE = it }
+                }
     }
 }
