@@ -14,7 +14,7 @@ import org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId
 
 inline fun history(func: HistoryRobot.() -> Unit) = HistoryRobot().apply(func)
 
-class HistoryRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomation by menuAutomation {
+class HistoryRobot : MenuRobot() {
 
     fun clickListItemActionMenu(position: Int) {
         onView(withId(R.id.browsing_history_recycler_view)).perform(

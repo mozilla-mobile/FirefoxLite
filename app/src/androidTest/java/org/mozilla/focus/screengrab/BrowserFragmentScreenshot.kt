@@ -21,13 +21,9 @@ import org.junit.runner.RunWith
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.annotation.ScreengrabOnly
-import org.mozilla.focus.autobot.bottomBar
-import org.mozilla.focus.autobot.indexOfType
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.content.BottomBarItemAdapter.Companion.TYPE_TAB_COUNTER
-import org.mozilla.rocket.content.BottomBarViewModel.Companion.DEFAULT_BOTTOM_BAR_ITEMS
 import tools.fastlane.screengrab.FalconScreenshotStrategy
 import tools.fastlane.screengrab.Screengrab
 import java.io.IOException
@@ -115,9 +111,7 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
     fun screenshotTabTray() {
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, webServer.url(TEST_PATH).toString())
-            bottomBar {
-                clickBrowserBottomBarItem(DEFAULT_BOTTOM_BAR_ITEMS.indexOfType(TYPE_TAB_COUNTER))
-            }
+            clickTabTray()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_TAB_TRAY)
             clickCloseAllTabs()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_TAB_TRAY_CLOSE_DIALOG)

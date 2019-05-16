@@ -21,13 +21,10 @@ import android.view.View;
 
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
-import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.BeforeTestTask;
-import org.mozilla.rocket.content.BottomBarViewModel;
+import org.mozilla.focus.widget.FragmentListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,15 +38,16 @@ import static android.support.test.espresso.action.ViewActions.pressImeActionBut
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.TYPE_MENU;
 
 public final class AndroidTestUtils {
 
@@ -111,22 +109,24 @@ public final class AndroidTestUtils {
                 }, Press.FINGER, 0, 0, null);
     }
 
-    @Deprecated
-    public static void showMenu(ActivityTestRule<MainActivity> activityTestRule) {
+    public static void showHomeMenu(ActivityTestRule<MainActivity> activityTestRule) {
         if (activityTestRule != null) {
             final MainActivity mainActivity = activityTestRule.getActivity();
-            mainActivity.runOnUiThread(() -> Inject.obtainChromeViewModel(mainActivity).getShowMenu().call());
+            mainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mainActivity.onNotified(null, FragmentListener.TYPE.SHOW_MENU, null);
+                }
+            });
         }
     }
 
     public static void tapHomeMenuButton() {
-        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
-        new BottomBarRobot().clickHomeBottomBarItem(bottomBarMenuPos);
+        onView(withId(R.id.btn_menu_home)).perform(click());
     }
 
     public static void tapBrowserMenuButton() {
-        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.Companion.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarMenuPos);
+        onView(withId(R.id.btn_menu)).perform(click());
     }
 
     public static void tapSettingButton() {

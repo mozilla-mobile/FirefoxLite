@@ -14,9 +14,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.filters.FlakyTest;
 import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.filters.FlakyTest;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.DisplayMetrics;
@@ -29,7 +29,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
-import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.DownloadCompleteIdlingResource;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
@@ -160,8 +159,7 @@ public class WebContextMenuTest {
         onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed())).perform(click());
 
         // Check tab count is 2
-        BottomBarRobot bottomBarRobot = new BottomBarRobot();
-        onView(allOf(withId(R.id.counter_text), isDescendantOfA(bottomBarRobot.browserBottomBarItemView(0)))).check(matches(withText("2")));
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(withId(R.id.browser_screen_menu)))).check(matches(withText("2")));
     }
 
     /**
@@ -305,7 +303,7 @@ public class WebContextMenuTest {
         // Open menu
         // Since right now snackbar will overlap with menu bar and we don't want to wait until snackbar is dismissed,
         // we cannot call onView(withId(R.id.btn_menu) here so call showMenu in MainActivity instead.
-        AndroidTestUtils.showMenu(intentsTestRule);
+        AndroidTestUtils.showHomeMenu(intentsTestRule);
 
         // Open download panel
         onView(withId(R.id.menu_download)).check(matches(isDisplayed())).perform(click());

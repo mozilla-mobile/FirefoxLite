@@ -56,7 +56,7 @@ class MenuViewModel : ViewModel() {
     }
 
     companion object {
-        val DEFAULT_MENU_BOTTOM_ITEMS: List<ItemData> = Arrays.asList(
+        private val DEFAULT_MENU_BOTTOM_ITEMS = Arrays.asList(
                 ItemData(BottomBarItemAdapter.TYPE_NEXT),
                 ItemData(BottomBarItemAdapter.TYPE_REFRESH),
                 ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
