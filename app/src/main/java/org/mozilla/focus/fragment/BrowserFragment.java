@@ -548,9 +548,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             }
         });
 
-        chromeViewModel.isNightMode().observe(this, isNightMode -> {
-            bottomBarItemAdapter.setNightMode(isNightMode);
-        });
+        chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
         chromeViewModel.getTabCount().observe(this, pair -> {
             int count = pair.getFirst();
             boolean needAnimation = pair.getSecond();
