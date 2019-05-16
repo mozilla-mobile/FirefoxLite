@@ -13,7 +13,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
-
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.FeatureSurveyViewHelper;
@@ -75,8 +74,6 @@ final public class FirebaseHelper {
     static final String STR_SHARE_APP_DIALOG_TITLE = "str_share_app_dialog_title";
     static final String STR_SHARE_APP_DIALOG_CONTENT = "str_share_app_dialog_content";
     static final String STR_SHARE_APP_DIALOG_MSG = "str_share_app_dialog_msg";
-
-    static final String STR_BOTTOM_BAR_ITEMS = "str_bottom_bar_items";
 
     private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
