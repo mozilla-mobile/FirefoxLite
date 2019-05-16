@@ -479,8 +479,10 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         });
         menuViewModel.isBottomBarEnabled().observe(this, bottomBarItemAdapter::setEnabled);
 
-        chromeViewModel.getTabCount().observe(this, changedEvent -> {
-            bottomBarItemAdapter.setTabCount(changedEvent.getCount(), changedEvent.getWithAnimation());
+        chromeViewModel.getTabCount().observe(this, pair -> {
+            int count = pair.getFirst();
+            boolean needAnimation = pair.getSecond();
+            bottomBarItemAdapter.setTabCount(count, needAnimation);
         });
         chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
         chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
