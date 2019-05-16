@@ -196,16 +196,9 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private ThemedView urlBarDivider;
     private View downloadIndicatorIntro;
     private BrowserBottomBar browserBottomBar;
-    private BottomBarViewModel bottomBarViewModel;
     private BottomBarItemAdapter bottomBarItemAdapter;
 
     private long landscapeStartTime = 0L;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
-    }
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -444,6 +437,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         sessionManager.register(this.managerObserver, this, false);
 
+        if (isTabRestoredComplete()) {
+            bottomBarItemAdapter.setTabCount(sessionManager.getTabsCount());
+        }
+
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
         return view;
     }
@@ -487,12 +484,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             return false;
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(browserBottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
-        bottomBarViewModel.getItems().observe(this, items -> {
-            bottomBarItemAdapter.setItems(items);
-            if (isTabRestoredComplete()) {
-                bottomBarItemAdapter.setTabCount(sessionManager.getTabsCount());
-            }
-        });
+        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
+        bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
         setupDownloadIndicator(rootView);
     }
@@ -651,8 +644,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             }
         }
         setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
-        // check if newer config exists when Browser screen go foreground
-        bottomBarViewModel.refresh();
     }
 
     private void initialiseNormalBrowserUi() {

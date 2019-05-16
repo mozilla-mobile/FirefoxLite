@@ -2,18 +2,16 @@ package org.mozilla.rocket.content
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import org.mozilla.focus.utils.AppConfigWrapper
-import org.mozilla.rocket.content.BottomBarItemAdapter.ItemData
 import java.util.*
 
 class BottomBarViewModel : ViewModel() {
-    val items = MutableLiveData<List<ItemData>>()
+    val items = MutableLiveData<List<Int>>()
 
     init {
         refresh()
     }
 
-    fun refresh() {
+    fun refresh() { // TODO: also call this function when creating BrowserFragment
         val configuredItems = getConfiguredItems() ?: DEFAULT_BOTTOM_BAR_ITEMS
         items.value.let { currentValue ->
             if (configuredItems != currentValue) {
@@ -22,15 +20,18 @@ class BottomBarViewModel : ViewModel() {
         }
     }
 
-    private fun getConfiguredItems(): List<ItemData>? = AppConfigWrapper.getBottomBarItems()
+    private fun getConfiguredItems(): List<Int>? {
+        // TODO: fetch configs from firebase
+        return null
+    }
 
     companion object {
         private val DEFAULT_BOTTOM_BAR_ITEMS = Arrays.asList(
-                ItemData(BottomBarItemAdapter.TYPE_TAB_COUNTER),
-                ItemData(BottomBarItemAdapter.TYPE_NEW_TAB),
-                ItemData(BottomBarItemAdapter.TYPE_SEARCH),
-                ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
-                ItemData(BottomBarItemAdapter.TYPE_MENU)
+                BottomBarItemAdapter.TYPE_TAB_COUNTER,
+                BottomBarItemAdapter.TYPE_NEW_TAB,
+                BottomBarItemAdapter.TYPE_SEARCH,
+                BottomBarItemAdapter.TYPE_CAPTURE,
+                BottomBarItemAdapter.TYPE_MENU
         )
     }
 }
