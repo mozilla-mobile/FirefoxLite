@@ -491,7 +491,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private void hidePinShortcutButtonIfNotSupported() {
         final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
         if (!requestPinShortcutSupported) {
-            BottomBar.BottomBarItem pinShortcutItem = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_PIN_SHORTCUT);
+            BottomBar.BottomBarItem pinShortcutItem = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_PIN_SHORTCUT);
             if (pinShortcutItem != null && pinShortcutItem.getView() != null) {
                 pinShortcutItem.getView().setVisibility(View.GONE);
             }
@@ -842,7 +842,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (currentTab == null) {
             return;
         }
-        final boolean isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
+        final boolean isActivated = bottomBarItemAdapter.findItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
         TelemetryWrapper.clickToolbarBookmark(!isActivated);
         if (isActivated) {
             bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
