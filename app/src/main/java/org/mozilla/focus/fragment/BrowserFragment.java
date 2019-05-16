@@ -89,7 +89,6 @@ import org.mozilla.rocket.content.ChromeViewModel;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
-import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
@@ -112,8 +111,6 @@ import org.mozilla.urlutils.UrlUtils;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.WeakHashMap;
-
-import kotlin.Unit;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
 import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
@@ -543,22 +540,19 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             return false;
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
-        LiveDataExtensionKt.nonNullObserve(bottomBarViewModel.getItems(), this, items -> {
+        bottomBarViewModel.getItems().observe(this, items -> {
             bottomBarItemAdapter.setItems(items);
             Session current = sessionManager.getFocusSession();
             if (current != null) {
                 bindBookmarkButtonState(current.getUrl());
             }
-            return Unit.INSTANCE;
         });
 
-        LiveDataExtensionKt.nonNullObserve(chromeViewModel.isNightMode(), this, isNightMode -> {
+        chromeViewModel.isNightMode().observe(this, isNightMode -> {
             bottomBarItemAdapter.setNightMode(isNightMode);
-            return Unit.INSTANCE;
         });
-        LiveDataExtensionKt.nonNullObserve(chromeViewModel.getTabCount(), this, changedEvent -> {
+        chromeViewModel.getTabCount().observe(this, changedEvent -> {
             bottomBarItemAdapter.setTabCount(changedEvent.getCount(), changedEvent.getWithAnimation());
-            return Unit.INSTANCE;
         });
         chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
         chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
@@ -569,8 +563,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private void setupDownloadIndicator(View rootView) {
         final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
 
-        DownloadIndicatorViewModel downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(getActivity());
-        LiveDataExtensionKt.nonNullObserve(downloadIndicatorViewModel.getDownloadIndicatorObservable(), this, status -> {
+        Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
             switch (status) {
                 case DOWNLOADING:
                     bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);
@@ -593,12 +586,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(this, menuItem.getView(), browserRoot, viewRef -> downloadIndicatorIntro = viewRef);
                 }
             }
-            return Unit.INSTANCE;
         });
     }
 
     @Override
-    public void onViewCreated(@NonNull View container, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@Nullable View container, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(container, savedInstanceState);
 
         // restore WebView state
@@ -728,7 +720,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     @Override
-    public void onSaveInstanceState(@NotNull Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         permissionHandler.onSaveInstanceState(outState);
         if (sessionManager.getFocusSession() != null) {
             final TabViewEngineSession es = sessionManager.getFocusSession().getEngineSession();
