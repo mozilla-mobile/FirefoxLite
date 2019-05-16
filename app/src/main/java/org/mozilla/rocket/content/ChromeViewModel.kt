@@ -7,7 +7,7 @@ import org.mozilla.rocket.download.SingleLiveEvent
 
 class ChromeViewModel(settings: Settings) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
-    val tabCount = MutableLiveData<TabCountChangedEvent>()
+    val tabCount = MutableLiveData<Pair<Int, Boolean>>()
     val isRefreshing = MutableLiveData<Boolean>()
     val canGoBack = MutableLiveData<Boolean>()
     val canGoForward = MutableLiveData<Boolean>()
@@ -27,7 +27,7 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
 
     init {
         isNightMode.value = settings.isNightModeEnable
-        tabCount.value = TabCountChangedEvent(0, false)
+        tabCount.value = Pair(0, false)
         isRefreshing.value = false
         canGoBack.value = false
         canGoForward.value = false
@@ -49,9 +49,9 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
 
     @JvmOverloads
     fun onTabCountChanged(count: Int, needAnimation: Boolean = false) {
-        val currentCount = tabCount.value?.count
+        val currentCount = tabCount.value?.first
         if (currentCount != count) {
-            tabCount.value = TabCountChangedEvent(count, needAnimation)
+            tabCount.value = Pair(count, needAnimation)
         }
     }
 
@@ -75,6 +75,4 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
             this.canGoForward.value = canGoForward
         }
     }
-
-    data class TabCountChangedEvent(val count: Int, val withAnimation: Boolean)
 }
