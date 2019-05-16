@@ -62,6 +62,9 @@ public class LocaleListPreference extends ListPreference {
         languageCodeToNameMap.put("su", "Basa Sunda");
         languageCodeToNameMap.put("ace", "Basa Acèh");
         languageCodeToNameMap.put("gor", "Bahasa Hulontalo");
+        languageCodeToNameMap.put("ta", "தமிழ்");
+        languageCodeToNameMap.put("kn", "ಕನ್ನಡ");
+        languageCodeToNameMap.put("ml", "മലയാളം");
     }
 
     /**
