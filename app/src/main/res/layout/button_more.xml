@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/MainMenuButton">
 
     <org.mozilla.rocket.nightmode.themed.ThemedImageButton
         android:id="@+id/btn_menu"
         style="@style/MainMenuButton"
         android:src="@drawable/action_menu"
-        android:tint="@color/browser_menu_button"
-        android:clickable="false" />
+        android:tint="@color/browser_menu_button" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/downloading_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        app:lottie_fileName="notify_downloading.json"
-        app:lottie_loop="true"
+        android:layout_alignParentEnd="true"
         android:visibility="gone"
-        tools:visibility="visible" />
+        app:lottie_fileName="notify_downloading.json"
+        app:lottie_loop="true" />
 
     <ImageView
         android:id="@+id/download_unread_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/notify_download"
-        android:visibility="gone"
-        tools:visibility="visible" />
-</FrameLayout>
+        android:visibility="gone" />
+</RelativeLayout>
