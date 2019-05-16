@@ -707,7 +707,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 onBookMarkClicked();
                 break;
             case R.id.action_share:
-                onShareClicked(browserFragment);
+                onShraeClicked(browserFragment);
                 TelemetryWrapper.clickToolbarShare();
                 break;
             case R.id.action_pin_shortcut:
@@ -927,7 +927,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         }
     }
 
-    private void onShareClicked(final BrowserFragment browserFragment) {
+    private void onShraeClicked(final BrowserFragment browserFragment) {
         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, browserFragment.getUrl());
@@ -1042,15 +1042,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 break;
             case PIN_SHORTCUT:
                 onAddToHomeClicked();
-                break;
-            case BOOKMARK:
-                onBookMarkClicked();
-                break;
-            case SHARE:
-                BrowserFragment browserFragment = getVisibleBrowserFragment();
-                if (browserFragment != null) {
-                    onShareClicked(browserFragment);
-                }
                 break;
             default:
                 break;

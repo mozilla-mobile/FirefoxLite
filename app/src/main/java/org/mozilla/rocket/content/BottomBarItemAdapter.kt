@@ -32,26 +32,17 @@ class BottomBarItemAdapter(
             types.map(this::convertToItem)
 
     private fun convertToItem(itemData: ItemData): BottomBarItem {
+        val tintResId = theme.buttonColorResId
         return when(val type = itemData.type) {
-            TYPE_TAB_COUNTER -> TabCounterItem(type, theme)
-            TYPE_MENU -> MenuItem(type, theme)
-            TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add, theme.buttonColorResId)
-            TYPE_SEARCH -> ImageItem(type, R.drawable.action_search, theme.buttonColorResId)
-            TYPE_CAPTURE -> ImageItem(type, R.drawable.action_capture, theme.buttonColorResId)
-            TYPE_PIN_SHORTCUT -> ImageItem(type, R.drawable.action_add_to_home, theme.buttonColorResId)
-            TYPE_BOOKMARK -> BookmarkItem(type, theme)
-            TYPE_REFRESH -> RefreshItem(type, theme)
-            TYPE_SHARE -> ImageItem(type, R.drawable.action_share, theme.buttonColorResId)
-            TYPE_NEXT -> ImageItem(type, R.drawable.action_next, theme.buttonColorResId)
+            TYPE_TAB_COUNTER -> TabCounterItem(type, tintResId)
+            TYPE_MENU -> MenuItem(type, theme.buttonColorResId)
+            TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add, tintResId)
+            TYPE_SEARCH -> ImageItem(type, R.drawable.action_search, tintResId)
+            TYPE_CAPTURE -> ImageItem(type, R.drawable.action_capture, tintResId)
+            TYPE_PIN_SHORTCUT -> ImageItem(type, R.drawable.action_add_to_home, tintResId)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
-
-    private fun getItems(type: Int): List<BottomBarItem> =
-            items?.filter { it.type == type } ?: emptyList()
-
-    fun findItem(type: Int): BottomBarItem? =
-            items?.find { it.type == type }
 
     fun setNightMode(isNight: Boolean) {
         items?.forEach {
@@ -61,10 +52,6 @@ class BottomBarItemAdapter(
                 view is ThemedImageButton -> view.setNightMode(isNight)
                 type == TYPE_TAB_COUNTER -> (view as TabCounter).setNightMode(isNight)
                 type == TYPE_MENU -> view?.findViewById<ThemedImageButton>(R.id.btn_menu)?.setNightMode(isNight)
-                type == TYPE_REFRESH -> {
-                    view?.findViewById<ThemedImageButton>(R.id.action_refresh)?.setNightMode(isNight)
-                    view?.findViewById<ThemedImageButton>(R.id.action_stop)?.setNightMode(isNight)
-                }
             }
         }
     }
@@ -119,77 +106,37 @@ class BottomBarItemAdapter(
         }
     }
 
-    fun setBookmark(isBookmark: Boolean) {
-        getItems(TYPE_BOOKMARK)
-                .forEach {
-                    it.view?.isActivated = isBookmark
-                }
-    }
+    private fun getItems(type: Int): List<BottomBarItem> =
+            items?.filter { it.type == type } ?: emptyList()
 
-    fun setRefreshing(isRefreshing: Boolean) {
-        getItems(TYPE_REFRESH)
-                .forEach {
-                    val refreshIcon = it.view?.findViewById<ThemedImageButton>(R.id.action_refresh)
-                    val stopIcon = it.view?.findViewById<ThemedImageButton>(R.id.action_stop)
-                    if (isRefreshing) {
-                        refreshIcon?.visibility = View.INVISIBLE
-                        stopIcon?.visibility = View.VISIBLE
-                    } else {
-                        refreshIcon?.visibility = View.VISIBLE
-                        stopIcon?.visibility = View.INVISIBLE
-                    }
-                }
-    }
-
-    fun setCanGoForward(canGoForward: Boolean) {
-        getItems(TYPE_NEXT)
-                .forEach {
-                    it.view?.isEnabled = canGoForward
-                }
-    }
+    fun findItem(type: Int): BottomBarItem? =
+            items?.find { it.type == type }
 
     private class TabCounterItem(
             type: Int,
-            private val theme: Theme
+            private val tintResId: Int
     ) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
             return TabCounter(contextThemeWrapper, null, 0).apply {
                 layoutParams = ViewGroup.LayoutParams(contextThemeWrapper, null)
-                tintDrawables(ContextCompat.getColorStateList(contextThemeWrapper, theme.buttonColorResId))
+                tintDrawables(ContextCompat.getColorStateList(contextThemeWrapper, tintResId))
             }
         }
     }
 
     private class MenuItem(
             type: Int,
-            private val theme: Theme
+            private val tintResId: Int
     ) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.button_more, null)
-                    .apply {
-                        findViewById<ThemedImageButton>(R.id.btn_menu).setTint(context, theme.buttonColorResId)
-                    }
-        }
-    }
-
-    private class BookmarkItem(type: Int, theme: Theme) : ImageItem(
-            type,
-            R.drawable.ic_add_bookmark,
-            if (theme == Theme.LIGHT) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
-    )
-
-    private class RefreshItem(
-            type: Int,
-            private val theme: Theme
-    ) : BottomBarItem(type) {
-        override fun createView(context: Context): View {
-            return LayoutInflater.from(context)
-                    .inflate(R.layout.button_refresh, null)
                     .also { view ->
-                        view.findViewById<ThemedImageButton>(R.id.action_refresh).setTint(context, theme.buttonColorResId)
-                        view.findViewById<ThemedImageButton>(R.id.action_stop).setTint(context, theme.buttonColorResId)
+                        view.findViewById<ThemedImageButton>(R.id.btn_menu).apply {
+                            val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
+                            imageTintList = ContextCompat.getColorStateList(contextThemeWrapper, tintResId)
+                        }
                     }
         }
     }
@@ -208,19 +155,10 @@ class BottomBarItemAdapter(
         const val TYPE_SEARCH = 3
         const val TYPE_CAPTURE = 4
         const val TYPE_PIN_SHORTCUT = 5
-        const val TYPE_BOOKMARK = 6
-        const val TYPE_REFRESH = 7
-        const val TYPE_SHARE = 8
-        const val TYPE_NEXT = 9
 
         const val DOWNLOAD_STATE_DEFAULT = 0
         const val DOWNLOAD_STATE_DOWNLOADING = 1
         const val DOWNLOAD_STATE_UNREAD = 2
         const val DOWNLOAD_STATE_WARNING = 3
     }
-}
-
-private fun ImageView.setTint(context: Context, colorResId: Int) {
-    val contextThemeWrapper = ContextThemeWrapper(context, 0)
-    imageTintList = ContextCompat.getColorStateList(contextThemeWrapper, colorResId)
 }

@@ -30,8 +30,6 @@ public interface FragmentListener {
         SHOW_MY_SHOT_ON_BOARDING, // no payload
         SHOW_DOWNLOAD_PANEL, // no payload
         PIN_SHORTCUT, // no payload
-        BOOKMARK, // no payload
-        SHARE // no payload
     }
 
     void onNotified(@NonNull Fragment from,
