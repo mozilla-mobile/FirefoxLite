@@ -67,7 +67,7 @@ public class TabCounter extends ThemedRelativeLayout {
                 TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
         text.setPadding(0, 0, 0, shiftOneDpForDefaultText);
 
-        if (menuIconColor != null && menuIconColor.getDefaultColor() != defaultMenuIconColor) {
+        if (menuIconColor.getDefaultColor() != defaultMenuIconColor) {
             tintDrawables(menuIconColor);
         }
 
@@ -117,9 +117,7 @@ public class TabCounter extends ThemedRelativeLayout {
         this.count = count;
     }
 
-    public void tintDrawables(ColorStateList menuIconColor) {
-        this.menuIconColor = menuIconColor;
-
+    private void tintDrawables(ColorStateList menuIconColor) {
         final Drawable tabCounterBox = DrawableUtils.loadAndTintDrawable(getContext(), R.drawable.tab_counter_box, menuIconColor.getDefaultColor());
         box.setImageDrawable(tabCounterBox);
         box.setImageTintList(menuIconColor);
@@ -260,9 +258,7 @@ public class TabCounter extends ThemedRelativeLayout {
     @Override
     public void setNightMode(boolean isNight) {
         super.setNightMode(isNight);
-        if (menuIconColor != null) {
-            tintDrawables(menuIconColor);
-        }
+        tintDrawables(menuIconColor);
         bar.setNightMode(isNight);
         box.setNightMode(isNight);
         text.setNightMode(isNight);
