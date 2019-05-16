@@ -56,7 +56,7 @@ class BottomBar : FrameLayout {
                 setOnClickListener { onItemClickListener?.onItemClick(item.type, index) }
                 setOnLongClickListener { onItemLongClickListener?.onItemLongClick(item.type, index) ?: false }
             }.let { view ->
-                view.visibility = itemVisibilityMap.getOrDefault(index, View.VISIBLE)
+                view.visibility = itemVisibilityMap[index] ?: View.VISIBLE
                 item.view = view
                 grid.addView(view)
             }
