@@ -8,7 +8,7 @@ import android.support.annotation.VisibleForTesting
 import android.support.v4.app.FragmentActivity
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.portal.ContentPortalView
+import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSourceManager.PREF_INT_NEWS_PRIORITY
 import org.mozilla.threadutils.ThreadUtils
@@ -18,8 +18,7 @@ interface NewsViewContract {
     fun updateNews(items: List<NewsItem>?)
 }
 
-class NewsPresenter(private val newsViewContract: NewsViewContract) :
-    ContentPortalView.NewsListListener {
+class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListListener {
 
     @VisibleForTesting
     var newsViewModel: NewsViewModel? = null
