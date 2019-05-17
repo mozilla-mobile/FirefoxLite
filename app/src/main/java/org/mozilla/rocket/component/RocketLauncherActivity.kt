@@ -3,8 +3,10 @@ package org.mozilla.rocket.component
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.rocket.content.HomeFragmentViewState
+import org.mozilla.rocket.privately.PrivateModeActivity
 
 class RocketLauncherActivity : AppCompatActivity() {
 
@@ -16,6 +18,7 @@ class RocketLauncherActivity : AppCompatActivity() {
         when (action) {
             LaunchIntentDispatcher.Action.HANDLED -> finish()
             LaunchIntentDispatcher.Action.NORMAL -> dispatchNormalIntent()
+            LaunchIntentDispatcher.Action.PRIVATE -> dispatchPrivateIntent()
         }
     }
 
@@ -28,6 +31,14 @@ class RocketLauncherActivity : AppCompatActivity() {
         filterFlags(intent)
         startActivity(intent)
         finish()
+    }
+
+    private fun dispatchPrivateIntent() {
+        val intent = Intent(intent)
+        intent.setClass(applicationContext, PrivateModeActivity::class.java)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.pb_enter, 0)
     }
 
     private fun filterFlags(intent: Intent) {
