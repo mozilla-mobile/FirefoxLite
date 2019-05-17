@@ -22,6 +22,7 @@
 
     <string name="pref_key_give_feedback" translatable="false"><xliff:g id="preference_key">pref_give_feedback</xliff:g></string>
     <string name="pref_key_share_with_friends" translatable="false"><xliff:g id="preference_key">pref_share_with_friends</xliff:g></string>
+    <string name="pref_key_private_mode_shortcut" translatable="false"><xliff:g id="preference_key">pref_private_mode_shortcut</xliff:g></string>
     <string name="pref_key_about" translatable="false"><xliff:g id="preference_key">pref_about</xliff:g></string>
     <string name="pref_key_help" translatable="false"><xliff:g id="preference_key">pref_help</xliff:g></string>
     <string name="pref_key_rights" translatable="false"><xliff:g id="preference_key">pref_rights</xliff:g></string>
