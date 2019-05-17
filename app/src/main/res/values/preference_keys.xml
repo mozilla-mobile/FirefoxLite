@@ -79,4 +79,7 @@
 
     <!-- Private Mode - turbo mode setting -->
     <string name="pref_key_pb_boolean_turbo_enabled" translatable="false"><xliff:g id="preference_key">pref_key_pb_turbo_enabled</xliff:g></string>
+
+    <!-- Private Mode - count of the times user leave private mode -->
+    <string name="pref_key_pb_int_leave_count" translatable="false"><xliff:g id="preference_key">pref_key_pb_leave_count</xliff:g>></string>
 </resources>
