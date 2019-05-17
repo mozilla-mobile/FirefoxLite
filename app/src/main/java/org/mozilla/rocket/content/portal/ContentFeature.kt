@@ -3,7 +3,7 @@ package org.mozilla.rocket.content.portal
 import org.mozilla.focus.utils.AppConfigWrapper
 
 /**
- * A presenter to store the logic of providing content portal features
+ * Storing the logic of how we provide content portal features
  *
  * */
 class ContentFeature {
@@ -23,9 +23,9 @@ class ContentFeature {
 
     fun hasContentPortal() = hasNews() || (hasCoupon() && hasShoppingLink())
 
-    // get the features from remote config
+    // get the eCommerceFeatures from remote config
     // if we want to change the order of tabs we should do it here.
-    fun features(): ArrayList<Int> {
+    fun eCommerceFeatures(): ArrayList<Int> {
 
         val features = ArrayList<Int>()
         if (hasCoupon()) {
@@ -34,10 +34,6 @@ class ContentFeature {
 
         if (hasShoppingLink()) {
             features.add(TYPE_TICKET)
-        }
-
-        if (hasNews()) {
-            features.add(TYPE_NEWS)
         }
 
         return features
