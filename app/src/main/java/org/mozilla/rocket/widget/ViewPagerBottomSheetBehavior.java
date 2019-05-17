@@ -29,10 +29,10 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends BottomSheetBeh
         }
 
         // Previous approach uses DFS to find the scrolling child. Now we consider the current
-        // selected page for ViewPager first, so the second page cou;d still gets touch event
+        // selected page for ViewPager first, so the second page could still gets touch event
         if (view instanceof ViewPager) {
             ViewPager viewPager = (ViewPager) view;
-            View currentViewPagerChild = viewPager.getChildAt(viewPager.getCurrentItem());
+            View currentViewPagerChild = viewPager.getFocusedChild();
             View scrollingChild = findScrollingChild(currentViewPagerChild);
             if (scrollingChild != null) {
                 return scrollingChild;
