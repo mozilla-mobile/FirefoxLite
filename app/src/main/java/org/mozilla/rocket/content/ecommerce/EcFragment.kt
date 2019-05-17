@@ -18,12 +18,9 @@ import org.mozilla.banner.BannerConfigViewModel
 import org.mozilla.banner.TelemetryListener
 import org.mozilla.focus.R
 import org.mozilla.focus.home.BannerHelper
-import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.widget.FragmentListener
-import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_KEY
@@ -33,7 +30,7 @@ import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_TICKET
  * Fragment that display the content for [ShoppingLink]s and [Coupon]s
  *
  */
-class EcFragment : Fragment(), ContentPortalListener {
+class EcFragment : Fragment() {
 
     companion object {
         fun newInstance(feature: Int): EcFragment {
@@ -42,13 +39,6 @@ class EcFragment : Fragment(), ContentPortalListener {
             }
             return EcFragment().apply { arguments = args }
         }
-    }
-
-    override fun onItemClicked(url: String) {
-        ScreenNavigator.get(context).showBrowserScreen(url, true, false)
-    }
-
-    override fun onStatus(items: List<NewsItem>?) {
     }
 
     override fun onCreateView(
@@ -60,8 +50,7 @@ class EcFragment : Fragment(), ContentPortalListener {
             TYPE_COUPON -> {
                 return inflater.inflate(R.layout.content_tab_coupon, container, false).apply {
                     val recyclerView = findViewById<RecyclerView>(R.id.content_coupons)
-                    val couponAdapter =
-                        CouponAdapter(this@EcFragment)
+                    val couponAdapter = CouponAdapter()
                     recyclerView?.layoutManager = LinearLayoutManager(context)
                     recyclerView?.adapter = couponAdapter
                     val coupons = AppConfigWrapper.getEcommerceCoupons()
@@ -74,8 +63,7 @@ class EcFragment : Fragment(), ContentPortalListener {
                 return inflater.inflate(R.layout.content_tab_shoppinglink, container, false).apply {
 
                     val recyclerView = findViewById<RecyclerView>(R.id.ct_shoppinglink_list)
-                    val shoppinglinkAdapter =
-                        ShoppingLinkAdapter(this@EcFragment)
+                    val shoppinglinkAdapter = ShoppingLinkAdapter()
                     recyclerView?.layoutManager = GridLayoutManager(context, 2)
                     recyclerView?.adapter = shoppinglinkAdapter
 
