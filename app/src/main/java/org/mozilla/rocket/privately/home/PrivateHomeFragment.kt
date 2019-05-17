@@ -6,14 +6,17 @@ package org.mozilla.rocket.privately.home
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
+import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -22,6 +25,8 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
+import org.mozilla.rocket.privately.ShortcutUtils
+import org.mozilla.rocket.privately.ShortcutViewModel
 
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
@@ -77,7 +82,42 @@ class PrivateHomeFragment : LocaleAwareFragment(),
                             onUrlInputScreenVisible(it)
                         }
                     })
+
+            val shortcutViewModel = ViewModelProviders.of(this).get(ShortcutViewModel::class.java)
+            monitorShortcutPromotion(this, shortcutViewModel)
+            monitorShortcutMessage(this, shortcutViewModel)
+            monitorShortcutCreation(this, shortcutViewModel)
         }
+    }
+
+    private fun monitorShortcutPromotion(context: Context, model: ShortcutViewModel) {
+        model.eventPromoteShortcut.observe(viewLifecycleOwner, Observer { callback ->
+            AlertDialog.Builder(context)
+                    .setMessage(R.string.private_browsing_dialog_add_shortcut_title)
+                    .setPositiveButton(R.string.private_browsing_dialog_add_shortcut_yes) { _, _ ->
+                        callback?.onPositive()
+                    }
+                    .setNegativeButton(R.string.private_browsing_dialog_add_shortcut_no) { _, _ ->
+                        callback?.onNegative()
+                    }
+                    .setOnCancelListener {
+                        callback?.onCancel()
+                    }
+                    .show()
+        })
+    }
+
+    private fun monitorShortcutMessage(context: Context, model: ShortcutViewModel) {
+        model.eventShowMessage.observe(viewLifecycleOwner, Observer {
+            val msgId = it ?: return@Observer
+            Toast.makeText(context, msgId, Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    private fun monitorShortcutCreation(context: Context, model: ShortcutViewModel) {
+        model.eventCreateShortcut.observe(viewLifecycleOwner, Observer {
+            // Create shortcut
+        })
     }
 
     override fun applyLocale() {
