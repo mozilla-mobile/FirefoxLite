@@ -93,7 +93,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     private fun monitorShortcutPromotion(context: Context, model: ShortcutViewModel) {
         model.eventPromoteShortcut.observe(viewLifecycleOwner, Observer { callback ->
             AlertDialog.Builder(context)
-                    .setMessage(R.string.private_browsing_dialog_add_shortcut_title)
+                    .setCustomTitle(View.inflate(context, R.layout.dialog_pb_shortcut, null))
                     .setPositiveButton(R.string.private_browsing_dialog_add_shortcut_yes) { _, _ ->
                         callback?.onPositive()
                     }
