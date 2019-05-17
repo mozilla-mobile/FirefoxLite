@@ -9,6 +9,7 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.Transformations
 
 fun <T> MutableLiveData<T>.invalidate() { value = value }
 
@@ -16,4 +17,14 @@ fun <T> LiveData<T>.nonNullObserve(owner: LifecycleOwner, observer: (t: T) -> Un
     this.observe(owner, Observer {
         observer(it!!)
     })
+}
+
+/** Uses `Transformations.map` on a LiveData */
+fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
+    return Transformations.map(this, body)
+}
+
+/** Uses `Transformations.switchMap` on a LiveData */
+fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
+    return Transformations.switchMap(this, body)
 }

@@ -4,6 +4,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mozilla.rocket.content.news.NewsPresenter
@@ -31,6 +32,12 @@ class NewsPresenterTest {
     fun `Avoid rapidly loading more news items`() {
         newsPresenter.loadMore()
         newsPresenter.loadMore()
-        Mockito.verify(newsViewModel, times(1)).loadMore()
+        `when`(viewContract.getCategory())?.thenReturn("")
+        Mockito.verify(newsViewModel, times(1)).loadMore(anyOrNull())
     }
 }
+/**
+ * Returns Mockito.any() as nullable type to avoid java.lang.IllegalStateException when
+ * null is returned.
+ */
+fun <T> anyOrNull(): T = Mockito.any<T>()

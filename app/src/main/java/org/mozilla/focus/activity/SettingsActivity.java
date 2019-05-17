@@ -4,14 +4,19 @@
 
 package org.mozilla.focus.activity;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.settings.SettingsFragment;
+import org.mozilla.rocket.content.news.NewsSettingFragment;
+import org.mozilla.rocket.content.portal.ContentFeature;
 
 public class SettingsActivity extends BaseActivity {
     public static final int ACTIVITY_RESULT_LOCALE_CHANGED = 1;
@@ -36,10 +41,18 @@ public class SettingsActivity extends BaseActivity {
                 finish();
             }
         });
+        final Intent intent = getIntent();
+        if (intent != null && intent.getStringExtra(ContentFeature.EXTRA_CONFIG_NEWS) != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, new NewsSettingFragment())
+                    .commit();
+        } else {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new SettingsFragment())
+                    .commit();
+        }
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, new SettingsFragment())
-                .commit();
+
 
         // Ensure all locale specific Strings are initialised on first run, we don't set the title
         // anywhere before now (the title can only be set via AndroidManifest, and ensuring
