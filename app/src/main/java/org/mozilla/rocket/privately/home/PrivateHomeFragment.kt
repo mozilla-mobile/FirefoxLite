@@ -116,7 +116,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     private fun monitorShortcutCreation(context: Context, model: ShortcutViewModel) {
         model.eventCreateShortcut.observe(viewLifecycleOwner, Observer {
-            // Create shortcut
+            ShortcutUtils.createShortcut(context)
         })
     }
 
