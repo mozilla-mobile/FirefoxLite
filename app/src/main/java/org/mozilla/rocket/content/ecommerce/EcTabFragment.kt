@@ -12,9 +12,7 @@ import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.portal.ContentFeature
-import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
-import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_NEWS
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_TICKET
 import java.lang.IllegalStateException
 import java.util.ArrayList
@@ -36,16 +34,16 @@ class EcTabFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.content_tab, container, false)
+        return inflater.inflate(R.layout.content_tab_ec, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
-            ContentFeature().features().apply {
-                val pager = view.findViewById<ViewPager>(R.id.content_viewpager)
-                view.findViewById<TabLayout>(R.id.content_tab).setupWithViewPager(pager)
-                pager.adapter = ContentFragmentAdapter(childFragmentManager, this)
+            ContentFeature().eCommerceFeatures().apply {
+                val pager = view.findViewById<ViewPager>(R.id.ec_viewpager)
+                view.findViewById<TabLayout>(R.id.ec_tab).setupWithViewPager(pager)
+                pager.adapter = EcFragmentAdapter(childFragmentManager, this)
                 pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                     override fun onPageScrollStateChanged(p0: Int) {
                     }
@@ -69,16 +67,15 @@ class EcTabFragment : Fragment() {
     }
 
     /**
-     * Adapter that builds a page for each content type .
+     * Adapter that builds a page for each E-Commerce type .
      */
-    inner class ContentFragmentAdapter(fm: FragmentManager, private val features: ArrayList<Int>) : FragmentPagerAdapter(fm) {
+    inner class EcFragmentAdapter(fm: FragmentManager, private val features: ArrayList<Int>) : FragmentPagerAdapter(fm) {
 
         override fun getCount() = features.size
 
         override fun getItem(position: Int): Fragment {
             val feature = features[position]
             return when (feature) {
-                TYPE_NEWS -> NewsFragment()
                 TYPE_TICKET -> EcFragment.newInstance(TYPE_TICKET)
                 TYPE_COUPON -> EcFragment.newInstance(TYPE_COUPON)
                 else -> throw IllegalStateException("Not supported Content Type")
@@ -88,7 +85,6 @@ class EcTabFragment : Fragment() {
         override fun getPageTitle(position: Int): CharSequence {
             val feature = features[position]
             return when (feature) {
-                TYPE_NEWS -> context?.getString(R.string.label_menu_latest_top_trending_news) ?: ""
                 TYPE_TICKET -> context?.getString(R.string.label_menu_e_commerce) ?: ""
                 TYPE_COUPON -> context?.getString(R.string.label_menu_e_commerce_coupon) ?: ""
                 else -> throw IllegalStateException("Not supported Content Type")
