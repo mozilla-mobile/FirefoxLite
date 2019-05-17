@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import org.mozilla.focus.R
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DrawableUtils
-import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 
-class ShoppingLinkAdapter(private val listener: ContentPortalListener) : ListAdapter<ShoppingLink, ShoppingLinkViewHolder>(
+class ShoppingLinkAdapter : ListAdapter<ShoppingLink, ShoppingLinkViewHolder>(
     COMPARATOR
         ) {
 
@@ -47,14 +47,7 @@ class ShoppingLinkAdapter(private val listener: ContentPortalListener) : ListAda
 
     override fun onBindViewHolder(holder: ShoppingLinkViewHolder, position: Int) {
         val item = getItem(position) ?: return
-        holder.bind(item, View.OnClickListener {
-            TelemetryWrapper.clickOnEcItem(
-                    pos = position.toString(),
-                    source = item.source,
-                    category = item.name
-            )
-            listener.onItemClicked(item.url)
-        })
+        holder.bind(item, position)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -95,8 +88,15 @@ class ShoppingLinkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         name = itemView.findViewById(R.id.shoppinglink_category_text)
     }
 
-    fun bind(item: ShoppingLink, listener: View.OnClickListener) {
-        view?.setOnClickListener(listener)
+    fun bind(item: ShoppingLink, position: Int) {
+        view?.setOnClickListener {
+            ScreenNavigator.get(it.context).showBrowserScreen(item.url, true, false)
+            TelemetryWrapper.clickOnEcItem(
+                pos = position.toString(),
+                source = item.source,
+                category = item.name
+            )
+        }
 
         name?.text = item.name
         DrawableUtils.getAndroidDrawable(itemView.context, item.image)?.let {

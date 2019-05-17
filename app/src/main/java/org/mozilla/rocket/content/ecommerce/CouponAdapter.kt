@@ -10,13 +10,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.content.ecommerce.data.Coupon
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CouponAdapter(private val listener: ContentPortalListener) : ListAdapter<Coupon, CouponViewHolder>(
+class CouponAdapter : ListAdapter<Coupon, CouponViewHolder>(
     COMPARATOR
 ) {
     object COMPARATOR : DiffUtil.ItemCallback<Coupon>() {
@@ -37,17 +37,7 @@ class CouponAdapter(private val listener: ContentPortalListener) : ListAdapter<C
 
     override fun onBindViewHolder(holder: CouponViewHolder, position: Int) {
         val item = getItem(position) ?: return
-        holder.bind(item, View.OnClickListener {
-            TelemetryWrapper.clickOnPromoItem(
-                    pos = position.toString(),
-                    id = item.id,
-                    feed = item.feed,
-                    source = item.link.source,
-                    category = item.category,
-                    subcategory = item.subcategory
-            )
-            listener.onItemClicked(item.link.url)
-        })
+        holder.bind(item, position)
     }
 }
 
@@ -66,8 +56,18 @@ class CouponViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         validPeriod = itemView.findViewById(R.id.coupon_item_time)
     }
 
-    fun bind(item: Coupon, listener: View.OnClickListener) {
-        view?.setOnClickListener(listener)
+    fun bind(item: Coupon, position: Int) {
+        view?.setOnClickListener {
+            ScreenNavigator.get(it.context).showBrowserScreen(item.link.url, true, false)
+            TelemetryWrapper.clickOnPromoItem(
+                pos = position.toString(),
+                id = item.id,
+                feed = item.feed,
+                source = item.link.source,
+                category = item.category,
+                subcategory = item.subcategory
+            )
+        }
 
         GlideApp.with(itemView.context)
                 .asBitmap()
