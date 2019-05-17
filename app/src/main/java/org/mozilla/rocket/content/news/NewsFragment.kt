@@ -14,6 +14,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
@@ -24,6 +25,15 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
         fun newInstance(bottomSheetBehavior: BottomSheetBehavior<View>): NewsFragment {
             return NewsFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
+        }
+
+        fun newInstance(category: String): NewsFragment {
+            val args = Bundle().apply {
+                putString(ContentFeature.TYPE_KEY, category)
+            }
+            return NewsFragment().apply {
+                arguments = args
+            }
         }
     }
 

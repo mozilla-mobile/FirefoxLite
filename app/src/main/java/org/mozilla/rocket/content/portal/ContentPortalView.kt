@@ -18,7 +18,7 @@ import org.mozilla.focus.R
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.ecommerce.EcTabFragment
-import org.mozilla.rocket.content.news.NewsFragment
+import org.mozilla.rocket.content.news.NewsTabFragment
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
 interface ContentPortalListener {
@@ -57,7 +57,7 @@ class ContentPortalView : CoordinatorLayout {
 
     private fun initNewsFragment() {
         context?.inTransaction {
-            replace(R.id.bottom_sheet, NewsFragment(), TAG_NEWS_FRAGMENT)
+            replace(R.id.bottom_sheet, NewsTabFragment.newInstance(bottomSheetBehavior), TAG_NEWS_FRAGMENT)
         }
     }
 
