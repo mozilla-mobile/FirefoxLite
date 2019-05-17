@@ -2,8 +2,8 @@ package org.mozilla.rocket.content.view
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
-import android.util.ArrayMap
 import android.util.AttributeSet
+import android.util.SparseIntArray
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
@@ -18,7 +18,7 @@ class BottomBar : FrameLayout {
     private lateinit var grid: EqualDistributeGrid
     private var onItemClickListener: OnItemClickListener? = null
     private var onItemLongClickListener: OnItemLongClickListener? = null
-    private val itemVisibilityMap = ArrayMap<Int, Int>()
+    private val itemVisibilities = SparseIntArray()
 
     constructor(context: Context) : super(context) {
         init()
@@ -56,7 +56,7 @@ class BottomBar : FrameLayout {
                 setOnClickListener { onItemClickListener?.onItemClick(item.type, index) }
                 setOnLongClickListener { onItemLongClickListener?.onItemLongClick(item.type, index) ?: false }
             }.let { view ->
-                view.visibility = itemVisibilityMap[index] ?: View.VISIBLE
+                view.visibility = itemVisibilities.get(index, View.VISIBLE)
                 item.view = view
                 grid.addView(view)
             }
@@ -65,7 +65,7 @@ class BottomBar : FrameLayout {
 
     fun setItemVisibility(position: Int, visibility: Int) {
         grid.getChildAt(position)?.visibility = visibility
-        itemVisibilityMap[position] = visibility
+        itemVisibilities.append(position, visibility)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
