@@ -26,6 +26,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.*;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
+import org.mozilla.rocket.privately.ShortcutUtils;
 import org.mozilla.telemetry.TelemetryHolder;
 
 import java.util.Locale;
@@ -73,6 +74,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromSetting(getActivity()));
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_default_browser))) {
             TelemetryWrapper.clickDefaultBrowserInSetting();
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_private_mode_shortcut))) {
+            ShortcutUtils.Companion.createShortcut(getActivity().getApplicationContext());
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
