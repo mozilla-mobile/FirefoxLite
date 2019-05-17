@@ -27,4 +27,20 @@ class PrivateBrowsingSettings(context: Context, prefFactory: PreferencesFactory)
     fun setTurboMode(enabled: Boolean) {
         preferences.putBoolean(resources.getString(R.string.pref_key_pb_boolean_turbo_enabled), enabled)
     }
+
+    fun getPrivateModeLeaveCount(): Int {
+        return preferences.getInt(
+                resources.getString(R.string.pref_key_pb_int_leave_count),
+                0
+        )
+    }
+
+    fun increasePrivateModeLeaveCount(): Int {
+        val count = getPrivateModeLeaveCount() + 1
+        preferences.putInt(
+                resources.getString(R.string.pref_key_pb_int_leave_count),
+                count
+        )
+        return count
+    }
 }
