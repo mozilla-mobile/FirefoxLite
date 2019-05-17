@@ -14,16 +14,33 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
 class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
+    override fun getCategory(): String {
+        return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
+    }
+
+    override fun getLanguage(): String {
+        return "english"
+    }
 
     companion object {
         private const val NEWS_THRESHOLD = 10
 
         fun newInstance(bottomSheetBehavior: BottomSheetBehavior<View>): NewsFragment {
             return NewsFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
+        }
+
+        fun newInstance(category: String): NewsFragment {
+            val args = Bundle().apply {
+                putString(ContentFeature.TYPE_KEY, category)
+            }
+            return NewsFragment().apply {
+                arguments = args
+            }
         }
     }
 
@@ -53,7 +70,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
         super.onViewCreated(view, savedInstanceState)
 
         newsPresenter = NewsPresenter(this)
-        newsPresenter?.setupNewsViewModel(activity, "top-news")
+        newsPresenter?.setupNewsViewModel(activity, getCategory())
         newsListListener = newsPresenter
         newsListListener?.onShow(context!!)
 
@@ -87,12 +104,12 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
         onStatus(items)
 
         newsAdapter?.submitList(items)
-        ContentPortalViewState.lastScrollPos?.let {
+        ContentPortalViewState.lastNewsPos?.let {
             val size = items?.size
             if (size != null && size > it) {
                 newsListLayoutManager?.scrollToPosition(it)
                 // forget about last scroll position
-                ContentPortalViewState.lastScrollPos = null
+                ContentPortalViewState.lastNewsPos = null
             }
         }
     }
@@ -102,7 +119,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
         // use findFirstVisibleItemPosition so we don't need to remember offset
         newsListLayoutManager?.findFirstVisibleItemPosition()?.let {
-            ContentPortalViewState.lastScrollPos = it
+            ContentPortalViewState.lastNewsPos = it
         }
     }
 
