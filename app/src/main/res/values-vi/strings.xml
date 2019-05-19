@@ -256,6 +256,7 @@
   <string name="news_category_option_business">Kinh doanh</string>
   <string name="news_category_option_health">Sức khỏe</string>
   <string name="news_category_option_movie_reviews">Đánh giá phim</string>
+  <string name="news_category_option_automobile">Ô tô</string>
   <string name="news_category_option_regional">Khu vực</string>
   <string name="news_category_option_travel">Du lịch</string>
   <string name="news_category_option_lifestyle">Phong cách sống</string>
@@ -264,6 +265,8 @@
   <string name="news_category_option_city">Thành phố</string>
   <string name="news_category_option_events">Sự kiện</string>
   <string name="news_category_option_religion">Tôn giáo</string>
+  <string name="news_category_option_crime">Tội phạm</string>
+  <string name="news_category_option_astrology">Chiêm tinh</string>
   <string name="news_category_option_science">Khoa học</string>
   <string name="news_category_option_jokes">Truyện cười</string>
   <string name="logo_text">Dịch vụ được cung cấp bởi</string>
