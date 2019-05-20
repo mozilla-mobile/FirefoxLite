@@ -23,7 +23,7 @@ public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
     static final boolean PRIVATE_MODE_ENABLED_DEFAULT = true;
     static final boolean LIFE_FEED_ENABLED_DEFAULT = false;
-    static final String LIFE_FEED_PROVIDERS_DEFAULT = "";
+    static final String STR_NEWS_PROVIDERS_DEFAULT = "";
     static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPONS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPON_BANNER_DEFAULT = "";
@@ -198,12 +198,8 @@ public class AppConfigWrapper {
         return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_COUPON_BANNER_MANIFEST);
     }
 
-    public static boolean isLifeFeedEnabled() {
-        return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_LIFE_FEED);
-    }
-
-    public static String getLifeFeedProviderUrl(String provider) {
-        String source = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.LIFE_FEED_PROVIDERS);
+    public static String getNewsProviderUrl(String provider) {
+        String source = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_NEWS_PROVIDERS);
         String url = "";
 
         try {
