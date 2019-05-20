@@ -18,6 +18,7 @@ class ChromeViewModel(
 ) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
     val tabCount = MutableLiveData<Int>()
+    val isTabRestoredComplete = MutableLiveData<Boolean>()
     val currentUrl = MutableLiveData<String>()
     var isCurrentUrlBookmarked: LiveData<Boolean>
     val isRefreshing = MutableLiveData<Boolean>()
@@ -63,10 +64,20 @@ class ChromeViewModel(
         }
     }
 
+    fun onRestoreTabCountStarted() {
+        isTabRestoredComplete.value = false
+    }
+
+    fun onRestoreTabCountCompleted() {
+        isTabRestoredComplete.value = true
+    }
+
     fun onTabCountChanged(count: Int) {
-        val currentCount = tabCount.value
-        if (currentCount != count) {
-            tabCount.value = count
+        if (isTabRestoredComplete.value == true) {
+            val currentCount = tabCount.value
+            if (currentCount != count) {
+                tabCount.value = count
+            }
         }
     }
 
