@@ -90,9 +90,9 @@ class BottomBarItemAdapter(
         getItem(TYPE_TAB_COUNTER)?.view?.apply {
             this as TabCounter
             if (animationEnabled) {
-                setCount(count)
-            } else {
                 setCountWithAnimation(count)
+            } else {
+                setCount(count)
             }
             if (count > 0) {
                 isEnabled = true
