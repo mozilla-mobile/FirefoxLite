@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
-import org.mozilla.rocket.content.HomeFragmentViewState
 import org.mozilla.rocket.privately.PrivateModeActivity
+import org.mozilla.rocket.content.ContentPortalViewState
 
 class RocketLauncherActivity : AppCompatActivity() {
 
@@ -14,7 +14,7 @@ class RocketLauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val action = LaunchIntentDispatcher.dispatch(this, intent)
-        HomeFragmentViewState.reset()
+        ContentPortalViewState.reset()
         when (action) {
             LaunchIntentDispatcher.Action.HANDLED -> finish()
             LaunchIntentDispatcher.Action.NORMAL -> dispatchNormalIntent()

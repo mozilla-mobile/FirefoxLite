@@ -51,7 +51,7 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.rocket.content.HomeFragmentViewState;
+import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
@@ -230,14 +230,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void onTabClick(int tabPosition) {
-        HomeFragmentViewState.reset();
+        ContentPortalViewState.reset();
         presenter.tabClicked(tabPosition);
         TelemetryWrapper.clickTabFromTabTray();
     }
 
     @Override
     public void onTabCloseClick(int tabPosition) {
-        HomeFragmentViewState.reset();
+        ContentPortalViewState.reset();
         presenter.tabCloseClicked(tabPosition);
         TelemetryWrapper.closeTabFromTabTray();
     }
@@ -372,7 +372,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                HomeFragmentViewState.reset();
+                ContentPortalViewState.reset();
                 presenter.tabCloseClicked(viewHolder.getAdapterPosition());
                 TelemetryWrapper.swipeTabFromTabTray();
             }
@@ -522,7 +522,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        HomeFragmentViewState.reset();
+        ContentPortalViewState.reset();
         ScreenNavigator.get(getContext()).addHomeScreen(false);
         TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
@@ -533,7 +533,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
                     .setPositiveButton(R.string.action_ok, (dialog, which) -> {
-                        HomeFragmentViewState.reset();
+                        ContentPortalViewState.reset();
                         presenter.closeAllTabs();
                         TelemetryWrapper.closeAllTabFromTabTray();
                     })
