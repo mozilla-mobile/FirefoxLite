@@ -13,7 +13,7 @@ import android.widget.ProgressBar
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.HomeFragmentViewState
+import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
@@ -87,12 +87,12 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
         onStatus(items)
 
         newsAdapter?.submitList(items)
-        HomeFragmentViewState.lastScrollPos?.let {
+        ContentPortalViewState.lastScrollPos?.let {
             val size = items?.size
             if (size != null && size > it) {
                 newsListLayoutManager?.scrollToPosition(it)
                 // forget about last scroll position
-                HomeFragmentViewState.lastScrollPos = null
+                ContentPortalViewState.lastScrollPos = null
             }
         }
     }
@@ -102,7 +102,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
         // use findFirstVisibleItemPosition so we don't need to remember offset
         newsListLayoutManager?.findFirstVisibleItemPosition()?.let {
-            HomeFragmentViewState.lastScrollPos = it
+            ContentPortalViewState.lastScrollPos = it
         }
     }
 

@@ -16,7 +16,7 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import org.mozilla.focus.R
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.HomeFragmentViewState
+import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.ecommerce.EcTabFragment
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.data.NewsRepository
@@ -90,7 +90,7 @@ class ContentPortalView : CoordinatorLayout {
         if (visibility == VISIBLE) {
             return
         }
-        HomeFragmentViewState.lastOpenNews()
+        ContentPortalViewState.lastOpened()
 
         if (!animated) {
             showInternal()
@@ -121,7 +121,7 @@ class ContentPortalView : CoordinatorLayout {
             return false
         }
 
-        HomeFragmentViewState.reset()
+        ContentPortalViewState.reset()
         NewsRepository.reset()
         AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_out)?.also {
             it.setAnimationListener(object : Animation.AnimationListener {
@@ -166,7 +166,7 @@ class ContentPortalView : CoordinatorLayout {
      * Check if content portal view need to show or hide itself base on previous sate
      * */
     fun onResume() {
-        if (HomeFragmentViewState.isLastOpenNews()) {
+        if (ContentPortalViewState.isOpened()) {
             show(false)
         } else {
             hide()

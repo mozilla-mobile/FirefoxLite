@@ -82,11 +82,11 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
-import org.mozilla.rocket.content.HomeFragmentViewState;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
 import org.mozilla.rocket.chrome.MenuViewModel;
+import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
@@ -997,7 +997,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         });
         chromeViewModel.getShowMenu().observe(this, unit -> showMenu());
         chromeViewModel.getShowNewTab().observe(this, unit -> {
-            HomeFragmentViewState.reset();
+            ContentPortalViewState.reset();
             ScreenNavigator.get(this).addHomeScreen(true);
         });
         chromeViewModel.getShowUrlInput().observe(this, url -> {
