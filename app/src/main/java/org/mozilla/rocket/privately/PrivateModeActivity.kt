@@ -40,7 +40,6 @@ import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.privately.browse.BrowserFragment
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.tabs.SessionManager
-import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
 class PrivateModeActivity : BaseActivity(),
