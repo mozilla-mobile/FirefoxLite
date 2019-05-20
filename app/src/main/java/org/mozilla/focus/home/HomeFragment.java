@@ -21,7 +21,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,13 +45,10 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,7 +59,6 @@ import org.mozilla.banner.OnClickListener;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.locale.LocaleAwareFragment;
@@ -95,11 +90,6 @@ import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.persistance.History.HistoryDatabase;
-import org.mozilla.rocket.tabs.Session;
-import org.mozilla.rocket.tabs.SessionManager;
-import org.mozilla.rocket.tabs.TabViewClient;
-import org.mozilla.rocket.tabs.TabViewEngineSession;
-import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
 import org.mozilla.urlutils.UrlUtils;
@@ -145,8 +135,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private SiteItemClickListener clickListener = new SiteItemClickListener();
     private TopSiteAdapter topSiteAdapter;
     private JSONArray orginalDefaultSites = null;
-    private SessionManager sessionManager;
-    private final SessionManagerObserver observer = new SessionManagerObserver();
     private RecyclerView homeBanner;
     private LinearLayoutManager bannerLayoutManager;
     private BroadcastReceiver receiver;
@@ -272,9 +260,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.recyclerView = view.findViewById(R.id.main_list);
 
         setupBottomBar(view);
-
-        sessionManager = TabsSessionProvider.getOrThrow(getActivity());
-        sessionManager.register(this.observer);
 
         this.fakeInput = view.findViewById(R.id.home_fragment_fake_input);
         this.fakeInput.setOnClickListener(v -> {
@@ -451,7 +436,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void onDestroyView() {
-        sessionManager.unregister(this.observer);
         doWithActivity(getActivity(), themeManager -> themeManager.unsubscribeThemeChange(homeScreenBackground));
         bannerConfigViewModel.getHomeConfig().removeObserver(homeBannerObserver);
         super.onDestroyView();
@@ -536,9 +520,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
-        chromeViewModel.getTabCount().observe(this, changedEvent -> {
-            bottomBarItemAdapter.setTabCount(changedEvent.getCount(), changedEvent.getWithAnimation());
-        });
+        chromeViewModel.getTabCount().observe(this, bottomBarItemAdapter::setTabCount);
         chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
 
         setupDownloadIndicator();
@@ -561,11 +543,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     break;
             }
         });
-    }
-
-    private boolean isTabRestoredComplete() {
-        return (getActivity() instanceof MainActivity)
-                && ((MainActivity) getActivity()).isTabRestoredComplete();
     }
 
     private class SiteItemClickListener implements View.OnClickListener, View.OnLongClickListener {
@@ -884,49 +861,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             db.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY);
             PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(TOP_SITES_V2_PREF, true).apply();
-        }
-    }
-
-    private class SessionManagerObserver implements SessionManager.Observer {
-
-        @Override
-        public void onFocusChanged(@Nullable Session tab, @NotNull SessionManager.Factor factor) {
-            // do nothing
-        }
-
-        @Override
-        public void onSessionAdded(@NonNull Session tab, @Nullable Bundle arguments) {
-            // do nothing
-        }
-
-        @Override
-        public void onSessionCountChanged(int count) {
-            int tabCount = sessionManager != null ? sessionManager.getTabsCount() : 0;
-            if (isTabRestoredComplete()) {
-                chromeViewModel.onTabCountChanged(tabCount);
-            }
-        }
-
-        @Override
-        public void updateFailingUrl(@org.jetbrains.annotations.Nullable String url, boolean updateFromError) {
-            // do nothing
-        }
-
-        @Override
-        public boolean handleExternalUrl(@org.jetbrains.annotations.Nullable String url) {
-            // do nothing
-            return false;
-        }
-
-        @Override
-        public boolean onShowFileChooser(@NotNull TabViewEngineSession es, @org.jetbrains.annotations.Nullable ValueCallback<Uri[]> filePathCallback, @org.jetbrains.annotations.Nullable WebChromeClient.FileChooserParams fileChooserParams) {
-            // do nothing
-            return false;
-        }
-
-        @Override
-        public void onHttpAuthRequest(@NotNull TabViewClient.HttpAuthCallback callback, @Nullable String host, @Nullable String realm) {
-            // do nothing
         }
     }
 

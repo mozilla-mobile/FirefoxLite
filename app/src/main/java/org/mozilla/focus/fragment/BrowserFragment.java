@@ -559,8 +559,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             bottomBarItemAdapter.setNightMode(isNightMode);
             return Unit.INSTANCE;
         });
-        LiveDataExtensionKt.nonNullObserve(chromeViewModel.getTabCount(), this, changedEvent -> {
-            bottomBarItemAdapter.setTabCount(changedEvent.getCount(), changedEvent.getWithAnimation());
+        LiveDataExtensionKt.nonNullObserve(chromeViewModel.getTabCount(), this, count -> {
+            bottomBarItemAdapter.setTabCount(count, true);
             return Unit.INSTANCE;
         });
         chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
@@ -1570,7 +1570,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         @Override
         public void onSessionCountChanged(int count) {
             if (isTabRestoredComplete()) {
-                chromeViewModel.onTabCountChanged(count, true);
+                chromeViewModel.onTabCountChanged(count);
             }
         }
 
