@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_TICKET
@@ -52,6 +53,7 @@ class EcTabFragment : Fragment() {
                     }
 
                     override fun onPageSelected(p0: Int) {
+                        ContentPortalViewState.lastEcTab = p0
                         if (this@apply.size > p0 && this@apply[p0] == TYPE_COUPON) {
                             TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.TAB)
                         } else {
@@ -62,6 +64,9 @@ class EcTabFragment : Fragment() {
                         view.requestLayout()
                     }
                 })
+                ContentPortalViewState.lastEcTab?.let {
+                    pager.currentItem = it
+                }
             }
         }
     }

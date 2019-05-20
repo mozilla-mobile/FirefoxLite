@@ -13,6 +13,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DrawableUtils
+import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 
 class ShoppingLinkAdapter : ListAdapter<ShoppingLink, ShoppingLinkViewHolder>(
@@ -90,6 +91,7 @@ class ShoppingLinkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     fun bind(item: ShoppingLink, position: Int) {
         view?.setOnClickListener {
+            ContentPortalViewState.lastEcPos = position
             ScreenNavigator.get(it.context).showBrowserScreen(item.url, true, false)
             TelemetryWrapper.clickOnEcItem(
                 pos = position.toString(),

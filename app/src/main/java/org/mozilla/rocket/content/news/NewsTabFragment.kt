@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
+import org.mozilla.rocket.content.ContentPortalViewState
 import java.util.ArrayList
 
 /**
@@ -71,11 +72,15 @@ class NewsTabFragment : Fragment() {
                     }
 
                     override fun onPageSelected(p0: Int) {
+                        ContentPortalViewState.lastNewsTab = p0
                         // need to call request Layout to force BottomsheetBehaviour to call our
                         // findScrollingChild() implementation to find the corresponding scrolling child
                         view.requestLayout()
                     }
                 })
+                ContentPortalViewState.lastNewsTab?.let {
+                    pager.currentItem = it
+                }
             }
         }
     }
