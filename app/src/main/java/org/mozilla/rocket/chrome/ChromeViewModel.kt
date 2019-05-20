@@ -17,7 +17,7 @@ class ChromeViewModel(
     bookmarkRepo: BookmarkRepository
 ) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
-    val tabCount = MutableLiveData<TabCountChangedEvent>()
+    val tabCount = MutableLiveData<Int>()
     val currentUrl = MutableLiveData<String>()
     var isCurrentUrlBookmarked: LiveData<Boolean>
     val isRefreshing = MutableLiveData<Boolean>()
@@ -39,7 +39,6 @@ class ChromeViewModel(
 
     init {
         isNightMode.value = settings.isNightModeEnable
-        tabCount.value = TabCountChangedEvent(0, false)
         isRefreshing.value = false
         canGoBack.value = false
         canGoForward.value = false
@@ -64,11 +63,10 @@ class ChromeViewModel(
         }
     }
 
-    @JvmOverloads
-    fun onTabCountChanged(count: Int, needAnimation: Boolean = false) {
-        val currentCount = tabCount.value?.count
+    fun onTabCountChanged(count: Int) {
+        val currentCount = tabCount.value
         if (currentCount != count) {
-            tabCount.value = TabCountChangedEvent(count, needAnimation)
+            tabCount.value = count
         }
     }
 
@@ -98,8 +96,6 @@ class ChromeViewModel(
             this.canGoForward.value = canGoForward
         }
     }
-
-    data class TabCountChangedEvent(val count: Int, val withAnimation: Boolean)
 
     data class ScreenCaptureTelemetryData(val mode: String, val position: Int) : Parcelable {
         constructor(source: Parcel) : this(

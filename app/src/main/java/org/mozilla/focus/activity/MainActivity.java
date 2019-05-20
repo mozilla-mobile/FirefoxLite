@@ -481,10 +481,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         });
         menuViewModel.isBottomBarEnabled().observe(this, bottomBarItemAdapter::setEnabled);
 
-        LiveDataExtensionKt.nonNullObserve(chromeViewModel.getTabCount(), this, changedEvent -> {
-            bottomBarItemAdapter.setTabCount(changedEvent.getCount(), changedEvent.getWithAnimation());
-            return Unit.INSTANCE;
-        });
+        chromeViewModel.getTabCount().observe(this, bottomBarItemAdapter::setTabCount);
         chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
         chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
         chromeViewModel.isCurrentUrlBookmarked().observe(this, bottomBarItemAdapter::setBookmark);
