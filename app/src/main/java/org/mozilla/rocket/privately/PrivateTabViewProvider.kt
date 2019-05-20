@@ -17,6 +17,7 @@ class PrivateTabViewProvider(private val host: Activity) : TabViewProvider() {
         return WebViewProvider.create(host, null, WebViewSettingsHook) as TabView
     }
 
+    @Suppress("DEPRECATION")
     override fun purify(context: Context?) {
         CookieManager.getInstance().removeAllCookies(null)
         WebStorage.getInstance().deleteAllData()
