@@ -60,7 +60,7 @@ final public class FirebaseHelper {
     static final String FIRST_LAUNCH_TIMER_MINUTES = "first_launch_timer_minutes";
     static final String FIRST_LAUNCH_NOTIFICATION_MESSAGE = "first_launch_notification_message";
     static final String ENABLE_LIFE_FEED = "enable_life_feed";
-    static final String LIFE_FEED_PROVIDERS = "life_feed_providers";
+    static final String STR_NEWS_PROVIDERS = "str_news_providers";
     static final String STR_E_COMMERCE_SHOPPINGLINKS = "str_e_commerce_shoppinglinks";
     static final String STR_E_COMMERCE_COUPONS = "str_e_commerce_coupons";
     static final String STR_COUPON_BANNER_MANIFEST = "str_coupon_banner_manifest";
@@ -222,7 +222,7 @@ final public class FirebaseHelper {
                     settings.setNewsSource(source);
                     NewsSourceManager.getInstance().setNewsSource(source);
                 }
-                final String url = AppConfigWrapper.getLifeFeedProviderUrl(settings.getNewsSource());
+                final String url = AppConfigWrapper.getNewsProviderUrl(settings.getNewsSource());
                 ThreadUtils.postToMainThread(() -> NewsSourceManager.getInstance().setNewsSourceUrl(url));
 
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(new Intent(FirebaseHelper.FIREBASE_READY));
@@ -275,7 +275,7 @@ final public class FirebaseHelper {
         map.put(FirebaseHelper.VPN_RECOMMENDER_URL, FeatureSurveyViewHelper.Constants.LINK_RECOMMEND_VPN);
         map.put(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES, FirstLaunchWorker.TIMER_DISABLED);
         map.put(FirebaseHelper.ENABLE_LIFE_FEED, AppConfigWrapper.LIFE_FEED_ENABLED_DEFAULT);
-        map.put(FirebaseHelper.LIFE_FEED_PROVIDERS, AppConfigWrapper.LIFE_FEED_PROVIDERS_DEFAULT);
+        map.put(FirebaseHelper.STR_NEWS_PROVIDERS, AppConfigWrapper.STR_NEWS_PROVIDERS_DEFAULT);
         map.put(FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS, AppConfigWrapper.STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT);
         map.put(FirebaseHelper.STR_E_COMMERCE_COUPONS, AppConfigWrapper.STR_E_COMMERCE_COUPONS_DEFAULT);
         map.put(FirebaseHelper.STR_COUPON_BANNER_MANIFEST, AppConfigWrapper.STR_E_COMMERCE_COUPON_BANNER_DEFAULT);
