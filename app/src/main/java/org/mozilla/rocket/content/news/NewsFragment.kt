@@ -97,12 +97,12 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
         onStatus(items)
 
         newsAdapter?.submitList(items)
-        ContentPortalViewState.lastScrollPos?.let {
+        ContentPortalViewState.lastNewsPos?.let {
             val size = items?.size
             if (size != null && size > it) {
                 newsListLayoutManager?.scrollToPosition(it)
                 // forget about last scroll position
-                ContentPortalViewState.lastScrollPos = null
+                ContentPortalViewState.lastNewsPos = null
             }
         }
     }
@@ -112,7 +112,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
         // use findFirstVisibleItemPosition so we don't need to remember offset
         newsListLayoutManager?.findFirstVisibleItemPosition()?.let {
-            ContentPortalViewState.lastScrollPos = it
+            ContentPortalViewState.lastNewsPos = it
         }
     }
 

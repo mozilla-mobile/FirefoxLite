@@ -12,18 +12,22 @@ package org.mozilla.rocket.content
  */
 object ContentPortalViewState {
 
+    var lastNewsTab: Int? = null
+    var lastNewsPos: Int? = null
+    var lastEcTab: Int? = null
+
     // TODO: make them enum / sealed class
     private const val STATE_CLOSED = 0
     private const val STATE_OPENED = 1
 
     private var state = STATE_CLOSED
 
-    var lastScrollPos: Int? = null
-
     @JvmStatic
     fun reset() {
         state = STATE_CLOSED
-        lastScrollPos = null
+        lastNewsTab = null
+        lastNewsPos = null
+        lastEcTab = null
     }
 
     @JvmStatic
