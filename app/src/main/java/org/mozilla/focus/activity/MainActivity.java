@@ -79,7 +79,6 @@ import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
@@ -120,7 +119,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         ThemeManager.ThemeHost,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
-        TabRestoreMonitor,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         PromotionViewContract {
@@ -148,7 +146,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private BroadcastReceiver uiMessageReceiver;
 
     private SessionManager sessionManager;
-    private boolean isTabRestoredComplete = false;
     public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     private static final String LOG_TAG = "MainActivity";
 
@@ -1103,13 +1100,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     @Override
-    public boolean isTabRestoredComplete() {
-        return isTabRestoredComplete;
-    }
-
-    @Override
     public void onQueryComplete(List<SessionManager.SessionWithState> states, String currentTabId) {
-        isTabRestoredComplete = true;
+        chromeViewModel.onRestoreTabCountCompleted();
         getSessionManager().restore(states, currentTabId);
         Session currentTab = getSessionManager().getFocusSession();
         if (!Settings.getInstance(this).shouldShowFirstrun() && currentTab != null && !getSupportFragmentManager().isStateSaved()) {
@@ -1118,12 +1110,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void restoreTabsFromPersistence() {
-        isTabRestoredComplete = false;
+        chromeViewModel.onRestoreTabCountStarted();
         TabModelStore.getInstance(this).getSavedTabs(this, this);
     }
 
     private void saveTabsToPersistence() {
-        if (!isTabRestoredComplete) {
+        if (chromeViewModel.isTabRestoredComplete().getValue() != true) {
             return;
         }
 
