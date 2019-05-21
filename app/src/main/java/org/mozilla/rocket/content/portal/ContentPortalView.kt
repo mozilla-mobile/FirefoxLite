@@ -178,7 +178,7 @@ class ContentPortalView : CoordinatorLayout {
     }
 
     companion object {
-        private const val TAG_NEWS_FRAGMENT = "TAG_NEWS_FRAGMENT"
+        const val TAG_NEWS_FRAGMENT = "TAG_NEWS_FRAGMENT"
         private const val TAG_CONTENT_FRAGMENT = "TAG_CONTENT_FRAGMENT"
     }
 }
