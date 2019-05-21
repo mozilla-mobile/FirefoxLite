@@ -42,6 +42,11 @@ class NewsViewModel(
         loadNewsCategoryUseCase.execute(param)
     }
 
+    fun clear() {
+        newsMap.clear()
+        useCaseMap.clear()
+    }
+
     fun getNews(category: String, lang: String, repo: Repository<out NewsItem>): MediatorLiveData<List<NewsItem>> {
         val items = newsMap[category] ?: MediatorLiveData()
         if (newsMap[category] == null) {

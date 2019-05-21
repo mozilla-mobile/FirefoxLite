@@ -210,7 +210,9 @@ dependencies {
     implementation "com.android.support:design:${Versions.support}"
     implementation "com.android.support:cardview-v7:${Versions.support}"
     implementation "com.android.support:recyclerview-v7:${Versions.support}"
+    implementation "com.android.support:preference-v7:${Versions.support}"
     implementation "com.android.support.constraint:constraint-layout:${Versions.constraint}"
+
     implementation "android.arch.work:work-runtime:${Versions.arch_work}"
 
 

@@ -1,19 +1,27 @@
 package org.mozilla.rocket.content.news
 
 import android.arch.lifecycle.Observer
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.design.widget.TabLayout.MODE_SCROLLABLE
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.content_tab_news.*
 import org.mozilla.focus.Inject
 import org.mozilla.focus.R
+import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.portal.ContentFeature
+import org.mozilla.rocket.content.portal.ContentPortalView
 
 /**
  * Fragment that host the tabs for different types of content portal
@@ -24,10 +32,6 @@ class NewsTabFragment : Fragment() {
     private var bottomSheetBehavior: org.mozilla.rocket.widget.BottomSheetBehavior<View>? = null
 
     companion object {
-        fun newInstance(): NewsTabFragment {
-            return NewsTabFragment()
-        }
-
         fun newInstance(bottomSheetBehavior: org.mozilla.rocket.widget.BottomSheetBehavior<View>?): NewsTabFragment {
             return NewsTabFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
         }
@@ -50,6 +54,10 @@ class NewsTabFragment : Fragment() {
                     setupViewPager(view, it)
                 }
             })
+        }
+
+        news_setting.setOnClickListener {
+            setting()
         }
     }
 
@@ -96,5 +104,39 @@ class NewsTabFragment : Fragment() {
         override fun getPageTitle(position: Int): CharSequence {
             return cats[position]
         }
+    }
+
+    fun setting() {
+
+        val intent = Intent().run {
+            putExtra(ContentFeature.EXTRA_CONFIG_NEWS, "config")
+            setClass(context!!, SettingsActivity::class.java)
+        }
+        startActivityForResult(intent, ContentFeature.SETTING_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ContentFeature.SETTING_REQUEST_CODE) {
+            // TODO: check if the setting has changed before recreate self
+            // TODO: repeated code for initNewsTabFragment
+            // recreate self
+            Inject.obtainNewsViewModel(activity).clear()
+            context?.inTransaction {
+                replace(R.id.bottom_sheet, NewsTabFragment.newInstance(bottomSheetBehavior),
+                    ContentPortalView.TAG_NEWS_FRAGMENT
+                )
+            }
+        }
+    }
+
+    // TODO: make this a util
+    // helper method to work with FragmentManager
+    private inline fun Context.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
+        val fragmentManager = (this as? FragmentActivity)?.supportFragmentManager
+        if (fragmentManager?.isStateSaved == true) {
+            return
+        }
+        fragmentManager?.beginTransaction()?.func()?.commit()
     }
 }

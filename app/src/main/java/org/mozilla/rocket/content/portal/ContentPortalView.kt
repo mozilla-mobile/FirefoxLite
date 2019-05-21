@@ -77,7 +77,11 @@ class ContentPortalView : CoordinatorLayout {
 
     // helper method to work with FragmentManager
     private inline fun Context.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        (this as? FragmentActivity)?.supportFragmentManager?.beginTransaction()?.func()?.commit()
+        val fragmentManager = (this as? FragmentActivity)?.supportFragmentManager
+        if (fragmentManager?.isStateSaved == true) {
+            return
+        }
+        fragmentManager?.beginTransaction()?.func()?.commit()
     }
 
     /**
@@ -172,7 +176,7 @@ class ContentPortalView : CoordinatorLayout {
     }
 
     companion object {
-        private const val TAG_NEWS_FRAGMENT = "TAG_NEWS_FRAGMENT"
+        const val TAG_NEWS_FRAGMENT = "TAG_NEWS_FRAGMENT"
         private const val TAG_CONTENT_FRAGMENT = "TAG_CONTENT_FRAGMENT"
     }
 }
