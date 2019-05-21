@@ -1,16 +1,25 @@
 package org.mozilla.rocket.chrome
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.os.Parcel
 import android.os.Parcelable
+import org.mozilla.focus.persistence.BookmarkModel
+import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
 
-class ChromeViewModel(settings: Settings) : ViewModel() {
+class ChromeViewModel(
+    settings: Settings,
+    bookmarkRepo: BookmarkRepository
+) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
     val tabCount = MutableLiveData<TabCountChangedEvent>()
+    val currentUrl = MutableLiveData<String>()
+    var isCurrentUrlBookmarked: LiveData<Boolean>
     val isRefreshing = MutableLiveData<Boolean>()
     val canGoBack = MutableLiveData<Boolean>()
     val canGoForward = MutableLiveData<Boolean>()
@@ -34,6 +43,11 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
         isRefreshing.value = false
         canGoBack.value = false
         canGoForward.value = false
+
+        isCurrentUrlBookmarked = Transformations.switchMap<String, List<BookmarkModel>>(currentUrl, bookmarkRepo::getBookmarksByUrl)
+                .let { urlBookmarksLiveData ->
+                    Transformations.map<List<BookmarkModel>, Boolean>(urlBookmarksLiveData) { it.isNotEmpty() }
+                }
     }
 
     fun invalidate() {
@@ -55,6 +69,12 @@ class ChromeViewModel(settings: Settings) : ViewModel() {
         val currentCount = tabCount.value?.count
         if (currentCount != count) {
             tabCount.value = TabCountChangedEvent(count, needAnimation)
+        }
+    }
+
+    fun onFocusedUrlChanged(url: String?) {
+        if (url != currentUrl.value) {
+            currentUrl.value = url
         }
     }
 
