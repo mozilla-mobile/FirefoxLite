@@ -17,7 +17,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.animation.Animation;
 
+import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabsDatabase;
+import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.focus.utils.Settings;
@@ -150,7 +152,8 @@ public class Inject {
 
     public static ChromeViewModel obtainChromeViewModel(FragmentActivity activity) {
         Settings settings = Settings.getInstance(activity);
-        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings);
+        BookmarkRepository bookmarkRepo = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(activity));
+        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings, bookmarkRepo);
         return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 

@@ -187,6 +187,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         super.onCreate(savedInstanceState);
         chromeViewModel = Inject.obtainChromeViewModel(this);
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
+        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
+                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)));
+        bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
 
         asyncInitialize();
 
@@ -227,15 +230,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             PromotionPresenter.runPromotion(this, promotionModel);
         }
 
-        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
-                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)));
-
-        bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
-
-        downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
         observeChromeAction();
 
         monitorOrientationState();
@@ -490,6 +487,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         });
         chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
         chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
+        chromeViewModel.isCurrentUrlBookmarked().observe(this, bottomBarItemAdapter::setBookmark);
     }
 
     private void hidePinShortcutButtonIfNotSupported() {
@@ -560,10 +558,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (current == null) {
             return;
         }
-        bookmarkViewModel.getBookmarksByUrl(current.getUrl()).observe(this, bookmarks -> {
-            boolean activateBookmark = bookmarks != null && bookmarks.size() > 0;
-            bottomBarItemAdapter.setBookmark(activateBookmark);
-        });
         bottomBarItemAdapter.setCanGoForward(chromeViewModel.getCanGoForward().getValue());
 
         boolean hasNewConfig = menuViewModel.refresh();
@@ -846,8 +840,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         if (currentTab == null) {
             return;
         }
-        final boolean isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
-        if (isActivated) {
+        Boolean isActivated = chromeViewModel.isCurrentUrlBookmarked().getValue();
+        if (isActivated != null && isActivated) {
             bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
         } else {
