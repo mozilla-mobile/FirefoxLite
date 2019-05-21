@@ -17,8 +17,8 @@ import org.mozilla.focus.autobot.indexOfType
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.content.BottomBarItemAdapter.Companion.TYPE_BOOKMARK
-import org.mozilla.rocket.content.MenuViewModel.Companion.DEFAULT_MENU_BOTTOM_ITEMS
+import org.mozilla.rocket.chrome.BottomBarItemAdapter.Companion.TYPE_BOOKMARK
+import org.mozilla.rocket.chrome.MenuViewModel.Companion.DEFAULT_MENU_BOTTOM_ITEMS
 import tools.fastlane.screengrab.FalconScreenshotStrategy
 import tools.fastlane.screengrab.Screengrab
 import java.io.IOException

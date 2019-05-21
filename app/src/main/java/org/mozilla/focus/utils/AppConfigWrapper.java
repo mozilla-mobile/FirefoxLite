@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.content.ecommerce.data.Coupon;
 import org.mozilla.rocket.content.ecommerce.data.CouponKey;
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink;

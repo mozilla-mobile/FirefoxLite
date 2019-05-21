@@ -25,8 +25,8 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.helper.ScreenshotIdlingResource
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.content.BottomBarItemAdapter
-import org.mozilla.rocket.content.BottomBarViewModel
+import org.mozilla.rocket.chrome.BottomBarItemAdapter
+import org.mozilla.rocket.chrome.BottomBarViewModel
 
 inline fun session(func: SessionRobot.() -> Unit) = SessionRobot().apply(func)
 class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomation by menuAutomation {

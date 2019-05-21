@@ -15,7 +15,7 @@ import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.focus.utils.StorageUtils;
-import org.mozilla.rocket.content.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
