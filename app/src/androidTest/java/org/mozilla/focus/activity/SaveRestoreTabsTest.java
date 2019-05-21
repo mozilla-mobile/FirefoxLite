@@ -18,8 +18,8 @@ import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.RecyclerViewTestUtils;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.BottomBarViewModel;
+import org.mozilla.rocket.chrome.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.BottomBarViewModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

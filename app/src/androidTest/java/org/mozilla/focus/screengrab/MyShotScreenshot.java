@@ -29,8 +29,8 @@ import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.ScreenshotIdlingResource;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.BottomBarViewModel;
+import org.mozilla.rocket.chrome.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.BottomBarViewModel;
 
 import tools.fastlane.screengrab.FalconScreenshotStrategy;
 import tools.fastlane.screengrab.Screengrab;

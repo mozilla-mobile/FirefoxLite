@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.chrome
 
 import android.content.Context
 import android.support.v4.content.ContextCompat

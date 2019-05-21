@@ -32,8 +32,8 @@ import org.mozilla.focus.autobot.indexOfType
 import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.content.BottomBarItemAdapter.Companion.TYPE_TAB_COUNTER
-import org.mozilla.rocket.content.BottomBarViewModel.Companion.DEFAULT_BOTTOM_BAR_ITEMS
+import org.mozilla.rocket.chrome.BottomBarItemAdapter.Companion.TYPE_TAB_COUNTER
+import org.mozilla.rocket.chrome.BottomBarViewModel.Companion.DEFAULT_BOTTOM_BAR_ITEMS
 
 @Ignore
 @Keep

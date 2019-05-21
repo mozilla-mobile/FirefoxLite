@@ -11,7 +11,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.content.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel;
 
 import java.lang.ref.WeakReference;
 

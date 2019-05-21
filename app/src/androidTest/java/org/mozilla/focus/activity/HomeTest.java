@@ -31,7 +31,7 @@ import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
-import org.mozilla.rocket.content.BottomBarViewModel;
+import org.mozilla.rocket.chrome.BottomBarViewModel;
 
 import java.util.List;
 
@@ -46,8 +46,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.TYPE_MENU;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.TYPE_TAB_COUNTER;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.TYPE_MENU;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.TYPE_TAB_COUNTER;
 
 @Keep
 @RunWith(AndroidJUnit4.class)

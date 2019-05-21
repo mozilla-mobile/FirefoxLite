@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.chrome
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

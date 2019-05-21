@@ -19,8 +19,8 @@ import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.CustomViewMatcher;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.MenuViewModel;
+import org.mozilla.rocket.chrome.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.MenuViewModel;
 
 import java.io.IOException;
 

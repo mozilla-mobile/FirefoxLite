@@ -19,9 +19,9 @@ import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.BottomBarViewModel;
-import org.mozilla.rocket.content.MenuViewModel;
+import org.mozilla.rocket.chrome.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.BottomBarViewModel;
+import org.mozilla.rocket.chrome.MenuViewModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;

@@ -83,10 +83,10 @@ import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.TabRestoreMonitor;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.BottomBarViewModel;
-import org.mozilla.rocket.content.ChromeViewModel;
-import org.mozilla.rocket.content.ChromeViewModel.ScreenCaptureTelemetryData;
+import org.mozilla.rocket.chrome.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.BottomBarViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
@@ -118,10 +118,10 @@ import kotlin.Unit;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.WEBVIEW;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_WARNING;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_WARNING;
 
 /**
  * Fragment for displaying the browser UI.

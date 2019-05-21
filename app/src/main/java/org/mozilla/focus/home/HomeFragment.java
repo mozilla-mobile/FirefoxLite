@@ -84,9 +84,9 @@ import org.mozilla.focus.utils.ViewUtils;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.content.BottomBarItemAdapter;
-import org.mozilla.rocket.content.BottomBarViewModel;
-import org.mozilla.rocket.content.ChromeViewModel;
+import org.mozilla.rocket.chrome.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.BottomBarViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
@@ -113,10 +113,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
-import static org.mozilla.rocket.content.BottomBarItemAdapter.DOWNLOAD_STATE_WARNING;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
+import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_WARNING;
 
 public class HomeFragment extends LocaleAwareFragment implements TopSitesContract.View, TopSitesContract.Model,
         ScreenNavigator.HomeScreen, BannerHelper.HomeBannerHelperListener {

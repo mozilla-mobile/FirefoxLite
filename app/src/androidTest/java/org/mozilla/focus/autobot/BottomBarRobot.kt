@@ -10,7 +10,7 @@ import org.mockito.Mockito.spy
 import org.mozilla.focus.R
 import org.mozilla.focus.helper.GetNthChildViewMatcher.nthChildOf
 import org.mozilla.focus.utils.FirebaseHelper
-import org.mozilla.rocket.content.BottomBarItemAdapter
+import org.mozilla.rocket.chrome.BottomBarItemAdapter
 
 inline fun bottomBar(func: BottomBarRobot.() -> Unit) = BottomBarRobot().apply(func)
 

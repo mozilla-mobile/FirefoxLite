@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content
+package org.mozilla.rocket.chrome
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
