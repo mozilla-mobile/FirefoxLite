@@ -6,10 +6,12 @@ package org.mozilla.focus.utils;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -266,5 +268,17 @@ public class IntentUtils {
             // In some cases, a matching Activity may not exist (according to the Android docs).
             return false;
         }
+    }
+
+    public static Intent getLauncherHomeIntent() {
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory(Intent.CATEGORY_HOME);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return homeIntent;
+    }
+
+    public static PendingIntent getLauncherHomePendingIntent(Context context) {
+        return PendingIntent.getActivity(context, 0, getLauncherHomeIntent(),
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

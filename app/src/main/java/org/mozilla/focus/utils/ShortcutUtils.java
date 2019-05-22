@@ -5,7 +5,6 @@
 package org.mozilla.focus.utils;
 
 import android.annotation.TargetApi;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -58,11 +57,8 @@ public class ShortcutUtils {
                 .build();
 
         // Display home screen after add to home screen
-        final Intent showHome = new Intent(Intent.ACTION_MAIN);
-        showHome.addCategory(Intent.CATEGORY_HOME);
-        showHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        final PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, showHome, PendingIntent.FLAG_UPDATE_CURRENT);
-        final IntentSender intentSender = pendingIntent.getIntentSender();
+        final IntentSender intentSender = IntentUtils.getLauncherHomePendingIntent(context)
+                .getIntentSender();
 
         // Update the shortcut icon on launcher since previous one may not ready. API 26+ only.
         // TODO: find a way to update the shortcut icon for API 25 and below. Currently the only way is remove old shortcut and add again.
