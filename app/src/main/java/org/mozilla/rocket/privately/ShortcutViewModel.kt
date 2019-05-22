@@ -5,10 +5,14 @@
 
 package org.mozilla.rocket.privately
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class ShortcutViewModel : ViewModel() {
@@ -19,19 +23,32 @@ class ShortcutViewModel : ViewModel() {
     /**
      * @return Event notifying the view to continue its leaving process
      */
-    fun interceptLeavingAndCheckShortcut(context: Context): SingleLiveEvent<Unit> {
-        val app = context.applicationContext as FocusApplication
-        val count = app.settings.privateBrowsingSettings.getPrivateModeLeaveCount() + 1
+    fun interceptLeavingAndCheckShortcut(context: Context): LiveData<Unit> {
+        val appContext = context.applicationContext as FocusApplication
+        val count = appContext.settings.privateBrowsingSettings.getPrivateModeLeaveCount() + 1
         val continueLeaveEvent = SingleLiveEvent<Unit>()
 
-        if (count == PROMOTE_SHORTCUT_COUNT) {
-            eventPromoteShortcut.value = createPromotionCallback(context, continueLeaveEvent)
-        } else {
-            increaseCount(context)
-            continueLeaveEvent.call()
+        val navigationState = ScreenNavigator.get(context).navigationState
+        val isHomeState = MediatorLiveData<Boolean>().apply {
+            addSource(navigationState) {
+                removeSource(navigationState)
+                val isHomeScreen = it?.isHome == true
+                value = isHomeScreen
+            }
         }
 
-        return continueLeaveEvent
+        return Transformations.switchMap(isHomeState) { isHome ->
+            if (!isHome) {
+                continueLeaveEvent.call()
+            } else if (count == PROMOTE_SHORTCUT_COUNT) {
+                eventPromoteShortcut.value = createPromotionCallback(appContext, continueLeaveEvent)
+            } else {
+                increaseCount(appContext)
+                continueLeaveEvent.call()
+            }
+
+            continueLeaveEvent
+        }
     }
 
     private fun createPromotionCallback(
