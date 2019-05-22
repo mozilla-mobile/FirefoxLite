@@ -110,6 +110,10 @@
 
         </activity>
 
+        <activity-alias
+            android:name="org.mozilla.rocket.activity.PrivateModeActivity"
+            android:targetActivity="org.mozilla.rocket.privately.PrivateModeActivity" />
+
         <!-- SettingsActivity title is set dynamically for multilocale support -->
         <activity
             android:name="org.mozilla.focus.activity.SettingsActivity"
