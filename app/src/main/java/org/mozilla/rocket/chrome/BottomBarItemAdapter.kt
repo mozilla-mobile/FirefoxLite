@@ -6,6 +6,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
@@ -47,6 +48,8 @@ class BottomBarItemAdapter(
             TYPE_SHARE -> ImageItem(type, R.drawable.action_share, theme.buttonColorResId)
             TYPE_NEXT -> ImageItem(type, R.drawable.action_next, theme.buttonColorResId)
             TYPE_PRIVATE_HOME -> PrivateHomeItem(type)
+            TYPE_DELETE -> ImageItem(type, R.drawable.menu_delete, theme.buttonColorResId)
+            TYPE_TRACKER -> TrackerItem(type)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
@@ -174,6 +177,41 @@ class BottomBarItemAdapter(
         }
     }
 
+    fun endPrivateHomeAnimation() {
+        getItem(TYPE_PRIVATE_HOME)?.view?.apply {
+            findViewById<LottieAnimationView>(R.id.pm_home_mask).progress = 1f
+        }
+    }
+
+    fun setTrackerSwitch(isOn: Boolean) {
+        getItem(TYPE_TRACKER)?.view?.apply {
+            val trackerOn = findViewById<LottieAnimationView>(R.id.btn_tracker_on)
+            val trackerOff = findViewById<ImageButton>(R.id.btn_tracker_off)
+            if (isOn) {
+                trackerOn.visibility = View.VISIBLE
+                trackerOff.visibility = View.GONE
+            } else {
+                trackerOn.visibility = View.GONE
+                trackerOff.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    fun setTrackerBadgeEnabled(isEnabled: Boolean) {
+        getItem(TYPE_TRACKER)?.view?.apply {
+            val trackerOn = findViewById<LottieAnimationView>(R.id.btn_tracker_on)
+            if (isEnabled) {
+                val isAnimating = trackerOn.isAnimating
+                val isFinished = trackerOn.frame >= trackerOn.maxFrame
+                if (!isAnimating && !isFinished) {
+                    trackerOn.playAnimation()
+                }
+            } else {
+                trackerOn.progress = 0f
+            }
+        }
+    }
+
     private class TabCounterItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
@@ -220,9 +258,17 @@ class BottomBarItemAdapter(
         }
     }
 
+    private class TrackerItem(type: Int) : BottomBarItem(type) {
+        override fun createView(context: Context): View {
+            return LayoutInflater.from(context)
+                    .inflate(R.layout.button_tracker, null)
+        }
+    }
+
     sealed class Theme(val buttonColorResId: Int) {
         object LIGHT : Theme(buttonColorResId = R.color.browser_menu_button)
         object DARK : Theme(buttonColorResId = R.color.home_bottom_button)
+        object PRIVATE_MODE : Theme(buttonColorResId = R.color.private_menu_button)
     }
 
     data class ItemData(val type: Int) {
@@ -242,6 +288,8 @@ class BottomBarItemAdapter(
         const val TYPE_SHARE = 8
         const val TYPE_NEXT = 9
         const val TYPE_PRIVATE_HOME = 10
+        const val TYPE_DELETE = 11
+        const val TYPE_TRACKER = 12
 
         const val DOWNLOAD_STATE_DEFAULT = 0
         const val DOWNLOAD_STATE_DOWNLOADING = 1

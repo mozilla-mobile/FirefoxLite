@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MainMenuButton">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/btn_tracker_on"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:lottie_fileName="action_trackingprotection-on.json" />
+
+    <ImageButton
+        android:id="@+id/btn_tracker_off"
+        style="@style/MainMenuButton"
+        android:tint="@color/private_menu_button"
+        app:srcCompat="@drawable/action_trackingprotection_off"
+        android:clickable="false" />
+</FrameLayout>
