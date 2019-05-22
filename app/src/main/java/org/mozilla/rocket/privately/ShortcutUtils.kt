@@ -12,6 +12,7 @@ import android.support.v4.content.pm.ShortcutManagerCompat
 import android.support.v4.graphics.drawable.IconCompat
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 
 class ShortcutUtils {
@@ -38,8 +39,14 @@ class ShortcutUtils {
                     .setIcon(icon)
                     .build()
 
+            // Known issue: when there is already an existing shortcut, intendSender will be called
+            // immediately when system shortcut dialog is shown. i.e. Home will be brought up, and then
+            // show the system shortcut dialog. UX currently agreed with this behavior since it's
+            // not often the user will add shortcut again.
+            val intentSender = IntentUtils.getLauncherHomePendingIntent(context).intentSender
+
             if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
-                ShortcutManagerCompat.requestPinShortcut(context, shortcut, null)
+                ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender)
             }
         }
     }
