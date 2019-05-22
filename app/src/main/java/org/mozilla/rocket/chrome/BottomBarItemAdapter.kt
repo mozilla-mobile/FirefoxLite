@@ -46,6 +46,7 @@ class BottomBarItemAdapter(
             TYPE_REFRESH -> RefreshItem(type, theme)
             TYPE_SHARE -> ImageItem(type, R.drawable.action_share, theme.buttonColorResId)
             TYPE_NEXT -> ImageItem(type, R.drawable.action_next, theme.buttonColorResId)
+            TYPE_PRIVATE_HOME -> PrivateHomeItem(type)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
@@ -167,6 +168,12 @@ class BottomBarItemAdapter(
         }
     }
 
+    fun animatePrivateHome() {
+        getItem(TYPE_PRIVATE_HOME)?.view?.apply {
+            findViewById<LottieAnimationView>(R.id.pm_home_mask).playAnimation()
+        }
+    }
+
     private class TabCounterItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
         override fun createView(context: Context): View {
             val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
@@ -206,6 +213,13 @@ class BottomBarItemAdapter(
         }
     }
 
+    private class PrivateHomeItem(type: Int) : BottomBarItem(type) {
+        override fun createView(context: Context): View {
+            return LayoutInflater.from(context)
+                    .inflate(R.layout.button_private_to_normal, null)
+        }
+    }
+
     sealed class Theme(val buttonColorResId: Int) {
         object LIGHT : Theme(buttonColorResId = R.color.browser_menu_button)
         object DARK : Theme(buttonColorResId = R.color.home_bottom_button)
@@ -227,6 +241,7 @@ class BottomBarItemAdapter(
         const val TYPE_REFRESH = 7
         const val TYPE_SHARE = 8
         const val TYPE_NEXT = 9
+        const val TYPE_PRIVATE_HOME = 10
 
         const val DOWNLOAD_STATE_DEFAULT = 0
         const val DOWNLOAD_STATE_DOWNLOADING = 1

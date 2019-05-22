@@ -57,6 +57,10 @@
         android:layout_height="@dimen/fake_input_height"
         android:layout_centerInParent="true" />
 
-    <include layout="@layout/fragment_private_browsing_homescreen_item" />
+    <org.mozilla.rocket.content.view.BottomBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fixed_menu_height"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

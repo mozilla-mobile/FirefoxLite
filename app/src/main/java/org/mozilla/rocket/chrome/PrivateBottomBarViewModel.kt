@@ -27,7 +27,7 @@ class PrivateBottomBarViewModel : ViewModel() {
     companion object {
         @JvmStatic
         val DEFAULT_PRIVATE_BOTTOM_BAR_ITEMS: List<ItemData> = Arrays.asList(
-                ItemData(BottomBarItemAdapter.TYPE_TAB_COUNTER),
+                ItemData(BottomBarItemAdapter.TYPE_PRIVATE_HOME),
                 ItemData(BottomBarItemAdapter.TYPE_NEW_TAB),
                 ItemData(BottomBarItemAdapter.TYPE_SEARCH),
                 ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
