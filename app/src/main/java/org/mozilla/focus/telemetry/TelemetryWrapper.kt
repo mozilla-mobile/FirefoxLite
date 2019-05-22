@@ -49,7 +49,6 @@ import org.mozilla.telemetry.schedule.jobscheduler.JobSchedulerTelemetrySchedule
 import org.mozilla.telemetry.serialize.JSONPingSerializer
 import org.mozilla.telemetry.storage.FileTelemetryStorage
 import org.mozilla.threadutils.ThreadUtils
-import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 object TelemetryWrapper {
@@ -2378,6 +2377,19 @@ object TelemetryWrapper {
             val context = configuration.context
             addCustomPing(configuration, ThemeToyMeasurement(context))
             addCustomPing(configuration, CaptureCountMeasurement(context))
+
+            updateFirebaseUserProperties(configuration)
+        }
+
+        private fun updateFirebaseUserProperties(
+            configuration: TelemetryConfiguration
+        ) = StrictModeViolation.tempGrant({ it.permitDiskReads() }) {
+            val context = configuration.context
+            val pref = PreferenceManager.getDefaultSharedPreferences(context).all
+            val prefKeys = configuration.preferencesImportantForTelemetry ?: return@tempGrant
+            prefKeys.forEach { key ->
+                FirebaseHelper.setUserProperty(context, key, pref[key].toString())
+            }
         }
 
         internal fun addCustomPing(
