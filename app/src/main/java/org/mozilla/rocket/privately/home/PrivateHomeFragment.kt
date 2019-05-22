@@ -15,15 +15,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.RelativeLayout
 import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
+import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
-import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
+import org.mozilla.rocket.chrome.BottomBarItemAdapter
+import org.mozilla.rocket.content.view.BottomBar
+import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.privately.ShortcutUtils
 import org.mozilla.rocket.privately.ShortcutViewModel
@@ -31,10 +33,9 @@ import org.mozilla.rocket.privately.ShortcutViewModel
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
 
-    private lateinit var btnBack: RelativeLayout
-    private lateinit var lottieMask: LottieAnimationView
     private lateinit var logoMan: LottieAnimationView
     private lateinit var fakeInput: View
+    private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
 
     @Override
     override fun onCreate(bundle: Bundle?) {
@@ -44,17 +45,8 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_private_homescreen, container, false)
-        btnBack = view.findViewById(R.id.pm_home_back)
-        lottieMask = view.findViewById(R.id.pm_home_mask)
         logoMan = view.findViewById(R.id.pm_home_logo)
         fakeInput = view.findViewById(R.id.pm_home_fake_input)
-
-        btnBack.setOnClickListener {
-            var parent = activity
-            if (parent is FragmentListener) {
-                parent.onNotified(this, TOGGLE_PRIVATE_MODE, null)
-            }
-        }
 
         fakeInput.setOnClickListener {
             var parent = activity
@@ -63,6 +55,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             }
         }
 
+        setupBottomBar(view)
         observeViewModel()
 
         return view
@@ -70,6 +63,31 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     override fun getFragment(): Fragment {
         return this
+    }
+
+    private fun setupBottomBar(rootView: View) {
+        val bottomBar = rootView.findViewById<BottomBar>(R.id.bottom_bar)
+        // Hard code to only show the first item in private home page
+        bottomBar.setItemVisibility(1, View.INVISIBLE)
+        bottomBar.setItemVisibility(2, View.INVISIBLE)
+        bottomBar.setItemVisibility(3, View.INVISIBLE)
+        bottomBar.setItemVisibility(4, View.INVISIBLE)
+        bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
+            override fun onItemClick(type: Int, position: Int) {
+                when (type) {
+                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> {
+                        val parent = activity
+                        if (parent is FragmentListener) {
+                            parent.onNotified(this@PrivateHomeFragment, FragmentListener.TYPE.TOGGLE_PRIVATE_MODE, null)
+                        }
+                    }
+                    else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
+                }
+            }
+        })
+        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.DARK)
+        val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
+        bottomBarViewModel.items.nonNullObserve(this, bottomBarItemAdapter::setItems)
     }
 
     private fun observeViewModel() {
@@ -132,7 +150,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     private fun animatePrivateHome() {
-        lottieMask.playAnimation()
+        bottomBarItemAdapter.animatePrivateHome()
         logoMan.playAnimation()
     }
 

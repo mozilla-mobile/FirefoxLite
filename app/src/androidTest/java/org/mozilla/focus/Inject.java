@@ -29,6 +29,8 @@ import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModelFactory;
 import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.chrome.MenuViewModelFactory;
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
@@ -148,6 +150,11 @@ public class Inject {
     public static MenuViewModel obtainMenuViewModel(FragmentActivity activity) {
         MenuViewModelFactory factory = MenuViewModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(MenuViewModel.class);
+    }
+
+    public static PrivateBottomBarViewModel obtainPrivateBottomBarViewModel(FragmentActivity activity) {
+        PrivateBottomBarViewModelFactory factory = PrivateBottomBarViewModelFactory.getInstance();
+        return ViewModelProviders.of(activity, factory).get(PrivateBottomBarViewModel.class);
     }
 
     public static ChromeViewModel obtainChromeViewModel(FragmentActivity activity) {
