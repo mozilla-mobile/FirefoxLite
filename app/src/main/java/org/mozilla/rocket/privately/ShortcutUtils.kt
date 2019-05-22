@@ -19,15 +19,14 @@ class ShortcutUtils {
         private const val SHORTCUT_ID = "pb_shortcut"
 
         fun createShortcut(context: Context) {
-            val shortcutIntent = Intent(Intent.ACTION_VIEW)
-            shortcutIntent.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
+            val shortcutIntent = Intent(Intent.ACTION_MAIN)
+            shortcutIntent.setClassName(context, AppConstants.LAUNCHER_PRIVATE_ACTIVITY_ALIAS)
             shortcutIntent.putExtra(
                     LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE.value,
                     true
             )
             shortcutIntent.flags = shortcutIntent.flags or
-                    Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    Intent.FLAG_ACTIVITY_NEW_TASK
 
             val icon = IconCompat.createWithResource(context, R.drawable.ic_pb_launcher)
             val shortcut = ShortcutInfoCompat.Builder(context, SHORTCUT_ID)

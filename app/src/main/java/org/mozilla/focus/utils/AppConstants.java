@@ -10,6 +10,7 @@ import org.mozilla.focus.BuildConfig;
 public final class AppConstants {
     // see activity-alias name for the launcher in AndroidManifest.xml
     public static final String LAUNCHER_ACTIVITY_ALIAS = "org.mozilla.rocket.activity.MainActivity";
+    public static final String LAUNCHER_PRIVATE_ACTIVITY_ALIAS = "org.mozilla.rocket.activity.PrivateModeActivity";
 
     private static final String BUILD_TYPE_DEBUG = "debug";
     private static final String BUILD_TYPE_FIREBASE = "firebase";
