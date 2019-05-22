@@ -19,7 +19,6 @@ import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.ecommerce.EcTabFragment
 import org.mozilla.rocket.content.news.NewsFragment
-import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
 interface ContentPortalListener {
@@ -122,7 +121,6 @@ class ContentPortalView : CoordinatorLayout {
         }
 
         ContentPortalViewState.reset()
-        NewsRepository.reset()
         AnimationUtils.loadAnimation(context, R.anim.tab_transition_fade_out)?.also {
             it.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
