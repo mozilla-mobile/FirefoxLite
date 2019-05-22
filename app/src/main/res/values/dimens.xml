@@ -65,7 +65,6 @@
     <dimen name="firstrun_icon_bottom_margin">20dp</dimen>
     <dimen name="fixed_menu_height">48dp</dimen>
     <dimen name="home_fixed_menu_horizontal_margin">36dp</dimen>
-    <dimen name="browser_fixed_menu_horizontal_margin">40dp</dimen>
     <dimen name="browser_fixed_menu_horizontal_padding">40dp</dimen>
     <dimen name="browser_tracker_popup_bottom_margin">40dp</dimen>
 

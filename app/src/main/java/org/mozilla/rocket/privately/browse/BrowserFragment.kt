@@ -22,15 +22,14 @@ import android.view.ViewGroup
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_private_browser_item_menu_button.*
-import kotlinx.android.synthetic.main.fragment_private_browser_item_menu_button.view.*
+import kotlinx.android.synthetic.main.fragment_private_browser.*
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
+import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -46,6 +45,9 @@ import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
+import org.mozilla.rocket.chrome.BottomBarItemAdapter
+import org.mozilla.rocket.content.view.BottomBar
+import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
@@ -73,6 +75,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
+    private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
 
     private lateinit var browserContainer: ViewGroup
     private lateinit var videoContainer: ViewGroup
@@ -81,10 +84,6 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var progressView: AnimatedProgressBar
     private lateinit var siteIdentity: ImageView
 
-    private lateinit var btnLoad: ImageButton
-    private lateinit var btnNext: ImageButton
-    private lateinit var btnTracker: View
-    private lateinit var browserMenuContainer: ViewGroup
     private lateinit var toolbarRoot: ViewGroup
 
     private lateinit var trackerPopup: TrackerPopup
@@ -116,6 +115,8 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun onViewCreated(view: View, savedState: Bundle?) {
         super.onViewCreated(view, savedState)
 
+        setupBottomBar(view)
+
         displayUrlView = view.findViewById(R.id.display_url)
         displayUrlView.setOnClickListener { onSearchClicked() }
 
@@ -128,21 +129,6 @@ class BrowserFragment : LocaleAwareFragment(),
 
         initTrackerView(view)
 
-        view.findViewById<View>(R.id.btn_mode).setOnClickListener { onModeClicked() }
-        view.findViewById<View>(R.id.btn_delete).setOnClickListener { onDeleteClicked() }
-
-        btnLoad = (view.findViewById<ImageButton>(R.id.btn_load))
-                .also { it.setOnClickListener { onLoadClicked() } }
-
-        btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton)
-                .also {
-                    it.isEnabled = false
-                    it.setOnClickListener { onNextClicked() }
-                }
-
-        btnTracker = view.btn_tracker.apply {
-            setOnClickListener { onTrackerButtonClicked() }
-        }
         monitorTrackerBlocked { count -> updateTrackerBlockedCount(count) }
 
         view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
@@ -150,7 +136,6 @@ class BrowserFragment : LocaleAwareFragment(),
             insets
         }
 
-        browserMenuContainer = view.findViewById(R.id.browser_menu_container)
         toolbarRoot = view.findViewById(R.id.toolbar_root)
 
         sessionManager = TabsSessionProvider.getOrThrow(activity)
@@ -263,10 +248,10 @@ class BrowserFragment : LocaleAwareFragment(),
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toolbarRoot.visibility = View.GONE
-            browserMenuContainer.visibility = View.GONE
+            browser_bottom_bar.visibility = View.GONE
         } else {
+            browser_bottom_bar.visibility = View.VISIBLE
             toolbarRoot.visibility = View.VISIBLE
-            browserMenuContainer.visibility = View.VISIBLE
         }
     }
 
@@ -393,16 +378,26 @@ class BrowserFragment : LocaleAwareFragment(),
         ScreenNavigator.get(activity).popToHomeScreen(true)
     }
 
+    private fun setupBottomBar(rootView: View) {
+        val bottomBar = rootView.findViewById<BottomBar>(R.id.browser_bottom_bar)
+        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PRIVATE_MODE)
+        val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
+        bottomBarViewModel.items.nonNullObserve(this) {
+            bottomBarItemAdapter.setItems(it)
+            bottomBarItemAdapter.endPrivateHomeAnimation()
+            bottomBarItemAdapter.setTrackerSwitch(isTurboModeEnabled(rootView.context))
+        }
+    }
+
     private fun initTrackerView(parentView: View) {
         trackerPopup = TrackerPopup(parentView.context)
-        updateTrackerButtonState(isTurboModeEnabled(parentView.context))
 
         trackerPopup.onSwitchToggled = { enabled ->
             val appContext = (parentView.context.applicationContext as FocusApplication)
             appContext.settings.privateBrowsingSettings.setTurboMode(enabled)
             sessionManager.focusSession?.engineSession?.tabView?.setContentBlockingEnabled(enabled)
 
-            updateTrackerButtonState(enabled)
+            bottomBarItemAdapter.setTrackerSwitch(enabled)
             stop()
             reload()
         }
@@ -413,16 +408,6 @@ class BrowserFragment : LocaleAwareFragment(),
         return appContext.settings.privateBrowsingSettings.shouldUseTurboMode()
     }
 
-    private fun updateTrackerButtonState(isEnabled: Boolean) {
-        if (isEnabled) {
-            btn_tracker.btn_tracker_on.visibility = View.VISIBLE
-            btn_tracker.btn_tracker_off.visibility = View.GONE
-        } else {
-            btn_tracker.btn_tracker_on.visibility = View.GONE
-            btn_tracker.btn_tracker_off.visibility = View.VISIBLE
-        }
-    }
-
     private fun monitorTrackerBlocked(onUpdate: (Int) -> Unit) {
         BrowsingSession.getInstance().blockedTrackerCount.observe(viewLifecycleOwner, Observer {
             val count = it ?: return@Observer
@@ -431,16 +416,7 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     private fun updateTrackerBlockedCount(count: Int) {
-        when (count) {
-            0 -> btnTracker.btn_tracker_on.progress = 0f
-            else -> {
-                val isAnimating = btnTracker.btn_tracker_on.isAnimating
-                val isFinished = btnTracker.btn_tracker_on.frame >= btnTracker.btn_tracker_on.maxFrame
-                if (!isAnimating && !isFinished) {
-                    btnTracker.btn_tracker_on.playAnimation()
-                }
-            }
-        }
+        bottomBarItemAdapter.setTrackerBadgeEnabled(count > 0)
         trackerPopup.blockedCount = count
     }
 
@@ -533,13 +509,6 @@ class BrowserFragment : LocaleAwareFragment(),
 
         override fun onLoadingStateChanged(session: Session, loading: Boolean) {
             fragment.isLoading = loading
-            if (loading) {
-                fragment.btnLoad.setImageResource(R.drawable.edit_close)
-            } else {
-                val es = fragment.sessionManager.focusSession?.engineSession ?: return
-                fragment.btnNext.isEnabled = es.tabView?.canGoForward() ?: false
-                fragment.btnLoad.setImageResource(R.drawable.action_refresh)
-            }
         }
 
         override fun onSecurityChanged(session: Session, isSecure: Boolean) {

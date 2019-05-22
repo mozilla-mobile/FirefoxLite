@@ -10,7 +10,7 @@
         android:id="@+id/browser_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/browser_menu_container"
+        android:layout_above="@id/browser_bottom_bar"
         android:orientation="vertical"
         tools:background="#FF0000">
 
@@ -72,9 +72,12 @@
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/browser_menu_container"
-        layout="@layout/fragment_private_browser_item_menu_button" />
+    <org.mozilla.rocket.content.view.BottomBar
+        android:id="@+id/browser_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fixed_menu_height"
+        android:background="@color/privateBackground"
+        android:layout_alignParentBottom="true"/>
 
     <FrameLayout
         android:id="@+id/video_container"

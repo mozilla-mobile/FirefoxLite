@@ -85,7 +85,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
                 }
             }
         })
-        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.DARK)
+        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PRIVATE_MODE)
         val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
         bottomBarViewModel.items.nonNullObserve(this, bottomBarItemAdapter::setItems)
     }
