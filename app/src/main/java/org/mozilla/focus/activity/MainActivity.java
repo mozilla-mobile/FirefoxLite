@@ -466,7 +466,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                     TelemetryWrapper.clickToolbarForward(MENU, position);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
+                    throw new IllegalArgumentException("Unhandled bottom bar item, type: " + type);
             }
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);

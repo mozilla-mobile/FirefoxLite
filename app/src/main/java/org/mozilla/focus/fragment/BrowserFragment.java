@@ -520,7 +520,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     TelemetryWrapper.clickToolbarForward(WEBVIEW, position);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
+                    throw new IllegalArgumentException("Unhandled bottom bar item, type: " + type);
             }
         });
         bottomBar.setOnItemLongClickListener((type, position) -> {

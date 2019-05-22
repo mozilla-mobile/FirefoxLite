@@ -505,7 +505,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                     TelemetryWrapper.showMenuHome();
                     break;
                 default:
-                    throw new IllegalArgumentException("Unhandled menu item in BrowserFragment, type: " + type);
+                    throw new IllegalArgumentException("Unhandled bottom bar item, type: " + type);
             }
         });
         bottomBar.setOnItemLongClickListener((type, position) -> {
