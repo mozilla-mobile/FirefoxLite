@@ -10,6 +10,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
 import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.news.data.NewsSourceManager.PREF_INT_NEWS_PRIORITY
 import org.mozilla.threadutils.ThreadUtils
 
@@ -28,13 +29,19 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
     }
     private var isLoading = false
 
-    fun setupNewsViewModel(fragmentActivity: FragmentActivity?) {
+    fun setupNewsViewModel(fragmentActivity: FragmentActivity?, category: String) {
         if (fragmentActivity == null) {
             return
         }
         newsViewModel = ViewModelProviders.of(fragmentActivity).get(NewsViewModel::class.java)
-        val repository =
-            NewsRepository.getInstance(fragmentActivity)
+        val repository = NewsRepository.newInstance(
+            fragmentActivity,
+            hashMapOf(
+                NewsRepository.CONFIG_URL to NewsSourceManager.getInstance().newsSourceUrl,
+                NewsRepository.CONFIG_CATEGORY to category,
+                NewsRepository.CONFIG_LANGUAGE to "english" // TODO integrate with news language preference
+            )
+        )
         repository.setOnDataChangedListener(newsViewModel)
         newsViewModel?.repository = repository
         newsViewModel?.items?.observe(newsViewContract.getViewLifecycleOwner(),
@@ -59,21 +66,6 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
 
     override fun onShow(context: Context) {
         updateSourcePriority(context)
-        checkNewsRepositoryReset(context)
-    }
-
-    fun checkNewsRepositoryReset(context: Context) {
-        // News Repository is reset and empty when the user changes the news source.
-        // We create a new Repository and inject to newsViewModel here.
-        // TODO: similar code happens in setupNewsViewModel(), need to refine them
-        if (NewsRepository.isEmpty() && newsViewModel != null) {
-            val repository =
-                NewsRepository.getInstance(context)
-            repository.setOnDataChangedListener(newsViewModel)
-            newsViewModel?.repository = repository
-            newsViewModel?.items?.value = null
-            newsViewModel?.loadMore()
-        }
     }
 
     private fun updateSourcePriority(context: Context) {

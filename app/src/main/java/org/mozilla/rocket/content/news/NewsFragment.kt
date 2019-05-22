@@ -53,7 +53,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
         super.onViewCreated(view, savedInstanceState)
 
         newsPresenter = NewsPresenter(this)
-        newsPresenter?.setupNewsViewModel(activity)
+        newsPresenter?.setupNewsViewModel(activity, "top-news")
         newsListListener = newsPresenter
         newsListListener?.onShow(context!!)
 

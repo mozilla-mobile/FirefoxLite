@@ -56,7 +56,6 @@ public class NewsSourceManager {
 
     public void setNewsSource(String newsSource) {
         this.newsSource = newsSource;
-        NewsRepository.reset();
     }
 
     public String getNewsSourceUrl() {
@@ -65,6 +64,5 @@ public class NewsSourceManager {
 
     public void setNewsSourceUrl(String newsSourceUrl) {
         this.newsSourceUrl = newsSourceUrl;
-        NewsRepository.resetSubscriptionUrl(newsSourceUrl);
     }
 }

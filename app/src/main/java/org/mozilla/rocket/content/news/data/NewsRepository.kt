@@ -1,48 +1,39 @@
 package org.mozilla.rocket.content.news.data
 
-import android.annotation.SuppressLint
 import android.content.Context
 import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
+import java.util.Locale
 
 class NewsRepository {
     companion object {
-
-        @SuppressLint("StaticFieldLeak")
-        @Volatile
-        private var INSTANCE: Repository<out NewsItem>? = null
+        const val CONFIG_URL = "url"
+        const val CONFIG_CATEGORY = "category"
+        const val CONFIG_LANGUAGE = "language"
 
         @JvmStatic
-        fun getInstance(
-            context: Context?
-        ): Repository<out NewsItem> = INSTANCE
-            ?: synchronized(this) {
+        fun newInstance(
+            context: Context?,
+            configurations: HashMap<String, String>
+        ): Repository<out NewsItem> {
             if (context == null) {
                 throw IllegalStateException("can't create Content Repository with null context")
             }
-            INSTANCE
-                ?: buildRepository(
-                    context.applicationContext
-                ).also { INSTANCE = it }
+
+            return buildRepository(context.applicationContext, configurations)
         }
 
-        @JvmStatic
-        fun reset() {
-            INSTANCE?.reset()
-            INSTANCE = null
-        }
-
-        @JvmStatic
-        fun resetSubscriptionUrl(subscriptionUrl: String) {
-            INSTANCE?.setSubscriptionUrl(subscriptionUrl)
-        }
-
-        @JvmStatic
-        fun isEmpty() = INSTANCE == null
-
-        private fun buildRepository(context: Context): Repository<out NewsItem> {
-            return RepositoryNewsPoint(context, NewsSourceManager.getInstance().newsSourceUrl)
+        private fun buildRepository(context: Context, configurations: HashMap<String, String>): Repository<out NewsItem> {
+            val url = String.format(
+                Locale.getDefault(),
+                configurations[CONFIG_URL] ?: "",
+                configurations[CONFIG_CATEGORY],
+                configurations[CONFIG_LANGUAGE],
+                "%d",
+                "%d"
+            )
+            return RepositoryNewsPoint(context, url)
         }
     }
 }

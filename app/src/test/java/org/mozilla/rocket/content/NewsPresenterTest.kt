@@ -10,7 +10,6 @@ import org.mozilla.rocket.content.news.NewsPresenter
 import org.mozilla.rocket.content.news.NewsViewContract
 import org.mozilla.rocket.content.news.NewsViewModel
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class NewsPresenterTest {
@@ -32,12 +31,6 @@ class NewsPresenterTest {
     fun `Avoid rapidly loading more news items`() {
         newsPresenter.loadMore()
         newsPresenter.loadMore()
-        Mockito.verify(newsViewModel, times(1)).loadMore()
-    }
-
-    @Test
-    fun `when Repository is not set, checkNewsRepositoryReset() should force load more news items`() {
-        newsPresenter.checkNewsRepositoryReset(RuntimeEnvironment.application)
         Mockito.verify(newsViewModel, times(1)).loadMore()
     }
 }
