@@ -21,7 +21,7 @@
   <string name="about_link_learn_more">Lenyepan</string>
   <string name="about_link_support">Pangrojong</string>
   <string name="about_link_your_rights">Hak Anjeun / Lisénsi</string>
-  <string name="about_link_privacy">Iber Salindungan</string>
+  <string name="about_link_privacy">Wawar Privasi</string>
   <string name="life_feed">Asupan Langsung</string>
   <string name="about_link_life_feed">Leuwih jéntré ngeunaan %1$s</string>
   <string name="preference_search_engine_default">Mesin pamaluruh baku</string>
@@ -187,7 +187,7 @@
   <string name="message_cannot_find_screenshot">Teu bisa midangkeun téwakan layar</string>
   <string name="remove">Piceun</string>
   <string name="pin_site">Pin loka</string>
-  <string name="privacy_policy_update_notification_title">Iber Apdétan Prodak</string>
+  <string name="privacy_policy_update_notification_title">Wawar Apdétan Prodak</string>
   <string name="privacy_policy_update_notification_action">Ngarah Firefox Lite leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
   <string name="rate_app_dialog_text_title">Bogoh %1$s?</string>
   <string name="rate_app_dialog_text_content">Hatur nuhun geus milih prodak kami. Pangdeudeul anjeun kacida utama pikeun kami.</string>
@@ -277,7 +277,7 @@
   <string name="private_browsing_open_action">BUKA</string>
   <string name="private_browsing_erase_done">Jujutan langlangan nyamuni\nanjeun geus dihapus.</string>
   <string name="private_browsing_tracker_blocked">Palacak dipeungpeuk</string>
-  <string name="private_browsing_tracker_blocked_description">Wilujeng ngalanglang kalawan panyalindungan leuwih.</string>
+  <string name="private_browsing_tracker_blocked_description">Wilujeng ngalanglang kalawan paminingan leuwih.</string>
   <string name="my_shot_on_boarding_message">Ilikan téwakan layar anjeun di dieu!</string>
   <string name="my_shot_on_boarding_category_message">Pikeun ngaronjatkeun pangalaman produk anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
   <string name="btn_vpn">Ladénan VPN bébas 7 poé geus sayaga. Instal ayeuna pikeun ngalanglang leuwih nyamuni tur aman.</string>
