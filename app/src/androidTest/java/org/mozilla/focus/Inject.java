@@ -31,6 +31,8 @@ import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.chrome.MenuViewModelFactory;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory;
+import org.mozilla.rocket.content.news.NewsViewModel;
+import org.mozilla.rocket.content.news.NewsViewModelFactory;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
@@ -162,6 +164,11 @@ public class Inject {
         BookmarkRepository bookmarkRepo = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(activity));
         ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings, bookmarkRepo);
         return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
+    }
+
+    public static NewsViewModel obtainNewsViewModel(FragmentActivity activity) {
+        final NewsViewModelFactory factory = NewsViewModelFactory.getInstance();
+        return ViewModelProviders.of(activity, factory).get(NewsViewModel.class);
     }
 
     public static void startAnimation(View view, Animation animation) {

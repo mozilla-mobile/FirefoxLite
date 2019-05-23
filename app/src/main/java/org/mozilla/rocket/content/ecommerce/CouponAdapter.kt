@@ -12,7 +12,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.ecommerce.data.Coupon
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -59,7 +58,6 @@ class CouponViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(item: Coupon, position: Int) {
         view?.setOnClickListener {
-            ContentPortalViewState.lastEcPos = position
             ScreenNavigator.get(it.context).showBrowserScreen(item.link.url, true, false)
             TelemetryWrapper.clickOnPromoItem(
                 pos = position.toString(),

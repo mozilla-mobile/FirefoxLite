@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.news
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.design.widget.TabLayout.MODE_SCROLLABLE
@@ -10,9 +11,9 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.ContentPortalViewState
-import java.util.ArrayList
 
 /**
  * Fragment that host the tabs for different types of content portal
@@ -43,44 +44,39 @@ class NewsTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
-            ArrayList<String>().apply {
-                add("top")
-                add("sport")
-                add("news")
-                add("funny")
-                add("game")
-                add("test")
-                add("software")
-                add("3c")
-                add("entertainment")
-                add("house")
-                add("cooking")
-                add("travel")
-                add("fashion")
-            }.apply {
-                val pager = view.findViewById<ViewPager>(R.id.news_viewpager)
-                view.findViewById<TabLayout>(R.id.news_tab).run {
-                    setupWithViewPager(pager)
-                    tabMode = MODE_SCROLLABLE
-                }
-                pager.adapter = EcFragmentAdapter(childFragmentManager, this)
-                pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                    override fun onPageScrollStateChanged(p0: Int) {
-                    }
 
-                    override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
-                    }
-
-                    override fun onPageSelected(p0: Int) {
-                        ContentPortalViewState.lastNewsTab = p0
-                        // need to call request Layout to force BottomsheetBehaviour to call our
-                        // findScrollingChild() implementation to find the corresponding scrolling child
-                        view.requestLayout()
-                    }
-                })
-                ContentPortalViewState.lastNewsTab?.let {
-                    pager.currentItem = it
+            Inject.obtainNewsViewModel(activity).categories.observe(viewLifecycleOwner, Observer { list ->
+                list?.let {
+                    setupViewPager(view, it)
                 }
+            })
+        }
+    }
+
+    private fun setupViewPager(view: View, newsCategories: List<String>) {
+        newsCategories.apply {
+            val pager = view.findViewById<ViewPager>(R.id.news_viewpager)
+            view.findViewById<TabLayout>(R.id.news_tab).run {
+                setupWithViewPager(pager)
+                tabMode = MODE_SCROLLABLE
+            }
+            pager.adapter = EcFragmentAdapter(childFragmentManager, this)
+            pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(p0: Int) {
+                }
+
+                override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
+                }
+
+                override fun onPageSelected(p0: Int) {
+                    ContentPortalViewState.lastNewsTab = p0
+                    // need to call request Layout to force BottomsheetBehaviour to call our
+                    // findScrollingChild() implementation to find the corresponding scrolling child
+                    view.requestLayout()
+                }
+            })
+            ContentPortalViewState.lastNewsTab?.let {
+                pager.currentItem = it
             }
         }
     }
@@ -88,7 +84,7 @@ class NewsTabFragment : Fragment() {
     /**
      * Adapter that builds a page for each E-Commerce type .
      */
-    inner class EcFragmentAdapter(fm: FragmentManager, private val cats: ArrayList<String>) : FragmentPagerAdapter(fm) {
+    inner class EcFragmentAdapter(fm: FragmentManager, private val cats: List<String>) : FragmentPagerAdapter(fm) {
 
         override fun getCount() = cats.size
 

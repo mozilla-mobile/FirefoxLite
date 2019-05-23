@@ -19,6 +19,13 @@ import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
 class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
+    override fun getCategory(): String {
+        return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
+    }
+
+    override fun getLanguage(): String {
+        return "english"
+    }
 
     companion object {
         private const val NEWS_THRESHOLD = 10
@@ -63,7 +70,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
         super.onViewCreated(view, savedInstanceState)
 
         newsPresenter = NewsPresenter(this)
-        newsPresenter?.setupNewsViewModel(activity, "top-news")
+        newsPresenter?.setupNewsViewModel(activity, getCategory())
         newsListListener = newsPresenter
         newsListListener?.onShow(context!!)
 
