@@ -398,7 +398,7 @@ class BrowserFragment : LocaleAwareFragment(),
                 }
             }
         })
-        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PRIVATE_MODE)
+        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
         val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)

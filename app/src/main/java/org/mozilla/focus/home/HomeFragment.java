@@ -516,7 +516,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
             return false;
         });
-        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.DARK.INSTANCE);
+        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Dark.INSTANCE);
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 

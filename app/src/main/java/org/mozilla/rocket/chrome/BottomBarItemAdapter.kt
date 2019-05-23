@@ -18,7 +18,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedImageButton
 
 class BottomBarItemAdapter(
     private val bottomBar: BottomBar,
-    private val theme: Theme = Theme.LIGHT
+    private val theme: Theme = Theme.Light
 ) {
     private var items: List<BottomBarItem>? = null
 
@@ -228,7 +228,7 @@ class BottomBarItemAdapter(
                     .inflate(R.layout.button_more, null)
                     .apply {
                         findViewById<ThemedImageButton>(R.id.btn_menu).setTint(context, theme.buttonColorResId)
-                        val downloadColorResId = if (theme == Theme.LIGHT) R.color.paletteDarkBlueC100 else theme.buttonColorResId
+                        val downloadColorResId = if (theme == Theme.Light) R.color.paletteDarkBlueC100 else theme.buttonColorResId
                         findViewById<ThemedImageButton>(R.id.download_unread_indicator).setTint(context, downloadColorResId)
                     }
         }
@@ -237,7 +237,7 @@ class BottomBarItemAdapter(
     private class BookmarkItem(type: Int, theme: Theme) : ImageItem(
             type,
             R.drawable.ic_add_bookmark,
-            if (theme == Theme.LIGHT) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
+            if (theme == Theme.Light) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
     )
 
     private class RefreshItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
@@ -266,9 +266,9 @@ class BottomBarItemAdapter(
     }
 
     sealed class Theme(val buttonColorResId: Int) {
-        object LIGHT : Theme(buttonColorResId = R.color.browser_menu_button)
-        object DARK : Theme(buttonColorResId = R.color.home_bottom_button)
-        object PRIVATE_MODE : Theme(buttonColorResId = R.color.private_menu_button)
+        object Light : Theme(buttonColorResId = R.color.browser_menu_button)
+        object Dark : Theme(buttonColorResId = R.color.home_bottom_button)
+        object PrivateMode : Theme(buttonColorResId = R.color.private_menu_button)
     }
 
     data class ItemData(val type: Int) {
