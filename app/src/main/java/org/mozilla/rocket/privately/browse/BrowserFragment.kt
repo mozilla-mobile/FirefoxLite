@@ -46,6 +46,7 @@ import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
+import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.privately.SharedViewModel
@@ -76,6 +77,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
+    private lateinit var chromeViewModel: ChromeViewModel
 
     private lateinit var browserContainer: ViewGroup
     private lateinit var videoContainer: ViewGroup
@@ -88,9 +90,12 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private lateinit var trackerPopup: TrackerPopup
 
-    private var isLoading: Boolean = false
-
     private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        chromeViewModel = Inject.obtainChromeViewModel(activity)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -364,9 +369,10 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     private fun onLoadClicked() {
-        when (isLoading) {
-            true -> stop()
-            else -> reload()
+        if (chromeViewModel.isRefreshing.value == true) {
+            stop()
+        } else {
+            reload()
         }
     }
 
@@ -380,6 +386,18 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun setupBottomBar(rootView: View) {
         val bottomBar = rootView.findViewById<BottomBar>(R.id.browser_bottom_bar)
+        bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
+            override fun onItemClick(type: Int, position: Int) {
+                when (type) {
+                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> onModeClicked()
+                    BottomBarItemAdapter.TYPE_NEXT -> onNextClicked()
+                    BottomBarItemAdapter.TYPE_DELETE -> onDeleteClicked()
+                    BottomBarItemAdapter.TYPE_REFRESH -> onLoadClicked()
+                    BottomBarItemAdapter.TYPE_TRACKER -> onTrackerButtonClicked()
+                    else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
+                }
+            }
+        })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PRIVATE_MODE)
         val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
         bottomBarViewModel.items.nonNullObserve(this) {
@@ -387,6 +405,9 @@ class BrowserFragment : LocaleAwareFragment(),
             bottomBarItemAdapter.endPrivateHomeAnimation()
             bottomBarItemAdapter.setTrackerSwitch(isTurboModeEnabled(rootView.context))
         }
+
+        chromeViewModel.isRefreshing.nonNullObserve(this, bottomBarItemAdapter::setRefreshing)
+        chromeViewModel.canGoForward.nonNullObserve(this, bottomBarItemAdapter::setCanGoForward)
     }
 
     private fun initTrackerView(parentView: View) {
@@ -502,13 +523,18 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         override fun onUrlChanged(session: Session, url: String?) {
+            fragment.chromeViewModel.onFocusedUrlChanged(url)
             if (!UrlUtils.isInternalErrorURL(url)) {
                 fragment.displayUrlView.text = url
             }
         }
 
         override fun onLoadingStateChanged(session: Session, loading: Boolean) {
-            fragment.isLoading = loading
+            if (loading) {
+                fragment.chromeViewModel.onPageLoadingStarted()
+            } else {
+                fragment.chromeViewModel.onPageLoadingStopped()
+            }
         }
 
         override fun onSecurityChanged(session: Session, isSecure: Boolean) {
@@ -517,6 +543,7 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         override fun onSessionCountChanged(count: Int) {
+            fragment.chromeViewModel.onTabCountChanged(count)
             if (count == 0) {
                 session?.unregister(this)
             } else {
@@ -564,6 +591,19 @@ class BrowserFragment : LocaleAwareFragment(),
 
             builder.createDialog()
             builder.show()
+        }
+
+        override fun onNavigationStateChanged(session: Session, canGoBack: Boolean, canGoForward: Boolean) {
+            fragment.chromeViewModel.onNavigationStateChanged(canGoBack, canGoForward)
+        }
+
+        override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {
+            fragment.chromeViewModel.onFocusedUrlChanged(session?.url)
+            if (session != null) {
+                val canGoBack = fragment.sessionManager.focusSession?.canGoBack ?: false
+                val canGoForward = fragment.sessionManager.focusSession?.canGoForward ?: false
+                fragment.chromeViewModel.onNavigationStateChanged(canGoBack, canGoForward)
+            }
         }
     }
 
