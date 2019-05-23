@@ -317,9 +317,7 @@ object TelemetryWrapper {
 
             FirebaseHelper.init(context, telemetryEnabled)
 
-            // keep the tracker token at our best effort.
-            val trackerToken = PreferenceManager.getDefaultSharedPreferences(context).getString(trackerTokenPrefKey, "")
-            FirebaseHelper.setUserProperty(context, FirebaseHelper.USER_PROPERTY_TRACKER, trackerToken)
+            updateFirebaseUserPropertiesAsync(configuration)
 
             val serializer = JSONPingSerializer()
             val storage = FileTelemetryStorage(configuration, serializer)
@@ -332,6 +330,32 @@ object TelemetryWrapper {
                             .addPingBuilder(TelemetryEventPingBuilder(configuration))
                             .setDefaultSearchProvider(createDefaultSearchProvider(context))
             )
+        }
+    }
+
+    private fun updateFirebaseUserPropertiesAsync(configuration: TelemetryConfiguration) {
+        ThreadUtils.postToBackgroundThread {
+            val provider = CustomSettingsProvider().apply { update(configuration) }
+            val context = configuration.context
+
+            configuration.preferencesImportantForTelemetry?.forEach { key ->
+                val value = if (provider.containsKey(key)) {
+                    provider.getValue(key).toString()
+                } else {
+                    ""
+                }
+
+                val propertyKey = convertToPropertyKey(context, key)
+                FirebaseHelper.setUserProperty(configuration.context, propertyKey, value)
+            }
+        }
+    }
+
+    private fun convertToPropertyKey(context: Context, key: String): String {
+        return if (key == context.getString(R.string.pref_key_s_tracker_token)) {
+            FirebaseHelper.USER_PROPERTY_TRACKER
+        } else {
+            key
         }
     }
 
@@ -2377,19 +2401,6 @@ object TelemetryWrapper {
             val context = configuration.context
             addCustomPing(configuration, ThemeToyMeasurement(context))
             addCustomPing(configuration, CaptureCountMeasurement(context))
-
-            updateFirebaseUserProperties(configuration)
-        }
-
-        private fun updateFirebaseUserProperties(
-            configuration: TelemetryConfiguration
-        ) = StrictModeViolation.tempGrant({ it.permitDiskReads() }) {
-            val context = configuration.context
-            val pref = PreferenceManager.getDefaultSharedPreferences(context).all
-            val prefKeys = configuration.preferencesImportantForTelemetry ?: return@tempGrant
-            prefKeys.forEach { key ->
-                FirebaseHelper.setUserProperty(context, key, pref[key].toString())
-            }
         }
 
         internal fun addCustomPing(
