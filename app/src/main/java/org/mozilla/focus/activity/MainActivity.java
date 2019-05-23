@@ -469,7 +469,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                     throw new IllegalArgumentException("Unhandled bottom bar item, type: " + type);
             }
         });
-        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.LIGHT.INSTANCE);
+        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Light.INSTANCE);
         menuViewModel = Inject.obtainMenuViewModel(this);
         LiveDataExtensionKt.nonNullObserve(menuViewModel.getBottomItems(), this, bottomItems -> {
             bottomBarItemAdapter.setItems(bottomItems);
