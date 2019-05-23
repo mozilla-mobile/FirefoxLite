@@ -1,11 +1,12 @@
 package org.mozilla.rocket.content.news
 
 import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.support.annotation.VisibleForTesting
 import android.support.v4.app.FragmentActivity
+import org.mozilla.focus.Inject
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
@@ -20,6 +21,8 @@ import org.mozilla.threadutils.ThreadUtils
 interface NewsViewContract {
     fun getViewLifecycleOwner(): LifecycleOwner
     fun updateNews(items: List<NewsItem>?)
+    fun getCategory(): String
+    fun getLanguage(): String
 }
 
 class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListListener {
@@ -30,13 +33,13 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
     companion object {
         private val LOADMORE_THRESHOLD = 3000L
     }
+
     private var isLoading = false
 
     fun setupNewsViewModel(fragmentActivity: FragmentActivity?, category: String) {
         if (fragmentActivity == null) {
             return
         }
-        newsViewModel = ViewModelProviders.of(fragmentActivity).get(NewsViewModel::class.java)
         val repository = NewsRepository.newInstance(
             fragmentActivity,
             hashMapOf(
@@ -45,27 +48,28 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
                 NewsRepository.CONFIG_LANGUAGE to "english" // TODO integrate with news language preference
             )
         )
-        repository.setOnDataChangedListener(newsViewModel)
-        newsViewModel?.repository = repository
-        newsViewModel?.items?.observe(newsViewContract.getViewLifecycleOwner(),
-                Observer { items ->
-                    newsViewContract.updateNews(items)
-                    isLoading = false
-                })
+
+        newsViewModel = Inject.obtainNewsViewModel(fragmentActivity)
+        val newsLiveData: MediatorLiveData<List<NewsItem>>? = newsViewModel?.getNews(newsViewContract.getCategory(), newsViewContract.getLanguage(), repository)
+        newsLiveData?.observe(newsViewContract.getViewLifecycleOwner(),
+            Observer { items ->
+                newsViewContract.updateNews(items)
+                isLoading = false
+            })
         // creating a repository will also create a new subscription.
         // we deliberately create a new subscription again to load data aggressively.
-        newsViewModel?.loadMore()
-
         val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
         val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(fragmentActivity.applicationContext)
         newsViewModel?.newsSettingsRepository = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
+        newsViewModel?.loadMore(newsViewContract.getCategory())
     }
 
     override fun loadMore() {
         if (!isLoading) {
-            newsViewModel?.loadMore()
+            newsViewModel?.loadMore(newsViewContract.getCategory())
             isLoading = true
-            ThreadUtils.postToMainThreadDelayed({ isLoading = false },
+            ThreadUtils.postToMainThreadDelayed(
+                { isLoading = false },
                 LOADMORE_THRESHOLD
             )
         }

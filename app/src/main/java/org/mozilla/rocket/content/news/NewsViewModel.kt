@@ -1,34 +1,68 @@
 package org.mozilla.rocket.content.news
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
+import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 
-class NewsViewModel : ViewModel(), Repository.OnDataChangedListener<NewsItem> {
-    var repository: Repository<out NewsItem>? = null
-        set(value) {
-            if (field != value) {
-                items.value = null
-            }
-            field = value
-        }
-    val items = MutableLiveData<List<NewsItem>>()
+class NewsViewModel(
+    private val loadNewsCategoryUseCase: LoadNewsCategoryUseCase
+) : ViewModel() {
+
+    companion object {
+        private const val DEFAULT_LANGUAGE = "english"
+    }
+
+    var language: String = DEFAULT_LANGUAGE
+
+    private var newCategoryResult: LiveData<Result<LoadNewsCategoryByLangResult>> =
+        loadNewsCategoryUseCase.observe()
+
+    val categories: LiveData<List<String>> =
+        Transformations.map(this.newCategoryResult) { (it as? Result.Success)?.data?.categories }
+
+    private val newsMap = HashMap<String, MediatorLiveData<List<NewsItem>>>()
+
+    private val useCaseMap = HashMap<String, LoadNewsUseCase>()
 
     lateinit var newsSettingsRepository: NewsSettingsRepository
 
-    override fun onDataChanged(newsItemList: List<NewsItem>?) {
-        // return the new list, so diff utils will think this is something to diff
-        items.value = newsItemList
+    init {
+        updateCategory("english")
     }
 
-    fun loadMore() {
-        repository?.loadMore()
-        // now wait for OnDataChangedListener.onDataChanged to return the result
+    private fun updateCategory(input: String) {
+        val param = LoadNewsCategoryByLangParameter(input)
+        loadNewsCategoryUseCase.execute(param)
+    }
+
+    fun getNews(category: String, lang: String, repo: Repository<out NewsItem>): MediatorLiveData<List<NewsItem>> {
+        val items = newsMap[category] ?: MediatorLiveData()
+        if (newsMap[category] == null) {
+            newsMap[category] = items
+            HashMap<String, String>().apply {
+                this["category"] = category
+                this["lang"] = lang
+            }
+            val loadNewsCase = LoadNewsUseCase(repo)
+            useCaseMap[category] = loadNewsCase
+            items.addSource(loadNewsCase.observe()) { result ->
+                (result as? Result.Success)?.data?.let {
+                    items.value = it.items
+                }
+            }
+        }
+        return items
+    }
+
+    fun loadMore(category: String) {
+        useCaseMap[category]?.execute(LoadNewsParameter(category, language))
     }
 
     fun getSupportLanguages(): LiveData<List<NewsLanguage>> {
