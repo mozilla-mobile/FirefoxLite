@@ -22,7 +22,7 @@ class PrivateBottomBarViewModel : ViewModel() {
         }
     }
 
-    private fun getConfiguredItems(): List<ItemData>? = AppConfigWrapper.getBottomBarItems()
+    private fun getConfiguredItems(): List<ItemData>? = AppConfigWrapper.getPrivateBottomBarItems()
 
     companion object {
         @JvmStatic

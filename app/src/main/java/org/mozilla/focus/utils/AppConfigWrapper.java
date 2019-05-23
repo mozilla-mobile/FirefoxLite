@@ -267,4 +267,22 @@ public class AppConfigWrapper {
 
         return itemDataList;
     }
+
+    public static List<BottomBarItemAdapter.ItemData> getPrivateBottomBarItems() {
+        List<BottomBarItemAdapter.ItemData> itemDataList = new ArrayList<>();
+        String jsonString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_PRIVATE_BOTTOM_BAR_ITEMS);
+        try {
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject row = jsonArray.getJSONObject(i);
+                int type = row.getInt("type");
+                itemDataList.add(new BottomBarItemAdapter.ItemData(type));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return itemDataList;
+    }
 }
