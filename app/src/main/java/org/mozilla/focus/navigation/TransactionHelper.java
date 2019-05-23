@@ -35,20 +35,17 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     TransactionHelper(@NonNull ScreenNavigator.HostActivity activity) {
         this.activity = activity;
-        this.backStackListener = new BackStackListener(this);
+        registerBackStackListener();
     }
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
-        this.activity.getSupportFragmentManager()
-                .addOnBackStackChangedListener(this.backStackListener = new BackStackListener(this));
+        registerBackStackListener();
     }
 
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
-        this.activity.getSupportFragmentManager()
-                .removeOnBackStackChangedListener(this.backStackListener);
-        this.backStackListener.onStop();
+        unregisterBackStackListener();
     }
 
     void showHomeScreen(boolean animated, @EntryData.EntryType int type, boolean executeImmediatly) {
@@ -232,6 +229,23 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
     private void onFragmentBroughtToFront(String fragmentTag) {
         topFragmentState.setValue(fragmentTag);
+    }
+
+    private void registerBackStackListener() {
+        if (this.backStackListener == null) {
+            this.backStackListener = new BackStackListener(this);
+            this.activity.getSupportFragmentManager().addOnBackStackChangedListener(
+                    this.backStackListener);
+        }
+    }
+
+    private void unregisterBackStackListener() {
+        if (this.backStackListener != null) {
+            this.activity.getSupportFragmentManager().removeOnBackStackChangedListener(
+                    this.backStackListener);
+            this.backStackListener.onStop();
+            this.backStackListener = null;
+        }
     }
 
     private static class BackStackListener implements FragmentManager.OnBackStackChangedListener {
