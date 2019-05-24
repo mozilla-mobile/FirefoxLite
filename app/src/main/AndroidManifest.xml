@@ -112,7 +112,34 @@
 
         <activity-alias
             android:name="org.mozilla.rocket.activity.PrivateModeActivity"
-            android:targetActivity="org.mozilla.rocket.privately.PrivateModeActivity" />
+            android:enabled="true"
+            android:icon="@drawable/ic_pb_launcher"
+            android:exported="true"
+            android:label="@string/app_name_private"
+            android:targetActivity="org.mozilla.rocket.privately.PrivateModeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="application/xhtml+xml" />
+            </intent-filter>
+        </activity-alias>
 
         <!-- SettingsActivity title is set dynamically for multilocale support -->
         <activity
