@@ -154,7 +154,7 @@ public class Inject {
     }
 
     public static NewsViewModel obtainNewsViewModel(FragmentActivity activity) {
-        final NewsViewModelFactory factory = NewsViewModelFactory.getInstance();
+        final NewsViewModelFactory factory = NewsViewModelFactory.getInstance(activity);
         return ViewModelProviders.of(activity, factory).get(NewsViewModel.class);
     }
 
