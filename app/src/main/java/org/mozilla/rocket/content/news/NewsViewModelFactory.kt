@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.news
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
 
 class NewsViewModelFactory private constructor(
     private val repository: FakeNewsCategoryRepository
@@ -22,10 +23,10 @@ class NewsViewModelFactory private constructor(
         private var INSTANCE: NewsViewModelFactory? = null
 
         @JvmStatic
-        fun getInstance(): NewsViewModelFactory? =
+        fun getInstance(context: Context): NewsViewModelFactory? =
             INSTANCE ?: synchronized(this) {
                 INSTANCE
-                    ?: NewsViewModelFactory(FakeNewsCategoryRepository()).also { INSTANCE = it }
+                    ?: NewsViewModelFactory(FakeNewsCategoryRepository(context.applicationContext)).also { INSTANCE = it }
             }
     }
 }

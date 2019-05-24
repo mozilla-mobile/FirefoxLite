@@ -1,82 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/content_portal_container"
-    android:layout_gravity="bottom"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_menu"
-    tools:ignore="MissingPrefix">
+<!--
+  ~ Copyright (C) 2015 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
 
-    <ProgressBar
-        android:id="@+id/news_progress_center"
-        android:layout_centerInParent="true"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="12dp"
-        android:indeterminate="true"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/news_list"
-        android:visibility="gone"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="60dp"
-        android:clipToPadding="false"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:paddingEnd="?android:attr/scrollbarSize"
+        android:paddingStart="?android:attr/scrollbarSize"
+        android:background="?attr/selectableItemBackground"
+        android:focusable="true">
 
     <RelativeLayout
-        android:id="@+id/empty_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dip"
+            android:layout_marginEnd="6dip"
+            android:layout_marginTop="6dip">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <ImageView
-                style="@style/PanelEmptyHolderImage"
-                android:id="@+id/empty_view_image"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/internet_error"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="ContentDescription"/>
-
-            <TextView
-                style="@style/Body3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/paletteDarkGreyD100"
-                android:gravity="center"
-                android:text="@string/error_page_recover_a"
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="@dimen/common_margin_m2"
-                app:layout_constraintTop_toBottomOf="@+id/empty_view_image"
-                app:layout_constraintBottom_toTopOf="@+id/news_try_again"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <Button
-                android:id="@+id/news_try_again"
-                style="@style/ButtonText2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/error_page_button"
-                android:textColor="@color/paletteDarkBlueC100"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-            />
-        </android.support.constraint.ConstraintLayout>
-
+        <TextView android:id="@android:id/title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:singleLine="true"
+                  android:textSize="16sp"
+                  android:textColor="?android:attr/textColorPrimary"
+                  android:ellipsize="marquee"
+                  android:fadingEdge="horizontal"
+                  tools:text="Interest "/>
 
     </RelativeLayout>
 
-
-</RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/news_setting_cat_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+            tools:spanCount="2"
+            tools:itemCount="13"
+            tools:listitem="@layout/content_tab_new_setting_item"
+    />
+</LinearLayout>

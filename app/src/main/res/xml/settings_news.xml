@@ -2,14 +2,21 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="root_preferences">
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:key="root_preferences_news">
     <!-- Empty default: we use an empty string to indicate "system default" language being selected -->
     <!--suppress AndroidDomInspection -->
 
+    <org.mozilla.rocket.content.news.data.NewsLanguagePreference
+            android:key="test2"
+            android:title="@string/news_language_dialog_title"
+            app:iconSpaceReserved="false"
+    />
 
-    <SwitchPreference
-            android:key="test"
-            android:title="@string/news_language_dialog_title"/>
+    <org.mozilla.rocket.content.news.data.NewsCategoryPreference
+            android:key="test3"
+            android:title="@string/news_category_title"/>
 
 </PreferenceScreen>
