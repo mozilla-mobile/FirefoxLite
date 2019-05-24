@@ -4,6 +4,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
     <string name="app_name" translatable="false">Firefox Lite Dev</string>
+    <string name="app_name_private" translatable="false">Firefox Lite Dev - Private browsing</string>
 
     <string name="text_selection_search_action">Search in Firefox Lite Dev</string>
 </resources>
