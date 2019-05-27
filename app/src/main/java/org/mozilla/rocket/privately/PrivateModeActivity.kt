@@ -136,6 +136,9 @@ class PrivateModeActivity : BaseActivity(),
                 onShareClicked(url)
             }
         })
+        chromeViewModel.togglePrivateMode.observe(this, Observer {
+            checkShortcutPromotion { pushToBack() }
+        })
     }
 
     private fun onAddToHomeClicked() {
@@ -166,7 +169,6 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun onNotified(from: Fragment, type: FragmentListener.TYPE, payload: Any?) {
         when (type) {
-            TYPE.TOGGLE_PRIVATE_MODE -> checkShortcutPromotion { pushToBack() }
             TYPE.SHOW_URL_INPUT -> showUrlInput(payload)
             TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)

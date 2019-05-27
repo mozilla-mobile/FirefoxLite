@@ -353,12 +353,6 @@ class BrowserFragment : LocaleAwareFragment(),
         shared.getUrl().removeObservers(this)
     }
 
-    private fun onModeClicked() {
-        val listener = activity as FragmentListener
-        listener.onNotified(this, TYPE.TOGGLE_PRIVATE_MODE, null)
-        TelemetryWrapper.togglePrivateMode(false)
-    }
-
     private fun onTrackerButtonClicked() {
         view?.let { parentView -> trackerPopup.show(parentView) }
     }
@@ -381,7 +375,10 @@ class BrowserFragment : LocaleAwareFragment(),
                     BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
                     BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
                     BottomBarItemAdapter.TYPE_NEXT -> chromeViewModel.goNext.call()
-                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> onModeClicked()
+                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> {
+                        chromeViewModel.togglePrivateMode.call()
+                        TelemetryWrapper.togglePrivateMode(false)
+                    }
                     BottomBarItemAdapter.TYPE_DELETE -> onDeleteClicked()
                     BottomBarItemAdapter.TYPE_TRACKER -> onTrackerButtonClicked()
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
