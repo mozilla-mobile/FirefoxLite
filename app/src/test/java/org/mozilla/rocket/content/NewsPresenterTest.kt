@@ -24,8 +24,7 @@ class NewsPresenterTest {
     fun warmUp() {
         viewContract = mock(NewsViewContract::class.java)
         newsViewModel = mock(NewsViewModel::class.java)
-        newsPresenter = NewsPresenter(viewContract)
-        newsPresenter.newsViewModel = newsViewModel
+        newsPresenter = NewsPresenter(viewContract, newsViewModel)
     }
 
     @Test
@@ -36,6 +35,7 @@ class NewsPresenterTest {
         Mockito.verify(newsViewModel, times(1)).loadMore(anyOrNull())
     }
 }
+
 /**
  * Returns Mockito.any() as nullable type to avoid java.lang.IllegalStateException when
  * null is returned.

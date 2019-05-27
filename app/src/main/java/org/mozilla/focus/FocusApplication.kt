@@ -8,7 +8,11 @@ package org.mozilla.focus
 import android.app.Activity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.v4.app.Fragment
 import com.squareup.leakcanary.LeakCanary
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -18,6 +22,7 @@ import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.rocket.content.news.data.NewsSourceManager
+import org.mozilla.rocket.di.DaggerAppComponent
 import org.mozilla.rocket.partner.PartnerActivator
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
@@ -25,7 +30,14 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.settings.SettingsProvider
 import java.io.File
 
-class FocusApplication : LocaleAwareApplication() {
+class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
+
+    @javax.inject.Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentInjector
+    }
 
     lateinit var partnerActivator: PartnerActivator
     var isInPrivateProcess = false
@@ -54,6 +66,7 @@ class FocusApplication : LocaleAwareApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        DaggerAppComponent.builder().application(this).build().inject(this)
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
