@@ -181,8 +181,7 @@ class PreferencesContentProvider : ContentProvider() {
         }
     }
 
-    private class BundleCursor internal constructor(private var bundle: Bundle?)
-        : MatrixCursor(arrayOf(), 1) {
+    private class BundleCursor internal constructor(private var bundle: Bundle?) : MatrixCursor(arrayOf(), 1) {
 
         override fun getExtras(): Bundle? {
             return bundle
