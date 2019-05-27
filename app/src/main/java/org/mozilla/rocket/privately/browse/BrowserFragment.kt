@@ -389,10 +389,13 @@ class BrowserFragment : LocaleAwareFragment(),
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
             override fun onItemClick(type: Int, position: Int) {
                 when (type) {
-                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> onModeClicked()
-                    BottomBarItemAdapter.TYPE_NEXT -> onNextClicked()
-                    BottomBarItemAdapter.TYPE_DELETE -> onDeleteClicked()
+                    BottomBarItemAdapter.TYPE_SEARCH -> chromeViewModel.showUrlInput.setValue(chromeViewModel.currentUrl.value)
+                    BottomBarItemAdapter.TYPE_PIN_SHORTCUT -> chromeViewModel.pinShortcut.call()
                     BottomBarItemAdapter.TYPE_REFRESH -> onLoadClicked()
+                    BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
+                    BottomBarItemAdapter.TYPE_NEXT -> onNextClicked()
+                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> onModeClicked()
+                    BottomBarItemAdapter.TYPE_DELETE -> onDeleteClicked()
                     BottomBarItemAdapter.TYPE_TRACKER -> onTrackerButtonClicked()
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
                 }

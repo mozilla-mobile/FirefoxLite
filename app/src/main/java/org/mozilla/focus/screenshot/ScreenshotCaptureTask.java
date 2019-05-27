@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.PRIVATE_MODE;
+
 public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
 
     private final Context context;
@@ -51,9 +53,11 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
                 Screenshot screenshot = new Screenshot(title, url, timestamp, path);
                 ScreenshotManager.getInstance().insert(screenshot, null);
 
-                TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(context, url), ScreenshotManager.getInstance().getCategoryVersion(),
-                        telemetryData.getMode(), telemetryData.getPosition());
-
+                // We don't collect data in private mode now
+                if (!PRIVATE_MODE.equals(telemetryData.getMode())) {
+                    TelemetryWrapper.clickToolbarCapture(ScreenshotManager.getInstance().getCategory(context, url), ScreenshotManager.getInstance().getCategoryVersion(),
+                            telemetryData.getMode(), telemetryData.getPosition());
+                }
             }
 
             return path;
