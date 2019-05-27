@@ -21,9 +21,11 @@ import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
+import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.privately.SharedViewModel
@@ -33,6 +35,7 @@ import org.mozilla.rocket.privately.ShortcutViewModel
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
 
+    private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var logoMan: LottieAnimationView
     private lateinit var fakeInput: View
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
@@ -40,6 +43,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     @Override
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
+        chromeViewModel = Inject.obtainChromeViewModel(activity)
     }
 
     @Override
@@ -76,10 +80,8 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             override fun onItemClick(type: Int, position: Int) {
                 when (type) {
                     BottomBarItemAdapter.TYPE_PRIVATE_HOME -> {
-                        val parent = activity
-                        if (parent is FragmentListener) {
-                            parent.onNotified(this@PrivateHomeFragment, FragmentListener.TYPE.TOGGLE_PRIVATE_MODE, null)
-                        }
+                        chromeViewModel.togglePrivateMode.call()
+                        TelemetryWrapper.togglePrivateMode(false)
                     }
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
                 }

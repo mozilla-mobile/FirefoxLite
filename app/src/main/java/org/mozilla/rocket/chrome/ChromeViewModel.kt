@@ -37,6 +37,7 @@ class ChromeViewModel(
     val share = SingleLiveEvent<Unit>()
     val goNext = SingleLiveEvent<Unit>()
     val showDownloadPanel = SingleLiveEvent<Unit>()
+    val togglePrivateMode = SingleLiveEvent<Unit>()
 
     init {
         isNightMode.value = settings.isNightModeEnable
