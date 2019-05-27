@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.CheckResult
 import android.support.v4.app.Fragment
@@ -19,6 +20,7 @@ import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
 import org.mozilla.focus.BuildConfig
+import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.activity.MainActivity
@@ -30,10 +32,15 @@ import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
+import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.SafeIntent
+import org.mozilla.focus.utils.ShortcutUtils
+import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
+import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
@@ -51,6 +58,7 @@ class PrivateModeActivity : BaseActivity(),
 
     private val LOG_TAG = "PrivateModeActivity"
     private var sessionManager: SessionManager? = null
+    private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var tabViewProvider: PrivateTabViewProvider
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var screenNavigator: ScreenNavigator
@@ -63,6 +71,7 @@ class PrivateModeActivity : BaseActivity(),
         // we don't keep any state if user leave Private-mode
         super.onCreate(null)
 
+        chromeViewModel = Inject.obtainChromeViewModel(this)
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 
@@ -81,6 +90,7 @@ class PrivateModeActivity : BaseActivity(),
         initBroadcastReceivers()
 
         screenNavigator.popToHomeScreen(false)
+        observeChromeAction()
 
         monitorOrientationState()
     }
@@ -110,6 +120,49 @@ class PrivateModeActivity : BaseActivity(),
     }
 
     override fun applyLocale() {}
+
+    private fun observeChromeAction() {
+        // Reserve to handle more chrome actions for the bottom bar A/B testing
+        chromeViewModel.showUrlInput.observe(this, Observer { url ->
+            if (!supportFragmentManager.isStateSaved) {
+                screenNavigator.addUrlScreen(url)
+            }
+        })
+        chromeViewModel.pinShortcut.observe(this, Observer {
+            onAddToHomeClicked()
+        })
+        chromeViewModel.share.observe(this, Observer {
+            chromeViewModel.currentUrl.value?.let { url ->
+                onShareClicked(url)
+            }
+        })
+    }
+
+    private fun onAddToHomeClicked() {
+        val focusTab = getSessionManager().focusSession ?: return
+        val url = focusTab.url
+        // If we pin an invalid url as shortcut, the app will not function properly.
+        // TODO: only enable the bottom menu item if the page is valid and loaded.
+        if (!SupportUtils.isUrl(url)) {
+            return
+        }
+        val bitmap = focusTab.favicon
+        val shortcut = Intent(Intent.ACTION_VIEW)
+        // Use activity-alias name here so we can start whoever want to control launching behavior
+        // Besides, RocketLauncherActivity not exported so using the alias-name is required.
+        shortcut.setClassName(this, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
+        shortcut.data = Uri.parse(url)
+        shortcut.putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.value, true)
+
+        ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.title, url!!, bitmap)
+    }
+
+    private fun onShareClicked(url: String) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, url)
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)))
+    }
 
     override fun onNotified(from: Fragment, type: FragmentListener.TYPE, payload: Any?) {
         when (type) {

@@ -246,6 +246,7 @@ object TelemetryWrapper {
         const val ARROW = "arrow"
         internal const val WEBVIEW = "webview"
         internal const val MENU = "menu"
+        internal const val PRIVATE_MODE = "private_mode"
     }
 
     enum class FIND_IN_PAGE {
