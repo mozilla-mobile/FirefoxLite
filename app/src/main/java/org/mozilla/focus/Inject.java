@@ -5,6 +5,8 @@
 
 package org.mozilla.focus;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -14,7 +16,6 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.animation.Animation;
 
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.BookmarksDatabase;
@@ -139,10 +140,12 @@ public class Inject {
         return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 
-    public static void startAnimation(@Nullable View view, Animation animation) {
+    public static void animate(@Nullable View view, int animator) {
         if (view == null) {
             return;
         }
-        view.startAnimation(animation);
+        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(view.getContext(), animator);
+        set.setTarget(view);
+        set.start();
     }
 }

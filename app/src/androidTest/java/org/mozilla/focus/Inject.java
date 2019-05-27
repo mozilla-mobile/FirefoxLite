@@ -15,7 +15,6 @@ import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.animation.Animation;
 
 import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabsDatabase;
@@ -29,6 +28,7 @@ import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModelFactory;
 import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.chrome.MenuViewModelFactory;
+import org.mozilla.rocket.content.news.NewsViewModel;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
@@ -157,6 +157,6 @@ public class Inject {
         return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 
-    public static void startAnimation(View view, Animation animation) {
+    public static void animate(View view, int animator) {
     }
 }
