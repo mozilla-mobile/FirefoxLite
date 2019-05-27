@@ -123,7 +123,9 @@ class BrowserFragment : LocaleAwareFragment(),
         setupBottomBar(view)
 
         displayUrlView = view.findViewById(R.id.display_url)
-        displayUrlView.setOnClickListener { onSearchClicked() }
+        displayUrlView.setOnClickListener {
+            chromeViewModel.showUrlInput.setValue(chromeViewModel.currentUrl.value)
+        }
 
         siteIdentity = view.findViewById(R.id.site_identity)
 
@@ -355,11 +357,6 @@ class BrowserFragment : LocaleAwareFragment(),
         val listener = activity as FragmentListener
         listener.onNotified(this, TYPE.TOGGLE_PRIVATE_MODE, null)
         TelemetryWrapper.togglePrivateMode(false)
-    }
-
-    private fun onSearchClicked() {
-        val listener = activity as FragmentListener
-        listener.onNotified(this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
     }
 
     private fun onTrackerButtonClicked() {
