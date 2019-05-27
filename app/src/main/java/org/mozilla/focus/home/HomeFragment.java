@@ -260,12 +260,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.recyclerView = view.findViewById(R.id.main_list);
 
         setupBottomBar(view);
+        setupFakeInput(view);
 
-        this.fakeInput = view.findViewById(R.id.home_fragment_fake_input);
-        this.fakeInput.setOnClickListener(v -> {
-            chromeViewModel.getShowUrlInput().call();
-            TelemetryWrapper.showSearchBarHome();
-        });
         this.homeBanner = view.findViewById(R.id.banner);
         bannerLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         homeBanner.setLayoutManager(bannerLayoutManager);
@@ -484,8 +480,11 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     public void onUrlInputScreenVisible(boolean urlInputScreenVisible) {
-        final int visibility = urlInputScreenVisible ? View.INVISIBLE : View.VISIBLE;
-        this.fakeInput.setVisibility(visibility);
+        if (urlInputScreenVisible) {
+            chromeViewModel.onShowHomePageUrlInput();
+        } else {
+            chromeViewModel.onDismissHomePageUrlInput();
+        }
     }
 
     private void setupBottomBar(View rootView) {
@@ -524,6 +523,21 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
 
         setupDownloadIndicator();
+    }
+
+    private void setupFakeInput(View rootView) {
+        this.fakeInput = rootView.findViewById(R.id.home_fragment_fake_input);
+        this.fakeInput.setOnClickListener(v -> {
+            chromeViewModel.getShowUrlInput().call();
+            TelemetryWrapper.showSearchBarHome();
+        });
+        chromeViewModel.isHomePageUrlInputShowing().observe(this, isShowing -> {
+            if (isShowing != null && isShowing) {
+                fakeInput.setVisibility(View.INVISIBLE);
+            } else {
+                fakeInput.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void setupDownloadIndicator() {

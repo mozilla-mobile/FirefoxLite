@@ -22,13 +22,10 @@ import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.widget.FragmentListener
-import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
-import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.privately.ShortcutUtils
 import org.mozilla.rocket.privately.ShortcutViewModel
 
@@ -52,13 +49,10 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         logoMan = view.findViewById(R.id.pm_home_logo)
         fakeInput = view.findViewById(R.id.pm_home_fake_input)
 
-        fakeInput.setOnClickListener {
-            var parent = activity
-            if (parent is FragmentListener) {
-                parent.onNotified(this, SHOW_URL_INPUT, null)
-            }
-        }
-
+        fakeInput.setOnClickListener { chromeViewModel.showUrlInput.call() }
+        chromeViewModel.isHomePageUrlInputShowing.observe(this, Observer { isShowing ->
+            if (isShowing == true) hideFakeInput() else showFakeInput()
+        })
         setupBottomBar(view)
         observeViewModel()
 
@@ -94,15 +88,6 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     private fun observeViewModel() {
         activity?.apply {
-            // since the view model is of the activity, use the fragment's activity instead of the fragment itself
-            ViewModelProviders.of(this).get(SharedViewModel::class.java)
-                    .urlInputState()
-                    .observe(this, Observer<Boolean> {
-                        it?.apply {
-                            onUrlInputScreenVisible(it)
-                        }
-                    })
-
             val shortcutViewModel = ViewModelProviders.of(this).get(ShortcutViewModel::class.java)
             monitorShortcutPromotion(this, shortcutViewModel)
             monitorShortcutMessage(this, shortcutViewModel)
@@ -158,12 +143,20 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     override fun onUrlInputScreenVisible(visible: Boolean) {
         if (visible) {
-            logoMan.visibility = View.INVISIBLE
-            fakeInput.visibility = View.INVISIBLE
+            chromeViewModel.onShowHomePageUrlInput()
         } else {
-            logoMan.visibility = View.VISIBLE
-            fakeInput.visibility = View.VISIBLE
+            chromeViewModel.onDismissHomePageUrlInput()
         }
+    }
+
+    private fun showFakeInput() {
+        logoMan.visibility = View.VISIBLE
+        fakeInput.visibility = View.VISIBLE
+    }
+
+    private fun hideFakeInput() {
+        logoMan.visibility = View.INVISIBLE
+        fakeInput.visibility = View.INVISIBLE
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
