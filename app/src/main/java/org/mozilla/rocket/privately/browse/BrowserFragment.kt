@@ -149,6 +149,8 @@ class BrowserFragment : LocaleAwareFragment(),
         sessionManager.focusSession?.register(observer)
 
         activity?.let { registerData(it) }
+
+        observeChromeAction()
     }
 
     override fun onDestroyView() {
@@ -355,10 +357,6 @@ class BrowserFragment : LocaleAwareFragment(),
         TelemetryWrapper.togglePrivateMode(false)
     }
 
-    private fun onNextClicked() {
-        goForward()
-    }
-
     private fun onSearchClicked() {
         val listener = activity as FragmentListener
         listener.onNotified(this, TYPE.SHOW_URL_INPUT, displayUrlView.text)
@@ -366,14 +364,6 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private fun onTrackerButtonClicked() {
         view?.let { parentView -> trackerPopup.show(parentView) }
-    }
-
-    private fun onLoadClicked() {
-        if (chromeViewModel.isRefreshing.value == true) {
-            stop()
-        } else {
-            reload()
-        }
     }
 
     private fun onDeleteClicked() {
@@ -391,9 +381,9 @@ class BrowserFragment : LocaleAwareFragment(),
                 when (type) {
                     BottomBarItemAdapter.TYPE_SEARCH -> chromeViewModel.showUrlInput.setValue(chromeViewModel.currentUrl.value)
                     BottomBarItemAdapter.TYPE_PIN_SHORTCUT -> chromeViewModel.pinShortcut.call()
-                    BottomBarItemAdapter.TYPE_REFRESH -> onLoadClicked()
+                    BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
                     BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
-                    BottomBarItemAdapter.TYPE_NEXT -> onNextClicked()
+                    BottomBarItemAdapter.TYPE_NEXT -> chromeViewModel.goNext.call()
                     BottomBarItemAdapter.TYPE_PRIVATE_HOME -> onModeClicked()
                     BottomBarItemAdapter.TYPE_DELETE -> onDeleteClicked()
                     BottomBarItemAdapter.TYPE_TRACKER -> onTrackerButtonClicked()
@@ -442,6 +432,21 @@ class BrowserFragment : LocaleAwareFragment(),
     private fun updateTrackerBlockedCount(count: Int) {
         bottomBarItemAdapter.setTrackerBadgeEnabled(count > 0)
         trackerPopup.blockedCount = count
+    }
+
+    private fun observeChromeAction() {
+        chromeViewModel.refreshOrStop.observe(this, Observer {
+            if (chromeViewModel.isRefreshing.value == true) {
+                stop()
+            } else {
+                reload()
+            }
+        })
+        chromeViewModel.goNext.observe(this, Observer {
+            if (chromeViewModel.canGoForward.value == true) {
+                goForward()
+            }
+        })
     }
 
     class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
