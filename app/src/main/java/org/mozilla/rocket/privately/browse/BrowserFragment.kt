@@ -42,7 +42,6 @@ import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.FragmentListener
-import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
@@ -282,7 +281,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
         sessionManager.dropTab(focus.id)
         ScreenNavigator.get(activity).popToHomeScreen(true)
-        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        chromeViewModel.dropCurrentPage.call()
         return true
     }
 
@@ -361,7 +360,7 @@ class BrowserFragment : LocaleAwareFragment(),
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
         }
-        listener?.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        chromeViewModel.dropCurrentPage.call()
         ScreenNavigator.get(activity).popToHomeScreen(true)
     }
 
