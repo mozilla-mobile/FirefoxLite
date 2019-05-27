@@ -139,6 +139,9 @@ class PrivateModeActivity : BaseActivity(),
         chromeViewModel.togglePrivateMode.observe(this, Observer {
             checkShortcutPromotion { pushToBack() }
         })
+        chromeViewModel.dropCurrentPage.observe(this, Observer {
+            dropBrowserFragment()
+        })
     }
 
     private fun onAddToHomeClicked() {
@@ -173,7 +176,6 @@ class PrivateModeActivity : BaseActivity(),
             TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
-            TYPE.DROP_BROWSING_PAGES -> dropBrowserFragment()
             else -> {
             }
         }
