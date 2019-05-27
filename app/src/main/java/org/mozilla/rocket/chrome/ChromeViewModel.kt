@@ -24,6 +24,7 @@ class ChromeViewModel(
     val isRefreshing = MutableLiveData<Boolean>()
     val canGoBack = MutableLiveData<Boolean>()
     val canGoForward = MutableLiveData<Boolean>()
+    val isHomePageUrlInputShowing = MutableLiveData<Boolean>()
 
     val showTabTray = SingleLiveEvent<Unit>()
     val showMenu = SingleLiveEvent<Unit>()
@@ -108,6 +109,14 @@ class ChromeViewModel(
         if (this.canGoForward.value != canGoForward) {
             this.canGoForward.value = canGoForward
         }
+    }
+
+    fun onShowHomePageUrlInput() {
+        isHomePageUrlInputShowing.value = true
+    }
+
+    fun onDismissHomePageUrlInput() {
+        isHomePageUrlInputShowing.value = false
     }
 
     data class ScreenCaptureTelemetryData(val mode: String, val position: Int) : Parcelable {

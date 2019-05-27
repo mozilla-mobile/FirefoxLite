@@ -15,12 +15,7 @@ import android.arch.lifecycle.ViewModel
 * */
 class SharedViewModel : ViewModel() {
 
-    private var isUrlInputShowing = MutableLiveData<Boolean>()
     private val url: MutableLiveData<String> = MutableLiveData()
-
-    fun urlInputState(): MutableLiveData<Boolean> {
-        return isUrlInputShowing
-    }
 
     fun setUrl(newUrl: String) {
         url.value = newUrl

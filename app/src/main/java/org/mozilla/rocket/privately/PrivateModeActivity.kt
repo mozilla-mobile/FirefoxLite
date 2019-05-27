@@ -97,7 +97,6 @@ class PrivateModeActivity : BaseActivity(),
 
     private fun initViewModel() {
         sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
-        sharedViewModel.urlInputState().value = false
     }
 
     override fun onResume() {
@@ -172,7 +171,6 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun onNotified(from: Fragment, type: FragmentListener.TYPE, payload: Any?) {
         when (type) {
-            TYPE.SHOW_URL_INPUT -> showUrlInput(payload)
             TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
@@ -274,15 +272,8 @@ class PrivateModeActivity : BaseActivity(),
         overridePendingTransition(0, R.anim.pb_exit)
     }
 
-    private fun showUrlInput(payload: Any?) {
-        val url = payload?.toString() ?: ""
-        screenNavigator.addUrlScreen(url)
-        sharedViewModel.urlInputState().value = true
-    }
-
     private fun dismissUrlInput() {
         screenNavigator.popUrlScreen()
-        sharedViewModel.urlInputState().value = false
     }
 
     private fun openUrl(payload: Any?) {
