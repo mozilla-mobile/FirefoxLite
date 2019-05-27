@@ -10,8 +10,9 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
+import javax.inject.Inject
 
-class NewsViewModel(
+class NewsViewModel @Inject constructor(
     private val loadNewsCategoryUseCase: LoadNewsCategoryUseCase
 ) : ViewModel() {
 

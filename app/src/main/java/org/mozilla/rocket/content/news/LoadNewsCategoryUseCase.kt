@@ -24,8 +24,9 @@ import org.mozilla.rocket.content.MediatorUseCase
 import org.mozilla.rocket.content.Result
 import org.mozilla.threadutils.ThreadUtils
 import java.util.Random
+import javax.inject.Inject
 
-class FakeNewsCategoryRepository(val context: Context) {
+class FakeNewsCategoryRepository @Inject constructor(val context: Context) {
 
     @WorkerThread
     fun getNewsCatsPref(): MutableSet<String>? {
@@ -67,7 +68,7 @@ class FakeNewsCategoryRepository(val context: Context) {
     }
 }
 
-open class LoadNewsCategoryUseCase(private val repository: FakeNewsCategoryRepository) :
+open class LoadNewsCategoryUseCase @Inject constructor(private val repository: FakeNewsCategoryRepository) :
 
     MediatorUseCase<LoadNewsCategoryByLangParameter, LoadNewsCategoryByLangResult>() {
     override fun execute(parameters: LoadNewsCategoryByLangParameter) {

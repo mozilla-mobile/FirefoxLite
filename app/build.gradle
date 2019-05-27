@@ -240,6 +240,14 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
 
+
+    // Dagger 2
+    implementation "com.google.dagger:dagger:${Versions.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${Versions.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${Versions.dagger}"
+
+
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
