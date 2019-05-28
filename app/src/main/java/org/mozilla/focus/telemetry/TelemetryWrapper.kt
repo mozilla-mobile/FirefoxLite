@@ -104,10 +104,12 @@ object TelemetryWrapper {
         const val OPEN = "open"
         const val SHOW = "show"
         const val LAUNCH = "launch"
+        const val KILL = "kill"
     }
 
     internal object Object {
         const val PRIVATE_MODE = "private_mode"
+        const val PRIVATE_SHORTCUT = "private_shortcut"
         const val PANEL = "panel"
         const val TOOLBAR = "toolbar"
         const val HOME = "home"
@@ -190,6 +192,7 @@ object TelemetryWrapper {
         internal const val LAUNCHER = "launcher"
         internal const val EXTERNAL_APP = "external_app"
         internal const val SHORTCUT = "shortcut"
+        internal const val PRIVATE_MODE = "private_mode"
 
         internal const val BACKGROUND = "background"
         internal const val ITEM = "item"
@@ -208,10 +211,13 @@ object TelemetryWrapper {
         internal const val UPDATE = "update"
         internal const val RETURN = "return"
         internal const val SWIPE = "swipe"
+
+        internal const val SETTINGS_PRIVATE_SHORTCUT = "pref_private_shortcut"
     }
 
     internal object Extra {
         const val TO = "to"
+        const val FROM = "from"
         const val ON = "on"
         const val DEFAULT = "default"
         const val SUCCESS = "success"
@@ -247,6 +253,9 @@ object TelemetryWrapper {
         internal const val WEBVIEW = "webview"
         internal const val MENU = "menu"
         internal const val PRIVATE_MODE = "private_mode"
+        internal const val SYSTEM_BACK = "system_back"
+        const val LAUNCHER = "launcher"
+        const val EXTERNAL_APP = "external_app"
     }
 
     enum class FIND_IN_PAGE {
@@ -423,6 +432,107 @@ object TelemetryWrapper {
     @JvmStatic
     fun launchByHomeScreenShortcutEvent() {
         EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.SHORTCUT).queue()
+    }
+
+    @TelemetryDoc(
+            name = "App is launched from Private Shortcut",
+            category = Category.ACTION,
+            method = Method.LAUNCH,
+            `object` = Object.APP,
+            value = Value.PRIVATE_MODE,
+            extras = [TelemetryExtra(name = Extra.FROM, value = "[${Extra_Value.LAUNCHER}|${Extra_Value.EXTERNAL_APP}]")])
+    @JvmStatic
+    fun launchByPrivateModeShortcut(from: String) {
+        EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.PRIVATE_MODE)
+                .extra(Extra.FROM, from)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show private shortcut prompt",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.PRIVATE_SHORTCUT,
+            value = "",
+            extras = [TelemetryExtra(name = Extra.MODE, value = Extra_Value.PRIVATE_MODE)])
+    @JvmStatic
+    fun showPrivateShortcutPrompt() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.PRIVATE_SHORTCUT)
+                .extra(Extra.MODE, Extra_Value.PRIVATE_MODE)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click private shortcut prompt",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.PRIVATE_SHORTCUT,
+            value = "[${Value.POSITIVE}|${Value.NEGATIVE}|${Value.DISMISS}]",
+            extras = [TelemetryExtra(name = Extra.MODE, value = Extra_Value.PRIVATE_MODE)])
+    @JvmStatic
+    fun clickPrivateShortcutPrompt(value: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PRIVATE_SHORTCUT, value)
+                .extra(Extra.MODE, Extra_Value.PRIVATE_MODE)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Users clicked on a Setting",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.SETTING,
+            value = Value.SETTINGS_PRIVATE_SHORTCUT,
+            extras = [])
+    @JvmStatic
+    fun clickPrivateShortcutItemInSettings() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, Value.SETTINGS_PRIVATE_SHORTCUT)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Exit private mode",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.PRIVATE_MODE,
+            value = Value.EXIT,
+            extras = [
+                TelemetryExtra(name = Extra.FROM, value = "[${Extra_Value.SYSTEM_BACK}]"),
+                TelemetryExtra(name = Extra.MODE, value = Extra_Value.PRIVATE_MODE)
+            ])
+    @JvmStatic
+    fun exitPrivateMode(from: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PRIVATE_MODE, Value.EXIT)
+                .extra(Extra.FROM, from)
+                .extra(Extra.MODE, Extra_Value.PRIVATE_MODE)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Private shortcut created",
+            category = Category.ACTION,
+            method = Method.PIN_SHORTCUT,
+            `object` = Object.PRIVATE_SHORTCUT,
+            value = "",
+            extras = [TelemetryExtra(name = Extra.MODE, value = Extra_Value.PRIVATE_MODE)])
+    @JvmStatic
+    fun createPrivateShortcut() {
+        EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.PRIVATE_SHORTCUT)
+                .extra(Extra.MODE, Extra_Value.PRIVATE_MODE)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Kill app",
+            category = Category.ACTION,
+            method = Method.KILL,
+            `object` = Object.APP,
+            value = "",
+            extras = [TelemetryExtra(name = Extra.MODE, value = Extra_Value.PRIVATE_MODE)])
+    @JvmStatic
+    fun appKilled(mode: String) {
+        EventBuilder(Category.ACTION, Method.KILL, Object.APP)
+                .extra(Extra.MODE, mode)
+                .queue()
     }
 
     @TelemetryDoc(
