@@ -22,14 +22,6 @@ interface Preferences {
 
     fun putBoolean(key: String, value: Boolean)
     fun getBoolean(key: String, defaultValue: Boolean): Boolean
-
-    fun addObserver(key: String, callback: () -> Unit) {
-        TODO("not implemented")
-    }
-
-    fun removeObserver(key: String, callback: () -> Unit) {
-        TODO("not implemented")
-    }
 }
 
 class AndroidPreferences(private val delegate: SharedPreferences) : Preferences {
