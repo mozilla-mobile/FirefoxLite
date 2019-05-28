@@ -495,11 +495,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         return screenNavigator.isBrowserInForeground() ? getBrowserFragment() : null;
     }
 
-    private void openUrl(String url, boolean withNewTab) {
-        String nonNullUrl = url != null ? url : "";
-        ScreenNavigator.get(this).showBrowserScreen(nonNullUrl, withNewTab, false);
-    }
-
     private void showMenu() {
         updateMenu();
         menu.show();
@@ -961,7 +956,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     private void observeChromeAction() {
         chromeViewModel.getOpenUrl().observe(this, action -> {
             if (action != null) {
-                openUrl(action.getUrl(), action.getWithNewTab());
+                screenNavigator.showBrowserScreen(action.getUrl(), action.getWithNewTab(), false);
             }
         });
         chromeViewModel.getShowTabTray().observe(this, unit -> {
