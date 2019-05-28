@@ -154,7 +154,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
     private ThemeManager themeManager;
 
-    private boolean pendingMyShotOnBoarding;
     private Dialog myshotOnBoardingDialog;
     private DownloadIndicatorViewModel downloadIndicatorViewModel;
 
@@ -509,7 +508,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void updateMenu() {
-
         turboModeButton.setSelected(isTurboEnabled());
         blockImageButton.setSelected(isBlockingImages());
 
@@ -520,19 +518,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
         privateModeIndicator.setVisibility(privateModeActivate ? View.VISIBLE : View.GONE);
-        if (pendingMyShotOnBoarding) {
-            pendingMyShotOnBoarding = false;
-            setShowNightModeSpotlight(settings, false);
-            myshotButton.post(() -> myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
-                    MainActivity.this,
-                    myshotButton,
-                    dialog -> dismissAllMenus(),
-                    v -> {
-                        final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
-                        this.screenNavigator.showBrowserScreen(url, true, false);
-                        dismissAllMenus();
-                    }));
-        }
 
         nightModeButton.setSelected(isNightModeEnabled(settings));
         if (shouldShowNightModeSpotlight(settings)) {
@@ -1010,17 +995,15 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         });
         chromeViewModel.getShowDownloadPanel().observe(this, unit -> onDownloadClicked());
         chromeViewModel.getUpdateMenu().observe(this, unit -> updateMenu());
+        chromeViewModel.isMyShotOnBoardingPending().observe(this, isPending -> {
+            if (isPending != null && isPending) {
+                showMyShotOnBoarding();
+            }
+        });
     }
 
     @Override
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
-        switch (type) {
-            case SHOW_MY_SHOT_ON_BOARDING:
-                showMyShotOnBoarding();
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -1184,7 +1167,19 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     @VisibleForTesting
     @UiThread
     public void showMyShotOnBoarding() {
-        pendingMyShotOnBoarding = true;
+        setShowNightModeSpotlight(Settings.getInstance(getApplicationContext()), false);
+        myshotButton.post(() -> {
+            myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
+                    MainActivity.this,
+                    myshotButton,
+                    dialog -> dismissAllMenus(),
+                    v -> {
+                        final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
+                        this.screenNavigator.showBrowserScreen(url, true, false);
+                        dismissAllMenus();
+                    });
+            chromeViewModel.onMyShotOnBoardingDisplayed();
+        });
         showMenu();
     }
 

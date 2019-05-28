@@ -73,7 +73,6 @@ import org.mozilla.focus.web.HttpAuthenticationDialogBuilder;
 import org.mozilla.focus.widget.AnimatedProgressBar;
 import org.mozilla.focus.widget.BackKeyHandleable;
 import org.mozilla.focus.widget.FindInPage;
-import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
@@ -1737,7 +1736,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         final Settings.EventHistory eventHistory = Settings.getInstance(activity).getEventHistory();
         if (!eventHistory.contains(Settings.Event.ShowMyShotOnBoardingDialog)) {
             eventHistory.add(Settings.Event.ShowMyShotOnBoardingDialog);
-            FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.SHOW_MY_SHOT_ON_BOARDING, null);
+            chromeViewModel.showMyShotOnBoarding();
         }
     }
 
