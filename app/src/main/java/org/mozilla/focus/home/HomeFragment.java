@@ -76,7 +76,6 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SwipeMotionDetector;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
@@ -577,8 +576,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public void onClick(View v) {
             final Site site = (Site) v.getTag();
-            final Activity parent = getActivity();
-            if ((site != null) && (parent instanceof FragmentListener)) {
+            if (site != null) {
                 ScreenNavigator.get(v.getContext()).showBrowserScreen(site.getUrl(), true, false);
                 ViewParent viewParent = v.getParent();
                 if (viewParent instanceof ViewGroup) {
