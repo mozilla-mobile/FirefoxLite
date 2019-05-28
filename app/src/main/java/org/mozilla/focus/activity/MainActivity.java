@@ -1009,14 +1009,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             }
         });
         chromeViewModel.getShowDownloadPanel().observe(this, unit -> onDownloadClicked());
+        chromeViewModel.getUpdateMenu().observe(this, unit -> updateMenu());
     }
 
     @Override
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
-            case UPDATE_MENU:
-                this.updateMenu();
-                break;
             case REFRESH_TOP_SITE:
                 Fragment fragment = this.screenNavigator.getTopFragment();
                 if (fragment instanceof HomeFragment) {
