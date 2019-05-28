@@ -95,6 +95,14 @@
                 app:layout_constraintTop_toTopOf="@id/quick_search_recycler_view" />
         </android.support.constraint.ConstraintLayout>
 
+        <View
+            android:id="@+id/dismiss"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/quick_search_container"
+            android:background="@color/colorUrlInputBackground"
+            android:contentDescription="@string/content_description_dismiss_input" />
+
         <org.mozilla.focus.widget.FlowLayout
             android:id="@+id/search_suggestion"
             android:layout_width="match_parent"
@@ -105,12 +113,5 @@
             tools:background="#55FF0000" />
 
     </RelativeLayout>
-
-    <View
-        android:id="@+id/dismiss"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorUrlInputBackground"
-        android:contentDescription="@string/content_description_dismiss_input" />
 
 </org.mozilla.focus.widget.ResizableKeyboardLayout>

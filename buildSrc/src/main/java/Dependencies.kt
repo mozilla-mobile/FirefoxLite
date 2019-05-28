@@ -21,7 +21,7 @@ object Versions {
     const val findbugs = "3.0.1"
     const val lottie = "2.7.0"
     const val leakcanary = "1.6.2"
-    const val android_components = "0.27.0"
+    const val android_components = "0.51.0"
     const val adjust = "4.11.4"
     const val junit = "4.12"
     const val mockito = "2.12.0"
