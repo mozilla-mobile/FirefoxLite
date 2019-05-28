@@ -10,8 +10,6 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
 import org.mozilla.rocket.content.news.data.NewsRepository
-import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
-import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.news.data.NewsSourceManager.PREF_INT_NEWS_PRIORITY
 import org.mozilla.threadutils.ThreadUtils
@@ -54,9 +52,6 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
         // creating a repository will also create a new subscription.
         // we deliberately create a new subscription again to load data aggressively.
         newsViewModel?.loadMore()
-
-        val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
-        newsViewModel?.newsSettingsRepository = NewsSettingsRepository(newsSettingsRemoteDataSource)
     }
 
     override fun loadMore() {
