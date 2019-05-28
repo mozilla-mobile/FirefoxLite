@@ -171,6 +171,18 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        observeChromeAction();
+    }
+
+    private void observeChromeAction() {
+        chromeViewModel.getClearBrowsingHistory().observe(this, unit -> {
+            updateTopSitesData();
+        });
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         showCurrentBannerTelemetry();

@@ -79,12 +79,12 @@ import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.rocket.component.LaunchIntentDispatcher;
-import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
 import org.mozilla.rocket.chrome.MenuViewModel;
+import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
@@ -1015,12 +1015,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     @Override
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
-            case REFRESH_TOP_SITE:
-                Fragment fragment = this.screenNavigator.getTopFragment();
-                if (fragment instanceof HomeFragment) {
-                    ((HomeFragment) fragment).updateTopSitesData();
-                }
-                break;
             case SHOW_MY_SHOT_ON_BOARDING:
                 showMyShotOnBoarding();
                 break;
