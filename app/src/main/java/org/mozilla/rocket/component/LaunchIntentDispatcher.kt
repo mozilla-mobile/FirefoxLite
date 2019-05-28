@@ -18,7 +18,7 @@ class LaunchIntentDispatcher {
         EXTRA_BOOL_WEB_SEARCH("web_search"),
         EXTRA_BOOL_TEXT_SELECTION("text_selection"),
         EXTRA_BOOL_HOME_SCREEN_SHORTCUT("shortcut"),
-        EXTRA_BOOL_PRIVATE_MODE("private_mode")
+        EXTRA_BOOL_PRIVATE_MODE_SHORTCUT("private_shortcut")
     }
 
     enum class Command(val value: String) {
@@ -59,10 +59,6 @@ class LaunchIntentDispatcher {
             if (intent.getBooleanExtra(LaunchMethod.EXTRA_BOOL_WEB_SEARCH.value, false)) {
                 TelemetryWrapper.launchByExternalAppEvent(TelemetryWrapper.Extra_Value.WEB_SEARCH)
                 return Action.NORMAL
-            }
-
-            if (intent.getBooleanExtra(LaunchMethod.EXTRA_BOOL_PRIVATE_MODE.value, false)) {
-                return Action.PRIVATE
             }
 
             /**

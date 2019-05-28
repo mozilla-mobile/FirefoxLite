@@ -23,7 +23,7 @@ class ShortcutUtils {
             val shortcutIntent = Intent(Intent.ACTION_MAIN)
             shortcutIntent.setClassName(context, AppConstants.LAUNCHER_PRIVATE_ACTIVITY_ALIAS)
             shortcutIntent.putExtra(
-                    LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE.value,
+                    LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE_SHORTCUT.value,
                     true
             )
             shortcutIntent.flags = shortcutIntent.flags or
