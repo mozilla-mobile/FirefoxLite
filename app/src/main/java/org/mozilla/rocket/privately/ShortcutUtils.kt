@@ -11,6 +11,7 @@ import android.support.v4.content.pm.ShortcutInfoCompat
 import android.support.v4.content.pm.ShortcutManagerCompat
 import android.support.v4.graphics.drawable.IconCompat
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.rocket.component.LaunchIntentDispatcher
@@ -46,6 +47,7 @@ class ShortcutUtils {
             val intentSender = IntentUtils.getLauncherHomePendingIntent(context).intentSender
 
             if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
+                TelemetryWrapper.createPrivateShortcut()
                 ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender)
             }
         }
