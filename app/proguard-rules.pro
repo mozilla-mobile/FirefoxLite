@@ -120,3 +120,7 @@ public static java.lang.String TABLENAME;
 ## Integrate Glide source code
 -dontwarn android.graphics.Bitmap$Config
 -dontwarn android.app.FragmentManager
+
+# According to https://github.com/Kotlin/kotlinx.coroutines/issues/1155
+# We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
+-dontwarn kotlinx.atomicfu.AtomicFU
