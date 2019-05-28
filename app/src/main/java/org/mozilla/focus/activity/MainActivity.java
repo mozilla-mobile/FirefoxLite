@@ -78,7 +78,6 @@ import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
@@ -115,8 +114,7 @@ import kotlin.Unit;
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.MENU;
 
-public class MainActivity extends BaseActivity implements FragmentListener,
-        ThemeManager.ThemeHost,
+public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
         ScreenNavigator.Provider,
@@ -1000,10 +998,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 showMyShotOnBoarding();
             }
         });
-    }
-
-    @Override
-    public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
     }
 
     @Override

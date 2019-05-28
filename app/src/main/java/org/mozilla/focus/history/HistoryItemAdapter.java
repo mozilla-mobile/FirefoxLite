@@ -32,10 +32,9 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
+import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.threadutils.ThreadUtils;
-import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.icon.FavIconUtils;
 
 import java.io.File;
 import java.net.URI;
@@ -187,7 +186,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         final int position = mRecyclerView.getChildAdapterPosition(v);
         if (position != RecyclerView.NO_POSITION && position < mItems.size()) {
             Object item = mItems.get(position);
-            if (item instanceof Site && mContext instanceof FragmentListener) {
+            if (item instanceof Site) {
                 ContentPortalViewState.reset();
                 ScreenNavigator.get(mContext).showBrowserScreen(((Site) item).getUrl(), true, false);
                 mHistoryListener.onItemClicked();
