@@ -77,7 +77,13 @@ class ContentPortalView : CoordinatorLayout {
 
     // helper method to work with FragmentManager
     private inline fun Context.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        (this as? FragmentActivity)?.supportFragmentManager?.beginTransaction()?.func()?.commit()
+
+        val fragmentManager = (this as? FragmentActivity)?.supportFragmentManager
+        // FragmentTransaction could be performed after animation completes, so we need to add this check.
+        if (fragmentManager?.isStateSaved == true) {
+            return
+        }
+        fragmentManager?.beginTransaction()?.func()?.commit()
     }
 
     /**
