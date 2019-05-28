@@ -41,7 +41,6 @@ import org.mozilla.focus.web.BrowsingSession
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
-import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
@@ -69,8 +68,6 @@ private const val ACTION_DOWNLOAD = 0
 class BrowserFragment : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
-
-    private var listener: FragmentListener? = null
 
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
@@ -238,16 +235,6 @@ class BrowserFragment : LocaleAwareFragment(),
                 }
             }
         })
-        if (context is FragmentListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

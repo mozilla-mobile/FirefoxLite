@@ -14,7 +14,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
@@ -36,8 +35,6 @@ import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
-import org.mozilla.focus.widget.FragmentListener
-import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
@@ -50,7 +47,6 @@ import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
 class PrivateModeActivity : BaseActivity(),
-        FragmentListener,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         TabsSessionProvider.SessionHost {
@@ -123,6 +119,9 @@ class PrivateModeActivity : BaseActivity(),
     override fun applyLocale() {}
 
     private fun observeChromeAction() {
+        chromeViewModel.openUrl.observe(this, Observer { action ->
+            openUrl(action?.url)
+        })
         chromeViewModel.showUrlInput.observe(this, Observer { url ->
             if (!supportFragmentManager.isStateSaved) {
                 screenNavigator.addUrlScreen(url)
@@ -172,15 +171,6 @@ class PrivateModeActivity : BaseActivity(),
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_TEXT, url)
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)))
-    }
-
-    override fun onNotified(from: Fragment, type: FragmentListener.TYPE, payload: Any?) {
-        when (type) {
-            TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
-            TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
-            else -> {
-            }
-        }
     }
 
     override fun onBackPressed() {
@@ -283,16 +273,14 @@ class PrivateModeActivity : BaseActivity(),
         screenNavigator.popUrlScreen()
     }
 
-    private fun openUrl(payload: Any?) {
-        val url = payload?.toString() ?: ""
-
+    private fun openUrl(url: String?) {
         ViewModelProviders.of(this)
                 .get(SharedViewModel::class.java)
-                .setUrl(url)
+                .setUrl(url ?: "")
 
         dismissUrlInput()
         startPrivateMode()
-        ScreenNavigator.get(this).showBrowserScreen(url, false, false)
+        ScreenNavigator.get(this).showBrowserScreen(url ?: "", false, false)
     }
 
     private fun makeStatusBarTransparent() {

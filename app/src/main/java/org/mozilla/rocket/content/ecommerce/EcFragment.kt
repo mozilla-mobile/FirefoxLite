@@ -16,11 +16,12 @@ import org.json.JSONObject
 import org.mozilla.banner.BannerAdapter
 import org.mozilla.banner.BannerConfigViewModel
 import org.mozilla.banner.TelemetryListener
+import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.home.BannerHelper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
-import org.mozilla.focus.widget.FragmentListener
+import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_KEY
@@ -39,6 +40,13 @@ class EcFragment : Fragment() {
             }
             return EcFragment().apply { arguments = args }
         }
+    }
+
+    private lateinit var chromeViewModel: ChromeViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        chromeViewModel = Inject.obtainChromeViewModel(activity)
     }
 
     override fun onCreateView(
@@ -103,13 +111,7 @@ class EcFragment : Fragment() {
 
             banner?.adapter = BannerAdapter(
                     it,
-                    { arg ->
-                        FragmentListener.notifyParent(
-                                this@EcFragment,
-                                FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB,
-                                arg
-                        )
-                    },
+                    { arg -> chromeViewModel.openUrl.value = ChromeViewModel.OpenUrlAction(url = arg, withNewTab = true) },
                     telemetryListener)
             banner?.visibility = View.VISIBLE
         })
