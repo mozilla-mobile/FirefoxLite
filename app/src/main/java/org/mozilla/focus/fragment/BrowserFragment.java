@@ -1227,7 +1227,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 updateUrlFromWebView(session);
                 chromeViewModel.onPageLoadingStopped();
                 updateIsLoading(false);
-                FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.UPDATE_MENU, null);
+                chromeViewModel.getUpdateMenu().call();
                 backgroundTransition.startTransition(ANIMATION_DURATION);
             }
         }
