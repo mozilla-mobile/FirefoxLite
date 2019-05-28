@@ -535,9 +535,9 @@ class BrowserFragment : LocaleAwareFragment(),
             val d = Download(
                     download.url,
                     download.fileName,
-                    download.userAgent!!,
+                    download.userAgent,
                     "",
-                    download.contentType!!,
+                    download.contentType,
                     download.contentLength!!,
                     false
                     )

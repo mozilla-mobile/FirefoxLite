@@ -167,6 +167,12 @@ android {
         // used by Room, to test migrations
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
+
+    // According to https://github.com/Kotlin/kotlinx.coroutines/issues/1064
+    // We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
+    packagingOptions {
+        pickFirst 'META-INF/atomicfu.kotlin_module'
+    }
 }
 
 repositories {
@@ -200,11 +206,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
-    // We didn't use CustomTabs so far. This is a build hack to force Android-Components to use
-    // same version of support library as we are. Android-Components depends on CustomTabs which
-    // version will be override by this.
-    // We can get rid of this once Android-Components' issue #404 has been resolve.
-    implementation "com.android.support:customtabs:${Versions.support}"
     implementation "com.android.support:support-v4:${Versions.support}"
     implementation "com.android.support:appcompat-v7:${Versions.support}"
     implementation "com.android.support:design:${Versions.support}"
@@ -231,6 +232,7 @@ dependencies {
     implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
     implementation "org.mozilla.components:browser-domains:${Versions.android_components}"
     implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
+    implementation "org.mozilla.components:lib-fetch-httpurlconnection:${Versions.android_components}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust

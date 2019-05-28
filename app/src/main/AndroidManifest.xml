@@ -169,13 +169,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <!-- Custom Tabs Service is currently not registering the intent-filter before its ready.
-             It should also be set to exported=true if you want to turn it on -->
-        <service
-            android:name="org.mozilla.focus.customtabs.CustomTabsService"
-            android:enabled="false"
-            android:exported="false"
-            tools:ignore="ExportedService" />
 
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"

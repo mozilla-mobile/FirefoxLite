@@ -42,9 +42,9 @@ public class Download implements Parcelable {
 
     public Download(@NonNull String url,
                     @Nullable String name,
-                    @NonNull String userAgent,
-                    @NonNull String contentDisposition,
-                    @NonNull String mimeType,
+                    @Nullable String userAgent,
+                    @Nullable String contentDisposition,
+                    @Nullable String mimeType,
                     long contentLength,
                     boolean startFromContextMenu) {
         this.url = url;
