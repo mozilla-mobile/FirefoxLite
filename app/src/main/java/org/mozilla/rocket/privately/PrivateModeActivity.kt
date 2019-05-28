@@ -36,6 +36,7 @@ import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.landing.NavigationModel
@@ -55,13 +56,11 @@ class PrivateModeActivity : BaseActivity(),
     private var sessionManager: SessionManager? = null
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var tabViewProvider: PrivateTabViewProvider
-    private lateinit var sharedViewModel: SharedViewModel
     private lateinit var screenNavigator: ScreenNavigator
     private lateinit var uiMessageReceiver: BroadcastReceiver
     private lateinit var snackBarContainer: View
 
     private val portraitStateModel = PortraitStateModel()
-    private var urlFromExternal: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // we don't keep any state if user leave Private-mode
@@ -84,17 +83,12 @@ class PrivateModeActivity : BaseActivity(),
         snackBarContainer = findViewById(R.id.container)
         makeStatusBarTransparent()
 
-        initViewModel()
         initBroadcastReceivers()
 
         screenNavigator.popToHomeScreen(false)
         observeChromeAction()
 
         monitorOrientationState()
-    }
-
-    private fun initViewModel() {
-        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
     }
 
     override fun onResume() {
@@ -120,7 +114,9 @@ class PrivateModeActivity : BaseActivity(),
 
     private fun observeChromeAction() {
         chromeViewModel.openUrl.observe(this, Observer { action ->
-            openUrl(action?.url)
+            dismissUrlInput()
+            startPrivateMode()
+            ScreenNavigator.get(this).showBrowserScreen(action?.url ?: "", false, false)
         })
         chromeViewModel.showUrlInput.observe(this, Observer { url ->
             if (!supportFragmentManager.isStateSaved) {
@@ -215,14 +211,6 @@ class PrivateModeActivity : BaseActivity(),
         setIntent(intent)
     }
 
-    override fun onResumeFragments() {
-        super.onResumeFragments()
-        urlFromExternal?.let {
-            openUrl(it)
-            urlFromExternal = null
-        }
-    }
-
     private fun monitorOrientationState() {
         val orientationState = OrientationState(object : NavigationModel {
             override val navigationState: LiveData<ScreenNavigator.NavigationState>
@@ -273,16 +261,6 @@ class PrivateModeActivity : BaseActivity(),
         screenNavigator.popUrlScreen()
     }
 
-    private fun openUrl(url: String?) {
-        ViewModelProviders.of(this)
-                .get(SharedViewModel::class.java)
-                .setUrl(url ?: "")
-
-        dismissUrlInput()
-        startPrivateMode()
-        ScreenNavigator.get(this).showBrowserScreen(url ?: "", false, false)
-    }
-
     private fun makeStatusBarTransparent() {
         var visibility = window.decorView.systemUiVisibility
         // do not overwrite existing value
@@ -324,7 +302,9 @@ class PrivateModeActivity : BaseActivity(),
         TelemetryWrapper.launchByPrivateModeShortcut(TelemetryWrapper.Extra_Value.EXTERNAL_APP)
         val fromHistory = (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
         if (!fromHistory) {
-            urlFromExternal = intent.dataString
+            intent.dataString?.let { url ->
+                chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = false)
+            }
         }
     }
 
