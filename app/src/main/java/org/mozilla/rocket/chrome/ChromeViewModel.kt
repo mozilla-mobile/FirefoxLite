@@ -43,6 +43,7 @@ class ChromeViewModel(
     val togglePrivateMode = SingleLiveEvent<Unit>()
     val dropCurrentPage = SingleLiveEvent<Unit>()
     val updateMenu = SingleLiveEvent<Unit>()
+    val clearBrowsingHistory = SingleLiveEvent<Unit>()
 
     init {
         isNightMode.value = settings.isNightModeEnable

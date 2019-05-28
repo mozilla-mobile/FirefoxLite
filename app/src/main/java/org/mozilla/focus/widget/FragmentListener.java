@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 public interface FragmentListener {
 
     enum TYPE {
-        REFRESH_TOP_SITE, // no payload
         SHOW_MY_SHOT_ON_BOARDING // no payload
     }
 
