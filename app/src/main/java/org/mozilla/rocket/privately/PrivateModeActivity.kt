@@ -123,12 +123,15 @@ class PrivateModeActivity : BaseActivity(),
     override fun applyLocale() {}
 
     private fun observeChromeAction() {
-        // Reserve to handle more chrome actions for the bottom bar A/B testing
         chromeViewModel.showUrlInput.observe(this, Observer { url ->
             if (!supportFragmentManager.isStateSaved) {
                 screenNavigator.addUrlScreen(url)
             }
         })
+        chromeViewModel.dismissUrlInput.observe(this, Observer {
+            dismissUrlInput()
+        })
+        // Reserve to handle more chrome actions for the bottom bar A/B testing
         chromeViewModel.pinShortcut.observe(this, Observer {
             onAddToHomeClicked()
         })
@@ -173,7 +176,6 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun onNotified(from: Fragment, type: FragmentListener.TYPE, payload: Any?) {
         when (type) {
-            TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
             else -> {

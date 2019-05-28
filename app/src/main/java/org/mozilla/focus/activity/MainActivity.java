@@ -994,6 +994,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             }
             this.screenNavigator.addUrlScreen(url);
         });
+        chromeViewModel.getDismissUrlInput().observe(this, unit -> screenNavigator.popUrlScreen());
         chromeViewModel.getPinShortcut().observe(this, unit -> onAddToHomeClicked());
         chromeViewModel.getToggleBookmark().observe(this, unit -> onBookMarkClicked());
         chromeViewModel.getShare().observe(this, unit -> {
@@ -1019,9 +1020,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 break;
             case OPEN_URL_IN_NEW_TAB:
                 openUrl(true, payload);
-                break;
-            case DISMISS_URL_INPUT:
-                this.screenNavigator.popUrlScreen();
                 break;
             case REFRESH_TOP_SITE:
                 Fragment fragment = this.screenNavigator.getTopFragment();

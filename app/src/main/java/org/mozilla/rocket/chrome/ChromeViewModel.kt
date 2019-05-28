@@ -30,6 +30,7 @@ class ChromeViewModel(
     val showMenu = SingleLiveEvent<Unit>()
     val showNewTab = SingleLiveEvent<Unit>()
     val showUrlInput = SingleLiveEvent<String?>()
+    val dismissUrlInput = SingleLiveEvent<Unit>()
     val doScreenshot = SingleLiveEvent<ScreenCaptureTelemetryData>()
     val pinShortcut = SingleLiveEvent<Unit>()
     val toggleBookmark = SingleLiveEvent<Unit>()
