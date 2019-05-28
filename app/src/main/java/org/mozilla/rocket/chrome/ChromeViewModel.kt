@@ -25,6 +25,7 @@ class ChromeViewModel(
     val canGoBack = MutableLiveData<Boolean>()
     val canGoForward = MutableLiveData<Boolean>()
     val isHomePageUrlInputShowing = MutableLiveData<Boolean>()
+    val isMyShotOnBoardingPending = MutableLiveData<Boolean>()
 
     val openUrl = SingleLiveEvent<OpenUrlAction>()
     val showTabTray = SingleLiveEvent<Unit>()
@@ -121,6 +122,18 @@ class ChromeViewModel(
 
     fun onDismissHomePageUrlInput() {
         isHomePageUrlInputShowing.value = false
+    }
+
+    fun showMyShotOnBoarding() {
+        if (isMyShotOnBoardingPending.value != true) {
+            isMyShotOnBoardingPending.value = true
+        }
+    }
+
+    fun onMyShotOnBoardingDisplayed() {
+        if (isMyShotOnBoardingPending.value != false) {
+            isMyShotOnBoardingPending.value = false
+        }
     }
 
     data class OpenUrlAction(
