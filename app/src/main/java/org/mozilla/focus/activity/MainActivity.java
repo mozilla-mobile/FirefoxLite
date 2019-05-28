@@ -498,9 +498,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         return screenNavigator.isBrowserInForeground() ? getBrowserFragment() : null;
     }
 
-    private void openUrl(final boolean withNewTab, final Object payload) {
-        final String url = (payload != null) ? payload.toString() : null;
-        ScreenNavigator.get(this).showBrowserScreen(url, withNewTab, false);
+    private void openUrl(String url, boolean withNewTab) {
+        String nonNullUrl = url != null ? url : "";
+        ScreenNavigator.get(this).showBrowserScreen(nonNullUrl, withNewTab, false);
     }
 
     private void showMenu() {
@@ -976,6 +976,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void observeChromeAction() {
+        chromeViewModel.getOpenUrl().observe(this, action -> {
+            if (action != null) {
+                openUrl(action.getUrl(), action.getWithNewTab());
+            }
+        });
         chromeViewModel.getShowTabTray().observe(this, unit -> {
             TabTrayFragment tabTray = TabTray.show(getSupportFragmentManager());
             if (tabTray != null) {
@@ -1014,12 +1019,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 break;
             case UPDATE_MENU:
                 this.updateMenu();
-                break;
-            case OPEN_URL_IN_CURRENT_TAB:
-                openUrl(false, payload);
-                break;
-            case OPEN_URL_IN_NEW_TAB:
-                openUrl(true, payload);
                 break;
             case REFRESH_TOP_SITE:
                 Fragment fragment = this.screenNavigator.getTopFragment();

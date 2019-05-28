@@ -17,8 +17,6 @@ public interface FragmentListener {
 
     enum TYPE {
         OPEN_PREFERENCE, // no payload
-        OPEN_URL_IN_CURRENT_TAB, // payload is url in String
-        OPEN_URL_IN_NEW_TAB, // payload is url in String
         UPDATE_MENU, // no payload
         REFRESH_TOP_SITE, // no payload
         SHOW_MY_SHOT_ON_BOARDING // no payload
