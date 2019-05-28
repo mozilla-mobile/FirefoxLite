@@ -1014,9 +1014,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     @Override
     public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
         switch (type) {
-            case OPEN_PREFERENCE:
-                openPreferences();
-                break;
             case UPDATE_MENU:
                 this.updateMenu();
                 break;
