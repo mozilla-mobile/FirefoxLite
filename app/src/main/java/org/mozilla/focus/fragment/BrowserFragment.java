@@ -1027,10 +1027,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         }
     }
 
-    public void openPreference() {
-        FragmentListener.notifyParent(BrowserFragment.this, FragmentListener.TYPE.OPEN_PREFERENCE, null);
-    }
-
     @NonNull
     public String getUrl() {
         // getUrl() is used for things like sharing the current URL. We could try to use the webview,
