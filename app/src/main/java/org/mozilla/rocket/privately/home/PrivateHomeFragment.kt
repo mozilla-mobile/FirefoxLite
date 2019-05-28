@@ -103,7 +103,6 @@ class PrivateHomeFragment : LocaleAwareFragment(),
                     .setOnCancelListener {
                         callback?.onCancel()
                     }
-                    .setCancelable(false)
                     .show()
         })
     }
