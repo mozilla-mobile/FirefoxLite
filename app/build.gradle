@@ -167,12 +167,12 @@ android {
         // used by Room, to test migrations
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
+}
 
-    // According to https://github.com/Kotlin/kotlinx.coroutines/issues/1064
-    // We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
-    packagingOptions {
-        pickFirst 'META-INF/atomicfu.kotlin_module'
-    }
+// According to https://github.com/Kotlin/kotlinx.coroutines/issues/1064
+// We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
+configurations {
+    compile.exclude group: 'org.jetbrains.kotlinx', module: 'atomicfu-common'
 }
 
 repositories {
