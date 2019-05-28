@@ -25,6 +25,7 @@ import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.tabs.SessionManager;
@@ -146,7 +147,7 @@ public class BrowsingIntentTest {
         intent.setData(Uri.parse(TARGET_URL_SITE_1));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         final Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        intent.setPackage(targetContext.getPackageName());
+        intent.setClassName(targetContext, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
         targetContext.startActivity(intent);
     }
 }
