@@ -75,6 +75,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_default_browser))) {
             TelemetryWrapper.clickDefaultBrowserInSetting();
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_private_mode_shortcut))) {
+            TelemetryWrapper.clickPrivateShortcutItemInSettings();
             ShortcutUtils.Companion.createShortcut(getActivity().getApplicationContext());
         }
 

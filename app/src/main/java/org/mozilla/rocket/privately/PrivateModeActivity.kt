@@ -14,7 +14,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.CheckResult
 import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
 import android.view.View
@@ -66,6 +65,7 @@ class PrivateModeActivity : BaseActivity(),
     private lateinit var snackBarContainer: View
 
     private val portraitStateModel = PortraitStateModel()
+    private var urlFromExternal: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // we don't keep any state if user leave Private-mode
@@ -75,11 +75,13 @@ class PrivateModeActivity : BaseActivity(),
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 
-        val exitEarly = handleIntent(intent)
-        if (exitEarly) {
+        if (isSanitizeIntent(intent)) {
+            sanitize()
             pushToBack()
             return
         }
+
+        handleIntent(intent)
 
         setContentView(R.layout.activity_private_mode)
 
@@ -190,7 +192,10 @@ class PrivateModeActivity : BaseActivity(),
         }
 
         if (!this.screenNavigator.canGoBack()) {
-            checkShortcutPromotion { finish() }
+            checkShortcutPromotion {
+                TelemetryWrapper.exitPrivateMode(TelemetryWrapper.Extra_Value.SYSTEM_BACK)
+                finish()
+            }
             return
         }
 
@@ -209,20 +214,20 @@ class PrivateModeActivity : BaseActivity(),
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        val exitEarly = handleIntent(intent)
-        if (exitEarly) {
+        if (isSanitizeIntent(intent)) {
+            sanitize()
             return
         }
 
+        handleIntent(intent)
         setIntent(intent)
     }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        intent?.let { SafeIntent(intent) }?.let { safeIntent ->
-            if (safeIntent.action == Intent.ACTION_VIEW) {
-                safeIntent.dataString?.let { openUrl(it) }
-            }
+        urlFromExternal?.let {
+            openUrl(it)
+            urlFromExternal = null
         }
     }
 
@@ -305,17 +310,42 @@ class PrivateModeActivity : BaseActivity(),
         tabViewProvider.purify(this)
     }
 
-    @CheckResult
-    private fun handleIntent(intent: Intent?): Boolean {
+    private fun isSanitizeIntent(intent: Intent?): Boolean {
+        return intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE
+    }
 
-        if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
-            TelemetryWrapper.erasePrivateModeNotification()
-            stopPrivateMode()
-            Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
-            finishAndRemoveTask()
-            return true
+    private fun sanitize() {
+        TelemetryWrapper.erasePrivateModeNotification()
+        stopPrivateMode()
+        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
+        finishAndRemoveTask()
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        val safeIntent = intent?.let { SafeIntent(it) } ?: return
+
+        when (safeIntent.action) {
+            Intent.ACTION_VIEW -> onReceiveViewIntent(safeIntent)
+            Intent.ACTION_MAIN -> onReceiveMainIntent(safeIntent)
         }
-        return false
+    }
+
+    private fun onReceiveViewIntent(intent: SafeIntent) {
+        TelemetryWrapper.launchByPrivateModeShortcut(TelemetryWrapper.Extra_Value.EXTERNAL_APP)
+        urlFromExternal = intent.dataString
+    }
+
+    private fun onReceiveMainIntent(intent: SafeIntent) {
+        if (isIntentFromPrivateShortcut(intent)) {
+            TelemetryWrapper.launchByPrivateModeShortcut(TelemetryWrapper.Extra_Value.LAUNCHER)
+        }
+    }
+
+    private fun isIntentFromPrivateShortcut(intent: SafeIntent): Boolean {
+        return intent.getBooleanExtra(
+                LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE_SHORTCUT.value,
+                false
+        )
     }
 
     private fun initBroadcastReceivers() {
