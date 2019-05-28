@@ -31,7 +31,6 @@ import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.utils.Constants
-import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.component.PrivateSessionNotificationService
@@ -157,17 +156,6 @@ class PrivateModeActivity : BaseActivity(),
         val exitEarly = handleIntent(intent)
         if (exitEarly) {
             return
-        }
-
-        setIntent(intent)
-    }
-
-    override fun onResumeFragments() {
-        super.onResumeFragments()
-        intent?.let { SafeIntent(intent) }?.let { safeIntent ->
-            if (safeIntent.action == Intent.ACTION_VIEW) {
-                safeIntent.dataString?.let { openUrl(it) }
-            }
         }
     }
 
