@@ -31,6 +31,7 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.focus.widget.FragmentListener
+import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.urlinput.QuickSearch
 import org.mozilla.rocket.urlinput.QuickSearchAdapter
 import java.util.Locale
@@ -43,6 +44,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private val autoCompleteProvider: DomainAutoCompleteProvider = DomainAutoCompleteProvider()
     private lateinit var presenter: UrlInputContract.Presenter
+    private lateinit var chromeViewModel: ChromeViewModel
 
     private lateinit var urlView: InlineAutocompleteEditText
     private lateinit var suggestionView: FlowLayout
@@ -59,6 +61,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         val userAgent = WebViewProvider.getUserAgentString(activity)
         this.presenter = UrlInputPresenter(SearchEngineManager.getInstance()
                 .getDefaultSearchEngine(activity), userAgent)
+        chromeViewModel = Inject.obtainChromeViewModel(activity)
 
         context?.let {
             autoCompleteProvider.initialize(it.applicationContext, true, false)
@@ -181,10 +184,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         // IllegalStateException because we already saved the state (of the activity / fragment) before
         // this transaction is committed. To avoid this we commit while allowing a state loss here.
         // We do not save any state in this fragment (It's getting destroyed) so this should not be a problem.
-        val activity = activity
-        if (activity is FragmentListener) {
-            (activity as FragmentListener).onNotified(this, FragmentListener.TYPE.DISMISS_URL_INPUT, true)
-        }
+        chromeViewModel.dismissUrlInput.call()
     }
 
     private fun onCommit() {
