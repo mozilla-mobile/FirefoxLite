@@ -4,5 +4,4 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
     <string name="app_name" translatable="false">Firefox Lite Nightly</string>
-    <string name="app_name_private" translatable="false">Firefox Lite Nightly - Private browsing</string>
 </resources>
