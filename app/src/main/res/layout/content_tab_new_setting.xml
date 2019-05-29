@@ -15,7 +15,7 @@
   ~ limitations under the License
   -->
 
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -29,6 +29,7 @@
         android:focusable="true">
 
     <RelativeLayout
+            android:id="@+id/news_setting_cat_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="15dip"
@@ -53,9 +54,19 @@
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
+            android:layout_below="@+id/news_setting_cat_title"
             tools:layoutManager="android.support.v7.widget.GridLayoutManager"
             tools:spanCount="2"
             tools:itemCount="13"
             tools:listitem="@layout/content_tab_new_setting_item"
     />
-</LinearLayout>
+
+    <ProgressBar
+            android:id="@+id/news_setting_cat_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:visibility="gone"/>
+
+</RelativeLayout>
