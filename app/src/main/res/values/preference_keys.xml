@@ -83,4 +83,5 @@
 
     <!-- Private Mode - count of the times user leave private mode -->
     <string name="pref_key_pb_int_leave_count" translatable="false"><xliff:g id="preference_key">pref_key_pb_leave_count</xliff:g>></string>
+    <string name="pref_key_pb_boolean_shortcut_created" translatable="false"><xliff:g id="preference_key">pref_key_pb_shortcut_created</xliff:g>></string>
 </resources>

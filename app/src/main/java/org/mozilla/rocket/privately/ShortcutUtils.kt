@@ -10,6 +10,7 @@ import android.content.Intent
 import android.support.v4.content.pm.ShortcutInfoCompat
 import android.support.v4.content.pm.ShortcutManagerCompat
 import android.support.v4.graphics.drawable.IconCompat
+import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.IntentUtils
@@ -44,6 +45,11 @@ class ShortcutUtils {
             // show the system shortcut dialog. UX currently agreed with this behavior since it's
             // not often the user will add shortcut again.
             val intentSender = IntentUtils.getLauncherHomePendingIntent(context).intentSender
+
+            (context.applicationContext as FocusApplication)
+                    .settings
+                    .privateBrowsingSettings
+                    .setPrivateShortcutCreated()
 
             if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
                 ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender)

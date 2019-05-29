@@ -48,4 +48,18 @@ class PrivateBrowsingSettings(context: Context, prefFactory: PreferencesFactory)
         )
         return count
     }
+
+    fun isPrivateShortcutCreatedBefore(): Boolean {
+        return preferences.getBoolean(
+                resources.getString(R.string.pref_key_pb_boolean_shortcut_created),
+                false
+        )
+    }
+
+    fun setPrivateShortcutCreated() {
+        preferences.putBoolean(
+                resources.getString(R.string.pref_key_pb_boolean_shortcut_created),
+                true
+        )
+    }
 }
