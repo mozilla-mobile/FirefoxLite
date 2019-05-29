@@ -10,7 +10,7 @@
     <!--suppress AndroidDomInspection -->
 
     <org.mozilla.rocket.content.news.data.NewsLanguagePreference
-            android:key="test2"
+            android:key="pref_dummy_s_news_lang"
             android:title="@string/news_language_dialog_title"
             app:iconSpaceReserved="false"
     />

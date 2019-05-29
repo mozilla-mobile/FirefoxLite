@@ -5,7 +5,6 @@
 package org.mozilla.rocket.content.news.data
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceViewHolder
 import android.support.v7.widget.GridLayoutManager
@@ -24,20 +23,16 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         layoutResource = R.layout.content_tab_new_setting
     }
 
-    override fun onGetDefaultValue(a: TypedArray?, index: Int): Any {
-        return "SS"
-    }
-
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         val list: RecyclerView = holder.findViewById(R.id.news_setting_cat_list) as RecyclerView
-        val cats = listOf(CategorySetting("A", "AA"), CategorySetting("B", "BB"), CategorySetting("C", "C"))
+        val cats = listOf<NewsCategory>()
         list.adapter = NewsCatSettingCatAdapter(cats)
         list.layoutManager = GridLayoutManager(context, 2)
     }
 }
 
-class NewsCatSettingCatAdapter(var cats: List<CategorySetting>) :
+class NewsCatSettingCatAdapter(var cats: List<NewsCategory>) :
     RecyclerView.Adapter<CategorySettingItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CategorySettingItemViewHolder {
@@ -46,9 +41,9 @@ class NewsCatSettingCatAdapter(var cats: List<CategorySetting>) :
     }
 
     override fun onBindViewHolder(vh: CategorySettingItemViewHolder, pos: Int) {
-        vh.button.textOff = cats[pos].display
-        vh.button.textOn = cats[pos].display
-        vh.button.text = cats[pos].display
+        vh.button.textOff = cats[pos].categoryId
+        vh.button.textOn = cats[pos].categoryId
+        vh.button.text = cats[pos].categoryId
     }
 
     override fun getItemCount(): Int {
@@ -59,8 +54,3 @@ class NewsCatSettingCatAdapter(var cats: List<CategorySetting>) :
 class CategorySettingItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var button: ToggleButton = view.findViewById(R.id.news_setting_cat_item)
 }
-
-data class CategorySetting(
-    val id: String,
-    val display: String
-)
