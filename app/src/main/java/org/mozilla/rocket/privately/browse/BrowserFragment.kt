@@ -441,6 +441,7 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         override fun onTitleChanged(session: Session, title: String?) {
+            fragment.chromeViewModel.onFocusedTitleChanged(title)
             session.let {
                 if (fragment.displayUrlView.text.toString() != it.url) {
                     fragment.displayUrlView.text = it.url
@@ -569,6 +570,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
         override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {
             fragment.chromeViewModel.onFocusedUrlChanged(session?.url)
+            fragment.chromeViewModel.onFocusedTitleChanged(session?.title)
             if (session != null) {
                 val canGoBack = fragment.sessionManager.focusSession?.canGoBack ?: false
                 val canGoForward = fragment.sessionManager.focusSession?.canGoForward ?: false

@@ -11,15 +11,17 @@ import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
+import org.mozilla.urlutils.UrlUtils
 
 class ChromeViewModel(
     settings: Settings,
-    bookmarkRepo: BookmarkRepository
+    private val bookmarkRepo: BookmarkRepository
 ) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
     val tabCount = MutableLiveData<Int>()
     val isTabRestoredComplete = MutableLiveData<Boolean>()
     val currentUrl = MutableLiveData<String>()
+    val currentTitle = MutableLiveData<String>()
     var isCurrentUrlBookmarked: LiveData<Boolean>
     val isRefreshing = MutableLiveData<Boolean>()
     val canGoBack = MutableLiveData<Boolean>()
@@ -95,6 +97,12 @@ class ChromeViewModel(
         }
     }
 
+    fun onFocusedTitleChanged(title: String?) {
+        if (title != currentTitle.value) {
+            currentTitle.value = title
+        }
+    }
+
     fun onPageLoadingStarted() {
         if (isRefreshing.value != true) {
             isRefreshing.value = true
@@ -133,6 +141,24 @@ class ChromeViewModel(
     fun onMyShotOnBoardingDisplayed() {
         if (isMyShotOnBoardingPending.value != false) {
             isMyShotOnBoardingPending.value = false
+        }
+    }
+
+    fun addBookmark(): String? {
+        var bookmarkId: String? = null
+        val url = currentUrl.value
+        if (!url.isNullOrEmpty()) {
+            val title = currentTitle.value.takeUnless { it.isNullOrEmpty() }
+                    ?: UrlUtils.stripCommonSubdomains(UrlUtils.stripHttp(url))
+            bookmarkId = bookmarkRepo.addBookmark(title, url)
+        }
+
+        return bookmarkId
+    }
+
+    fun deleteBookmark() {
+        currentUrl.value?.let { url ->
+            bookmarkRepo.deleteBookmarksByUrl(url)
         }
     }
 
