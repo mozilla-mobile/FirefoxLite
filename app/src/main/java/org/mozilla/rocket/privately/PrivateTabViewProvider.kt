@@ -19,11 +19,11 @@ class PrivateTabViewProvider(private val host: Activity) : TabViewProvider() {
 
     @Suppress("DEPRECATION")
     override fun purify(context: Context?) {
-        CookieManager.getInstance().removeAllCookies(null)
-        WebStorage.getInstance().deleteAllData()
-        val webViewDatabase = WebViewDatabase.getInstance(context)
-        webViewDatabase.clearFormData()
-        StrictModeViolation.tempGrant({ it.permitDiskWrites() }) {
+        StrictModeViolation.tempGrant({ it.permitDiskWrites().permitDiskReads() }) {
+            CookieManager.getInstance().removeAllCookies(null)
+            WebStorage.getInstance().deleteAllData()
+            val webViewDatabase = WebViewDatabase.getInstance(context)
+            webViewDatabase.clearFormData()
             webViewDatabase.clearHttpAuthUsernamePassword()
         }
     }

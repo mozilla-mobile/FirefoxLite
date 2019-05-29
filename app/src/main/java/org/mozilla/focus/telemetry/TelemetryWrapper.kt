@@ -287,7 +287,7 @@ object TelemetryWrapper {
     }
 
     fun init(context: Context) {
-        StrictModeViolation.tempGrant({ obj: Builder -> obj.permitDiskReads() }) {
+        StrictModeViolation.tempGrant({ obj: Builder -> obj.permitDiskReads().permitDiskWrites() }) {
             // When initializing the telemetry library it will make sure that all directories exist and
             // are readable/writable.
             val resources = context.resources

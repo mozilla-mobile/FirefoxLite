@@ -18,6 +18,7 @@ import org.mozilla.focus.provider.SettingContract.GET_FLOAT
 import org.mozilla.focus.provider.SettingContract.KEY
 import org.mozilla.focus.provider.SettingContract.PATH_GET_BOOLEAN
 import org.mozilla.focus.provider.SettingContract.PATH_GET_FLOAT
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class SettingProvider : ContentProvider() {
 
@@ -50,12 +51,23 @@ class SettingProvider : ContentProvider() {
             key = selectionArgs[0]
             defValue = selectionArgs[1]
         }
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
         val bundle = Bundle()
-        when (uriMatcher.match(uri)) {
-            GET_FLOAT -> bundle.putFloat(KEY, preferences.getFloat(key, java.lang.Float.parseFloat(defValue)))
-            GET_BOOLEAN -> bundle.putBoolean(KEY, preferences.getBoolean(key, java.lang.Boolean.parseBoolean(defValue)))
-            else -> throw IllegalArgumentException("Unknown uri：" + uri)
+        StrictModeViolation.tempGrant({ builder ->
+            builder.permitDiskReads().permitDiskWrites()
+        }) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            when (uriMatcher.match(uri)) {
+                GET_FLOAT -> bundle.putFloat(
+                        KEY,
+                        preferences.getFloat(key, java.lang.Float.parseFloat(defValue))
+                )
+                GET_BOOLEAN -> bundle.putBoolean(
+                        KEY,
+                        preferences.getBoolean(key, java.lang.Boolean.parseBoolean(defValue))
+                )
+                else -> throw IllegalArgumentException("Unknown uri：" + uri)
+            }
         }
         return BundleCursor(bundle)
     }
