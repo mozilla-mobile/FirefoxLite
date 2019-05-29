@@ -114,9 +114,11 @@ class PrivateModeActivity : BaseActivity(),
 
     private fun observeChromeAction() {
         chromeViewModel.openUrl.observe(this, Observer { action ->
-            dismissUrlInput()
-            startPrivateMode()
-            ScreenNavigator.get(this).showBrowserScreen(action?.url ?: "", false, false)
+            action?.run {
+                dismissUrlInput()
+                startPrivateMode()
+                screenNavigator.showBrowserScreen(url, false, isFromExternal)
+            }
         })
         chromeViewModel.showUrlInput.observe(this, Observer { url ->
             if (!supportFragmentManager.isStateSaved) {
@@ -303,7 +305,7 @@ class PrivateModeActivity : BaseActivity(),
         val fromHistory = (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
         if (!fromHistory) {
             intent.dataString?.let { url ->
-                chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = false)
+                chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = false, isFromExternal = true)
             }
         }
     }

@@ -138,7 +138,8 @@ class ChromeViewModel(
 
     data class OpenUrlAction(
         val url: String,
-        val withNewTab: Boolean
+        val withNewTab: Boolean,
+        val isFromExternal: Boolean
     )
 
     data class ScreenCaptureTelemetryData(val mode: String, val position: Int) : Parcelable {

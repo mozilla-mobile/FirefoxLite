@@ -111,7 +111,7 @@ class EcFragment : Fragment() {
 
             banner?.adapter = BannerAdapter(
                     it,
-                    { arg -> chromeViewModel.openUrl.value = ChromeViewModel.OpenUrlAction(url = arg, withNewTab = true) },
+                    { arg -> chromeViewModel.openUrl.value = ChromeViewModel.OpenUrlAction(url = arg, withNewTab = true, isFromExternal = false) },
                     telemetryListener)
             banner?.visibility = View.VISIBLE
         })

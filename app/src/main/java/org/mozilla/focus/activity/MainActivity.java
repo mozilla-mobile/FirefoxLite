@@ -80,6 +80,7 @@ import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
 import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
@@ -122,9 +123,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         PromotionViewContract {
 
     private PromotionModel promotionModel;
-
-    // Url request from onNewIntent() need to wait till fragments are resumed.
-    private String pendingUrl;
 
     private BottomSheetDialog menu;
     private BottomBarItemAdapter bottomBarItemAdapter;
@@ -196,13 +194,8 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         SafeIntent intent = new SafeIntent(getIntent());
 
         if (savedInstanceState == null) {
-            if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-                final String url = intent.getDataString();
-
-                boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
-                        false);
-                this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
-            } else {
+            boolean handledExternalLink = handleExternalLink(intent);
+            if (!handledExternalLink) {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     this.screenNavigator.addFirstRunScreen();
                 } else {
@@ -326,11 +319,8 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 return;
             }
         }
-
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            // We can't update our fragment right now because we need to wait until the activity is
-            // resumed. So just remember this URL and load it in onResumeFragments().
-            pendingUrl = intent.getDataString();
+        boolean handledExternalLink = handleExternalLink(intent);
+        if (handledExternalLink) {
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
@@ -340,15 +330,17 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         setIntent(unsafeIntent);
     }
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        if (pendingUrl != null) {
-            final SafeIntent intent = new SafeIntent(getIntent());
+    private boolean handleExternalLink(SafeIntent intent) {
+        boolean handled = false;
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String url = intent.getDataString();
+            String nonNullUrl = url != null ? url : "";
             boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
-            this.screenNavigator.showBrowserScreen(pendingUrl, openInNewTab, true);
-            pendingUrl = null;
+            chromeViewModel.getOpenUrl().setValue(new OpenUrlAction(nonNullUrl, openInNewTab, true));
+            handled = true;
         }
+
+        return handled;
     }
 
     private void initViews() {
@@ -956,7 +948,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     private void observeChromeAction() {
         chromeViewModel.getOpenUrl().observe(this, action -> {
             if (action != null) {
-                screenNavigator.showBrowserScreen(action.getUrl(), action.getWithNewTab(), false);
+                screenNavigator.showBrowserScreen(action.getUrl(), action.getWithNewTab(), action.isFromExternal());
             }
         });
         chromeViewModel.getShowTabTray().observe(this, unit -> {
