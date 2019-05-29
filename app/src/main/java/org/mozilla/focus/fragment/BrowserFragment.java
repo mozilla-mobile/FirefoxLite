@@ -1308,6 +1308,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         @Override
         public void onTitleChanged(@NonNull Session session, @Nullable String title) {
+            chromeViewModel.onFocusedTitleChanged(title);
             if (session == null) {
                 return;
             }
@@ -1487,6 +1488,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         @Override
         public void onFocusChanged(@Nullable final Session tab, SessionManager.Factor factor) {
             chromeViewModel.onFocusedUrlChanged(tab != null ? tab.getUrl() : null);
+            chromeViewModel.onFocusedTitleChanged(tab != null ? tab.getTitle() : null);
             if (tab == null) {
                 if (factor == SessionManager.Factor.FACTOR_NO_FOCUS && !isStartedFromExternalApp()) {
                     ScreenNavigator.get(getContext()).popToHomeScreen(true);

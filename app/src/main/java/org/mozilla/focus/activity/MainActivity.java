@@ -8,7 +8,6 @@ package org.mozilla.focus.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -51,10 +50,8 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
-import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabModelStore;
 import org.mozilla.focus.provider.DownloadContract;
-import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.tabtray.TabTray;
@@ -75,7 +72,6 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
@@ -104,7 +100,6 @@ import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
-import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.util.List;
@@ -146,7 +141,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     private static final String LOG_TAG = "MainActivity";
 
     private ChromeViewModel chromeViewModel;
-    private BookmarkViewModel bookmarkViewModel;
 
     private ThemeManager themeManager;
 
@@ -179,9 +173,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         super.onCreate(savedInstanceState);
         chromeViewModel = Inject.obtainChromeViewModel(this);
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
-        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
-                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)));
-        bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
 
         asyncInitialize();
 
@@ -801,25 +792,17 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     private void onBookMarkClicked() {
-        Session currentTab = getSessionManager().getFocusSession();
-        if (currentTab == null) {
-            return;
-        }
         Boolean isActivated = chromeViewModel.isCurrentUrlBookmarked().getValue();
         if (isActivated != null && isActivated) {
-            bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
+            chromeViewModel.deleteBookmark();
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
         } else {
-            if (TextUtils.isEmpty(currentTab.getUrl())) {
-                //TODO: Edge case - should add a hint for failing to add the bookmark
-                return;
+            final String itemId = chromeViewModel.addBookmark();
+            if (itemId != null) {
+                final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
+                snackbar.show();
             }
-            final String originalTitle = currentTab.getTitle();
-            final String title = TextUtils.isEmpty(originalTitle) ? UrlUtils.stripCommonSubdomains(UrlUtils.stripHttp(currentTab.getUrl())) : originalTitle;
-            final String itemId = bookmarkViewModel.addBookmark(title, currentTab.getUrl());
-            final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
-            snackbar.show();
         }
     }
 
