@@ -38,10 +38,15 @@ class ShortcutViewModel : ViewModel() {
             }
         }
 
+        val createdBefore = (context.applicationContext as FocusApplication)
+                .settings
+                .privateBrowsingSettings
+                .isPrivateShortcutCreatedBefore()
+
         return Transformations.switchMap(isHomeState) { isHome ->
             if (!isHome) {
                 continueLeaveEvent.call()
-            } else if (count == PROMOTE_SHORTCUT_COUNT) {
+            } else if (count == PROMOTE_SHORTCUT_COUNT && !createdBefore) {
                 eventPromoteShortcut.value = createPromotionCallback(appContext, continueLeaveEvent)
                 TelemetryWrapper.showPrivateShortcutPrompt()
             } else {
