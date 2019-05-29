@@ -48,8 +48,16 @@ class NewsSettingsRemoteDataSource : NewsSettingsDataSource {
         return categoriesLiveData
     }
 
+    override fun setSupportCategories(language: String, supportCategories: List<String>) {
+        throw UnsupportedOperationException("Can't set news categories to server")
+    }
+
     override fun getUserPreferenceCategories(language: String): LiveData<List<String>> {
         throw UnsupportedOperationException("Can't get user preference news category setting from server")
+    }
+
+    override fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) {
+        throw UnsupportedOperationException("Can't set user preference news category setting to server")
     }
 
     private fun getLanguageApiEndpoint(): String {

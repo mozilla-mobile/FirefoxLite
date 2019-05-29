@@ -8,5 +8,7 @@ interface NewsSettingsDataSource {
     fun getUserPreferenceLanguage(): LiveData<NewsLanguage>
     fun setUserPreferenceLanguage(language: NewsLanguage)
     fun getSupportCategories(language: String): LiveData<List<String>>
+    fun setSupportCategories(language: String, supportCategories: List<String>)
     fun getUserPreferenceCategories(language: String): LiveData<List<String>>
+    fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>)
 }
