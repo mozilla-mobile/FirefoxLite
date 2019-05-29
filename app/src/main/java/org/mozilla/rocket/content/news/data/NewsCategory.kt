@@ -5,7 +5,7 @@ import org.mozilla.focus.R
 sealed class NewsCategory(
     val categoryId: String,
     val stringResourceId: Int,
-    val isSelected: Boolean = false
+    var isSelected: Boolean = false
 ) {
     object TOP_NEWS : NewsCategory("top-news", R.string.news_category_option_top_news, true)
     object INDIA : NewsCategory("india", R.string.news_category_option_india, true)
@@ -67,5 +67,9 @@ sealed class NewsCategory(
         fun getCategoryById(categoryId: String): NewsCategory? {
             return mapping[categoryId]
         }
+    }
+
+    override fun toString(): String {
+        return "categoryId=$categoryId, stringResourceId=$stringResourceId, isSelected=$isSelected"
     }
 }
