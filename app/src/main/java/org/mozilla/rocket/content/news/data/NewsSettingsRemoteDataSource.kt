@@ -3,7 +3,6 @@ package org.mozilla.rocket.content.news.data
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import org.json.JSONArray
-import org.json.JSONObject
 import org.mozilla.httprequest.HttpRequest
 import org.mozilla.threadutils.ThreadUtils
 import java.net.URL
@@ -15,23 +14,23 @@ class NewsSettingsRemoteDataSource : NewsSettingsDataSource {
     override fun getSupportLanguages(): LiveData<List<NewsLanguage>> {
         ThreadUtils.postToBackgroundThread {
             var responseBody = getHttpResult(getLanguageApiEndpoint())
-            val result = ArrayList<NewsLanguage>()
-            val items = JSONObject(responseBody)
-            for (key in items.keys()) {
-                //  Log.d("NewsSettingsRepository", key + " - " + items.get(key))
-                val item = items.getJSONObject(key)
-                val code = item.optString("languageCode")
-                val name = item.optString("languageName")
-                result.add(NewsLanguage(key, code, name))
-            }
-            languagesLiveData.postValue(result)
+            val newsLanguageList = NewsLanguage.fromJson(responseBody)
+            languagesLiveData.postValue(newsLanguageList)
         }
 
         return languagesLiveData
     }
 
-    override fun getUserPreferenceLanguage(): NewsLanguage {
+    override fun setSupportLanguages(languages: List<NewsLanguage>) {
+        throw UnsupportedOperationException("Can't set news languages setting to server")
+    }
+
+    override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
         throw UnsupportedOperationException("Can't get user preference news languages setting from server")
+    }
+
+    override fun setUserPreferenceLanguage(language: NewsLanguage) {
+        throw UnsupportedOperationException("Can't set user preference news languages setting to server")
     }
 
     override fun getSupportCategories(language: String): LiveData<List<String>> {

@@ -10,6 +10,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
 import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.news.data.NewsSourceManager
@@ -56,7 +57,8 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
         newsViewModel?.loadMore()
 
         val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
-        newsViewModel?.newsSettingsRepository = NewsSettingsRepository(newsSettingsRemoteDataSource)
+        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(fragmentActivity.applicationContext)
+        newsViewModel?.newsSettingsRepository = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
     }
 
     override fun loadMore() {

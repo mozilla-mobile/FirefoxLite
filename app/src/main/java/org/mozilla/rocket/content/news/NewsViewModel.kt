@@ -35,6 +35,14 @@ class NewsViewModel : ViewModel(), Repository.OnDataChangedListener<NewsItem> {
         return newsSettingsRepository.getLanguages()
     }
 
+    fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
+        return newsSettingsRepository.getUserPreferenceLanguage()
+    }
+
+    fun setUserPreferenceLanguage(language: NewsLanguage) {
+        newsSettingsRepository.setUserPreferenceLanguage(language)
+    }
+
     fun getCategoriesByLanguage(language: String): LiveData<List<NewsCategory>> {
         return newsSettingsRepository.getCategoriesByLanguage(language)
     }
