@@ -691,8 +691,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     public void onDestroy() {
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
-
-        sessionManager.destroy();
+        if (sessionManager != null) {
+            sessionManager.destroy();
+        }
         super.onDestroy();
     }
 
