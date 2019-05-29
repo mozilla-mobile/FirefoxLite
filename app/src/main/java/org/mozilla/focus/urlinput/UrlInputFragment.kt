@@ -228,7 +228,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         } else {
             false
         }
-        chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = openNewTab)
+        chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = openNewTab, isFromExternal = false)
 
         return openNewTab
     }

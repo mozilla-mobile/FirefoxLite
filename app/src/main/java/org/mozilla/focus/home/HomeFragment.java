@@ -252,7 +252,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public OnClickListener onBannerClickListener() {
-        return arg -> chromeViewModel.getOpenUrl().setValue(new OpenUrlAction(arg, true));
+        return arg -> chromeViewModel.getOpenUrl().setValue(new OpenUrlAction(arg, true, false));
     }
 
     @Override
