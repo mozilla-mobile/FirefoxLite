@@ -4,7 +4,9 @@
 
 package org.mozilla.rocket.content.news.data
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.database.DataSetObserver
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceManager
@@ -15,40 +17,64 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.RadioButton
 import org.mozilla.focus.R
-import org.mozilla.threadutils.ThreadUtils
 
 class NewsLanguagePreference @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null) :
     Preference(context, attributes) {
+
+    // FIXME: data in view, bad
+    val languages = mutableListOf<NewsLanguage>() // empty list
 
     override fun getSummary(): CharSequence? {
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        if (sharedPreferences.getString("lang", null) == null) {
+        if (sharedPreferences.getString("user_pref_lang", null) == null) {
             return "default lang"
         }
         return "english"
     }
 
+    private var dialogAdapter: BaseAdapter? = null
+
+    @SuppressLint("InflateParams")
     override fun onClick() {
         super.onClick()
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.simple_list, null)
-        val langs = listOf(
-            NewsLanguage("key", "code", "name", true),
-            NewsLanguage("key2", "code2", "name2", false)
-        )
-        val adapter = object : BaseAdapter() {
+        // this is the time when the view is lay-out
+        val dialogList = view?.findViewById(R.id.simple_list) as? ListView
+        val dialogProgress = view?.findViewById(R.id.simple_progress) as? ProgressBar
+        val dialog1 = AlertDialog.Builder(context)
+            .setTitle(R.string.news_language_dialog_title)
+            .setNegativeButton(
+                R.string.setting_dialog_cancel
+            ) { dialog, _ -> dialog.dismiss() }
+            .setView(view).create()
+        dialogAdapter = object : BaseAdapter() {
+            @SuppressLint("ViewHolder") // be easy here.
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                val item = layoutInflater.inflate(android.R.layout.simple_list_item_1, null)
-                item.findViewById<TextView>(android.R.id.text1).text = langs[position].name
+                val item = layoutInflater.inflate(R.layout.simple_list_check_item, null)
+                val tv = item.findViewById<RadioButton>(R.id.simple_list_check_text)
+                tv.text = languages[position].name
+                tv.isChecked = languages[position].isSelected
+                item.setOnClickListener {
+                    languages.forEach { it.isSelected = false }
+                    languages[position].isSelected = true
+                    notifyDataSetChanged()
+                    PreferenceManager.getDefaultSharedPreferences(context).edit()
+                        .putString("user_pref_lang", languages[position].name).apply()
+                    summary = languages[position].name
+                    notifyChanged()
+                    dialog1.dismiss()
+                    // save db value, update pref, relo
+                }
                 return item
             }
 
             override fun getItem(position: Int): Any {
-                return langs[position]
+                return languages[position]
             }
 
             override fun getItemId(position: Int): Long {
@@ -56,28 +82,37 @@ class NewsLanguagePreference @JvmOverloads constructor(context: Context, attribu
             }
 
             override fun getCount(): Int {
-                return langs.size
+                return languages.size
             }
         }
-        val list = view.findViewById<ListView>(R.id.simple_list)
-        val progress = view.findViewById<ProgressBar>(R.id.simple_progress)
-
-        val dialog = AlertDialog.Builder(context)
-            .setNegativeButton(
-                R.string.setting_dialog_cancel
-            ) { dialog, _ -> dialog.dismiss() }
-            .setView(view).create()
-
-        // TODO: Preference don't have lifecle , we can either: a. obeserverForever b. make this class lifeCyclerXXXX c. use the lifecycle of S etting Activity
-        ThreadUtils.postToBackgroundThread {
-            Thread.sleep(3000)
-            ThreadUtils.postToMainThread {
-                list.adapter = adapter
-                adapter.notifyDataSetChanged()
-                progress.visibility = View.GONE
-                list.visibility = View.VISIBLE
+        dialogAdapter?.registerDataSetObserver(object : DataSetObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                // FIXME: extract this
+                if (languages.size > 0) {
+                    dialogProgress?.visibility = View.GONE
+                    dialogList?.visibility = View.VISIBLE
+                }
             }
+        })
+        dialogList?.adapter = dialogAdapter
+
+        dialog1.show()
+        // FIXME: extract this
+        if (languages.size > 0) {
+            dialogProgress?.visibility = View.GONE
+            dialogList?.visibility = View.VISIBLE
         }
-        dialog.show()
+    }
+
+    fun updateLangList(list: List<NewsLanguage>?) {
+        list?.let {
+            if (list == languages) {
+                return
+            }
+            languages.clear()
+            languages.addAll(list)
+            dialogAdapter?.notifyDataSetChanged()
+        }
     }
 }

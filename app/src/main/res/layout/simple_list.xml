@@ -25,7 +25,11 @@
             android:id="@+id/simple_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             tools:listitem="@android:layout/simple_list_item_1"
+            tools:visibility="visible"
             android:visibility="gone"/>
 
     <RelativeLayout

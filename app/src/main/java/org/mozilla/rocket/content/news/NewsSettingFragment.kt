@@ -1,5 +1,7 @@
 package org.mozilla.rocket.content.news
 
+import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
@@ -7,13 +9,43 @@ import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
+import dagger.android.support.AndroidSupportInjection
 import org.mozilla.focus.R
+import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.news.data.CategorySetting
 import org.mozilla.rocket.content.news.data.NewsCatSettingCatAdapter
+import org.mozilla.rocket.content.news.data.NewsLanguagePreference
+import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
+import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
+import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.threadutils.ThreadUtils
 import java.lang.Thread.sleep
 
 class NewsSettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+
+    @javax.inject.Inject
+    lateinit var viewModelFactory: NewsViewModelFactory
+
+    @javax.inject.Inject
+    lateinit var applicationContext: Context
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        AndroidSupportInjection.inject(this)
+        val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
+        val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
+        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(applicationContext)
+        val newsLanguagePreference = findPreference("user_pref_lang") as NewsLanguagePreference
+        newsViewModel.newsSettingsRepository =
+            NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
+        newsViewModel.newsSettingsRepository.getLanguages().observe(viewLifecycleOwner, Observer {
+
+            newsLanguagePreference.updateLangList(it)
+        })
+        newsViewModel.newsSettingsRepository.getUserPreferenceLanguage().observe(viewLifecycleOwner, Observer {
+            newsLanguagePreference.summary = it?.name
+        })
+    }
 
     companion object {
         fun newInstance(): NewsSettingFragment {
@@ -39,7 +71,7 @@ class NewsSettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         // detect when the user had change the language setting, now refresh the categories
-        if (key == "test2") {
+        if (key == "user_pref_lang") {
 
             // find hte view on activity... it's not pretty,
             // TODO: we should let the update the cats via repository/use case, and let [NewsCategoryPreference] change it's data

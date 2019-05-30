@@ -26,6 +26,7 @@ import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
 import org.mozilla.rocket.content.news.NewsFragment
+import org.mozilla.rocket.content.news.NewsSettingFragment
 import org.mozilla.rocket.content.news.NewsTabFragment
 
 /**
@@ -65,4 +66,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     internal abstract fun bindNewsFragment(): NewsFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindNewsSettingFragment(): NewsSettingFragment
 }
