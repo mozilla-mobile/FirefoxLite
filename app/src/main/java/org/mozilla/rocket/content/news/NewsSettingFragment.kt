@@ -1,5 +1,7 @@
 package org.mozilla.rocket.content.news
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,35 +13,44 @@ import android.view.View
 import android.widget.ProgressBar
 import dagger.android.support.AndroidSupportInjection
 import org.mozilla.focus.R
-import org.mozilla.rocket.content.news.data.CategorySetting
 import org.mozilla.rocket.content.news.data.NewsCatSettingCatAdapter
+import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguagePreference
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
-import org.mozilla.threadutils.ThreadUtils
-import java.lang.Thread.sleep
+import org.mozilla.rocket.extension.switchMap
 
 class NewsSettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     @javax.inject.Inject
     lateinit var applicationContext: Context
+    var queryCatsByLang = MutableLiveData<String>()
+    var categories: LiveData<List<NewsCategory>> = queryCatsByLang.switchMap {
+        repository.getCategoriesByLanguage(it)
+    }
+
+    lateinit var repository: NewsSettingsRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AndroidSupportInjection.inject(this)
         val remoteSource = NewsSettingsRemoteDataSource()
         val localSource = NewsSettingsLocalDataSource(applicationContext)
-        val repository = NewsSettingsRepository(remoteSource, localSource)
-
+        repository = NewsSettingsRepository(remoteSource, localSource)
+        repository.getUserPreferenceLanguage().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                queryCatsByLang.value = it.key.toLowerCase()
+            }
+        })
         // FIXME: hard code
         val newsLanguagePreference = findPreference("user_pref_lang") as NewsLanguagePreference
 
         repository.getLanguages().observe(viewLifecycleOwner, Observer {
             newsLanguagePreference.updateLangList(it)
         })
-        repository.getUserPreferenceLanguage().observe(viewLifecycleOwner, Observer {
-            newsLanguagePreference.summary = it?.name
+        categories.observe(viewLifecycleOwner, Observer {
+            this.updateCats(it)
         })
     }
 
@@ -67,32 +78,30 @@ class NewsSettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         // detect when the user had change the language setting, now refresh the categories
-        if (key == "user_pref_lang") {
+        val newLanguage = sharedPreferences?.getString("user_pref_lang", null)
+        if (key == "user_pref_lang" && newLanguage != null) {
+            queryCatsByLang.value = newLanguage.toLowerCase()
+        }
+    }
 
-            // find hte view on activity... it's not pretty,
-            // TODO: we should let the update the cats via repository/use case, and let [NewsCategoryPreference] change it's data
-            val list = (context as? FragmentActivity)?.findViewById<RecyclerView>(R.id.news_setting_cat_list)
-            val progress = (context as? FragmentActivity)?.findViewById<ProgressBar>(R.id.news_setting_cat_progress)
+    private fun updateCats(newList: List<NewsCategory>?) {
+        if (newList == null) {
+            return
+        }
+        // find the view on activity... it's not pretty,
+        // TODO: we should let the update the cats via repository/use case, and let [NewsCategoryPreference] change it's data
+        val list = (context as? FragmentActivity)?.findViewById<RecyclerView>(R.id.news_setting_cat_list)
+        val progress = (context as? FragmentActivity)?.findViewById<ProgressBar>(R.id.news_setting_cat_progress)
 
-            list?.visibility = View.GONE
-            progress?.visibility = View.VISIBLE
+        list?.visibility = View.GONE
+        progress?.visibility = View.VISIBLE
 
-            (list?.adapter as? NewsCatSettingCatAdapter)?.apply {
-                ThreadUtils.postToBackgroundThread {
-                    sleep(3000)
-                    ThreadUtils.postToMainThread {
-                        this.cats =
-                            listOf(
-                                CategorySetting("D", "DD"),
-                                CategorySetting("E", "EE"),
-                                CategorySetting("F", "FF")
-                            )
-                        this.notifyDataSetChanged()
-                        list.visibility = View.VISIBLE
-                        progress?.visibility = View.GONE
-                    }
-                }
-            }
+        (list?.adapter as? NewsCatSettingCatAdapter)?.apply {
+
+            this.cats = newList
+            this.notifyDataSetChanged()
+            list.visibility = View.VISIBLE
+            progress?.visibility = View.GONE
         }
     }
 }

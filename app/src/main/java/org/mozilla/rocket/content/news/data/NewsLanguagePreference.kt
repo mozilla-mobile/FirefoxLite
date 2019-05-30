@@ -61,7 +61,7 @@ class NewsLanguagePreference @JvmOverloads constructor(context: Context, attribu
                     languages[position].isSelected = true
                     notifyDataSetChanged()
                     PreferenceManager.getDefaultSharedPreferences(context).edit()
-                        .putString("user_pref_lang", languages[position].name).apply()
+                        .putString("user_pref_lang", languages[position].key).apply()
                     summary = languages[position].name
                     notifyChanged()
                     dialog1.dismiss()
