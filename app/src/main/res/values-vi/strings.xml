@@ -33,7 +33,7 @@
   <string name="preference_privacy_storage_clear_browsing_data">Xóa dữ liệu truy cập</string>
   <string name="preference_privacy_storage_save_downloads_to">Lưu các bản tải xuống vào</string>
   <string name="preference_default_browser">Đặt làm trình duyệt mặc định</string>
-  <string name="preference_default_browser_is_setting">Thay đổi cài đặt…</string>
+  <string name="preference_default_browser_is_setting">Đang thay đổi cài đặt…</string>
   <string name="preference_turbo_mode">Chế độ Turbo</string>
   <string name="preference_mozilla_telemetry">Gửi dữ liệu sử dụng</string>
   <string name="preference_mozilla_telemetry_summary">%2$s cố gắng chỉ thu thập những gì chúng tôi cần cung cấp và cải thiện %1$s cho mọi người.</string>
