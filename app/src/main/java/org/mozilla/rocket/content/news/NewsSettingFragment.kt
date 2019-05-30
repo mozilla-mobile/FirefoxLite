@@ -11,7 +11,6 @@ import android.view.View
 import android.widget.ProgressBar
 import dagger.android.support.AndroidSupportInjection
 import org.mozilla.focus.R
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.news.data.CategorySetting
 import org.mozilla.rocket.content.news.data.NewsCatSettingCatAdapter
 import org.mozilla.rocket.content.news.data.NewsLanguagePreference
@@ -24,25 +23,22 @@ import java.lang.Thread.sleep
 class NewsSettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     @javax.inject.Inject
-    lateinit var viewModelFactory: NewsViewModelFactory
-
-    @javax.inject.Inject
     lateinit var applicationContext: Context
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AndroidSupportInjection.inject(this)
-        val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
-        val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
-        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(applicationContext)
-        val newsLanguagePreference = findPreference("user_pref_lang") as NewsLanguagePreference
-        newsViewModel.newsSettingsRepository =
-            NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
-        newsViewModel.newsSettingsRepository.getLanguages().observe(viewLifecycleOwner, Observer {
+        val remoteSource = NewsSettingsRemoteDataSource()
+        val localSource = NewsSettingsLocalDataSource(applicationContext)
+        val repository = NewsSettingsRepository(remoteSource, localSource)
 
+        // FIXME: hard code
+        val newsLanguagePreference = findPreference("user_pref_lang") as NewsLanguagePreference
+
+        repository.getLanguages().observe(viewLifecycleOwner, Observer {
             newsLanguagePreference.updateLangList(it)
         })
-        newsViewModel.newsSettingsRepository.getUserPreferenceLanguage().observe(viewLifecycleOwner, Observer {
+        repository.getUserPreferenceLanguage().observe(viewLifecycleOwner, Observer {
             newsLanguagePreference.summary = it?.name
         })
     }

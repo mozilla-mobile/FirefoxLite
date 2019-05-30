@@ -30,10 +30,7 @@ class NewsLanguagePreference @JvmOverloads constructor(context: Context, attribu
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        if (sharedPreferences.getString("user_pref_lang", null) == null) {
-            return "default lang"
-        }
-        return "english"
+        return sharedPreferences.getString("user_pref_lang", null) ?: return "default lang"
     }
 
     private var dialogAdapter: BaseAdapter? = null
