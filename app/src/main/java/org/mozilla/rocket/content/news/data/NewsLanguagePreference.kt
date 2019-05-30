@@ -67,6 +67,8 @@ class NewsLanguagePreference @JvmOverloads constructor(context: Context, attribu
                 R.string.setting_dialog_cancel
             ) { dialog, _ -> dialog.dismiss() }
             .setView(view).create()
+
+        // TODO: Preference don't have lifecle , we can either: a. obeserverForever b. make this class lifeCyclerXXXX c. use the lifecycle of S etting Activity
         ThreadUtils.postToBackgroundThread {
             Thread.sleep(3000)
             ThreadUtils.postToMainThread {

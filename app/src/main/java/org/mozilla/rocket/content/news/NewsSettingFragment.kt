@@ -27,6 +27,7 @@ class NewsSettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
 
     override fun onResume() {
         super.onResume()
+
         preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -37,7 +38,11 @@ class NewsSettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        // detect when the user had change the language setting, now refresh the categories
         if (key == "test2") {
+
+            // find hte view on activity... it's not pretty,
+            // TODO: we should let the update the cats via repository/use case, and let [NewsCategoryPreference] change it's data
             val list = (context as? FragmentActivity)?.findViewById<RecyclerView>(R.id.news_setting_cat_list)
             val progress = (context as? FragmentActivity)?.findViewById<ProgressBar>(R.id.news_setting_cat_progress)
 
