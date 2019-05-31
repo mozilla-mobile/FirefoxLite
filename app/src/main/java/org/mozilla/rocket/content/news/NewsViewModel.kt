@@ -24,7 +24,7 @@ class NewsViewModel @Inject constructor(
 
     private var newCategoryResult: MediatorLiveData<Result<LoadNewsCategoryByLangResult>> = loadNewsCategoryUseCase.observe()
 
-    val categories: LiveData<List<String>> =
+    val categories: LiveData<List<NewsCategory>> =
         Transformations.map(this.newCategoryResult) { (it as? Result.Success)?.data?.categories }
 
     private val newsMap = HashMap<String, MediatorLiveData<List<NewsItem>>>()

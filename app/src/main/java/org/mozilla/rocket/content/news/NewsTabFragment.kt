@@ -22,6 +22,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalView
 
@@ -71,7 +72,7 @@ class NewsTabFragment : DaggerFragment() {
         }
     }
 
-    private fun setupViewPager(view: View, newsCategories: List<String>) {
+    private fun setupViewPager(view: View, newsCategories: List<NewsCategory>) {
         newsCategories.apply {
             val pager = view.findViewById<ViewPager>(R.id.news_viewpager)
             view.findViewById<TabLayout>(R.id.news_tab).run {
@@ -102,17 +103,17 @@ class NewsTabFragment : DaggerFragment() {
     /**
      * Adapter that builds a page for each E-Commerce type .
      */
-    inner class EcFragmentAdapter(fm: FragmentManager, private val cats: List<String>) : FragmentPagerAdapter(fm) {
+    inner class EcFragmentAdapter(fm: FragmentManager, private val cats: List<NewsCategory>) : FragmentPagerAdapter(fm) {
 
         override fun getCount() = cats.size
 
         override fun getItem(position: Int): Fragment {
             val cat = cats[position]
-            return NewsFragment.newInstance(cat)
+            return NewsFragment.newInstance(cat.categoryId)
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return cats[position]
+            return getString(cats[position].stringResourceId)
         }
     }
 
