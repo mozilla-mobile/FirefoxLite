@@ -30,11 +30,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.content.pm.ShortcutManagerCompat;
-import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -74,20 +71,16 @@ import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
-import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
-import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.content.ContentPortalViewState;
-import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
-import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.landing.OrientationState;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
+import org.mozilla.rocket.menu.MenuDialog;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
@@ -105,10 +98,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
-import kotlin.Unit;
-
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.MENU;
 
 public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost,
         SharedPreferences.OnSharedPreferenceChangeListener,
@@ -120,15 +110,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     private PromotionModel promotionModel;
 
     private BottomSheetDialog menu;
-    private BottomBarItemAdapter bottomBarItemAdapter;
-    private MenuViewModel menuViewModel;
-    private View myshotIndicator;
-    private View myshotButton;
     private View snackBarContainer;
-    private View nightModeButton;
-    private View turboModeButton;
-    private View blockImageButton;
-    private View privateModeIndicator;
 
     private ScreenNavigator screenNavigator;
 
@@ -374,104 +356,10 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     private void setUpMenu() {
-        final View sheet = getLayoutInflater().inflate(R.layout.bottom_sheet_main_menu, null);
-        menu = new BottomSheetDialog(this, R.style.BottomSheetTheme);
-        menu.setContentView(sheet);
+        menu = new MenuDialog(this, R.style.BottomSheetTheme);
         menu.setCanceledOnTouchOutside(true);
-
         menu.setOnShowListener(dialog -> portraitStateModel.request(PortraitComponent.BottomMenu.INSTANCE));
         menu.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.BottomMenu.INSTANCE));
-
-        setupMenuBottomBar(menu);
-
-        myshotIndicator = menu.findViewById(R.id.menu_my_shot_unread);
-        privateModeIndicator = menu.findViewById(R.id.menu_private_mode_indicator);
-        myshotButton = menu.findViewById(R.id.menu_screenshots);
-
-        turboModeButton = menu.findViewById(R.id.menu_turbomode);
-        turboModeButton.setSelected(isTurboEnabled());
-
-        blockImageButton = menu.findViewById(R.id.menu_blockimg);
-        blockImageButton.setSelected(isBlockingImages());
-
-        nightModeButton = menu.findViewById(R.id.menu_night_mode);
-        nightModeButton.setOnLongClickListener(onLongClickListener);
-        nightModeButton.setSelected(isNightModeEnabled(Settings.getInstance(getApplicationContext())));
-    }
-
-    private void setupMenuBottomBar(AppCompatDialog dialog) {
-        BottomBar bottomBar = dialog.findViewById(R.id.menu_bottom_bar);
-        bottomBar.setOnItemClickListener((type, position) -> {
-            menu.cancel();
-            switch (type) {
-                case BottomBarItemAdapter.TYPE_TAB_COUNTER:
-                    chromeViewModel.getShowTabTray().call();
-                    TelemetryWrapper.showTabTrayToolbar(MENU, position);
-                    break;
-                case BottomBarItemAdapter.TYPE_MENU:
-                    chromeViewModel.getShowMenu().call();
-                    TelemetryWrapper.showMenuToolbar(MENU, position);
-                    break;
-                case BottomBarItemAdapter.TYPE_NEW_TAB:
-                    chromeViewModel.getShowNewTab().call();
-                    TelemetryWrapper.clickAddTabToolbar(MENU, position);
-                    break;
-                case BottomBarItemAdapter.TYPE_SEARCH:
-                    chromeViewModel.getShowUrlInput().call();
-                    TelemetryWrapper.clickToolbarSearch(MENU, position);
-                    break;
-                case BottomBarItemAdapter.TYPE_CAPTURE:
-                    chromeViewModel.getDoScreenshot().setValue(new ScreenCaptureTelemetryData(MENU, position));
-                    // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
-                    break;
-                case BottomBarItemAdapter.TYPE_PIN_SHORTCUT:
-                    chromeViewModel.getPinShortcut().call();
-                    TelemetryWrapper.clickAddToHome(MENU, position);
-                    break;
-                case BottomBarItemAdapter.TYPE_BOOKMARK:
-                    boolean isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
-                    TelemetryWrapper.clickToolbarBookmark(!isActivated, MENU, position);
-                    chromeViewModel.getToggleBookmark().call();
-                    break;
-                case BottomBarItemAdapter.TYPE_REFRESH:
-                    chromeViewModel.getRefreshOrStop().call();
-                    TelemetryWrapper.clickToolbarReload(MENU, position);
-                    break;
-                case BottomBarItemAdapter.TYPE_SHARE:
-                    chromeViewModel.getShare().call();
-                    TelemetryWrapper.clickToolbarShare(MENU, position);
-                    break;
-                case BottomBarItemAdapter.TYPE_NEXT:
-                    chromeViewModel.getGoNext().call();
-                    TelemetryWrapper.clickToolbarForward(MENU, position);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unhandled bottom bar item, type: " + type);
-            }
-        });
-        bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Light.INSTANCE);
-        menuViewModel = Inject.obtainMenuViewModel(this);
-        LiveDataExtensionKt.nonNullObserve(menuViewModel.getBottomItems(), this, bottomItems -> {
-            bottomBarItemAdapter.setItems(bottomItems);
-            hidePinShortcutButtonIfNotSupported();
-            return Unit.INSTANCE;
-        });
-        menuViewModel.isBottomBarEnabled().observe(this, bottomBarItemAdapter::setEnabled);
-
-        chromeViewModel.getTabCount().observe(this, bottomBarItemAdapter::setTabCount);
-        chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
-        chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
-        chromeViewModel.isCurrentUrlBookmarked().observe(this, bottomBarItemAdapter::setBookmark);
-    }
-
-    private void hidePinShortcutButtonIfNotSupported() {
-        final boolean requestPinShortcutSupported = ShortcutManagerCompat.isRequestPinShortcutSupported(this);
-        if (!requestPinShortcutSupported) {
-            BottomBar.BottomBarItem pinShortcutItem = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_PIN_SHORTCUT);
-            if (pinShortcutItem != null && pinShortcutItem.getView() != null) {
-                pinShortcutItem.getView().setVisibility(View.GONE);
-            }
-        }
     }
 
     public BrowserFragment getVisibleBrowserFragment() {
@@ -479,46 +367,8 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     private void showMenu() {
-        updateMenu();
+        chromeViewModel.getUpdateMenu().call();
         menu.show();
-    }
-
-    private void updateMenu() {
-        turboModeButton.setSelected(isTurboEnabled());
-        blockImageButton.setSelected(isBlockingImages());
-
-        final boolean isMyShotUnreadEnabled = AppConfigWrapper.getMyshotUnreadEnabled();
-        final boolean showUnread = isMyShotUnreadEnabled && Settings.getInstance(this).hasUnreadMyShot();
-        final boolean privateModeActivate = PrivateMode.hasPrivateSession(this);
-        final Settings settings = Settings.getInstance(getApplicationContext());
-
-        myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
-        privateModeIndicator.setVisibility(privateModeActivate ? View.VISIBLE : View.GONE);
-
-        nightModeButton.setSelected(isNightModeEnabled(settings));
-        if (shouldShowNightModeSpotlight(settings)) {
-            setShowNightModeSpotlight(settings, false);
-            nightModeButton.post(() -> DialogUtils.showSpotlight(
-                    MainActivity.this,
-                    nightModeButton,
-                    dialog -> {
-
-                    }, R.string.night_mode_on_boarding_message));
-        }
-
-        final BrowserFragment browserFragment = getVisibleBrowserFragment();
-        final boolean hasFocus = browserFragment != null;
-        menuViewModel.onTabFocusChanged(hasFocus);
-        Session current = getSessionManager().getFocusSession();
-        if (current == null) {
-            return;
-        }
-        bottomBarItemAdapter.setCanGoForward(chromeViewModel.getCanGoForward().getValue());
-
-        boolean hasNewConfig = menuViewModel.refresh();
-        if (hasNewConfig) {
-            chromeViewModel.invalidate();
-        }
     }
 
     private boolean isTurboEnabled() {
@@ -559,7 +409,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         }
     }
 
-    OnLongClickListener onLongClickListener = new OnLongClickListener() {
+    View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
             menu.cancel();
@@ -963,7 +813,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
             }
         });
         chromeViewModel.getShowDownloadPanel().observe(this, unit -> onDownloadClicked());
-        chromeViewModel.getUpdateMenu().observe(this, unit -> updateMenu());
         chromeViewModel.isMyShotOnBoardingPending().observe(this, isPending -> {
             if (isPending != null && isPending) {
                 showMyShotOnBoarding();
@@ -1133,10 +982,11 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     @UiThread
     public void showMyShotOnBoarding() {
         setShowNightModeSpotlight(Settings.getInstance(getApplicationContext()), false);
-        myshotButton.post(() -> {
+        View view = menu.findViewById(R.id.menu_screenshots);
+        view.post(() -> {
             myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
                     MainActivity.this,
-                    myshotButton,
+                    view,
                     dialog -> dismissAllMenus(),
                     v -> {
                         final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
