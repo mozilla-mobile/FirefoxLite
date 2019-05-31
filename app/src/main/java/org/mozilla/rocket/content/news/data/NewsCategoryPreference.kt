@@ -5,7 +5,6 @@
 package org.mozilla.rocket.content.news.data
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceViewHolder
 import android.support.v7.widget.GridLayoutManager
@@ -22,10 +21,6 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
 
     init {
         layoutResource = R.layout.content_tab_new_setting
-    }
-
-    override fun onGetDefaultValue(a: TypedArray?, index: Int): Any {
-        return "SS"
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {

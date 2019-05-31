@@ -19,12 +19,14 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
         private const val KEY_STRING_USER_PREFERENCE_LANGUAGE = "user_pref_lang"
         private const val KEY_STRING_SUPPORT_CATEGORIES_PREFIX = "support_cat_"
         private const val KEY_STRING_USER_PREFERENCE_CATEGORIES_PREFIX = "user_pref_cat_"
+        private const val DEFAULT_LANGUAGE = "english"
+        private const val DEFAULT_LANGUAGE_KEY = "1"
     }
 
     override fun getSupportLanguages(): LiveData<List<NewsLanguage>> {
         ThreadUtils.postToBackgroundThread {
             val jsonString = getPreferences()
-                .getString(KEY_STRING_SUPPORT_LANGUAGES, "") ?: ""
+                .getString(KEY_STRING_SUPPORT_LANGUAGES, DEFAULT_LANGUAGE) ?: ""
             val newsLanguageList = NewsLanguage.fromJson(jsonString)
             if (newsLanguageList.isNotEmpty()) {
                 languagesLiveData.postValue(newsLanguageList)
@@ -46,9 +48,12 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
             val jsonString = getPreferences()
                 .getString(KEY_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
             val newsLanguageList = NewsLanguage.fromJson(jsonString)
-            if (newsLanguageList.isNotEmpty()) {
-                preferenceLanguagesLiveData.postValue(newsLanguageList[0].also { it.isSelected = true })
+            val selectedLanguage = if (newsLanguageList.isNotEmpty()) {
+                newsLanguageList[0].also { it.isSelected = true }
+            } else {
+                NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE, DEFAULT_LANGUAGE, true)
             }
+            preferenceLanguagesLiveData.postValue(selectedLanguage)
         }
 
         return preferenceLanguagesLiveData
