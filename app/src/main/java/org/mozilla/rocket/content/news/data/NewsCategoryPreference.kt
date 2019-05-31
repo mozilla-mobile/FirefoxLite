@@ -44,6 +44,7 @@ class NewsCatSettingCatAdapter(var cats: List<NewsCategory>) :
         vh.button.textOff = cats[pos].categoryId
         vh.button.textOn = cats[pos].categoryId
         vh.button.text = cats[pos].categoryId
+        vh.button.isChecked = cats[pos].isSelected
     }
 
     override fun getItemCount(): Int {
