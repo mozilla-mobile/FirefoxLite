@@ -4,8 +4,11 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.SharedPreferences
+import android.text.TextUtils
+import android.util.Log
 import org.json.JSONArray
 import org.mozilla.threadutils.ThreadUtils
+import java.lang.Exception
 
 class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
     private val languagesLiveData: MutableLiveData<List<NewsLanguage>> = MutableLiveData()
@@ -14,6 +17,7 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
     private val preferenceCategoriesLiveData: MutableLiveData<List<String>> = MutableLiveData()
 
     companion object {
+        private const val TAG = "NewsLocalDataSource"
         private const val PREF_NAME = "news_settings"
         private const val KEY_STRING_SUPPORT_LANGUAGES = "support_lang"
         private const val KEY_STRING_USER_PREFERENCE_LANGUAGE = "user_pref_lang"
@@ -44,16 +48,24 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
     }
 
     override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
-        ThreadUtils.postToBackgroundThread {
+
+        try {
+
             val jsonString = getPreferences()
                 .getString(KEY_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
-            val newsLanguageList = NewsLanguage.fromJson(jsonString)
-            val selectedLanguage = if (newsLanguageList.isNotEmpty()) {
-                newsLanguageList[0].also { it.isSelected = true }
-            } else {
+
+            val selectedLanguage = if (TextUtils.isEmpty(jsonString)) {
                 NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE, DEFAULT_LANGUAGE, true)
+            } else {
+                val newsLanguageList = NewsLanguage.fromJson(jsonString)
+                if (newsLanguageList.isNotEmpty()) {
+                    newsLanguageList[0].also { it.isSelected = true }
+                }
+                null
             }
             preferenceLanguagesLiveData.postValue(selectedLanguage)
+        } catch (e: Exception) {
+            Log.d(TAG, "Error Parsing Json")
         }
 
         return preferenceLanguagesLiveData
