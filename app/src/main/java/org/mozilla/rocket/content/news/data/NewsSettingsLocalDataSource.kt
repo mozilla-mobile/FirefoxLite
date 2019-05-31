@@ -49,23 +49,25 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
 
     override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
 
-        try {
+        ThreadUtils.postToBackgroundThread {
+            try {
 
-            val jsonString = getPreferences()
-                .getString(KEY_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
+                val jsonString = getPreferences()
+                    .getString(KEY_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
 
-            val selectedLanguage = if (TextUtils.isEmpty(jsonString)) {
-                NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE, DEFAULT_LANGUAGE, true)
-            } else {
-                val newsLanguageList = NewsLanguage.fromJson(jsonString)
-                if (newsLanguageList.isNotEmpty()) {
-                    newsLanguageList[0].also { it.isSelected = true }
+                val selectedLanguage = if (TextUtils.isEmpty(jsonString)) {
+                    NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE, DEFAULT_LANGUAGE, true)
+                } else {
+                    val newsLanguageList = NewsLanguage.fromJson(jsonString)
+                    if (newsLanguageList.isNotEmpty()) {
+                        newsLanguageList[0].also { it.isSelected = true }
+                    }
+                    null
                 }
-                null
+                preferenceLanguagesLiveData.postValue(selectedLanguage)
+            } catch (e: JSONException) {
+                Log.d(TAG, "Error Parsing Json")
             }
-            preferenceLanguagesLiveData.postValue(selectedLanguage)
-        } catch (e: JSONException) {
-            Log.d(TAG, "Error Parsing Json")
         }
 
         return preferenceLanguagesLiveData
