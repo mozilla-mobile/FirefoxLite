@@ -7,8 +7,8 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import android.util.Log
 import org.json.JSONArray
+import org.json.JSONException
 import org.mozilla.threadutils.ThreadUtils
-import java.lang.Exception
 
 class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
     private val languagesLiveData: MutableLiveData<List<NewsLanguage>> = MutableLiveData()
@@ -64,7 +64,7 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
                 null
             }
             preferenceLanguagesLiveData.postValue(selectedLanguage)
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
             Log.d(TAG, "Error Parsing Json")
         }
 
