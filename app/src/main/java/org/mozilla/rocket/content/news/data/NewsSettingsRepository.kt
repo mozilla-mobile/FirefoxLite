@@ -18,7 +18,7 @@ class NewsSettingsRepository(
     private var localCategories: List<String>? = null
     private var preferenceCategories: List<String>? = null
 
-    fun getLanguages(): LiveData<List<NewsLanguage>> {
+    init {
         languagesLiveData.addSource(remoteDataSource.getSupportLanguages()) {
             remoteLanguages = it
             updateLanguageResult()
@@ -31,6 +31,9 @@ class NewsSettingsRepository(
             preferenceLanguage = it
             updateLanguageResult()
         }
+    }
+
+    fun getLanguages(): LiveData<List<NewsLanguage>> {
         return languagesLiveData
     }
 
@@ -43,15 +46,21 @@ class NewsSettingsRepository(
     }
 
     fun getCategoriesByLanguage(language: String): LiveData<List<NewsCategory>> {
-        categoriesLiveData.addSource(remoteDataSource.getSupportCategories(language)) {
+        val remoteCategoriesData = remoteDataSource.getSupportCategories(language)
+        categoriesLiveData.removeSource(remoteCategoriesData)
+        categoriesLiveData.addSource(remoteCategoriesData) {
             remoteCategories = it
             updateCategoryResult(language)
         }
-        categoriesLiveData.addSource(localDataSource.getSupportCategories(language)) {
+        val localCategoriesData = localDataSource.getSupportCategories(language)
+        categoriesLiveData.removeSource(localCategoriesData)
+        categoriesLiveData.addSource(localCategoriesData) {
             localCategories = it
             updateCategoryResult(language)
         }
-        categoriesLiveData.addSource(localDataSource.getUserPreferenceCategories(language)) {
+        val localPreferenceCategoriesData = localDataSource.getUserPreferenceCategories(language)
+        categoriesLiveData.removeSource(localPreferenceCategoriesData)
+        categoriesLiveData.addSource(localPreferenceCategoriesData) {
             preferenceCategories = it
             updateCategoryResult(language)
         }
