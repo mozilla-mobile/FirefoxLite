@@ -2,9 +2,10 @@ package org.mozilla.rocket.content.news
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 
 class NewsViewModelFactory constructor(
-    private val repository: FakeNewsCategoryRepository
+    private val repository: NewsSettingsRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

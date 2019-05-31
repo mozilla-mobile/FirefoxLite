@@ -6,7 +6,6 @@ import dagger.Provides
 import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
-import org.mozilla.rocket.content.news.FakeNewsCategoryRepository
 import org.mozilla.rocket.content.news.NewsViewModelFactory
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
@@ -34,21 +33,15 @@ class ContentModule {
     @Provides
     fun provideNewsSettingsRepository(
         newsSettingsRemoteDataSource: NewsSettingsRemoteDataSource,
-        newsSettingsLocalDataSource: NewsSettingsLocalDataSource)
-        : NewsSettingsRepository {
+        newsSettingsLocalDataSource: NewsSettingsLocalDataSource
+    ): NewsSettingsRepository {
         return NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
     }
 
     @Singleton
     @Provides
-    fun provideNewsCategoryRepository(context: Context): FakeNewsCategoryRepository {
-        return FakeNewsCategoryRepository(context)
-    }
-
-    @Singleton
-    @Provides
-    fun provideNewsViewModelFactory(newsCategoryRepository: FakeNewsCategoryRepository): NewsViewModelFactory {
-        return NewsViewModelFactory(newsCategoryRepository)
+    fun provideNewsViewModelFactory(newsSettingsRepository: NewsSettingsRepository): NewsViewModelFactory {
+        return NewsViewModelFactory(newsSettingsRepository)
     }
 
     @Singleton

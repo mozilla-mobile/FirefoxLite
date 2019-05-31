@@ -16,69 +16,22 @@
 
 package org.mozilla.rocket.content.news
 
-import android.content.Context
-import android.support.annotation.WorkerThread
-import android.support.v7.preference.PreferenceManager
-import org.mozilla.focus.R
 import org.mozilla.rocket.content.MediatorUseCase
 import org.mozilla.rocket.content.Result
-import org.mozilla.threadutils.ThreadUtils
-import java.util.Random
+import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import javax.inject.Inject
 
-class FakeNewsCategoryRepository @Inject constructor(val context: Context) {
-
-    @WorkerThread
-    fun getNewsCatsPref(): MutableSet<String>? {
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
-        val key = context.getString(R.string.pref_key_s_news_categories)
-        // TODO: remove this before merge. now simulate 90% the API call will success.
-        if (Random().nextInt(10) >= 9) {
-            return preferenceManager.getStringSet(key, null)
-        }
-        val default = setOf(
-            "movie-reviews",
-            "politics",
-            "career",
-            "education",
-            "entertainment",
-            "regional",
-            "videos",
-            "astrology",
-            "india",
-            "photos",
-            "automobile",
-            "world",
-            "crime",
-            "events",
-            "top-news",
-            "sports",
-            "business",
-            "health",
-            "technology",
-            "City",
-            "food",
-            "lifestyle",
-            "cricket",
-            "science",
-            "travel",
-            "jokes"
-        )
-        return preferenceManager.getStringSet(key, default)
-    }
-}
-
-open class LoadNewsCategoryUseCase @Inject constructor(private val repository: FakeNewsCategoryRepository) :
-
+open class LoadNewsCategoryUseCase @Inject constructor(private val repository: NewsSettingsRepository) :
     MediatorUseCase<LoadNewsCategoryByLangParameter, LoadNewsCategoryByLangResult>() {
     override fun execute(parameters: LoadNewsCategoryByLangParameter) {
-        // TODO: use coroutine when we have coroutineContext in androidx.core:core-ktx
-        ThreadUtils.postToBackgroundThread {
-            val newsCatsPref = repository.getNewsCatsPref()
-            if (newsCatsPref == null) {
+        val categoriesLiveData = repository.getCategoriesByLanguage(parameters.language)
+        result.removeSource(categoriesLiveData)
+        result.addSource(categoriesLiveData) { newsCategories ->
+            if (newsCategories == null) {
                 result.postValue(Result.Error(NewsCategoryNotFoundException()))
             } else {
-                val cats = LoadNewsCategoryByLangResult(newsCatsPref.toList())
+                val cats = LoadNewsCategoryByLangResult(newsCategories)
                 result.postValue(Result.Success(cats))
             }
         }
@@ -88,11 +41,9 @@ open class LoadNewsCategoryUseCase @Inject constructor(private val repository: F
 class NewsCategoryNotFoundException : Exception()
 
 data class LoadNewsCategoryByLangResult(
-
-    val categories: List<String>
+    val categories: List<NewsCategory>
 )
 
 data class LoadNewsCategoryByLangParameter(
-
     val language: String
 )
