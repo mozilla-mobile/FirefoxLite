@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
-import android.util.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.mozilla.threadutils.ThreadUtils
@@ -17,24 +16,35 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
     private val preferenceCategoriesLiveData: MutableLiveData<List<String>> = MutableLiveData()
 
     companion object {
-        private const val TAG = "NewsLocalDataSource"
         private const val PREF_NAME = "news_settings"
-        private const val KEY_STRING_SUPPORT_LANGUAGES = "support_lang"
-        private const val KEY_STRING_USER_PREFERENCE_LANGUAGE = "user_pref_lang"
-        private const val KEY_STRING_SUPPORT_CATEGORIES_PREFIX = "support_cat_"
-        private const val KEY_STRING_USER_PREFERENCE_CATEGORIES_PREFIX = "user_pref_cat_"
-        private const val DEFAULT_LANGUAGE = "english"
-        private const val DEFAULT_LANGUAGE_KEY = "1"
+        private const val KEY_JSON_STRING_SUPPORT_LANGUAGES = "support_lang"
+        private const val KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE = "user_pref_lang"
+        private const val KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX = "support_cat_"
+        private const val KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX = "user_pref_cat_"
+        private val DEFAULT_LANGUAGE_LIST = listOf(
+            NewsLanguage("English", "1", "English")
+        )
+        private val DEFAULT_CATEGORY_LIST = listOf(
+            NewsCategory.TOP_NEWS.categoryId
+        )
     }
 
     override fun getSupportLanguages(): LiveData<List<NewsLanguage>> {
         ThreadUtils.postToBackgroundThread {
+            var newsLanguageList = DEFAULT_LANGUAGE_LIST
             val jsonString = getPreferences()
-                .getString(KEY_STRING_SUPPORT_LANGUAGES, DEFAULT_LANGUAGE) ?: ""
-            val newsLanguageList = NewsLanguage.fromJson(jsonString)
-            if (newsLanguageList.isNotEmpty()) {
-                languagesLiveData.postValue(newsLanguageList)
+                .getString(KEY_JSON_STRING_SUPPORT_LANGUAGES, "") ?: ""
+            if (!TextUtils.isEmpty(jsonString)) {
+                try {
+                    val newsLanguageResult = NewsLanguage.fromJson(jsonString)
+                    if (newsLanguageResult.isNotEmpty()) {
+                        newsLanguageList = newsLanguageResult
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
             }
+            languagesLiveData.postValue(newsLanguageList)
         }
 
         return languagesLiveData
@@ -42,32 +52,27 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
 
     override fun setSupportLanguages(languages: List<NewsLanguage>) {
         ThreadUtils.postToBackgroundThread {
-            getPreferences().edit().putString(KEY_STRING_SUPPORT_LANGUAGES, languages.toJson().toString()).apply()
+            getPreferences().edit().putString(KEY_JSON_STRING_SUPPORT_LANGUAGES, languages.toJson().toString()).apply()
         }
         languagesLiveData.postValue(languages)
     }
 
     override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
-
         ThreadUtils.postToBackgroundThread {
-            try {
-
-                val jsonString = getPreferences()
-                    .getString(KEY_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
-
-                val selectedLanguage = if (TextUtils.isEmpty(jsonString)) {
-                    NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE, DEFAULT_LANGUAGE, true)
-                } else {
+            var selectedLanguage = DEFAULT_LANGUAGE_LIST[0].also { it.isSelected = true }
+            val jsonString = getPreferences()
+                .getString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
+            if (!TextUtils.isEmpty(jsonString)) {
+                try {
                     val newsLanguageList = NewsLanguage.fromJson(jsonString)
                     if (newsLanguageList.isNotEmpty()) {
-                        newsLanguageList[0].also { it.isSelected = true }
+                        selectedLanguage = newsLanguageList[0].also { it.isSelected = true }
                     }
-                    null
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
-                preferenceLanguagesLiveData.postValue(selectedLanguage)
-            } catch (e: JSONException) {
-                Log.d(TAG, "Error Parsing Json")
             }
+            preferenceLanguagesLiveData.postValue(selectedLanguage)
         }
 
         return preferenceLanguagesLiveData
@@ -75,17 +80,16 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
 
     override fun setUserPreferenceLanguage(language: NewsLanguage) {
         ThreadUtils.postToBackgroundThread {
-            getPreferences().edit().putString(KEY_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
+            getPreferences().edit().putString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
         }
         preferenceLanguagesLiveData.postValue(language)
     }
 
     override fun getSupportCategories(language: String): LiveData<List<String>> {
         ThreadUtils.postToBackgroundThread {
-            val jsonString = getPreferences().getString(KEY_STRING_SUPPORT_CATEGORIES_PREFIX + language, "")
-            jsonString?.let {
-                supportCategoriesLiveData.postValue(toCategoryList(it))
-            }
+            val jsonString = getPreferences()
+                .getString(KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language, "") ?: ""
+            supportCategoriesLiveData.postValue(toCategoryList(jsonString))
         }
 
         return supportCategoriesLiveData
@@ -94,7 +98,7 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
     override fun setSupportCategories(language: String, supportCategories: List<String>) {
         ThreadUtils.postToBackgroundThread {
             getPreferences().edit().putString(
-                KEY_STRING_SUPPORT_CATEGORIES_PREFIX + language,
+                KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
                 categoryListToJsonArray(supportCategories).toString()
             ).apply()
         }
@@ -103,10 +107,9 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
 
     override fun getUserPreferenceCategories(language: String): LiveData<List<String>> {
         ThreadUtils.postToBackgroundThread {
-            val jsonString = getPreferences().getString(KEY_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "")
-            jsonString?.let {
-                preferenceCategoriesLiveData.postValue(toCategoryList(it))
-            }
+            val jsonString = getPreferences()
+                .getString(KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "") ?: ""
+            preferenceCategoriesLiveData.postValue(toCategoryList(jsonString))
         }
 
         return preferenceCategoriesLiveData
@@ -115,7 +118,7 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
     override fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) {
         ThreadUtils.postToBackgroundThread {
             getPreferences().edit().putString(
-                KEY_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
+                KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
                 categoryListToJsonArray(userPreferenceCategories).toString()
             ).apply()
         }
@@ -137,12 +140,22 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
 
     private fun toCategoryList(jsonString: String): List<String> {
         val result = ArrayList<String>()
-        val items = JSONArray(jsonString)
-        for (i in 0 until items.length()) {
-            val categoryId = items.optString(i)
-            result.add(categoryId)
+        if (!TextUtils.isEmpty(jsonString)) {
+            try {
+                val items = JSONArray(jsonString)
+                for (i in 0 until items.length()) {
+                    val categoryId = items.optString(i)
+                    result.add(categoryId)
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
         }
 
-        return result
+        return if (result.size > 0) {
+            result
+        } else {
+            DEFAULT_CATEGORY_LIST
+        }
     }
 }
