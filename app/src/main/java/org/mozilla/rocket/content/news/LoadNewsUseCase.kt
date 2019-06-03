@@ -50,6 +50,5 @@ data class LoadNewsResult(
 )
 
 data class LoadNewsParameter(
-    val category: String,
-    val language: String
+    val category: String
 )
