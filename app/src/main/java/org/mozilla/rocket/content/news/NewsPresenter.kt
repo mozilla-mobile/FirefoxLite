@@ -32,7 +32,7 @@ class NewsPresenter(private val newsViewContract: NewsViewContract, private val 
 
     private var isLoading = false
 
-    fun setupNewsViewModel(fragmentActivity: FragmentActivity?, category: String) {
+    fun setupNewsViewModel(fragmentActivity: FragmentActivity?, category: String, language: String) {
         if (fragmentActivity == null) {
             return
         }
@@ -41,7 +41,7 @@ class NewsPresenter(private val newsViewContract: NewsViewContract, private val 
             hashMapOf(
                 NewsRepository.CONFIG_URL to NewsSourceManager.getInstance().newsSourceUrl,
                 NewsRepository.CONFIG_CATEGORY to category,
-                NewsRepository.CONFIG_LANGUAGE to "english" // TODO integrate with news language preference
+                NewsRepository.CONFIG_LANGUAGE to language
             )
         )
 
