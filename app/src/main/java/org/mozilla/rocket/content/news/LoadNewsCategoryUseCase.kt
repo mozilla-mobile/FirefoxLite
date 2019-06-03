@@ -45,5 +45,5 @@ data class LoadNewsCategoryByLangResult(
 )
 
 data class LoadNewsCategoryByLangParameter(
-    val language: String
+    val language: String = ""
 )
