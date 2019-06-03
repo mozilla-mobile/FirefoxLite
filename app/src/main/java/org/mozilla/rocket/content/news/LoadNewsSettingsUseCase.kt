@@ -19,31 +19,30 @@ package org.mozilla.rocket.content.news
 import org.mozilla.rocket.content.MediatorUseCase
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import javax.inject.Inject
 
-open class LoadNewsCategoryUseCase @Inject constructor(private val repository: NewsSettingsRepository) :
-    MediatorUseCase<LoadNewsCategoryByLangParameter, LoadNewsCategoryByLangResult>() {
-    override fun execute(parameters: LoadNewsCategoryByLangParameter) {
-        val categoriesLiveData = repository.getCategoriesByLanguage(parameters.language)
-        result.removeSource(categoriesLiveData)
-        result.addSource(categoriesLiveData) { newsCategories ->
-            if (newsCategories == null) {
-                result.postValue(Result.Error(NewsCategoryNotFoundException()))
+open class LoadNewsSettingsUseCase @Inject constructor(private val repository: NewsSettingsRepository) :
+    MediatorUseCase<LoadNewsSettingsParameter, LoadNewsSettingsResult>() {
+    override fun execute(parameters: LoadNewsSettingsParameter) {
+        val settingsLiveData = repository.getNewsSettings()
+        result.removeSource(settingsLiveData)
+        result.addSource(settingsLiveData) { settingsPair ->
+            if (settingsPair == null) {
+                result.postValue(Result.Error(NewsSettingsNotFoundException()))
             } else {
-                val cats = LoadNewsCategoryByLangResult(newsCategories)
-                result.postValue(Result.Success(cats))
+                val settingsResult = LoadNewsSettingsResult(settingsPair)
+                result.postValue(Result.Success(settingsResult))
             }
         }
     }
 }
 
-class NewsCategoryNotFoundException : Exception()
+class NewsSettingsNotFoundException : Exception()
 
-data class LoadNewsCategoryByLangResult(
-    val categories: List<NewsCategory>
+data class LoadNewsSettingsResult(
+    val settings: Pair<NewsLanguage, List<NewsCategory>>
 )
 
-data class LoadNewsCategoryByLangParameter(
-    val language: String = ""
-)
+class LoadNewsSettingsParameter

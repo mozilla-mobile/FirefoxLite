@@ -2,7 +2,6 @@ package org.mozilla.rocket.content.news.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
-import java.lang.NumberFormatException
 
 class NewsSettingsRepository(
     private val remoteDataSource: NewsSettingsDataSource,
@@ -15,6 +14,7 @@ class NewsSettingsRepository(
     private var preferenceLanguage: NewsLanguage? = null
 
     private val categoriesLiveData = MediatorLiveData<List<NewsCategory>>()
+    private val settingsLiveData = MediatorLiveData<Pair<NewsLanguage, List<NewsCategory>>>()
     private var remoteCategories: List<String>? = null
     private var localCategories: List<String>? = null
     private var preferenceCategories: List<String>? = null
@@ -66,6 +66,26 @@ class NewsSettingsRepository(
             updateCategoryResult(language)
         }
         return categoriesLiveData
+    }
+
+    fun getNewsSettings(): LiveData<Pair<NewsLanguage, List<NewsCategory>>> {
+        val userPreferenceLanguageData = localDataSource.getUserPreferenceLanguage()
+        settingsLiveData.removeSource(userPreferenceLanguageData)
+        settingsLiveData.addSource(userPreferenceLanguageData) { newsLanguage ->
+            newsLanguage?.let { language ->
+                preferenceLanguage = language
+
+                val categoriesByLanguage = getCategoriesByLanguage(language.key)
+                settingsLiveData.removeSource(categoriesByLanguage)
+                settingsLiveData.addSource(categoriesByLanguage) { categories ->
+                    categories?.let { list ->
+                        settingsLiveData.postValue(Pair(language, list))
+                    }
+                }
+            }
+        }
+
+        return settingsLiveData
     }
 
     fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) {

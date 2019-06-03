@@ -29,7 +29,7 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
     }
 
     override fun getLanguage(): String {
-        return "english"
+        return arguments?.getString(ContentFeature.EXTRA_NEWS_LANGUAGE) ?: "english"
     }
 
     companion object {
@@ -39,9 +39,10 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
             return NewsFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
         }
 
-        fun newInstance(category: String): NewsFragment {
+        fun newInstance(category: String, language: String): NewsFragment {
             val args = Bundle().apply {
                 putString(ContentFeature.TYPE_KEY, category)
+                putString(ContentFeature.EXTRA_NEWS_LANGUAGE, language)
             }
             return NewsFragment().apply {
                 arguments = args
@@ -75,7 +76,7 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
         super.onViewCreated(view, savedInstanceState)
         val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
         newsPresenter = NewsPresenter(this, newsViewModel)
-        newsPresenter?.setupNewsViewModel(activity, getCategory())
+        newsPresenter?.setupNewsViewModel(activity, getCategory(), getLanguage())
         newsListListener = newsPresenter
         newsListListener?.onShow(context!!)
 

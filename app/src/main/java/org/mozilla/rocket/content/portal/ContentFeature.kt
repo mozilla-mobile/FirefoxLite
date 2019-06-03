@@ -14,6 +14,7 @@ class ContentFeature {
         const val TYPE_COUPON = 1 shl 2
         const val TYPE_KEY = "contentType"
         const val EXTRA_CONFIG_NEWS = "extra_config_news"
+        const val EXTRA_NEWS_LANGUAGE = "extra_news_language"
         const val SETTING_REQUEST_CODE = 1492
     }
 
