@@ -19,7 +19,7 @@ tasks.create([ "type" : Pmd, "group": "verification", "name": "pmd"]) {
         xml.enabled = false
         html.enabled = true
         html {
-            destination "$projectDir.absolutePath/build/reports/pmd/pmd.html"
+            destination file("$projectDir.absolutePath/build/reports/pmd/pmd.html")
         }
     }
 }

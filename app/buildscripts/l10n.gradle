@@ -1,12 +1,11 @@
 import org.mozilla.rocket.GenerateLocaleTask
-import groovy.transform.Field
 // -------------------------------------------------------------------------------------------------
 // L10N: Generate list of locales
 // Focus provides its own (Android independent) locale switcher. That switcher requires a list
 // of locale codes. We generate that list here to avoid having to manually maintain a list of locales:
 // -------------------------------------------------------------------------------------------------
 
-@Field Closure removeR = {
+project.ext.removeR = {
     if (it.length() > 3 && it.contains("-r")) {
         // Android resource dirs add an "r" prefix to the region - we need to strip that for java usage
         // Add 1 to have the index of the r, without the dash
