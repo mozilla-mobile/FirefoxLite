@@ -72,9 +72,15 @@ class ChromeViewModel(
     fun invalidate() {
         isNightMode.invalidate()
         tabCount.invalidate()
+        isTabRestoredComplete.invalidate()
+        navigationState.invalidate()
+        currentUrl.invalidate()
+        currentTitle.invalidate()
         isRefreshing.invalidate()
         canGoBack.invalidate()
         canGoForward.invalidate()
+        isHomePageUrlInputShowing.invalidate()
+        isMyShotOnBoardingPending.invalidate()
     }
 
     fun onNightModeChanged(isEnabled: Boolean) {
