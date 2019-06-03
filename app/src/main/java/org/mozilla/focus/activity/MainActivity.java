@@ -23,7 +23,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -36,7 +35,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -60,7 +58,6 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.DialogUtils;
-import org.mozilla.focus.utils.FormatUtils;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.NoRemovableStorageException;
@@ -81,9 +78,7 @@ import org.mozilla.rocket.landing.OrientationState;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
 import org.mozilla.rocket.menu.MenuDialog;
-import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.PrivateMode;
-import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.promotion.PromotionModel;
 import org.mozilla.rocket.promotion.PromotionPresenter;
 import org.mozilla.rocket.promotion.PromotionViewContract;
@@ -109,7 +104,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     private PromotionModel promotionModel;
 
-    private BottomSheetDialog menu;
+    private MenuDialog menu;
     private View snackBarContainer;
 
     private ScreenNavigator screenNavigator;
@@ -153,7 +148,10 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     protected void onCreate(Bundle savedInstanceState) {
         themeManager = new ThemeManager(this);
         super.onCreate(savedInstanceState);
+        screenNavigator = new ScreenNavigator(this);
         chromeViewModel = Inject.obtainChromeViewModel(this);
+        screenNavigator.getNavigationState().observe(this, state ->
+                chromeViewModel.getNavigationState().setValue(state));
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
 
         asyncInitialize();
@@ -161,8 +159,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         setContentView(R.layout.activity_main);
         initViews();
         initBroadcastReceivers();
-
-        screenNavigator = new ScreenNavigator(this);
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -367,7 +363,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     private void showMenu() {
-        chromeViewModel.getUpdateMenu().call();
         menu.show();
     }
 
@@ -379,7 +374,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         return Settings.getInstance(this).shouldBlockImages();
     }
 
-    private void showListPanel(int type) {
+    public void showListPanel(int type) {
         ListPanelDialog dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
 
@@ -409,105 +404,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         }
     }
 
-    View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            menu.cancel();
-            switch (v.getId()) {
-                case R.id.menu_night_mode:
-                    final Settings settings = Settings.getInstance(getApplicationContext());
-
-                    setNightModeEnabled(settings, true);
-                    showAdjustBrightness();
-
-                    return true;
-                default:
-                    throw new RuntimeException("Unknown id in menu, OnLongClickListener() is only for known ids");
-            }
-        }
-    };
-
+    // TODO: Evan, remove this workaround method
     public void onMenuItemClicked(View v) {
-        final int stringResource;
-        if (!v.isEnabled()) {
-            return;
-        }
-        switch (v.getId()) {
-            case R.id.menu_blockimg:
-                //  Toggle
-                final boolean blockingImages = !isBlockingImages();
-                Settings.getInstance(this).setBlockImages(blockingImages);
-
-                v.setSelected(blockingImages);
-                stringResource = blockingImages ? R.string.message_enable_block_image : R.string.message_disable_block_image;
-                Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
-
-                TelemetryWrapper.menuBlockImageChangeTo(blockingImages);
-                break;
-            case R.id.menu_turbomode:
-                //  Toggle
-                final boolean turboEnabled = !isTurboEnabled();
-                Settings.getInstance(this).setTurboMode(turboEnabled);
-
-                v.setSelected(turboEnabled);
-                stringResource = turboEnabled ? R.string.message_enable_turbo_mode : R.string.message_disable_turbo_mode;
-                Toast.makeText(this, stringResource, Toast.LENGTH_SHORT).show();
-
-                TelemetryWrapper.menuTurboChangeTo(turboEnabled);
-                break;
-            case R.id.btn_private_browsing:
-                Intent intent = new Intent(this, PrivateModeActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out);
-                TelemetryWrapper.togglePrivateMode(true);
-                break;
-            case R.id.menu_night_mode:
-                final Settings settings = Settings.getInstance(this);
-                final boolean nightModeEnabled = !isNightModeEnabled(settings);
-                v.setSelected(nightModeEnabled);
-
-                setNightModeEnabled(settings, nightModeEnabled);
-                showAdjustBrightnessIfNeeded(settings);
-
-                TelemetryWrapper.menuNightModeChangeTo(nightModeEnabled);
-                break;
-            case R.id.menu_find_in_page:
-                onFindInPageClicked();
-                break;
-            case R.id.menu_delete:
-                onDeleteClicked();
-                TelemetryWrapper.clickMenuClearCache();
-                break;
-            case R.id.menu_download:
-                chromeViewModel.getShowDownloadPanel().call();
-                TelemetryWrapper.clickMenuDownload();
-                break;
-            case R.id.menu_history:
-                onHistoryClicked();
-                TelemetryWrapper.clickMenuHistory();
-                break;
-            case R.id.menu_screenshots:
-                onScreenshotsClicked();
-                TelemetryWrapper.clickMenuCapture();
-                break;
-            case R.id.menu_preferences:
-                driveDefaultBrowser();
-                onPreferenceClicked();
-                TelemetryWrapper.clickMenuSettings();
-                break;
-            case R.id.menu_exit:
-                onExitClicked();
-                TelemetryWrapper.clickMenuExit();
-                break;
-            case R.id.menu_bookmark:
-                onBookmarksClicked();
-                TelemetryWrapper.clickMenuBookmark();
-                break;
-            default:
-                throw new RuntimeException("Unknown id in menu, onMenuItemClicked() is only for" +
-                        " known ids");
-        }
-        menu.cancel();
+        menu.onMenuItemClicked(v);
     }
 
     private void driveDefaultBrowser() {
@@ -538,10 +437,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         super.onDestroy();
     }
 
-    private void onPreferenceClicked() {
-        openPreferences();
-    }
-
     private void onExitClicked() {
         GeoPermissionCache.clear();
         if (PrivateMode.hasPrivateSession(this)) {
@@ -551,59 +446,12 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         finish();
     }
 
-
-    private void onBookmarksClicked() {
-        showListPanel(ListPanelDialog.TYPE_BOOKMARKS);
-    }
-
     private void onDownloadClicked() {
         showListPanel(ListPanelDialog.TYPE_DOWNLOADS);
     }
 
-    private void onHistoryClicked() {
-        showListPanel(ListPanelDialog.TYPE_HISTORY);
-    }
-
-    private void onScreenshotsClicked() {
-        Settings.getInstance(this).setHasUnreadMyShot(false);
-        showListPanel(ListPanelDialog.TYPE_SCREENSHOTS);
-    }
-
-    private void onFindInPageClicked() {
-        final BrowserFragment frg = getVisibleBrowserFragment();
-        if (frg != null) {
-            frg.showFindInPage();
-        }
-    }
-
-    private void onDeleteClicked() {
-        final long diff = FileUtils.clearCache(this);
-        final int stringId = (diff < 0) ? R.string.message_clear_cache_fail : R.string.message_cleared_cached;
-        final String msg = getString(stringId, FormatUtils.getReadableStringFromFileSize(diff));
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    private boolean shouldShowNightModeSpotlight(Settings settings) {
-        return settings.showNightModeSpotlight();
-    }
-
     private void setShowNightModeSpotlight(Settings settings, boolean enabled) {
         settings.setNightModeSpotlight(enabled);
-    }
-
-    private void showAdjustBrightness() {
-        startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromMenu(this));
-    }
-
-    private void showAdjustBrightnessIfNeeded(Settings settings) {
-        final float currentBrightness = settings.getNightModeBrightnessValue();
-        if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
-            // First time turn on
-            settings.setNightModeBrightnessValue(AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS);
-            showAdjustBrightness();
-
-            setShowNightModeSpotlight(settings, true);
-        }
     }
 
     private void applyNightModeBrightness(boolean enable, Settings settings, Window window) {
@@ -619,9 +467,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         window.setAttributes(layoutParams);
     }
 
-    private void setNightModeEnabled(Settings settings, boolean enabled) {
-        chromeViewModel.onNightModeChanged(enabled);
-        settings.setNightMode(enabled);
+    private void onNightModeEnabled(Settings settings, boolean enabled) {
         applyNightModeBrightness(enabled, settings, getWindow());
 
         Fragment fragment = this.screenNavigator.getTopFragment();
@@ -630,10 +476,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         } else if (fragment instanceof HomeFragment) {
             ((HomeFragment) fragment).setNightModeEnabled(enabled);
         }
-    }
-
-    private boolean isNightModeEnabled(Settings settings) {
-        return settings.isNightModeEnable();
     }
 
     @VisibleForTesting
@@ -818,6 +660,14 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 showMyShotOnBoarding();
             }
         });
+        chromeViewModel.isNightMode().observe(this, isNightMode -> {
+            if (isNightMode != null) {
+                onNightModeEnabled(Settings.getInstance(this), isNightMode);
+            }
+        });
+        chromeViewModel.getDriveDefaultBrowser().observe(this, unit -> driveDefaultBrowser());
+        chromeViewModel.getExitApp().observe(this, unit -> onExitClicked());
+        chromeViewModel.getOpenPreference().observe(this, unit -> openPreferences());
     }
 
     @Override
