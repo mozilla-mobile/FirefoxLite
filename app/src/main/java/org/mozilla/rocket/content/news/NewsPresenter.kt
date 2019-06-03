@@ -4,7 +4,6 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.support.v4.app.FragmentActivity
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
@@ -32,12 +31,9 @@ class NewsPresenter(private val newsViewContract: NewsViewContract, private val 
 
     private var isLoading = false
 
-    fun setupNewsViewModel(fragmentActivity: FragmentActivity?, category: String, language: String) {
-        if (fragmentActivity == null) {
-            return
-        }
+    fun setupNewsViewModel(context: Context, category: String, language: String) {
         val repository = NewsRepository.newInstance(
-            fragmentActivity,
+            context,
             hashMapOf(
                 NewsRepository.CONFIG_URL to NewsSourceManager.getInstance().newsSourceUrl,
                 NewsRepository.CONFIG_CATEGORY to category,
@@ -55,7 +51,7 @@ class NewsPresenter(private val newsViewContract: NewsViewContract, private val 
         // creating a repository will also create a new subscription.
         // we deliberately create a new subscription again to load data aggressively.
         val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
-        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(fragmentActivity.applicationContext)
+        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(context.applicationContext)
         newsViewModel.newsSettingsRepository = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
         newsViewModel.loadMore(newsViewContract.getCategory())
     }
