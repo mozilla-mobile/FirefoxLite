@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.news.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import java.lang.NumberFormatException
 
 class NewsSettingsRepository(
     private val remoteDataSource: NewsSettingsDataSource,
@@ -79,6 +80,11 @@ class NewsSettingsRepository(
         if (localLanguages?.isNotEmpty() == true) {
             localLanguages?.let {
                 supportLanguages.addAll(it)
+                try {
+                    supportLanguages.sortBy { item -> item.code.toInt() }
+                } catch (e: NumberFormatException) {
+                    e.printStackTrace()
+                }
             }
         }
 
@@ -89,7 +95,7 @@ class NewsSettingsRepository(
             remoteLanguages = null
         }
 
-        val defaultLanguage = preferenceLanguage?.key ?: "English"
+        val defaultLanguage = preferenceLanguage?.key ?: ""
         supportLanguages.find { it.key == defaultLanguage }?.isSelected = true
 
         languagesLiveData.postValue(supportLanguages)
@@ -98,10 +104,11 @@ class NewsSettingsRepository(
     private fun updateCategoryResult(language: String) {
         val supportCategories = ArrayList<NewsCategory>()
         if (localCategories?.isNotEmpty() == true) {
-            localCategories?.let {
+            localCategories?.let { it ->
                 supportCategories.addAll(
                     it.asSequence()
                         .mapNotNull { categoryId -> NewsCategory.getCategoryById(categoryId) }
+                        .sortedBy { item -> item.order }
                         .toList()
                 )
             }
