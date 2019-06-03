@@ -5,7 +5,7 @@ object Versions {
     const val build_tools = "28.0.3"
     const val version_code = 1
     const val version_name = "1.9.1"
-    const val android_gradle_plugin = "3.2.1"
+    const val android_gradle_plugin = "3.4.2"
     const val gms_oss_licenses_plugin = "0.9.3"
     const val support = "1.0.0"
     const val appcompat = "1.0.2"
@@ -19,7 +19,7 @@ object Versions {
     const val lifecycle = "2.0.0"
     const val room = "2.1.0"
     const val glide = "4.0.0"
-    const val kotlin = "1.3.0"
+    const val kotlin = "1.3.41"
     const val ktlint = "0.32.0"
     const val gms = "11.8.0"
     const val navigation = "2.0.0"
