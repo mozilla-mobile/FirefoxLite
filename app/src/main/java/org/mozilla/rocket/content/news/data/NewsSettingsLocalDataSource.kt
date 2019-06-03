@@ -109,7 +109,9 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
         ThreadUtils.postToBackgroundThread {
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "") ?: ""
-            preferenceCategoriesLiveData.postValue(toCategoryList(jsonString))
+            if (jsonString.isNotEmpty()) {
+                preferenceCategoriesLiveData.postValue(toCategoryList(jsonString))
+            }
         }
 
         return preferenceCategoriesLiveData
