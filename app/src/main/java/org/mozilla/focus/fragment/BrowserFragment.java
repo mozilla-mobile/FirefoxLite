@@ -471,6 +471,12 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 goForward();
             }
         });
+        chromeViewModel.getShowFindInPage().observe(this, unit -> {
+            ScreenNavigator.NavigationState state = chromeViewModel.getNavigationState().getValue();
+            if (state != null & state.isBrowser()) {
+                showFindInPage();
+            }
+        });
     }
 
     private void setupBottomBar(View rootView) {
