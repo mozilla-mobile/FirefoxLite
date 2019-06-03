@@ -6,6 +6,7 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.os.Parcel
 import android.os.Parcelable
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Settings
@@ -20,6 +21,7 @@ class ChromeViewModel(
     val isNightMode = MutableLiveData<Boolean>()
     val tabCount = MutableLiveData<Int>()
     val isTabRestoredComplete = MutableLiveData<Boolean>()
+    val navigationState = MutableLiveData<ScreenNavigator.NavigationState>()
     val currentUrl = MutableLiveData<String>()
     val currentTitle = MutableLiveData<String>()
     var isCurrentUrlBookmarked: LiveData<Boolean>
@@ -47,6 +49,13 @@ class ChromeViewModel(
     val dropCurrentPage = SingleLiveEvent<Unit>()
     val updateMenu = SingleLiveEvent<Unit>()
     val clearBrowsingHistory = SingleLiveEvent<Unit>()
+    val driveDefaultBrowser = SingleLiveEvent<Unit>()
+    val exitApp = SingleLiveEvent<Unit>()
+    val showBookmarks = SingleLiveEvent<Unit>()
+    val showHistory = SingleLiveEvent<Unit>()
+    val showScreenshots = SingleLiveEvent<Unit>()
+    val openPreference = SingleLiveEvent<Unit>()
+    val showFindInPage = SingleLiveEvent<Unit>()
 
     init {
         isNightMode.value = settings.isNightModeEnable

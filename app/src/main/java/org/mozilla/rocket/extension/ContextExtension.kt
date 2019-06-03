@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.support.v4.app.FragmentActivity
 
-
 fun Context.toActivity(): Activity = when {
     this is Activity -> this
     this is ContextWrapper -> this.baseContext.toActivity()
