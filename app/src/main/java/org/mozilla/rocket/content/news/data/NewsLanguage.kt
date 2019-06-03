@@ -28,10 +28,10 @@ data class NewsLanguage(
             return result
         }
     }
-}
 
-fun NewsLanguage.getApiId(): String {
-    return key.toLowerCase()
+    fun getApiId(): String {
+        return key.toLowerCase()
+    }
 }
 
 fun List<NewsLanguage>.toJson(): JSONObject {

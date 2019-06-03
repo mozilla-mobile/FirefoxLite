@@ -8,17 +8,18 @@ import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import javax.inject.Inject
 
 class NewsViewModel @Inject constructor(
-    private val loadNewsCategoryUseCase: LoadNewsCategoryUseCase
+    private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase
 ) : ViewModel() {
 
-    private var newCategoryResult: MediatorLiveData<Result<LoadNewsCategoryByLangResult>> = loadNewsCategoryUseCase.observe()
+    private var newsSettingsResult: MediatorLiveData<Result<LoadNewsSettingsResult>> = loadNewsSettingsUseCase.observe()
 
-    val categories: LiveData<List<NewsCategory>> =
-        Transformations.map(this.newCategoryResult) { (it as? Result.Success)?.data?.categories }
+    val newsSettings: LiveData<Pair<NewsLanguage, List<NewsCategory>>> =
+        Transformations.map(this.newsSettingsResult) { (it as? Result.Success)?.data?.settings }
 
     private val newsMap = HashMap<String, MediatorLiveData<List<NewsItem>>>()
 
@@ -31,8 +32,7 @@ class NewsViewModel @Inject constructor(
     }
 
     private fun updateCategory() {
-        val param = LoadNewsCategoryByLangParameter()
-        loadNewsCategoryUseCase.execute(param)
+        loadNewsSettingsUseCase.execute(LoadNewsSettingsParameter())
     }
 
     fun clear() {

@@ -17,12 +17,13 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.content_tab_news.*
+import kotlinx.android.synthetic.main.content_tab_news.news_setting
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalView
 
@@ -60,8 +61,8 @@ class NewsTabFragment : DaggerFragment() {
         if (savedInstanceState == null) {
             newsViewModel = activityViewModelProvider(viewModelFactory)
 
-            newsViewModel.categories.observe(viewLifecycleOwner, Observer { list ->
-                list?.let {
+            newsViewModel.newsSettings.observe(viewLifecycleOwner, Observer { settings ->
+                settings?.let {
                     setupViewPager(view, it)
                 }
             })
@@ -72,8 +73,8 @@ class NewsTabFragment : DaggerFragment() {
         }
     }
 
-    private fun setupViewPager(view: View, newsCategories: List<NewsCategory>) {
-        newsCategories.apply {
+    private fun setupViewPager(view: View, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
+        newsSettings.apply {
             val pager = view.findViewById<ViewPager>(R.id.news_viewpager)
             view.findViewById<TabLayout>(R.id.news_tab).run {
                 setupWithViewPager(pager)
@@ -103,17 +104,20 @@ class NewsTabFragment : DaggerFragment() {
     /**
      * Adapter that builds a page for each E-Commerce type .
      */
-    inner class EcFragmentAdapter(fm: FragmentManager, private val cats: List<NewsCategory>) : FragmentPagerAdapter(fm) {
+    inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) : FragmentPagerAdapter(fm) {
 
-        override fun getCount() = cats.size
+        private val language = newsSettings.first.getApiId()
+        private val categories = newsSettings.second
+
+        override fun getCount() = categories.size
 
         override fun getItem(position: Int): Fragment {
-            val cat = cats[position]
-            return NewsFragment.newInstance(cat.categoryId)
+            val cat = categories[position]
+            return NewsFragment.newInstance(cat.categoryId, language)
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return getString(cats[position].stringResourceId)
+            return getString(categories[position].stringResourceId)
         }
     }
 
