@@ -278,6 +278,12 @@
   <string name="private_browsing_erase_done">ล้างประวัติการเรียกดูแบบส่วนตัวของคุณแล้ว</string>
   <string name="private_browsing_tracker_blocked">ตัวติดตามที่ปิดกั้น</string>
   <string name="private_browsing_tracker_blocked_description">เพลิดเพลินกับการเรียกดูด้วยการป้องกันพิเศษ</string>
+  <string name="private_browsing_dialog_add_shortcut_title">เข้าถึงโหมดส่วนตัวในคลิกเดียว! ต้องการเพิ่มทางลัดโหมดส่วนตัวไปยังหน้าจอหลัก?</string>
+  <string name="private_browsing_dialog_add_shortcut_no">ไม่ ขอบคุณ</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">ใช่</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">คุณสามารถเพิ่มทางลัดโหมดส่วนตัวในภายหลังในการตั้งค่า</string>
+  <string name="private_browsing_shortcut_name">%1$s - การเรียกดูแบบส่วนตัว</string>
+  <string name="preference_add_private_browsing_shortcut">เพิ่มทางลัดโหมดส่วนตัวไปยังหน้าจอหลัก</string>
   <string name="my_shot_on_boarding_message">ดูภาพหน้าจอของคุณที่นี่!</string>
   <string name="my_shot_on_boarding_category_message">เพื่อปรับปรุงประสบการณ์ผลิตภัณฑ์ของคุณ เราเก็บรวบรวมข้อมูลเกี่ยวกับหมวดหมู่ของภาพหน้าจอของคุณ</string>
   <string name="btn_vpn">บริการ VPN ฟรี 7 วันพร้อมแล้วสำหรับคุณ ติดตั้งตอนนี้เพื่อเรียกดูอย่างเป็นส่วนตัวและปลอดภัยมากขึ้น</string>
