@@ -24,6 +24,9 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
     @javax.inject.Inject
     lateinit var viewModelFactory: NewsViewModelFactory
 
+    @javax.inject.Inject
+    lateinit var applicationContext: Context
+
     override fun getCategory(): String {
         return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
     }
@@ -76,7 +79,7 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
         super.onViewCreated(view, savedInstanceState)
         val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
         newsPresenter = NewsPresenter(this, newsViewModel)
-        newsPresenter?.setupNewsViewModel(activity, getCategory(), getLanguage())
+        newsPresenter?.setupNewsViewModel(applicationContext, getCategory(), getLanguage())
         newsListListener = newsPresenter
         newsListListener?.onShow(context!!)
 
