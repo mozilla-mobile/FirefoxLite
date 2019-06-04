@@ -404,11 +404,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         }
     }
 
-    // TODO: Evan, remove this workaround method
-    public void onMenuItemClicked(View v) {
-        menu.onMenuItemClicked(v);
-    }
-
     private void driveDefaultBrowser() {
         final Settings settings = Settings.getInstance(this);
         if (settings.isDefaultBrowserSettingDidShow()) {
@@ -444,10 +439,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
             startActivity(intent);
         }
         finish();
-    }
-
-    private void onDownloadClicked() {
-        showListPanel(ListPanelDialog.TYPE_DOWNLOADS);
     }
 
     private void setShowNightModeSpotlight(Settings settings, boolean enabled) {
@@ -622,6 +613,11 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     private void observeChromeAction() {
+        chromeViewModel.getShowToast().observe(this, toastMessage -> {
+            if (toastMessage != null) {
+                Toast.makeText(this, getString(toastMessage.getStringResId(), (Object[]) toastMessage.getArgs()), toastMessage.getDuration()).show();
+            }
+        });
         chromeViewModel.getOpenUrl().observe(this, action -> {
             if (action != null) {
                 screenNavigator.showBrowserScreen(action.getUrl(), action.getWithNewTab(), action.isFromExternal());
@@ -654,7 +650,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 onShareClicked(browserFragment);
             }
         });
-        chromeViewModel.getShowDownloadPanel().observe(this, unit -> onDownloadClicked());
+        chromeViewModel.getShowDownloadPanel().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_DOWNLOADS));
         chromeViewModel.isMyShotOnBoardingPending().observe(this, isPending -> {
             if (isPending != null && isPending) {
                 showMyShotOnBoarding();
@@ -668,6 +664,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         chromeViewModel.getDriveDefaultBrowser().observe(this, unit -> driveDefaultBrowser());
         chromeViewModel.getExitApp().observe(this, unit -> onExitClicked());
         chromeViewModel.getOpenPreference().observe(this, unit -> openPreferences());
+        chromeViewModel.getShowBookmarks().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_BOOKMARKS));
+        chromeViewModel.getShowHistory().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_HISTORY));
+        chromeViewModel.getShowScreenshots().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_SCREENSHOTS));
     }
 
     @Override

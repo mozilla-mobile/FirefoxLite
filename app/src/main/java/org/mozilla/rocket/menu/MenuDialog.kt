@@ -39,14 +39,6 @@ class MenuDialog : BottomSheetDialog {
 
     private lateinit var contentLayout: View
 
-    // TODO: Evan, to be implemented
-//    private lateinit var myshotIndicator: View
-//    private lateinit var myshotButton: View
-//    private lateinit var nightModeButton: View
-//    private lateinit var turboModeButton: View
-//    private lateinit var blockImageButton: View
-//    private lateinit var privateModeIndicator: View
-
     constructor(context: Context) : super(context)
     constructor(context: Context, @StyleRes theme: Int) : super(context, theme)
 
@@ -69,27 +61,89 @@ class MenuDialog : BottomSheetDialog {
     }
 
     private fun initMenu() {
-        // TODO: Evan, to be implemented
-//        myshotIndicator = contentLayout.findViewById<View>(R.id.menu_my_shot_unread)
-//        privateModeIndicator = contentLayout.findViewById<View>(R.id.menu_private_mode_indicator)
-//        myshotButton = contentLayout.findViewById<View>(R.id.menu_screenshots)
-//
-//        turboModeButton = contentLayout.findViewById<View>(R.id.menu_turbomode)
-//        turboModeButton.isSelected = settings.shouldUseTurboMode()
-//
-//        blockImageButton = contentLayout.findViewById<View>(R.id.menu_blockimg)
-//        blockImageButton.isSelected = settings.shouldBlockImages()
-//
-//        nightModeButton = contentLayout.findViewById<View>(R.id.menu_night_mode)
-//        nightModeButton.setOnLongClickListener(onLongClickListener)
-//        nightModeButton.isSelected = settings.isNightModeEnable
-
         val menuLayout = contentLayout.findViewById<MenuLayout>(R.id.menu_layout)
+        menuLayout.setOnItemClickListener(object : MenuLayout.OnItemClickListener {
+            override fun onItemClick(type: Int, position: Int) {
+                cancel()
+                when (type) {
+                    MenuItemAdapter.TYPE_BOOKMARKS -> {
+                        chromeViewModel.showBookmarks.call()
+                        TelemetryWrapper.clickMenuBookmark()
+                    }
+                    MenuItemAdapter.TYPE_DOWNLOADS -> {
+                        chromeViewModel.showDownloadPanel.call()
+                        TelemetryWrapper.clickMenuDownload()
+                    }
+                    MenuItemAdapter.TYPE_HISTORY -> {
+                        chromeViewModel.showHistory.call()
+                        TelemetryWrapper.clickMenuHistory()
+                    }
+                    MenuItemAdapter.TYPE_SCREENSHOTS -> {
+                        settings.setHasUnreadMyShot(false)
+                        chromeViewModel.showScreenshots.call()
+                        TelemetryWrapper.clickMenuCapture()
+                    }
+                    MenuItemAdapter.TYPE_TURBO_MODE -> chromeViewModel.onTurboModeToggled()
+                    MenuItemAdapter.TYPE_PRIVATE_BROWSING -> {
+                        val intent = Intent(context, PrivateModeActivity::class.java)
+                        startActivity(context, intent, null)
+                        overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out)
+                        TelemetryWrapper.togglePrivateMode(true)
+                    }
+                    MenuItemAdapter.TYPE_NIGHT_MODE -> {
+                        chromeViewModel.onNightModeToggled()
+                        showAdjustBrightnessIfNeeded(settings)
+                    }
+                    MenuItemAdapter.TYPE_BLOCK_IMAGE -> chromeViewModel.onBlockImageToggled()
+                    MenuItemAdapter.TYPE_FIND_IN_PAGE -> chromeViewModel.showFindInPage.call()
+                    MenuItemAdapter.TYPE_CLEAR_CACHE -> {
+                        onDeleteClicked()
+                        TelemetryWrapper.clickMenuClearCache()
+                    }
+                    MenuItemAdapter.TYPE_PREFERENCES -> {
+                        chromeViewModel.driveDefaultBrowser.call()
+                        chromeViewModel.openPreference.call()
+                        TelemetryWrapper.clickMenuSettings()
+                    }
+                    MenuItemAdapter.TYPE_EXIT_APP -> {
+                        chromeViewModel.exitApp.call()
+                        TelemetryWrapper.clickMenuExit()
+                    }
+                    else -> throw IllegalArgumentException("Unhandled menu item, type: $type")
+                }
+            }
+        })
+        menuLayout.setOnItemLongClickListener(object : MenuLayout.OnItemLongClickListener {
+            override fun onItemLongClick(type: Int, position: Int): Boolean {
+                when (type) {
+                    MenuItemAdapter.TYPE_NIGHT_MODE -> {
+                        chromeViewModel.onNightModeChanged(true)
+                        showAdjustBrightness()
+                    }
+                    else -> return false
+                }
+
+                return true
+            }
+        })
         menuItemAdapter = MenuItemAdapter(menuLayout, MenuItemAdapter.Theme.Light)
         val activity = context.toFragmentActivity()
-        menuViewModel.menuItems.nonNullObserve(activity) { menuItems ->
-            menuItemAdapter.setItems(menuItems)
-        }
+        menuViewModel.menuItems.nonNullObserve(activity, menuItemAdapter::setItems)
+
+        chromeViewModel.isTurboModeEnabled.nonNullObserve(activity, menuItemAdapter::setTurboMode)
+        chromeViewModel.isNightMode.nonNullObserve(activity, menuItemAdapter::setNightMode)
+        chromeViewModel.isBlockImageEnabled.nonNullObserve(activity, menuItemAdapter::setBlockImageEnabled)
+    }
+
+    private fun overridePendingTransition(enterAnim: Int, exitAnim: Int) {
+        context.toActivity().overridePendingTransition(enterAnim, exitAnim)
+    }
+
+    private fun onDeleteClicked() {
+        val diff = FileUtils.clearCache(context)
+        val stringId = if (diff < 0) R.string.message_clear_cache_fail else R.string.message_cleared_cached
+        val msg = context.getString(stringId, FormatUtils.getReadableStringFromFileSize(diff))
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun initBottomBar() {
@@ -203,20 +257,6 @@ class MenuDialog : BottomSheetDialog {
         }
     }
 
-    private var onLongClickListener: View.OnLongClickListener = View.OnLongClickListener { v ->
-        cancel()
-        when (v.id) {
-            R.id.menu_night_mode -> {
-                chromeViewModel.onNightModeChanged(true)
-                settings.setNightMode(true)
-                showAdjustBrightness()
-
-                true
-            }
-            else -> throw RuntimeException("Unknown id in menu, OnLongClickListener() is only for known ids")
-        }
-    }
-
     private fun showAdjustBrightness() {
         startActivity(context, AdjustBrightnessDialog.Intents.getStartIntentFromMenu(context), null)
     }
@@ -229,97 +269,5 @@ class MenuDialog : BottomSheetDialog {
             showAdjustBrightness()
             settings.setNightModeSpotlight(true)
         }
-    }
-
-    fun onMenuItemClicked(v: View) {
-        val stringResource: Int
-        if (!v.isEnabled) {
-            return
-        }
-        when (v.id) {
-            R.id.menu_blockimg -> {
-                //  Toggle
-                val blockingImages = !settings.shouldBlockImages()
-                settings.setBlockImages(blockingImages)
-
-                v.isSelected = blockingImages
-                stringResource = if (blockingImages) R.string.message_enable_block_image else R.string.message_disable_block_image
-                Toast.makeText(context, stringResource, Toast.LENGTH_SHORT).show()
-
-                TelemetryWrapper.menuBlockImageChangeTo(blockingImages)
-            }
-            R.id.menu_turbomode -> {
-                //  Toggle
-                val turboEnabled = !settings.shouldUseTurboMode()
-                settings.setTurboMode(!settings.shouldUseTurboMode())
-
-                v.isSelected = turboEnabled
-                stringResource = if (turboEnabled) R.string.message_enable_turbo_mode else R.string.message_disable_turbo_mode
-                Toast.makeText(context, stringResource, Toast.LENGTH_SHORT).show()
-
-                TelemetryWrapper.menuTurboChangeTo(turboEnabled)
-            }
-            R.id.btn_private_browsing -> {
-                val intent = Intent(context, PrivateModeActivity::class.java)
-                startActivity(context, intent, null)
-                overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out)
-                TelemetryWrapper.togglePrivateMode(true)
-            }
-            R.id.menu_night_mode -> {
-                val settings = settings
-                val nightModeEnabled = !settings.isNightModeEnable
-                v.isSelected = nightModeEnabled
-
-                chromeViewModel.onNightModeChanged(nightModeEnabled)
-                settings.setNightMode(nightModeEnabled)
-                showAdjustBrightnessIfNeeded(settings)
-
-                TelemetryWrapper.menuNightModeChangeTo(nightModeEnabled)
-            }
-            R.id.menu_find_in_page -> chromeViewModel.showFindInPage.call()
-            R.id.menu_delete -> {
-                onDeleteClicked()
-                TelemetryWrapper.clickMenuClearCache()
-            }
-            R.id.menu_download -> {
-                chromeViewModel.showDownloadPanel.call()
-                TelemetryWrapper.clickMenuDownload()
-            }
-            R.id.menu_history -> {
-                chromeViewModel.showHistory.call()
-                TelemetryWrapper.clickMenuHistory()
-            }
-            R.id.menu_screenshots -> {
-                settings.setHasUnreadMyShot(false)
-                chromeViewModel.showScreenshots.call()
-                TelemetryWrapper.clickMenuCapture()
-            }
-            R.id.menu_preferences -> {
-                chromeViewModel.driveDefaultBrowser.call()
-                chromeViewModel.openPreference.call()
-                TelemetryWrapper.clickMenuSettings()
-            }
-            R.id.menu_exit -> {
-                chromeViewModel.exitApp.call()
-                TelemetryWrapper.clickMenuExit()
-            }
-            R.id.menu_bookmark -> {
-                chromeViewModel.showBookmarks.call()
-                TelemetryWrapper.clickMenuBookmark()
-            }
-            else -> throw RuntimeException("Unknown id in menu, onMenuItemClicked() is only for" + " known ids")
-        }
-        cancel()
-    }
-
-    private fun overridePendingTransition(enterAnim: Int, exitAnim: Int) {
-        context.toActivity().overridePendingTransition(enterAnim, exitAnim)
-    }
-
-    private fun onDeleteClicked() {
-        val diff = FileUtils.clearCache(context)
-        val stringId = if (diff < 0) R.string.message_clear_cache_fail else R.string.message_cleared_cached
-        val msg = context.getString(stringId, FormatUtils.getReadableStringFromFileSize(diff))
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 }
