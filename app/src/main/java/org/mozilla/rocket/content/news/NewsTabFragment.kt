@@ -107,22 +107,21 @@ class NewsTabFragment : DaggerFragment() {
     inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) : FragmentPagerAdapter(fm) {
 
         private val language = newsSettings.first.getApiId()
-        private val categories = newsSettings.second
+        private val displayCategories = newsSettings.second.filter { it.isSelected }
 
-        override fun getCount() = categories.size
+        override fun getCount() = displayCategories.size
 
         override fun getItem(position: Int): Fragment {
-            val cat = categories[position]
+            val cat = displayCategories[position]
             return NewsFragment.newInstance(cat.categoryId, language)
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return getString(categories[position].stringResourceId)
+            return getString(displayCategories[position].stringResourceId)
         }
     }
 
     fun setting() {
-
         val intent = Intent().run {
             putExtra(ContentFeature.EXTRA_CONFIG_NEWS, "config")
             setClass(context!!, SettingsActivity::class.java)
