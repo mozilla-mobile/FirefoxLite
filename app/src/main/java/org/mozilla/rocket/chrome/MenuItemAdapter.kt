@@ -62,6 +62,24 @@ class MenuItemAdapter(
         }
     }
 
+    fun setTurboMode(isTurboMode: Boolean) {
+        getItem(TYPE_TURBO_MODE)?.view?.apply {
+            isActivated = isTurboMode
+        }
+    }
+
+    fun setNightMode(isNightMode: Boolean) {
+        getItem(TYPE_NIGHT_MODE)?.view?.apply {
+            isActivated = isNightMode
+        }
+    }
+
+    fun setBlockImageEnabled(isEnabled: Boolean) {
+        getItem(TYPE_BLOCK_IMAGE)?.view?.apply {
+            isActivated = isEnabled
+        }
+    }
+
     sealed class Theme(val tintResId: Int) {
         object Light : Theme(tintResId = R.color.sheet_menu_button)
     }

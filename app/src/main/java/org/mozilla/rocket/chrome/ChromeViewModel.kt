@@ -6,16 +6,18 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.os.Parcel
 import android.os.Parcelable
+import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.repository.BookmarkRepository
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
 import org.mozilla.urlutils.UrlUtils
 
 class ChromeViewModel(
-    settings: Settings,
+    private val settings: Settings,
     private val bookmarkRepo: BookmarkRepository
 ) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
@@ -30,7 +32,10 @@ class ChromeViewModel(
     val canGoForward = MutableLiveData<Boolean>()
     val isHomePageUrlInputShowing = MutableLiveData<Boolean>()
     val isMyShotOnBoardingPending = MutableLiveData<Boolean>()
+    val isTurboModeEnabled = MutableLiveData<Boolean>()
+    val isBlockImageEnabled = MutableLiveData<Boolean>()
 
+    val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()
     val showTabTray = SingleLiveEvent<Unit>()
     val showMenu = SingleLiveEvent<Unit>()
@@ -58,7 +63,11 @@ class ChromeViewModel(
     val showFindInPage = SingleLiveEvent<Unit>()
 
     init {
-        isNightMode.value = settings.isNightModeEnable
+        settings.run {
+            isNightMode.value = isNightModeEnable
+            isTurboModeEnabled.value = shouldUseTurboMode()
+            isBlockImageEnabled.value = shouldBlockImages()
+        }
         isRefreshing.value = false
         canGoBack.value = false
         canGoForward.value = false
@@ -81,12 +90,20 @@ class ChromeViewModel(
         canGoForward.invalidate()
         isHomePageUrlInputShowing.invalidate()
         isMyShotOnBoardingPending.invalidate()
+        isTurboModeEnabled.invalidate()
+        isBlockImageEnabled.invalidate()
     }
 
     fun onNightModeChanged(isEnabled: Boolean) {
+        settings.setNightMode(isEnabled)
         if (isNightMode.value != isEnabled) {
             isNightMode.value = isEnabled
         }
+        TelemetryWrapper.menuNightModeChangeTo(isEnabled)
+    }
+
+    fun onNightModeToggled() {
+        onNightModeChanged(!settings.isNightModeEnable)
     }
 
     fun onRestoreTabCountStarted() {
@@ -177,6 +194,26 @@ class ChromeViewModel(
         }
     }
 
+    fun onTurboModeToggled() {
+        val toEnable = !settings.shouldUseTurboMode()
+        settings.setTurboMode(toEnable)
+        if (isTurboModeEnabled.value != toEnable) {
+            isTurboModeEnabled.value = toEnable
+        }
+        showToast.value = ToastMessage(if (toEnable) R.string.message_enable_turbo_mode else R.string.message_disable_turbo_mode)
+        TelemetryWrapper.menuTurboChangeTo(toEnable)
+    }
+
+    fun onBlockImageToggled() {
+        val toEnable = !settings.shouldBlockImages()
+        settings.setBlockImages(toEnable)
+        if (isBlockImageEnabled.value != toEnable) {
+            isBlockImageEnabled.value = toEnable
+        }
+        showToast.value = ToastMessage(if (toEnable) R.string.message_enable_block_image else R.string.message_disable_block_image)
+        TelemetryWrapper.menuBlockImageChangeTo(toEnable)
+    }
+
     data class OpenUrlAction(
         val url: String,
         val withNewTab: Boolean,
@@ -203,5 +240,16 @@ class ChromeViewModel(
                 override fun newArray(size: Int): Array<ScreenCaptureTelemetryData?> = arrayOfNulls(size)
             }
         }
+    }
+}
+
+class ToastMessage(
+    val stringResId: Int,
+    val duration: Int = LENGTH_SHORT,
+    vararg val args: String
+) {
+    companion object {
+        const val LENGTH_SHORT = 0
+        const val LENGTH_LONG = 1
     }
 }
