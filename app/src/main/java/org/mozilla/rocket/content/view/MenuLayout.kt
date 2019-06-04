@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import org.mozilla.focus.R
@@ -75,28 +76,32 @@ class MenuLayout : FrameLayout {
             type: Int,
             private val textResId: Int,
             private val drawableResId: Int,
-            private val tintResId: Int
+            private val tintResId: Int?
         ) : MenuItem(type) {
             override fun createView(context: Context): View {
                 return LinearLayout(context).apply {
                     layoutParams = ViewGroup.LayoutParams(dpToPx(74f), dpToPx(74f))
                     orientation = LinearLayout.VERTICAL
-                    gravity = Gravity.CENTER_HORIZONTAL
-                    setPadding(paddingLeft, dpToPx(12f), paddingRight, paddingBottom)
+                    gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+                    setPadding(paddingLeft, paddingTop, paddingRight, dpToPx(16f))
                     setBackgroundResource(R.drawable.round_rectangle_ripple)
 
                     addView(
-                            View(context).apply {
-                                layoutParams = LinearLayout.LayoutParams(dpToPx(24f), dpToPx(24f))
-                                setBackgroundResource(drawableResId)
-                                backgroundTintList = ContextCompat.getColorStateList(context, tintResId)
+                            ImageView(context).apply {
+                                layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+                                setImageResource(drawableResId)
+                                if (tintResId != null) {
+                                    imageTintList = ContextCompat.getColorStateList(context, tintResId)
+                                }
                             }
                     )
                     addView(
                             TextView(ContextThemeWrapper(context, R.style.MenuButtonText)).apply {
                                 layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
                                 setText(textResId)
-                                setTextColor(ContextCompat.getColorStateList(context, tintResId))
+                                if (tintResId != null) {
+                                    setTextColor(ContextCompat.getColorStateList(context, tintResId))
+                                }
                             }
                     )
                 }

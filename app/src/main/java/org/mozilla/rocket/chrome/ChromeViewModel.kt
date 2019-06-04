@@ -12,6 +12,7 @@ import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
@@ -36,6 +37,7 @@ class ChromeViewModel(
     val isMyShotOnBoardingPending = MutableLiveData<Boolean>()
     val isTurboModeEnabled = MutableLiveData<Boolean>()
     val isBlockImageEnabled = MutableLiveData<Boolean>()
+    val hasUnreadScreenshot = MutableLiveData<Boolean>()
 
     val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()
@@ -70,6 +72,7 @@ class ChromeViewModel(
             isNightMode.value = isNightModeEnable
             isTurboModeEnabled.value = shouldUseTurboMode()
             isBlockImageEnabled.value = shouldBlockImages()
+            hasUnreadScreenshot.value = AppConfigWrapper.getMyshotUnreadEnabled() && hasUnreadMyShot()
         }
         isRefreshing.value = false
         canGoBack.value = false
@@ -231,6 +234,23 @@ class ChromeViewModel(
         }
         showToast.value = ToastMessage(if (toEnable) R.string.message_enable_block_image else R.string.message_disable_block_image)
         TelemetryWrapper.menuBlockImageChangeTo(toEnable)
+    }
+
+    fun onDoScreenshot(telemetryData: ScreenCaptureTelemetryData) {
+        doScreenshot.value = telemetryData
+        val shouldShowUnread = AppConfigWrapper.getMyshotUnreadEnabled()
+        if (hasUnreadScreenshot.value != shouldShowUnread) {
+            hasUnreadScreenshot.value = shouldShowUnread
+        }
+    }
+
+    fun showScreenshots() {
+        settings.setHasUnreadMyShot(false)
+        if (hasUnreadScreenshot.value != false) {
+            hasUnreadScreenshot.value = false
+        }
+        showScreenshots.call()
+        TelemetryWrapper.clickMenuCapture()
     }
 
     data class OpenUrlAction(
