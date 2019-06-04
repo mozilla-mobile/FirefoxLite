@@ -24,59 +24,60 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         layoutResource = R.layout.content_tab_new_setting
     }
 
-    private var catList: RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private var progress: ProgressBar? = null
+    private var categoryList: List<NewsCategory> = listOf()
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        catList = holder.findViewById(R.id.news_setting_cat_list) as RecyclerView
+        recyclerView = holder.findViewById(R.id.news_setting_cat_list) as RecyclerView
         progress = holder.findViewById(R.id.news_setting_cat_progress) as ProgressBar
 
-        val cats = listOf<NewsCategory>()
-        catList?.adapter = NewsCatSettingCatAdapter(cats)
-        catList?.layoutManager = GridLayoutManager(context, 2)
+        recyclerView?.adapter = NewsCatSettingCatAdapter()
+        recyclerView?.layoutManager = GridLayoutManager(context, 2)
+
+        if (categoryList.isNotEmpty()) {
+            hideProgressBar()
+        }
     }
+
+    fun getCategoryList() = categoryList
 
     fun updateCatList(newList: List<NewsCategory>?) {
-        if (newList == null) {
+        if (newList == null || newList.isEmpty()) {
             return
         }
+        categoryList = newList
+        recyclerView?.adapter?.notifyDataSetChanged()
 
-        catList?.visibility = View.GONE
-        progress?.visibility = View.VISIBLE
+        hideProgressBar()
+    }
 
-        (catList?.adapter as? NewsCatSettingCatAdapter)?.apply {
+    private fun hideProgressBar() {
+        recyclerView?.visibility = View.VISIBLE
+        progress?.visibility = View.GONE
+    }
 
-            this.cats = newList
-            this.notifyDataSetChanged()
-            catList?.visibility = View.VISIBLE
-            progress?.visibility = View.GONE
+    inner class NewsCatSettingCatAdapter : RecyclerView.Adapter<CategorySettingItemViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CategorySettingItemViewHolder {
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.content_tab_new_setting_item, parent, false)
+            return CategorySettingItemViewHolder(v)
         }
-    }
 
-    fun getCategoryList() = (catList?.adapter as? NewsCatSettingCatAdapter)?.cats
-}
-
-class NewsCatSettingCatAdapter(var cats: List<NewsCategory>) :
-    RecyclerView.Adapter<CategorySettingItemViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CategorySettingItemViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.content_tab_new_setting_item, parent, false)
-        return CategorySettingItemViewHolder(v)
-    }
-
-    override fun onBindViewHolder(vh: CategorySettingItemViewHolder, pos: Int) {
-        vh.button.textOff = cats[pos].categoryId
-        vh.button.textOn = cats[pos].categoryId
-        vh.button.text = cats[pos].categoryId
-        vh.button.isChecked = cats[pos].isSelected
-        vh.button.setOnCheckedChangeListener { _, checked ->
-            cats[pos].isSelected = checked
+        override fun onBindViewHolder(vh: CategorySettingItemViewHolder, pos: Int) {
+            vh.button.textOff = categoryList[pos].categoryId
+            vh.button.textOn = categoryList[pos].categoryId
+            vh.button.text = categoryList[pos].categoryId
+            vh.button.isChecked = categoryList[pos].isSelected
+            vh.button.setOnClickListener {
+                categoryList[pos].isSelected = !categoryList[pos].isSelected
+            }
         }
-    }
 
-    override fun getItemCount(): Int {
-        return cats.size
+        override fun getItemCount(): Int {
+            return categoryList.size
+        }
     }
 }
 
