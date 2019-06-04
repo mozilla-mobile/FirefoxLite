@@ -11,7 +11,11 @@
     android:orientation="vertical"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-    <include layout="@layout/bottom_sheet_main_menu_buttons"/>
+    <org.mozilla.rocket.content.view.MenuLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MenuSheetRow"/>
 
     <View
         android:layout_width="match_parent"

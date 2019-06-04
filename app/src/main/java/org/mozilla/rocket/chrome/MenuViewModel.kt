@@ -3,11 +3,11 @@ package org.mozilla.rocket.chrome
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import org.mozilla.focus.utils.AppConfigWrapper
-import org.mozilla.rocket.chrome.BottomBarItemAdapter.ItemData
 import java.util.Arrays
 
 class MenuViewModel : ViewModel() {
-    val bottomItems = MutableLiveData<List<ItemData>>()
+    val menuItems = MutableLiveData<List<MenuItemAdapter.ItemData>>()
+    val bottomItems = MutableLiveData<List<BottomBarItemAdapter.ItemData>>()
     val isBottomBarEnabled = MutableLiveData<Boolean>()
 
     init {
@@ -18,10 +18,17 @@ class MenuViewModel : ViewModel() {
 
     fun refresh(): Boolean {
         var hasNewConfig = false
-        val configuredItems = getConfiguredItems() ?: DEFAULT_MENU_BOTTOM_ITEMS
+        val configuredMenuItems = getConfiguredMenuItems() ?: DEFAULT_MENU_ITEMS
+        val configuredBottomBarItems = getConfiguredBottomBarItems() ?: DEFAULT_MENU_BOTTOM_ITEMS
+        menuItems.value.let { currentValue ->
+            if (configuredMenuItems != currentValue) {
+                menuItems.value = configuredMenuItems
+                hasNewConfig = true
+            }
+        }
         bottomItems.value.let { currentValue ->
-            if (configuredItems != currentValue) {
-                bottomItems.value = configuredItems
+            if (configuredBottomBarItems != currentValue) {
+                bottomItems.value = configuredBottomBarItems
                 hasNewConfig = true
             }
         }
@@ -29,7 +36,9 @@ class MenuViewModel : ViewModel() {
         return hasNewConfig
     }
 
-    private fun getConfiguredItems(): List<ItemData>? = AppConfigWrapper.getMenuBottomBarItems()
+    private fun getConfiguredMenuItems(): List<MenuItemAdapter.ItemData>? = AppConfigWrapper.getMenuItems()
+
+    private fun getConfiguredBottomBarItems(): List<BottomBarItemAdapter.ItemData>? = AppConfigWrapper.getMenuBottomBarItems()
 
     /**
      * TODO: temporary method, directly call the onGainTabFocus() and onLostTabFocus() when
@@ -57,12 +66,27 @@ class MenuViewModel : ViewModel() {
 
     companion object {
         @JvmStatic
-        val DEFAULT_MENU_BOTTOM_ITEMS: List<ItemData> = Arrays.asList(
-                ItemData(BottomBarItemAdapter.TYPE_NEXT),
-                ItemData(BottomBarItemAdapter.TYPE_REFRESH),
-                ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
-                ItemData(BottomBarItemAdapter.TYPE_PIN_SHORTCUT),
-                ItemData(BottomBarItemAdapter.TYPE_SHARE)
+        val DEFAULT_MENU_ITEMS: List<MenuItemAdapter.ItemData> = Arrays.asList(
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_BOOKMARKS),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_DOWNLOADS),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_HISTORY),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_SCREENSHOTS),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_TURBO_MODE),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_PRIVATE_BROWSING),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_NIGHT_MODE),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_BLOCK_IMAGE),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_FIND_IN_PAGE),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_CLEAR_CACHE),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_PREFERENCES),
+                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_EXIT_APP)
+        )
+        @JvmStatic
+        val DEFAULT_MENU_BOTTOM_ITEMS: List<BottomBarItemAdapter.ItemData> = Arrays.asList(
+                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_NEXT),
+                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_REFRESH),
+                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
+                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_PIN_SHORTCUT),
+                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_SHARE)
         )
     }
 }

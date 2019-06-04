@@ -117,10 +117,9 @@
 
     <!-- for bottom sheet menu -->
     <style name="MenuSheetRow">
-        <item name="android:layout_marginEnd">@dimen/menu_layout_margin</item>
-        <item name="android:layout_marginStart">@dimen/menu_layout_margin</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/menu_layout_horizontal_margin</item>
+        <item name="android:layout_marginStart">@dimen/menu_layout_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/menu_layout_top_margin</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
@@ -132,23 +131,17 @@
     <style name="MenuButtonContainer" parent="MenuButtonContainerSkeleton">
         <item name="android:onClick">onMenuItemClicked</item>
         <item name="android:background">@drawable/round_rectangle_ripple</item>
+        <item name="android:paddingTop">12dp</item>
     </style>
 
     <style name="MenuButtonGroup">
         <item name="android:paddingTop">12dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="MenuButtonText">
         <item name="android:paddingEnd">@dimen/menu_text_padding</item>
         <item name="android:paddingStart">@dimen/menu_text_padding</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize" tools:ignore="SpUsage">12dp</item>
-        <item name="android:textColor">@color/sheet_menu_button</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center</item>
         <item name="android:textAllCaps">false</item>
@@ -157,8 +150,6 @@
     </style>
 
     <style name="MenuButtonIcon">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
         <item name="android:backgroundTint">@color/sheet_menu_button</item>
     </style>
 

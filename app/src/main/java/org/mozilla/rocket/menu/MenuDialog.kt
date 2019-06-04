@@ -15,19 +15,18 @@ import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.MENU
-import org.mozilla.focus.utils.AppConfigWrapper
-import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.FormatUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.MenuItemAdapter
 import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.content.view.BottomBar
+import org.mozilla.rocket.content.view.MenuLayout
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.toActivity
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
-import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.privately.PrivateModeActivity
 
 class MenuDialog : BottomSheetDialog {
@@ -35,16 +34,18 @@ class MenuDialog : BottomSheetDialog {
     private val menuViewModel: MenuViewModel
     private val chromeViewModel: ChromeViewModel
     private var settings: Settings
+    private lateinit var menuItemAdapter: MenuItemAdapter
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
 
     private lateinit var contentLayout: View
 
-    private lateinit var myshotIndicator: View
-    private lateinit var myshotButton: View
-    private lateinit var nightModeButton: View
-    private lateinit var turboModeButton: View
-    private lateinit var blockImageButton: View
-    private lateinit var privateModeIndicator: View
+    // TODO: Evan, to be implemented
+//    private lateinit var myshotIndicator: View
+//    private lateinit var myshotButton: View
+//    private lateinit var nightModeButton: View
+//    private lateinit var turboModeButton: View
+//    private lateinit var blockImageButton: View
+//    private lateinit var privateModeIndicator: View
 
     constructor(context: Context) : super(context)
     constructor(context: Context, @StyleRes theme: Int) : super(context, theme)
@@ -68,19 +69,27 @@ class MenuDialog : BottomSheetDialog {
     }
 
     private fun initMenu() {
-        myshotIndicator = contentLayout.findViewById<View>(R.id.menu_my_shot_unread)
-        privateModeIndicator = contentLayout.findViewById<View>(R.id.menu_private_mode_indicator)
-        myshotButton = contentLayout.findViewById<View>(R.id.menu_screenshots)
+        // TODO: Evan, to be implemented
+//        myshotIndicator = contentLayout.findViewById<View>(R.id.menu_my_shot_unread)
+//        privateModeIndicator = contentLayout.findViewById<View>(R.id.menu_private_mode_indicator)
+//        myshotButton = contentLayout.findViewById<View>(R.id.menu_screenshots)
+//
+//        turboModeButton = contentLayout.findViewById<View>(R.id.menu_turbomode)
+//        turboModeButton.isSelected = settings.shouldUseTurboMode()
+//
+//        blockImageButton = contentLayout.findViewById<View>(R.id.menu_blockimg)
+//        blockImageButton.isSelected = settings.shouldBlockImages()
+//
+//        nightModeButton = contentLayout.findViewById<View>(R.id.menu_night_mode)
+//        nightModeButton.setOnLongClickListener(onLongClickListener)
+//        nightModeButton.isSelected = settings.isNightModeEnable
 
-        turboModeButton = contentLayout.findViewById<View>(R.id.menu_turbomode)
-        turboModeButton.isSelected = settings.shouldUseTurboMode()
-
-        blockImageButton = contentLayout.findViewById<View>(R.id.menu_blockimg)
-        blockImageButton.isSelected = settings.shouldBlockImages()
-
-        nightModeButton = contentLayout.findViewById<View>(R.id.menu_night_mode)
-        nightModeButton.setOnLongClickListener(onLongClickListener)
-        nightModeButton.isSelected = settings.isNightModeEnable
+        val menuLayout = contentLayout.findViewById<MenuLayout>(R.id.menu_layout)
+        menuItemAdapter = MenuItemAdapter(menuLayout, MenuItemAdapter.Theme.Light)
+        val activity = context.toFragmentActivity()
+        menuViewModel.menuItems.nonNullObserve(activity) { menuItems ->
+            menuItemAdapter.setItems(menuItems)
+        }
     }
 
     private fun initBottomBar() {
@@ -133,7 +142,7 @@ class MenuDialog : BottomSheetDialog {
         })
         val activity = context.toFragmentActivity()
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Light)
-        menuViewModel.bottomItems.nonNullObserve(context.toFragmentActivity()) { bottomItems ->
+        menuViewModel.bottomItems.nonNullObserve(activity) { bottomItems ->
             bottomBarItemAdapter.setItems(bottomItems)
             hidePinShortcutButtonIfNotSupported()
         }
@@ -161,27 +170,28 @@ class MenuDialog : BottomSheetDialog {
     }
 
     private fun updateMenu() {
-        val settings = settings
-
-        turboModeButton.isSelected = settings.shouldUseTurboMode()
-        blockImageButton.isSelected = settings.shouldBlockImages()
-        nightModeButton.isSelected = settings.isNightModeEnable
-
-        val showUnread = AppConfigWrapper.getMyshotUnreadEnabled() && settings.hasUnreadMyShot()
-        myshotIndicator.visibility = if (showUnread) View.VISIBLE else View.GONE
-        privateModeIndicator.visibility = if (PrivateMode.hasPrivateSession(context)) View.VISIBLE else View.GONE
-
-        if (settings.showNightModeSpotlight()) {
-            settings.setNightModeSpotlight(false)
-            nightModeButton.post {
-                DialogUtils.showSpotlight(
-                        context.toActivity(),
-                        nightModeButton,
-                        {},
-                        R.string.night_mode_on_boarding_message
-                )
-            }
-        }
+        // TODO: Evan, to be implemented
+//        val settings = settings
+//
+//        turboModeButton.isSelected = settings.shouldUseTurboMode()
+//        blockImageButton.isSelected = settings.shouldBlockImages()
+//        nightModeButton.isSelected = settings.isNightModeEnable
+//
+//        val showUnread = AppConfigWrapper.getMyshotUnreadEnabled() && settings.hasUnreadMyShot()
+//        myshotIndicator.visibility = if (showUnread) View.VISIBLE else View.GONE
+//        privateModeIndicator.visibility = if (PrivateMode.hasPrivateSession(context)) View.VISIBLE else View.GONE
+//
+//        if (settings.showNightModeSpotlight()) {
+//            settings.setNightModeSpotlight(false)
+//            nightModeButton.post {
+//                DialogUtils.showSpotlight(
+//                        context.toActivity(),
+//                        nightModeButton,
+//                        {},
+//                        R.string.night_mode_on_boarding_message
+//                )
+//            }
+//        }
 
         val hasFocus = chromeViewModel.navigationState.value?.isBrowser == true
         menuViewModel.onTabFocusChanged(hasFocus)
