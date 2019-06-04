@@ -30,7 +30,7 @@ class MenuItemAdapter(
             TYPE_BOOKMARKS -> MenuItem.TextImageItem(type, R.string.label_menu_bookmark, R.drawable.ic_bookmarks, theme.tintResId)
             TYPE_DOWNLOADS -> MenuItem.TextImageItem(type, R.string.label_menu_download, R.drawable.menu_download, theme.tintResId)
             TYPE_HISTORY -> MenuItem.TextImageItem(type, R.string.label_menu_history, R.drawable.menu_history, theme.tintResId)
-            TYPE_SCREENSHOTS -> MenuItem.TextImageItem(type, R.string.label_menu_my_shots, R.drawable.menu_my_shots, theme.tintResId)
+            TYPE_SCREENSHOTS -> MenuItem.TextImageItem(type, R.string.label_menu_my_shots, R.drawable.menu_my_shots_states, null)
             TYPE_TURBO_MODE -> MenuItem.TextImageItem(type, R.string.label_menu_turbo_mode, R.drawable.menu_speedmode, theme.tintResId)
             TYPE_PRIVATE_BROWSING -> MenuItem.TextImageItem(type, R.string.private_tab, R.drawable.private_browsing_mask, theme.tintResId)
             TYPE_NIGHT_MODE -> MenuItem.TextImageItem(type, R.string.label_menu_night_mode, R.drawable.icon_night_mode, theme.tintResId)
@@ -77,6 +77,12 @@ class MenuItemAdapter(
     fun setBlockImageEnabled(isEnabled: Boolean) {
         getItem(TYPE_BLOCK_IMAGE)?.view?.apply {
             isActivated = isEnabled
+        }
+    }
+
+    fun setUnreadScreenshot(unread: Boolean) {
+        getItem(TYPE_SCREENSHOTS)?.view?.apply {
+            isActivated = unread
         }
     }
 

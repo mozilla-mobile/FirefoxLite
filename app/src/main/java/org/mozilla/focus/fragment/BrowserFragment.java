@@ -500,7 +500,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     TelemetryWrapper.clickToolbarSearch(WEBVIEW, position);
                     break;
                 case BottomBarItemAdapter.TYPE_CAPTURE:
-                    chromeViewModel.getDoScreenshot().setValue(new ScreenCaptureTelemetryData(WEBVIEW, position));
+                    chromeViewModel.onDoScreenshot(new ScreenCaptureTelemetryData(WEBVIEW, position));
                     // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
                     break;
                 case BottomBarItemAdapter.TYPE_PIN_SHORTCUT:

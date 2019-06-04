@@ -78,11 +78,7 @@ class MenuDialog : BottomSheetDialog {
                         chromeViewModel.showHistory.call()
                         TelemetryWrapper.clickMenuHistory()
                     }
-                    MenuItemAdapter.TYPE_SCREENSHOTS -> {
-                        settings.setHasUnreadMyShot(false)
-                        chromeViewModel.showScreenshots.call()
-                        TelemetryWrapper.clickMenuCapture()
-                    }
+                    MenuItemAdapter.TYPE_SCREENSHOTS -> chromeViewModel.showScreenshots()
                     MenuItemAdapter.TYPE_TURBO_MODE -> chromeViewModel.onTurboModeToggled()
                     MenuItemAdapter.TYPE_PRIVATE_BROWSING -> {
                         val intent = Intent(context, PrivateModeActivity::class.java)
@@ -127,6 +123,7 @@ class MenuDialog : BottomSheetDialog {
         chromeViewModel.isTurboModeEnabled.nonNullObserve(activity, menuItemAdapter::setTurboMode)
         chromeViewModel.isNightMode.nonNullObserve(activity, menuItemAdapter::setNightMode)
         chromeViewModel.isBlockImageEnabled.nonNullObserve(activity, menuItemAdapter::setBlockImageEnabled)
+        chromeViewModel.hasUnreadScreenshot.nonNullObserve(activity, menuItemAdapter::setUnreadScreenshot)
     }
 
     private fun overridePendingTransition(enterAnim: Int, exitAnim: Int) {
@@ -162,7 +159,7 @@ class MenuDialog : BottomSheetDialog {
                         chromeViewModel.showUrlInput.call()
                         TelemetryWrapper.clickToolbarSearch(MENU, position)
                     }
-                    BottomBarItemAdapter.TYPE_CAPTURE -> chromeViewModel.doScreenshot.setValue(ChromeViewModel.ScreenCaptureTelemetryData(MENU, position))
+                    BottomBarItemAdapter.TYPE_CAPTURE -> chromeViewModel.onDoScreenshot(ChromeViewModel.ScreenCaptureTelemetryData(MENU, position))
                     BottomBarItemAdapter.TYPE_PIN_SHORTCUT -> {
                         chromeViewModel.pinShortcut.call()
                         TelemetryWrapper.clickAddToHome(MENU, position)
