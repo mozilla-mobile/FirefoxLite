@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/new_tab_root"
@@ -9,6 +9,7 @@
         android:orientation="vertical">
 
     <RelativeLayout
+            android:id="@+id/news_tab_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -22,28 +23,37 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_menu_news"
                 style="@style/Headline4"
-                android:textColor="@color/paletteLightBlack100"/>
+                android:textColor="@color/paletteLightBlack100" />
 
         <ImageButton
                 android:id="@+id/news_setting"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:background="@null"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/menu_settings"/>
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/menu_settings" />
     </RelativeLayout>
 
     <android.support.design.widget.TabLayout
             android:id="@+id/news_tab"
+            android:layout_below="@+id/news_tab_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_margin_m7"
-            app:tabIndicatorColor="@android:color/transparent"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:tabPaddingStart="0dp"
+            app:tabSelectedTextColor="@color/paletteDarkGreyC100"
+            app:tabTextColor="#80000000"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabUnboundedRipple="true"
+            />
 
     <android.support.v4.view.ViewPager
             android:id="@+id/news_viewpager"
+            android:layout_below="@+id/news_tab"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
 
-</LinearLayout>
+</RelativeLayout>

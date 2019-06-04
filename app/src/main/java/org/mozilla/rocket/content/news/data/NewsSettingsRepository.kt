@@ -79,7 +79,10 @@ class NewsSettingsRepository(
                 settingsLiveData.removeSource(categoriesByLanguage)
                 settingsLiveData.addSource(categoriesByLanguage) { categories ->
                     categories?.let { list ->
-                        settingsLiveData.postValue(Pair(language, list))
+                        val cache = settingsLiveData.value
+                        if (language != cache?.first || list != cache.second) {
+                            settingsLiveData.postValue(Pair(language, list))
+                        }
                     }
                 }
             }

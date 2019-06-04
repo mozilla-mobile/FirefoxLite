@@ -13,6 +13,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.ToggleButton
 import org.mozilla.focus.R
 
@@ -23,32 +24,62 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         layoutResource = R.layout.content_tab_new_setting
     }
 
+    private var recyclerView: RecyclerView? = null
+    private var progress: ProgressBar? = null
+    private var categoryList: List<NewsCategory> = listOf()
+    var onCategoryClick: (categories: List<NewsCategory>) -> Unit = {}
+
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        val list: RecyclerView = holder.findViewById(R.id.news_setting_cat_list) as RecyclerView
-        val cats = listOf<NewsCategory>()
-        list.adapter = NewsCatSettingCatAdapter(cats)
-        list.layoutManager = GridLayoutManager(context, 2)
-    }
-}
+        recyclerView = holder.findViewById(R.id.news_setting_cat_list) as RecyclerView
+        progress = holder.findViewById(R.id.news_setting_cat_progress) as ProgressBar
 
-class NewsCatSettingCatAdapter(var cats: List<NewsCategory>) :
-    RecyclerView.Adapter<CategorySettingItemViewHolder>() {
+        recyclerView?.adapter = NewsCatSettingCatAdapter()
+        recyclerView?.layoutManager = GridLayoutManager(context, 2)
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CategorySettingItemViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.content_tab_new_setting_item, parent, false)
-        return CategorySettingItemViewHolder(v)
+        if (categoryList.isNotEmpty()) {
+            hideProgressBar()
+        }
     }
 
-    override fun onBindViewHolder(vh: CategorySettingItemViewHolder, pos: Int) {
-        vh.button.textOff = cats[pos].categoryId
-        vh.button.textOn = cats[pos].categoryId
-        vh.button.text = cats[pos].categoryId
-        vh.button.isChecked = cats[pos].isSelected
+    fun updateCatList(newList: List<NewsCategory>?) {
+        if (newList == null || newList.isEmpty()) {
+            return
+        }
+        categoryList = newList
+        recyclerView?.adapter?.notifyDataSetChanged()
+
+        hideProgressBar()
     }
 
-    override fun getItemCount(): Int {
-        return cats.size
+    private fun hideProgressBar() {
+        recyclerView?.visibility = View.VISIBLE
+        progress?.visibility = View.GONE
+    }
+
+    inner class NewsCatSettingCatAdapter : RecyclerView.Adapter<CategorySettingItemViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CategorySettingItemViewHolder {
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.content_tab_new_setting_item, parent, false)
+            return CategorySettingItemViewHolder(v)
+        }
+
+        override fun onBindViewHolder(vh: CategorySettingItemViewHolder, pos: Int) {
+
+            val displayString = vh.button.context.getString(categoryList[pos].stringResourceId)
+            vh.button.textOff = displayString
+            vh.button.textOn = displayString
+            vh.button.text = displayString
+            vh.button.isChecked = categoryList[pos].isSelected
+            vh.button.setOnClickListener {
+                categoryList[pos].isSelected = !categoryList[pos].isSelected
+                onCategoryClick(categoryList)
+            }
+        }
+
+        override fun getItemCount(): Int {
+            return categoryList.size
+        }
     }
 }
 
