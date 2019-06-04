@@ -8,7 +8,6 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.content.pm.ShortcutManagerCompat
 import android.view.View
-import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.Toast
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.Inject
@@ -53,6 +52,7 @@ class MenuDialog : BottomSheetDialog {
         initBottomBar()
 
         chromeViewModel.updateMenu.observe(activity, Observer { updateMenu() })
+        chromeViewModel.showAdjustBrightness.observe(activity, Observer { showAdjustBrightness() })
     }
 
     private fun initLayout() {
@@ -90,10 +90,7 @@ class MenuDialog : BottomSheetDialog {
                         overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out)
                         TelemetryWrapper.togglePrivateMode(true)
                     }
-                    MenuItemAdapter.TYPE_NIGHT_MODE -> {
-                        chromeViewModel.onNightModeToggled()
-                        showAdjustBrightnessIfNeeded(settings)
-                    }
+                    MenuItemAdapter.TYPE_NIGHT_MODE -> chromeViewModel.onNightModeToggled()
                     MenuItemAdapter.TYPE_BLOCK_IMAGE -> chromeViewModel.onBlockImageToggled()
                     MenuItemAdapter.TYPE_FIND_IN_PAGE -> chromeViewModel.showFindInPage.call()
                     MenuItemAdapter.TYPE_CLEAR_CACHE -> {
@@ -116,10 +113,7 @@ class MenuDialog : BottomSheetDialog {
         menuLayout.setOnItemLongClickListener(object : MenuLayout.OnItemLongClickListener {
             override fun onItemLongClick(type: Int, position: Int): Boolean {
                 when (type) {
-                    MenuItemAdapter.TYPE_NIGHT_MODE -> {
-                        chromeViewModel.onNightModeChanged(true)
-                        showAdjustBrightness()
-                    }
+                    MenuItemAdapter.TYPE_NIGHT_MODE -> chromeViewModel.adjustNightMode()
                     else -> return false
                 }
 
@@ -259,15 +253,5 @@ class MenuDialog : BottomSheetDialog {
 
     private fun showAdjustBrightness() {
         startActivity(context, AdjustBrightnessDialog.Intents.getStartIntentFromMenu(context), null)
-    }
-
-    private fun showAdjustBrightnessIfNeeded(settings: Settings) {
-        val currentBrightness = settings.nightModeBrightnessValue
-        if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
-            // First time turn on
-            settings.nightModeBrightnessValue = AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS
-            showAdjustBrightness()
-            settings.setNightModeSpotlight(true)
-        }
     }
 }

@@ -6,6 +6,7 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.os.Parcel
 import android.os.Parcelable
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.persistence.BookmarkModel
@@ -14,6 +15,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.urlutils.UrlUtils
 
 class ChromeViewModel(
@@ -61,6 +63,7 @@ class ChromeViewModel(
     val showScreenshots = SingleLiveEvent<Unit>()
     val openPreference = SingleLiveEvent<Unit>()
     val showFindInPage = SingleLiveEvent<Unit>()
+    val showAdjustBrightness = SingleLiveEvent<Unit>()
 
     init {
         settings.run {
@@ -94,7 +97,17 @@ class ChromeViewModel(
         isBlockImageEnabled.invalidate()
     }
 
-    fun onNightModeChanged(isEnabled: Boolean) {
+    fun adjustNightMode() {
+        updateNightMode(true)
+        showAdjustBrightness.call()
+    }
+
+    fun onNightModeToggled() {
+        updateNightMode(!settings.isNightModeEnable)
+        showAdjustBrightnessIfNeeded()
+    }
+
+    private fun updateNightMode(isEnabled: Boolean) {
         settings.setNightMode(isEnabled)
         if (isNightMode.value != isEnabled) {
             isNightMode.value = isEnabled
@@ -102,8 +115,14 @@ class ChromeViewModel(
         TelemetryWrapper.menuNightModeChangeTo(isEnabled)
     }
 
-    fun onNightModeToggled() {
-        onNightModeChanged(!settings.isNightModeEnable)
+    private fun showAdjustBrightnessIfNeeded() {
+        val currentBrightness = settings.nightModeBrightnessValue
+        if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
+            // First time turn on
+            settings.nightModeBrightnessValue = AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS
+            showAdjustBrightness.call()
+            settings.setNightModeSpotlight(true)
+        }
     }
 
     fun onRestoreTabCountStarted() {
