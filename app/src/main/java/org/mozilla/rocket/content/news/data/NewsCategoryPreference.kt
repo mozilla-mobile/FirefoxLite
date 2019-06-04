@@ -53,6 +53,8 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
             progress?.visibility = View.GONE
         }
     }
+
+    fun getCategoryList() = (catList?.adapter as? NewsCatSettingCatAdapter)?.cats
 }
 
 class NewsCatSettingCatAdapter(var cats: List<NewsCategory>) :
@@ -68,6 +70,9 @@ class NewsCatSettingCatAdapter(var cats: List<NewsCategory>) :
         vh.button.textOn = cats[pos].categoryId
         vh.button.text = cats[pos].categoryId
         vh.button.isChecked = cats[pos].isSelected
+        vh.button.setOnCheckedChangeListener { _, checked ->
+            cats[pos].isSelected = checked
+        }
     }
 
     override fun getItemCount(): Int {

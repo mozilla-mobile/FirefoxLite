@@ -49,7 +49,7 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         repository.getLanguages().observe(viewLifecycleOwner, allLangsObserver)
 
         val settingObserver = Observer<Pair<NewsLanguage, List<NewsCategory>>> {
-            Log.d(TAG, "news locale/cats setting has changed")
+            Log.d(TAG, "news locale/cats setting has changed, hence the changes to the cat list is overridden again and again ")
             it?.first?.let { langChanged ->
                 languagePreference?.summary = langChanged.name
             }
@@ -74,7 +74,21 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         return super.onPreferenceTreeClick(preference)
     }
 
+    override fun onPause() {
+        super.onPause()
+        val setting = repository.getNewsSettings().value
+        val language = setting?.first?.key?.toLowerCase()
+        val categories = categoryPreference?.getCategoryList()
+        if (language != null && categories != null) {
+            repository.setUserPreferenceCategories(language, categories)
+        }
+    }
+
     private fun onLanguagePrefClick() {
-        dialogHelper.build(context!!)
+        dialogHelper.build(context!!, ::setUserPreferLanguage)
+    }
+
+    private fun setUserPreferLanguage(language: NewsLanguage) {
+        repository.setUserPreferenceLanguage(language)
     }
 }

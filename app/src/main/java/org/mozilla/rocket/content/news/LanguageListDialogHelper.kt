@@ -20,7 +20,7 @@ class LanguageListDialogHelper {
 
     val languages = mutableListOf<NewsLanguage>() // empty list
 
-    fun build(context: Context) {
+    fun build(context: Context, onclick: (NewsLanguage) -> Unit) {
 
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.simple_list, null)
@@ -45,7 +45,7 @@ class LanguageListDialogHelper {
                     languages[position].isSelected = true
                     dialogAdapter?.notifyDataSetChanged()
                     // TODO: repository.setUserPreferenceLanguage(languages[position])
-
+                    onclick(languages[position])
                     dialog1.dismiss()
                     // save db value, update pref, relo
                 }
