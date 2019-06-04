@@ -8,7 +8,7 @@
     <dimen name="top_site_font_size" tools:ignore="SpUsage">12dp</dimen>
     <dimen name="top_site_textview_width">65dp</dimen>
 
-    <dimen name="menu_layout_margin">20dp</dimen>
+    <dimen name="menu_layout_horizontal_margin">20dp</dimen>
 
     <dimen name="first_run_upgrade_title_margin_top">38dp</dimen>
     <dimen name="first_run_upgrade_title_margin_bottom">32dp</dimen>

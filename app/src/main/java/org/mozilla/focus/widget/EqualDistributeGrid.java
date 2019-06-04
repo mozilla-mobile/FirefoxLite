@@ -179,4 +179,20 @@ public class EqualDistributeGrid extends ViewGroup {
         }
         return null;
     }
+
+    public int getRowCapacity() {
+        return rowCapacity;
+    }
+
+    public void setRowCapacity(int rowCapacity) {
+        this.rowCapacity = rowCapacity;
+    }
+
+    public int getGutter() {
+        return gutter;
+    }
+
+    public void setGutter(int gutter) {
+        this.gutter = gutter;
+    }
 }

@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
+import org.mozilla.rocket.chrome.MenuItemAdapter;
 import org.mozilla.rocket.content.ecommerce.data.Coupon;
 import org.mozilla.rocket.content.ecommerce.data.CouponKey;
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink;
@@ -266,6 +267,24 @@ public class AppConfigWrapper {
                 JSONObject row = jsonArray.getJSONObject(i);
                 int type = row.getInt("type");
                 itemDataList.add(new BottomBarItemAdapter.ItemData(type));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return itemDataList;
+    }
+
+    public static List<MenuItemAdapter.ItemData> getMenuItems() {
+        List<MenuItemAdapter.ItemData> itemDataList = new ArrayList<>();
+        String jsonString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_MENU_ITEMS);
+        try {
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject row = jsonArray.getJSONObject(i);
+                int type = row.getInt("type");
+                itemDataList.add(new MenuItemAdapter.ItemData(type));
             }
         } catch (JSONException e) {
             e.printStackTrace();

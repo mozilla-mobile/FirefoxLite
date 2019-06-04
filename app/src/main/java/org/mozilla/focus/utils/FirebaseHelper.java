@@ -77,6 +77,7 @@ final public class FirebaseHelper {
     static final String STR_SHARE_APP_DIALOG_MSG = "str_share_app_dialog_msg";
 
     public static final String STR_BOTTOM_BAR_ITEMS = "str_bottom_bar_items";
+    public static final String STR_MENU_ITEMS = "str_menu_items";
     public static final String STR_MENU_BOTTOM_BAR_ITEMS = "str_menu_bottom_bar_items";
     public static final String STR_PRIVATE_BOTTOM_BAR_ITEMS = "str_private_bottom_bar_items";
 
