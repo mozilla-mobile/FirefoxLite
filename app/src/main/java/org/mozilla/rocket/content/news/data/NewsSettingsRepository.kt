@@ -75,7 +75,7 @@ class NewsSettingsRepository(
             newsLanguage?.let { language ->
                 preferenceLanguage = language
 
-                val categoriesByLanguage = getCategoriesByLanguage(language.key)
+                val categoriesByLanguage = getCategoriesByLanguage(language.getApiId())
                 settingsLiveData.removeSource(categoriesByLanguage)
                 settingsLiveData.addSource(categoriesByLanguage) { categories ->
                     categories?.let { list ->
