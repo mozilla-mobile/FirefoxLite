@@ -30,7 +30,7 @@ class NewsAdapter<T : NewsItem>(private val listener: ContentPortalListener) :
         }
 
         override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
     }
 
