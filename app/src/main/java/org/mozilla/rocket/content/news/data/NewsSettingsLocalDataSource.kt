@@ -124,7 +124,7 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
                 categoryListToJsonArray(userPreferenceCategories).toString()
             ).apply()
         }
-        preferenceCategoriesLiveData.postValue(userPreferenceCategories)
+//        preferenceCategoriesLiveData.postValue(userPreferenceCategories)
     }
 
     private fun getPreferences(): SharedPreferences {

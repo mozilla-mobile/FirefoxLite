@@ -16,7 +16,7 @@
     />
 
     <org.mozilla.rocket.content.news.data.NewsCategoryPreference
-            android:key="test3"
+            android:key="pref_dummy_s_news_Cat"
             android:title="@string/news_category_title"/>
 
 </PreferenceScreen>
