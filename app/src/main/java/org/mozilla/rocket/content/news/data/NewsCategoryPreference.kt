@@ -13,6 +13,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.ToggleButton
 import org.mozilla.focus.R
 
@@ -23,12 +24,34 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         layoutResource = R.layout.content_tab_new_setting
     }
 
+    private var catList: RecyclerView? = null
+    private var progress: ProgressBar? = null
+
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        val list: RecyclerView = holder.findViewById(R.id.news_setting_cat_list) as RecyclerView
+        catList = holder.findViewById(R.id.news_setting_cat_list) as RecyclerView
+        progress = holder.findViewById(R.id.news_setting_cat_progress) as ProgressBar
+
         val cats = listOf<NewsCategory>()
-        list.adapter = NewsCatSettingCatAdapter(cats)
-        list.layoutManager = GridLayoutManager(context, 2)
+        catList?.adapter = NewsCatSettingCatAdapter(cats)
+        catList?.layoutManager = GridLayoutManager(context, 2)
+    }
+
+    fun updateCatList(newList: List<NewsCategory>?) {
+        if (newList == null) {
+            return
+        }
+
+        catList?.visibility = View.GONE
+        progress?.visibility = View.VISIBLE
+
+        (catList?.adapter as? NewsCatSettingCatAdapter)?.apply {
+
+            this.cats = newList
+            this.notifyDataSetChanged()
+            catList?.visibility = View.VISIBLE
+            progress?.visibility = View.GONE
+        }
     }
 }
 
