@@ -76,7 +76,9 @@
                 android:layout_height="@dimen/common_margin_m7"
                 android:background="@color/paletteLightGreyB100"
                 android:clipToPadding="false"
-                android:paddingStart="16dp" />
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:layout_width="match_parent"
