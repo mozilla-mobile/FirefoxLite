@@ -276,7 +276,7 @@ class PrivateModeActivity : BaseActivity(),
 
     private fun stopPrivateMode() {
         PrivateSessionNotificationService.stop(this)
-        PrivateMode.sanitize(this.applicationContext)
+        PrivateMode.getInstance(this).sanitize()
         tabViewProvider.purify(this)
     }
 
