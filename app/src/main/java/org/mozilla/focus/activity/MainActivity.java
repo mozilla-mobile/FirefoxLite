@@ -166,9 +166,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
             boolean handledExternalLink = handleExternalLink(intent);
             if (!handledExternalLink) {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
-                    this.screenNavigator.addFirstRunScreen();
+                    screenNavigator.addFirstRunScreen();
                 } else {
-                    this.screenNavigator.popToHomeScreen(false);
+                    screenNavigator.popToHomeScreen(false);
                 }
             }
         }
@@ -196,7 +196,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     private void monitorOrientationState() {
         OrientationState orientationState = new OrientationState(
-                () -> ScreenNavigator.get(MainActivity.this).getNavigationState(),
+                () -> screenNavigator.getNavigationState(),
                 portraitStateModel);
 
         orientationState.observe(this, orientation -> {
@@ -461,7 +461,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     private void onNightModeEnabled(Settings settings, boolean enabled) {
         applyNightModeBrightness(enabled, settings, getWindow());
 
-        Fragment fragment = this.screenNavigator.getTopFragment();
+        Fragment fragment = screenNavigator.getTopFragment();
         if (fragment instanceof BrowserFragment) { // null fragment will not make instanceof to be true
             ((BrowserFragment) fragment).setNightModeEnabled(enabled);
         } else if (fragment instanceof HomeFragment) {
@@ -592,7 +592,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
             return;
         }
 
-        if (!this.screenNavigator.canGoBack()) {
+        if (!screenNavigator.canGoBack()) {
             finish();
             return;
         }
@@ -601,7 +601,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     private boolean dismissContentPortal() {
-        Fragment fragment = this.screenNavigator.getTopFragment();
+        Fragment fragment = screenNavigator.getTopFragment();
         if (fragment instanceof HomeFragment) {
             return ((HomeFragment) fragment).hideContentPortal();
         }
@@ -609,7 +609,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     public void firstrunFinished() {
-        this.screenNavigator.popToHomeScreen(false);
+        screenNavigator.popToHomeScreen(false);
     }
 
     private void observeChromeAction() {
@@ -633,13 +633,13 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         chromeViewModel.getShowMenu().observe(this, unit -> showMenu());
         chromeViewModel.getShowNewTab().observe(this, unit -> {
             ContentPortalViewState.reset();
-            ScreenNavigator.get(this).addHomeScreen(true);
+            screenNavigator.addHomeScreen(true);
         });
         chromeViewModel.getShowUrlInput().observe(this, url -> {
             if (getSupportFragmentManager().isStateSaved()) {
                 return;
             }
-            this.screenNavigator.addUrlScreen(url);
+            screenNavigator.addUrlScreen(url);
         });
         chromeViewModel.getDismissUrlInput().observe(this, unit -> screenNavigator.popUrlScreen());
         chromeViewModel.getPinShortcut().observe(this, unit -> onAddToHomeClicked());
@@ -839,7 +839,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                     dialog -> dismissAllMenus(),
                     v -> {
                         final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
-                        this.screenNavigator.showBrowserScreen(url, true, false);
+                        screenNavigator.showBrowserScreen(url, true, false);
                         dismissAllMenus();
                     });
             chromeViewModel.onMyShotOnBoardingDisplayed();
