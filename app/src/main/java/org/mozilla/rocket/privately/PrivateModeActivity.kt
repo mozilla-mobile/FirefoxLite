@@ -322,7 +322,10 @@ class PrivateModeActivity : BaseActivity(),
 
     private fun onReceiveViewIntent(intent: SafeIntent) {
         TelemetryWrapper.launchByPrivateModeShortcut(TelemetryWrapper.Extra_Value.EXTERNAL_APP)
-        urlFromExternal = intent.dataString
+        val fromHistory = (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
+        if (!fromHistory) {
+            urlFromExternal = intent.dataString
+        }
     }
 
     private fun onReceiveMainIntent(intent: SafeIntent) {
