@@ -42,8 +42,6 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         }
     }
 
-    fun getCategoryList() = categoryList
-
     fun updateCatList(newList: List<NewsCategory>?) {
         if (newList == null || newList.isEmpty()) {
             return
@@ -67,9 +65,11 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         }
 
         override fun onBindViewHolder(vh: CategorySettingItemViewHolder, pos: Int) {
-            vh.button.textOff = categoryList[pos].categoryId
-            vh.button.textOn = categoryList[pos].categoryId
-            vh.button.text = categoryList[pos].categoryId
+
+            val displayString = vh.button.context.getString(categoryList[pos].stringResourceId)
+            vh.button.textOff = displayString
+            vh.button.textOn = displayString
+            vh.button.text = displayString
             vh.button.isChecked = categoryList[pos].isSelected
             vh.button.setOnClickListener {
                 categoryList[pos].isSelected = !categoryList[pos].isSelected
