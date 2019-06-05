@@ -35,7 +35,8 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         progress = holder.findViewById(R.id.news_setting_cat_progress) as ProgressBar
 
         recyclerView?.adapter = NewsCatSettingCatAdapter()
-        recyclerView?.layoutManager = GridLayoutManager(context, 2)
+        val spanCount = context.resources.getInteger(R.integer.news_setting_category_column)
+        recyclerView?.layoutManager = GridLayoutManager(context, spanCount)
 
         if (categoryList.isNotEmpty()) {
             hideProgressBar()
