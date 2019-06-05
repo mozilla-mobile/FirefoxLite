@@ -17,11 +17,13 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
+import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.urlutils.UrlUtils
 
 class ChromeViewModel(
     private val settings: Settings,
-    private val bookmarkRepo: BookmarkRepository
+    private val bookmarkRepo: BookmarkRepository,
+    private val privateMode: PrivateMode
 ) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
     val tabCount = MutableLiveData<Int>()
@@ -38,6 +40,7 @@ class ChromeViewModel(
     val isTurboModeEnabled = MutableLiveData<Boolean>()
     val isBlockImageEnabled = MutableLiveData<Boolean>()
     val hasUnreadScreenshot = MutableLiveData<Boolean>()
+    val isPrivateBrowsingActive = MutableLiveData<Boolean>()
 
     val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()
@@ -73,6 +76,7 @@ class ChromeViewModel(
             isTurboModeEnabled.value = shouldUseTurboMode()
             isBlockImageEnabled.value = shouldBlockImages()
             hasUnreadScreenshot.value = AppConfigWrapper.getMyshotUnreadEnabled() && hasUnreadMyShot()
+            isPrivateBrowsingActive.value = privateMode.hasPrivateSession()
         }
         isRefreshing.value = false
         canGoBack.value = false
@@ -251,6 +255,14 @@ class ChromeViewModel(
         }
         showScreenshots.call()
         TelemetryWrapper.clickMenuCapture()
+    }
+
+    // TODO: find a way to observe if has private session
+    fun checkIfPrivateBrowsingActive() {
+        val hasPrivateSession = privateMode.hasPrivateSession()
+        if (isPrivateBrowsingActive.value != hasPrivateSession) {
+            isPrivateBrowsingActive.value = hasPrivateSession
+        }
     }
 
     data class OpenUrlAction(
