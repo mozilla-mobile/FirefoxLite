@@ -212,34 +212,12 @@ class MenuDialog : BottomSheetDialog {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        updateMenu()
+        chromeViewModel.onMenuShown()
     }
 
+    // This method exists for helping the communication between chromeViewMode and menuViewModel
+    // Need to see if there's a better way to deal with this
     private fun updateMenu() {
-        // TODO: Evan, to be implemented
-//        val settings = settings
-//
-//        turboModeButton.isSelected = settings.shouldUseTurboMode()
-//        blockImageButton.isSelected = settings.shouldBlockImages()
-//        nightModeButton.isSelected = settings.isNightModeEnable
-//
-//        val showUnread = AppConfigWrapper.getMyshotUnreadEnabled() && settings.hasUnreadMyShot()
-//        myshotIndicator.visibility = if (showUnread) View.VISIBLE else View.GONE
-//        privateModeIndicator.visibility = if (PrivateMode.hasPrivateSession(context)) View.VISIBLE else View.GONE
-//
-//        if (settings.showNightModeSpotlight()) {
-//            settings.setNightModeSpotlight(false)
-//            nightModeButton.post {
-//                DialogUtils.showSpotlight(
-//                        context.toActivity(),
-//                        nightModeButton,
-//                        {},
-//                        R.string.night_mode_on_boarding_message
-//                )
-//            }
-//        }
-        chromeViewModel.checkIfPrivateBrowsingActive()
-
         val hasFocus = chromeViewModel.navigationState.value?.isBrowser == true
         menuViewModel.onTabFocusChanged(hasFocus)
         bottomBarItemAdapter.setCanGoForward(hasFocus && chromeViewModel.canGoForward.value == true)
