@@ -20,4 +20,18 @@
     <item name="empty_view_text" type="id"/>
     <item name="empty_view_image" type="id"/>
 
+    <!-- Menu Items -->
+    <item name="menu_bookmark" type="id"/>
+    <item name="menu_download" type="id"/>
+    <item name="menu_history" type="id"/>
+    <item name="menu_screenshots" type="id"/>
+    <item name="menu_turbomode" type="id"/>
+    <item name="btn_private_browsing" type="id"/>
+    <item name="menu_night_mode" type="id"/>
+    <item name="menu_blockimg" type="id"/>
+    <item name="menu_find_in_page" type="id"/>
+    <item name="menu_delete" type="id"/>
+    <item name="menu_preferences" type="id"/>
+    <item name="menu_exit" type="id"/>
+
 </resources>

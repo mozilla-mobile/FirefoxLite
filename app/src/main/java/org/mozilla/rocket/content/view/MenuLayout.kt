@@ -67,19 +67,21 @@ class MenuLayout : FrameLayout {
         fun onItemLongClick(type: Int, position: Int): Boolean
     }
 
-    abstract class MenuItem(val type: Int) {
+    abstract class MenuItem(val type: Int, val viewId: Int) {
         var view: View? = null
 
         abstract fun createView(context: Context): View
 
         open class TextImageItem(
             type: Int,
+            id: Int,
             private val textResId: Int,
             private val drawableResId: Int,
             private val tintResId: Int?
-        ) : MenuItem(type) {
+        ) : MenuItem(type, id) {
             override fun createView(context: Context): View {
                 return LinearLayout(context).apply {
+                    id = viewId
                     layoutParams = ViewGroup.LayoutParams(dpToPx(74f), dpToPx(74f))
                     orientation = LinearLayout.VERTICAL
                     gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM

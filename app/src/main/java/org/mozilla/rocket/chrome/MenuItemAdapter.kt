@@ -27,18 +27,18 @@ class MenuItemAdapter(
 
     private fun convertToItem(itemData: ItemData): MenuItem {
         return when (val type = itemData.type) {
-            TYPE_BOOKMARKS -> MenuItem.TextImageItem(type, R.string.label_menu_bookmark, R.drawable.ic_bookmarks, theme.tintResId)
-            TYPE_DOWNLOADS -> MenuItem.TextImageItem(type, R.string.label_menu_download, R.drawable.menu_download, theme.tintResId)
-            TYPE_HISTORY -> MenuItem.TextImageItem(type, R.string.label_menu_history, R.drawable.menu_history, theme.tintResId)
-            TYPE_SCREENSHOTS -> MenuItem.TextImageItem(type, R.string.label_menu_my_shots, R.drawable.menu_my_shots_states, null)
-            TYPE_TURBO_MODE -> MenuItem.TextImageItem(type, R.string.label_menu_turbo_mode, R.drawable.menu_speedmode, theme.tintResId)
-            TYPE_PRIVATE_BROWSING -> MenuItem.TextImageItem(type, R.string.private_tab, R.drawable.private_browsing_mask_states, null)
-            TYPE_NIGHT_MODE -> MenuItem.TextImageItem(type, R.string.label_menu_night_mode, R.drawable.icon_night_mode, theme.tintResId)
-            TYPE_BLOCK_IMAGE -> MenuItem.TextImageItem(type, R.string.label_menu_block_image, R.drawable.menu_blockimg, theme.tintResId)
-            TYPE_FIND_IN_PAGE -> MenuItem.TextImageItem(type, R.string.label_menu_find_in_page, R.drawable.ic_menu_find_in_page, theme.tintResId)
-            TYPE_CLEAR_CACHE -> MenuItem.TextImageItem(type, R.string.label_menu_clear_cache, R.drawable.menu_delete, theme.tintResId)
-            TYPE_PREFERENCES -> MenuItem.TextImageItem(type, R.string.label_menu_settings, R.drawable.menu_settings, theme.tintResId)
-            TYPE_EXIT_APP -> MenuItem.TextImageItem(type, R.string.label_menu_exit, R.drawable.menu_exit, theme.tintResId)
+            TYPE_BOOKMARKS -> MenuItem.TextImageItem(type, R.id.menu_bookmark, R.string.label_menu_bookmark, R.drawable.ic_bookmarks, theme.tintResId)
+            TYPE_DOWNLOADS -> MenuItem.TextImageItem(type, R.id.menu_download, R.string.label_menu_download, R.drawable.menu_download, theme.tintResId)
+            TYPE_HISTORY -> MenuItem.TextImageItem(type, R.id.menu_history, R.string.label_menu_history, R.drawable.menu_history, theme.tintResId)
+            TYPE_SCREENSHOTS -> MenuItem.TextImageItem(type, R.id.menu_screenshots, R.string.label_menu_my_shots, R.drawable.menu_my_shots_states, null)
+            TYPE_TURBO_MODE -> MenuItem.TextImageItem(type, R.id.menu_turbomode, R.string.label_menu_turbo_mode, R.drawable.menu_speedmode, theme.tintResId)
+            TYPE_PRIVATE_BROWSING -> MenuItem.TextImageItem(type, R.id.btn_private_browsing, R.string.private_tab, R.drawable.private_browsing_mask_states, null)
+            TYPE_NIGHT_MODE -> MenuItem.TextImageItem(type, R.id.menu_night_mode, R.string.label_menu_night_mode, R.drawable.icon_night_mode, theme.tintResId)
+            TYPE_BLOCK_IMAGE -> MenuItem.TextImageItem(type, R.id.menu_blockimg, R.string.label_menu_block_image, R.drawable.menu_blockimg, theme.tintResId)
+            TYPE_FIND_IN_PAGE -> MenuItem.TextImageItem(type, R.id.menu_find_in_page, R.string.label_menu_find_in_page, R.drawable.ic_menu_find_in_page, theme.tintResId)
+            TYPE_CLEAR_CACHE -> MenuItem.TextImageItem(type, R.id.menu_delete, R.string.label_menu_clear_cache, R.drawable.menu_delete, theme.tintResId)
+            TYPE_PREFERENCES -> MenuItem.TextImageItem(type, R.id.menu_preferences, R.string.label_menu_settings, R.drawable.menu_settings, theme.tintResId)
+            TYPE_EXIT_APP -> MenuItem.TextImageItem(type, R.id.menu_exit, R.string.label_menu_exit, R.drawable.menu_exit, theme.tintResId)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
