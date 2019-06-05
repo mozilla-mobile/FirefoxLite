@@ -63,6 +63,7 @@ class NewsTabFragment : DaggerFragment() {
 
             newsViewModel.newsSettings.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
+                    newsViewModel.clear()
                     setupViewPager(view, it)
                 }
             })
@@ -118,6 +119,18 @@ class NewsTabFragment : DaggerFragment() {
 
         override fun getPageTitle(position: Int): CharSequence {
             return getString(displayCategories[position].stringResourceId)
+        }
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val fragment = super.instantiateItem(container, position) as NewsFragment
+            // Force to update the news language and category settings since Viewpager may reuse
+            // the fragment instance previously instantiated.
+            fragment.arguments?.apply {
+                val category = displayCategories[position]
+                putString(ContentFeature.TYPE_KEY, category.categoryId)
+                putString(ContentFeature.EXTRA_NEWS_LANGUAGE, language)
+            }
+            return fragment
         }
     }
 
