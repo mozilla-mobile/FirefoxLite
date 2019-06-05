@@ -27,6 +27,7 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
     private var recyclerView: RecyclerView? = null
     private var progress: ProgressBar? = null
     private var categoryList: List<NewsCategory> = listOf()
+    var onCategoryClick: (categories: List<NewsCategory>) -> Unit = {}
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
@@ -72,6 +73,7 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
             vh.button.isChecked = categoryList[pos].isSelected
             vh.button.setOnClickListener {
                 categoryList[pos].isSelected = !categoryList[pos].isSelected
+                onCategoryClick(categoryList)
             }
         }
 

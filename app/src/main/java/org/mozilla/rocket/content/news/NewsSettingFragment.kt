@@ -28,6 +28,8 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
     private var dialogHelper = LanguageListDialogHelper()
 
+    private var langKey: String? = null
+
     companion object {
         private const val TAG = "NewsSettingFragment"
         private const val PREF_NEWS_LANG = "pref_dummy_s_news_lang"
@@ -49,9 +51,13 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         repository.getLanguages().observe(viewLifecycleOwner, allLangsObserver)
 
         val settingObserver = Observer<Pair<NewsLanguage, List<NewsCategory>>> {
-            Log.d(TAG, "news locale/cats setting has changed, hence the changes to the cat list is overridden again and again ")
+            Log.d(
+                TAG,
+                "news locale/cats setting has changed, hence the changes to the cat list is overridden again and again "
+            )
             it?.first?.let { langChanged ->
                 languagePreference?.summary = langChanged.name
+                langKey = langChanged.key.toLowerCase()
             }
             it?.second?.let { categories ->
                 categoryPreference?.updateCatList(categories)
@@ -65,6 +71,11 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
         languagePreference = findPreference(PREF_NEWS_LANG) as? NewsLanguagePreference
         categoryPreference = findPreference(PREF_NEWS_CAT) as? NewsCategoryPreference
+        categoryPreference?.onCategoryClick = {
+            langKey?.let { key ->
+                repository.setUserPreferenceCategories(key, it)
+            }
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
@@ -72,16 +83,6 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
             onLanguagePrefClick()
         }
         return super.onPreferenceTreeClick(preference)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        val setting = repository.getNewsSettings().value
-        val language = setting?.first?.key?.toLowerCase()
-        val categories = categoryPreference?.getCategoryList()
-        if (language != null && categories != null) {
-            repository.setUserPreferenceCategories(language, categories)
-        }
     }
 
     private fun onLanguagePrefClick() {
