@@ -441,10 +441,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         finish();
     }
 
-    private void setShowNightModeSpotlight(Settings settings, boolean enabled) {
-        settings.setNightModeSpotlight(enabled);
-    }
-
     private void applyNightModeBrightness(boolean enable, Settings settings, Window window) {
         final WindowManager.LayoutParams layoutParams = window.getAttributes();
         final float screenBrightness;
@@ -656,6 +652,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 showMyShotOnBoarding();
             }
         });
+        chromeViewModel.getShowNightModeOnBoarding().observe(this, unit -> showNightModeOnBoarding());
         chromeViewModel.isNightMode().observe(this, isNightMode -> {
             if (isNightMode != null) {
                 onNightModeEnabled(Settings.getInstance(this), isNightMode);
@@ -827,10 +824,20 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         }
     }
 
+    private void showNightModeOnBoarding() {
+        View view = menu.findViewById(R.id.menu_night_mode);
+        view.post(() -> DialogUtils.showSpotlight(
+                MainActivity.this,
+                view,
+                dialog -> {
+                },
+                R.string.night_mode_on_boarding_message));
+    }
+
     @VisibleForTesting
     @UiThread
     public void showMyShotOnBoarding() {
-        setShowNightModeSpotlight(Settings.getInstance(getApplicationContext()), false);
+        Settings.getInstance(this).setNightModeSpotlight(false);
         View view = menu.findViewById(R.id.menu_screenshots);
         view.post(() -> {
             myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(

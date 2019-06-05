@@ -69,6 +69,7 @@ class ChromeViewModel(
     val openPreference = SingleLiveEvent<Unit>()
     val showFindInPage = SingleLiveEvent<Unit>()
     val showAdjustBrightness = SingleLiveEvent<Unit>()
+    val showNightModeOnBoarding = SingleLiveEvent<Unit>()
 
     init {
         settings.run {
@@ -171,6 +172,32 @@ class ChromeViewModel(
         if (isRefreshing.value == true) {
             isRefreshing.value = false
         }
+        updateMenu()
+    }
+
+    fun onMenuShown() {
+        updateMenu()
+    }
+
+    private fun updateMenu() {
+        updateMenu.call()
+        checkIfShowPrivateBrowsingOnBoarding()
+        checkIfPrivateBrowsingActive()
+    }
+
+    private fun checkIfShowPrivateBrowsingOnBoarding() {
+        if (settings.showNightModeSpotlight()) {
+            settings.setNightModeSpotlight(false)
+            showNightModeOnBoarding.call()
+        }
+    }
+
+    // TODO: find a better way to observe if there is private session
+    private fun checkIfPrivateBrowsingActive() {
+        val hasPrivateSession = privateMode.hasPrivateSession()
+        if (isPrivateBrowsingActive.value != hasPrivateSession) {
+            isPrivateBrowsingActive.value = hasPrivateSession
+        }
     }
 
     fun onNavigationStateChanged(canGoBack: Boolean, canGoForward: Boolean) {
@@ -255,14 +282,6 @@ class ChromeViewModel(
         }
         showScreenshots.call()
         TelemetryWrapper.clickMenuCapture()
-    }
-
-    // TODO: find a way to observe if has private session
-    fun checkIfPrivateBrowsingActive() {
-        val hasPrivateSession = privateMode.hasPrivateSession()
-        if (isPrivateBrowsingActive.value != hasPrivateSession) {
-            isPrivateBrowsingActive.value = hasPrivateSession
-        }
     }
 
     data class OpenUrlAction(
