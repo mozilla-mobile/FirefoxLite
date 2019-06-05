@@ -32,7 +32,7 @@ class MenuItemAdapter(
             TYPE_HISTORY -> MenuItem.TextImageItem(type, R.string.label_menu_history, R.drawable.menu_history, theme.tintResId)
             TYPE_SCREENSHOTS -> MenuItem.TextImageItem(type, R.string.label_menu_my_shots, R.drawable.menu_my_shots_states, null)
             TYPE_TURBO_MODE -> MenuItem.TextImageItem(type, R.string.label_menu_turbo_mode, R.drawable.menu_speedmode, theme.tintResId)
-            TYPE_PRIVATE_BROWSING -> MenuItem.TextImageItem(type, R.string.private_tab, R.drawable.private_browsing_mask, theme.tintResId)
+            TYPE_PRIVATE_BROWSING -> MenuItem.TextImageItem(type, R.string.private_tab, R.drawable.private_browsing_mask_states, null)
             TYPE_NIGHT_MODE -> MenuItem.TextImageItem(type, R.string.label_menu_night_mode, R.drawable.icon_night_mode, theme.tintResId)
             TYPE_BLOCK_IMAGE -> MenuItem.TextImageItem(type, R.string.label_menu_block_image, R.drawable.menu_blockimg, theme.tintResId)
             TYPE_FIND_IN_PAGE -> MenuItem.TextImageItem(type, R.string.label_menu_find_in_page, R.drawable.ic_menu_find_in_page, theme.tintResId)
@@ -83,6 +83,12 @@ class MenuItemAdapter(
     fun setUnreadScreenshot(unread: Boolean) {
         getItem(TYPE_SCREENSHOTS)?.view?.apply {
             isActivated = unread
+        }
+    }
+
+    fun setPrivateBrowsingActive(active: Boolean) {
+        getItem(TYPE_PRIVATE_BROWSING)?.view?.apply {
+            isActivated = active
         }
     }
 

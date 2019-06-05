@@ -124,6 +124,7 @@ class MenuDialog : BottomSheetDialog {
         chromeViewModel.isNightMode.nonNullObserve(activity, menuItemAdapter::setNightMode)
         chromeViewModel.isBlockImageEnabled.nonNullObserve(activity, menuItemAdapter::setBlockImageEnabled)
         chromeViewModel.hasUnreadScreenshot.nonNullObserve(activity, menuItemAdapter::setUnreadScreenshot)
+        chromeViewModel.isPrivateBrowsingActive.nonNullObserve(activity, menuItemAdapter::setPrivateBrowsingActive)
     }
 
     private fun overridePendingTransition(enterAnim: Int, exitAnim: Int) {
@@ -237,6 +238,7 @@ class MenuDialog : BottomSheetDialog {
 //                )
 //            }
 //        }
+        chromeViewModel.checkIfPrivateBrowsingActive()
 
         val hasFocus = chromeViewModel.navigationState.value?.isBrowser == true
         menuViewModel.onTabFocusChanged(hasFocus)
