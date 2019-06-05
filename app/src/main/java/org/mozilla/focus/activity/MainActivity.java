@@ -434,7 +434,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     private void onExitClicked() {
         GeoPermissionCache.clear();
-        if (PrivateMode.hasPrivateSession(this)) {
+        if (PrivateMode.getInstance(this).hasPrivateSession()) {
             final Intent intent = PrivateSessionNotificationService.buildIntent(this.getApplicationContext(), true);
             startActivity(intent);
         }

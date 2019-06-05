@@ -14,9 +14,52 @@ import org.mozilla.threadutils.ThreadUtils
 import java.io.File
 
 // Describe when to clear the private mode session
-class PrivateMode {
+class PrivateMode private constructor(context: Context) {
+    private val appContext: Context = context.applicationContext
 
-    // Provide common resources, and helper functions
+    fun sanitize() {
+        ThreadUtils.postToBackgroundThread {
+
+            appContext.cacheDir?.let { dir ->
+                clean(dir, appContext)
+            }
+
+            appContext.getDir(WEBVIEW_FOLDER_NAME, MODE_PRIVATE)?.let { dir ->
+                clean(dir, appContext)
+            }
+        }
+    }
+
+    /**
+     * A helper function to report whether this service is alive.
+     * When there's a private session, it implies a PrivateSessionNotificationService is running.
+     *
+     * @param context
+     * @return true if this service is alive
+     */
+    @Suppress("deprecation")
+    fun hasPrivateSession(): Boolean {
+        val manager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        // Although this method is no longer available to third party applications.  For backwards compatibility,
+        // it will still return the caller's own services.
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (PrivateSessionNotificationService::class.java.name == service.service.className) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun clean(dir: File, context: Context) {
+
+        val delete = FileUtils.deleteDirectory(dir)
+        if (!delete) {
+            // TODO:remember to clear the  SANITIZE_REMINDER when the app launch next time
+            PreferenceManager.getDefaultSharedPreferences(context)?.edit()?.putString(PREF_KEY_SANITIZE_REMINDER, dir.absolutePath)?.apply()
+        }
+    }
+
     companion object {
         const val PREF_KEY_SANITIZE_REMINDER = "pref_key_sanitize_reminder"
 
@@ -24,49 +67,12 @@ class PrivateMode {
         const val PRIVATE_PROCESS_NAME = "private_mode"
         const val WEBVIEW_FOLDER_NAME = "webview"
 
+        @Volatile private var INSTANCE: PrivateMode? = null
+
         @JvmStatic
-        fun sanitize(context: Context) {
-            ThreadUtils.postToBackgroundThread {
-
-                context.applicationContext.cacheDir?.let { dir ->
-                    clean(dir, context)
+        fun getInstance(context: Context): PrivateMode =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: PrivateMode(context).also { INSTANCE = it }
                 }
-
-                context.applicationContext.getDir(PrivateMode.WEBVIEW_FOLDER_NAME, MODE_PRIVATE)?.let { dir ->
-                    clean(dir, context)
-                }
-            }
-        }
-
-        /**
-         * A helper function to report whether this service is alive.
-         * When there's a private session, it implies a PrivateSessionNotificationService is running.
-         *
-         * @param context
-         * @return true if this service is alive
-         */
-        @Suppress("deprecation")
-        @JvmStatic
-        fun hasPrivateSession(context: Context): Boolean {
-            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            // Although this method is no longer available to third party applications.  For backwards compatibility,
-            // it will still return the caller's own services.
-            for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
-                if (PrivateSessionNotificationService::class.java.name == service.service.className) {
-                    return true
-                }
-            }
-
-            return false
-        }
-
-        private fun clean(dir: File, context: Context) {
-
-            val delete = FileUtils.deleteDirectory(dir)
-            if (!delete) {
-                // TODO:remember to clear the  SANITIZE_REMINDER when the app launch next time
-                PreferenceManager.getDefaultSharedPreferences(context)?.edit()?.putString(PREF_KEY_SANITIZE_REMINDER, dir.absolutePath)?.apply()
-            }
-        }
     }
 }
