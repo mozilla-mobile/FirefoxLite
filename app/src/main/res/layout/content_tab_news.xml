@@ -32,7 +32,7 @@
                 android:background="@null"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/menu_settings" />
+                android:src="@drawable/news_setting" />
     </RelativeLayout>
 
     <android.support.design.widget.TabLayout
