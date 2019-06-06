@@ -113,8 +113,8 @@ public class MyShotScreenshot extends BaseScreenshot {
         new BottomBarRobot().clickBrowserBottomBarItem(bottomBarCapturePos);
         IdlingRegistry.getInstance().register(screenshotIdlingResource);
 
-        // Open menu
-        AndroidTestUtils.tapHomeMenuButton();
+        // Open browser menu
+        AndroidTestUtils.tapBrowserMenuButton();
         IdlingRegistry.getInstance().unregister(screenshotIdlingResource);
 
         // Click my shot and take a screenshot of panel and toast
