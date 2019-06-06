@@ -57,7 +57,7 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
             )
             it?.first?.let { langChanged ->
                 languagePreference?.summary = langChanged.name
-                langKey = langChanged.key.toLowerCase()
+                langKey = langChanged.getApiId()
             }
             it?.second?.let { categories ->
                 categoryPreference?.updateCatList(categories)
