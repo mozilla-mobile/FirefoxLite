@@ -136,14 +136,16 @@ class NewsSettingsRepository(
                 )
             }
         }
-
+        // save all possible categories from remote to local
         if (remoteCategories?.isNotEmpty() == true) {
             remoteCategories?.let {
+                // here's a infinite loop here, cause localDataSource will make it's obeserver call updateCategoryResult
                 localDataSource.setSupportCategories(language, it)
             }
             remoteCategories = null
         }
 
+        // when I enter here, preferenceCategories's full of cats now
         val selectedCategories = preferenceCategories?.joinToString(",") ?: ""
         if (selectedCategories.isNotEmpty()) {
             supportCategories.forEach {
