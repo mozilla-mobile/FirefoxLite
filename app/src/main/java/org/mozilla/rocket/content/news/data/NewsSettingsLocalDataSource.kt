@@ -21,11 +21,14 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
         private const val KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE = "user_pref_lang"
         private const val KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX = "support_cat_"
         private const val KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX = "user_pref_cat_"
+        private const val DEFAULT_LANGUAGE_KEY = "English"
+        private const val DEFAULT_LANGUAGE_CODE = "1"
+        private const val DEFAULT_CATEGORY_ID = "top-news"
         private val DEFAULT_LANGUAGE_LIST = listOf(
-            NewsLanguage("English", "1", "English")
+            NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE_CODE, DEFAULT_LANGUAGE_KEY)
         )
         private val DEFAULT_CATEGORY_LIST = listOf(
-            NewsCategory.TOP_NEWS.categoryId
+            DEFAULT_CATEGORY_ID
         )
     }
 
