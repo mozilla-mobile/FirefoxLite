@@ -79,10 +79,8 @@ class NewsSettingsRepository(
                 settingsLiveData.removeSource(categoriesByLanguage)
                 settingsLiveData.addSource(categoriesByLanguage) { categories ->
                     categories?.let { list ->
-                        val cache = settingsLiveData.value
-                        if (language != cache?.first || list != cache.second) {
-                            settingsLiveData.postValue(Pair(language, list))
-                        }
+                        // TODO: Skip same settings to reduce the update to UI layer
+                        settingsLiveData.postValue(Pair(language, list))
                     }
                 }
             }
@@ -94,7 +92,10 @@ class NewsSettingsRepository(
     fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) {
         localDataSource.setUserPreferenceCategories(
             language,
-            userPreferenceCategories.asSequence().map { it.categoryId }.toList()
+            userPreferenceCategories.asSequence()
+                .filter { it.isSelected }
+                .map { it.categoryId }
+                .toList()
         )
     }
 
