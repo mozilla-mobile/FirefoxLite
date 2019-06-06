@@ -6,6 +6,7 @@
 package org.mozilla.rocket.content.portal
 
 import android.content.Context
+import android.support.annotation.VisibleForTesting
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
@@ -31,14 +32,15 @@ class ContentPortalView : CoordinatorLayout {
     private var bottomSheet: LinearLayout? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
-    private val contentFeature = ContentFeature()
+    @VisibleForTesting
+    var contentFeature = ContentFeature()
 
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-            context, attrs, defStyleAttr
+        context, attrs, defStyleAttr
     )
 
     override fun onAttachedToWindow() {
@@ -63,9 +65,7 @@ class ContentPortalView : CoordinatorLayout {
 
     private fun initEcTabFragment() {
         context?.inTransaction {
-            replace(R.id.bottom_sheet, EcTabFragment.newInstance(),
-                TAG_CONTENT_FRAGMENT
-            )
+            replace(R.id.bottom_sheet, EcTabFragment.newInstance(), TAG_CONTENT_FRAGMENT)
         }
     }
 
@@ -152,7 +152,7 @@ class ContentPortalView : CoordinatorLayout {
         bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior?.setBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
+            BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
@@ -179,6 +179,6 @@ class ContentPortalView : CoordinatorLayout {
 
     companion object {
         const val TAG_NEWS_FRAGMENT = "TAG_NEWS_FRAGMENT"
-        private const val TAG_CONTENT_FRAGMENT = "TAG_CONTENT_FRAGMENT"
+        const val TAG_CONTENT_FRAGMENT = "TAG_CONTENT_FRAGMENT"
     }
 }
