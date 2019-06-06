@@ -278,6 +278,12 @@
   <string name="private_browsing_erase_done">Jujutan langlangan nyamuni\nanjeun geus dihapus.</string>
   <string name="private_browsing_tracker_blocked">Palacak dipeungpeuk</string>
   <string name="private_browsing_tracker_blocked_description">Wilujeng ngalanglang kalawan paminingan leuwih.</string>
+  <string name="private_browsing_dialog_add_shortcut_title">Aksés modeu pribadi kur sakali ngaklik! Rék nambahkeun takulan modeu pribadi kana layar tepas?</string>
+  <string name="private_browsing_dialog_add_shortcut_no">Teu, nuhun</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">Enya</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">Anjeun bisa nambahkeun takulan modeu pribadi engké na pangaturan.</string>
+  <string name="private_browsing_shortcut_name">%1$s - Sungsian pribadi</string>
+  <string name="preference_add_private_browsing_shortcut">Tambahkeun takulan modeu pribadi kana layar Tepas</string>
   <string name="my_shot_on_boarding_message">Ilikan téwakan layar anjeun di dieu!</string>
   <string name="my_shot_on_boarding_category_message">Pikeun ngaronjatkeun pangalaman produk anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
   <string name="btn_vpn">Ladénan VPN bébas 7 poé geus sayaga. Instal ayeuna pikeun ngalanglang leuwih nyamuni tur aman.</string>

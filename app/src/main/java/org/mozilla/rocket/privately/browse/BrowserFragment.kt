@@ -3,7 +3,6 @@ package org.mozilla.rocket.privately.browse
 import android.Manifest
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -12,7 +11,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
@@ -41,14 +39,12 @@ import org.mozilla.focus.web.BrowsingSession
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
-import org.mozilla.focus.widget.FragmentListener
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
-import org.mozilla.rocket.privately.SharedViewModel
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
@@ -69,8 +65,6 @@ private const val ACTION_DOWNLOAD = 0
 class BrowserFragment : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
-
-    private var listener: FragmentListener? = null
 
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
@@ -149,14 +143,11 @@ class BrowserFragment : LocaleAwareFragment(),
         sessionManager.register(observer)
         sessionManager.focusSession?.register(observer)
 
-        activity?.let { registerData(it) }
-
         observeChromeAction()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        activity?.let { unregisterData(it) }
 
         sessionManager.focusSession?.unregister(observer)
         sessionManager.unregister(observer)
@@ -238,16 +229,6 @@ class BrowserFragment : LocaleAwareFragment(),
                 }
             }
         })
-        if (context is FragmentListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -339,18 +320,6 @@ class BrowserFragment : LocaleAwareFragment(),
     private fun goForward() = sessionManager.focusSession?.engineSession?.goForward()
     private fun stop() = sessionManager.focusSession?.engineSession?.stopLoading()
     private fun reload() = sessionManager.focusSession?.engineSession?.reload()
-
-    private fun registerData(activity: FragmentActivity) {
-        val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
-        shared.getUrl().observe(this, Observer<String> { url ->
-            url?.let { loadUrl(it, false, false, null) }
-        })
-    }
-
-    private fun unregisterData(activity: FragmentActivity) {
-        val shared = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
-        shared.getUrl().removeObservers(this)
-    }
 
     private fun onTrackerButtonClicked() {
         view?.let { parentView -> trackerPopup.show(parentView) }
@@ -472,6 +441,7 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         override fun onTitleChanged(session: Session, title: String?) {
+            fragment.chromeViewModel.onFocusedTitleChanged(title)
             session.let {
                 if (fragment.displayUrlView.text.toString() != it.url) {
                     fragment.displayUrlView.text = it.url
@@ -600,6 +570,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
         override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {
             fragment.chromeViewModel.onFocusedUrlChanged(session?.url)
+            fragment.chromeViewModel.onFocusedTitleChanged(session?.title)
             if (session != null) {
                 val canGoBack = fragment.sessionManager.focusSession?.canGoBack ?: false
                 val canGoForward = fragment.sessionManager.focusSession?.canGoForward ?: false

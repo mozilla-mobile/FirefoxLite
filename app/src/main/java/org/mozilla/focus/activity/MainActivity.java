@@ -8,7 +8,6 @@ package org.mozilla.focus.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -51,10 +50,8 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
-import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabModelStore;
 import org.mozilla.focus.provider.DownloadContract;
-import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
 import org.mozilla.focus.tabs.tabtray.TabTray;
@@ -75,16 +72,15 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ShortcutUtils;
 import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.viewmodel.BookmarkViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.focus.widget.FragmentListener;
-import org.mozilla.rocket.component.LaunchIntentDispatcher;
-import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
 import org.mozilla.rocket.chrome.MenuViewModel;
+import org.mozilla.rocket.component.LaunchIntentDispatcher;
+import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
@@ -104,7 +100,6 @@ import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
-import org.mozilla.urlutils.UrlUtils;
 
 import java.io.File;
 import java.util.List;
@@ -115,8 +110,7 @@ import kotlin.Unit;
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.MENU;
 
-public class MainActivity extends BaseActivity implements FragmentListener,
-        ThemeManager.ThemeHost,
+public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost,
         SharedPreferences.OnSharedPreferenceChangeListener,
         TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
         ScreenNavigator.Provider,
@@ -124,9 +118,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         PromotionViewContract {
 
     private PromotionModel promotionModel;
-
-    // Url request from onNewIntent() need to wait till fragments are resumed.
-    private String pendingUrl;
 
     private BottomSheetDialog menu;
     private BottomBarItemAdapter bottomBarItemAdapter;
@@ -150,11 +141,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     private static final String LOG_TAG = "MainActivity";
 
     private ChromeViewModel chromeViewModel;
-    private BookmarkViewModel bookmarkViewModel;
 
     private ThemeManager themeManager;
 
-    private boolean pendingMyShotOnBoarding;
     private Dialog myshotOnBoardingDialog;
     private DownloadIndicatorViewModel downloadIndicatorViewModel;
 
@@ -184,9 +173,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         super.onCreate(savedInstanceState);
         chromeViewModel = Inject.obtainChromeViewModel(this);
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
-        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
-                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)));
-        bookmarkViewModel = ViewModelProviders.of(this, factory).get(BookmarkViewModel.class);
 
         asyncInitialize();
 
@@ -199,13 +185,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         SafeIntent intent = new SafeIntent(getIntent());
 
         if (savedInstanceState == null) {
-            if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-                final String url = intent.getDataString();
-
-                boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB,
-                        false);
-                this.screenNavigator.showBrowserScreen(url, openInNewTab, true);
-            } else {
+            boolean handledExternalLink = handleExternalLink(intent);
+            if (!handledExternalLink) {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
                     this.screenNavigator.addFirstRunScreen();
                 } else {
@@ -329,11 +310,8 @@ public class MainActivity extends BaseActivity implements FragmentListener,
                 return;
             }
         }
-
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            // We can't update our fragment right now because we need to wait until the activity is
-            // resumed. So just remember this URL and load it in onResumeFragments().
-            pendingUrl = intent.getDataString();
+        boolean handledExternalLink = handleExternalLink(intent);
+        if (handledExternalLink) {
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
             dismissAllMenus();
             TabTray.dismiss(getSupportFragmentManager());
@@ -343,15 +321,17 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         setIntent(unsafeIntent);
     }
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        if (pendingUrl != null) {
-            final SafeIntent intent = new SafeIntent(getIntent());
+    private boolean handleExternalLink(SafeIntent intent) {
+        boolean handled = false;
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String url = intent.getDataString();
+            String nonNullUrl = url != null ? url : "";
             boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
-            this.screenNavigator.showBrowserScreen(pendingUrl, openInNewTab, true);
-            pendingUrl = null;
+            chromeViewModel.getOpenUrl().setValue(new OpenUrlAction(nonNullUrl, openInNewTab, true));
+            handled = true;
         }
+
+        return handled;
     }
 
     private void initViews() {
@@ -498,18 +478,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
         return screenNavigator.isBrowserInForeground() ? getBrowserFragment() : null;
     }
 
-    private void openUrl(final boolean withNewTab, final Object payload) {
-        final String url = (payload != null) ? payload.toString() : null;
-        ScreenNavigator.get(this).showBrowserScreen(url, withNewTab, false);
-    }
-
     private void showMenu() {
         updateMenu();
         menu.show();
     }
 
     private void updateMenu() {
-
         turboModeButton.setSelected(isTurboEnabled());
         blockImageButton.setSelected(isBlockingImages());
 
@@ -520,19 +494,6 @@ public class MainActivity extends BaseActivity implements FragmentListener,
 
         myshotIndicator.setVisibility(showUnread ? View.VISIBLE : View.GONE);
         privateModeIndicator.setVisibility(privateModeActivate ? View.VISIBLE : View.GONE);
-        if (pendingMyShotOnBoarding) {
-            pendingMyShotOnBoarding = false;
-            setShowNightModeSpotlight(settings, false);
-            myshotButton.post(() -> myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
-                    MainActivity.this,
-                    myshotButton,
-                    dialog -> dismissAllMenus(),
-                    v -> {
-                        final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
-                        this.screenNavigator.showBrowserScreen(url, true, false);
-                        dismissAllMenus();
-                    }));
-        }
 
         nightModeButton.setSelected(isNightModeEnabled(settings));
         if (shouldShowNightModeSpotlight(settings)) {
@@ -721,8 +682,9 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     public void onDestroy() {
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
-
-        sessionManager.destroy();
+        if (sessionManager != null) {
+            sessionManager.destroy();
+        }
         super.onDestroy();
     }
 
@@ -830,25 +792,17 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void onBookMarkClicked() {
-        Session currentTab = getSessionManager().getFocusSession();
-        if (currentTab == null) {
-            return;
-        }
         Boolean isActivated = chromeViewModel.isCurrentUrlBookmarked().getValue();
         if (isActivated != null && isActivated) {
-            bookmarkViewModel.deleteBookmarksByUrl(currentTab.getUrl());
+            chromeViewModel.deleteBookmark();
             Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
         } else {
-            if (TextUtils.isEmpty(currentTab.getUrl())) {
-                //TODO: Edge case - should add a hint for failing to add the bookmark
-                return;
+            final String itemId = chromeViewModel.addBookmark();
+            if (itemId != null) {
+                final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
+                snackbar.show();
             }
-            final String originalTitle = currentTab.getTitle();
-            final String title = TextUtils.isEmpty(originalTitle) ? UrlUtils.stripCommonSubdomains(UrlUtils.stripHttp(currentTab.getUrl())) : originalTitle;
-            final String itemId = bookmarkViewModel.addBookmark(title, currentTab.getUrl());
-            final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
-            snackbar.show();
         }
     }
 
@@ -976,6 +930,11 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     }
 
     private void observeChromeAction() {
+        chromeViewModel.getOpenUrl().observe(this, action -> {
+            if (action != null) {
+                screenNavigator.showBrowserScreen(action.getUrl(), action.getWithNewTab(), action.isFromExternal());
+            }
+        });
         chromeViewModel.getShowTabTray().observe(this, unit -> {
             TabTrayFragment tabTray = TabTray.show(getSupportFragmentManager());
             if (tabTray != null) {
@@ -994,6 +953,7 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             }
             this.screenNavigator.addUrlScreen(url);
         });
+        chromeViewModel.getDismissUrlInput().observe(this, unit -> screenNavigator.popUrlScreen());
         chromeViewModel.getPinShortcut().observe(this, unit -> onAddToHomeClicked());
         chromeViewModel.getToggleBookmark().observe(this, unit -> onBookMarkClicked());
         chromeViewModel.getShare().observe(this, unit -> {
@@ -1003,38 +963,12 @@ public class MainActivity extends BaseActivity implements FragmentListener,
             }
         });
         chromeViewModel.getShowDownloadPanel().observe(this, unit -> onDownloadClicked());
-    }
-
-    @Override
-    public void onNotified(@NonNull Fragment from, @NonNull TYPE type, @Nullable Object payload) {
-        switch (type) {
-            case OPEN_PREFERENCE:
-                openPreferences();
-                break;
-            case UPDATE_MENU:
-                this.updateMenu();
-                break;
-            case OPEN_URL_IN_CURRENT_TAB:
-                openUrl(false, payload);
-                break;
-            case OPEN_URL_IN_NEW_TAB:
-                openUrl(true, payload);
-                break;
-            case DISMISS_URL_INPUT:
-                this.screenNavigator.popUrlScreen();
-                break;
-            case REFRESH_TOP_SITE:
-                Fragment fragment = this.screenNavigator.getTopFragment();
-                if (fragment instanceof HomeFragment) {
-                    ((HomeFragment) fragment).updateTopSitesData();
-                }
-                break;
-            case SHOW_MY_SHOT_ON_BOARDING:
+        chromeViewModel.getUpdateMenu().observe(this, unit -> updateMenu());
+        chromeViewModel.isMyShotOnBoardingPending().observe(this, isPending -> {
+            if (isPending != null && isPending) {
                 showMyShotOnBoarding();
-                break;
-            default:
-                break;
-        }
+            }
+        });
     }
 
     @Override
@@ -1198,7 +1132,19 @@ public class MainActivity extends BaseActivity implements FragmentListener,
     @VisibleForTesting
     @UiThread
     public void showMyShotOnBoarding() {
-        pendingMyShotOnBoarding = true;
+        setShowNightModeSpotlight(Settings.getInstance(getApplicationContext()), false);
+        myshotButton.post(() -> {
+            myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
+                    MainActivity.this,
+                    myshotButton,
+                    dialog -> dismissAllMenus(),
+                    v -> {
+                        final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
+                        this.screenNavigator.showBrowserScreen(url, true, false);
+                        dismissAllMenus();
+                    });
+            chromeViewModel.onMyShotOnBoardingDisplayed();
+        });
         showMenu();
     }
 

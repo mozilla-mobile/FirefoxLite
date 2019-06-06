@@ -13,6 +13,7 @@ import android.content.Context
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class ShortcutViewModel : ViewModel() {
@@ -37,11 +38,17 @@ class ShortcutViewModel : ViewModel() {
             }
         }
 
+        val createdBefore = (context.applicationContext as FocusApplication)
+                .settings
+                .privateBrowsingSettings
+                .isPrivateShortcutCreatedBefore()
+
         return Transformations.switchMap(isHomeState) { isHome ->
             if (!isHome) {
                 continueLeaveEvent.call()
-            } else if (count == PROMOTE_SHORTCUT_COUNT) {
+            } else if (count == PROMOTE_SHORTCUT_COUNT && !createdBefore) {
                 eventPromoteShortcut.value = createPromotionCallback(appContext, continueLeaveEvent)
+                TelemetryWrapper.showPrivateShortcutPrompt()
             } else {
                 increaseCount(appContext)
                 continueLeaveEvent.call()
@@ -56,18 +63,22 @@ class ShortcutViewModel : ViewModel() {
         continueLeaveEvent: SingleLiveEvent<Unit>
     ) = object : PromotionCallback {
         override fun onPositive() {
+            TelemetryWrapper.clickPrivateShortcutPrompt(TelemetryWrapper.Value.POSITIVE)
             increaseCount(context)
             continueLeaveEvent.call()
             eventCreateShortcut.call()
         }
 
         override fun onNegative() {
+            TelemetryWrapper.clickPrivateShortcutPrompt(TelemetryWrapper.Value.NEGATIVE)
             increaseCount(context)
             continueLeaveEvent.call()
             eventShowMessage.value = R.string.private_browsing_dialog_add_shortcut_no_toast
         }
 
-        override fun onCancel() {}
+        override fun onCancel() {
+            TelemetryWrapper.clickPrivateShortcutPrompt(TelemetryWrapper.Value.DISMISS)
+        }
     }
 
     private fun increaseCount(context: Context) {

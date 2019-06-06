@@ -278,6 +278,12 @@
   <string name="private_browsing_erase_done">您的隐私浏览\n历史已被清除。</string>
   <string name="private_browsing_tracker_blocked">跟踪器拦截数量</string>
   <string name="private_browsing_tracker_blocked_description">享受额外保护的浏览。</string>
+  <string name="private_browsing_dialog_add_shortcut_title">一键进入隐私模式！要在主屏幕加入隐私模式的快捷方式吗？</string>
+  <string name="private_browsing_dialog_add_shortcut_no">不了，谢谢</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">好的</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">也可稍后到设置页中添加。</string>
+  <string name="private_browsing_shortcut_name">%1$s - 隐私浏览</string>
+  <string name="preference_add_private_browsing_shortcut">将隐私模式快捷方式添加到主屏幕</string>
   <string name="my_shot_on_boarding_message">在这里查看您的截图！</string>
   <string name="my_shot_on_boarding_category_message">为了改善您的产品体验，我们会收集有关您的屏幕截图类别的信息。</string>
   <string name="btn_vpn">VPN 服务 7 天免费使用。立即安装，上网可以更私密、更安全。</string>

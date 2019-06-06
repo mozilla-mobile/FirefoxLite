@@ -98,7 +98,7 @@
         <activity
             android:name="org.mozilla.rocket.privately.PrivateModeActivity"
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:launchMode="singleTask"
             android:process=":private_mode"
             android:screenOrientation="portrait"

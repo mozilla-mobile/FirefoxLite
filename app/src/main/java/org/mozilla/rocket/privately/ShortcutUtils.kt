@@ -10,7 +10,9 @@ import android.content.Intent
 import android.support.v4.content.pm.ShortcutInfoCompat
 import android.support.v4.content.pm.ShortcutManagerCompat
 import android.support.v4.graphics.drawable.IconCompat
+import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.rocket.component.LaunchIntentDispatcher
@@ -23,7 +25,7 @@ class ShortcutUtils {
             val shortcutIntent = Intent(Intent.ACTION_MAIN)
             shortcutIntent.setClassName(context, AppConstants.LAUNCHER_PRIVATE_ACTIVITY_ALIAS)
             shortcutIntent.putExtra(
-                    LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE.value,
+                    LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE_SHORTCUT.value,
                     true
             )
             shortcutIntent.flags = shortcutIntent.flags or
@@ -45,7 +47,13 @@ class ShortcutUtils {
             // not often the user will add shortcut again.
             val intentSender = IntentUtils.getLauncherHomePendingIntent(context).intentSender
 
+            (context.applicationContext as FocusApplication)
+                    .settings
+                    .privateBrowsingSettings
+                    .setPrivateShortcutCreated()
+
             if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
+                TelemetryWrapper.createPrivateShortcut()
                 ShortcutManagerCompat.requestPinShortcut(context, shortcut, intentSender)
             }
         }

@@ -7,10 +7,11 @@ package org.mozilla.rocket.settings
 
 import android.content.Context
 import org.mozilla.rocket.preference.AndroidPreferencesFactory
+import org.mozilla.rocket.preference.GlobalPreferencesFactory
 
 class SettingsProvider(context: Context) {
     val privateBrowsingSettings by lazy {
-        PrivateBrowsingSettings(context, AndroidPreferencesFactory())
+        PrivateBrowsingSettings(context, GlobalPreferencesFactory())
     }
 
     val globalSettings by lazy {

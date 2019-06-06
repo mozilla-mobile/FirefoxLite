@@ -76,12 +76,12 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SwipeMotionDetector;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
@@ -170,6 +170,18 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        observeChromeAction();
+    }
+
+    private void observeChromeAction() {
+        chromeViewModel.getClearBrowsingHistory().observe(this, unit -> {
+            updateTopSitesData();
+        });
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         showCurrentBannerTelemetry();
@@ -240,7 +252,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public OnClickListener onBannerClickListener() {
-        return arg -> FragmentListener.notifyParent(this, FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB, arg);
+        return arg -> chromeViewModel.getOpenUrl().setValue(new OpenUrlAction(arg, true, false));
     }
 
     @Override
@@ -564,8 +576,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         @Override
         public void onClick(View v) {
             final Site site = (Site) v.getTag();
-            final Activity parent = getActivity();
-            if ((site != null) && (parent instanceof FragmentListener)) {
+            if (site != null) {
                 ScreenNavigator.get(v.getContext()).showBrowserScreen(site.getUrl(), true, false);
                 ViewParent viewParent = v.getParent();
                 if (viewParent instanceof ViewGroup) {

@@ -33,7 +33,7 @@
   <string name="preference_privacy_storage_clear_browsing_data">Xóa dữ liệu truy cập</string>
   <string name="preference_privacy_storage_save_downloads_to">Lưu các bản tải xuống vào</string>
   <string name="preference_default_browser">Đặt làm trình duyệt mặc định</string>
-  <string name="preference_default_browser_is_setting">Thay đổi cài đặt…</string>
+  <string name="preference_default_browser_is_setting">Đang thay đổi cài đặt…</string>
   <string name="preference_turbo_mode">Chế độ Turbo</string>
   <string name="preference_mozilla_telemetry">Gửi dữ liệu sử dụng</string>
   <string name="preference_mozilla_telemetry_summary">%2$s cố gắng chỉ thu thập những gì chúng tôi cần cung cấp và cải thiện %1$s cho mọi người.</string>
@@ -278,6 +278,12 @@
   <string name="private_browsing_erase_done">Trình duyệt riêng tư của bạn\nlịch sử đã bị xóa.</string>
   <string name="private_browsing_tracker_blocked">Trình theo dõi đã chặn</string>
   <string name="private_browsing_tracker_blocked_description">Tận hưởng duyệt web với lớp bảo vệ được thêm.</string>
+  <string name="private_browsing_dialog_add_shortcut_title">Truy cập chế độ riêng tư trong một cú nhấp chuột! Bạn muốn thêm lối tắt chế độ riêng tư vào màn hình chính?</string>
+  <string name="private_browsing_dialog_add_shortcut_no">Không, cảm ơn</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">Có</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">Bạn có thể thêm lối tắt chế độ riêng tư sau này trong cài đặt.</string>
+  <string name="private_browsing_shortcut_name">%1$s - Duyệt web riêng tư</string>
+  <string name="preference_add_private_browsing_shortcut">Thêm phím tắt chế độ riêng tư vào màn hình chính</string>
   <string name="my_shot_on_boarding_message">Xem ảnh chụp màn hình của bạn ở đây!</string>
   <string name="my_shot_on_boarding_category_message">Để cải thiện trải nghiệm sản phẩm của bạn, chúng tôi thu thập thông tin về các loại ảnh chụp màn hình của bạn.</string>
   <string name="btn_vpn">Dịch vụ VPN miễn phí 7 ngày đã sẵn sàng cho bạn. Cài đặt ngay để duyệt riêng tư và an toàn hơn.</string>

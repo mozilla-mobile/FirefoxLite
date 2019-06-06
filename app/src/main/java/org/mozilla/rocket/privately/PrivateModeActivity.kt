@@ -14,8 +14,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.CheckResult
-import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
@@ -37,9 +35,8 @@ import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
-import org.mozilla.focus.widget.FragmentListener
-import org.mozilla.focus.widget.FragmentListener.TYPE
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.landing.NavigationModel
@@ -51,7 +48,6 @@ import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
 class PrivateModeActivity : BaseActivity(),
-        FragmentListener,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         TabsSessionProvider.SessionHost {
@@ -60,7 +56,6 @@ class PrivateModeActivity : BaseActivity(),
     private var sessionManager: SessionManager? = null
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var tabViewProvider: PrivateTabViewProvider
-    private lateinit var sharedViewModel: SharedViewModel
     private lateinit var screenNavigator: ScreenNavigator
     private lateinit var uiMessageReceiver: BroadcastReceiver
     private lateinit var snackBarContainer: View
@@ -75,28 +70,25 @@ class PrivateModeActivity : BaseActivity(),
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 
-        val exitEarly = handleIntent(intent)
-        if (exitEarly) {
+        if (isSanitizeIntent(intent)) {
+            sanitize()
             pushToBack()
             return
         }
+
+        handleIntent(intent)
 
         setContentView(R.layout.activity_private_mode)
 
         snackBarContainer = findViewById(R.id.container)
         makeStatusBarTransparent()
 
-        initViewModel()
         initBroadcastReceivers()
 
         screenNavigator.popToHomeScreen(false)
         observeChromeAction()
 
         monitorOrientationState()
-    }
-
-    private fun initViewModel() {
-        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
     }
 
     override fun onResume() {
@@ -121,12 +113,22 @@ class PrivateModeActivity : BaseActivity(),
     override fun applyLocale() {}
 
     private fun observeChromeAction() {
-        // Reserve to handle more chrome actions for the bottom bar A/B testing
+        chromeViewModel.openUrl.observe(this, Observer { action ->
+            action?.run {
+                dismissUrlInput()
+                startPrivateMode()
+                screenNavigator.showBrowserScreen(url, false, isFromExternal)
+            }
+        })
         chromeViewModel.showUrlInput.observe(this, Observer { url ->
             if (!supportFragmentManager.isStateSaved) {
                 screenNavigator.addUrlScreen(url)
             }
         })
+        chromeViewModel.dismissUrlInput.observe(this, Observer {
+            dismissUrlInput()
+        })
+        // Reserve to handle more chrome actions for the bottom bar A/B testing
         chromeViewModel.pinShortcut.observe(this, Observer {
             onAddToHomeClicked()
         })
@@ -169,16 +171,6 @@ class PrivateModeActivity : BaseActivity(),
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)))
     }
 
-    override fun onNotified(from: Fragment, type: FragmentListener.TYPE, payload: Any?) {
-        when (type) {
-            TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
-            TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
-            TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
-            else -> {
-            }
-        }
-    }
-
     override fun onBackPressed() {
         if (supportFragmentManager.isStateSaved) {
             return
@@ -190,7 +182,10 @@ class PrivateModeActivity : BaseActivity(),
         }
 
         if (!this.screenNavigator.canGoBack()) {
-            checkShortcutPromotion { finish() }
+            checkShortcutPromotion {
+                TelemetryWrapper.exitPrivateMode(TelemetryWrapper.Extra_Value.SYSTEM_BACK)
+                finish()
+            }
             return
         }
 
@@ -209,21 +204,13 @@ class PrivateModeActivity : BaseActivity(),
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        val exitEarly = handleIntent(intent)
-        if (exitEarly) {
+        if (isSanitizeIntent(intent)) {
+            sanitize()
             return
         }
 
+        handleIntent(intent)
         setIntent(intent)
-    }
-
-    override fun onResumeFragments() {
-        super.onResumeFragments()
-        intent?.let { SafeIntent(intent) }?.let { safeIntent ->
-            if (safeIntent.action == Intent.ACTION_VIEW) {
-                safeIntent.dataString?.let { openUrl(it) }
-            }
-        }
     }
 
     private fun monitorOrientationState() {
@@ -276,18 +263,6 @@ class PrivateModeActivity : BaseActivity(),
         screenNavigator.popUrlScreen()
     }
 
-    private fun openUrl(payload: Any?) {
-        val url = payload?.toString() ?: ""
-
-        ViewModelProviders.of(this)
-                .get(SharedViewModel::class.java)
-                .setUrl(url)
-
-        dismissUrlInput()
-        startPrivateMode()
-        ScreenNavigator.get(this).showBrowserScreen(url, false, false)
-    }
-
     private fun makeStatusBarTransparent() {
         var visibility = window.decorView.systemUiVisibility
         // do not overwrite existing value
@@ -305,17 +280,47 @@ class PrivateModeActivity : BaseActivity(),
         tabViewProvider.purify(this)
     }
 
-    @CheckResult
-    private fun handleIntent(intent: Intent?): Boolean {
+    private fun isSanitizeIntent(intent: Intent?): Boolean {
+        return intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE
+    }
 
-        if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
-            TelemetryWrapper.erasePrivateModeNotification()
-            stopPrivateMode()
-            Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
-            finishAndRemoveTask()
-            return true
+    private fun sanitize() {
+        TelemetryWrapper.erasePrivateModeNotification()
+        stopPrivateMode()
+        Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
+        finishAndRemoveTask()
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        val safeIntent = intent?.let { SafeIntent(it) } ?: return
+
+        when (safeIntent.action) {
+            Intent.ACTION_VIEW -> onReceiveViewIntent(safeIntent)
+            Intent.ACTION_MAIN -> onReceiveMainIntent(safeIntent)
         }
-        return false
+    }
+
+    private fun onReceiveViewIntent(intent: SafeIntent) {
+        TelemetryWrapper.launchByPrivateModeShortcut(TelemetryWrapper.Extra_Value.EXTERNAL_APP)
+        val fromHistory = (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
+        if (!fromHistory) {
+            intent.dataString?.let { url ->
+                chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = false, isFromExternal = true)
+            }
+        }
+    }
+
+    private fun onReceiveMainIntent(intent: SafeIntent) {
+        if (isIntentFromPrivateShortcut(intent)) {
+            TelemetryWrapper.launchByPrivateModeShortcut(TelemetryWrapper.Extra_Value.LAUNCHER)
+        }
+    }
+
+    private fun isIntentFromPrivateShortcut(intent: SafeIntent): Boolean {
+        return intent.getBooleanExtra(
+                LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE_SHORTCUT.value,
+                false
+        )
     }
 
     private fun initBroadcastReceivers() {

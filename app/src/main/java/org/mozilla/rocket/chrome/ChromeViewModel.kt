@@ -11,25 +11,30 @@ import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
+import org.mozilla.urlutils.UrlUtils
 
 class ChromeViewModel(
     settings: Settings,
-    bookmarkRepo: BookmarkRepository
+    private val bookmarkRepo: BookmarkRepository
 ) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
     val tabCount = MutableLiveData<Int>()
     val isTabRestoredComplete = MutableLiveData<Boolean>()
     val currentUrl = MutableLiveData<String>()
+    val currentTitle = MutableLiveData<String>()
     var isCurrentUrlBookmarked: LiveData<Boolean>
     val isRefreshing = MutableLiveData<Boolean>()
     val canGoBack = MutableLiveData<Boolean>()
     val canGoForward = MutableLiveData<Boolean>()
     val isHomePageUrlInputShowing = MutableLiveData<Boolean>()
+    val isMyShotOnBoardingPending = MutableLiveData<Boolean>()
 
+    val openUrl = SingleLiveEvent<OpenUrlAction>()
     val showTabTray = SingleLiveEvent<Unit>()
     val showMenu = SingleLiveEvent<Unit>()
     val showNewTab = SingleLiveEvent<Unit>()
     val showUrlInput = SingleLiveEvent<String?>()
+    val dismissUrlInput = SingleLiveEvent<Unit>()
     val doScreenshot = SingleLiveEvent<ScreenCaptureTelemetryData>()
     val pinShortcut = SingleLiveEvent<Unit>()
     val toggleBookmark = SingleLiveEvent<Unit>()
@@ -40,6 +45,8 @@ class ChromeViewModel(
     val showDownloadPanel = SingleLiveEvent<Unit>()
     val togglePrivateMode = SingleLiveEvent<Unit>()
     val dropCurrentPage = SingleLiveEvent<Unit>()
+    val updateMenu = SingleLiveEvent<Unit>()
+    val clearBrowsingHistory = SingleLiveEvent<Unit>()
 
     init {
         isNightMode.value = settings.isNightModeEnable
@@ -90,6 +97,12 @@ class ChromeViewModel(
         }
     }
 
+    fun onFocusedTitleChanged(title: String?) {
+        if (title != currentTitle.value) {
+            currentTitle.value = title
+        }
+    }
+
     fun onPageLoadingStarted() {
         if (isRefreshing.value != true) {
             isRefreshing.value = true
@@ -118,6 +131,42 @@ class ChromeViewModel(
     fun onDismissHomePageUrlInput() {
         isHomePageUrlInputShowing.value = false
     }
+
+    fun showMyShotOnBoarding() {
+        if (isMyShotOnBoardingPending.value != true) {
+            isMyShotOnBoardingPending.value = true
+        }
+    }
+
+    fun onMyShotOnBoardingDisplayed() {
+        if (isMyShotOnBoardingPending.value != false) {
+            isMyShotOnBoardingPending.value = false
+        }
+    }
+
+    fun addBookmark(): String? {
+        var bookmarkId: String? = null
+        val url = currentUrl.value
+        if (!url.isNullOrEmpty()) {
+            val title = currentTitle.value.takeUnless { it.isNullOrEmpty() }
+                    ?: UrlUtils.stripCommonSubdomains(UrlUtils.stripHttp(url))
+            bookmarkId = bookmarkRepo.addBookmark(title, url)
+        }
+
+        return bookmarkId
+    }
+
+    fun deleteBookmark() {
+        currentUrl.value?.let { url ->
+            bookmarkRepo.deleteBookmarksByUrl(url)
+        }
+    }
+
+    data class OpenUrlAction(
+        val url: String,
+        val withNewTab: Boolean,
+        val isFromExternal: Boolean
+    )
 
     data class ScreenCaptureTelemetryData(val mode: String, val position: Int) : Parcelable {
         constructor(source: Parcel) : this(
