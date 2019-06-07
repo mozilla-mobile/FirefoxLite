@@ -1,11 +1,12 @@
 package org.mozilla.focus.screenshot
 
+import android.app.Application
+import androidx.test.core.app.ApplicationProvider
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.FirebaseNoOpImp
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class ScreenshotManagerTest {
@@ -13,7 +14,7 @@ class ScreenshotManagerTest {
     @Test
     fun testCategories() {
         val sm = ScreenshotManager()
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Application>()
 
         FirebaseHelper.replaceContract(FirebaseNoOpImp())
         assert(sm.getCategory(context, "https://alipay.com/").equals("Banking"))
