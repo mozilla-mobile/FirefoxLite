@@ -25,7 +25,7 @@ object Versions {
     const val adjust = "4.11.4"
     const val junit = "4.12"
     const val mockito = "2.12.0"
-    const val robolectric = "4.0-alpha-3"
+    const val robolectric = "4.3"
     const val espresso = "3.0.2"
     const val test_runner = "1.0.2"
     const val uiautomator = "2.1.3"
@@ -38,6 +38,7 @@ object Versions {
     const val fastlane_screengrab = "1.2.0"
     const val jraska_falcon = "2.0.1"
     const val dagger = "2.17"
+    const val androidx_test_core = "1.1.0"
 }
 
 object SystemEnv {
