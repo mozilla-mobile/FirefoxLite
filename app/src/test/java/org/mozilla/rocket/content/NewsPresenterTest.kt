@@ -7,9 +7,11 @@ import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
+import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.news.NewsPresenter
 import org.mozilla.rocket.content.news.NewsViewContract
 import org.mozilla.rocket.content.news.NewsViewModel
+import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -32,6 +34,19 @@ class NewsPresenterTest {
         newsPresenter.loadMore()
         newsPresenter.loadMore()
         `when`(viewContract.getCategory())?.thenReturn("")
+        Mockito.verify(newsViewModel, times(1)).loadMore(anyOrNull())
+    }
+
+    @Test
+    fun `test contract needed for setupViewModel `() {
+        newsPresenter.setupNewsViewModel(
+            mock(Repository::class.java),
+            mock(NewsSettingsRepository::class.java)
+        )
+        Mockito.verify(viewContract, times(1)).getCategory()
+        Mockito.verify(viewContract, times(1)).getLanguage()
+        Mockito.verify(viewContract, times(1)).getViewLifecycleOwner()
+        Mockito.verify(viewContract, times(1)).updateSourcePriority()
         Mockito.verify(newsViewModel, times(1)).loadMore(anyOrNull())
     }
 }
