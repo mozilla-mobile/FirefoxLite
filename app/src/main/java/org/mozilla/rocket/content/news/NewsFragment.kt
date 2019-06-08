@@ -12,9 +12,15 @@ import android.widget.ProgressBar
 import dagger.android.support.DaggerFragment
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
+import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
+import org.mozilla.rocket.content.news.data.NewsSettingsRepository
+import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.widget.BottomSheetBehavior
@@ -33,6 +39,11 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
 
     override fun getLanguage(): String {
         return arguments?.getString(ContentFeature.EXTRA_NEWS_LANGUAGE) ?: "english"
+    }
+
+    override fun updateSourcePriority() {
+        // the user had seen the news. Treat it as an user selection so no on can change it
+        Settings.getInstance(context).setPriority(NewsSourceManager.PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER)
     }
 
     companion object {
@@ -55,7 +66,6 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
 
     interface NewsListListener {
         fun loadMore()
-        fun onShow(context: Context)
     }
 
     private var newsPresenter: NewsPresenter? = null
@@ -79,9 +89,24 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
         super.onViewCreated(view, savedInstanceState)
         val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
         newsPresenter = NewsPresenter(this, newsViewModel)
-        newsPresenter?.setupNewsViewModel(applicationContext, getCategory(), getLanguage())
+
+        // creating a repository will also create a new subscription.
+        // we deliberately create a new subscription again to load data aggressively.
+        val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
+        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(applicationContext)
+        val newsSettingRepo = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
+
+        val newsRepo = NewsRepository.newInstance(
+            context,
+            hashMapOf(
+                NewsRepository.CONFIG_URL to NewsSourceManager.getInstance().newsSourceUrl,
+                NewsRepository.CONFIG_CATEGORY to getCategory(),
+                NewsRepository.CONFIG_LANGUAGE to getLanguage()
+            )
+        )
+
+        newsPresenter?.setupNewsViewModel(newsRepo, newsSettingRepo)
         newsListListener = newsPresenter
-        newsListListener?.onShow(context!!)
 
         view.findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
             newsListListener?.loadMore()
