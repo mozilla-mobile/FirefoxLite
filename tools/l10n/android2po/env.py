@@ -199,7 +199,7 @@ MISSING_LOCALES = {
         'local_name': 'ಕನ್ನಡ',
         'plural_rule': 'ka',
         'team': 'kn <LL@li.org>\n'
-     }
+     },
     'ml': {
         'name': 'Malayalam',
         'local_name': 'മലയാളം',
