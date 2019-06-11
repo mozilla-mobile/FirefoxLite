@@ -18,6 +18,7 @@ class NewsSettingsRepository(
     private var remoteCategories: List<String>? = null
     private var localCategories: List<String>? = null
     private var preferenceCategories: List<String>? = null
+    private var cacheNewsSettings: Pair<NewsLanguage, List<NewsCategory>>? = null
 
     init {
         languagesLiveData.addSource(remoteDataSource.getSupportLanguages()) {
@@ -46,28 +47,6 @@ class NewsSettingsRepository(
         return localDataSource.getUserPreferenceLanguage()
     }
 
-    fun getCategoriesByLanguage(language: String): LiveData<List<NewsCategory>> {
-        val remoteCategoriesData = remoteDataSource.getSupportCategories(language)
-        categoriesLiveData.removeSource(remoteCategoriesData)
-        categoriesLiveData.addSource(remoteCategoriesData) {
-            remoteCategories = it
-            updateCategoryResult(language)
-        }
-        val localCategoriesData = localDataSource.getSupportCategories(language)
-        categoriesLiveData.removeSource(localCategoriesData)
-        categoriesLiveData.addSource(localCategoriesData) {
-            localCategories = it
-            updateCategoryResult(language)
-        }
-        val localPreferenceCategoriesData = localDataSource.getUserPreferenceCategories(language)
-        categoriesLiveData.removeSource(localPreferenceCategoriesData)
-        categoriesLiveData.addSource(localPreferenceCategoriesData) {
-            preferenceCategories = it
-            updateCategoryResult(language)
-        }
-        return categoriesLiveData
-    }
-
     fun getNewsSettings(): LiveData<Pair<NewsLanguage, List<NewsCategory>>> {
         val userPreferenceLanguageData = localDataSource.getUserPreferenceLanguage()
         settingsLiveData.removeSource(userPreferenceLanguageData)
@@ -79,8 +58,11 @@ class NewsSettingsRepository(
                 settingsLiveData.removeSource(categoriesByLanguage)
                 settingsLiveData.addSource(categoriesByLanguage) { categories ->
                     categories?.let { list ->
-                        // TODO: Skip same settings to reduce the update to UI layer
-                        settingsLiveData.postValue(Pair(language, list))
+                        val newsSettings = Pair(language, list)
+                        if (newsSettings != cacheNewsSettings) {
+                            cacheNewsSettings = newsSettings
+                            settingsLiveData.postValue(newsSettings)
+                        }
                     }
                 }
             }
@@ -125,6 +107,28 @@ class NewsSettingsRepository(
         languagesLiveData.postValue(supportLanguages)
     }
 
+    private fun getCategoriesByLanguage(language: String): LiveData<List<NewsCategory>> {
+        val remoteCategoriesData = remoteDataSource.getSupportCategories(language)
+        categoriesLiveData.removeSource(remoteCategoriesData)
+        categoriesLiveData.addSource(remoteCategoriesData) {
+            remoteCategories = it
+            updateCategoryResult(language)
+        }
+        val localCategoriesData = localDataSource.getSupportCategories(language)
+        categoriesLiveData.removeSource(localCategoriesData)
+        categoriesLiveData.addSource(localCategoriesData) {
+            localCategories = it
+            updateCategoryResult(language)
+        }
+        val localPreferenceCategoriesData = localDataSource.getUserPreferenceCategories(language)
+        categoriesLiveData.removeSource(localPreferenceCategoriesData)
+        categoriesLiveData.addSource(localPreferenceCategoriesData) {
+            preferenceCategories = it
+            updateCategoryResult(language)
+        }
+        return categoriesLiveData
+    }
+
     private fun updateCategoryResult(language: String) {
         val supportCategories = ArrayList<NewsCategory>()
         if (localCategories?.isNotEmpty() == true) {
@@ -146,7 +150,6 @@ class NewsSettingsRepository(
             remoteCategories = null
         }
 
-        // when I enter here, preferenceCategories's full of cats now
         val selectedCategories = preferenceCategories?.joinToString(",") ?: ""
         if (selectedCategories.isNotEmpty()) {
             supportCategories.forEach {

@@ -40,11 +40,15 @@ data class NewsCategory(
         }
 
         fun getCategoryById(categoryId: String): NewsCategory? {
-            return mapping[categoryId]
+            val newsCategory = mapping[categoryId]
+            return if (newsCategory != null) {
+                NewsCategory(newsCategory.categoryId, newsCategory.stringResourceId, newsCategory.order, newsCategory.isSelected)
+            } else {
+                null
+            }
         }
     }
 
-    override fun toString(): String {
-        return "categoryId=$categoryId, stringResourceId=$stringResourceId, isSelected=$isSelected"
-    }
+    // TODO: workaround to fix the Kotlin and JVM 1.8 compatible issue: https://youtrack.jetbrains.com/issue/KT-31027
+    override fun hashCode(): Int = categoryId.hashCode()
 }
