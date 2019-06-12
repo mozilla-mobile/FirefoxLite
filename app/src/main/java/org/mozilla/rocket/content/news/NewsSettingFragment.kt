@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import dagger.android.support.AndroidSupportInjection
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsCategoryPreference
 import org.mozilla.rocket.content.news.data.NewsLanguage
@@ -74,6 +75,7 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         categoryPreference?.onCategoryClick = {
             langKey?.let { key ->
                 repository.setUserPreferenceCategories(key, it)
+                TelemetryWrapper.changeNewsSetting(categories = it.map { lang -> lang.order.toString() })
             }
         }
     }
@@ -90,6 +92,7 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
     }
 
     private fun setUserPreferLanguage(language: NewsLanguage) {
+        TelemetryWrapper.changeNewsSetting(language = language.key)
         repository.setUserPreferenceLanguage(language)
     }
 }
