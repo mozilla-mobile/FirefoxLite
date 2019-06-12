@@ -73,11 +73,11 @@
   <string name="first_run_page2_title">முன்பை விட வேகமாக உலாவுங்கள்</string>
   <string name="first_run_page2_text">தடமறி விளம்பரங்களை தடுத்து சுழலி முறைமையை பயன்படுத்தி உலாவல் வேகத்தை முடுக்குங்கள். வலைத் தளங்கள் தடுமாறினால் பட்டியலில் உள்ள சுழலி முறைமை சாவியைத் தட்டுங்கள்.</string>
   <string name="first_run_page3_title">தரவு சிக்கனம் = பண சிக்கனம்</string>
-  <string name="first_run_page3_text">பின்தொடரல் விளம்பரங்களத் தடுத்து தரவைச் சேமியுங்கள். படங்களைத் தடுப்பதன் மூலம் கூடுதலாகச் சேமிக்கலாம்.</string>
+  <string name="first_run_page3_text">பின்தொடரல் விளம்பரங்களைத் தடுத்து தரவைச் சேமியுங்கள். படங்களைத் தடுப்பதன் மூலம் கூடுதலாகச் சேமிக்கலாம்.</string>
   <string name="first_run_page4_title">முழுப்பக்கத்தையும் திரைப்பிடிப்பு செய்</string>
   <string name="first_run_page4_text">முழு வலைப்பக்கத்தையும் திரைப்பிடியுங்கள். தரவுப் பயன்பாடின்றி படியுங்கள் அல்லது வலைப்பக்கத்தை மீண்டும் பார்க்க அதனைத் தட்டுங்கள்.</string>
   <string name="first_run_page5_title">அடுத்த நிலை தனியுரிமை</string>
-  <string name="first_run_page5_text">ஒரு தடத்தை இல்லாமல் உலாவுங்கள், மற்றும் முன்னிருப்பாக பொதுவான வலை டிராக்கர்களின் பரவலான தடுப்பு. உங்கள் ரகசியத் தரவின் பாதுகாப்பை உறுதிசெய்யவும்.</string>
+  <string name="first_run_page5_text">தடமின்றி உலாவுங்கள், மற்றும் பொதுவான வலை பின்தொடரிகள் பலவற்றை முன்னிருப்பாக முடக்குங்கள். உங்கள் தனிப்பட்ட தரவின் பாதுகாப்பை உறுதிசெய்யுங்கள்.</string>
   <string name="first_run_page6_title">புதியவற்றைக் கண்டறி</string>
   <string name="first_run_page6_text">ஒற்றை நகர்வில், “%1$s” உடன் உங்களைப் புதுப்பித்துக்கொள்ளுங்கள் - பரபரப்பான செய்திகளிலிருந்து சிறந்த சலுகைகள் வரை பல்வகை உள்ளடக்கங்கள். %2$s</string>
   <string name="first_run_page7_title">கண்காணிக்கப்படுவதைத் தடு</string>
@@ -278,6 +278,12 @@
   <string name="private_browsing_erase_done">உங்களின் அந்தரங்க உலாவல்\nவரலாறு அகற்றப்பட்டது.</string>
   <string name="private_browsing_tracker_blocked">தடுக்கப்பட்ட பின்தொடரிகள்</string>
   <string name="private_browsing_tracker_blocked_description">கூடுதல் பாதுகாப்புடன் உலாவி மகிழுங்கள்.</string>
+  <string name="private_browsing_dialog_add_shortcut_title">அந்தரங்க முறைமையை ஒரு சொடுக்கில் அணுகுக! அந்தரங்க முறைமையின் குறுக்குவழியை முகத்திரையில் சேர்க்கவா?</string>
+  <string name="private_browsing_dialog_add_shortcut_no">வேண்டாம், நன்றி</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">ஆமாம்</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">அந்தரங்க முறைமையின் குறுக்கு வழியைப் பிறகு அமைவிற்கு சென்று சேர்க்க முடியும்.</string>
+  <string name="private_browsing_shortcut_name">%1$s - அந்தரங்க உலாவல்</string>
+  <string name="preference_add_private_browsing_shortcut">அந்தரங்க முறைமையின் குறுக்குவழியை முகத்திரையில் சேர்</string>
   <string name="my_shot_on_boarding_message">உங்கள் திரைக்காட்சிகளை இங்கே காண்க!</string>
   <string name="my_shot_on_boarding_category_message">உங்கள் தயாரிப்பு அனுபவத்தை மேம்படுத்த, உங்கள் திரைப்பிடிப்பு பற்றிய தகவல்களை நாங்கள் சேகரிக்கிறோம்.</string>
   <string name="btn_vpn">7-நாள் இலவச VPN சேவை உங்களுக்குத் தயாராக உள்ளது. மேலும் தனியாகவும் பாதுகாப்பாகவும் உலாவுவதற்கு இப்போதே நிறுவுங்கள்.</string>

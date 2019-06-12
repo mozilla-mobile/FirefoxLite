@@ -278,6 +278,12 @@
   <string name="private_browsing_erase_done">Riwayat penjelajahan pribadi Anda\ntelah dihapus.</string>
   <string name="private_browsing_tracker_blocked">Pelacak diblokir</string>
   <string name="private_browsing_tracker_blocked_description">Nikmati penjelajahan dengan perlindungan ekstra.</string>
+  <string name="private_browsing_dialog_add_shortcut_title">Akses mode private dengan satu klik! Ingin tambahkan pintasan mode privat di beranda?</string>
+  <string name="private_browsing_dialog_add_shortcut_no">Tidak, terima kasih</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">Ya</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">Anda dapat menambahkan pintasan mode private di pengaturan.</string>
+  <string name="private_browsing_shortcut_name">%1$s - Penjelajahan privat</string>
+  <string name="preference_add_private_browsing_shortcut">Tambahkan pintasan mode private ke Beranda</string>
   <string name="my_shot_on_boarding_message">Lihat cuplikan layar Anda di sini!</string>
   <string name="my_shot_on_boarding_category_message">Untuk meningkatkan pengalaman produk, kami mengumpulkan informasi tentang kategori cuplikan layar Anda.</string>
   <string name="btn_vpn">Layanan VPN gratis selama 7 hari telah tersedia untuk Anda. Pasang sekarang untuk menjelajah lebih pribadi dan aman.</string>

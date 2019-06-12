@@ -278,7 +278,7 @@
   <string name="private_browsing_erase_done">已清除您的隱私瀏覽紀錄。</string>
   <string name="private_browsing_tracker_blocked">追蹤器封鎖數量</string>
   <string name="private_browsing_tracker_blocked_description">享受上網時的額外保護。</string>
-  <string name="private_browsing_dialog_add_shortcut_title">只要一按，快速進入隱私瀏覽模式！想要在主畫面加入隱私瀏覽模式的捷徑嗎？</string>
+  <string name="private_browsing_dialog_add_shortcut_title">只要一按，就可以快速進入隱私瀏覽模式！要在主畫面加入隱私瀏覽模式的捷徑嗎？</string>
   <string name="private_browsing_dialog_add_shortcut_no">不用了，謝謝</string>
   <string name="private_browsing_dialog_add_shortcut_yes">好的</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">也可以稍後再到設定畫面中加入。</string>

@@ -108,13 +108,13 @@
   <string name="label_menu_block_image">Peungpeuk gambar</string>
   <string name="label_menu_settings">Setélan</string>
   <string name="label_menu_exit">Kaluar</string>
-  <string name="permission_toast_location_deny">Idin perenah ditolak.</string>
+  <string name="permission_toast_location_deny">Idin lokasi ditolak.</string>
   <string name="permission_toast_storage_deny">Idin teundeunan ditolak.</string>
   <string name="permission_handler_permission_dialog_setting">setélan</string>
   <string name="permission_dialog_not_now">Moal waka</string>
-  <string name="permission_toast_location">Perenah teu sayaga. Idinan pikeun ngaksés perenah anjeun.</string>
+  <string name="permission_toast_location">Lokasi teu sayaga. Idinan pikeun ngaksés lokasi anjeun.</string>
   <string name="permission_toast_storage">Paneundeunan teu sayaga. Idinan pikeun nyimpen sarupaning foto jeung koropak na parangkat anjeun.</string>
-  <string name="geolocation_dialog_message">%1$s\nhayang nénjo perenah anjeun.</string>
+  <string name="geolocation_dialog_message">%1$s\nhayang nénjo lokasi anjeun.</string>
   <string name="geolocation_dialog_message_cache_it">Ulah ménta deui pikeun ieu loka nepi ka %1$s dimuat ulang</string>
   <string name="geolocation_dialog_allow">HEUGBAÉ</string>
   <string name="geolocation_dialog_block">PEUNGPEUK</string>
@@ -136,7 +136,7 @@
   <string name="undo">Bedo</string>
   <string name="open">Buka</string>
   <string name="menu_longpress_downloads">Pencét lila pikeun muka Undeuran</string>
-  <string name="pause">hanca</string>
+  <string name="pause">dihancaan</string>
   <string name="pending">Tagen</string>
   <string name="running">ngundeur</string>
   <string name="successful">Laksana</string>
@@ -221,7 +221,7 @@
   <string name="title_activity_edit_bookmark">Édit markah</string>
   <string name="bookmark_edit_save">TEUNDEUN</string>
   <string name="bookmark_edit_name">Wasta</string>
-  <string name="bookmark_edit_location">Perenah</string>
+  <string name="bookmark_edit_location">Lokasi</string>
   <string name="bookmark_edit_success">Markah diapdét</string>
   <string name="bookmarks_empty_view_msg">Euweuh markah</string>
   <string name="edit_bookmark">Édit</string>
