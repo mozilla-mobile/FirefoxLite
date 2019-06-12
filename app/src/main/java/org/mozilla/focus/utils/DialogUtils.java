@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.FocusView;
+import org.mozilla.rocket.widget.CustomViewDialogData;
+import org.mozilla.rocket.widget.PromotionDialog;
 
 public class DialogUtils {
 
@@ -47,59 +50,55 @@ public class DialogUtils {
             return;
         }
 
-        final AlertDialog dialog = new AlertDialog.Builder(context).create();
-        dialog.setOnCancelListener(dialogInterface -> {
-            Settings.getInstance(context).setRateAppDialogDidDismiss();
-            telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
-        });
+        CustomViewDialogData data = new CustomViewDialogData();
 
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_rate_app_dialog, null);
+        data.setDrawable(ContextCompat.getDrawable(context, R.drawable.promotion_02));
 
-        final TextView textView = dialogView.findViewById(R.id.rate_app_dialog_textview_title);
-        textView.setText(context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name)));
+        final String configTitle = AppConfigWrapper.getRateAppDialogTitle();
+        final String defaultTitle = context.getString(R.string.rate_app_dialog_text_title, context.getString(R.string.app_name));
+        data.setTitle(TextUtils.isEmpty(configTitle) ? defaultTitle : configTitle);
 
-        dialogView.findViewById(R.id.dialog_rate_app_btn_close).setOnClickListener(v -> {
-            Settings.getInstance(context).setRateAppDialogDidDismiss();
-            dialog.dismiss();
-            telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
-        });
-        final TextView positive = dialogView.findViewById(R.id.dialog_rate_app_btn_go_rate);
-        final String positiveString = AppConfigWrapper.getRateAppPositiveString();
-        if (!TextUtils.isEmpty(positiveString)) {
-            positive.setText(positiveString);
-        }
-        positive.setOnClickListener(v -> {
+        final String configContent = AppConfigWrapper.getRateAppDialogContent();
+        final String defaultContent = context.getString(R.string.rate_app_dialog_text_content);
+        data.setDescription(TextUtils.isEmpty(configContent) ? defaultContent : configContent);
 
-            IntentUtils.goToPlayStore(context);
+        final String configPositiveText = AppConfigWrapper.getRateAppPositiveString();
+        final String defaultPositiveText = context.getString(R.string.rate_app_dialog_btn_go_rate);
+        final String positiveText = TextUtils.isEmpty(configPositiveText) ? defaultPositiveText : configPositiveText;
+        data.setPositiveText(positiveText);
 
-            dialog.dismiss();
-            telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
-        });
-        final String title = AppConfigWrapper.getRateAppDialogTitle();
-        if (!TextUtils.isEmpty(title)) {
-            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_textview_title)).setText(title);
-        }
+        final String configNegativeText = AppConfigWrapper.getRateAppNegativeString();
+        final String defaultNegativeText = context.getString(R.string.rate_app_dialog_btn_feedback);
+        final String negativeText = TextUtils.isEmpty(configNegativeText) ? defaultNegativeText : configNegativeText;
+        data.setNegativeText(negativeText);
 
-        final String content = AppConfigWrapper.getRateAppDialogContent();
-        if (!TextUtils.isEmpty(content)) {
-            ((TextView) dialogView.findViewById(R.id.rate_app_dialog_text_content)).setText(content);
-        }
+        data.setShowCloseButton(true);
 
-        final TextView negative = dialogView.findViewById(R.id.dialog_rate_app_btn_feedback);
-        final String negativeString = AppConfigWrapper.getRateAppNegativeString();
-        if (!TextUtils.isEmpty(negativeString)) {
-            negative.setText(negativeString);
-        }
-        negative.setOnClickListener(v -> {
-            // Users set negative negative, don't ask them to share in the future
-            Settings.getInstance(context).setShareAppDialogDidShow();
-            IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url), true);
-            dialog.dismiss();
-            telemetryFeedback(context, TelemetryWrapper.Value.NEGATIVE);
-        });
-        dialog.setView(dialogView);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        new PromotionDialog(context, data)
+                .onPositive(() -> {
+                    IntentUtils.goToPlayStore(context);
+                    telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
+                    return null;
+                })
+                .onNegative(() -> {
+                    Settings.getInstance(context).setShareAppDialogDidShow();
+                    IntentUtils.openUrl(context, context.getString(R.string.rate_app_feedback_url), true);
+                    telemetryFeedback(context, TelemetryWrapper.Value.NEGATIVE);
+                    return null;
+                })
+                .onClose(() -> {
+                    Settings.getInstance(context).setRateAppDialogDidDismiss();
+                    telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
+                    return null;
+                })
+                .onCancel(() -> {
+                    Settings.getInstance(context).setRateAppDialogDidDismiss();
+                    telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
+                    return null;
+                })
+                .setCancellable(true)
+                .show();
+
         Settings.getInstance(context).setRateAppDialogDidShow();
     }
 
@@ -116,30 +115,34 @@ public class DialogUtils {
             return;
         }
 
-        final AlertDialog dialog = new AlertDialog.Builder(context).create();
-        dialog.setOnCancelListener(dialogInterface -> telemetryShareApp(context, TelemetryWrapper.Value.DISMISS));
+        CustomViewDialogData data = new CustomViewDialogData();
+        data.setDrawable(ContextCompat.getDrawable(context, R.drawable.promotion_03));
+        data.setTitle(AppConfigWrapper.getShareAppDialogTitle());
+        data.setDescription(AppConfigWrapper.getShareAppDialogContent());
+        data.setPositiveText(context.getString(R.string.share_app_dialog_btn_share));
+        data.setShowCloseButton(true);
 
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_share_app_dialog, null);
-        dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_title).setText(
-                AppConfigWrapper.getShareAppDialogTitle());
-        dialogView.<TextView>findViewById(R.id.share_app_dialog_textview_content).setText(
-                AppConfigWrapper.getShareAppDialogContent());
-        dialogView.findViewById(R.id.dialog_share_app_btn_close).setOnClickListener(v -> {
-            dialog.dismiss();
-            telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
-        });
-        dialogView.findViewById(R.id.dialog_share_app_btn_share).setOnClickListener(v -> {
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
-            sendIntent.putExtra(Intent.EXTRA_TEXT, AppConfigWrapper.getShareAppMessage());
-            context.startActivity(Intent.createChooser(sendIntent, null));
-            dialog.dismiss();
-            telemetryShareApp(context, TelemetryWrapper.Value.SHARE);
-        });
-        dialog.setView(dialogView);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        new PromotionDialog(context, data)
+                .onPositive(() -> {
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.setType("text/plain");
+                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, AppConfigWrapper.getShareAppMessage());
+                    context.startActivity(Intent.createChooser(sendIntent, null));
+                    telemetryShareApp(context, TelemetryWrapper.Value.SHARE);
+                    return null;
+                })
+                .onClose(() -> {
+                    telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
+                    return null;
+                })
+                .onCancel(() -> {
+                    telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
+                    return null;
+                })
+                .setCancellable(true)
+                .show();
+
         Settings.getInstance(context).setShareAppDialogDidShow();
     }
 
