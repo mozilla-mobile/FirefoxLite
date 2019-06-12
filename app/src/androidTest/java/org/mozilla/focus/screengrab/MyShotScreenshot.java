@@ -23,14 +23,11 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.annotation.ScreengrabOnly;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.ScreenshotIdlingResource;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.chrome.BottomBarItemAdapter;
-import org.mozilla.rocket.chrome.BottomBarViewModel;
 
 import tools.fastlane.screengrab.FalconScreenshotStrategy;
 import tools.fastlane.screengrab.Screengrab;
@@ -109,8 +106,7 @@ public class MyShotScreenshot extends BaseScreenshot {
         screenshotIdlingResource = new ScreenshotIdlingResource(activityTestRule.getActivity());
 
         // Click screen capture button
-        int bottomBarCapturePos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_CAPTURE);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarCapturePos);
+        new BottomBarRobot().clickBrowserBottomBarItem(R.id.bottom_bar_capture);
         IdlingRegistry.getInstance().register(screenshotIdlingResource);
 
         // Open browser menu

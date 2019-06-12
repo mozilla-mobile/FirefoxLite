@@ -126,12 +126,11 @@ public class HomeTest {
         onView(withId(R.id.main_list)).check(matches(isDisplayed()));
 
         // Check if menu button is visible
-        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
-        onView(new BottomBarRobot().homeBottomBarItemView(bottomBarMenuPos)).check(matches(isDisplayed()));
+        BottomBarRobot bottomBarRobot = new BottomBarRobot();
+        onView(bottomBarRobot.homeBottomBarItemView(R.id.bottom_bar_menu)).check(matches(isDisplayed()));
 
         // Check if tab tray button is visible
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_TAB_COUNTER);
-        onView(new BottomBarRobot().homeBottomBarItemView(bottomBarTabCounterPos)).check(matches(isDisplayed()));
+        onView(bottomBarRobot.homeBottomBarItemView(R.id.bottom_bar_tab_counter)).check(matches(isDisplayed()));
 
     }
 

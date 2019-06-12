@@ -25,9 +25,7 @@ import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.BeforeTestTask;
-import org.mozilla.rocket.chrome.BottomBarViewModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +47,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
-import static org.mozilla.rocket.chrome.BottomBarItemAdapter.TYPE_MENU;
 
 public final class AndroidTestUtils {
 
@@ -120,13 +117,11 @@ public final class AndroidTestUtils {
     }
 
     public static void tapHomeMenuButton() {
-        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
-        new BottomBarRobot().clickHomeBottomBarItem(bottomBarMenuPos);
+        new BottomBarRobot().clickHomeBottomBarItem(R.id.bottom_bar_menu);
     }
 
     public static void tapBrowserMenuButton() {
-        int bottomBarMenuPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), TYPE_MENU);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarMenuPos);
+        new BottomBarRobot().clickBrowserBottomBarItem(R.id.bottom_bar_menu);
     }
 
     public static void tapSettingButton() {

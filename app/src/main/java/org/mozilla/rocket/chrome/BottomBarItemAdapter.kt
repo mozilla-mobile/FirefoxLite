@@ -37,19 +37,19 @@ class BottomBarItemAdapter(
 
     private fun convertToItem(itemData: ItemData): BottomBarItem {
         return when (val type = itemData.type) {
-            TYPE_TAB_COUNTER -> TabCounterItem(type, theme)
-            TYPE_MENU -> MenuItem(type, theme)
-            TYPE_NEW_TAB -> ImageItem(type, R.drawable.action_add, theme.buttonColorResId)
-            TYPE_SEARCH -> ImageItem(type, R.drawable.action_search, theme.buttonColorResId)
-            TYPE_CAPTURE -> ImageItem(type, R.drawable.action_capture, theme.buttonColorResId)
-            TYPE_PIN_SHORTCUT -> ImageItem(type, R.drawable.action_add_to_home, theme.buttonColorResId)
-            TYPE_BOOKMARK -> BookmarkItem(type, theme)
-            TYPE_REFRESH -> RefreshItem(type, theme)
-            TYPE_SHARE -> ImageItem(type, R.drawable.action_share, theme.buttonColorResId)
-            TYPE_NEXT -> ImageItem(type, R.drawable.action_next, theme.buttonColorResId)
-            TYPE_PRIVATE_HOME -> PrivateHomeItem(type)
-            TYPE_DELETE -> ImageItem(type, R.drawable.menu_delete, theme.buttonColorResId)
-            TYPE_TRACKER -> TrackerItem(type)
+            TYPE_TAB_COUNTER -> TabCounterItem(type, R.id.bottom_bar_tab_counter, theme)
+            TYPE_MENU -> MenuItem(type, R.id.bottom_bar_menu, theme)
+            TYPE_NEW_TAB -> ImageItem(type, R.id.bottom_bar_new_tab, R.drawable.action_add, theme.buttonColorResId)
+            TYPE_SEARCH -> ImageItem(type, R.id.bottom_bar_search, R.drawable.action_search, theme.buttonColorResId)
+            TYPE_CAPTURE -> ImageItem(type, R.id.bottom_bar_capture, R.drawable.action_capture, theme.buttonColorResId)
+            TYPE_PIN_SHORTCUT -> ImageItem(type, R.id.bottom_bar_pin_shortcut, R.drawable.action_add_to_home, theme.buttonColorResId)
+            TYPE_BOOKMARK -> BookmarkItem(type, R.id.bottom_bar_bookmark, theme)
+            TYPE_REFRESH -> RefreshItem(type, R.id.bottom_bar_refresh, theme)
+            TYPE_SHARE -> ImageItem(type, R.id.bottom_bar_share, R.drawable.action_share, theme.buttonColorResId)
+            TYPE_NEXT -> ImageItem(type, R.id.bottom_bar_next, R.drawable.action_next, theme.buttonColorResId)
+            TYPE_PRIVATE_HOME -> PrivateHomeItem(type, R.id.bottom_bar_private_home)
+            TYPE_DELETE -> ImageItem(type, R.id.bottom_bar_delete, R.drawable.menu_delete, theme.buttonColorResId)
+            TYPE_TRACKER -> TrackerItem(type, R.id.bottom_bar_tracker)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
@@ -212,8 +212,8 @@ class BottomBarItemAdapter(
         }
     }
 
-    private class TabCounterItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
-        override fun createView(context: Context, parent: ViewGroup): View {
+    private class TabCounterItem(type: Int, id: Int, private val theme: Theme) : BottomBarItem(type, id) {
+        override fun onCreateView(context: Context, parent: ViewGroup): View {
             val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
             return TabCounter(contextThemeWrapper, null, 0).apply {
                 layoutParams = ViewGroup.LayoutParams(contextThemeWrapper, null)
@@ -222,8 +222,8 @@ class BottomBarItemAdapter(
         }
     }
 
-    private class MenuItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
-        override fun createView(context: Context, parent: ViewGroup): View {
+    private class MenuItem(type: Int, id: Int, private val theme: Theme) : BottomBarItem(type, id) {
+        override fun onCreateView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.button_more, parent, false)
                     .apply {
@@ -234,32 +234,32 @@ class BottomBarItemAdapter(
         }
     }
 
-    private class BookmarkItem(type: Int, theme: Theme) : ImageItem(
+    private class BookmarkItem(type: Int, id: Int, theme: Theme) : ImageItem(
             type,
+            id,
             R.drawable.ic_add_bookmark,
             if (theme == Theme.Light) R.color.ic_add_bookmark_tint_light else R.color.ic_add_bookmark_tint_dark
     )
 
-    private class RefreshItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
-        override fun createView(context: Context, parent: ViewGroup): View {
+    private class RefreshItem(type: Int, id: Int, private val theme: Theme) : BottomBarItem(type, id) {
+        override fun onCreateView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
-                    .inflate(R.layout.button_refresh, parent, false)
-                    .also { view ->
-                        view.findViewById<ThemedImageButton>(R.id.action_refresh).setTint(context, theme.buttonColorResId)
-                        view.findViewById<ThemedImageButton>(R.id.action_stop).setTint(context, theme.buttonColorResId)
+                    .inflate(R.layout.button_refresh, parent, false).apply {
+                        findViewById<ThemedImageButton>(R.id.action_refresh).setTint(context, theme.buttonColorResId)
+                        findViewById<ThemedImageButton>(R.id.action_stop).setTint(context, theme.buttonColorResId)
                     }
         }
     }
 
-    private class PrivateHomeItem(type: Int) : BottomBarItem(type) {
-        override fun createView(context: Context, parent: ViewGroup): View {
+    private class PrivateHomeItem(type: Int, id: Int) : BottomBarItem(type, id) {
+        override fun onCreateView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.button_private_to_normal, parent, false)
         }
     }
 
-    private class TrackerItem(type: Int) : BottomBarItem(type) {
-        override fun createView(context: Context, parent: ViewGroup): View {
+    private class TrackerItem(type: Int, id: Int) : BottomBarItem(type, id) {
+        override fun onCreateView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.button_tracker, parent, false)
         }

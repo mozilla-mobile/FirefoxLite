@@ -25,12 +25,9 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.annotation.ScreengrabOnly;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.chrome.BottomBarItemAdapter;
-import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 
 import tools.fastlane.screengrab.Screengrab;
@@ -96,8 +93,7 @@ public class PrivateBrowsingScreenshot extends BaseScreenshot {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Finish private browsing
-        int bottomBarDeletePos = BottomBarRobotKt.indexOfType(PrivateBottomBarViewModel.getDEFAULT_PRIVATE_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_DELETE);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarDeletePos);
+        new BottomBarRobot().clickBrowserBottomBarItem(R.id.bottom_bar_delete);
 
         // Check private browsing is cleared toast is displayed
         MockUIUtils.showToast(activityTestRule.getActivity(), R.string.private_browsing_erase_done);
