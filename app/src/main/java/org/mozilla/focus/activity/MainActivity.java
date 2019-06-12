@@ -103,7 +103,6 @@ import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 
 public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost,
         TabsSessionProvider.SessionHost,
-        TabModelStore.AsyncQueryListener,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         PromotionViewContract {
@@ -152,6 +151,15 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
             setMenuButtonSelected(R.id.menu_blockimg, blockingImages);
         }
         // For turbo mode, a automatic refresh is done when we disable block image.
+    };
+
+    private TabModelStore.AsyncQueryListener asyncQueryListener = (states, currentTabId) -> {
+        chromeViewModel.onRestoreTabCountCompleted();
+        getSessionManager().restore(states, currentTabId);
+        Session currentTab = getSessionManager().getFocusSession();
+        if (!Settings.getInstance(this).shouldShowFirstrun() && currentTab != null && !getSupportFragmentManager().isStateSaved()) {
+            screenNavigator.restoreBrowserScreen(currentTab.getId());
+        }
     };
 
     @Override
@@ -723,19 +731,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         return sessionManager;
     }
 
-    @Override
-    public void onQueryComplete(List<SessionManager.SessionWithState> states, String currentTabId) {
-        chromeViewModel.onRestoreTabCountCompleted();
-        getSessionManager().restore(states, currentTabId);
-        Session currentTab = getSessionManager().getFocusSession();
-        if (!Settings.getInstance(this).shouldShowFirstrun() && currentTab != null && !getSupportFragmentManager().isStateSaved()) {
-            screenNavigator.restoreBrowserScreen(currentTab.getId());
-        }
-    }
-
     private void restoreTabsFromPersistence() {
         chromeViewModel.onRestoreTabCountStarted();
-        TabModelStore.getInstance(this).getSavedTabs(this, this);
+        TabModelStore.getInstance(this).getSavedTabs(this, asyncQueryListener);
     }
 
     private void saveTabsToPersistence() {
