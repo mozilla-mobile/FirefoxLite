@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/promotion_02" />
+
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/round_rectangle_ripple"
+            android:padding="11dp"
+            android:src="@drawable/edit_close"
+            android:tint="@color/colorScreenshotItemBorder" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textColor="@color/colorDownloadText"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:lineSpacingExtra="5dp"
+        android:text="@string/rate_app_dialog_text_content"
+        android:textColor="@color/colorDownloadSubText"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/button_divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/colorPromotionDialogDivider" />
+
+    <Button
+        android:id="@+id/positive_button"
+        style="@style/PromoteDialogButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/rate_app_dialog_btn_go_rate"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/button_divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPromotionDialogDivider" />
+
+    <Button
+        android:id="@+id/negative_button"
+        style="@style/PromoteDialogButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/rate_app_dialog_btn_feedback"
+        android:textColor="@color/colorPromotionDialogSecBtn"
+        android:textSize="14sp" />
+</LinearLayout>
