@@ -20,6 +20,7 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.content_tab_news.news_setting
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -90,6 +91,7 @@ class NewsTabFragment : DaggerFragment() {
                 }
 
                 override fun onPageSelected(p0: Int) {
+                    TelemetryWrapper.openLifeFeedNews(newsSettings.second[p0].order.toString())
                     ContentPortalViewState.lastNewsTab = p0
                     // need to call request Layout to force BottomsheetBehaviour to call our
                     // findScrollingChild() implementation to find the corresponding scrolling child
@@ -139,6 +141,7 @@ class NewsTabFragment : DaggerFragment() {
             putExtra(ContentFeature.EXTRA_CONFIG_NEWS, "config")
             setClass(context!!, SettingsActivity::class.java)
         }
+        TelemetryWrapper.clickOnNewsSetting()
         startActivityForResult(intent, ContentFeature.SETTING_REQUEST_CODE)
     }
 
