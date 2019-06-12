@@ -62,6 +62,8 @@ object TelemetryWrapper {
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
     private const val LIFE_FEED_PROMO_VERSION = "2"
+    private const val OPEN_LIFEFEED_NEWS_VERSION = "2"
+    private const val DEFAULT_NEWS_CATEGORY = "top-news"
 
     // List of site title which are the partners of affiliate program.
     // Please use the exact title name from pin_sites.json
@@ -170,6 +172,7 @@ object TelemetryWrapper {
         internal const val FINISH = "finish"
         internal const val INFO = "info"
         internal const val LIFEFEED_NEWS = "lifefeed_news"
+        internal const val LIFEFEED_NEWS_PREF = "pref_news"
         internal const val LIFEFEED_EC = "lifefeed_ec"
         internal const val LIFEFEED_PROMO = "lifefeed_promo"
 
@@ -239,6 +242,7 @@ object TelemetryWrapper {
         const val MODE = "mode"
         const val ID = "id"
         const val DURATION = "duration"
+        const val LANGUAGE = "language"
     }
 
     object Extra_Value {
@@ -1537,16 +1541,54 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Open lifefeed news",
-            category = Category.ACTION,
-            method = Method.OPEN,
-            `object` = Object.PANEL,
-            value = Value.LIFEFEED_NEWS,
-            extras = [])
+        name = "Open lifefeed news",
+        category = Category.ACTION,
+        method = Method.OPEN,
+        `object` = Object.PANEL,
+        value = Value.LIFEFEED_NEWS,
+        extras = [TelemetryExtra(name = Extra.CATEGORY, value = "top-news, india, weather...etc"),
+            TelemetryExtra(name = Extra.VERSION, value = "2")]
+    )
     @JvmStatic
-    fun openLifeFeedNews() {
+    fun openLifeFeedNews(category: String?) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.PANEL, Value.LIFEFEED_NEWS)
-                .queue()
+            .extra(Extra.CATEGORY, category ?: DEFAULT_NEWS_CATEGORY)
+            .extra(Extra.VERSION, OPEN_LIFEFEED_NEWS_VERSION)
+            .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Click News settings",
+        category = Category.ACTION,
+        method = Method.CLICK,
+        `object` = Object.SETTING,
+        value = Value.LIFEFEED_NEWS,
+        extras = [])
+    fun clickOnNewsSetting() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, Value.LIFEFEED_NEWS)
+            .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Change News settings",
+        category = Category.ACTION,
+        method = Method.CHANGE,
+        `object` = Object.SETTING,
+        value = Value.LIFEFEED_NEWS,
+        extras = [
+            TelemetryExtra(name = Extra.LANGUAGE, value = "english|hindi|...other supported languages"),
+            TelemetryExtra(name = Extra.CATEGORY, value = "[top-news, india, world, .....]")
+        ]
+    )
+    fun changeNewsSetting(language: String? = null, categories: List<String>? = null) {
+        val eventBuilder = EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, Value.LIFEFEED_NEWS_PREF)
+        if (language != null) {
+            eventBuilder.extra(Extra.LANGUAGE, language)
+        }
+        if (categories != null) {
+            eventBuilder.extra(Extra.CATEGORY, categories.joinToString(prefix = "[", postfix = "]"))
+        }
+        eventBuilder.queue()
     }
 
     @TelemetryDoc(

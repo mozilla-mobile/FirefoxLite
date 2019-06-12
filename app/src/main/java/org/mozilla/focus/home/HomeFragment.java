@@ -1005,7 +1005,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                 // default tab for ec is coupon. so we send the telemetry as coupon
                 TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.ARROW);
             } else if (contentFeature.hasNews()) {
-                TelemetryWrapper.openLifeFeedNews();
+                TelemetryWrapper.openLifeFeedNews(null);
             }
         }
     }
