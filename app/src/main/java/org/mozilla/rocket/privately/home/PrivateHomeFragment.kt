@@ -102,7 +102,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             val data = CustomViewDialogData().apply {
                 this.drawable = ContextCompat.getDrawable(context, R.drawable.dialog_pbshortcut)
                 this.title = context.getString(R.string.private_browsing_dialog_add_shortcut_title)
-                this.description = context.getString(R.string.private_browsing_dialog_add_shortcut_title)
+                this.description = context.getString(R.string.private_browsing_dialog_add_shortcut_content)
                 this.positiveText = context.getString(R.string.private_browsing_dialog_add_shortcut_yes)
                 this.negativeText = context.getString(R.string.private_browsing_dialog_add_shortcut_no)
                 this.showCloseButton = true
