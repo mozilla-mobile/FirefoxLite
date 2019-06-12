@@ -84,17 +84,24 @@ class BottomBar : FrameLayout {
         fun onItemLongClick(type: Int, position: Int): Boolean
     }
 
-    abstract class BottomBarItem(val type: Int) {
+    abstract class BottomBarItem(val type: Int, val viewId: Int) {
         var view: View? = null
 
-        abstract fun createView(context: Context, parent: ViewGroup): View
+        fun createView(context: Context, parent: ViewGroup): View {
+            return onCreateView(context, parent).apply {
+                id = viewId
+            }
+        }
+
+        abstract fun onCreateView(context: Context, parent: ViewGroup): View
 
         open class ImageItem(
             type: Int,
+            id: Int,
             private val drawableResId: Int,
             private val tintResId: Int
-        ) : BottomBarItem(type) {
-            override fun createView(context: Context, parent: ViewGroup): View {
+        ) : BottomBarItem(type, id) {
+            override fun onCreateView(context: Context, parent: ViewGroup): View {
                 val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
                 return ThemedImageButton(contextThemeWrapper, null, 0).apply {
                     layoutParams = ViewGroup.LayoutParams(contextThemeWrapper, null)

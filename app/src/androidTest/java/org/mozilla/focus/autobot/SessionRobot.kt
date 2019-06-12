@@ -8,7 +8,6 @@ import android.support.test.espresso.action.Tap
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.pressImeActionButton
 import android.support.test.espresso.action.ViewActions.replaceText
-
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.RootMatchers
@@ -25,8 +24,6 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.helper.ScreenshotIdlingResource
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.chrome.BottomBarItemAdapter
-import org.mozilla.rocket.chrome.BottomBarViewModel
 
 inline fun session(func: SessionRobot.() -> Unit) = SessionRobot().apply(func)
 class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomation by menuAutomation {
@@ -93,8 +90,7 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
 
         // Click screen capture button
         bottomBar {
-            val bottomBarTabCapturePos = BottomBarViewModel.DEFAULT_BOTTOM_BAR_ITEMS.indexOfType(BottomBarItemAdapter.TYPE_CAPTURE)
-            clickBrowserBottomBarItem(bottomBarTabCapturePos)
+            clickBrowserBottomBarItem(R.id.bottom_bar_capture)
         }
 
         AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
@@ -112,8 +108,7 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
         // TODO find a way to remove the activity reference
         // Click screen capture button
         bottomBar {
-            val bottomBarTabCapturePos = BottomBarViewModel.DEFAULT_BOTTOM_BAR_ITEMS.indexOfType(BottomBarItemAdapter.TYPE_CAPTURE)
-            clickBrowserBottomBarItem(bottomBarTabCapturePos)
+            clickBrowserBottomBarItem(R.id.bottom_bar_capture)
         }
         checkScreenshotOnBoarding()
     }

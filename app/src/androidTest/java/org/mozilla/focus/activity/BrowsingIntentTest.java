@@ -79,8 +79,7 @@ public class BrowsingIntentTest {
                 .check(matches(withText(TARGET_URL_SITE_1)));
 
         // Click search button
-        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarSearchPos);
+        onView(withId(R.id.bottom_bar_search)).perform(click());
 
         // Browsing site 2
         onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE_2), pressImeActionButton());

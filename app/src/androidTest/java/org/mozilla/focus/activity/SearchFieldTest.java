@@ -21,13 +21,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.chrome.BottomBarItemAdapter;
-import org.mozilla.rocket.chrome.BottomBarViewModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -165,8 +162,7 @@ public class SearchFieldTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button
-        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarSearchPos);
+        new BottomBarRobot().clickBrowserBottomBarItem(R.id.bottom_bar_search);
 
         // Type some science characters
         onView(withId(R.id.url_edit)).perform(clearText()).perform(replaceText(TYPED_SCIENCE_SYMBOLS_TEXT), pressImeActionButton());

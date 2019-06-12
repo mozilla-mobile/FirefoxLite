@@ -16,12 +16,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mozilla.focus.R;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.chrome.BottomBarItemAdapter;
-import org.mozilla.rocket.chrome.BottomBarViewModel;
-import org.mozilla.rocket.chrome.MenuViewModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -80,8 +76,7 @@ public class NavigationTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button and clear existing text in search field
-        int bottomBarSearchPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_SEARCH);
-        new BottomBarRobot().clickBrowserBottomBarItem(bottomBarSearchPos);
+        onView(withId(R.id.bottom_bar_search)).perform(click());
         onView(withId(R.id.url_edit)).perform(clearText());
 
         // Enter site 2 url
@@ -103,8 +98,7 @@ public class NavigationTest {
 
         // Open menu and click next button
         AndroidTestUtils.tapBrowserMenuButton();
-        int menuBottomBarNextPos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_NEXT);
-        new BottomBarRobot().clickMenuBottomBarItem(menuBottomBarNextPos);
+        new BottomBarRobot().clickMenuBottomBarItem(R.id.bottom_bar_next);
 
         // Check if site 2 is loaded again
         IdlingRegistry.getInstance().register(loadingIdlingResource);

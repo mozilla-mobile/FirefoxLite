@@ -2,13 +2,14 @@ package org.mozilla.focus.autobot
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.view.View
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.spy
 import org.mozilla.focus.R
-import org.mozilla.focus.helper.GetNthChildViewMatcher.nthChildOf
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 
@@ -32,17 +33,17 @@ interface BottomBarAutomation {
 
     fun mockMenuBottomBarItems(items: List<BottomBarItemAdapter.ItemData>)
 
-    fun clickHomeBottomBarItem(position: Int)
+    fun clickHomeBottomBarItem(id: Int)
 
-    fun clickBrowserBottomBarItem(position: Int)
+    fun clickBrowserBottomBarItem(id: Int)
 
-    fun clickMenuBottomBarItem(position: Int)
+    fun clickMenuBottomBarItem(id: Int)
 
-    fun homeBottomBarItemView(position: Int): Matcher<View>
+    fun homeBottomBarItemView(id: Int): Matcher<View>
 
-    fun browserBottomBarItemView(position: Int): Matcher<View>
+    fun browserBottomBarItemView(id: Int): Matcher<View>
 
-    fun menuBottomBarItemView(position: Int): Matcher<View>
+    fun menuBottomBarItemView(id: Int): Matcher<View>
 }
 
 class BottomBarRobot : BottomBarAutomation {
@@ -64,29 +65,29 @@ class BottomBarRobot : BottomBarAutomation {
     private fun List<BottomBarItemAdapter.ItemData>.toJsonString(): String =
             joinToString(separator = ",", prefix = "[", postfix = "]") { "{\"type\":\"${it.type}\"}" }
 
-    override fun clickHomeBottomBarItem(position: Int) {
-        onView(bottomBarItemView(R.id.bottom_bar, position)).perform(click())
+    override fun clickHomeBottomBarItem(id: Int) {
+        onView(bottomBarItemView(R.id.bottom_bar, id)).perform(click())
     }
 
-    override fun clickBrowserBottomBarItem(position: Int) {
-        onView(bottomBarItemView(R.id.browser_bottom_bar, position)).perform(click())
+    override fun clickBrowserBottomBarItem(id: Int) {
+        onView(bottomBarItemView(R.id.browser_bottom_bar, id)).perform(click())
     }
 
-    override fun clickMenuBottomBarItem(position: Int) {
-        onView(bottomBarItemView(R.id.menu_bottom_bar, position)).perform(click())
+    override fun clickMenuBottomBarItem(id: Int) {
+        onView(bottomBarItemView(R.id.menu_bottom_bar, id)).perform(click())
     }
 
-    override fun homeBottomBarItemView(position: Int): Matcher<View> =
-            bottomBarItemView(R.id.bottom_bar, position)
+    override fun homeBottomBarItemView(id: Int): Matcher<View> =
+            bottomBarItemView(R.id.bottom_bar, id)
 
-    override fun browserBottomBarItemView(position: Int): Matcher<View> =
-            bottomBarItemView(R.id.browser_bottom_bar, position)
+    override fun browserBottomBarItemView(id: Int): Matcher<View> =
+            bottomBarItemView(R.id.browser_bottom_bar, id)
 
-    override fun menuBottomBarItemView(position: Int): Matcher<View> =
-            bottomBarItemView(R.id.menu_bottom_bar, position)
+    override fun menuBottomBarItemView(id: Int): Matcher<View> =
+            bottomBarItemView(R.id.menu_bottom_bar, id)
 
-    private fun bottomBarItemView(id: Int, position: Int): Matcher<View> =
-            nthChildOf(nthChildOf(withId(id), 0), position)
+    private fun bottomBarItemView(bottomBarId: Int, viewId: Int): Matcher<View> =
+            allOf(isDescendantOfA(withId(bottomBarId)), withId(viewId))
 }
 
 fun List<BottomBarItemAdapter.ItemData>.indexOfType(type: Int): Int = indexOf(BottomBarItemAdapter.ItemData(type))

@@ -9,16 +9,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.annotation.ScreengrabOnly
 import org.mozilla.focus.autobot.bookmark
 import org.mozilla.focus.autobot.bottomBar
-import org.mozilla.focus.autobot.indexOfType
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.chrome.BottomBarItemAdapter.Companion.TYPE_BOOKMARK
-import org.mozilla.rocket.chrome.MenuViewModel.Companion.DEFAULT_MENU_BOTTOM_ITEMS
 import tools.fastlane.screengrab.FalconScreenshotStrategy
 import tools.fastlane.screengrab.Screengrab
 import java.io.IOException
@@ -76,7 +74,7 @@ class BookmarksScreenshot : BaseScreenshot() {
             loadPageFromHomeSearchField(activityTestRule.activity, webServer.url(TEST_SITE_1).toString())
             clickBrowserMenu()
             bottomBar {
-                clickMenuBottomBarItem(DEFAULT_MENU_BOTTOM_ITEMS.indexOfType(TYPE_BOOKMARK))
+                clickMenuBottomBarItem(R.id.bottom_bar_bookmark)
             }
             checkAddBookmarkSnackbarIsDisplayed()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BOOKMARK_ADD_SNACKBAR)
@@ -103,7 +101,7 @@ class BookmarksScreenshot : BaseScreenshot() {
         session {
             clickBrowserMenu()
             bottomBar {
-                clickBrowserBottomBarItem(DEFAULT_MENU_BOTTOM_ITEMS.indexOfType(TYPE_BOOKMARK))
+                clickBrowserBottomBarItem(R.id.bottom_bar_bookmark)
             }
             checkRemoveBookmarkToastIsDisplayed(activityTestRule.activity)
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BOOKMARK_REMOVED)

@@ -21,12 +21,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.rocket.chrome.BottomBarItemAdapter;
-import org.mozilla.rocket.chrome.MenuViewModel;
 
 import java.io.IOException;
 
@@ -43,7 +40,6 @@ import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.not;
@@ -149,8 +145,7 @@ public class MenuShareLinkTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Check share btn disabled
-        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
-        onView(new BottomBarRobot().menuBottomBarItemView(menuBottomBarSharePos)).check(matches(not(isEnabled())));
+        onView(new BottomBarRobot().menuBottomBarItemView(R.id.bottom_bar_share)).check(matches(not(isEnabled())));
     }
 
 
@@ -167,8 +162,7 @@ public class MenuShareLinkTest {
 
         // Tap menu -> share link
         AndroidTestUtils.tapBrowserMenuButton();
-        int menuBottomBarSharePos = BottomBarRobotKt.indexOfType(MenuViewModel.getDEFAULT_MENU_BOTTOM_ITEMS(), BottomBarItemAdapter.TYPE_SHARE);
-        onView(new BottomBarRobot().menuBottomBarItemView(menuBottomBarSharePos)).check(matches(isDisplayed())).perform(click());
+        new BottomBarRobot().clickMenuBottomBarItem(R.id.bottom_bar_share);
 
         IdlingRegistry.getInstance().unregister(sessionLoadedIdlingResource);
     }

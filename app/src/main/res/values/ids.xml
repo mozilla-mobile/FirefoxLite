@@ -34,4 +34,18 @@
     <item name="menu_preferences" type="id"/>
     <item name="menu_exit" type="id"/>
 
+    <!-- Bottom Bar Items -->
+    <item name="bottom_bar_tab_counter" type="id"/>
+    <item name="bottom_bar_menu" type="id"/>
+    <item name="bottom_bar_new_tab" type="id"/>
+    <item name="bottom_bar_search" type="id"/>
+    <item name="bottom_bar_capture" type="id"/>
+    <item name="bottom_bar_pin_shortcut" type="id"/>
+    <item name="bottom_bar_bookmark" type="id"/>
+    <item name="bottom_bar_refresh" type="id"/>
+    <item name="bottom_bar_share" type="id"/>
+    <item name="bottom_bar_next" type="id"/>
+    <item name="bottom_bar_private_home" type="id"/>
+    <item name="bottom_bar_delete" type="id"/>
+    <item name="bottom_bar_tracker" type="id"/>
 </resources>

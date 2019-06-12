@@ -13,13 +13,10 @@ import org.junit.runner.RunWith;
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.RecyclerViewTestUtils;
-import org.mozilla.rocket.chrome.BottomBarItemAdapter;
-import org.mozilla.rocket.chrome.BottomBarViewModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -61,9 +58,8 @@ public class SaveRestoreTabsTest {
      */
     @Test
     public void restoreEmptyTab() {
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
-        checkHomeTabCounterText(bottomBarTabCounterPos, "0");
+        checkHomeTabCounterText("0");
     }
 
     /**
@@ -78,9 +74,8 @@ public class SaveRestoreTabsTest {
      */
     @Test
     public void restoreEmptyTab_addNewTabThenRelaunch() {
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "0");
+        checkBrowserTabCounterText("0");
 
         // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
         // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
@@ -90,8 +85,8 @@ public class SaveRestoreTabsTest {
 
         relaunchActivity();
 
-        checkHomeTabCounterText(bottomBarTabCounterPos, "1");
-        onView(new BottomBarRobot().homeBottomBarItemView(bottomBarTabCounterPos)).perform(click());
+        checkHomeTabCounterText("1");
+        new BottomBarRobot().clickHomeBottomBarItem(R.id.bottom_bar_tab_counter);
 
         onView(withId(R.id.tab_tray)).check(matches(isDisplayed()));
 
@@ -119,12 +114,11 @@ public class SaveRestoreTabsTest {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
         AndroidTestUtils.setFocusTabId(TAB.getId());
 
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
 
         //open a new tab from tab tray
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "2");
-        onView(new BottomBarRobot().browserBottomBarItemView(bottomBarTabCounterPos)).perform(click());
+        checkBrowserTabCounterText("2");
+        new BottomBarRobot().clickBrowserBottomBarItem(R.id.bottom_bar_tab_counter);
 
         // wait for tab tray to show up
         Thread.sleep(500);
@@ -135,7 +129,7 @@ public class SaveRestoreTabsTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         relaunchActivity();
 
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "3");
+        checkBrowserTabCounterText("3");
     }
 
     /**
@@ -156,12 +150,10 @@ public class SaveRestoreTabsTest {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
         AndroidTestUtils.setFocusTabId(TAB.getId());
 
-        int bottomBarTabCounterPos = BottomBarRobotKt.indexOfType(BottomBarViewModel.getDEFAULT_BOTTOM_BAR_ITEMS(), BottomBarItemAdapter.TYPE_TAB_COUNTER);
         activityRule.launchActivity(new Intent());
 
         // Open tab tray
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "2");
-        onView(new BottomBarRobot().browserBottomBarItemView(bottomBarTabCounterPos)).perform(click());
+        new BottomBarRobot().clickBrowserBottomBarItem(R.id.bottom_bar_tab_counter);
 
         // Tap Close All -> Tap Cancel
         // wait for tab tray to show up
@@ -177,7 +169,7 @@ public class SaveRestoreTabsTest {
         onView(withText(R.string.action_ok)).perform(click());
 
         // Check tab number is 0
-        checkBrowserTabCounterText(bottomBarTabCounterPos, "0");
+        checkBrowserTabCounterText("0");
     }
 
 
@@ -186,13 +178,13 @@ public class SaveRestoreTabsTest {
         activityRule.launchActivity(new Intent());
     }
 
-    private void checkHomeTabCounterText(int tabCounterPos, String text) {
-        onView(allOf(withId(R.id.counter_text), isDescendantOfA(new BottomBarRobot().homeBottomBarItemView(tabCounterPos))))
+    private void checkHomeTabCounterText(String text) {
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(new BottomBarRobot().homeBottomBarItemView(R.id.bottom_bar_tab_counter))))
                 .check(matches(withText(text)));
     }
 
-    private void checkBrowserTabCounterText(int tabCounterPos, String text) {
-        onView(allOf(withId(R.id.counter_text), isDescendantOfA(new BottomBarRobot().browserBottomBarItemView(tabCounterPos))))
+    private void checkBrowserTabCounterText(String text) {
+        onView(allOf(withId(R.id.counter_text), isDescendantOfA(new BottomBarRobot().browserBottomBarItemView(R.id.bottom_bar_tab_counter))))
                 .check(matches(withText(text)));
     }
 }

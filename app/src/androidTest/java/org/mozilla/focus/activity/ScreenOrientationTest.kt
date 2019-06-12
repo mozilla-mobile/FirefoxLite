@@ -28,12 +28,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
 import org.mozilla.focus.autobot.bottomBar
-import org.mozilla.focus.autobot.indexOfType
 import org.mozilla.focus.helper.BeforeTestTask
 import org.mozilla.focus.helper.SessionLoadedIdlingResource
 import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.rocket.chrome.BottomBarItemAdapter.Companion.TYPE_TAB_COUNTER
-import org.mozilla.rocket.chrome.BottomBarViewModel.Companion.DEFAULT_BOTTOM_BAR_ITEMS
 
 @Ignore
 @Keep
@@ -131,7 +128,7 @@ class ScreenOrientationTest {
         // Prepare
         gotoBrowserScreen()
         bottomBar {
-            clickBrowserBottomBarItem(DEFAULT_BOTTOM_BAR_ITEMS.indexOfType(TYPE_TAB_COUNTER))
+            clickBrowserBottomBarItem(R.id.bottom_bar_tab_counter)
         }
 
         // Test - Should be SCREEN_ORIENTATION_PORTRAIT when the second level menu is opened
