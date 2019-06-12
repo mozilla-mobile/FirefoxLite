@@ -155,13 +155,11 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeManager = new ThemeManager(this);
         super.onCreate(savedInstanceState);
-        screenNavigator = new ScreenNavigator(this);
         chromeViewModel = Inject.obtainChromeViewModel(this);
-        screenNavigator.getNavigationState().observe(this, state ->
-                chromeViewModel.getNavigationState().setValue(state));
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
+        themeManager = new ThemeManager(this);
+        screenNavigator = new ScreenNavigator(this);
 
         asyncInitialize();
 
@@ -174,7 +172,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 new InAppUpdateModelRepository(Settings.getInstance(this)));
 
         SafeIntent intent = new SafeIntent(getIntent());
-
         if (savedInstanceState == null) {
             boolean handledExternalLink = handleExternalLink(intent);
             if (!handledExternalLink) {
@@ -192,19 +189,24 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         WebViewProvider.preload(this);
 
         promotionModel = new PromotionModel(this, intent);
-
-        if (Inject.getActivityNewlyCreatedFlag()) {
-            Inject.setActivityNewlyCreatedFlag();
-
-            PromotionPresenter.runPromotion(this, promotionModel);
-        }
-
-
+        checkAndRunPromotion();
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
-        observeChromeAction();
-
+        observeNavigation();
         monitorOrientationState();
+        observeChromeAction();
+    }
+
+    private void checkAndRunPromotion() {
+        if (Inject.getActivityNewlyCreatedFlag()) {
+            Inject.setActivityNewlyCreatedFlag();
+            PromotionPresenter.runPromotion(this, promotionModel);
+        }
+    }
+
+    private void observeNavigation() {
+        screenNavigator.getNavigationState().observe(this, state ->
+                chromeViewModel.getNavigationState().setValue(state));
     }
 
     private void monitorOrientationState() {
@@ -227,7 +229,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 switch (intent.getAction()) {
                     case Constants.ACTION_NOTIFY_UI:
                         final CharSequence msg = intent.getCharSequenceExtra(Constants.EXTRA_MESSAGE);
-                        showMessage(msg);
+                        if (!TextUtils.isEmpty(msg)) {
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case Constants.ACTION_NOTIFY_RELOCATE_FINISH:
                         DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snackBarContainer, LOG_TAG);
@@ -690,14 +694,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     @Override
     public HomeFragment createHomeScreen() {
         return HomeFragment.create();
-    }
-
-    private void showMessage(@NonNull CharSequence msg) {
-        if (TextUtils.isEmpty(msg)) {
-            return;
-        }
-
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void asyncInitialize() {
