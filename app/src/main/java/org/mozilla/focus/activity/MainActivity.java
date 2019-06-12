@@ -378,18 +378,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         return screenNavigator.isBrowserInForeground() ? getBrowserFragment() : null;
     }
 
-    private void showMenu() {
-        menu.show();
-    }
-
-    private boolean isTurboEnabled() {
-        return Settings.getInstance(this).shouldUseTurboMode();
-    }
-
-    private boolean isBlockingImages() {
-        return Settings.getInstance(this).shouldBlockImages();
-    }
-
     public void showListPanel(int type) {
         ListPanelDialog dialogFragment = ListPanelDialog.newInstance(type);
         dialogFragment.setCancelable(true);
@@ -505,14 +493,14 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Only refresh when disabling turbo mode
         if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)) {
-            final boolean turboEnabled = isTurboEnabled();
+            final boolean turboEnabled = chromeViewModel.isTurboModeEnabled().getValue();
             BrowserFragment browserFragment = getBrowserFragment();
             if (browserFragment != null) {
                 browserFragment.setContentBlockingEnabled(turboEnabled);
             }
             setMenuButtonSelected(R.id.menu_turbomode, turboEnabled);
         } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
-            final boolean blockingImages = isBlockingImages();
+            final boolean blockingImages = chromeViewModel.isBlockImageEnabled().getValue();
             BrowserFragment browserFragment = getBrowserFragment();
             if (browserFragment != null) {
                 browserFragment.setImageBlockingEnabled(blockingImages);
@@ -649,7 +637,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 portraitStateModel.request(PortraitComponent.TabTray.INSTANCE);
             }
         });
-        chromeViewModel.getShowMenu().observe(this, unit -> showMenu());
+        chromeViewModel.getShowMenu().observe(this, unit -> menu.show());
         chromeViewModel.getShowNewTab().observe(this, unit -> {
             ContentPortalViewState.reset();
             screenNavigator.addHomeScreen(true);
@@ -882,6 +870,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                     });
             chromeViewModel.onMyShotOnBoardingDisplayed();
         });
-        showMenu();
+        menu.show();
     }
 }
