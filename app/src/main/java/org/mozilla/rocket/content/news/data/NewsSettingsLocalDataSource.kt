@@ -57,8 +57,8 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
     override fun setSupportLanguages(languages: List<NewsLanguage>) {
         ThreadUtils.postToBackgroundThread {
             getPreferences().edit().putString(KEY_JSON_STRING_SUPPORT_LANGUAGES, languages.toJson().toString()).apply()
+            languagesLiveData.postValue(languages)
         }
-        languagesLiveData.postValue(languages)
     }
 
     override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
@@ -85,8 +85,8 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
     override fun setUserPreferenceLanguage(language: NewsLanguage) {
         ThreadUtils.postToBackgroundThread {
             getPreferences().edit().putString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
+            preferenceLanguagesLiveData.postValue(language)
         }
-        preferenceLanguagesLiveData.postValue(language)
     }
 
     override fun getSupportCategories(language: String): LiveData<List<String>> {
@@ -105,17 +105,20 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
                 KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
                 categoryListToJsonArray(supportCategories).toString()
             ).apply()
+            supportCategoriesLiveData.postValue(supportCategories)
         }
-        supportCategoriesLiveData.postValue(supportCategories)
     }
 
     override fun getUserPreferenceCategories(language: String): LiveData<List<String>> {
         ThreadUtils.postToBackgroundThread {
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "") ?: ""
-            if (jsonString.isNotEmpty()) {
-                preferenceCategoriesLiveData.postValue(toCategoryList(jsonString))
+            val preferenceCategories = if (jsonString.isEmpty()) {
+                emptyList()
+            } else {
+                toCategoryList(jsonString)
             }
+            preferenceCategoriesLiveData.postValue(preferenceCategories)
         }
 
         return preferenceCategoriesLiveData
@@ -127,8 +130,8 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
                 KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
                 categoryListToJsonArray(userPreferenceCategories).toString()
             ).apply()
+            preferenceCategoriesLiveData.postValue(userPreferenceCategories)
         }
-//        preferenceCategoriesLiveData.postValue(userPreferenceCategories)
     }
 
     private fun getPreferences(): SharedPreferences {
