@@ -109,31 +109,29 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         PromotionViewContract {
 
     public static final int REQUEST_CODE_IN_APP_UPDATE = 1024;
-
-    private PromotionModel promotionModel;
-
-    private MenuDialog menu;
-    private View snackBarContainer;
-
-    private ScreenNavigator screenNavigator;
-
-    private DialogFragment mDialogFragment;
-
-    private BroadcastReceiver uiMessageReceiver;
-
-    private SessionManager sessionManager;
-    public static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     private static final String LOG_TAG = "MainActivity";
 
     private ChromeViewModel chromeViewModel;
-
-    private ThemeManager themeManager;
-
-    private Dialog myshotOnBoardingDialog;
     private DownloadIndicatorViewModel downloadIndicatorViewModel;
-
     private PortraitStateModel portraitStateModel = new PortraitStateModel();
+    private PromotionModel promotionModel;
+
+    private DialogFragment mDialogFragment;
+    private MenuDialog menu;
+    private Dialog myshotOnBoardingDialog;
+    private View snackBarContainer;
+
+    private ScreenNavigator screenNavigator;
+    private SessionManager sessionManager;
+    private BroadcastReceiver uiMessageReceiver;
+    private ThemeManager themeManager;
     private DialogQueue dialogQueue = new DialogQueue();
+    private ContentObserver downloadObserver = new ContentObserver(null) {
+        @Override
+        public void onChange(boolean selfChange) {
+            downloadIndicatorViewModel.updateIndicator();
+        }
+    };
 
     private InAppUpdateManager appUpdateManager;
 
@@ -886,11 +884,4 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         });
         showMenu();
     }
-
-    private ContentObserver downloadObserver = new ContentObserver(null) {
-        @Override
-        public void onChange(boolean selfChange) {
-            downloadIndicatorViewModel.updateIndicator();
-        }
-    };
 }

@@ -30,6 +30,7 @@ public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
     static final boolean PRIVATE_MODE_ENABLED_DEFAULT = true;
     static final boolean LIFE_FEED_ENABLED_DEFAULT = false;
+    static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     static final String LIFE_FEED_PROVIDERS_DEFAULT = "";
     static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPONS_DEFAULT = "";

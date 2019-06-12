@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.screenshot.ScreenshotManager;
@@ -272,7 +271,7 @@ final public class FirebaseHelper {
         map.put(FirebaseHelper.RATE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG);
         map.put(FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION);
         map.put(FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD, DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG);
-        map.put(FirebaseHelper.ENABLE_MY_SHOT_UNREAD, MainActivity.ENABLE_MY_SHOT_UNREAD_DEFAULT);
+        map.put(FirebaseHelper.ENABLE_MY_SHOT_UNREAD, AppConfigWrapper.ENABLE_MY_SHOT_UNREAD_DEFAULT);
         map.put(FirebaseHelper.BANNER_MANIFEST, HomeFragment.BANNER_MANIFEST_DEFAULT);
         map.put(FirebaseHelper.FEATURE_SURVEY, RemoteConfigConstants.INSTANCE.getFEATURE_SURVEY_DEFAULT());
         map.put(FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST, ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT);
