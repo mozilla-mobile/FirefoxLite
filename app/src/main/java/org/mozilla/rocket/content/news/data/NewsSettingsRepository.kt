@@ -102,7 +102,9 @@ class NewsSettingsRepository(
         }
 
         val defaultLanguage = preferenceLanguage?.key ?: ""
-        supportLanguages.find { it.key == defaultLanguage }?.isSelected = true
+        supportLanguages.forEach {
+            it.isSelected = (it.key == defaultLanguage)
+        }
 
         languagesLiveData.postValue(supportLanguages)
     }
