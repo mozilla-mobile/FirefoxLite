@@ -8,6 +8,7 @@ import android.text.TextUtils
 import org.json.JSONArray
 import org.json.JSONException
 import org.mozilla.threadutils.ThreadUtils
+import java.util.Locale
 
 class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
     private val languagesLiveData: MutableLiveData<List<NewsLanguage>> = MutableLiveData()
@@ -62,7 +63,7 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
 
     override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
         ThreadUtils.postToBackgroundThread {
-            var selectedLanguage = DEFAULT_LANGUAGE_LIST[0].also { it.isSelected = true }
+            var selectedLanguage = getDefaultPreferenceLanguage()
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
             if (!TextUtils.isEmpty(jsonString)) {
@@ -132,6 +133,24 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
 
     private fun getPreferences(): SharedPreferences {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+    private fun getDefaultPreferenceLanguage(): NewsLanguage {
+        var defaultLanguage = NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE_CODE, DEFAULT_LANGUAGE_KEY)
+        val jsonString = getPreferences()
+            .getString(KEY_JSON_STRING_SUPPORT_LANGUAGES, "") ?: ""
+        if (!TextUtils.isEmpty(jsonString)) {
+            try {
+                val newsLanguageResult = NewsLanguage.fromJson(jsonString)
+                newsLanguageResult
+                    .find { language -> Locale.getDefault().displayName.contains(language.name) }
+                    ?.let { defaultLanguage = it }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
+
+        return defaultLanguage.also { it.isSelected = true }
     }
 
     private fun categoryListToJsonArray(categories: List<String>): JSONArray {
