@@ -826,23 +826,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         }
     }
 
-    // a TabViewProvider and it should only be used in this activity
-    private static class MainTabViewProvider extends TabViewProvider {
-        private Activity activity;
-
-        MainTabViewProvider(@NonNull final Activity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        public TabView create() {
-            // FIXME: we should avoid casting here.
-            // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
-            // but there is no promise about this.
-            return (TabView) WebViewProvider.create(this.activity, null);
-        }
-    }
-
     private void showNightModeOnBoarding() {
         View view = menu.findViewById(R.id.menu_night_mode);
         view.post(() -> DialogUtils.showSpotlight(
@@ -871,5 +854,22 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
             chromeViewModel.onMyShotOnBoardingDisplayed();
         });
         menu.show();
+    }
+
+    // a TabViewProvider and it should only be used in this activity
+    private static class MainTabViewProvider extends TabViewProvider {
+        private Activity activity;
+
+        MainTabViewProvider(@NonNull final Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public TabView create() {
+            // FIXME: we should avoid casting here.
+            // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
+            // but there is no promise about this.
+            return (TabView) WebViewProvider.create(this.activity, null);
+        }
     }
 }
