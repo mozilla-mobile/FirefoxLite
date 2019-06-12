@@ -12,7 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
@@ -102,8 +102,8 @@ import java.util.Locale;
 import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 
 public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost,
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        TabsSessionProvider.SessionHost, TabModelStore.AsyncQueryListener,
+        TabsSessionProvider.SessionHost,
+        TabModelStore.AsyncQueryListener,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         PromotionViewContract {
@@ -126,6 +126,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     private BroadcastReceiver uiMessageReceiver;
     private ThemeManager themeManager;
     private DialogQueue dialogQueue = new DialogQueue();
+    private InAppUpdateManager appUpdateManager;
     private ContentObserver downloadObserver = new ContentObserver(null) {
         @Override
         public void onChange(boolean selfChange) {
@@ -133,7 +134,25 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         }
     };
 
-    private InAppUpdateManager appUpdateManager;
+    private OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
+        // Only refresh when disabling turbo mode
+        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)) {
+            final boolean turboEnabled = chromeViewModel.isTurboModeEnabled().getValue();
+            BrowserFragment browserFragment = getBrowserFragment();
+            if (browserFragment != null) {
+                browserFragment.setContentBlockingEnabled(turboEnabled);
+            }
+            setMenuButtonSelected(R.id.menu_turbomode, turboEnabled);
+        } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
+            final boolean blockingImages = chromeViewModel.isBlockImageEnabled().getValue();
+            BrowserFragment browserFragment = getBrowserFragment();
+            if (browserFragment != null) {
+                browserFragment.setImageBlockingEnabled(blockingImages);
+            }
+            setMenuButtonSelected(R.id.menu_blockimg, blockingImages);
+        }
+        // For turbo mode, a automatic refresh is done when we disable block image.
+    };
 
     @Override
     public ThemeManager getThemeManager() {
@@ -191,7 +210,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         promotionModel = new PromotionModel(this, intent);
         checkAndRunPromotion();
         PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this);
+                .registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
         observeNavigation();
         monitorOrientationState();
         observeChromeAction();
@@ -423,7 +442,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     @Override
     public void onDestroy() {
         PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(this);
+                .unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
         if (sessionManager != null) {
             sessionManager.destroy();
         }
@@ -481,27 +500,6 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                 snackbar.show();
             }
         }
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // Only refresh when disabling turbo mode
-        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)) {
-            final boolean turboEnabled = chromeViewModel.isTurboModeEnabled().getValue();
-            BrowserFragment browserFragment = getBrowserFragment();
-            if (browserFragment != null) {
-                browserFragment.setContentBlockingEnabled(turboEnabled);
-            }
-            setMenuButtonSelected(R.id.menu_turbomode, turboEnabled);
-        } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
-            final boolean blockingImages = chromeViewModel.isBlockImageEnabled().getValue();
-            BrowserFragment browserFragment = getBrowserFragment();
-            if (browserFragment != null) {
-                browserFragment.setImageBlockingEnabled(blockingImages);
-            }
-            setMenuButtonSelected(R.id.menu_blockimg, blockingImages);
-        }
-        // For turbo mode, a automatic refresh is done when we disable block image.
     }
 
     void setMenuButtonSelected(int buttonId, boolean selected) {
