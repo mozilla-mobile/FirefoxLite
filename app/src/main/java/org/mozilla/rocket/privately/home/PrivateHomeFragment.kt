@@ -9,7 +9,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +28,8 @@ import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.privately.ShortcutUtils
 import org.mozilla.rocket.privately.ShortcutViewModel
+import org.mozilla.rocket.widget.PromotionDialog
+import org.mozilla.rocket.widget.CustomViewDialogData
 
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
@@ -97,18 +99,21 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     private fun monitorShortcutPromotion(context: Context, model: ShortcutViewModel) {
         model.eventPromoteShortcut.observe(viewLifecycleOwner, Observer { callback ->
-            AlertDialog.Builder(context)
-                    .setCustomTitle(View.inflate(context, R.layout.dialog_pb_shortcut, null))
-                    .setPositiveButton(R.string.private_browsing_dialog_add_shortcut_yes) { _, _ ->
-                        callback?.onPositive()
-                    }
-                    .setNegativeButton(R.string.private_browsing_dialog_add_shortcut_no) { _, _ ->
-                        callback?.onNegative()
-                    }
-                    .setOnCancelListener {
-                        callback?.onCancel()
-                    }
-                    .setCancelable(false)
+            val data = CustomViewDialogData().apply {
+                this.drawable = ContextCompat.getDrawable(context, R.drawable.dialog_pbshortcut)
+                this.title = context.getString(R.string.private_browsing_dialog_add_shortcut_title)
+                this.description = context.getString(R.string.private_browsing_dialog_add_shortcut_title)
+                this.positiveText = context.getString(R.string.private_browsing_dialog_add_shortcut_yes)
+                this.negativeText = context.getString(R.string.private_browsing_dialog_add_shortcut_no)
+                this.showCloseButton = true
+            }
+
+            PromotionDialog(context, data)
+                    .onPositive { callback?.onPositive() }
+                    .onNegative { callback?.onNegative() }
+                    .onClose { callback?.onNegative() }
+                    .onCancel { callback?.onCancel() }
+                    .setCancellable(false)
                     .show()
         })
     }
