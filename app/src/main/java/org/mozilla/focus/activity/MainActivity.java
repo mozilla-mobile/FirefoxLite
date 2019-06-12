@@ -701,13 +701,13 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     }
 
     private void asyncInitialize() {
-        new Thread(this::asyncCheckStorage).start();
+        new Thread(this::checkRemovableStorage).start();
     }
 
     /**
      * To check existence of removable storage, and write result to preference
      */
-    private void asyncCheckStorage() {
+    private void checkRemovableStorage() {
         boolean exist;
         try {
             final File dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(this, "*/*");
