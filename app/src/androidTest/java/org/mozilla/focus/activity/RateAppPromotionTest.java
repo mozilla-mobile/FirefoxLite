@@ -93,7 +93,7 @@ public class RateAppPromotionTest {
         intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
 
         // Check share app dialog is displayed and click the rate app button
-        onView(withId(R.id.dialog_rate_app_btn_go_rate)).check(matches(isDisplayed())).perform(click());
+        onView(withId(R.id.positive_button)).check(matches(isDisplayed())).perform(click());
 
         // Check if the intent that open rocket in google play is fired
         final Uri uri = Uri.parse(IntentUtils.MARKET_INTENT_URI_PACKAGE_PREFIX + InstrumentationRegistry.getInstrumentation().getTargetContext().getPackageName());
@@ -116,7 +116,7 @@ public class RateAppPromotionTest {
         sessionLoadedIdlingResource = new SessionLoadedIdlingResource(intentTestRule.getActivity());
 
         // Check share app dialog is displayed and click the feedback button
-        onView(withId(R.id.dialog_rate_app_btn_feedback)).check(matches(isDisplayed())).perform(click());
+        onView(withId(R.id.negative_button)).check(matches(isDisplayed())).perform(click());
 
         // Wait the feedback web page is loaded
         IdlingRegistry.getInstance().register(sessionLoadedIdlingResource);
@@ -140,7 +140,7 @@ public class RateAppPromotionTest {
     @Test
     public void showRateAppPromotionAndClickClose_backToHome() {
         // Check share app dialog is displayed and click the close button
-        onView(withId(R.id.dialog_rate_app_btn_close)).check(matches(isDisplayed())).perform(click());
+        onView(withId(R.id.close_button)).check(matches(isDisplayed())).perform(click());
 
         // Check if we are back to home
         onView(withId(R.id.home_fragment_fake_input)).check(matches(isDisplayed()));
