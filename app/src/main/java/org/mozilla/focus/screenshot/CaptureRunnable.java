@@ -101,7 +101,7 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
             if (browserFragment != null && success
                     && !Settings.getInstance(context).getEventHistory().contains(Settings.Event.ShowMyShotOnBoardingDialog)) {
                 // My shot on boarding didn't show before and capture is succeed, skip to show toast
-                browserFragment.showMyShotOnBoarding();
+                browserFragment.checkToShowMyShotOnBoarding();
                 return;
             }
         }

@@ -1735,16 +1735,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         }
     }
 
-    public void showMyShotOnBoarding() {
-        final Activity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-        final Settings.EventHistory eventHistory = Settings.getInstance(activity).getEventHistory();
-        if (!eventHistory.contains(Settings.Event.ShowMyShotOnBoardingDialog)) {
-            eventHistory.add(Settings.Event.ShowMyShotOnBoardingDialog);
-            chromeViewModel.showMyShotOnBoarding();
-        }
+    public void checkToShowMyShotOnBoarding() {
+        chromeViewModel.checkToShowMyShotOnBoarding();
     }
 
     @Override
