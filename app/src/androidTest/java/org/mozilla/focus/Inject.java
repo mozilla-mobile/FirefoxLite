@@ -166,11 +166,6 @@ public class Inject {
         return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 
-    public static NewsViewModel obtainNewsViewModel(FragmentActivity activity) {
-        final NewsViewModelFactory factory = NewsViewModelFactory.getInstance(activity);
-        return ViewModelProviders.of(activity, factory).get(NewsViewModel.class);
-    }
-
     public static void startAnimation(View view, Animation animation) {
     }
 }

@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class NewsLanguagePreference extends ListPreference {

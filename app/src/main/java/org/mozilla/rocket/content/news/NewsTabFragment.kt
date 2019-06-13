@@ -15,11 +15,13 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.content_tab_news.*
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalView
 
@@ -27,7 +29,12 @@ import org.mozilla.rocket.content.portal.ContentPortalView
  * Fragment that host the tabs for different types of content portal
  *
  */
-class NewsTabFragment : Fragment() {
+class NewsTabFragment : DaggerFragment() {
+
+    @javax.inject.Inject
+    lateinit var viewModelFactory: NewsViewModelFactory
+
+    lateinit var newsViewModel: NewsViewModel
 
     private var bottomSheetBehavior: org.mozilla.rocket.widget.BottomSheetBehavior<View>? = null
 
@@ -47,9 +54,12 @@ class NewsTabFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
+        AndroidSupportInjection.inject(this)
 
-            Inject.obtainNewsViewModel(activity).categories.observe(viewLifecycleOwner, Observer { list ->
+        if (savedInstanceState == null) {
+            newsViewModel = activityViewModelProvider(viewModelFactory)
+
+            newsViewModel.categories.observe(viewLifecycleOwner, Observer { list ->
                 list?.let {
                     setupViewPager(view, it)
                 }
@@ -121,9 +131,9 @@ class NewsTabFragment : Fragment() {
             // TODO: check if the setting has changed before recreate self
             // TODO: repeated code for initNewsTabFragment
             // recreate self
-            Inject.obtainNewsViewModel(activity).clear()
             context?.inTransaction {
-                replace(R.id.bottom_sheet, NewsTabFragment.newInstance(bottomSheetBehavior),
+                replace(
+                    R.id.bottom_sheet, NewsTabFragment.newInstance(bottomSheetBehavior),
                     ContentPortalView.TAG_NEWS_FRAGMENT
                 )
             }
