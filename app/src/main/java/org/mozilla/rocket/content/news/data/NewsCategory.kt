@@ -32,10 +32,11 @@ data class NewsCategory(
                 NewsCategory("videos", R.string.news_category_option_video, 19),
                 NewsCategory("City", R.string.news_category_option_city, 20),
                 NewsCategory("events", R.string.news_category_option_events, 21),
-                NewsCategory("crime", R.string.news_category_option_crime, 22),
-                NewsCategory("astrology", R.string.news_category_option_astrology, 23),
-                NewsCategory("science", R.string.news_category_option_science, 24),
-                NewsCategory("jokes", R.string.news_category_option_jokes, 25)
+                NewsCategory("religion", R.string.news_category_option_religion, 22),
+                NewsCategory("crime", R.string.news_category_option_crime, 23),
+                NewsCategory("astrology", R.string.news_category_option_astrology, 24),
+                NewsCategory("science", R.string.news_category_option_science, 25),
+                NewsCategory("jokes", R.string.news_category_option_jokes, 26)
             ).associateBy(NewsCategory::categoryId)
         }
 
