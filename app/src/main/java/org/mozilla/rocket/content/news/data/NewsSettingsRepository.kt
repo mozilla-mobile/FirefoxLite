@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.news.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import org.mozilla.focus.utils.CharacterValidator
 
 class NewsSettingsRepository(
     private val remoteDataSource: NewsSettingsDataSource,
@@ -85,7 +86,9 @@ class NewsSettingsRepository(
         val supportLanguages = ArrayList<NewsLanguage>()
         if (localLanguages?.isNotEmpty() == true) {
             localLanguages?.let {
-                supportLanguages.addAll(it)
+                val displayCharacterForNotSupportedCharacter = "\u2612"
+                val characterValidator = CharacterValidator(displayCharacterForNotSupportedCharacter)
+                supportLanguages.addAll(it.filterNot { item -> characterValidator.characterIsMissingInFont(item.name.substring(0, 1)) })
                 try {
                     supportLanguages.sortBy { item -> item.code.toInt() }
                 } catch (e: NumberFormatException) {
