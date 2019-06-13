@@ -52,7 +52,7 @@ class BottomBar : FrameLayout {
     fun setItems(items: List<BottomBarItem>) {
         grid.removeAllViews()
         items.forEachIndexed { index, item ->
-            item.createView(context).apply {
+            item.createView(context, grid).apply {
                 setOnClickListener { onItemClickListener?.onItemClick(item.type, index) }
                 setOnLongClickListener { onItemLongClickListener?.onItemLongClick(item.type, index) ?: false }
             }.let { view ->
@@ -87,14 +87,14 @@ class BottomBar : FrameLayout {
     abstract class BottomBarItem(val type: Int) {
         var view: View? = null
 
-        abstract fun createView(context: Context): View
+        abstract fun createView(context: Context, parent: ViewGroup): View
 
         open class ImageItem(
             type: Int,
             private val drawableResId: Int,
             private val tintResId: Int
         ) : BottomBarItem(type) {
-            override fun createView(context: Context): View {
+            override fun createView(context: Context, parent: ViewGroup): View {
                 val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
                 return ThemedImageButton(contextThemeWrapper, null, 0).apply {
                     layoutParams = ViewGroup.LayoutParams(contextThemeWrapper, null)
