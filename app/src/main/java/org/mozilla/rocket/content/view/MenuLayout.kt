@@ -3,18 +3,14 @@ package org.mozilla.rocket.content.view
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import kotlinx.android.synthetic.main.menu_item_text_image.view.menu_item_image
+import kotlinx.android.synthetic.main.menu_item_text_image.view.menu_item_text
 import org.mozilla.focus.R
 import org.mozilla.focus.widget.EqualDistributeGrid
-import org.mozilla.rocket.extension.dpToPx
 
 class MenuLayout : FrameLayout {
     private lateinit var grid: EqualDistributeGrid
@@ -41,7 +37,7 @@ class MenuLayout : FrameLayout {
     fun setItems(items: List<MenuItem>) {
         grid.removeAllViews()
         items.forEachIndexed { index, item ->
-            item.createView(context).apply {
+            item.createView(context, grid).apply {
                 setOnClickListener { onItemClickListener?.onItemClick(item.type, index) }
                 setOnLongClickListener { onItemLongClickListener?.onItemLongClick(item.type, index) ?: false }
             }.let { view ->
@@ -70,7 +66,7 @@ class MenuLayout : FrameLayout {
     abstract class MenuItem(val type: Int, val viewId: Int) {
         var view: View? = null
 
-        abstract fun createView(context: Context): View
+        abstract fun createView(context: Context, parent: ViewGroup): View
 
         open class TextImageItem(
             type: Int,
@@ -79,34 +75,23 @@ class MenuLayout : FrameLayout {
             private val drawableResId: Int,
             private val tintResId: Int?
         ) : MenuItem(type, id) {
-            override fun createView(context: Context): View {
-                return LinearLayout(context).apply {
-                    id = viewId
-                    layoutParams = ViewGroup.LayoutParams(dpToPx(74f), dpToPx(74f))
-                    orientation = LinearLayout.VERTICAL
-                    gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-                    setPadding(paddingLeft, paddingTop, paddingRight, dpToPx(16f))
-                    setBackgroundResource(R.drawable.round_rectangle_ripple)
-
-                    addView(
-                            ImageView(context).apply {
-                                layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            override fun createView(context: Context, parent: ViewGroup): View {
+                return LayoutInflater.from(context)
+                        .inflate(R.layout.menu_item_text_image, parent, false).apply {
+                            id = viewId
+                            menu_item_image.apply {
                                 setImageResource(drawableResId)
                                 if (tintResId != null) {
                                     imageTintList = ContextCompat.getColorStateList(context, tintResId)
                                 }
                             }
-                    )
-                    addView(
-                            TextView(ContextThemeWrapper(context, R.style.MenuButtonText)).apply {
-                                layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+                            menu_item_text.apply {
                                 setText(textResId)
                                 if (tintResId != null) {
                                     setTextColor(ContextCompat.getColorStateList(context, tintResId))
                                 }
                             }
-                    )
-                }
+                        }
             }
         }
     }
