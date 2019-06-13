@@ -213,7 +213,7 @@ class BottomBarItemAdapter(
     }
 
     private class TabCounterItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
-        override fun createView(context: Context): View {
+        override fun createView(context: Context, parent: ViewGroup): View {
             val contextThemeWrapper = ContextThemeWrapper(context, R.style.MainMenuButton)
             return TabCounter(contextThemeWrapper, null, 0).apply {
                 layoutParams = ViewGroup.LayoutParams(contextThemeWrapper, null)
@@ -223,9 +223,9 @@ class BottomBarItemAdapter(
     }
 
     private class MenuItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
-        override fun createView(context: Context): View {
+        override fun createView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
-                    .inflate(R.layout.button_more, null)
+                    .inflate(R.layout.button_more, parent, false)
                     .apply {
                         findViewById<ThemedImageButton>(R.id.btn_menu).setTint(context, theme.buttonColorResId)
                         val downloadColorResId = if (theme == Theme.Light) R.color.paletteDarkBlueC100 else theme.buttonColorResId
@@ -241,9 +241,9 @@ class BottomBarItemAdapter(
     )
 
     private class RefreshItem(type: Int, private val theme: Theme) : BottomBarItem(type) {
-        override fun createView(context: Context): View {
+        override fun createView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
-                    .inflate(R.layout.button_refresh, null)
+                    .inflate(R.layout.button_refresh, parent, false)
                     .also { view ->
                         view.findViewById<ThemedImageButton>(R.id.action_refresh).setTint(context, theme.buttonColorResId)
                         view.findViewById<ThemedImageButton>(R.id.action_stop).setTint(context, theme.buttonColorResId)
@@ -252,16 +252,16 @@ class BottomBarItemAdapter(
     }
 
     private class PrivateHomeItem(type: Int) : BottomBarItem(type) {
-        override fun createView(context: Context): View {
+        override fun createView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
-                    .inflate(R.layout.button_private_to_normal, null)
+                    .inflate(R.layout.button_private_to_normal, parent, false)
         }
     }
 
     private class TrackerItem(type: Int) : BottomBarItem(type) {
-        override fun createView(context: Context): View {
+        override fun createView(context: Context, parent: ViewGroup): View {
             return LayoutInflater.from(context)
-                    .inflate(R.layout.button_tracker, null)
+                    .inflate(R.layout.button_tracker, parent, false)
         }
     }
 
