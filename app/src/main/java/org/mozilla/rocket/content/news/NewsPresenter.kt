@@ -4,9 +4,7 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.support.annotation.VisibleForTesting
 import android.support.v4.app.FragmentActivity
-import org.mozilla.focus.Inject
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
@@ -25,10 +23,8 @@ interface NewsViewContract {
     fun getLanguage(): String
 }
 
-class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListListener {
-
-    @VisibleForTesting
-    var newsViewModel: NewsViewModel? = null
+class NewsPresenter(private val newsViewContract: NewsViewContract, private val newsViewModel: NewsViewModel) :
+    NewsListListener {
 
     companion object {
         private val LOADMORE_THRESHOLD = 3000L
@@ -49,8 +45,8 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
             )
         )
 
-        newsViewModel = Inject.obtainNewsViewModel(fragmentActivity)
-        val newsLiveData: MediatorLiveData<List<NewsItem>>? = newsViewModel?.getNews(newsViewContract.getCategory(), newsViewContract.getLanguage(), repository)
+        val newsLiveData: MediatorLiveData<List<NewsItem>>? =
+            newsViewModel.getNews(newsViewContract.getCategory(), newsViewContract.getLanguage(), repository)
         newsLiveData?.observe(newsViewContract.getViewLifecycleOwner(),
             Observer { items ->
                 newsViewContract.updateNews(items)
@@ -60,13 +56,13 @@ class NewsPresenter(private val newsViewContract: NewsViewContract) : NewsListLi
         // we deliberately create a new subscription again to load data aggressively.
         val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
         val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(fragmentActivity.applicationContext)
-        newsViewModel?.newsSettingsRepository = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
-        newsViewModel?.loadMore(newsViewContract.getCategory())
+        newsViewModel.newsSettingsRepository = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
+        newsViewModel.loadMore(newsViewContract.getCategory())
     }
 
     override fun loadMore() {
         if (!isLoading) {
-            newsViewModel?.loadMore(newsViewContract.getCategory())
+            newsViewModel.loadMore(newsViewContract.getCategory())
             isLoading = true
             ThreadUtils.postToMainThreadDelayed(
                 { isLoading = false },

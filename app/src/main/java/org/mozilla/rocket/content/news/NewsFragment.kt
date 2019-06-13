@@ -2,7 +2,6 @@ package org.mozilla.rocket.content.news
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,15 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
+import dagger.android.support.DaggerFragment
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
-class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
+class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
+
+    @javax.inject.Inject
+    lateinit var viewModelFactory: NewsViewModelFactory
+
     override fun getCategory(): String {
         return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
     }
@@ -68,8 +73,8 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        newsPresenter = NewsPresenter(this)
+        val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
+        newsPresenter = NewsPresenter(this, newsViewModel)
         newsPresenter?.setupNewsViewModel(activity, getCategory())
         newsListListener = newsPresenter
         newsListListener?.onShow(context!!)
