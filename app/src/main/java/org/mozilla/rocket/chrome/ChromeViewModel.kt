@@ -217,9 +217,12 @@ class ChromeViewModel(
         isHomePageUrlInputShowing.value = false
     }
 
-    fun showMyShotOnBoarding() {
-        if (isMyShotOnBoardingPending.value != true) {
-            isMyShotOnBoardingPending.value = true
+    fun checkToShowMyShotOnBoarding() {
+        if (!settings.eventHistory.contains(Settings.Event.ShowMyShotOnBoardingDialog)) {
+            settings.eventHistory.add(Settings.Event.ShowMyShotOnBoardingDialog)
+            if (isMyShotOnBoardingPending.value != true) {
+                isMyShotOnBoardingPending.value = true
+            }
         }
     }
 
