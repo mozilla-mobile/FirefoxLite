@@ -1582,7 +1582,7 @@ object TelemetryWrapper {
         ]
     )
     fun changeNewsSetting(language: String? = null, categories: List<String>? = null) {
-        val eventBuilder = EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, Value.LIFEFEED_NEWS_PREF)
+        val eventBuilder = EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.LIFEFEED_NEWS_PREF)
         if (language != null) {
             eventBuilder.extra(Extra.LANGUAGE, language)
         }

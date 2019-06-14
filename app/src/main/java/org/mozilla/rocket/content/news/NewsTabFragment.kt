@@ -91,7 +91,9 @@ class NewsTabFragment : DaggerFragment() {
                 }
 
                 override fun onPageSelected(p0: Int) {
-                    TelemetryWrapper.openLifeFeedNews(newsSettings.second[p0].order.toString())
+                    if (newsSettings.second.isNotEmpty()) {
+                        TelemetryWrapper.openLifeFeedNews(newsSettings.second[p0].order.toString())
+                    }
                     ContentPortalViewState.lastNewsTab = p0
                     // need to call request Layout to force BottomsheetBehaviour to call our
                     // findScrollingChild() implementation to find the corresponding scrolling child
@@ -107,7 +109,8 @@ class NewsTabFragment : DaggerFragment() {
     /**
      * Adapter that builds a page for each E-Commerce type .
      */
-    inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) : FragmentPagerAdapter(fm) {
+    inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) :
+        FragmentPagerAdapter(fm) {
 
         private val language = newsSettings.first.getApiId()
         private val displayCategories = newsSettings.second.filter { it.isSelected }
