@@ -300,7 +300,7 @@ class MainActivity : BaseActivity(),
                 onNightModeEnabled(nightModeSettings.brightness, nightModeSettings.isEnabled)
             }
             driveDefaultBrowser.observe(this@MainActivity, Observer { driveDefaultBrowser() })
-            exitApp.observe(this@MainActivity, Observer { onExitClicked() })
+            exitApp.observe(this@MainActivity, Observer { exitApp() })
             openPreference.observe(this@MainActivity, Observer { openPreferences() })
             showBookmarks.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_BOOKMARKS) })
             showHistory.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_HISTORY) })
@@ -504,7 +504,7 @@ class MainActivity : BaseActivity(),
         TelemetryWrapper.showDefaultSettingNotification()
     }
 
-    private fun onExitClicked() {
+    private fun exitApp() {
         GeoPermissionCache.clear()
         if (PrivateMode.getInstance(this).hasPrivateSession()) {
             val intent = PrivateSessionNotificationService.buildIntent(this.applicationContext, true)
