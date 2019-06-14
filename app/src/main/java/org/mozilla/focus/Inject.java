@@ -37,6 +37,7 @@ import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
 import org.mozilla.rocket.download.DownloadViewModelFactory;
+import org.mozilla.rocket.helper.StorageHelper;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.urlinput.GlobalDataSource;
 import org.mozilla.rocket.urlinput.LocaleDataSource;
@@ -151,7 +152,8 @@ public class Inject {
         Settings settings = Settings.getInstance(activity);
         BookmarkRepository bookmarkRepo = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(activity));
         PrivateMode privateMode = PrivateMode.getInstance(activity);
-        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings, bookmarkRepo, privateMode);
+        StorageHelper storageHelper = new StorageHelper(activity);
+        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings, bookmarkRepo, privateMode, storageHelper);
         return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 

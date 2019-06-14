@@ -56,11 +56,9 @@ import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.NewFeatureNotice
-import org.mozilla.focus.utils.NoRemovableStorageException
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ShortcutUtils
-import org.mozilla.focus.utils.StorageUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.web.GeoPermissionCache
 import org.mozilla.focus.web.WebViewProvider
@@ -168,8 +166,6 @@ class MainActivity : BaseActivity(),
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
 
-        asyncInitialize()
-
         setContentView(R.layout.activity_main)
         initViews()
         initBroadcastReceivers()
@@ -203,24 +199,6 @@ class MainActivity : BaseActivity(),
         observeNavigation()
         monitorOrientationState()
         observeChromeAction()
-    }
-
-    private fun asyncInitialize() {
-        Thread(Runnable { this.checkRemovableStorage() }).start()
-    }
-
-    /**
-     * To check existence of removable storage, and write result to preference
-     */
-    private fun checkRemovableStorage() {
-        val exist = try {
-            val dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(this, "*/*")
-            dir != null
-        } catch (e: NoRemovableStorageException) {
-            false
-        }
-
-        Settings.getInstance(this).removableStorageStateOnCreate = exist
     }
 
     private fun initViews() {
