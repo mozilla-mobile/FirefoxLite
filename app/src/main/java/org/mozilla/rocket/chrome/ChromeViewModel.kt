@@ -20,6 +20,7 @@ import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.urlutils.UrlUtils
+import kotlin.concurrent.thread
 
 class ChromeViewModel(
     private val settings: Settings,
@@ -89,6 +90,15 @@ class ChromeViewModel(
                 .let { urlBookmarksLiveData ->
                     Transformations.map<List<BookmarkModel>, Boolean>(urlBookmarksLiveData) { it.isNotEmpty() }
                 }
+
+        thread { checkRemovableStorage() }
+    }
+
+    /**
+     * To check existence of removable storage, and write result to preference
+     */
+    private fun checkRemovableStorage() {
+        settings.removableStorageStateOnCreate = storageHelper.hasRemovableStorage()
     }
 
     fun invalidate() {
