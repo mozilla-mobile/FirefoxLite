@@ -1,7 +1,9 @@
-import re
+#git log --pretty=oneline --abbrev-commit -n 40 | python revertCommitParser.py
+import re, sys
 
-with open('log', 'r') as f:
-    commits = f.readlines()
+# with open('log', 'r') as f:
+#     commits = f.readlines()
+commits = sys.stdin.readlines()
 
 pattern = "\[.+\]"
 
