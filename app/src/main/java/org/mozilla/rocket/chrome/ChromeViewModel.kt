@@ -300,6 +300,10 @@ class ChromeViewModel(
         TelemetryWrapper.clickMenuCapture()
     }
 
+    fun onSurveyNotificationPosted() {
+        settings.eventHistory.add(Settings.Event.PostSurveyNotification)
+    }
+
     data class OpenUrlAction(
         val url: String,
         val withNewTab: Boolean,

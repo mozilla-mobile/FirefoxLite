@@ -615,8 +615,7 @@ class MainActivity : BaseActivity(),
             }
 
     override fun onPointerCaptureChanged(hasCapture: Boolean) {
-        val history = Settings.getInstance(this).eventHistory
-        history.add(Settings.Event.PostSurveyNotification)
+        chromeViewModel.onSurveyNotificationPosted()
     }
 
     override fun showRateAppDialog() {
