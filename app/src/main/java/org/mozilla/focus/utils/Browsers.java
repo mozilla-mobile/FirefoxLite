@@ -61,6 +61,7 @@ public class Browsers {
         }
     }
 
+    private Context appContext;
     private final Map<String, ActivityInfo> browsers;
     private final ActivityInfo defaultBrowser;
     // This will contain installed firefox branded browser ordered by priority from Firefox,
@@ -81,6 +82,7 @@ public class Browsers {
         // wants to handle our URL.
         findKnownBrowsers(packageManager, browsers, uri);
 
+        this.appContext = context.getApplicationContext();
         this.browsers = browsers;
         this.defaultBrowser = findDefault(packageManager, uri);
         this.firefoxBrandedBrowser = findFirefoxBrandedBrowser();
@@ -211,13 +213,17 @@ public class Browsers {
         return browsers.containsKey(browser.packageName);
     }
 
+    public boolean isDefaultBrowser() {
+        return (defaultBrowser != null)
+                && (appContext.getPackageName().equals(defaultBrowser.packageName));
+    }
+
     /**
      * Is *this* application the default browser?
      */
     public static boolean isDefaultBrowser(Context context) {
         final Browsers browser = new Browsers(context, "http://mozilla.org");
-        return (browser.defaultBrowser != null)
-                && (context.getPackageName().equals(browser.defaultBrowser.packageName));
+        return browser.isDefaultBrowser();
     }
 
     public static boolean hasDefaultBrowser(Context context) {

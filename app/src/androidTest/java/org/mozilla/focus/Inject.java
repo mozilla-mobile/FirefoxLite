@@ -21,6 +21,7 @@ import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
@@ -165,8 +166,9 @@ public class Inject {
         Settings settings = Settings.getInstance(activity);
         BookmarkRepository bookmarkRepo = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(activity));
         PrivateMode privateMode = PrivateMode.getInstance(activity);
+        Browsers Browsers = new Browsers(activity, "http://mozilla.org");
         StorageHelper storageHelper = new StorageHelper(activity);
-        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings, bookmarkRepo, privateMode, storageHelper);
+        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings, bookmarkRepo, privateMode, Browsers, storageHelper);
         return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 

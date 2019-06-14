@@ -94,7 +94,7 @@ class MenuDialog : BottomSheetDialog {
                         TelemetryWrapper.clickMenuClearCache()
                     }
                     MenuItemAdapter.TYPE_PREFERENCES -> {
-                        chromeViewModel.driveDefaultBrowser.call()
+                        chromeViewModel.checkToDriveDefaultBrowser()
                         chromeViewModel.openPreference.call()
                         TelemetryWrapper.clickMenuSettings()
                     }
