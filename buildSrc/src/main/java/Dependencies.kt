@@ -34,6 +34,7 @@ object Versions {
     const val robolectric = "4.3"
     const val espresso = "3.2.0"
     const val test_core = "1.1.0"
+    const val test_ext = "1.1.1"
     const val test_runner = "1.2.0"
     const val uiautomator = "2.2.0"
     const val mockwebserver = "3.7.0"

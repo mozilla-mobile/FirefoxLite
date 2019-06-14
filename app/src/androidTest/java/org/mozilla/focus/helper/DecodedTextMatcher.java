@@ -11,7 +11,7 @@ import org.hamcrest.Matcher;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import static android.support.test.internal.util.Checks.checkNotNull;
+import static androidx.test.internal.util.Checks.checkNotNull;
 
 public class DecodedTextMatcher {
     private static final String TAG = "DecodedTextMatcher";
