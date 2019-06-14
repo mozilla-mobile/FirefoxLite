@@ -15,6 +15,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.chrome.ToastMessage.Companion.LENGTH_LONG
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
 import org.mozilla.rocket.helper.StorageHelper
@@ -59,7 +60,7 @@ class ChromeViewModel(
     val dismissUrlInput = SingleLiveEvent<Unit>()
     val doScreenshot = SingleLiveEvent<ScreenCaptureTelemetryData>()
     val pinShortcut = SingleLiveEvent<Unit>()
-    val toggleBookmark = SingleLiveEvent<Unit>()
+    val bookmarkAdded = SingleLiveEvent<String>()
     // TODO: separate to startRefresh / stopLoading
     val refreshOrStop = SingleLiveEvent<Unit>()
     val share = SingleLiveEvent<Unit>()
@@ -250,7 +251,25 @@ class ChromeViewModel(
         }
     }
 
-    fun addBookmark(): String? {
+    fun toggleBookmark() {
+        if (isCurrentUrlBookmarked.value == true) {
+            deleteBookmark()
+            showToast.value = ToastMessage(R.string.bookmark_removed, duration = LENGTH_LONG)
+        } else {
+            val itemId = addBookmark()
+            if (itemId != null) {
+                bookmarkAdded.value = itemId
+            }
+        }
+    }
+
+    private fun deleteBookmark() {
+        currentUrl.value?.let { url ->
+            bookmarkRepo.deleteBookmarksByUrl(url)
+        }
+    }
+
+    private fun addBookmark(): String? {
         var bookmarkId: String? = null
         val url = currentUrl.value
         if (!url.isNullOrEmpty()) {
@@ -260,12 +279,6 @@ class ChromeViewModel(
         }
 
         return bookmarkId
-    }
-
-    fun deleteBookmark() {
-        currentUrl.value?.let { url ->
-            bookmarkRepo.deleteBookmarksByUrl(url)
-        }
     }
 
     fun onTurboModeToggled() {
