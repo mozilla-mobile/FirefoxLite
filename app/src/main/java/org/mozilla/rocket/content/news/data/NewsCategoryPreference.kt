@@ -43,6 +43,8 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
         }
     }
 
+    fun getCatList() = categoryList
+
     fun updateCatList(newList: List<NewsCategory>?) {
         if (newList == null || newList.isEmpty()) {
             return

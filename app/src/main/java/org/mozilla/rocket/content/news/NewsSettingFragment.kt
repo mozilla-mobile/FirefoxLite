@@ -41,6 +41,13 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        categoryPreference?.NewsCatSettingCatAdapter()
+        val catList = categoryPreference?.getCatList()
+        TelemetryWrapper.changeNewsSetting(categories = catList?.filter { item -> item.isSelected }?.map { lang -> lang.order.toString() })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AndroidSupportInjection.inject(this)
@@ -75,7 +82,6 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         categoryPreference?.onCategoryClick = {
             langKey?.let { key ->
                 repository.setUserPreferenceCategories(key, it)
-                TelemetryWrapper.changeNewsSetting(categories = it.map { lang -> lang.order.toString() })
             }
         }
     }
