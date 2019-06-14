@@ -249,6 +249,10 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${Versions.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${Versions.dagger}"
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutine}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutine}"
+
+
 
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"

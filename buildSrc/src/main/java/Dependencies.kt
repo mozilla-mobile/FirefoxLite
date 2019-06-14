@@ -39,6 +39,7 @@ object Versions {
     const val jraska_falcon = "2.0.1"
     const val dagger = "2.17"
     const val androidx_test_core = "1.1.0"
+    const val coroutine = "1.2.0"
 }
 
 object SystemEnv {
