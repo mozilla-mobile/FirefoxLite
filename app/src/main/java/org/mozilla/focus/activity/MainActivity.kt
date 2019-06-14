@@ -300,8 +300,8 @@ class MainActivity : BaseActivity(),
                 }
             }
             showNightModeOnBoarding.observe(this@MainActivity, Observer { showNightModeOnBoarding() })
-            isNightMode.nonNullObserve(this@MainActivity) { isNightMode ->
-                onNightModeEnabled(Settings.getInstance(this@MainActivity), isNightMode)
+            isNightMode.nonNullObserve(this@MainActivity) { nightModeSettings ->
+                onNightModeEnabled(nightModeSettings.brightness, nightModeSettings.isEnabled)
             }
             driveDefaultBrowser.observe(this@MainActivity, Observer { driveDefaultBrowser() })
             exitApp.observe(this@MainActivity, Observer { onExitClicked() })
@@ -530,10 +530,10 @@ class MainActivity : BaseActivity(),
         finish()
     }
 
-    private fun applyNightModeBrightness(enable: Boolean, settings: Settings, window: Window) {
+    private fun applyNightModeBrightness(enable: Boolean, brightness: Float, window: Window) {
         val layoutParams = window.attributes
         layoutParams.screenBrightness = if (enable) {
-            settings.nightModeBrightnessValue
+            brightness
         } else {
             // Disable night mode, restore the screen brightness
             BRIGHTNESS_OVERRIDE_NONE
@@ -541,8 +541,8 @@ class MainActivity : BaseActivity(),
         window.attributes = layoutParams
     }
 
-    private fun onNightModeEnabled(settings: Settings, enabled: Boolean) {
-        applyNightModeBrightness(enabled, settings, window)
+    private fun onNightModeEnabled(brightness: Float, enabled: Boolean) {
+        applyNightModeBrightness(enabled, brightness, window)
         when (val fragment = screenNavigator.topFragment) {
             is BrowserFragment -> fragment.setNightModeEnabled(enabled)
             is HomeFragment -> fragment.setNightModeEnabled(enabled)

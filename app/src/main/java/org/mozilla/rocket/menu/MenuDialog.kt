@@ -121,7 +121,9 @@ class MenuDialog : BottomSheetDialog {
         menuViewModel.menuItems.nonNullObserve(activity, menuItemAdapter::setItems)
 
         chromeViewModel.isTurboModeEnabled.nonNullObserve(activity, menuItemAdapter::setTurboMode)
-        chromeViewModel.isNightMode.nonNullObserve(activity, menuItemAdapter::setNightMode)
+        chromeViewModel.isNightMode.nonNullObserve(activity) {
+            menuItemAdapter.setNightMode(it.isEnabled)
+        }
         chromeViewModel.isBlockImageEnabled.nonNullObserve(activity, menuItemAdapter::setBlockImageEnabled)
         chromeViewModel.hasUnreadScreenshot.nonNullObserve(activity, menuItemAdapter::setUnreadScreenshot)
         chromeViewModel.isPrivateBrowsingActive.nonNullObserve(activity, menuItemAdapter::setPrivateBrowsingActive)

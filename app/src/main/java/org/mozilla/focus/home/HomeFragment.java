@@ -86,6 +86,7 @@ import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.view.BottomBar;
+import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
@@ -102,6 +103,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import kotlin.Unit;
 
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
@@ -532,7 +535,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
         chromeViewModel.getTabCount().observe(this, bottomBarItemAdapter::setTabCount);
-        chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
+        LiveDataExtensionKt.nonNullObserve(chromeViewModel.isNightMode(), this, nightModeSettings -> {
+            bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled());
+            return Unit.INSTANCE;
+        });
 
         setupDownloadIndicator();
     }
