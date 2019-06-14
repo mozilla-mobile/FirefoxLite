@@ -16,6 +16,7 @@ import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
+import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.urlutils.UrlUtils
@@ -23,7 +24,8 @@ import org.mozilla.urlutils.UrlUtils
 class ChromeViewModel(
     private val settings: Settings,
     private val bookmarkRepo: BookmarkRepository,
-    private val privateMode: PrivateMode
+    private val privateMode: PrivateMode,
+    private val storageHelper: StorageHelper
 ) : ViewModel() {
     val isNightMode = MutableLiveData<Boolean>()
     val tabCount = MutableLiveData<Int>()
