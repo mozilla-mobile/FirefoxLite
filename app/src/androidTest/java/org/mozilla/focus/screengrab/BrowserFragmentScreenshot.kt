@@ -8,10 +8,10 @@ package org.mozilla.focus.screengrab
 import android.Manifest
 import android.content.Intent
 import android.os.Build
-import android.support.test.filters.SdkSuppress
-import android.support.test.rule.ActivityTestRule
-import android.support.test.rule.GrantPermissionRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
+import androidx.test.rule.ActivityTestRule
+import androidx.test.rule.GrantPermissionRule
+import androidx.test.runner.AndroidJUnit4
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Before

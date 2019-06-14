@@ -10,7 +10,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.StrictMode;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;

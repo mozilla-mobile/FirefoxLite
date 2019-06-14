@@ -3,8 +3,8 @@ package org.mozilla.focus.screengrab;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.SystemClock;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 

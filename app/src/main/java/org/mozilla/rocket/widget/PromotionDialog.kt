@@ -1,7 +1,7 @@
 package org.mozilla.rocket.widget
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.View
 import kotlinx.android.synthetic.main.layout_promotion_dialog.view.*
 import org.mozilla.focus.R

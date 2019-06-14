@@ -5,11 +5,11 @@
 
 package org.mozilla.rocket.extension
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.Transformations
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 
 fun <T> MutableLiveData<T>.invalidate() { value = value }
 

@@ -6,10 +6,10 @@
 package org.mozilla.rocket.content.portal
 
 import android.content.Context
-import android.support.annotation.VisibleForTesting
-import android.support.design.widget.CoordinatorLayout
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentTransaction
+import androidx.annotation.VisibleForTesting
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation

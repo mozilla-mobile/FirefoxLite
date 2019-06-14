@@ -2,7 +2,7 @@ package org.mozilla.rocket.partner;
 
 import android.content.ContentResolver;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import java.io.BufferedReader;

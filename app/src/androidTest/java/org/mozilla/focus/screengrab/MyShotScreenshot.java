@@ -8,11 +8,11 @@ package org.mozilla.focus.screengrab;
 import android.Manifest;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.support.test.espresso.IdlingRegistry;
-import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.rule.GrantPermissionRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,15 +35,15 @@ import org.mozilla.rocket.chrome.BottomBarViewModel;
 import tools.fastlane.screengrab.FalconScreenshotStrategy;
 import tools.fastlane.screengrab.Screengrab;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.isDialog;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
 
 @ScreengrabOnly

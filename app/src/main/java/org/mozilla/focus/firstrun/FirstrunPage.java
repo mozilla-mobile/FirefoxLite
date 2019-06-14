@@ -1,6 +1,6 @@
 package org.mozilla.focus.firstrun;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 class FirstrunPage {
     public final String title;

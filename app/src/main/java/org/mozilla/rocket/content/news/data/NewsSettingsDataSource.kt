@@ -1,6 +1,6 @@
 package org.mozilla.rocket.content.news.data
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 
 interface NewsSettingsDataSource {
     fun getSupportLanguages(): LiveData<List<NewsLanguage>>

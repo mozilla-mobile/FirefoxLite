@@ -1,8 +1,8 @@
 package org.mozilla.rocket.content.news
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.news.NewsFragment.NewsListListener

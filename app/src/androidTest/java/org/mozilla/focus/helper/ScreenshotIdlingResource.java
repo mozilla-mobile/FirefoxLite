@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.helper;
 
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.screenshot.CaptureRunnable;

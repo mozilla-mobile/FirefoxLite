@@ -1,6 +1,6 @@
 package com.bumptech.glide.load.model;
 
-import android.support.v4.util.Pools.Pool;
+import androidx.core.util.Pools.Pool;
 import com.bumptech.glide.util.Synthetic;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,7 +1,7 @@
 package org.mozilla.rocket.chrome
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Settings
 

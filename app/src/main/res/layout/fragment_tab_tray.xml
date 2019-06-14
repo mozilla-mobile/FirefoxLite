@@ -26,7 +26,7 @@
         android:layout_marginBottom="@dimen/tab_tray_peekHeight"
         app:srcCompat="@drawable/logo_man" />
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -126,5 +126,5 @@
                     tools:ignore="RtlSymmetry" />
             </FrameLayout>
         </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

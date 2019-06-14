@@ -5,8 +5,8 @@
 
 package org.mozilla.rocket.landing
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import android.content.pm.ActivityInfo
 
 import org.mozilla.focus.navigation.ScreenNavigator

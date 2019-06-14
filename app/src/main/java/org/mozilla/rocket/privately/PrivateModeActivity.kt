@@ -5,16 +5,16 @@
 
 package org.mozilla.rocket.privately
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
 import org.mozilla.focus.BuildConfig

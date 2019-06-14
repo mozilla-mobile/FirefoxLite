@@ -9,7 +9,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;

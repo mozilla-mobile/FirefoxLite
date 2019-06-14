@@ -5,18 +5,18 @@
 
 package org.mozilla.focus.provider;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.db.SupportSQLiteOpenHelper;
-import android.arch.persistence.db.SupportSQLiteQuery;
-import android.arch.persistence.db.SupportSQLiteQueryBuilder;
-import android.arch.persistence.room.OnConflictStrategy;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
+import androidx.room.OnConflictStrategy;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.mozilla.focus.provider.HistoryContract.BrowsingHistory;
 import org.mozilla.focus.provider.HistoryDatabaseHelper.Tables;

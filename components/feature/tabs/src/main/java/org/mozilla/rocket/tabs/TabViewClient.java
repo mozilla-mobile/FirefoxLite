@@ -5,7 +5,7 @@
 
 package org.mozilla.rocket.tabs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * An abstract layer of @see{android.webkit.WebViewClient}

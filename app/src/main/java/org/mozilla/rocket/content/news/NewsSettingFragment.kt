@@ -1,10 +1,10 @@
 package org.mozilla.rocket.content.news
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import android.util.Log
 import android.view.View
 import dagger.android.support.AndroidSupportInjection

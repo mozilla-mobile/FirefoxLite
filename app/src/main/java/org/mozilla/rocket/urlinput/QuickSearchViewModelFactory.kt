@@ -4,8 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.urlinput
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class QuickSearchViewModelFactory(private val repository: QuickSearchRepository) : ViewModelProvider.NewInstanceFactory() {
 

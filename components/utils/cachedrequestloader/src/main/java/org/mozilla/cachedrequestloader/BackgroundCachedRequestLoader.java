@@ -2,8 +2,8 @@ package org.mozilla.cachedrequestloader;
 
 import android.content.Context;
 import android.net.TrafficStats;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.util.Pair;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
 

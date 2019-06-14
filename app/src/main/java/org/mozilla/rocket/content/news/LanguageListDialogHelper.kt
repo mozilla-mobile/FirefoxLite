@@ -3,7 +3,7 @@ package org.mozilla.rocket.content.news
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.DataSetObserver
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

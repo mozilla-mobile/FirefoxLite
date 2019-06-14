@@ -35,7 +35,7 @@
                 android:src="@drawable/news_setting" />
     </RelativeLayout>
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
             android:id="@+id/news_tab"
             android:layout_below="@+id/news_tab_title"
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
             app:tabUnboundedRipple="true"
             />
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
             android:id="@+id/news_viewpager"
             android:layout_below="@+id/news_tab"
             android:layout_width="match_parent"

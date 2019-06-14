@@ -1,7 +1,7 @@
 package org.mozilla.rocket.chrome
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View

@@ -6,7 +6,7 @@
 package org.mozilla.focus.helper;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 
 import org.mozilla.focus.Inject;
 import org.mozilla.focus.history.BrowsingHistoryManager;

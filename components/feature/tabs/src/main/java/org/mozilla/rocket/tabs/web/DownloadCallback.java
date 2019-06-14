@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.tabs.web;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface DownloadCallback {
     void onDownloadStart(@NonNull Download download);

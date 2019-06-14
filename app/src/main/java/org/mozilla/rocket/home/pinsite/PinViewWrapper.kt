@@ -7,8 +7,8 @@ package org.mozilla.rocket.home.pinsite
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.support.v4.graphics.ColorUtils
-import android.support.v4.graphics.drawable.DrawableCompat
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.drawable.DrawableCompat
 import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R

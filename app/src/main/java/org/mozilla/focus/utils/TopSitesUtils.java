@@ -7,7 +7,7 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.support.annotation.RawRes;
+import androidx.annotation.RawRes;
 
 import org.json.JSONArray;
 import org.json.JSONException;

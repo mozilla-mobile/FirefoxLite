@@ -9,9 +9,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.IntDef;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import android.view.WindowManager;
 
 import org.mozilla.focus.R;
