@@ -101,10 +101,10 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         model.eventPromoteShortcut.observe(viewLifecycleOwner, Observer { callback ->
             val data = CustomViewDialogData().apply {
                 this.drawable = ContextCompat.getDrawable(context, R.drawable.dialog_pbshortcut)
-                this.title = context.getString(R.string.private_browsing_dialog_add_shortcut_title)
-                this.description = context.getString(R.string.private_browsing_dialog_add_shortcut_content)
-                this.positiveText = context.getString(R.string.private_browsing_dialog_add_shortcut_yes)
-                this.negativeText = context.getString(R.string.private_browsing_dialog_add_shortcut_no)
+                this.title = context.getString(R.string.private_browsing_dialog_add_shortcut_title_v2)
+                this.description = context.getString(R.string.private_browsing_dialog_add_shortcut_content_v2)
+                this.positiveText = context.getString(R.string.private_browsing_dialog_add_shortcut_yes_v2)
+                this.negativeText = context.getString(R.string.private_browsing_dialog_add_shortcut_no_v2)
                 this.showCloseButton = true
             }
 

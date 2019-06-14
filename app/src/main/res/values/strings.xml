@@ -593,10 +593,14 @@
     <!-- A description is shown below the switch of block trackers when opening tracker blocked panel -->
     <string name="private_browsing_tracker_blocked_description">Enjoy browsing with extra protection.</string>
     <!-- Message to prompt users to add private mode shortcut to their device's home. -->
-    <string name="private_browsing_dialog_add_shortcut_title">Add private mode shortcut</string>
-    <string name="private_browsing_dialog_add_shortcut_content">Access private mode quickly from your homescreen.</string>
-    <string name="private_browsing_dialog_add_shortcut_no">NO, THANKS</string>
-    <string name="private_browsing_dialog_add_shortcut_yes">YES, ADD IT NOW!</string>
+    <string name="private_browsing_dialog_add_shortcut_title">Access private mode in one click! Want to add private mode shortcut to homescreen?</string>
+    <string name="private_browsing_dialog_add_shortcut_no">No, thanks</string>
+    <string name="private_browsing_dialog_add_shortcut_yes">Yes</string>
+
+    <string name="private_browsing_dialog_add_shortcut_title_v2">Add private mode shortcut</string>
+    <string name="private_browsing_dialog_add_shortcut_content_v2">Access private mode quickly from your homescreen.</string>
+    <string name="private_browsing_dialog_add_shortcut_no_v2">NO, THANKS</string>
+    <string name="private_browsing_dialog_add_shortcut_yes_v2">YES, ADD IT NOW!</string>
     <!-- Message shown after user denied add private mode shortcut's prompt. -->
     <string name="private_browsing_dialog_add_shortcut_no_toast">You can add private mode shortcut later in settings.</string>
     <!-- Name of Private mode shortcut. %1$s will be replaced with the name of the app (e.g. Firefox Lite) -->
