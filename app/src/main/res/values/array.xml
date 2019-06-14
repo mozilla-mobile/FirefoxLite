@@ -31,4 +31,19 @@
         <item>@string/pref_value_clear_cookies</item>
         <item>@string/pref_value_clear_cache</item>
     </string-array>
+
+
+    <!-- life feed developer settings entries -->
+    <string-array name="life_feed_settings_entries">
+        <item>Default</item>
+        <item>News</item>
+        <item>E-commerce</item>
+    </string-array>
+
+    <!-- life feed developer settings values -->
+    <string-array name="life_feed_settings_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
@@ -41,7 +42,7 @@ class EcTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
-            ContentFeature().eCommerceFeatures().apply {
+            ContentFeature(Settings.getInstance(context)).eCommerceFeatures().apply {
                 val pager = view.findViewById<ViewPager>(R.id.ec_viewpager)
                 view.findViewById<TabLayout>(R.id.ec_tab).setupWithViewPager(pager)
                 pager.adapter = EcFragmentAdapter(childFragmentManager, this)

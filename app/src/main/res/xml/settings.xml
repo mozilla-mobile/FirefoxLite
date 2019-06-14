@@ -81,6 +81,13 @@
         android:key="@string/pref_key_category_development"
         android:title="For Development">
 
+        <org.mozilla.focus.widget.LifeFeedPreference
+            android:dialogTitle="Life feed settings"
+            android:entries="@array/life_feed_settings_entries"
+            android:entryValues="@array/life_feed_settings_values"
+            android:key="@string/pref_key_developer_option_life_feed"
+            android:title="Life feed settings" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
