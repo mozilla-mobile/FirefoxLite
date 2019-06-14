@@ -4,9 +4,9 @@ dependencies {
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:disklrucache')
 
-    implementation "com.android.support:support-annotations:${Versions.support}"
-    implementation "com.android.support:support-v4:${Versions.support}"
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    implementation "androidx.annotation:annotation:${Versions.annotation}"
+    implementation "androidx.legacy:legacy-support-v4:${Versions.support}"
+    implementation "androidx.appcompat:appcompat:${Versions.appcompat}"
 }
 
 android {

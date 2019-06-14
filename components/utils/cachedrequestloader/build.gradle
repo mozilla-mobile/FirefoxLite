@@ -10,11 +10,11 @@ dependencies {
     implementation project(':httptask')
     implementation project(':HttpRequest')
 
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    implementation "androidx.appcompat:appcompat:${Versions.appcompat}"
     testImplementation "junit:junit:${Versions.junit}"
-    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
+    androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
 }
 
