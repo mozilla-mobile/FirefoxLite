@@ -540,7 +540,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Light.INSTANCE);
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
-        chromeViewModel.isNightMode().observe(this, bottomBarItemAdapter::setNightMode);
+        LiveDataExtensionKt.nonNullObserve(chromeViewModel.isNightMode(), this, nightModeSettings -> {
+            bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled());
+            return Unit.INSTANCE;
+        });
         LiveDataExtensionKt.nonNullObserve(chromeViewModel.getTabCount(), this, count -> {
             bottomBarItemAdapter.setTabCount(count, true);
             return Unit.INSTANCE;
