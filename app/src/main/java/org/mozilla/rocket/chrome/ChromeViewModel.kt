@@ -47,6 +47,9 @@ class ChromeViewModel(
     val hasUnreadScreenshot = MutableLiveData<Boolean>()
     val isPrivateBrowsingActive = MutableLiveData<Boolean>()
 
+    val shouldShowFirstrun: Boolean
+        get() = settings.shouldShowFirstrun()
+
     val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()
     val showTabTray = SingleLiveEvent<Unit>()
