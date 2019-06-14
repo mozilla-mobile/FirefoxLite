@@ -10,6 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.Settings
@@ -48,6 +53,7 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
 
     companion object {
         private const val NEWS_THRESHOLD = 10
+        private const val TIME_MILLIS_STATE_LOADING_THRESHOLD = 5000L
 
         fun newInstance(bottomSheetBehavior: BottomSheetBehavior<View>): NewsFragment {
             return NewsFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
@@ -109,6 +115,8 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
         newsListListener = newsPresenter
 
         view.findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
+            // call onStatus() again with null to display the loading indicator
+            onStatus(null)
             newsListListener?.loadMore()
         }
         recyclerView = view.findViewById(R.id.news_list)
@@ -157,25 +165,48 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
         }
     }
 
+    private val uiScope = CoroutineScope(Dispatchers.Main)
+    private var stateLoadingJob: Job? = null
+
     override fun onStatus(items: List<NewsItem>?) {
         when {
             items == null -> {
-                recyclerView?.visibility = View.GONE
-                newsEmptyView?.visibility = View.GONE
-                newsProgressCenter?.visibility = View.VISIBLE
-                bottomSheetBehavior?.skipCollapsed = true
+                stateLoading()
+                stateLoadingJob = uiScope.launch {
+                    delay(TIME_MILLIS_STATE_LOADING_THRESHOLD)
+                    stateEmpty()
+                }
             }
             items.isEmpty() -> {
-                recyclerView?.visibility = View.GONE
-                newsEmptyView?.visibility = View.VISIBLE
-                newsProgressCenter?.visibility = View.GONE
-                bottomSheetBehavior?.skipCollapsed = true
+                stateLoadingJob?.cancel()
+                stateLoadingJob = null
+                stateEmpty()
             }
             else -> {
-                recyclerView?.visibility = View.VISIBLE
-                newsEmptyView?.visibility = View.GONE
-                newsProgressCenter?.visibility = View.GONE
+                stateLoadingJob?.cancel()
+                stateLoadingJob = null
+                stateDisplay()
             }
         }
+    }
+
+    private fun stateDisplay() {
+        recyclerView?.visibility = View.VISIBLE
+        newsEmptyView?.visibility = View.GONE
+        newsProgressCenter?.visibility = View.GONE
+    }
+
+    private fun stateEmpty() {
+        recyclerView?.visibility = View.GONE
+        newsEmptyView?.visibility = View.VISIBLE
+        newsProgressCenter?.visibility = View.GONE
+        bottomSheetBehavior?.skipCollapsed = true
+    }
+
+    private fun stateLoading() {
+        recyclerView?.visibility = View.GONE
+        newsEmptyView?.visibility = View.GONE
+        newsProgressCenter?.visibility = View.VISIBLE
+        bottomSheetBehavior?.skipCollapsed = true
     }
 }

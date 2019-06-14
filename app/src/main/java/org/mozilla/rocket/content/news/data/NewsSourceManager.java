@@ -9,6 +9,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.threadutils.ThreadUtils;
 
@@ -50,6 +51,13 @@ public class NewsSourceManager {
             } else {
                 newsSource = settings.getNewsSource();
                 Log.d(NewsSourceManager.TAG, "NewsSourceManager already set:" + newsSource);
+            }
+            // previously we only set the source url after remote config is fetched. But when there's no internet connection,
+            // the remote config's callback will never be called, thus newsSourceUrl will always be null.
+            // We try to set the url here if previously we already got the value from remote config.
+            final String url = AppConfigWrapper.getNewsProviderUrl(settings.getNewsSource());
+            if (!TextUtils.isEmpty(url)) {
+                this.newsSourceUrl = url;
             }
         });
     }
