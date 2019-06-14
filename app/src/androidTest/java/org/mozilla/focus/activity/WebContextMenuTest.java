@@ -18,7 +18,7 @@ import androidx.test.espresso.action.Tap;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.filters.FlakyTest;
 import androidx.test.rule.GrantPermissionRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import android.util.DisplayMetrics;
 
 import junit.framework.Assert;

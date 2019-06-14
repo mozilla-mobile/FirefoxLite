@@ -2,7 +2,7 @@ package org.mozilla.focus.autobot
 
 import android.content.Intent
 import android.preference.PreferenceManager
-import androidx.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.espresso.DataInteraction
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
