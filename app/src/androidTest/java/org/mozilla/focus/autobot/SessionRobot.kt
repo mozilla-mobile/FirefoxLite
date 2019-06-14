@@ -2,7 +2,7 @@ package org.mozilla.focus.autobot
 
 import android.app.Activity
 import android.content.Intent
-import androidx.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.Tap
 import androidx.test.espresso.action.ViewActions.click

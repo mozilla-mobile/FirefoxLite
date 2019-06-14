@@ -251,6 +251,7 @@ dependencies {
     androidTestImplementation "androidx.annotation:annotation:${Versions.annotation}"
     androidTestImplementation "androidx.room:room-testing:${Versions.room}"
     androidTestImplementation "androidx.arch.core:core-testing:${Versions.arch_core}"
+    androidTestImplementation "androidx.test.ext:junit:${Versions.test_ext}"
     androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
     androidTestImplementation "androidx.test.uiautomator:uiautomator:${Versions.uiautomator}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
@@ -258,10 +259,11 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
     androidTestImplementation "androidx.test.espresso:espresso-intents:${Versions.espresso}"
     androidTestImplementation "androidx.test.espresso:espresso-web:${Versions.espresso}"
-    androidTestImplementation "tools.fastlane:screengrab:${Versions.fastlane_screengrab}"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
     androidTestImplementation "com.jraska:falcon:${Versions.jraska_falcon}"
-//    androidTestUtil "androidx.test:orchestrator:${Versions.test_runner}"
+    androidTestImplementation("tools.fastlane:screengrab:${Versions.fastlane_screengrab}", {
+        exclude group: 'com.android.support.test.uiautomator', module: 'uiautomator-v18'
+    })
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"

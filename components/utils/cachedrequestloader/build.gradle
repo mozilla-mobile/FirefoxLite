@@ -13,6 +13,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${Versions.appcompat}"
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
+    androidTestImplementation "androidx.test.ext:junit:${Versions.test_ext}"
     androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"

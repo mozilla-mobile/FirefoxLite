@@ -14,7 +14,7 @@ import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.espresso.web.webdriver.Locator;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import android.util.Log;
 
