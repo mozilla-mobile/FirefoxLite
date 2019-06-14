@@ -4,18 +4,25 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
 
 class ChromeViewModelFactory private constructor(
     private val settings: Settings,
     private val bookmarkRepo: BookmarkRepository,
-    private val privateMode: PrivateMode
+    private val privateMode: PrivateMode,
+    private val storageHelper: StorageHelper
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ChromeViewModel::class.java)) {
-            return ChromeViewModel(settings, bookmarkRepo, privateMode) as T
+            return ChromeViewModel(
+                    settings,
+                    bookmarkRepo,
+                    privateMode,
+                    storageHelper
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
@@ -28,10 +35,16 @@ class ChromeViewModelFactory private constructor(
         fun getInstance(
             settings: Settings,
             bookmarkRepo: BookmarkRepository,
-            privateMode: PrivateMode
+            privateMode: PrivateMode,
+            storageHelper: StorageHelper
         ): ChromeViewModelFactory? =
                 INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: ChromeViewModelFactory(settings, bookmarkRepo, privateMode).also { INSTANCE = it }
+                    INSTANCE ?: ChromeViewModelFactory(
+                            settings,
+                            bookmarkRepo,
+                            privateMode,
+                            storageHelper
+                    ).also { INSTANCE = it }
                 }
     }
 }
