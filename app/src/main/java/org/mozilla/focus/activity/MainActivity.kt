@@ -136,7 +136,7 @@ class MainActivity : BaseActivity(),
         chromeViewModel.onRestoreTabCountCompleted()
         getSessionManager().restore(states, currentTabId)
         val currentTab = getSessionManager().focusSession
-        if (currentTab != null && !Settings.getInstance(this).shouldShowFirstrun() && !supportFragmentManager.isStateSaved) {
+        if (currentTab != null && !chromeViewModel.shouldShowFirstrun && !supportFragmentManager.isStateSaved) {
             screenNavigator.restoreBrowserScreen(currentTab.id)
         }
     }
@@ -177,7 +177,7 @@ class MainActivity : BaseActivity(),
         if (savedInstanceState == null) {
             val handledExternalLink = handleExternalLink(intent)
             if (!handledExternalLink) {
-                if (Settings.getInstance(this).shouldShowFirstrun()) {
+                if (chromeViewModel.shouldShowFirstrun) {
                     screenNavigator.addFirstRunScreen()
                 } else {
                     screenNavigator.popToHomeScreen(false)
