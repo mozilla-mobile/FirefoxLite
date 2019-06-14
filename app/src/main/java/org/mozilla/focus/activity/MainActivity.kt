@@ -285,7 +285,7 @@ class MainActivity : BaseActivity(),
             })
             dismissUrlInput.observe(this@MainActivity, Observer { screenNavigator.popUrlScreen() })
             pinShortcut.observe(this@MainActivity, Observer { requestPinShortcut() })
-            toggleBookmark.observe(this@MainActivity, Observer { onBookMarkClicked() })
+            bookmarkAdded.nonNullObserve(this@MainActivity) { itemId -> showBookmarkAddedSnackbar(itemId) }
             share.observe(this@MainActivity, Observer {
                 visibleBrowserFragment?.let { shareText(it.url) }
             })
@@ -532,20 +532,12 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    private fun onBookMarkClicked() {
-        if (chromeViewModel.isCurrentUrlBookmarked.value == true) {
-            chromeViewModel.deleteBookmark()
-            Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show()
-        } else {
-            val itemId = chromeViewModel.addBookmark()
-            if (itemId != null) {
-                Snackbar.make(container, R.string.bookmark_saved, Snackbar.LENGTH_LONG).apply {
-                    setAction(R.string.bookmark_saved_edit) {
-                        startActivity(Intent(this@MainActivity, EditBookmarkActivity::class.java).putExtra(ITEM_UUID_KEY, itemId))
-                    }
-                }.show()
+    private fun showBookmarkAddedSnackbar(bookmarkItemId: String) {
+        Snackbar.make(container, R.string.bookmark_saved, Snackbar.LENGTH_LONG).apply {
+            setAction(R.string.bookmark_saved_edit) {
+                startActivity(Intent(this@MainActivity, EditBookmarkActivity::class.java).putExtra(ITEM_UUID_KEY, bookmarkItemId))
             }
-        }
+        }.show()
     }
 
     private fun shareText(url: String) {

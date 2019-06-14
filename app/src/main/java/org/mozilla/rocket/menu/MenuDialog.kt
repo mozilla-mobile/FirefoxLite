@@ -170,7 +170,7 @@ class MenuDialog : BottomSheetDialog {
                     BottomBarItemAdapter.TYPE_BOOKMARK -> {
                         val isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK)?.view?.isActivated == true
                         TelemetryWrapper.clickToolbarBookmark(!isActivated, MENU, position)
-                        chromeViewModel.toggleBookmark.call()
+                        chromeViewModel.toggleBookmark()
                     }
                     BottomBarItemAdapter.TYPE_REFRESH -> {
                         chromeViewModel.refreshOrStop.call()

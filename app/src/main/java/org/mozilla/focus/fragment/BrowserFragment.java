@@ -510,7 +510,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 case BottomBarItemAdapter.TYPE_BOOKMARK:
                     boolean isActivated = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_BOOKMARK).getView().isActivated();
                     TelemetryWrapper.clickToolbarBookmark(!isActivated, WEBVIEW, position);
-                    chromeViewModel.getToggleBookmark().call();
+                    chromeViewModel.toggleBookmark();
                     break;
                 case BottomBarItemAdapter.TYPE_REFRESH:
                     chromeViewModel.getRefreshOrStop().call();
