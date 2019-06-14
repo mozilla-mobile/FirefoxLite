@@ -13,6 +13,7 @@ import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
@@ -26,6 +27,7 @@ class ChromeViewModel(
     private val settings: Settings,
     private val bookmarkRepo: BookmarkRepository,
     private val privateMode: PrivateMode,
+    private val browsers: Browsers,
     private val storageHelper: StorageHelper
 ) : ViewModel() {
     val isNightMode = MutableLiveData<NightModeSettings>()
@@ -302,6 +304,21 @@ class ChromeViewModel(
 
     fun onSurveyNotificationPosted() {
         settings.eventHistory.add(Settings.Event.PostSurveyNotification)
+    }
+
+    fun checkToDriveDefaultBrowser() {
+        if (settings.isDefaultBrowserSettingDidShow) {
+            // We don't need to accumulate the count after we've displayed the default browser promotion
+            return
+        }
+        settings.addMenuPreferenceClickCount()
+
+        val count = settings.menuPreferenceClickCount
+        val threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold()
+        // even if user above threshold and not set-as-default-browser, still don't show notification.
+        if (count == threshold && !browsers.isDefaultBrowser) {
+            driveDefaultBrowser.call()
+        }
     }
 
     data class NightModeSettings(

@@ -51,7 +51,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.AppConstants
-import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.IntentUtils
@@ -504,21 +503,8 @@ class MainActivity : BaseActivity(),
     }
 
     private fun driveDefaultBrowser() {
-        val settings = Settings.getInstance(this)
-        if (settings.isDefaultBrowserSettingDidShow) {
-            // We don't need to accumulate the count after we've displayed the default browser promotion
-            return
-        } else {
-            settings.addMenuPreferenceClickCount()
-        }
-
-        val count = settings.menuPreferenceClickCount
-        val threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold()
-        // even if user above threshold and not set-as-default-browser, still don't show notification.
-        if (count == threshold && !Browsers.isDefaultBrowser(this)) {
-            DialogUtils.showDefaultSettingNotification(this)
-            TelemetryWrapper.showDefaultSettingNotification()
-        }
+        DialogUtils.showDefaultSettingNotification(this)
+        TelemetryWrapper.showDefaultSettingNotification()
     }
 
     private fun onExitClicked() {

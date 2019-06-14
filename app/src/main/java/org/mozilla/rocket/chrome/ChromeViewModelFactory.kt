@@ -3,6 +3,7 @@ package org.mozilla.rocket.chrome
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import org.mozilla.focus.repository.BookmarkRepository
+import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
@@ -11,6 +12,7 @@ class ChromeViewModelFactory private constructor(
     private val settings: Settings,
     private val bookmarkRepo: BookmarkRepository,
     private val privateMode: PrivateMode,
+    private val browsers: Browsers,
     private val storageHelper: StorageHelper
 ) : ViewModelProvider.NewInstanceFactory() {
 
@@ -21,6 +23,7 @@ class ChromeViewModelFactory private constructor(
                     settings,
                     bookmarkRepo,
                     privateMode,
+                    browsers,
                     storageHelper
             ) as T
         }
@@ -36,6 +39,7 @@ class ChromeViewModelFactory private constructor(
             settings: Settings,
             bookmarkRepo: BookmarkRepository,
             privateMode: PrivateMode,
+            browsers: Browsers,
             storageHelper: StorageHelper
         ): ChromeViewModelFactory? =
                 INSTANCE ?: synchronized(this) {
@@ -43,6 +47,7 @@ class ChromeViewModelFactory private constructor(
                             settings,
                             bookmarkRepo,
                             privateMode,
+                            browsers,
                             storageHelper
                     ).also { INSTANCE = it }
                 }
