@@ -13,18 +13,12 @@ dependencies {
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
     testImplementation "junit:junit:${Versions.junit}"
 
-    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:${Versions.espresso}"
+    androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
 
     implementation "org.mozilla.components:browser-session:${Versions.android_components}"
 }
 
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle'
-}
-
-// According to https://github.com/Kotlin/kotlinx.coroutines/issues/1064
-// We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
-configurations {
-    compile.exclude group: 'org.jetbrains.kotlinx', module: 'atomicfu-common'
 }

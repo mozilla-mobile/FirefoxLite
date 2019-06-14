@@ -8,7 +8,6 @@ apply from: '../buildSrc/checkstyle.gradle'
 apply from: '../buildSrc/findbugs.gradle'
 apply from: 'buildscripts/l10n.gradle'
 
-
 android {
     compileSdkVersion Versions.compile_sdk
     buildToolsVersion Versions.build_tools
@@ -169,12 +168,6 @@ android {
     }
 }
 
-// According to https://github.com/Kotlin/kotlinx.coroutines/issues/1064
-// We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
-configurations {
-    compile.exclude group: 'org.jetbrains.kotlinx', module: 'atomicfu-common'
-}
-
 repositories {
     flatDir {
         dirs 'libs'
@@ -206,23 +199,21 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
-    implementation "com.android.support:support-v4:${Versions.support}"
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
-    implementation "com.android.support:design:${Versions.support}"
-    implementation "com.android.support:cardview-v7:${Versions.support}"
-    implementation "com.android.support:recyclerview-v7:${Versions.support}"
-    implementation "com.android.support:preference-v7:${Versions.support}"
-    implementation "com.android.support.constraint:constraint-layout:${Versions.constraint}"
-
-    implementation "android.arch.work:work-runtime:${Versions.arch_work}"
-
+    implementation "androidx.legacy:legacy-support-v4:${Versions.support}"
+    implementation "androidx.appcompat:appcompat:${Versions.appcompat}"
+    implementation "com.google.android.material:material:${Versions.material}"
+    implementation "androidx.cardview:cardview:${Versions.cardview}"
+    implementation "androidx.recyclerview:recyclerview:${Versions.recyclerview}"
+    implementation "androidx.constraintlayout:constraintlayout:${Versions.constraint}"
+    implementation "androidx.preference:preference:${Versions.preference}"
 
     // Architecture components
-    implementation "android.arch.lifecycle:extensions:${Versions.lifecycle}"
-    implementation "android.arch.lifecycle:common-java8:${Versions.lifecycle}"
-    implementation "android.arch.persistence.room:runtime:${Versions.room}"
-    implementation "android.arch.navigation:navigation-fragment:${Versions.navigation}"
-    kapt "android.arch.persistence.room:compiler:${Versions.room}"
+    implementation "androidx.work:work-runtime:${Versions.arch_work}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
+    implementation "androidx.navigation:navigation-fragment:${Versions.navigation}"
+    implementation "androidx.room:room-runtime:${Versions.room}"
+    kapt "androidx.room:room-compiler:${Versions.room}"
 
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
@@ -238,10 +229,8 @@ dependencies {
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.google.android.gms:play-services-analytics:${Versions.firebase}" // Required by Adjust
-    // Required by Adjust
 
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
-
 
     // Dagger 2
     implementation "com.google.dagger:dagger:${Versions.dagger}"
@@ -252,34 +241,26 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutine}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutine}"
 
-
-
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
-    testImplementation "androidx.test:core:${Versions.androidx_test_core}"
+    testImplementation "androidx.test:core:${Versions.test_core}"
     androidTestImplementation "org.mockito:mockito-android:${Versions.mockito}"
 
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:${Versions.espresso}", {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:${Versions.espresso}"
-    androidTestImplementation "com.android.support:support-annotations:${Versions.support}"
-    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:${Versions.uiautomator}"
-    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
-    androidTestImplementation "android.arch.persistence.room:testing:${Versions.room}"
-    androidTestImplementation "android.arch.core:core-testing:${Versions.arch_core}"
-    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:${Versions.espresso}", {
-        exclude group: 'com.android.support', module: 'appcompat'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude module: 'recyclerview-v7'
-    })
-    androidTestImplementation "com.android.support.test.espresso:espresso-web:${Versions.espresso}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${Versions.espresso}"
+    androidTestImplementation "androidx.annotation:annotation:${Versions.annotation}"
+    androidTestImplementation "androidx.room:room-testing:${Versions.room}"
+    androidTestImplementation "androidx.arch.core:core-testing:${Versions.arch_core}"
+    androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:${Versions.uiautomator}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:${Versions.espresso}"
+    androidTestImplementation "androidx.test.espresso:espresso-web:${Versions.espresso}"
     androidTestImplementation "tools.fastlane:screengrab:${Versions.fastlane_screengrab}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
     androidTestImplementation "com.jraska:falcon:${Versions.jraska_falcon}"
-//    androidTestUtil "com.android.support.test:orchestrator:${Versions.test_runner}"
+//    androidTestUtil "androidx.test:orchestrator:${Versions.test_runner}"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
@@ -405,8 +386,6 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions.allWarningsAsErrors = true
     }
 }
-
-
 
 afterEvaluate {
     check.dependsOn 'findbugs', 'pmd', 'checkstyle', 'checkTelemetryDocDirty', 'ktlint'

@@ -7,10 +7,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':urlutils')
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    implementation "androidx.appcompat:appcompat:${Versions.appcompat}"
     testImplementation "junit:junit:${Versions.junit}"
-    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+    androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
     compileOnly("com.google.code.findbugs:annotations:${Versions.findbugs}")
 }
 

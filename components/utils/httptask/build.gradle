@@ -7,10 +7,10 @@ apply from: '../../../buildSrc/findbugs.gradle'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:appcompat-v7:${Versions.support}"
+    implementation "androidx.appcompat:appcompat:${Versions.appcompat}"
     implementation project(path: ':HttpRequest')
-    androidTestImplementation "com.android.support.test:runner:${Versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+    androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${Versions.mockwebserver}"
 }
 
