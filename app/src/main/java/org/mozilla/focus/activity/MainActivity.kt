@@ -662,7 +662,6 @@ class MainActivity : BaseActivity(),
     @VisibleForTesting
     @UiThread
     fun showMyShotOnBoarding() {
-        Settings.getInstance(this).setNightModeSpotlight(false)
         val view = menu.findViewById<View>(R.id.menu_screenshots)
         view?.post {
             myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(

@@ -239,6 +239,7 @@ class ChromeViewModel(
     }
 
     fun onMyShotOnBoardingDisplayed() {
+        settings.setNightModeSpotlight(false)
         if (isMyShotOnBoardingPending.value != false) {
             isMyShotOnBoardingPending.value = false
         }
