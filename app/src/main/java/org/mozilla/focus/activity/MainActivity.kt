@@ -287,10 +287,7 @@ class MainActivity : BaseActivity(),
             pinShortcut.observe(this@MainActivity, Observer { requestPinShortcut() })
             toggleBookmark.observe(this@MainActivity, Observer { onBookMarkClicked() })
             share.observe(this@MainActivity, Observer {
-                val browserFragment = visibleBrowserFragment
-                if (browserFragment != null) {
-                    onShareClicked(browserFragment)
-                }
+                visibleBrowserFragment?.let { shareText(it.url) }
             })
             showDownloadPanel.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_DOWNLOADS) })
             isMyShotOnBoardingPending.nonNullObserve(this@MainActivity) { isPending ->
@@ -551,10 +548,10 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    private fun onShareClicked(browserFragment: BrowserFragment) {
+    private fun shareText(url: String) {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, browserFragment.url)
+            putExtra(Intent.EXTRA_TEXT, url)
         }
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)))
     }
