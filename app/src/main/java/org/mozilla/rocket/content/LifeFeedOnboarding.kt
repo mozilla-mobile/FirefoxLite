@@ -9,6 +9,7 @@ import android.text.style.ClickableSpan
 import android.view.View
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
+import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.rocket.content.portal.ContentFeature
 
@@ -19,7 +20,7 @@ object LifeFeedOnboarding {
 
     @JvmStatic
     fun shouldShow(context: Context): Boolean {
-        return shouldShowOnboarding(context) && ContentFeature().hasContentPortal()
+        return shouldShowOnboarding(context) && ContentFeature(Settings.getInstance(context)).hasContentPortal()
     }
 
     @JvmStatic

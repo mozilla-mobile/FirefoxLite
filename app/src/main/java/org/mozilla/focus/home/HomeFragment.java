@@ -127,7 +127,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Nullable private ContentPortalView contentPanel;
 
     @NonNull private BannerHelper bannerHelper = new BannerHelper();
-    @NonNull private ContentFeature contentFeature = new ContentFeature();
+    @NonNull private ContentFeature contentFeature = new ContentFeature(Settings.getInstance(getContext()));
 
     private View lifeFeedOnboardingLayer;
     private ThemedTextView fakeInput;

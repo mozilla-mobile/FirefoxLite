@@ -16,6 +16,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.ecommerce.EcTabFragment
@@ -33,7 +34,7 @@ class ContentPortalView : CoordinatorLayout {
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
     @VisibleForTesting
-    var contentFeature = ContentFeature()
+    var contentFeature = ContentFeature(Settings.getInstance(context))
 
     constructor(context: Context) : super(context)
 
