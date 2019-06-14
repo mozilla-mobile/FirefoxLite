@@ -284,7 +284,7 @@ class MainActivity : BaseActivity(),
                 }
             })
             dismissUrlInput.observe(this@MainActivity, Observer { screenNavigator.popUrlScreen() })
-            pinShortcut.observe(this@MainActivity, Observer { onAddToHomeClicked() })
+            pinShortcut.observe(this@MainActivity, Observer { requestPinShortcut() })
             toggleBookmark.observe(this@MainActivity, Observer { onBookMarkClicked() })
             share.observe(this@MainActivity, Observer {
                 val browserFragment = visibleBrowserFragment
@@ -559,7 +559,7 @@ class MainActivity : BaseActivity(),
         startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)))
     }
 
-    private fun onAddToHomeClicked() {
+    private fun requestPinShortcut() {
         val focusTab = getSessionManager().focusSession ?: return
         val url = focusTab.url ?: return
         // If we pin an invalid url as shortcut, the app will not function properly.
