@@ -5,7 +5,7 @@
 package org.mozilla.focus.webkit;
 
 import android.content.res.Resources;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 

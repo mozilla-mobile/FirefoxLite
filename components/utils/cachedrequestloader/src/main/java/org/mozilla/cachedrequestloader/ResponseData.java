@@ -1,9 +1,9 @@
 package org.mozilla.cachedrequestloader;
 
 
-import android.arch.lifecycle.MutableLiveData;
-import android.support.annotation.MainThread;
-import android.support.v4.util.Pair;
+import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.MainThread;
+import androidx.core.util.Pair;
 
 public class ResponseData extends MutableLiveData<Pair<Integer, String>> {
 

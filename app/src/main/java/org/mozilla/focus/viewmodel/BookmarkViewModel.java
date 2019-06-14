@@ -1,9 +1,9 @@
 package org.mozilla.focus.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
 
 import org.mozilla.focus.persistence.BookmarkModel;
 import org.mozilla.focus.repository.BookmarkRepository;

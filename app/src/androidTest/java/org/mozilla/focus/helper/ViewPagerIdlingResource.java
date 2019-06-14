@@ -1,7 +1,7 @@
 package org.mozilla.focus.helper;
 
-import android.support.test.espresso.IdlingResource;
-import android.support.v4.view.ViewPager;
+import androidx.test.espresso.IdlingResource;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * An IdlingResource implementation that waits until the ViewPager is not loading anymore.

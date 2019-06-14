@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/animated_background">
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                         tools:progress="50" />
                 </FrameLayout>
 
-            </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
         </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
 

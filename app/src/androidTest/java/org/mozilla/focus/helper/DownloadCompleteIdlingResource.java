@@ -6,7 +6,7 @@ package org.mozilla.focus.helper;
 
 import android.database.ContentObserver;
 import android.net.Uri;
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.provider.DownloadContract;

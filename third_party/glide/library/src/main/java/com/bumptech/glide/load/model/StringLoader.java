@@ -2,7 +2,7 @@ package com.bumptech.glide.load.model;
 
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import com.bumptech.glide.load.Options;
 import java.io.File;

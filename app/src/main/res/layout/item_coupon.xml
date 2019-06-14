@@ -3,7 +3,7 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -61,4 +61,4 @@
                 tools:text="Valid until 30 January 2020" />
         </LinearLayout>
     </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

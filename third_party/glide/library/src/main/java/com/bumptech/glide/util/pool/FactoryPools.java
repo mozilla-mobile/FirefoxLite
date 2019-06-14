@@ -1,8 +1,8 @@
 package com.bumptech.glide.util.pool;
 
-import android.support.v4.util.Pools.Pool;
-import android.support.v4.util.Pools.SimplePool;
-import android.support.v4.util.Pools.SynchronizedPool;
+import androidx.core.util.Pools.Pool;
+import androidx.core.util.Pools.SimplePool;
+import androidx.core.util.Pools.SynchronizedPool;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;

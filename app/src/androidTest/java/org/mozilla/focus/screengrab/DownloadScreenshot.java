@@ -9,14 +9,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.IdlingRegistry;
-import android.support.test.espresso.action.Tap;
-import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.RootMatchers;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.rule.GrantPermissionRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.action.Tap;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.RootMatchers;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
+import androidx.test.runner.AndroidJUnit4;
 import android.util.DisplayMetrics;
 
 import org.junit.After;
@@ -39,15 +39,15 @@ import okhttp3.mockwebserver.MockWebServer;
 import tools.fastlane.screengrab.FalconScreenshotStrategy;
 import tools.fastlane.screengrab.Screengrab;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
@@ -142,7 +142,7 @@ public class DownloadScreenshot extends BaseScreenshot {
 
         // Simulate show no download permission snackbar
         MockUIUtils.showSnackbarAndWait(activityRule.getActivity(), R.string.permission_toast_storage, R.string.permission_handler_permission_dialog_setting);
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.permission_toast_storage))).check(matches(isDisplayed()));
+        onView(allOf(withId(com.google.android.material.R.id.snackbar_text), withText(R.string.permission_toast_storage))).check(matches(isDisplayed()));
         Screengrab.screenshot(ScreenshotNamingUtils.DOWNLOAD_NO_PERMISSION);
         SystemClock.sleep(MockUIUtils.SHORT_DELAY);
 
@@ -179,7 +179,7 @@ public class DownloadScreenshot extends BaseScreenshot {
 
         // Wait for download complete
         IdlingRegistry.getInstance().register(downloadCompleteIdlingResource);
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
+        onView(allOf(withId(com.google.android.material.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
                 .check(matches(isDisplayed()));
         Screengrab.screenshot(ScreenshotNamingUtils.DOWNLOAD_DOWNLOADED);
 
@@ -214,7 +214,7 @@ public class DownloadScreenshot extends BaseScreenshot {
 
         SystemClock.sleep(MockUIUtils.POPUP_DELAY);
         // Check if delete successfully message is displayed
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
+        onView(allOf(withId(com.google.android.material.R.id.snackbar_text), withText(containsString(IMAGE_FILE_NAME_DOWNLOADED_PREFIX))))
                 .check(matches(isDisplayed()));
 
         Screengrab.screenshot(ScreenshotNamingUtils.DOWNLOAD_DELETED);

@@ -7,7 +7,7 @@
     android:background="#4D111111"
     android:gravity="bottom">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="277dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/hint_swipe"
@@ -46,7 +46,7 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/hint_swipe"

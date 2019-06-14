@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 
-class ThemedImageButton : android.support.v7.widget.AppCompatImageButton {
+class ThemedImageButton : androidx.appcompat.widget.AppCompatImageButton {
     private var isNight: Boolean = false
 
     constructor(context: Context) : super(context)

@@ -1,7 +1,7 @@
 package org.mozilla.cachedrequestloader;
 
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 public class RequestLoaderDelegation {
     private Context context;

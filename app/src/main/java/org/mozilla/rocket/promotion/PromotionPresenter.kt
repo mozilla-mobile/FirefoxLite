@@ -1,7 +1,7 @@
 package org.mozilla.rocket.promotion
 
 import android.content.Context
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.NewFeatureNotice

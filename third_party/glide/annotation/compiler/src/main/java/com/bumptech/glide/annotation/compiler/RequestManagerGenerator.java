@@ -264,7 +264,7 @@ final class RequestManagerGenerator {
             elementUtils.getTypeElement(
                 RequestOptionsGenerator.REQUEST_OPTIONS_QUALIFIED_NAME);
     TypeElement androidNonNullType =
-            elementUtils.getTypeElement("android.support.annotation.NonNull");
+            elementUtils.getTypeElement("androidx.annotation.NonNull");
 
     // This class may have just been generated and therefore may not be found if we try to obtain
     // it via Elements, so use just the String version instead.

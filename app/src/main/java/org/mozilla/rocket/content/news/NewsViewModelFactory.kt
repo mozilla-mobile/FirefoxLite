@@ -1,7 +1,7 @@
 package org.mozilla.rocket.content.news
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 
 class NewsViewModelFactory constructor(

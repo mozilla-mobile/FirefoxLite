@@ -47,14 +47,14 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/news_setting_cat_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_below="@+id/news_setting_cat_title"
-            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:spanCount="2"
             tools:itemCount="13"
             tools:listitem="@layout/content_tab_new_setting_item"

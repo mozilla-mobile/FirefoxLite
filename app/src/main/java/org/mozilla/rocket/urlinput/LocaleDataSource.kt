@@ -5,8 +5,8 @@
 package org.mozilla.rocket.urlinput
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Context
 
 class LocaleDataSource : QuickSearchDataSource {

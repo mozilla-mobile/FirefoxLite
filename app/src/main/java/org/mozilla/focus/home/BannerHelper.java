@@ -1,9 +1,9 @@
 package org.mozilla.focus.home;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.util.Consumer;
+import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
 import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONException;

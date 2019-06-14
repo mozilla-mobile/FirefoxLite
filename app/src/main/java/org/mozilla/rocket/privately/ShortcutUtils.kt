@@ -7,9 +7,9 @@ package org.mozilla.rocket.privately
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.pm.ShortcutInfoCompat
-import android.support.v4.content.pm.ShortcutManagerCompat
-import android.support.v4.graphics.drawable.IconCompat
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper

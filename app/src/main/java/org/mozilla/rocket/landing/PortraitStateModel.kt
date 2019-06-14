@@ -5,8 +5,8 @@
 
 package org.mozilla.rocket.landing
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 class PortraitStateModel : PortraitModel {
     private val stateData = MutableLiveData<Boolean>()

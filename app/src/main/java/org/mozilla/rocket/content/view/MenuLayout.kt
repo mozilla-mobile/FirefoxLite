@@ -1,12 +1,12 @@
 package org.mozilla.rocket.content.view
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.menu_item_text_image.view.menu_item_image
 import kotlinx.android.synthetic.main.menu_item_text_image.view.menu_item_text
 import org.mozilla.focus.R

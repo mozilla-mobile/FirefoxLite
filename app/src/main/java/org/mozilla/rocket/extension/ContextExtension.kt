@@ -3,7 +3,7 @@ package org.mozilla.rocket.extension
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 
 fun Context.toActivity(): Activity = when {
     this is Activity -> this
