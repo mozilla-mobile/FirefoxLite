@@ -1,7 +1,7 @@
 package org.mozilla.focus.test.runner;
 
 import android.os.Bundle;
-import android.support.test.runner.AndroidJUnitRunner;
+import androidx.test.runner.AndroidJUnitRunner;
 
 /** Custom test runner for UI tests. **/
 public class CustomTestRunner extends AndroidJUnitRunner {
@@ -19,7 +19,7 @@ public class CustomTestRunner extends AndroidJUnitRunner {
         arguments.putString("disableAnalytics", "true");
         arguments.putString("clearPackageData", "true");
         // Using notAnnotation to exclude auto screenshot classes when running UI test.
-        arguments.putString("notAnnotation", "org.mozilla.focus.annotation.ScreengrabOnly,android.support.test.filters.FlakyTest");
+        arguments.putString("notAnnotation", "org.mozilla.focus.annotation.ScreengrabOnly,androidx.test.filters.FlakyTest");
 
         super.onCreate(arguments);
     }

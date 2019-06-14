@@ -2,7 +2,7 @@ package org.mozilla.focus.utils;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import org.mozilla.focus.R;
 import org.mozilla.icon.FavIconUtils;

@@ -1,7 +1,7 @@
 package org.mozilla.rocket.content.view
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.util.SparseIntArray
 import android.view.ContextThemeWrapper

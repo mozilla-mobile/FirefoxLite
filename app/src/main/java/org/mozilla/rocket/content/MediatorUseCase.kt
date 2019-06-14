@@ -16,7 +16,7 @@
 
 package org.mozilla.rocket.content
 
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.MediatorLiveData
 
 /**
  * Executes business logic in its execute method and keep posting updates to the result as

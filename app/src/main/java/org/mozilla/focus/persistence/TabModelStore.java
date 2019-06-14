@@ -3,8 +3,8 @@ package org.mozilla.focus.persistence;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.Inject;

@@ -5,7 +5,7 @@
 package org.mozilla.rocket.content.news.data
 
 import android.content.Context
-import android.support.v7.preference.Preference
+import androidx.preference.Preference
 import android.util.AttributeSet
 
 // dummy preference for clicking

@@ -2,21 +2,21 @@ package org.mozilla.focus.autobot
 
 import android.app.Activity
 import android.content.Intent
-import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.Tap
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.pressImeActionButton
-import android.support.test.espresso.action.ViewActions.replaceText
-import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.RootMatchers
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withClassName
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
-import android.support.test.uiautomator.UiDevice
-import android.support.test.uiautomator.UiSelector
+import androidx.test.InstrumentationRegistry
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.Tap
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.pressImeActionButton
+import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiSelector
 import android.view.View
 import org.hamcrest.Matchers
 import org.mozilla.focus.R
@@ -69,12 +69,12 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
     }
 
     fun checkAddBookmarkSnackbarIsDisplayed() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
+        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
                 .check(matches(isDisplayed()))
     }
 
     fun clickBookmarkSnackbarEdit() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit))).perform(click())
+        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_action), withText(R.string.bookmark_saved_edit))).perform(click())
     }
 
     fun checkRemoveBookmarkToastIsDisplayed(activity: Activity) {
@@ -133,11 +133,11 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
     }
 
     fun checkNewTabOpenedSnackbarIsDisplayed() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()))
+        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()))
     }
 
     fun checkNoLocationPermissionSnackbarIsDisplayed() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.permission_toast_location))).check(matches(isDisplayed()))
+        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText(R.string.permission_toast_location))).check(matches(isDisplayed()))
     }
 
     fun checkGeoPermissionDialogIsDisplayed() {

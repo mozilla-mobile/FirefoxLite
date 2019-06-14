@@ -2,8 +2,8 @@ package org.mozilla.rocket.content.news
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -125,7 +125,7 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
         newsAdapter = NewsAdapter(this)
 
         recyclerView?.adapter = newsAdapter
-        newsListLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        newsListLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerView?.layoutManager = newsListLayoutManager
         newsListLayoutManager?.let {
             recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {

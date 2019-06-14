@@ -1,7 +1,7 @@
 package org.mozilla.rocket.preference
 
-import android.arch.lifecycle.LiveData
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
 
 abstract class SharedPreferenceLiveData<T>(
     val sharedPrefs: SharedPreferences,

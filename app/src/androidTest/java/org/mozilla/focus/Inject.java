@@ -5,15 +5,15 @@
 
 package org.mozilla.focus;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Room;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.support.test.InstrumentationRegistry;
-import android.support.v4.app.FragmentActivity;
+import androidx.test.InstrumentationRegistry;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 import android.view.animation.Animation;
 

@@ -9,8 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.manager.ConnectivityMonitor;
@@ -36,9 +36,9 @@ import java.io.File;
  * handling, use the static Glide.load methods with your Fragment or Activity.
  *
  * @see Glide#with(android.app.Activity)
- * @see Glide#with(android.support.v4.app.FragmentActivity)
+ * @see Glide#with(androidx.fragment.app.FragmentActivity)
  * @see Glide#with(android.app.Fragment)
- * @see Glide#with(android.support.v4.app.Fragment)
+ * @see Glide#with(androidx.fragment.app.Fragment)
  * @see Glide#with(Context)
  */
 public class RequestManager implements LifecycleListener {

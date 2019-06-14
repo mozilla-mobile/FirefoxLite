@@ -1,7 +1,7 @@
 package org.mozilla.focus.activity
 
-import android.support.test.filters.SdkSuppress
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
+import androidx.test.runner.AndroidJUnit4
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

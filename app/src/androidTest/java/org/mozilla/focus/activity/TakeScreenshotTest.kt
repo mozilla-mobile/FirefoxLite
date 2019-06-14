@@ -7,10 +7,10 @@ package org.mozilla.focus.activity
 
 import android.Manifest
 import android.content.Intent
-import android.support.annotation.Keep
-import android.support.test.rule.ActivityTestRule
-import android.support.test.rule.GrantPermissionRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.annotation.Keep
+import androidx.test.rule.ActivityTestRule
+import androidx.test.rule.GrantPermissionRule
+import androidx.test.runner.AndroidJUnit4
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule

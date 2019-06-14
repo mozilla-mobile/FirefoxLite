@@ -90,7 +90,7 @@ public static java.lang.String TABLENAME;
 -keep class **$Properties
 
 # Customized BottomSheetBehavior for ViewPager
--keep class android.support.design.widget.ViewPagerBottomSheetBehavior
+-keep class org.mozilla.rocket.widget.ViewPagerBottomSheetBehavior
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -102,7 +102,7 @@ public static java.lang.String TABLENAME;
 
 
 # For Fragments which be created by xml of Android Navigation Architecture Components
--keep public class org.mozilla.rocket.** extends android.support.v4.app.Fragment
+-keep public class org.mozilla.rocket.** extends androidx.fragment.app.Fragment
 
 
 # Integrate buddybuild leakcanary
@@ -120,7 +120,3 @@ public static java.lang.String TABLENAME;
 ## Integrate Glide source code
 -dontwarn android.graphics.Bitmap$Config
 -dontwarn android.app.FragmentManager
-
-# According to https://github.com/Kotlin/kotlinx.coroutines/issues/1155
-# We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
--dontwarn kotlinx.atomicfu.AtomicFU

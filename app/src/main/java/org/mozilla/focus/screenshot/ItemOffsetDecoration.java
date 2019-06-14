@@ -6,7 +6,7 @@
 package org.mozilla.focus.screenshot;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import static org.mozilla.focus.screenshot.ScreenshotItemAdapter.VIEW_TYPE_SCREENSHOT;

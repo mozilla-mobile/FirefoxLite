@@ -6,10 +6,10 @@
 package org.mozilla.rocket.appupdate
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
 import android.content.Intent
-import android.support.v4.app.FragmentActivity
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener

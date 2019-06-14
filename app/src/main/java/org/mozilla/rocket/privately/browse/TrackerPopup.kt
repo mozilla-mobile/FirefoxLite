@@ -8,8 +8,8 @@ package org.mozilla.rocket.privately.browse
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
