@@ -75,6 +75,8 @@ public class BackgroundCachedRequestLoader implements RequestLoaderDelegation.Re
                     requestLoaderDelegation.writeToCache(string);
                 }
             } catch (MalformedURLException e) {
+                // treat network error as no data
+                stringLiveData.postValue(new Pair<>(ResponseData.SOURCE_NETWORK, ""));
                 e.printStackTrace();
             }
         });
