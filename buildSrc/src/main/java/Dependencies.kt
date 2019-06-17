@@ -14,7 +14,7 @@ object Versions {
     const val lifecycle = "1.1.1"
     const val room = "1.1.1"
     const val glide = "4.0.0"
-    const val kotlin = "1.3.0"
+    const val kotlin = "1.3.31"
     const val ktlint = "0.32.0"
     const val gms = "11.8.0"
     const val navigation = "1.0.0-alpha03"
@@ -39,7 +39,7 @@ object Versions {
     const val jraska_falcon = "2.0.1"
     const val dagger = "2.17"
     const val androidx_test_core = "1.1.0"
-    const val coroutine = "1.2.0"
+    const val coroutine = "1.3.0-M1"
 }
 
 object SystemEnv {
