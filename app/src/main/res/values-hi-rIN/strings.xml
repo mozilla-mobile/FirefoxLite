@@ -278,6 +278,12 @@
   <string name="private_browsing_erase_done">आपका निजी ब्राउज़िंग\nइतिहास मिटा दिया गया है।</string>
   <string name="private_browsing_tracker_blocked">ट्रैकर्स अवरुद्ध</string>
   <string name="private_browsing_tracker_blocked_description">अतरिक्त सुरक्षा के साथ ब्राउज़िंग का आनंद लें।</string>
+  <string name="private_browsing_dialog_add_shortcut_title">एक ही क्लिक द्वारा निजी मोड चलाएं! निजी मोड के शॉर्टकट को होमस्क्रीन पर जोड़ना चाहेंगे?</string>
+  <string name="private_browsing_dialog_add_shortcut_no">नहीं, शुक्रिया</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">हाँ</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">आप बाद में भी निजी मोड को सेटिंग्स में जाकर जोड़ सकते हैं।</string>
+  <string name="private_browsing_shortcut_name">%1$s - निजी ब्राउज़िंग</string>
+  <string name="preference_add_private_browsing_shortcut">निजी मोड शॉर्टकट को होम स्क्रीन पर जोड़ें</string>
   <string name="my_shot_on_boarding_message">अपने स्क्रीनशॉटों को यहाँ देखें!</string>
   <string name="my_shot_on_boarding_category_message">आपके प्रोडक्ट अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट श्रेणियों के बारे में जानकारियाँ जमा करते हैं।</string>
   <string name="btn_vpn">7-दिनों की निःशुल्क VPN सेवा आपके लिए तैयार है। और भी अधिक निजी एवं सुरक्षित रूप से ब्राउज करने हेतु अभी इनस्टॉल करें।</string>
