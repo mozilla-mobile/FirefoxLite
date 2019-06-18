@@ -91,7 +91,7 @@ class NewsTabFragment : DaggerFragment() {
                 }
 
                 override fun onPageSelected(p0: Int) {
-                    if (newsSettings.second.isNotEmpty()) {
+                    if (newsSettings.second.size > p0) {
                         TelemetryWrapper.openLifeFeedNews(newsSettings.second[p0].order.toString())
                     }
                     ContentPortalViewState.lastNewsTab = p0
