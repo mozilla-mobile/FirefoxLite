@@ -45,11 +45,7 @@ public class DialogUtils {
     private static final int REQUEST_DEFAULT_CLICK = 4;
     private static final int REQUEST_PRIVACY_POLICY_CLICK = 5;
 
-    public static void showRateAppDialog(final Context context) {
-        if (context == null) {
-            return;
-        }
-
+    public static PromotionDialog createRateAppDialog(@NonNull final Context context) {
         CustomViewDialogData data = new CustomViewDialogData();
 
         data.setDrawable(ContextCompat.getDrawable(context, R.drawable.promotion_02));
@@ -74,7 +70,7 @@ public class DialogUtils {
 
         data.setShowCloseButton(true);
 
-        new PromotionDialog(context, data)
+        return new PromotionDialog(context, data)
                 .onPositive(() -> {
                     IntentUtils.goToPlayStore(context);
                     telemetryFeedback(context, TelemetryWrapper.Value.POSITIVE);
@@ -96,10 +92,11 @@ public class DialogUtils {
                     telemetryFeedback(context, TelemetryWrapper.Value.DISMISS);
                     return null;
                 })
-                .setCancellable(true)
-                .show();
-
-        Settings.getInstance(context).setRateAppDialogDidShow();
+                .addOnShowListener(() -> {
+                    Settings.getInstance(context).setRateAppDialogDidShow();
+                    return null;
+                })
+                .setCancellable(true);
     }
 
     private static void telemetryFeedback(final Context context, String value) {
@@ -110,11 +107,7 @@ public class DialogUtils {
         }
     }
 
-    public static void showShareAppDialog(final Context context) {
-        if (context == null) {
-            return;
-        }
-
+    public static PromotionDialog createShareAppDialog(@NonNull final Context context) {
         CustomViewDialogData data = new CustomViewDialogData();
         data.setDrawable(ContextCompat.getDrawable(context, R.drawable.promotion_03));
         data.setTitle(AppConfigWrapper.getShareAppDialogTitle());
@@ -122,7 +115,7 @@ public class DialogUtils {
         data.setPositiveText(context.getString(R.string.share_app_dialog_btn_share));
         data.setShowCloseButton(true);
 
-        new PromotionDialog(context, data)
+        return new PromotionDialog(context, data)
                 .onPositive(() -> {
                     Intent sendIntent = new Intent(Intent.ACTION_SEND);
                     sendIntent.setType("text/plain");
@@ -140,10 +133,11 @@ public class DialogUtils {
                     telemetryShareApp(context, TelemetryWrapper.Value.DISMISS);
                     return null;
                 })
-                .setCancellable(true)
-                .show();
-
-        Settings.getInstance(context).setShareAppDialogDidShow();
+                .addOnShowListener(() -> {
+                    Settings.getInstance(context).setShareAppDialogDidShow();
+                    return null;
+                })
+                .setCancellable(true);
     }
 
     private static void telemetryShareApp(final Context context, String value) {
