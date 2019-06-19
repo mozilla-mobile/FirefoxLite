@@ -14,7 +14,12 @@ object Versions {
     const val lifecycle = "1.1.1"
     const val room = "1.1.1"
     const val glide = "4.0.0"
+
+    // TODO: Remove below two lines in proguard-rules.pro after upgrading to 1.3.40
+    // -dontwarn kotlinx.coroutines.flow.*
+    // -dontwarn kotlinx.coroutines.flow.internal.*
     const val kotlin = "1.3.31"
+
     const val ktlint = "0.32.0"
     const val gms = "11.8.0"
     const val navigation = "1.0.0-alpha03"

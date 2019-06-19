@@ -124,3 +124,8 @@ public static java.lang.String TABLENAME;
 # According to https://github.com/Kotlin/kotlinx.coroutines/issues/1155
 # We can get rid of this once Android-Components' upgrade to 0.53.0 with coroutines 1.2.1
 -dontwarn kotlinx.atomicfu.AtomicFU
+
+# According to https://github.com/Kotlin/kotlinx.coroutines/issues/1270
+# These two line should be removed after Kotlin 1.3.40
+-dontwarn kotlinx.coroutines.flow.*
+-dontwarn kotlinx.coroutines.flow.internal.*
