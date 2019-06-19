@@ -13,6 +13,9 @@ import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import mozilla.components.service.glean.Glean
+import mozilla.components.service.glean.config.Configuration
+import mozilla.components.service.glean.private.PingType
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -64,6 +67,20 @@ class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
         return super.getDir(name, mode)
     }
 
+    internal object Pings {
+        /**
+         * This ping is intended to provide a measure of the activation of mobile
+         * products. It's generated when Fenix starts, right after Glean is initialized.
+         * It doesn't include the client_id, since it might be reporting an hashed version
+         * of the Google Advertising ID.
+         */
+        val activation: PingType =
+            PingType(
+                name = "activation",
+                includeClientId = false
+            )
+    }
+
     override fun onCreate() {
         super.onCreate()
         DaggerAppComponent.builder().application(this).build().inject(this)
@@ -96,6 +113,14 @@ class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
         partnerActivator.launch()
 
         monitorPrivateProcess()
+
+        glean()
+    }
+
+    private fun glean() {
+        Glean.setUploadEnabled(true)
+        Glean.registerPings(Pings)
+        Glean.initialize(applicationContext, Configuration(channel = BuildConfig.BUILD_TYPE))
     }
 
     /**
