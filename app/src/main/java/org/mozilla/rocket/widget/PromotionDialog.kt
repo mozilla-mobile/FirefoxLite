@@ -1,3 +1,4 @@
+@file:JvmName("PromotionDialogExt")
 package org.mozilla.rocket.widget
 
 import android.content.Context
@@ -5,6 +6,7 @@ import android.support.v7.app.AlertDialog
 import android.view.View
 import kotlinx.android.synthetic.main.layout_promotion_dialog.view.*
 import org.mozilla.focus.R
+import org.mozilla.rocket.landing.DialogQueue
 
 class PromotionDialog(
     private val context: Context,
@@ -16,6 +18,9 @@ class PromotionDialog(
     private var onNegativeListener: (() -> Unit)? = null
     private var onCloseListener: (() -> Unit)? = null
     private var onCancelListener: (() -> Unit)? = null
+
+    private val onShowListeners = mutableListOf<() -> Unit>()
+    private val onDismissListeners = mutableListOf<() -> Unit>()
 
     private var cancellable = false
 
@@ -40,6 +45,16 @@ class PromotionDialog(
 
     fun onCancel(listener: () -> Unit): PromotionDialog {
         this.onCancelListener = listener
+        return this
+    }
+
+    fun addOnShowListener(listener: () -> Unit): PromotionDialog {
+        onShowListeners.add(listener)
+        return this
+    }
+
+    fun addOnDismissListener(listener: () -> Unit): PromotionDialog {
+        onDismissListeners.add(listener)
         return this
     }
 
@@ -110,6 +125,41 @@ class PromotionDialog(
             onCloseListener?.invoke()
         }
 
+        dialog.setOnShowListener {
+            onShowListeners.forEach { it() }
+        }
+
+        dialog.setOnDismissListener {
+            onDismissListeners.forEach { it() }
+        }
+
         return dialog
     }
+}
+
+fun DialogQueue.enqueue(dialog: PromotionDialog, onShow: () -> Unit) {
+    enqueue(object : DialogQueue.DialogDelegate {
+        override fun setOnDismissListener(listener: () -> Unit) {
+            dialog.addOnDismissListener(listener)
+        }
+
+        override fun show() {
+            dialog.show()
+            onShow()
+        }
+    })
+}
+
+@Suppress("unused")
+fun DialogQueue.tryShow(dialog: PromotionDialog, onShow: () -> Unit): Boolean {
+    return tryShow(object : DialogQueue.DialogDelegate {
+        override fun setOnDismissListener(listener: () -> Unit) {
+            dialog.addOnDismissListener(listener)
+        }
+
+        override fun show() {
+            dialog.show()
+            onShow()
+        }
+    })
 }
