@@ -251,7 +251,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutine}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutine}"
-
+    implementation "org.mozilla.components:service-glean:0.56.4"
 
 
     testImplementation "junit:junit:${Versions.junit}"

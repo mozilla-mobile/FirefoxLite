@@ -39,12 +39,12 @@ class ContentFeature(val settings: Settings) {
     fun eCommerceFeatures(): ArrayList<Int> {
 
         val features = ArrayList<Int>()
-        if (hasCoupon()) {
-            features.add(TYPE_COUPON)
-        }
-
         if (hasShoppingLink()) {
             features.add(TYPE_TICKET)
+        }
+
+        if (hasCoupon()) {
+            features.add(TYPE_COUPON)
         }
 
         return features
