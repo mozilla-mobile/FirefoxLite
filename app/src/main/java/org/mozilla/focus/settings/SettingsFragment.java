@@ -5,7 +5,7 @@
 
 package org.mozilla.focus.settings;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -61,22 +61,22 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         TelemetryWrapper.settingsClickEvent(keyClicked);
 
         if (keyClicked.equals(resources.getString(R.string.pref_key_give_feedback))) {
-            DialogUtils.showRateAppDialog(getActivity());
+            DialogUtils.createRateAppDialog(preference.getContext()).show();
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_share_with_friends))) {
             if (!debugingFirebase()) {
-                DialogUtils.showShareAppDialog(getActivity());
+                DialogUtils.createShareAppDialog(preference.getContext()).show();
             }
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_about))) {
-            final Intent intent = InfoActivity.getAboutIntent(getActivity());
+            final Intent intent = InfoActivity.getAboutIntent(preference.getContext());
             startActivity(intent);
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_night_mode_brightness))) {
-            Settings.getInstance(getActivity()).setNightModeSpotlight(true);
-            startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromSetting(getActivity()));
+            Settings.getInstance(preference.getContext()).setNightModeSpotlight(true);
+            startActivity(AdjustBrightnessDialog.Intents.INSTANCE.getStartIntentFromSetting(preference.getContext()));
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_default_browser))) {
             TelemetryWrapper.clickDefaultBrowserInSetting();
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_private_mode_shortcut))) {
             TelemetryWrapper.clickPrivateShortcutItemInSettings();
-            ShortcutUtils.Companion.createShortcut(getActivity().getApplicationContext());
+            ShortcutUtils.Companion.createShortcut(preference.getContext().getApplicationContext());
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);

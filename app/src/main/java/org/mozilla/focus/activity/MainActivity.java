@@ -74,6 +74,7 @@ import org.mozilla.rocket.component.LaunchIntentDispatcher;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.landing.DialogQueue;
 import org.mozilla.rocket.landing.OrientationState;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
@@ -88,6 +89,8 @@ import org.mozilla.rocket.tabs.TabView;
 import org.mozilla.rocket.tabs.TabViewProvider;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.theme.ThemeManager;
+import org.mozilla.rocket.widget.PromotionDialog;
+import org.mozilla.rocket.widget.PromotionDialogExt;
 
 import java.io.File;
 import java.util.List;
@@ -125,6 +128,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
     private DownloadIndicatorViewModel downloadIndicatorViewModel;
 
     private PortraitStateModel portraitStateModel = new PortraitStateModel();
+    private DialogQueue dialogQueue = new DialogQueue();
 
     @Override
     public ThemeManager getThemeManager() {
@@ -771,8 +775,11 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     @Override
     public void showRateAppDialog() {
-        DialogUtils.showRateAppDialog(this);
-        TelemetryWrapper.showRateApp(false);
+        PromotionDialog dialog = DialogUtils.createRateAppDialog(this);
+        PromotionDialogExt.enqueue(dialogQueue, dialog, () -> {
+            TelemetryWrapper.showRateApp(false);
+            return null;
+        });
     }
 
     @Override
@@ -783,8 +790,11 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     @Override
     public void showShareAppDialog() {
-        DialogUtils.showShareAppDialog(this);
-        TelemetryWrapper.showPromoteShareDialog();
+        PromotionDialog dialog = DialogUtils.createShareAppDialog(this);
+        PromotionDialogExt.enqueue(dialogQueue, dialog, () -> {
+            TelemetryWrapper.showPromoteShareDialog();
+            return null;
+        });
     }
 
     @Override
@@ -795,9 +805,11 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     @Override
     public void showRateAppDialogFromIntent() {
-
-        DialogUtils.showRateAppDialog(this);
-        TelemetryWrapper.showRateApp(false);
+        PromotionDialog dialog = DialogUtils.createRateAppDialog(this);
+        PromotionDialogExt.enqueue(dialogQueue, dialog, () -> {
+            TelemetryWrapper.showRateApp(false);
+            return null;
+        });
 
         NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_FIREFOX);
 
