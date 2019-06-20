@@ -40,6 +40,7 @@ object Versions {
     const val dagger = "2.17"
     const val androidx_test_core = "1.1.0"
     const val coroutine = "1.2.0"
+    const val play = "1.6.1"
 }
 
 object SystemEnv {
