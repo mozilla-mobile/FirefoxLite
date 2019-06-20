@@ -68,6 +68,8 @@ import org.mozilla.focus.utils.StorageUtils;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.rocket.appupdate.InAppUpdateManager;
+import org.mozilla.rocket.appupdate.InAppUpdateModelRepository;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.component.LaunchIntentDispatcher;
@@ -75,6 +77,7 @@ import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.landing.DialogQueue;
+import org.mozilla.rocket.appupdate.InAppUpdateViewDelegate;
 import org.mozilla.rocket.landing.OrientationState;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
@@ -105,6 +108,8 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         ScreenNavigator.HostActivity,
         PromotionViewContract {
 
+    public static final int REQUEST_CODE_IN_APP_UPDATE = 1024;
+
     private PromotionModel promotionModel;
 
     private MenuDialog menu;
@@ -129,6 +134,8 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
     private PortraitStateModel portraitStateModel = new PortraitStateModel();
     private DialogQueue dialogQueue = new DialogQueue();
+
+    private InAppUpdateManager appUpdateManager;
 
     @Override
     public ThemeManager getThemeManager() {
@@ -163,6 +170,10 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         setContentView(R.layout.activity_main);
         initViews();
         initBroadcastReceivers();
+
+        appUpdateManager = new InAppUpdateManager(
+                new InAppUpdateViewDelegate(this, snackBarContainer),
+                new InAppUpdateModelRepository(Settings.getInstance(this)));
 
         SafeIntent intent = new SafeIntent(getIntent());
 
@@ -247,6 +258,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         //if (urlInputFragment != null) {
         //    getUrlInputPresenter().setView(urlInputFragment);
         //}
+        if (!Settings.getInstance(this).shouldShowFirstrun()) {
+            appUpdateManager.update(this, AppConfigWrapper.getInAppUpdateConfig());
+        }
         super.onStart();
     }
 
@@ -543,6 +557,13 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
                     }
                     screenNavigator.showBrowserScreen(url, true, false);
                 }
+            }
+
+        } else if (requestCode == REQUEST_CODE_IN_APP_UPDATE) {
+            if (resultCode == Activity.RESULT_OK) {
+                appUpdateManager.onInAppUpdateGranted();
+            } else {
+                appUpdateManager.onInAppUpdateDenied();
             }
         }
     }
