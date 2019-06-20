@@ -81,6 +81,9 @@ final public class FirebaseHelper {
     public static final String STR_MENU_BOTTOM_BAR_ITEMS = "str_menu_bottom_bar_items";
     public static final String STR_PRIVATE_BOTTOM_BAR_ITEMS = "str_private_bottom_bar_items";
 
+    public static final String BOOL_IN_APP_UPDATE_SHOW_INTRO = "bool_in_app_update_show_intro";
+    public static final String STR_IN_APP_UPDATE_CONFIG = "str_in_app_update_config";
+
     private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
     private static FirebaseContract firebaseContract;
