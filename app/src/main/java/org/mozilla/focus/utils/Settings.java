@@ -254,6 +254,16 @@ public class Settings {
         preferences.edit().putFloat(getPreferenceKey(R.string.pref_key_brightness), value).apply();
     }
 
+    public int getLastPromptInAppUpdateVersion() {
+        return preferences.getInt(getPreferenceKey(R.string.pref_int_last_prompt_in_app_update_version), 0);
+    }
+
+    public void setLastPromptInAppUpdateVersion(int version) {
+        preferences.edit()
+                .putInt(getPreferenceKey(R.string.pref_int_last_prompt_in_app_update_version), version)
+                .apply();
+    }
+
     public static void updatePrefDefaultBrowserIfNeeded(Context context, boolean isDefaultBrowser) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         final Set<String> keySet = sharedPreferences.getAll().keySet();
