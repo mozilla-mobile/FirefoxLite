@@ -6,10 +6,13 @@
 package org.mozilla.focus.utils;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mozilla.rocket.appupdate.InAppUpdateConfig;
+import org.mozilla.rocket.appupdate.InAppUpdateIntro;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.MenuItemAdapter;
 import org.mozilla.rocket.content.ecommerce.data.Coupon;
@@ -328,5 +331,41 @@ public class AppConfigWrapper {
         }
 
         return itemDataList;
+    }
+
+    @Nullable
+    public static InAppUpdateConfig getInAppUpdateConfig() {
+        boolean showIntro = FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.BOOL_IN_APP_UPDATE_SHOW_INTRO);
+        String config = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_IN_APP_UPDATE_CONFIG);
+        return convertToInAppUpdateConfig(config, showIntro);
+    }
+
+    @Nullable
+    private static InAppUpdateIntro getInAppUpdateIntro(JSONObject obj) {
+        try {
+            JSONObject introObj = obj.getJSONObject("intro");
+            return new InAppUpdateIntro(introObj.getString("title"),
+                    introObj.getString("description"),
+                    introObj.getString("positive"),
+                    introObj.getString("negative"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Nullable
+    private static InAppUpdateConfig convertToInAppUpdateConfig(String config, boolean showIntro) {
+        try {
+            JSONObject obj = new JSONObject(config);
+            InAppUpdateIntro intro = getInAppUpdateIntro(obj);
+            return new InAppUpdateConfig(obj.getInt("targetVersion"),
+                    obj.getBoolean("forceClose"),
+                    showIntro,
+                    intro);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
