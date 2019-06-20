@@ -17,6 +17,5 @@
 -dontnote com.bumptech.glide.repackaged.com.google.common.**
 # com.google.common.collect.* and some others (….common.*.*)
 -dontwarn com.google.j2objc.annotations.Weak
-# com.google.common.util.concurrent.FuturesGetChecked$GetCheckedTypeValidatorHolder$ClassValueValidator
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
 #-dontwarn **

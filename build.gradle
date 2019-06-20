@@ -18,15 +18,15 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        maven {
-            url "https://maven.mozilla.org/maven2"
+    allprojects {
+        repositories {
+            google()
+            maven {
+                url "https://maven.mozilla.org/maven2"
+            }
+            jcenter()
         }
-        jcenter()
     }
-}
 
 task clean(type: Delete) {
     delete rootProject.buildDir
