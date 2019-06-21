@@ -281,6 +281,10 @@
   <string name="private_browsing_dialog_add_shortcut_title">一键进入隐私模式！要在主屏幕加入隐私模式的快捷方式吗？</string>
   <string name="private_browsing_dialog_add_shortcut_no">不了，谢谢</string>
   <string name="private_browsing_dialog_add_shortcut_yes">好的</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">为隐私模式添加桌面快捷方式</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">从主屏幕上直接打开隐私模式。</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">不必</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">好，加上吧！</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">也可稍后到设置页中添加。</string>
   <string name="private_browsing_shortcut_name">%1$s - 隐私浏览</string>
   <string name="preference_add_private_browsing_shortcut">将隐私模式快捷方式添加到主屏幕</string>

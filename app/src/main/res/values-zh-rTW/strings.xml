@@ -281,6 +281,10 @@
   <string name="private_browsing_dialog_add_shortcut_title">只要一按，就可以快速進入隱私瀏覽模式！要在主畫面加入隱私瀏覽模式的捷徑嗎？</string>
   <string name="private_browsing_dialog_add_shortcut_no">不用了，謝謝</string>
   <string name="private_browsing_dialog_add_shortcut_yes">好的</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">新增隱私瀏覽模式捷徑</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">從裝置只畫面快速開啟隱私瀏覽模式。</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">不用，謝謝</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">好的，現在幫我加！</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">也可以稍後再到設定畫面中加入。</string>
   <string name="private_browsing_shortcut_name">%1$s - 隱私瀏覽</string>
   <string name="preference_add_private_browsing_shortcut">新增隱私瀏覽模式捷徑到主畫面</string>
