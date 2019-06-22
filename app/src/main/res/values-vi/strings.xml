@@ -281,6 +281,10 @@
   <string name="private_browsing_dialog_add_shortcut_title">Truy cập chế độ riêng tư trong một cú nhấp chuột! Bạn muốn thêm lối tắt chế độ riêng tư vào màn hình chính?</string>
   <string name="private_browsing_dialog_add_shortcut_no">Không, cảm ơn</string>
   <string name="private_browsing_dialog_add_shortcut_yes">Có</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">Thêm phím tắt chế độ riêng tư</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">Truy cập chế độ riêng tư nhanh chóng từ màn hình chính của bạn.</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">KHÔNG, CÁM ƠN</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">CÓ, THÊM NGAY BÂY GIỜ!</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">Bạn có thể thêm lối tắt chế độ riêng tư sau này trong cài đặt.</string>
   <string name="private_browsing_shortcut_name">%1$s - Duyệt web riêng tư</string>
   <string name="preference_add_private_browsing_shortcut">Thêm phím tắt chế độ riêng tư vào màn hình chính</string>
