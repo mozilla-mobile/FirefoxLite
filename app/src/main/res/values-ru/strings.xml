@@ -281,6 +281,10 @@
   <string name="private_browsing_dialog_add_shortcut_title">Попадайте в приватный просмотр одним касанием! Вы хотите добавить ярлык приватного просмотра на домашний экран?</string>
   <string name="private_browsing_dialog_add_shortcut_no">Нет, спасибо</string>
   <string name="private_browsing_dialog_add_shortcut_yes">Да</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">Добавить ярлык приватного просмотра</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">Быстро попадайте в приватный просмотр с вашего домашнего экрана.</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">НЕТ, СПАСИБО</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">ДА, ДОБАВИТЬ СЕЙЧАС!</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">Вы сможете добавить ярлык приватного просмотра позже в Параметрах.</string>
   <string name="private_browsing_shortcut_name">%1$s - Приватный просмотр</string>
   <string name="preference_add_private_browsing_shortcut">Добавить ярлык приватного просмотра на домашний экран</string>
