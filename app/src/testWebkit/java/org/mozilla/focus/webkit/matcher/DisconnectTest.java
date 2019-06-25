@@ -9,13 +9,13 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertFalse;
@@ -53,16 +53,16 @@ public class DisconnectTest {
     // http://robolectric.org/getting-started/#note-for-linux-and-mac-users
     @Test
     public void matches() throws Exception {
-        final UrlMatcher matcher = UrlMatcher.loadMatcher(RuntimeEnvironment.application, R.raw.blocklist, new int[] { R.raw.google_mapping }, R.raw.entitylist, R.raw.abpindo_adservers);
+        final UrlMatcher matcher = UrlMatcher.loadMatcher(ApplicationProvider.getApplicationContext(), R.raw.blocklist, new int[] { R.raw.google_mapping }, R.raw.entitylist, R.raw.abpindo_adservers);
 
         // Enable everything
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
         prefs.edit()
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_ads), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_analytics), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_other), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_social), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_abpindo), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_ads), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_analytics), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_other), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_social), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_abpindo), true)
                 .apply();
 
         // We check that our google_mapping was loaded correctly. We do these checks per-category, so we have:
@@ -83,11 +83,11 @@ public class DisconnectTest {
 
         // Now disable social, and check that only social sites have changed:
         prefs.edit()
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_ads), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_analytics), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_other), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_abpindo), true)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_social), false)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_ads), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_analytics), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_other), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_abpindo), true)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_social), false)
                 .apply();
 
         // ads:
@@ -106,11 +106,11 @@ public class DisconnectTest {
 
         // Now disable everything - all sites should work:
         prefs.edit()
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_ads), false)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_analytics), false)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_other), false)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_social), false)
-                .putBoolean(RuntimeEnvironment.application.getString(R.string.pref_key_privacy_block_abpindo), false)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_ads), false)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_analytics), false)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_other), false)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_social), false)
+                .putBoolean(ApplicationProvider.getApplicationContext().getString(R.string.pref_key_privacy_block_abpindo), false)
                 .apply();
 
         // ads:

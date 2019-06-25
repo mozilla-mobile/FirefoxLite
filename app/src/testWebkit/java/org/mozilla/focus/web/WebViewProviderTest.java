@@ -5,13 +5,9 @@
 
 package org.mozilla.focus.web;
 
-import android.content.pm.PackageManager;
-import android.os.Build;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.*;
 

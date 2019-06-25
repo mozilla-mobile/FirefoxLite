@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import com.squareup.leakcanary.LeakCanary
+import com.squareup.leakcanary.RefWatcher
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -30,7 +31,7 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.settings.SettingsProvider
 import java.io.File
 
-class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
+open class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
 
     @javax.inject.Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -67,12 +68,7 @@ class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
     override fun onCreate() {
         super.onCreate()
         DaggerAppComponent.builder().application(this).build().inject(this)
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
-        LeakCanary.install(this)
+        setupLeakCanary()
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
@@ -96,6 +92,16 @@ class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
         partnerActivator.launch()
 
         monitorPrivateProcess()
+    }
+
+    open fun setupLeakCanary(): RefWatcher {
+        return if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            RefWatcher.DISABLED
+        } else {
+            LeakCanary.install(this)
+        }
     }
 
     /**

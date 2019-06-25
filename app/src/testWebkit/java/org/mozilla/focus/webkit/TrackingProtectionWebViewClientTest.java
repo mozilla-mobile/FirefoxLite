@@ -11,13 +11,13 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mozilla.focus.BuildConfig;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.Map;
@@ -40,10 +40,10 @@ public class TrackingProtectionWebViewClientTest {
 
     @Before
     public void setup() {
-        trackingProtectionWebViewClient = new TrackingProtectionWebViewClient(RuntimeEnvironment.application);
+        trackingProtectionWebViewClient = new TrackingProtectionWebViewClient(ApplicationProvider.getApplicationContext());
 
         webView = mock(WebView.class);
-        when(webView.getContext()).thenReturn(RuntimeEnvironment.application);
+        when(webView.getContext()).thenReturn(ApplicationProvider.getApplicationContext());
     }
 
     @After

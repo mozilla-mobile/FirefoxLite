@@ -8,13 +8,14 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.webkit.matcher.util.FocusString;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class UrlMatcherTest {
         // Number of categories we want to test with.
         final int CAT_COUNT = 4;
 
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 
         { // Setup for category tests
             final SharedPreferences.Editor editor = preferences.edit();
@@ -86,7 +87,7 @@ public class UrlMatcherTest {
             editor.apply();
         }
 
-        final UrlMatcher matcher = new UrlMatcher(RuntimeEnvironment.application, categoryPrefMap, categories, null);
+        final UrlMatcher matcher = new UrlMatcher(ApplicationProvider.getApplicationContext(), categoryPrefMap, categories, null);
 
         // We can test every permutation by iterating over every value of a 4-bit integer (each bit
         // indicates whether a given category is enabled or disabled).
