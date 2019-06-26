@@ -409,6 +409,14 @@
     <string name="remove">Remove</string>
     <!-- Pin Top site item -->
     <string name="pin_site">Pin site</string>
+     
+    <!-- In-app message to update to latest build. -->
+    <!-- Show a toast message when start downloading the new apk from google play. -->
+    <string name="update_to_latest_app_toast">Downloading latest build…</string>
+    <!-- Show snack bar or notification so users can tap to update the apk-->
+    <string name="update_to_latest_app_notification">Latest build has been downloaded. Tap to update.</string>
+    <string name="update_to_latest_app_snack_bar_message">Latest build has been downloaded. Tap to update.</string>
+    <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
    
     <!-- In-app notification, Privacy policy update -->
     <string name="privacy_policy_update_notification_title">Product Update Notice</string>
@@ -432,8 +440,8 @@
     <string name="share_app_dialog_btn_share">Share</string>
     <string name="share_app_google_play_url" translatable="false">https://mzl.la/2kScptw</string>
     <!-- The message template used when user shares Rocket with friends. %1$s is the App name i.e. Rocket, and %2$s is the Google Play url, and %3$s is "Mozilla"-->
-    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from %3$s. %1$s %2$s</string>
-
+    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from %3$s. %1$s %2$s</string>    
+   
     <!-- Text shown in the "Your rights" screen.
     %1$s will be replaced with the name of the app (e.g. Firefox Rocket)
     %2$s will be replaced by "Mozilla"-->
