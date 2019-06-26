@@ -281,6 +281,10 @@
   <string name="private_browsing_dialog_add_shortcut_title">அந்தரங்க முறைமையை ஒரு சொடுக்கில் அணுகுக! அந்தரங்க முறைமையின் குறுக்குவழியை முகத்திரையில் சேர்க்கவா?</string>
   <string name="private_browsing_dialog_add_shortcut_no">வேண்டாம், நன்றி</string>
   <string name="private_browsing_dialog_add_shortcut_yes">ஆமாம்</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">தனிப்பட்ட பயன்முறை குறுக்குவழியைச் சேர்</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">உங்கள் முகப்புத் திரையிலிருந்து தனிப்பட்ட பயன்முறையை விரைவாக அணுகுக.</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">தேவையில்லை, நன்றி</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">ஆம், இப்போதே சேர்!</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">அந்தரங்க முறைமையின் குறுக்கு வழியைப் பிறகு அமைவிற்கு சென்று சேர்க்க முடியும்.</string>
   <string name="private_browsing_shortcut_name">%1$s - அந்தரங்க உலாவல்</string>
   <string name="preference_add_private_browsing_shortcut">அந்தரங்க முறைமையின் குறுக்குவழியை முகத்திரையில் சேர்</string>

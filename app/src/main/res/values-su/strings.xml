@@ -281,6 +281,10 @@
   <string name="private_browsing_dialog_add_shortcut_title">Aksés modeu pribadi kur sakali ngaklik! Rék nambahkeun takulan modeu pribadi kana layar tepas?</string>
   <string name="private_browsing_dialog_add_shortcut_no">Teu, nuhun</string>
   <string name="private_browsing_dialog_add_shortcut_yes">Enya</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">Tambahan tarabas mode nyamuni</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">Gancang asup ka mode nyamuni ti layar tepas.</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">MOAL, NUHUN</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">ENYA, PASANG AYEUNA!</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">Anjeun bisa nambahkeun takulan modeu pribadi engké na pangaturan.</string>
   <string name="private_browsing_shortcut_name">%1$s - Sungsian pribadi</string>
   <string name="preference_add_private_browsing_shortcut">Tambahkeun takulan modeu pribadi kana layar Tepas</string>
