@@ -43,7 +43,7 @@ fun InAppUpdateConfig.shouldShowIntro(): Boolean {
 }
 
 fun InAppUpdateConfig.getIntroIfAvailable(): InAppUpdateIntro? {
-    return if (shouldShowIntro()) { introData } else { null }
+    return introData.takeIf { shouldShowIntro() }
 }
 
 class InAppUpdateManager(
@@ -54,6 +54,11 @@ class InAppUpdateManager(
 
     fun update(activity: FragmentActivity, config: InAppUpdateConfig?) {
         updateConfig = config ?: return
+
+        if (!config.isUpdateRecommended()) {
+            log("(current=${BuildConfig.VERSION_CODE} >= target=${config.targetVersion}), skip")
+            return
+        }
 
         val updateManager = AppUpdateManagerFactory.create(activity)
         updateManager.appUpdateInfo.addOnSuccessListener { info ->
@@ -114,16 +119,11 @@ class InAppUpdateManager(
     ) {
         log("config: $config")
 
-        if (!config.isUpdateRecommended()) {
-            log("no urgent update is needed, abort")
-            return
-        }
-
         val currentVersion = BuildConfig.VERSION_CODE
         val configVersion = config.targetVersion
         val availableVersion = info.availableVersionCode()
 
-        if (isVersionPromptBefore(availableVersion)) {
+        if (!config.forceCloseOnDenied && isVersionPromptBefore(availableVersion)) {
             log("version $availableVersion had been asked before, skip")
             return
         } else {
