@@ -150,7 +150,13 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
     }
 
     private boolean isDownloadManagerEnabled(final Context context) {
-        final int state = context.getPackageManager().getApplicationEnabledSetting(DOWNLOAD_MANAGER_PACKAGE_NAME);
+        int state = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        try {
+            state = context.getPackageManager().getApplicationEnabledSetting(DOWNLOAD_MANAGER_PACKAGE_NAME);
+        } catch (IllegalArgumentException e) { // throws when the named package does not exist
+            e.printStackTrace();
+        }
+
         return !(state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER);
     }
 }
