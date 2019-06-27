@@ -49,7 +49,6 @@ import org.mozilla.focus.screenshot.ScreenshotViewerActivity
 import org.mozilla.focus.tabs.tabtray.TabTray
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
-import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.DialogUtils
@@ -309,8 +308,8 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onStart() {
-        if (!Settings.getInstance(this).shouldShowFirstrun()) {
-            appUpdateManager.update(this, AppConfigWrapper.getInAppUpdateConfig())
+        if (!chromeViewModel.shouldShowFirstrun) {
+            appUpdateManager.update(this, chromeViewModel.inAppUpdateConfig)
         }
         super.onStart()
     }
